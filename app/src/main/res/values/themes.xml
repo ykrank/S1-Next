@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="LightTheme" parent="Theme.AppCompat.Light">
+        <!-- Use ToolBar as the ActionBar. -->
+        <item name="windowActionBar">false</item>
+        <!--show Contextual Action Bars-->
+        <item name="windowActionModeOverlay">true</item>
+        <item name="dividerColor">@color/black12</item>
+        <item name="menuCross">@drawable/ic_menu_close_black_24dp</item>
+        <item name="menuPersonAdd">@drawable/ic_menu_person_add_black_24dp</item>
+        <item name="menuPageFlip">@drawable/ic_menu_swap_horiz_black_24dp</item>
+        <item name="iconSettings">@drawable/ic_settings_grey600_24dp</item>
+        <!-- card view background color -->
+        <item name="myCardView">@style/MyCardView.Light</item>
+    </style>
+
+    <style name="DarkTheme" parent="Theme.AppCompat">
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="dividerColor">@color/white12</item>
+        <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
+        <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
+        <item name="menuPageFlip">@drawable/ic_menu_swap_horiz_white_24dp</item>
+        <item name="iconSettings">@drawable/ic_settings_white_24dp</item>
+        <item name="myCardView">@style/MyCardView.Dark</item>
+    </style>
+
+    <style name="MyCardView.Light" parent="CardView">
+        <item name="cardBackgroundColor">@color/cardview_light_background</item>
+    </style>
+
+    <style name="MyCardView.Dark" parent="CardView">
+        <item name="cardBackgroundColor">@color/cardview_dark_background</item>
+    </style>
+
+</resources>

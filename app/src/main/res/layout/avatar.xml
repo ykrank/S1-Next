@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TouchDelegate: the minimum touch target size is 48dp -->
+<ImageButton
+    android:id="@+id/avatar"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/avatar_size"
+    android:layout_height="@dimen/avatar_size"
+    android:layout_marginEnd="@dimen/avatar_margin_right"
+    android:layout_marginRight="@dimen/avatar_margin_right"
+    android:background="@android:color/transparent"
+    android:clickable="false"
+    android:contentDescription="@string/avatar_content_desc"/>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView
+    style="?attr/myCardView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/card_view_vertical_margin"
+    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
+    android:layout_marginLeft="@dimen/card_view_horizontal_margin"
+    android:layout_marginRight="@dimen/card_view_horizontal_margin"
+    android:layout_marginStart="@dimen/card_view_horizontal_margin"
+    android:layout_marginTop="@dimen/card_view_vertical_margin"
+    tools:context="cl.monsoon.s1next.adapter.PostListRecyclerAdapter">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/list_view_item_padding"
+        android:paddingEnd="@dimen/list_view_item_padding"
+        android:paddingLeft="@dimen/list_view_item_padding"
+        android:paddingRight="@dimen/list_view_item_padding"
+        android:paddingStart="@dimen/list_view_item_padding">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/two_line_height_with_avatar"
+            android:gravity="center_vertical">
+
+            <include
+                android:id="@id/avatar"
+                layout="@layout/avatar"/>
+
+            <TextView
+                android:id="@+id/drawer_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/avatar"
+                android:layout_toRightOf="@id/avatar"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/drawer_username"
+                android:layout_alignStart="@id/drawer_username"
+                android:layout_below="@id/drawer_username"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+
+            <TextView
+                android:id="@+id/count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/reply"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

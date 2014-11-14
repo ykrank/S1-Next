@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="pref_key_general"
+        android:persistent="false"
+        android:title="@string/pref_general">
+
+        <SwitchPreference
+            android:defaultValue="@bool/pref_night_mode_default_value"
+            android:key="pref_night_mode"
+            android:title="@string/pref_night_mode"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_download_avatars_default_value"
+            android:dialogTitle="@string/pref_download_avatars"
+            android:entries="@array/pref_download_avatars_entries"
+            android:entryValues="@array/pref_download_avatars_entry_values"
+            android:key="pref_key_download_avatars"
+            android:summary="%s"
+            android:title="@string/pref_download_avatars"/>
+
+        <ListPreference
+            android:defaultValue="@string/pref_download_images_default_value"
+            android:dialogTitle="@string/pref_download_images"
+            android:entries="@array/pref_download_images_entries"
+            android:entryValues="@array/pref_download_images_entry_values"
+            android:key="pref_key_download_images"
+            android:summary="%s"
+            android:title="@string/pref_download_images"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_key_about"
+        android:persistent="false"
+        android:title="@string/pref_about">
+
+        <Preference
+            android:key="pref_key_open_source_licenses"
+            android:persistent="false"
+            android:summary="@string/pref_open_source_licenses_summary"
+            android:title="@string/pref_open_source_licenses"/>
+
+        <Preference
+            android:key="pref_version"
+            android:persistent="false"
+            android:summary="@string/pref_version_summary"
+            android:title="@string/pref_version"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

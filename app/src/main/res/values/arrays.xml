@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--<string-array name="login_type">-->
+    <!--<item>Username</item>-->
+    <!--<item>UID</item>-->
+    <!--<item>Email</item>-->
+    <!--</string-array>-->
+
+    <!-- settings -->
+
+    <string-array name="pref_download_avatars_entries">
+        <item>@string/pref_download_avatars_entries_1</item>
+        <item>@string/pref_download_avatars_entries_2</item>
+        <item>@string/pref_download_avatars_entries_3</item>
+    </string-array>
+
+    <string-array name="pref_download_avatars_entry_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="pref_download_images_entries">
+        <item>@string/pref_download_images_entries_1</item>
+        <item>@string/pref_download_images_entries_2</item>
+        <item>@string/pref_download_images_entries_3</item>
+    </string-array>
+
+    <string-array name="pref_download_images_entry_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name" translatable="false">S1 Next</string>
+
+    <!-- common -->
+    <string name="action_login">Sign in</string>
+    <string name="avatar_content_desc">Avatar</string>
+
+    <!-- drawer -->
+    <string name="settings">Settings</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- menu button -->
+    <string name="menu_account_new">Create an account</string>
+    <string name="menu_page_flip">Flip page</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_refresh">Refresh</string>
+    <string name="menu_browser">Open in browser</string>
+
+    <!-- toast -->
+    <string name="message_network_error">There was a network error</string>
+    <string name="message_server_error">Couldn\'t communicate with the server, please try again later.</string>
+
+    <!-- login activity -->
+    <string name="activity_label_login" translatable="false">@string/action_login</string>
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+
+    <string name="error_field_required">Can\'t leave this empty.</string>
+
+    <string name="dialog_progress_title_login">Signing in…</string>
+
+    <!-- forum activity -->
+
+    <!-- Because other Spinner drop down items fetched from S1 is Chinese,
+    So this string is Chinese for all locales -->
+    <string name="toolbar_spinner_drop_down_forum_first_item" translatable="false">全部</string>
+
+    <!-- post activity -->
+    <string name="dialog_seekbar_title_page_flip">Go to…</string>
+
+    <!-- settings -->
+    <string name="pref_general">GENERAL</string>
+    <string name="pref_night_mode">Night mode</string>
+    <string name="pref_download_avatars">Download avatars</string>
+    <string name="pref_download_avatars_default_value" translatable="false">2</string>
+    <string name="pref_download_images">Download images</string>
+    <string name="pref_download_images_default_value" translatable="false">1</string>
+
+    <string name="pref_about">ABOUT</string>
+    <string name="pref_open_source_licenses">Open source licenses</string>
+    <string name="pref_open_source_licenses_summary">License details for open source software</string>
+    <string name="pref_version">Build Version</string>
+    <!-- TODO: Update version code when bump version -->
+    <string name="pref_version_summary">Version: 0.1.0</string>
+
+    <!-- array -->
+    <string name="pref_download_avatars_entries_1">Do not download avatars</string>
+    <string name="pref_download_avatars_entries_2">Download avatars over Wi-Fi only</string>
+    <string name="pref_download_avatars_entries_3">Download avatars at any time</string>
+
+    <string name="pref_download_images_entries_1">Do not download images</string>
+    <string name="pref_download_images_entries_2">Download images over Wi-Fi only</string>
+    <string name="pref_download_images_entries_3">Download images at any time</string>
+
+</resources>

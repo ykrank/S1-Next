@@ -1,0 +1,22 @@
+package cl.monsoon.s1next.model.mapper;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import cl.monsoon.s1next.model.list.PostList;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public final class PostListWrapper implements Deserialization {
+
+    @JsonProperty("Variables")
+    private PostList data;
+
+    public PostList unwrap() {
+        return data;
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void setData(PostList data) {
+        this.data = data;
+    }
+}

@@ -1,0 +1,53 @@
+<manifest
+    package="cl.monsoon.s1next"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/DarkTheme"
+        tools:ignore="UnusedAttribute">
+
+        <activity
+            android:name="cl.monsoon.s1next.activity.LoginActivity"
+            android:label="@string/activity_label_login">
+        </activity>
+
+        <activity
+            android:name=".activity.ForumActivity"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="cl.monsoon.s1next.activity.ThreadListActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activity.ForumActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cl.monsoon.s1next.activity.ForumActivity"/>
+        </activity>
+
+        <activity
+            android:name="cl.monsoon.s1next.activity.PostListActivity"
+            android:parentActivityName="cl.monsoon.s1next.activity.ThreadListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cl.monsoon.s1next.activity.ThreadListActivity"/>
+        </activity>
+
+        <activity android:name="cl.monsoon.s1next.activity.SettingsActivity"/>
+
+    </application>
+
+</manifest>
