@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
 import java.util.Map;
 
@@ -22,7 +23,6 @@ import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Post;
 import cl.monsoon.s1next.widget.GlideImageGetter;
-import cl.monsoon.s1next.widget.RoundedBitmapTransformation;
 
 public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, PostListRecyclerAdapter.ViewHolder> {
 
@@ -42,7 +42,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, PostLis
                         .from(String.class)
                         .error(R.drawable.ic_avatar_placeholder)
                         .priority(Priority.HIGH)
-                        .transform(new RoundedBitmapTransformation(mContext));
+                        .transform(new CenterCrop(Glide.get(context).getBitmapPool()));
 
         // used in GlideImageGetter
         mImageGetterRequestBuilder =
