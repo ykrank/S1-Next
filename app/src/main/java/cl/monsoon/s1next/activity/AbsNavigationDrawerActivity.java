@@ -19,11 +19,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.widget.RoundedBitmapTransformation;
 
 /**
  * An abstract Activity to create a navigation drawer.
@@ -56,7 +56,7 @@ public abstract class AbsNavigationDrawerActivity extends AbsThemeActivity {
         mDrawer = findViewById(R.id.drawer);
         Glide.with(this)
                 .load(R.drawable.ic_avatar_placeholder)
-                .transform(new RoundedBitmapTransformation(this))
+                .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
                 .into((ImageView) mDrawer.findViewById(R.id.drawer_avatar));
         mDrawer.findViewById(R.id.drawer_header).setOnClickListener(v -> {
             mDrawerLayout.closeDrawer(mDrawer);
@@ -214,7 +214,7 @@ public abstract class AbsNavigationDrawerActivity extends AbsThemeActivity {
             Glide.with(this)
                     .load(Api.getUrlAvatarMedium(Config.getUid()))
                     .error(R.drawable.ic_avatar_placeholder)
-                    .transform(new RoundedBitmapTransformation(this))
+                    .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
                     .into((ImageView) mDrawer.findViewById(R.id.drawer_avatar));
         }
     }
