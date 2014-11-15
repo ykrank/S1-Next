@@ -16,7 +16,7 @@
         tools:ignore="UnusedAttribute">
 
         <activity
-            android:name="cl.monsoon.s1next.activity.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:label="@string/activity_label_login">
         </activity>
 
@@ -30,23 +30,23 @@
         </activity>
 
         <activity
-            android:name="cl.monsoon.s1next.activity.ThreadListActivity"
+            android:name=".activity.ThreadListActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".activity.ForumActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="cl.monsoon.s1next.activity.ForumActivity"/>
+                android:value=".activity.ForumActivity"/>
         </activity>
 
         <activity
-            android:name="cl.monsoon.s1next.activity.PostListActivity"
-            android:parentActivityName="cl.monsoon.s1next.activity.ThreadListActivity">
+            android:name=".activity.PostListActivity"
+            android:parentActivityName=".activity.ThreadListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="cl.monsoon.s1next.activity.ThreadListActivity"/>
+                android:value=".activity.ThreadListActivity"/>
         </activity>
 
-        <activity android:name="cl.monsoon.s1next.activity.SettingsActivity"/>
+        <activity android:name=".activity.SettingsActivity"/>
 
     </application>
 
