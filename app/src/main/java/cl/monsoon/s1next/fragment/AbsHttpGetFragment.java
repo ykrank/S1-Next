@@ -3,7 +3,6 @@ package cl.monsoon.s1next.fragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +28,6 @@ public abstract class AbsHttpGetFragment<D extends Deserialization> extends Frag
     HttpGetRetainedFragment<D> mHttpGetRetainedFragment;
     private String mRetainedHttpGetFragmentTag;
 
-
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (savedInstanceState != null) {
