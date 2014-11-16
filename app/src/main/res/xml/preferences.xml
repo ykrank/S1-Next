@@ -10,7 +10,7 @@
             android:key="pref_night_mode"
             android:title="@string/pref_night_mode"/>
 
-        <ListPreference
+        <cl.monsoon.s1next.widget.ListPreferenceCompat
             android:defaultValue="@string/pref_download_avatars_default_value"
             android:dialogTitle="@string/pref_download_avatars"
             android:entries="@array/pref_download_avatars_entries"
@@ -19,7 +19,7 @@
             android:summary="%s"
             android:title="@string/pref_download_avatars"/>
 
-        <ListPreference
+        <cl.monsoon.s1next.widget.ListPreferenceCompat
             android:defaultValue="@string/pref_download_images_default_value"
             android:dialogTitle="@string/pref_download_images"
             android:entries="@array/pref_download_images_entries"
