@@ -14,6 +14,7 @@
     <string name="message_server_error">无法与服务器进行通信，请稍后再试</string>
     <string name="navigation_drawer_close">打开导航抽屉</string>
     <string name="navigation_drawer_open">关闭导航抽屉</string>
+    <string name="picture_content_desc">图片</string>
     <string name="pref_about">关于</string>
     <string name="pref_download_avatars">下载头像</string>
     <string name="pref_download_avatars_entries_1">不下载头像</string>

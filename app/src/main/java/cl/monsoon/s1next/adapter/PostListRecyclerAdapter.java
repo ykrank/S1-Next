@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.format.DateUtils;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,9 @@ import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Post;
+import cl.monsoon.s1next.widget.ClickMovementMethod;
 import cl.monsoon.s1next.widget.GlideImageGetter;
+import cl.monsoon.s1next.widget.ImageTagHandler;
 
 public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, PostListRecyclerAdapter.ViewHolder> {
 
@@ -114,7 +115,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, PostLis
                 Html.fromHtml(
                         reply,
                         new GlideImageGetter(replayView, mImageGetterRequestBuilder),
-                        null));
+                        new ImageTagHandler(mContext)));
     }
 
     @Override
@@ -140,7 +141,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, PostLis
             mReply = (TextView) itemView.findViewById(R.id.reply);
 
             // make link clickable
-            mReply.setMovementMethod(LinkMovementMethod.getInstance());
+            mReply.setMovementMethod(ClickMovementMethod.getInstance());
         }
     }
 }

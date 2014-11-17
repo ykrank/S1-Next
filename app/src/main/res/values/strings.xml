@@ -6,6 +6,7 @@
     <!-- common -->
     <string name="action_login">Sign in</string>
     <string name="avatar_content_desc">Avatar</string>
+    <string name="picture_content_desc">Picture</string>
 
     <!-- drawer -->
     <string name="settings">Settings</string>

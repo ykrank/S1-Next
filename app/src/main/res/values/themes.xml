@@ -28,6 +28,13 @@
         <item name="myCardView">@style/MyCardView.Dark</item>
     </style>
 
+    <style name="GalleryTheme" parent="Theme.AppCompat">
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
     <style name="MyCardView.Light" parent="CardView">
         <item name="cardBackgroundColor">@color/cardview_light_background</item>
     </style>
