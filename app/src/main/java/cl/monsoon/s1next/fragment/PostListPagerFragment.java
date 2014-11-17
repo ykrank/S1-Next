@@ -83,7 +83,7 @@ public final class PostListPagerFragment extends AbsNavigationDrawerInteractionF
                 // remove two space and page number's length
                 String value =
                         title.subSequence(0, title.length() - 2 - String.valueOf(mPageNum).length())
-                                + "： "
+                                + ": "
                                 + Api.getUrlBrowserPostList(mThreadId, 1);
 
                 intent = new Intent(Intent.ACTION_SEND);
