@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
@@ -102,6 +103,7 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
             if (mSeekBarProgress != -1) {
                 showDialogSeekBar();
             }
+            //TODO: 恢复回复帖子的对话框
         }
     }
 
@@ -155,6 +157,10 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
             // show SeekBar to let user to flip page
             case R.id.menu_page_flip:
                 showDialogSeekBar();
+                break;
+            case R.id.menu_reply:
+                showDialogReply();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -165,6 +171,45 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
         super.onSaveInstanceState(outState);
 
         outState.putInt(STATE_SEEKBAR_PROGRESS, mSeekBarProgress);
+    }
+
+    /**
+     * 在界面上显示回复帖子对话框
+     */
+    private void showDialogReply() {
+        View view = getLayoutInflater().inflate(R.layout.dialog_reply, mDrawerLayout, false);
+        EditText replayMessage = (EditText) view.findViewById(R.id.reply_message);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(view);
+        builder.setTitle(R.string.dialog_reply_title);
+        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss());
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+            Toast.makeText(this, replayMessage.getText(), Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        // 获取按钮对象前必须调用show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        replayMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (TextUtils.isEmpty(replayMessage.getText())) {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                } else {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                }
+            }
+        });
+
     }
 
     private void showDialogSeekBar() {

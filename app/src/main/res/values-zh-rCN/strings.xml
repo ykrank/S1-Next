@@ -32,4 +32,6 @@
     <string name="prompt_password">密码</string>
     <string name="prompt_username">用户名</string>
     <string name="settings">设置</string>
+    <string name="menu_reply">回复</string>
+    <string name="dialog_reply_title">回复帖子</string>
 </resources>
