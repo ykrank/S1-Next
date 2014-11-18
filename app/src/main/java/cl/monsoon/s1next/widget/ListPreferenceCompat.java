@@ -12,9 +12,12 @@ import android.util.AttributeSet;
 @SuppressWarnings("UnusedDeclaration")
 public final class ListPreferenceCompat extends ListPreference {
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ListPreferenceCompat(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+    public ListPreferenceCompat(Context context) {
+        super(context);
+    }
+
+    public ListPreferenceCompat(Context context, AttributeSet attrs) {
+        super(context, attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -22,12 +25,9 @@ public final class ListPreferenceCompat extends ListPreference {
         super(context, attrs, defStyleAttr);
     }
 
-    public ListPreferenceCompat(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public ListPreferenceCompat(Context context) {
-        super(context);
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public ListPreferenceCompat(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     /**
