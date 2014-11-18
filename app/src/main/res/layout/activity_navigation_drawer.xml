@@ -48,13 +48,15 @@
                 android:paddingRight="0dp"
                 android:paddingStart="@dimen/list_view_item_padding">
 
-                <ImageView
+                <cl.monsoon.s1next.widget.BezelImageView
                     android:id="@+id/drawer_avatar"
+                    xmlns:s1="http://schemas.android.com/apk/res-auto"
                     android:layout_width="@dimen/avatar_size"
                     android:layout_height="@dimen/avatar_size"
                     android:layout_marginEnd="@dimen/avatar_margin_right"
                     android:layout_marginRight="@dimen/avatar_margin_right"
-                    android:contentDescription="@string/avatar_content_desc"/>
+                    android:contentDescription="@string/avatar_content_desc"
+                    s1:maskDrawable="@drawable/circle_mask"/>
 
                 <TextView
                     android:id="@+id/drawer_username"
