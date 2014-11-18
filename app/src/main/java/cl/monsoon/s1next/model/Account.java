@@ -11,11 +11,25 @@ import cl.monsoon.s1next.Config;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Account {
 
+    @JsonProperty("formhash")
+    private String formHash;
+
     @JsonProperty("member_username")
     private String username;
 
     @JsonProperty("member_uid")
     private String uid;
+
+    /**
+     * FormHash，发帖等操作的必须参数
+     */
+    public String getFormHash() {
+        return formHash;
+    }
+
+    public void setFormHash(String formHash) {
+        this.formHash = formHash;
+    }
 
     public String getUsername() {
         return username;

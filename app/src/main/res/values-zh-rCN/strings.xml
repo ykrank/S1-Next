@@ -34,4 +34,5 @@
     <string name="settings">设置</string>
     <string name="menu_reply">回复</string>
     <string name="dialog_reply_title">回复帖子</string>
+    <string name="forbid_reply">载入完成前无法回帖</string>
 </resources>

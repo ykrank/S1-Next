@@ -42,6 +42,7 @@
     <!-- post activity -->
     <string name="dialog_seekbar_title_page_flip">Go to…</string>
     <string name="dialog_reply_title">Reply post</string>
+    <string name="forbid_reply">Can not reply post before posts loaded</string>
 
     <!-- settings -->
     <string name="pref_general">GENERAL</string>

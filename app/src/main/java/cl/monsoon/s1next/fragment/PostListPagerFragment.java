@@ -128,6 +128,9 @@ public final class PostListPagerFragment extends AbsNavigationDrawerInteractionF
 
                 ((OnPagerInteractionCallback) getActivity())
                         .setCount(postList.getPostListInfo().getReplies() + 1);
+                // discuz的提交会检查formhash，formhash在大部分restful接口作为Variables的字段返回
+                // 这里提交给父Activity
+                ((OnGetFormHashCallback) getActivity()).setFormHash(postList.getFormHash());
             } catch (NullPointerException e) {
                 ToastHelper.showByResId(R.string.message_server_error);
             } catch (ClassCastException e) {
@@ -148,5 +151,16 @@ public final class PostListPagerFragment extends AbsNavigationDrawerInteractionF
          * Callback to set actual page which used for {@link android.support.v4.view.PagerAdapter}
          */
         public void setCount(int i);
+    }
+
+    /**
+     * 获取到FormHash时的回调接口。
+     */
+    public static interface OnGetFormHashCallback {
+
+        /**
+         * 让调用者保存FormHash。
+         */
+        public void setFormHash(String formHash);
     }
 }
