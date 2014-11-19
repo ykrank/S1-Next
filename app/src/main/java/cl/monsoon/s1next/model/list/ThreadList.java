@@ -12,8 +12,8 @@ import cl.monsoon.s1next.model.Thread;
 /**
  * {@link #threadList}:
  * <pre>
- * &#x5e16;&#x5b50;1
- * &#x5e16;&#x5b50;2
+ * 帖子1
+ * 帖子2
  * </pre>
  */
 @SuppressWarnings("UnusedDeclaration")

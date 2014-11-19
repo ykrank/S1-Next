@@ -12,8 +12,8 @@ import cl.monsoon.s1next.model.Post;
 /**
  * {@link #postList}:
  * <pre>
- * &#x56de;&#x590d;1
- * &#x56de;&#x590d;2
+ * 回复1
+ * 回复2
  * </pre>
  */
 @SuppressWarnings("UnusedDeclaration")

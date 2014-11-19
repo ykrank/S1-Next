@@ -21,33 +21,33 @@ import cl.monsoon.s1next.model.ForumGroup;
  * <p>
  * {@link #forumList}:
  * <pre>
- * &#x6e38;&#x620f;&#x8bba;&#x575b;
- * &#x624b;&#x6e38;&#x9875;&#x6e38;
- * &#x52a8;&#x6f2b;&#x8bba;&#x575b;
- * &hellip;
+ * 游戏论坛
+ * 手游页游
+ * 动漫论坛
+ * …
  * </pre>
  * <p>
  * {@link #forumGroupNameList}:
  * <pre>
- * &#x4e3b;&#x8bba;&#x575b;
- * &#x4e3b;&#x9898;&#x516c;&#x56ed;
- * &#x5b50;&#x8bba;&#x575b;
+ * 主论坛
+ * 主题公园
+ * 子论坛
  * </pre>
  * <p>
  * {@link #forumGroupList}:
  * <pre>
- * &#x4e3b;&#x8bba;&#x575b;
- *   &#x70ed;&#x8840;&#x9b54;&#x517d;
+ * 主论坛
+ *   热血魔兽
  *   DOTA
- *   &hellip;
- * &#x4e3b;&#x8bba;&#x575b;
- *   &#x6e38;&#x620f;&#x8bba;&#x575b;
- *   &#x624b;&#x6e38;&#x9875;&#x6e38;
- *   &hellip;
- * &#x4e3b;&#x9898;&#x516c;&#x56ed;
- *   &#x4efb;&#x5929;&#x5802;&#x4e13;&#x533a;
- *   &#x5f02;&#x5ea6;&#x4f20;&#x8bf4;
- *   &hellip;
+ *   …
+ * 主论坛
+ *   游戏论坛
+ *   手游页游
+ *   …
+ * 主题公园
+ *   任天堂专区
+ *   异度传说
+ *   …
  * </pre>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
