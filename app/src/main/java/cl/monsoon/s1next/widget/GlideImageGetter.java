@@ -7,6 +7,7 @@ import android.webkit.URLUtil;
 import android.widget.TextView;
 
 import com.bumptech.glide.DrawableRequestBuilder;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.Request;
@@ -58,6 +59,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
 
             mDrawableRequestBuilder
                     .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(new ImageGetterViewTarget(mTextView, urlDrawable));
 
             return urlDrawable;
