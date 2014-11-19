@@ -1,5 +1,7 @@
 package cl.monsoon.s1next.model;
 
+import android.graphics.Color;
+
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -8,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -52,7 +56,8 @@ public final class Post {
     }
 
     public void setReply(String reply) {
-        this.reply = reply;
+        // see mapColor(String)
+        this.reply = mapColor(reply);
     }
 
     public String getCount() {
@@ -80,6 +85,67 @@ public final class Post {
 
     public void setAttachmentWrapper(AttachmentWrapper attachmentWrapper) {
         this.attachmentWrapper = attachmentWrapper;
+    }
+
+    /**
+     * {@link Color} doesn't support all HTML color names.
+     * So {@link android.text.Html#fromHtml(String)} won't
+     * map some color names for replies in S1.
+     * We need to map these color name to its hex value by ourselves.
+     */
+    private static String mapColor(CharSequence reply) {
+        // sample: color="sienna"
+        // matcher.group(0): color="sienna"
+        // matcher.group(1): sienna
+        Pattern pattern = Pattern.compile("color=\"(\\p{ASCII}+)\"");
+        Matcher matcher = pattern.matcher(reply);
+
+        StringBuffer stringBuffer = new StringBuffer();
+        String color;
+        while (matcher.find()) {
+            // get color hex value for its color name
+            color = sColorNameMap.get(matcher.group(1).toLowerCase());
+            if (color == null) {
+                // throw new IllegalStateException("sColorNameMap" + "must contain " + matcher.group(0));
+                continue;
+            }
+            // append part of the string and plus its color hex value
+            matcher.appendReplacement(stringBuffer, "color=\"" + color + "\"");
+        }
+        matcher.appendTail(stringBuffer);
+
+        return String.valueOf(stringBuffer);
+    }
+
+    private static final Map<String, String> sColorNameMap;
+
+    static {
+        sColorNameMap = new HashMap<>();
+
+        sColorNameMap.put("sienna", "#A0522D");
+        sColorNameMap.put("darkolivegreen", "#556B2F");
+        sColorNameMap.put("darkgreen", "#006400");
+        sColorNameMap.put("darkslateblue", "#483D8B");
+        sColorNameMap.put("indigo", "#4B0082");
+        sColorNameMap.put("darkslategray", "#2F4F4F");
+        sColorNameMap.put("darkred", "#8B0000");
+        sColorNameMap.put("darkorange", "#FF8C00");
+        sColorNameMap.put("slategray", "#708090");
+        sColorNameMap.put("dimgray", "#696969");
+        sColorNameMap.put("sandybrown", "#F4A460");
+        sColorNameMap.put("yellowgreen", "#9ACD32");
+        sColorNameMap.put("seagreen", "#2E8B57");
+        sColorNameMap.put("mediumturquoise", "#48D1CC");
+        sColorNameMap.put("royalblue", "#4169E1");
+        sColorNameMap.put("orange", "#FFA500");
+        sColorNameMap.put("deepskyblue", "#00BFFF");
+        sColorNameMap.put("darkorchid", "#9932CC");
+        sColorNameMap.put("pink", "#FFC0CB");
+        sColorNameMap.put("wheat", "#F5DEB3");
+        sColorNameMap.put("lemonchiffon", "#FFFACD");
+        sColorNameMap.put("palegreen", "#98FB98");
+        sColorNameMap.put("paleturquoise", "#AFEEEE");
+        sColorNameMap.put("lightblue", "#ADD8E6");
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
