@@ -1,5 +1,7 @@
 package cl.monsoon.s1next.model;
 
+import android.text.Html;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -32,7 +34,8 @@ public final class Thread {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        // encode HTML entities
+        this.title = String.valueOf(Html.fromHtml(title));
     }
 
     public int getReplies() {
