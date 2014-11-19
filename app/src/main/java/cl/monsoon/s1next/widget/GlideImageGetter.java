@@ -97,8 +97,18 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
 
         @Override
         public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-            Rect rect = new Rect(
-                    0, 0, resource.getIntrinsicWidth(), resource.getIntrinsicHeight());
+            // calculate these drawable width to fitXY
+            int width, height;
+            if (getView().getWidth() >= resource.getIntrinsicWidth()) {
+                width = resource.getIntrinsicWidth();
+                height = resource.getIntrinsicHeight();
+            } else {
+                width = getView().getWidth();
+                height = resource.getIntrinsicHeight()
+                        / (resource.getIntrinsicWidth() / getView().getWidth());
+            }
+
+            Rect rect = new Rect(0, 0, width, height);
             resource.setBounds(rect);
 
             mDrawable.setBounds(rect);
