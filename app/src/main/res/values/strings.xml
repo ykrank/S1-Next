@@ -19,6 +19,7 @@
     <string name="menu_share">Share</string>
     <string name="menu_refresh">Refresh</string>
     <string name="menu_browser">Open in browser</string>
+    <string name="menu_reply">Reply</string>
 
     <!-- toast -->
     <string name="message_network_error">There was a network error</string>
@@ -41,6 +42,8 @@
 
     <!-- post activity -->
     <string name="dialog_seekbar_title_page_flip">Go to…</string>
+    <string name="dialog_reply_title">Reply post</string>
+    <string name="forbid_reply">Can not reply post before posts loaded</string>
 
     <!-- settings -->
     <string name="pref_general">GENERAL</string>

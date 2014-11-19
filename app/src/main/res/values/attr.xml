@@ -9,6 +9,7 @@
     <attr name="drawerAccountCircle" format="reference"/>
     <attr name="iconSettings" format="reference"/>
     <attr name="myCardView" format="reference"/>
+    <attr name="menuReply" format="reference"/>
 
     <declare-styleable name="BezelImageView">
         <attr name="maskDrawable" format="reference" />

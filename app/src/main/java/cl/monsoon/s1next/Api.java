@@ -17,6 +17,8 @@ public final class Api {
     public static final String URL_REGISTER = prefix("member.php?mod=register");
     private static final String URL_THREAD_LIST = prefix("api/mobile/index.php?module=forumdisplay");
     private static final String URL_POST_LIST = prefix("api/mobile/index.php?module=viewthread");
+    //reply
+    public static final String URL_REPLY_POST = prefix("api/mobile/index.php?mobile=no&version=1&module=sendreply&replysubmit=yes&tid=");
     // private static final String URL_USER_AVATAR_SMALL = prefix("uc_server/avatar.php?uid=%s&size=small");
     // private static final String URL_USER_AVATAR_MEDIUM = prefix("uc_server/avatar.php?uid=%s&size=middle");
     private static final String URL_USER_AVATAR_SMALL = prefix("uc_server/data/avatar/%s_avatar_small.jpg");
@@ -35,6 +37,15 @@ public final class Api {
                         .add("password", password.toString())
                         .add("cookietime", "2592000")
                         .build();
+    }
+
+    public static RequestBody getReplyPostBuilder(CharSequence message, String formHash) {
+        return new FormEncodingBuilder()
+                .add("message", message.toString())
+                //.add("mobiletype", "2")
+                //.add("noticetrimstr", "")
+                .add("formhash", formHash)
+                .build();
     }
 
     public static String getUrlThreadList(CharSequence forumId, int pageNum) {

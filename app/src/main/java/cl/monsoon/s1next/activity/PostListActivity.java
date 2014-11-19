@@ -3,10 +3,12 @@ package cl.monsoon.s1next.activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.Loader;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -24,20 +26,26 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 
+import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.AbsHttpGetFragment;
 import cl.monsoon.s1next.fragment.PostListPagerFragment;
+import cl.monsoon.s1next.model.Reply;
+import cl.monsoon.s1next.model.mapper.ReplyWrapper;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
+import cl.monsoon.s1next.util.ToastHelper;
+import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
+import cl.monsoon.s1next.widget.HttpPostLoader;
 import cl.monsoon.s1next.widget.InputFilterRange;
 
 /**
  * An Activity representing a list of posts.
  * Similar to {@see ThreadListActivity}
  */
-public final class PostListActivity extends AbsNavigationDrawerActivity implements PostListPagerFragment.OnPagerInteractionCallback {
+public final class PostListActivity extends AbsNavigationDrawerActivity implements PostListPagerFragment.OnPagerInteractionCallback, PostListPagerFragment.OnGetFormHashCallback, LoaderManager.LoaderCallbacks<AsyncResult<ReplyWrapper>> {
 
     public final static String ARG_THREAD_TITLE = "thread_title";
     public final static String ARG_THREAD_ID = "thread_id";
@@ -62,6 +70,12 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
     private CharSequence mThreadId;
     private CharSequence mTitle;
     private int mNumPages;
+
+    private static final int LOADER_REPLY = 0;
+
+    private String mMessageToReply;
+    private Loader mReplyLoader;
+    private String mFormHash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +116,7 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
             if (mSeekBarProgress != -1) {
                 showDialogSeekBar();
             }
+            //TODO: 恢复回复帖子的对话框
         }
     }
 
@@ -155,6 +170,15 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
             // show SeekBar to let user to flip page
             case R.id.menu_page_flip:
                 showDialogSeekBar();
+                break;
+            case R.id.menu_reply:
+                if (mFormHash != null) {
+                    showDialogReply();
+                } else {
+                    //FIXME 应该改为载入帖子完成前，禁用回帖按钮
+                    ToastHelper.showByResId(R.string.forbid_reply);
+                }
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -165,6 +189,51 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
         super.onSaveInstanceState(outState);
 
         outState.putInt(STATE_SEEKBAR_PROGRESS, mSeekBarProgress);
+    }
+
+    /**
+     * 在界面上显示回复帖子对话框
+     */
+    private void showDialogReply() {
+        View view = getLayoutInflater().inflate(R.layout.dialog_reply, mDrawerLayout, false);
+        EditText replayMessage = (EditText) view.findViewById(R.id.reply_message);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(view);
+        builder.setTitle(R.string.dialog_reply_title);
+        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss());
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+            mMessageToReply = replayMessage.getText().toString();
+            mReplyLoader = getLoaderManager().getLoader(LOADER_REPLY);
+            if (mReplyLoader == null) {
+                mReplyLoader = getLoaderManager().initLoader(LOADER_REPLY, null, this);
+            } else {
+                mReplyLoader.onContentChanged();
+            }
+            dialog.dismiss();
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        // 获取按钮对象前必须调用show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        replayMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (TextUtils.isEmpty(replayMessage.getText())) {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                } else {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                }
+            }
+        });
+
     }
 
     private void showDialogSeekBar() {
@@ -268,6 +337,42 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
             runOnUiThread(mAdapter::notifyDataSetChanged);
         }
     }
+
+    @Override
+    public Loader<AsyncResult<ReplyWrapper>> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case LOADER_REPLY:
+                return new HttpPostLoader<>(this, Api.URL_REPLY_POST + mThreadId,
+                        ReplyWrapper.class, Api.getReplyPostBuilder(mMessageToReply, mFormHash));
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<AsyncResult<ReplyWrapper>> loader, AsyncResult<ReplyWrapper> asyncResult) {
+        if (asyncResult.exception != null) {
+            AsyncResult.handleException(asyncResult.exception);
+        } else {
+            switch (loader.getId()) {
+                case LOADER_REPLY:
+                    ReplyWrapper wrapper = asyncResult.data;
+                    Reply reply = wrapper.unwrap();
+                    ToastHelper.showByText(reply.getMessage());
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<AsyncResult<ReplyWrapper>> loader) {
+    }
+
+    @Override
+    public void setFormHash(String formHash) {
+        mFormHash = formHash;
+    }
+
 
     /**
      * Returns a Fragment corresponding to one of the pages of posts.
