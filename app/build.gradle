@@ -5,8 +5,6 @@ android {
     compileSdkVersion 21
     buildToolsVersion '21.1.1'
 
-    compileOptions.encoding = "UTF-8"
-
     defaultConfig {
         applicationId "cl.monsoon.s1next"
         minSdkVersion 15
@@ -28,6 +26,10 @@ android {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
     }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
 
 dependencies {
