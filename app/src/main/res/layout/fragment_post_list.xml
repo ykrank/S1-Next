@@ -34,7 +34,7 @@
                 layout="@layout/avatar"/>
 
             <TextView
-                android:id="@+id/drawer_username"
+                android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/avatar"
@@ -45,9 +45,9 @@
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/drawer_username"
-                android:layout_alignStart="@id/drawer_username"
-                android:layout_below="@id/drawer_username"
+                android:layout_alignLeft="@id/username"
+                android:layout_alignStart="@id/username"
+                android:layout_below="@id/username"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
             <TextView

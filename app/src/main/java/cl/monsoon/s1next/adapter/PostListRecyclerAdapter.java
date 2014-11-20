@@ -135,7 +135,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, PostLis
             super(itemView);
 
             mAvatar = (ImageView) itemView.findViewById(R.id.avatar);
-            mUsername = (TextView) itemView.findViewById(R.id.drawer_username);
+            mUsername = (TextView) itemView.findViewById(R.id.username);
             mTime = (TextView) itemView.findViewById(R.id.time);
             mCount = (TextView) itemView.findViewById(R.id.count);
             mReply = (TextView) itemView.findViewById(R.id.reply);
