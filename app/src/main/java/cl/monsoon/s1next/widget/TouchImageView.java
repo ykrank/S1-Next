@@ -11,12 +11,13 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+import android.view.View;
 import android.widget.ImageView;
 
 /**
  * An ImageView that supports multi-touch (zoom in/out and move).
  */
-public final class TouchImageView extends ImageView {
+public final class TouchImageView extends ImageView implements View.OnTouchListener {
 
     private static final float MAX_SCALE = 5;
     private static final float MIN_SCALE = .1f;
@@ -30,8 +31,6 @@ public final class TouchImageView extends ImageView {
 
     public TouchImageView(Context context) {
         super(context);
-
-        init(context);
     }
 
     public TouchImageView(Context context, AttributeSet attrs) {
@@ -40,42 +39,24 @@ public final class TouchImageView extends ImageView {
 
     public TouchImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            init(context);
-        }
     }
 
     @SuppressWarnings("UnusedDeclaration")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public TouchImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            init(context);
-        }
     }
 
-    private void init(Context context) {
+    @Override
+    protected void onFinishInflate() {
         // scale
-        mScaleGestureDetector = new ScaleGestureDetector(context, new ScaleListener());
-
+        mScaleGestureDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
         // move
-        mGestureDetector = new GestureDetector(context, new GestureListener());
+        mGestureDetector = new GestureDetector(getContext(), new GestureListener());
 
-        OnTouchListener onTouch = (v, event) -> {
-            if (getDrawable() == null || mScaleGestureDetector == null || mGestureDetector == null) {
-                return false;
-            }
+        setOnTouchListener(this);
 
-            // let the ScaleGestureDetector and GestureDetector inspect all events
-            mScaleGestureDetector.onTouchEvent(event);
-            mGestureDetector.onTouchEvent(event);
-
-            return true;
-        };
-
-        setOnTouchListener(onTouch);
+        super.onFinishInflate();
     }
 
     @Override
@@ -182,6 +163,19 @@ public final class TouchImageView extends ImageView {
                 matrix.postTranslate(0, dy);
             }
         }
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (getDrawable() == null || mScaleGestureDetector == null || mGestureDetector == null) {
+            return false;
+        }
+
+        // let the ScaleGestureDetector and GestureDetector inspect all events
+        mScaleGestureDetector.onTouchEvent(event);
+        mGestureDetector.onTouchEvent(event);
+
+        return true;
     }
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
