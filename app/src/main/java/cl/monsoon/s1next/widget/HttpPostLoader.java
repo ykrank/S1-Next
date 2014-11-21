@@ -28,8 +28,19 @@ public final class HttpPostLoader<D extends Deserialization> extends HttpGetLoad
         this.mRequestBody = requestBody;
     }
 
-    public void setRequestBody(RequestBody requestBody) {
+    /**
+     * Use {@link cl.monsoon.s1next.widget.HttpPostLoader#onContentChanged(RequestBody)} instead.
+     */
+    @Override
+    @Deprecated
+    public void onContentChanged() {
+        super.onContentChanged();
+    }
+
+    public void onContentChanged(RequestBody requestBody) {
         this.mRequestBody = requestBody;
+
+        super.onContentChanged();
     }
 
     /**
