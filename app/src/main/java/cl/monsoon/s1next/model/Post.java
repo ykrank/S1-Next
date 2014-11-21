@@ -56,8 +56,12 @@ public final class Post {
     }
 
     public void setReply(String reply) {
-        // see mapColor(String)
-        this.reply = mapColor(reply);
+        // Map colors (see mapColors(String))
+        // and replace "imgwidth" with "img width",
+        // because some img tags in S1 aren't correct.
+        // This may be the best way to deal with it though
+        // we may replace something wrong by accident.
+        this.reply = mapColors(reply).replaceAll("<imgwidth=\"", "<img width=\"");
     }
 
     public String getCount() {
@@ -93,7 +97,7 @@ public final class Post {
      * map some color names for replies in S1.
      * We need to map these color name to its hex value by ourselves.
      */
-    private static String mapColor(CharSequence reply) {
+    private static String mapColors(CharSequence reply) {
         // sample: color="sienna"
         // matcher.group(0): color="sienna"
         // matcher.group(1): sienna
@@ -114,7 +118,7 @@ public final class Post {
         }
         matcher.appendTail(stringBuffer);
 
-        return String.valueOf(stringBuffer);
+        return stringBuffer.toString();
     }
 
     private static final Map<String, String> sColorNameMap;
