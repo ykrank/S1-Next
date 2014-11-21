@@ -44,7 +44,6 @@ public class HttpGetLoader<D extends Deserialization> extends AsyncTaskLoader<As
         this.mUrl = url;
     }
 
-
     @Override
     protected void onStartLoading() {
         if (mAsyncResult != null) {

@@ -174,6 +174,16 @@ public final class LoginFragment extends Fragment implements LoaderManager.Loade
             if (mLoader == null) {
                 mLoader = getLoaderManager().initLoader(ID_LOADER, null, this);
             } else {
+                try {
+                    ((HttpPostLoader) mLoader)
+                            .setRequestBody(
+                                    Api.getLoginBuilder(
+                                            mUsernameView.getText(),
+                                            mPasswordView.getText()));
+                } catch (ClassCastException e) {
+                    throw new IllegalStateException(mLoader + " must extend HttpPostLoader.");
+                }
+
                 mLoader.onContentChanged();
             }
             mLogging = true;

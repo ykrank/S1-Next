@@ -20,11 +20,15 @@ import cl.monsoon.s1next.singleton.MyOkHttpClient;
  */
 public final class HttpPostLoader<D extends Deserialization> extends HttpGetLoader<D> {
 
-    private final RequestBody mRequestBody;
+    private RequestBody mRequestBody;
 
     public HttpPostLoader(Context context, String url, Class<D> clazz, RequestBody requestBody) {
         super(context, url, clazz);
 
+        this.mRequestBody = requestBody;
+    }
+
+    public void setRequestBody(RequestBody requestBody) {
         this.mRequestBody = requestBody;
     }
 
