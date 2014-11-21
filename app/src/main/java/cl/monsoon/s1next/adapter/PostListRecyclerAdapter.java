@@ -3,6 +3,7 @@ package cl.monsoon.s1next.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,8 +91,17 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, PostLis
                         0));
         viewHolder.mCount.setText("#" + post.getCount());
 
-        String url;
         String reply = post.getReply();
+        TextView replayView = viewHolder.mReply;
+        // some replies are empty
+        // like http://bbs.saraba1st.com/2b/thread-1008413-1-1.html#authorposton24836448
+        if (TextUtils.isEmpty(reply)) {
+            replayView.setText(null);
+
+            return;
+        }
+
+        String url;
         Post.AttachmentWrapper attachmentWrapper = post.getAttachmentWrapper();
         // whether this post has attachment images
         if (attachmentWrapper != null) {
@@ -110,7 +120,6 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, PostLis
         }
 
         // use GlideImageGetter to show images
-        TextView replayView = viewHolder.mReply;
         replayView.setText(
                 Html.fromHtml(
                         reply,
