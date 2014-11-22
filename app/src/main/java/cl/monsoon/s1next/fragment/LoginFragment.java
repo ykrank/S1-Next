@@ -1,8 +1,5 @@
 package cl.monsoon.s1next.fragment;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.Loader;
 import android.net.Uri;
@@ -17,10 +14,12 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
+import com.squareup.okhttp.RequestBody;
+
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.model.Authority;
-import cl.monsoon.s1next.model.mapper.AuthorityWrapper;
+import cl.monsoon.s1next.model.Result;
+import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpPostLoader;
@@ -28,15 +27,9 @@ import cl.monsoon.s1next.widget.HttpPostLoader;
 /**
  * A login screen that offers login via username/password.
  */
-public final class LoginFragment extends Fragment implements LoaderManager.LoaderCallbacks<AsyncResult<AuthorityWrapper>> {
+public final class LoginFragment extends AbsPostFragment {
 
     public static final String TAG = "login_fragment";
-
-    /**
-     * The serialization (saved instance state) Bundle key representing
-     * whether is logging when configuration changed.
-     */
-    private static final String STATE_LOGGING = "logging";
 
     /**
      * For desktop is "login_succeed".
@@ -44,16 +37,10 @@ public final class LoginFragment extends Fragment implements LoaderManager.Loade
      * "login_succeed" when already has logged.
      */
     private static final String STATUS_AUTH_SUCCESS = "location_login_succeed_mobile";
-    private static final String STATUS_AUTH_SUCCESS_ALREAY = "login_succeed";
-
-    private static final int ID_LOADER = 0;
-    private Loader mLoader;
+    private static final String STATUS_AUTH_SUCCESS_ALREADY = "login_succeed";
 
     private EditText mUsernameView;
     private EditText mPasswordView;
-    private ProgressDialog mProgressDialog;
-
-    private Boolean mLogging = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,10 +61,6 @@ public final class LoginFragment extends Fragment implements LoaderManager.Loade
 
         view.findViewById(R.id.login).setOnClickListener(v -> attemptLogin());
 
-        if (savedInstanceState != null) {
-            mLogging = savedInstanceState.getBoolean(STATE_LOGGING);
-        }
-
         return view;
     }
 
@@ -86,23 +69,6 @@ public final class LoginFragment extends Fragment implements LoaderManager.Loade
         super.onActivityCreated(savedInstanceState);
 
         setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (mLogging) {
-            showProgressDialog();
-            mLoader = getLoaderManager().initLoader(ID_LOADER, null, this);
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        dismissProgressDialog();
     }
 
     @Override
@@ -125,13 +91,6 @@ public final class LoginFragment extends Fragment implements LoaderManager.Loade
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putBoolean(STATE_LOGGING, mLogging);
     }
 
     private void attemptLogin() {
@@ -170,77 +129,45 @@ public final class LoginFragment extends Fragment implements LoaderManager.Loade
             showProgressDialog();
 
             // start to log in
-            mLoader = getLoaderManager().getLoader(ID_LOADER);
-            if (mLoader == null) {
-                mLoader = getLoaderManager().initLoader(ID_LOADER, null, this);
-            } else {
-                try {
-                    ((HttpPostLoader) mLoader)
-                            .onContentChanged(
-                                    Api.getLoginBuilder(
-                                            mUsernameView.getText(),
-                                            mPasswordView.getText()));
-                } catch (ClassCastException e) {
-                    throw new IllegalStateException(mLoader + " must extend HttpPostLoader.");
-                }
-            }
-            mLogging = true;
+            startLoader(getLoginPostBuilder());
         }
     }
 
-    private void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(getActivity());
-            mProgressDialog.setMessage(getText(R.string.dialog_progress_title_login));
-            mProgressDialog.setOnCancelListener(dialog -> {
-                // see HttpGetLoader#cancelLoad()
-                //noinspection RedundantCast
-                ((HttpPostLoader) mLoader).cancelLoad();
-                mLogging = false;
-            });
-        }
-
-        mProgressDialog.show();
-    }
-
-    private void dismissProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
+    private RequestBody getLoginPostBuilder() {
+        return Api.getLoginPostBuilder(mUsernameView.getText(), mPasswordView.getText());
     }
 
     @Override
-    public Loader<AsyncResult<AuthorityWrapper>> onCreateLoader(int id, Bundle args) {
+    public CharSequence getProgressMessage() {
+        return getText(R.string.dialog_progress_title_login);
+    }
+
+    @Override
+    public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
         return
                 new HttpPostLoader<>(
                         getActivity(),
                         Api.URL_LOGIN,
-                        AuthorityWrapper.class,
-                        Api.getLoginBuilder(mUsernameView.getText(), mPasswordView.getText()));
+                        ResultWrapper.class,
+                        getLoginPostBuilder());
     }
 
     @Override
-    public void onLoadFinished(Loader<AsyncResult<AuthorityWrapper>> loader, AsyncResult<AuthorityWrapper> asyncResult) {
-        mLogging = false;
-        dismissProgressDialog();
+    public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> asyncResult) {
+        super.onLoadFinished(loader, asyncResult);
 
         if (asyncResult.exception != null) {
             AsyncResult.handleException(asyncResult.exception);
         } else {
-            AuthorityWrapper wrapper = asyncResult.data;
-            Authority authority = wrapper.getAuthority();
+            ResultWrapper wrapper = asyncResult.data;
+            Result result = wrapper.getResult();
 
-            ToastHelper.showByText(authority.getMessage());
+            ToastHelper.showByText(result.getValue());
 
-            if (authority.getStatus().equals(STATUS_AUTH_SUCCESS)
-                    || authority.getStatus().equals(STATUS_AUTH_SUCCESS_ALREAY)) {
+            if (result.getStatus().equals(STATUS_AUTH_SUCCESS)
+                    || result.getStatus().equals(STATUS_AUTH_SUCCESS_ALREADY)) {
                 getActivity().onBackPressed();
             }
         }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<AsyncResult<AuthorityWrapper>> loader) {
-
     }
 }

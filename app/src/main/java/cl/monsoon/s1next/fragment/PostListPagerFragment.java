@@ -3,13 +3,16 @@ package cl.monsoon.s1next.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import cl.monsoon.s1next.Api;
+import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.activity.ReplyActivity;
 import cl.monsoon.s1next.adapter.PostListRecyclerAdapter;
 import cl.monsoon.s1next.model.Post;
 import cl.monsoon.s1next.model.list.PostList;
@@ -30,6 +33,8 @@ public final class PostListPagerFragment extends AbsNavigationDrawerInteractionF
 
     private CharSequence mThreadId;
     private int mPageNum;
+
+    private MenuItem mMenuReply;
 
     public static PostListPagerFragment newInstance(CharSequence threadId, int page) {
         PostListPagerFragment fragment = new PostListPagerFragment();
@@ -59,10 +64,39 @@ public final class PostListPagerFragment extends AbsNavigationDrawerInteractionF
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        prepareMenuReply();
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.fragment_post, menu);
+
+        // disable default in fragment_post.xml
+        // we will enable it when finish loading
+        // post list and user has already logged in
+        // see PostListPagerFragment#onPostExecute()
+        mMenuReply = menu.findItem(R.id.menu_reply);
+        prepareMenuReply();
+    }
+
+    /**
+     * Sets whether the menu reply is enabled depends on whether user logged before.
+     */
+    private void prepareMenuReply() {
+        if (mMenuReply == null) {
+            return;
+        }
+
+        if (mRecyclerAdapter.getItemCount() == 0 || TextUtils.isEmpty(Config.getUsername())) {
+            mMenuReply.setEnabled(false);
+        } else {
+            mMenuReply.setEnabled(true);
+        }
     }
 
     @Override
@@ -78,13 +112,18 @@ public final class PostListPagerFragment extends AbsNavigationDrawerInteractionF
                 startActivity(intent);
 
                 return true;
+            case R.id.menu_reply:
+                intent = new Intent(getActivity(), ReplyActivity.class);
+
+                intent.putExtra(ReplyActivity.ARG_THREAD_TITLE, getThreadTitle());
+                intent.putExtra(ReplyActivity.ARG_THREAD_ID, mThreadId);
+
+                startActivity(intent);
+
+                return true;
             case R.id.menu_share:
-                CharSequence title = getActivity().getTitle();
-                // remove two space and page number's length
                 String value =
-                        title.subSequence(0, title.length() - 2 - String.valueOf(mPageNum).length())
-                                + ": "
-                                + Api.getUrlBrowserPostList(mThreadId, 1);
+                        getThreadTitle() + "  " + Api.getUrlBrowserPostList(mThreadId, 1);
 
                 intent = new Intent(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_TEXT, value);
@@ -92,10 +131,17 @@ public final class PostListPagerFragment extends AbsNavigationDrawerInteractionF
 
                 startActivity(intent);
 
-                break;
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private CharSequence getThreadTitle() {
+        CharSequence title = getActivity().getTitle();
+        // remove two space and page number's length
+
+        return title.subSequence(0, title.length() - 2 - String.valueOf(mPageNum).length());
     }
 
     @Override
@@ -126,11 +172,10 @@ public final class PostListPagerFragment extends AbsNavigationDrawerInteractionF
                 mRecyclerAdapter.setDataSet(postList.getPostList());
                 mRecyclerAdapter.notifyDataSetChanged();
 
+                prepareMenuReply();
+
                 ((OnPagerInteractionCallback) getActivity())
                         .setCount(postList.getPostListInfo().getReplies() + 1);
-                // discuz的提交会检查formhash，formhash在大部分restful接口作为Variables的字段返回
-                // 这里提交给父Activity
-                ((OnGetFormHashCallback) getActivity()).setFormHash(postList.getFormHash());
             } catch (NullPointerException e) {
                 ToastHelper.showByResId(R.string.message_server_error);
             } catch (ClassCastException e) {
@@ -151,16 +196,5 @@ public final class PostListPagerFragment extends AbsNavigationDrawerInteractionF
          * Callback to set actual page which used for {@link android.support.v4.view.PagerAdapter}
          */
         public void setCount(int i);
-    }
-
-    /**
-     * 获取到FormHash时的回调接口。
-     */
-    public static interface OnGetFormHashCallback {
-
-        /**
-         * 让调用者保存FormHash。
-         */
-        public void setFormHash(String formHash);
     }
 }

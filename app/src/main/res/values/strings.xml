@@ -7,6 +7,7 @@
     <string name="action_login">Sign in</string>
     <string name="avatar_content_desc">Avatar</string>
     <string name="picture_content_desc">Picture</string>
+    <string name="send_content_desc">Send</string>
 
     <!-- drawer -->
     <string name="settings">Settings</string>
@@ -42,8 +43,10 @@
 
     <!-- post activity -->
     <string name="dialog_seekbar_title_page_flip">Go to…</string>
-    <string name="dialog_reply_title">Reply post</string>
-    <string name="forbid_reply">Can not reply post before posts loaded</string>
+
+    <!-- reply fragment -->
+    <string name="prompt_reply">Write something…</string>
+    <string name="dialog_progress_title_reply">Replying…</string>
 
     <!-- settings -->
     <string name="pref_general">GENERAL</string>

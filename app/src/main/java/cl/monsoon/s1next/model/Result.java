@@ -7,13 +7,13 @@ import cl.monsoon.s1next.model.mapper.Deserialization;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Authority implements Deserialization {
+public final class Result implements Deserialization {
 
     @JsonProperty("messageval")
     private String status;
 
     @JsonProperty("messagestr")
-    private String message;
+    private String value;
 
     public String getStatus() {
         return status;
@@ -23,11 +23,11 @@ public final class Authority implements Deserialization {
         this.status = status;
     }
 
-    public String getMessage() {
-        return message;
+    public String getValue() {
+        return value;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setValue(String value) {
+        this.value = value;
     }
 }

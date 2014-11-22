@@ -49,6 +49,11 @@
         <activity android:name=".activity.SettingsActivity"/>
 
         <activity
+            android:name=".activity.ReplyActivity"
+            android:theme="@style/TranslucentDarkTheme"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
             android:name=".activity.GalleryActivity"
             android:theme="@style/GalleryTheme"/>
 

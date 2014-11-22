@@ -4,24 +4,24 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cl.monsoon.s1next.model.Account;
-import cl.monsoon.s1next.model.Authority;
+import cl.monsoon.s1next.model.Result;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class AuthorityWrapper implements Deserialization {
+public final class ResultWrapper implements Deserialization {
 
     @JsonProperty("Message")
-    private Authority authority;
+    private Result result;
 
     @JsonProperty("Variables")
     private Account account;
 
-    public Authority getAuthority() {
-        return authority;
+    public Result getResult() {
+        return result;
     }
 
-    public void setAuthority(Authority authority) {
-        this.authority = authority;
+    public void setResult(Result result) {
+        this.result = result;
     }
 
     public Account getAccount() {

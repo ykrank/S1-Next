@@ -15,10 +15,12 @@ public final class Api {
     public static final String URL_FORUM = prefix("api/mobile/index.php?module=forumindex");
     // open in browser
     public static final String URL_REGISTER = prefix("member.php?mod=register");
+
     private static final String URL_THREAD_LIST = prefix("api/mobile/index.php?module=forumdisplay");
     private static final String URL_POST_LIST = prefix("api/mobile/index.php?module=viewthread");
-    //reply
-    public static final String URL_REPLY_POST = prefix("api/mobile/index.php?mobile=no&version=1&module=sendreply&replysubmit=yes&tid=");
+
+    private static final String URL_REPLY = prefix("api/mobile/index.php?module=sendreply&replysubmit=yes");
+
     // private static final String URL_USER_AVATAR_SMALL = prefix("uc_server/avatar.php?uid=%s&size=small");
     // private static final String URL_USER_AVATAR_MEDIUM = prefix("uc_server/avatar.php?uid=%s&size=middle");
     private static final String URL_USER_AVATAR_SMALL = prefix("uc_server/data/avatar/%s_avatar_small.jpg");
@@ -30,7 +32,7 @@ public final class Api {
         return URL_S1 + suffix;
     }
 
-    public static RequestBody getLoginBuilder(CharSequence username, CharSequence password) {
+    public static RequestBody getLoginPostBuilder(CharSequence username, CharSequence password) {
         return
                 new FormEncodingBuilder()
                         .add("username", username.toString())
@@ -39,12 +41,15 @@ public final class Api {
                         .build();
     }
 
-    public static RequestBody getReplyPostBuilder(CharSequence message, String formHash) {
+    public static RequestBody getReplyPostBuilder(String reply) {
+        if (Config.getAuthenticityToken() == null) {
+            throw new IllegalStateException("AuthenticityToken must not be null.");
+        }
+
         return new FormEncodingBuilder()
-                .add("message", message.toString())
-                //.add("mobiletype", "2")
-                //.add("noticetrimstr", "")
-                .add("formhash", formHash)
+                //.add("mobiletype", "1")
+                .add("message", reply)
+                .add("formhash", Config.getAuthenticityToken())
                 .build();
     }
 
@@ -63,6 +68,13 @@ public final class Api {
                         .appendQueryParameter("tid", threadId.toString())
                         .appendQueryParameter("page", String.valueOf(pageNum))
                         .appendQueryParameter("ppp", String.valueOf(Config.POSTS_PER_PAGE))
+                        .toString();
+    }
+
+    public static String getPostRely(CharSequence threadId) {
+        return
+                Uri.parse(Api.URL_REPLY).buildUpon()
+                        .appendQueryParameter("tid", threadId.toString())
                         .toString();
     }
 

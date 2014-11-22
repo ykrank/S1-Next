@@ -16,6 +16,12 @@ public enum Config {
     public static final int DARK_THEME = R.style.DarkTheme;
 
     /**
+     * Used in {@link cl.monsoon.s1next.activity.ReplyActivity}.
+     */
+    public static final int TRANSLUCENT_LIGHT_THEME = R.style.TranslucentLightTheme;
+    public static final int TRANSLUCENT_DARK_THEME = R.style.TranslucentDarkTheme;
+
+    /**
      * Take care of Menu ~ open in browser ~
      * when these numbers are not default.
      */
@@ -27,6 +33,7 @@ public enum Config {
     private volatile boolean wifi;
     private volatile String username;
     private volatile String uid;
+    private volatile String authenticityToken;
     private volatile DownloadStrategy avatarsDownloadStrategy;
     private volatile DownloadStrategy imagesDownloadStrategy;
 
@@ -46,11 +53,25 @@ public enum Config {
         INSTANCE.uid = uid;
     }
 
+    public static String getAuthenticityToken() {
+        return INSTANCE.authenticityToken;
+    }
+
+    public static void setAuthenticityToken(String authenticityToken) {
+        INSTANCE.authenticityToken = authenticityToken;
+    }
+
     public static int getTheme() {
         return INSTANCE.theme;
     }
 
     public static void setTheme(int theme) {
+        if (theme == TRANSLUCENT_LIGHT_THEME) {
+            throw new IllegalStateException("You can't set theme to TRANSLUCENT_LIGHT_THEME.");
+        } else if (theme == TRANSLUCENT_DARK_THEME) {
+            throw new IllegalStateException("You can't set theme to TRANSLUCENT_DARK_THEME.");
+        }
+
         INSTANCE.theme = theme;
 
         // get theme's accent color

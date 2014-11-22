@@ -3,6 +3,13 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="cl.monsoon.s1next.fragment.PostListPagerFragment">
     <item
+        android:id="@+id/menu_reply"
+        android:enabled="false"
+        android:icon="?attr/menuReply"
+        android:orderInCategory="1"
+        android:title="@string/menu_reply"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/menu_share"
         android:orderInCategory="9"
         android:title="@string/menu_share"
