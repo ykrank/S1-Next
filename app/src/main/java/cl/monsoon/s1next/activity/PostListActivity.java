@@ -63,6 +63,8 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
     private CharSequence mTitle;
     private int mNumPages;
 
+    private MenuItem mMenuPageFlip;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,7 +144,25 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_post, menu);
 
+        mMenuPageFlip = menu.findItem(R.id.menu_page_flip);
+        prepareMenuPageFlip();
+
         return true;
+    }
+
+    /**
+     * Disable flip page menu when {@link cl.monsoon.s1next.activity.PostListActivity#mNumPages} = 1.
+     */
+    private void prepareMenuPageFlip() {
+        if (mMenuPageFlip == null) {
+            return;
+        }
+
+        if (mNumPages == 1) {
+            mMenuPageFlip.setEnabled(false);
+        } else {
+            mMenuPageFlip.setEnabled(true);
+        }
     }
 
     @Override
@@ -265,6 +285,8 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
     @Override
     public void setCount(int i) {
         mNumPages = MathUtil.divide(i, Config.POSTS_PER_PAGE);
+
+        prepareMenuPageFlip();
 
         if (mAdapter != null) {
             runOnUiThread(mAdapter::notifyDataSetChanged);
