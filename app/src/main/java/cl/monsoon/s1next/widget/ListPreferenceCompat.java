@@ -10,7 +10,7 @@ import android.util.AttributeSet;
  * See https://android.googlesource.com/platform/frameworks/base/+/94c02a1a1a6d7e6900e5a459e9cc699b9510e5a2
  */
 @SuppressWarnings("UnusedDeclaration")
-public final class ListPreferenceCompat extends ListPreference {
+final class ListPreferenceCompat extends ListPreference {
 
     public ListPreferenceCompat(Context context) {
         super(context);

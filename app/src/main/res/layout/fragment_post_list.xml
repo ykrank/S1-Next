@@ -39,6 +39,8 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/avatar"
                 android:layout_toRightOf="@id/avatar"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
 
             <TextView
@@ -48,6 +50,8 @@
                 android:layout_alignLeft="@id/username"
                 android:layout_alignStart="@id/username"
                 android:layout_below="@id/username"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
             <TextView
@@ -56,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:singleLine="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
         </RelativeLayout>

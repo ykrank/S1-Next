@@ -60,7 +60,7 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
     private PagerAdapter mAdapter;
 
     private CharSequence mThreadId;
-    private CharSequence mTitle;
+    private CharSequence mThreadTitle;
     private int mNumPages;
 
     private MenuItem mMenuPageFlip;
@@ -90,8 +90,8 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
         FrameLayout parent = (FrameLayout) findViewById(R.id.frame_layout);
         View.inflate(this, R.layout.activity_screen_slide, parent);
 
-        mTitle = getIntent().getCharSequenceExtra(ARG_THREAD_TITLE);
-        setTitle(mTitle);
+        mThreadTitle = getIntent().getCharSequenceExtra(ARG_THREAD_TITLE);
+        setTitle(mThreadTitle);
         mThreadId = getIntent().getCharSequenceExtra(ARG_THREAD_ID);
         setCount(getIntent().getIntExtra(ARG_POST_REPLIES, 1));
 
@@ -313,7 +313,7 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
             // TODO: We can't see thread page number sometimes because title is long,
             // so it's better to put a TextView in ToolBar to show thread page number
             // or make the title marquee.
-            setTitle(mTitle + "  " + (position + 1));
+            setTitle(mThreadTitle + "  " + (position + 1));
 
             super.setPrimaryItem(container, position, object);
         }

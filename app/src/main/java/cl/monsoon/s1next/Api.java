@@ -55,7 +55,7 @@ public final class Api {
 
     public static String getUrlThreadList(CharSequence forumId, int pageNum) {
         return
-                Uri.parse(Api.URL_THREAD_LIST).buildUpon()
+                Uri.parse(URL_THREAD_LIST).buildUpon()
                         .appendQueryParameter("fid", forumId.toString())
                         .appendQueryParameter("page", String.valueOf(pageNum))
                         .appendQueryParameter("tpp", String.valueOf(Config.THREADS_PER_PAGE))
@@ -64,7 +64,7 @@ public final class Api {
 
     public static String getUrlPostList(CharSequence threadId, int pageNum) {
         return
-                Uri.parse(Api.URL_POST_LIST).buildUpon()
+                Uri.parse(URL_POST_LIST).buildUpon()
                         .appendQueryParameter("tid", threadId.toString())
                         .appendQueryParameter("page", String.valueOf(pageNum))
                         .appendQueryParameter("ppp", String.valueOf(Config.POSTS_PER_PAGE))
@@ -73,7 +73,7 @@ public final class Api {
 
     public static String getPostRely(CharSequence threadId) {
         return
-                Uri.parse(Api.URL_REPLY).buildUpon()
+                Uri.parse(URL_REPLY).buildUpon()
                         .appendQueryParameter("tid", threadId.toString())
                         .toString();
     }
@@ -87,11 +87,11 @@ public final class Api {
     }
 
     public static String getUrlBrowserThreadList(CharSequence forumId, int pageNum) {
-        return String.format(Api.URL_BROWSER_THREAD_LIST, forumId, pageNum);
+        return String.format(URL_BROWSER_THREAD_LIST, forumId, pageNum);
     }
 
     public static String getUrlBrowserPostList(CharSequence threadId, int pageNum) {
-        return String.format(Api.URL_BROWSER_POST_LIST, threadId, pageNum);
+        return String.format(URL_BROWSER_POST_LIST, threadId, pageNum);
     }
 
     private static String formatUrlAvatar(String url, String userId) {

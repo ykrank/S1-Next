@@ -64,9 +64,8 @@ public abstract class AbsHttpGetFragment<D extends Deserialization> extends Frag
 
         if (mHttpGetRetainedFragment == null) {
             getFragmentManager().beginTransaction()
-                    .add(mHttpGetRetainedFragment = new HttpGetRetainedFragment<>()
-                            , mRetainedHttpGetFragmentTag)
-                    .commit();
+                    .add(mHttpGetRetainedFragment =
+                            new HttpGetRetainedFragment<>(), mRetainedHttpGetFragmentTag).commit();
         } else {
             // post data when configuration change and we already have data
             D data = mHttpGetRetainedFragment.getData();

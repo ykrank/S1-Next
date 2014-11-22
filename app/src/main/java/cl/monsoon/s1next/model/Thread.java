@@ -35,7 +35,7 @@ public final class Thread {
 
     public void setTitle(String title) {
         // encode HTML entities
-        this.title = String.valueOf(Html.fromHtml(title));
+        this.title = Html.fromHtml(title).toString();
     }
 
     public int getReplies() {

@@ -50,9 +50,9 @@ public final class ImageTagHandler implements Html.TagHandler {
 
     public static class ImageClickableSpan extends ImageSpan implements View.OnClickListener {
 
-        private Context mContext;
+        private final Context mContext;
 
-        protected ImageClickableSpan(Context context, Drawable d, String source) {
+        ImageClickableSpan(Context context, Drawable d, String source) {
             super(d, source);
 
             this.mContext = context;

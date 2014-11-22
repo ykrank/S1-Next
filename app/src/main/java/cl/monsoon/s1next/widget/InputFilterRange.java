@@ -23,7 +23,7 @@ public final class InputFilterRange implements InputFilter {
     @Override
     public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
         String value =
-                String.valueOf(dest.subSequence(0, dstart))
+                dest.subSequence(0, dstart).toString()
                         + source.subSequence(start, end)
                         + dest.subSequence(dend, dest.length());
         try {

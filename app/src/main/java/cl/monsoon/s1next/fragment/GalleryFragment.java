@@ -20,7 +20,7 @@ public final class GalleryFragment extends Fragment {
 
     public static final String TAG = "gallery_fragment";
 
-    public static final String ARG_IMAGE_URL = "image_url";
+    private static final String ARG_IMAGE_URL = "image_url";
 
     private String mUrl;
 
