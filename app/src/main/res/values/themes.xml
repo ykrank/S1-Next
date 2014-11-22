@@ -9,8 +9,8 @@
         <item name="dividerColor">@color/black12</item>
         <item name="menuCross">@drawable/ic_menu_close_black_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_black_24dp</item>
-        <item name="menuReply">@drawable/ic_menu_comment_black_24dp</item>
-        <item name="menuPageFlip">@drawable/ic_menu_swap_horiz_black_24dp</item>
+        <item name="menuReply">@drawable/selector_menu_comment_black</item>
+        <item name="menuPageFlip">@drawable/selector_menu_swap_horiz_black</item>
         <item name="iconSettings">@drawable/ic_settings_grey600_24dp</item>
         <!-- card view background color -->
         <item name="myCardView">@style/MyCardView.Light</item>
@@ -22,8 +22,8 @@
         <item name="dividerColor">@color/white12</item>
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
-        <item name="menuReply">@drawable/ic_menu_comment_white_24dp</item>
-        <item name="menuPageFlip">@drawable/ic_menu_swap_horiz_white_24dp</item>
+        <item name="menuReply">@drawable/selector_menu_comment_white</item>
+        <item name="menuPageFlip">@drawable/selector_menu_swap_horiz_white</item>
         <item name="iconSettings">@drawable/ic_settings_white_24dp</item>
         <item name="myCardView">@style/MyCardView.Dark</item>
     </style>
@@ -37,7 +37,7 @@
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="secondaryBackground">@color/background_material_light</item>
-        <item name="iconSend">@drawable/ic_send_black_24dp</item>
+        <item name="iconSend">@drawable/selector_send_black</item>
         <item name="myCardView">@style/MyCardView.Light</item>
     </style>
 
@@ -49,7 +49,7 @@
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="secondaryBackground">@color/background_material_dark</item>
-        <item name="iconSend">@drawable/ic_send_white_24dp</item>
+        <item name="iconSend">@drawable/selector_send_white</item>
         <item name="myCardView">@style/MyCardView.Dark</item>
     </style>
 
