@@ -33,6 +33,8 @@
 
     <style name="TranslucentLightTheme" parent="Theme.AppCompat.Light">
         <item name="windowActionBar">false</item>
+        <!-- disable animations -->
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
 
         <!-- copy from @android:style/Theme.Translucent.NoTitleBar -->
         <item name="android:windowNoTitle">true</item>
@@ -49,6 +51,7 @@
 
     <style name="TranslucentDarkTheme" parent="Theme.AppCompat">
         <item name="windowActionBar">false</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@color/translucentDark30</item>
