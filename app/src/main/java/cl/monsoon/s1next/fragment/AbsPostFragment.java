@@ -103,7 +103,7 @@ public abstract class AbsPostFragment extends Fragment implements LoaderManager.
                 // pass RequestBody to change post body
                 ((HttpPostLoader) mLoader).onContentChanged(requestBody);
             } catch (ClassCastException e) {
-                throw new IllegalStateException(mLoader + " must extend HttpPostLoader.");
+                throw new ClassCastException(mLoader + " must extend HttpPostLoader.");
             }
         }
         mLoading = true;

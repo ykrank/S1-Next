@@ -1,5 +1,6 @@
 package cl.monsoon.s1next.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,6 +37,8 @@ public final class PostListPagerFragment extends AbsNavigationDrawerInteractionF
 
     private MenuItem mMenuReply;
 
+    private OnPagerInteractionCallback mOnPagerInteractionCallback;
+
     public static PostListPagerFragment newInstance(CharSequence threadId, int page) {
         PostListPagerFragment fragment = new PostListPagerFragment();
 
@@ -68,6 +71,26 @@ public final class PostListPagerFragment extends AbsNavigationDrawerInteractionF
         super.onResume();
 
         prepareMenuReply();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if (activity instanceof OnPagerInteractionCallback) {
+            mOnPagerInteractionCallback = ((OnPagerInteractionCallback) getActivity());
+        } else {
+            throw new ClassCastException(
+                    getActivity()
+                            + " must implement OnPagerInteractionListener.");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        mOnPagerInteractionCallback = null;
     }
 
     @Override
@@ -174,14 +197,9 @@ public final class PostListPagerFragment extends AbsNavigationDrawerInteractionF
 
                 prepareMenuReply();
 
-                ((OnPagerInteractionCallback) getActivity())
-                        .setCount(postList.getPostListInfo().getReplies() + 1);
+                mOnPagerInteractionCallback.setCount(postList.getPostListInfo().getReplies() + 1);
             } catch (NullPointerException e) {
                 ToastHelper.showByResId(R.string.message_server_error);
-            } catch (ClassCastException e) {
-                throw new IllegalStateException(
-                        getActivity()
-                                + " must implement OnPagerInteractionListener.");
             }
         }
     }

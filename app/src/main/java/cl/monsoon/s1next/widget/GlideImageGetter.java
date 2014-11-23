@@ -20,6 +20,7 @@ import java.util.List;
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.util.ObjectUtil;
 
 /**
  * Display image from HTML string in the TextView which uses
@@ -143,13 +144,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
             Object tag = view.getTag();
             List<Request> requestList;
             if (tag != null) {
-                try {
-                    //noinspection unchecked
-                    requestList = (List<Request>) tag;
-                } catch (ClassCastException e) {
-                    throw new IllegalStateException(
-                            "Must setTag(List<Request>) on a view Glide is targeting.");
-                }
+                requestList = ObjectUtil.uncheckedCast(tag);
             } else {
                 requestList = new ArrayList<>();
             }

@@ -34,7 +34,7 @@ public final class ForumFragment extends AbsNavigationDrawerInteractionFragment<
     /**
      * Host Activity callback.
      */
-    private OnToolbarSpinnerInteractionCallback mToolbarSpinnerInteractionListener;
+    private OnToolbarSpinnerInteractionCallback mOnToolbarSpinnerInteractionCallback;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -66,10 +66,10 @@ public final class ForumFragment extends AbsNavigationDrawerInteractionFragment<
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        try {
-            mToolbarSpinnerInteractionListener = (OnToolbarSpinnerInteractionCallback) activity;
-        } catch (ClassCastException e) {
-            throw new IllegalStateException(
+        if (activity instanceof OnToolbarSpinnerInteractionCallback) {
+            mOnToolbarSpinnerInteractionCallback = (OnToolbarSpinnerInteractionCallback) activity;
+        } else {
+            throw new ClassCastException(
                     getActivity()
                             + " must implement OnSpinnerInteractionListener.");
         }
@@ -79,7 +79,7 @@ public final class ForumFragment extends AbsNavigationDrawerInteractionFragment<
     public void onDetach() {
         super.onDetach();
 
-        mToolbarSpinnerInteractionListener = null;
+        mOnToolbarSpinnerInteractionCallback = null;
     }
 
     @Override
@@ -129,7 +129,7 @@ public final class ForumFragment extends AbsNavigationDrawerInteractionFragment<
 
                 // after set adapter, host activity
                 // would call changeContent().
-                mToolbarSpinnerInteractionListener.setAdapterDataSet(
+                mOnToolbarSpinnerInteractionCallback.setAdapterDataSet(
                         mForumGroupList.getForumGroupNameList());
             } catch (NullPointerException e) {
                 ToastHelper.showByResId(R.string.message_server_error);
@@ -142,7 +142,7 @@ public final class ForumFragment extends AbsNavigationDrawerInteractionFragment<
      * else to group forum.
      */
     public void changeContent() {
-        int position = mToolbarSpinnerInteractionListener.getItemPosition();
+        int position = mOnToolbarSpinnerInteractionCallback.getItemPosition();
         if (position == 0) {
             mRecyclerAdapter.setDataSet(mForumGroupList.getForumList());
         } else {

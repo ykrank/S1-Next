@@ -15,6 +15,7 @@ import java.io.InputStream;
 import cl.monsoon.s1next.model.mapper.Deserialization;
 import cl.monsoon.s1next.singleton.MyObjectMapper;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
+import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 
 /**
@@ -39,11 +40,10 @@ public class HttpGetRetainedFragment<D extends Deserialization> extends DataReta
         // if its host is Activity
         // else its host is Fragment
         if (getTag() == null) {
-            try {
-                //noinspection unchecked
-                mAsyncTaskCallback = (AsyncTaskCallback<D>) activity;
-            } catch (ClassCastException e) {
-                throw new IllegalStateException(getActivity() + " must implement Callback<D>.");
+            if (activity instanceof AsyncTaskCallback) {
+                mAsyncTaskCallback = ObjectUtil.uncheckedCast(activity);
+            } else {
+                throw new ClassCastException(getActivity() + " must implement AsyncTaskCallback.");
             }
         } else {
             String hostFragmentTag = getTag().substring(TAG_PREFIX.length());
@@ -54,11 +54,10 @@ public class HttpGetRetainedFragment<D extends Deserialization> extends DataReta
                 throw new IllegalStateException("Can't find Fragment which host this Fragment.");
             }
 
-            try {
-                //noinspection unchecked
-                mAsyncTaskCallback = (AsyncTaskCallback<D>) fragment;
-            } catch (ClassCastException e) {
-                throw new IllegalStateException(fragment + " must implement Callback<D>.");
+            if (fragment instanceof AsyncTaskCallback) {
+                mAsyncTaskCallback = ObjectUtil.uncheckedCast(fragment);
+            } else {
+                throw new ClassCastException(fragment + " must implement AsyncTaskCallback.");
             }
         }
     }

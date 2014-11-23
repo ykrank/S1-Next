@@ -1,5 +1,6 @@
 package cl.monsoon.s1next.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,6 +32,8 @@ public final class ThreadListPagerFragment extends AbsNavigationDrawerInteractio
 
     private CharSequence mForumId;
     private int mPageNum;
+
+    private OnPagerInteractionCallback mOnPagerInteractionCallback;
 
     public static ThreadListPagerFragment newInstance(CharSequence forumId, int page) {
         ThreadListPagerFragment fragment = new ThreadListPagerFragment();
@@ -75,6 +78,26 @@ public final class ThreadListPagerFragment extends AbsNavigationDrawerInteractio
                             startActivity(intent);
                         })
         );
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if (activity instanceof OnPagerInteractionCallback) {
+            mOnPagerInteractionCallback = ((OnPagerInteractionCallback) getActivity());
+        } else {
+            throw new ClassCastException(
+                    getActivity()
+                            + " must implement OnPagerInteractionListener.");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        mOnPagerInteractionCallback = null;
     }
 
     @Override
@@ -127,14 +150,9 @@ public final class ThreadListPagerFragment extends AbsNavigationDrawerInteractio
                 mRecyclerAdapter.setDataSet(threadList.getThreadList());
                 mRecyclerAdapter.notifyDataSetChanged();
 
-                ((OnPagerInteractionCallback) getActivity())
-                        .setCount(threadList.getThreadsInfo().getThreads());
+                mOnPagerInteractionCallback.setCount(threadList.getThreadsInfo().getThreads());
             } catch (NullPointerException e) {
                 ToastHelper.showByResId(R.string.message_server_error);
-            } catch (ClassCastException e) {
-                throw new IllegalStateException(
-                        getActivity()
-                                + " must implement OnPagerInteractionListener.");
             }
         }
     }

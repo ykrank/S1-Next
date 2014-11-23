@@ -116,16 +116,6 @@ public final class TouchImageView extends ImageView implements View.OnTouchListe
         int containerWidth = getWidth();
         int containerHeight = getHeight();
 
-        //        View container;
-        //        try {
-        //            container = (View) getParent();
-        //        } catch (ClassCastException e) {
-        //            throw new IllegalStateException(this + " must have a parent view.");
-        //        }
-        //
-        //        int containerWidth = container.getWidth();
-        //        int containerHeight = container.getHeight();
-
         // get drawable's bounds
         RectF bounds =
                 MatrixHelper.getBounds(
