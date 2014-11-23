@@ -4,7 +4,7 @@
       tools:context="cl.monsoon.s1next.fragment.ThreadListPagerFragment">
     <item
         android:id="@+id/menu_browser"
-        android:orderInCategory="11"
+        android:orderInCategory="10"
         android:title="@string/menu_browser"
         app:showAsAction="never"/>
 </menu>

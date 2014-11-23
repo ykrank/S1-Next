@@ -6,7 +6,7 @@
         android:id="@+id/menu_reply"
         android:enabled="false"
         android:icon="?attr/menuReply"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         android:title="@string/menu_reply"
         app:showAsAction="ifRoom"/>
     <item
@@ -16,7 +16,7 @@
         app:showAsAction="never"/>
     <item
         android:id="@+id/menu_browser"
-        android:orderInCategory="11"
+        android:orderInCategory="10"
         android:title="@string/menu_browser"
         app:showAsAction="never"/>
 </menu>

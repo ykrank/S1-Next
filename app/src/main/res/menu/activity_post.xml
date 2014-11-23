@@ -4,7 +4,7 @@
     <item
         android:id="@+id/menu_page_flip"
         android:icon="?attr/menuPageFlip"
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         android:title="@string/menu_page_flip"
         app:showAsAction="ifRoom" />
 </menu>
