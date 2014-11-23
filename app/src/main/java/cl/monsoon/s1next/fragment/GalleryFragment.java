@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import cl.monsoon.s1next.R;
 
@@ -41,7 +42,7 @@ public final class GalleryFragment extends Fragment {
         mUrl = getArguments().getString(ARG_IMAGE_URL);
         Glide.with(getActivity())
                 .load(mUrl)
-                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into((ImageView) view.findViewById(R.id.picture));
 
         return view;

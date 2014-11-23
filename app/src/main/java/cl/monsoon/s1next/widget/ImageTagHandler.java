@@ -69,6 +69,5 @@ public final class ImageTagHandler implements Html.TagHandler {
 
             getContext().startActivity(intent);
         }
-
     }
 }
