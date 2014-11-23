@@ -47,7 +47,7 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
      * The serialization (saved instance state) Bundle key representing
      * SeekBar's progress when page flip dialog is showing.
      */
-    private static final String STATE_SEEKBAR_PROGRESS = "seek_bar_progress";
+    private static final String STATE_SEEKBAR_PROGRESS = "seekbar_progress";
     private int mSeekBarProgress = -1;
 
     private BroadcastReceiver broadcastReceiver;
@@ -102,7 +102,7 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
         if (savedInstanceState != null) {
             mSeekBarProgress = savedInstanceState.getInt(STATE_SEEKBAR_PROGRESS);
             if (mSeekBarProgress != -1) {
-                showDialogSeekBar();
+                showSeekBarDialog();
             }
         }
     }
@@ -174,7 +174,7 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
                 return true;
             // show SeekBar to let user to flip page
             case R.id.menu_page_flip:
-                showDialogSeekBar();
+                showSeekBarDialog();
 
                 return true;
         }
@@ -189,7 +189,7 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
         outState.putInt(STATE_SEEKBAR_PROGRESS, mSeekBarProgress);
     }
 
-    private void showDialogSeekBar() {
+    private void showSeekBarDialog() {
         View view = getLayoutInflater().inflate(R.layout.dialog_seekbar, mDrawerLayout, false);
 
         if (mSeekBarProgress == -1) {
@@ -259,24 +259,23 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
             }
         });
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(view);
-        builder.setTitle(R.string.dialog_seekbar_title_page_flip);
-        builder.setNegativeButton(
-                getText(android.R.string.cancel),
-                (dialog, which) -> mSeekBarProgress = -1
-        );
-        builder.setPositiveButton(
-                getText(android.R.string.ok),
-                (dialog, which) -> {
-                    mSeekBarProgress = -1;
+        new AlertDialog.Builder(this)
+                .setView(view)
+                .setTitle(R.string.dialog_seekbar_title_page_flip)
+                .setPositiveButton(
+                        getText(android.R.string.ok),
+                        (dialog, which) -> {
+                            mSeekBarProgress = -1;
 
-                    if (!TextUtils.isEmpty(valueView.getText())) {
-                        mViewPager.setCurrentItem(seekbar.getProgress());
-                    }
-                }
-        );
-        builder.show();
+                            if (!TextUtils.isEmpty(valueView.getText())) {
+                                mViewPager.setCurrentItem(seekbar.getProgress());
+                            }
+                        }
+                )
+                .setNegativeButton(
+                        getText(android.R.string.cancel),
+                        (dialog, which) -> mSeekBarProgress = -1
+                ).show();
     }
 
     /**

@@ -84,11 +84,14 @@ public final class SettingsFragment extends PreferenceFragment implements Shared
             WebView webView = new WebView(getActivity());
             webView.loadUrl("file:///android_asset/NOTICE.html");
 
-            return new AlertDialog.Builder(getActivity())
-                    .setTitle(R.string.pref_open_source_licenses)
-                    .setView(webView)
-                    .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                    .create();
+            return
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.pref_open_source_licenses)
+                            .setView(webView)
+                            .setPositiveButton(
+                                    android.R.string.ok,
+                                    (dialog, which) -> dialog.dismiss())
+                            .create();
         }
     }
 }
