@@ -1,5 +1,8 @@
 package cl.monsoon.s1next.activity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -16,6 +19,8 @@ public class ReplyActivity extends ActionBarActivity {
     public final static String ARG_THREAD_TITLE = "thread_title";
     public final static String ARG_THREAD_ID = "thread_id";
 
+    private ReplyFragment mReplyFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // default theme is TranslucentDarkTheme
@@ -30,11 +35,49 @@ public class ReplyActivity extends ActionBarActivity {
 
         CharSequence title = getIntent().getStringExtra(ARG_THREAD_TITLE);
         String url = getIntent().getStringExtra(ARG_THREAD_ID);
-        if (savedInstanceState == null) {
-            Fragment fragment = ReplyFragment.newInstance(title, url);
+
+        Fragment fragment = getFragmentManager().findFragmentByTag(ReplyFragment.TAG);
+        if (fragment == null) {
+            mReplyFragment = ReplyFragment.newInstance(title, url);
 
             getFragmentManager().beginTransaction()
-                    .replace(R.id.frame_layout, fragment, ReplyFragment.TAG).commit();
+                    .replace(R.id.frame_layout, mReplyFragment, ReplyFragment.TAG).commit();
+        } else {
+            if (fragment instanceof ReplyFragment) {
+                mReplyFragment = (ReplyFragment) fragment;
+            } else {
+                throw new ClassCastException(fragment + " must extend ReplyFragment.");
+            }
+        }
+    }
+
+    /**
+     * Show AlertDialog when reply content is not empty.
+     */
+    @Override
+    public void onBackPressed() {
+        if (mReplyFragment.isReplyEmpty()) {
+            super.onBackPressed();
+        } else {
+            new BackPromptDialog().show(getFragmentManager(), BackPromptDialog.TAG);
+        }
+    }
+
+    public static class BackPromptDialog extends DialogFragment {
+
+        private static final String TAG = "back_prompt_dialog";
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            return
+                    new AlertDialog.Builder(getActivity())
+                            .setMessage(R.string.dialog_progress_message_back)
+                            .setPositiveButton(android.R.string.ok,
+                                    (dialog, which) -> getActivity().finish())
+                            .setNegativeButton(
+                                    android.R.string.cancel, null)
+                            .create();
         }
     }
 }

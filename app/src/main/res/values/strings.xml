@@ -44,9 +44,10 @@
     <!-- post activity -->
     <string name="dialog_seekbar_title_page_flip">Go to…</string>
 
-    <!-- reply fragment -->
+    <!-- reply activity & fragment -->
     <string name="prompt_reply">Write something…</string>
     <string name="dialog_progress_title_reply">Replying…</string>
+    <string name="dialog_progress_message_back">Do you want to discard this post?</string>
 
     <!-- settings -->
     <string name="pref_general">GENERAL</string>

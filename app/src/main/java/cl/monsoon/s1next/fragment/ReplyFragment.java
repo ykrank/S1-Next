@@ -115,6 +115,10 @@ public final class ReplyFragment extends AbsPostFragment implements View.OnClick
         startLoader(getReplyPostBuilder());
     }
 
+    public boolean isReplyEmpty() {
+        return mReplyView == null || TextUtils.isEmpty(mReplyView.getText().toString());
+    }
+
     @Override
     public CharSequence getProgressMessage() {
         return getText(R.string.dialog_progress_title_reply);

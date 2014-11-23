@@ -2,6 +2,7 @@
 <resources>
     <string name="action_login">登录</string>
     <string name="avatar_content_desc">头像</string>
+    <string name="dialog_progress_message_back">要舍弃这条信息吗？</string>
     <string name="dialog_progress_title_login">登录中…</string>
     <string name="dialog_progress_title_reply">回复中…</string>
     <string name="dialog_seekbar_title_page_flip">前往…</string>
