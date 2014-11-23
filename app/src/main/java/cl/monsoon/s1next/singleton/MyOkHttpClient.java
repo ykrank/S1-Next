@@ -16,6 +16,7 @@ public enum MyOkHttpClient {
     INSTANCE;
 
     private final OkHttpClient okHttpClient;
+    private final CookieManager cookieManager;
 
     private MyOkHttpClient() {
         okHttpClient = new OkHttpClient();
@@ -24,7 +25,7 @@ public enum MyOkHttpClient {
         okHttpClient.setWriteTimeout(10, TimeUnit.SECONDS);
         okHttpClient.setReadTimeout(30, TimeUnit.SECONDS);
 
-        CookieManager cookieManager = new CookieManager(
+        cookieManager = new CookieManager(
                 new PersistentHttpCookieStore(
                         MyApplication.getContext()), CookiePolicy.ACCEPT_ALL);
 
@@ -33,5 +34,9 @@ public enum MyOkHttpClient {
 
     public static OkHttpClient get() {
         return INSTANCE.okHttpClient;
+    }
+
+    public static boolean clearCookie() {
+        return INSTANCE.cookieManager.getCookieStore().removeAll();
     }
 }

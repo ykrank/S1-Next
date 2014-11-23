@@ -1,5 +1,8 @@
 package cl.monsoon.s1next.activity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
@@ -24,6 +27,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.singleton.MyOkHttpClient;
 
 /**
  * An abstract Activity to create a navigation drawer.
@@ -37,10 +41,12 @@ public abstract class AbsNavigationDrawerActivity extends AbsThemeActivity {
     ActionBarDrawerToggle mDrawerToggle;
 
     private View mDrawer;
+    private TextView mDrawerUsernameView;
+
     private ActionMenuView mActionMenuView;
     private CharSequence mTitle;
 
-    private boolean showLogin = false;
+    private LoginStatus mLoginStatus = LoginStatus.NONE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +58,10 @@ public abstract class AbsNavigationDrawerActivity extends AbsThemeActivity {
         setSupportActionBar(mToolbar);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         mDrawer = findViewById(R.id.drawer);
-        Glide.with(this)
-                .load(R.drawable.ic_avatar_placeholder)
-                .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
-                .into((ImageView) mDrawer.findViewById(R.id.drawer_avatar));
-        mDrawer.findViewById(R.id.drawer_header).setOnClickListener(v -> {
-            mDrawerLayout.closeDrawer(mDrawer);
+        mDrawerUsernameView = (TextView) mDrawer.findViewById(R.id.drawer_username);
 
-            Intent intent = new Intent(AbsNavigationDrawerActivity.this, LoginActivity.class);
-            startActivity(intent);
-        });
+        showLoginPrompt();
 
         TextView textView = (TextView) mDrawer.findViewById(R.id.settings);
         textView.setText(getText(R.string.settings));
@@ -126,6 +124,7 @@ public abstract class AbsNavigationDrawerActivity extends AbsThemeActivity {
     protected void onResume() {
         super.onResume();
 
+        showLoginPrompt();
         showUserInfo();
     }
 
@@ -202,20 +201,87 @@ public abstract class AbsNavigationDrawerActivity extends AbsThemeActivity {
     }
 
     /**
+     * Show default avatar and login prompt.
+     */
+    private void showLoginPrompt() {
+        if (mDrawerLayout == null || mDrawer == null || mDrawerUsernameView == null) {
+            throw new IllegalStateException("Some views must not be null.");
+        }
+
+        if (TextUtils.isEmpty(Config.getUsername()) && mLoginStatus != LoginStatus.NOT) {
+            mLoginStatus = LoginStatus.NOT;
+
+            Glide.with(this)
+                    .load(R.drawable.ic_avatar_placeholder)
+                    .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
+                    .into((ImageView) mDrawer.findViewById(R.id.drawer_avatar));
+            mDrawer.findViewById(R.id.drawer_header).setOnClickListener(v -> {
+                mDrawerLayout.closeDrawer(mDrawer);
+
+                Intent intent = new Intent(AbsNavigationDrawerActivity.this, LoginActivity.class);
+                startActivity(intent);
+            });
+            mDrawerUsernameView.setText(R.string.action_login);
+        }
+    }
+
+    /**
      * Show username and its avatar when user logged in.
      */
     public void showUserInfo() {
-        if (!TextUtils.isEmpty(Config.getUsername()) && !showLogin) {
-            showLogin = true;
+        if (mDrawer == null || mDrawerUsernameView == null) {
+            throw new IllegalStateException("Some views must not be null.");
+        }
 
-            ((TextView) mDrawer.findViewById(R.id.drawer_username)).setText(Config.getUsername());
-            mDrawer.findViewById(R.id.drawer_header).setOnClickListener(null);
+        if (!TextUtils.isEmpty(Config.getUsername()) && mLoginStatus != LoginStatus.LOGIN) {
+            mLoginStatus = LoginStatus.LOGIN;
 
             Glide.with(this)
                     .load(Api.getUrlAvatarMedium(Config.getUid()))
                     .error(R.drawable.ic_avatar_placeholder)
                     .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
                     .into((ImageView) mDrawer.findViewById(R.id.drawer_avatar));
+            mDrawerUsernameView.setText(Config.getUsername());
+
+            mDrawer.findViewById(R.id.drawer_header).setOnClickListener(v ->
+                    new LogOutDialog().show(getFragmentManager(), LogOutDialog.TAG));
+        }
+    }
+
+    public void logout() {
+        MyOkHttpClient.clearCookie();
+        Config.clearUserInfo();
+
+        showLoginPrompt();
+    }
+
+    private enum LoginStatus {
+        NONE, NOT, LOGIN
+    }
+
+    public static class LogOutDialog extends DialogFragment {
+
+        private static final String TAG = "log_out_dialog";
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            return
+                    new AlertDialog.Builder(getActivity())
+                            .setMessage(R.string.dialog_progress_log_out)
+                            .setPositiveButton(android.R.string.ok,
+                                    (dialog, which) -> {
+                                        try {
+                                            ((AbsNavigationDrawerActivity) getActivity()).logout();
+                                        } catch (ClassCastException e) {
+                                            throw new ClassCastException(
+                                                    getActivity()
+                                                            + " must extend AbsNavigationDrawerActivity.");
+                                        }
+                                    })
+                            .setNegativeButton(
+                                    android.R.string.cancel, null)
+                            .create();
         }
     }
 }

@@ -61,6 +61,10 @@ public enum Config {
         INSTANCE.authenticityToken = authenticityToken;
     }
 
+    public static String clearUserInfo() {
+        return INSTANCE.username = INSTANCE.uid = INSTANCE.authenticityToken = null;
+    }
+
     public static int getTheme() {
         return INSTANCE.theme;
     }
