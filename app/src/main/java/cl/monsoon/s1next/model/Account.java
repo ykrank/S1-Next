@@ -30,10 +30,10 @@ public class Account {
     public void setUsername(String username) {
         this.username = username;
 
-        if (Config.getUsername() == null && !TextUtils.isEmpty(username)) {
-            Config.setUsername(username);
-        } else if (Config.getUsername() != null && TextUtils.isEmpty(username)) {
+        if (TextUtils.isEmpty(username)) {
             Config.setUsername(null);
+        } else {
+            Config.setUsername(username);
         }
     }
 
@@ -45,10 +45,10 @@ public class Account {
         this.uid = uid;
 
         // uid.equals("0") = true when user hasn't logged in
-        if (Config.getUid() == null && !TextUtils.isEmpty(uid) && !uid.equals("0")) {
-            Config.setUid(uid);
-        } else if (Config.getUid() != null && (TextUtils.isEmpty(uid) || uid.equals("0"))) {
+        if (TextUtils.isEmpty(uid) || uid.equals("0")) {
             Config.setUid(null);
+        } else {
+            Config.setUid(uid);
         }
     }
 
@@ -59,11 +59,10 @@ public class Account {
     public void setAuthenticityToken(String authenticityToken) {
         this.authenticityToken = authenticityToken;
 
-        if (Config.getAuthenticityToken() == null && !TextUtils.isEmpty(authenticityToken)) {
-            Config.setAuthenticityToken(authenticityToken);
-        } else if (Config.getAuthenticityToken() != null &&
-                !authenticityToken.equals(Config.getAuthenticityToken())) {
+        if (TextUtils.isEmpty(authenticityToken)) {
             Config.setAuthenticityToken(null);
+        } else {
+            Config.setAuthenticityToken(authenticityToken);
         }
     }
 }
