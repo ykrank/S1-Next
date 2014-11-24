@@ -140,6 +140,8 @@ public final class ReplyFragment extends AbsPostFragment implements View.OnClick
 
     @Override
     public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> asyncResult) {
+        super.onLoadFinished(loader, asyncResult);
+
         if (asyncResult.exception != null) {
             AsyncResult.handleException(asyncResult.exception);
         } else {
