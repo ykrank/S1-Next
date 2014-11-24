@@ -3,11 +3,9 @@ package cl.monsoon.s1next.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import cl.monsoon.s1next.model.mapper.Deserialization;
-
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Result implements Deserialization {
+public final class Result {
 
     @JsonProperty("messageval")
     private String status;
