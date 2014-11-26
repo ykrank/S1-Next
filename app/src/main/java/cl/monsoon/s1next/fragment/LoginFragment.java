@@ -28,7 +28,7 @@ import cl.monsoon.s1next.widget.HttpPostLoader;
 /**
  * A login screen that offers login via username/password.
  */
-public final class LoginFragment extends AbsPostLoaderFragment{
+public final class LoginFragment extends AbsPostLoaderFragment {
 
     public static final String TAG = "login_fragment";
 
@@ -45,7 +45,12 @@ public final class LoginFragment extends AbsPostLoaderFragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        return inflater.inflate(R.layout.fragment_login, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         mUsernameView = (EditText) view.findViewById(R.id.drawer_username);
         mPasswordView = (EditText) view.findViewById(R.id.password);
@@ -61,8 +66,6 @@ public final class LoginFragment extends AbsPostLoaderFragment{
         });
 
         view.findViewById(R.id.login).setOnClickListener(v -> attemptLogin());
-
-        return view;
     }
 
     @Override

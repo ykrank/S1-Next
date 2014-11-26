@@ -28,7 +28,12 @@ public abstract class AbsSwipeRefreshFragment<D extends Deserialization> extends
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(getLayoutResource(), container, false);
+        return inflater.inflate(getLayoutResource(), container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         mSwipeRefreshLayout.setColorSchemeResources(
@@ -41,8 +46,6 @@ public abstract class AbsSwipeRefreshFragment<D extends Deserialization> extends
                 0,
                 (int) TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
-
-        return view;
     }
 
     @Override

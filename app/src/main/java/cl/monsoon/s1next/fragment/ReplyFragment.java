@@ -58,7 +58,12 @@ public final class ReplyFragment extends AbsReplyLoaderFragment implements View.
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_reply, container, false);
+        return inflater.inflate(R.layout.fragment_reply, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         mThreadId = getArguments().getString(ARG_THREAD_ID);
 
@@ -106,8 +111,6 @@ public final class ReplyFragment extends AbsReplyLoaderFragment implements View.
                 }
             }
         });
-
-        return view;
     }
 
     @Override

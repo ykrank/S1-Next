@@ -47,8 +47,7 @@ public class HttpGetRetainedFragment<D extends Deserialization> extends DataReta
             }
         } else {
             String hostFragmentTag = getTag().substring(TAG_PREFIX.length());
-            Fragment fragment =
-                    activity.getFragmentManager().findFragmentByTag(hostFragmentTag);
+            Fragment fragment = getFragmentManager().findFragmentByTag(hostFragmentTag);
 
             if (fragment == null) {
                 throw new IllegalStateException("Can't find Fragment which host this Fragment.");

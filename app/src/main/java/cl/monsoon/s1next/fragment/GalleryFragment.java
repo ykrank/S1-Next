@@ -37,15 +37,18 @@ public final class GalleryFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_gallery, container, false);
+        return inflater.inflate(R.layout.fragment_gallery, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         mUrl = getArguments().getString(ARG_IMAGE_URL);
         Glide.with(getActivity())
                 .load(mUrl)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into((ImageView) view.findViewById(R.id.picture));
-
-        return view;
     }
 
     @Override

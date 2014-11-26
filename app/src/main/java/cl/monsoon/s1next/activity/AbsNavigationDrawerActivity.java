@@ -248,7 +248,7 @@ public abstract class AbsNavigationDrawerActivity extends AbsThemeActivity {
         }
     }
 
-    public void logout() {
+    void logout() {
         MyOkHttpClient.clearCookie();
         Config.clearUserInfo();
 

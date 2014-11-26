@@ -36,7 +36,7 @@ public enum MyOkHttpClient {
         return INSTANCE.okHttpClient;
     }
 
-    public static boolean clearCookie() {
-        return INSTANCE.cookieManager.getCookieStore().removeAll();
+    public static void clearCookie() {
+        INSTANCE.cookieManager.getCookieStore().removeAll();
     }
 }
