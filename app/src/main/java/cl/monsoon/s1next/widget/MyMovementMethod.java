@@ -2,26 +2,29 @@ package cl.monsoon.s1next.widget;
 
 import android.support.annotation.NonNull;
 import android.text.Layout;
+import android.text.Selection;
 import android.text.Spannable;
-import android.text.method.LinkMovementMethod;
+import android.text.method.ArrowKeyMovementMethod;
 import android.text.method.MovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
 /**
- * Handle {@link cl.monsoon.s1next.widget.ImageTagHandler.ImageClickableSpan} click event.
+ * A movement method that provides selection and clicking on links,
+ * also makes {@link cl.monsoon.s1next.widget.ImageTagHandler.ImageClickableSpan} clickable.
  */
-public final class ClickMovementMethod extends LinkMovementMethod {
+public final class MyMovementMethod extends ArrowKeyMovementMethod {
 
     /**
-     * @see android.text.method.LinkMovementMethod#onTouchEvent(android.widget.TextView, android.text.Spannable, android.view.MotionEvent)
+     * @see android.text.method.LinkMovementMethod#onTouchEvent(TextView, Spannable, MotionEvent)
      */
     @Override
     public boolean onTouchEvent(@NonNull TextView widget, @NonNull Spannable buffer, @NonNull MotionEvent event) {
-
         int action = event.getAction();
 
-        if (action == MotionEvent.ACTION_UP) {
+        if (action == MotionEvent.ACTION_UP ||
+                action == MotionEvent.ACTION_DOWN) {
             int x = (int) event.getX();
             int y = (int) event.getY();
 
@@ -35,13 +38,31 @@ public final class ClickMovementMethod extends LinkMovementMethod {
             int line = layout.getLineForVertical(y);
             int off = layout.getOffsetForHorizontal(line, x);
 
-            ImageTagHandler.ImageClickableSpan[] imageClickableSpans =
-                    buffer.getSpans(off, off, ImageTagHandler.ImageClickableSpan.class);
-            if (imageClickableSpans.length != 0) {
-                imageClickableSpans[0].onClick(widget);
+            ClickableSpan[] link = buffer.getSpans(off, off, ClickableSpan.class);
+
+            if (link.length != 0) {
+                if (action == MotionEvent.ACTION_UP) {
+                    link[0].onClick(widget);
+                } else {
+                    Selection.setSelection(buffer,
+                            buffer.getSpanStart(link[0]),
+                            buffer.getSpanEnd(link[0]));
+                }
 
                 return true;
             }
+
+            // invoke ImageSpan's click event
+            ImageTagHandler.ImageClickableSpan[] imageClickableSpans =
+                    buffer.getSpans(off, off, ImageTagHandler.ImageClickableSpan.class);
+            if (imageClickableSpans.length != 0) {
+                if (action == MotionEvent.ACTION_UP) {
+                    imageClickableSpans[0].onClick(widget);
+                }
+
+                return true;
+            }
+
         }
 
         return super.onTouchEvent(widget, buffer, event);
@@ -49,11 +70,11 @@ public final class ClickMovementMethod extends LinkMovementMethod {
 
     public static MovementMethod getInstance() {
         if (sInstance == null) {
-            sInstance = new ClickMovementMethod();
+            sInstance = new MyMovementMethod();
         }
 
         return sInstance;
     }
 
-    private static LinkMovementMethod sInstance;
+    private static MyMovementMethod sInstance;
 }

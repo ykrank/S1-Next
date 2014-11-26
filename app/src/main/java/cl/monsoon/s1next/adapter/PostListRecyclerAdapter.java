@@ -22,7 +22,7 @@ import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Post;
-import cl.monsoon.s1next.widget.ClickMovementMethod;
+import cl.monsoon.s1next.widget.MyMovementMethod;
 import cl.monsoon.s1next.widget.GlideImageGetter;
 import cl.monsoon.s1next.widget.ImageTagHandler;
 
@@ -149,8 +149,8 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, PostLis
             mCount = (TextView) itemView.findViewById(R.id.count);
             mReply = (TextView) itemView.findViewById(R.id.reply);
 
-            // make link clickable
-            mReply.setMovementMethod(ClickMovementMethod.getInstance());
+            // use custom movement method to provides selection and click
+            mReply.setMovementMethod(MyMovementMethod.getInstance());
         }
     }
 }

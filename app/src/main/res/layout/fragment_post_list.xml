@@ -69,7 +69,8 @@
             android:id="@+id/reply"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textIsSelectable="true"/>
 
     </LinearLayout>
 
