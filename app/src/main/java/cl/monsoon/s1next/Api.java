@@ -19,6 +19,10 @@ public final class Api {
     private static final String URL_THREAD_LIST = prefix("api/mobile/index.php?module=forumdisplay");
     private static final String URL_POST_LIST = prefix("api/mobile/index.php?module=viewthread");
 
+    // The authenticity token (formhash) you get is not fresh when you are logged in
+    // and haven't browse any other contents.
+    // So we need get the correct token when you want to reply immediately after login.
+    public static final String URL_REPLY_HELPER = prefix("api/mobile/index.php?module=toplist");
     private static final String URL_REPLY = prefix("api/mobile/index.php?module=sendreply&replysubmit=yes");
 
     // private static final String URL_USER_AVATAR_SMALL = prefix("uc_server/avatar.php?uid=%s&size=small");

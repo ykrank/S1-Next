@@ -17,6 +17,7 @@ import android.widget.EditText;
 import com.squareup.okhttp.RequestBody;
 
 import cl.monsoon.s1next.Api;
+import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
@@ -27,7 +28,7 @@ import cl.monsoon.s1next.widget.HttpPostLoader;
 /**
  * A login screen that offers login via username/password.
  */
-public final class LoginFragment extends AbsPostFragment {
+public final class LoginFragment extends AbsPostLoaderFragment{
 
     public static final String TAG = "login_fragment";
 
@@ -166,6 +167,10 @@ public final class LoginFragment extends AbsPostFragment {
 
             if (result.getStatus().equals(STATUS_AUTH_SUCCESS)
                     || result.getStatus().equals(STATUS_AUTH_SUCCESS_ALREADY)) {
+                // this authenticity token is not fresh
+                // we need abandon this token
+                Config.setAuthenticityToken(null);
+
                 getActivity().onBackPressed();
             }
         }

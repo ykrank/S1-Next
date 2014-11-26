@@ -23,12 +23,13 @@ import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
+import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.HttpPostLoader;
 
 /**
  * Send the reply via EditView.
  */
-public final class ReplyFragment extends AbsPostFragment implements View.OnClickListener {
+public final class ReplyFragment extends AbsReplyLoaderFragment implements View.OnClickListener {
 
     public static final String TAG = "reply_fragment";
 
@@ -130,34 +131,42 @@ public final class ReplyFragment extends AbsPostFragment implements View.OnClick
 
     @Override
     public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
-        return
-                new HttpPostLoader<>(
-                        getActivity(),
-                        Api.getPostRely(mThreadId),
-                        ResultWrapper.class,
-                        getReplyPostBuilder());
-    }
-
-    @Override
-    public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> asyncResult) {
-        super.onLoadFinished(loader, asyncResult);
-
-        if (asyncResult.exception != null) {
-            AsyncResult.handleException(asyncResult.exception);
+        if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
+            return
+                    new HttpGetLoader<>(
+                            getActivity(),
+                            Api.URL_REPLY_HELPER,
+                            ResultWrapper.class);
+        } else if (id == ID_LOADER_POST_REPLY) {
+            return
+                    new HttpPostLoader<>(
+                            getActivity(),
+                            Api.getPostRely(mThreadId),
+                            ResultWrapper.class,
+                            getReplyPostBuilder());
         } else {
-            ResultWrapper wrapper = asyncResult.data;
-            Result result = wrapper.getResult();
-
-            ToastHelper.showByText(result.getValue());
-
-            if (result.getStatus().equals(STATUS_REPLY_SUCCESS)) {
-                getActivity().onBackPressed();
-            }
+            throw new ClassCastException("Loader id can't be " + id + ".");
         }
     }
 
     @Override
-    public void onLoaderReset(Loader<AsyncResult<ResultWrapper>> loader) {
+    public void onLoadFinished
+            (Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> asyncResult) {
+        if (asyncResult.exception != null) {
+            AsyncResult.handleException(asyncResult.exception);
+        } else {
+            super.onLoadFinished(loader, asyncResult);
 
+            if (loader.getId() == ID_LOADER_POST_REPLY) {
+                ResultWrapper wrapper = asyncResult.data;
+                Result result = wrapper.getResult();
+
+                ToastHelper.showByText(result.getValue());
+
+                if (result.getStatus().equals(STATUS_REPLY_SUCCESS)) {
+                    getActivity().finish();
+                }
+            }
+        }
     }
 }

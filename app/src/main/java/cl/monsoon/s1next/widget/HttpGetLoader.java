@@ -37,7 +37,7 @@ public class HttpGetLoader<D extends Deserialization> extends AsyncTaskLoader<As
     Call mCall;
     private AsyncResult<D> mAsyncResult;
 
-    HttpGetLoader(Context context, String url, Class<D> clazz) {
+    public HttpGetLoader(Context context, String url, Class<D> clazz) {
         super(context);
 
         this.mClass = clazz;
