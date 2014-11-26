@@ -62,6 +62,7 @@
             android:gravity="top"
             android:hint="@string/prompt_reply"
             android:inputType="textMultiLine"
+            android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
             android:paddingBottom="@dimen/list_view_item_padding"
             android:paddingEnd="@dimen/list_view_item_padding"
             android:paddingLeft="@dimen/list_view_item_padding"
