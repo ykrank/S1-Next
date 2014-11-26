@@ -33,8 +33,6 @@ public abstract class AbsSwipeRefreshFragment<D extends Deserialization> extends
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.swipe_refresh_1, R.color.swipe_refresh_2, R.color.swipe_refresh_3);

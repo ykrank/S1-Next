@@ -19,6 +19,8 @@ public abstract class AbsRecyclerViewFragment<T, D extends Deserialization, VH e
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         //noinspection ConstantConditions
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
