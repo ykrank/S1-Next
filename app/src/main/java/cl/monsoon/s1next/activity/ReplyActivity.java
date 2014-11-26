@@ -14,7 +14,7 @@ import cl.monsoon.s1next.fragment.ReplyFragment;
 /**
  * An Activity to send a reply.
  */
-public class ReplyActivity extends ActionBarActivity {
+public final class ReplyActivity extends ActionBarActivity {
 
     public final static String ARG_THREAD_TITLE = "thread_title";
     public final static String ARG_THREAD_ID = "thread_id";
