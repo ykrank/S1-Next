@@ -46,9 +46,9 @@ public final class MyApplication extends Application {
         boolean nightMode =
                 sharedPreferences.getBoolean(SettingsFragment.KEY_PREF_NIGHT_MODE, false);
         if (nightMode) {
-            Config.setTheme(Config.DARK_THEME);
+            Config.setCurrentTheme(Config.DARK_THEME);
         } else {
-            Config.setTheme(Config.LIGHT_THEME);
+            Config.setCurrentTheme(Config.LIGHT_THEME);
         }
 
         // init download strategy

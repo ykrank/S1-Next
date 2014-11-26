@@ -24,7 +24,7 @@ public class ReplyActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // default theme is TranslucentDarkTheme
-        if (Config.getTheme() == Config.LIGHT_THEME) {
+        if (Config.getCurrentTheme() == Config.LIGHT_THEME) {
             setTheme(Config.TRANSLUCENT_LIGHT_THEME);
         } else {
             setTheme(Config.TRANSLUCENT_DARK_THEME);

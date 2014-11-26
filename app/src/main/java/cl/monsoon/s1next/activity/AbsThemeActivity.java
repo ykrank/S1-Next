@@ -15,10 +15,10 @@ public abstract class AbsThemeActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // default theme is DarkTheme
-        if (Config.getTheme() == Config.LIGHT_THEME) {
+        if (Config.getCurrentTheme() == Config.LIGHT_THEME) {
             setTheme(Config.LIGHT_THEME);
         }
-        mThemeResId = Config.getTheme();
+        mThemeResId = Config.getCurrentTheme();
 
         super.onCreate(savedInstanceState);
     }
@@ -28,8 +28,8 @@ public abstract class AbsThemeActivity extends ActionBarActivity {
         super.onResume();
 
         // change theme when night mode setting changes
-        if (mThemeResId != Config.getTheme()) {
-            setTheme(Config.getTheme());
+        if (mThemeResId != Config.getCurrentTheme()) {
+            setTheme(Config.getCurrentTheme());
 
             recreate();
         }

@@ -50,9 +50,9 @@ public final class SettingsFragment extends PreferenceFragment implements Shared
             case KEY_PREF_NIGHT_MODE:
                 if (sharedPreferences.getBoolean(
                         key, getResources().getBoolean(R.bool.pref_night_mode_default_value))) {
-                    Config.setTheme(Config.DARK_THEME);
+                    Config.setCurrentTheme(Config.DARK_THEME);
                 } else {
-                    Config.setTheme(Config.LIGHT_THEME);
+                    Config.setCurrentTheme(Config.LIGHT_THEME);
                 }
 
                 getActivity().recreate();

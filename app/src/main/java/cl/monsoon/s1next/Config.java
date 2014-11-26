@@ -28,7 +28,7 @@ public enum Config {
     public static final int THREADS_PER_PAGE = 50;
     public static final int POSTS_PER_PAGE = 30;
 
-    private volatile int theme;
+    private volatile int currentTheme;
     private volatile int colorAccent;
     private volatile boolean wifi;
     private volatile String username;
@@ -65,18 +65,18 @@ public enum Config {
         INSTANCE.username = INSTANCE.uid = INSTANCE.authenticityToken = null;
     }
 
-    public static int getTheme() {
-        return INSTANCE.theme;
+    public static int getCurrentTheme() {
+        return INSTANCE.currentTheme;
     }
 
-    public static void setTheme(int theme) {
+    public static void setCurrentTheme(int theme) {
         if (theme == TRANSLUCENT_LIGHT_THEME) {
             throw new IllegalStateException("You can't set theme to TRANSLUCENT_LIGHT_THEME.");
         } else if (theme == TRANSLUCENT_DARK_THEME) {
             throw new IllegalStateException("You can't set theme to TRANSLUCENT_DARK_THEME.");
         }
 
-        INSTANCE.theme = theme;
+        INSTANCE.currentTheme = theme;
 
         // get theme's accent color
         TypedArray typedArray =
