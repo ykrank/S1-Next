@@ -17,10 +17,10 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.squareup.okhttp.RequestBody;
 
 import cl.monsoon.s1next.Api;
-import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
+import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpGetLoader;
@@ -29,7 +29,7 @@ import cl.monsoon.s1next.widget.HttpPostLoader;
 /**
  * Send the reply via EditView.
  */
-public final class ReplyFragment extends AbsReplyLoaderFragment implements View.OnClickListener {
+public final class ReplyFragment extends AbsPostLoaderFragment implements View.OnClickListener {
 
     public static final String TAG = "reply_fragment";
 
@@ -38,12 +38,16 @@ public final class ReplyFragment extends AbsReplyLoaderFragment implements View.
 
     private static final String STATUS_REPLY_SUCCESS = "post_reply_succeed";
 
+    private static final int ID_LOADER_GET_AUTHENTICITY_TOKEN = 0;
+    private static final int ID_LOADER_POST_REPLY = 1;
+
     private CharSequence mThreadId;
 
     /**
      * The reply we need to send.
      */
     private EditText mReplyView;
+    private RequestBody mRequestBody;
 
     public static ReplyFragment newInstance(CharSequence title, String threadId) {
         ReplyFragment fragment = new ReplyFragment();
@@ -69,12 +73,12 @@ public final class ReplyFragment extends AbsReplyLoaderFragment implements View.
 
         // show user's avatar
         Glide.with(this)
-                .load(Api.getUrlAvatarMedium(Config.getUid()))
+                .load(Api.getUrlAvatarMedium(User.getUid()))
                 .error(R.drawable.ic_avatar_placeholder)
                 .transform(new CenterCrop(Glide.get(getActivity()).getBitmapPool()))
                 .into((ImageView) view.findViewById(R.id.avatar));
 
-        String username = Config.getUsername();
+        String username = User.getName();
         if (TextUtils.isEmpty(username)) {
             throw new IllegalStateException("Username must not be null.");
         }
@@ -132,6 +136,48 @@ public final class ReplyFragment extends AbsReplyLoaderFragment implements View.
         return Api.getReplyPostBuilder(mReplyView.getText().toString());
     }
 
+    /**
+     * We need to get authenticity token (formhash) if we haven't.
+     * Then posts the rely.
+     *
+     * @see cl.monsoon.s1next.Api#URL_REPLY_HELPER
+     */
+    private void startLoader() {
+        int loaderId;
+        if (TextUtils.isEmpty(User.getAuthenticityToken())) {
+            loaderId = ID_LOADER_GET_AUTHENTICITY_TOKEN;
+        } else {
+            loaderId = ID_LOADER_POST_REPLY;
+        }
+
+        mLoader = getLoaderManager().getLoader(loaderId);
+        if (mLoader == null) {
+            mLoader = getLoaderManager().initLoader(loaderId, null, this);
+        } else {
+            if (loaderId == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
+                mLoader.onContentChanged();
+            } else {
+                if (mLoader instanceof HttpPostLoader) {
+                    // pass RequestBody to change post body
+                    //noinspection RedundantCast
+                    ((HttpPostLoader) mLoader).onContentChanged(mRequestBody);
+                } else {
+                    throw new ClassCastException(mLoader + " must extend HttpPostLoader.");
+                }
+            }
+        }
+        mLoading = true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    void startLoader(RequestBody requestBody) {
+        this.mRequestBody = requestBody;
+
+        startLoader();
+    }
+
     @Override
     public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
         if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
@@ -153,14 +199,21 @@ public final class ReplyFragment extends AbsReplyLoaderFragment implements View.
     }
 
     @Override
-    public void onLoadFinished
-            (Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> asyncResult) {
+    public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> asyncResult) {
         if (asyncResult.exception != null) {
             AsyncResult.handleException(asyncResult.exception);
         } else {
-            super.onLoadFinished(loader, asyncResult);
+            int id = loader.getId();
+            if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
+                if (TextUtils.isEmpty(User.getAuthenticityToken())) {
+                    throw new IllegalStateException("Authenticity Token can't be empty.");
+                }
 
-            if (loader.getId() == ID_LOADER_POST_REPLY) {
+                startLoader();
+            } else if (id == ID_LOADER_POST_REPLY) {
+                mLoading = false;
+                dismissProgressDialog();
+
                 ResultWrapper wrapper = asyncResult.data;
                 Result result = wrapper.getResult();
 
@@ -169,6 +222,8 @@ public final class ReplyFragment extends AbsReplyLoaderFragment implements View.
                 if (result.getStatus().equals(STATUS_REPLY_SUCCESS)) {
                     getActivity().finish();
                 }
+            } else {
+                throw new ClassCastException("Loader id can't be " + id + ".");
             }
         }
     }

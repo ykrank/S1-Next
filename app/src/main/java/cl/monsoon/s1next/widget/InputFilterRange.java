@@ -4,7 +4,7 @@ import android.text.InputFilter;
 import android.text.Spanned;
 
 /**
- * Users can't enter a value out of range in EditView.
+ * Users can't enter a value which is out of the range in EditView.
  */
 public final class InputFilterRange implements InputFilter {
 

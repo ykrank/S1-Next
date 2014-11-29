@@ -11,7 +11,7 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.GalleryFragment;
 
 /**
- * An Activity show an ImageView that supports multi-touch.
+ * An Activity shows an ImageView that supports multi-touch.
  */
 public final class GalleryActivity extends ActionBarActivity {
 

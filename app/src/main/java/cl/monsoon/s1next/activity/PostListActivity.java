@@ -24,10 +24,10 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 
-import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.fragment.AbsHttpGetFragment;
+import cl.monsoon.s1next.fragment.BaseFragment;
 import cl.monsoon.s1next.fragment.PostListPagerFragment;
+import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
@@ -37,7 +37,9 @@ import cl.monsoon.s1next.widget.InputFilterRange;
  * An Activity representing a list of posts.
  * Similar to {@see ThreadListActivity}
  */
-public final class PostListActivity extends AbsNavigationDrawerActivity implements PostListPagerFragment.OnPagerInteractionCallback {
+public final class PostListActivity
+        extends BaseActivity
+        implements PostListPagerFragment.OnPagerInteractionCallback {
 
     public final static String ARG_THREAD_TITLE = "thread_title";
     public final static String ARG_THREAD_ID = "thread_id";
@@ -50,34 +52,35 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
     private static final String STATE_SEEKBAR_PROGRESS = "seekbar_progress";
     private int mSeekBarProgress = -1;
 
-    private BroadcastReceiver broadcastReceiver;
-
-    private ViewPager mViewPager;
-    /**
-     * The {@link FragmentStatePagerAdapter} will provide
-     * fragments for each of the pages of posts.
-     */
-    private PagerAdapter mAdapter;
-
     private CharSequence mThreadId;
     private CharSequence mThreadTitle;
     private int mNumPages;
 
+    /**
+     * The {@link FragmentStatePagerAdapter} will provide
+     * fragments for each page of posts.
+     */
+    private PagerAdapter mAdapter;
+    private ViewPager mViewPager;
+
     private MenuItem mMenuPageFlip;
+
+    private BroadcastReceiver wifiReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_base);
 
-        mDrawerToggle.setDrawerIndicatorEnabled(false);
+        setNavDrawerIndicatorEnabled(false);
 
         // not works well
-        //        // title has marquee effect if thread title is long
-        //        // similar use to AbsNavigationDrawerActivity#showGlobalContext()
-        //        final TextView title;
-        //        final int count = mToolbar.getChildCount();
+        //        // Title has marquee effect if thread's title is long.
+        //        // Similar use to AbsNavigationDrawerActivity#setupGlobalToolbar()
+        //        TextView title;
+        //        int count = mToolbar.getChildCount();
         //        for (int i = 0; i < count; i++) {
-        //            final View view = mToolbar.getChildAt(i);
+        //            View view = mToolbar.getChildAt(i);
         //            if (view instanceof TextView) {
         //                title = (TextView) view;
         //                title.setEllipsize(TextUtils.TruncateAt.MARQUEE);
@@ -87,22 +90,22 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
         //            }
         //        }
 
-        FrameLayout parent = (FrameLayout) findViewById(R.id.frame_layout);
-        View.inflate(this, R.layout.activity_screen_slide, parent);
-
         mThreadTitle = getIntent().getCharSequenceExtra(ARG_THREAD_TITLE);
         setTitle(mThreadTitle);
         mThreadId = getIntent().getCharSequenceExtra(ARG_THREAD_ID);
         setCount(getIntent().getIntExtra(ARG_POST_REPLIES, 1));
 
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        FrameLayout container = (FrameLayout) findViewById(R.id.frame_layout);
+        View.inflate(this, R.layout.activity_screen_slide, container);
+
+        mViewPager = (ViewPager) container.findViewById(R.id.pager);
         mAdapter = new PostListPagerAdapter(getFragmentManager());
         mViewPager.setAdapter(mAdapter);
 
         if (savedInstanceState != null) {
             mSeekBarProgress = savedInstanceState.getInt(STATE_SEEKBAR_PROGRESS);
             if (mSeekBarProgress != -1) {
-                showSeekBarDialog();
+                showPageFlipDialog();
             }
         }
     }
@@ -111,13 +114,13 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
     protected void onResume() {
         super.onResume();
 
-        // register broadcast receiver to check whether Wi-Fi is enabled
-        // when we need to download images
-        if ((Config.getAvatarsDownloadStrategy() != Config.DownloadStrategy.NOT
-                || Config.getImagesDownloadStrategy() != Config.DownloadStrategy.NOT)) {
+        // Register broadcast receiver to check whether Wi-Fi is enabled
+        // when we need to download images.
+        if (Config.getAvatarsDownloadStrategy() != Config.DownloadStrategy.NOT
+                || Config.getImagesDownloadStrategy() != Config.DownloadStrategy.NOT) {
             Config.setWifi(NetworkUtil.isWifiConnected());
 
-            broadcastReceiver = new BroadcastReceiver() {
+            wifiReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     Config.setWifi(NetworkUtil.isWifiConnected());
@@ -126,7 +129,7 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
 
             IntentFilter intentFilter =
                     new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-            registerReceiver(broadcastReceiver, intentFilter);
+            registerReceiver(wifiReceiver, intentFilter);
         }
     }
 
@@ -134,9 +137,9 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
     protected void onPause() {
         super.onPause();
 
-        if (broadcastReceiver != null) {
-            unregisterReceiver(broadcastReceiver);
-            broadcastReceiver = null;
+        if (wifiReceiver != null) {
+            unregisterReceiver(wifiReceiver);
+            wifiReceiver = null;
         }
     }
 
@@ -148,6 +151,44 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
         prepareMenuPageFlip();
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+
+                return true;
+            // show SeekBar to let user to flip page
+            case R.id.menu_page_flip:
+                showPageFlipDialog();
+
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(STATE_SEEKBAR_PROGRESS, mSeekBarProgress);
+    }
+
+    /**
+     * Implement {@link cl.monsoon.s1next.fragment.PostListPagerFragment.OnPagerInteractionCallback}.
+     */
+    @Override
+    public void setCount(int i) {
+        mNumPages = MathUtil.divide(i, Config.POSTS_PER_PAGE);
+
+        prepareMenuPageFlip();
+
+        if (mAdapter != null) {
+            runOnUiThread(mAdapter::notifyDataSetChanged);
+        }
     }
 
     /**
@@ -165,43 +206,21 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-
-                return true;
-            // show SeekBar to let user to flip page
-            case R.id.menu_page_flip:
-                showSeekBarDialog();
-
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putInt(STATE_SEEKBAR_PROGRESS, mSeekBarProgress);
-    }
-
-    private void showSeekBarDialog() {
-        View view = getLayoutInflater().inflate(R.layout.dialog_seekbar, mDrawerLayout, false);
+    private void showPageFlipDialog() {
+        View view =
+                getLayoutInflater().inflate(
+                        R.layout.dialog_seekbar, (ViewGroup) findViewById(R.id.root), false);
 
         if (mSeekBarProgress == -1) {
             mSeekBarProgress = mViewPager.getCurrentItem();
         }
 
-        final SeekBar seekbar = (SeekBar) view.findViewById(R.id.seekbar);
+        SeekBar seekbar = (SeekBar) view.findViewById(R.id.seekbar);
         seekbar.setProgress(mSeekBarProgress);
         // seekBar is zero-based!
         seekbar.setMax(mNumPages - 1);
 
-        final EditText valueView = (EditText) view.findViewById(R.id.value);
+        EditText valueView = (EditText) view.findViewById(R.id.value);
         valueView.setText(String.valueOf(mSeekBarProgress + 1));
         valueView.setEms(String.valueOf(mNumPages).length());
         // set EditText range filter
@@ -279,21 +298,7 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
     }
 
     /**
-     * Implement {@link cl.monsoon.s1next.fragment.PostListPagerFragment.OnPagerInteractionCallback}.
-     */
-    @Override
-    public void setCount(int i) {
-        mNumPages = MathUtil.divide(i, Config.POSTS_PER_PAGE);
-
-        prepareMenuPageFlip();
-
-        if (mAdapter != null) {
-            runOnUiThread(mAdapter::notifyDataSetChanged);
-        }
-    }
-
-    /**
-     * Returns a Fragment corresponding to one of the pages of posts.
+     * Return a Fragment corresponding to one of the pages of posts.
      */
     private class PostListPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -302,10 +307,14 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
         }
 
         @Override
+        public int getCount() {
+            return mNumPages;
+        }
+
+        @Override
         public Fragment getItem(int i) {
             return PostListPagerFragment.newInstance(mThreadId, i + 1);
         }
-
 
         @Override
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
@@ -319,14 +328,11 @@ public final class PostListActivity extends AbsNavigationDrawerActivity implemen
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            ((AbsHttpGetFragment) object).destroyRetainedFragment();
+            if (object instanceof BaseFragment) {
+                ((BaseFragment) object).destroyRetainedFragment();
+            }
 
             super.destroyItem(container, position, object);
-        }
-
-        @Override
-        public int getCount() {
-            return mNumPages;
         }
     }
 }

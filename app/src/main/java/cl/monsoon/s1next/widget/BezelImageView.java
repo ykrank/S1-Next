@@ -16,6 +16,7 @@
 
 package cl.monsoon.s1next.widget;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -28,6 +29,8 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -38,8 +41,12 @@ import cl.monsoon.s1next.R;
  * An {@link android.widget.ImageView} that draws its contents inside a mask and draws a border
  * drawable on top. This is useful for applying a beveled look to image contents, but is also
  * flexible enough for use with other desired aesthetics.
+ * <p>
+ * Forked from https://github.com/google/iosched/blob/0a90bf8e6b90e9226f8c15b34eb7b1e4bf6d632e/android/src/main/java/com/google/samples/apps/iosched/ui/widget/BezelImageView.java
+ * SHA: 36d88985ff6813fa9035530cd426393720a6f7b4
  */
-public class BezelImageView extends ImageView {
+public final class BezelImageView extends ImageView {
+
     private Paint mBlackPaint;
     private Paint mMaskedPaint;
 
@@ -65,12 +72,31 @@ public class BezelImageView extends ImageView {
         this(context, attrs, 0);
     }
 
-    public BezelImageView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+    public BezelImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
 
-        // Attribute initialization
-        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BezelImageView,
-                defStyle, 0);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            init(context, attrs, defStyleAttr, 0);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public BezelImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            init(context, attrs, defStyleAttr, defStyleRes);
+        }
+    }
+
+    private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        // attribute initialization
+        final TypedArray a =
+                context.obtainStyledAttributes(
+                        attrs,
+                        R.styleable.BezelImageView,
+                        defStyleAttr,
+                        defStyleRes);
 
         mMaskDrawable = a.getDrawable(R.styleable.BezelImageView_maskDrawable);
         if (mMaskDrawable != null) {
@@ -87,18 +113,18 @@ public class BezelImageView extends ImageView {
 
         a.recycle();
 
-        // Other initialization
+        // other initialization
         mBlackPaint = new Paint();
         mBlackPaint.setColor(0xff000000);
-        
+
         mMaskedPaint = new Paint();
         mMaskedPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
 
-        // Always want a cache allocated.
+        // always want a cache allocated
         mCacheBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
 
         if (mDesaturateOnPress) {
-            // Create a desaturate color filter for pressed state.
+            // create a desaturate color filter for pressed state
             ColorMatrix cm = new ColorMatrix();
             cm.setSaturation(0);
             mDesaturateColorFilter = new ColorMatrixColorFilter(cm);
@@ -126,7 +152,7 @@ public class BezelImageView extends ImageView {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         if (mBounds == null) {
             return;
         }
@@ -139,12 +165,13 @@ public class BezelImageView extends ImageView {
         }
 
         if (!mCacheValid || width != mCachedWidth || height != mCachedHeight) {
-            // Need to redraw the cache
+            // need to redraw the cache
             if (width == mCachedWidth && height == mCachedHeight) {
-                // Have a correct-sized bitmap cache already allocated. Just erase it.
+                // have a correct-sized bitmap cache already allocated
+                // just erase it
                 mCacheBitmap.eraseColor(0);
             } else {
-                // Allocate a new bitmap with the correct dimensions.
+                // allocate a new bitmap with the correct dimensions
                 mCacheBitmap.recycle();
                 //noinspection AndroidLintDrawAllocation
                 mCacheBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -179,7 +206,7 @@ public class BezelImageView extends ImageView {
             }
         }
 
-        // Draw from cache
+        // draw from cache
         canvas.drawBitmap(mCacheBitmap, mBounds.left, mBounds.top, null);
     }
 
@@ -198,7 +225,7 @@ public class BezelImageView extends ImageView {
     }
 
     @Override
-    public void invalidateDrawable(Drawable who) {
+    public void invalidateDrawable(@NonNull Drawable who) {
         if (who == mBorderDrawable || who == mMaskDrawable) {
             invalidate();
         } else {

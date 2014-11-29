@@ -181,8 +181,7 @@ public final class Post {
      * }
      * </pre>
      * <p>
-     * So use {@code @JsonAnyGetter/@JsonAnySetter}
-     * to handling Unknown fields.
+     * So use {@code @JsonAnyGetter/@JsonAnySetter} to handle Unknown fields.
      */
     public static class AttachmentWrapper {
 

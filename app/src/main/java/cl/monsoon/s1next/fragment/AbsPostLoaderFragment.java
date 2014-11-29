@@ -95,7 +95,7 @@ public abstract class AbsPostLoaderFragment extends Fragment
 
     @Override
     public void onCancel(DialogInterface dialog) {
-        // Cancel HTTP post
+        // cancel HTTP post
         // see HttpGetLoader#cancelLoad()
         if (mLoader instanceof HttpPostLoader) {
             //noinspection RedundantCast
@@ -118,8 +118,8 @@ public abstract class AbsPostLoaderFragment extends Fragment
      * @param requestBody used when content changed.
      */
     void startLoader(RequestBody requestBody) {
-        // we need to change the post body
-        // if we have Loader before
+        // We need to change the post body
+        // if we have Loader before.
         mLoader = getLoaderManager().getLoader(ID_LOADER);
         if (mLoader == null) {
             mLoader = getLoaderManager().initLoader(ID_LOADER, null, this);

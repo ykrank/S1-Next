@@ -35,10 +35,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Fork from https://android.googlesource.com/platform/libcore/+/master/luni/src/main/java/java/net/CookieStoreImpl.java
- * blob: 36f74a9e1b5b41831f3ee0c4d59fdabd954edd96
- * <p>
  * A shared preference cookie store.
+ * <p>
+ * Forked from https://android.googlesource.com/platform/libcore/+/master/luni/src/main/java/java/net/CookieStoreImpl.java
+ * blob: 36f74a9e1b5b41831f3ee0c4d59fdabd954edd96
  */
 public final class PersistentHttpCookieStore implements CookieStore {
 
@@ -110,7 +110,7 @@ public final class PersistentHttpCookieStore implements CookieStore {
             editor.putStringSet(COOKIES_URI, uris);
         }
 
-        // https://stackoverflow.com/questions/14034803/misbehavior-when-trying-to-store-a-string-set-using-sharedpreferences
+        // see https://stackoverflow.com/questions/14034803/misbehavior-when-trying-to-store-a-string-set-using-sharedpreferences
         Set<String> cookiesName =
                 new HashSet<>(cookieSP.getStringSet(uriString, Collections.<String>emptySet()));
         String cookieNameWithUri = uriString + httpCookie.getName();

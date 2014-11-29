@@ -9,11 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Forum;
+import cl.monsoon.s1next.singleton.Config;
 
-public final class ForumListRecyclerAdapter extends RecyclerAdapter<Forum, ForumListRecyclerAdapter.ViewHolder> {
+public final class ForumListRecyclerAdapter
+        extends RecyclerAdapter<Forum, ForumListRecyclerAdapter.ViewHolder> {
 
     public ForumListRecyclerAdapter() {
         setHasStableIds(true);

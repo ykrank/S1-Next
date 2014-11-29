@@ -7,9 +7,9 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
-import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.ReplyFragment;
+import cl.monsoon.s1next.singleton.Config;
 
 /**
  * An Activity to send a reply.

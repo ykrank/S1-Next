@@ -16,8 +16,8 @@ import cl.monsoon.s1next.singleton.MyObjectMapper;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
 
 /**
- * Don't use this due to
- * https://stackoverflow.com/questions/15897547/loader-unable-to-retain-itself-during-certain-configuration-change
+ * Pay attention to https://stackoverflow.com/questions/15897547/loader-unable-to-retain-itself-during-certain-configuration-change
+ * We must not use this during certain configuration change.
  * <p>
  * Load JSON from Internet and deserialized to data.
  * {@see android.content.AsyncTaskLoader}.
@@ -109,7 +109,7 @@ public class HttpGetLoader<D extends Deserialization> extends AsyncTaskLoader<As
     }
 
     /**
-     * CancelLoad requires API 16,
+     * {@link android.content.AsyncTaskLoader#cancelLoad} requires API 16,
      * so we override this methods to provide backport.
      */
     @Override

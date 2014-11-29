@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
@@ -18,20 +22,22 @@ import cl.monsoon.s1next.model.list.ThreadList;
 import cl.monsoon.s1next.model.mapper.ThreadListWrapper;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
-import cl.monsoon.s1next.widget.RecyclerItemTouchListener;
+import cl.monsoon.s1next.widget.RecyclerViewOnItemTouchListener;
 
 /**
  * A Fragment representing one of the pages of threads.
  * All activities containing this Fragment must
  * implement {@link cl.monsoon.s1next.fragment.ThreadListPagerFragment.OnPagerInteractionCallback}.
  */
-public final class ThreadListPagerFragment extends AbsNavigationDrawerInteractionFragment<Thread, ThreadListWrapper, ThreadListRecyclerAdapter.ViewHolder> {
+public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrapper> {
 
     private static final String ARG_FORUM_ID = "forum_id";
     private static final String ARG_PAGE_NUM = "page_num";
 
     private CharSequence mForumId;
     private int mPageNum;
+
+    private ThreadListRecyclerAdapter mRecyclerAdapter;
 
     private OnPagerInteractionCallback mOnPagerInteractionCallback;
 
@@ -47,6 +53,11 @@ public final class ThreadListPagerFragment extends AbsNavigationDrawerInteractio
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_recycler_view, container, false);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -58,10 +69,15 @@ public final class ThreadListPagerFragment extends AbsNavigationDrawerInteractio
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerAdapter = new ThreadListRecyclerAdapter();
+        mRecyclerView.setAdapter(mRecyclerAdapter);
+
         int padding = getResources().getDimensionPixelSize(R.dimen.list_view_padding);
         mRecyclerView.setPadding(0, padding, 0, padding);
         mRecyclerView.addOnItemTouchListener(
-                new RecyclerItemTouchListener(
+                new RecyclerViewOnItemTouchListener(
                         getActivity(),
                         (position) -> {
                             Intent intent = new Intent(
@@ -123,17 +139,8 @@ public final class ThreadListPagerFragment extends AbsNavigationDrawerInteractio
     }
 
     @Override
-    protected void initAdapter() {
-        super.initAdapter();
-
-        mRecyclerAdapter = new ThreadListRecyclerAdapter();
-    }
-
-    @Override
-    void load() {
-        String url = Api.getUrlThreadList(mForumId, mPageNum);
-
-        executeHttpGet(url, ThreadListWrapper.class);
+    public void onRefresh() {
+        execute(Api.getUrlThreadList(mForumId, mPageNum), ThreadListWrapper.class);
     }
 
     @Override
@@ -158,8 +165,7 @@ public final class ThreadListPagerFragment extends AbsNavigationDrawerInteractio
     }
 
     /**
-     * A callback interface that all activities containing this Fragment must
-     * implement.
+     * A callback interface that all activities containing this Fragment must implement.
      */
     public static interface OnPagerInteractionCallback {
 

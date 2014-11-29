@@ -3,68 +3,58 @@ package cl.monsoon.s1next.activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.fragment.AbsHttpGetFragment;
+import cl.monsoon.s1next.fragment.BaseFragment;
 import cl.monsoon.s1next.fragment.ThreadListPagerFragment;
+import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 
 /**
  * An Activity representing a list of threads.
  */
-public final class ThreadListActivity extends AbsNavigationDrawerActivity implements ThreadListPagerFragment.OnPagerInteractionCallback {
+public final class ThreadListActivity
+        extends BaseActivity
+        implements ThreadListPagerFragment.OnPagerInteractionCallback {
 
     public final static String ARG_FORUM_NAME = "forum_name";
     public final static String ARG_FORUM_ID = "forum_id";
     public final static String ARG_THREADS = "threads";
 
+    private CharSequence mTitle;
+    private CharSequence mForumId;
+    private int mNumPages;
+
     /**
      * The {@link FragmentStatePagerAdapter} that will provide
-     * fragments for each of the pages of threads.
+     * fragments for each page of threads.
      */
     private PagerAdapter mAdapter;
-
-    private CharSequence mForumId;
-    private CharSequence mTitle;
-    private int mNumPages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_base);
 
-        mDrawerToggle.setDrawerIndicatorEnabled(false);
-
-        FrameLayout parent = (FrameLayout) findViewById(R.id.frame_layout);
-        View.inflate(this, R.layout.activity_screen_slide, parent);
+        setNavDrawerIndicatorEnabled(false);
 
         mTitle = getIntent().getCharSequenceExtra(ARG_FORUM_NAME);
         setTitle(mTitle);
         mForumId = getIntent().getCharSequenceExtra(ARG_FORUM_ID);
         setCount(getIntent().getIntExtra(ARG_THREADS, 1));
 
-        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        FrameLayout container = (FrameLayout) findViewById(R.id.frame_layout);
+        View.inflate(this, R.layout.activity_screen_slide, container);
+
+        ViewPager pager = (ViewPager) container.findViewById(R.id.pager);
         mAdapter = new ThreadListPagerAdapter(getFragmentManager());
         pager.setAdapter(mAdapter);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -80,7 +70,7 @@ public final class ThreadListActivity extends AbsNavigationDrawerActivity implem
     }
 
     /**
-     * Returns a Fragment corresponding to one of the pages of threads.
+     * Return a Fragment corresponding to one of the pages of threads.
      */
     private class ThreadListPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -103,9 +93,11 @@ public final class ThreadListActivity extends AbsNavigationDrawerActivity implem
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             // We do not reuse Fragment in ViewPager and its retained fragment.
-            // May reuse these both later, but I think it's not cost-effective nowadays.
+            // May reuse these both later, but it's not cost-effective nowadays.
             // See AbsHttpFragment#onActivityCreated(Bundle).
-            ((AbsHttpGetFragment) object).destroyRetainedFragment();
+            if (object instanceof BaseFragment) {
+                ((BaseFragment) object).destroyRetainedFragment();
+            }
 
             super.destroyItem(container, position, object);
         }

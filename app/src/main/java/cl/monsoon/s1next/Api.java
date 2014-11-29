@@ -5,6 +5,9 @@ import android.net.Uri;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.RequestBody;
 
+import cl.monsoon.s1next.singleton.Config;
+import cl.monsoon.s1next.singleton.User;
+
 public final class Api {
 
     public static final String URL_S1 = "http://bbs.saraba1st.com/2b/";
@@ -19,9 +22,9 @@ public final class Api {
     private static final String URL_THREAD_LIST = prefix("api/mobile/index.php?module=forumdisplay");
     private static final String URL_POST_LIST = prefix("api/mobile/index.php?module=viewthread");
 
-    // The authenticity token (formhash) you get is not fresh
-    // when you are logged in without browsing any other contents.
-    // So we need get the correct token when you want to reply after login.
+    // The authenticity token (formhash) we have gotten is not fresh
+    // when we have logged in without browsing any other contents.
+    // So we need get the correct token when we want to reply after login.
     public static final String URL_REPLY_HELPER = prefix("api/mobile/index.php?module=toplist");
     private static final String URL_REPLY = prefix("api/mobile/index.php?module=sendreply&replysubmit=yes");
 
@@ -46,14 +49,14 @@ public final class Api {
     }
 
     public static RequestBody getReplyPostBuilder(String reply) {
-        if (Config.getAuthenticityToken() == null) {
+        if (User.getAuthenticityToken() == null) {
             throw new IllegalStateException("AuthenticityToken must not be null.");
         }
 
         return new FormEncodingBuilder()
                 //.add("mobiletype", "1")
                 .add("message", reply)
-                .add("formhash", Config.getAuthenticityToken())
+                .add("formhash", User.getAuthenticityToken())
                 .build();
     }
 

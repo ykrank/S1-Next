@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import cl.monsoon.s1next.Config;
+import cl.monsoon.s1next.singleton.User;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -31,9 +31,9 @@ public class Account {
         this.username = username;
 
         if (TextUtils.isEmpty(username)) {
-            Config.setUsername(null);
+            User.setName(null);
         } else {
-            Config.setUsername(username);
+            User.setName(username);
         }
     }
 
@@ -46,9 +46,9 @@ public class Account {
 
         // uid.equals("0") = true when user hasn't logged in
         if (TextUtils.isEmpty(uid) || uid.equals("0")) {
-            Config.setUid(null);
+            User.setUid(null);
         } else {
-            Config.setUid(uid);
+            User.setUid(uid);
         }
     }
 
@@ -60,9 +60,9 @@ public class Account {
         this.authenticityToken = authenticityToken;
 
         if (TextUtils.isEmpty(authenticityToken)) {
-            Config.setAuthenticityToken(null);
+            User.setAuthenticityToken(null);
         } else {
-            Config.setAuthenticityToken(authenticityToken);
+            User.setAuthenticityToken(authenticityToken);
         }
     }
 }

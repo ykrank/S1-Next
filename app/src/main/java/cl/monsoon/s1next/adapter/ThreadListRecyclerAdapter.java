@@ -9,14 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Thread;
+import cl.monsoon.s1next.singleton.Config;
 
 /**
  * Similar to {@see cl.monsoon.s1next.adapter.ForumListRecyclerAdapter}.
  */
-public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, ThreadListRecyclerAdapter.ViewHolder> {
+public final class ThreadListRecyclerAdapter
+        extends RecyclerAdapter<Thread, ThreadListRecyclerAdapter.ViewHolder> {
 
     public ThreadListRecyclerAdapter() {
         setHasStableIds(true);

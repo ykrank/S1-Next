@@ -20,7 +20,8 @@ import cl.monsoon.s1next.widget.AsyncResult;
 
 /**
  * Load JSON from Internet and deserialize to data.
- * Also retain AsyncTask and data when configuration change.
+ * Also retain {@link HttpGetRetainedFragment.AsyncHttpGetTask}
+ * and data when configuration change.
  */
 public class HttpGetRetainedFragment<D extends Deserialization> extends DataRetainedFragment<D> {
 
@@ -28,10 +29,10 @@ public class HttpGetRetainedFragment<D extends Deserialization> extends DataReta
 
     private AsyncHttpGetTask mAsyncHttpGetTask;
 
-    private AsyncTaskCallback<D> mAsyncTaskCallback;
+    private Callback<D> mAsyncTaskCallback;
 
     /**
-     * Attach to its host to get its {@link AsyncTaskCallback}.
+     * Attach to its host to get its {@link Callback}.
      */
     @Override
     public void onAttach(Activity activity) {
@@ -40,7 +41,7 @@ public class HttpGetRetainedFragment<D extends Deserialization> extends DataReta
         // if its host is Activity
         // else its host is Fragment
         if (getTag() == null) {
-            if (activity instanceof AsyncTaskCallback) {
+            if (activity instanceof Callback) {
                 mAsyncTaskCallback = ObjectUtil.uncheckedCast(activity);
             } else {
                 throw new ClassCastException(getActivity() + " must implement AsyncTaskCallback.");
@@ -53,7 +54,7 @@ public class HttpGetRetainedFragment<D extends Deserialization> extends DataReta
                 throw new IllegalStateException("Can't find Fragment which host this Fragment.");
             }
 
-            if (fragment instanceof AsyncTaskCallback) {
+            if (fragment instanceof Callback) {
                 mAsyncTaskCallback = ObjectUtil.uncheckedCast(fragment);
             } else {
                 throw new ClassCastException(fragment + " must implement AsyncTaskCallback.");
@@ -78,7 +79,7 @@ public class HttpGetRetainedFragment<D extends Deserialization> extends DataReta
     }
 
     /**
-     * Start {@link AsyncHttpGetTask} to load data.
+     * Execute {@link AsyncHttpGetTask} to load data.
      */
     public void execute(String url, Class<D> clazz) {
         if (!isRunning()) {
@@ -87,7 +88,7 @@ public class HttpGetRetainedFragment<D extends Deserialization> extends DataReta
         }
     }
 
-    void cancel() {
+    private void cancel() {
         if (isRunning()) {
             mAsyncHttpGetTask.cancelRequest();
             mAsyncHttpGetTask.cancel(true);
@@ -100,18 +101,17 @@ public class HttpGetRetainedFragment<D extends Deserialization> extends DataReta
     }
 
     /**
-     * A callback interface that all activities containing this Fragment must
-     * implement.
+     * A callback interface that all activities containing this Fragment must implement.
      */
-    public static interface AsyncTaskCallback<D extends Deserialization> {
+    public static interface Callback<D extends Deserialization> {
 
         public void onPostExecute(AsyncResult<D> dAsyncResult);
     }
 
-    class AsyncHttpGetTask extends AsyncTask<Void, Void, AsyncResult<D>> {
+    private class AsyncHttpGetTask extends AsyncTask<Void, Void, AsyncResult<D>> {
 
-        String mUrl;
-        Call mCall;
+        private String mUrl;
+        private Call mCall;
 
         /**
          * Used for JSON mapper.
@@ -150,7 +150,7 @@ public class HttpGetRetainedFragment<D extends Deserialization> extends DataReta
          * {@link HttpGetRetainedFragment.AsyncHttpGetTask}
          * is asynchronism.
          */
-        InputStream request() throws IOException {
+        private InputStream request() throws IOException {
             Request request = new Request.Builder()
                     .url(mUrl)
                     .build();
@@ -169,7 +169,7 @@ public class HttpGetRetainedFragment<D extends Deserialization> extends DataReta
             }
         }
 
-        AsyncHttpGetTask params(String url, Class<D> clazz) {
+        private AsyncHttpGetTask params(String url, Class<D> clazz) {
             mUrl = url;
             mClass = clazz;
 

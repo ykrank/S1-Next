@@ -19,14 +19,15 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import java.util.Map;
 
 import cl.monsoon.s1next.Api;
-import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Post;
-import cl.monsoon.s1next.widget.MyMovementMethod;
+import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.widget.GlideImageGetter;
 import cl.monsoon.s1next.widget.ImageTagHandler;
+import cl.monsoon.s1next.widget.MyMovementMethod;
 
-public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, PostListRecyclerAdapter.ViewHolder> {
+public final class PostListRecyclerAdapter
+        extends RecyclerAdapter<Post, PostListRecyclerAdapter.ViewHolder> {
 
     private final Context mContext;
 
@@ -38,7 +39,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, PostLis
 
         setHasStableIds(true);
 
-        // loading avatars is prior to images in reply
+        // Lading avatars is prior to images in replies
         mAvatarRequestBuilder =
                 Glide.with(mContext)
                         .from(String.class)
@@ -68,8 +69,8 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, PostLis
 
         ImageView avatarView = viewHolder.mAvatar;
 
-        // whether need download avatars depends settings and Wi-Fi status
-        boolean avatarsDownload = Config.isAvatarsDownload();
+        // whether need download avatars depends on settings and Wi-Fi status
+        final boolean avatarsDownload = Config.isAvatarsDownload();
         if (avatarsDownload) {
             avatarView.setVisibility(View.VISIBLE);
 

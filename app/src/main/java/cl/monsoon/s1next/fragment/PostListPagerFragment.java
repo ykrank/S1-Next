@@ -4,20 +4,23 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import cl.monsoon.s1next.Api;
-import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.ReplyActivity;
 import cl.monsoon.s1next.adapter.PostListRecyclerAdapter;
-import cl.monsoon.s1next.model.Post;
 import cl.monsoon.s1next.model.list.PostList;
 import cl.monsoon.s1next.model.mapper.PostListWrapper;
+import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
 
@@ -27,13 +30,15 @@ import cl.monsoon.s1next.widget.AsyncResult;
  * implement {@link cl.monsoon.s1next.fragment.PostListPagerFragment.OnPagerInteractionCallback}.
  * Similar to {@see ThreadListPagerFragment}
  */
-public final class PostListPagerFragment extends AbsNavigationDrawerInteractionFragment<Post, PostListWrapper, PostListRecyclerAdapter.ViewHolder> {
+public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
 
     private static final String ARG_THREAD_ID = "thread_id";
     private static final String ARG_PAGE_NUM = "page_num";
 
     private CharSequence mThreadId;
     private int mPageNum;
+
+    private PostListRecyclerAdapter mRecyclerAdapter;
 
     private MenuItem mMenuReply;
 
@@ -59,8 +64,18 @@ public final class PostListPagerFragment extends AbsNavigationDrawerInteractionF
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_recycler_view, container, false);
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerAdapter = new PostListRecyclerAdapter(getActivity());
+        mRecyclerView.setAdapter(mRecyclerAdapter);
 
         int padding = getResources().getDimensionPixelSize(R.dimen.recycler_view_card_padding);
         mRecyclerView.setPadding(0, padding, 0, padding);
@@ -99,9 +114,9 @@ public final class PostListPagerFragment extends AbsNavigationDrawerInteractionF
 
         inflater.inflate(R.menu.fragment_post, menu);
 
-        // disable default in fragment_post.xml
+        // disabled default in fragment_post.xml
         // we will enable it when finish loading
-        // post list and user has already logged in
+        // post list and user already has logged in
         // see PostListPagerFragment#onPostExecute()
         mMenuReply = menu.findItem(R.id.menu_reply);
         prepareMenuReply();
@@ -115,7 +130,7 @@ public final class PostListPagerFragment extends AbsNavigationDrawerInteractionF
             return;
         }
 
-        if (mRecyclerAdapter.getItemCount() == 0 || TextUtils.isEmpty(Config.getUsername())) {
+        if (mRecyclerAdapter.getItemCount() == 0 || TextUtils.isEmpty(User.getName())) {
             mMenuReply.setEnabled(false);
         } else {
             mMenuReply.setEnabled(true);
@@ -168,17 +183,8 @@ public final class PostListPagerFragment extends AbsNavigationDrawerInteractionF
     }
 
     @Override
-    protected void initAdapter() {
-        super.initAdapter();
-
-        mRecyclerAdapter = new PostListRecyclerAdapter(getActivity());
-    }
-
-    @Override
-    void load() {
-        String url = Api.getUrlPostList(mThreadId, mPageNum);
-
-        executeHttpGet(url, PostListWrapper.class);
+    public void onRefresh() {
+        execute(Api.getUrlPostList(mThreadId, mPageNum), PostListWrapper.class);
     }
 
     @Override
@@ -205,8 +211,7 @@ public final class PostListPagerFragment extends AbsNavigationDrawerInteractionF
     }
 
     /**
-     * A callback interface that all activities containing this Fragment must
-     * implement.
+     * A callback interface that all activities containing this Fragment must implement.
      */
     public static interface OnPagerInteractionCallback {
 

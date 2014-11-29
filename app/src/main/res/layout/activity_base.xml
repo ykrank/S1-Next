@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
+    android:id="@+id/root"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="cl.monsoon.s1next.activity.AbsNavigationDrawerActivity">
+    android:orientation="vertical">
 
     <!-- ToolBar as the ActionBar for the Activity -->
     <include layout="@layout/toolbar"/>
@@ -36,7 +35,7 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/drawer_header"
+                android:id="@+id/drawer_user_view"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/single_line_height"
                 android:background="?attr/selectableItemBackground"
@@ -48,7 +47,7 @@
                 android:paddingStart="@dimen/list_view_item_padding">
 
                 <cl.monsoon.s1next.widget.BezelImageView
-                    android:id="@+id/drawer_avatar"
+                    android:id="@+id/drawer_user_avatar"
                     xmlns:s1="http://schemas.android.com/apk/res-auto"
                     android:layout_width="@dimen/avatar_size"
                     android:layout_height="@dimen/avatar_size"

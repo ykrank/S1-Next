@@ -13,6 +13,7 @@ import com.bumptech.glide.load.model.GlideUrl;
 import java.io.InputStream;
 
 import cl.monsoon.s1next.fragment.SettingsFragment;
+import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
 
 public final class MyApplication extends Application {
@@ -43,7 +44,7 @@ public final class MyApplication extends Application {
 
         // set theme depends on settings
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean nightMode =
+        final boolean nightMode =
                 sharedPreferences.getBoolean(SettingsFragment.KEY_PREF_NIGHT_MODE, false);
         if (nightMode) {
             Config.setCurrentTheme(Config.DARK_THEME);

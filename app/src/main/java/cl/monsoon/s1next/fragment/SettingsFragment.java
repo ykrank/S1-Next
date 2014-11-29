@@ -9,8 +9,8 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.webkit.WebView;
 
-import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.singleton.Config;
 
 public final class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
 

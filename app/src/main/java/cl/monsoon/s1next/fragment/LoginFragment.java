@@ -17,10 +17,10 @@ import android.widget.EditText;
 import com.squareup.okhttp.RequestBody;
 
 import cl.monsoon.s1next.Api;
-import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
+import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpPostLoader;
@@ -35,7 +35,7 @@ public final class LoginFragment extends AbsPostLoaderFragment {
     /**
      * For desktop is "login_succeed".
      * For mobile is "location_login_succeed_mobile".
-     * "login_succeed" when already has logged.
+     * "login_succeed" when already has logged in.
      */
     private static final String STATUS_AUTH_SUCCESS = "location_login_succeed_mobile";
     private static final String STATUS_AUTH_SUCCESS_ALREADY = "login_succeed";
@@ -52,20 +52,20 @@ public final class LoginFragment extends AbsPostLoaderFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mUsernameView = (EditText) view.findViewById(R.id.drawer_username);
+        mUsernameView = (EditText) view.findViewById(R.id.username);
         mPasswordView = (EditText) view.findViewById(R.id.password);
 
         // called when an ime action is performed
         // not working in some manufacturers
         mPasswordView.setOnEditorActionListener((textView, i, keyEvent) -> {
             if (i == R.id.ime_login || i == EditorInfo.IME_NULL) {
-                attemptLogin();
+                prepareLogin();
                 return true;
             }
             return false;
         });
 
-        view.findViewById(R.id.login).setOnClickListener(v -> attemptLogin());
+        view.findViewById(R.id.login).setOnClickListener(v -> prepareLogin());
     }
 
     @Override
@@ -97,7 +97,7 @@ public final class LoginFragment extends AbsPostLoaderFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void attemptLogin() {
+    private void prepareLogin() {
         // reset errors
         mUsernameView.setError(null);
         mPasswordView.setError(null);
@@ -172,7 +172,7 @@ public final class LoginFragment extends AbsPostLoaderFragment {
                     || result.getStatus().equals(STATUS_AUTH_SUCCESS_ALREADY)) {
                 // this authenticity token is not fresh
                 // we need abandon this token
-                Config.setAuthenticityToken(null);
+                User.setAuthenticityToken(null);
 
                 getActivity().onBackPressed();
             }

@@ -1,8 +1,10 @@
-package cl.monsoon.s1next;
+package cl.monsoon.s1next.singleton;
 
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 
+import cl.monsoon.s1next.MyApplication;
+import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.SettingsFragment;
 
 public enum Config {
@@ -31,39 +33,8 @@ public enum Config {
     private volatile int currentTheme;
     private volatile int colorAccent;
     private volatile boolean wifi;
-    private volatile String username;
-    private volatile String uid;
-    private volatile String authenticityToken;
     private volatile DownloadStrategy avatarsDownloadStrategy;
     private volatile DownloadStrategy imagesDownloadStrategy;
-
-    public static String getUsername() {
-        return INSTANCE.username;
-    }
-
-    public static void setUsername(String username) {
-        INSTANCE.username = username;
-    }
-
-    public static String getUid() {
-        return INSTANCE.uid;
-    }
-
-    public static void setUid(String uid) {
-        INSTANCE.uid = uid;
-    }
-
-    public static String getAuthenticityToken() {
-        return INSTANCE.authenticityToken;
-    }
-
-    public static void setAuthenticityToken(String authenticityToken) {
-        INSTANCE.authenticityToken = authenticityToken;
-    }
-
-    public static void clearUserInfo() {
-        INSTANCE.username = INSTANCE.uid = INSTANCE.authenticityToken = null;
-    }
 
     public static int getCurrentTheme() {
         return INSTANCE.currentTheme;

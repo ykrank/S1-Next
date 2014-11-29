@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cl.monsoon.s1next.Api;
-import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.ObjectUtil;
 
 /**
@@ -43,12 +43,12 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
 
     @Override
     public Drawable getDrawable(String url) {
-        // whether need download images depends settings and Wi-Fi status
+        // whether need download images depends on settings and Wi-Fi status
         // but download Emoji at any time
         boolean download = true;
 
         // Append url prefix if the url is not a network url
-        // because Emoji url without domain.
+        // because Emoji url hasn't domain.
         if (!URLUtil.isNetworkUrl(url)) {
             url = Api.URL_S1 + url;
         } else if (!Config.isImagesDownload()) {

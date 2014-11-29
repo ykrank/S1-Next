@@ -13,10 +13,9 @@ import cl.monsoon.s1next.model.mapper.Deserialization;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
 
 /**
- * The bug in {@link HttpGetLoader} doesn't affect this,
- * because we didn't need to retain this post and start anther activity.
- * <p>
  * Use an HTTP POST to send a request body.
+ *
+ * @see HttpGetLoader
  */
 public final class HttpPostLoader<D extends Deserialization> extends HttpGetLoader<D> {
 

@@ -30,11 +30,11 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 /**
- * Fork from https://github.com/android/platform_frameworks_support/tree/62cf5e32ad0d24fffde4c0d0425aa12cd2b054a6/v13/java/android/support/v13/app/FragmentStatePagerAdapter.java
- * Change-Id: I9197cb319a2b1bf070ab1fd8a7abbf9ee01de543
+ * Adds tag to fragment in order to let {@link cl.monsoon.s1next.fragment.headless.HttpGetRetainedFragment}
+ * to know its parent Fragment in ViewPager.
  * <p>
- * Add tag to fragment in order to let {@link cl.monsoon.s1next.fragment.headless.HttpGetRetainedFragment}
- * to know its parent Fragment {@link cl.monsoon.s1next.fragment.AbsHttpGetFragment} in ViewPager.
+ * Forked from https://github.com/android/platform_frameworks_support/tree/62cf5e32ad0d24fffde4c0d0425aa12cd2b054a6/v13/java/android/support/v13/app/FragmentStatePagerAdapter.java
+ * Change-Id: I9197cb319a2b1bf070ab1fd8a7abbf9ee01de543
  */
 public abstract class FragmentStatePagerAdapter extends PagerAdapter {
 

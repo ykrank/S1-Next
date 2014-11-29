@@ -4,48 +4,61 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
-import java.util.List;
+import android.view.ViewGroup;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.widget.OnToolbarDropDownItemSelectedListener;
 import cl.monsoon.s1next.activity.ThreadListActivity;
+import cl.monsoon.s1next.widget.ToolbarSpinnerInteractionCallback;
 import cl.monsoon.s1next.adapter.ForumListRecyclerAdapter;
 import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.model.list.ForumGroupList;
 import cl.monsoon.s1next.model.mapper.ForumGroupListWrapper;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
-import cl.monsoon.s1next.widget.RecyclerItemTouchListener;
+import cl.monsoon.s1next.widget.RecyclerViewOnItemTouchListener;
 
 /**
  * A Fragment representing forums.
  */
-public final class ForumFragment extends AbsNavigationDrawerInteractionFragment<Forum, ForumGroupListWrapper, ForumListRecyclerAdapter.ViewHolder> {
+public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
+        implements OnToolbarDropDownItemSelectedListener {
 
     public static final String TAG = "forum_fragment";
 
-    private ForumGroupList mForumGroupList;
+    private ForumListRecyclerAdapter mRecyclerAdapter;
 
-    /**
-     * Host Activity callback.
-     */
-    private OnToolbarSpinnerInteractionCallback mOnToolbarSpinnerInteractionCallback;
+    private ForumGroupList mForumGroupList;
+    private ToolbarSpinnerInteractionCallback mToolbarSpinnerInteractionCallback;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_recycler_view, container, false);
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerAdapter = new ForumListRecyclerAdapter();
+        mRecyclerView.setAdapter(mRecyclerAdapter);
 
         int padding = getResources().getDimensionPixelSize(R.dimen.list_view_padding);
         mRecyclerView.setPadding(0, padding, 0, padding);
         // the forum list's each element are fixed size
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addOnItemTouchListener(
-                new RecyclerItemTouchListener(
+                new RecyclerViewOnItemTouchListener(
                         getActivity(),
                         (position) -> {
                             Intent intent = new Intent(
@@ -66,8 +79,8 @@ public final class ForumFragment extends AbsNavigationDrawerInteractionFragment<
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        if (activity instanceof OnToolbarSpinnerInteractionCallback) {
-            mOnToolbarSpinnerInteractionCallback = (OnToolbarSpinnerInteractionCallback) activity;
+        if (activity instanceof ToolbarSpinnerInteractionCallback) {
+            mToolbarSpinnerInteractionCallback = (ToolbarSpinnerInteractionCallback) activity;
         } else {
             throw new ClassCastException(
                     getActivity()
@@ -79,7 +92,7 @@ public final class ForumFragment extends AbsNavigationDrawerInteractionFragment<
     public void onDetach() {
         super.onDetach();
 
-        mOnToolbarSpinnerInteractionCallback = null;
+        mToolbarSpinnerInteractionCallback = null;
     }
 
     @Override
@@ -105,15 +118,8 @@ public final class ForumFragment extends AbsNavigationDrawerInteractionFragment<
     }
 
     @Override
-    protected void initAdapter() {
-        super.initAdapter();
-
-        mRecyclerAdapter = new ForumListRecyclerAdapter();
-    }
-
-    @Override
-    void load() {
-        executeHttpGet(Api.URL_FORUM, ForumGroupListWrapper.class);
+    public void onRefresh() {
+        execute(Api.URL_FORUM, ForumGroupListWrapper.class);
     }
 
     @Override
@@ -129,7 +135,7 @@ public final class ForumFragment extends AbsNavigationDrawerInteractionFragment<
 
                 // after set adapter, host activity
                 // would call changeContent().
-                mOnToolbarSpinnerInteractionCallback.setAdapterDataSet(
+                mToolbarSpinnerInteractionCallback.setupToolbarDropDown(
                         mForumGroupList.getForumGroupNameList());
             } catch (NullPointerException e) {
                 ToastHelper.showByResId(R.string.message_server_error);
@@ -138,11 +144,12 @@ public final class ForumFragment extends AbsNavigationDrawerInteractionFragment<
     }
 
     /**
-     * Set content to All sorted Forum when {@code position == 0}
-     * else to group forum.
+     * Implement {@link cl.monsoon.s1next.widget.OnToolbarDropDownItemSelectedListener}.
+     * <p>
+     * Shows all forums when {@code position == 0} otherwise for each group.
      */
-    public void changeContent() {
-        int position = mOnToolbarSpinnerInteractionCallback.getItemPosition();
+    @Override
+    public void OnToolbarDropDownItemSelected(int position) {
         if (position == 0) {
             mRecyclerAdapter.setDataSet(mForumGroupList.getForumList());
         } else {
@@ -153,22 +160,5 @@ public final class ForumFragment extends AbsNavigationDrawerInteractionFragment<
         }
 
         mRecyclerAdapter.notifyDataSetChanged();
-    }
-
-    /**
-     * A callback interface that all activities containing this Fragment must
-     * implement.
-     */
-    public static interface OnToolbarSpinnerInteractionCallback {
-
-        /**
-         * Set Spinner data set.
-         */
-        public void setAdapterDataSet(List<? extends CharSequence> dropDownItem);
-
-        /**
-         * Get Spinner drop down item position.
-         */
-        public int getItemPosition();
     }
 }
