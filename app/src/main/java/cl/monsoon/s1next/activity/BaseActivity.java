@@ -298,7 +298,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
     /**
      * Show user's avatar and username if user has logged in.
      */
-    public void setupDrawerUserView() {
+    void setupDrawerUserView() {
         if (mDrawerLayout == null || mDrawer == null && usernameView != null) {
             return;
         }
