@@ -30,10 +30,19 @@ public class Account {
     public void setUsername(String username) {
         this.username = username;
 
+        final boolean isUserExisted = !TextUtils.isEmpty(User.getName());
         if (TextUtils.isEmpty(username)) {
-            User.setName(null);
+            if (isUserExisted) {
+                User.setName(null);
+                // user's cookie has expired
+                User.sendLogoutOrExpirationBroadcast();
+            }
         } else {
-            User.setName(username);
+            if (!isUserExisted) {
+                User.setName(username);
+                // login in
+                User.sendLoginBroadcast();
+            }
         }
     }
 

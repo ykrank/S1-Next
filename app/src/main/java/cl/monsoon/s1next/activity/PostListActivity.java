@@ -28,6 +28,7 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.BaseFragment;
 import cl.monsoon.s1next.fragment.PostListPagerFragment;
 import cl.monsoon.s1next.singleton.Config;
+import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
@@ -64,6 +65,7 @@ public final class PostListActivity
     private ViewPager mViewPager;
 
     private MenuItem mMenuPageFlip;
+    private MenuItem mMenuReply;
 
     private BroadcastReceiver wifiReceiver;
 
@@ -147,6 +149,9 @@ public final class PostListActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_post, menu);
 
+        mMenuReply = menu.findItem(R.id.menu_reply);
+        prepareMenuReply();
+
         mMenuPageFlip = menu.findItem(R.id.menu_page_flip);
         prepareMenuPageFlip();
 
@@ -158,6 +163,15 @@ public final class PostListActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
+
+                return true;
+            case R.id.menu_reply:
+                Intent intent = new Intent(this, ReplyActivity.class);
+
+                intent.putExtra(ReplyActivity.ARG_THREAD_TITLE, mThreadTitle);
+                intent.putExtra(ReplyActivity.ARG_THREAD_ID, mThreadId);
+
+                startActivity(intent);
 
                 return true;
             // show SeekBar to let user to flip page
@@ -188,6 +202,26 @@ public final class PostListActivity
 
         if (mAdapter != null) {
             runOnUiThread(mAdapter::notifyDataSetChanged);
+        }
+    }
+
+    @Override
+    void setupOthersWhenUserLoginStatusChanged(Intent intent) {
+        prepareMenuReply();
+    }
+
+    /**
+     * Enable/disable the reply menu depends on whether user has logged in.
+     */
+    private void prepareMenuReply() {
+        if (mMenuReply == null) {
+            return;
+        }
+
+        if (TextUtils.isEmpty(User.getName())) {
+            mMenuReply.setEnabled(false);
+        } else {
+            mMenuReply.setEnabled(true);
         }
     }
 

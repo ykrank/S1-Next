@@ -1,10 +1,18 @@
 package cl.monsoon.s1next.singleton;
 
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
+
+import cl.monsoon.s1next.MyApplication;
+
 /**
  * Current user.
  */
 public enum User {
     INSTANCE;
+
+    public static final String ACTION_USER_LOGIN = "user_login";
+    public static final String ACTION_USER_LOGOUT_OR_EXPIRATION = "user_logout_or_expiration";
 
     private volatile String name;
     private volatile String uid;
@@ -36,6 +44,16 @@ public enum User {
 
     public static void clear() {
         INSTANCE.name = INSTANCE.uid = INSTANCE.authenticityToken = null;
+    }
+
+    public static void sendLoginBroadcast() {
+        LocalBroadcastManager.getInstance(
+                MyApplication.getContext()).sendBroadcast(new Intent(ACTION_USER_LOGIN));
+    }
+
+    public static void sendLogoutOrExpirationBroadcast() {
+        LocalBroadcastManager.getInstance(
+                MyApplication.getContext()).sendBroadcast(new Intent(ACTION_USER_LOGOUT_OR_EXPIRATION));
     }
 
     public static interface OnLogoutListener {

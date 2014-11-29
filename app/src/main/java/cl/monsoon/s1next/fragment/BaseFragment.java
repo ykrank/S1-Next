@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.activity.BaseActivity;
 import cl.monsoon.s1next.fragment.headless.HttpGetRetainedFragment;
 import cl.monsoon.s1next.model.mapper.Deserialization;
 import cl.monsoon.s1next.util.ObjectUtil;
@@ -162,15 +161,6 @@ public abstract class BaseFragment<D extends Deserialization>
     @Override
     public void onPostExecute(AsyncResult<D> dAsyncResult) {
         mSwipeRefreshLayout.setRefreshing(false);
-
-        // Set up drawer's user view depends on user's cookie whether has expired.
-        try {
-            ((BaseActivity) getActivity()).setupDrawerUserView();
-        } catch (ClassCastException e) {
-            throw new IllegalStateException(
-                    getActivity()
-                            + " must extends BaseActivity.");
-        }
     }
 
     void execute(String url, Class<D> clazz) {

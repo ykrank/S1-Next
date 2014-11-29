@@ -48,16 +48,19 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
 
     private DrawerLayout mDrawerLayout;
     private View mDrawer;
-    private DrawerUserStatus mDrawerUserStatus = DrawerUserStatus.NONE;
     private ActionBarDrawerToggle mDrawerToggle;
     private boolean mHasNavDrawer = true;
     private boolean mHasNavDrawerIndicator = true;
 
-    private BroadcastReceiver themeChangeReceiver;
+    /**
+     * The user view is the area at the top of drawer.
+     */
+    private View mDrawerUserView;
+    private TextView usernameView;
+    private ImageView userAvatarView;
 
-    private enum DrawerUserStatus {
-        NONE, NOT_LOGIN, LOGIN
-    }
+    private BroadcastReceiver themeChangeReceiver;
+    private BroadcastReceiver userLoginStatusReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +78,27 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
                 recreate();
             }
         };
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(themeChangeReceiver, new IntentFilter(ACTION_CHANGE_THEME));
 
-        LocalBroadcastManager.getInstance(this).
-                registerReceiver(themeChangeReceiver, new IntentFilter(ACTION_CHANGE_THEME));
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(User.ACTION_USER_LOGIN);
+        intentFilter.addAction(User.ACTION_USER_LOGOUT_OR_EXPIRATION);
+        // change drawer's top area depends on user's login status
+        userLoginStatusReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(User.ACTION_USER_LOGIN)) {
+                    setupDrawerUserView();
+                } else {
+                    setupDrawerLoginPrompt();
+                }
+
+                setupOthersWhenUserLoginStatusChanged(intent);
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(userLoginStatusReceiver, intentFilter);
     }
 
     @Override
@@ -87,17 +108,11 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        setupDrawerUserView();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
 
         LocalBroadcastManager.getInstance(this).unregisterReceiver(themeChangeReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(userLoginStatusReceiver);
     }
 
     @Override
@@ -221,6 +236,20 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
             return;
         }
 
+        mDrawerUserView = mDrawer.findViewById(R.id.drawer_user_view);
+        if (mDrawerUserView != null) {
+            usernameView = (TextView) mDrawerUserView.findViewById(R.id.drawer_username);
+            userAvatarView = (ImageView) mDrawerUserView.findViewById(R.id.drawer_user_avatar);
+
+            // Show default avatar and login prompt if user hasn't logged in,
+            // else show user's avatar and username.
+            if (TextUtils.isEmpty(User.getName())) {
+                setupDrawerLoginPrompt();
+            } else {
+                setupDrawerUserView();
+            }
+        }
+
         // add settings item
         TextView settingsView = (TextView) mDrawer.findViewById(R.id.settings);
         settingsView.setText(getText(R.string.settings));
@@ -243,54 +272,53 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
     }
 
     /**
-     * Set up the user view. The user view is the area at the top of drawer.
+     * Show default avatar and login prompt if user hasn't logged in.
      */
-    public void setupDrawerUserView() {
-        if (mDrawerLayout == null || mDrawer == null) {
+    private void setupDrawerLoginPrompt() {
+        if (mDrawerLayout == null || mDrawer == null && usernameView != null) {
             return;
         }
 
-        View mDrawerUserView = mDrawer.findViewById(R.id.drawer_user_view);
-        TextView usernameView = (TextView) mDrawerUserView.findViewById(R.id.drawer_username);
-        ImageView userAvatarView = (ImageView) mDrawerUserView.findViewById(R.id.drawer_user_avatar);
+        // setup default avatar
+        Glide.with(this)
+                .load(R.drawable.ic_avatar_placeholder)
+                .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
+                .into(userAvatarView);
 
-        // Show default avatar and login prompt if user hasn't logged in,
-        // else show user avatar and username.
-        final boolean isUserActive = !TextUtils.isEmpty(User.getName());
-        if (!isUserActive && mDrawerUserStatus != DrawerUserStatus.NOT_LOGIN) {
-            mDrawerUserStatus = DrawerUserStatus.NOT_LOGIN;
+        // start LoginActivity if clicked
+        usernameView.setText(R.string.action_login);
+        mDrawerUserView.setOnClickListener(v -> {
+            mDrawerLayout.closeDrawer(mDrawer);
 
-            // setup default avatar
-            Glide.with(this)
-                    .load(R.drawable.ic_avatar_placeholder)
-                    .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
-                    .into(userAvatarView);
-
-            // start LoginActivity if clicked
-            usernameView.setText(R.string.action_login);
-            mDrawerUserView.setOnClickListener(v -> {
-                mDrawerLayout.closeDrawer(mDrawer);
-
-                Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
-                startActivity(intent);
-            });
-        } else if (isUserActive && mDrawerUserStatus != DrawerUserStatus.LOGIN) {
-            mDrawerUserStatus = DrawerUserStatus.LOGIN;
-
-            // setup user avatar
-            Glide.with(this)
-                    .load(Api.getUrlAvatarMedium(User.getUid()))
-                    .error(R.drawable.ic_avatar_placeholder)
-                    .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
-                    .into(userAvatarView);
-
-            // show logout dialog if clicked
-            usernameView.setText(User.getName());
-            mDrawer.findViewById(R.id.drawer_user_view).setOnClickListener(v ->
-                    new LogoutDialog().show(getFragmentManager(), LogoutDialog.TAG));
-        }
+            Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
+            startActivity(intent);
+        });
     }
 
+    /**
+     * Show user's avatar and username if user has logged in.
+     */
+    public void setupDrawerUserView() {
+        if (mDrawerLayout == null || mDrawer == null && usernameView != null) {
+            return;
+        }
+
+        // setup user's avatar
+        Glide.with(this)
+                .load(Api.getUrlAvatarMedium(User.getUid()))
+                .error(R.drawable.ic_avatar_placeholder)
+                .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
+                .into(userAvatarView);
+
+        // show logout dialog if clicked
+        usernameView.setText(User.getName());
+        mDrawer.findViewById(R.id.drawer_user_view).setOnClickListener(v ->
+                new LogoutDialog().show(getFragmentManager(), LogoutDialog.TAG));
+    }
+
+    void setupOthersWhenUserLoginStatusChanged(Intent intent) {
+
+    }
 
     /**
      * Per the navigation drawer design guidelines, updates the ToolBar to show the global app
@@ -379,7 +407,6 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
         // clear cookie and current user's info
         MyOkHttpClient.clearCookie();
         User.clear();
-
-        setupDrawerUserView();
+        User.sendLogoutOrExpirationBroadcast();
     }
 }

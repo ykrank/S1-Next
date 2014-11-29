@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,11 +15,9 @@ import android.view.ViewGroup;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.activity.ReplyActivity;
 import cl.monsoon.s1next.adapter.PostListRecyclerAdapter;
 import cl.monsoon.s1next.model.list.PostList;
 import cl.monsoon.s1next.model.mapper.PostListWrapper;
-import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
 
@@ -39,8 +36,6 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     private int mPageNum;
 
     private PostListRecyclerAdapter mRecyclerAdapter;
-
-    private MenuItem mMenuReply;
 
     private OnPagerInteractionCallback mOnPagerInteractionCallback;
 
@@ -82,13 +77,6 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        prepareMenuReply();
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
@@ -113,28 +101,6 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.fragment_post, menu);
-
-        // disabled default in fragment_post.xml
-        // we will enable it when finish loading
-        // post list and user already has logged in
-        // see PostListPagerFragment#onPostExecute()
-        mMenuReply = menu.findItem(R.id.menu_reply);
-        prepareMenuReply();
-    }
-
-    /**
-     * Sets whether the menu reply is enabled depends on whether user logged before.
-     */
-    private void prepareMenuReply() {
-        if (mMenuReply == null) {
-            return;
-        }
-
-        if (mRecyclerAdapter.getItemCount() == 0 || TextUtils.isEmpty(User.getName())) {
-            mMenuReply.setEnabled(false);
-        } else {
-            mMenuReply.setEnabled(true);
-        }
     }
 
     @Override
@@ -146,15 +112,6 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
 
                 intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
-
-                startActivity(intent);
-
-                return true;
-            case R.id.menu_reply:
-                intent = new Intent(getActivity(), ReplyActivity.class);
-
-                intent.putExtra(ReplyActivity.ARG_THREAD_TITLE, getThreadTitle());
-                intent.putExtra(ReplyActivity.ARG_THREAD_ID, mThreadId);
 
                 startActivity(intent);
 
@@ -200,8 +157,6 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                 PostList postList = asyncResult.data.unwrap();
                 mRecyclerAdapter.setDataSet(postList.getPostList());
                 mRecyclerAdapter.notifyDataSetChanged();
-
-                prepareMenuReply();
 
                 mOnPagerInteractionCallback.setCount(postList.getPostListInfo().getReplies() + 1);
             } catch (NullPointerException e) {
