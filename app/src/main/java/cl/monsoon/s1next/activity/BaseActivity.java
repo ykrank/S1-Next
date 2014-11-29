@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -114,7 +115,18 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
             if (mDrawerToggle != null) {
                 mDrawerToggle.syncState();
             }
+
+            if (isNavDrawerOpened()) {
+                setupGlobalToolbar();
+            }
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     private void setUpToolbar() {
@@ -318,6 +330,10 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
 
     void setNavDrawerIndicatorEnabled(boolean enabled) {
         mHasNavDrawerIndicator = enabled;
+    }
+
+    boolean isNavDrawerOpened() {
+        return mDrawerLayout != null && mDrawer != null && mDrawerLayout.isDrawerOpen(mDrawer);
     }
 
     public static class LogoutDialog extends DialogFragment {

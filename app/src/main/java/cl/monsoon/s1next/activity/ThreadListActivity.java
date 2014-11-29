@@ -85,7 +85,9 @@ public final class ThreadListActivity
 
         @Override
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
-            setTitle(mTitle + "  " + (position + 1));
+            if (!isNavDrawerOpened()) {
+                setTitle(mTitle + "  " + (position + 1));
+            }
 
             super.setPrimaryItem(container, position, object);
         }
