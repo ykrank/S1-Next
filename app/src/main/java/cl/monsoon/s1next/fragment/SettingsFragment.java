@@ -3,13 +3,16 @@ package cl.monsoon.s1next.fragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.webkit.WebView;
 
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.activity.BaseActivity;
 import cl.monsoon.s1next.singleton.Config;
 
 public final class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
@@ -55,7 +58,8 @@ public final class SettingsFragment extends PreferenceFragment implements Shared
                     Config.setCurrentTheme(Config.LIGHT_THEME);
                 }
 
-                getActivity().recreate();
+                LocalBroadcastManager.getInstance(getActivity())
+                        .sendBroadcast(new Intent(BaseActivity.ACTION_CHANGE_THEME));
                 break;
             // change download strategy
             case KEY_PREF_DOWNLOAD_AVATARS:

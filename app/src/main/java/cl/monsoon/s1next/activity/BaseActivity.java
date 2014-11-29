@@ -3,10 +3,14 @@ package cl.monsoon.s1next.activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -36,10 +40,7 @@ import cl.monsoon.s1next.singleton.User;
  */
 public abstract class BaseActivity extends ActionBarActivity implements User.OnLogoutListener {
 
-    /**
-     * Current theme resource id.
-     */
-    private int mThemeResId;
+    public static final String ACTION_CHANGE_THEME = "change_theme";
 
     private Toolbar mToolbar;
     private CharSequence mTitle;
@@ -52,6 +53,8 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
     private boolean mHasNavDrawer = true;
     private boolean mHasNavDrawerIndicator = true;
 
+    private BroadcastReceiver themeChangeReceiver;
+
     private enum DrawerUserStatus {
         NONE, NOT_LOGIN, LOGIN
     }
@@ -62,9 +65,19 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
         if (Config.getCurrentTheme() == Config.LIGHT_THEME) {
             setTheme(Config.LIGHT_THEME);
         }
-        mThemeResId = Config.getCurrentTheme();
 
         super.onCreate(savedInstanceState);
+
+        // change theme when night mode setting changes
+        themeChangeReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                recreate();
+            }
+        };
+
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(themeChangeReceiver, new IntentFilter(ACTION_CHANGE_THEME));
     }
 
     @Override
@@ -77,14 +90,14 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
     protected void onResume() {
         super.onResume();
 
-        // change theme when night mode setting changes
-        if (mThemeResId != Config.getCurrentTheme()) {
-            setTheme(Config.getCurrentTheme());
-
-            recreate();
-        }
-
         setupDrawerUserView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(themeChangeReceiver);
     }
 
     @Override
