@@ -148,6 +148,8 @@ public final class LoginFragment extends AbsPostLoaderFragment {
 
     @Override
     public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
+        super.onCreateLoader(id, args);
+
         return
                 new HttpPostLoader<>(
                         getActivity(),

@@ -180,6 +180,8 @@ public final class ReplyFragment extends AbsPostLoaderFragment implements View.O
 
     @Override
     public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
+        super.onCreateLoader(id, args);
+
         if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
             return
                     new HttpGetLoader<>(
