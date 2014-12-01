@@ -118,6 +118,7 @@ public final class ReplyFragment extends LoaderFragment implements View.OnClickL
 
     @Override
     public void onClick(View v) {
+        showProgressDialog();
         // We need to get authenticity token (formhash) if we haven't.
         // Then posts the rely.
         // see cl.monsoon.s1next.Api#URL_REPLY_HELPER

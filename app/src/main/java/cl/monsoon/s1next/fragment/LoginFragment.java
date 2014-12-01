@@ -130,6 +130,7 @@ public final class LoginFragment extends LoaderFragment {
             // form field with an error.
             focusView.requestFocus();
         } else {
+            showProgressDialog();
             // start to log in
             startLoader(ID_LOADER_LOGIN);
         }

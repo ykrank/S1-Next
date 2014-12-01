@@ -78,7 +78,7 @@ public abstract class LoaderFragment extends Fragment
         outState.putInt(STATE_ID_LOADER, mLoaderId);
     }
 
-    private void showProgressDialog() {
+    void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(getActivity());
             mProgressDialog.setMessage(getProgressMessage());
@@ -94,11 +94,11 @@ public abstract class LoaderFragment extends Fragment
     public void onCancel(DialogInterface dialog) {
         // cancel HTTP post
         // see HttpGetLoader#cancelLoad()
-        if (mLoader instanceof HttpPostLoader) {
+        if (mLoader instanceof HttpGetLoader) {
             //noinspection RedundantCast
-            ((HttpPostLoader) mLoader).cancelLoad();
+            ((HttpGetLoader) mLoader).cancelLoad();
         } else {
-            throw new ClassCastException(mLoader + " must extend HttpPostLoader.");
+            throw new ClassCastException(mLoader + " must extend HttpGetLoader.");
         }
         mLoading = false;
     }
@@ -110,25 +110,23 @@ public abstract class LoaderFragment extends Fragment
     }
 
     void startLoader(int loaderId) {
-        showProgressDialog();
-
+        mLoading = true;
         mLoaderId = loaderId;
-        mLoader = getLoaderManager().getLoader(loaderId);
+        mLoader = getLoaderManager().getLoader(mLoaderId);
         if (mLoader == null) {
-            mLoader = getLoaderManager().initLoader(loaderId, null, this);
+            mLoader = getLoaderManager().initLoader(mLoaderId, null, this);
         } else {
             if (mLoader instanceof HttpPostLoader) {
                 // We need to change the post body
                 // if we have Loader before.
                 //noinspection RedundantCast
-                ((HttpPostLoader) mLoader).onContentChanged(getRequestBody(mLoader.getId()));
+                ((HttpPostLoader) mLoader).onContentChanged(getRequestBody(mLoaderId));
             } else if (mLoader instanceof HttpGetLoader) {
                 mLoader.onContentChanged();
             } else {
                 throw new ClassCastException(mLoader + " must extend HttpGetLoader.");
             }
         }
-        mLoading = true;
     }
 
     abstract RequestBody getRequestBody(int loaderId);
