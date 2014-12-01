@@ -28,9 +28,11 @@ import cl.monsoon.s1next.widget.HttpPostLoader;
 /**
  * A login screen that offers login via username/password.
  */
-public final class LoginFragment extends AbsPostLoaderFragment {
+public final class LoginFragment extends LoaderFragment {
 
     public static final String TAG = "login_fragment";
+
+    private static final int ID_LOADER_LOGIN = 0;
 
     /**
      * For desktop is "login_succeed".
@@ -128,17 +130,9 @@ public final class LoginFragment extends AbsPostLoaderFragment {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress dialog, and kick off a background task to
-            // perform the user login attempt.
-            showProgressDialog();
-
             // start to log in
-            startLoader(getLoginPostBuilder());
+            startLoader(ID_LOADER_LOGIN);
         }
-    }
-
-    private RequestBody getLoginPostBuilder() {
-        return Api.getLoginPostBuilder(mUsernameView.getText(), mPasswordView.getText());
     }
 
     @Override
@@ -147,15 +141,18 @@ public final class LoginFragment extends AbsPostLoaderFragment {
     }
 
     @Override
-    public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
-        super.onCreateLoader(id, args);
+    RequestBody getRequestBody(int loaderId) {
+        return Api.getLoginPostBuilder(mUsernameView.getText(), mPasswordView.getText());
+    }
 
+    @Override
+    public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
         return
                 new HttpPostLoader<>(
                         getActivity(),
                         Api.URL_LOGIN,
                         ResultWrapper.class,
-                        getLoginPostBuilder());
+                        getRequestBody(id));
     }
 
     @Override

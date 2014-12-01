@@ -11,12 +11,13 @@ import com.squareup.okhttp.RequestBody;
 
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.widget.AsyncResult;
+import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.HttpPostLoader;
 
 /**
  * Wrap {@link cl.monsoon.s1next.widget.HttpPostLoader} and ProgressDialog.
  */
-public abstract class AbsPostLoaderFragment extends Fragment
+public abstract class LoaderFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<AsyncResult<ResultWrapper>>, DialogInterface.OnCancelListener {
 
     /**
@@ -31,15 +32,13 @@ public abstract class AbsPostLoaderFragment extends Fragment
      */
     private static final String STATE_ID_LOADER = "id_loader";
 
-    private static final int ID_LOADER = 0;
-
-    Loader mLoader;
+    private Loader mLoader;
 
     /**
      * Whether {@link android.content.Loader} is loading.
      */
-    Boolean mLoading = false;
-    private int mLoaderId = -1;
+    private Boolean mLoading = false;
+    private int mLoaderId;
 
     private ProgressDialog mProgressDialog;
 
@@ -59,10 +58,6 @@ public abstract class AbsPostLoaderFragment extends Fragment
 
         // show ProgressDialog if Loader is still loading (works when configuration changed)
         if (mLoading) {
-            if (mLoaderId == -1) {
-                throw new IllegalStateException("Loader id must not be -1.");
-            }
-
             showProgressDialog();
             mLoader = getLoaderManager().initLoader(mLoaderId, null, this);
         }
@@ -83,7 +78,7 @@ public abstract class AbsPostLoaderFragment extends Fragment
         outState.putInt(STATE_ID_LOADER, mLoaderId);
     }
 
-    void showProgressDialog() {
+    private void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(getActivity());
             mProgressDialog.setMessage(getProgressMessage());
@@ -92,6 +87,8 @@ public abstract class AbsPostLoaderFragment extends Fragment
 
         mProgressDialog.show();
     }
+
+    protected abstract CharSequence getProgressMessage();
 
     @Override
     public void onCancel(DialogInterface dialog) {
@@ -106,41 +103,35 @@ public abstract class AbsPostLoaderFragment extends Fragment
         mLoading = false;
     }
 
-    protected abstract CharSequence getProgressMessage();
-
-    void dismissProgressDialog() {
+    private void dismissProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
     }
 
-    /**
-     * @param requestBody used when content changed.
-     */
-    void startLoader(RequestBody requestBody) {
-        // We need to change the post body
-        // if we have Loader before.
-        mLoader = getLoaderManager().getLoader(ID_LOADER);
+    void startLoader(int loaderId) {
+        showProgressDialog();
+
+        mLoaderId = loaderId;
+        mLoader = getLoaderManager().getLoader(loaderId);
         if (mLoader == null) {
-            mLoader = getLoaderManager().initLoader(ID_LOADER, null, this);
+            mLoader = getLoaderManager().initLoader(loaderId, null, this);
         } else {
             if (mLoader instanceof HttpPostLoader) {
-                // pass RequestBody to change post body
+                // We need to change the post body
+                // if we have Loader before.
                 //noinspection RedundantCast
-                ((HttpPostLoader) mLoader).onContentChanged(requestBody);
+                ((HttpPostLoader) mLoader).onContentChanged(getRequestBody(mLoader.getId()));
+            } else if (mLoader instanceof HttpGetLoader) {
+                mLoader.onContentChanged();
             } else {
-                throw new ClassCastException(mLoader + " must extend HttpPostLoader.");
+                throw new ClassCastException(mLoader + " must extend HttpGetLoader.");
             }
         }
         mLoading = true;
     }
 
-    @Override
-    public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
-        mLoaderId = id;
-
-        return null;
-    }
+    abstract RequestBody getRequestBody(int loaderId);
 
     @Override
     public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> data) {

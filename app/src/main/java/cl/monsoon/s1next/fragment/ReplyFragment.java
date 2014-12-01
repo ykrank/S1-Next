@@ -29,7 +29,7 @@ import cl.monsoon.s1next.widget.HttpPostLoader;
 /**
  * Send the reply via EditView.
  */
-public final class ReplyFragment extends AbsPostLoaderFragment implements View.OnClickListener {
+public final class ReplyFragment extends LoaderFragment implements View.OnClickListener {
 
     public static final String TAG = "reply_fragment";
 
@@ -47,7 +47,6 @@ public final class ReplyFragment extends AbsPostLoaderFragment implements View.O
      * The reply we need to send.
      */
     private EditText mReplyView;
-    private RequestBody mRequestBody;
 
     public static ReplyFragment newInstance(CharSequence title, String threadId) {
         ReplyFragment fragment = new ReplyFragment();
@@ -119,8 +118,16 @@ public final class ReplyFragment extends AbsPostLoaderFragment implements View.O
 
     @Override
     public void onClick(View v) {
-        showProgressDialog();
-        startLoader(getReplyPostBuilder());
+        // We need to get authenticity token (formhash) if we haven't.
+        // Then posts the rely.
+        // see cl.monsoon.s1next.Api#URL_REPLY_HELPER
+        int loaderId;
+        if (TextUtils.isEmpty(User.getAuthenticityToken())) {
+            loaderId = ID_LOADER_GET_AUTHENTICITY_TOKEN;
+        } else {
+            loaderId = ID_LOADER_POST_REPLY;
+        }
+        startLoader(loaderId);
     }
 
     public boolean isReplyEmpty() {
@@ -132,56 +139,17 @@ public final class ReplyFragment extends AbsPostLoaderFragment implements View.O
         return getText(R.string.dialog_progress_title_reply);
     }
 
-    private RequestBody getReplyPostBuilder() {
+    @Override
+    RequestBody getRequestBody(int loaderId) {
+        if (loaderId == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
+            throw new IllegalStateException("loaderId can't be ID_LOADER_GET_AUTHENTICITY_TOKEN.");
+        }
+
         return Api.getReplyPostBuilder(mReplyView.getText().toString());
-    }
-
-    /**
-     * We need to get authenticity token (formhash) if we haven't.
-     * Then posts the rely.
-     *
-     * @see cl.monsoon.s1next.Api#URL_REPLY_HELPER
-     */
-    private void startLoader() {
-        int loaderId;
-        if (TextUtils.isEmpty(User.getAuthenticityToken())) {
-            loaderId = ID_LOADER_GET_AUTHENTICITY_TOKEN;
-        } else {
-            loaderId = ID_LOADER_POST_REPLY;
-        }
-
-        mLoader = getLoaderManager().getLoader(loaderId);
-        if (mLoader == null) {
-            mLoader = getLoaderManager().initLoader(loaderId, null, this);
-        } else {
-            if (loaderId == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
-                mLoader.onContentChanged();
-            } else {
-                if (mLoader instanceof HttpPostLoader) {
-                    // pass RequestBody to change post body
-                    //noinspection RedundantCast
-                    ((HttpPostLoader) mLoader).onContentChanged(mRequestBody);
-                } else {
-                    throw new ClassCastException(mLoader + " must extend HttpPostLoader.");
-                }
-            }
-        }
-        mLoading = true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    void startLoader(RequestBody requestBody) {
-        this.mRequestBody = requestBody;
-
-        startLoader();
     }
 
     @Override
     public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
-        super.onCreateLoader(id, args);
-
         if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
             return
                     new HttpGetLoader<>(
@@ -194,7 +162,7 @@ public final class ReplyFragment extends AbsPostLoaderFragment implements View.O
                             getActivity(),
                             Api.getPostRely(mThreadId),
                             ResultWrapper.class,
-                            getReplyPostBuilder());
+                            getRequestBody(id));
         } else {
             throw new ClassCastException("Loader id can't be " + id + ".");
         }
@@ -211,11 +179,10 @@ public final class ReplyFragment extends AbsPostLoaderFragment implements View.O
                     throw new IllegalStateException("Authenticity Token can't be empty.");
                 }
 
-                startLoader();
-            } else if (id == ID_LOADER_POST_REPLY) {
-                mLoading = false;
-                dismissProgressDialog();
+                startLoader(ID_LOADER_POST_REPLY);
 
+                return;
+            } else if (id == ID_LOADER_POST_REPLY) {
                 ResultWrapper wrapper = asyncResult.data;
                 Result result = wrapper.getResult();
 
@@ -228,5 +195,7 @@ public final class ReplyFragment extends AbsPostLoaderFragment implements View.O
                 throw new ClassCastException("Loader id can't be " + id + ".");
             }
         }
+
+        super.onLoadFinished(loader, asyncResult);
     }
 }
