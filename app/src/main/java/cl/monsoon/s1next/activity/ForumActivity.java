@@ -15,8 +15,7 @@ import java.util.List;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.ForumFragment;
 import cl.monsoon.s1next.util.ObjectUtil;
-import cl.monsoon.s1next.widget.OnToolbarDropDownItemSelectedListener;
-import cl.monsoon.s1next.widget.ToolbarSpinnerInteractionCallback;
+import cl.monsoon.s1next.widget.ToolbarInterface;
 
 /**
  * This Activity has Spinner in ToolBar to switch between two different views.
@@ -25,7 +24,7 @@ import cl.monsoon.s1next.widget.ToolbarSpinnerInteractionCallback;
  */
 public final class ForumActivity
         extends BaseActivity
-        implements AdapterView.OnItemSelectedListener, ToolbarSpinnerInteractionCallback {
+        implements AdapterView.OnItemSelectedListener, ToolbarInterface.SpinnerInteractionCallback {
 
     /**
      * The serialization (saved instance state) Bundle key representing
@@ -41,7 +40,7 @@ public final class ForumActivity
     private Spinner mSpinner;
     private View mSpinnerView;
 
-    private OnToolbarDropDownItemSelectedListener mOnToolbarDropDownItemSelectedListener;
+    private ToolbarInterface.OnDropDownItemSelectedListener mOnToolbarDropDownItemSelectedListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +59,7 @@ public final class ForumActivity
             fragment = fragmentManager.findFragmentByTag(ForumFragment.TAG);
         }
 
-        if (fragment instanceof OnToolbarDropDownItemSelectedListener) {
+        if (fragment instanceof ToolbarInterface.OnDropDownItemSelectedListener) {
             mOnToolbarDropDownItemSelectedListener = ObjectUtil.uncheckedCast(fragment);
         } else {
             throw
@@ -109,7 +108,7 @@ public final class ForumActivity
     }
 
     /**
-     * Implement {@link ToolbarSpinnerInteractionCallback}.
+     * Implement {@link cl.monsoon.s1next.widget.ToolbarInterface.SpinnerInteractionCallback}.
      */
     @Override
     public void setupToolbarDropDown(List<? extends CharSequence> dropDownItemList) {

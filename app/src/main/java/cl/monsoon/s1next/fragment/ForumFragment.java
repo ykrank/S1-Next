@@ -15,9 +15,7 @@ import android.view.ViewGroup;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.widget.OnToolbarDropDownItemSelectedListener;
 import cl.monsoon.s1next.activity.ThreadListActivity;
-import cl.monsoon.s1next.widget.ToolbarSpinnerInteractionCallback;
 import cl.monsoon.s1next.adapter.ForumListRecyclerAdapter;
 import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.model.list.ForumGroupList;
@@ -25,19 +23,20 @@ import cl.monsoon.s1next.model.mapper.ForumGroupListWrapper;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.RecyclerViewOnItemTouchListener;
+import cl.monsoon.s1next.widget.ToolbarInterface;
 
 /**
  * A Fragment representing forums.
  */
 public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
-        implements OnToolbarDropDownItemSelectedListener {
+        implements ToolbarInterface.OnDropDownItemSelectedListener {
 
     public static final String TAG = "forum_fragment";
 
     private ForumListRecyclerAdapter mRecyclerAdapter;
 
     private ForumGroupList mForumGroupList;
-    private ToolbarSpinnerInteractionCallback mToolbarSpinnerInteractionCallback;
+    private ToolbarInterface.SpinnerInteractionCallback mToolbarSpinnerInteractionCallback;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,8 +52,6 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
         mRecyclerAdapter = new ForumListRecyclerAdapter();
         mRecyclerView.setAdapter(mRecyclerAdapter);
 
-        int padding = getResources().getDimensionPixelSize(R.dimen.list_view_padding);
-        mRecyclerView.setPadding(0, padding, 0, padding);
         // the forum list's each element are fixed size
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addOnItemTouchListener(
@@ -79,8 +76,9 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        if (activity instanceof ToolbarSpinnerInteractionCallback) {
-            mToolbarSpinnerInteractionCallback = (ToolbarSpinnerInteractionCallback) activity;
+        if (activity instanceof ToolbarInterface.SpinnerInteractionCallback) {
+            mToolbarSpinnerInteractionCallback =
+                    (ToolbarInterface.SpinnerInteractionCallback) activity;
         } else {
             throw new ClassCastException(
                     getActivity()
@@ -144,7 +142,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
     }
 
     /**
-     * Implement {@link cl.monsoon.s1next.widget.OnToolbarDropDownItemSelectedListener}.
+     * Implement {@link cl.monsoon.s1next.widget.ToolbarInterface.OnDropDownItemSelectedListener}.
      * <p>
      * Shows all forums when {@code position == 0} otherwise for each group.
      */
