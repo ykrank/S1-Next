@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +21,7 @@ import cl.monsoon.s1next.model.list.ForumGroupList;
 import cl.monsoon.s1next.model.mapper.ForumGroupListWrapper;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
+import cl.monsoon.s1next.widget.MyRecyclerView;
 import cl.monsoon.s1next.widget.RecyclerViewOnItemTouchListener;
 import cl.monsoon.s1next.widget.ToolbarInterface;
 
@@ -47,14 +47,14 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        MyRecyclerView recyclerView = (MyRecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerAdapter = new ForumListRecyclerAdapter();
-        mRecyclerView.setAdapter(mRecyclerAdapter);
+        recyclerView.setAdapter(mRecyclerAdapter);
 
         // the forum list's each element are fixed size
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addOnItemTouchListener(
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addOnItemTouchListener(
                 new RecyclerViewOnItemTouchListener(
                         getActivity(),
                         (position) -> {
@@ -70,6 +70,12 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
                             startActivity(intent);
                         })
         );
+
+        setupRecyclerViewPadding(
+                recyclerView,
+                getResources().getDimensionPixelSize(R.dimen.list_view_padding),
+                true);
+        enableToolbarAutoHideEffect(recyclerView);
     }
 
     @Override

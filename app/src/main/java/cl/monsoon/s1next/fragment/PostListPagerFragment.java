@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +19,7 @@ import cl.monsoon.s1next.model.list.PostList;
 import cl.monsoon.s1next.model.mapper.PostListWrapper;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
+import cl.monsoon.s1next.widget.MyRecyclerView;
 
 /**
  * A Fragment representing one of the pages of posts.
@@ -67,13 +67,16 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        MyRecyclerView recyclerView = (MyRecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerAdapter = new PostListRecyclerAdapter(getActivity());
-        mRecyclerView.setAdapter(mRecyclerAdapter);
+        recyclerView.setAdapter(mRecyclerAdapter);
 
-        int padding = getResources().getDimensionPixelSize(R.dimen.recycler_view_card_padding);
-        mRecyclerView.setPadding(0, padding, 0, padding);
+        setupRecyclerViewPadding(
+                recyclerView,
+                getResources().getDimensionPixelSize(R.dimen.recycler_view_card_padding),
+                true);
+        enableToolbarAutoHideEffect(recyclerView);
     }
 
     @Override

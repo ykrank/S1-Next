@@ -7,6 +7,9 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="swipe_refresh_progress_view_start">8dp</dimen>
+    <dimen name="swipe_refresh_progress_view_end">72dp</dimen>
+
     <dimen name="divider">1dp</dimen>
 
     <dimen name="dialog_padding">24dp</dimen>

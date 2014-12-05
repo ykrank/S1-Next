@@ -103,6 +103,22 @@ public final class PostListActivity
         mViewPager = (ViewPager) container.findViewById(R.id.pager);
         mAdapter = new PostListPagerAdapter(getFragmentManager());
         mViewPager.setAdapter(mAdapter);
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                showOrHideToolbar(true);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         if (savedInstanceState != null) {
             mSeekBarProgress = savedInstanceState.getInt(STATE_SEEKBAR_PROGRESS);

@@ -52,9 +52,25 @@ public final class ThreadListActivity
         FrameLayout container = (FrameLayout) findViewById(R.id.frame_layout);
         View.inflate(this, R.layout.activity_screen_slide, container);
 
-        ViewPager pager = (ViewPager) container.findViewById(R.id.pager);
+        ViewPager viewPager = (ViewPager) container.findViewById(R.id.pager);
         mAdapter = new ThreadListPagerAdapter(getFragmentManager());
-        pager.setAdapter(mAdapter);
+        viewPager.setAdapter(mAdapter);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                showOrHideToolbar(true);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     /**

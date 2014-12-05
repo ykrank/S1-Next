@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.ActionMenuView;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -22,6 +23,7 @@ import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,6 +35,8 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
 import cl.monsoon.s1next.singleton.User;
+import cl.monsoon.s1next.util.ResourceUtil;
+import cl.monsoon.s1next.widget.MyRecyclerView;
 
 /**
  * A base Activity which includes the toolbar, navigation drawer, login.
@@ -45,6 +49,15 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
     private Toolbar mToolbar;
     private CharSequence mTitle;
     private ActionMenuView mActionMenuView;
+
+    private boolean mIsToolbarShown = true;
+
+    /**
+     * We need to set up overlay Toolbar if we want to enable Toolbar's auto show/hide effect.
+     * So we could start hiding Toolbar if main content has been full covered by Toolbar.
+     * That's why this value always equals to Toolbar's height.
+     */
+    private int mToolbarAutoHideMinY;
 
     private DrawerLayout mDrawerLayout;
     private View mDrawer;
@@ -164,6 +177,48 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
                 // designate a ToolBar as the ActionBar
                 setSupportActionBar(mToolbar);
             }
+        }
+    }
+
+    public void enableToolbarAutoHideEffect(final MyRecyclerView myRecyclerView) {
+        mToolbarAutoHideMinY = ResourceUtil.getToolbarHeight(this);
+
+        myRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                // myRecyclerView.computeVerticalScrollOffset() may cause poor performance
+                // so we also check mIsToolbarShown though we will do it later (over showOrHideToolbar(boolean))
+                if (mIsToolbarShown && dy > 0
+                        && myRecyclerView.computeVerticalScrollOffset() >= mToolbarAutoHideMinY) {
+                    showOrHideToolbar(false);
+                } else if (dy < 0) {
+                    showOrHideToolbar(true);
+                }
+            }
+        });
+    }
+
+    void showOrHideToolbar(boolean show) {
+        if (show == mIsToolbarShown) {
+            return;
+        }
+
+        mIsToolbarShown = show;
+        onToolbarAutoShowOrHide(show);
+    }
+
+    private void onToolbarAutoShowOrHide(boolean show) {
+        if (show) {
+            mToolbar.animate()
+                    .alpha(1)
+                    .translationY(0)
+                    .setInterpolator(new DecelerateInterpolator());
+        } else {
+            mToolbar.animate()
+                    .alpha(0)
+                    .translationY(-mToolbar.getBottom())
+                    .setInterpolator(new DecelerateInterpolator());
         }
     }
 

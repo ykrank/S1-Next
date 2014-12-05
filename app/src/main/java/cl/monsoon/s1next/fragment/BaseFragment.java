@@ -4,16 +4,20 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.activity.BaseActivity;
 import cl.monsoon.s1next.fragment.headless.HttpGetRetainedFragment;
 import cl.monsoon.s1next.model.mapper.Deserialization;
 import cl.monsoon.s1next.util.ObjectUtil;
+import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
+import cl.monsoon.s1next.widget.MyRecyclerView;
 
 /**
  * A base Fragment which includes the SwipeRefreshLayout to refresh when loading data.
@@ -153,6 +157,40 @@ public abstract class BaseFragment<D extends Deserialization>
         }
 
         throw new IllegalStateException("Can't set up SwipeRefreshLayout.");
+    }
+
+    /**
+     * We need to update SwipeRefreshLayout's progress view offset if we have overlay Toolbar.
+     */
+    private void updateSwipeRefreshProgressViewPosition() {
+        if (mSwipeRefreshLayout == null) {
+            return;
+        }
+
+        int start = getResources().getDimensionPixelSize(R.dimen.swipe_refresh_progress_view_start);
+        int end = getResources().getDimensionPixelSize(R.dimen.swipe_refresh_progress_view_end);
+
+        mSwipeRefreshLayout.setProgressViewOffset(false, start, end);
+    }
+
+    void setupRecyclerViewPadding(RecyclerView recyclerView, int padding, boolean hasOverlayToolbar) {
+        int additionalTopPadding =
+                hasOverlayToolbar
+                        ? ResourceUtil.getToolbarHeight(getActivity())
+                        : 0;
+        // +Toolbar's height if has overlay Toolbar
+        recyclerView.setPadding(
+                0, padding + additionalTopPadding, 0, padding);
+
+        updateSwipeRefreshProgressViewPosition();
+    }
+
+    void enableToolbarAutoHideEffect(MyRecyclerView recyclerView) {
+        if (getActivity() instanceof BaseActivity) {
+            ((BaseActivity) getActivity()).enableToolbarAutoHideEffect(recyclerView);
+        } else {
+            throw new ClassCastException(getActivity() + "must extend BaseActivity.");
+        }
     }
 
     @Override
