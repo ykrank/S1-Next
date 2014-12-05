@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,6 +35,8 @@ public abstract class BaseFragment<D extends Deserialization>
      * Detect swipe gestures and trigger to refresh data.
      */
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private boolean mIsProgressbarViewGone;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -94,7 +95,7 @@ public abstract class BaseFragment<D extends Deserialization>
         final boolean isRunning = mHttpGetRetainedFragment.isRunning();
 
         // refresh when mHttpGetRetainedFragment is still loading data
-        if (!hasData || isRunning) {
+        if (hasData && isRunning) {
             mSwipeRefreshLayout.setRefreshing(true);
         }
 
@@ -120,7 +121,8 @@ public abstract class BaseFragment<D extends Deserialization>
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         // Disable refresh action when SwipeRefreshLayout is still refreshing.
-        menu.findItem(R.id.menu_refresh).setEnabled(!mHttpGetRetainedFragment.isRunning());
+        menu.findItem(R.id.menu_refresh).setEnabled(
+                mSwipeRefreshLayout.isEnabled() && !mHttpGetRetainedFragment.isRunning());
     }
 
     @Override
@@ -143,13 +145,8 @@ public abstract class BaseFragment<D extends Deserialization>
                 mSwipeRefreshLayout.setColorSchemeResources(
                         R.color.swipe_refresh_1, R.color.swipe_refresh_2, R.color.swipe_refresh_3);
 
-                // see https://code.google.com/p/android/issues/detail?id=77712&q=SwipeRefreshLayout&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars
-                mSwipeRefreshLayout.setProgressViewOffset(
-                        false,
-                        0,
-                        (int) TypedValue.applyDimension(
-                                TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
                 mSwipeRefreshLayout.setOnRefreshListener(this);
+                mSwipeRefreshLayout.setEnabled(false);
 
                 return;
             }
@@ -160,7 +157,14 @@ public abstract class BaseFragment<D extends Deserialization>
 
     @Override
     public void onPostExecute(AsyncResult<D> dAsyncResult) {
-        mSwipeRefreshLayout.setRefreshing(false);
+        if (mIsProgressbarViewGone) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        } else {
+            mSwipeRefreshLayout.setEnabled(true);
+            //noinspection ConstantConditions
+            getView().findViewById(R.id.progressbar).setVisibility(View.GONE);
+            mIsProgressbarViewGone = true;
+        }
     }
 
     void execute(String url, Class<D> clazz) {
