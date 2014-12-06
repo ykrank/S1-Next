@@ -380,6 +380,10 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
      * context when drawer opened, rather than just what's in the current screen.
      */
     void setupGlobalToolbar() {
+        if (mToolbar == null) {
+            return;
+        }
+
         mTitle = getTitle();
         setTitle(R.string.app_name);
 
@@ -408,6 +412,10 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
      * Subclass must call {@code super.restoreToolbar()}.
      */
     void restoreToolbar() {
+        if (mToolbar == null) {
+            return;
+        }
+
         setTitle(mTitle);
 
         // show menu in Toolbar
@@ -428,7 +436,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
         mHasNavDrawerIndicator = enabled;
     }
 
-    boolean isNavDrawerOpened() {
+    private boolean isNavDrawerOpened() {
         return mDrawerLayout != null && mDrawer != null && mDrawerLayout.isDrawerOpen(mDrawer);
     }
 

@@ -1,4 +1,4 @@
-package cl.monsoon.s1next.widget;
+package cl.monsoon.s1next.activity;
 
 import java.util.List;
 

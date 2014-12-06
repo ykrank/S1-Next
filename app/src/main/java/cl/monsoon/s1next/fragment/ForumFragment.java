@@ -23,7 +23,7 @@ import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.MyRecyclerView;
 import cl.monsoon.s1next.widget.RecyclerViewOnItemTouchListener;
-import cl.monsoon.s1next.widget.ToolbarInterface;
+import cl.monsoon.s1next.activity.ToolbarInterface;
 
 /**
  * A Fragment representing forums.
@@ -52,7 +52,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
         mRecyclerAdapter = new ForumListRecyclerAdapter();
         recyclerView.setAdapter(mRecyclerAdapter);
 
-        // the forum list's each element are fixed size
+        // the forum list's each element has fixed size
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnItemTouchListener(
                 new RecyclerViewOnItemTouchListener(
@@ -63,7 +63,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
                                     ThreadListActivity.class);
 
                             Forum forum = mRecyclerAdapter.getItem(position);
-                            intent.putExtra(ThreadListActivity.ARG_FORUM_NAME, forum.getName());
+                            intent.putExtra(ThreadListActivity.ARG_FORUM_TITLE, forum.getName());
                             intent.putExtra(ThreadListActivity.ARG_FORUM_ID, forum.getId());
                             intent.putExtra(ThreadListActivity.ARG_THREADS, forum.getThreads());
 
@@ -148,7 +148,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
     }
 
     /**
-     * Implement {@link cl.monsoon.s1next.widget.ToolbarInterface.OnDropDownItemSelectedListener}.
+     * Implement {@link cl.monsoon.s1next.activity.ToolbarInterface.OnDropDownItemSelectedListener}.
      * <p>
      * Shows all forums when {@code position == 0} otherwise for each group.
      */

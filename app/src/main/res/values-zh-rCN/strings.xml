@@ -14,7 +14,7 @@
     <string name="menu_refresh">刷新</string>
     <string name="menu_share">分享</string>
     <string name="message_network_error">发生了网络错误</string>
-    <string name="message_server_error">无法与服务器进行通信，请稍后再试</string>
+    <string name="message_server_error">无法与服务器进行通信，请稍后再试。</string>
     <string name="navigation_drawer_close">打开导航抽屉</string>
     <string name="navigation_drawer_open">关闭导航抽屉</string>
     <string name="picture_content_desc">图片</string>

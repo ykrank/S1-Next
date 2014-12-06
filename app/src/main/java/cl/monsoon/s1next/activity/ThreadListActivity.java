@@ -14,6 +14,7 @@ import cl.monsoon.s1next.fragment.BaseFragment;
 import cl.monsoon.s1next.fragment.ThreadListPagerFragment;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.MathUtil;
+import cl.monsoon.s1next.util.StringHelper;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 
 /**
@@ -23,11 +24,11 @@ public final class ThreadListActivity
         extends BaseActivity
         implements ThreadListPagerFragment.OnPagerInteractionCallback {
 
-    public final static String ARG_FORUM_NAME = "forum_name";
+    public final static String ARG_FORUM_TITLE = "forum_title";
     public final static String ARG_FORUM_ID = "forum_id";
     public final static String ARG_THREADS = "threads";
 
-    private CharSequence mTitle;
+    private CharSequence mForumTitle;
     private CharSequence mForumId;
     private int mNumPages;
 
@@ -44,8 +45,8 @@ public final class ThreadListActivity
 
         setNavDrawerIndicatorEnabled(false);
 
-        mTitle = getIntent().getCharSequenceExtra(ARG_FORUM_NAME);
-        setTitle(mTitle);
+        mForumTitle = getIntent().getCharSequenceExtra(ARG_FORUM_TITLE);
+        setTitle(StringHelper.concatTitleWithPageNum(mForumTitle, 1));
         mForumId = getIntent().getCharSequenceExtra(ARG_FORUM_ID);
         setCount(getIntent().getIntExtra(ARG_THREADS, 1));
 
@@ -63,7 +64,7 @@ public final class ThreadListActivity
 
             @Override
             public void onPageSelected(int position) {
-
+                setTitle(StringHelper.concatTitleWithPageNum(mForumTitle, position + 1));
             }
 
             @Override
@@ -97,15 +98,6 @@ public final class ThreadListActivity
         @Override
         public Fragment getItem(int i) {
             return ThreadListPagerFragment.newInstance(mForumId, i + 1);
-        }
-
-        @Override
-        public void setPrimaryItem(ViewGroup container, int position, Object object) {
-            if (!isNavDrawerOpened()) {
-                setTitle(mTitle + "  " + (position + 1));
-            }
-
-            super.setPrimaryItem(container, position, object);
         }
 
         @Override

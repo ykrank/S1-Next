@@ -15,7 +15,6 @@ import java.util.List;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.ForumFragment;
 import cl.monsoon.s1next.util.ObjectUtil;
-import cl.monsoon.s1next.widget.ToolbarInterface;
 
 /**
  * This Activity has Spinner in ToolBar to switch between two different views.
@@ -108,7 +107,7 @@ public final class ForumActivity
     }
 
     /**
-     * Implement {@link cl.monsoon.s1next.widget.ToolbarInterface.SpinnerInteractionCallback}.
+     * Implement {@link ToolbarInterface.SpinnerInteractionCallback}.
      */
     @Override
     public void setupToolbarDropDown(List<? extends CharSequence> dropDownItemList) {

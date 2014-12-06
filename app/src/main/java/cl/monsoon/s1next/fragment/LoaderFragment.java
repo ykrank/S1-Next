@@ -119,7 +119,6 @@ public abstract class LoaderFragment extends Fragment
             if (mLoader instanceof HttpPostLoader) {
                 // We need to change the post body
                 // if we have Loader before.
-                //noinspection RedundantCast
                 ((HttpPostLoader) mLoader).onContentChanged(getRequestBody(mLoaderId));
             } else if (mLoader instanceof HttpGetLoader) {
                 mLoader.onContentChanged();

@@ -12,7 +12,7 @@
     android:layout_marginRight="@dimen/card_view_horizontal_margin"
     android:layout_marginStart="@dimen/card_view_horizontal_margin"
     android:layout_marginTop="@dimen/card_view_vertical_margin"
-    tools:context="cl.monsoon.s1next.adapter.PostListRecyclerAdapter">
+    tools:context="cl.monsoon.s1next.fragment.PostListPagerFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

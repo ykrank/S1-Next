@@ -31,6 +31,7 @@ import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
+import cl.monsoon.s1next.util.StringHelper;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 import cl.monsoon.s1next.widget.InputFilterRange;
 
@@ -93,7 +94,7 @@ public final class PostListActivity
         //        }
 
         mThreadTitle = getIntent().getCharSequenceExtra(ARG_THREAD_TITLE);
-        setTitle(mThreadTitle);
+        setTitle(StringHelper.concatTitleWithPageNum(mThreadTitle, 1));
         mThreadId = getIntent().getCharSequenceExtra(ARG_THREAD_ID);
         setCount(getIntent().getIntExtra(ARG_POST_REPLIES, 1));
 
@@ -111,7 +112,10 @@ public final class PostListActivity
 
             @Override
             public void onPageSelected(int position) {
-
+                // TODO: We can't see thread page number sometimes because title is long,
+                // so it's better to put a TextView in ToolBar to show thread page number
+                // or make the title marquee.
+                setTitle(StringHelper.concatTitleWithPageNum(mThreadTitle, position + 1));
             }
 
             @Override
@@ -205,20 +209,6 @@ public final class PostListActivity
         super.onSaveInstanceState(outState);
 
         outState.putInt(STATE_SEEKBAR_PROGRESS, mSeekBarProgress);
-    }
-
-    /**
-     * Implement {@link cl.monsoon.s1next.fragment.PostListPagerFragment.OnPagerInteractionCallback}.
-     */
-    @Override
-    public void setCount(int i) {
-        mNumPages = MathUtil.divide(i, Config.POSTS_PER_PAGE);
-
-        prepareMenuPageFlip();
-
-        if (mAdapter != null) {
-            runOnUiThread(mAdapter::notifyDataSetChanged);
-        }
     }
 
     @Override
@@ -348,6 +338,20 @@ public final class PostListActivity
     }
 
     /**
+     * Implement {@link cl.monsoon.s1next.fragment.PostListPagerFragment.OnPagerInteractionCallback}.
+     */
+    @Override
+    public void setCount(int i) {
+        mNumPages = MathUtil.divide(i, Config.POSTS_PER_PAGE);
+
+        prepareMenuPageFlip();
+
+        if (mAdapter != null) {
+            runOnUiThread(mAdapter::notifyDataSetChanged);
+        }
+    }
+
+    /**
      * Return a Fragment corresponding to one of the pages of posts.
      */
     private class PostListPagerAdapter extends FragmentStatePagerAdapter {
@@ -364,18 +368,6 @@ public final class PostListActivity
         @Override
         public Fragment getItem(int i) {
             return PostListPagerFragment.newInstance(mThreadId, i + 1);
-        }
-
-        @Override
-        public void setPrimaryItem(ViewGroup container, int position, Object object) {
-            if (!isNavDrawerOpened()) {
-                // TODO: We can't see thread page number sometimes because title is long,
-                // so it's better to put a TextView in ToolBar to show thread page number
-                // or make the title marquee.
-                setTitle(mThreadTitle + "  " + (position + 1));
-            }
-
-            super.setPrimaryItem(container, position, object);
         }
 
         @Override
