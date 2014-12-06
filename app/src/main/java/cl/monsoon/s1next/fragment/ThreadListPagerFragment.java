@@ -152,7 +152,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
         super.onPostExecute(asyncResult);
 
         if (asyncResult.exception != null) {
-            if (isVisible()) {
+            if (getUserVisibleHint()) {
                 AsyncResult.handleException(asyncResult.exception);
             }
         } else {
