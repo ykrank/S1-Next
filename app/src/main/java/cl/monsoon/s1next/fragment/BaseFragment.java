@@ -40,8 +40,6 @@ public abstract class BaseFragment<D extends Deserialization>
      */
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private boolean mIsProgressbarViewGone;
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         setupSwipeRefreshLayout();
@@ -99,7 +97,7 @@ public abstract class BaseFragment<D extends Deserialization>
         final boolean isRunning = mHttpGetRetainedFragment.isRunning();
 
         // refresh when mHttpGetRetainedFragment is still loading data
-        if (hasData && isRunning) {
+        if (hasData && isRunning && mSwipeRefreshLayout.isEnabled()) {
             mSwipeRefreshLayout.setRefreshing(true);
         }
 
@@ -125,8 +123,7 @@ public abstract class BaseFragment<D extends Deserialization>
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         // Disable refresh action when SwipeRefreshLayout is still refreshing.
-        menu.findItem(R.id.menu_refresh).setEnabled(
-                mSwipeRefreshLayout.isEnabled() && !mHttpGetRetainedFragment.isRunning());
+        menu.findItem(R.id.menu_refresh).setEnabled(!isLoading());
     }
 
     @Override
@@ -185,24 +182,30 @@ public abstract class BaseFragment<D extends Deserialization>
         updateSwipeRefreshProgressViewPosition();
     }
 
-    void enableToolbarAutoHideEffect(MyRecyclerView recyclerView) {
+    void enableToolbarAutoHideEffect(MyRecyclerView recyclerView, RecyclerView.OnScrollListener onScrollListener) {
         if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).enableToolbarAutoHideEffect(recyclerView);
+            ((BaseActivity) getActivity()).enableToolbarAutoHideEffect(recyclerView, onScrollListener);
         } else {
             throw new ClassCastException(getActivity() + "must extend BaseActivity.");
         }
     }
 
+    boolean isLoading() {
+        return (mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isEnabled())
+                || (mHttpGetRetainedFragment != null && mHttpGetRetainedFragment.isRunning());
+    }
+
+    void setSwipeRefreshLayoutEnabled(boolean enabled) {
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setEnabled(enabled);
+        }
+    }
+
     @Override
     public void onPostExecute(AsyncResult<D> dAsyncResult) {
-        if (mIsProgressbarViewGone) {
-            mSwipeRefreshLayout.setRefreshing(false);
-        } else {
-            mSwipeRefreshLayout.setEnabled(true);
-            //noinspection ConstantConditions
-            getView().findViewById(R.id.progressbar).setVisibility(View.GONE);
-            mIsProgressbarViewGone = true;
-        }
+        mSwipeRefreshLayout.setEnabled(true);
+        //noinspection ConstantConditions
+        getView().findViewById(R.id.progressbar).setVisibility(View.GONE);
     }
 
     void execute(String url, Class<D> clazz) {

@@ -3,7 +3,6 @@ package cl.monsoon.s1next.model.list;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Collections;
 import java.util.List;
 
 import cl.monsoon.s1next.model.Account;
@@ -27,7 +26,7 @@ public final class PostList extends Account {
     private Post.PostListInfo postListInfo;
 
     public List<Post> getPostList() {
-        return Collections.unmodifiableList(postList);
+        return postList;
     }
 
     public void setPostList(List<Post> postList) {

@@ -30,7 +30,7 @@ public final class ThreadListActivity
 
     private CharSequence mForumTitle;
     private CharSequence mForumId;
-    private int mNumPages;
+    private int mTotalPages;
 
     /**
      * The {@link FragmentStatePagerAdapter} that will provide
@@ -48,7 +48,7 @@ public final class ThreadListActivity
         mForumTitle = getIntent().getCharSequenceExtra(ARG_FORUM_TITLE);
         setTitle(StringHelper.concatTitleWithPageNum(mForumTitle, 1));
         mForumId = getIntent().getCharSequenceExtra(ARG_FORUM_ID);
-        setCount(getIntent().getIntExtra(ARG_THREADS, 1));
+        setTotalPages(getIntent().getIntExtra(ARG_THREADS, 1));
 
         FrameLayout container = (FrameLayout) findViewById(R.id.frame_layout);
         View.inflate(this, R.layout.activity_screen_slide, container);
@@ -78,8 +78,8 @@ public final class ThreadListActivity
      * Implement {@link cl.monsoon.s1next.fragment.ThreadListPagerFragment.OnPagerInteractionCallback}.
      */
     @Override
-    public void setCount(int i) {
-        mNumPages = MathUtil.divide(i, Config.THREADS_PER_PAGE);
+    public void setTotalPages(int i) {
+        mTotalPages = MathUtil.divide(i, Config.THREADS_PER_PAGE);
 
         if (mAdapter != null) {
             runOnUiThread(mAdapter::notifyDataSetChanged);
@@ -114,7 +114,7 @@ public final class ThreadListActivity
 
         @Override
         public int getCount() {
-            return mNumPages;
+            return mTotalPages;
         }
     }
 }

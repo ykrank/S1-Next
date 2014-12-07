@@ -56,7 +56,7 @@ public final class PostListActivity
 
     private CharSequence mThreadId;
     private CharSequence mThreadTitle;
-    private int mNumPages;
+    private int mTotalPages;
 
     /**
      * The {@link FragmentStatePagerAdapter} will provide
@@ -96,7 +96,7 @@ public final class PostListActivity
         mThreadTitle = getIntent().getCharSequenceExtra(ARG_THREAD_TITLE);
         setTitle(StringHelper.concatTitleWithPageNum(mThreadTitle, 1));
         mThreadId = getIntent().getCharSequenceExtra(ARG_THREAD_ID);
-        setCount(getIntent().getIntExtra(ARG_POST_REPLIES, 1));
+        setTotalPages(getIntent().getIntExtra(ARG_POST_REPLIES, 1));
 
         FrameLayout container = (FrameLayout) findViewById(R.id.frame_layout);
         View.inflate(this, R.layout.activity_screen_slide, container);
@@ -232,14 +232,14 @@ public final class PostListActivity
     }
 
     /**
-     * Disable flip page menu when {@link cl.monsoon.s1next.activity.PostListActivity#mNumPages} = 1.
+     * Disable flip page menu when {@link cl.monsoon.s1next.activity.PostListActivity#mTotalPages} = 1.
      */
     private void prepareMenuPageFlip() {
         if (mMenuPageFlip == null) {
             return;
         }
 
-        if (mNumPages == 1) {
+        if (mTotalPages == 1) {
             mMenuPageFlip.setEnabled(false);
         } else {
             mMenuPageFlip.setEnabled(true);
@@ -258,14 +258,14 @@ public final class PostListActivity
         SeekBar seekbar = (SeekBar) view.findViewById(R.id.seekbar);
         seekbar.setProgress(mSeekBarProgress);
         // seekBar is zero-based!
-        seekbar.setMax(mNumPages - 1);
+        seekbar.setMax(mTotalPages - 1);
 
         EditText valueView = (EditText) view.findViewById(R.id.value);
         valueView.setText(String.valueOf(mSeekBarProgress + 1));
-        valueView.setEms(String.valueOf(mNumPages).length());
+        valueView.setEms(String.valueOf(mTotalPages).length());
         // set EditText range filter
         valueView.setFilters(
-                new InputFilter[]{new InputFilterRange(1, mNumPages)});
+                new InputFilter[]{new InputFilterRange(1, mTotalPages)});
         valueView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -337,12 +337,17 @@ public final class PostListActivity
                 ).show();
     }
 
+    @Override
+    public int getTotalPages() {
+        return mTotalPages;
+    }
+
     /**
      * Implement {@link cl.monsoon.s1next.fragment.PostListPagerFragment.OnPagerInteractionCallback}.
      */
     @Override
-    public void setCount(int i) {
-        mNumPages = MathUtil.divide(i, Config.POSTS_PER_PAGE);
+    public void setTotalPages(int i) {
+        mTotalPages = MathUtil.divide(i, Config.POSTS_PER_PAGE);
 
         prepareMenuPageFlip();
 
@@ -362,7 +367,7 @@ public final class PostListActivity
 
         @Override
         public int getCount() {
-            return mNumPages;
+            return mTotalPages;
         }
 
         @Override

@@ -27,7 +27,12 @@ import cl.monsoon.s1next.widget.ImageTagHandler;
 import cl.monsoon.s1next.widget.MyMovementMethod;
 
 public final class PostListRecyclerAdapter
-        extends RecyclerAdapter<Post, PostListRecyclerAdapter.ViewHolder> {
+        extends RecyclerAdapter<Post, RecyclerView.ViewHolder> {
+
+    private static final int TYPE_ITEM = 0;
+    private static final int TYPE_FOOTER_PROGRESS = 1;
+
+    private boolean mHasFooterProgress;
 
     private final Context mContext;
 
@@ -54,20 +59,49 @@ public final class PostListRecyclerAdapter
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == TYPE_FOOTER_PROGRESS) {
+            View view =
+                    LayoutInflater.from(
+                            parent.getContext())
+                            .inflate(R.layout.fragment_post_list_footer_progress, parent, false);
+
+            return new FooterProgressViewHolder(view);
+        }
+
         View view =
                 LayoutInflater.from(
-                        viewGroup.getContext())
-                        .inflate(R.layout.fragment_post_list, viewGroup, false);
+                        parent.getContext())
+                        .inflate(R.layout.fragment_post_list, parent, false);
 
-        return new ViewHolder(view);
+        return new ItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        Post post = mList.get(i);
+    public int getItemViewType(int position) {
+        if (isFooterProgress(position)) {
+            return TYPE_FOOTER_PROGRESS;
+        }
 
-        ImageView avatarView = viewHolder.mAvatar;
+        return TYPE_ITEM;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (isFooterProgress(position)) {
+            return;
+        }
+
+        ItemViewHolder itemViewHolder;
+        if (holder instanceof ItemViewHolder) {
+            itemViewHolder = (ItemViewHolder) holder;
+        } else {
+            throw new ClassCastException(holder + "must extend ItemViewHolder.");
+        }
+
+        Post post = mList.get(position);
+
+        ImageView avatarView = itemViewHolder.mAvatar;
 
         // whether need download avatars depends on settings and Wi-Fi status
         final boolean avatarsDownload = Config.isAvatarsDownload();
@@ -82,18 +116,18 @@ public final class PostListRecyclerAdapter
             avatarView.setVisibility(View.GONE);
         }
 
-        viewHolder.mUsername.setText(post.getUsername());
-        viewHolder.mTime.setText(
+        itemViewHolder.mUsername.setText(post.getUsername());
+        itemViewHolder.mTime.setText(
                 DateUtils.getRelativeDateTimeString(
                         mContext,
                         post.getTime(),
                         DateUtils.MINUTE_IN_MILLIS,
                         DateUtils.DAY_IN_MILLIS,
                         0));
-        viewHolder.mCount.setText("#" + post.getCount());
+        itemViewHolder.mCount.setText("#" + post.getCount());
 
         String reply = post.getReply();
-        TextView replayView = viewHolder.mReply;
+        TextView replayView = itemViewHolder.mReply;
         // some replies are empty
         // like http://bbs.saraba1st.com/2b/thread-1008413-1-1.html#authorposton24836448
         if (TextUtils.isEmpty(reply)) {
@@ -130,10 +164,35 @@ public final class PostListRecyclerAdapter
 
     @Override
     public long getItemId(int position) {
+        if (isFooterProgress(position)) {
+            return Integer.MIN_VALUE;
+        }
+
         return Long.parseLong(mList.get(position).getCount());
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    private boolean isFooterProgress(int position) {
+        return mHasFooterProgress && position == getItemCount() - 1;
+    }
+
+    public void showFooterProgress() {
+        if (mHasFooterProgress) {
+            throw new IllegalStateException(this + " already has footer progress.");
+        }
+
+        mHasFooterProgress = true;
+        mList.add(null);
+        notifyItemChanged(getItemCount() - 1);
+    }
+
+    public void hideFooterProgress() {
+        int position = getItemCount() - 1;
+        mList.remove(position);
+        mHasFooterProgress = false;
+        notifyItemRemoved(position);
+    }
+
+    public static class ItemViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView mAvatar;
         private final TextView mUsername;
@@ -141,7 +200,7 @@ public final class PostListRecyclerAdapter
         private final TextView mCount;
         private final TextView mReply;
 
-        public ViewHolder(View itemView) {
+        public ItemViewHolder(View itemView) {
             super(itemView);
 
             mAvatar = (ImageView) itemView.findViewById(R.id.avatar);
@@ -152,6 +211,13 @@ public final class PostListRecyclerAdapter
 
             // use custom movement method to provides selection and click
             mReply.setMovementMethod(MyMovementMethod.getInstance());
+        }
+    }
+
+    public static class FooterProgressViewHolder extends RecyclerView.ViewHolder {
+
+        public FooterProgressViewHolder(View itemView) {
+            super(itemView);
         }
     }
 }

@@ -75,7 +75,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
                 recyclerView,
                 getResources().getDimensionPixelSize(R.dimen.list_view_padding),
                 true);
-        enableToolbarAutoHideEffect(recyclerView);
+        enableToolbarAutoHideEffect(recyclerView, null);
     }
 
     @Override
@@ -162,7 +162,5 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
             mRecyclerAdapter.setDataSet(
                     mForumGroupList.getForumGroupList().get(position - 1).getForumList());
         }
-
-        mRecyclerAdapter.notifyDataSetChanged();
     }
 }

@@ -97,7 +97,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
                 recyclerView,
                 getResources().getDimensionPixelSize(R.dimen.list_view_padding),
                 true);
-        enableToolbarAutoHideEffect(recyclerView);
+        enableToolbarAutoHideEffect(recyclerView, null);
     }
 
     @Override
@@ -159,9 +159,8 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
             try {
                 ThreadList threadList = asyncResult.data.unwrap();
                 mRecyclerAdapter.setDataSet(threadList.getThreadList());
-                mRecyclerAdapter.notifyDataSetChanged();
 
-                mOnPagerInteractionCallback.setCount(threadList.getThreadsInfo().getThreads());
+                mOnPagerInteractionCallback.setTotalPages(threadList.getThreadsInfo().getThreads());
             } catch (NullPointerException e) {
                 ToastHelper.showByResId(R.string.message_server_error);
             }
@@ -174,8 +173,8 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     public static interface OnPagerInteractionCallback {
 
         /**
-         * Callback to set actual page which used for {@link android.support.v4.view.PagerAdapter}
+         * Callback to set actual total pages which used for {@link android.support.v4.view.PagerAdapter}
          */
-        public void setCount(int i);
+        public void setTotalPages(int i);
     }
 }

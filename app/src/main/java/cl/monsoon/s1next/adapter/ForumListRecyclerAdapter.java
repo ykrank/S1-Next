@@ -21,20 +21,20 @@ public final class ForumListRecyclerAdapter
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view =
                 LayoutInflater.from(
-                        viewGroup.getContext()).inflate(R.layout.single_line_list_item, viewGroup, false);
+                        parent.getContext()).inflate(R.layout.single_line_list_item, parent, false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        TextView textView = viewHolder.mTextView;
-        Forum forum = mList.get(i);
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        TextView textView = holder.mTextView;
+        Forum forum = mList.get(position);
 
-        viewHolder.mTextView.setText(forum.getName());
+        holder.mTextView.setText(forum.getName());
         // add today's posts count to each forum
         if (forum.getTodayPosts() != 0) {
             int start = textView.getText().length();

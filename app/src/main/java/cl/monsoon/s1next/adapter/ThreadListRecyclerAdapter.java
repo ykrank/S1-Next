@@ -24,20 +24,20 @@ public final class ThreadListRecyclerAdapter
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view =
                 LayoutInflater.from(
-                        viewGroup.getContext()).inflate(R.layout.multi_line_list_item, viewGroup, false);
+                        parent.getContext()).inflate(R.layout.multi_line_list_item, parent, false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        TextView textView = viewHolder.mTextView;
-        Thread thread = mList.get(i);
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        TextView textView = holder.mTextView;
+        Thread thread = mList.get(position);
 
-        viewHolder.mTextView.setText(thread.getTitle());
+        holder.mTextView.setText(thread.getTitle());
 
         // add thread's replies count to each thread
         int start = textView.getText().length();

@@ -180,13 +180,17 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
         }
     }
 
-    public void enableToolbarAutoHideEffect(final MyRecyclerView myRecyclerView) {
+    public void enableToolbarAutoHideEffect(MyRecyclerView myRecyclerView, RecyclerView.OnScrollListener onScrollListener) {
         mToolbarAutoHideMinY = ResourceUtil.getToolbarHeight(this);
 
         myRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (onScrollListener != null) {
+                    onScrollListener.onScrolled(recyclerView, dx, dy);
+                }
+
                 // myRecyclerView.computeVerticalScrollOffset() may cause poor performance
                 // so we also check mIsToolbarShown though we will do it later (over showOrHideToolbar(boolean))
                 if (mIsToolbarShown && dy > 0

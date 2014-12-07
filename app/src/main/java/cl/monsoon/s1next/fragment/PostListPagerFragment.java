@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,10 +33,18 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     private static final String ARG_THREAD_ID = "thread_id";
     private static final String ARG_PAGE_NUM = "page_num";
 
+    /**
+     * The serialization (saved instance state) Bundle key representing whether
+     * {@link cl.monsoon.s1next.widget.MyRecyclerView} is endless loading when configuration changed.
+     */
+    private static final String STATE_IS_ENDLESS_LOADING = "is_endless_loading";
+
     private CharSequence mThreadId;
     private int mPageNum;
 
     private PostListRecyclerAdapter mRecyclerAdapter;
+
+    private boolean mIsEndlessLoading;
 
     private OnPagerInteractionCallback mOnPagerInteractionCallback;
 
@@ -56,6 +65,10 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
 
         mThreadId = getArguments().getCharSequence(ARG_THREAD_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
+
+        if (savedInstanceState != null) {
+            mIsEndlessLoading = savedInstanceState.getBoolean(STATE_IS_ENDLESS_LOADING);
+        }
     }
 
     @Override
@@ -76,7 +89,35 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                 recyclerView,
                 getResources().getDimensionPixelSize(R.dimen.recycler_view_card_padding),
                 true);
-        enableToolbarAutoHideEffect(recyclerView);
+        enableToolbarAutoHideEffect(recyclerView, new RecyclerView.OnScrollListener() {
+
+            private final LinearLayoutManager mLinearLayoutManager =
+                    (LinearLayoutManager) recyclerView.getLayoutManager();
+
+            /**
+             * Endless Scrolling with RecyclerView.
+             */
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy < 0) {
+                    return;
+                }
+
+                int lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
+                int itemCount = mLinearLayoutManager.getItemCount();
+
+                if (!mIsEndlessLoading
+                        && lastVisibleItem == itemCount - 1
+                        && mPageNum == mOnPagerInteractionCallback.getTotalPages()
+                        && !isLoading()) {
+
+                    mIsEndlessLoading = true;
+                    setSwipeRefreshLayoutEnabled(false);
+                    mRecyclerAdapter.showFooterProgress();
+                    onRefresh();
+                }
+            }
+        });
     }
 
     @Override
@@ -135,6 +176,13 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean(STATE_IS_ENDLESS_LOADING, mIsEndlessLoading);
+    }
+
     private CharSequence getThreadTitle() {
         CharSequence title = getActivity().getTitle();
         // remove two space and page number's length
@@ -151,6 +199,18 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     public void onPostExecute(AsyncResult<PostListWrapper> asyncResult) {
         super.onPostExecute(asyncResult);
 
+        if (mIsEndlessLoading) {
+            // mRecyclerAdapter.getItemCount() = 0 when configuration changes (like orientation changes)
+            if (mRecyclerAdapter.getItemCount() == 0) {
+                mIsEndlessLoading = true;
+                setSwipeRefreshLayoutEnabled(false);
+                mRecyclerAdapter.showFooterProgress();
+            } else {
+                mRecyclerAdapter.hideFooterProgress();
+                mIsEndlessLoading = false;
+            }
+        }
+
         if (asyncResult.exception != null) {
             if (getUserVisibleHint()) {
                 AsyncResult.handleException(asyncResult.exception);
@@ -159,9 +219,8 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
             try {
                 PostList postList = asyncResult.data.unwrap();
                 mRecyclerAdapter.setDataSet(postList.getPostList());
-                mRecyclerAdapter.notifyDataSetChanged();
 
-                mOnPagerInteractionCallback.setCount(postList.getPostListInfo().getReplies() + 1);
+                mOnPagerInteractionCallback.setTotalPages(postList.getPostListInfo().getReplies() + 1);
             } catch (NullPointerException e) {
                 ToastHelper.showByResId(R.string.message_server_error);
             }
@@ -173,9 +232,11 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
      */
     public static interface OnPagerInteractionCallback {
 
+        public int getTotalPages();
+
         /**
-         * Callback to set actual page which used for {@link android.support.v4.view.PagerAdapter}
+         * Callback to set actual total pages which used for {@link android.support.v4.view.PagerAdapter}
          */
-        public void setCount(int i);
+        public void setTotalPages(int i);
     }
 }
