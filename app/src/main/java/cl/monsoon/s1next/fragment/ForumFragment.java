@@ -23,7 +23,7 @@ import cl.monsoon.s1next.model.mapper.ForumGroupListWrapper;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.MyRecyclerView;
-import cl.monsoon.s1next.widget.RecyclerViewOnItemTouchListener;
+import cl.monsoon.s1next.widget.RecyclerViewHelper;
 
 /**
  * A Fragment representing forums.
@@ -55,19 +55,29 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
         // the forum list's each element has fixed size
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnItemTouchListener(
-                new RecyclerViewOnItemTouchListener(
+                new RecyclerViewHelper(
                         getActivity(),
-                        (position) -> {
-                            Intent intent = new Intent(
-                                    ForumFragment.this.getActivity(),
-                                    ThreadListActivity.class);
+                        recyclerView,
+                        new RecyclerViewHelper.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                Intent intent = new Intent(
+                                        ForumFragment.this.getActivity(),
+                                        ThreadListActivity.class);
 
-                            Forum forum = mRecyclerAdapter.getItem(position);
-                            intent.putExtra(ThreadListActivity.ARG_FORUM_TITLE, forum.getName());
-                            intent.putExtra(ThreadListActivity.ARG_FORUM_ID, forum.getId());
-                            intent.putExtra(ThreadListActivity.ARG_THREADS, forum.getThreads());
+                                Forum forum = mRecyclerAdapter.getItem(position);
 
-                            startActivity(intent);
+                                intent.putExtra(ThreadListActivity.ARG_FORUM_TITLE, forum.getName())
+                                        .putExtra(ThreadListActivity.ARG_FORUM_ID, forum.getId())
+                                        .putExtra(ThreadListActivity.ARG_THREADS, forum.getThreads());
+
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onItemLongClick(int position) {
+
+                            }
                         })
         );
 

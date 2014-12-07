@@ -16,13 +16,12 @@ import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.PostListActivity;
 import cl.monsoon.s1next.adapter.ThreadListRecyclerAdapter;
-import cl.monsoon.s1next.model.Thread;
 import cl.monsoon.s1next.model.list.ThreadList;
 import cl.monsoon.s1next.model.mapper.ThreadListWrapper;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.MyRecyclerView;
-import cl.monsoon.s1next.widget.RecyclerViewOnItemTouchListener;
+import cl.monsoon.s1next.widget.RecyclerViewHelper;
 
 /**
  * A Fragment representing one of the pages of threads.
@@ -75,23 +74,46 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
         recyclerView.setAdapter(mRecyclerAdapter);
 
         recyclerView.addOnItemTouchListener(
-                new RecyclerViewOnItemTouchListener(
+                new RecyclerViewHelper(
                         getActivity(),
-                        (position) -> {
-                            Intent intent = new Intent(
-                                    ThreadListPagerFragment.this.getActivity(),
-                                    PostListActivity.class);
+                        recyclerView,
+                        new RecyclerViewHelper.OnItemClickListener() {
 
-                            Thread thread = mRecyclerAdapter.getItem(position);
-                            intent.putExtra(PostListActivity.ARG_THREAD_TITLE, thread.getTitle());
-                            intent.putExtra(PostListActivity.ARG_THREAD_ID, thread.getId());
-                            intent.putExtra(
-                                    PostListActivity.ARG_POST_REPLIES,
-                                    thread.getReplies() + 1);
+                            @Override
+                            public void onItemClick(int position) {
+                                startActivity(position, false);
+                            }
 
-                            startActivity(intent);
-                        })
-        );
+                            @Override
+                            public void onItemLongClick(int position) {
+                                // cause NullPointerException sometimes when orientation changes
+                                try {
+                                    startActivity(position, true);
+                                } catch (NullPointerException ignore) {
+
+                                }
+                            }
+
+                            private void startActivity(int position, boolean shouldGoToLastPage) {
+                                Intent intent = new Intent(
+                                        ThreadListPagerFragment.this.getActivity(),
+                                        PostListActivity.class);
+
+                                cl.monsoon.s1next.model.Thread thread =
+                                        mRecyclerAdapter.getItem(position);
+
+                                intent.putExtra(PostListActivity.ARG_THREAD_TITLE, thread.getTitle())
+                                        .putExtra(PostListActivity.ARG_THREAD_ID, thread.getId())
+                                        .putExtra(PostListActivity.ARG_POST_REPLIES, thread.getReplies() + 1);
+
+                                if (shouldGoToLastPage) {
+                                    intent.putExtra(PostListActivity.ARG_SHOULD_GO_TO_LAST_PAGE, true);
+                                }
+
+                                ThreadListPagerFragment.this.startActivity(intent);
+                            }
+                        }
+                ));
 
         setupRecyclerViewPadding(
                 recyclerView,

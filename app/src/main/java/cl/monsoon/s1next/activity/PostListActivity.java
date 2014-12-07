@@ -47,6 +47,9 @@ public final class PostListActivity
     public final static String ARG_THREAD_ID = "thread_id";
     public final static String ARG_POST_REPLIES = "post_replies";
 
+    public final static String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
+
+
     /**
      * The serialization (saved instance state) Bundle key representing
      * SeekBar's progress when page flip dialog is showing.
@@ -123,6 +126,11 @@ public final class PostListActivity
 
             }
         });
+
+        // set ViewPager to last page when true
+        if (getIntent().getBooleanExtra(ARG_SHOULD_GO_TO_LAST_PAGE, false)) {
+            mViewPager.setCurrentItem(mTotalPages - 1);
+        }
 
         if (savedInstanceState != null) {
             mSeekBarProgress = savedInstanceState.getInt(STATE_SEEKBAR_PROGRESS);
