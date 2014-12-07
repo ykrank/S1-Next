@@ -203,6 +203,7 @@ public abstract class BaseFragment<D extends Deserialization>
 
     @Override
     public void onPostExecute(AsyncResult<D> dAsyncResult) {
+        mSwipeRefreshLayout.setRefreshing(false);
         mSwipeRefreshLayout.setEnabled(true);
         //noinspection ConstantConditions
         getView().findViewById(R.id.progressbar).setVisibility(View.GONE);
