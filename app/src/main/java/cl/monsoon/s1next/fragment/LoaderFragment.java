@@ -24,7 +24,7 @@ public abstract class LoaderFragment extends Fragment
      * The serialization (saved instance state) Bundle key representing
      * whether is loading when configuration changed.
      */
-    private static final String STATE_LOADING = "loading";
+    private static final String STATE_IS_LOADING = "is_loading";
 
     /**
      * The serialization (saved instance state) Bundle key representing
@@ -37,7 +37,7 @@ public abstract class LoaderFragment extends Fragment
     /**
      * Whether {@link android.content.Loader} is loading.
      */
-    private Boolean mLoading = false;
+    private Boolean mIsLoading = false;
     private int mLoaderId;
 
     private ProgressDialog mProgressDialog;
@@ -47,7 +47,7 @@ public abstract class LoaderFragment extends Fragment
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null) {
-            mLoading = savedInstanceState.getBoolean(STATE_LOADING);
+            mIsLoading = savedInstanceState.getBoolean(STATE_IS_LOADING);
             mLoaderId = savedInstanceState.getInt(STATE_ID_LOADER);
         }
     }
@@ -57,7 +57,7 @@ public abstract class LoaderFragment extends Fragment
         super.onResume();
 
         // show ProgressDialog if Loader is still loading (works when configuration changed)
-        if (mLoading) {
+        if (mIsLoading) {
             showProgressDialog();
             mLoader = getLoaderManager().initLoader(mLoaderId, null, this);
         }
@@ -74,7 +74,7 @@ public abstract class LoaderFragment extends Fragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putBoolean(STATE_LOADING, mLoading);
+        outState.putBoolean(STATE_IS_LOADING, mIsLoading);
         outState.putInt(STATE_ID_LOADER, mLoaderId);
     }
 
@@ -100,7 +100,7 @@ public abstract class LoaderFragment extends Fragment
         } else {
             throw new ClassCastException(mLoader + " must extend HttpGetLoader.");
         }
-        mLoading = false;
+        mIsLoading = false;
     }
 
     private void dismissProgressDialog() {
@@ -110,7 +110,7 @@ public abstract class LoaderFragment extends Fragment
     }
 
     void startLoader(int loaderId) {
-        mLoading = true;
+        mIsLoading = true;
         mLoaderId = loaderId;
         mLoader = getLoaderManager().getLoader(mLoaderId);
         if (mLoader == null) {
@@ -132,7 +132,7 @@ public abstract class LoaderFragment extends Fragment
 
     @Override
     public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> data) {
-        mLoading = false;
+        mIsLoading = false;
         dismissProgressDialog();
     }
 

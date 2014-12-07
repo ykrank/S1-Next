@@ -27,7 +27,7 @@ public final class TouchImageView extends ImageView implements View.OnTouchListe
 
     private final Matrix mMatrix = new Matrix();
 
-    private boolean mFirst = true;
+    private boolean mIsFirst = true;
 
     public TouchImageView(Context context) {
         super(context);
@@ -71,8 +71,8 @@ public final class TouchImageView extends ImageView implements View.OnTouchListe
             return;
         }
 
-        if (mFirst) {
-            mFirst = false;
+        if (mIsFirst) {
+            mIsFirst = false;
 
             int dx = getWidth() - width;
             int dy = getHeight() - height;

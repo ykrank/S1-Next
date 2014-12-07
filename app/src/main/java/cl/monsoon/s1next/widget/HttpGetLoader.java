@@ -51,7 +51,7 @@ public class HttpGetLoader<D extends Deserialization> extends AsyncTaskLoader<As
         }
 
         if (takeContentChanged() || mAsyncResult == null) {
-            // force an asynchronous load.
+            // force an asynchronous load
             forceLoad();
         }
     }

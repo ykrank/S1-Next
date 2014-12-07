@@ -193,7 +193,8 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
 
                 // myRecyclerView.computeVerticalScrollOffset() may cause poor performance
                 // so we also check mIsToolbarShown though we will do it later (over showOrHideToolbar(boolean))
-                if (mIsToolbarShown && dy > 0
+                if (mIsToolbarShown
+                        && dy > 0
                         && myRecyclerView.computeVerticalScrollOffset() >= mToolbarAutoHideMinY) {
                     showOrHideToolbar(false);
                 } else if (dy < 0) {

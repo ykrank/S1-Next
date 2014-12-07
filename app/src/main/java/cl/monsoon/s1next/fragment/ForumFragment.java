@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.ThreadListActivity;
+import cl.monsoon.s1next.activity.ToolbarInterface;
 import cl.monsoon.s1next.adapter.ForumListRecyclerAdapter;
 import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.model.list.ForumGroupList;
@@ -23,7 +24,6 @@ import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.MyRecyclerView;
 import cl.monsoon.s1next.widget.RecyclerViewOnItemTouchListener;
-import cl.monsoon.s1next.activity.ToolbarInterface;
 
 /**
  * A Fragment representing forums.
@@ -40,7 +40,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_recycler_view, container, false);
+        return inflater.inflate(R.layout.fragment_base, container, false);
     }
 
     @Override
