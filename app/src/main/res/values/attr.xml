@@ -5,6 +5,9 @@
     <!-- used in fragment_reply.xml -->
     <attr name="secondaryBackground" format="color"/>
 
+    <attr name="mySpinner" format="reference"/>
+    <attr name="myCardView" format="reference"/>
+
     <attr name="menuCross" format="reference"/>
     <attr name="menuPersonAdd" format="reference"/>
     <attr name="menuReply" format="reference"/>
@@ -12,7 +15,6 @@
     <attr name="drawerAccountCircle" format="reference"/>
     <attr name="iconSettings" format="reference"/>
     <attr name="iconSend" format="reference"/>
-    <attr name="myCardView" format="reference"/>
 
     <declare-styleable name="BezelImageView">
         <attr name="maskDrawable" format="reference"/>

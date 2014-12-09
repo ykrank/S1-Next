@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="light_blue_500">#03A9F4</color>
+    <color name="light_blue_700">#039BE5</color>
+    <color name="pink_A200">#FF4081</color>
+
     <color name="swipe_refresh_1">#FF4081</color>
     <color name="swipe_refresh_2">#FFAB40</color>
     <color name="swipe_refresh_3">#40C4FF</color>
