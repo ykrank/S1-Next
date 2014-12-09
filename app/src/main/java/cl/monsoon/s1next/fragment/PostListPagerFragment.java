@@ -103,11 +103,11 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                     return;
                 }
 
-                int lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
+                int lastCompletelyVisibleItem = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
                 int itemCount = mLinearLayoutManager.getItemCount();
 
                 if (!mIsEndlessLoading
-                        && lastVisibleItem == itemCount - 1
+                        && lastCompletelyVisibleItem == itemCount - 1
                         && mPageNum == mOnPagerInteractionCallback.getTotalPages()
                         && !isLoading()) {
 
