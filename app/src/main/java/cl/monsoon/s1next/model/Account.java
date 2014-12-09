@@ -40,8 +40,13 @@ public class Account {
         } else {
             if (!isUserExisted) {
                 User.setName(username);
-                // login in
-                User.sendLoginBroadcast();
+
+                // we should confirm both username and uid are exist
+                // then send login Broadcast
+                if (uid != null) {
+                    // login in
+                    User.sendLoginBroadcast();
+                }
             }
         }
     }
@@ -58,6 +63,11 @@ public class Account {
             User.setUid(null);
         } else {
             User.setUid(uid);
+
+            // we don't send login Broadcast twice actually
+            if (username != null) {
+                User.sendLoginBroadcast();
+            }
         }
     }
 
