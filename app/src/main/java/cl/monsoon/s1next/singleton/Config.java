@@ -18,12 +18,6 @@ public enum Config {
     public static final int DARK_THEME = R.style.DarkTheme;
 
     /**
-     * Used in {@link cl.monsoon.s1next.activity.ReplyActivity}.
-     */
-    public static final int TRANSLUCENT_LIGHT_THEME = R.style.TranslucentLightTheme;
-    public static final int TRANSLUCENT_DARK_THEME = R.style.TranslucentDarkTheme;
-
-    /**
      * Take care of Menu ~ open in browser ~
      * when these numbers are not default.
      */
@@ -41,12 +35,6 @@ public enum Config {
     }
 
     public static void setCurrentTheme(int theme) {
-        if (theme == TRANSLUCENT_LIGHT_THEME) {
-            throw new IllegalStateException("You can't set theme to TRANSLUCENT_LIGHT_THEME.");
-        } else if (theme == TRANSLUCENT_DARK_THEME) {
-            throw new IllegalStateException("You can't set theme to TRANSLUCENT_DARK_THEME.");
-        }
-
         INSTANCE.currentTheme = theme;
 
         // get theme's accent color

@@ -50,7 +50,6 @@
 
         <activity
             android:name=".activity.ReplyActivity"
-            android:theme="@style/TranslucentDarkTheme"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity

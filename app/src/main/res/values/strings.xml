@@ -7,7 +7,6 @@
     <string name="action_login">Sign in</string>
     <string name="avatar_content_desc">Avatar</string>
     <string name="picture_content_desc">Picture</string>
-    <string name="send_content_desc">Send</string>
 
     <!-- drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -26,6 +25,7 @@
     <string name="menu_refresh">Refresh</string>
     <string name="menu_browser">Open in browser</string>
     <string name="menu_reply">Reply</string>
+    <string name="menu_reply_post">Reply</string>
 
     <!-- toast -->
     <string name="message_network_error">There was a network error</string>
@@ -50,6 +50,9 @@
     <string name="dialog_seekbar_title_page_flip">Go to…</string>
 
     <!-- reply activity & fragment -->
+
+    <!-- Because thread's title usually is chinese, so this string is Chinese for all locales. -->
+    <string name="reply_activity_title_prefix" translatable="false">"回复主题 - "</string>
     <string name="prompt_reply">Write something…</string>
     <string name="dialog_progress_title_reply">Replying…</string>
     <string name="dialog_progress_message_back">Do you want to discard this post?</string>

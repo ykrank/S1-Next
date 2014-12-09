@@ -22,6 +22,8 @@
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
         <item name="menuReply">@drawable/selector_menu_comment_black</item>
         <item name="menuPageFlip">@drawable/selector_menu_swap_horiz_black</item>
+        <item name="menuSend">@drawable/selector_menu_send_black</item>
+
         <item name="iconSettings">@drawable/ic_settings_grey600_24dp</item>
     </style>
 
@@ -35,38 +37,8 @@
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
         <item name="menuReply">@drawable/selector_menu_comment_white</item>
         <item name="menuPageFlip">@drawable/selector_menu_swap_horiz_white</item>
+        <item name="menuSend">@drawable/selector_menu_send_white</item>
         <item name="iconSettings">@drawable/ic_settings_white_24dp</item>
-    </style>
-
-    <style name="TranslucentLightTheme" parent="Theme.AppCompat.Light">
-        <item name="windowActionBar">false</item>
-        <!-- disable animations -->
-        <item name="android:windowAnimationStyle">@android:style/Animation</item>
-
-        <!-- copy from @android:style/Theme.Translucent.NoTitleBar -->
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@color/translucent_light_50</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowIsTranslucent">true</item>
-
-        <item name="secondaryBackground">@color/background_material_light</item>
-
-        <item name="iconSend">@drawable/selector_send_black</item>
-        <item name="myCardView">@style/LightCardView</item>
-    </style>
-
-    <style name="TranslucentDarkTheme" parent="Theme.AppCompat">
-        <item name="windowActionBar">false</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@color/translucent_dark_30</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="secondaryBackground">@color/background_material_dark</item>
-        <item name="iconSend">@drawable/selector_send_white</item>
-        <item name="myCardView">@style/DarkCardView</item>
     </style>
 
     <style name="GalleryTheme" parent="Theme.AppCompat">

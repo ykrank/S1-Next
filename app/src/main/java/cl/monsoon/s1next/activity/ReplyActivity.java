@@ -5,16 +5,14 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.ReplyFragment;
-import cl.monsoon.s1next.singleton.Config;
 
 /**
  * An Activity to send a reply.
  */
-public final class ReplyActivity extends ActionBarActivity {
+public final class ReplyActivity extends BaseActivity {
 
     public final static String ARG_THREAD_TITLE = "thread_title";
     public final static String ARG_THREAD_ID = "thread_id";
@@ -23,22 +21,21 @@ public final class ReplyActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // default theme is TranslucentDarkTheme
-        if (Config.getCurrentTheme() == Config.LIGHT_THEME) {
-            setTheme(Config.TRANSLUCENT_LIGHT_THEME);
-        } else {
-            setTheme(Config.TRANSLUCENT_DARK_THEME);
-        }
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reply);
+        setContentView(R.layout.activity);
 
-        CharSequence title = getIntent().getStringExtra(ARG_THREAD_TITLE);
+        setNavDrawerEnabled(false);
+        setupNavCrossIcon();
+
+        setTitle(
+                getText(R.string.reply_activity_title_prefix)
+                        + getIntent().getStringExtra(ARG_THREAD_TITLE));
+
         String url = getIntent().getStringExtra(ARG_THREAD_ID);
 
         Fragment fragment = getFragmentManager().findFragmentByTag(ReplyFragment.TAG);
         if (fragment == null) {
-            mReplyFragment = ReplyFragment.newInstance(title, url);
+            mReplyFragment = ReplyFragment.newInstance(url);
 
             getFragmentManager().beginTransaction()
                     .replace(R.id.frame_layout, mReplyFragment, ReplyFragment.TAG).commit();

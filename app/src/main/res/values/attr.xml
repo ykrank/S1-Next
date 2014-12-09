@@ -13,8 +13,9 @@
     <attr name="menuReply" format="reference"/>
     <attr name="menuPageFlip" format="reference"/>
     <attr name="drawerAccountCircle" format="reference"/>
+    <attr name="menuSend" format="reference"/>
+
     <attr name="iconSettings" format="reference"/>
-    <attr name="iconSend" format="reference"/>
 
     <declare-styleable name="BezelImageView">
         <attr name="maskDrawable" format="reference"/>

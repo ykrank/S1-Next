@@ -6,14 +6,13 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.squareup.okhttp.RequestBody;
 
 import cl.monsoon.s1next.Api;
@@ -29,11 +28,10 @@ import cl.monsoon.s1next.widget.HttpPostLoader;
 /**
  * Send the reply via EditView.
  */
-public final class ReplyFragment extends LoaderFragment implements View.OnClickListener {
+public final class ReplyFragment extends LoaderFragment {
 
     public static final String TAG = "reply_fragment";
 
-    private final static String ARG_THREAD_TITLE = "thread_title";
     private static final String ARG_THREAD_ID = "thread_id";
 
     private static final String STATUS_REPLY_SUCCESS = "post_reply_succeed";
@@ -48,11 +46,12 @@ public final class ReplyFragment extends LoaderFragment implements View.OnClickL
      */
     private EditText mReplyView;
 
-    public static ReplyFragment newInstance(CharSequence title, String threadId) {
+    private MenuItem mMenuReplyPost;
+
+    public static ReplyFragment newInstance(String threadId) {
         ReplyFragment fragment = new ReplyFragment();
 
         Bundle args = new Bundle();
-        args.putCharSequence(ARG_THREAD_TITLE, title);
         args.putString(ARG_THREAD_ID, threadId);
         fragment.setArguments(args);
 
@@ -70,30 +69,7 @@ public final class ReplyFragment extends LoaderFragment implements View.OnClickL
 
         mThreadId = getArguments().getString(ARG_THREAD_ID);
 
-        // show user's avatar
-        Glide.with(this)
-                .load(Api.getUrlAvatarMedium(User.getUid()))
-                .error(R.drawable.ic_avatar_placeholder)
-                .transform(new CenterCrop(Glide.get(getActivity()).getBitmapPool()))
-                .into((ImageView) view.findViewById(R.id.avatar));
-
-        String username = User.getName();
-        if (TextUtils.isEmpty(username)) {
-            throw new IllegalStateException("Username must not be null.");
-        }
-
-        // show username and post title
-        ((TextView) view.findViewById(R.id.username)).setText(username);
-        ((TextView) view.findViewById(R.id.title))
-                .setText(getArguments().getCharSequence(ARG_THREAD_TITLE));
-
         mReplyView = (EditText) view.findViewById(R.id.comment_or_reply);
-
-        View sendButton = view.findViewById(R.id.send);
-        sendButton.setOnClickListener(this);
-
-        // disable send button because the content of reply is empty
-        sendButton.setEnabled(false);
         mReplyView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -107,28 +83,51 @@ public final class ReplyFragment extends LoaderFragment implements View.OnClickL
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (TextUtils.isEmpty(s.toString())) {
-                    sendButton.setEnabled(false);
-                } else {
-                    sendButton.setEnabled(true);
+                if (mMenuReplyPost == null) {
+                    return;
                 }
+
+                // disable send button because the content of reply is empty
+                mMenuReplyPost.setEnabled(!TextUtils.isEmpty(s.toString()));
             }
         });
     }
 
     @Override
-    public void onClick(View v) {
-        showProgressDialog();
-        // We need to get authenticity token (formhash) if we haven't.
-        // Then posts the rely.
-        // see cl.monsoon.s1next.Api#URL_REPLY_HELPER
-        int loaderId;
-        if (TextUtils.isEmpty(User.getAuthenticityToken())) {
-            loaderId = ID_LOADER_GET_AUTHENTICITY_TOKEN;
-        } else {
-            loaderId = ID_LOADER_POST_REPLY;
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.fragment_reply, menu);
+
+        mMenuReplyPost = menu.findItem(R.id.menu_reply_post);
+        mMenuReplyPost.setEnabled(!TextUtils.isEmpty(mReplyView.getText().toString()));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_reply_post:
+                showProgressDialog();
+                // We need to get authenticity token (formhash) if we haven't.
+                // Then posts the rely.
+                // see cl.monsoon.s1next.Api#URL_REPLY_HELPER
+                int loaderId;
+                if (TextUtils.isEmpty(User.getAuthenticityToken())) {
+                    loaderId = ID_LOADER_GET_AUTHENTICITY_TOKEN;
+                } else {
+                    loaderId = ID_LOADER_POST_REPLY;
+                }
+                startLoader(loaderId);
+
+                return true;
         }
-        startLoader(loaderId);
+
+        return super.onOptionsItemSelected(item);
     }
 
     public boolean isReplyEmpty() {
