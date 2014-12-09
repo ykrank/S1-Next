@@ -257,7 +257,7 @@ public final class PostListActivity
     private void showPageFlipDialog() {
         View view =
                 getLayoutInflater().inflate(
-                        R.layout.dialog_seekbar, (ViewGroup) findViewById(R.id.root), false);
+                        R.layout.dialog_seekbar, (ViewGroup) findViewById(R.id.drawer_layout), false);
 
         if (mSeekBarProgress == -1) {
             mSeekBarProgress = mViewPager.getCurrentItem();

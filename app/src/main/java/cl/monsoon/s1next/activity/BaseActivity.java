@@ -14,7 +14,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -47,8 +46,6 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
     public static final String ACTION_CHANGE_THEME = "change_theme";
 
     private Toolbar mToolbar;
-    private CharSequence mTitle;
-    private ActionMenuView mActionMenuView;
 
     private boolean mIsToolbarShown = true;
 
@@ -65,12 +62,9 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
     private boolean mHasNavDrawer = true;
     private boolean mHasNavDrawerIndicator = true;
 
-    /**
-     * The user view is the area at the top of drawer.
-     */
-    private View mDrawerUserView;
-    private TextView usernameView;
-    private ImageView userAvatarView;
+    private View mDrawerTopBackgroundView;
+    private ImageView mDrawerUserAvatarView;
+    private TextView mDrawerUsernameView;
 
     private BroadcastReceiver themeChangeReceiver;
     private BroadcastReceiver userLoginStatusReceiver;
@@ -155,10 +149,6 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
             // Sync the toggle state after onRestoreInstanceState has occurred.
             if (mDrawerToggle != null) {
                 mDrawerToggle.syncState();
-            }
-
-            if (isNavDrawerOpened()) {
-                setupGlobalToolbar();
             }
         }
     }
@@ -260,14 +250,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
 
-                setupGlobalToolbar();
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-
-                restoreToolbar();
+                showOrHideToolbar(true);
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -296,18 +279,16 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
             return;
         }
 
-        mDrawerUserView = mDrawer.findViewById(R.id.drawer_user_view);
-        if (mDrawerUserView != null) {
-            usernameView = (TextView) mDrawerUserView.findViewById(R.id.drawer_username);
-            userAvatarView = (ImageView) mDrawerUserView.findViewById(R.id.drawer_user_avatar);
+        mDrawerTopBackgroundView = mDrawer.findViewById(R.id.drawer_top_background);
+        mDrawerUserAvatarView = (ImageView) mDrawer.findViewById(R.id.drawer_user_avatar);
+        mDrawerUsernameView = (TextView) mDrawer.findViewById(R.id.drawer_username);
 
-            // Show default avatar and login prompt if user hasn't logged in,
-            // else show user's avatar and username.
-            if (TextUtils.isEmpty(User.getName())) {
-                setupDrawerLoginPrompt();
-            } else {
-                setupDrawerUserView();
-            }
+        // Show default avatar and login prompt if user hasn't logged in,
+        // else show user's avatar and username.
+        if (TextUtils.isEmpty(User.getName())) {
+            setupDrawerLoginPrompt();
+        } else {
+            setupDrawerUserView();
         }
 
         // add settings item
@@ -335,19 +316,22 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
      * Show default avatar and login prompt if user hasn't logged in.
      */
     private void setupDrawerLoginPrompt() {
-        if (mDrawerLayout == null || mDrawer == null && usernameView != null) {
+        if (mDrawerLayout == null || mDrawer == null
+                || mDrawerTopBackgroundView == null
+                || mDrawerUserAvatarView == null || mDrawerUsernameView == null) {
             return;
         }
 
         // setup default avatar
         Glide.with(this)
-                .load(R.drawable.ic_avatar_placeholder)
+                .load(R.drawable.ic_drawer_avatar_placeholder)
                 .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
-                .into(userAvatarView);
+                .into(mDrawerUserAvatarView);
 
         // start LoginActivity if clicked
-        usernameView.setText(R.string.action_login);
-        mDrawerUserView.setOnClickListener(v -> {
+        mDrawerUsernameView.setText(R.string.action_login);
+
+        mDrawerTopBackgroundView.setOnClickListener(v -> {
             mDrawerLayout.closeDrawer(mDrawer);
 
             Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
@@ -359,74 +343,27 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
      * Show user's avatar and username if user has logged in.
      */
     void setupDrawerUserView() {
-        if (mDrawerLayout == null || mDrawer == null && usernameView != null) {
+        if (mDrawerTopBackgroundView == null
+                || mDrawerUserAvatarView == null || mDrawerUsernameView == null) {
             return;
         }
 
         // setup user's avatar
         Glide.with(this)
                 .load(Api.getUrlAvatarMedium(User.getUid()))
-                .error(R.drawable.ic_avatar_placeholder)
+                .error(R.drawable.ic_drawer_avatar_placeholder)
                 .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
-                .into(userAvatarView);
+                .into(mDrawerUserAvatarView);
 
         // show logout dialog if clicked
-        usernameView.setText(User.getName());
-        mDrawer.findViewById(R.id.drawer_user_view).setOnClickListener(v ->
+        mDrawerUsernameView.setText(User.getName());
+
+        mDrawerTopBackgroundView.setOnClickListener(v ->
                 new LogoutDialog().show(getFragmentManager(), LogoutDialog.TAG));
     }
 
     void setupOthersWhenUserLoginStatusChanged(Intent intent) {
 
-    }
-
-    /**
-     * Per the navigation drawer design guidelines, updates the ToolBar to show the global app
-     * context when drawer opened, rather than just what's in the current screen.
-     */
-    void setupGlobalToolbar() {
-        if (mToolbar == null) {
-            return;
-        }
-
-        mTitle = getTitle();
-        setTitle(R.string.app_name);
-
-        // Hide menu in Toolbar.
-        // Because mToolbar.getChildAt() doesn't return
-        // right view at the specified position,
-        // so use loop to get the ActionMenuView.
-        if (mActionMenuView == null) {
-            int count = mToolbar.getChildCount();
-            for (int i = 0; i < count; i++) {
-                View view = mToolbar.getChildAt(i);
-                if (view instanceof ActionMenuView) {
-                    mActionMenuView = (ActionMenuView) view;
-                    mActionMenuView.setVisibility(View.GONE);
-                    break;
-                }
-            }
-        } else {
-            mActionMenuView.setVisibility(View.GONE);
-        }
-    }
-
-    /**
-     * Restore ToolBar when drawer closed.
-     * <p>
-     * Subclass must call {@code super.restoreToolbar()}.
-     */
-    void restoreToolbar() {
-        if (mToolbar == null) {
-            return;
-        }
-
-        setTitle(mTitle);
-
-        // show menu in Toolbar
-        if (mActionMenuView != null) {
-            mActionMenuView.setVisibility(View.VISIBLE);
-        }
     }
 
     Toolbar getToolbar() {
@@ -439,10 +376,6 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
 
     void setNavDrawerIndicatorEnabled(boolean enabled) {
         mHasNavDrawerIndicator = enabled;
-    }
-
-    private boolean isNavDrawerOpened() {
-        return mDrawerLayout != null && mDrawer != null && mDrawerLayout.isDrawerOpen(mDrawer);
     }
 
     public static class LogoutDialog extends DialogFragment {

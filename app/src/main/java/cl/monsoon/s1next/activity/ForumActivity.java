@@ -37,7 +37,6 @@ public final class ForumActivity
     private int mSelectedPosition = 0;
 
     private Spinner mSpinner;
-    private View mSpinnerView;
 
     private ToolbarInterface.OnDropDownItemSelectedListener mOnToolbarDropDownItemSelectedListener;
 
@@ -74,24 +73,6 @@ public final class ForumActivity
         outState.putInt(STATE_SPINNER_SELECTED_POSITION, mSelectedPosition);
     }
 
-    @Override
-    void setupGlobalToolbar() {
-        super.setupGlobalToolbar();
-
-        if (mSpinnerView != null) {
-            mSpinnerView.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    void restoreToolbar() {
-        super.restoreToolbar();
-
-        if (mSpinnerView != null) {
-            mSpinnerView.setVisibility(View.VISIBLE);
-        }
-    }
-
     /**
      * Implement {@link android.widget.AdapterView.OnItemSelectedListener}.
      */
@@ -124,8 +105,8 @@ public final class ForumActivity
             // We disable clickable in Spinner
             // and let its parents LinearLayout to handle
             // click event in order to increase clickable area.
-            mSpinnerView = getToolbar().findViewById(R.id.toolbar_layout);
-            mSpinnerView.setOnClickListener(v -> mSpinner.performClick());
+            View spinnerView = getToolbar().findViewById(R.id.toolbar_layout);
+            spinnerView.setOnClickListener(v -> mSpinner.performClick());
         }
         mSpinner.setAdapter(getSpinnerAdapter(dropDownItemList));
         // invalid index when user's login status has changed

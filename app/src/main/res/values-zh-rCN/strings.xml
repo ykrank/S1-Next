@@ -7,6 +7,8 @@
     <string name="dialog_progress_title_login">登录中…</string>
     <string name="dialog_progress_title_reply">回复中…</string>
     <string name="dialog_seekbar_title_page_flip">前往…</string>
+    <string name="drawer_avatar_content_desc">用户头像</string>
+    <string name="drawer_top_background_content_desc">背景</string>
     <string name="error_field_required">此处不能留空</string>
     <string name="menu_account_new">创建帐户</string>
     <string name="menu_browser">从浏览器中打开</string>

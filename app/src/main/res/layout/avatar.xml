@@ -8,6 +8,6 @@
     s1:borderDrawable="@drawable/circle_border"
     android:layout_width="@dimen/avatar_size"
     android:layout_height="@dimen/avatar_size"
-    android:layout_marginEnd="@dimen/avatar_margin_right"
-    android:layout_marginRight="@dimen/avatar_margin_right"
+    android:layout_marginEnd="@dimen/avatar_margin"
+    android:layout_marginRight="@dimen/avatar_margin"
     android:contentDescription="@string/avatar_content_desc"/>

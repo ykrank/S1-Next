@@ -1,89 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<merge>
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <FrameLayout
-        android:id="@+id/root"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.v4.widget.DrawerLayout
-            android:id="@+id/drawer_layout"
+        <!-- As the main content view, the view below consumes the entire
+             space available using match_parent in both dimensions. -->
+        <FrameLayout
+            android:id="@+id/frame_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <!-- As the main content view, the view below consumes the entire
-                 space available using match_parent in both dimensions. -->
-            <FrameLayout
-                android:id="@+id/frame_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-            <!-- android:layout_gravity="start" tells DrawerLayout to treat
-             this as a sliding drawer on the left side for left-to-right
-             languages and on the right side for right-to-left languages. -->
-            <LinearLayout
-                android:id="@+id/drawer"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:background="?attr/android:windowBackground"
-                android:clickable="true"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/drawer_user_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/single_line_height"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:gravity="center_vertical"
-                    android:paddingEnd="0dp"
-                    android:paddingLeft="@dimen/list_view_item_padding"
-                    android:paddingRight="0dp"
-                    android:paddingStart="@dimen/list_view_item_padding">
-
-                    <cl.monsoon.s1next.widget.BezelImageView
-                        android:id="@+id/drawer_user_avatar"
-                        xmlns:s1="http://schemas.android.com/apk/res-auto"
-                        android:layout_width="@dimen/avatar_size"
-                        android:layout_height="@dimen/avatar_size"
-                        android:layout_marginEnd="@dimen/avatar_margin_right"
-                        android:layout_marginRight="@dimen/avatar_margin_right"
-                        android:contentDescription="@string/avatar_content_desc"
-                        s1:maskDrawable="@drawable/circle_mask"/>
-
-                    <TextView
-                        android:id="@+id/drawer_username"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:ellipsize="end"
-                        android:gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:singleLine="true"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/divider"
-                    android:layout_marginBottom="@dimen/list_view_padding"
-                    android:background="?attr/dividerColor"/>
-
-                <include
-                    android:id="@+id/settings"
-                    layout="@layout/multi_line_list_item"/>
-
-            </LinearLayout>
-
-        </android.support.v4.widget.DrawerLayout>
+            android:layout_height="match_parent"/>
 
         <!-- ToolBar as the ActionBar for the Activity -->
         <include layout="@layout/toolbar"/>
 
     </FrameLayout>
 
-</merge>
+    <!-- android:layout_gravity="start" tells DrawerLayout to treat
+     this as a sliding drawer on the left side for left-to-right
+     languages and on the right side for right-to-left languages. -->
+    <RelativeLayout
+        android:id="@+id/drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="?attr/android:windowBackground"
+        android:clickable="true">
+
+        <ImageView
+            android:id="@+id/drawer_top_background"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/drawer_top_height"
+            android:clickable="true"
+            android:contentDescription="@string/drawer_top_background_content_desc"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_drawer_background"/>
+
+        <cl.monsoon.s1next.widget.BezelImageView
+            android:id="@+id/drawer_user_avatar"
+            xmlns:s1="http://schemas.android.com/apk/res-auto"
+            android:layout_width="@dimen/drawer_avatar_size"
+            android:layout_height="@dimen/drawer_avatar_size"
+            android:layout_marginLeft="@dimen/avatar_margin"
+            android:layout_marginStart="@dimen/avatar_margin"
+            android:layout_marginTop="@dimen/avatar_margin"
+            android:contentDescription="@string/drawer_avatar_content_desc"
+            s1:maskDrawable="@drawable/circle_mask"/>
+
+        <TextView
+            android:id="@+id/drawer_username"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/single_line_height"
+            android:layout_below="@id/drawer_user_avatar"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/list_view_item_padding"
+            android:paddingRight="@dimen/list_view_item_padding"
+            android:paddingStart="@dimen/list_view_item_padding"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/abc_primary_text_material_dark"
+            tools:ignore="NewApi"/>
+
+        <include
+            android:id="@+id/settings"
+            layout="@layout/multi_line_list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/drawer_username"
+            android:layout_marginTop="@dimen/list_view_padding"/>
+
+    </RelativeLayout>
+
+</android.support.v4.widget.DrawerLayout>
