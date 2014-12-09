@@ -13,7 +13,7 @@
 
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
 
-        <item name="dividerColor">@color/black12</item>
+        <item name="dividerColor">@color/black_12</item>
 
         <item name="mySpinner">@style/mySpinner</item>
         <item name="myCardView">@style/LightCardView</item>
@@ -29,7 +29,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="dividerColor">@color/white12</item>
+        <item name="dividerColor">@color/white_12</item>
         <item name="myCardView">@style/DarkCardView</item>
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
@@ -46,7 +46,7 @@
         <!-- copy from @android:style/Theme.Translucent.NoTitleBar -->
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@color/translucentLight50</item>
+        <item name="android:windowBackground">@color/translucent_light_50</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
 
@@ -61,7 +61,7 @@
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@color/translucentDark30</item>
+        <item name="android:windowBackground">@color/translucent_dark_30</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="secondaryBackground">@color/background_material_dark</item>

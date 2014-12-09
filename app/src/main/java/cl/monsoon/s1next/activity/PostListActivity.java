@@ -49,7 +49,6 @@ public final class PostListActivity
 
     public final static String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
 
-
     /**
      * The serialization (saved instance state) Bundle key representing
      * SeekBar's progress when page flip dialog is showing.
@@ -71,7 +70,7 @@ public final class PostListActivity
     private MenuItem mMenuPageFlip;
     private MenuItem mMenuReply;
 
-    private BroadcastReceiver wifiReceiver;
+    private BroadcastReceiver mWifiReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +149,7 @@ public final class PostListActivity
                 || Config.getImagesDownloadStrategy() != Config.DownloadStrategy.NOT) {
             Config.setWifi(NetworkUtil.isWifiConnected());
 
-            wifiReceiver = new BroadcastReceiver() {
+            mWifiReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     Config.setWifi(NetworkUtil.isWifiConnected());
@@ -159,7 +158,7 @@ public final class PostListActivity
 
             IntentFilter intentFilter =
                     new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-            registerReceiver(wifiReceiver, intentFilter);
+            registerReceiver(mWifiReceiver, intentFilter);
         }
     }
 
@@ -167,9 +166,9 @@ public final class PostListActivity
     protected void onPause() {
         super.onPause();
 
-        if (wifiReceiver != null) {
-            unregisterReceiver(wifiReceiver);
-            wifiReceiver = null;
+        if (mWifiReceiver != null) {
+            unregisterReceiver(mWifiReceiver);
+            mWifiReceiver = null;
         }
     }
 
