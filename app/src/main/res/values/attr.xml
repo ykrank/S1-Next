@@ -2,8 +2,6 @@
 <resources>
 
     <attr name="dividerColor" format="color"/>
-    <!-- used in fragment_reply.xml -->
-    <attr name="secondaryBackground" format="color"/>
 
     <attr name="fabColorNormal" format="color"/>
     <attr name="fabColorPressed" format="color"/>
@@ -14,7 +12,6 @@
     <attr name="menuCross" format="reference"/>
     <attr name="menuPersonAdd" format="reference"/>
     <attr name="menuPageFlip" format="reference"/>
-    <attr name="drawerAccountCircle" format="reference"/>
     <attr name="menuSend" format="reference"/>
 
     <attr name="iconSettings" format="reference"/>

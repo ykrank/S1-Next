@@ -15,7 +15,7 @@
     <string name="drawer_top_background_content_desc">background</string>
     <string name="drawer_avatar_content_desc">User avatar</string>
 
-    <string name="dialog_progress_log_out">Sign out?</string>
+    <string name="dialog_message_log_out">Sign out?</string>
     <string name="settings">Settings</string>
 
     <!-- menu button -->
@@ -55,7 +55,7 @@
     <string name="reply_activity_title_prefix" translatable="false">"回复主题 - "</string>
     <string name="prompt_reply">Write something…</string>
     <string name="dialog_progress_title_reply">Replying…</string>
-    <string name="dialog_progress_message_back">Do you want to discard this post?</string>
+    <string name="dialog_message_back_prompt">Do you want to discard this post?</string>
 
     <!-- settings -->
     <string name="pref_general">GENERAL</string>

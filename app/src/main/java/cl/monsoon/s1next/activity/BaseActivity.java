@@ -417,7 +417,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             return
                     new AlertDialog.Builder(getActivity())
-                            .setMessage(R.string.dialog_progress_log_out)
+                            .setMessage(R.string.dialog_message_log_out)
                             .setPositiveButton(android.R.string.ok,
                                     (dialog, which) -> {
                                         if (getActivity() instanceof User.OnLogoutListener) {

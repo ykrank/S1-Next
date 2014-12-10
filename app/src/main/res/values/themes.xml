@@ -4,7 +4,7 @@
     <style name="LightTheme" parent="Theme.AppCompat.Light">
         <!-- Use ToolBar as the ActionBar. -->
         <item name="windowActionBar">false</item>
-        <!--show Contextual Action Bars-->
+        <!-- show contextual action bar -->
         <item name="windowActionModeOverlay">true</item>
         <!-- translucent status bar when API >= 19 -->
         <item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>

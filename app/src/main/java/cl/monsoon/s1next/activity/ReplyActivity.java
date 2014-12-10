@@ -69,7 +69,7 @@ public final class ReplyActivity extends BaseActivity {
 
             return
                     new AlertDialog.Builder(getActivity())
-                            .setMessage(R.string.dialog_progress_message_back)
+                            .setMessage(R.string.dialog_message_back_prompt)
                             .setPositiveButton(android.R.string.ok,
                                     (dialog, which) -> getActivity().finish())
                             .setNegativeButton(

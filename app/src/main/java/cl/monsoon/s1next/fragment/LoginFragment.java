@@ -79,8 +79,6 @@ public final class LoginFragment extends LoaderFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
         inflater.inflate(R.menu.fragment_login, menu);
     }
 
