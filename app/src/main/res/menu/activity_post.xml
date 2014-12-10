@@ -1,16 +1,12 @@
 <?xmlmenu_refresh version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/menu_reply"
-        android:icon="?attr/menuReply"
-        android:orderInCategory="2"
-        android:title="@string/menu_reply"
-        app:showAsAction="ifRoom"/>
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="cl.monsoon.s1next.activity.PostListActivity">
     <item
         android:id="@+id/menu_page_flip"
         android:icon="?attr/menuPageFlip"
-        android:orderInCategory="3"
+        android:orderInCategory="2"
         android:title="@string/menu_page_flip"
         app:showAsAction="ifRoom"/>
 </menu>

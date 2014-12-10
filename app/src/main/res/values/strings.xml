@@ -24,7 +24,6 @@
     <string name="menu_share">Share</string>
     <string name="menu_refresh">Refresh</string>
     <string name="menu_browser">Open in browser</string>
-    <string name="menu_reply">Reply</string>
     <string name="menu_reply_post">Reply</string>
 
     <!-- toast -->
@@ -48,6 +47,7 @@
 
     <!-- post activity -->
     <string name="dialog_seekbar_title_page_flip">Go to…</string>
+    <string name="dialog_message_login_prompt">You can\'t reply without login, please sign in first.</string>
 
     <!-- reply activity & fragment -->
 

@@ -85,7 +85,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
                 recyclerView,
                 getResources().getDimensionPixelSize(R.dimen.list_view_padding),
                 true);
-        enableToolbarAutoHideEffect(recyclerView, null);
+        enableToolbarAndFabAutoHideEffect(recyclerView, null);
     }
 
     @Override

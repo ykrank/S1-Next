@@ -182,9 +182,9 @@ public abstract class BaseFragment<D extends Deserialization>
         updateSwipeRefreshProgressViewPosition();
     }
 
-    void enableToolbarAutoHideEffect(MyRecyclerView recyclerView, RecyclerView.OnScrollListener onScrollListener) {
+    void enableToolbarAndFabAutoHideEffect(MyRecyclerView recyclerView, RecyclerView.OnScrollListener onScrollListener) {
         if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).enableToolbarAutoHideEffect(recyclerView, onScrollListener);
+            ((BaseActivity) getActivity()).enableToolbarAndFabAutoHideEffect(recyclerView, onScrollListener);
         } else {
             throw new ClassCastException(getActivity() + "must extend BaseActivity.");
         }

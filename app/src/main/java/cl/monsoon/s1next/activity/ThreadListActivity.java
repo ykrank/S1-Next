@@ -59,7 +59,7 @@ public final class ThreadListActivity
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                showOrHideToolbar(true);
+                showOrHideToolbarAndFab(true);
             }
 
             @Override

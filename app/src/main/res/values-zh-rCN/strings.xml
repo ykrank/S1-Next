@@ -14,7 +14,6 @@
     <string name="menu_share">分享</string>
     <string name="menu_refresh">刷新</string>
     <string name="menu_browser">从浏览器中打开</string>
-    <string name="menu_reply">回复</string>
     <string name="menu_reply_post">发表回复</string>
     <string name="message_network_error">发生了网络错误</string>
     <string name="message_server_error">无法与服务器进行通信，请稍后再试。</string>
@@ -23,6 +22,7 @@
     <string name="error_field_required">此处不能留空</string>
     <string name="dialog_progress_title_login">登录中…</string>
     <string name="dialog_seekbar_title_page_flip">前往…</string>
+    <string name="dialog_message_login_prompt">您需要登录后，才可以回帖。</string>
     <string name="prompt_reply">写点内容吧…</string>
     <string name="dialog_progress_title_reply">回复中…</string>
     <string name="dialog_progress_message_back">要舍弃这条信息吗？</string>

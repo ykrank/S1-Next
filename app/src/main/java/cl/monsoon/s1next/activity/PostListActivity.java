@@ -1,6 +1,8 @@
 package cl.monsoon.s1next.activity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
@@ -41,7 +43,8 @@ import cl.monsoon.s1next.widget.InputFilterRange;
  */
 public final class PostListActivity
         extends BaseActivity
-        implements PostListPagerFragment.OnPagerInteractionCallback {
+        implements PostListPagerFragment.OnPagerInteractionCallback,
+        View.OnClickListener {
 
     public final static String ARG_THREAD_TITLE = "thread_title";
     public final static String ARG_THREAD_ID = "thread_id";
@@ -68,7 +71,6 @@ public final class PostListActivity
     private ViewPager mViewPager;
 
     private MenuItem mMenuPageFlip;
-    private MenuItem mMenuReply;
 
     private BroadcastReceiver mWifiReceiver;
 
@@ -109,7 +111,7 @@ public final class PostListActivity
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                showOrHideToolbar(true);
+                showOrHideToolbarAndFab(true);
             }
 
             @Override
@@ -137,6 +139,8 @@ public final class PostListActivity
                 showPageFlipDialog();
             }
         }
+
+        setupFloatingActionButton(R.drawable.ic_menu_comment_white_24dp);
     }
 
     @Override
@@ -176,9 +180,6 @@ public final class PostListActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_post, menu);
 
-        mMenuReply = menu.findItem(R.id.menu_reply);
-        prepareMenuReply();
-
         mMenuPageFlip = menu.findItem(R.id.menu_page_flip);
         prepareMenuPageFlip();
 
@@ -190,15 +191,6 @@ public final class PostListActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
-
-                return true;
-            case R.id.menu_reply:
-                Intent intent = new Intent(this, ReplyActivity.class);
-
-                intent.putExtra(ReplyActivity.ARG_THREAD_TITLE, mThreadTitle);
-                intent.putExtra(ReplyActivity.ARG_THREAD_ID, mThreadId);
-
-                startActivity(intent);
 
                 return true;
             // show SeekBar to let user to flip page
@@ -216,26 +208,6 @@ public final class PostListActivity
         super.onSaveInstanceState(outState);
 
         outState.putInt(STATE_SEEKBAR_PROGRESS, mSeekBarProgress);
-    }
-
-    @Override
-    void setupOthersWhenUserLoginStatusChanged(Intent intent) {
-        prepareMenuReply();
-    }
-
-    /**
-     * Enable/disable the reply menu depends on whether user has logged in.
-     */
-    private void prepareMenuReply() {
-        if (mMenuReply == null) {
-            return;
-        }
-
-        if (TextUtils.isEmpty(User.getName())) {
-            mMenuReply.setEnabled(false);
-        } else {
-            mMenuReply.setEnabled(true);
-        }
     }
 
     /**
@@ -364,6 +336,26 @@ public final class PostListActivity
     }
 
     /**
+     * Floating action button's {@link android.view.View.OnClickListener}.
+     */
+    @Override
+    public void onClick(View v) {
+        // show LoginPromptDialog if user hasn't logged in.
+        if (TextUtils.isEmpty(User.getName())) {
+            new LoginPromptDialog().show(getFragmentManager(), LoginPromptDialog.TAG);
+
+            return;
+        }
+
+        Intent intent = new Intent(this, ReplyActivity.class);
+
+        intent.putExtra(ReplyActivity.ARG_THREAD_TITLE, mThreadTitle);
+        intent.putExtra(ReplyActivity.ARG_THREAD_ID, mThreadId);
+
+        startActivity(intent);
+    }
+
+    /**
      * Return a Fragment corresponding to one of the pages of posts.
      */
     private class PostListPagerAdapter extends FragmentStatePagerAdapter {
@@ -389,6 +381,28 @@ public final class PostListActivity
             }
 
             super.destroyItem(container, position, object);
+        }
+    }
+
+
+    public static class LoginPromptDialog extends DialogFragment {
+
+        private static final String TAG = "login_prompt_dialog";
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            return
+                    new AlertDialog.Builder(getActivity())
+                            .setMessage(R.string.dialog_message_login_prompt)
+                            .setPositiveButton(R.string.action_login,
+                                    (dialog, which) -> {
+                                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                        startActivity(intent);
+                                    })
+                            .setNegativeButton(
+                                    android.R.string.cancel, null)
+                            .create();
         }
     }
 }

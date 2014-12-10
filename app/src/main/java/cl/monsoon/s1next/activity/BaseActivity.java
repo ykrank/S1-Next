@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.melnykov.fab.FloatingActionButton;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
@@ -66,6 +67,8 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
     private ImageView mDrawerUserAvatarView;
     private TextView mDrawerUsernameView;
 
+    private FloatingActionButton mFloatingActionButton;
+
     private BroadcastReceiver themeChangeReceiver;
     private BroadcastReceiver userLoginStatusReceiver;
 
@@ -100,8 +103,6 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
                 } else {
                     setupDrawerLoginPrompt();
                 }
-
-                setupOthersWhenUserLoginStatusChanged(intent);
             }
         };
         LocalBroadcastManager.getInstance(this)
@@ -170,7 +171,25 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
         }
     }
 
-    public void enableToolbarAutoHideEffect(MyRecyclerView myRecyclerView, RecyclerView.OnScrollListener onScrollListener) {
+    void setupFloatingActionButton(int resId) {
+        View.OnClickListener onClickListener;
+        if (this instanceof View.OnClickListener) {
+            onClickListener = (View.OnClickListener) this;
+        } else {
+            throw new ClassCastException(this + " must implement View.OnClickListener.");
+        }
+
+        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.floating_action_button);
+        mFloatingActionButton.setImageResource(resId);
+        mFloatingActionButton.setVisibility(View.VISIBLE);
+        mFloatingActionButton.setOnClickListener(onClickListener);
+    }
+
+    /**
+     * Also enable {@link cl.monsoon.s1next.activity.BaseActivity#mFloatingActionButton}
+     * auto show/hide effect.
+     */
+    public void enableToolbarAndFabAutoHideEffect(MyRecyclerView myRecyclerView, RecyclerView.OnScrollListener onScrollListener) {
         mToolbarAutoHideMinY = ResourceUtil.getToolbarHeight(this);
 
         myRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -182,25 +201,33 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
                 }
 
                 // myRecyclerView.computeVerticalScrollOffset() may cause poor performance
-                // so we also check mIsToolbarShown though we will do it later (over showOrHideToolbar(boolean))
+                // so we also check mIsToolbarShown though we will do it later (over showOrHideToolbarAndFab(boolean))
                 if (mIsToolbarShown
                         && dy > 0
                         && myRecyclerView.computeVerticalScrollOffset() >= mToolbarAutoHideMinY) {
-                    showOrHideToolbar(false);
+                    showOrHideToolbarAndFab(false);
                 } else if (dy < 0) {
-                    showOrHideToolbar(true);
+                    showOrHideToolbarAndFab(true);
                 }
             }
         });
     }
 
-    void showOrHideToolbar(boolean show) {
+    void showOrHideToolbarAndFab(boolean show) {
         if (show == mIsToolbarShown) {
             return;
         }
 
         mIsToolbarShown = show;
         onToolbarAutoShowOrHide(show);
+
+        if (mFloatingActionButton != null) {
+            if (show) {
+                mFloatingActionButton.show();
+            } else {
+                mFloatingActionButton.hide();
+            }
+        }
     }
 
     private void onToolbarAutoShowOrHide(boolean show) {
@@ -250,7 +277,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
 
-                showOrHideToolbar(true);
+                showOrHideToolbarAndFab(true);
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -360,10 +387,6 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
 
         mDrawerTopBackgroundView.setOnClickListener(v ->
                 new LogoutDialog().show(getFragmentManager(), LogoutDialog.TAG));
-    }
-
-    void setupOthersWhenUserLoginStatusChanged(Intent intent) {
-
     }
 
     Toolbar getToolbar() {

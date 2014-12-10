@@ -27,6 +27,8 @@
     <!-- actually both 4dp, but card view has padding 2dp -->
     <dimen name="card_view_vertical_margin">2dp</dimen>
 
+    <dimen name="fab_margin">16dp</dimen>
+
     <dimen name="avatar_size">40dp</dimen>
     <dimen name="avatar_margin">16dp</dimen>
     <dimen name="left_icon_margin_right">32dp</dimen>

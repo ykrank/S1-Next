@@ -89,7 +89,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                 recyclerView,
                 getResources().getDimensionPixelSize(R.dimen.recycler_view_card_padding),
                 true);
-        enableToolbarAutoHideEffect(recyclerView, new RecyclerView.OnScrollListener() {
+        enableToolbarAndFabAutoHideEffect(recyclerView, new RecyclerView.OnScrollListener() {
 
             private final LinearLayoutManager mLinearLayoutManager =
                     (LinearLayoutManager) recyclerView.getLayoutManager();

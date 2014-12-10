@@ -5,6 +5,12 @@
     <color name="light_blue_700">#039BE5</color>
     <color name="pink_A200">#FF4081</color>
 
+    <color name="light_green_A200_54">#8aB2FF59</color>
+    <color name="light_green_A400_54">#8a76FF03</color>
+
+    <color name="light_green_A200_70">#b3B2FF59</color>
+    <color name="light_green_A400_70">#b376FF03</color>
+
     <color name="swipe_refresh_1">#FF4081</color>
     <color name="swipe_refresh_2">#FFAB40</color>
     <color name="swipe_refresh_3">#40C4FF</color>

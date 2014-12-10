@@ -15,12 +15,14 @@
 
         <item name="dividerColor">@color/black_12</item>
 
+        <item name="fabColorNormal">@color/light_green_A200_54</item>
+        <item name="fabColorPressed">@color/light_green_A400_54</item>
+
         <item name="mySpinner">@style/mySpinner</item>
         <item name="myCardView">@style/LightCardView</item>
 
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
-        <item name="menuReply">@drawable/selector_menu_comment_black</item>
         <item name="menuPageFlip">@drawable/selector_menu_swap_horiz_black</item>
         <item name="menuSend">@drawable/selector_menu_send_black</item>
 
@@ -32,10 +34,11 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="dividerColor">@color/white_12</item>
+        <item name="fabColorNormal">@color/light_green_A200_70</item>
+        <item name="fabColorPressed">@color/light_green_A400_70</item>
         <item name="myCardView">@style/DarkCardView</item>
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
-        <item name="menuReply">@drawable/selector_menu_comment_white</item>
         <item name="menuPageFlip">@drawable/selector_menu_swap_horiz_white</item>
         <item name="menuSend">@drawable/selector_menu_send_white</item>
         <item name="iconSettings">@drawable/ic_settings_white_24dp</item>
