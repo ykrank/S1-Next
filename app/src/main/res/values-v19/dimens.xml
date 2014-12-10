@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="fake_statusbar_height">25dp</dimen>
+
+    <!-- 8dp + 25dp -->
+    <dimen name="swipe_refresh_progress_view_start">33dp</dimen>
+    <!-- 8dp + 25dp -->
+    <dimen name="swipe_refresh_progress_view_end">97dp</dimen>
+
+</resources>

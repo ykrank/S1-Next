@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="LightTheme" parent="Theme.AppCompat.Light">
         <!-- Use ToolBar as the ActionBar. -->
         <item name="windowActionBar">false</item>
         <!--show Contextual Action Bars-->
         <item name="windowActionModeOverlay">true</item>
+        <!-- translucent status bar when API >= 19 -->
+        <item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>
 
         <item name="colorPrimary">@color/light_blue_500</item>
         <item name="colorPrimaryDark">@color/light_blue_700</item>
@@ -32,6 +34,7 @@
     <style name="DarkTheme" parent="Theme.AppCompat">
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="dividerColor">@color/white_12</item>
         <item name="fabColorNormal">@color/light_green_A200_70</item>
@@ -48,6 +51,9 @@
         <item name="windowActionBar">false</item>
 
         <item name="android:windowBackground">@android:color/black</item>
+
+        <item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>
+        <item name="android:windowTranslucentNavigation" tools:ignore="NewApi">true</item>
 
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
     </style>

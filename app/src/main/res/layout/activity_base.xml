@@ -33,8 +33,22 @@
             fab:fab_colorPressed="?attr/fabColorPressed"
             fab:fab_colorRipple="?attr/colorControlHighlight"/>
 
-        <!-- ToolBar as the ActionBar for the Activity -->
-        <include layout="@layout/toolbar"/>
+        <!-- see cl.monsoon.s1next.activity.BaseActivity#mToolbarWithFakeStatusbar -->
+        <LinearLayout
+            android:id="@+id/toolbar_with_fake_statusbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fake_statusbar_height"
+                android:background="?attr/colorPrimary"/>
+
+            <!-- ToolBar as the ActionBar for the Activity. -->
+            <include layout="@layout/toolbar"/>
+
+        </LinearLayout>
 
     </FrameLayout>
 

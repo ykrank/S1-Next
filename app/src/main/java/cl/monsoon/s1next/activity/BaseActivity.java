@@ -48,6 +48,13 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
 
     private Toolbar mToolbar;
 
+    /**
+     * We enable translucent system bars if API >= 19.
+     * When API >= 19, we use a fake status bar (a view with background)
+     * to represent the status bar color.
+     * When API < 19, the fake status bar has 0dp height.
+     */
+    private View mToolbarWithFakeStatusbar;
     private boolean mIsToolbarShown = true;
 
     /**
@@ -190,6 +197,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
      * auto show/hide effect.
      */
     public void enableToolbarAndFabAutoHideEffect(MyRecyclerView myRecyclerView, RecyclerView.OnScrollListener onScrollListener) {
+        mToolbarWithFakeStatusbar = findViewById(R.id.toolbar_with_fake_statusbar);
         mToolbarAutoHideMinY = ResourceUtil.getToolbarHeight(this);
 
         myRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -232,12 +240,12 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
 
     private void onToolbarAutoShowOrHide(boolean show) {
         if (show) {
-            mToolbar.animate()
+            mToolbarWithFakeStatusbar.animate()
                     .alpha(1)
                     .translationY(0)
                     .setInterpolator(new DecelerateInterpolator());
         } else {
-            mToolbar.animate()
+            mToolbarWithFakeStatusbar.animate()
                     .alpha(0)
                     .translationY(-mToolbar.getBottom())
                     .setInterpolator(new DecelerateInterpolator());

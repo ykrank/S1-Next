@@ -174,6 +174,7 @@ public abstract class BaseFragment<D extends Deserialization>
         int additionalTopPadding =
                 hasOverlayToolbar
                         ? ResourceUtil.getToolbarHeight(getActivity())
+                        + getResources().getDimensionPixelSize(R.dimen.fake_statusbar_height)
                         : 0;
         // +Toolbar's height if has overlay Toolbar
         recyclerView.setPadding(
