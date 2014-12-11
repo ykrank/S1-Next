@@ -143,30 +143,30 @@ public enum Config {
     public static enum FontSize {
         VERY_SMALL(0.8f), SMALL(0.9f), Medium(1f), LARGE(1.1f), VERY_LARGE(1.2f);
 
-        private static final FontSize[] values = FontSize.values();
+        private static final FontSize[] VALUES = FontSize.values();
 
-        private final float mSize;
+        private final float size;
 
         FontSize(float size) {
-            this.mSize = size;
+            this.size = size;
         }
 
         public float getSize() {
-            return mSize;
+            return size;
         }
 
         public static FontSize fromString(String value) {
-            return values[Integer.parseInt(value)];
+            return VALUES[Integer.parseInt(value)];
         }
     }
 
     public static enum DownloadStrategy {
         NOT, WIFI, ALWAYS;
 
-        private static final DownloadStrategy[] values = DownloadStrategy.values();
+        private static final DownloadStrategy[] VALUES = DownloadStrategy.values();
 
         public static DownloadStrategy fromString(String value) {
-            return values[Integer.parseInt(value)];
+            return VALUES[Integer.parseInt(value)];
         }
     }
 }
