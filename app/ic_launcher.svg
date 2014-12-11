@@ -14,7 +14,7 @@
    id="svg3074"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="绘图1.svg">
+   sodipodi:docname="ic_launcher.svg">
   <defs
      id="defs3076" />
   <sodipodi:namedview
@@ -25,9 +25,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="9.8994949"
-     inkscape:cx="4.2880878"
+     inkscape:cx="-7.8337428"
      inkscape:cy="32.730007"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      showgrid="true"
      inkscape:grid-bbox="true"
      inkscape:document-units="px"
@@ -44,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -55,7 +55,7 @@
      style="display:inline">
     <path
        sodipodi:type="arc"
-       style="fill:#ffda00;fill-opacity:1;display:inline"
+       style="fill:#ffeb3b;fill-opacity:1;display:inline"
        id="path3925"
        sodipodi:cx="16005.023"
        sodipodi:cy="8905.6748"
@@ -82,15 +82,5 @@
        inkscape:connector-curvature="0"
        d="m 17.303387,14.414118 c -0.324988,1.624926 -0.649976,1.29994 -1.299942,3.249853 -0.649977,1.949912 -0.622516,2.004822 -0.974965,4.549797"
        id="path3127" />
-    <path
-       style="fill:#ffffff;fill-opacity:0.71350995;fill-rule:evenodd"
-       inkscape:connector-curvature="0"
-       d="m 3.869861,21.275161 c 0,0 1.068691,-6.54166 5.440588,-12.403245 4.954822,-4.404283 7.221736,-5.213891 12.176558,-5.764437 4.954824,-0.550536 6.606431,0.550546 6.606431,0.550546 0,0 -10.751645,-0.03238 -15.706467,5.472967 -4.663359,3.756598 -8.51711,12.144169 -8.51711,12.144169 z"
-       id="path3129" />
-    <path
-       style="fill-opacity:0.22703002;fill-rule:evenodd"
-       inkscape:connector-curvature="0"
-       d="m 22.361387,44.851046 c 0,0 6.120665,0.582922 9.618182,-0.874379 3.497527,-1.457302 8.45234,-5.829204 10.201099,-8.743805 1.748768,-2.914601 3.78899,-6.995043 3.78899,-9.618183 0,-2.623141 0,-6.703581 -0.874379,-8.452342 l -2.040221,-4.080441 c 0,0 1.748758,5.537741 1.165841,9.326721 -0.582926,3.788981 -1.457305,6.703582 -4.080443,11.658405 -3.206064,4.663363 -4.080443,5.829202 -7.577961,8.452344 -4.954822,2.623141 -10.201108,2.33168 -10.201108,2.33168 z"
-       id="path3139" />
   </g>
 </svg>

@@ -11,7 +11,7 @@
 
         <item name="colorPrimary">@color/light_blue_500</item>
         <item name="colorPrimaryDark">@color/light_blue_700</item>
-        <item name="colorAccent">@color/pink_A200</item>
+        <item name="colorAccent">@color/pink_A100</item>
 
         <item name="actionModeBackground">?attr/colorPrimary</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
@@ -26,8 +26,8 @@
 
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
-        <item name="menuPageFlip">@drawable/selector_menu_swap_horiz_black</item>
-        <item name="menuSend">@drawable/selector_menu_send_black</item>
+        <item name="menuPageFlip">@drawable/selector_menu_swap_horiz_white</item>
+        <item name="menuSend">@drawable/selector_menu_send_white</item>
 
         <item name="iconSettings">@drawable/ic_settings_grey600_24dp</item>
     </style>
@@ -38,8 +38,8 @@
         <item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="dividerColor">@color/white_12</item>
-        <item name="fabColorNormal">@color/light_green_A200_70</item>
-        <item name="fabColorPressed">@color/light_green_A400_70</item>
+        <item name="fabColorNormal">@color/light_green_A200_100</item>
+        <item name="fabColorPressed">@color/light_green_A400_100</item>
         <item name="myCardView">@style/DarkCardView</item>
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>

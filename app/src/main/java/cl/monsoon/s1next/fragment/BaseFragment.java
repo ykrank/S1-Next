@@ -145,7 +145,8 @@ public abstract class BaseFragment<D extends Deserialization>
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh);
             if (mSwipeRefreshLayout != null) {
                 mSwipeRefreshLayout.setColorSchemeResources(
-                        R.color.swipe_refresh_1, R.color.swipe_refresh_2, R.color.swipe_refresh_3);
+                        R.color.swipe_refresh_1, R.color.swipe_refresh_2,
+                        R.color.swipe_refresh_3, R.color.swipe_refresh_4);
 
                 mSwipeRefreshLayout.setOnRefreshListener(this);
                 mSwipeRefreshLayout.setEnabled(false);

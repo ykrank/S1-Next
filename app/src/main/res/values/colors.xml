@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="light_blue_500">#03A9F4</color>
-    <color name="light_blue_700">#039BE5</color>
-    <color name="pink_A200">#FF4081</color>
+    <color name="swipe_refresh_1">@color/pink_A200</color>
+    <color name="swipe_refresh_2">@color/orange_A200</color>
+    <color name="swipe_refresh_3">@color/light_blue_A200</color>
+    <color name="swipe_refresh_4">@color/green_A200</color>
 
-    <color name="light_green_A200_54">#8aB2FF59</color>
-    <color name="light_green_A400_54">#8a76FF03</color>
+    <color name="pink_A200">#ffff4081</color>
+    <color name="orange_A200">#ffffab40</color>
+    <color name="light_blue_A200">#ff40c4ff</color>
+    <color name="green_A200">#ff69f0ae</color>
 
-    <color name="light_green_A200_70">#b3B2FF59</color>
-    <color name="light_green_A400_70">#b376FF03</color>
+    <color name="light_blue_500">#ff03a9f4</color>
+    <color name="light_blue_700">#ff039be5</color>
+    <color name="pink_A100">#ffff80ab</color>
 
-    <color name="swipe_refresh_1">#FF4081</color>
-    <color name="swipe_refresh_2">#FFAB40</color>
-    <color name="swipe_refresh_3">#40C4FF</color>
+    <color name="light_green_A200_54">#8ab2ff59</color>
+    <color name="light_green_A400_54">#8a76ff03</color>
+    <color name="light_green_A200_100">#ffb2ff59</color>
+    <color name="light_green_A400_100">#ff76ff03</color>
 
     <color name="black_12">#1f000000</color>
     <color name="white_12">#1fffffff</color>
