@@ -100,9 +100,9 @@
 
         <include
             android:id="@+id/settings"
-            layout="@layout/multi_line_list_item"
+            layout="@layout/single_line_list_item"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/single_line_height"
             android:layout_below="@id/drawer_username"
             android:layout_marginTop="@dimen/list_view_padding"/>
 
