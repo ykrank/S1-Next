@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.preference.ListPreference;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 
 /**
@@ -35,8 +36,14 @@ final class ListPreferenceCompat extends ListPreference {
      */
     @Override
     public void setValue(String value) {
-        super.setValue(value);
-
-        notifyChanged();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            super.setValue(value);
+        } else {
+            String oldValue = getValue();
+            super.setValue(value);
+            if (!TextUtils.equals(value, oldValue)) {
+                notifyChanged();
+            }
+        }
     }
 }
