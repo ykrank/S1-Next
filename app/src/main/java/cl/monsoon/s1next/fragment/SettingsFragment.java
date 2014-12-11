@@ -8,20 +8,33 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.annotation.StringDef;
 import android.support.v4.content.LocalBroadcastManager;
 import android.webkit.WebView;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.activity.BaseActivity;
 import cl.monsoon.s1next.singleton.Config;
 
 public final class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
 
-    public static final String KEY_PREF_NIGHT_MODE = "pref_night_mode";
-    public static final String KEY_PREF_DOWNLOAD_AVATARS = "pref_key_download_avatars";
-    public static final String KEY_PREF_DOWNLOAD_IMAGES = "pref_key_download_images";
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({PREF_KEY_FONT_SIZE, PREF_KEY_DOWNLOAD_AVATARS, PREF_KEY_DOWNLOAD_IMAGES})
+    public @interface PreferenceKey {
 
-    private static final String KEY_PREF_OPEN_SOURCE_LICENSES = "pref_key_open_source_licenses";
+    }
+
+    public static final String PREF_KEY_NIGHT_MODE = "pref_night_mode";
+    public static final String PREF_KEY_FONT_SIZE = "pref_key_font_size";
+    public static final String PREF_KEY_DOWNLOAD_AVATARS = "pref_key_download_avatars";
+    public static final String PREF_KEY_DOWNLOAD_IMAGES = "pref_key_download_images";
+
+    public static final String ACTION_CHANGE_THEME = "change_theme";
+    public static final String ACTION_CHANGE_FONT_SIZE = "change_font_size";
+
+    private static final String PREF_KEY_OPEN_SOURCE_LICENSES = "pref_key_open_source_licenses";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,7 +42,7 @@ public final class SettingsFragment extends PreferenceFragment implements Shared
 
         addPreferencesFromResource(R.xml.preferences);
 
-        findPreference(KEY_PREF_OPEN_SOURCE_LICENSES).setOnPreferenceClickListener(this);
+        findPreference(PREF_KEY_OPEN_SOURCE_LICENSES).setOnPreferenceClickListener(this);
     }
 
     @Override
@@ -47,10 +60,10 @@ public final class SettingsFragment extends PreferenceFragment implements Shared
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @PreferenceKey String key) {
         switch (key) {
             // set current strategy
-            case KEY_PREF_NIGHT_MODE:
+            case PREF_KEY_NIGHT_MODE:
                 if (sharedPreferences.getBoolean(
                         key, getResources().getBoolean(R.bool.pref_night_mode_default_value))) {
                     Config.setCurrentTheme(Config.DARK_THEME);
@@ -59,13 +72,20 @@ public final class SettingsFragment extends PreferenceFragment implements Shared
                 }
 
                 LocalBroadcastManager.getInstance(getActivity())
-                        .sendBroadcast(new Intent(BaseActivity.ACTION_CHANGE_THEME));
+                        .sendBroadcast(new Intent(ACTION_CHANGE_THEME));
+                break;
+            // change font size
+            case PREF_KEY_FONT_SIZE:
+                Config.setTextSize(sharedPreferences);
+
+                LocalBroadcastManager.getInstance(getActivity())
+                        .sendBroadcast(new Intent(ACTION_CHANGE_FONT_SIZE));
                 break;
             // change download strategy
-            case KEY_PREF_DOWNLOAD_AVATARS:
+            case PREF_KEY_DOWNLOAD_AVATARS:
                 Config.setAvatarsDownloadStrategy(sharedPreferences);
                 break;
-            case KEY_PREF_DOWNLOAD_IMAGES:
+            case PREF_KEY_DOWNLOAD_IMAGES:
                 Config.setImagesDownloadStrategy(sharedPreferences);
                 break;
         }

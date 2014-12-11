@@ -60,6 +60,8 @@
     <!-- settings -->
     <string name="pref_general">GENERAL</string>
     <string name="pref_night_mode">Night mode</string>
+    <string name="pref_font_size">Font size</string>
+    <string name="pref_font_size_default_value" translatable="false">2</string>
     <string name="pref_download_avatars">Download avatars</string>
     <string name="pref_download_avatars_default_value" translatable="false">2</string>
     <string name="pref_download_images">Download images</string>
@@ -73,6 +75,12 @@
     <string name="pref_version_summary">Version: 0.1.0</string>
 
     <!-- array -->
+    <string name="pref_font_size_entries_1">Very small</string>
+    <string name="pref_font_size_entries_2">Small</string>
+    <string name="pref_font_size_entries_3">Medium</string>
+    <string name="pref_font_size_entries_4">Large</string>
+    <string name="pref_font_size_entries_5">Very Large</string>
+
     <string name="pref_download_avatars_entries_1">Do not download avatars</string>
     <string name="pref_download_avatars_entries_2">Download avatars over Wi-Fi only</string>
     <string name="pref_download_avatars_entries_3">Download avatars at any time</string>

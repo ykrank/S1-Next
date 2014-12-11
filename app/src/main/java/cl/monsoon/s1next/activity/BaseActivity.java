@@ -34,6 +34,7 @@ import com.melnykov.fab.FloatingActionButton;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.fragment.SettingsFragment;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
 import cl.monsoon.s1next.singleton.User;
@@ -45,8 +46,6 @@ import cl.monsoon.s1next.widget.MyRecyclerView;
  * Also change theme depends on settings.
  */
 public abstract class BaseActivity extends ActionBarActivity implements User.OnLogoutListener {
-
-    public static final String ACTION_CHANGE_THEME = "change_theme";
 
     private Toolbar mToolbar;
 
@@ -78,7 +77,11 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
 
     private FloatingActionButton mFloatingActionButton;
 
-    private BroadcastReceiver themeChangeReceiver;
+    /**
+     * Either {@link cl.monsoon.s1next.fragment.SettingsFragment#ACTION_CHANGE_THEME}
+     * or {@link cl.monsoon.s1next.fragment.SettingsFragment#ACTION_CHANGE_FONT_SIZE}.
+     */
+    private BroadcastReceiver recreateActivityReceiver;
     private BroadcastReceiver userLoginStatusReceiver;
 
     @Override
@@ -90,17 +93,25 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
 
         super.onCreate(savedInstanceState);
 
-        // change theme when night mode setting changes
-        themeChangeReceiver = new BroadcastReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(SettingsFragment.ACTION_CHANGE_THEME);
+        intentFilter.addAction(SettingsFragment.ACTION_CHANGE_FONT_SIZE);
+        // recreate this Activity when night mode or font size setting changes
+        recreateActivityReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                if (BaseActivity.this instanceof SettingsActivity
+                        && intent.getAction().equals(SettingsFragment.ACTION_CHANGE_FONT_SIZE)) {
+                    return;
+                }
+
                 recreate();
             }
         };
         LocalBroadcastManager.getInstance(this)
-                .registerReceiver(themeChangeReceiver, new IntentFilter(ACTION_CHANGE_THEME));
+                .registerReceiver(recreateActivityReceiver, intentFilter);
 
-        IntentFilter intentFilter = new IntentFilter();
+        intentFilter = new IntentFilter();
         intentFilter.addAction(User.ACTION_USER_LOGIN);
         intentFilter.addAction(User.ACTION_USER_LOGOUT_OR_EXPIRATION);
         // change drawer's top area depends on user's login status
@@ -128,7 +139,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
     protected void onDestroy() {
         super.onDestroy();
 
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(themeChangeReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(recreateActivityReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(userLoginStatusReceiver);
     }
 
@@ -319,6 +330,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
         mDrawerTopBackgroundView = mDrawer.findViewById(R.id.drawer_top_background);
         mDrawerUserAvatarView = (ImageView) mDrawer.findViewById(R.id.drawer_user_avatar);
         mDrawerUsernameView = (TextView) mDrawer.findViewById(R.id.drawer_username);
+        Config.updateTextSize(mDrawerUsernameView);
 
         // Show default avatar and login prompt if user hasn't logged in,
         // else show user's avatar and username.
@@ -330,6 +342,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
 
         // add settings item
         TextView settingsView = (TextView) mDrawer.findViewById(R.id.settings);
+        Config.updateTextSize(settingsView);
         settingsView.setText(getText(R.string.settings));
 
         // set up settings icon

@@ -28,6 +28,7 @@
     <string name="dialog_message_back_prompt">要舍弃这条信息吗？</string>
     <string name="pref_general">常规</string>
     <string name="pref_night_mode">夜间模式</string>
+    <string name="pref_font_size">字体大小</string>
     <string name="pref_download_avatars">下载头像</string>
     <string name="pref_download_images">下载图片</string>
     <string name="pref_about">关于</string>
@@ -35,6 +36,11 @@
     <string name="pref_open_source_licenses_summary">开放源代码软件的许可详情</string>
     <string name="pref_version">版本号</string>
     <string name="pref_version_summary">版本： 0.1.0</string>
+    <string name="pref_font_size_entries_1">极小</string>
+    <string name="pref_font_size_entries_2">小</string>
+    <string name="pref_font_size_entries_3">中</string>
+    <string name="pref_font_size_entries_4">大</string>
+    <string name="pref_font_size_entries_5">极大</string>
     <string name="pref_download_avatars_entries_1">不下载头像</string>
     <string name="pref_download_avatars_entries_2">仅通过Wi-Fi下载头像</string>
     <string name="pref_download_avatars_entries_3">任何时候都下载头像</string>

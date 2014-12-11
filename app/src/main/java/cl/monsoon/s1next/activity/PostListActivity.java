@@ -240,6 +240,7 @@ public final class PostListActivity
         seekbar.setMax(mTotalPages - 1);
 
         EditText valueView = (EditText) view.findViewById(R.id.value);
+        Config.updateTextSize(valueView);
         valueView.setText(String.valueOf(mSeekBarProgress + 1));
         valueView.setEms(String.valueOf(mTotalPages).length());
         // set EditText range filter

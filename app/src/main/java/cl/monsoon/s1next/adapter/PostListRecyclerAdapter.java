@@ -209,6 +209,11 @@ public final class PostListRecyclerAdapter
             mCount = (TextView) itemView.findViewById(R.id.count);
             mReply = (TextView) itemView.findViewById(R.id.reply);
 
+            Config.updateTextSize(mUsername);
+            Config.updateTextSize(mTime);
+            Config.updateTextSize(mCount);
+            Config.updateTextSize(mReply);
+
             // use custom movement method to provides selection and click
             mReply.setMovementMethod(MyMovementMethod.getInstance());
         }

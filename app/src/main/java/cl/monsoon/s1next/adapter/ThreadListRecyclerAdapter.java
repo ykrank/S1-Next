@@ -64,6 +64,7 @@ public final class ThreadListRecyclerAdapter
             super(itemView);
 
             mTextView = (TextView) itemView;
+            Config.updateTextSize(mTextView);
         }
     }
 }

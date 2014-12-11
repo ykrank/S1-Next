@@ -11,6 +11,15 @@
             android:title="@string/pref_night_mode"/>
 
         <cl.monsoon.s1next.widget.ListPreferenceCompat
+            android:defaultValue="@string/pref_font_size_default_value"
+            android:dialogTitle="@string/pref_font_size"
+            android:entries="@array/pref_font_size_entries"
+            android:entryValues="@array/pref_font_size_entry_values"
+            android:key="pref_key_font_size"
+            android:summary="%s"
+            android:title="@string/pref_font_size"/>
+
+        <cl.monsoon.s1next.widget.ListPreferenceCompat
             android:defaultValue="@string/pref_download_avatars_default_value"
             android:dialogTitle="@string/pref_download_avatars"
             android:entries="@array/pref_download_avatars_entries"

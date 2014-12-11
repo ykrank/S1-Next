@@ -19,6 +19,7 @@ import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
+import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
@@ -67,6 +68,7 @@ public final class ReplyFragment extends LoaderFragment {
         mThreadId = getArguments().getString(ARG_THREAD_ID);
 
         mReplyView = (EditText) view.findViewById(R.id.comment_or_reply);
+        Config.updateTextSize(mReplyView);
         mReplyView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

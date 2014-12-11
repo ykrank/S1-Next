@@ -61,7 +61,9 @@ public final class ForumListRecyclerAdapter
 
         public ViewHolder(View itemView) {
             super(itemView);
+
             mTextView = (TextView) itemView;
+            Config.updateTextSize(mTextView);
         }
     }
 }

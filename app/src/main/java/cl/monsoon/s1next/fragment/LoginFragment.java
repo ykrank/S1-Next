@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.squareup.okhttp.RequestBody;
@@ -20,6 +21,7 @@ import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
+import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
@@ -54,6 +56,8 @@ public final class LoginFragment extends LoaderFragment {
 
         mUsernameView = (EditText) view.findViewById(R.id.username);
         mPasswordView = (EditText) view.findViewById(R.id.password);
+        Config.updateTextSize(mUsernameView);
+        Config.updateTextSize(mPasswordView);
 
         // called when an ime action is performed
         // not working in some manufacturers
@@ -65,7 +69,9 @@ public final class LoginFragment extends LoaderFragment {
             return false;
         });
 
-        view.findViewById(R.id.login).setOnClickListener(v -> prepareLogin());
+        Button loginView = (Button) view.findViewById(R.id.login);
+        Config.updateTextSize(loginView);
+        loginView.setOnClickListener(v -> prepareLogin());
     }
 
     @Override

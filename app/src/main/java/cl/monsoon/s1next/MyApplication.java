@@ -45,13 +45,15 @@ public final class MyApplication extends Application {
         // set theme depends on settings
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         final boolean nightMode =
-                sharedPreferences.getBoolean(SettingsFragment.KEY_PREF_NIGHT_MODE, false);
+                sharedPreferences.getBoolean(SettingsFragment.PREF_KEY_NIGHT_MODE, false);
         if (nightMode) {
             Config.setCurrentTheme(Config.DARK_THEME);
         } else {
             Config.setCurrentTheme(Config.LIGHT_THEME);
         }
 
+        // set current font size
+        Config.setTextSize(sharedPreferences);
         // init download strategy
         Config.setAvatarsDownloadStrategy(sharedPreferences);
         Config.setImagesDownloadStrategy(sharedPreferences);

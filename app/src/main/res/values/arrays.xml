@@ -8,6 +8,21 @@
     <!--</string-array>-->
 
     <!-- settings -->
+    <string-array name="pref_font_size_entries">
+        <item>@string/pref_font_size_entries_1</item>
+        <item>@string/pref_font_size_entries_2</item>
+        <item>@string/pref_font_size_entries_3</item>
+        <item>@string/pref_font_size_entries_4</item>
+        <item>@string/pref_font_size_entries_5</item>
+    </string-array>
+
+    <string-array name="pref_font_size_entry_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
 
     <string-array name="pref_download_avatars_entries">
         <item>@string/pref_download_avatars_entries_1</item>
