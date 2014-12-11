@@ -10,6 +10,8 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -178,7 +180,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
         }
     }
 
-    void setupFloatingActionButton(int resId) {
+    void setupFloatingActionButton(@DrawableRes int resId) {
         View.OnClickListener onClickListener;
         if (this instanceof View.OnClickListener) {
             onClickListener = (View.OnClickListener) this;
@@ -196,7 +198,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
      * Also enable {@link cl.monsoon.s1next.activity.BaseActivity#mFloatingActionButton}
      * auto show/hide effect.
      */
-    public void enableToolbarAndFabAutoHideEffect(MyRecyclerView myRecyclerView, RecyclerView.OnScrollListener onScrollListener) {
+    public void enableToolbarAndFabAutoHideEffect(MyRecyclerView myRecyclerView, @Nullable RecyclerView.OnScrollListener onScrollListener) {
         mToolbarWithFakeStatusbar = findViewById(R.id.toolbar_with_fake_statusbar);
         mToolbarAutoHideMinY = ResourceUtil.getToolbarHeight(this);
 
@@ -397,6 +399,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
                 new LogoutDialog().show(getFragmentManager(), LogoutDialog.TAG));
     }
 
+    @Nullable
     Toolbar getToolbar() {
         return mToolbar;
     }

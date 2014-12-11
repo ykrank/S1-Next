@@ -2,6 +2,11 @@ package cl.monsoon.s1next.singleton;
 
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.support.annotation.ColorRes;
+import android.support.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import cl.monsoon.s1next.MyApplication;
 import cl.monsoon.s1next.R;
@@ -9,6 +14,12 @@ import cl.monsoon.s1next.fragment.SettingsFragment;
 
 public enum Config {
     INSTANCE;
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({LIGHT_THEME, DARK_THEME})
+    public @interface Theme {
+
+    }
 
     public static final int LIGHT_THEME = R.style.LightTheme;
 
@@ -30,11 +41,12 @@ public enum Config {
     private volatile DownloadStrategy avatarsDownloadStrategy;
     private volatile DownloadStrategy imagesDownloadStrategy;
 
+    @Theme
     public static int getCurrentTheme() {
         return INSTANCE.currentTheme;
     }
 
-    public static void setCurrentTheme(int theme) {
+    public static void setCurrentTheme(@Theme int theme) {
         INSTANCE.currentTheme = theme;
 
         // get theme's accent color
@@ -48,6 +60,7 @@ public enum Config {
         }
     }
 
+    @ColorRes
     public static int getColorAccent() {
         return INSTANCE.colorAccent;
     }

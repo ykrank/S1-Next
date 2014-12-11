@@ -32,8 +32,6 @@ public final class LoginFragment extends LoaderFragment {
 
     public static final String TAG = "login_fragment";
 
-    private static final int ID_LOADER_LOGIN = 0;
-
     /**
      * For desktop is "login_succeed".
      * For mobile is "location_login_succeed_mobile".
@@ -141,7 +139,11 @@ public final class LoginFragment extends LoaderFragment {
 
     @Override
     RequestBody getRequestBody(int loaderId) {
-        return Api.getLoginPostBuilder(mUsernameView.getText(), mPasswordView.getText());
+        if (loaderId == ID_LOADER_LOGIN) {
+            return Api.getLoginPostBuilder(mUsernameView.getText(), mPasswordView.getText());
+        } else {
+            throw new IllegalStateException("loaderId must be ID_LOADER_LOGIN.");
+        }
     }
 
     @Override

@@ -97,6 +97,7 @@ public final class ForumActivity
 
             // add Spinner (drop down) to Toolbar
             LayoutInflater.from(this).inflate(R.layout.toolbar_spinner, getToolbar(), true);
+            //noinspection ConstantConditions
             mSpinner = (Spinner) getToolbar().findViewById(R.id.spinner);
 
             // set Listener to switch between views

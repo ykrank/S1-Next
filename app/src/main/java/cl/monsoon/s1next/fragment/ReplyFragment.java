@@ -36,9 +36,6 @@ public final class ReplyFragment extends LoaderFragment {
 
     private static final String STATUS_REPLY_SUCCESS = "post_reply_succeed";
 
-    private static final int ID_LOADER_GET_AUTHENTICITY_TOKEN = 0;
-    private static final int ID_LOADER_POST_REPLY = 1;
-
     private CharSequence mThreadId;
 
     /**
@@ -141,11 +138,11 @@ public final class ReplyFragment extends LoaderFragment {
 
     @Override
     RequestBody getRequestBody(int loaderId) {
-        if (loaderId == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
-            throw new IllegalStateException("loaderId can't be ID_LOADER_GET_AUTHENTICITY_TOKEN.");
+        if (loaderId == ID_LOADER_POST_REPLY) {
+            return Api.getReplyPostBuilder(mReplyView.getText().toString());
+        } else {
+            throw new IllegalStateException("loaderId must be ID_LOADER_POST_REPLY.");
         }
-
-        return Api.getReplyPostBuilder(mReplyView.getText().toString());
     }
 
     @Override

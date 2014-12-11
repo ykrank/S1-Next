@@ -6,8 +6,12 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Loader;
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 
 import com.squareup.okhttp.RequestBody;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.widget.AsyncResult;
@@ -19,6 +23,16 @@ import cl.monsoon.s1next.widget.HttpPostLoader;
  */
 public abstract class LoaderFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<AsyncResult<ResultWrapper>>, DialogInterface.OnCancelListener {
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({ID_LOADER_LOGIN, ID_LOADER_GET_AUTHENTICITY_TOKEN, ID_LOADER_POST_REPLY})
+    public @interface LoaderId {
+
+    }
+
+    static final int ID_LOADER_LOGIN = 0;
+    static final int ID_LOADER_GET_AUTHENTICITY_TOKEN = 1;
+    static final int ID_LOADER_POST_REPLY = 2;
 
     /**
      * The serialization (saved instance state) Bundle key representing
@@ -109,7 +123,7 @@ public abstract class LoaderFragment extends Fragment
         }
     }
 
-    void startLoader(int loaderId) {
+    void startLoader(@LoaderId int loaderId) {
         mIsLoading = true;
         mLoaderId = loaderId;
         mLoader = getLoaderManager().getLoader(mLoaderId);
@@ -128,7 +142,7 @@ public abstract class LoaderFragment extends Fragment
         }
     }
 
-    abstract RequestBody getRequestBody(int loaderId);
+    abstract RequestBody getRequestBody(@LoaderId int loaderId);
 
     @Override
     public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> data) {

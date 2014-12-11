@@ -3,6 +3,7 @@ package cl.monsoon.s1next.fragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -183,7 +184,7 @@ public abstract class BaseFragment<D extends Deserialization>
         updateSwipeRefreshProgressViewPosition();
     }
 
-    void enableToolbarAndFabAutoHideEffect(MyRecyclerView recyclerView, RecyclerView.OnScrollListener onScrollListener) {
+    void enableToolbarAndFabAutoHideEffect(MyRecyclerView recyclerView, @Nullable RecyclerView.OnScrollListener onScrollListener) {
         if (getActivity() instanceof BaseActivity) {
             ((BaseActivity) getActivity()).enableToolbarAndFabAutoHideEffect(recyclerView, onScrollListener);
         } else {
