@@ -6,9 +6,6 @@ import cl.monsoon.s1next.MyApplication;
 
 public final class ToastHelper {
 
-    private ToastHelper() {
-    }
-
     public static void showByText(CharSequence text) {
         Toast.makeText(MyApplication.getContext(), text, Toast.LENGTH_LONG).show();
     }
