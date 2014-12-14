@@ -7,11 +7,12 @@ public final class ObjectUtil {
         return (T) obj;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T cast(Object obj, Class<T> clazz) {
-        if (obj.getClass().isAssignableFrom(clazz)) {
-            return uncheckedCast(obj);
+        if (clazz.isInstance(obj)) {
+            return (T) obj;
         } else {
-            throw new ClassCastException(obj + " must extends " + clazz + ".");
+            throw new ClassCastException(obj + " must extend/implement " + clazz + ".");
         }
     }
 }

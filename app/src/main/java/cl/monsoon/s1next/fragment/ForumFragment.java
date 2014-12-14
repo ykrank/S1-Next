@@ -20,6 +20,7 @@ import cl.monsoon.s1next.adapter.ForumListRecyclerAdapter;
 import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.model.list.ForumGroupList;
 import cl.monsoon.s1next.model.mapper.ForumGroupListWrapper;
+import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.MyRecyclerView;
@@ -92,14 +93,8 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        if (activity instanceof ToolbarInterface.SpinnerInteractionCallback) {
-            mToolbarSpinnerInteractionCallback =
-                    (ToolbarInterface.SpinnerInteractionCallback) activity;
-        } else {
-            throw new ClassCastException(
-                    getActivity()
-                            + " must implement OnSpinnerInteractionListener.");
-        }
+        mToolbarSpinnerInteractionCallback =
+                ObjectUtil.cast(activity, ToolbarInterface.SpinnerInteractionCallback.class);
     }
 
     @Override

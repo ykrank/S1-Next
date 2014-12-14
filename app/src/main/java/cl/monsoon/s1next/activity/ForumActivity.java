@@ -57,13 +57,8 @@ public final class ForumActivity
             fragment = fragmentManager.findFragmentByTag(ForumFragment.TAG);
         }
 
-        if (fragment instanceof ToolbarInterface.OnDropDownItemSelectedListener) {
-            mOnToolbarDropDownItemSelectedListener = ObjectUtil.uncheckedCast(fragment);
-        } else {
-            throw
-                    new ClassCastException(
-                            fragment + " must implement mOnToolbarDropDownItemSelectedListener.");
-        }
+        mOnToolbarDropDownItemSelectedListener =
+                ObjectUtil.cast(fragment, ToolbarInterface.OnDropDownItemSelectedListener.class);
     }
 
     @Override

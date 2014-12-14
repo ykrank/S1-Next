@@ -1,7 +1,6 @@
 package cl.monsoon.s1next.singleton;
 
 import android.content.Intent;
-import android.support.v4.content.LocalBroadcastManager;
 
 import cl.monsoon.s1next.MyApplication;
 
@@ -47,13 +46,11 @@ public enum User {
     }
 
     public static void sendLoginBroadcast() {
-        LocalBroadcastManager.getInstance(
-                MyApplication.getContext()).sendBroadcast(new Intent(ACTION_USER_LOGIN));
+        MyApplication.getContext().sendBroadcast(new Intent(ACTION_USER_LOGIN));
     }
 
     public static void sendLogoutOrExpirationBroadcast() {
-        LocalBroadcastManager.getInstance(
-                MyApplication.getContext()).sendBroadcast(new Intent(ACTION_USER_LOGOUT_OR_EXPIRATION));
+        MyApplication.getContext().sendBroadcast(new Intent(ACTION_USER_LOGOUT_OR_EXPIRATION));
     }
 
     public static interface OnLogoutListener {

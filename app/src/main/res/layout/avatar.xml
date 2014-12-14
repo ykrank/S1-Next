@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TODO: TouchDelegate: the minimum touch target size is 48dp -->
+
 <cl.monsoon.s1next.widget.BezelImageView
     android:id="@+id/avatar"
     xmlns:android="http://schemas.android.com/apk/res/android"

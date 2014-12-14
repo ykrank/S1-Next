@@ -18,6 +18,7 @@ import cl.monsoon.s1next.activity.PostListActivity;
 import cl.monsoon.s1next.adapter.ThreadListRecyclerAdapter;
 import cl.monsoon.s1next.model.list.ThreadList;
 import cl.monsoon.s1next.model.mapper.ThreadListWrapper;
+import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.MyRecyclerView;
@@ -57,16 +58,11 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         mForumId = getArguments().getCharSequence(ARG_FORUM_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
         MyRecyclerView recyclerView = (MyRecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -126,13 +122,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        if (activity instanceof OnPagerInteractionCallback) {
-            mOnPagerInteractionCallback = ((OnPagerInteractionCallback) getActivity());
-        } else {
-            throw new ClassCastException(
-                    getActivity()
-                            + " must implement OnPagerInteractionListener.");
-        }
+        mOnPagerInteractionCallback = ObjectUtil.cast(activity, OnPagerInteractionCallback.class);
     }
 
     @Override

@@ -14,6 +14,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import cl.monsoon.s1next.model.Extractable;
+import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.HttpPostLoader;
@@ -106,12 +107,7 @@ public abstract class LoaderFragment<D extends Extractable> extends Fragment
     public void onCancel(DialogInterface dialog) {
         // cancel HTTP post
         // see HttpGetLoader#cancelLoad()
-        if (mLoader instanceof HttpGetLoader) {
-            //noinspection RedundantCast
-            ((HttpGetLoader) mLoader).cancelLoad();
-        } else {
-            throw new ClassCastException(mLoader + " must extend HttpGetLoader.");
-        }
+        ObjectUtil.cast(mLoader, HttpGetLoader.class).cancelLoad();
         mIsLoading = false;
     }
 

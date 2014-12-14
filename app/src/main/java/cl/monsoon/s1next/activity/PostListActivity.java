@@ -34,6 +34,7 @@ import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
+import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.StringHelper;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 import cl.monsoon.s1next.widget.InputFilterRange;
@@ -88,7 +89,6 @@ public final class PostListActivity
 
         // not works well
         //        // Title has marquee effect if thread's title is long.
-        //        // Similar use to AbsNavigationDrawerActivity#setupGlobalToolbar()
         //        TextView title;
         //        int count = mToolbar.getChildCount();
         //        for (int i = 0; i < count; i++) {
@@ -109,6 +109,8 @@ public final class PostListActivity
 
         FrameLayout container = (FrameLayout) findViewById(R.id.frame_layout);
         View.inflate(this, R.layout.activity_screen_slide, container);
+
+        setupFloatingActionButton(R.drawable.ic_menu_comment_white_24dp);
 
         mViewPager = (ViewPager) container.findViewById(R.id.pager);
         mAdapter = new PostListPagerAdapter(getFragmentManager());
@@ -144,8 +146,6 @@ public final class PostListActivity
                 showPageFlipDialog();
             }
         }
-
-        setupFloatingActionButton(R.drawable.ic_menu_comment_white_24dp);
     }
 
     @Override
@@ -397,9 +397,7 @@ public final class PostListActivity
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            if (object instanceof BaseFragment) {
-                ((BaseFragment) object).destroyRetainedFragment();
-            }
+            ObjectUtil.cast(object, BaseFragment.class).destroyRetainedFragment();
 
             super.destroyItem(container, position, object);
         }

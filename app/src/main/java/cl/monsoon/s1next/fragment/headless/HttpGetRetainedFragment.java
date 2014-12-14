@@ -41,11 +41,9 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
         // if its host is Activity
         // else its host is Fragment
         if (getTag() == null) {
-            if (activity instanceof Callback) {
-                mAsyncTaskCallback = ObjectUtil.uncheckedCast(activity);
-            } else {
-                throw new ClassCastException(getActivity() + " must implement AsyncTaskCallback.");
-            }
+            mAsyncTaskCallback =
+                    ObjectUtil.uncheckedCast(
+                            ObjectUtil.cast(activity, Callback.class));
         } else {
             String hostFragmentTag = getTag().substring(TAG_PREFIX.length());
             Fragment fragment = getFragmentManager().findFragmentByTag(hostFragmentTag);
@@ -54,11 +52,7 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
                 throw new IllegalStateException("Can't find Fragment which host this Fragment.");
             }
 
-            if (fragment instanceof Callback) {
-                mAsyncTaskCallback = ObjectUtil.uncheckedCast(fragment);
-            } else {
-                throw new ClassCastException(fragment + " must implement AsyncTaskCallback.");
-            }
+            mAsyncTaskCallback = ObjectUtil.uncheckedCast(ObjectUtil.cast(fragment, Callback.class));
         }
     }
 

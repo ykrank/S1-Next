@@ -14,6 +14,7 @@ import cl.monsoon.s1next.fragment.BaseFragment;
 import cl.monsoon.s1next.fragment.ThreadListPagerFragment;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.MathUtil;
+import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.StringHelper;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 
@@ -105,9 +106,7 @@ public final class ThreadListActivity
             // We do not reuse Fragment in ViewPager and its retained fragment.
             // May reuse these both later, but it's not cost-effective nowadays.
             // See AbsHttpFragment#onActivityCreated(Bundle).
-            if (object instanceof BaseFragment) {
-                ((BaseFragment) object).destroyRetainedFragment();
-            }
+            ObjectUtil.cast(object, BaseFragment.class).destroyRetainedFragment();
 
             super.destroyItem(container, position, object);
         }

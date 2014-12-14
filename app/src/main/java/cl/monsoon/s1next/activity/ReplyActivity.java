@@ -9,6 +9,7 @@ import android.text.TextUtils;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.ReplyFragment;
+import cl.monsoon.s1next.util.ObjectUtil;
 
 /**
  * An Activity to send a reply.
@@ -46,11 +47,7 @@ public final class ReplyActivity extends BaseActivity {
             getFragmentManager().beginTransaction()
                     .replace(R.id.frame_layout, mReplyFragment, ReplyFragment.TAG).commit();
         } else {
-            if (fragment instanceof ReplyFragment) {
-                mReplyFragment = (ReplyFragment) fragment;
-            } else {
-                throw new ClassCastException(fragment + " must extend ReplyFragment.");
-            }
+            mReplyFragment = ObjectUtil.cast(fragment, ReplyFragment.class);
         }
     }
 

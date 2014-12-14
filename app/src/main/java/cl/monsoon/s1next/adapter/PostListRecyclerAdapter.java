@@ -29,6 +29,7 @@ import cl.monsoon.s1next.activity.PostListActivity;
 import cl.monsoon.s1next.activity.ReplyActivity;
 import cl.monsoon.s1next.model.Post;
 import cl.monsoon.s1next.singleton.Config;
+import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.widget.GlideImageGetter;
 import cl.monsoon.s1next.widget.ImageTagHandler;
 import cl.monsoon.s1next.widget.MyMovementMethod;
@@ -99,12 +100,7 @@ public final class PostListRecyclerAdapter
             return;
         }
 
-        ItemViewHolder itemViewHolder;
-        if (holder instanceof ItemViewHolder) {
-            itemViewHolder = (ItemViewHolder) holder;
-        } else {
-            throw new ClassCastException(holder + "must extend ItemViewHolder.");
-        }
+        ItemViewHolder itemViewHolder = ObjectUtil.cast(holder, ItemViewHolder.class);
 
         Post post = mList.get(position);
 

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.StringDef;
-import android.support.v4.content.LocalBroadcastManager;
 import android.webkit.WebView;
 
 import java.lang.annotation.Retention;
@@ -71,15 +70,13 @@ public final class SettingsFragment extends PreferenceFragment implements Shared
                     Config.setCurrentTheme(Config.LIGHT_THEME);
                 }
 
-                LocalBroadcastManager.getInstance(getActivity())
-                        .sendBroadcast(new Intent(ACTION_CHANGE_THEME));
+                getActivity().sendBroadcast(new Intent(ACTION_CHANGE_THEME));
                 break;
             // change font size
             case PREF_KEY_FONT_SIZE:
                 Config.setTextSize(sharedPreferences);
 
-                LocalBroadcastManager.getInstance(getActivity())
-                        .sendBroadcast(new Intent(ACTION_CHANGE_FONT_SIZE));
+                getActivity().sendBroadcast(new Intent(ACTION_CHANGE_FONT_SIZE));
                 break;
             // change download strategy
             case PREF_KEY_DOWNLOAD_AVATARS:

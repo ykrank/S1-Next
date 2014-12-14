@@ -70,11 +70,9 @@ public abstract class BaseFragment<D extends Extractable>
 
         Fragment fragment = fragmentManager.findFragmentByTag(mRetainedHttpGetFragmentTag);
         if (fragment != null) {
-            if (fragment instanceof HttpGetRetainedFragment) {
-                mHttpGetRetainedFragment = ObjectUtil.uncheckedCast(fragment);
-            } else {
-                throw new ClassCastException(fragment + " must extend HttpGetRetainedFragment.");
-            }
+            mHttpGetRetainedFragment =
+                    ObjectUtil.uncheckedCast(
+                            ObjectUtil.cast(fragment, HttpGetRetainedFragment.class));
         }
 
         if (mHttpGetRetainedFragment == null) {
@@ -186,11 +184,8 @@ public abstract class BaseFragment<D extends Extractable>
     }
 
     void enableToolbarAndFabAutoHideEffect(MyRecyclerView recyclerView, @Nullable RecyclerView.OnScrollListener onScrollListener) {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).enableToolbarAndFabAutoHideEffect(recyclerView, onScrollListener);
-        } else {
-            throw new ClassCastException(getActivity() + "must extend BaseActivity.");
-        }
+        ObjectUtil.cast(getActivity(), BaseActivity.class)
+                .enableToolbarAndFabAutoHideEffect(recyclerView, onScrollListener);
     }
 
     boolean isLoading() {

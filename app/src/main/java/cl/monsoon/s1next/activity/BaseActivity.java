@@ -12,7 +12,6 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -38,6 +37,7 @@ import cl.monsoon.s1next.fragment.SettingsFragment;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
 import cl.monsoon.s1next.singleton.User;
+import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.widget.MyRecyclerView;
 
@@ -81,8 +81,8 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
      * Either {@link cl.monsoon.s1next.fragment.SettingsFragment#ACTION_CHANGE_THEME}
      * or {@link cl.monsoon.s1next.fragment.SettingsFragment#ACTION_CHANGE_FONT_SIZE}.
      */
-    private BroadcastReceiver recreateActivityReceiver;
-    private BroadcastReceiver userLoginStatusReceiver;
+    private BroadcastReceiver mRecreateActivityReceiver;
+    private BroadcastReceiver mUserLoginStatusReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +97,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
         intentFilter.addAction(SettingsFragment.ACTION_CHANGE_THEME);
         intentFilter.addAction(SettingsFragment.ACTION_CHANGE_FONT_SIZE);
         // recreate this Activity when night mode or font size setting changes
-        recreateActivityReceiver = new BroadcastReceiver() {
+        mRecreateActivityReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (BaseActivity.this instanceof SettingsActivity
@@ -108,14 +108,13 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
                 recreate();
             }
         };
-        LocalBroadcastManager.getInstance(this)
-                .registerReceiver(recreateActivityReceiver, intentFilter);
+        registerReceiver(mRecreateActivityReceiver, intentFilter);
 
         intentFilter = new IntentFilter();
         intentFilter.addAction(User.ACTION_USER_LOGIN);
         intentFilter.addAction(User.ACTION_USER_LOGOUT_OR_EXPIRATION);
         // change drawer's top area depends on user's login status
-        userLoginStatusReceiver = new BroadcastReceiver() {
+        mUserLoginStatusReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(User.ACTION_USER_LOGIN)) {
@@ -125,8 +124,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
                 }
             }
         };
-        LocalBroadcastManager.getInstance(this)
-                .registerReceiver(userLoginStatusReceiver, intentFilter);
+        registerReceiver(mUserLoginStatusReceiver, intentFilter);
     }
 
     @Override
@@ -139,8 +137,8 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
     protected void onDestroy() {
         super.onDestroy();
 
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(recreateActivityReceiver);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(userLoginStatusReceiver);
+        unregisterReceiver(mRecreateActivityReceiver);
+        unregisterReceiver(mUserLoginStatusReceiver);
     }
 
     @Override
@@ -192,17 +190,12 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
     }
 
     void setupFloatingActionButton(@DrawableRes int resId) {
-        View.OnClickListener onClickListener;
-        if (this instanceof View.OnClickListener) {
-            onClickListener = (View.OnClickListener) this;
-        } else {
-            throw new ClassCastException(this + " must implement View.OnClickListener.");
-        }
-
         mFloatingActionButton = (FloatingActionButton) findViewById(R.id.floating_action_button);
+        // subclass need to implement android.view.View.OnClickListener
+        mFloatingActionButton.setOnClickListener(
+                ObjectUtil.cast(this, View.OnClickListener.class));
         mFloatingActionButton.setImageResource(resId);
         mFloatingActionButton.setVisibility(View.VISIBLE);
-        mFloatingActionButton.setOnClickListener(onClickListener);
     }
 
     /**
@@ -435,15 +428,11 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
                     new AlertDialog.Builder(getActivity())
                             .setMessage(R.string.dialog_message_log_out)
                             .setPositiveButton(android.R.string.ok,
-                                    (dialog, which) -> {
-                                        if (getActivity() instanceof User.OnLogoutListener) {
-                                            ((User.OnLogoutListener) getActivity()).onLogout();
-                                        } else {
-                                            throw new ClassCastException(
-                                                    getActivity()
-                                                            + " must implements  User.OnLogoutListener.");
-                                        }
-                                    })
+                                    (dialog, which) ->
+                                            ObjectUtil.cast(
+                                                    getActivity(),
+                                                    User.OnLogoutListener.class
+                                            ).onLogout())
                             .setNegativeButton(
                                     android.R.string.cancel, null)
                             .create();

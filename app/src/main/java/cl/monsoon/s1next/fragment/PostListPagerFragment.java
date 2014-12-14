@@ -18,6 +18,7 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.adapter.PostListRecyclerAdapter;
 import cl.monsoon.s1next.model.list.PostList;
 import cl.monsoon.s1next.model.mapper.PostListWrapper;
+import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.MyRecyclerView;
@@ -60,18 +61,6 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        mThreadId = getArguments().getCharSequence(ARG_THREAD_ID);
-        mPageNum = getArguments().getInt(ARG_PAGE_NUM);
-
-        if (savedInstanceState != null) {
-            mIsEndlessLoading = savedInstanceState.getBoolean(STATE_IS_ENDLESS_LOADING);
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_base, container, false);
     }
@@ -79,6 +68,9 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mThreadId = getArguments().getCharSequence(ARG_THREAD_ID);
+        mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
         MyRecyclerView recyclerView = (MyRecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -118,19 +110,17 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                 }
             }
         });
+
+        if (savedInstanceState != null) {
+            mIsEndlessLoading = savedInstanceState.getBoolean(STATE_IS_ENDLESS_LOADING);
+        }
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        if (activity instanceof OnPagerInteractionCallback) {
-            mOnPagerInteractionCallback = ((OnPagerInteractionCallback) getActivity());
-        } else {
-            throw new ClassCastException(
-                    getActivity()
-                            + " must implement OnPagerInteractionListener.");
-        }
+        mOnPagerInteractionCallback = ObjectUtil.cast(activity, OnPagerInteractionCallback.class);
     }
 
     @Override
