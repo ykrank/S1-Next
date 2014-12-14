@@ -2,6 +2,7 @@ package cl.monsoon.s1next.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spannable;
@@ -11,6 +12,7 @@ import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -231,6 +233,22 @@ public final class PostListRecyclerAdapter
             mCount.setMovementMethod(LinkMovementMethod.getInstance());
             // use custom movement method to provides selection and click
             mPost.setMovementMethod(MyMovementMethod.getInstance());
+
+            // use TouchDelegate to increase mCount's click area
+            mCount.post(() -> {
+                int halfMinimumTouchTargetSize =
+                        mCount.getContext()
+                                .getResources()
+                                .getDimensionPixelSize(
+                                        R.dimen.minimum_touch_target_size) / 2;
+                Rect rect = new Rect();
+                mCount.getHitRect(rect);
+                rect.top -= halfMinimumTouchTargetSize;
+                rect.right += halfMinimumTouchTargetSize;
+                rect.bottom += halfMinimumTouchTargetSize;
+                rect.left -= halfMinimumTouchTargetSize;
+                itemView.setTouchDelegate(new TouchDelegate(rect, mCount));
+            });
         }
     }
 
