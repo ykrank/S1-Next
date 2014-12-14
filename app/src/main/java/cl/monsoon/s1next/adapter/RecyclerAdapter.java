@@ -24,6 +24,12 @@ public abstract class RecyclerAdapter<T, VH extends RecyclerView.ViewHolder>
         notifyDataSetChanged();
     }
 
+    public void addAll(List<T> list) {
+        int start = this.mList.size();
+        this.mList.addAll(list);
+        notifyItemRangeChanged(start, list.size());
+    }
+
     public T getItem(int i) {
         return mList.get(i);
     }

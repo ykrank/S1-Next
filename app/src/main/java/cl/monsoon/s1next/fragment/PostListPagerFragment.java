@@ -189,10 +189,12 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     public void onPostExecute(AsyncResult<PostListWrapper> asyncResult) {
         super.onPostExecute(asyncResult);
 
+        boolean isFinishedEndlessLoading = mIsEndlessLoading;
         if (mIsEndlessLoading) {
             // mRecyclerAdapter.getItemCount() = 0 when configuration changes (like orientation changes)
             if (mRecyclerAdapter.getItemCount() == 0) {
                 mIsEndlessLoading = true;
+                isFinishedEndlessLoading = false;
                 setSwipeRefreshLayoutEnabled(false);
                 mRecyclerAdapter.showFooterProgress();
             } else {
@@ -208,7 +210,16 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
         } else {
             try {
                 PostList postList = asyncResult.data.unwrap();
-                mRecyclerAdapter.setDataSet(postList.getPostList());
+
+                if (isFinishedEndlessLoading) {
+                    mRecyclerAdapter.addAll(
+                            postList.getPostList()
+                                    .subList(
+                                            mRecyclerAdapter.getItemCount(),
+                                            postList.getPostList().size()));
+                } else {
+                    mRecyclerAdapter.setDataSet(postList.getPostList());
+                }
 
                 mOnPagerInteractionCallback.setTotalPages(postList.getPostListInfo().getReplies() + 1);
             } catch (NullPointerException e) {
