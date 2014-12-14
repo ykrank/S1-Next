@@ -18,7 +18,7 @@ public final class ReplyActivity extends BaseActivity {
 
     public final static String ARG_THREAD_TITLE = "thread_title";
     public final static String ARG_THREAD_ID = "thread_id";
-    public final static String ARG_QUOTE_COUNT = "quote_count";
+    public final static String ARG_QUOTE_POST_ID = "quote_post_id";
 
     private ReplyFragment mReplyFragment;
 
@@ -30,19 +30,18 @@ public final class ReplyActivity extends BaseActivity {
         setNavDrawerEnabled(false);
         setupNavCrossIcon();
 
-        CharSequence quoteCount = getIntent().getCharSequenceExtra(ARG_QUOTE_COUNT);
+        CharSequence quotePostId = getIntent().getCharSequenceExtra(ARG_QUOTE_POST_ID);
         String titlePrefix =
-                TextUtils.isEmpty(quoteCount)
+                TextUtils.isEmpty(quotePostId)
                         ? getString(R.string.reply_activity_title_prefix)
-                        : getString(R.string.reply_activity_quote_title_prefix, quoteCount);
+                        : getString(R.string.reply_activity_quote_title_prefix, quotePostId);
         setTitle(titlePrefix + getIntent().getStringExtra(ARG_THREAD_TITLE));
 
         Fragment fragment = getFragmentManager().findFragmentByTag(ReplyFragment.TAG);
         if (fragment == null) {
             mReplyFragment =
                     ReplyFragment.newInstance(
-                            getIntent().getCharSequenceExtra(ARG_THREAD_ID),
-                            quoteCount);
+                            getIntent().getCharSequenceExtra(ARG_THREAD_ID),quotePostId);
 
             getFragmentManager().beginTransaction()
                     .replace(R.id.frame_layout, mReplyFragment, ReplyFragment.TAG).commit();

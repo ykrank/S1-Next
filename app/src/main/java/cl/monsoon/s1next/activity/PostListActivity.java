@@ -173,7 +173,7 @@ public final class PostListActivity
         mQuoteReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                startReplyActivity(intent.getCharSequenceExtra(ReplyActivity.ARG_QUOTE_COUNT));
+                startReplyActivity(intent.getCharSequenceExtra(ReplyActivity.ARG_QUOTE_POST_ID));
             }
         };
         registerReceiver(mQuoteReceiver, new IntentFilter(ACTION_QUOTE));
@@ -359,7 +359,7 @@ public final class PostListActivity
         startReplyActivity(null);
     }
 
-    void startReplyActivity(@Nullable CharSequence quoteCount) {
+    void startReplyActivity(@Nullable CharSequence quotePostId) {
         // show LoginPromptDialog if user hasn't logged in.
         if (TextUtils.isEmpty(User.getName())) {
             new LoginPromptDialog().show(getFragmentManager(), LoginPromptDialog.TAG);
@@ -371,7 +371,7 @@ public final class PostListActivity
 
         intent.putExtra(ReplyActivity.ARG_THREAD_TITLE, mThreadTitle);
         intent.putExtra(ReplyActivity.ARG_THREAD_ID, mThreadId);
-        intent.putExtra(ReplyActivity.ARG_QUOTE_COUNT, quoteCount);
+        intent.putExtra(ReplyActivity.ARG_QUOTE_POST_ID, quotePostId);
 
         startActivity(intent);
     }

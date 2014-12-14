@@ -41,12 +41,12 @@ public final class ReplyFragment extends LoaderFragment {
     private static final String STATE_QUOTE = "quote";
 
     private static final String ARG_THREAD_ID = "thread_id";
-    private static final String ARG_QUOTE_COUNT = "quote_count";
+    private static final String ARG_QUOTE_POST_ID = "quote_post_id";
 
     private static final String STATUS_REPLY_SUCCESS = "post_reply_succeed";
 
     private CharSequence mThreadId;
-    private CharSequence mQuoteCount;
+    private CharSequence mQuotePostId;
 
     private Quote mQuote;
 
@@ -57,12 +57,12 @@ public final class ReplyFragment extends LoaderFragment {
 
     private MenuItem mMenuReplyPost;
 
-    public static ReplyFragment newInstance(CharSequence threadId, CharSequence quoteCount) {
+    public static ReplyFragment newInstance(CharSequence threadId, CharSequence quotePostId) {
         ReplyFragment fragment = new ReplyFragment();
 
         Bundle args = new Bundle();
         args.putCharSequence(ARG_THREAD_ID, threadId);
-        args.putCharSequence(ARG_QUOTE_COUNT, quoteCount);
+        args.putCharSequence(ARG_QUOTE_POST_ID, quotePostId);
         fragment.setArguments(args);
 
         return fragment;
@@ -78,7 +78,7 @@ public final class ReplyFragment extends LoaderFragment {
         super.onViewCreated(view, savedInstanceState);
 
         mThreadId = getArguments().getCharSequence(ARG_THREAD_ID);
-        mQuoteCount = getArguments().getCharSequence(ARG_QUOTE_COUNT);
+        mQuotePostId = getArguments().getCharSequence(ARG_QUOTE_POST_ID);
 
         mReplyView = (EditText) view.findViewById(R.id.reply);
         Config.updateTextSize(mReplyView);
@@ -134,7 +134,7 @@ public final class ReplyFragment extends LoaderFragment {
                 final boolean hasAuthenticityToken =
                         !TextUtils.isEmpty(User.getAuthenticityToken());
                 if (hasAuthenticityToken) {
-                    if (TextUtils.isEmpty(mQuoteCount)) {
+                    if (TextUtils.isEmpty(mQuotePostId)) {
                         loaderId = ID_LOADER_POST_REPLY;
                     } else {
                         if (mQuote == null) {
@@ -198,7 +198,7 @@ public final class ReplyFragment extends LoaderFragment {
             return
                     new HttpGetLoader<>(
                             getActivity(),
-                            Api.getQuoteHelper(mThreadId, mQuoteCount),
+                            Api.getQuoteHelper(mThreadId, mQuotePostId),
                             Quote.class);
         } else if (id == ID_LOADER_POST_REPLY || id == ID_LOADER_POST_QUOTE) {
             return
@@ -220,7 +220,7 @@ public final class ReplyFragment extends LoaderFragment {
         } else {
             int id = loader.getId();
             if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
-                if (TextUtils.isEmpty(mQuoteCount)) {
+                if (TextUtils.isEmpty(mQuotePostId)) {
                     startLoader(ID_LOADER_POST_REPLY);
                 } else {
                     startLoader(ID_LOADER_GET_QUOTE_EXTRA_INFO);

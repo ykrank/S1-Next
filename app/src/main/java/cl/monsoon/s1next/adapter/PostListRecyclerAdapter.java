@@ -139,7 +139,7 @@ public final class PostListRecyclerAdapter
             spannable.setSpan(
                     MyClickableSpan, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             countView.setText(spannable);
-            countView.setTag(post.getCount());
+            countView.setTag(post.getPostId());
         }
 
         String reply = post.getReply();
@@ -257,7 +257,7 @@ public final class PostListRecyclerAdapter
         @Override
         public void onClick(View widget) {
             Intent intent = new Intent(PostListActivity.ACTION_QUOTE);
-            intent.putExtra(ReplyActivity.ARG_QUOTE_COUNT, (CharSequence) widget.getTag());
+            intent.putExtra(ReplyActivity.ARG_QUOTE_POST_ID, (CharSequence) widget.getTag());
 
             widget.getContext().sendBroadcast(intent);
         }

@@ -78,11 +78,11 @@ public final class Api {
                         .toString();
     }
 
-    public static String getQuoteHelper(CharSequence threadId, CharSequence quoteCount) {
+    public static String getQuoteHelper(CharSequence threadId, CharSequence quotePostId) {
         return
                 Uri.parse(URL_QUOTE_HELPER).buildUpon()
                         .appendQueryParameter("tid", threadId.toString())
-                        .appendQueryParameter("repquote", quoteCount.toString())
+                        .appendQueryParameter("repquote", quotePostId.toString())
                         .toString();
     }
 

@@ -23,6 +23,9 @@ public final class Post {
     @JsonProperty("authorid")
     private String userId;
 
+    @JsonProperty("pid")
+    private String postId;
+
     @JsonProperty("message")
     private String reply;
 
@@ -49,6 +52,14 @@ public final class Post {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
     public String getReply() {
