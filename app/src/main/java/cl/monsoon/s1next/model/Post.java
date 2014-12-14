@@ -101,7 +101,7 @@ public final class Post {
         // sample: color="sienna"
         // matcher.group(0): color="sienna"
         // matcher.group(1): sienna
-        Pattern pattern = Pattern.compile("color=\"(\\p{ASCII}+)\"");
+        Pattern pattern = Pattern.compile("color=\"([a-zA-Z]+)\"");
         Matcher matcher = pattern.matcher(reply);
 
         StringBuffer stringBuffer = new StringBuffer();
