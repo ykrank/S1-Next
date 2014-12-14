@@ -35,7 +35,7 @@
     <string name="pref_open_source_licenses">开放源代码许可</string>
     <string name="pref_open_source_licenses_summary">开放源代码软件的许可详情</string>
     <string name="pref_version">版本号</string>
-    <string name="pref_version_summary">版本： 0.1.0</string>
+    <string name="pref_version_summary">版本： 0.2.0-rc1</string>
     <string name="pref_font_size_entries_1">极小</string>
     <string name="pref_font_size_entries_2">小</string>
     <string name="pref_font_size_entries_3">中</string>
