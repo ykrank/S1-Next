@@ -12,18 +12,18 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.io.InputStream;
 
-import cl.monsoon.s1next.model.mapper.Deserialization;
-import cl.monsoon.s1next.singleton.MyObjectMapper;
+import cl.monsoon.s1next.model.Extractable;
+import cl.monsoon.s1next.singleton.MyObjectExtractor;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
 import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 
 /**
- * Load JSON from Internet and deserialize to data.
+ * Load data from the Internet and then extracted into POJO.
  * Also retain {@link HttpGetRetainedFragment.AsyncHttpGetTask}
  * and data when configuration change.
  */
-public class HttpGetRetainedFragment<D extends Deserialization> extends DataRetainedFragment<D> {
+public class HttpGetRetainedFragment<D extends Extractable> extends DataRetainedFragment<D> {
 
     public static final String TAG_PREFIX = "retained_fragment_";
 
@@ -103,7 +103,7 @@ public class HttpGetRetainedFragment<D extends Deserialization> extends DataReta
     /**
      * A callback interface that all activities containing this Fragment must implement.
      */
-    public static interface Callback<D extends Deserialization> {
+    public static interface Callback<D extends Extractable> {
 
         public void onPostExecute(AsyncResult<D> dAsyncResult);
     }
@@ -128,7 +128,7 @@ public class HttpGetRetainedFragment<D extends Deserialization> extends DataReta
 
                 try {
                     // JSON mapper
-                    result.data = MyObjectMapper.readValue(in, mClass);
+                    result.data = MyObjectExtractor.readValue(in, mClass);
                 } catch (IOException e) {
                     throw new RemoteException(e.toString());
                 }

@@ -8,7 +8,7 @@ import cl.monsoon.s1next.model.Result;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class ResultWrapper implements Deserialization {
+public final class ResultWrapper implements Deserializable {
 
     @JsonProperty("Message")
     private Result result;

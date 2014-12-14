@@ -30,7 +30,7 @@ import cl.monsoon.s1next.widget.HttpPostLoader;
 /**
  * A login screen that offers login via username/password.
  */
-public final class LoginFragment extends LoaderFragment {
+public final class LoginFragment extends LoaderFragment<ResultWrapper> {
 
     public static final String TAG = "login_fragment";
 
@@ -147,9 +147,9 @@ public final class LoginFragment extends LoaderFragment {
     RequestBody getRequestBody(int loaderId) {
         if (loaderId == ID_LOADER_LOGIN) {
             return Api.getLoginPostBuilder(mUsernameView.getText(), mPasswordView.getText());
-        } else {
-            throw new IllegalStateException("loaderId must be ID_LOADER_LOGIN.");
         }
+
+        return super.getRequestBody(loaderId);
     }
 
     @Override
@@ -164,7 +164,7 @@ public final class LoginFragment extends LoaderFragment {
 
     @Override
     public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> asyncResult) {
-        super.onLoadFinished(loader, asyncResult);
+        dismissProgressDialog();
 
         if (asyncResult.exception != null) {
             AsyncResult.handleException(asyncResult.exception);
@@ -183,5 +183,10 @@ public final class LoginFragment extends LoaderFragment {
                 getActivity().onBackPressed();
             }
         }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<AsyncResult<ResultWrapper>> loader) {
+
     }
 }

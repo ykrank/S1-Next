@@ -13,7 +13,7 @@ import com.squareup.okhttp.RequestBody;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import cl.monsoon.s1next.model.mapper.ResultWrapper;
+import cl.monsoon.s1next.model.Extractable;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.HttpPostLoader;
@@ -21,11 +21,13 @@ import cl.monsoon.s1next.widget.HttpPostLoader;
 /**
  * Wrap {@link cl.monsoon.s1next.widget.HttpPostLoader} and ProgressDialog.
  */
-public abstract class LoaderFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<AsyncResult<ResultWrapper>>, DialogInterface.OnCancelListener {
+public abstract class LoaderFragment<D extends Extractable> extends Fragment
+        implements LoaderManager.LoaderCallbacks<AsyncResult<D>>, DialogInterface.OnCancelListener {
 
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({ID_LOADER_LOGIN, ID_LOADER_GET_AUTHENTICITY_TOKEN, ID_LOADER_POST_REPLY})
+    @IntDef({ID_LOADER_LOGIN,
+            ID_LOADER_GET_AUTHENTICITY_TOKEN, ID_LOADER_POST_REPLY,
+            ID_LOADER_GET_QUOTE_EXTRA_INFO, ID_LOADER_POST_QUOTE})
     public @interface LoaderId {
 
     }
@@ -33,6 +35,8 @@ public abstract class LoaderFragment extends Fragment
     static final int ID_LOADER_LOGIN = 0;
     static final int ID_LOADER_GET_AUTHENTICITY_TOKEN = 1;
     static final int ID_LOADER_POST_REPLY = 2;
+    static final int ID_LOADER_GET_QUOTE_EXTRA_INFO = 3;
+    static final int ID_LOADER_POST_QUOTE = 4;
 
     /**
      * The serialization (saved instance state) Bundle key representing
@@ -78,13 +82,6 @@ public abstract class LoaderFragment extends Fragment
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-
-        dismissProgressDialog();
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -92,7 +89,8 @@ public abstract class LoaderFragment extends Fragment
         outState.putInt(STATE_ID_LOADER, mLoaderId);
     }
 
-    void showProgressDialog() {
+    final void showProgressDialog() {
+        mIsLoading = true;
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(getActivity());
             mProgressDialog.setMessage(getProgressMessage());
@@ -117,14 +115,14 @@ public abstract class LoaderFragment extends Fragment
         mIsLoading = false;
     }
 
-    private void dismissProgressDialog() {
+    final void dismissProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
+        mIsLoading = false;
     }
 
     void startLoader(@LoaderId int loaderId) {
-        mIsLoading = true;
         mLoaderId = loaderId;
         mLoader = getLoaderManager().getLoader(mLoaderId);
         if (mLoader == null) {
@@ -142,16 +140,7 @@ public abstract class LoaderFragment extends Fragment
         }
     }
 
-    abstract RequestBody getRequestBody(@LoaderId int loaderId);
-
-    @Override
-    public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> data) {
-        mIsLoading = false;
-        dismissProgressDialog();
-    }
-
-    @Override
-    public void onLoaderReset(Loader<AsyncResult<ResultWrapper>> loader) {
-
+    RequestBody getRequestBody(@LoaderId int loaderId) {
+        throw new IllegalStateException("Loader ID can't be " + loaderId + ".");
     }
 }

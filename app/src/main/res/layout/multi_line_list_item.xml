@@ -14,5 +14,5 @@ is not sure (less than 4) and each line are all primary. -->
     android:gravity="center_vertical"
     android:includeFontPadding="false"
     android:maxLines="@integer/list_max_line"
-    android:padding="@dimen/list_view_item_padding"
+    android:padding="@dimen/item_padding"
     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>

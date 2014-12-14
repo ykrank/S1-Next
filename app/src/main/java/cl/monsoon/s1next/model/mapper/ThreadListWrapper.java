@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import cl.monsoon.s1next.model.list.ThreadList;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class ThreadListWrapper implements Deserialization {
+public final class ThreadListWrapper implements Deserializable {
 
     @JsonProperty("Variables")
     private ThreadList data;

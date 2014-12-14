@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -52,6 +53,8 @@ public final class PostListActivity
 
     public final static String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
 
+    public static final String ACTION_QUOTE = "quote";
+
     /**
      * The serialization (saved instance state) Bundle key representing
      * SeekBar's progress when page flip dialog is showing.
@@ -73,6 +76,8 @@ public final class PostListActivity
     private MenuItem mMenuPageFlip;
 
     private BroadcastReceiver mWifiReceiver;
+
+    private BroadcastReceiver mQuoteReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,6 +169,14 @@ public final class PostListActivity
                     new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION);
             registerReceiver(mWifiReceiver, intentFilter);
         }
+
+        mQuoteReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                startReplyActivity(intent.getCharSequenceExtra(ReplyActivity.ARG_QUOTE_COUNT));
+            }
+        };
+        registerReceiver(mQuoteReceiver, new IntentFilter(ACTION_QUOTE));
     }
 
     @Override
@@ -174,6 +187,8 @@ public final class PostListActivity
             unregisterReceiver(mWifiReceiver);
             mWifiReceiver = null;
         }
+
+        unregisterReceiver(mQuoteReceiver);
     }
 
     @Override
@@ -341,6 +356,10 @@ public final class PostListActivity
      */
     @Override
     public void onClick(View v) {
+        startReplyActivity(null);
+    }
+
+    void startReplyActivity(@Nullable CharSequence quoteCount) {
         // show LoginPromptDialog if user hasn't logged in.
         if (TextUtils.isEmpty(User.getName())) {
             new LoginPromptDialog().show(getFragmentManager(), LoginPromptDialog.TAG);
@@ -352,6 +371,7 @@ public final class PostListActivity
 
         intent.putExtra(ReplyActivity.ARG_THREAD_TITLE, mThreadTitle);
         intent.putExtra(ReplyActivity.ARG_THREAD_ID, mThreadId);
+        intent.putExtra(ReplyActivity.ARG_QUOTE_COUNT, quoteCount);
 
         startActivity(intent);
     }

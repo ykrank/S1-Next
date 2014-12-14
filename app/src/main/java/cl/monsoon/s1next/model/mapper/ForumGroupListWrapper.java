@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import cl.monsoon.s1next.model.list.ForumGroupList;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class ForumGroupListWrapper implements Deserialization {
+public final class ForumGroupListWrapper implements Deserializable {
 
     @JsonProperty("Variables")
     private ForumGroupList data;

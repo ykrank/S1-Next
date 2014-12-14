@@ -53,9 +53,10 @@
 
     <!-- Because thread's title usually is chinese, so this string is Chinese for all locales. -->
     <string name="reply_activity_title_prefix" translatable="false">"回复主题 - "</string>
+    <string name="reply_activity_quote_title_prefix" translatable="false">"引用#%1$s - "</string>
     <string name="prompt_reply">Write something…</string>
     <string name="dialog_progress_title_reply">Replying…</string>
-    <string name="dialog_message_back_prompt">Do you want to discard this post?</string>
+    <string name="dialog_message_reply_back_prompt">Do you want to discard this reply?</string>
 
     <!-- settings -->
     <string name="pref_general">GENERAL</string>

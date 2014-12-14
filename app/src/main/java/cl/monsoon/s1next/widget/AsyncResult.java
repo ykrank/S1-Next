@@ -5,15 +5,15 @@ import android.os.RemoteException;
 import java.io.IOException;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.model.mapper.Deserialization;
+import cl.monsoon.s1next.model.Extractable;
 import cl.monsoon.s1next.util.ToastHelper;
 
 /**
  * {@code exception} is not null when load data failed.
  *
- * @param <D> the data type which can be deserialized from JSON.
+ * @param <D> the data type which can be be extracted to POJO.
  */
-public final class AsyncResult<D extends Deserialization> {
+public final class AsyncResult<D extends Extractable> {
 
     public D data;
     public Throwable exception;

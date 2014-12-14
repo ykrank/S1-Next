@@ -19,20 +19,18 @@
     <dimen name="swipe_refresh_progress_view_end">72dp</dimen>
 
     <dimen name="single_line_height">56dp</dimen>
-    <dimen name="two_line_height_with_avatar">72dp</dimen>
+
+    <dimen name="item_padding">16dp</dimen>
 
     <dimen name="list_view_padding">8dp</dimen>
     <!-- half of card view divider padding -->
     <dimen name="recycler_view_card_padding">4dp</dimen>
-
-    <dimen name="list_view_item_padding">16dp</dimen>
 
     <dimen name="card_view_horizontal_margin">8dp</dimen>
     <!-- actually both 4dp, but CardView has padding 2dp in pre-Lollipop -->
     <dimen name="card_view_vertical_margin">2dp</dimen>
 
     <dimen name="avatar_size">40dp</dimen>
-    <dimen name="avatar_margin">16dp</dimen>
     <dimen name="left_icon_margin_right">32dp</dimen>
 
     <dimen name="dialog_padding">24dp</dimen>

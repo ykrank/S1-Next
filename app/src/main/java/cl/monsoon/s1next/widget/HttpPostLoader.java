@@ -9,7 +9,7 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.io.InputStream;
 
-import cl.monsoon.s1next.model.mapper.Deserialization;
+import cl.monsoon.s1next.model.mapper.Deserializable;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
 
 /**
@@ -17,7 +17,7 @@ import cl.monsoon.s1next.singleton.MyOkHttpClient;
  *
  * @see HttpGetLoader
  */
-public final class HttpPostLoader<D extends Deserialization> extends HttpGetLoader<D> {
+public final class HttpPostLoader<D extends Deserializable> extends HttpGetLoader<D> {
 
     private RequestBody mRequestBody;
 

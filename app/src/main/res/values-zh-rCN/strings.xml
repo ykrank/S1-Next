@@ -25,7 +25,7 @@
     <string name="dialog_message_login_prompt">您需要登录后，才可以回帖。</string>
     <string name="prompt_reply">写点内容吧…</string>
     <string name="dialog_progress_title_reply">回复中…</string>
-    <string name="dialog_message_back_prompt">要舍弃这条信息吗？</string>
+    <string name="dialog_message_reply_back_prompt">要舍弃这条回复吗？</string>
     <string name="pref_general">常规</string>
     <string name="pref_night_mode">夜间模式</string>
     <string name="pref_font_size">字体大小</string>

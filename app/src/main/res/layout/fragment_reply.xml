@@ -13,7 +13,7 @@
     tools:context="cl.monsoon.s1next.fragment.ReplyFragment">
 
     <EditText
-        android:id="@+id/comment_or_reply"
+        android:id="@+id/reply"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@null"

@@ -11,20 +11,20 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.io.InputStream;
 
-import cl.monsoon.s1next.model.mapper.Deserialization;
-import cl.monsoon.s1next.singleton.MyObjectMapper;
+import cl.monsoon.s1next.model.Extractable;
+import cl.monsoon.s1next.singleton.MyObjectExtractor;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
 
 /**
  * Pay attention to https://stackoverflow.com/questions/15897547/loader-unable-to-retain-itself-during-certain-configuration-change
  * We must not use this during certain configuration change.
  * <p>
- * Load JSON from Internet and deserialized to data.
+ * Load data from the Internet and then extracted into POJO.
  * {@see android.content.AsyncTaskLoader}.
  *
- * @param <D> the data type which can be deserialized from JSON.
+ * @param <D> the data type which could be extracted into POJO.
  */
-public class HttpGetLoader<D extends Deserialization> extends AsyncTaskLoader<AsyncResult<D>> {
+public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncResult<D>> {
 
     final String mUrl;
     /**
@@ -65,7 +65,7 @@ public class HttpGetLoader<D extends Deserialization> extends AsyncTaskLoader<As
             InputStream in = request();
 
             // JSON mapper
-            asyncResult.data = MyObjectMapper.readValue(in, mClass);
+            asyncResult.data = MyObjectExtractor.readValue(in, mClass);
         } catch (IOException e) {
             asyncResult.exception = e;
         }

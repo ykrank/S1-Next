@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.ReplyFragment;
@@ -16,6 +17,7 @@ public final class ReplyActivity extends BaseActivity {
 
     public final static String ARG_THREAD_TITLE = "thread_title";
     public final static String ARG_THREAD_ID = "thread_id";
+    public final static String ARG_QUOTE_COUNT = "quote_count";
 
     private ReplyFragment mReplyFragment;
 
@@ -27,15 +29,19 @@ public final class ReplyActivity extends BaseActivity {
         setNavDrawerEnabled(false);
         setupNavCrossIcon();
 
-        setTitle(
-                getText(R.string.reply_activity_title_prefix)
-                        + getIntent().getStringExtra(ARG_THREAD_TITLE));
-
-        String url = getIntent().getStringExtra(ARG_THREAD_ID);
+        CharSequence quoteCount = getIntent().getCharSequenceExtra(ARG_QUOTE_COUNT);
+        String titlePrefix =
+                TextUtils.isEmpty(quoteCount)
+                        ? getString(R.string.reply_activity_title_prefix)
+                        : getString(R.string.reply_activity_quote_title_prefix, quoteCount);
+        setTitle(titlePrefix + getIntent().getStringExtra(ARG_THREAD_TITLE));
 
         Fragment fragment = getFragmentManager().findFragmentByTag(ReplyFragment.TAG);
         if (fragment == null) {
-            mReplyFragment = ReplyFragment.newInstance(url);
+            mReplyFragment =
+                    ReplyFragment.newInstance(
+                            getIntent().getCharSequenceExtra(ARG_THREAD_ID),
+                            quoteCount);
 
             getFragmentManager().beginTransaction()
                     .replace(R.id.frame_layout, mReplyFragment, ReplyFragment.TAG).commit();
@@ -69,7 +75,7 @@ public final class ReplyActivity extends BaseActivity {
 
             return
                     new AlertDialog.Builder(getActivity())
-                            .setMessage(R.string.dialog_message_back_prompt)
+                            .setMessage(R.string.dialog_message_reply_back_prompt)
                             .setPositiveButton(android.R.string.ok,
                                     (dialog, which) -> getActivity().finish())
                             .setNegativeButton(

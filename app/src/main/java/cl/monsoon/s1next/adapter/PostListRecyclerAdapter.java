@@ -1,10 +1,15 @@
 package cl.monsoon.s1next.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +25,8 @@ import java.util.Map;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.activity.PostListActivity;
+import cl.monsoon.s1next.activity.ReplyActivity;
 import cl.monsoon.s1next.model.Post;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.widget.GlideImageGetter;
@@ -124,10 +131,21 @@ public final class PostListRecyclerAdapter
                         DateUtils.MINUTE_IN_MILLIS,
                         DateUtils.DAY_IN_MILLIS,
                         0));
-        itemViewHolder.mCount.setText("#" + post.getCount());
+
+        TextView countView = itemViewHolder.mCount;
+        // there is no need to quote #1
+        if (post.getCount().equals("1")) {
+            countView.setText("#1");
+        } else {
+            Spannable spannable = new SpannableString("#" + post.getCount());
+            spannable.setSpan(
+                    MyClickableSpan, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            countView.setText(spannable);
+            countView.setTag(post.getCount());
+        }
 
         String reply = post.getReply();
-        TextView replayView = itemViewHolder.mReply;
+        TextView replayView = itemViewHolder.mPost;
         // some replies are empty
         // like http://bbs.saraba1st.com/2b/thread-1008413-1-1.html#authorposton24836448
         if (TextUtils.isEmpty(reply)) {
@@ -198,7 +216,7 @@ public final class PostListRecyclerAdapter
         private final TextView mUsername;
         private final TextView mTime;
         private final TextView mCount;
-        private final TextView mReply;
+        private final TextView mPost;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -207,17 +225,29 @@ public final class PostListRecyclerAdapter
             mUsername = (TextView) itemView.findViewById(R.id.username);
             mTime = (TextView) itemView.findViewById(R.id.time);
             mCount = (TextView) itemView.findViewById(R.id.count);
-            mReply = (TextView) itemView.findViewById(R.id.reply);
+            mPost = (TextView) itemView.findViewById(R.id.post);
 
             Config.updateTextSize(mUsername);
             Config.updateTextSize(mTime);
             Config.updateTextSize(mCount);
-            Config.updateTextSize(mReply);
+            Config.updateTextSize(mPost);
 
+            mCount.setMovementMethod(LinkMovementMethod.getInstance());
             // use custom movement method to provides selection and click
-            mReply.setMovementMethod(MyMovementMethod.getInstance());
+            mPost.setMovementMethod(MyMovementMethod.getInstance());
         }
     }
+
+    private static final ClickableSpan MyClickableSpan = new ClickableSpan() {
+
+        @Override
+        public void onClick(View widget) {
+            Intent intent = new Intent(PostListActivity.ACTION_QUOTE);
+            intent.putExtra(ReplyActivity.ARG_QUOTE_COUNT, (CharSequence) widget.getTag());
+
+            widget.getContext().sendBroadcast(intent);
+        }
+    };
 
     public static class FooterProgressViewHolder extends RecyclerView.ViewHolder {
 

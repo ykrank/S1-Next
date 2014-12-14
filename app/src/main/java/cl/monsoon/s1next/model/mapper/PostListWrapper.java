@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import cl.monsoon.s1next.model.list.PostList;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class PostListWrapper implements Deserialization {
+public final class PostListWrapper implements Deserializable {
 
     @JsonProperty("Variables")
     private PostList data;

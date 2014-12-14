@@ -14,7 +14,7 @@ import android.view.View;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.BaseActivity;
 import cl.monsoon.s1next.fragment.headless.HttpGetRetainedFragment;
-import cl.monsoon.s1next.model.mapper.Deserialization;
+import cl.monsoon.s1next.model.Extractable;
 import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
@@ -25,7 +25,7 @@ import cl.monsoon.s1next.widget.MyRecyclerView;
  * And wrap {@link cl.monsoon.s1next.fragment.headless.HttpGetRetainedFragment} to
  * retain {@link HttpGetRetainedFragment.AsyncHttpGetTask} and data when configuration change.
  */
-public abstract class BaseFragment<D extends Deserialization>
+public abstract class BaseFragment<D extends Extractable>
         extends Fragment
         implements HttpGetRetainedFragment.Callback<D>,
         SwipeRefreshLayout.OnRefreshListener {
