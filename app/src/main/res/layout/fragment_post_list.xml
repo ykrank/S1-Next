@@ -58,11 +58,13 @@
             android:singleLine="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
+        <!-- layout_marginTop = 72dp (two line height with avatar) - 16dp (RelativeLayout's top padding) -->
         <TextView
             android:id="@+id/post"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/avatar"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="56dp"
             android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textIsSelectable="true"/>
