@@ -173,7 +173,9 @@ public final class PostListActivity
         mQuoteReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                startReplyActivity(intent.getCharSequenceExtra(ReplyActivity.ARG_QUOTE_POST_ID));
+                startReplyActivity(
+                        intent.getCharSequenceExtra(ReplyActivity.ARG_QUOTE_POST_ID),
+                        intent.getCharSequenceExtra(ReplyActivity.ARG_QUOTE_POST_COUNT));
             }
         };
         registerReceiver(mQuoteReceiver, new IntentFilter(ACTION_QUOTE));
@@ -356,10 +358,10 @@ public final class PostListActivity
      */
     @Override
     public void onClick(View v) {
-        startReplyActivity(null);
+        startReplyActivity(null, null);
     }
 
-    void startReplyActivity(@Nullable CharSequence quotePostId) {
+    void startReplyActivity(@Nullable CharSequence quotePostId, @Nullable CharSequence quotePostCount) {
         // show LoginPromptDialog if user hasn't logged in.
         if (TextUtils.isEmpty(User.getName())) {
             new LoginPromptDialog().show(getFragmentManager(), LoginPromptDialog.TAG);
@@ -372,6 +374,7 @@ public final class PostListActivity
         intent.putExtra(ReplyActivity.ARG_THREAD_TITLE, mThreadTitle);
         intent.putExtra(ReplyActivity.ARG_THREAD_ID, mThreadId);
         intent.putExtra(ReplyActivity.ARG_QUOTE_POST_ID, quotePostId);
+        intent.putExtra(ReplyActivity.ARG_QUOTE_POST_COUNT, quotePostCount);
 
         startActivity(intent);
     }

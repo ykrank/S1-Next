@@ -17,14 +17,14 @@ import java.util.regex.Pattern;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class Post {
 
+    @JsonProperty("pid")
+    private String id;
+
     @JsonProperty("author")
     private String username;
 
     @JsonProperty("authorid")
     private String userId;
-
-    @JsonProperty("pid")
-    private String postId;
 
     @JsonProperty("message")
     private String reply;
@@ -37,6 +37,23 @@ public final class Post {
 
     @JsonProperty("attachments")
     private AttachmentWrapper attachmentWrapper;
+
+    public Post() {
+
+    }
+
+    private Post(String id, String count) {
+        this.id = id;
+        this.count = count;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -52,14 +69,6 @@ public final class Post {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getPostId() {
-        return postId;
-    }
-
-    public void setPostId(String postId) {
-        this.postId = postId;
     }
 
     public String getReply() {
@@ -100,6 +109,10 @@ public final class Post {
 
     public void setAttachmentWrapper(AttachmentWrapper attachmentWrapper) {
         this.attachmentWrapper = attachmentWrapper;
+    }
+
+    public Post getPartForQuote() {
+        return new Post(id, count);
     }
 
     /**

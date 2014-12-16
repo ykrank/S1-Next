@@ -19,6 +19,7 @@ public final class ReplyActivity extends BaseActivity {
     public final static String ARG_THREAD_TITLE = "thread_title";
     public final static String ARG_THREAD_ID = "thread_id";
     public final static String ARG_QUOTE_POST_ID = "quote_post_id";
+    public final static String ARG_QUOTE_POST_COUNT = "quote_post_count";
 
     private ReplyFragment mReplyFragment;
 
@@ -34,14 +35,16 @@ public final class ReplyActivity extends BaseActivity {
         String titlePrefix =
                 TextUtils.isEmpty(quotePostId)
                         ? getString(R.string.reply_activity_title_prefix)
-                        : getString(R.string.reply_activity_quote_title_prefix, quotePostId);
-        setTitle(titlePrefix + getIntent().getStringExtra(ARG_THREAD_TITLE));
+                        : getString(
+                                R.string.reply_activity_quote_title_prefix,
+                                getIntent().getStringExtra(ARG_QUOTE_POST_COUNT));
+        setTitle(titlePrefix + getIntent().getCharSequenceExtra(ARG_THREAD_TITLE));
 
         Fragment fragment = getFragmentManager().findFragmentByTag(ReplyFragment.TAG);
         if (fragment == null) {
             mReplyFragment =
                     ReplyFragment.newInstance(
-                            getIntent().getCharSequenceExtra(ARG_THREAD_ID),quotePostId);
+                            getIntent().getCharSequenceExtra(ARG_THREAD_ID), quotePostId);
 
             getFragmentManager().beginTransaction()
                     .replace(R.id.frame_layout, mReplyFragment, ReplyFragment.TAG).commit();
