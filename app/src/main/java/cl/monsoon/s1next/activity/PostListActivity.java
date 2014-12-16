@@ -85,6 +85,7 @@ public final class PostListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
+        enableWindowTranslucentStatus();
         setNavDrawerIndicatorEnabled(false);
 
         // not works well

@@ -7,10 +7,11 @@
 
     <dimen name="minimum_touch_target_size">48dp</dimen>
 
-    <dimen name="fake_statusbar_height">0dp</dimen>
+    <dimen name="statusbar_height">0dp</dimen>
 
+    <dimen name="drawer_avatar_margin_top">@dimen/item_padding</dimen>
     <dimen name="drawer_avatar_size">64dp</dimen>
-    <!-- 16dp + 72dp + 56dp -->
+    <!-- 16dp (avatar margin top) + 64dp (avatar height) + 56dp (username) -->
     <dimen name="drawer_top_height">136dp</dimen>
 
     <dimen name="divider">1dp</dimen>

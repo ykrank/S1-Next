@@ -45,6 +45,8 @@ public final class ForumActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
+        enableWindowTranslucentStatus();
+
         Fragment fragment;
         FragmentManager fragmentManager = getFragmentManager();
         if (savedInstanceState == null) {

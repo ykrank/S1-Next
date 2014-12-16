@@ -44,6 +44,7 @@ public final class ThreadListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
+        enableWindowTranslucentStatus();
         setNavDrawerIndicatorEnabled(false);
 
         mForumTitle = getIntent().getCharSequenceExtra(ARG_FORUM_TITLE);

@@ -42,7 +42,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/fake_statusbar_height"
+                android:layout_height="@dimen/statusbar_height"
                 android:background="?attr/colorPrimary"/>
 
             <!-- ToolBar as the ActionBar for the Activity. -->
@@ -79,7 +79,7 @@
             android:layout_height="@dimen/drawer_avatar_size"
             android:layout_marginLeft="@dimen/item_padding"
             android:layout_marginStart="@dimen/item_padding"
-            android:layout_marginTop="@dimen/item_padding"
+            android:layout_marginTop="@dimen/drawer_avatar_margin_top"
             android:contentDescription="@string/drawer_avatar_content_desc"
             s1:maskDrawable="@drawable/circle_mask"/>
 
