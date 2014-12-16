@@ -36,16 +36,17 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
 
     /**
      * The serialization (saved instance state) Bundle key representing whether
-     * {@link cl.monsoon.s1next.widget.MyRecyclerView} is endless loading when configuration changed.
+     * {@link cl.monsoon.s1next.widget.MyRecyclerView} is loading more when configuration changed.
      */
-    private static final String STATE_IS_ENDLESS_LOADING = "is_endless_loading";
+    private static final String STATE_IS_LOADING_MORE = "is_loading_more";
 
     private CharSequence mThreadId;
     private int mPageNum;
 
     private PostListRecyclerAdapter mRecyclerAdapter;
-
-    private boolean mIsEndlessLoading;
+    private LinearLayoutManager mLinearLayoutManager;
+    private MyRecyclerView recyclerView;
+    private boolean mIsLoadingMore;
 
     private OnPagerInteractionCallback mOnPagerInteractionCallback;
 
@@ -72,19 +73,18 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
         mThreadId = getArguments().getCharSequence(ARG_THREAD_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
-        MyRecyclerView recyclerView = (MyRecyclerView) view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView = (MyRecyclerView) view.findViewById(R.id.recycler_view);
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        // mLinearLayoutManager.setSmoothScrollbarEnabled(false);
+        // if https://code.google.com/p/android/issues/detail?id=78375&q=setSmoothScrollbarEnabled&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars fixed
+        recyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerAdapter = new PostListRecyclerAdapter(getActivity());
         recyclerView.setAdapter(mRecyclerAdapter);
-
         setupRecyclerViewPadding(
                 recyclerView,
                 getResources().getDimensionPixelSize(R.dimen.recycler_view_card_padding),
                 true);
         enableToolbarAndFabAutoHideEffect(recyclerView, new RecyclerView.OnScrollListener() {
-
-            private final LinearLayoutManager mLinearLayoutManager =
-                    (LinearLayoutManager) recyclerView.getLayoutManager();
 
             /**
              * Endless Scrolling with RecyclerView.
@@ -95,15 +95,13 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                     return;
                 }
 
-                int lastCompletelyVisibleItem = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
-                int itemCount = mLinearLayoutManager.getItemCount();
-
-                if (!mIsEndlessLoading
-                        && lastCompletelyVisibleItem == itemCount - 1
+                if (!mIsLoadingMore
+                        && mLinearLayoutManager.findLastVisibleItemPosition()
+                                == mLinearLayoutManager.getItemCount() - 1
                         && mPageNum == mOnPagerInteractionCallback.getTotalPages()
                         && !isLoading()) {
 
-                    mIsEndlessLoading = true;
+                    mIsLoadingMore = true;
                     setSwipeRefreshLayoutEnabled(false);
                     mRecyclerAdapter.showFooterProgress();
                     onRefresh();
@@ -112,7 +110,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
         });
 
         if (savedInstanceState != null) {
-            mIsEndlessLoading = savedInstanceState.getBoolean(STATE_IS_ENDLESS_LOADING);
+            mIsLoadingMore = savedInstanceState.getBoolean(STATE_IS_LOADING_MORE);
         }
     }
 
@@ -170,7 +168,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putBoolean(STATE_IS_ENDLESS_LOADING, mIsEndlessLoading);
+        outState.putBoolean(STATE_IS_LOADING_MORE, mIsLoadingMore);
     }
 
     private CharSequence getThreadTitle() {
@@ -189,17 +187,16 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     public void onPostExecute(AsyncResult<PostListWrapper> asyncResult) {
         super.onPostExecute(asyncResult);
 
-        boolean isFinishedEndlessLoading = mIsEndlessLoading;
-        if (mIsEndlessLoading) {
-            // mRecyclerAdapter.getItemCount() = 0 when configuration changes (like orientation changes)
+        if (mIsLoadingMore) {
+            // mRecyclerAdapter.getItemCount() = 0
+            // when configuration changes (like orientation changes)
             if (mRecyclerAdapter.getItemCount() == 0) {
-                mIsEndlessLoading = true;
-                isFinishedEndlessLoading = false;
+                mIsLoadingMore = true;
                 setSwipeRefreshLayoutEnabled(false);
                 mRecyclerAdapter.showFooterProgress();
             } else {
                 mRecyclerAdapter.hideFooterProgress();
-                mIsEndlessLoading = false;
+                mIsLoadingMore = false;
             }
         }
 
@@ -211,20 +208,23 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
             try {
                 PostList postList = asyncResult.data.unwrap();
 
-                if (isFinishedEndlessLoading) {
-                    mRecyclerAdapter.addAll(
-                            postList.getPostList()
-                                    .subList(
-                                            mRecyclerAdapter.getItemCount(),
-                                            postList.getPostList().size()));
-                } else {
-                    mRecyclerAdapter.setDataSet(postList.getPostList());
-                }
+                mRecyclerAdapter.setDataSet(postList.getPostList());
 
                 mOnPagerInteractionCallback.setTotalPages(postList.getPostListInfo().getReplies() + 1);
             } catch (NullPointerException e) {
                 ToastHelper.showByResId(R.string.message_server_error);
             }
+        }
+
+        int itemCount = mRecyclerAdapter.getItemCount();
+        // if footer is visible
+        if (itemCount != 0 &&
+                mLinearLayoutManager.findLastVisibleItemPosition() == itemCount - 1) {
+            // scroll up in order to hide footer
+            // then RecyclerView can load more
+            // if RecyclerView scrolls down
+            recyclerView.scrollBy(
+                    0, -PostListRecyclerAdapter.FooterViewHolder.HEIGHT_WHEN_PROGRESSBAR_NOT_SHOWN);
         }
     }
 

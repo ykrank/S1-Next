@@ -40,9 +40,9 @@ public final class PostListRecyclerAdapter
         extends RecyclerAdapter<Post, RecyclerView.ViewHolder> {
 
     private static final int TYPE_ITEM = 0;
-    private static final int TYPE_FOOTER_PROGRESS = 1;
+    private static final int TYPE_FOOTER = Integer.MIN_VALUE;
 
-    private boolean mHasFooterProgress;
+    private boolean mShouldFooterProgressShow;
 
     private final Context mContext;
 
@@ -69,14 +69,34 @@ public final class PostListRecyclerAdapter
     }
 
     @Override
+    public int getItemCount() {
+        int itemCount = mList.size();
+
+        return
+                itemCount == 0
+                        ? 0
+                        : itemCount + 1;
+
+    }
+
+    @Override
+    public Post getItem(int i) {
+        if (isFooter(i)) {
+            throw new IllegalStateException("Can't get the footer item.");
+        }
+
+        return super.getItem(i);
+    }
+
+    @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == TYPE_FOOTER_PROGRESS) {
+        if (viewType == TYPE_FOOTER) {
             View view =
                     LayoutInflater.from(
                             parent.getContext())
                             .inflate(R.layout.fragment_post_list_footer_progress, parent, false);
 
-            return new FooterProgressViewHolder(view);
+            return new FooterViewHolder(view);
         }
 
         View view =
@@ -89,8 +109,8 @@ public final class PostListRecyclerAdapter
 
     @Override
     public int getItemViewType(int position) {
-        if (isFooterProgress(position)) {
-            return TYPE_FOOTER_PROGRESS;
+        if (isFooter(position)) {
+            return TYPE_FOOTER;
         }
 
         return TYPE_ITEM;
@@ -98,7 +118,9 @@ public final class PostListRecyclerAdapter
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (isFooterProgress(position)) {
+        if (isFooter(position)) {
+            ObjectUtil.cast(holder, FooterViewHolder.class).updateFooter(mShouldFooterProgressShow);
+
             return;
         }
 
@@ -180,32 +202,33 @@ public final class PostListRecyclerAdapter
 
     @Override
     public long getItemId(int position) {
-        if (isFooterProgress(position)) {
+        if (isFooter(position)) {
             return Integer.MIN_VALUE;
         }
 
         return Long.parseLong(mList.get(position).getCount());
     }
 
-    private boolean isFooterProgress(int position) {
-        return mHasFooterProgress && position == getItemCount() - 1;
+    private boolean isFooter(int position) {
+        return position == getItemCount() - 1;
     }
 
     public void showFooterProgress() {
-        if (mHasFooterProgress) {
-            throw new IllegalStateException(this + " already has footer progress.");
+        if (mShouldFooterProgressShow) {
+            return;
         }
 
-        mHasFooterProgress = true;
-        mList.add(null);
+        mShouldFooterProgressShow = true;
         notifyItemChanged(getItemCount() - 1);
     }
 
     public void hideFooterProgress() {
-        int position = getItemCount() - 1;
-        mList.remove(position);
-        mHasFooterProgress = false;
-        notifyItemRemoved(position);
+        if (!mShouldFooterProgressShow) {
+            return;
+        }
+
+        mShouldFooterProgressShow = false;
+        notifyItemChanged(getItemCount() - 1);
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -266,10 +289,45 @@ public final class PostListRecyclerAdapter
         }
     };
 
-    public static class FooterProgressViewHolder extends RecyclerView.ViewHolder {
+    /**
+     * The footer height is 1px when progressbar isn't visible
+     * otherwise 56dp (single ine height).
+     * {@link cl.monsoon.s1next.widget.MyRecyclerView} is loading more
+     * when progressbar is showing.
+     */
+    public static class FooterViewHolder extends RecyclerView.ViewHolder {
 
-        public FooterProgressViewHolder(View itemView) {
+        /**
+         * 1px.
+         */
+        public static final int HEIGHT_WHEN_PROGRESSBAR_NOT_SHOWN = 1;
+
+        private final int heightWhenProgressbarShown;
+        private final View mProgressbar;
+
+        public FooterViewHolder(View itemView) {
             super(itemView);
+
+            heightWhenProgressbarShown =
+                    itemView.getResources().getDimensionPixelSize(R.dimen.single_line_height);
+            mProgressbar = itemView.findViewById(R.id.footer_progressbar);
+        }
+
+        private void updateFooter(Boolean shouldProgressShow) {
+            if (shouldProgressShow) {
+                mProgressbar.setVisibility(View.VISIBLE);
+            } else {
+                mProgressbar.setVisibility(View.GONE);
+            }
+
+            ViewGroup.LayoutParams layoutParams = itemView.getLayoutParams();
+            int height =
+                    shouldProgressShow
+                            ? heightWhenProgressbarShown
+                            : HEIGHT_WHEN_PROGRESSBAR_NOT_SHOWN;
+            if (height != layoutParams.height) {
+                layoutParams.height = height;
+            }
         }
     }
 }
