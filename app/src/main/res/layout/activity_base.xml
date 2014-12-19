@@ -3,6 +3,7 @@
 <android.support.v4.widget.DrawerLayout
     android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -74,14 +75,14 @@
 
         <cl.monsoon.s1next.widget.BezelImageView
             android:id="@+id/drawer_user_avatar"
-            xmlns:s1="http://schemas.android.com/apk/res-auto"
             android:layout_width="@dimen/drawer_avatar_size"
             android:layout_height="@dimen/drawer_avatar_size"
             android:layout_marginLeft="@dimen/item_padding"
             android:layout_marginStart="@dimen/item_padding"
             android:layout_marginTop="@dimen/drawer_avatar_margin_top"
             android:contentDescription="@string/drawer_avatar_content_desc"
-            s1:maskDrawable="@drawable/circle_mask"/>
+            app:borderDrawable="@drawable/selector_circle_border"
+            app:maskDrawable="@drawable/circle_mask"/>
 
         <TextView
             android:id="@+id/drawer_username"

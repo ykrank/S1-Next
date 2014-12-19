@@ -7,10 +7,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
@@ -34,6 +36,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.melnykov.fab.FloatingActionButton;
 
 import cl.monsoon.s1next.Api;
+import cl.monsoon.s1next.MyApplication;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.SettingsFragment;
 import cl.monsoon.s1next.singleton.Config;
@@ -307,6 +310,17 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
 
                 showOrHideToolbarAndFab(true);
             }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+
+                if (drawerView.getTag() instanceof Runnable) {
+                    Runnable runnable = (Runnable) drawerView.getTag();
+                    drawerView.setTag(null);
+                    runnable.run();
+                }
+            }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         if (!mHasNavDrawerIndicator) {
@@ -329,6 +343,15 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
         setupNavDrawerItem();
     }
 
+    private void closeDrawer(@Nullable Runnable runnable) {
+        if (mDrawerLayout != null && mDrawer != null) {
+            mDrawerLayout.post(() -> {
+                mDrawer.setTag(runnable);
+                mDrawerLayout.closeDrawer(mDrawer);
+            });
+        }
+    }
+
     private void setupNavDrawerItem() {
         if (mDrawerLayout == null || mDrawer == null) {
             return;
@@ -336,6 +359,9 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
 
         mDrawerTopBackgroundView = mDrawer.findViewById(R.id.drawer_top_background);
         mDrawerUserAvatarView = (ImageView) mDrawer.findViewById(R.id.drawer_user_avatar);
+        mDrawerUserAvatarView.setOnClickListener(v ->
+                new ThemeChangeDialog().show(getFragmentManager(), ThemeChangeDialog.TAG));
+
         mDrawerUsernameView = (TextView) mDrawer.findViewById(R.id.drawer_username);
         Config.updateTextSize(mDrawerUsernameView);
 
@@ -361,12 +387,10 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
                 getResources().getDrawable(typedValue.resourceId), null, null, null);
 
         // start SettingsActivity if clicked
-        settingsView.setOnClickListener(v -> {
-            mDrawerLayout.closeDrawer(mDrawer);
-
-            Intent intent = new Intent(this, SettingsActivity.class);
+        settingsView.setOnClickListener(v -> closeDrawer(() -> {
+            Intent intent = new Intent(BaseActivity.this, SettingsActivity.class);
             startActivity(intent);
-        });
+        }));
     }
 
     /**
@@ -430,6 +454,52 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
 
     void setNavDrawerIndicatorEnabled(boolean enabled) {
         mHasNavDrawerIndicator = enabled;
+    }
+
+    public static class ThemeChangeDialog extends DialogFragment {
+
+        private static final String TAG = "theme_change_dialog";
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            SharedPreferences sharedPreferences =
+                    PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+            int checkedItem =
+                    Integer.parseInt(
+                            sharedPreferences.getString(
+                                    SettingsFragment.PREF_KEY_THEME,
+                                    MyApplication.getContext()
+                                            .getString(R.string.pref_theme_default_value)));
+            return
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.pref_theme)
+                            .setSingleChoiceItems(
+                                    R.array.pref_theme_entries,
+                                    checkedItem,
+                                    (dialog, which) -> {
+                                        Runnable runnable = null;
+                                        // won't change theme if unchanged
+                                        if (which != checkedItem) {
+                                            sharedPreferences.edit()
+                                                    .putString(
+                                                            SettingsFragment.PREF_KEY_THEME,
+                                                            String.valueOf(which)).apply();
+                                            Config.setCurrentTheme(sharedPreferences);
+
+                                            // We use MyApplication.getContext() instead of getActivity()
+                                            // in order to avoid NullPointerException when out of scope.
+                                            runnable = () -> MyApplication.getContext()
+                                                    .sendBroadcast(
+                                                            new Intent(SettingsFragment.ACTION_CHANGE_THEME));
+                                        }
+                                        dismiss();
+                                        ObjectUtil.cast(
+                                                getActivity(),
+                                                BaseActivity.class).closeDrawer(runnable);
+                                    })
+                            .create();
+        }
     }
 
     public static class LogoutDialog extends DialogFragment {

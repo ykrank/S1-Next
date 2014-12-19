@@ -43,7 +43,6 @@ import cl.monsoon.s1next.R;
  * flexible enough for use with other desired aesthetics.
  * <p>
  * Forked from https://github.com/google/iosched/blob/0a90bf8e6b90e9226f8c15b34eb7b1e4bf6d632e/android/src/main/java/com/google/samples/apps/iosched/ui/widget/BezelImageView.java
- * SHA: 36d88985ff6813fa9035530cd426393720a6f7b4
  */
 public final class BezelImageView extends ImageView {
 
@@ -57,9 +56,9 @@ public final class BezelImageView extends ImageView {
     private Drawable mMaskDrawable;
 
     private ColorMatrixColorFilter mDesaturateColorFilter;
-    private boolean mDesaturateOnPress = false;
+    private boolean mDesaturateOnPress;
 
-    private boolean mCacheValid = false;
+    private boolean mCacheValid;
     private Bitmap mCacheBitmap;
     private int mCachedWidth;
     private int mCachedHeight;
@@ -87,27 +86,28 @@ public final class BezelImageView extends ImageView {
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         // attribute initialization
-        final TypedArray a =
+        final TypedArray typedArray =
                 context.obtainStyledAttributes(
                         attrs,
                         R.styleable.BezelImageView,
                         defStyleAttr,
                         defStyleRes);
 
-        mMaskDrawable = a.getDrawable(R.styleable.BezelImageView_maskDrawable);
+        mMaskDrawable = typedArray.getDrawable(R.styleable.BezelImageView_maskDrawable);
         if (mMaskDrawable != null) {
             mMaskDrawable.setCallback(this);
         }
 
-        mBorderDrawable = a.getDrawable(R.styleable.BezelImageView_borderDrawable);
+        mBorderDrawable = typedArray.getDrawable(R.styleable.BezelImageView_borderDrawable);
         if (mBorderDrawable != null) {
             mBorderDrawable.setCallback(this);
         }
 
-        mDesaturateOnPress = a.getBoolean(R.styleable.BezelImageView_desaturateOnPress,
-                mDesaturateOnPress);
+        mDesaturateOnPress =
+                typedArray.getBoolean(
+                        R.styleable.BezelImageView_desaturateOnPress, mDesaturateOnPress);
 
-        a.recycle();
+        typedArray.recycle();
 
         // other initialization
         mBlackPaint = new Paint();
@@ -121,9 +121,9 @@ public final class BezelImageView extends ImageView {
 
         if (mDesaturateOnPress) {
             // create a desaturate color filter for pressed state
-            ColorMatrix cm = new ColorMatrix();
-            cm.setSaturation(0);
-            mDesaturateColorFilter = new ColorMatrixColorFilter(cm);
+            ColorMatrix colorMatrix = new ColorMatrix();
+            colorMatrix.setSaturation(0);
+            mDesaturateColorFilter = new ColorMatrixColorFilter(colorMatrix);
         }
     }
 
@@ -177,22 +177,28 @@ public final class BezelImageView extends ImageView {
 
             Canvas cacheCanvas = new Canvas(mCacheBitmap);
             if (mMaskDrawable != null) {
-                int sc = cacheCanvas.save();
+                int saveCount = cacheCanvas.save();
                 mMaskDrawable.draw(cacheCanvas);
-                mMaskedPaint.setColorFilter((mDesaturateOnPress && isPressed())
-                        ? mDesaturateColorFilter : null);
-                cacheCanvas.saveLayer(mBoundsF, mMaskedPaint,
+                mMaskedPaint.setColorFilter(
+                        mDesaturateOnPress && isPressed()
+                                ? mDesaturateColorFilter
+                                : null);
+                cacheCanvas.saveLayer(
+                        mBoundsF,
+                        mMaskedPaint,
                         Canvas.HAS_ALPHA_LAYER_SAVE_FLAG | Canvas.FULL_COLOR_LAYER_SAVE_FLAG);
                 super.onDraw(cacheCanvas);
-                cacheCanvas.restoreToCount(sc);
+                cacheCanvas.restoreToCount(saveCount);
             } else if (mDesaturateOnPress && isPressed()) {
-                int sc = cacheCanvas.save();
+                int saveCount = cacheCanvas.save();
                 cacheCanvas.drawRect(0, 0, mCachedWidth, mCachedHeight, mBlackPaint);
                 mMaskedPaint.setColorFilter(mDesaturateColorFilter);
-                cacheCanvas.saveLayer(mBoundsF, mMaskedPaint,
+                cacheCanvas.saveLayer(
+                        mBoundsF,
+                        mMaskedPaint,
                         Canvas.HAS_ALPHA_LAYER_SAVE_FLAG | Canvas.FULL_COLOR_LAYER_SAVE_FLAG);
                 super.onDraw(cacheCanvas);
-                cacheCanvas.restoreToCount(sc);
+                cacheCanvas.restoreToCount(saveCount);
             } else {
                 super.onDraw(cacheCanvas);
             }
@@ -216,7 +222,11 @@ public final class BezelImageView extends ImageView {
             mMaskDrawable.setState(getDrawableState());
         }
         if (isDuplicateParentStateEnabled()) {
-            ViewCompat.postInvalidateOnAnimation(this);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                this.postInvalidateOnAnimation();
+            } else {
+                ViewCompat.postInvalidateOnAnimation(this);
+            }
         }
     }
 
