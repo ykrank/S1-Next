@@ -7,37 +7,67 @@
         <!-- show contextual action bar -->
         <item name="windowActionModeOverlay">true</item>
 
-        <item name="colorPrimary">@color/light_blue_500</item>
-        <item name="colorPrimaryDark">@color/light_blue_700</item>
-        <item name="colorAccent">@color/pink_A100</item>
-
-        <item name="actionModeBackground">?attr/colorPrimary</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-
         <item name="dividerColor">@color/black_12</item>
-
-        <item name="fabColorNormal">@color/light_green_A200_54</item>
-        <item name="fabColorPressed">@color/light_green_A400_54</item>
-
-        <item name="mySpinner">@style/mySpinner</item>
         <item name="myCardView">@style/LightCardView</item>
+        <item name="mySpinnerItemTextColor">@color/abc_primary_text_material_light</item>
+
+        <item name="fabColorNormal">?attr/colorPrimary</item>
+        <item name="fabColorPressed">?attr/colorPrimaryDark</item>
+
+        <item name="menuCross">@drawable/ic_menu_close_black_24dp</item>
+        <item name="menuPersonAdd">@drawable/ic_menu_person_add_black_24dp</item>
+        <item name="menuPageFlip">@drawable/selector_menu_swap_horiz_black</item>
+        <item name="menuSend">@drawable/selector_menu_send_black</item>
+
+        <item name="iconSettings">@drawable/ic_settings_grey600_24dp</item>
+    </style>
+
+    <style name="LightTheme.S1">
+        <item name="colorPrimary">@color/s1_theme_color_primary</item>
+        <item name="colorPrimaryDark">@color/s1_theme_color_primary_dark</item>
+        <item name="colorAccent">@color/s1_theme_color_accent</item>
+        <item name="android:windowBackground">@color/s1_theme_background</item>
+        <item name="myCardView">@style/S1CardView</item>
+    </style>
+
+    <style name="LightTheme.Inverse">
+        <item name="actionModeBackground">?attr/colorPrimary</item>
+
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="mySpinner">@style/mySpinner</item>
+        <item name="mySpinnerItemTextColor">@color/abc_primary_text_material_dark</item>
 
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
         <item name="menuPageFlip">@drawable/selector_menu_swap_horiz_white</item>
         <item name="menuSend">@drawable/selector_menu_send_white</item>
+    </style>
 
-        <item name="iconSettings">@drawable/ic_settings_grey600_24dp</item>
+    <style name="LightTheme.Inverse.LightBlue">
+        <item name="colorPrimary">@color/light_blue_500</item>
+        <item name="colorPrimaryDark">@color/light_blue_700</item>
+        <item name="colorAccent">@color/pink_A200</item>
+    </style>
+
+    <style name="LightTheme.Inverse.Green">
+        <item name="colorPrimary">@color/green_500</item>
+        <item name="colorPrimaryDark">@color/green_700</item>
+        <item name="colorAccent">@color/deep_orange_A200</item>
     </style>
 
     <style name="DarkTheme" parent="Theme.AppCompat">
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="dividerColor">@color/white_12</item>
-        <item name="fabColorNormal">@color/light_green_A200_100</item>
-        <item name="fabColorPressed">@color/light_green_A400_100</item>
         <item name="myCardView">@style/DarkCardView</item>
+        <item name="mySpinnerItemTextColor">@color/abc_primary_text_material_dark</item>
+        <item name="fabColorNormal">@color/grey_500</item>
+        <item name="fabColorPressed">@color/grey_700</item>
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
         <item name="menuPageFlip">@drawable/selector_menu_swap_horiz_white</item>

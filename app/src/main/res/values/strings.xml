@@ -60,7 +60,8 @@
 
     <!-- settings -->
     <string name="pref_general">GENERAL</string>
-    <string name="pref_night_mode">Night mode</string>
+    <string name="pref_theme">Theme</string>
+    <string name="pref_theme_default_value" translatable="false">0</string>
     <string name="pref_font_size">Font size</string>
     <string name="pref_font_size_default_value" translatable="false">2</string>
     <string name="pref_download_avatars">Download avatars</string>
@@ -76,6 +77,11 @@
     <string name="pref_version_summary">Version: 0.2.0-rc1</string>
 
     <!-- array -->
+    <string name="pref_theme_entries_1">Default</string>
+    <string name="pref_theme_entries_2">Light blue</string>
+    <string name="pref_theme_entries_3">Green</string>
+    <string name="pref_theme_entries_4">Dark</string>
+
     <string name="pref_font_size_entries_1">Very small</string>
     <string name="pref_font_size_entries_2">Small</string>
     <string name="pref_font_size_entries_3">Medium</string>

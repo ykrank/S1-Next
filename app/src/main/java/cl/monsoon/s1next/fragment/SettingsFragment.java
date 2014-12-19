@@ -25,7 +25,7 @@ public final class SettingsFragment extends PreferenceFragment implements Shared
 
     }
 
-    public static final String PREF_KEY_NIGHT_MODE = "pref_night_mode";
+    public static final String PREF_KEY_THEME = "pref_key_theme";
     public static final String PREF_KEY_FONT_SIZE = "pref_key_font_size";
     public static final String PREF_KEY_DOWNLOAD_AVATARS = "pref_key_download_avatars";
     public static final String PREF_KEY_DOWNLOAD_IMAGES = "pref_key_download_images";
@@ -62,13 +62,8 @@ public final class SettingsFragment extends PreferenceFragment implements Shared
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @PreferenceKey String key) {
         switch (key) {
             // set current strategy
-            case PREF_KEY_NIGHT_MODE:
-                if (sharedPreferences.getBoolean(
-                        key, getResources().getBoolean(R.bool.pref_night_mode_default_value))) {
-                    Config.setCurrentTheme(Config.DARK_THEME);
-                } else {
-                    Config.setCurrentTheme(Config.LIGHT_THEME);
-                }
+            case PREF_KEY_THEME:
+                Config.setCurrentTheme(sharedPreferences);
 
                 getActivity().sendBroadcast(new Intent(ACTION_CHANGE_THEME));
                 break;

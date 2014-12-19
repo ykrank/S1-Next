@@ -5,10 +5,14 @@
         android:persistent="false"
         android:title="@string/pref_general">
 
-        <SwitchPreference
-            android:defaultValue="@bool/pref_night_mode_default_value"
-            android:key="pref_night_mode"
-            android:title="@string/pref_night_mode"/>
+        <cl.monsoon.s1next.widget.ListPreferenceCompat
+            android:defaultValue="@string/pref_theme_default_value"
+            android:dialogTitle="@string/pref_theme"
+            android:entries="@array/pref_theme_entries"
+            android:entryValues="@array/pref_theme_entry_values"
+            android:key="pref_key_theme"
+            android:summary="%s"
+            android:title="@string/pref_theme"/>
 
         <cl.monsoon.s1next.widget.ListPreferenceCompat
             android:defaultValue="@string/pref_font_size_default_value"

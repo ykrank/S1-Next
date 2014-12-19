@@ -2,13 +2,10 @@ package cl.monsoon.s1next.singleton;
 
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.support.annotation.ColorRes;
-import android.support.annotation.IntDef;
 import android.util.TypedValue;
 import android.widget.TextView;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 
 import cl.monsoon.s1next.MyApplication;
 import cl.monsoon.s1next.R;
@@ -17,19 +14,6 @@ import cl.monsoon.s1next.fragment.SettingsFragment;
 public enum Config {
     INSTANCE;
 
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({LIGHT_THEME, DARK_THEME})
-    public @interface Theme {
-
-    }
-
-    public static final int LIGHT_THEME = R.style.LightTheme;
-
-    /**
-     * Night mode.
-     */
-    public static final int DARK_THEME = R.style.DarkTheme;
-
     /**
      * Take care of Menu ~ open in browser ~
      * when these numbers are not default.
@@ -37,35 +21,73 @@ public enum Config {
     public static final int THREADS_PER_PAGE = 50;
     public static final int POSTS_PER_PAGE = 30;
 
+    private static final int LIGHT_THEME_S1 = R.style.LightTheme_S1;
+    private static final int LIGHT_THEME_LIGHT_BLUE = R.style.LightTheme_Inverse_LightBlue;
+    private static final int LIGHT_THEME_GREEN = R.style.LightTheme_Inverse_Green;
+    private static final int DARK_THEME = R.style.DarkTheme;
+
+    private static final int[] THEMES = {
+            LIGHT_THEME_S1,
+            LIGHT_THEME_LIGHT_BLUE,
+            LIGHT_THEME_GREEN,
+            DARK_THEME
+    };
+
     private volatile int currentTheme;
-    private volatile int colorAccent;
+    private volatile int colorAccent87;
     private volatile float textSize;
     private volatile boolean wifi;
     private volatile DownloadStrategy avatarsDownloadStrategy;
     private volatile DownloadStrategy imagesDownloadStrategy;
 
-    @Theme
+    public static boolean isDefaultApplicationTheme() {
+        // default theme in AndroidManifest.xml is DarkTheme
+        return INSTANCE.currentTheme == DARK_THEME;
+    }
+
+    public static boolean isS1Theme() {
+        return INSTANCE.currentTheme == LIGHT_THEME_S1;
+    }
+
     public static int getCurrentTheme() {
         return INSTANCE.currentTheme;
     }
 
-    public static void setCurrentTheme(@Theme int theme) {
-        INSTANCE.currentTheme = theme;
+    public static void setCurrentTheme(SharedPreferences sharedPreferences) {
+        INSTANCE.currentTheme =
+                THEMES[Integer.parseInt(
+                        sharedPreferences.getString(
+                                SettingsFragment.PREF_KEY_THEME,
+                                MyApplication.getContext()
+                                        .getString(R.string.pref_theme_default_value)))];
 
-        // get theme's accent color
+        // get current theme's accent color
         TypedArray typedArray =
                 MyApplication.getContext()
-                        .obtainStyledAttributes(theme, new int[]{R.attr.colorAccent});
-        INSTANCE.colorAccent = typedArray.getColor(0, -1);
-
-        if (INSTANCE.colorAccent == -1) {
+                        .obtainStyledAttributes(
+                                INSTANCE.currentTheme, new int[]{R.attr.colorAccent});
+        int accentColor = typedArray.getColor(0, -1);
+        if (accentColor == -1) {
             throw new IllegalStateException("Theme accent color can't be -1.");
+        }
+
+        INSTANCE.colorAccent87 =
+                Color.argb(
+                        (int) (0.87 * 255 + 0.5),
+                        Color.red(accentColor), Color.green(accentColor), Color.blue(accentColor));
+    }
+
+    public static void changeTextColorWhenS1Theme(TextView textView) {
+        if (INSTANCE.currentTheme == LIGHT_THEME_S1) {
+            textView.setTextColor(
+                    MyApplication.getContext()
+                            .getResources().getColor(R.color.s1_theme_text_color_primary_87));
         }
     }
 
     @ColorRes
-    public static int getColorAccent() {
-        return INSTANCE.colorAccent;
+    public static int getColorAccent87() {
+        return INSTANCE.colorAccent87;
     }
 
     private static float getTextSize() {

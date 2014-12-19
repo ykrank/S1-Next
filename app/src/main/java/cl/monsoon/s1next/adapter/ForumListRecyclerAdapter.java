@@ -42,7 +42,7 @@ public final class ForumListRecyclerAdapter
             textView.append("  " + forum.getTodayPosts());
             Spannable spannable = (Spannable) textView.getText();
             spannable.setSpan(
-                    new ForegroundColorSpan(Config.getColorAccent()),
+                    new ForegroundColorSpan(Config.getColorAccent87()),
                     start,
                     textView.getText().length(),
                     Spanned.SPAN_INCLUSIVE_INCLUSIVE);
@@ -64,6 +64,7 @@ public final class ForumListRecyclerAdapter
 
             mTextView = (TextView) itemView;
             Config.updateTextSize(mTextView);
+            Config.changeTextColorWhenS1Theme(mTextView);
         }
     }
 }

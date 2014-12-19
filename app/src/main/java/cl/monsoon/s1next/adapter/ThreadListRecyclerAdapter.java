@@ -44,7 +44,7 @@ public final class ThreadListRecyclerAdapter
         textView.append("  " + thread.getReplies());
         Spannable spannable = (Spannable) textView.getText();
         spannable.setSpan(
-                new ForegroundColorSpan(Config.getColorAccent()),
+                new ForegroundColorSpan(Config.getColorAccent87()),
                 start,
                 textView.getText().length(),
                 Spanned.SPAN_INCLUSIVE_INCLUSIVE);
@@ -65,6 +65,7 @@ public final class ThreadListRecyclerAdapter
 
             mTextView = (TextView) itemView;
             Config.updateTextSize(mTextView);
+            Config.changeTextColorWhenS1Theme(mTextView);
         }
     }
 }

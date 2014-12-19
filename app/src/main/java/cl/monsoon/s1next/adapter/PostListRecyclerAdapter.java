@@ -239,6 +239,9 @@ public final class PostListRecyclerAdapter
             Config.updateTextSize(mCount);
             Config.updateTextSize(mPost);
 
+            Config.changeTextColorWhenS1Theme(mUsername);
+            Config.changeTextColorWhenS1Theme(mPost);
+
             mCount.setMovementMethod(LinkMovementMethod.getInstance());
             // use custom movement method to provides selection and click
             mPost.setMovementMethod(MyMovementMethod.getInstance());

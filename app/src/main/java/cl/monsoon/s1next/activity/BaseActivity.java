@@ -88,9 +88,8 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // default theme is DarkTheme
-        if (Config.getCurrentTheme() == Config.LIGHT_THEME) {
-            setTheme(Config.LIGHT_THEME);
+        if (!Config.isDefaultApplicationTheme()) {
+            setTheme(Config.getCurrentTheme());
         }
 
         super.onCreate(savedInstanceState);
