@@ -44,8 +44,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     private int mPageNum;
 
     private PostListRecyclerAdapter mRecyclerAdapter;
-    private LinearLayoutManager mLinearLayoutManager;
-    private MyRecyclerView recyclerView;
+    private MyRecyclerView mRecyclerView;
     private boolean mIsLoadingMore;
 
     private OnPagerInteractionCallback mOnPagerInteractionCallback;
@@ -73,32 +72,27 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
         mThreadId = getArguments().getCharSequence(ARG_THREAD_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
-        recyclerView = (MyRecyclerView) view.findViewById(R.id.recycler_view);
-        mLinearLayoutManager = new LinearLayoutManager(getActivity());
-        // mLinearLayoutManager.setSmoothScrollbarEnabled(false);
+        mRecyclerView = (MyRecyclerView) view.findViewById(R.id.recycler_view);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        // linearLayoutManager.setSmoothScrollbarEnabled(false);
         // if https://code.google.com/p/android/issues/detail?id=78375&q=setSmoothScrollbarEnabled&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars fixed
-        recyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerAdapter = new PostListRecyclerAdapter(getActivity());
-        recyclerView.setAdapter(mRecyclerAdapter);
+        mRecyclerView.setAdapter(mRecyclerAdapter);
         setupRecyclerViewPadding(
-                recyclerView,
+                mRecyclerView,
                 getResources().getDimensionPixelSize(R.dimen.recycler_view_card_padding),
                 true);
-        enableToolbarAndFabAutoHideEffect(recyclerView, new RecyclerView.OnScrollListener() {
+        enableToolbarAndFabAutoHideEffect(mRecyclerView, new RecyclerView.OnScrollListener() {
 
             /**
              * Endless Scrolling with RecyclerView.
              */
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy < 0) {
-                    return;
-                }
-
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (!mIsLoadingMore
-                        && mLinearLayoutManager.findLastVisibleItemPosition()
-                                == mLinearLayoutManager.getItemCount() - 1
                         && mPageNum == mOnPagerInteractionCallback.getTotalPages()
+                        && !mRecyclerView.canScrollVertically(1)
                         && !isLoading()) {
 
                     mIsLoadingMore = true;
@@ -187,16 +181,16 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     public void onPostExecute(AsyncResult<PostListWrapper> asyncResult) {
         super.onPostExecute(asyncResult);
 
+        boolean isFinishedLoadingMore = false;
         if (mIsLoadingMore) {
             // mRecyclerAdapter.getItemCount() = 0
             // when configuration changes (like orientation changes)
             if (mRecyclerAdapter.getItemCount() == 0) {
-                mIsLoadingMore = true;
                 setSwipeRefreshLayoutEnabled(false);
-                mRecyclerAdapter.showFooterProgress();
             } else {
                 mRecyclerAdapter.hideFooterProgress();
                 mIsLoadingMore = false;
+                isFinishedLoadingMore = true;
             }
         }
 
@@ -208,7 +202,16 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
             try {
                 PostList postList = asyncResult.data.unwrap();
 
+                int lastItemCount = mRecyclerAdapter.getItemCount();
                 mRecyclerAdapter.setDataSet(postList.getPostList());
+                if (isFinishedLoadingMore) {
+                    int newItemCount = mRecyclerAdapter.getItemCount() - lastItemCount;
+                    if (newItemCount > 0) {
+                        mRecyclerAdapter.notifyItemRangeInserted(lastItemCount, newItemCount);
+                    }
+                } else {
+                    mRecyclerAdapter.notifyDataSetChanged();
+                }
 
                 mOnPagerInteractionCallback.setTotalPages(postList.getPostListInfo().getReplies() + 1);
             } catch (NullPointerException e) {
@@ -216,15 +219,8 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
             }
         }
 
-        int itemCount = mRecyclerAdapter.getItemCount();
-        // if footer is visible
-        if (itemCount != 0 &&
-                mLinearLayoutManager.findLastVisibleItemPosition() == itemCount - 1) {
-            // scroll up in order to hide footer
-            // then RecyclerView can load more
-            // if RecyclerView scrolls down
-            recyclerView.scrollBy(
-                    0, -PostListRecyclerAdapter.FooterViewHolder.HEIGHT_WHEN_PROGRESSBAR_NOT_SHOWN);
+        if (mIsLoadingMore) {
+            mRecyclerAdapter.showFooterProgress();
         }
     }
 

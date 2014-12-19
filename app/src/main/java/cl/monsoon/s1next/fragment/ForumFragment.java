@@ -167,5 +167,6 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
             mRecyclerAdapter.setDataSet(
                     mForumGroupList.getForumGroupList().get(position - 1).getForumList());
         }
+        mRecyclerAdapter.notifyDataSetChanged();
     }
 }

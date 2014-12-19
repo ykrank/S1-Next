@@ -21,7 +21,6 @@ public abstract class RecyclerAdapter<T, VH extends RecyclerView.ViewHolder>
 
     public void setDataSet(List<T> list) {
         this.mList = list;
-        notifyDataSetChanged();
     }
 
     public T getItem(int i) {

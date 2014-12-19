@@ -171,6 +171,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
             try {
                 ThreadList threadList = asyncResult.data.unwrap();
                 mRecyclerAdapter.setDataSet(threadList.getThreadList());
+                mRecyclerAdapter.notifyDataSetChanged();
 
                 mOnPagerInteractionCallback.setTotalPages(threadList.getThreadsInfo().getThreads());
             } catch (NullPointerException e) {

@@ -217,6 +217,13 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
         myRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (onScrollListener != null) {
+                    onScrollListener.onScrollStateChanged(recyclerView, newState);
+                }
+            }
+
+            @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (onScrollListener != null) {
                     onScrollListener.onScrolled(recyclerView, dx, dy);
