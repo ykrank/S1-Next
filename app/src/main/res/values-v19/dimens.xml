@@ -3,6 +3,11 @@
 
     <dimen name="statusbar_height">25dp</dimen>
 
+    <!-- 16dp + 13dp (half of statusbar_height, because status bar in KitKat is semi-transparent) -->
+    <dimen name="drawer_avatar_margin_top">29dp</dimen>
+    <!-- 16dp (avatar margin top) + 13dp (half of statusbar_height) + 64dp (avatar height) + 56dp (username) -->
+    <dimen name="drawer_top_height">149dp</dimen>
+
     <!-- 8dp + 25dp (statusbar_height) -->
     <dimen name="swipe_refresh_progress_view_start">33dp</dimen>
     <!-- 72dp + 25dp (statusbar_height) -->
