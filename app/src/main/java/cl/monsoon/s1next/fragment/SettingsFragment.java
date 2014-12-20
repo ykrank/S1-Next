@@ -21,7 +21,7 @@ public final class SettingsFragment extends PreferenceFragment implements Shared
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({PREF_KEY_FONT_SIZE, PREF_KEY_DOWNLOAD_AVATARS, PREF_KEY_DOWNLOAD_IMAGES})
-    public @interface PreferenceKey {
+    private @interface PreferenceKey {
 
     }
 
@@ -64,21 +64,23 @@ public final class SettingsFragment extends PreferenceFragment implements Shared
             // set current strategy
             case PREF_KEY_THEME:
                 Config.setCurrentTheme(sharedPreferences);
-
                 getActivity().sendBroadcast(new Intent(ACTION_CHANGE_THEME));
+
                 break;
             // change font size
             case PREF_KEY_FONT_SIZE:
                 Config.setTextSize(sharedPreferences);
-
                 getActivity().sendBroadcast(new Intent(ACTION_CHANGE_FONT_SIZE));
+
                 break;
             // change download strategy
             case PREF_KEY_DOWNLOAD_AVATARS:
                 Config.setAvatarsDownloadStrategy(sharedPreferences);
+
                 break;
             case PREF_KEY_DOWNLOAD_IMAGES:
                 Config.setImagesDownloadStrategy(sharedPreferences);
+
                 break;
         }
     }

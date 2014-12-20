@@ -29,7 +29,7 @@ public abstract class LoaderFragment<D extends Extractable> extends Fragment
     @IntDef({ID_LOADER_LOGIN,
             ID_LOADER_GET_AUTHENTICITY_TOKEN, ID_LOADER_POST_REPLY,
             ID_LOADER_GET_QUOTE_EXTRA_INFO, ID_LOADER_POST_QUOTE})
-    public @interface LoaderId {
+    private @interface LoaderId {
 
     }
 

@@ -68,7 +68,6 @@
             android:id="@+id/drawer_top_background"
             android:layout_width="match_parent"
             android:layout_height="@dimen/drawer_top_height"
-            android:clickable="true"
             android:contentDescription="@string/drawer_top_background_content_desc"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_drawer_background"/>

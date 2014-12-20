@@ -137,7 +137,7 @@ public final class PostListRecyclerAdapter
         } else {
             Spannable spannable = new SpannableString("#" + post.getCount());
             spannable.setSpan(
-                    MyClickableSpan, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    MY_CLICKABLE_SPAN, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             countView.setText(spannable);
             countView.setTag(post.getPartForQuote());
         }
@@ -264,8 +264,7 @@ public final class PostListRecyclerAdapter
         }
     }
 
-    private static final ClickableSpan MyClickableSpan = new ClickableSpan() {
-
+    private static final ClickableSpan MY_CLICKABLE_SPAN = new ClickableSpan() {
         @Override
         public void onClick(View widget) {
             Intent intent = new Intent(PostListActivity.ACTION_QUOTE);
