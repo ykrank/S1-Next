@@ -45,6 +45,7 @@ public final class GalleryActivity extends ActionBarActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 super.onBackPressed();
+
                 return true;
         }
 

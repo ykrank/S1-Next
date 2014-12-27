@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -73,6 +74,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
     private DrawerLayout mDrawerLayout;
     private View mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
+    private boolean mHasNavCrossIcon;
     private boolean mHasNavDrawer = true;
     private boolean mHasNavDrawerIndicator = true;
 
@@ -155,7 +157,12 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                super.onBackPressed();
+                if (!mHasNavCrossIcon) {
+                    NavUtils.navigateUpFromSameTask(this);
+                } else {
+                    super.onBackPressed();
+                }
+
                 return true;
         }
 
@@ -280,6 +287,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
      */
     void setupNavCrossIcon() {
         if (mToolbar != null) {
+            mHasNavCrossIcon = true;
 
             TypedValue typedValue = new TypedValue();
             getTheme().resolveAttribute(R.attr.menuCross, typedValue, true);
