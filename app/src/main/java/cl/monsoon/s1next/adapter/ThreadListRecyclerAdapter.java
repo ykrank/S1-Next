@@ -15,7 +15,7 @@ import cl.monsoon.s1next.model.Thread;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ColorUtil;
-import cl.monsoon.s1next.util.StringUtil;
+import cl.monsoon.s1next.util.StringHelper;
 
 /**
  * Similar to {@see cl.monsoon.s1next.adapter.ForumListRecyclerAdapter}.
@@ -56,14 +56,14 @@ public final class ThreadListRecyclerAdapter
         if (thread.getPermission() != 0) {
             // add thread's permission hint
             textView.append(
-                    StringUtil.TWO_SPACES
+                    StringHelper.Util.TWO_SPACES
                             + "[" + THREAD_PERMISSION_HINT_PREFIX + thread.getPermission() + "]");
         }
         // disable TextView if user has not permission to access this thread
         holder.setTextViewEnabled(User.getPermission() >= thread.getPermission());
 
         // add thread's replies count to each thread
-        textView.append(StringUtil.TWO_SPACES + thread.getReplies());
+        textView.append(StringHelper.Util.TWO_SPACES + thread.getReplies());
 
         Spannable spannable = (Spannable) textView.getText();
         spannable.setSpan(

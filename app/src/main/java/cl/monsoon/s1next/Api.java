@@ -8,7 +8,7 @@ import com.squareup.okhttp.RequestBody;
 import cl.monsoon.s1next.model.Quote;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.User;
-import cl.monsoon.s1next.util.StringUtil;
+import cl.monsoon.s1next.util.StringHelper;
 
 public final class Api {
 
@@ -18,11 +18,6 @@ public final class Api {
 
     // public static final String URL_HOT_FORUM = prefix("api/mobile/index.php?module=hotforum");
     public static final String URL_FORUM = prefix("api/mobile/index.php?module=forumindex");
-
-    /**
-     * open in browser
-     */
-    public static final String URL_REGISTER = prefix("member.php?mod=register");
 
     private static final String URL_THREAD_LIST = prefix("api/mobile/index.php?module=forumdisplay");
     private static final String URL_POST_LIST = prefix("api/mobile/index.php?module=viewthread");
@@ -46,6 +41,11 @@ public final class Api {
     // private static final String URL_USER_AVATAR_MEDIUM = prefix("uc_server/avatar.php?uid=%s&size=middle");
     private static final String URL_USER_AVATAR_SMALL = prefix("uc_server/data/avatar/%s_avatar_small.jpg");
     private static final String URL_USER_AVATAR_MEDIUM = prefix("uc_server/data/avatar/%s_avatar_middle.jpg");
+
+    /**
+     * open in browser
+     */
+    public static final String URL_BROWSER_REGISTER = prefix("member.php?mod=register");
     private static final String URL_BROWSER_THREAD_LIST = prefix("forum-%s-%d.html");
     private static final String URL_BROWSER_POST_LIST = prefix("thread-%s-%d-1.html");
 
@@ -130,7 +130,6 @@ public final class Api {
 
         return
                 new FormEncodingBuilder()
-                        //.add("mobiletype", "1")
                         .add("message", reply)
                         .add("formhash", User.getAuthenticityToken())
                         .build();
@@ -145,7 +144,7 @@ public final class Api {
                 new FormEncodingBuilder()
                         .add("noticeauthor", quote.getEncodedUserId())
                         .add("noticetrimstr", quote.getQuoteMessage())
-                        .add("noticeauthormsg", StringUtil.ellipsize(reply, 100))
+                        .add("noticeauthormsg", StringHelper.Util.ellipsize(reply, 100))
                         .add("message", reply)
                         .add("formhash", User.getAuthenticityToken())
                         .build();

@@ -22,8 +22,8 @@ import cl.monsoon.s1next.model.list.PostList;
 import cl.monsoon.s1next.model.mapper.PostListWrapper;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.ObjectUtil;
-import cl.monsoon.s1next.util.StringUtil;
-import cl.monsoon.s1next.util.ToastHelper;
+import cl.monsoon.s1next.util.StringHelper;
+import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.MyRecyclerView;
 
@@ -152,7 +152,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
             case R.id.menu_share:
                 String value =
                         getThreadTitle()
-                                + StringUtil.TWO_SPACES
+                                + StringHelper.Util.TWO_SPACES
                                 + Api.getUrlBrowserPostList(mThreadId, 1);
 
                 intent = new Intent(Intent.ACTION_SEND);
@@ -215,7 +215,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                 if (postList.getPostList().size() == 0) {
                     String message = asyncResult.data.getResult().getValue();
                     if (!TextUtils.isEmpty(message)) {
-                        ToastHelper.showByText(message, Toast.LENGTH_SHORT);
+                        ToastUtil.showByText(message, Toast.LENGTH_SHORT);
                     }
                 } else {
                     int lastItemCount = mRecyclerAdapter.getItemCount();
@@ -233,7 +233,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                             postList.getPostListInfo().getReplies() + 1);
                 }
             } catch (NullPointerException e) {
-                ToastHelper.showByResId(R.string.message_server_error, Toast.LENGTH_SHORT);
+                ToastUtil.showByResId(R.string.message_server_error, Toast.LENGTH_SHORT);
             }
         }
 

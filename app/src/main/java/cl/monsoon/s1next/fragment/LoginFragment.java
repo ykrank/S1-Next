@@ -24,7 +24,7 @@ import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.User;
-import cl.monsoon.s1next.util.ToastHelper;
+import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpPostLoader;
 
@@ -92,7 +92,7 @@ public final class LoginFragment extends LoaderFragment<ResultWrapper> {
         switch (item.getItemId()) {
             case R.id.menu_account_add:
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(Api.URL_REGISTER));
+                intent.setData(Uri.parse(Api.URL_BROWSER_REGISTER));
 
                 startActivity(intent);
 
@@ -173,7 +173,7 @@ public final class LoginFragment extends LoaderFragment<ResultWrapper> {
             ResultWrapper wrapper = asyncResult.data;
             Result result = wrapper.getResult();
 
-            ToastHelper.showByText(result.getValue(), Toast.LENGTH_LONG);
+            ToastUtil.showByText(result.getValue(), Toast.LENGTH_LONG);
 
             if (result.getStatus().equals(STATUS_AUTH_SUCCESS)
                     || result.getStatus().equals(STATUS_AUTH_SUCCESS_ALREADY)) {

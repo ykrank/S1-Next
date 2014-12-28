@@ -8,11 +8,11 @@ import java.lang.annotation.RetentionPolicy;
 
 import cl.monsoon.s1next.MyApplication;
 
-public final class ToastHelper {
+public final class ToastUtil {
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({Toast.LENGTH_SHORT, Toast.LENGTH_LONG})
-    public @interface Duration {
+    private @interface Duration {
 
     }
 

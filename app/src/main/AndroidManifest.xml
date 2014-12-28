@@ -17,8 +17,7 @@
 
         <activity
             android:name=".activity.LoginActivity"
-            android:label="@string/activity_label_login">
-        </activity>
+            android:label="@string/activity_label_login"/>
 
         <activity
             android:name=".activity.ForumActivity"

@@ -22,7 +22,7 @@ import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.model.list.ForumGroupList;
 import cl.monsoon.s1next.model.mapper.ForumGroupListWrapper;
 import cl.monsoon.s1next.util.ObjectUtil;
-import cl.monsoon.s1next.util.ToastHelper;
+import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.MyRecyclerView;
 import cl.monsoon.s1next.widget.RecyclerViewHelper;
@@ -148,7 +148,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
                 mToolbarSpinnerInteractionCallback.setupToolbarDropDown(
                         mForumGroupList.getForumGroupNameList());
             } catch (NullPointerException e) {
-                ToastHelper.showByResId(R.string.message_server_error, Toast.LENGTH_SHORT);
+                ToastUtil.showByResId(R.string.message_server_error, Toast.LENGTH_SHORT);
             }
         }
     }

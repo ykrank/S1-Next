@@ -21,7 +21,7 @@ import cl.monsoon.s1next.adapter.ThreadListRecyclerAdapter;
 import cl.monsoon.s1next.model.list.ThreadList;
 import cl.monsoon.s1next.model.mapper.ThreadListWrapper;
 import cl.monsoon.s1next.util.ObjectUtil;
-import cl.monsoon.s1next.util.ToastHelper;
+import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.MyRecyclerView;
 import cl.monsoon.s1next.widget.RecyclerViewHelper;
@@ -182,7 +182,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
                 if (threadList.getThreadList().size() == 0) {
                     String message = asyncResult.data.getResult().getValue();
                     if (!TextUtils.isEmpty(message)) {
-                        ToastHelper.showByText(message, Toast.LENGTH_SHORT);
+                        ToastUtil.showByText(message, Toast.LENGTH_SHORT);
                     }
                 } else {
                     mRecyclerAdapter.setDataSet(threadList.getThreadList());
@@ -192,7 +192,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
                             threadList.getThreadsInfo().getThreads());
                 }
             } catch (NullPointerException e) {
-                ToastHelper.showByResId(R.string.message_server_error, Toast.LENGTH_SHORT);
+                ToastUtil.showByResId(R.string.message_server_error, Toast.LENGTH_SHORT);
             }
         }
     }

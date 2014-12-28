@@ -24,7 +24,7 @@ import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ObjectUtil;
-import cl.monsoon.s1next.util.ToastHelper;
+import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.HttpPostLoader;
@@ -239,7 +239,7 @@ public final class ReplyFragment extends LoaderFragment {
                 ResultWrapper wrapper = ObjectUtil.cast(asyncResult.data, ResultWrapper.class);
                 Result result = wrapper.getResult();
 
-                ToastHelper.showByText(result.getValue(), Toast.LENGTH_LONG);
+                ToastUtil.showByText(result.getValue(), Toast.LENGTH_LONG);
 
                 if (result.getStatus().equals(STATUS_REPLY_SUCCESS)) {
                     getActivity().finish();

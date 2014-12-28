@@ -13,7 +13,7 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.ColorUtil;
-import cl.monsoon.s1next.util.StringUtil;
+import cl.monsoon.s1next.util.StringHelper;
 
 public final class ForumListRecyclerAdapter
         extends RecyclerAdapter<Forum, ForumListRecyclerAdapter.ViewHolder> {
@@ -46,7 +46,7 @@ public final class ForumListRecyclerAdapter
         if (forum.getTodayPosts() != 0) {
             int start = textView.getText().length();
 
-            textView.append(StringUtil.TWO_SPACES + forum.getTodayPosts());
+            textView.append(StringHelper.Util.TWO_SPACES + forum.getTodayPosts());
             Spannable spannable = (Spannable) textView.getText();
             spannable.setSpan(
                     new ForegroundColorSpan(mSecondaryTextColor),

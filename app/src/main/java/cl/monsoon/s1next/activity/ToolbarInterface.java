@@ -9,7 +9,7 @@ public interface ToolbarInterface {
         public void OnToolbarDropDownItemSelected(int position);
     }
 
-    public interface SpinnerInteractionCallback {
+    public static interface SpinnerInteractionCallback {
 
         /**
          * Set up ToolBar's drop down items.
