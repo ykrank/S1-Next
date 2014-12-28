@@ -2,7 +2,6 @@ package cl.monsoon.s1next.singleton;
 
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.support.annotation.ColorRes;
 import android.util.TypedValue;
 import android.widget.TextView;
@@ -10,6 +9,7 @@ import android.widget.TextView;
 import cl.monsoon.s1next.MyApplication;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.SettingsFragment;
+import cl.monsoon.s1next.util.ColorUtil;
 
 public enum Config {
     INSTANCE;
@@ -34,7 +34,7 @@ public enum Config {
     };
 
     private volatile int currentTheme;
-    private volatile int colorAccent87;
+    private volatile int colorAccent;
     private volatile float textSize;
     private volatile boolean wifi;
     private volatile DownloadStrategy avatarsDownloadStrategy;
@@ -66,15 +66,10 @@ public enum Config {
                 MyApplication.getContext()
                         .obtainStyledAttributes(
                                 INSTANCE.currentTheme, new int[]{R.attr.colorAccent});
-        int accentColor = typedArray.getColor(0, -1);
-        if (accentColor == -1) {
+        INSTANCE.colorAccent = typedArray.getColor(0, -1);
+        if (INSTANCE.colorAccent == -1) {
             throw new IllegalStateException("Theme accent color can't be -1.");
         }
-
-        INSTANCE.colorAccent87 =
-                Color.argb(
-                        (int) (0.87 * 255 + 0.5),
-                        Color.red(accentColor), Color.green(accentColor), Color.blue(accentColor));
     }
 
     public static void changeTextColorWhenS1Theme(TextView textView) {
@@ -86,8 +81,26 @@ public enum Config {
     }
 
     @ColorRes
-    public static int getColorAccent87() {
-        return INSTANCE.colorAccent87;
+    public static int getColorAccent() {
+        return INSTANCE.colorAccent;
+    }
+
+    @ColorUtil.Alpha
+    public static int getSecondaryTextAlpha() {
+        if (INSTANCE.currentTheme == DARK_THEME) {
+            return ColorUtil.BLACK_BACKGROUND_SECONDARY_TEXT_ALPHA;
+        } else {
+            return ColorUtil.WHITE_BACKGROUND_SECONDARY_TEXT_OR_ICONS_ALPHA;
+        }
+    }
+
+    @ColorUtil.Alpha
+    public static int getDisabledOrHintTextAlpha() {
+        if (INSTANCE.currentTheme == DARK_THEME) {
+            return ColorUtil.BLACK_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA;
+        } else {
+            return ColorUtil.WHITE_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA;
+        }
     }
 
     private static float getTextSize() {

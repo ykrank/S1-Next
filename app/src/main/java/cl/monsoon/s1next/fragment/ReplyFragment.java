@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.squareup.okhttp.RequestBody;
 
@@ -238,7 +239,7 @@ public final class ReplyFragment extends LoaderFragment {
                 ResultWrapper wrapper = ObjectUtil.cast(asyncResult.data, ResultWrapper.class);
                 Result result = wrapper.getResult();
 
-                ToastHelper.showByText(result.getValue());
+                ToastHelper.showByText(result.getValue(), Toast.LENGTH_LONG);
 
                 if (result.getStatus().equals(STATUS_REPLY_SUCCESS)) {
                     getActivity().finish();

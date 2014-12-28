@@ -6,12 +6,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
@@ -20,6 +22,7 @@ import cl.monsoon.s1next.model.list.PostList;
 import cl.monsoon.s1next.model.mapper.PostListWrapper;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.ObjectUtil;
+import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.util.ToastHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.MyRecyclerView;
@@ -148,7 +151,9 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                 return true;
             case R.id.menu_share:
                 String value =
-                        getThreadTitle() + "  " + Api.getUrlBrowserPostList(mThreadId, 1);
+                        getThreadTitle()
+                                + StringUtil.TWO_SPACES
+                                + Api.getUrlBrowserPostList(mThreadId, 1);
 
                 intent = new Intent(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_TEXT, value);
@@ -206,20 +211,29 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
             try {
                 PostList postList = asyncResult.data.unwrap();
 
-                int lastItemCount = mRecyclerAdapter.getItemCount();
-                mRecyclerAdapter.setDataSet(postList.getPostList());
-                if (isFinishedLoadingMore) {
-                    int newItemCount = mRecyclerAdapter.getItemCount() - lastItemCount;
-                    if (newItemCount > 0) {
-                        mRecyclerAdapter.notifyItemRangeInserted(lastItemCount, newItemCount);
+                // when user has logged out and then has not permission to access this thread
+                if (postList.getPostList().size() == 0) {
+                    String message = asyncResult.data.getResult().getValue();
+                    if (!TextUtils.isEmpty(message)) {
+                        ToastHelper.showByText(message, Toast.LENGTH_SHORT);
                     }
                 } else {
-                    mRecyclerAdapter.notifyDataSetChanged();
-                }
+                    int lastItemCount = mRecyclerAdapter.getItemCount();
+                    mRecyclerAdapter.setDataSet(postList.getPostList());
+                    if (isFinishedLoadingMore) {
+                        int newItemCount = mRecyclerAdapter.getItemCount() - lastItemCount;
+                        if (newItemCount > 0) {
+                            mRecyclerAdapter.notifyItemRangeInserted(lastItemCount, newItemCount);
+                        }
+                    } else {
+                        mRecyclerAdapter.notifyDataSetChanged();
+                    }
 
-                mOnPagerInteractionCallback.setTotalPages(postList.getPostListInfo().getReplies() + 1);
+                    mOnPagerInteractionCallback.setTotalPages(
+                            postList.getPostListInfo().getReplies() + 1);
+                }
             } catch (NullPointerException e) {
-                ToastHelper.showByResId(R.string.message_server_error);
+                ToastHelper.showByResId(R.string.message_server_error, Toast.LENGTH_SHORT);
             }
         }
 

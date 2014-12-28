@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
@@ -76,21 +78,26 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
                         new RecyclerViewHelper.OnItemClickListener() {
 
                             @Override
-                            public void onItemClick(int position) {
-                                startActivity(position, false);
+                            public void onItemClick(View view, int position) {
+                                startActivity(view, position, false);
                             }
 
                             @Override
-                            public void onItemLongClick(int position) {
+                            public void onItemLongClick(View view, int position) {
                                 // cause NullPointerException sometimes when orientation changes
                                 try {
-                                    startActivity(position, true);
+                                    startActivity(view, position, true);
                                 } catch (NullPointerException ignore) {
 
                                 }
                             }
 
-                            private void startActivity(int position, boolean shouldGoToLastPage) {
+                            private void startActivity(View view, int position, boolean shouldGoToLastPage) {
+                                // user has not permission to access this thread
+                                if (!view.isEnabled()) {
+                                    return;
+                                }
+
                                 Intent intent = new Intent(
                                         ThreadListPagerFragment.this.getActivity(),
                                         PostListActivity.class);
@@ -170,12 +177,22 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
         } else {
             try {
                 ThreadList threadList = asyncResult.data.unwrap();
-                mRecyclerAdapter.setDataSet(threadList.getThreadList());
-                mRecyclerAdapter.notifyDataSetChanged();
 
-                mOnPagerInteractionCallback.setTotalPages(threadList.getThreadsInfo().getThreads());
+                // when user has logged out and then has not permission to access this forum
+                if (threadList.getThreadList().size() == 0) {
+                    String message = asyncResult.data.getResult().getValue();
+                    if (!TextUtils.isEmpty(message)) {
+                        ToastHelper.showByText(message, Toast.LENGTH_SHORT);
+                    }
+                } else {
+                    mRecyclerAdapter.setDataSet(threadList.getThreadList());
+                    mRecyclerAdapter.notifyDataSetChanged();
+
+                    mOnPagerInteractionCallback.setTotalPages(
+                            threadList.getThreadsInfo().getThreads());
+                }
             } catch (NullPointerException e) {
-                ToastHelper.showByResId(R.string.message_server_error);
+                ToastHelper.showByResId(R.string.message_server_error, Toast.LENGTH_SHORT);
             }
         }
     }

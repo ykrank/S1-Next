@@ -12,12 +12,19 @@ import android.widget.TextView;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.singleton.Config;
+import cl.monsoon.s1next.util.ColorUtil;
+import cl.monsoon.s1next.util.StringUtil;
 
 public final class ForumListRecyclerAdapter
         extends RecyclerAdapter<Forum, ForumListRecyclerAdapter.ViewHolder> {
 
+    private final int mSecondaryTextColor;
+
     public ForumListRecyclerAdapter() {
         setHasStableIds(true);
+
+        mSecondaryTextColor =
+                ColorUtil.a(Config.getColorAccent(), Config.getSecondaryTextAlpha());
     }
 
     @Override
@@ -39,10 +46,10 @@ public final class ForumListRecyclerAdapter
         if (forum.getTodayPosts() != 0) {
             int start = textView.getText().length();
 
-            textView.append("  " + forum.getTodayPosts());
+            textView.append(StringUtil.TWO_SPACES + forum.getTodayPosts());
             Spannable spannable = (Spannable) textView.getText();
             spannable.setSpan(
-                    new ForegroundColorSpan(Config.getColorAccent87()),
+                    new ForegroundColorSpan(mSecondaryTextColor),
                     start,
                     textView.getText().length(),
                     Spanned.SPAN_INCLUSIVE_INCLUSIVE);

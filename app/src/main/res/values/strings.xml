@@ -45,6 +45,11 @@
     so this string is Chinese for all locales. -->
     <string name="toolbar_spinner_drop_down_forum_first_item" translatable="false">全部</string>
 
+    <!-- thread activity -->
+
+    <!-- Because thread's title usually is chinese, so this string is Chinese for all locales. -->
+    <string name="thread_activity_thread_permission" translatable="false">阅读权限</string>
+
     <!-- post activity -->
     <string name="dialog_seekbar_title_page_flip">Go to…</string>
     <string name="dialog_message_login_prompt">You can\'t reply without login, please sign in first.</string>

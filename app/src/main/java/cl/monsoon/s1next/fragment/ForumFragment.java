@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
@@ -61,7 +62,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
                         recyclerView,
                         new RecyclerViewHelper.OnItemClickListener() {
                             @Override
-                            public void onItemClick(int position) {
+                            public void onItemClick(View view, int position) {
                                 Intent intent = new Intent(
                                         ForumFragment.this.getActivity(),
                                         ThreadListActivity.class);
@@ -76,7 +77,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
                             }
 
                             @Override
-                            public void onItemLongClick(int position) {
+                            public void onItemLongClick(View view, int position) {
 
                             }
                         })
@@ -147,7 +148,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
                 mToolbarSpinnerInteractionCallback.setupToolbarDropDown(
                         mForumGroupList.getForumGroupNameList());
             } catch (NullPointerException e) {
-                ToastHelper.showByResId(R.string.message_server_error);
+                ToastHelper.showByResId(R.string.message_server_error, Toast.LENGTH_SHORT);
             }
         }
     }

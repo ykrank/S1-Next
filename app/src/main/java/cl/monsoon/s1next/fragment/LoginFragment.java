@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.squareup.okhttp.RequestBody;
 
@@ -172,7 +173,7 @@ public final class LoginFragment extends LoaderFragment<ResultWrapper> {
             ResultWrapper wrapper = asyncResult.data;
             Result result = wrapper.getResult();
 
-            ToastHelper.showByText(result.getValue());
+            ToastHelper.showByText(result.getValue(), Toast.LENGTH_LONG);
 
             if (result.getStatus().equals(STATUS_AUTH_SUCCESS)
                     || result.getStatus().equals(STATUS_AUTH_SUCCESS_ALREADY)) {

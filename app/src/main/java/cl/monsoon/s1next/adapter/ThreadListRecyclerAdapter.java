@@ -9,9 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import cl.monsoon.s1next.MyApplication;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Thread;
 import cl.monsoon.s1next.singleton.Config;
+import cl.monsoon.s1next.singleton.User;
+import cl.monsoon.s1next.util.ColorUtil;
+import cl.monsoon.s1next.util.StringUtil;
 
 /**
  * Similar to {@see cl.monsoon.s1next.adapter.ForumListRecyclerAdapter}.
@@ -19,8 +23,16 @@ import cl.monsoon.s1next.singleton.Config;
 public final class ThreadListRecyclerAdapter
         extends RecyclerAdapter<Thread, ThreadListRecyclerAdapter.ViewHolder> {
 
+    private final int mSecondaryTextColor;
+
+    private static final CharSequence THREAD_PERMISSION_HINT_PREFIX =
+            MyApplication.getContext().getText(R.string.thread_activity_thread_permission);
+
     public ThreadListRecyclerAdapter() {
         setHasStableIds(true);
+
+        mSecondaryTextColor =
+                ColorUtil.a(Config.getColorAccent(), Config.getSecondaryTextAlpha());
     }
 
     @Override
@@ -39,12 +51,23 @@ public final class ThreadListRecyclerAdapter
 
         holder.mTextView.setText(thread.getTitle());
 
-        // add thread's replies count to each thread
         int start = textView.getText().length();
-        textView.append("  " + thread.getReplies());
+
+        if (thread.getPermission() != 0) {
+            // add thread's permission hint
+            textView.append(
+                    StringUtil.TWO_SPACES
+                            + "[" + THREAD_PERMISSION_HINT_PREFIX + thread.getPermission() + "]");
+        }
+        // disable TextView if user has not permission to access this thread
+        holder.setTextViewEnabled(User.getPermission() >= thread.getPermission());
+
+        // add thread's replies count to each thread
+        textView.append(StringUtil.TWO_SPACES + thread.getReplies());
+
         Spannable spannable = (Spannable) textView.getText();
         spannable.setSpan(
-                new ForegroundColorSpan(Config.getColorAccent87()),
+                new ForegroundColorSpan(mSecondaryTextColor),
                 start,
                 textView.getText().length(),
                 Spanned.SPAN_INCLUSIVE_INCLUSIVE);
@@ -60,12 +83,28 @@ public final class ThreadListRecyclerAdapter
 
         private final TextView mTextView;
 
+        private final int mDefaultTextViewColor;
+        private final int mDisabledTextViewColor;
+
         public ViewHolder(View itemView) {
             super(itemView);
 
             mTextView = (TextView) itemView;
             Config.updateTextSize(mTextView);
             Config.changeTextColorWhenS1Theme(mTextView);
+
+            mDefaultTextViewColor = mTextView.getCurrentTextColor();
+            mDisabledTextViewColor =
+                    ColorUtil.a(mDefaultTextViewColor, Config.getDisabledOrHintTextAlpha());
+        }
+
+        public void setTextViewEnabled(Boolean enabled) {
+            if (enabled) {
+                mTextView.setTextColor(mDefaultTextViewColor);
+            } else {
+                mTextView.setTextColor(mDisabledTextViewColor);
+            }
+            mTextView.setEnabled(enabled);
         }
     }
 }

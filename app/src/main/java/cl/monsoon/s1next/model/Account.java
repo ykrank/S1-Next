@@ -20,6 +20,9 @@ public class Account {
     @JsonProperty("formhash")
     private String authenticityToken;
 
+    @JsonProperty("readaccess")
+    private int permission;
+
     public String getUsername() {
         return username;
     }
@@ -83,5 +86,15 @@ public class Account {
         } else {
             User.setAuthenticityToken(authenticityToken);
         }
+    }
+
+    public int getPermission() {
+        return permission;
+    }
+
+    public void setPermission(int permission) {
+        this.permission = permission;
+
+        User.setPermission(permission);
     }
 }

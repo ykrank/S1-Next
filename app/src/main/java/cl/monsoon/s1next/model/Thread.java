@@ -21,6 +21,9 @@ public final class Thread {
     @JsonProperty("replies")
     private int replies;
 
+    @JsonProperty("readperm")
+    private int permission;
+
     public String getId() {
         return id;
     }
@@ -44,6 +47,14 @@ public final class Thread {
 
     public void setReplies(int replies) {
         this.replies = replies;
+    }
+
+    public int getPermission() {
+        return permission;
+    }
+
+    public void setPermission(int permission) {
+        this.permission = permission;
     }
 
     /**

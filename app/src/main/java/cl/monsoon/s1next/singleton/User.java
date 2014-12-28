@@ -16,6 +16,7 @@ public enum User {
     private volatile String name;
     private volatile String uid;
     private volatile String authenticityToken;
+    private volatile int permission;
 
     public static String getName() {
         return INSTANCE.name;
@@ -41,8 +42,17 @@ public enum User {
         INSTANCE.authenticityToken = authenticityToken;
     }
 
+    public static int getPermission() {
+        return INSTANCE.permission;
+    }
+
+    public static void setPermission(int permission) {
+        INSTANCE.permission = permission;
+    }
+
     public static void clear() {
         INSTANCE.name = INSTANCE.uid = INSTANCE.authenticityToken = null;
+        INSTANCE.permission = 0;
     }
 
     public static void sendLoginBroadcast() {
