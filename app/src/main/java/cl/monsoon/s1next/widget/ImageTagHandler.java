@@ -27,24 +27,36 @@ public final class ImageTagHandler implements Html.TagHandler {
 
     @Override
     public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
-        if (tag.toLowerCase().equals("img")) {
-            // get all ImageSpans
-            int length = output.length();
-            // ImageSpan's length = 1
-            ImageSpan imageSpan = output.getSpans(length - 1, length, ImageSpan.class)[0];
+        if (!opening && tag.equalsIgnoreCase("img")) {
+            handleStartImg(output);
+        }
+    }
 
-            String url = imageSpan.getSource();
-            // Emoji url don't have domain
-            // skip Emoji url because we don't want Emoji clickable
-            if (URLUtil.isNetworkUrl(url)) {
+    /**
+     * see android.text.HtmlToSpannedConverter#startImg(android.text.SpannableStringBuilder, org.xml.sax.Attributes, android.text.Html.ImageGetter)
+     */
+    private void handleStartImg(Editable output) {
+        int end = output.length();
 
-                // make this ImageSpan clickable
-                output.setSpan(
-                        new ImageClickableSpan(mContext, imageSpan.getDrawable(), url),
-                        length - 1,
-                        length,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
+        int len = "\uFFFC".length();
+        ImageSpan imageSpan = output.getSpans(end - len, end, ImageSpan.class)[0];
+
+        String url = imageSpan.getSource();
+        // replace \uFFFC (OBJECT REPLACEMENT CHARACTER) to its ImageSpan's source
+        // in order to support url copy (when selected)
+        output.replace(end - len, end, url);
+
+        // Emoji url don't have domain
+        // skip Emoji url because we don't want Emoji clickable
+        if (URLUtil.isNetworkUrl(url)) {
+
+            output.removeSpan(imageSpan);
+            // make this ImageSpan clickable
+            output.setSpan(
+                    new ImageClickableSpan(mContext, imageSpan.getDrawable(), url),
+                    end - len,
+                    output.length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }
 
