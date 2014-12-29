@@ -56,10 +56,10 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     public static PostListPagerFragment newInstance(CharSequence threadId, int page) {
         PostListPagerFragment fragment = new PostListPagerFragment();
 
-        Bundle args = new Bundle();
-        args.putCharSequence(ARG_THREAD_ID, threadId);
-        args.putInt(ARG_PAGE_NUM, page);
-        fragment.setArguments(args);
+        Bundle bundle = new Bundle();
+        bundle.putCharSequence(ARG_THREAD_ID, threadId);
+        bundle.putInt(ARG_PAGE_NUM, page);
+        fragment.setArguments(bundle);
 
         return fragment;
     }

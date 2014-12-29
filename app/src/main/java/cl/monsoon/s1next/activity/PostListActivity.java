@@ -428,9 +428,9 @@ public final class PostListActivity
         public static ThreadFavouritesAddDialogFragment newInstance(CharSequence threadId) {
             ThreadFavouritesAddDialogFragment fragment = new ThreadFavouritesAddDialogFragment();
 
-            Bundle args = new Bundle();
-            args.putCharSequence(ARG_THREAD_ID, threadId);
-            fragment.setArguments(args);
+            Bundle bundle = new Bundle();
+            bundle.putCharSequence(ARG_THREAD_ID, threadId);
+            fragment.setArguments(bundle);
 
             return fragment;
         }
@@ -475,10 +475,10 @@ public final class PostListActivity
             public static LoaderDialogFragment newInstance(CharSequence threadId, CharSequence description) {
                 LoaderDialogFragment fragment = new LoaderDialogFragment();
 
-                Bundle args = new Bundle();
-                args.putCharSequence(ARG_THREAD_ID, threadId);
-                args.putCharSequence(ARG_REMARK, description);
-                fragment.setArguments(args);
+                Bundle bundle = new Bundle();
+                bundle.putCharSequence(ARG_THREAD_ID, threadId);
+                bundle.putCharSequence(ARG_REMARK, description);
+                fragment.setArguments(bundle);
 
                 return fragment;
             }

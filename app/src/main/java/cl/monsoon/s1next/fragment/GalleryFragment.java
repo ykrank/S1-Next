@@ -28,9 +28,9 @@ public final class GalleryFragment extends Fragment {
     public static GalleryFragment newInstance(String imageUrl) {
         GalleryFragment fragment = new GalleryFragment();
 
-        Bundle args = new Bundle();
-        args.putString(ARG_IMAGE_URL, imageUrl);
-        fragment.setArguments(args);
+        Bundle bundle = new Bundle();
+        bundle.putString(ARG_IMAGE_URL, imageUrl);
+        fragment.setArguments(bundle);
 
         return fragment;
     }

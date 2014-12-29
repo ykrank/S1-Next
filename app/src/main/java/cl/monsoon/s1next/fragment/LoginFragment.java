@@ -151,10 +151,10 @@ public final class LoginFragment extends Fragment {
         public static LoginLoaderDialogFragment newInstance(CharSequence username, CharSequence password) {
             LoginLoaderDialogFragment fragment = new LoginLoaderDialogFragment();
 
-            Bundle args = new Bundle();
-            args.putCharSequence(ARG_USERNAME, username);
-            args.putCharSequence(ARG_PASSWORD, password);
-            fragment.setArguments(args);
+            Bundle bundle = new Bundle();
+            bundle.putCharSequence(ARG_USERNAME, username);
+            bundle.putCharSequence(ARG_PASSWORD, password);
+            fragment.setArguments(bundle);
 
             return fragment;
         }

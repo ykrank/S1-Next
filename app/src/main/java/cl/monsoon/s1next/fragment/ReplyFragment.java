@@ -64,10 +64,10 @@ public final class ReplyFragment extends Fragment {
     public static ReplyFragment newInstance(CharSequence threadId, CharSequence quotePostId) {
         ReplyFragment fragment = new ReplyFragment();
 
-        Bundle args = new Bundle();
-        args.putCharSequence(ARG_THREAD_ID, threadId);
-        args.putCharSequence(ARG_QUOTE_POST_ID, quotePostId);
-        fragment.setArguments(args);
+        Bundle bundle = new Bundle();
+        bundle.putCharSequence(ARG_THREAD_ID, threadId);
+        bundle.putCharSequence(ARG_QUOTE_POST_ID, quotePostId);
+        fragment.setArguments(bundle);
 
         return fragment;
     }
@@ -165,12 +165,12 @@ public final class ReplyFragment extends Fragment {
         public static ReplyLoaderDialogFragment newInstance(CharSequence threadId, CharSequence quotePostId, Quote quote, CharSequence reply) {
             ReplyLoaderDialogFragment fragment = new ReplyLoaderDialogFragment();
 
-            Bundle args = new Bundle();
-            args.putCharSequence(ARG_THREAD_ID, threadId);
-            args.putCharSequence(ARG_QUOTE_POST_ID, quotePostId);
-            args.putParcelable(ARG_QUOTE, quote);
-            args.putCharSequence(ARG_REPLY, reply);
-            fragment.setArguments(args);
+            Bundle bundle = new Bundle();
+            bundle.putCharSequence(ARG_THREAD_ID, threadId);
+            bundle.putCharSequence(ARG_QUOTE_POST_ID, quotePostId);
+            bundle.putParcelable(ARG_QUOTE, quote);
+            bundle.putCharSequence(ARG_REPLY, reply);
+            fragment.setArguments(bundle);
 
             return fragment;
         }
