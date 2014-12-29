@@ -33,7 +33,7 @@ import cl.monsoon.s1next.model.Post;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.widget.GlideImageGetter;
-import cl.monsoon.s1next.widget.ImageTagHandler;
+import cl.monsoon.s1next.widget.MyTagHandler;
 import cl.monsoon.s1next.widget.MyMovementMethod;
 
 public final class PostListRecyclerAdapter
@@ -175,7 +175,7 @@ public final class PostListRecyclerAdapter
                 Html.fromHtml(
                         reply,
                         new GlideImageGetter(replayView, mImageGetterRequestBuilder),
-                        new ImageTagHandler(mContext)));
+                        new MyTagHandler(mContext)));
     }
 
     @Override

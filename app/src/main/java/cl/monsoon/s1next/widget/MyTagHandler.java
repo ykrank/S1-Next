@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.Html;
+import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
+import android.text.style.StrikethroughSpan;
 import android.view.View;
 import android.webkit.URLUtil;
 
@@ -15,13 +17,13 @@ import org.xml.sax.XMLReader;
 import cl.monsoon.s1next.activity.GalleryActivity;
 
 /**
- * Make ImageSpan clickable.
+ * Make ImageSpan clickable and handle `strike` tag.
  */
-public final class ImageTagHandler implements Html.TagHandler {
+public final class MyTagHandler implements Html.TagHandler {
 
     private final Context mContext;
 
-    public ImageTagHandler(Context context) {
+    public MyTagHandler(Context context) {
         this.mContext = context;
     }
 
@@ -29,11 +31,13 @@ public final class ImageTagHandler implements Html.TagHandler {
     public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
         if (!opening && tag.equalsIgnoreCase("img")) {
             handleStartImg(output);
+        } else if (tag.equalsIgnoreCase("strike")) {
+            handleStrike(opening, output);
         }
     }
 
     /**
-     * see android.text.HtmlToSpannedConverter#startImg(android.text.SpannableStringBuilder, org.xml.sax.Attributes, android.text.Html.ImageGetter)
+     * See android.text.HtmlToSpannedConverter#startImg(android.text.SpannableStringBuilder, org.xml.sax.Attributes, android.text.Html.ImageGetter)
      */
     private void handleStartImg(Editable output) {
         int end = output.length();
@@ -60,6 +64,39 @@ public final class ImageTagHandler implements Html.TagHandler {
         }
     }
 
+    /**
+     * See android.text.HtmlToSpannedConverter#handleStartTag(java.lang.String, org.xml.sax.Attributes)
+     * See android.text.HtmlToSpannedConverter#handleEndTag(java.lang.String)
+     */
+    private void handleStrike(boolean opening, Editable output) {
+        int len = output.length();
+        if (opening) {
+            output.setSpan(new Strike(), len, len, Spannable.SPAN_MARK_MARK);
+        } else {
+            Object obj = getLast(output, Strike.class);
+            int where = output.getSpanStart(obj);
+
+            output.removeSpan(obj);
+
+            if (where != len) {
+                output.setSpan(new StrikethroughSpan(), where, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
+    }
+
+    /**
+     * Same to android.text.HtmlToSpannedConverter#getLast(android.text.Spanned, java.lang.Class)
+     */
+    private static Object getLast(Spanned text, Class kind) {
+        Object[] objs = text.getSpans(0, text.length(), kind);
+
+        if (objs.length == 0) {
+            return null;
+        } else {
+            return objs[objs.length - 1];
+        }
+    }
+
     public static class ImageClickableSpan extends ImageSpan implements View.OnClickListener {
 
         private final Context mContext;
@@ -81,5 +118,9 @@ public final class ImageTagHandler implements Html.TagHandler {
 
             getContext().startActivity(intent);
         }
+    }
+
+    private static class Strike {
+
     }
 }

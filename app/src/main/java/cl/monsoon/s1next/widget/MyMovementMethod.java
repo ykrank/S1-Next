@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 /**
  * A movement method that provides selection and clicking on links,
- * also makes {@link cl.monsoon.s1next.widget.ImageTagHandler.ImageClickableSpan} clickable.
+ * also makes {@link MyTagHandler.ImageClickableSpan} clickable.
  */
 public final class MyMovementMethod extends ArrowKeyMovementMethod {
 
@@ -53,8 +53,8 @@ public final class MyMovementMethod extends ArrowKeyMovementMethod {
             }
 
             // invoke ImageSpan's click event
-            ImageTagHandler.ImageClickableSpan[] imageClickableSpans =
-                    buffer.getSpans(off, off, ImageTagHandler.ImageClickableSpan.class);
+            MyTagHandler.ImageClickableSpan[] imageClickableSpans =
+                    buffer.getSpans(off, off, MyTagHandler.ImageClickableSpan.class);
             if (imageClickableSpans.length != 0) {
                 if (action == MotionEvent.ACTION_UP) {
                     imageClickableSpans[0].onClick(widget);
