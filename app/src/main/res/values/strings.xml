@@ -21,6 +21,7 @@
     <!-- menu button -->
     <string name="menu_account_new">Create an account</string>
     <string name="menu_page_flip">Flip page</string>
+    <string name="menu_favourites_add">Add to favourites</string>
     <string name="menu_share">Share</string>
     <string name="menu_refresh">Refresh</string>
     <string name="menu_browser">Open in browser</string>
@@ -37,7 +38,7 @@
 
     <string name="error_field_required">Can\'t leave this empty.</string>
 
-    <string name="dialog_progress_title_login">Signing in…</string>
+    <string name="dialog_progress_message_login">Signing in…</string>
 
     <!-- forum activity -->
 
@@ -52,6 +53,9 @@
 
     <!-- post activity -->
     <string name="dialog_seekbar_title_page_flip">Go to…</string>
+    <string name="dialog_title_favourites_add" translatable="false">@string/menu_favourites_add</string>
+    <string name="dialog_progress_message_favourites_add">Adding…</string>
+    <string name="prompt_remark">Remark</string>
     <string name="dialog_message_login_prompt">You can\'t reply without login, please sign in first.</string>
 
     <!-- reply activity & fragment -->
@@ -60,7 +64,7 @@
     <string name="reply_activity_title_prefix" translatable="false">"回复主题 - "</string>
     <string name="reply_activity_quote_title_prefix" translatable="false">"引用#%1$s - "</string>
     <string name="prompt_reply">Write something…</string>
-    <string name="dialog_progress_title_reply">Replying…</string>
+    <string name="dialog_progress_message_reply">Replying…</string>
     <string name="dialog_message_reply_back_prompt">Do you want to discard this reply?</string>
 
     <!-- settings -->

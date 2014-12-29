@@ -1,9 +1,11 @@
 package cl.monsoon.s1next.fragment;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.Loader;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,7 +33,7 @@ import cl.monsoon.s1next.widget.HttpPostLoader;
 /**
  * A login screen that offers login via username/password.
  */
-public final class LoginFragment extends LoaderFragment<ResultWrapper> {
+public final class LoginFragment extends Fragment {
 
     public static final String TAG = "login_fragment";
 
@@ -133,61 +135,87 @@ public final class LoginFragment extends LoaderFragment<ResultWrapper> {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            showProgressDialog();
             // start to log in
-            startLoader(ID_LOADER_LOGIN);
+            LoginLoaderDialogFragment.newInstance(mUsernameView.getText(), mPasswordView.getText())
+                    .show(getFragmentManager(), LoginLoaderDialogFragment.TAG);
         }
     }
 
-    @Override
-    public CharSequence getProgressMessage() {
-        return getText(R.string.dialog_progress_title_login);
-    }
+    public static class LoginLoaderDialogFragment extends LoaderDialogFragment<ResultWrapper> {
 
-    @Override
-    RequestBody getRequestBody(int loaderId) {
-        if (loaderId == ID_LOADER_LOGIN) {
-            return Api.getLoginPostBuilder(mUsernameView.getText(), mPasswordView.getText());
+        private static final String TAG = "login_loader_dialog";
+
+        private static final String ARG_USERNAME = "username";
+        private static final String ARG_PASSWORD = "password";
+
+        public static LoginLoaderDialogFragment newInstance(CharSequence username, CharSequence password) {
+            LoginLoaderDialogFragment fragment = new LoginLoaderDialogFragment();
+
+            Bundle args = new Bundle();
+            args.putCharSequence(ARG_USERNAME, username);
+            args.putCharSequence(ARG_PASSWORD, password);
+            fragment.setArguments(args);
+
+            return fragment;
         }
 
-        return super.getRequestBody(loaderId);
-    }
+        @Override
+        protected CharSequence getProgressMessage() {
+            return getText(R.string.dialog_progress_message_login);
+        }
 
-    @Override
-    public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
-        return
-                new HttpPostLoader<>(
-                        getActivity(),
-                        Api.URL_LOGIN,
-                        ResultWrapper.class,
-                        getRequestBody(id));
-    }
+        @Override
+        protected int getStartLoaderId() {
+            return ID_LOADER_LOGIN;
+        }
 
-    @Override
-    public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> asyncResult) {
-        dismissProgressDialog();
-
-        if (asyncResult.exception != null) {
-            AsyncResult.handleException(asyncResult.exception);
-        } else {
-            ResultWrapper wrapper = asyncResult.data;
-            Result result = wrapper.getResult();
-
-            ToastUtil.showByText(result.getValue(), Toast.LENGTH_LONG);
-
-            if (result.getStatus().equals(STATUS_AUTH_SUCCESS)
-                    || result.getStatus().equals(STATUS_AUTH_SUCCESS_ALREADY)) {
-                // this authenticity token is not fresh
-                // we need abandon this token
-                User.setAuthenticityToken(null);
-
-                getActivity().onBackPressed();
+        @Override
+        protected RequestBody getRequestBody(int loaderId) {
+            if (loaderId == ID_LOADER_LOGIN) {
+                return Api.getLoginPostBuilder(
+                        getArguments().getCharSequence(ARG_USERNAME),
+                        getArguments().getCharSequence(ARG_PASSWORD));
             }
+
+            return super.getRequestBody(loaderId);
         }
-    }
 
-    @Override
-    public void onLoaderReset(Loader<AsyncResult<ResultWrapper>> loader) {
+        @Override
+        public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
+            return
+                    new HttpPostLoader<>(
+                            getActivity(),
+                            Api.URL_LOGIN,
+                            ResultWrapper.class,
+                            getRequestBody(id));
+        }
 
+        @Override
+        public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> asyncResult) {
+            if (asyncResult.exception != null) {
+                AsyncResult.handleException(asyncResult.exception);
+            } else {
+                ResultWrapper wrapper = asyncResult.data;
+                Result result = wrapper.getResult();
+
+                ToastUtil.showByText(result.getMessage(), Toast.LENGTH_LONG);
+
+                if (result.getStatus().equals(STATUS_AUTH_SUCCESS)
+                        || result.getStatus().equals(STATUS_AUTH_SUCCESS_ALREADY)) {
+                    // this authenticity token is not fresh
+                    // we need abandon this token
+                    User.setAuthenticityToken(null);
+
+                    getActivity().onBackPressed();
+                }
+            }
+
+            new Handler().post(this::dismiss);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<AsyncResult<ResultWrapper>> loader) {
+
+        }
     }
 }

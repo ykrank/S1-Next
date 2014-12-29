@@ -2,7 +2,6 @@ package cl.monsoon.s1next.widget;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.os.Build;
 
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Request;
@@ -105,19 +104,6 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
         if (mAsyncResult != null) {
             onReleaseResources();
             mAsyncResult = null;
-        }
-    }
-
-    /**
-     * {@link android.content.AsyncTaskLoader#cancelLoad} requires API 16,
-     * so we override this methods to provide backport.
-     */
-    @Override
-    public boolean cancelLoad() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            return onCancelLoad();
-        } else {
-            return super.cancelLoad();
         }
     }
 

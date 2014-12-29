@@ -213,7 +213,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
 
                 // when user has logged out and then has not permission to access this thread
                 if (postList.getPostList().size() == 0) {
-                    String message = asyncResult.data.getResult().getValue();
+                    String message = asyncResult.data.getResult().getMessage();
                     if (!TextUtils.isEmpty(message)) {
                         ToastUtil.showByText(message, Toast.LENGTH_SHORT);
                     }

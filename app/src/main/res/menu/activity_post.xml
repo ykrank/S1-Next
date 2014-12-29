@@ -9,4 +9,9 @@
         android:orderInCategory="2"
         android:title="@string/menu_page_flip"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menu_favourites_add"
+        android:orderInCategory="3"
+        android:title="@string/menu_favourites_add"
+        app:showAsAction="never"/>
 </menu>

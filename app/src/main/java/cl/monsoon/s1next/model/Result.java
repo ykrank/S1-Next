@@ -11,7 +11,7 @@ public final class Result {
     private String status;
 
     @JsonProperty("messagestr")
-    private String value;
+    private String message;
 
     public String getStatus() {
         return status;
@@ -21,11 +21,11 @@ public final class Result {
         this.status = status;
     }
 
-    public String getValue() {
-        return value;
+    public String getMessage() {
+        return message;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

@@ -30,6 +30,8 @@ public final class Api {
     public static final String URL_AUTHENTICITY_TOKEN_HELPER = prefix("api/mobile/index.php?module=toplist");
     private static final String URL_REPLY = prefix("api/mobile/index.php?module=sendreply&replysubmit=yes");
 
+    public static final String URL_THREAD_FAVOURITES_ADD = prefix("api/mobile/index.php?module=favthread&favoritesubmit=yes");
+
     /**
      * We need to use this to get extra information for quote.
      * <b>noticeauthor</b> the user ID which was encoded in server, without this we can't notify the original author.
@@ -120,6 +122,19 @@ public final class Api {
                         .add("username", username.toString())
                         .add("password", password.toString())
                         .add("cookietime", "2592000")
+                        .build();
+    }
+
+    public static RequestBody getThreadFavouritesAddBuilder(CharSequence threadId, CharSequence remark) {
+        if (User.getAuthenticityToken() == null) {
+            throw new IllegalStateException("AuthenticityToken must not be null.");
+        }
+
+        return
+                new FormEncodingBuilder()
+                        .add("id", threadId.toString())
+                        .add("description", remark.toString())
+                        .add("formhash", User.getAuthenticityToken())
                         .build();
     }
 

@@ -19,27 +19,12 @@ import cl.monsoon.s1next.singleton.MyOkHttpClient;
  */
 public final class HttpPostLoader<D extends Deserializable> extends HttpGetLoader<D> {
 
-    private RequestBody mRequestBody;
+    private final RequestBody mRequestBody;
 
     public HttpPostLoader(Context context, String url, Class<D> clazz, RequestBody requestBody) {
         super(context, url, clazz);
 
         this.mRequestBody = requestBody;
-    }
-
-    /**
-     * Use {@link cl.monsoon.s1next.widget.HttpPostLoader#onContentChanged(RequestBody)} instead.
-     */
-    @Override
-    @Deprecated
-    public void onContentChanged() {
-        super.onContentChanged();
-    }
-
-    public void onContentChanged(RequestBody requestBody) {
-        this.mRequestBody = requestBody;
-
-        super.onContentChanged();
     }
 
     /**

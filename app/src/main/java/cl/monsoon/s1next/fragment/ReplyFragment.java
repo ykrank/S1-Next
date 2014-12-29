@@ -1,7 +1,10 @@
 package cl.monsoon.s1next.fragment;
 
+import android.app.Fragment;
 import android.content.Loader;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -32,7 +35,7 @@ import cl.monsoon.s1next.widget.HttpPostLoader;
 /**
  * Send the reply via EditView.
  */
-public final class ReplyFragment extends LoaderFragment {
+public final class ReplyFragment extends Fragment {
 
     public static final String TAG = "reply_fragment";
 
@@ -130,30 +133,8 @@ public final class ReplyFragment extends LoaderFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_reply_post:
-                showProgressDialog();
-
-                int loaderId;
-                final boolean hasAuthenticityToken =
-                        !TextUtils.isEmpty(User.getAuthenticityToken());
-                if (hasAuthenticityToken) {
-                    if (TextUtils.isEmpty(mQuotePostId)) {
-                        loaderId = ID_LOADER_POST_REPLY;
-                    } else {
-                        if (mQuote == null) {
-                            // We need to get extra information for quote.
-                            // see cl.monsoon.s1next.Api#URL_QUOTE_HELPER
-                            loaderId = ID_LOADER_GET_QUOTE_EXTRA_INFO;
-                        } else {
-                            loaderId = ID_LOADER_POST_QUOTE;
-                        }
-                    }
-                } else {
-                    // We need to get authenticity token (formhash) if we haven't.
-                    // Then posts the rely.
-                    // see cl.monsoon.s1next.Api#URL_AUTHENTICITY_TOKEN_HELPER
-                    loaderId = ID_LOADER_GET_AUTHENTICITY_TOKEN;
-                }
-                startLoader(loaderId);
+                ReplyLoaderDialogFragment.newInstance(mThreadId, mQuotePostId, mQuote, mReplyView.getText())
+                        .show(getFragmentManager(), ReplyLoaderDialogFragment.TAG);
 
                 return true;
         }
@@ -162,7 +143,7 @@ public final class ReplyFragment extends LoaderFragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putParcelable(STATE_QUOTE, mQuote);
@@ -172,88 +153,164 @@ public final class ReplyFragment extends LoaderFragment {
         return mReplyView == null || TextUtils.isEmpty(mReplyView.getText().toString());
     }
 
-    @Override
-    public CharSequence getProgressMessage() {
-        return getText(R.string.dialog_progress_title_reply);
-    }
+    public static class ReplyLoaderDialogFragment extends LoaderDialogFragment {
 
-    @Override
-    RequestBody getRequestBody(int loaderId) {
-        if (loaderId == ID_LOADER_POST_REPLY) {
-            return Api.getReplyPostBuilder(mReplyView.getText().toString());
-        } else if (loaderId == ID_LOADER_POST_QUOTE) {
-            return Api.getQuotePostBuilder(mQuote, mReplyView.getText().toString());
+        private static final String TAG = "reply_loader_dialog";
+
+        private static final String ARG_QUOTE = "quote";
+        private static final String ARG_REPLY = "reply";
+
+        private Quote mQuote;
+
+        public static ReplyLoaderDialogFragment newInstance(CharSequence threadId, CharSequence quotePostId, Quote quote, CharSequence reply) {
+            ReplyLoaderDialogFragment fragment = new ReplyLoaderDialogFragment();
+
+            Bundle args = new Bundle();
+            args.putCharSequence(ARG_THREAD_ID, threadId);
+            args.putCharSequence(ARG_QUOTE_POST_ID, quotePostId);
+            args.putParcelable(ARG_QUOTE, quote);
+            args.putCharSequence(ARG_REPLY, reply);
+            fragment.setArguments(args);
+
+            return fragment;
         }
 
-        return super.getRequestBody(loaderId);
-    }
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
 
-    @Override
-    public Loader onCreateLoader(int id, Bundle args) {
-        if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
-            return
-                    new HttpGetLoader<>(
-                            getActivity(),
-                            Api.URL_AUTHENTICITY_TOKEN_HELPER,
-                            ResultWrapper.class);
-        } else if (id == ID_LOADER_GET_QUOTE_EXTRA_INFO) {
-            return
-                    new HttpGetLoader<>(
-                            getActivity(),
-                            Api.getQuoteHelper(mThreadId, mQuotePostId),
-                            Quote.class);
-        } else if (id == ID_LOADER_POST_REPLY || id == ID_LOADER_POST_QUOTE) {
-            return
-                    new HttpPostLoader<>(
-                            getActivity(),
-                            Api.getPostRely(mThreadId),
-                            ResultWrapper.class,
-                            getRequestBody(id));
-        } else {
-            throw new ClassCastException("Loader ID can't be " + id + ".");
-        }
-    }
-
-    @Override
-    public void onLoadFinished(Loader loader, Object data) {
-        AsyncResult asyncResult = ObjectUtil.cast(data, AsyncResult.class);
-        if (asyncResult.exception != null) {
-            AsyncResult.handleException(asyncResult.exception);
-        } else {
-            int id = loader.getId();
-            if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
-                if (TextUtils.isEmpty(mQuotePostId)) {
-                    startLoader(ID_LOADER_POST_REPLY);
-                } else {
-                    startLoader(ID_LOADER_GET_QUOTE_EXTRA_INFO);
-                }
-
-                return;
-            } else if (id == ID_LOADER_GET_QUOTE_EXTRA_INFO) {
-                mQuote = ObjectUtil.cast(asyncResult.data, Quote.class);
-
-                startLoader(ID_LOADER_POST_QUOTE);
-
-                return;
-            } else if (id == ID_LOADER_POST_REPLY || id == ID_LOADER_POST_QUOTE) {
-                ResultWrapper wrapper = ObjectUtil.cast(asyncResult.data, ResultWrapper.class);
-                Result result = wrapper.getResult();
-
-                ToastUtil.showByText(result.getValue(), Toast.LENGTH_LONG);
-
-                if (result.getStatus().equals(STATUS_REPLY_SUCCESS)) {
-                    getActivity().finish();
-                }
+            if (savedInstanceState == null) {
+                mQuote = getArguments().getParcelable(ARG_QUOTE);
             } else {
-                throw new IllegalStateException("Loader ID can't be " + id + ".");
+                mQuote = savedInstanceState.getParcelable(STATE_QUOTE);
             }
         }
 
-        dismissProgressDialog();
-    }
+        @Override
+        public void onSaveInstanceState(@NonNull Bundle outState) {
+            super.onSaveInstanceState(outState);
 
-    @Override
-    public void onLoaderReset(Loader loader) {
+            outState.putParcelable(STATE_QUOTE, mQuote);
+        }
 
+        @Override
+        protected CharSequence getProgressMessage() {
+            return getText(R.string.dialog_progress_message_reply);
+        }
+
+        @Override
+        protected int getStartLoaderId() {
+            int loaderId;
+            final boolean hasAuthenticityToken =
+                    !TextUtils.isEmpty(User.getAuthenticityToken());
+            if (hasAuthenticityToken) {
+                if (TextUtils.isEmpty(getArguments().getCharSequence(ARG_QUOTE_POST_ID))) {
+                    loaderId = ID_LOADER_POST_REPLY;
+                } else {
+                    if (mQuote == null) {
+                        // We need to get extra information for quote.
+                        // see cl.monsoon.s1next.Api#URL_QUOTE_HELPER
+                        loaderId = ID_LOADER_GET_QUOTE_EXTRA_INFO;
+                    } else {
+                        loaderId = ID_LOADER_POST_QUOTE;
+                    }
+                }
+            } else {
+                // We need to get authenticity token (formhash) if we haven't.
+                // Then posts the rely.
+                // see cl.monsoon.s1next.Api#URL_AUTHENTICITY_TOKEN_HELPER
+                loaderId = ID_LOADER_GET_AUTHENTICITY_TOKEN;
+            }
+
+            return loaderId;
+        }
+
+        @Override
+        protected RequestBody getRequestBody(int loaderId) {
+            if (loaderId == ID_LOADER_POST_REPLY) {
+                return
+                        Api.getReplyPostBuilder(
+                                getArguments().getCharSequence(ARG_REPLY).toString());
+            } else if (loaderId == ID_LOADER_POST_QUOTE) {
+                return
+                        Api.getQuotePostBuilder
+                                (mQuote, getArguments().getCharSequence(ARG_REPLY).toString());
+            }
+
+            return super.getRequestBody(loaderId);
+        }
+
+        @Override
+        public Loader onCreateLoader(int id, Bundle args) {
+            if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
+                return
+                        new HttpGetLoader<>(
+                                getActivity(),
+                                Api.URL_AUTHENTICITY_TOKEN_HELPER,
+                                ResultWrapper.class);
+            } else if (id == ID_LOADER_GET_QUOTE_EXTRA_INFO) {
+                return
+                        new HttpGetLoader<>(
+                                getActivity(),
+                                Api.getQuoteHelper(
+                                        getArguments().getCharSequence(ARG_THREAD_ID),
+                                        getArguments().getCharSequence(ARG_QUOTE_POST_ID)),
+                                Quote.class);
+            } else if (id == ID_LOADER_POST_REPLY || id == ID_LOADER_POST_QUOTE) {
+                return
+                        new HttpPostLoader<>(
+                                getActivity(),
+                                Api.getPostRely(getArguments().getCharSequence(ARG_THREAD_ID)),
+                                ResultWrapper.class,
+                                getRequestBody(id));
+            } else {
+                throw new ClassCastException("Loader ID can't be " + id + ".");
+            }
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public void onLoadFinished(Loader loader, Object data) {
+            AsyncResult asyncResult = ObjectUtil.cast(data, AsyncResult.class);
+            if (asyncResult.exception != null) {
+                AsyncResult.handleException(asyncResult.exception);
+            } else {
+                int id = loader.getId();
+                if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
+                    if (TextUtils.isEmpty(getArguments().getCharSequence(ARG_QUOTE_POST_ID))) {
+                        getLoaderManager().initLoader(ID_LOADER_POST_REPLY, null, this);
+                    } else {
+                        getLoaderManager().initLoader(ID_LOADER_GET_QUOTE_EXTRA_INFO, null, this);
+                    }
+
+                    return;
+                } else if (id == ID_LOADER_GET_QUOTE_EXTRA_INFO) {
+                    mQuote = ObjectUtil.cast(asyncResult.data, Quote.class);
+                    ObjectUtil.cast(getActivity(), ReplyFragment.class).mQuote = mQuote;
+
+                    getLoaderManager().initLoader(ID_LOADER_POST_QUOTE, null, this);
+
+                    return;
+                } else if (id == ID_LOADER_POST_REPLY || id == ID_LOADER_POST_QUOTE) {
+                    ResultWrapper wrapper = ObjectUtil.cast(asyncResult.data, ResultWrapper.class);
+                    Result result = wrapper.getResult();
+
+                    ToastUtil.showByText(result.getMessage(), Toast.LENGTH_LONG);
+
+                    if (result.getStatus().equals(STATUS_REPLY_SUCCESS)) {
+                        getActivity().finish();
+                    }
+                } else {
+                    throw new IllegalStateException("Loader ID can't be " + id + ".");
+                }
+            }
+
+            new Handler().post(this::dismiss);
+        }
+
+        @Override
+        public void onLoaderReset(Loader loader) {
+
+        }
     }
 }

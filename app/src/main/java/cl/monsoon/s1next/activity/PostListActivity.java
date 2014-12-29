@@ -9,8 +9,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.Loader;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -25,17 +27,27 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
+import com.squareup.okhttp.RequestBody;
+
+import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.BaseFragment;
 import cl.monsoon.s1next.fragment.PostListPagerFragment;
+import cl.monsoon.s1next.model.Result;
+import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
 import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.StringHelper;
+import cl.monsoon.s1next.util.ToastUtil;
+import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
+import cl.monsoon.s1next.widget.HttpGetLoader;
+import cl.monsoon.s1next.widget.HttpPostLoader;
 import cl.monsoon.s1next.widget.InputFilterRange;
 
 /**
@@ -209,6 +221,11 @@ public final class PostListActivity
             // show SeekBar to let user to flip page
             case R.id.menu_page_flip:
                 showPageFlipDialog();
+
+                return true;
+            case R.id.menu_favourites_add:
+                ThreadFavouritesAddDialogFragment.newInstance(mThreadId)
+                        .show(getFragmentManager(), ThreadFavouritesAddDialogFragment.TAG);
 
                 return true;
         }
@@ -402,6 +419,158 @@ public final class PostListActivity
         }
     }
 
+    public static class ThreadFavouritesAddDialogFragment extends DialogFragment {
+
+        private static final String TAG = "thread_favourites_add_dialog";
+
+        private EditText mRemarkView;
+
+        public static ThreadFavouritesAddDialogFragment newInstance(CharSequence threadId) {
+            ThreadFavouritesAddDialogFragment fragment = new ThreadFavouritesAddDialogFragment();
+
+            Bundle args = new Bundle();
+            args.putCharSequence(ARG_THREAD_ID, threadId);
+            fragment.setArguments(args);
+
+            return fragment;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            View view =
+                    getActivity().getLayoutInflater().inflate(
+                            R.layout.dialog_favourites_add,
+                            (ViewGroup) getActivity().findViewById(R.id.drawer_layout),
+                            false);
+            mRemarkView = (EditText) view.findViewById(R.id.remark);
+            Config.updateTextSize(mRemarkView);
+
+            AlertDialog alertDialog =
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.dialog_title_favourites_add)
+                            .setView(view)
+                            .setPositiveButton(android.R.string.ok, null)
+                            .setNegativeButton(
+                                    android.R.string.cancel, null)
+                            .create();
+
+            alertDialog.setOnShowListener(dialog ->
+                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v ->
+                            LoaderDialogFragment.newInstance(
+                                    getArguments().getCharSequence(ARG_THREAD_ID), mRemarkView.getText())
+                                    .show(getFragmentManager(), LoaderDialogFragment.TAG)));
+
+            return alertDialog;
+        }
+
+        public static class LoaderDialogFragment extends cl.monsoon.s1next.fragment.LoaderDialogFragment<ResultWrapper> {
+
+            private static final String TAG = "thread_favourites_add_loader_dialog";
+
+            private static final String ARG_REMARK = "remark";
+
+            private static final String STATUS_ADD_TO_FAVOURITES_SUCCESS = "favorite_do_success";
+            private static final String STATUS_ADD_TO_FAVOURITES_REPEAT = "favorite_repeat";
+
+            public static LoaderDialogFragment newInstance(CharSequence threadId, CharSequence description) {
+                LoaderDialogFragment fragment = new LoaderDialogFragment();
+
+                Bundle args = new Bundle();
+                args.putCharSequence(ARG_THREAD_ID, threadId);
+                args.putCharSequence(ARG_REMARK, description);
+                fragment.setArguments(args);
+
+                return fragment;
+            }
+
+            @Override
+            protected CharSequence getProgressMessage() {
+                return getText(R.string.dialog_progress_message_favourites_add);
+            }
+
+            @Override
+            protected int getStartLoaderId() {
+                if (TextUtils.isEmpty(User.getAuthenticityToken())) {
+                    return ID_LOADER_GET_AUTHENTICITY_TOKEN;
+                } else {
+                    return ID_LOADER_ADD_THREAD_TO_FAVOURITES;
+                }
+            }
+
+            @Override
+            protected RequestBody getRequestBody(int loaderId) {
+                if (loaderId == ID_LOADER_ADD_THREAD_TO_FAVOURITES) {
+                    return Api.getThreadFavouritesAddBuilder(
+                            getArguments().getCharSequence(ARG_THREAD_ID),
+                            getArguments().getCharSequence(ARG_REMARK));
+                } else {
+                    throw new IllegalStateException("Loader ID can't be " + loaderId + ".");
+                }
+            }
+
+            @Override
+            public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
+                if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
+                    return
+                            new HttpGetLoader<>(
+                                    getActivity(),
+                                    Api.URL_AUTHENTICITY_TOKEN_HELPER,
+                                    ResultWrapper.class);
+                } else if (id == ID_LOADER_ADD_THREAD_TO_FAVOURITES) {
+                    return
+                            new HttpPostLoader<>(
+                                    getActivity(),
+                                    Api.URL_THREAD_FAVOURITES_ADD,
+                                    ResultWrapper.class,
+                                    getRequestBody(id));
+                } else {
+                    throw new ClassCastException("Loader ID can't be " + id + ".");
+                }
+            }
+
+            @Override
+            public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> data) {
+                AsyncResult asyncResult = ObjectUtil.cast(data, AsyncResult.class);
+                if (asyncResult.exception != null) {
+                    AsyncResult.handleException(asyncResult.exception);
+                } else {
+                    int id = loader.getId();
+                    if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
+                        getLoaderManager().initLoader(ID_LOADER_ADD_THREAD_TO_FAVOURITES, null, this);
+
+                        return;
+                    } else if (id == ID_LOADER_ADD_THREAD_TO_FAVOURITES) {
+                        ResultWrapper wrapper = ObjectUtil.cast(asyncResult.data, ResultWrapper.class);
+                        Result result = wrapper.getResult();
+
+                        ToastUtil.showByText(result.getMessage(), Toast.LENGTH_SHORT);
+
+                        if (result.getStatus().equals(STATUS_ADD_TO_FAVOURITES_SUCCESS)
+                                || result.getStatus().equals(STATUS_ADD_TO_FAVOURITES_REPEAT)) {
+                            Fragment fragment =
+                                    getFragmentManager()
+                                            .findFragmentByTag(ThreadFavouritesAddDialogFragment.TAG);
+                            if (fragment != null) {
+                                new Handler().post(() ->
+                                                ObjectUtil.cast(fragment, ThreadFavouritesAddDialogFragment.class)
+                                                        .dismiss()
+                                );
+                            }
+                        }
+                    } else {
+                        throw new IllegalStateException("Loader ID can't be " + id + ".");
+                    }
+                }
+
+                new Handler().post(this::dismiss);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<AsyncResult<ResultWrapper>> loader) {
+
+            }
+        }
+    }
 
     public static class LoginPromptDialog extends DialogFragment {
 
