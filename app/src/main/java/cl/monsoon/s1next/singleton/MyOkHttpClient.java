@@ -33,6 +33,7 @@ public enum MyOkHttpClient {
 
         okHttpClient.setCookieHandler(cookieManager);
 
+        // this is a shallow copy (including CookieManager reference)
         okHttpClientForNonIdempotent = okHttpClient.clone();
         okHttpClientForNonIdempotent.setRetryOnConnectionFailure(false);
     }
