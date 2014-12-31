@@ -150,7 +150,7 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
             mCall = null;
 
             if (!response.isSuccessful()) {
-                throw new RemoteException("Unexpected code " + response);
+                throw new RemoteException("Unexpected code " + response + ".");
             }
 
             return response.body().byteStream();

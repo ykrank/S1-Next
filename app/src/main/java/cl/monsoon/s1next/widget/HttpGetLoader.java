@@ -121,7 +121,7 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
         mCall = null;
 
         if (!response.isSuccessful()) {
-            throw new RemoteException("Unexpected code " + response);
+            throw new RemoteException("Unexpected code " + response + ".");
         }
 
         return response.body().byteStream();
