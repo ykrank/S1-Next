@@ -37,7 +37,7 @@ public final class HttpPostLoader<D extends Deserializable> extends HttpGetLoade
                 .post(mRequestBody)
                 .build();
 
-        mCall = MyOkHttpClient.get().newCall(request);
+        mCall = MyOkHttpClient.getForNonIdempotent().newCall(request);
 
         Response response = mCall.execute();
 

@@ -1,6 +1,5 @@
 package cl.monsoon.s1next.singleton;
 
-import com.squareup.okhttp.HttpMethodWhitelistRetryPolicy;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.net.CookieManager;
@@ -17,6 +16,8 @@ public enum MyOkHttpClient {
     INSTANCE;
 
     private final OkHttpClient okHttpClient;
+    private final OkHttpClient okHttpClientForNonIdempotent;
+
     private final CookieManager cookieManager;
 
     private MyOkHttpClient() {
@@ -25,18 +26,23 @@ public enum MyOkHttpClient {
         okHttpClient.setConnectTimeout(20, TimeUnit.SECONDS);
         okHttpClient.setWriteTimeout(20, TimeUnit.SECONDS);
         okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
-        // see https://github.com/square/okhttp/pull/1185
-        okHttpClient.setRetryPolicy(HttpMethodWhitelistRetryPolicy.forIdempotentOnly());
 
         cookieManager = new CookieManager(
                 new PersistentHttpCookieStore(
                         MyApplication.getContext()), CookiePolicy.ACCEPT_ALL);
 
         okHttpClient.setCookieHandler(cookieManager);
+
+        okHttpClientForNonIdempotent = okHttpClient.clone();
+        okHttpClientForNonIdempotent.setRetryOnConnectionFailure(false);
     }
 
     public static OkHttpClient get() {
         return INSTANCE.okHttpClient;
+    }
+
+    public static OkHttpClient getForNonIdempotent() {
+        return INSTANCE.okHttpClientForNonIdempotent;
     }
 
     public static void clearCookie() {

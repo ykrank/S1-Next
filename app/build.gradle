@@ -34,8 +34,6 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.android.support:support-v13:21.0.3'
     compile 'com.android.support:appcompat-v7:21.0.3'
@@ -45,11 +43,9 @@ dependencies {
 
     compile 'com.fasterxml.jackson.core:jackson-databind:2.4.4'
 
-    // compile 'com.squareup.okhttp:okhttp:2.1.0'
-    // OkHttp has this dependency
-    compile 'com.squareup.okio:okio:1.0.1'
+    compile 'com.squareup.okhttp:okhttp:2.2.0'
 
-    // compile 'com.github.bumptech.glide:okhttp-integration:1.1.0'
+    compile 'com.github.bumptech.glide:okhttp-integration:1.1.0'
     compile 'com.github.bumptech.glide:glide:3.4.0'
 
     compile 'com.melnykov:floatingactionbutton:1.1.0'
