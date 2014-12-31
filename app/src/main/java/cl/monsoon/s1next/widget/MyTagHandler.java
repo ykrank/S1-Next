@@ -29,8 +29,8 @@ public final class MyTagHandler implements Html.TagHandler {
 
     @Override
     public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
-        if (!opening && tag.equalsIgnoreCase("img")) {
-            handleStartImg(output);
+        if (tag.equalsIgnoreCase("img")) {
+            handleImg(opening, output);
         } else if (tag.equalsIgnoreCase("strike")) {
             handleStrike(opening, output);
         }
@@ -39,28 +39,30 @@ public final class MyTagHandler implements Html.TagHandler {
     /**
      * See android.text.HtmlToSpannedConverter#startImg(android.text.SpannableStringBuilder, org.xml.sax.Attributes, android.text.Html.ImageGetter)
      */
-    private void handleStartImg(Editable output) {
-        int end = output.length();
+    private void handleImg(boolean opening, Editable output) {
+        if (!opening) {
+            int end = output.length();
 
-        int len = "\uFFFC".length();
-        ImageSpan imageSpan = output.getSpans(end - len, end, ImageSpan.class)[0];
+            int len = "\uFFFC".length();
+            ImageSpan imageSpan = output.getSpans(end - len, end, ImageSpan.class)[0];
 
-        String url = imageSpan.getSource();
-        // replace \uFFFC (OBJECT REPLACEMENT CHARACTER) to its ImageSpan's source
-        // in order to support url copy (when selected)
-        output.replace(end - len, end, url);
+            String url = imageSpan.getSource();
+            // replace \uFFFC (OBJECT REPLACEMENT CHARACTER) to its ImageSpan's source
+            // in order to support url copy (when selected)
+            output.replace(end - len, end, url);
 
-        // Emoji url don't have domain
-        // skip Emoji url because we don't want Emoji clickable
-        if (URLUtil.isNetworkUrl(url)) {
+            // Emoji url don't have domain
+            // skip Emoji url because we don't want Emoji clickable
+            if (URLUtil.isNetworkUrl(url)) {
 
-            output.removeSpan(imageSpan);
-            // make this ImageSpan clickable
-            output.setSpan(
-                    new ImageClickableSpan(mContext, imageSpan.getDrawable(), url),
-                    end - len,
-                    output.length(),
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                output.removeSpan(imageSpan);
+                // make this ImageSpan clickable
+                output.setSpan(
+                        new ImageClickableSpan(mContext, imageSpan.getDrawable(), url),
+                        end - len,
+                        output.length(),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
         }
     }
 
