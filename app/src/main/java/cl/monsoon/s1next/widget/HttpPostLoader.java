@@ -1,6 +1,7 @@
 package cl.monsoon.s1next.widget;
 
 import android.content.Context;
+import android.os.RemoteException;
 
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
@@ -31,15 +32,19 @@ public final class HttpPostLoader<D extends Deserializable> extends HttpGetLoade
      * Synchronous post but the {@link HttpPostLoader} is asynchronism.
      */
     @Override
-    InputStream request() throws IOException {
+    InputStream request() throws IOException, RemoteException {
         Request request = new Request.Builder()
                 .url(mUrl)
                 .post(mRequestBody)
                 .build();
 
         mCall = MyOkHttpClient.getForNonIdempotent().newCall(request);
-
         Response response = mCall.execute();
+        mCall = null;
+
+        if (!response.isSuccessful()) {
+            throw new RemoteException("Unexpected code " + response);
+        }
 
         return response.body().byteStream();
     }

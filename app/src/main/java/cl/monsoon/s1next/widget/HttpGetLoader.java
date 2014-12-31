@@ -2,6 +2,7 @@ package cl.monsoon.s1next.widget;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.os.RemoteException;
 
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Request;
@@ -65,7 +66,7 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
 
             // JSON mapper
             asyncResult.data = MyObjectExtractor.readValue(in, mClass);
-        } catch (IOException e) {
+        } catch (IOException | RemoteException e) {
             asyncResult.exception = e;
         }
 
@@ -110,14 +111,18 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
     /**
      * Synchronous get but the {@link HttpGetLoader} is asynchronism.
      */
-    InputStream request() throws IOException {
+    InputStream request() throws IOException, RemoteException {
         Request request = new Request.Builder()
                 .url(mUrl)
                 .build();
 
         mCall = MyOkHttpClient.get().newCall(request);
-
         Response response = mCall.execute();
+        mCall = null;
+
+        if (!response.isSuccessful()) {
+            throw new RemoteException("Unexpected code " + response);
+        }
 
         return response.body().byteStream();
     }

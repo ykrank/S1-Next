@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
@@ -22,7 +21,6 @@ import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.model.list.ForumGroupList;
 import cl.monsoon.s1next.model.mapper.ForumGroupListWrapper;
 import cl.monsoon.s1next.util.ObjectUtil;
-import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.MyRecyclerView;
 import cl.monsoon.s1next.widget.RecyclerViewHelper;
@@ -139,17 +137,13 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
         if (asyncResult.exception != null) {
             AsyncResult.handleException(asyncResult.exception);
         } else {
-            try {
-                ForumGroupListWrapper wrapper = asyncResult.data;
-                mForumGroupList = wrapper.unwrap();
+            ForumGroupListWrapper wrapper = asyncResult.data;
+            mForumGroupList = wrapper.unwrap();
 
-                // after set adapter, host activity
-                // would call changeContent().
-                mToolbarSpinnerInteractionCallback.setupToolbarDropDown(
-                        mForumGroupList.getForumGroupNameList());
-            } catch (NullPointerException e) {
-                ToastUtil.showByResId(R.string.message_server_error, Toast.LENGTH_SHORT);
-            }
+            // after set adapter, host activity
+            // would call changeContent().
+            mToolbarSpinnerInteractionCallback.setupToolbarDropDown(
+                    mForumGroupList.getForumGroupNameList());
         }
     }
 

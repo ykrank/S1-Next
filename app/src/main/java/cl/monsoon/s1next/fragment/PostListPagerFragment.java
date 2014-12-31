@@ -208,32 +208,28 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                 AsyncResult.handleException(asyncResult.exception);
             }
         } else {
-            try {
-                PostList postList = asyncResult.data.unwrap();
+            PostList postList = asyncResult.data.unwrap();
 
-                // when user has logged out and then has not permission to access this thread
-                if (postList.getPostList().size() == 0) {
-                    String message = asyncResult.data.getResult().getMessage();
-                    if (!TextUtils.isEmpty(message)) {
-                        ToastUtil.showByText(message, Toast.LENGTH_SHORT);
+            // when user has logged out and then has not permission to access this thread
+            if (postList.getPostList().size() == 0) {
+                String message = asyncResult.data.getResult().getMessage();
+                if (!TextUtils.isEmpty(message)) {
+                    ToastUtil.showByText(message, Toast.LENGTH_SHORT);
+                }
+            } else {
+                int lastItemCount = mRecyclerAdapter.getItemCount();
+                mRecyclerAdapter.setDataSet(postList.getPostList());
+                if (isFinishedLoadingMore) {
+                    int newItemCount = mRecyclerAdapter.getItemCount() - lastItemCount;
+                    if (newItemCount > 0) {
+                        mRecyclerAdapter.notifyItemRangeInserted(lastItemCount, newItemCount);
                     }
                 } else {
-                    int lastItemCount = mRecyclerAdapter.getItemCount();
-                    mRecyclerAdapter.setDataSet(postList.getPostList());
-                    if (isFinishedLoadingMore) {
-                        int newItemCount = mRecyclerAdapter.getItemCount() - lastItemCount;
-                        if (newItemCount > 0) {
-                            mRecyclerAdapter.notifyItemRangeInserted(lastItemCount, newItemCount);
-                        }
-                    } else {
-                        mRecyclerAdapter.notifyDataSetChanged();
-                    }
-
-                    mOnPagerInteractionCallback.setTotalPages(
-                            postList.getPostListInfo().getReplies() + 1);
+                    mRecyclerAdapter.notifyDataSetChanged();
                 }
-            } catch (NullPointerException e) {
-                ToastUtil.showByResId(R.string.message_server_error, Toast.LENGTH_SHORT);
+
+                mOnPagerInteractionCallback.setTotalPages(
+                        postList.getPostListInfo().getReplies() + 1);
             }
         }
 

@@ -175,24 +175,20 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
                 AsyncResult.handleException(asyncResult.exception);
             }
         } else {
-            try {
-                ThreadList threadList = asyncResult.data.unwrap();
+            ThreadList threadList = asyncResult.data.unwrap();
 
-                // when user has logged out and then has not permission to access this forum
-                if (threadList.getThreadList().size() == 0) {
-                    String message = asyncResult.data.getResult().getMessage();
-                    if (!TextUtils.isEmpty(message)) {
-                        ToastUtil.showByText(message, Toast.LENGTH_SHORT);
-                    }
-                } else {
-                    mRecyclerAdapter.setDataSet(threadList.getThreadList());
-                    mRecyclerAdapter.notifyDataSetChanged();
-
-                    mOnPagerInteractionCallback.setTotalPages(
-                            threadList.getThreadsInfo().getThreads());
+            // when user has logged out and then has not permission to access this forum
+            if (threadList.getThreadList().size() == 0) {
+                String message = asyncResult.data.getResult().getMessage();
+                if (!TextUtils.isEmpty(message)) {
+                    ToastUtil.showByText(message, Toast.LENGTH_SHORT);
                 }
-            } catch (NullPointerException e) {
-                ToastUtil.showByResId(R.string.message_server_error, Toast.LENGTH_SHORT);
+            } else {
+                mRecyclerAdapter.setDataSet(threadList.getThreadList());
+                mRecyclerAdapter.notifyDataSetChanged();
+
+                mOnPagerInteractionCallback.setTotalPages(
+                        threadList.getThreadsInfo().getThreads());
             }
         }
     }

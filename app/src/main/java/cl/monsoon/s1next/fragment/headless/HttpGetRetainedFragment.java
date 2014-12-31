@@ -120,12 +120,8 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
                 // get response body from Internet
                 InputStream in = request();
 
-                try {
-                    // JSON mapper
-                    result.data = MyObjectExtractor.readValue(in, mClass);
-                } catch (IOException e) {
-                    throw new RemoteException(e.toString());
-                }
+                // JSON mapper
+                result.data = MyObjectExtractor.readValue(in, mClass);
             } catch (IOException | RemoteException e) {
                 result.exception = e;
             }
@@ -144,7 +140,7 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
          * {@link HttpGetRetainedFragment.AsyncHttpGetTask}
          * is asynchronism.
          */
-        private InputStream request() throws IOException {
+        private InputStream request() throws IOException, RemoteException {
             Request request = new Request.Builder()
                     .url(mUrl)
                     .build();
@@ -152,6 +148,10 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
             mCall = MyOkHttpClient.get().newCall(request);
             Response response = mCall.execute();
             mCall = null;
+
+            if (!response.isSuccessful()) {
+                throw new RemoteException("Unexpected code " + response);
+            }
 
             return response.body().byteStream();
         }
