@@ -16,10 +16,10 @@ import cl.monsoon.s1next.util.ObjectUtil;
  */
 public final class ReplyActivity extends BaseActivity {
 
-    public final static String ARG_THREAD_TITLE = "thread_title";
-    public final static String ARG_THREAD_ID = "thread_id";
-    public final static String ARG_QUOTE_POST_ID = "quote_post_id";
-    public final static String ARG_QUOTE_POST_COUNT = "quote_post_count";
+    public static final String ARG_THREAD_TITLE = "thread_title";
+    public static final String ARG_THREAD_ID = "thread_id";
+    public static final String ARG_QUOTE_POST_ID = "quote_post_id";
+    public static final String ARG_QUOTE_POST_COUNT = "quote_post_count";
 
     private ReplyFragment mReplyFragment;
 

@@ -100,7 +100,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                 if (!mIsLoadingMore
                         && mPageNum == mOnPagerInteractionCallback.getTotalPages()
                         && !mRecyclerView.canScrollVertically(1)
-                        && !isLoading()) {
+                        && !isRefreshing()) {
 
                     mIsLoadingMore = true;
                     setSwipeRefreshLayoutEnabled(false);
@@ -177,7 +177,6 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     private CharSequence getThreadTitle() {
         CharSequence title = getActivity().getTitle();
         // remove two space and page number's length
-
         return title.subSequence(0, title.length() - 2 - String.valueOf(mPageNum).length());
     }
 
@@ -211,14 +210,14 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
             PostList postList = asyncResult.data.unwrap();
 
             // when user has logged out and then has not permission to access this thread
-            if (postList.getPostList().size() == 0) {
+            if (postList.getData().isEmpty()) {
                 String message = asyncResult.data.getResult().getMessage();
                 if (!TextUtils.isEmpty(message)) {
                     ToastUtil.showByText(message, Toast.LENGTH_SHORT);
                 }
             } else {
                 int lastItemCount = mRecyclerAdapter.getItemCount();
-                mRecyclerAdapter.setDataSet(postList.getPostList());
+                mRecyclerAdapter.setDataSet(postList.getData());
                 if (isFinishedLoadingMore) {
                     int newItemCount = mRecyclerAdapter.getItemCount() - lastItemCount;
                     if (newItemCount > 0) {
@@ -228,8 +227,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                     mRecyclerAdapter.notifyDataSetChanged();
                 }
 
-                mOnPagerInteractionCallback.setTotalPages(
-                        postList.getPostListInfo().getReplies() + 1);
+                mOnPagerInteractionCallback.setTotalPages(postList.getInfo().getReplies() + 1);
             }
         }
 

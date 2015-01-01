@@ -122,7 +122,7 @@ public abstract class BaseFragment<D extends Extractable>
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         // Disable refresh action when SwipeRefreshLayout is still refreshing.
-        menu.findItem(R.id.menu_refresh).setEnabled(!isLoading());
+        menu.findItem(R.id.menu_refresh).setEnabled(!isRefreshing());
     }
 
     @Override
@@ -188,7 +188,7 @@ public abstract class BaseFragment<D extends Extractable>
                 .enableToolbarAndFabAutoHideEffect(recyclerView, onScrollListener);
     }
 
-    boolean isLoading() {
+    boolean isRefreshing() {
         return (mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isEnabled())
                 || (mHttpGetRetainedFragment != null && mHttpGetRetainedFragment.isRunning());
     }

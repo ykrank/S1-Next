@@ -76,7 +76,7 @@ public final class ForumActivity
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         mSelectedPosition = position;
-        mOnToolbarDropDownItemSelectedListener.OnToolbarDropDownItemSelected(position);
+        mOnToolbarDropDownItemSelectedListener.onToolbarDropDownItemSelected(position);
     }
 
     @Override

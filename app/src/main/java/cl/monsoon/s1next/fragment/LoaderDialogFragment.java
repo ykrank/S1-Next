@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.LoaderManager;
 import android.app.ProgressDialog;
+import android.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
@@ -84,5 +85,15 @@ public abstract class LoaderDialogFragment<D extends Extractable> extends Dialog
 
     protected RequestBody getRequestBody(@LoaderId int loaderId) {
         throw new IllegalStateException("Loader ID can't be " + loaderId + ".");
+    }
+
+    @Override
+    public Loader<AsyncResult<D>> onCreateLoader(int id, Bundle args) {
+        throw new IllegalStateException("Loader ID can't be " + id + ".");
+    }
+
+    @Override
+    public void onLoadFinished(Loader<AsyncResult<D>> loader, AsyncResult<D> data) {
+        throw new IllegalStateException("Loader ID can't be " + loader.getId() + ".");
     }
 }

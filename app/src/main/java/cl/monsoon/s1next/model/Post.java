@@ -132,9 +132,9 @@ public final class Post {
         String color;
         while (matcher.find()) {
             // get color hex value for its color name
-            color = sColorNameMap.get(matcher.group(1).toLowerCase());
+            color = COLOR_NAME_MAP.get(matcher.group(1).toLowerCase());
             if (color == null) {
-                // throw new IllegalStateException("sColorNameMap" + "must contain " + matcher.group(0));
+                // throw new IllegalStateException("COLOR_NAME_MAP" + "must contain " + matcher.group(0));
                 continue;
             }
             // append part of the string and plus its color hex value
@@ -145,35 +145,35 @@ public final class Post {
         return stringBuffer.toString();
     }
 
-    private static final Map<String, String> sColorNameMap;
+    private static final Map<String, String> COLOR_NAME_MAP;
 
     static {
-        sColorNameMap = new HashMap<>();
+        COLOR_NAME_MAP = new HashMap<>();
 
-        sColorNameMap.put("sienna", "#A0522D");
-        sColorNameMap.put("darkolivegreen", "#556B2F");
-        sColorNameMap.put("darkgreen", "#006400");
-        sColorNameMap.put("darkslateblue", "#483D8B");
-        sColorNameMap.put("indigo", "#4B0082");
-        sColorNameMap.put("darkslategray", "#2F4F4F");
-        sColorNameMap.put("darkred", "#8B0000");
-        sColorNameMap.put("darkorange", "#FF8C00");
-        sColorNameMap.put("slategray", "#708090");
-        sColorNameMap.put("dimgray", "#696969");
-        sColorNameMap.put("sandybrown", "#F4A460");
-        sColorNameMap.put("yellowgreen", "#9ACD32");
-        sColorNameMap.put("seagreen", "#2E8B57");
-        sColorNameMap.put("mediumturquoise", "#48D1CC");
-        sColorNameMap.put("royalblue", "#4169E1");
-        sColorNameMap.put("orange", "#FFA500");
-        sColorNameMap.put("deepskyblue", "#00BFFF");
-        sColorNameMap.put("darkorchid", "#9932CC");
-        sColorNameMap.put("pink", "#FFC0CB");
-        sColorNameMap.put("wheat", "#F5DEB3");
-        sColorNameMap.put("lemonchiffon", "#FFFACD");
-        sColorNameMap.put("palegreen", "#98FB98");
-        sColorNameMap.put("paleturquoise", "#AFEEEE");
-        sColorNameMap.put("lightblue", "#ADD8E6");
+        COLOR_NAME_MAP.put("sienna", "#A0522D");
+        COLOR_NAME_MAP.put("darkolivegreen", "#556B2F");
+        COLOR_NAME_MAP.put("darkgreen", "#006400");
+        COLOR_NAME_MAP.put("darkslateblue", "#483D8B");
+        COLOR_NAME_MAP.put("indigo", "#4B0082");
+        COLOR_NAME_MAP.put("darkslategray", "#2F4F4F");
+        COLOR_NAME_MAP.put("darkred", "#8B0000");
+        COLOR_NAME_MAP.put("darkorange", "#FF8C00");
+        COLOR_NAME_MAP.put("slategray", "#708090");
+        COLOR_NAME_MAP.put("dimgray", "#696969");
+        COLOR_NAME_MAP.put("sandybrown", "#F4A460");
+        COLOR_NAME_MAP.put("yellowgreen", "#9ACD32");
+        COLOR_NAME_MAP.put("seagreen", "#2E8B57");
+        COLOR_NAME_MAP.put("mediumturquoise", "#48D1CC");
+        COLOR_NAME_MAP.put("royalblue", "#4169E1");
+        COLOR_NAME_MAP.put("orange", "#FFA500");
+        COLOR_NAME_MAP.put("deepskyblue", "#00BFFF");
+        COLOR_NAME_MAP.put("darkorchid", "#9932CC");
+        COLOR_NAME_MAP.put("pink", "#FFC0CB");
+        COLOR_NAME_MAP.put("wheat", "#F5DEB3");
+        COLOR_NAME_MAP.put("lemonchiffon", "#FFFACD");
+        COLOR_NAME_MAP.put("palegreen", "#98FB98");
+        COLOR_NAME_MAP.put("paleturquoise", "#AFEEEE");
+        COLOR_NAME_MAP.put("lightblue", "#ADD8E6");
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

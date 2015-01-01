@@ -62,7 +62,7 @@ public class Account {
         this.uid = uid;
 
         // uid.equals("0") = true when user hasn't logged in
-        if (TextUtils.isEmpty(uid) || uid.equals("0")) {
+        if (TextUtils.isEmpty(uid) || "0".equals(uid)) {
             User.setUid(null);
         } else {
             User.setUid(uid);

@@ -15,7 +15,7 @@ import cl.monsoon.s1next.fragment.GalleryFragment;
  */
 public final class GalleryActivity extends ActionBarActivity {
 
-    public final static String ARG_IMAGE_URL = "image_url";
+    public static final String ARG_IMAGE_URL = "image_url";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

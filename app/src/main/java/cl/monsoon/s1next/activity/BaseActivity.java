@@ -395,10 +395,11 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
                 getResources().getDrawable(typedValue.resourceId), null, null, null);
 
         // start SettingsActivity if clicked
-        settingsView.setOnClickListener(v -> closeDrawer(() -> {
-            Intent intent = new Intent(BaseActivity.this, SettingsActivity.class);
-            startActivity(intent);
-        }));
+        settingsView.setOnClickListener(v ->
+                closeDrawer(() -> {
+                    Intent intent = new Intent(BaseActivity.this, SettingsActivity.class);
+                    startActivity(intent);
+                }));
     }
 
     /**
@@ -519,7 +520,8 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
             return
                     new AlertDialog.Builder(getActivity())
                             .setMessage(R.string.dialog_message_log_out)
-                            .setPositiveButton(android.R.string.ok,
+                            .setPositiveButton(
+                                    android.R.string.ok,
                                     (dialog, which) ->
                                             ObjectUtil.cast(
                                                     getActivity(),

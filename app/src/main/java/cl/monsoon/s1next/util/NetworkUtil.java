@@ -8,6 +8,10 @@ import cl.monsoon.s1next.MyApplication;
 
 public final class NetworkUtil {
 
+    private NetworkUtil() {
+
+    }
+
     public static boolean isWifiConnected() {
         ConnectivityManager connectivityManager =
                 (ConnectivityManager)

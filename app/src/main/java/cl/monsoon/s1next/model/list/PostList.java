@@ -9,7 +9,7 @@ import cl.monsoon.s1next.model.Account;
 import cl.monsoon.s1next.model.Post;
 
 /**
- * {@link #postList}:
+ * {@link #data}:
  * <pre>
  * 回复1
  * 回复2
@@ -20,24 +20,24 @@ import cl.monsoon.s1next.model.Post;
 public final class PostList extends Account {
 
     @JsonProperty("postlist")
-    private List<Post> postList;
+    private List<Post> data;
 
     @JsonProperty("thread")
-    private Post.PostListInfo postListInfo;
+    private Post.PostListInfo info;
 
-    public List<Post> getPostList() {
-        return postList;
+    public List<Post> getData() {
+        return data;
     }
 
-    public void setPostList(List<Post> postList) {
-        this.postList = postList;
+    public void setData(List<Post> data) {
+        this.data = data;
     }
 
-    public Post.PostListInfo getPostListInfo() {
-        return postListInfo;
+    public Post.PostListInfo getInfo() {
+        return info;
     }
 
-    public void setPostListInfo(Post.PostListInfo postListInfo) {
-        this.postListInfo = postListInfo;
+    public void setInfo(Post.PostListInfo info) {
+        this.info = info;
     }
 }

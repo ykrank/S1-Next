@@ -16,6 +16,16 @@ import android.widget.TextView;
  */
 public final class MyMovementMethod extends ArrowKeyMovementMethod {
 
+    private static MyMovementMethod sInstance;
+
+    public static MovementMethod getInstance() {
+        if (sInstance == null) {
+            sInstance = new MyMovementMethod();
+        }
+
+        return sInstance;
+    }
+
     /**
      * @see android.text.method.LinkMovementMethod#onTouchEvent(TextView, Spannable, MotionEvent)
      */
@@ -67,14 +77,4 @@ public final class MyMovementMethod extends ArrowKeyMovementMethod {
 
         return super.onTouchEvent(widget, buffer, event);
     }
-
-    public static MovementMethod getInstance() {
-        if (sInstance == null) {
-            sInstance = new MyMovementMethod();
-        }
-
-        return sInstance;
-    }
-
-    private static MyMovementMethod sInstance;
 }

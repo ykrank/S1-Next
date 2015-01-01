@@ -176,7 +176,7 @@ public enum Config {
     }
 
     public static enum FontSize {
-        VERY_SMALL(0.8f), SMALL(0.9f), Medium(1f), LARGE(1.1f), VERY_LARGE(1.2f);
+        VERY_SMALL(0.8f), SMALL(0.9f), MEDIUM(1f), LARGE(1.1f), VERY_LARGE(1.2f);
 
         private static final FontSize[] VALUES = FontSize.values();
 

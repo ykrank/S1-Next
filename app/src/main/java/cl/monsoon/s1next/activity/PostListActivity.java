@@ -59,11 +59,11 @@ public final class PostListActivity
         implements PostListPagerFragment.OnPagerInteractionCallback,
         View.OnClickListener {
 
-    public final static String ARG_THREAD_TITLE = "thread_title";
-    public final static String ARG_THREAD_ID = "thread_id";
-    public final static String ARG_POST_REPLIES = "post_replies";
+    public static final String ARG_THREAD_TITLE = "thread_title";
+    public static final String ARG_THREAD_ID = "thread_id";
+    public static final String ARG_POST_REPLIES = "post_replies";
 
-    public final static String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
+    public static final String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
 
     public static final String ACTION_QUOTE = "quote";
 
@@ -503,9 +503,9 @@ public final class PostListActivity
                     return Api.getThreadFavouritesAddBuilder(
                             getArguments().getCharSequence(ARG_THREAD_ID),
                             getArguments().getCharSequence(ARG_REMARK));
-                } else {
-                    throw new IllegalStateException("Loader ID can't be " + loaderId + ".");
                 }
+
+                return super.getRequestBody(loaderId);
             }
 
             @Override
@@ -523,9 +523,9 @@ public final class PostListActivity
                                     Api.URL_THREAD_FAVOURITES_ADD,
                                     ResultWrapper.class,
                                     getRequestBody(id));
-                } else {
-                    throw new ClassCastException("Loader ID can't be " + id + ".");
                 }
+
+                return super.onCreateLoader(id, args);
             }
 
             @Override
@@ -558,7 +558,7 @@ public final class PostListActivity
                             }
                         }
                     } else {
-                        throw new IllegalStateException("Loader ID can't be " + id + ".");
+                        super.onLoadFinished(loader, data);
                     }
                 }
 

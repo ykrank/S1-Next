@@ -29,9 +29,9 @@ public final class MyTagHandler implements Html.TagHandler {
 
     @Override
     public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
-        if (tag.equalsIgnoreCase("img")) {
+        if ("img".equalsIgnoreCase(tag)) {
             handleImg(opening, output);
-        } else if (tag.equalsIgnoreCase("strike")) {
+        } else if ("strike".equalsIgnoreCase(tag)) {
             handleStrike(opening, output);
         }
     }
@@ -75,10 +75,10 @@ public final class MyTagHandler implements Html.TagHandler {
         if (opening) {
             output.setSpan(new Strike(), len, len, Spannable.SPAN_MARK_MARK);
         } else {
-            Object obj = getLast(output, Strike.class);
-            int where = output.getSpanStart(obj);
+            Strike strike = getLastSpan(output, Strike.class);
+            int where = output.getSpanStart(strike);
 
-            output.removeSpan(obj);
+            output.removeSpan(strike);
 
             if (where != len) {
                 output.setSpan(new StrikethroughSpan(), where, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -87,15 +87,15 @@ public final class MyTagHandler implements Html.TagHandler {
     }
 
     /**
-     * Same to android.text.HtmlToSpannedConverter#getLast(android.text.Spanned, java.lang.Class)
+     * See to android.text.HtmlToSpannedConverter#getLast(android.text.Spanned, java.lang.Class)
      */
-    private static Object getLast(Spanned text, Class kind) {
-        Object[] objs = text.getSpans(0, text.length(), kind);
+    private static <T> T getLastSpan(Spanned text, Class<T> kind) {
+        T[] spans = text.getSpans(0, text.length(), kind);
 
-        if (objs.length == 0) {
+        if (spans.length == 0) {
             return null;
         } else {
-            return objs[objs.length - 1];
+            return spans[spans.length - 1];
         }
     }
 

@@ -33,11 +33,10 @@ import cl.monsoon.s1next.model.Post;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.widget.GlideImageGetter;
-import cl.monsoon.s1next.widget.MyTagHandler;
 import cl.monsoon.s1next.widget.MyMovementMethod;
+import cl.monsoon.s1next.widget.MyTagHandler;
 
-public final class PostListRecyclerAdapter
-        extends RecyclerAdapter<Post, RecyclerView.ViewHolder> {
+public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, RecyclerView.ViewHolder> {
 
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER_PROGRESS = Integer.MIN_VALUE;
@@ -132,7 +131,7 @@ public final class PostListRecyclerAdapter
 
         TextView countView = itemViewHolder.mCount;
         // there is no need to quote #1
-        if (post.getCount().equals("1")) {
+        if ("1".equals(post.getCount())) {
             countView.setText("#1");
         } else {
             Spannable spannable = new SpannableString("#" + post.getCount());

@@ -1,13 +1,11 @@
 package cl.monsoon.s1next.model;
 
-import android.support.annotation.NonNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Forum implements Comparable {
+public final class Forum {
 
     @JsonProperty("fid")
     private String id;
@@ -51,13 +49,5 @@ public final class Forum implements Comparable {
 
     public void setTodayPosts(int todayPosts) {
         this.todayPosts = todayPosts;
-    }
-
-    /**
-     * Sort by {@link #todayPosts}.
-     */
-    @Override
-    public int compareTo(@NonNull Object another) {
-        return getTodayPosts() - ((Forum) another).getTodayPosts();
     }
 }

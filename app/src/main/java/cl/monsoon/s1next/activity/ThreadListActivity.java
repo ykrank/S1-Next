@@ -25,9 +25,9 @@ public final class ThreadListActivity
         extends BaseActivity
         implements ThreadListPagerFragment.OnPagerInteractionCallback {
 
-    public final static String ARG_FORUM_TITLE = "forum_title";
-    public final static String ARG_FORUM_ID = "forum_id";
-    public final static String ARG_THREADS = "threads";
+    public static final String ARG_FORUM_TITLE = "forum_title";
+    public static final String ARG_FORUM_ID = "forum_id";
+    public static final String ARG_THREADS = "threads";
 
     private CharSequence mForumTitle;
     private CharSequence mForumId;

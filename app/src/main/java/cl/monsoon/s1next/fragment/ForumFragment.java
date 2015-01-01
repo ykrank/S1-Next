@@ -153,14 +153,13 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
      * Shows all forums when {@code position == 0} otherwise for each group.
      */
     @Override
-    public void OnToolbarDropDownItemSelected(int position) {
+    public void onToolbarDropDownItemSelected(int position) {
         if (position == 0) {
             mRecyclerAdapter.setDataSet(mForumGroupList.getForumList());
         } else {
             // the first position is "全部"
             // so position - 1 to correspond each group
-            mRecyclerAdapter.setDataSet(
-                    mForumGroupList.getForumGroupList().get(position - 1).getForumList());
+            mRecyclerAdapter.setDataSet(mForumGroupList.getData().get(position - 1).getForumList());
         }
         mRecyclerAdapter.notifyDataSetChanged();
     }

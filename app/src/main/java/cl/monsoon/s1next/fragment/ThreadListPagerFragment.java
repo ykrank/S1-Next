@@ -178,13 +178,13 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
             ThreadList threadList = asyncResult.data.unwrap();
 
             // when user has logged out and then has not permission to access this forum
-            if (threadList.getThreadList().size() == 0) {
+            if (threadList.getData().isEmpty()) {
                 String message = asyncResult.data.getResult().getMessage();
                 if (!TextUtils.isEmpty(message)) {
                     ToastUtil.showByText(message, Toast.LENGTH_SHORT);
                 }
             } else {
-                mRecyclerAdapter.setDataSet(threadList.getThreadList());
+                mRecyclerAdapter.setDataSet(threadList.getData());
                 mRecyclerAdapter.notifyDataSetChanged();
 
                 mOnPagerInteractionCallback.setTotalPages(

@@ -263,9 +263,9 @@ public final class ReplyFragment extends Fragment {
                                 Api.getPostRely(getArguments().getCharSequence(ARG_THREAD_ID)),
                                 ResultWrapper.class,
                                 getRequestBody(id));
-            } else {
-                throw new ClassCastException("Loader ID can't be " + id + ".");
             }
+
+            return super.onCreateLoader(id, args);
         }
 
         @Override
@@ -301,7 +301,7 @@ public final class ReplyFragment extends Fragment {
                         getActivity().finish();
                     }
                 } else {
-                    throw new IllegalStateException("Loader ID can't be " + id + ".");
+                    super.onLoadFinished(loader, asyncResult);
                 }
             }
 

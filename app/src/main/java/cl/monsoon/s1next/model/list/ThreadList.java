@@ -10,7 +10,7 @@ import cl.monsoon.s1next.model.Account;
 import cl.monsoon.s1next.model.Thread;
 
 /**
- * {@link #threadList}:
+ * {@link #data}:
  * <pre>
  * 帖子1
  * 帖子2
@@ -21,17 +21,17 @@ import cl.monsoon.s1next.model.Thread;
 public final class ThreadList extends Account {
 
     @JsonProperty("forum_threadlist")
-    private List<Thread> threadList;
+    private List<Thread> data;
 
     @JsonProperty("forum")
     private Thread.ThreadListInfo threadsInfo;
 
-    public List<Thread> getThreadList() {
-        return Collections.unmodifiableList(threadList);
+    public List<Thread> getData() {
+        return Collections.unmodifiableList(data);
     }
 
-    public void setThreadList(List<Thread> threadList) {
-        this.threadList = threadList;
+    public void setData(List<Thread> data) {
+        this.data = data;
     }
 
     public Thread.ThreadListInfo getThreadsInfo() {

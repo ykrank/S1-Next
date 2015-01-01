@@ -6,7 +6,7 @@ public interface ToolbarInterface {
 
     public static interface OnDropDownItemSelectedListener {
 
-        public void OnToolbarDropDownItemSelected(int position);
+        public void onToolbarDropDownItemSelected(int position);
     }
 
     public static interface SpinnerInteractionCallback {

@@ -183,10 +183,8 @@ public final class TouchImageView extends ImageView implements View.OnTouchListe
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            if (mScaleGestureDetector != null) {
-                if (mScaleGestureDetector.isInProgress()) {
-                    return false;
-                }
+            if (mScaleGestureDetector != null && mScaleGestureDetector.isInProgress()) {
+                return false;
             }
 
             postTranslate(-distanceX, -distanceY);
@@ -202,28 +200,28 @@ public final class TouchImageView extends ImageView implements View.OnTouchListe
      */
     private static class MatrixHelper extends RectF {
 
-        private static final float[] values = new float[9];
+        private static final float[] VALUES = new float[9];
 
         /**
          * Get drawable's scale.
          */
         public static float getScale(Matrix matrix) {
-            matrix.getValues(values);
+            matrix.getValues(VALUES);
 
-            return values[0];
+            return VALUES[0];
         }
 
         /**
          * Get drawable's bounds.
          */
         public static RectF getBounds(int srcWidth, int srcHeight, Matrix matrix) {
-            matrix.getValues(values);
+            matrix.getValues(VALUES);
 
             RectF rectF = new RectF();
-            rectF.left = values[2];
-            rectF.top = values[5];
-            rectF.right = rectF.left + srcWidth * values[0];
-            rectF.bottom = rectF.top + srcHeight * values[0];
+            rectF.left = VALUES[2];
+            rectF.top = VALUES[5];
+            rectF.right = rectF.left + srcWidth * VALUES[0];
+            rectF.bottom = rectF.top + srcHeight * VALUES[0];
 
             return rectF;
         }

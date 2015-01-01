@@ -51,6 +51,10 @@ public final class Api {
     private static final String URL_BROWSER_THREAD_LIST = prefix("forum-%s-%d.html");
     private static final String URL_BROWSER_POST_LIST = prefix("thread-%s-%d-1.html");
 
+    private Api() {
+
+    }
+
     private static String prefix(String suffix) {
         return URL_S1 + suffix;
     }
@@ -96,6 +100,11 @@ public final class Api {
         return formatUrlAvatar(URL_USER_AVATAR_MEDIUM, userId);
     }
 
+    /**
+     * Example:
+     * URL: http://bbs.saraba1st.com/2b/uc_server/data/avatar/%s_avatar_middle.jpg
+     * User id: 123456 -> 000123456 -> 000/12/34/56 -> http://bbs.saraba1st.com/2b/uc_server/data/avatar/000/12/34/56_avatar_middle.jpg
+     */
     private static String formatUrlAvatar(String url, String userId) {
         String s = String.format("%09d", Integer.parseInt(userId));
 
@@ -126,42 +135,49 @@ public final class Api {
     }
 
     public static RequestBody getThreadFavouritesAddBuilder(CharSequence threadId, CharSequence remark) {
-        if (User.getAuthenticityToken() == null) {
-            throw new IllegalStateException("AuthenticityToken must not be null.");
-        }
-
         return
-                new FormEncodingBuilder()
+                MyFormEncodingBuilder.newInstance()
                         .add("id", threadId.toString())
                         .add("description", remark.toString())
-                        .add("formhash", User.getAuthenticityToken())
                         .build();
     }
 
     public static RequestBody getReplyPostBuilder(String reply) {
-        if (User.getAuthenticityToken() == null) {
-            throw new IllegalStateException("AuthenticityToken must not be null.");
-        }
-
         return
-                new FormEncodingBuilder()
+                MyFormEncodingBuilder.newInstance()
                         .add("message", reply)
-                        .add("formhash", User.getAuthenticityToken())
                         .build();
     }
 
     public static RequestBody getQuotePostBuilder(Quote quote, String reply) {
-        if (User.getAuthenticityToken() == null) {
-            throw new IllegalStateException("AuthenticityToken must not be null.");
-        }
-
         return
-                new FormEncodingBuilder()
+                MyFormEncodingBuilder.newInstance()
                         .add("noticeauthor", quote.getEncodedUserId())
                         .add("noticetrimstr", quote.getQuoteMessage())
                         .add("noticeauthormsg", StringHelper.Util.ellipsize(reply, 100))
                         .add("message", reply)
-                        .add("formhash", User.getAuthenticityToken())
                         .build();
+    }
+
+    private static class MyFormEncodingBuilder {
+
+        private MyFormEncodingBuilder() {
+
+        }
+
+        private static FormEncodingBuilder newInstance() {
+            return
+                    new FormEncodingBuilder()
+                            .add("formhash", getAuthenticityToken());
+        }
+
+
+        private static String getAuthenticityToken() {
+            if (User.getAuthenticityToken() == null) {
+                throw new IllegalStateException("AuthenticityToken must not be null.");
+            }
+
+            return User.getAuthenticityToken();
+        }
     }
 }

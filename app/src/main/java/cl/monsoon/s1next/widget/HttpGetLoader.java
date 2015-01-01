@@ -75,10 +75,8 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
 
     @Override
     public void deliverResult(AsyncResult<D> result) {
-        if (isReset()) {
-            if (result != null) {
-                onReleaseResources();
-            }
+        if (isReset() && result != null) {
+            onReleaseResources();
         }
 
         mAsyncResult = result;

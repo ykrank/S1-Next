@@ -16,6 +16,10 @@ public final class ToastUtil {
 
     }
 
+    private ToastUtil() {
+
+    }
+
     public static void showByText(CharSequence text, @Duration int duration) {
         Toast.makeText(MyApplication.getContext(), text, duration).show();
     }
