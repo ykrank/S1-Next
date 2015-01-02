@@ -24,7 +24,6 @@ import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
-import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
@@ -59,8 +58,6 @@ public final class LoginFragment extends Fragment {
 
         mUsernameView = (EditText) view.findViewById(R.id.username);
         mPasswordView = (EditText) view.findViewById(R.id.password);
-        Config.updateTextSize(mUsernameView);
-        Config.updateTextSize(mPasswordView);
 
         // called when an ime action is performed
         // not working in some manufacturers
@@ -73,7 +70,6 @@ public final class LoginFragment extends Fragment {
         });
 
         Button loginView = (Button) view.findViewById(R.id.login);
-        Config.updateTextSize(loginView);
         loginView.setOnClickListener(v -> prepareLogin());
     }
 

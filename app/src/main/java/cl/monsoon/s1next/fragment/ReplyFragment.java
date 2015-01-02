@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.okhttp.RequestBody;
@@ -24,10 +25,10 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Quote;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
-import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ToastUtil;
+import cl.monsoon.s1next.util.ViewHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.HttpPostLoader;
@@ -85,8 +86,8 @@ public final class ReplyFragment extends Fragment {
         mQuotePostId = getArguments().getCharSequence(ARG_QUOTE_POST_ID);
 
         mReplyView = (EditText) view.findViewById(R.id.reply);
-        Config.updateTextSize(mReplyView);
-        Config.changeTextColorWhenS1Theme(mReplyView);
+        ViewHelper.updateTextSize(new TextView[]{mReplyView});
+        ViewHelper.updateTextColorWhenS1Theme(new TextView[]{mReplyView});
         mReplyView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

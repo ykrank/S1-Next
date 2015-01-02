@@ -16,6 +16,7 @@ import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ColorUtil;
 import cl.monsoon.s1next.util.StringHelper;
+import cl.monsoon.s1next.util.ViewHelper;
 
 /**
  * Similar to {@see cl.monsoon.s1next.adapter.ForumListRecyclerAdapter}.
@@ -90,8 +91,8 @@ public final class ThreadListRecyclerAdapter
             super(itemView);
 
             mTextView = (TextView) itemView;
-            Config.updateTextSize(mTextView);
-            Config.changeTextColorWhenS1Theme(mTextView);
+            ViewHelper.updateTextSize(new TextView[]{mTextView});
+            ViewHelper.updateTextColorWhenS1Theme(new TextView[]{mTextView});
 
             mDefaultTextViewColor = mTextView.getCurrentTextColor();
             mDisabledTextViewColor =

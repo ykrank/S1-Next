@@ -371,7 +371,6 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
                 new ThemeChangeDialog().show(getFragmentManager(), ThemeChangeDialog.TAG));
 
         mDrawerUsernameView = (TextView) mDrawer.findViewById(R.id.drawer_username);
-        Config.updateTextSize(mDrawerUsernameView);
 
         // Show default avatar and login prompt if user hasn't logged in,
         // else show user's avatar and username.
@@ -383,7 +382,6 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
 
         // add settings item
         TextView settingsView = (TextView) mDrawer.findViewById(R.id.settings);
-        Config.updateTextSize(settingsView);
         settingsView.setText(getText(R.string.settings));
 
         // set up settings icon

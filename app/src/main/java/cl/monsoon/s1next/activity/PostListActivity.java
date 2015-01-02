@@ -270,7 +270,6 @@ public final class PostListActivity
         seekbar.setMax(mTotalPages - 1);
 
         EditText valueView = (EditText) view.findViewById(R.id.value);
-        Config.updateTextSize(valueView);
         valueView.setText(String.valueOf(mSeekBarProgress + 1));
         valueView.setEms(String.valueOf(mTotalPages).length());
         // set EditText range filter
@@ -423,8 +422,6 @@ public final class PostListActivity
 
         private static final String TAG = "thread_favourites_add_dialog";
 
-        private EditText mRemarkView;
-
         public static ThreadFavouritesAddDialogFragment newInstance(CharSequence threadId) {
             ThreadFavouritesAddDialogFragment fragment = new ThreadFavouritesAddDialogFragment();
 
@@ -442,8 +439,6 @@ public final class PostListActivity
                             R.layout.dialog_favourites_add,
                             (ViewGroup) getActivity().findViewById(R.id.drawer_layout),
                             false);
-            mRemarkView = (EditText) view.findViewById(R.id.remark);
-            Config.updateTextSize(mRemarkView);
 
             AlertDialog alertDialog =
                     new AlertDialog.Builder(getActivity())
@@ -457,7 +452,8 @@ public final class PostListActivity
             alertDialog.setOnShowListener(dialog ->
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v ->
                             LoaderDialogFragment.newInstance(
-                                    getArguments().getCharSequence(ARG_THREAD_ID), mRemarkView.getText())
+                                    getArguments().getCharSequence(ARG_THREAD_ID),
+                                    ((EditText) view.findViewById(R.id.remark)).getText())
                                     .show(getFragmentManager(), LoaderDialogFragment.TAG)));
 
             return alertDialog;

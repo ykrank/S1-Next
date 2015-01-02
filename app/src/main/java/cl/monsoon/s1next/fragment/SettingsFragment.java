@@ -74,7 +74,7 @@ public final class SettingsFragment extends PreferenceFragment implements Shared
                 break;
             // change font size
             case PREF_KEY_FONT_SIZE:
-                Config.setTextSize(sharedPreferences);
+                Config.setTextScale(sharedPreferences);
                 getActivity().sendBroadcast(new Intent(ACTION_CHANGE_FONT_SIZE));
 
                 break;

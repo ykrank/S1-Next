@@ -43,11 +43,9 @@ public final class MyApplication extends Application {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        // set theme
+        // initiate the config depends on settings
         Config.setCurrentTheme(sharedPreferences);
-        // set current font size
-        Config.setTextSize(sharedPreferences);
-        // init download strategy
+        Config.setTextScale(sharedPreferences);
         Config.setAvatarsDownloadStrategy(sharedPreferences);
         Config.setImagesDownloadStrategy(sharedPreferences);
 

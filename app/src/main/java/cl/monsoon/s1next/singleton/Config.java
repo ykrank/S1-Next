@@ -3,8 +3,6 @@ package cl.monsoon.s1next.singleton;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.support.annotation.ColorRes;
-import android.util.TypedValue;
-import android.widget.TextView;
 
 import cl.monsoon.s1next.MyApplication;
 import cl.monsoon.s1next.R;
@@ -35,7 +33,7 @@ public enum Config {
 
     private volatile int currentTheme;
     private volatile int colorAccent;
-    private volatile float textSize;
+    private volatile float textScale;
     private volatile boolean wifi;
     private volatile DownloadStrategy avatarsDownloadStrategy;
     private volatile DownloadStrategy imagesDownloadStrategy;
@@ -72,14 +70,6 @@ public enum Config {
         }
     }
 
-    public static void changeTextColorWhenS1Theme(TextView textView) {
-        if (INSTANCE.currentTheme == LIGHT_THEME_S1) {
-            textView.setTextColor(
-                    MyApplication.getContext()
-                            .getResources().getColor(R.color.s1_theme_text_color_primary_87));
-        }
-    }
-
     @ColorRes
     public static int getColorAccent() {
         return INSTANCE.colorAccent;
@@ -103,28 +93,18 @@ public enum Config {
         }
     }
 
-    private static float getTextSize() {
-        return INSTANCE.textSize;
+    public static float getTextScale() {
+        return INSTANCE.textScale;
     }
 
-    public static void setTextSize(SharedPreferences sharedPreferences) {
+    public static void setTextScale(SharedPreferences sharedPreferences) {
         String value =
                 sharedPreferences.getString(
                         SettingsFragment.PREF_KEY_FONT_SIZE,
                         MyApplication.getContext().
                                 getString(R.string.pref_font_size_default_value));
 
-        INSTANCE.textSize = FontSize.fromString(value).getSize();
-    }
-
-    /**
-     * Update TextView's font size depends on
-     * {@link cl.monsoon.s1next.singleton.Config#textSize} (which same to Settings).
-     *
-     * @param textView works for {@link android.widget.EditText} and {@link android.widget.Button}.
-     */
-    public static void updateTextSize(TextView textView) {
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textView.getTextSize() * Config.getTextSize());
+        INSTANCE.textScale = TextScale.fromString(value).getSize();
     }
 
     public static void setWifi(boolean wifi) {
@@ -175,14 +155,14 @@ public enum Config {
                         || downloadStrategy == DownloadStrategy.ALWAYS;
     }
 
-    public static enum FontSize {
+    public static enum TextScale {
         VERY_SMALL(0.8f), SMALL(0.9f), MEDIUM(1f), LARGE(1.1f), VERY_LARGE(1.2f);
 
-        private static final FontSize[] VALUES = FontSize.values();
+        private static final TextScale[] VALUES = TextScale.values();
 
         private final float size;
 
-        FontSize(float size) {
+        TextScale(float size) {
             this.size = size;
         }
 
@@ -190,7 +170,7 @@ public enum Config {
             return size;
         }
 
-        public static FontSize fromString(String value) {
+        public static TextScale fromString(String value) {
             return VALUES[Integer.parseInt(value)];
         }
     }
