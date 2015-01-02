@@ -55,9 +55,8 @@
             android:title="@string/pref_open_source_licenses"/>
 
         <Preference
-            android:key="pref_version"
+            android:key="pref_key_version"
             android:persistent="false"
-            android:summary="@string/pref_version_summary"
             android:title="@string/pref_version"/>
 
     </PreferenceCategory>

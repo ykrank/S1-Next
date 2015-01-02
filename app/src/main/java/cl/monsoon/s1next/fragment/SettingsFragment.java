@@ -14,6 +14,7 @@ import android.webkit.WebView;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import cl.monsoon.s1next.BuildConfig;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.singleton.Config;
 
@@ -34,6 +35,7 @@ public final class SettingsFragment extends PreferenceFragment implements Shared
     public static final String ACTION_CHANGE_FONT_SIZE = "change_font_size";
 
     private static final String PREF_KEY_OPEN_SOURCE_LICENSES = "pref_key_open_source_licenses";
+    private static final String PREF_KEY_VERSION = "pref_key_version";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,9 @@ public final class SettingsFragment extends PreferenceFragment implements Shared
         addPreferencesFromResource(R.xml.preferences);
 
         findPreference(PREF_KEY_OPEN_SOURCE_LICENSES).setOnPreferenceClickListener(this);
+
+        findPreference(PREF_KEY_VERSION).setSummary(
+                getResources().getString(R.string.pref_version_summary, BuildConfig.VERSION_NAME));
     }
 
     @Override

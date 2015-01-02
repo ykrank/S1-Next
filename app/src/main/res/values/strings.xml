@@ -82,8 +82,7 @@
     <string name="pref_open_source_licenses">Open source licenses</string>
     <string name="pref_open_source_licenses_summary">License details for open source software</string>
     <string name="pref_version">Build Version</string>
-    <!-- TODO: Update version code when bump version -->
-    <string name="pref_version_summary">Version: 0.2.0</string>
+    <string name="pref_version_summary">v%1$s</string>
 
     <!-- array -->
     <string name="pref_theme_entries_1">Default</string>
