@@ -216,6 +216,13 @@ public final class PostListActivity
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.menu_favourites_add).setEnabled(User.isLoggedIn());
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // show SeekBar to let user to flip page
@@ -375,7 +382,7 @@ public final class PostListActivity
 
     void startReplyActivity(@Nullable CharSequence quotePostId, @Nullable CharSequence quotePostCount) {
         // show LoginPromptDialog if user hasn't logged in.
-        if (TextUtils.isEmpty(User.getName())) {
+        if (!User.isLoggedIn()) {
             new LoginPromptDialog().show(getFragmentManager(), LoginPromptDialog.TAG);
 
             return;

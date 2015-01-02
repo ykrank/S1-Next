@@ -21,7 +21,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.MenuItem;
@@ -374,10 +373,10 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
 
         // Show default avatar and login prompt if user hasn't logged in,
         // else show user's avatar and username.
-        if (TextUtils.isEmpty(User.getName())) {
-            setupDrawerLoginPrompt();
-        } else {
+        if (User.isLoggedIn()) {
             setupDrawerUserView();
+        } else {
+            setupDrawerLoginPrompt();
         }
 
         // add settings item

@@ -1,6 +1,7 @@
 package cl.monsoon.s1next.singleton;
 
 import android.content.Intent;
+import android.text.TextUtils;
 
 import cl.monsoon.s1next.MyApplication;
 
@@ -48,6 +49,10 @@ public enum User {
 
     public static void setPermission(int permission) {
         INSTANCE.permission = permission;
+    }
+
+    public static boolean isLoggedIn() {
+        return !TextUtils.isEmpty(INSTANCE.name);
     }
 
     public static void clear() {

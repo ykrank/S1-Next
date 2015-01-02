@@ -33,15 +33,15 @@ public class Account {
     public void setUsername(String username) {
         this.username = username;
 
-        final boolean isUserExisted = !TextUtils.isEmpty(User.getName());
+        final boolean isUserLoggedIn = User.isLoggedIn();
         if (TextUtils.isEmpty(username)) {
-            if (isUserExisted) {
+            if (isUserLoggedIn) {
                 User.setName(null);
                 // user's cookie has expired
                 User.sendLogoutOrExpirationBroadcast();
             }
         } else {
-            if (!isUserExisted) {
+            if (!isUserLoggedIn) {
                 User.setName(username);
 
                 // we should confirm both username and uid are exist
