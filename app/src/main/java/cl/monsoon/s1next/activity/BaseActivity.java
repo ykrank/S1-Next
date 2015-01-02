@@ -208,8 +208,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
     void setupFloatingActionButton(@DrawableRes int resId) {
         mFloatingActionButton = (FloatingActionButton) findViewById(R.id.floating_action_button);
         // subclass need to implement android.view.View.OnClickListener
-        mFloatingActionButton.setOnClickListener(
-                ObjectUtil.cast(this, View.OnClickListener.class));
+        mFloatingActionButton.setOnClickListener(ObjectUtil.cast(this, View.OnClickListener.class));
         mFloatingActionButton.setImageResource(resId);
         mFloatingActionButton.setVisibility(View.VISIBLE);
     }
@@ -522,8 +521,7 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
                                     (dialog, which) ->
                                             ObjectUtil.cast(
                                                     getActivity(),
-                                                    User.OnLogoutListener.class
-                                            ).onLogout())
+                                                    User.OnLogoutListener.class).onLogout())
                             .setNegativeButton(
                                     android.R.string.cancel, null)
                             .create();

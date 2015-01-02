@@ -555,8 +555,9 @@ public final class PostListActivity
                                             .findFragmentByTag(ThreadFavouritesAddDialogFragment.TAG);
                             if (fragment != null) {
                                 new Handler().post(() ->
-                                                ObjectUtil.cast(fragment, ThreadFavouritesAddDialogFragment.class)
-                                                        .dismiss()
+                                                ObjectUtil.cast(
+                                                        fragment,
+                                                        ThreadFavouritesAddDialogFragment.class).dismiss()
                                 );
                             }
                         }

@@ -287,7 +287,9 @@ public final class ReplyFragment extends Fragment {
                     return;
                 } else if (id == ID_LOADER_GET_QUOTE_EXTRA_INFO) {
                     mQuote = ObjectUtil.cast(asyncResult.data, Quote.class);
-                    ObjectUtil.cast(getActivity(), ReplyFragment.class).mQuote = mQuote;
+                    ObjectUtil.cast(
+                            getFragmentManager().findFragmentByTag(ReplyFragment.TAG),
+                            ReplyFragment.class).mQuote = mQuote;
 
                     getLoaderManager().initLoader(ID_LOADER_POST_QUOTE, null, this);
 

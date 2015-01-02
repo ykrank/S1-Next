@@ -42,8 +42,7 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
         // else its host is Fragment
         if (getTag() == null) {
             mAsyncTaskCallback =
-                    ObjectUtil.uncheckedCast(
-                            ObjectUtil.cast(activity, Callback.class));
+                    ObjectUtil.uncheckedCast(ObjectUtil.cast(activity, Callback.class));
         } else {
             String hostFragmentTag = getTag().substring(TAG_PREFIX.length());
             Fragment fragment = getFragmentManager().findFragmentByTag(hostFragmentTag);

@@ -184,8 +184,9 @@ public abstract class BaseFragment<D extends Extractable>
     }
 
     void enableToolbarAndFabAutoHideEffect(MyRecyclerView recyclerView, @Nullable RecyclerView.OnScrollListener onScrollListener) {
-        ObjectUtil.cast(getActivity(), BaseActivity.class)
-                .enableToolbarAndFabAutoHideEffect(recyclerView, onScrollListener);
+        ObjectUtil.cast(
+                getActivity(),
+                BaseActivity.class).enableToolbarAndFabAutoHideEffect(recyclerView, onScrollListener);
     }
 
     boolean isRefreshing() {
