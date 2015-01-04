@@ -14,6 +14,6 @@ public interface ToolbarInterface {
         /**
          * Set up ToolBar's drop down items.
          */
-        public void setupToolbarDropDown(List<? extends CharSequence> dropDownItem);
+        public void setupToolbarDropDown(List<String> dropDownItem);
     }
 }

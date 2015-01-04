@@ -23,17 +23,23 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.melnykov.fab.FloatingActionButton;
+
+import java.util.List;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.MyApplication;
@@ -47,12 +53,33 @@ import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.widget.MyRecyclerView;
 
 /**
- * A base Activity which includes the toolbar, navigation drawer, login.
+ * A base Activity which includes the toolbar tweaks,
+ * drop-down navigation, navigation drawer amongst others.
  * Also change theme depends on settings.
+ * <p>
+ * This base activity Implement the required
+ * {@link android.widget.AdapterView.OnItemSelectedListener}
+ * interface for Spinner to switch between views.
  */
-public abstract class BaseActivity extends ActionBarActivity implements User.OnLogoutListener {
+public abstract class BaseActivity extends ActionBarActivity
+        implements User.OnLogoutListener,
+        AdapterView.OnItemSelectedListener,
+        ToolbarInterface.SpinnerInteractionCallback {
 
     private Toolbar mToolbar;
+
+    /**
+     * The serialization (saved instance state) Bundle key representing
+     * the position of the selected spinner item.
+     */
+    private static final String STATE_SPINNER_SELECTED_POSITION = "selected_position";
+
+    /**
+     * Store the selected Spinner position after restore save instance.
+     */
+    private int mSelectedPosition = 0;
+
+    private Spinner mSpinner;
 
     /**
      * We enable translucent system bars if API >= 19.
@@ -130,6 +157,17 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
             }
         };
         registerReceiver(mUserLoginStatusReceiver, intentFilter);
+
+        if (savedInstanceState != null) {
+            mSelectedPosition = savedInstanceState.getInt(STATE_SPINNER_SELECTED_POSITION);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(STATE_SPINNER_SELECTED_POSITION, mSelectedPosition);
     }
 
     @Override
@@ -203,6 +241,59 @@ public abstract class BaseActivity extends ActionBarActivity implements User.OnL
                 setSupportActionBar(mToolbar);
             }
         }
+    }
+
+    /**
+     * Implement {@link android.widget.AdapterView.OnItemSelectedListener}.
+     */
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        mSelectedPosition = position;
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    /**
+     * Implement {@link ToolbarInterface.SpinnerInteractionCallback}.
+     */
+    @Override
+    public void setupToolbarDropDown(List<String> dropDownItemList) {
+        if (mSpinner == null) {
+            setTitle(null);
+
+            // add Spinner (drop down) to Toolbar
+            LayoutInflater.from(this).inflate(R.layout.toolbar_spinner, getToolbar(), true);
+            //noinspection ConstantConditions
+            mSpinner = (Spinner) getToolbar().findViewById(R.id.spinner);
+
+            // set Listener to switch between views
+            mSpinner.setOnItemSelectedListener(this);
+
+            // We disable clickable in Spinner
+            // and let its parents LinearLayout to handle
+            // click event in order to increase clickable area.
+            View spinnerView = getToolbar().findViewById(R.id.toolbar_layout);
+            spinnerView.setOnClickListener(v -> mSpinner.performClick());
+        }
+
+        mSpinner.setAdapter(getSpinnerAdapter(dropDownItemList));
+        // invalid index when user's login status has changed
+        if (mSpinner.getAdapter().getCount() - 1 < mSelectedPosition) {
+            mSpinner.setSelection(0);
+        } else {
+            mSpinner.setSelection(mSelectedPosition);
+        }
+    }
+
+    ArrayAdapter getSpinnerAdapter(List<String> dropDownItemList) {
+        ArrayAdapter arrayAdapter =
+                new ArrayAdapter<>(this, R.layout.toolbar_spinner_item, dropDownItemList);
+        arrayAdapter.setDropDownViewResource(R.layout.toolbar_spinner_dropdown_item);
+
+        return arrayAdapter;
     }
 
     void setupFloatingActionButton(@DrawableRes int resId) {
