@@ -340,7 +340,7 @@ public abstract class BaseActivity extends ActionBarActivity
         });
     }
 
-    void showOrHideToolbarAndFab(boolean show) {
+    public void showOrHideToolbarAndFab(boolean show) {
         if (show == mIsToolbarShown) {
             return;
         }

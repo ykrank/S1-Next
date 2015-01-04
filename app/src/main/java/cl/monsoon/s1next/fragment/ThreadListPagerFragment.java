@@ -129,7 +129,9 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        mOnPagerInteractionCallback = ObjectUtil.cast(activity, OnPagerInteractionCallback.class);
+        mOnPagerInteractionCallback =
+                ObjectUtil.cast(getFragmentManager().findFragmentByTag(
+                        ThreadListFragment.TAG), OnPagerInteractionCallback.class);
     }
 
     @Override

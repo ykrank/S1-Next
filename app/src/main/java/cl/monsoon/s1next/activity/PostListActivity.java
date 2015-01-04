@@ -51,8 +51,8 @@ import cl.monsoon.s1next.widget.HttpPostLoader;
 import cl.monsoon.s1next.widget.InputFilterRange;
 
 /**
- * An Activity representing a list of posts.
- * Similar to {@see ThreadListActivity}
+ * An Activity which includes {@link android.support.v4.view.ViewPager}
+ * to represent each page of post lists.
  */
 public final class PostListActivity
         extends BaseActivity
@@ -120,7 +120,7 @@ public final class PostListActivity
         setTotalPages(getIntent().getIntExtra(ARG_POST_REPLIES, 1));
 
         FrameLayout container = (FrameLayout) findViewById(R.id.frame_layout);
-        View.inflate(this, R.layout.activity_screen_slide, container);
+        View.inflate(this, R.layout.screen_slide, container);
 
         setupFloatingActionButton(R.drawable.ic_menu_comment_white_24dp);
 
