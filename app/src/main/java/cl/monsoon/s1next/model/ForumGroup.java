@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("UnusedDeclaration")
@@ -29,7 +28,7 @@ public final class ForumGroup {
     }
 
     public List<Integer> getForumIds() {
-        return Collections.unmodifiableList(forumIds);
+        return forumIds;
     }
 
     public void setForumIds(List<Integer> forumIDs) {
@@ -37,7 +36,7 @@ public final class ForumGroup {
     }
 
     public List<Forum> getForumList() {
-        return Collections.unmodifiableList(forumList);
+        return forumList;
     }
 
     public void setForumList(List<Forum> forumList) {

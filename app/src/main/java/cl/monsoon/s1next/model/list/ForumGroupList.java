@@ -90,14 +90,14 @@ public final class ForumGroupList extends Account {
     }
 
     public List<Forum> getForumList() {
-        return Collections.unmodifiableList(forumList);
+        return forumList;
     }
 
     public List<String> getForumGroupNameList() {
-        return Collections.unmodifiableList(forumGroupNameList);
+        return forumGroupNameList;
     }
 
     public List<ForumGroup> getData() {
-        return Collections.unmodifiableList(data);
+        return data;
     }
 }

@@ -3,7 +3,6 @@ package cl.monsoon.s1next.model.list;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Collections;
 import java.util.List;
 
 import cl.monsoon.s1next.model.Account;
@@ -27,7 +26,7 @@ public final class ThreadList extends Account {
     private Thread.ThreadListInfo threadsInfo;
 
     public List<Thread> getData() {
-        return Collections.unmodifiableList(data);
+        return data;
     }
 
     public void setData(List<Thread> data) {
