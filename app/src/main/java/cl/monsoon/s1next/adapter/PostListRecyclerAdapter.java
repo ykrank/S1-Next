@@ -153,12 +153,8 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         }
 
         String url;
-        Post.AttachmentWrapper attachmentWrapper = post.getAttachmentWrapper();
-        // whether this post has attachment images
-        if (attachmentWrapper != null) {
-            Map<String, Post.Attachment> attachmentMap =
-                    post.getAttachmentWrapper().getAttachmentMap();
-
+        Map<String, Post.Attachment> attachmentMap = post.getAttachmentMap();
+        if (attachmentMap != null) {
             for (Map.Entry<String, Post.Attachment> entry : attachmentMap.entrySet()) {
                 Post.Attachment attachment = entry.getValue();
                 url = attachment.getUrl();

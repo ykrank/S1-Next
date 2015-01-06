@@ -2,7 +2,6 @@ package cl.monsoon.s1next.model;
 
 import android.graphics.Color;
 
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -36,7 +35,7 @@ public final class Post {
     private long time;
 
     @JsonProperty("attachments")
-    private AttachmentWrapper attachmentWrapper;
+    private Map<String, Attachment> attachmentMap;
 
     public Post() {
 
@@ -103,12 +102,8 @@ public final class Post {
         this.time = time * 1000;
     }
 
-    public AttachmentWrapper getAttachmentWrapper() {
-        return attachmentWrapper;
-    }
-
-    public void setAttachmentWrapper(AttachmentWrapper attachmentWrapper) {
-        this.attachmentWrapper = attachmentWrapper;
+    public Map<String, Attachment> getAttachmentMap() {
+        return attachmentMap;
     }
 
     public Post getPartForQuote() {
@@ -191,41 +186,6 @@ public final class Post {
         }
     }
 
-    /**
-     * Example:
-     * <pre>
-     * {
-     *   "reply": "[attach]13[\/attach]",
-     *   "attachments": {
-     *     "13": {
-     *       "attachment": "201410\/1\/1.png",
-     *        "url": "http:\/\/img.saraba1st.com\/attachments\/forum\/",
-     *      }
-     *   }
-     * }
-     * </pre>
-     * <p>
-     * So use {@code @JsonAnyGetter/@JsonAnySetter} to handle Unknown fields.
-     */
-    public static class AttachmentWrapper {
-
-        @JsonIgnore
-        private final Map<String, Attachment> attachmentMap = new HashMap<>();
-
-        public Map<String, Attachment> getAttachmentMap() {
-            return attachmentMap;
-        }
-
-        @JsonAnySetter
-        public void setAttachment(String name, Attachment value) {
-            attachmentMap.put(name, value);
-        }
-
-        public boolean hasAttachments() {
-            return !attachmentMap.isEmpty();
-        }
-    }
-
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Attachment {
 
@@ -235,8 +195,7 @@ public final class Post {
         @JsonCreator
         public Attachment(
                 @JsonProperty("url") String urlPrefix,
-                @JsonProperty("attachment") String urlSuffix
-        ) {
+                @JsonProperty("attachment") String urlSuffix) {
             this.url = urlPrefix + urlSuffix;
         }
 
