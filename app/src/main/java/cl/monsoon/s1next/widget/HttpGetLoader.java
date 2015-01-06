@@ -8,6 +8,8 @@ import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import org.apache.http.client.HttpResponseException;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -27,14 +29,17 @@ import cl.monsoon.s1next.singleton.MyOkHttpClient;
 public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncResult<D>> {
 
     final String mUrl;
+
     /**
      * Used for JSON mapper.
      */
     private final Class<D> mClass;
+
     /**
      * {@link Call} is the request that has been prepared for execution.
      */
     Call mCall;
+
     private AsyncResult<D> mAsyncResult;
 
     public HttpGetLoader(Context context, String url, Class<D> clazz) {
@@ -60,14 +65,23 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
     public AsyncResult<D> loadInBackground() {
         AsyncResult<D> asyncResult = new AsyncResult<>();
 
+        InputStream in = null;
         try {
             // get response body from Internet
-            InputStream in = request();
+            in = request();
 
             // JSON mapper
             asyncResult.data = MyObjectExtractor.readValue(in, mClass);
         } catch (IOException | RemoteException e) {
             asyncResult.exception = e;
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException ignored) {
+
+                }
+            }
         }
 
         return asyncResult;
@@ -109,7 +123,7 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
     /**
      * Synchronous get but the {@link HttpGetLoader} is asynchronism.
      */
-    InputStream request() throws IOException, RemoteException {
+    InputStream request() throws IOException {
         Request request = new Request.Builder()
                 .url(mUrl)
                 .build();
@@ -119,7 +133,8 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
         mCall = null;
 
         if (!response.isSuccessful()) {
-            throw new RemoteException("Unexpected code " + response + ".");
+            response.body().close();
+            throw new HttpResponseException(response.code(), response.toString());
         }
 
         return response.body().byteStream();

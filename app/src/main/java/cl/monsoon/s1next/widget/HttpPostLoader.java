@@ -1,11 +1,12 @@
 package cl.monsoon.s1next.widget;
 
 import android.content.Context;
-import android.os.RemoteException;
 
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+
+import org.apache.http.client.HttpResponseException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +33,7 @@ public final class HttpPostLoader<D extends Deserializable> extends HttpGetLoade
      * Synchronous post but the {@link HttpPostLoader} is asynchronism.
      */
     @Override
-    InputStream request() throws IOException, RemoteException {
+    InputStream request() throws IOException {
         Request request = new Request.Builder()
                 .url(mUrl)
                 .post(mRequestBody)
@@ -43,7 +44,8 @@ public final class HttpPostLoader<D extends Deserializable> extends HttpGetLoade
         mCall = null;
 
         if (!response.isSuccessful()) {
-            throw new RemoteException("Unexpected code " + response + ".");
+            response.body().close();
+            throw new HttpResponseException(response.code(), response.toString());
         }
 
         return response.body().byteStream();

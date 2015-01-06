@@ -9,6 +9,8 @@ import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import org.apache.http.client.HttpResponseException;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -115,14 +117,23 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
         protected AsyncResult<D> doInBackground(Void... params) {
             AsyncResult<D> result = new AsyncResult<>();
 
+            InputStream in = null;
             try {
                 // get response body from Internet
-                InputStream in = request();
+                in = request();
 
                 // JSON mapper
                 result.data = MyObjectExtractor.readValue(in, mClass);
             } catch (IOException | RemoteException e) {
                 result.exception = e;
+            } finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException ignored) {
+
+                    }
+                }
             }
 
             return result;
@@ -139,7 +150,7 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
          * {@link HttpGetRetainedFragment.AsyncHttpGetTask}
          * is asynchronism.
          */
-        private InputStream request() throws IOException, RemoteException {
+        private InputStream request() throws IOException {
             Request request = new Request.Builder()
                     .url(mUrl)
                     .build();
@@ -149,7 +160,8 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
             mCall = null;
 
             if (!response.isSuccessful()) {
-                throw new RemoteException("Unexpected code " + response + ".");
+                response.body().close();
+                throw new HttpResponseException(response.code(), response.toString());
             }
 
             return response.body().byteStream();
