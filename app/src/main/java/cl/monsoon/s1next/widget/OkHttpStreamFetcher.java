@@ -24,7 +24,7 @@ import cl.monsoon.s1next.R;
 final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 
     // see http://tools.ietf.org/html/rfc7231#section-6.1
-    // we need to cache these status codes by default
+    // we need to cache the responses with following status codes
     private static final List<Integer> CACHEABLE_STATUS_CODES =
             Arrays.asList(
                     200, 203, 204, 206,
@@ -53,8 +53,8 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
         mCall = null;
 
         // We need to provide InputStream (the default avatar placeholder)
-        // in order to cache some URLs whose status code is in CACHEABLE_STATUS_CODES.
-        // But we needn't provide InputStream when the status code is in [200..300),
+        // in order to cache some responses whose status code is in CACHEABLE_STATUS_CODES.
+        // But we needn't provide InputStream when response status code is in [200..300),
         // because we will get it (user avatar) from server.
         if (!response.isSuccessful()
                 && CACHEABLE_STATUS_CODES.contains(response.code())) {
