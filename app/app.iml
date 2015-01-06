@@ -100,7 +100,6 @@
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="glide-3.4.0" level="project" />
     <orderEntry type="library" exported="" name="okio-1.2.0" level="project" />
-    <orderEntry type="library" exported="" name="okhttp-integration-1.1.0" level="project" />
   </component>
 </module>
 

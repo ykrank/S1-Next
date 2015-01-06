@@ -45,7 +45,6 @@ dependencies {
 
     compile 'com.squareup.okhttp:okhttp:2.2.0'
 
-    compile 'com.github.bumptech.glide:okhttp-integration:1.1.0'
     compile 'com.github.bumptech.glide:glide:3.4.0'
 
     compile 'com.melnykov:floatingactionbutton:1.1.0'
