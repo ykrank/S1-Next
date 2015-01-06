@@ -261,7 +261,7 @@ public abstract class BaseActivity extends ActionBarActivity
      * Implement {@link ToolbarInterface.SpinnerInteractionCallback}.
      */
     @Override
-    public void setupToolbarDropDown(List<String> dropDownItemList) {
+    public void setupToolbarDropDown(List<? extends CharSequence> dropDownItemList) {
         if (mSpinner == null) {
             setTitle(null);
 
@@ -289,7 +289,7 @@ public abstract class BaseActivity extends ActionBarActivity
         }
     }
 
-    ArrayAdapter getSpinnerAdapter(List<String> dropDownItemList) {
+    ArrayAdapter getSpinnerAdapter(List<? extends CharSequence> dropDownItemList) {
         ArrayAdapter arrayAdapter =
                 new ArrayAdapter<>(this, R.layout.toolbar_spinner_item, dropDownItemList);
         arrayAdapter.setDropDownViewResource(R.layout.toolbar_spinner_dropdown_item);

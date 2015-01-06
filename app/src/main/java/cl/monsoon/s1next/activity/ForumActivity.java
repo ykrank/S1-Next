@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cl.monsoon.s1next.R;
@@ -50,11 +51,15 @@ public final class ForumActivity extends BaseActivity {
     }
 
     @Override
-    ArrayAdapter getSpinnerAdapter(List<String> dropDownItemList) {
+    ArrayAdapter getSpinnerAdapter(List<? extends CharSequence> dropDownItemList) {
+        // don't use dropDownItemList#add(int, E)
+        // otherwise we will have multiple "全部"
+        // if we invoke this method many times
+        List<CharSequence> list = new ArrayList<>(dropDownItemList);
         // the first drop-down item is "全部"
         // and other items fetched from S1
-        dropDownItemList.add(0, getResources().getString(R.string.toolbar_spinner_drop_down_forum_first_item));
+        list.add(0, getResources().getString(R.string.toolbar_spinner_drop_down_forum_first_item));
 
-        return super.getSpinnerAdapter(dropDownItemList);
+        return super.getSpinnerAdapter(list);
     }
 }
