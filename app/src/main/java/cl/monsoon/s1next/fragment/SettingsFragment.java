@@ -18,7 +18,8 @@ import cl.monsoon.s1next.BuildConfig;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.singleton.Config;
 
-public final class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
+public final class SettingsFragment extends PreferenceFragment
+        implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({PREF_KEY_FONT_SIZE, PREF_KEY_DOWNLOAD_AVATARS, PREF_KEY_DOWNLOAD_IMAGES})
@@ -92,8 +93,7 @@ public final class SettingsFragment extends PreferenceFragment implements Shared
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        new OpenSourceLicensesDialog().show(
-                getFragmentManager(), OpenSourceLicensesDialog.TAG);
+        new OpenSourceLicensesDialog().show(getFragmentManager(), OpenSourceLicensesDialog.TAG);
 
         return true;
     }
