@@ -2,9 +2,11 @@ package cl.monsoon.s1next.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 
 import cl.monsoon.s1next.R;
@@ -40,13 +42,14 @@ public final class ReplyActivity extends BaseActivity {
                                 getIntent().getStringExtra(ARG_QUOTE_POST_COUNT));
         setTitle(titlePrefix + getIntent().getCharSequenceExtra(ARG_THREAD_TITLE));
 
-        Fragment fragment = getFragmentManager().findFragmentByTag(ReplyFragment.TAG);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(ReplyFragment.TAG);
         if (fragment == null) {
             mReplyFragment =
                     ReplyFragment.newInstance(
                             getIntent().getCharSequenceExtra(ARG_THREAD_ID), quotePostId);
 
-            getFragmentManager().beginTransaction()
+            fragmentManager.beginTransaction()
                     .replace(R.id.frame_layout, mReplyFragment, ReplyFragment.TAG).commit();
         } else {
             mReplyFragment = ObjectUtil.cast(fragment, ReplyFragment.class);
@@ -61,7 +64,7 @@ public final class ReplyActivity extends BaseActivity {
         if (mReplyFragment.isReplyEmpty()) {
             super.onBackPressed();
         } else {
-            new BackPromptDialog().show(getFragmentManager(), BackPromptDialog.TAG);
+            new BackPromptDialog().show(getSupportFragmentManager(), BackPromptDialog.TAG);
         }
     }
 
@@ -69,6 +72,7 @@ public final class ReplyActivity extends BaseActivity {
 
         private static final String TAG = "back_prompt_dialog";
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 

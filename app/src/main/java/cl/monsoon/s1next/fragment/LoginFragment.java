@@ -1,11 +1,11 @@
 package cl.monsoon.s1next.fragment;
 
-import android.app.Fragment;
 import android.content.Intent;
-import android.content.Loader;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -133,7 +133,7 @@ public final class LoginFragment extends Fragment {
         } else {
             // start to log in
             LoginLoaderDialogFragment.newInstance(mUsernameView.getText(), mPasswordView.getText())
-                    .show(getFragmentManager(), LoginLoaderDialogFragment.TAG);
+                    .show(getChildFragmentManager(), LoginLoaderDialogFragment.TAG);
         }
     }
 

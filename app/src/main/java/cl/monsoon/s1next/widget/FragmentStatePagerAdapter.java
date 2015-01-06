@@ -16,12 +16,11 @@
 
 package cl.monsoon.s1next.widget;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v13.app.FragmentCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.View;
@@ -33,7 +32,7 @@ import java.util.ArrayList;
  * Adds tag to fragment in order to let {@link cl.monsoon.s1next.fragment.headless.HttpGetRetainedFragment}
  * to know its parent Fragment in ViewPager.
  * <p>
- * Forked from https://github.com/android/platform_frameworks_support/tree/62cf5e32ad0d24fffde4c0d0425aa12cd2b054a6/v13/java/android/support/v13/app/FragmentStatePagerAdapter.java
+ * Forked from https://github.com/android/platform_frameworks_support/blob/62cf5e32ad0d24fffde4c0d0425aa12cd2b054a6/v4/java/android/support/v4/app/FragmentStatePagerAdapter.java
  * Change-Id: I9197cb319a2b1bf070ab1fd8a7abbf9ee01de543
  */
 public abstract class FragmentStatePagerAdapter extends PagerAdapter {
@@ -42,9 +41,10 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
     private static final boolean DEBUG = false;
 
     private final FragmentManager mFragmentManager;
+    private FragmentTransaction mCurTransaction = null;
+
     private final ArrayList<Fragment.SavedState> mSavedState = new ArrayList<>();
     private final ArrayList<Fragment> mFragments = new ArrayList<>();
-    private FragmentTransaction mCurTransaction = null;
     private Fragment mCurrentPrimaryItem = null;
 
     public FragmentStatePagerAdapter(FragmentManager fm) {
@@ -90,8 +90,8 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
         while (mFragments.size() <= position) {
             mFragments.add(null);
         }
-        FragmentCompat.setMenuVisibility(fragment, false);
-        FragmentCompat.setUserVisibleHint(fragment, false);
+        fragment.setMenuVisibility(false);
+        fragment.setUserVisibleHint(false);
         mFragments.set(position, fragment);
 
         // here we did to add a tag to the Fragment!
@@ -128,12 +128,12 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
         Fragment fragment = (Fragment) object;
         if (fragment != mCurrentPrimaryItem) {
             if (mCurrentPrimaryItem != null) {
-                FragmentCompat.setMenuVisibility(mCurrentPrimaryItem, false);
-                FragmentCompat.setUserVisibleHint(mCurrentPrimaryItem, false);
+                mCurrentPrimaryItem.setMenuVisibility(false);
+                mCurrentPrimaryItem.setUserVisibleHint(false);
             }
             if (fragment != null) {
-                FragmentCompat.setMenuVisibility(fragment, true);
-                FragmentCompat.setUserVisibleHint(fragment, true);
+                fragment.setMenuVisibility(true);
+                fragment.setUserVisibleHint(true);
             }
             mCurrentPrimaryItem = fragment;
         }
@@ -197,7 +197,7 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
                         while (mFragments.size() <= index) {
                             mFragments.add(null);
                         }
-                        FragmentCompat.setMenuVisibility(f, false);
+                        f.setMenuVisibility(false);
                         mFragments.set(index, f);
                     } else {
                         Log.w(TAG, "Bad fragment at key " + key);

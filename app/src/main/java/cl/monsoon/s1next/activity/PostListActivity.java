@@ -2,18 +2,19 @@ package cl.monsoon.s1next.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.Loader;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
@@ -125,7 +126,7 @@ public final class PostListActivity
         setupFloatingActionButton(R.drawable.ic_menu_comment_white_24dp);
 
         mViewPager = (ViewPager) container.findViewById(R.id.pager);
-        mAdapter = new PostListPagerAdapter(getFragmentManager());
+        mAdapter = new PostListPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -232,7 +233,7 @@ public final class PostListActivity
                 return true;
             case R.id.menu_favourites_add:
                 ThreadFavouritesAddDialogFragment.newInstance(mThreadId)
-                        .show(getFragmentManager(), ThreadFavouritesAddDialogFragment.TAG);
+                        .show(getSupportFragmentManager(), ThreadFavouritesAddDialogFragment.TAG);
 
                 return true;
         }
@@ -383,7 +384,7 @@ public final class PostListActivity
     void startReplyActivity(@Nullable CharSequence quotePostId, @Nullable CharSequence quotePostCount) {
         // show LoginPromptDialog if user hasn't logged in.
         if (!User.isLoggedIn()) {
-            new LoginPromptDialog().show(getFragmentManager(), LoginPromptDialog.TAG);
+            new LoginPromptDialog().show(getSupportFragmentManager(), LoginPromptDialog.TAG);
 
             return;
         }
@@ -439,6 +440,7 @@ public final class PostListActivity
             return fragment;
         }
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             View view =
@@ -461,7 +463,7 @@ public final class PostListActivity
                             LoaderDialogFragment.newInstance(
                                     getArguments().getCharSequence(ARG_THREAD_ID),
                                     ((EditText) view.findViewById(R.id.remark)).getText())
-                                    .show(getFragmentManager(), LoaderDialogFragment.TAG)));
+                                    .show(getChildFragmentManager(), LoaderDialogFragment.TAG)));
 
             return alertDialog;
         }
@@ -550,16 +552,10 @@ public final class PostListActivity
 
                         if (result.getStatus().equals(STATUS_ADD_TO_FAVOURITES_SUCCESS)
                                 || result.getStatus().equals(STATUS_ADD_TO_FAVOURITES_REPEAT)) {
-                            Fragment fragment =
-                                    getFragmentManager()
-                                            .findFragmentByTag(ThreadFavouritesAddDialogFragment.TAG);
-                            if (fragment != null) {
-                                new Handler().post(() ->
-                                                ObjectUtil.cast(
-                                                        fragment,
-                                                        ThreadFavouritesAddDialogFragment.class).dismiss()
-                                );
-                            }
+                            new Handler().post(() ->
+                                    ObjectUtil.cast(
+                                            getParentFragment(),
+                                            ThreadFavouritesAddDialogFragment.class).dismiss());
                         }
                     } else {
                         super.onLoadFinished(loader, data);
@@ -580,6 +576,7 @@ public final class PostListActivity
 
         private static final String TAG = "login_prompt_dialog";
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 

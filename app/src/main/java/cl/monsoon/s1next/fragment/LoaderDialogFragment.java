@@ -1,13 +1,13 @@
 package cl.monsoon.s1next.fragment;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.LoaderManager;
 import android.app.ProgressDialog;
-import android.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 
 import com.squareup.okhttp.RequestBody;
 
@@ -18,9 +18,10 @@ import cl.monsoon.s1next.model.Extractable;
 import cl.monsoon.s1next.widget.AsyncResult;
 
 /**
- * Wrap {@link cl.monsoon.s1next.widget.HttpPostLoader} and {@link android.app.DialogFragment}.
+ * Wrap {@link cl.monsoon.s1next.widget.HttpPostLoader}and {@link android.support.v4.app.DialogFragment}.
  */
-public abstract class LoaderDialogFragment<D extends Extractable> extends DialogFragment
+public abstract class LoaderDialogFragment<D extends Extractable>
+        extends DialogFragment
         implements LoaderManager.LoaderCallbacks<AsyncResult<D>> {
 
     @Retention(RetentionPolicy.SOURCE)
@@ -48,6 +49,7 @@ public abstract class LoaderDialogFragment<D extends Extractable> extends Dialog
 
     private int mLoaderId = -1;
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (savedInstanceState != null) {

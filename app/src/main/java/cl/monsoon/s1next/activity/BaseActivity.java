@@ -2,7 +2,6 @@ package cl.monsoon.s1next.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +13,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -457,7 +458,7 @@ public abstract class BaseActivity extends ActionBarActivity
         mDrawerTopBackgroundView = mDrawer.findViewById(R.id.drawer_top_background);
         mDrawerUserAvatarView = (ImageView) mDrawer.findViewById(R.id.drawer_user_avatar);
         mDrawerUserAvatarView.setOnClickListener(v ->
-                new ThemeChangeDialog().show(getFragmentManager(), ThemeChangeDialog.TAG));
+                new ThemeChangeDialog().show(getSupportFragmentManager(), ThemeChangeDialog.TAG));
 
         mDrawerUsernameView = (TextView) mDrawer.findViewById(R.id.drawer_username);
 
@@ -536,7 +537,7 @@ public abstract class BaseActivity extends ActionBarActivity
         mDrawerUsernameView.setText(User.getName());
 
         mDrawerTopBackgroundView.setOnClickListener(v ->
-                new LogoutDialog().show(getFragmentManager(), LogoutDialog.TAG));
+                new LogoutDialog().show(getSupportFragmentManager(), LogoutDialog.TAG));
     }
 
     @Nullable
@@ -556,6 +557,7 @@ public abstract class BaseActivity extends ActionBarActivity
 
         private static final String TAG = "theme_change_dialog";
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             SharedPreferences sharedPreferences =
@@ -602,6 +604,7 @@ public abstract class BaseActivity extends ActionBarActivity
 
         private static final String TAG = "log_out_dialog";
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             return

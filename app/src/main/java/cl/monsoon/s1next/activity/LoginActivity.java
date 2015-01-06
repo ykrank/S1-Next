@@ -1,7 +1,7 @@
 package cl.monsoon.s1next.activity;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.LoginFragment;
@@ -19,7 +19,7 @@ public final class LoginActivity extends BaseActivity {
         if (savedInstanceState == null) {
             Fragment fragment = new LoginFragment();
 
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frame_layout, fragment, LoginFragment.TAG).commit();
         }
     }

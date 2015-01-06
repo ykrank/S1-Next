@@ -1,8 +1,8 @@
 package cl.monsoon.s1next.widget;
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.RemoteException;
+import android.support.v4.content.AsyncTaskLoader;
 
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Request;

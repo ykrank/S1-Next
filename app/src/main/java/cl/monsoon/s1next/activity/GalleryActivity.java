@@ -1,7 +1,7 @@
 package cl.monsoon.s1next.activity;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
@@ -35,7 +35,7 @@ public final class GalleryActivity extends ActionBarActivity {
         if (savedInstanceState == null) {
             Fragment fragment = GalleryFragment.newInstance(url);
 
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frame_layout, fragment, GalleryFragment.TAG).commit();
         }
     }

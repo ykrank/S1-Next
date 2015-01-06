@@ -1,10 +1,10 @@
 package cl.monsoon.s1next.fragment;
 
-import android.app.Fragment;
-import android.content.Loader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -135,7 +135,7 @@ public final class ReplyFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.menu_reply_post:
                 ReplyLoaderDialogFragment.newInstance(mThreadId, mQuotePostId, mQuote, mReplyView.getText())
-                        .show(getFragmentManager(), ReplyLoaderDialogFragment.TAG);
+                        .show(getChildFragmentManager(), ReplyLoaderDialogFragment.TAG);
 
                 return true;
         }
@@ -287,9 +287,7 @@ public final class ReplyFragment extends Fragment {
                     return;
                 } else if (id == ID_LOADER_GET_QUOTE_EXTRA_INFO) {
                     mQuote = ObjectUtil.cast(asyncResult.data, Quote.class);
-                    ObjectUtil.cast(
-                            getFragmentManager().findFragmentByTag(ReplyFragment.TAG),
-                            ReplyFragment.class).mQuote = mQuote;
+                    ObjectUtil.cast(getParentFragment(), ReplyFragment.class).mQuote = mQuote;
 
                     getLoaderManager().initLoader(ID_LOADER_POST_QUOTE, null, this);
 

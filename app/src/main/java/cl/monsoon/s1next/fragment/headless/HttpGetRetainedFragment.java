@@ -1,9 +1,9 @@
 package cl.monsoon.s1next.fragment.headless;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.RemoteException;
+import android.support.v4.app.Fragment;
 
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Request;

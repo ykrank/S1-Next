@@ -1,7 +1,7 @@
 package cl.monsoon.s1next.fragment.headless;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import cl.monsoon.s1next.model.Extractable;
 

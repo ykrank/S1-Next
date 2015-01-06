@@ -1,8 +1,8 @@
 package cl.monsoon.s1next.activity;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,7 +28,7 @@ public final class ForumActivity extends BaseActivity {
         enableWindowTranslucentStatus();
 
         Fragment fragment;
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null) {
             fragment = new ForumFragment();
 

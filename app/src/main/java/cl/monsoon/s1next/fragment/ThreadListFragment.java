@@ -1,9 +1,9 @@
 package cl.monsoon.s1next.fragment;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -70,6 +70,9 @@ public final class ThreadListFragment extends Fragment
         setTotalPages(getArguments().getInt(ARG_THREADS, 1));
 
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
+        // don't use getChildFragmentManager()
+        // because we can't retain Fragments (HttpGetRetainedFragment)
+        // that are nested in other fragments
         mAdapter = new ThreadListPagerAdapter(getFragmentManager());
         viewPager.setAdapter(mAdapter);
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -120,7 +123,6 @@ public final class ThreadListFragment extends Fragment
         public void destroyItem(ViewGroup container, int position, Object object) {
             // We do not reuse Fragment in ViewPager and its retained fragment.
             // May reuse these both later, but it's not cost-effective nowadays.
-            // See AbsHttpFragment#onActivityCreated(Bundle).
             ObjectUtil.cast(object, BaseFragment.class).destroyRetainedFragment();
 
             super.destroyItem(container, position, object);

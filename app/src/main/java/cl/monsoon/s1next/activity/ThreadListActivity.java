@@ -1,7 +1,7 @@
 package cl.monsoon.s1next.activity;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.ThreadListFragment;
@@ -26,7 +26,7 @@ public final class ThreadListActivity extends BaseActivity {
                     getIntent().getCharSequenceExtra(ARG_FORUM_ID),
                     getIntent().getIntExtra(ARG_THREADS, 1));
 
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frame_layout, fragment, ThreadListFragment.TAG).commit();
         }
     }
