@@ -31,7 +31,7 @@
     <string name="message_network_error">There was a network error</string>
     <string name="message_server_error">Couldn\'t communicate with the server, please try again later.</string>
 
-    <!-- login activity -->
+    <!-- login -->
     <string name="activity_label_login" translatable="false">@string/action_login</string>
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
@@ -40,25 +40,25 @@
 
     <string name="dialog_progress_message_login">Signing in…</string>
 
-    <!-- forum activity -->
+    <!-- forum -->
 
     <!-- Because other Spinner drop down items fetched from S1 is Chinese,
     so this string is Chinese for all locales. -->
     <string name="toolbar_spinner_drop_down_forum_first_item" translatable="false">全部</string>
 
-    <!-- thread activity -->
+    <!-- thread -->
 
     <!-- Because thread's title usually is chinese, so this string is Chinese for all locales. -->
     <string name="thread_activity_thread_permission" translatable="false">阅读权限</string>
 
-    <!-- post activity -->
+    <!-- post -->
     <string name="dialog_seekbar_title_page_flip">Go to…</string>
     <string name="dialog_title_favourites_add" translatable="false">@string/menu_favourites_add</string>
     <string name="dialog_progress_message_favourites_add">Adding…</string>
     <string name="prompt_remark">Remark</string>
     <string name="dialog_message_login_prompt">You can\'t reply without login, please sign in first.</string>
 
-    <!-- reply activity & fragment -->
+    <!-- reply -->
 
     <!-- Because thread's title usually is chinese, so this string is Chinese for all locales. -->
     <string name="reply_activity_title_prefix" translatable="false">"回复主题 - "</string>
