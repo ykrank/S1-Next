@@ -11,6 +11,7 @@
 
     <dimen name="drawer_avatar_margin_top">@dimen/item_padding</dimen>
     <dimen name="drawer_avatar_size">64dp</dimen>
+    <dimen name="drawer_avatar_border_width">3dp</dimen>
     <!-- 16dp (avatar margin top) + 64dp (avatar height) + 56dp (username) -->
     <dimen name="drawer_top_height">136dp</dimen>
 
