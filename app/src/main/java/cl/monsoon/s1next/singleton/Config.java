@@ -12,6 +12,10 @@ import cl.monsoon.s1next.util.ColorUtil;
 public enum Config {
     INSTANCE;
 
+    public static final int OKHTTP_CLIENT_CONNECT_TIMEOUT = 20;
+    public static final int OKHTTP_CLIENT_WRITE_TIMEOUT = 20;
+    public static final int OKHTTP_CLIENT_READ_TIMEOUT = 60;
+
     /**
      * Take care of Menu ~ open in browser ~
      * when these numbers are not default.

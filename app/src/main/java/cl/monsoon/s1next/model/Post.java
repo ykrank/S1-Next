@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -99,7 +100,7 @@ public final class Post {
      * Convert seconds to milliseconds.
      */
     public void setTime(long time) {
-        this.time = time * 1000;
+        this.time = TimeUnit.SECONDS.toMillis(time);
     }
 
     public Map<String, Attachment> getAttachmentMap() {

@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
@@ -111,7 +112,7 @@ public final class BezelImageView extends ImageView {
 
         // other initialization
         mBlackPaint = new Paint();
-        mBlackPaint.setColor(0xff000000);
+        mBlackPaint.setColor(Color.BLACK);
 
         mMaskedPaint = new Paint();
         mMaskedPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));

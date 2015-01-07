@@ -23,9 +23,9 @@ public enum MyOkHttpClient {
     private MyOkHttpClient() {
         okHttpClient = new OkHttpClient();
 
-        okHttpClient.setConnectTimeout(20, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(20, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
+        okHttpClient.setConnectTimeout(Config.OKHTTP_CLIENT_CONNECT_TIMEOUT, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(Config.OKHTTP_CLIENT_WRITE_TIMEOUT, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(Config.OKHTTP_CLIENT_READ_TIMEOUT, TimeUnit.SECONDS);
 
         cookieManager = new CookieManager(
                 new PersistentHttpCookieStore(
