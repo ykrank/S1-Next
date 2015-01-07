@@ -45,7 +45,7 @@ public final class Api {
     private static final String URL_USER_AVATAR_MEDIUM = prefix("uc_server/data/avatar/%s_avatar_middle.jpg");
 
     /**
-     * open in browser
+     * Open in browser.
      */
     public static final String URL_BROWSER_REGISTER = prefix("member.php?mod=register");
     private static final String URL_BROWSER_THREAD_LIST = prefix("forum-%s-%d.html");
