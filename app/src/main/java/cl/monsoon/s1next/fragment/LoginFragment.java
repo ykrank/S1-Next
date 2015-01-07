@@ -202,7 +202,7 @@ public final class LoginFragment extends Fragment {
                     // we need abandon this token
                     User.setAuthenticityToken(null);
 
-                    getActivity().onBackPressed();
+                    new Handler().post(() -> getActivity().onBackPressed());
                 }
             }
 
