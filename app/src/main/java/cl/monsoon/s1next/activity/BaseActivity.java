@@ -38,6 +38,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.signature.StringSignature;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.List;
@@ -49,6 +50,7 @@ import cl.monsoon.s1next.fragment.SettingsFragment;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
 import cl.monsoon.s1next.singleton.User;
+import cl.monsoon.s1next.util.DateUtil;
 import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.widget.MyRecyclerView;
@@ -529,6 +531,7 @@ public abstract class BaseActivity extends ActionBarActivity
         // setup user's avatar
         Glide.with(this)
                 .load(Api.getUrlAvatarMedium(User.getUid()))
+                .signature(new StringSignature(DateUtil.getDayWithYear()))
                 .error(R.drawable.ic_drawer_avatar_placeholder)
                 .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
                 .into(mDrawerUserAvatarView);

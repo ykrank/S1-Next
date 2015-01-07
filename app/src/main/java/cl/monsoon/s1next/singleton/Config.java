@@ -16,6 +16,9 @@ public enum Config {
     public static final int OKHTTP_CLIENT_WRITE_TIMEOUT = 20;
     public static final int OKHTTP_CLIENT_READ_TIMEOUT = 60;
 
+    // 64MB
+    public static final int GLIDE_DISK_CACHE_SIZE = 64 * 1024 * 1024;
+
     /**
      * Take care of Menu ~ open in browser ~
      * when these numbers are not default.
