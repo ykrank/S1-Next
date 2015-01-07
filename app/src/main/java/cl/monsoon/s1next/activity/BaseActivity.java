@@ -619,8 +619,7 @@ public abstract class BaseActivity extends ActionBarActivity
                                             ObjectUtil.cast(
                                                     getActivity(),
                                                     User.OnLogoutListener.class).onLogout())
-                            .setNegativeButton(
-                                    android.R.string.cancel, null)
+                            .setNegativeButton(android.R.string.cancel, null)
                             .create();
         }
     }

@@ -454,8 +454,7 @@ public final class PostListActivity
                             .setTitle(R.string.dialog_title_favourites_add)
                             .setView(view)
                             .setPositiveButton(android.R.string.ok, null)
-                            .setNegativeButton(
-                                    android.R.string.cancel, null)
+                            .setNegativeButton(android.R.string.cancel, null)
                             .create();
 
             alertDialog.setOnShowListener(dialog ->
@@ -588,8 +587,7 @@ public final class PostListActivity
                                         Intent intent = new Intent(getActivity(), LoginActivity.class);
                                         startActivity(intent);
                                     })
-                            .setNegativeButton(
-                                    android.R.string.cancel, null)
+                            .setNegativeButton(android.R.string.cancel, null)
                             .create();
         }
     }

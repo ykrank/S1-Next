@@ -81,8 +81,7 @@ public final class ReplyActivity extends BaseActivity {
                             .setMessage(R.string.dialog_message_reply_back_prompt)
                             .setPositiveButton(android.R.string.ok,
                                     (dialog, which) -> getActivity().finish())
-                            .setNegativeButton(
-                                    android.R.string.cancel, null)
+                            .setNegativeButton(android.R.string.cancel, null)
                             .create();
         }
     }
