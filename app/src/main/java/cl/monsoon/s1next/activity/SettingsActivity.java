@@ -18,20 +18,7 @@ public final class SettingsActivity extends BaseActivity {
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .replace(R.id.frame_layout, new SettingsFragment())
-                    .commit();
+                    .replace(R.id.frame_layout, new SettingsFragment()).commit();
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                super.onBackPressed();
-
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

@@ -14,7 +14,7 @@ public final class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity);
 
         setNavDrawerEnabled(false);
-        setupNavCrossIcon();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState == null) {
             Fragment fragment = new LoginFragment();

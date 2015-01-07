@@ -103,7 +103,6 @@ public abstract class BaseActivity extends ActionBarActivity
     private DrawerLayout mDrawerLayout;
     private View mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
-    private boolean mHasNavCrossIcon;
     private boolean mHasNavDrawer = true;
     private boolean mHasNavDrawerIndicator = true;
 
@@ -197,7 +196,7 @@ public abstract class BaseActivity extends ActionBarActivity
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (!mHasNavCrossIcon) {
+                if (NavUtils.getParentActivityName(this) != null) {
                     NavUtils.navigateUpFromSameTask(this);
                 } else {
                     super.onBackPressed();
@@ -379,8 +378,6 @@ public abstract class BaseActivity extends ActionBarActivity
      */
     void setupNavCrossIcon() {
         if (mToolbar != null) {
-            mHasNavCrossIcon = true;
-
             TypedValue typedValue = new TypedValue();
             getTheme().resolveAttribute(R.attr.menuCross, typedValue, true);
             mToolbar.setNavigationIcon(typedValue.resourceId);
