@@ -44,7 +44,7 @@
 
     <!-- Because other Spinner drop down items fetched from S1 is Chinese,
     so this string is Chinese for all locales. -->
-    <string name="toolbar_spinner_drop_down_forum_first_item" translatable="false">全部</string>
+    <string name="toolbar_spinner_drop_down_all_forums_item" translatable="false">全部</string>
 
     <!-- thread -->
 
