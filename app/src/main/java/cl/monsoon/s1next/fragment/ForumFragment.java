@@ -61,9 +61,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
                         new RecyclerViewHelper.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Intent intent = new Intent(
-                                        ForumFragment.this.getActivity(),
-                                        ThreadListActivity.class);
+                                Intent intent = new Intent(getActivity(), ThreadListActivity.class);
 
                                 Forum forum = mRecyclerAdapter.getItem(position);
 

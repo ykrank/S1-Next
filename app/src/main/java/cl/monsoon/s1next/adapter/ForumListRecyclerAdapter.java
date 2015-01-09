@@ -42,7 +42,7 @@ public final class ForumListRecyclerAdapter
         TextView textView = holder.mTextView;
         Forum forum = mList.get(position);
 
-        holder.mTextView.setText(forum.getName());
+        textView.setText(forum.getName());
         // add today's posts count to each forum
         if (forum.getTodayPosts() != 0) {
             int start = textView.getText().length();

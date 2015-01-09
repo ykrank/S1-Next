@@ -50,8 +50,7 @@ public final class ThreadListRecyclerAdapter
         TextView textView = holder.mTextView;
         Thread thread = mList.get(position);
 
-        holder.mTextView.setText(thread.getTitle());
-
+        textView.setText(thread.getTitle());
         int start = textView.getText().length();
 
         if (thread.getPermission() != 0) {

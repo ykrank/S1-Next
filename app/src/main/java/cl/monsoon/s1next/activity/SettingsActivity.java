@@ -1,7 +1,6 @@
 package cl.monsoon.s1next.activity;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.SettingsFragment;
