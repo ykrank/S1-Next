@@ -27,3 +27,6 @@
 
 # Gradle Retrolambda Plugin
 -dontwarn java.lang.invoke.*
+
+# RoundedImageView
+-dontwarn com.makeramen.RoundedTransformationBuilder*
