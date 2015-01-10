@@ -55,17 +55,17 @@ public final class HttpCookieParcelable implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(mHttpCookie.getName());
-        parcel.writeString(mHttpCookie.getValue());
-        parcel.writeString(mHttpCookie.getComment());
-        parcel.writeString(mHttpCookie.getCommentURL());
-        parcel.writeByte((byte) (mHttpCookie.getDiscard() ? 1 : 0));
-        parcel.writeString(mHttpCookie.getDomain());
-        parcel.writeLong(mHttpCookie.getMaxAge());
-        parcel.writeString(mHttpCookie.getPath());
-        parcel.writeString(mHttpCookie.getPortlist());
-        parcel.writeByte((byte) (mHttpCookie.getSecure() ? 1 : 0));
-        parcel.writeInt(mHttpCookie.getVersion());
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mHttpCookie.getName());
+        dest.writeString(mHttpCookie.getValue());
+        dest.writeString(mHttpCookie.getComment());
+        dest.writeString(mHttpCookie.getCommentURL());
+        dest.writeByte((byte) (mHttpCookie.getDiscard() ? 1 : 0));
+        dest.writeString(mHttpCookie.getDomain());
+        dest.writeLong(mHttpCookie.getMaxAge());
+        dest.writeString(mHttpCookie.getPath());
+        dest.writeString(mHttpCookie.getPortlist());
+        dest.writeByte((byte) (mHttpCookie.getSecure() ? 1 : 0));
+        dest.writeInt(mHttpCookie.getVersion());
     }
 }

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.BaseActivity;
+import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.ObjectUtil;
@@ -27,12 +28,9 @@ public final class ThreadListFragment extends Fragment
 
     public static final String TAG = "thread_list_fragment";
 
-    private static final String ARG_FORUM_TITLE = "forum_title";
-    private static final String ARG_FORUM_ID = "forum_id";
-    private static final String ARG_THREADS = "threads";
+    private static final String ARG_FORUM = "forum";
 
     private CharSequence mForumTitle;
-
     private CharSequence mForumId;
     private int mTotalPages;
 
@@ -42,13 +40,11 @@ public final class ThreadListFragment extends Fragment
      */
     private PagerAdapter mAdapter;
 
-    public static ThreadListFragment newInstance(CharSequence title, CharSequence forumId, int threads) {
+    public static ThreadListFragment newInstance(Forum forum) {
         ThreadListFragment fragment = new ThreadListFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putCharSequence(ARG_FORUM_TITLE, title);
-        bundle.putCharSequence(ARG_FORUM_ID, forumId);
-        bundle.putInt(ARG_THREADS, threads);
+        bundle.putParcelable(ARG_FORUM, forum);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -64,10 +60,11 @@ public final class ThreadListFragment extends Fragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mForumTitle = getArguments().getCharSequence(ARG_FORUM_TITLE);
+        Forum forum = getArguments().getParcelable(ARG_FORUM);
+        mForumTitle = forum.getName();
         getActivity().setTitle(StringHelper.concatTitleWithPageNum(mForumTitle, 1));
-        mForumId = getArguments().getCharSequence(ARG_FORUM_ID);
-        setTotalPages(getArguments().getInt(ARG_THREADS, 1));
+        mForumId = forum.getId();
+        setTotalPages(forum.getThreads());
 
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
         // don't use getChildFragmentManager()

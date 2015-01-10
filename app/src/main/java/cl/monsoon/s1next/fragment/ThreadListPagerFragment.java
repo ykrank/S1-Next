@@ -113,9 +113,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
                                 cl.monsoon.s1next.model.Thread thread =
                                         mRecyclerAdapter.getItem(position);
 
-                                intent.putExtra(PostListActivity.ARG_THREAD_TITLE, thread.getTitle())
-                                        .putExtra(PostListActivity.ARG_THREAD_ID, thread.getId())
-                                        .putExtra(PostListActivity.ARG_POST_REPLIES, thread.getReplies() + 1);
+                                intent.putExtra(PostListActivity.ARG_THREAD, thread);
 
                                 if (shouldGoToLastPage) {
                                     intent.putExtra(PostListActivity.ARG_SHOULD_GO_TO_LAST_PAGE, true);

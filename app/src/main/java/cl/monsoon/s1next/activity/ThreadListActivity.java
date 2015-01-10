@@ -22,9 +22,7 @@ import cl.monsoon.s1next.util.ObjectUtil;
  */
 public class ThreadListActivity extends BaseActivity {
 
-    public static final String ARG_FORUM_TITLE = "forum_title";
-    public static final String ARG_FORUM_ID = "forum_id";
-    public static final String ARG_THREADS = "threads";
+    public static final String ARG_FORUM = "forum";
 
     private SubForumBaseAdapter mSubForumBaseAdapter;
 
@@ -37,10 +35,8 @@ public class ThreadListActivity extends BaseActivity {
         setNavDrawerIndicatorEnabled(false);
 
         if (savedInstanceState == null) {
-            Fragment fragment = ThreadListFragment.newInstance(
-                    getIntent().getCharSequenceExtra(ARG_FORUM_TITLE),
-                    getIntent().getCharSequenceExtra(ARG_FORUM_ID),
-                    getIntent().getIntExtra(ARG_THREADS, 1));
+            Fragment fragment =
+                    ThreadListFragment.newInstance(getIntent().getParcelableExtra(ARG_FORUM));
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frame_layout, fragment, ThreadListFragment.TAG).commit();
@@ -65,9 +61,7 @@ public class ThreadListActivity extends BaseActivity {
             Forum forum = mSubForumBaseAdapter.getItem(position);
 
             Intent intent = new Intent(this, SubForumThreadListActivity.class);
-            intent.putExtra(ThreadListActivity.ARG_FORUM_TITLE, forum.getName())
-                    .putExtra(ThreadListActivity.ARG_FORUM_ID, forum.getId())
-                    .putExtra(ThreadListActivity.ARG_THREADS, forum.getThreads());
+            intent.putExtra(ThreadListActivity.ARG_FORUM, forum);
 
             startActivity(intent);
 

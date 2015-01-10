@@ -1,5 +1,8 @@
 package cl.monsoon.s1next.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,7 +13,20 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Thread {
+public final class Thread implements Parcelable {
+
+    public static final Parcelable.Creator<Thread> CREATOR =
+            new Parcelable.Creator<Thread>() {
+                @Override
+                public Thread createFromParcel(Parcel parcel) {
+                    return new Thread(parcel);
+                }
+
+                @Override
+                public Thread[] newArray(int i) {
+                    return new Thread[i];
+                }
+            };
 
     @JsonProperty("tid")
     private String id;
@@ -23,6 +39,16 @@ public final class Thread {
 
     @JsonProperty("readperm")
     private int permission;
+
+    private Thread() {
+    }
+
+    private Thread(Parcel parcel) {
+        id = parcel.readString();
+        title = parcel.readString();
+        replies = parcel.readInt();
+        permission = parcel.readInt();
+    }
 
     public String getId() {
         return id;
@@ -55,6 +81,19 @@ public final class Thread {
 
     public void setPermission(int permission) {
         this.permission = permission;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(title);
+        dest.writeInt(replies);
+        dest.writeInt(permission);
     }
 
     /**

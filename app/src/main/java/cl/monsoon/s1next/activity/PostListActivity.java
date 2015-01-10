@@ -60,9 +60,7 @@ public class PostListActivity
         implements PostListPagerFragment.OnPagerInteractionCallback,
         View.OnClickListener {
 
-    public static final String ARG_THREAD_TITLE = "thread_title";
-    public static final String ARG_THREAD_ID = "thread_id";
-    public static final String ARG_POST_REPLIES = "post_replies";
+    public static final String ARG_THREAD = "thread";
 
     public static final String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
 
@@ -115,10 +113,12 @@ public class PostListActivity
         //            }
         //        }
 
-        mThreadTitle = getIntent().getCharSequenceExtra(ARG_THREAD_TITLE);
+        cl.monsoon.s1next.model.Thread thread = getIntent().getParcelableExtra(ARG_THREAD);
+        mThreadTitle = thread.getTitle();
         setTitle(StringHelper.concatTitleWithPageNum(mThreadTitle, 1));
-        mThreadId = getIntent().getCharSequenceExtra(ARG_THREAD_ID);
-        setTotalPages(getIntent().getIntExtra(ARG_POST_REPLIES, 1));
+        mThreadId = thread.getId();
+        // +1 for original post
+        setTotalPages(thread.getReplies() + 1);
 
         FrameLayout container = (FrameLayout) findViewById(R.id.frame_layout);
         View.inflate(this, R.layout.screen_slide, container);
@@ -391,8 +391,9 @@ public class PostListActivity
 
         Intent intent = new Intent(this, ReplyActivity.class);
 
-        intent.putExtra(ReplyActivity.ARG_THREAD_TITLE, mThreadTitle);
         intent.putExtra(ReplyActivity.ARG_THREAD_ID, mThreadId);
+        intent.putExtra(ReplyActivity.ARG_THREAD_TITLE, mThreadTitle);
+
         intent.putExtra(ReplyActivity.ARG_QUOTE_POST_ID, quotePostId);
         intent.putExtra(ReplyActivity.ARG_QUOTE_POST_COUNT, quotePostCount);
 
@@ -429,6 +430,8 @@ public class PostListActivity
     public static class ThreadFavouritesAddDialogFragment extends DialogFragment {
 
         private static final String TAG = "thread_favourites_add_dialog";
+
+        public static final String ARG_THREAD_ID = "thread_id";
 
         public static ThreadFavouritesAddDialogFragment newInstance(CharSequence threadId) {
             ThreadFavouritesAddDialogFragment fragment = new ThreadFavouritesAddDialogFragment();

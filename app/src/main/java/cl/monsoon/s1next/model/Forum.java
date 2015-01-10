@@ -1,5 +1,8 @@
 package cl.monsoon.s1next.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,7 +10,20 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Forum {
+public final class Forum implements Parcelable {
+
+    public static final Parcelable.Creator<Forum> CREATOR =
+            new Parcelable.Creator<Forum>() {
+                @Override
+                public Forum createFromParcel(Parcel parcel) {
+                    return new Forum(parcel);
+                }
+
+                @Override
+                public Forum[] newArray(int i) {
+                    return new Forum[i];
+                }
+            };
 
     @JsonProperty("fid")
     private String id;
@@ -20,6 +36,17 @@ public final class Forum {
 
     @JsonProperty("todayposts")
     private int todayPosts;
+
+    public Forum() {
+
+    }
+
+    private Forum(Parcel parcel) {
+        id = parcel.readString();
+        name = parcel.readString();
+        threads = parcel.readInt();
+        todayPosts = parcel.readInt();
+    }
 
     public String getId() {
         return id;
@@ -52,5 +79,18 @@ public final class Forum {
 
     public void setTodayPosts(int todayPosts) {
         this.todayPosts = todayPosts;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeInt(threads);
+        dest.writeInt(todayPosts);
     }
 }
