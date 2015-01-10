@@ -17,6 +17,9 @@ import android.widget.Toast;
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.PostListActivity;
+import cl.monsoon.s1next.activity.SubForumPostListActivity;
+import cl.monsoon.s1next.activity.SubForumThreadListActivity;
+import cl.monsoon.s1next.activity.ThreadListActivity;
 import cl.monsoon.s1next.adapter.ThreadListRecyclerAdapter;
 import cl.monsoon.s1next.model.list.ThreadList;
 import cl.monsoon.s1next.model.mapper.ThreadListWrapper;
@@ -98,9 +101,14 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
                                     return;
                                 }
 
-                                Intent intent = new Intent(
-                                        ThreadListPagerFragment.this.getActivity(),
-                                        PostListActivity.class);
+                                Intent intent;
+                                if (getActivity() instanceof SubForumThreadListActivity) {
+                                    intent =
+                                            new Intent(
+                                                    getActivity(), SubForumPostListActivity.class);
+                                } else {
+                                    intent = new Intent(getActivity(), PostListActivity.class);
+                                }
 
                                 cl.monsoon.s1next.model.Thread thread =
                                         mRecyclerAdapter.getItem(position);
@@ -191,6 +199,11 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
 
                 mOnPagerInteractionCallback.setTotalPages(
                         threadList.getThreadsInfo().getThreads());
+            }
+
+            if (!threadList.getSubForumList().isEmpty()) {
+                ObjectUtil.cast(getActivity(),
+                        ThreadListActivity.class).setupToolbarDropDown(threadList.getSubForumList());
             }
         }
     }

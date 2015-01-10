@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,15 +52,21 @@ public final class ForumActivity extends BaseActivity {
     }
 
     @Override
-    ArrayAdapter getSpinnerAdapter(List<? extends CharSequence> dropDownItemList) {
+    BaseAdapter getSpinnerAdapter(List dropDownItemList) {
         // don't use dropDownItemList#add(int, E)
         // otherwise we will have multiple "全部"
         // if we invoke this method many times
-        List<CharSequence> list = new ArrayList<>(dropDownItemList);
+
+        List<CharSequence> list = new ArrayList<>();
         // the first drop-down item is "全部"
         // and other items fetched from S1
-        list.add(0, getResources().getString(R.string.toolbar_spinner_drop_down_forum_first_item));
+        list.addAll(ObjectUtil.uncheckedCast(dropDownItemList));
+        list.add(getResources().getString(R.string.toolbar_spinner_drop_down_all_forums_item_title));
 
-        return super.getSpinnerAdapter(list);
+        ArrayAdapter<CharSequence> arrayAdapter =
+                new ArrayAdapter<>(this, R.layout.toolbar_spinner_item, list);
+        arrayAdapter.setDropDownViewResource(R.layout.toolbar_spinner_dropdown_item);
+
+        return arrayAdapter;
     }
 }

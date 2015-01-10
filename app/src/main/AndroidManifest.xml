@@ -38,11 +38,28 @@
         </activity>
 
         <activity
+            android:name=".activity.SubForumThreadListActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activity.ThreadListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.ThreadListActivity"/>
+        </activity>
+
+        <activity
             android:name=".activity.PostListActivity"
             android:parentActivityName=".activity.ThreadListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.ThreadListActivity"/>
+        </activity>
+
+        <activity
+            android:name=".activity.SubForumPostListActivity"
+            android:parentActivityName=".activity.SubForumThreadListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.SubForumPostListActivity"/>
         </activity>
 
         <activity

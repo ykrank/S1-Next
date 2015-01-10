@@ -31,7 +31,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -262,10 +262,8 @@ public abstract class BaseActivity extends ActionBarActivity
      * Implement {@link ToolbarInterface.SpinnerInteractionCallback}.
      */
     @Override
-    public void setupToolbarDropDown(List<? extends CharSequence> dropDownItemList) {
+    public void setupToolbarDropDown(List dropDownItemList) {
         if (mSpinner == null) {
-            setTitle(null);
-
             // add Spinner (drop down) to Toolbar
             LayoutInflater.from(this).inflate(R.layout.toolbar_spinner, getToolbar(), true);
             //noinspection ConstantConditions
@@ -290,12 +288,8 @@ public abstract class BaseActivity extends ActionBarActivity
         }
     }
 
-    ArrayAdapter getSpinnerAdapter(List<? extends CharSequence> dropDownItemList) {
-        ArrayAdapter arrayAdapter =
-                new ArrayAdapter<>(this, R.layout.toolbar_spinner_item, dropDownItemList);
-        arrayAdapter.setDropDownViewResource(R.layout.toolbar_spinner_dropdown_item);
-
-        return arrayAdapter;
+    BaseAdapter getSpinnerAdapter(List dropDownItemList) {
+        throw new UnsupportedOperationException("This method hasn't been implemented.");
     }
 
     void setupFloatingActionButton(@DrawableRes int resId) {

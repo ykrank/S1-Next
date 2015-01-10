@@ -55,7 +55,7 @@ import cl.monsoon.s1next.widget.InputFilterRange;
  * An Activity which includes {@link android.support.v4.view.ViewPager}
  * to represent each page of post lists.
  */
-public final class PostListActivity
+public class PostListActivity
         extends BaseActivity
         implements PostListPagerFragment.OnPagerInteractionCallback,
         View.OnClickListener {

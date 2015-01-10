@@ -43,8 +43,9 @@
     <!-- forum -->
 
     <!-- Because other Spinner drop down items fetched from S1 is Chinese,
-    so this string is Chinese for all locales. -->
-    <string name="toolbar_spinner_drop_down_all_forums_item" translatable="false">全部</string>
+    so these string is Chinese for all locales. -->
+    <string name="toolbar_spinner_drop_down_all_forums_item_title" translatable="false">全部</string>
+    <string name="toolbar_spinner_drop_down_sub_forums_header_title" translatable="false">子版块</string>
 
     <!-- thread -->
 

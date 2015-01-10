@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/header"
+        style="?attr/spinnerDropDownItemStyle"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:paddingTop="@dimen/list_view_padding"
+        android:singleLine="true"
+        android:textSize="@dimen/abc_text_size_subtitle_material_toolbar"/>
+
+    <CheckedTextView
+        android:id="@android:id/text1"
+        style="?attr/spinnerDropDownItemStyle"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/dropdownListPreferredItemHeight"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:textSize="@dimen/abc_text_size_title_material_toolbar"/>
+
+</LinearLayout>
