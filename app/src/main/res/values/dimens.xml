@@ -15,8 +15,6 @@
     <!-- 16dp (avatar margin top) + 64dp (avatar height) + 56dp (username) -->
     <dimen name="drawer_top_height">136dp</dimen>
 
-    <dimen name="divider">1dp</dimen>
-
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="swipe_refresh_progress_view_start">8dp</dimen>

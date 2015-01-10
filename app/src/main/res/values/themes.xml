@@ -9,7 +9,6 @@
 
         <item name="theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="dividerColor">@color/black_12</item>
         <item name="myCardView">@style/LightCardView</item>
         <item name="mySpinnerItemTextColor">@color/abc_primary_text_material_light</item>
 
@@ -63,7 +62,6 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="dividerColor">@color/white_12</item>
         <item name="myCardView">@style/DarkCardView</item>
         <item name="mySpinnerItemTextColor">@color/abc_primary_text_material_dark</item>
         <item name="fabColorNormal">@color/grey_500</item>
