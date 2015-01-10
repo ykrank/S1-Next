@@ -3,6 +3,8 @@ package cl.monsoon.s1next.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class Forum {
@@ -32,7 +34,8 @@ public final class Forum {
     }
 
     public void setName(String name) {
-        this.name = name;
+        // unescape some basic XML entities
+        this.name = StringEscapeUtils.unescapeXml(name);
     }
 
     public int getThreads() {

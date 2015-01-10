@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import java.util.List;
 
 @SuppressWarnings("UnusedDeclaration")
@@ -24,7 +26,8 @@ public final class ForumGroup {
     }
 
     public void setName(String name) {
-        this.name = name;
+        // unescape some basic XML entities
+        this.name = StringEscapeUtils.unescapeXml(name);
     }
 
     public List<Integer> getForumIds() {

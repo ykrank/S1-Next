@@ -1,9 +1,9 @@
 package cl.monsoon.s1next.model;
 
-import android.text.Html;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * Ambiguity in naming due to java.lang.Thread.
@@ -37,8 +37,8 @@ public final class Thread {
     }
 
     public void setTitle(String title) {
-        // encode HTML entities
-        this.title = Html.fromHtml(title).toString();
+        // unescape some basic XML entities
+        this.title = StringEscapeUtils.unescapeXml(title);
     }
 
     public int getReplies() {

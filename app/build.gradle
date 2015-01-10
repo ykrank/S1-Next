@@ -25,7 +25,9 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
     }
 }
 
@@ -51,5 +53,6 @@ dependencies {
 
     compile 'com.melnykov:floatingactionbutton:1.1.0'
 
+    compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'commons-io:commons-io:2.4'
 }
