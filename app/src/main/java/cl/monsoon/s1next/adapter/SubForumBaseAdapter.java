@@ -20,8 +20,8 @@ import cl.monsoon.s1next.util.StringHelper;
 
 /**
  * This Adapter behaves different from each other.
- * The item view title is always the forum title.
- * And its dropdown view is always the sub-forums item.
+ * The item view is always the current forum.
+ * And its dropdown view is always the sub-forums list.
  * The item view never changes when we select dropdown item.
  * <p>
  * We need to reselect the first dropdown item if dropdown selection changes
@@ -29,11 +29,12 @@ import cl.monsoon.s1next.util.StringHelper;
  */
 public class SubForumBaseAdapter extends BaseAdapter {
 
-    private static final long HEADER_ID = Integer.MIN_VALUE;
+    private static final long CURRENT_FORUM_ID = Integer.MIN_VALUE;
+    private static final long SUB_FORUMS_HEADER_ID = Integer.MAX_VALUE;
 
     private final LayoutInflater mLayoutInflater;
 
-    private CharSequence mItemTitle;
+    private CharSequence mCurrentForumTitle;
     private final CharSequence mDropdownHeaderTitle;
     private final List<Forum> mSubForms;
 
@@ -41,10 +42,10 @@ public class SubForumBaseAdapter extends BaseAdapter {
 
     private TextView mSpinnerItemView;
 
-    public SubForumBaseAdapter(Context context, CharSequence itemTitle, List<Forum> subForms) {
+    public SubForumBaseAdapter(Context context, CharSequence currentForumTitle, List<Forum> subForms) {
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        this.mItemTitle = itemTitle;
+        this.mCurrentForumTitle = currentForumTitle;
         this.mSubForms = subForms;
 
         mDropdownHeaderTitle =
@@ -60,22 +61,26 @@ public class SubForumBaseAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mSubForms.size() + 1;
+        // one for the Forum title
+        // another for the sub-forums header
+        return mSubForms.size() + 2;
     }
 
     @Override
     public Forum getItem(int position) {
-        if (isHeader(position)) {
+        if (isCurrentForum(position) || isSubForumHeader(position)) {
             throw new IllegalStateException("Position can't be " + position + ".");
         }
 
-        return mSubForms.get(position - 1);
+        return mSubForms.get(position - 2);
     }
 
     @Override
     public long getItemId(int position) {
-        if (isHeader(position)) {
-            return HEADER_ID;
+        if (isCurrentForum(position)) {
+            return CURRENT_FORUM_ID;
+        } else if (isSubForumHeader(position)) {
+            return SUB_FORUMS_HEADER_ID;
         }
 
         return Long.parseLong(getItem(position).getId());
@@ -88,7 +93,7 @@ public class SubForumBaseAdapter extends BaseAdapter {
                     (TextView)
                             mLayoutInflater.inflate(R.layout.toolbar_spinner_item, parent, false);
         }
-        mSpinnerItemView.setText(mItemTitle);
+        mSpinnerItemView.setText(mCurrentForumTitle);
 
         return mSpinnerItemView;
     }
@@ -103,40 +108,44 @@ public class SubForumBaseAdapter extends BaseAdapter {
 
             viewHolder = new ViewHolder();
             viewHolder.mHeaderView = (TextView) convertView.findViewById(R.id.header);
-            viewHolder.mItemView = (TextView) convertView.findViewById(android.R.id.text1);
+            viewHolder.mDropdownItemView = (TextView) convertView.findViewById(android.R.id.text1);
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
         TextView headerView = viewHolder.mHeaderView;
-        TextView itemView = viewHolder.mItemView;
-        if (isHeader(position)) {
+        TextView dropdownItemView = viewHolder.mDropdownItemView;
+        if (isCurrentForum(position)) {
+            headerView.setVisibility(View.GONE);
+            dropdownItemView.setVisibility(View.VISIBLE);
+
+            dropdownItemView.setText(mCurrentForumTitle);
+        } else if (isSubForumHeader(position)) {
             headerView.setVisibility(View.VISIBLE);
-            itemView.setVisibility(View.GONE);
+            dropdownItemView.setVisibility(View.GONE);
 
             headerView.setText(mDropdownHeaderTitle);
-            headerView.setTextColor(
-                    ColorUtil.a(headerView.getCurrentTextColor(), Config.getSecondaryTextAlpha()));
         } else {
             headerView.setVisibility(View.GONE);
-            itemView.setVisibility(View.VISIBLE);
+            dropdownItemView.setVisibility(View.VISIBLE);
 
             Forum forum = getItem(position);
 
-            itemView.setText(forum.getName());
+            dropdownItemView.setText(forum.getName());
             // add today's posts count to each forum
             if (forum.getTodayPosts() != 0) {
-                int start = itemView.getText().length();
+                int start = dropdownItemView.getText().length();
 
-                itemView.append(StringHelper.Util.TWO_SPACES + forum.getTodayPosts());
-                Spannable spannable = (Spannable) itemView.getText();
+                dropdownItemView.append(StringHelper.Util.TWO_SPACES + forum.getTodayPosts());
+                Spannable spannable = (Spannable) dropdownItemView.getText();
                 spannable.setSpan(
                         new ForegroundColorSpan(mSecondaryTextColor),
                         start,
-                        itemView.getText().length(),
+                        dropdownItemView.getText().length(),
                         Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                itemView.setText(spannable);
+                dropdownItemView.setText(spannable);
             }
         }
 
@@ -145,24 +154,28 @@ public class SubForumBaseAdapter extends BaseAdapter {
 
     @Override
     public boolean isEnabled(int position) {
-        return !isHeader(position);
+        return !isSubForumHeader(position);
     }
 
-    private boolean isHeader(int position) {
+    private boolean isCurrentForum(int position) {
         return position == 0;
     }
 
-    public void setItemTitle(CharSequence itemTitle) {
-        this.mItemTitle = itemTitle;
+    private boolean isSubForumHeader(int position) {
+        return position == 1;
+    }
+
+    public void setItemTitle(CharSequence currentForumTitle) {
+        this.mCurrentForumTitle = currentForumTitle;
 
         if (mSpinnerItemView != null) {
-            mSpinnerItemView.setText(mItemTitle);
+            mSpinnerItemView.setText(mCurrentForumTitle);
         }
     }
 
     private static class ViewHolder {
 
         private TextView mHeaderView;
-        private TextView mItemView;
+        private TextView mDropdownItemView;
     }
 }

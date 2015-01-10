@@ -7,14 +7,13 @@
 
     <TextView
         android:id="@+id/header"
-        style="?attr/spinnerDropDownItemStyle"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/dropdownListPreferredItemHeight"
         android:ellipsize="marquee"
-        android:paddingTop="@dimen/list_view_padding"
         android:singleLine="true"
-        android:textSize="@dimen/abc_text_size_subtitle_material_toolbar"/>
+        android:textSize="@dimen/abc_text_size_subtitle_material_toolbar"
+        android:visibility="gone"/>
 
     <CheckedTextView
         android:id="@android:id/text1"
