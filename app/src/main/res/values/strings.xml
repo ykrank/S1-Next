@@ -19,12 +19,12 @@
     <string name="settings">Settings</string>
 
     <!-- menu button -->
+    <string name="menu_refresh">Refresh</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_browser">Open in browser</string>
     <string name="menu_account_new">Create an account</string>
     <string name="menu_page_flip">Flip page</string>
     <string name="menu_favourites_add">Add to favourites</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_refresh">Refresh</string>
-    <string name="menu_browser">Open in browser</string>
     <string name="menu_reply_post">Reply</string>
 
     <!-- toast -->
@@ -43,9 +43,8 @@
     <!-- forum -->
 
     <!-- Because other Spinner drop down items fetched from S1 is Chinese,
-    so these string is Chinese for all locales. -->
+    so this string is Chinese for all locales. -->
     <string name="toolbar_spinner_drop_down_all_forums_item_title" translatable="false">全部</string>
-    <string name="toolbar_spinner_drop_down_sub_forums_header_title" translatable="false">子版块</string>
 
     <!-- thread -->
 
