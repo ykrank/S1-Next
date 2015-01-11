@@ -1,9 +1,6 @@
 package cl.monsoon.s1next.adapter;
 
 import android.content.Context;
-import android.text.Spannable;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +13,7 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.ColorUtil;
-import cl.monsoon.s1next.util.StringHelper;
+import cl.monsoon.s1next.util.TextViewHelper;
 
 /**
  * This Adapter behaves different from each other.
@@ -136,16 +133,10 @@ public class SubForumBaseAdapter extends BaseAdapter {
             dropdownItemView.setText(forum.getName());
             // add today's posts count to each forum
             if (forum.getTodayPosts() != 0) {
-                int start = dropdownItemView.getText().length();
-
-                dropdownItemView.append(StringHelper.Util.TWO_SPACES + forum.getTodayPosts());
-                Spannable spannable = (Spannable) dropdownItemView.getText();
-                spannable.setSpan(
-                        new ForegroundColorSpan(mSecondaryTextColor),
-                        start,
-                        dropdownItemView.getText().length(),
-                        Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                dropdownItemView.setText(spannable);
+                int start = dropdownItemView.length();
+                TextViewHelper.appendWithTwoSpaces(dropdownItemView, forum.getTodayPosts());
+                TextViewHelper.setForegroundColor(
+                        dropdownItemView, mSecondaryTextColor, start, dropdownItemView.length());
             }
         }
 

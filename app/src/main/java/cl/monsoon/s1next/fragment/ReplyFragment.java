@@ -28,7 +28,7 @@ import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ToastUtil;
-import cl.monsoon.s1next.util.ViewHelper;
+import cl.monsoon.s1next.util.TextViewHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.HttpPostLoader;
@@ -86,8 +86,8 @@ public final class ReplyFragment extends Fragment {
         mQuotePostId = getArguments().getCharSequence(ARG_QUOTE_POST_ID);
 
         mReplyView = (EditText) view.findViewById(R.id.reply);
-        ViewHelper.updateTextSize(new TextView[]{mReplyView});
-        ViewHelper.updateTextColorWhenS1Theme(new TextView[]{mReplyView});
+        TextViewHelper.updateTextSize(new TextView[]{mReplyView});
+        TextViewHelper.updateTextColorWhenS1Theme(new TextView[]{mReplyView});
         mReplyView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

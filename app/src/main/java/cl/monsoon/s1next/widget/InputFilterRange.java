@@ -3,21 +3,17 @@ package cl.monsoon.s1next.widget;
 import android.text.InputFilter;
 import android.text.Spanned;
 
+import org.apache.commons.lang3.Range;
+
 /**
  * Users can't enter a value which is out of the range in EditView.
  */
 public final class InputFilterRange implements InputFilter {
 
-    private final int mMin;
-    private final int mMax;
+    private final Range<Integer> mRange;
 
-    public InputFilterRange(int min, int max) {
-        if (min > max) {
-            throw new IllegalStateException("Min can't larger than max.");
-        }
-
-        this.mMin = min;
-        this.mMax = max;
+    public InputFilterRange(Range<Integer> range) {
+        this.mRange = range;
     }
 
     @Override
@@ -27,9 +23,7 @@ public final class InputFilterRange implements InputFilter {
                         + source.subSequence(start, end)
                         + dest.subSequence(dend, dest.length());
         try {
-            int input = Integer.parseInt(value);
-
-            if (isInRange(input, mMin, mMax)) {
+            if (mRange.contains(Integer.valueOf(value))) {
                 return null;
             }
         } catch (NumberFormatException ignored) {
@@ -37,9 +31,5 @@ public final class InputFilterRange implements InputFilter {
         }
 
         return "";
-    }
-
-    private boolean isInRange(int input, int min, int max) {
-        return input >= min && input <= max;
     }
 }

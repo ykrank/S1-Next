@@ -32,6 +32,8 @@ import android.widget.Toast;
 
 import com.squareup.okhttp.RequestBody;
 
+import org.apache.commons.lang3.Range;
+
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.BaseFragment;
@@ -115,7 +117,7 @@ public class PostListActivity
 
         cl.monsoon.s1next.model.Thread thread = getIntent().getParcelableExtra(ARG_THREAD);
         mThreadTitle = thread.getTitle();
-        setTitle(StringHelper.concatTitleWithPageNum(mThreadTitle, 1));
+        setTitle(StringHelper.concatWithTwoSpaces(mThreadTitle, 1));
         mThreadId = thread.getId();
         // +1 for original post
         setTotalPages(thread.getReplies() + 1);
@@ -139,7 +141,7 @@ public class PostListActivity
                 // TODO: We can't see thread page number sometimes because title is long,
                 // so it's better to put a TextView in ToolBar to show thread page number
                 // or make the title marquee.
-                setTitle(StringHelper.concatTitleWithPageNum(mThreadTitle, position + 1));
+                setTitle(StringHelper.concatWithTwoSpaces(mThreadTitle, position + 1));
             }
 
             @Override
@@ -282,7 +284,7 @@ public class PostListActivity
         valueView.setEms(String.valueOf(mTotalPages).length());
         // set EditText range filter
         valueView.setFilters(
-                new InputFilter[]{new InputFilterRange(1, mTotalPages)});
+                new InputFilter[]{new InputFilterRange(Range.between(1, mTotalPages))});
         valueView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

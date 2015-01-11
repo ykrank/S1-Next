@@ -1,9 +1,6 @@
 package cl.monsoon.s1next.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +10,7 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.ColorUtil;
-import cl.monsoon.s1next.util.StringHelper;
-import cl.monsoon.s1next.util.ViewHelper;
+import cl.monsoon.s1next.util.TextViewHelper;
 
 public final class ForumListRecyclerAdapter
         extends RecyclerAdapter<Forum, ForumListRecyclerAdapter.ViewHolder> {
@@ -45,16 +41,9 @@ public final class ForumListRecyclerAdapter
         textView.setText(forum.getName());
         // add today's posts count to each forum
         if (forum.getTodayPosts() != 0) {
-            int start = textView.getText().length();
-
-            textView.append(StringHelper.Util.TWO_SPACES + forum.getTodayPosts());
-            Spannable spannable = (Spannable) textView.getText();
-            spannable.setSpan(
-                    new ForegroundColorSpan(mSecondaryTextColor),
-                    start,
-                    textView.getText().length(),
-                    Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            textView.setText(spannable);
+            int start = textView.length();
+            TextViewHelper.appendWithTwoSpaces(textView, forum.getTodayPosts());
+            TextViewHelper.setForegroundColor(textView, mSecondaryTextColor, start, textView.length());
         }
     }
 
@@ -71,8 +60,8 @@ public final class ForumListRecyclerAdapter
             super(itemView);
 
             mTextView = (TextView) itemView;
-            ViewHelper.updateTextSize(new TextView[]{mTextView});
-            ViewHelper.updateTextColorWhenS1Theme(new TextView[]{mTextView});
+            TextViewHelper.updateTextSize(new TextView[]{mTextView});
+            TextViewHelper.updateTextColorWhenS1Theme(new TextView[]{mTextView});
         }
     }
 }

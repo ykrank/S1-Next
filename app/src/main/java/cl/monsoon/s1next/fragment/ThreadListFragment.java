@@ -62,7 +62,7 @@ public final class ThreadListFragment extends Fragment
 
         Forum forum = getArguments().getParcelable(ARG_FORUM);
         mForumTitle = forum.getName();
-        getActivity().setTitle(StringHelper.concatTitleWithPageNum(mForumTitle, 1));
+        getActivity().setTitle(StringHelper.concatWithTwoSpaces(mForumTitle, 1));
         mForumId = forum.getId();
         setTotalPages(forum.getThreads());
 
@@ -80,7 +80,7 @@ public final class ThreadListFragment extends Fragment
 
             @Override
             public void onPageSelected(int position) {
-                getActivity().setTitle(StringHelper.concatTitleWithPageNum(mForumTitle, position + 1));
+                getActivity().setTitle(StringHelper.concatWithTwoSpaces(mForumTitle, position + 1));
             }
 
             @Override

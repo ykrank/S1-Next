@@ -5,10 +5,11 @@ import android.net.Uri;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.RequestBody;
 
+import org.apache.commons.lang3.StringUtils;
+
 import cl.monsoon.s1next.model.Quote;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.User;
-import cl.monsoon.s1next.util.StringHelper;
 
 public final class Api {
 
@@ -106,7 +107,7 @@ public final class Api {
      * User id: 123456 -> 000123456 -> 000/12/34/56 -> http://bbs.saraba1st.com/2b/uc_server/data/avatar/000/12/34/56_avatar_middle.jpg
      */
     private static String formatUrlAvatar(String url, String userId) {
-        String s = String.format("%09d", Integer.parseInt(userId));
+        String s = StringUtils.leftPad(userId, 9, '0');
 
         return
                 String.format(
@@ -154,7 +155,7 @@ public final class Api {
                 MyFormEncodingBuilder.newInstance()
                         .add("noticeauthor", quote.getEncodedUserId())
                         .add("noticetrimstr", quote.getQuoteMessage())
-                        .add("noticeauthormsg", StringHelper.Util.ellipsize(reply, 100))
+                        .add("noticeauthormsg", StringUtils.abbreviate(reply, 100))
                         .add("message", reply)
                         .build();
     }

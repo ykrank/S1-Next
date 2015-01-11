@@ -8,10 +8,10 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
 
 import cl.monsoon.s1next.MyApplication;
 import cl.monsoon.s1next.R;
@@ -25,11 +25,11 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 
     // see http://tools.ietf.org/html/rfc7231#section-6.1
     // we need to cache the responses with following status codes
-    private static final List<Integer> CACHEABLE_STATUS_CODES =
-            Arrays.asList(
+    private static final int[] CACHEABLE_STATUS_CODES =
+            new int[]{
                     200, 203, 204, 206,
                     300, 301,
-                    404, 405, 410, 414, 501);
+                    404, 405, 410, 414, 501};
 
     private final OkHttpClient mOkHttpClient;
     private final GlideUrl mGlideUrl;
@@ -57,7 +57,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
         // But we needn't provide InputStream when response status code is in [200..300),
         // because we will get it (user avatar) from server.
         if (!response.isSuccessful()
-                && CACHEABLE_STATUS_CODES.contains(response.code())) {
+                && ArrayUtils.contains(CACHEABLE_STATUS_CODES, response.code())) {
             response.body().close();
 
             //noinspection ResourceType

@@ -151,9 +151,8 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                 return true;
             case R.id.menu_share:
                 String value =
-                        getThreadTitle()
-                                + StringHelper.Util.TWO_SPACES
-                                + Api.getUrlBrowserPostList(mThreadId, 1);
+                        StringHelper.concatWithTwoSpaces(
+                                getThreadTitle(), Api.getUrlBrowserPostList(mThreadId, 1));
 
                 intent = new Intent(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_TEXT, value);

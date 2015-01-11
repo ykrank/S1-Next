@@ -2,29 +2,17 @@ package cl.monsoon.s1next.util;
 
 public final class StringHelper {
 
+    static final String TWO_SPACES = "  ";
+
     private StringHelper() {
 
     }
 
-    public static String concatTitleWithPageNum(CharSequence title, int pageNum) {
-        return title + Util.TWO_SPACES + pageNum;
+    public static String concatWithTwoSpaces(CharSequence title, int value) {
+        return title + TWO_SPACES + value;
     }
 
-    public static final class Util {
-
-        public static final String TWO_SPACES = "  ";
-        private static final String ELLIPSIS = "…";
-
-        private Util() {
-
-        }
-
-        public static String ellipsize(String s, int maxLength) {
-            if (s == null || s.length() < maxLength) {
-                return s;
-            }
-
-            return s.substring(0, maxLength) + ELLIPSIS;
-        }
+    public static String concatWithTwoSpaces(CharSequence title, CharSequence text) {
+        return title + TWO_SPACES + text;
     }
 }

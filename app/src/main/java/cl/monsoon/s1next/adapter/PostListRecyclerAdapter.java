@@ -34,7 +34,7 @@ import cl.monsoon.s1next.model.Post;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.DateUtil;
 import cl.monsoon.s1next.util.ObjectUtil;
-import cl.monsoon.s1next.util.ViewHelper;
+import cl.monsoon.s1next.util.TextViewHelper;
 import cl.monsoon.s1next.widget.GlideImageGetter;
 import cl.monsoon.s1next.widget.MyMovementMethod;
 import cl.monsoon.s1next.widget.MyTagHandler;
@@ -233,8 +233,8 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
             mCount = (TextView) itemView.findViewById(R.id.count);
             mPost = (TextView) itemView.findViewById(R.id.post);
 
-            ViewHelper.updateTextSize(new TextView[]{mUsername, mTime, mCount, mPost});
-            ViewHelper.updateTextColorWhenS1Theme(new TextView[]{mUsername, mPost});
+            TextViewHelper.updateTextSize(new TextView[]{mUsername, mTime, mCount, mPost});
+            TextViewHelper.updateTextColorWhenS1Theme(new TextView[]{mUsername, mPost});
 
             mCount.setMovementMethod(LinkMovementMethod.getInstance());
             // use custom movement method to provides selection and click

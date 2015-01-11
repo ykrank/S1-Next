@@ -1,6 +1,10 @@
 package cl.monsoon.s1next.util;
 
+import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
+import android.text.Spannable;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
 import android.widget.TextView;
 
@@ -8,10 +12,29 @@ import cl.monsoon.s1next.MyApplication;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.singleton.Config;
 
-public final class ViewHelper {
+public final class TextViewHelper {
 
-    private ViewHelper() {
+    private TextViewHelper() {
 
+    }
+
+    public static void appendWithTwoSpaces(@NonNull TextView textView, int value) {
+        textView.append(StringHelper.TWO_SPACES + value);
+    }
+
+    public static void appendWithTwoSpaces(@NonNull TextView textView, CharSequence text) {
+        textView.append(StringHelper.TWO_SPACES + text);
+    }
+
+    public static void setForegroundColor(@NonNull TextView textView, @ColorRes int color, int start, int end) {
+        Spannable spannable = (Spannable) textView.getText();
+        spannable.setSpan(
+                new ForegroundColorSpan(color),
+                start,
+                end,
+                Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+
+        textView.setText(spannable);
     }
 
     /**
