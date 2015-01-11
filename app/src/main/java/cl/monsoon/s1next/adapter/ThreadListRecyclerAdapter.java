@@ -28,8 +28,7 @@ public final class ThreadListRecyclerAdapter
     public ThreadListRecyclerAdapter() {
         setHasStableIds(true);
 
-        mSecondaryTextColor =
-                ColorUtil.a(Config.getColorAccent(), Config.getSecondaryTextAlpha());
+        mSecondaryTextColor = ColorUtil.a(Config.getColorAccent(), Config.getSecondaryTextAlpha());
     }
 
     @Override
@@ -43,9 +42,9 @@ public final class ThreadListRecyclerAdapter
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        TextView textView = holder.mTextView;
         Thread thread = mList.get(position);
 
+        TextView textView = holder.mTextView;
         textView.setText(thread.getTitle());
         int start = textView.length();
 

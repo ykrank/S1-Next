@@ -262,12 +262,12 @@ public abstract class BaseActivity extends ActionBarActivity
      * Implement {@link ToolbarInterface.SpinnerInteractionCallback}.
      */
     @Override
-    public void setupToolbarDropDown(List dropDownItemList) {
+    public void setupToolbarDropDown(List<? extends CharSequence> dropDownItemList) {
         if (mSpinner == null) {
             // add Spinner (drop down) to Toolbar
-            LayoutInflater.from(this).inflate(R.layout.toolbar_spinner, getToolbar(), true);
+            LayoutInflater.from(this).inflate(R.layout.toolbar_spinner, mToolbar, true);
             //noinspection ConstantConditions
-            mSpinner = (Spinner) getToolbar().findViewById(R.id.spinner);
+            mSpinner = (Spinner) mToolbar.findViewById(R.id.spinner);
 
             // set Listener to switch between views
             mSpinner.setOnItemSelectedListener(this);
@@ -275,20 +275,20 @@ public abstract class BaseActivity extends ActionBarActivity
             // We disable clickable in Spinner
             // and let its parents LinearLayout to handle
             // click event in order to increase clickable area.
-            View spinnerView = getToolbar().findViewById(R.id.toolbar_layout);
+            View spinnerView = mToolbar.findViewById(R.id.toolbar_layout);
             spinnerView.setOnClickListener(v -> mSpinner.performClick());
         }
 
         mSpinner.setAdapter(getSpinnerAdapter(dropDownItemList));
         // invalid index when user's login status has changed
         if (mSpinner.getAdapter().getCount() - 1 < mSelectedPosition) {
-            mSpinner.setSelection(0);
+            mSpinner.setSelection(0, false);
         } else {
-            mSpinner.setSelection(mSelectedPosition);
+            mSpinner.setSelection(mSelectedPosition, false);
         }
     }
 
-    BaseAdapter getSpinnerAdapter(List dropDownItemList) {
+    BaseAdapter getSpinnerAdapter(List<? extends CharSequence> dropDownItemList) {
         throw new UnsupportedOperationException("This method hasn't been implemented.");
     }
 

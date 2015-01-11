@@ -105,10 +105,9 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
             return;
         }
 
-        ItemViewHolder itemViewHolder = ObjectUtil.cast(holder, ItemViewHolder.class);
-
         Post post = mList.get(position);
 
+        ItemViewHolder itemViewHolder = ObjectUtil.cast(holder, ItemViewHolder.class);
         ImageView avatarView = itemViewHolder.mAvatar;
 
         // whether need download avatars depends on settings and Wi-Fi status

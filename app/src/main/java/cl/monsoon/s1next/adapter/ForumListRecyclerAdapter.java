@@ -20,8 +20,7 @@ public final class ForumListRecyclerAdapter
     public ForumListRecyclerAdapter() {
         setHasStableIds(true);
 
-        mSecondaryTextColor =
-                ColorUtil.a(Config.getColorAccent(), Config.getSecondaryTextAlpha());
+        mSecondaryTextColor = ColorUtil.a(Config.getColorAccent(), Config.getSecondaryTextAlpha());
     }
 
     @Override
@@ -35,9 +34,9 @@ public final class ForumListRecyclerAdapter
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        TextView textView = holder.mTextView;
         Forum forum = mList.get(position);
 
+        TextView textView = holder.mTextView;
         textView.setText(forum.getName());
         // add today's posts count to each forum
         if (forum.getTodayPosts() != 0) {

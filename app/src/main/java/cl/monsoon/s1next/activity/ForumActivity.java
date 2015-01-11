@@ -52,7 +52,7 @@ public final class ForumActivity extends BaseActivity {
     }
 
     @Override
-    BaseAdapter getSpinnerAdapter(List dropDownItemList) {
+    BaseAdapter getSpinnerAdapter(List<? extends CharSequence> dropDownItemList) {
         // don't use dropDownItemList#add(int, E)
         // otherwise we will have multiple "全部"
         // if we invoke this method many times
@@ -60,7 +60,7 @@ public final class ForumActivity extends BaseActivity {
         List<CharSequence> list = new ArrayList<>();
         // the first drop-down item is "全部"
         // and other items fetched from S1
-        list.addAll(ObjectUtil.uncheckedCast(dropDownItemList));
+        list.addAll(dropDownItemList);
         list.add(getResources().getString(R.string.toolbar_spinner_drop_down_all_forums_item_title));
 
         ArrayAdapter<CharSequence> arrayAdapter =

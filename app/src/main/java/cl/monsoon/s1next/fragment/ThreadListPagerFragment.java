@@ -113,9 +113,11 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
                                 cl.monsoon.s1next.model.Thread thread =
                                         mRecyclerAdapter.getItem(position);
 
+                                // Same to SubForumPostListActivity.ARG_THREAD
                                 intent.putExtra(PostListActivity.ARG_THREAD, thread);
 
                                 if (shouldGoToLastPage) {
+                                    // Same to SubForumPostListActivity.ARG_SHOULD_GO_TO_LAST_PAGE
                                     intent.putExtra(PostListActivity.ARG_SHOULD_GO_TO_LAST_PAGE, true);
                                 }
 
@@ -200,8 +202,9 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
             }
 
             if (!threadList.getSubForumList().isEmpty()) {
+
                 ObjectUtil.cast(getActivity(),
-                        ThreadListActivity.class).setupToolbarDropDown(threadList.getSubForumList());
+                        ThreadListActivity.class).setupSubForums(threadList.getSubForumList());
             }
         }
     }
