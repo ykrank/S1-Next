@@ -94,6 +94,8 @@ public class ThreadListActivity extends BaseActivity {
                 mListPopupWindow.dismiss();
             });
 
+            mListPopupWindow.setContentWidth(measureContentWidth(mSubForumArrayAdapter));
+
             // mMenuSubForums = null when configuration changes (like orientation changes)
             // but we don't need to care about the visibility of mMenuSubForums
             // because mListPopupWindow != null and we won't invoke
@@ -107,7 +109,9 @@ public class ThreadListActivity extends BaseActivity {
             mSubForumArrayAdapter.notifyDataSetChanged();
         }
 
-        mListPopupWindow.setContentWidth(measureContentWidth(mSubForumArrayAdapter));
+        // We need to invoke this every times when mSubForumArrayAdapter changes,
+        // but now we only invoke this the first time due to cost-performance.
+        // mListPopupWindow.setContentWidth(measureContentWidth(mSubForumArrayAdapter));
     }
 
     /**
