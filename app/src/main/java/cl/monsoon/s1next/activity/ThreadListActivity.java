@@ -64,7 +64,7 @@ public class ThreadListActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_sub_forums:
-                mListPopupWindow.setAnchorView(findViewById(R.id.menu_sub_forums));
+                mListPopupWindow.setAnchorView(getToolbar().findViewById(R.id.menu_sub_forums));
                 mListPopupWindow.show();
 
                 return true;

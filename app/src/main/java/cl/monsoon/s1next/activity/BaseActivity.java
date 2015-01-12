@@ -266,7 +266,6 @@ public abstract class BaseActivity extends ActionBarActivity
         if (mSpinner == null) {
             // add Spinner (drop down) to Toolbar
             LayoutInflater.from(this).inflate(R.layout.toolbar_spinner, mToolbar, true);
-            //noinspection ConstantConditions
             mSpinner = (Spinner) mToolbar.findViewById(R.id.spinner);
 
             // set Listener to switch between views
@@ -534,7 +533,6 @@ public abstract class BaseActivity extends ActionBarActivity
                 new LogoutDialog().show(getSupportFragmentManager(), LogoutDialog.TAG));
     }
 
-    @Nullable
     Toolbar getToolbar() {
         return mToolbar;
     }
