@@ -54,6 +54,10 @@ public enum Config {
         return INSTANCE.currentTheme == LIGHT_THEME_S1;
     }
 
+    public static boolean isDarkTheme() {
+        return INSTANCE.currentTheme == DARK_THEME;
+    }
+
     public static int getCurrentTheme() {
         return INSTANCE.currentTheme;
     }

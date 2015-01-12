@@ -36,7 +36,6 @@
 
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="mySpinner">@style/mySpinner</item>
         <item name="mySpinnerItemTextColor">@color/abc_primary_text_material_dark</item>
 
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>

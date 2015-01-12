@@ -7,8 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -54,6 +57,7 @@ import cl.monsoon.s1next.util.DateUtil;
 import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.widget.MyRecyclerView;
+import cl.monsoon.s1next.widget.StateListDrawableWithTint;
 
 /**
  * A base Activity which includes the toolbar tweaks,
@@ -262,12 +266,30 @@ public abstract class BaseActivity extends ActionBarActivity
      * Implement {@link ToolbarInterface.SpinnerInteractionCallback}.
      */
     @Override
+    @SuppressWarnings("deprecation")
     public void setupToolbarDropDown(List<? extends CharSequence> dropDownItemList) {
         if (mSpinner == null) {
             // add Spinner (drop down) to Toolbar
             LayoutInflater.from(this).inflate(R.layout.toolbar_spinner, mToolbar, true);
             mSpinner = (Spinner) mToolbar.findViewById(R.id.spinner);
 
+            if (!Config.isS1Theme() && !Config.isDarkTheme()) {
+                int colorAccent = Config.getColorAccent();
+                int[][] states =
+                        new int[][]{
+                                new int[]{android.R.attr.state_enabled, android.R.attr.state_focused},
+                                new int[]{android.R.attr.state_enabled, android.R.attr.state_pressed},
+                                new int[]{}
+                        };
+                int[] colors = new int[]{colorAccent, colorAccent, Color.TRANSPARENT};
+                ColorStateList colorStateList = new ColorStateList(states, colors);
+
+                mSpinner.setBackgroundDrawable(
+                        new StateListDrawableWithTint(
+                                getResources().getDrawable(R.drawable.abc_spinner_mtrl_am_alpha),
+                                colorStateList,
+                                PorterDuff.Mode.SRC_ATOP));
+            }
             // set Listener to switch between views
             mSpinner.setOnItemSelectedListener(this);
 
