@@ -29,7 +29,8 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
             new int[]{
                     200, 203, 204, 206,
                     300, 301,
-                    404, 405, 410, 414, 501};
+                    404, 405, 410, 414, 501
+            };
 
     private final OkHttpClient mOkHttpClient;
     private final GlideUrl mGlideUrl;
