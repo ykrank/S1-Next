@@ -31,6 +31,8 @@ public final class TouchImageView extends ImageView implements View.OnTouchListe
 
     public TouchImageView(Context context) {
         super(context);
+
+        init();
     }
 
     public TouchImageView(Context context, AttributeSet attrs) {
@@ -39,24 +41,25 @@ public final class TouchImageView extends ImageView implements View.OnTouchListe
 
     public TouchImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        init();
     }
 
     @SuppressWarnings("UnusedDeclaration")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public TouchImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+
+        init();
     }
 
-    @Override
-    protected void onFinishInflate() {
+    private void init() {
         // scale
         mScaleGestureDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
         // move
         mGestureDetector = new GestureDetector(getContext(), new GestureListener());
 
         setOnTouchListener(this);
-
-        super.onFinishInflate();
     }
 
     @Override
