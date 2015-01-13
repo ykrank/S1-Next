@@ -269,6 +269,8 @@ public abstract class BaseActivity extends ActionBarActivity
     @SuppressWarnings("deprecation")
     public void setupToolbarDropDown(List<? extends CharSequence> dropDownItemList) {
         if (mSpinner == null) {
+            setTitle(null);
+
             // add Spinner (drop down) to Toolbar
             LayoutInflater.from(this).inflate(R.layout.toolbar_spinner, mToolbar, true);
             mSpinner = (Spinner) mToolbar.findViewById(R.id.spinner);
