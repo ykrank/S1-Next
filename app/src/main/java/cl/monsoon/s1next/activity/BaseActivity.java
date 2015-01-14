@@ -78,25 +78,18 @@ public abstract class BaseActivity extends ActionBarActivity
         AdapterView.OnItemSelectedListener,
         ToolbarInterface.SpinnerInteractionCallback {
 
-    private Toolbar mToolbar;
-
     /**
      * The serialization (saved instance state) Bundle key representing
      * the position of the selected spinner item.
      */
     private static final String STATE_SPINNER_SELECTED_POSITION = "selected_position";
 
-    /**
-     * Store the selected Spinner position after restore save instance.
-     */
-    private int mSelectedPosition = 0;
-
-    private Spinner mSpinner;
 
     private Rect mSystemWindowInsets;
     private final List<InsetsFrameLayout.OnInsetsCallback> onInsetsCallbackList =
             Collections.synchronizedList(new ArrayList<>());
 
+    private Toolbar mToolbar;
     private boolean mIsToolbarShown = true;
 
     /**
@@ -115,6 +108,13 @@ public abstract class BaseActivity extends ActionBarActivity
     private View mDrawerTopBackgroundView;
     private ImageView mDrawerUserAvatarView;
     private TextView mDrawerUsernameView;
+
+    private Spinner mSpinner;
+
+    /**
+     * Store the selected Spinner position after restore save instance.
+     */
+    private int mSelectedPosition = 0;
 
     private FloatingActionButton mFloatingActionButton;
 
@@ -274,10 +274,14 @@ public abstract class BaseActivity extends ActionBarActivity
         mToolbar.getLayoutParams().height = insetsTop + ResourceUtil.getToolbarHeight(this);
         mToolbar.requestLayout();
 
+        if (mDrawerTopBackgroundView == null || mDrawerUserAvatarView == null) {
+            return;
+        }
+
         // adjust drawer top background & user avatar's layout
         mDrawerTopBackgroundView.getLayoutParams().height =
                 insetsTop + getResources().getDimensionPixelSize(R.dimen.drawer_top_height);
-        mDrawerLayout.requestLayout();
+        mDrawerTopBackgroundView.requestLayout();
 
         ViewGroup.MarginLayoutParams marginLayoutParams =
                 (ViewGroup.MarginLayoutParams) mDrawerUserAvatarView.getLayoutParams();
@@ -289,6 +293,7 @@ public abstract class BaseActivity extends ActionBarActivity
             onInsetsCallback.onInsetsChanged(insets);
         }
     }
+
 
     public void registerInsetsCallback(@NonNull InsetsFrameLayout.OnInsetsCallback onInsetsCallback) {
         onInsetsCallbackList.add(onInsetsCallback);
@@ -523,7 +528,6 @@ public abstract class BaseActivity extends ActionBarActivity
         mDrawerUserAvatarView = (ImageView) mDrawer.findViewById(R.id.drawer_user_avatar);
         mDrawerUserAvatarView.setOnClickListener(v ->
                 new ThemeChangeDialog().show(getSupportFragmentManager(), ThemeChangeDialog.TAG));
-
         mDrawerUsernameView = (TextView) mDrawer.findViewById(R.id.drawer_username);
 
         // Show default avatar and login prompt if user hasn't logged in,
@@ -605,6 +609,7 @@ public abstract class BaseActivity extends ActionBarActivity
                 new LogoutDialog().show(getSupportFragmentManager(), LogoutDialog.TAG));
     }
 
+    @Nullable
     Toolbar getToolbar() {
         return mToolbar;
     }
