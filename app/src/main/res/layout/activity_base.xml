@@ -46,7 +46,7 @@
                 android:layout_height="@dimen/statusbar_height"
                 android:background="?attr/colorPrimary"/>
 
-            <!-- ToolBar as the ActionBar for the Activity. -->
+            <!-- Toolbar as the ActionBar for the Activity. -->
             <include layout="@layout/toolbar"/>
 
         </LinearLayout>

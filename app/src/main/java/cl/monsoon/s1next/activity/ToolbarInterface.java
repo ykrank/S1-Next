@@ -12,7 +12,7 @@ public interface ToolbarInterface {
     public static interface SpinnerInteractionCallback {
 
         /**
-         * Set up ToolBar's drop down items.
+         * Set up Toolbar's drop down items.
          */
         public void setupToolbarDropDown(List<? extends CharSequence> dropDownItemList);
     }

@@ -139,7 +139,7 @@ public class PostListActivity
             @Override
             public void onPageSelected(int position) {
                 // TODO: We can't see thread page number sometimes because title is long,
-                // so it's better to put a TextView in ToolBar to show thread page number
+                // so it's better to put a TextView in Toolbar to show thread page number
                 // or make the title marquee.
                 setTitle(StringHelper.concatWithTwoSpaces(mThreadTitle, position + 1));
             }

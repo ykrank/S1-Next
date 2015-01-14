@@ -16,7 +16,7 @@ import cl.monsoon.s1next.fragment.ForumFragment;
 import cl.monsoon.s1next.util.ObjectUtil;
 
 /**
- * This Activity has Spinner in ToolBar to switch between different forum groups.
+ * This Activity has Spinner in Toolbar to switch between different forum groups.
  */
 public final class ForumActivity extends BaseActivity {
 

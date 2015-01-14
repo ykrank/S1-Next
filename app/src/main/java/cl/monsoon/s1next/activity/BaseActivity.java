@@ -243,7 +243,7 @@ public abstract class BaseActivity extends ActionBarActivity
         if (mToolbar == null) {
             mToolbar = (Toolbar) findViewById(R.id.toolbar);
             if (mToolbar != null) {
-                // designate a ToolBar as the ActionBar
+                // designate a Toolbar as the ActionBar
                 setSupportActionBar(mToolbar);
             }
         }
@@ -391,7 +391,7 @@ public abstract class BaseActivity extends ActionBarActivity
     }
 
     /**
-     * Set ToolBar's navigation icon to cross.
+     * Set Toolbar's navigation icon to cross.
      */
     void setupNavCrossIcon() {
         if (mToolbar != null) {
@@ -414,7 +414,7 @@ public abstract class BaseActivity extends ActionBarActivity
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close) {
             /**
-             * Only show items in the ToolBar relevant to this screen
+             * Only show items in the Toolbar relevant to this screen
              * if the drawer is not showing. Otherwise, let the drawer
              * decide what to show in the Toolbar.
              */

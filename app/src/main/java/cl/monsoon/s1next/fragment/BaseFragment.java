@@ -54,7 +54,7 @@ public abstract class BaseFragment<D extends Extractable>
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // Indicate that this Fragment would like to
-        // influence the set of actions in the ToolBar.
+        // influence the set of actions in the Toolbar.
         setHasOptionsMenu(true);
 
         String thisFragmentTag = getTag();

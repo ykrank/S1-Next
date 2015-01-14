@@ -2,7 +2,7 @@
 <resources>
 
     <style name="LightTheme" parent="Theme.AppCompat.Light">
-        <!-- Use ToolBar as the ActionBar. -->
+        <!-- Use Toolbar as the ActionBar. -->
         <item name="windowActionBar">false</item>
         <!-- show contextual action bar -->
         <item name="windowActionModeOverlay">true</item>

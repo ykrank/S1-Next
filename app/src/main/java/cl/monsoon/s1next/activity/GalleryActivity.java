@@ -26,7 +26,7 @@ public final class GalleryActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
         setTitle(null);
 
-        // set ToolBar's up icon to cross
+        // set Toolbar's up icon to cross
         TypedValue typedValue = new TypedValue();
         getTheme().resolveAttribute(R.attr.menuCross, typedValue, true);
         toolbar.setNavigationIcon(typedValue.resourceId);
