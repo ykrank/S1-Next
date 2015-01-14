@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -335,9 +334,8 @@ public abstract class BaseActivity extends ActionBarActivity
                         new int[][]{
                                 new int[]{android.R.attr.state_enabled, android.R.attr.state_focused},
                                 new int[]{android.R.attr.state_enabled, android.R.attr.state_pressed},
-                                new int[]{}
                         };
-                int[] colors = new int[]{colorAccent, colorAccent, Color.TRANSPARENT};
+                int[] colors = new int[]{colorAccent, colorAccent};
                 ColorStateList colorStateList = new ColorStateList(states, colors);
 
                 mSpinner.setBackgroundDrawable(
