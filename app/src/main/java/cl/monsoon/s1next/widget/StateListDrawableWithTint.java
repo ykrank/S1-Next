@@ -22,8 +22,12 @@ public final class StateListDrawableWithTint extends StateListDrawable {
 
     @Override
     protected boolean onStateChange(int[] stateSet) {
-        int color = mColorStateList.getColorForState(stateSet, Color.TRANSPARENT);
-        setColorFilter(color, mMode);
+        // mColorStateList is null when constructor invokes super() implicitly
+        //noinspection ConstantConditions
+        if (mColorStateList != null) {
+            int color = mColorStateList.getColorForState(stateSet, Color.TRANSPARENT);
+            setColorFilter(color, mMode);
+        }
 
         return super.onStateChange(stateSet);
     }
