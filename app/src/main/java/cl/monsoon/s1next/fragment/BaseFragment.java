@@ -1,6 +1,9 @@
 package cl.monsoon.s1next.fragment;
 
+import android.app.Activity;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +21,7 @@ import cl.monsoon.s1next.model.Extractable;
 import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
+import cl.monsoon.s1next.widget.InsetsFrameLayout;
 import cl.monsoon.s1next.widget.MyRecyclerView;
 
 /**
@@ -32,7 +36,8 @@ import cl.monsoon.s1next.widget.MyRecyclerView;
 public abstract class BaseFragment<D extends Extractable>
         extends Fragment
         implements HttpGetRetainedFragment.Callback<D>,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener,
+        InsetsFrameLayout.OnInsetsCallback {
 
     /**
      * Use {@link cl.monsoon.s1next.fragment.headless.HttpGetRetainedFragment}
@@ -116,6 +121,20 @@ public abstract class BaseFragment<D extends Extractable>
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        ObjectUtil.cast(activity, BaseActivity.class).registerInsetsCallback(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        ObjectUtil.cast(getActivity(), BaseActivity.class).unregisterInsetsCallback(this);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.refresh, menu);
     }
@@ -158,30 +177,37 @@ public abstract class BaseFragment<D extends Extractable>
     }
 
     /**
-     * We need to update SwipeRefreshLayout's progress view offset if we have overlay Toolbar.
+     * We need to update SwipeRefreshLayout's progress view offset
+     * if we have overlay status bar & Toolbar.
      */
-    private void updateSwipeRefreshProgressViewPosition() {
+    private void updateSwipeRefreshProgressViewPosition(@NonNull Rect insects) {
         if (mSwipeRefreshLayout == null) {
             return;
         }
 
-        int start = getResources().getDimensionPixelSize(R.dimen.swipe_refresh_progress_view_start);
-        int end = getResources().getDimensionPixelSize(R.dimen.swipe_refresh_progress_view_end);
+        int start =
+                insects.top
+                        + getResources().getDimensionPixelSize(R.dimen.swipe_refresh_progress_view_start);
+        int end =
+                insects.top
+                        + getResources().getDimensionPixelSize(R.dimen.swipe_refresh_progress_view_end);
 
         mSwipeRefreshLayout.setProgressViewOffset(false, start, end);
     }
 
-    void setupRecyclerViewPadding(RecyclerView recyclerView, int padding, boolean hasOverlayToolbar) {
-        int additionalTopPadding =
-                hasOverlayToolbar
-                        ? ResourceUtil.getToolbarHeight(getActivity())
-                        + getResources().getDimensionPixelSize(R.dimen.statusbar_height)
-                        : 0;
-        // +Toolbar's height if has overlay Toolbar
-        recyclerView.setPadding(
-                0, padding + additionalTopPadding, 0, padding);
+    /**
+     * @see cl.monsoon.s1next.activity.BaseActivity#onInsetsChanged(android.graphics.Rect)
+     */
+    void setRecyclerViewPadding(@NonNull RecyclerView recyclerView, @NonNull Rect insets, int padding) {
+        int toolbarHeight =
+                ResourceUtil.getToolbarHeight(getActivity());
+        recyclerView.setPadding(0, padding + insets.top + toolbarHeight, 0, padding);
 
-        updateSwipeRefreshProgressViewPosition();
+        updateSwipeRefreshProgressViewPosition(insets);
+    }
+
+    void onInsetsChanged() {
+        onInsetsChanged(ObjectUtil.cast(getActivity(), BaseActivity.class).getSystemWindowInsets());
     }
 
     void enableToolbarAndFabAutoHideEffect(MyRecyclerView recyclerView, @Nullable RecyclerView.OnScrollListener onScrollListener) {

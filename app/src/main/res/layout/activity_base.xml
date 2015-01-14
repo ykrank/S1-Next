@@ -9,10 +9,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <cl.monsoon.s1next.widget.InsetsFrameLayout
+        android:id="@+id/insets_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:fitsSystemWindows="true">
 
         <!-- As the main content view, the view below consumes the entire
              space available using match_parent in both dimensions. -->
@@ -34,24 +35,9 @@
             fab:fab_colorPressed="?attr/fabColorPressed"
             fab:fab_colorRipple="?attr/colorControlHighlight"/>
 
-        <!-- see cl.monsoon.s1next.activity.BaseActivity#mToolbarWithFakeStatusbar -->
-        <LinearLayout
-            android:id="@+id/toolbar_with_fake_statusbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        <include layout="@layout/toolbar"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/statusbar_height"
-                android:background="?attr/colorPrimary"/>
-
-            <!-- Toolbar as the ActionBar for the Activity. -->
-            <include layout="@layout/toolbar"/>
-
-        </LinearLayout>
-
-    </FrameLayout>
+    </cl.monsoon.s1next.widget.InsetsFrameLayout>
 
     <!-- android:layout_gravity="start" tells DrawerLayout to treat
      this as a sliding drawer on the left side for left-to-right

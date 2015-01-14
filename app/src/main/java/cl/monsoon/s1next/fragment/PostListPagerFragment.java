@@ -2,8 +2,10 @@ package cl.monsoon.s1next.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -47,8 +49,8 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     private CharSequence mThreadId;
     private int mPageNum;
 
-    private PostListRecyclerAdapter mRecyclerAdapter;
     private MyRecyclerView mRecyclerView;
+    private PostListRecyclerAdapter mRecyclerAdapter;
     private boolean mIsLoadingMore;
 
     private OnPagerInteractionCallback mOnPagerInteractionCallback;
@@ -86,10 +88,8 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerAdapter = new PostListRecyclerAdapter(getActivity());
         mRecyclerView.setAdapter(mRecyclerAdapter);
-        setupRecyclerViewPadding(
-                mRecyclerView,
-                getResources().getDimensionPixelSize(R.dimen.recycler_view_card_padding),
-                true);
+
+        onInsetsChanged();
         enableToolbarAndFabAutoHideEffect(mRecyclerView, new RecyclerView.OnScrollListener() {
 
             /**
@@ -127,6 +127,14 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
         super.onDetach();
 
         mOnPagerInteractionCallback = null;
+    }
+
+    @Override
+    public void onInsetsChanged(@NonNull Rect insets) {
+        setRecyclerViewPadding(
+                mRecyclerView,
+                insets,
+                getResources().getDimensionPixelSize(R.dimen.recycler_view_card_padding));
     }
 
     @Override

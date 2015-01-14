@@ -25,9 +25,9 @@ public final class ForumActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
 
         enableWindowTranslucentStatus();
+        setContentView(R.layout.activity_base);
 
         Fragment fragment;
         FragmentManager fragmentManager = getSupportFragmentManager();

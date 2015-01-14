@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- 16dp + 25dp (statusbar_height) -->
-    <dimen name="drawer_avatar_margin_top">41dp</dimen>
-    <!-- 16dp (avatar margin top) + 25dp (statusbar_height) + 64dp (avatar height) + 56dp (username) -->
-    <dimen name="drawer_top_height">161dp</dimen>
-
     <dimen name="card_view_vertical_margin">4dp</dimen>
 
 </resources>

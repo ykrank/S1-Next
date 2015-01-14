@@ -95,9 +95,10 @@ public class PostListActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
 
         enableWindowTranslucentStatus();
+        setContentView(R.layout.activity_base);
+
         setNavDrawerIndicatorEnabled(false);
 
         // not works well

@@ -12,6 +12,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -44,6 +45,8 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.signature.StringSignature;
 import com.melnykov.fab.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import cl.monsoon.s1next.Api;
@@ -56,6 +59,7 @@ import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.DateUtil;
 import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
+import cl.monsoon.s1next.widget.InsetsFrameLayout;
 import cl.monsoon.s1next.widget.MyRecyclerView;
 import cl.monsoon.s1next.widget.StateListDrawableWithTint;
 
@@ -70,6 +74,7 @@ import cl.monsoon.s1next.widget.StateListDrawableWithTint;
  */
 public abstract class BaseActivity extends ActionBarActivity
         implements User.OnLogoutListener,
+        InsetsFrameLayout.OnInsetsCallback,
         AdapterView.OnItemSelectedListener,
         ToolbarInterface.SpinnerInteractionCallback {
 
@@ -88,13 +93,10 @@ public abstract class BaseActivity extends ActionBarActivity
 
     private Spinner mSpinner;
 
-    /**
-     * We enable translucent system bars if API >= 19.
-     * When API >= 19, we use a fake status bar (a view with background)
-     * to represent the status bar color.
-     * When API < 19, the fake status bar has 0dp height.
-     */
-    private View mToolbarWithFakeStatusbar;
+    private Rect mSystemWindowInsets;
+    private final List<InsetsFrameLayout.OnInsetsCallback> onInsetsCallbackList =
+            Collections.synchronizedList(new ArrayList<>());
+
     private boolean mIsToolbarShown = true;
 
     /**
@@ -180,6 +182,12 @@ public abstract class BaseActivity extends ActionBarActivity
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
         setUpToolbar();
+
+        InsetsFrameLayout insetsFrameLayout =
+                (InsetsFrameLayout) findViewById(R.id.insets_frame_layout);
+        if (insetsFrameLayout != null) {
+            insetsFrameLayout.setOnInsetsCallback(this);
+        }
     }
 
     @Override
@@ -247,6 +255,47 @@ public abstract class BaseActivity extends ActionBarActivity
                 setSupportActionBar(mToolbar);
             }
         }
+    }
+
+    /**
+     * This method only useful if API >= 19 (which we can enable translucent status bar).
+     * But we don't use `fitsSystemWindows` to adjust layout
+     * in order to show overlay status bar & Toolbar.
+     */
+    @Override
+    public void onInsetsChanged(@NonNull Rect insets) {
+        mSystemWindowInsets = insets;
+
+        int insetsTop = insets.top;
+
+        // We need to set Toolbar's padding
+        // instead of translucent/transparent status bar.
+        mToolbar.setPadding(0, insetsTop, 0, 0);
+        mToolbar.getLayoutParams().height = insetsTop + ResourceUtil.getToolbarHeight(this);
+        mToolbar.requestLayout();
+
+        // adjust drawer top background & user avatar's layout
+        mDrawerTopBackgroundView.getLayoutParams().height =
+                insetsTop + getResources().getDimensionPixelSize(R.dimen.drawer_top_height);
+        mDrawerLayout.requestLayout();
+
+        ViewGroup.MarginLayoutParams marginLayoutParams =
+                (ViewGroup.MarginLayoutParams) mDrawerUserAvatarView.getLayoutParams();
+        marginLayoutParams.topMargin =
+                insetsTop + getResources().getDimensionPixelSize(R.dimen.drawer_avatar_margin_top);
+        mDrawerUserAvatarView.requestLayout();
+
+        for (InsetsFrameLayout.OnInsetsCallback onInsetsCallback : onInsetsCallbackList) {
+            onInsetsCallback.onInsetsChanged(insets);
+        }
+    }
+
+    public void registerInsetsCallback(@NonNull InsetsFrameLayout.OnInsetsCallback onInsetsCallback) {
+        onInsetsCallbackList.add(onInsetsCallback);
+    }
+
+    public void unregisterInsetsCallback(@NonNull InsetsFrameLayout.OnInsetsCallback onInsetsCallback) {
+        onInsetsCallbackList.remove(onInsetsCallback);
     }
 
     /**
@@ -328,7 +377,6 @@ public abstract class BaseActivity extends ActionBarActivity
      * auto show/hide effect.
      */
     public void enableToolbarAndFabAutoHideEffect(MyRecyclerView myRecyclerView, @Nullable RecyclerView.OnScrollListener onScrollListener) {
-        mToolbarWithFakeStatusbar = findViewById(R.id.toolbar_with_fake_statusbar);
         mToolbarAutoHideMinY = ResourceUtil.getToolbarHeight(this);
 
         myRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -378,12 +426,12 @@ public abstract class BaseActivity extends ActionBarActivity
 
     private void onToolbarAutoShowOrHide(boolean show) {
         if (show) {
-            mToolbarWithFakeStatusbar.animate()
+            mToolbar.animate()
                     .alpha(1)
                     .translationY(0)
                     .setInterpolator(new DecelerateInterpolator());
         } else {
-            mToolbarWithFakeStatusbar.animate()
+            mToolbar.animate()
                     .alpha(0)
                     .translationY(-mToolbar.getBottom())
                     .setInterpolator(new DecelerateInterpolator());
@@ -559,6 +607,14 @@ public abstract class BaseActivity extends ActionBarActivity
 
     Toolbar getToolbar() {
         return mToolbar;
+    }
+
+    public Rect getSystemWindowInsets() {
+        if (mSystemWindowInsets == null) {
+            mSystemWindowInsets = new Rect();
+        }
+
+        return mSystemWindowInsets;
     }
 
     void setNavDrawerEnabled(boolean enabled) {

@@ -34,9 +34,10 @@ public class ThreadListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
 
         enableWindowTranslucentStatus();
+        setContentView(R.layout.activity_base);
+
         setNavDrawerIndicatorEnabled(false);
 
         if (savedInstanceState == null) {

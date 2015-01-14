@@ -2,8 +2,10 @@ package cl.monsoon.s1next.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -42,6 +44,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     private CharSequence mForumId;
     private int mPageNum;
 
+    private MyRecyclerView mRecyclerView;
     private ThreadListRecyclerAdapter mRecyclerAdapter;
 
     private OnPagerInteractionCallback mOnPagerInteractionCallback;
@@ -69,15 +72,15 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
         mForumId = getArguments().getCharSequence(ARG_FORUM_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
-        MyRecyclerView recyclerView = (MyRecyclerView) view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView = (MyRecyclerView) view.findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerAdapter = new ThreadListRecyclerAdapter();
-        recyclerView.setAdapter(mRecyclerAdapter);
+        mRecyclerView.setAdapter(mRecyclerAdapter);
 
-        recyclerView.addOnItemTouchListener(
+        mRecyclerView.addOnItemTouchListener(
                 new RecyclerViewHelper(
                         getActivity(),
-                        recyclerView,
+                        mRecyclerView,
                         new RecyclerViewHelper.OnItemClickListener() {
 
                             @Override
@@ -126,11 +129,9 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
                         }
                 ));
 
-        setupRecyclerViewPadding(
-                recyclerView,
-                getResources().getDimensionPixelSize(R.dimen.list_view_padding),
-                true);
-        enableToolbarAndFabAutoHideEffect(recyclerView, null);
+
+        onInsetsChanged();
+        enableToolbarAndFabAutoHideEffect(mRecyclerView, null);
     }
 
     @Override
@@ -147,6 +148,14 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
         super.onDetach();
 
         mOnPagerInteractionCallback = null;
+    }
+
+    @Override
+    public void onInsetsChanged(@NonNull Rect insets) {
+        setRecyclerViewPadding(
+                mRecyclerView,
+                insets,
+                getResources().getDimensionPixelSize(R.dimen.list_view_padding));
     }
 
     @Override
