@@ -23,6 +23,7 @@
     <string name="menu_share">Share</string>
     <string name="menu_browser">Open in browser</string>
     <string name="menu_account_new">Create an account</string>
+    <string name="menu_thread_attachment">Attachment</string>
     <string name="menu_page_flip">Flip page</string>
     <string name="menu_favourites_add">Add to favourites</string>
     <string name="menu_sub_forums" translatable="false">子版块</string>

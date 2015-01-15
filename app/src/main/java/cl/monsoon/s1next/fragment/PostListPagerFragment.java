@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.activity.PostListActivity;
 import cl.monsoon.s1next.adapter.PostListRecyclerAdapter;
 import cl.monsoon.s1next.model.list.PostList;
 import cl.monsoon.s1next.model.mapper.PostListWrapper;
@@ -235,6 +236,12 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                 }
 
                 mOnPagerInteractionCallback.setTotalPages(postList.getInfo().getReplies() + 1);
+            }
+
+
+            if (postList.getThreadAttachment() != null) {
+                ObjectUtil.cast(getActivity(),
+                        PostListActivity.class).setupThreadAttachment(postList.getThreadAttachment());
             }
         }
 

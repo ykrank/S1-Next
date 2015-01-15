@@ -19,6 +19,7 @@
     <dimen name="swipe_refresh_progress_view_end">72dp</dimen>
 
     <dimen name="single_line_height">56dp</dimen>
+    <dimen name="two_line_height">72dp</dimen>
 
     <dimen name="item_padding">16dp</dimen>
 

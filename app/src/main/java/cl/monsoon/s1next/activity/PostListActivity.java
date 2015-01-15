@@ -36,9 +36,11 @@ import org.apache.commons.lang3.Range;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.adapter.ThreadAttachmentOptionListArrayAdapter;
 import cl.monsoon.s1next.fragment.BaseFragment;
 import cl.monsoon.s1next.fragment.PostListPagerFragment;
 import cl.monsoon.s1next.model.Result;
+import cl.monsoon.s1next.model.list.PostList;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.User;
@@ -85,6 +87,9 @@ public class PostListActivity
      */
     private PagerAdapter mAdapter;
     private ViewPager mViewPager;
+
+    private PostList.ThreadAttachment mThreadAttachment;
+    private MenuItem mMenuThreadAttachment;
 
     private MenuItem mMenuPageFlip;
 
@@ -213,6 +218,11 @@ public class PostListActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_post, menu);
 
+        mMenuThreadAttachment = menu.findItem(R.id.menu_thread_attachment);
+        if (mThreadAttachment == null) {
+            mMenuThreadAttachment.setVisible(false);
+        }
+
         mMenuPageFlip = menu.findItem(R.id.menu_page_flip);
         prepareMenuPageFlip();
 
@@ -229,6 +239,10 @@ public class PostListActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_thread_attachment:
+                showThreadAttachmentDialog();
+
+                return true;
             // show SeekBar to let user to flip page
             case R.id.menu_page_flip:
                 showPageFlipDialog();
@@ -249,6 +263,19 @@ public class PostListActivity
         super.onSaveInstanceState(outState);
 
         outState.putInt(STATE_SEEKBAR_PROGRESS, mSeekBarProgress);
+    }
+
+    public void setupThreadAttachment(PostList.ThreadAttachment threadAttachment) {
+        this.mThreadAttachment = threadAttachment;
+
+        if (mMenuThreadAttachment != null) {
+            mMenuThreadAttachment.setVisible(true);
+        }
+    }
+
+    private void showThreadAttachmentDialog() {
+        ThreadAttachmentDialogFragment.newInstance(mThreadAttachment)
+                .show(getSupportFragmentManager(), ThreadAttachmentDialogFragment.TAG);
     }
 
     /**
@@ -427,6 +454,43 @@ public class PostListActivity
             ObjectUtil.cast(object, BaseFragment.class).destroyRetainedFragment();
 
             super.destroyItem(container, position, object);
+        }
+    }
+
+    public static class ThreadAttachmentDialogFragment extends DialogFragment {
+
+        private static final String TAG = "thread_attachment_dialog";
+
+        private static final String ARG_ATTACHMENT_TITLE = "attachment_title";
+        private static final String ARG_THREAD_ATTACHMENT_INFO_LIST = "thread_attachment_info_list";
+
+        public static ThreadAttachmentDialogFragment newInstance(PostList.ThreadAttachment threadAttachment) {
+            ThreadAttachmentDialogFragment fragment = new ThreadAttachmentDialogFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putCharSequence(ARG_ATTACHMENT_TITLE, threadAttachment.getTitle());
+            bundle.putParcelableArrayList(
+                    ARG_THREAD_ATTACHMENT_INFO_LIST, threadAttachment.getOptionList());
+            fragment.setArguments(bundle);
+
+            return fragment;
+        }
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            return
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(getArguments().getCharSequence(ARG_ATTACHMENT_TITLE))
+                            .setAdapter(
+                                    new ThreadAttachmentOptionListArrayAdapter(
+                                            getActivity(),
+                                            R.layout.two_line_list_item,
+                                            getArguments().getParcelableArrayList(
+                                                    ARG_THREAD_ATTACHMENT_INFO_LIST)),
+                                    null)
+                            .setPositiveButton(android.R.string.ok, null)
+                            .create();
         }
     }
 
