@@ -1,6 +1,7 @@
 package cl.monsoon.s1next.adapter;
 
 import android.content.Context;
+import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,26 +17,17 @@ import cl.monsoon.s1next.util.TextViewHelper;
 
 public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
 
+    @LayoutRes
     private final int mResource;
 
     private final int mSecondaryTextColor;
 
-    public SubForumArrayAdapter(Context context, int resource, List<Forum> objects) {
+    public SubForumArrayAdapter(Context context, @LayoutRes int resource, List<Forum> objects) {
         super(context, resource, objects);
 
         this.mResource = resource;
 
         mSecondaryTextColor = ColorUtil.a(Config.getColorAccent(), Config.getSecondaryTextAlpha());
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return true;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return Long.parseLong(getItem(position).getId());
     }
 
     @Override
@@ -64,6 +56,16 @@ public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
         }
 
         return convertView;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return true;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return Long.parseLong(getItem(position).getId());
     }
 
     private static class ViewHolder {

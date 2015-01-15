@@ -67,7 +67,7 @@ import cl.monsoon.s1next.widget.StateListDrawableWithTint;
  * drop-down navigation, navigation drawer amongst others.
  * Also change theme depends on settings.
  * <p>
- * This base activity Implement the required
+ * This base activity implement the required
  * {@link android.widget.AdapterView.OnItemSelectedListener}
  * interface for Spinner to switch between views.
  */

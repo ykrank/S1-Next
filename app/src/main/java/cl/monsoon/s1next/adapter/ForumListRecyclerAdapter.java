@@ -12,8 +12,7 @@ import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.ColorUtil;
 import cl.monsoon.s1next.util.TextViewHelper;
 
-public final class ForumListRecyclerAdapter
-        extends RecyclerAdapter<Forum, ForumListRecyclerAdapter.ViewHolder> {
+public final class ForumListRecyclerAdapter extends RecyclerAdapter<Forum, ForumListRecyclerAdapter.ViewHolder> {
 
     private final int mSecondaryTextColor;
 

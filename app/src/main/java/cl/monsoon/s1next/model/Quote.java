@@ -13,20 +13,6 @@ import java.util.regex.Pattern;
  */
 public final class Quote implements Extractable, Parcelable {
 
-    // noticeauthor which was encoded
-    private String encodedUserId;
-    // noticetrimstr
-    private String quoteMessage;
-
-    public Quote() {
-
-    }
-
-    Quote(Parcel source) {
-        encodedUserId = source.readString();
-        quoteMessage = source.readString();
-    }
-
     public static final Parcelable.Creator<Quote> CREATOR = new Parcelable.Creator<Quote>() {
         @Override
         public Quote createFromParcel(Parcel source) {
@@ -39,15 +25,18 @@ public final class Quote implements Extractable, Parcelable {
         }
     };
 
-    @Override
-    public int describeContents() {
-        return 0;
+    // noticeauthor which was encoded
+    private String encodedUserId;
+    // noticetrimstr
+    private String quoteMessage;
+
+    public Quote() {
+
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(encodedUserId);
-        dest.writeString(quoteMessage);
+    private Quote(Parcel source) {
+        encodedUserId = source.readString();
+        quoteMessage = source.readString();
     }
 
     public String getEncodedUserId() {
@@ -92,5 +81,17 @@ public final class Quote implements Extractable, Parcelable {
         }
 
         return quote;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(encodedUserId);
+        dest.writeString(quoteMessage);
     }
 }

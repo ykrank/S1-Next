@@ -17,8 +17,7 @@ import cl.monsoon.s1next.util.TextViewHelper;
 /**
  * Similar to {@see cl.monsoon.s1next.adapter.ForumListRecyclerAdapter}.
  */
-public final class ThreadListRecyclerAdapter
-        extends RecyclerAdapter<Thread, ThreadListRecyclerAdapter.ViewHolder> {
+public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, ThreadListRecyclerAdapter.ViewHolder> {
 
     private final int mSecondaryTextColor;
 
