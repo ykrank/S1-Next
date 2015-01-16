@@ -2,6 +2,7 @@ package cl.monsoon.s1next.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public final class DateUtil {
 
@@ -16,7 +17,7 @@ public final class DateUtil {
      */
     public static String getDayWithYear() {
         // y year, D day in year
-        return new SimpleDateFormat("y D").format(new Date());
+        return new SimpleDateFormat("y D", Locale.US).format(new Date());
     }
 
     /**
@@ -24,6 +25,6 @@ public final class DateUtil {
      */
     public static String getWeekWithYear() {
         // y year, w week in year
-        return new SimpleDateFormat("y w").format(new Date());
+        return new SimpleDateFormat("y w", Locale.US).format(new Date());
     }
 }

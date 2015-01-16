@@ -76,6 +76,8 @@ public enum Config {
                         .obtainStyledAttributes(
                                 INSTANCE.currentTheme, new int[]{R.attr.colorAccent});
         INSTANCE.colorAccent = typedArray.getColor(0, -1);
+        typedArray.recycle();
+
         if (INSTANCE.colorAccent == -1) {
             throw new IllegalStateException("Theme accent color can't be -1.");
         }
