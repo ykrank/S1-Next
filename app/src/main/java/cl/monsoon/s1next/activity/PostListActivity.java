@@ -36,7 +36,7 @@ import org.apache.commons.lang3.Range;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.adapter.ThreadAttachmentOptionListArrayAdapter;
+import cl.monsoon.s1next.adapter.ThreadAttachmentInfoListArrayAdapter;
 import cl.monsoon.s1next.fragment.BaseFragment;
 import cl.monsoon.s1next.fragment.PostListPagerFragment;
 import cl.monsoon.s1next.model.Result;
@@ -470,7 +470,7 @@ public class PostListActivity
             Bundle bundle = new Bundle();
             bundle.putCharSequence(ARG_ATTACHMENT_TITLE, threadAttachment.getTitle());
             bundle.putParcelableArrayList(
-                    ARG_THREAD_ATTACHMENT_INFO_LIST, threadAttachment.getOptionList());
+                    ARG_THREAD_ATTACHMENT_INFO_LIST, threadAttachment.getInfoList());
             fragment.setArguments(bundle);
 
             return fragment;
@@ -483,7 +483,7 @@ public class PostListActivity
                     new AlertDialog.Builder(getActivity())
                             .setTitle(getArguments().getCharSequence(ARG_ATTACHMENT_TITLE))
                             .setAdapter(
-                                    new ThreadAttachmentOptionListArrayAdapter(
+                                    new ThreadAttachmentInfoListArrayAdapter(
                                             getActivity(),
                                             R.layout.two_line_list_item,
                                             getArguments().getParcelableArrayList(

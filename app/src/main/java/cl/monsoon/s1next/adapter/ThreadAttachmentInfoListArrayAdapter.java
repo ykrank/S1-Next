@@ -12,12 +12,12 @@ import java.util.List;
 
 import cl.monsoon.s1next.model.list.PostList;
 
-public class ThreadAttachmentOptionListArrayAdapter extends ArrayAdapter<PostList.ThreadAttachment.Option> {
+public class ThreadAttachmentInfoListArrayAdapter extends ArrayAdapter<PostList.ThreadAttachment.Info> {
 
     @LayoutRes
     private final int mResource;
 
-    public ThreadAttachmentOptionListArrayAdapter(Context context, @LayoutRes int resource, List<PostList.ThreadAttachment.Option> objects) {
+    public ThreadAttachmentInfoListArrayAdapter(Context context, @LayoutRes int resource, List<PostList.ThreadAttachment.Info> objects) {
         super(context, resource, objects);
 
         this.mResource = resource;
@@ -37,10 +37,10 @@ public class ThreadAttachmentOptionListArrayAdapter extends ArrayAdapter<PostLis
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        PostList.ThreadAttachment.Option option = getItem(position);
+        PostList.ThreadAttachment.Info info = getItem(position);
 
-        viewHolder.mLabelView.setText(option.getLabel());
-        viewHolder.mValueView.setText(option.getValue());
+        viewHolder.mLabelView.setText(info.getLabel());
+        viewHolder.mValueView.setText(info.getValue());
 
         return convertView;
     }

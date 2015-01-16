@@ -68,7 +68,7 @@ public final class PostList extends Account {
         private String title;
 
         @JsonProperty("optionlist")
-        private ArrayList<Option> optionList;
+        private ArrayList<Info> infoList;
 
         public String getTitle() {
             return title;
@@ -78,16 +78,16 @@ public final class PostList extends Account {
             this.title = title;
         }
 
-        public ArrayList<Option> getOptionList() {
-            return optionList;
+        public ArrayList<Info> getInfoList() {
+            return infoList;
         }
 
-        public void setOptionList(ArrayList<Option> optionList) {
-            this.optionList = optionList;
+        public void setInfoList(ArrayList<Info> infoList) {
+            this.infoList = infoList;
         }
 
         @JsonIgnoreProperties(ignoreUnknown = true)
-        public static class Option implements Parcelable {
+        public static class Info implements Parcelable {
 
             @JsonIgnore
             private final String label;
@@ -97,7 +97,7 @@ public final class PostList extends Account {
 
             @SuppressWarnings("UnusedDeclaration")
             @JsonCreator
-            public Option(
+            public Info(
                     @JsonProperty("title") String label,
                     @JsonProperty("value") String value,
                     @JsonProperty("unit") String unit) {
@@ -107,20 +107,20 @@ public final class PostList extends Account {
                                 + StringUtils.defaultString(unit);
             }
 
-            private Option(Parcel source) {
+            private Info(Parcel source) {
                 label = source.readString();
                 value = source.readString();
             }
 
-            public static final Parcelable.Creator<Option> CREATOR = new Parcelable.Creator<Option>() {
+            public static final Parcelable.Creator<Info> CREATOR = new Parcelable.Creator<Info>() {
                 @Override
-                public Option createFromParcel(Parcel source) {
-                    return new Option(source);
+                public Info createFromParcel(Parcel source) {
+                    return new Info(source);
                 }
 
                 @Override
-                public Option[] newArray(int size) {
-                    return new Option[size];
+                public Info[] newArray(int size) {
+                    return new Info[size];
                 }
             };
 
