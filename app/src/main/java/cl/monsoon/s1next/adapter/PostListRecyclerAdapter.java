@@ -1,8 +1,11 @@
 package cl.monsoon.s1next.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spannable;
@@ -12,6 +15,7 @@ import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,12 +140,17 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         // there is no need to quote #1
         if ("1".equals(post.getCount())) {
             countView.setText("#1");
+            countView.setOnTouchListener(null);
         } else {
             Spannable spannable = new SpannableString("#" + post.getCount());
             spannable.setSpan(
                     MY_CLICKABLE_SPAN, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             countView.setText(spannable);
             countView.setTag(post.getPartForQuote());
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                countView.setOnTouchListener(MY_TOUCH_LISTENER);
+            }
         }
 
         String reply = post.getReply();
@@ -258,6 +267,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
     }
 
     private static final ClickableSpan MY_CLICKABLE_SPAN = new ClickableSpan() {
+
         @Override
         public void onClick(View widget) {
             Intent intent = new Intent(PostListActivity.ACTION_QUOTE);
@@ -268,6 +278,25 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
 
             widget.getContext().sendBroadcast(intent);
         }
+    };
+
+    @SuppressLint("NewApi")
+    private static final View.OnTouchListener MY_TOUCH_LISTENER = (v, event) -> {
+
+        TextView textView = (TextView) v;
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                textView.setBackgroundColor(textView.getHighlightColor());
+
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                textView.setBackgroundColor(Color.TRANSPARENT);
+
+                break;
+        }
+
+        return false;
     };
 
     public static class FooterProgressViewHolder extends RecyclerView.ViewHolder {
