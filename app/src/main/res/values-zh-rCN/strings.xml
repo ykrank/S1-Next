@@ -3,6 +3,7 @@
     <string name="action_login">登录</string>
     <string name="avatar_content_desc">头像</string>
     <string name="picture_content_desc">图片</string>
+    <string name="dialog_message_login_prompt">请先登录</string>
     <string name="navigation_drawer_open">打开导航抽屉</string>
     <string name="navigation_drawer_close">关闭导航抽屉</string>
     <string name="drawer_top_background_content_desc">背景</string>
@@ -26,7 +27,6 @@
     <string name="dialog_seekbar_title_page_flip">前往…</string>
     <string name="dialog_progress_message_favourites_add">添加中…</string>
     <string name="prompt_remark">备注</string>
-    <string name="dialog_message_login_prompt">您需要登录后，才可以回帖。</string>
     <string name="prompt_reply">写点内容吧…</string>
     <string name="dialog_progress_message_reply">回复中…</string>
     <string name="dialog_message_reply_back_prompt">要舍弃这条回复吗？</string>

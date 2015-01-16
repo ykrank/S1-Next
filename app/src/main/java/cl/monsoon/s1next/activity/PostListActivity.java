@@ -230,13 +230,6 @@ public class PostListActivity
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.menu_favourites_add).setEnabled(User.isLoggedIn());
-
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_thread_attachment:
@@ -249,8 +242,10 @@ public class PostListActivity
 
                 return true;
             case R.id.menu_favourites_add:
-                ThreadFavouritesAddDialogFragment.newInstance(mThreadId)
-                        .show(getSupportFragmentManager(), ThreadFavouritesAddDialogFragment.TAG);
+                if (checkUserLoggedInStatus()) {
+                    ThreadFavouritesAddDialogFragment.newInstance(mThreadId)
+                            .show(getSupportFragmentManager(), ThreadFavouritesAddDialogFragment.TAG);
+                }
 
                 return true;
         }
@@ -416,10 +411,7 @@ public class PostListActivity
     }
 
     void startReplyActivity(@Nullable CharSequence quotePostId, @Nullable CharSequence quotePostCount) {
-        // show LoginPromptDialog if user hasn't logged in.
-        if (!User.isLoggedIn()) {
-            new LoginPromptDialog().show(getSupportFragmentManager(), LoginPromptDialog.TAG);
-
+        if (!checkUserLoggedInStatus()) {
             return;
         }
 
@@ -432,6 +424,17 @@ public class PostListActivity
         intent.putExtra(ReplyActivity.ARG_QUOTE_POST_COUNT, quotePostCount);
 
         startActivity(intent);
+    }
+
+    private boolean checkUserLoggedInStatus() {
+        // show LoginPromptDialog if user hasn't logged in.
+        if (!User.isLoggedIn()) {
+            new LoginPromptDialog().show(getSupportFragmentManager(), LoginPromptDialog.TAG);
+
+            return false;
+        }
+
+        return true;
     }
 
     /**

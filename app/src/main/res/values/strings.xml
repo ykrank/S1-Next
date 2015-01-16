@@ -7,6 +7,7 @@
     <string name="action_login">Sign in</string>
     <string name="avatar_content_desc">Avatar</string>
     <string name="picture_content_desc">Picture</string>
+    <string name="dialog_message_login_prompt">Please sign in first</string>
 
     <!-- drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -58,7 +59,6 @@
     <string name="dialog_title_favourites_add" translatable="false">@string/menu_favourites_add</string>
     <string name="dialog_progress_message_favourites_add">Adding…</string>
     <string name="prompt_remark">Remark</string>
-    <string name="dialog_message_login_prompt">You can\'t reply without login, please sign in first.</string>
 
     <!-- reply -->
 
