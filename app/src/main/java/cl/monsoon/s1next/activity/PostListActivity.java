@@ -268,6 +268,10 @@ public class PostListActivity
     public void setupThreadAttachment(PostList.ThreadAttachment threadAttachment) {
         this.mThreadAttachment = threadAttachment;
 
+        // mMenuThreadAttachment = null when configuration changes (like orientation changes)
+        // but we don't need to care about the visibility of mMenuThreadAttachment
+        // because mThreadAttachment != null and we won't invoke
+        // mMenuThreadAttachment.setVisible(false) during onCreateOptionsMenu(Menu)
         if (mMenuThreadAttachment != null) {
             mMenuThreadAttachment.setVisible(true);
         }
