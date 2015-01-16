@@ -24,6 +24,13 @@ public abstract class LoaderDialogFragment<D extends Extractable>
         extends DialogFragment
         implements LoaderManager.LoaderCallbacks<AsyncResult<D>> {
 
+    static final int ID_LOADER_LOGIN = 0;
+    protected static final int ID_LOADER_GET_AUTHENTICITY_TOKEN = 1;
+    protected static final int ID_LOADER_ADD_THREAD_TO_FAVOURITES = 2;
+    static final int ID_LOADER_POST_REPLY = 3;
+    static final int ID_LOADER_GET_QUOTE_EXTRA_INFO = 4;
+    static final int ID_LOADER_POST_QUOTE = 5;
+
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({ID_LOADER_LOGIN,
             ID_LOADER_GET_AUTHENTICITY_TOKEN,
@@ -33,13 +40,6 @@ public abstract class LoaderDialogFragment<D extends Extractable>
     private @interface LoaderId {
 
     }
-
-    static final int ID_LOADER_LOGIN = 0;
-    protected static final int ID_LOADER_GET_AUTHENTICITY_TOKEN = 1;
-    protected static final int ID_LOADER_ADD_THREAD_TO_FAVOURITES = 2;
-    static final int ID_LOADER_POST_REPLY = 3;
-    static final int ID_LOADER_GET_QUOTE_EXTRA_INFO = 4;
-    static final int ID_LOADER_POST_QUOTE = 5;
 
     /**
      * The serialization (saved instance state) Bundle key representing
