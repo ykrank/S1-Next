@@ -32,7 +32,7 @@ final class ListPreferenceCompat extends ListPreference {
     }
 
     /**
-     * setValue() was not calling notifyChanged() before android-4.4,
+     * setValue() was not calling notifyChanged() before android-4.4.
      */
     @Override
     public void setValue(String value) {
