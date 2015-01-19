@@ -4,7 +4,6 @@
     android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -31,9 +30,9 @@
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginRight="@dimen/fab_margin"
             android:visibility="gone"
-            fab:fab_colorNormal="?attr/fabColorNormal"
-            fab:fab_colorPressed="?attr/fabColorPressed"
-            fab:fab_colorRipple="?attr/colorControlHighlight"/>
+            app:fab_colorNormal="?attr/fabColorNormal"
+            app:fab_colorPressed="?attr/fabColorPressed"
+            app:fab_colorRipple="?attr/colorControlHighlight"/>
 
         <include layout="@layout/toolbar"/>
 
