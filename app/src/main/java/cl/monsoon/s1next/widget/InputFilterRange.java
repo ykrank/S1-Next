@@ -4,9 +4,10 @@ import android.text.InputFilter;
 import android.text.Spanned;
 
 import org.apache.commons.lang3.Range;
+import org.apache.commons.lang3.StringUtils;
 
 /**
- * Users can't enter a value which is out of the range in EditView.
+ * Constrains input from entering a value which is out of the range.
  */
 public final class InputFilterRange implements InputFilter {
 
@@ -30,6 +31,6 @@ public final class InputFilterRange implements InputFilter {
 
         }
 
-        return "";
+        return StringUtils.EMPTY;
     }
 }

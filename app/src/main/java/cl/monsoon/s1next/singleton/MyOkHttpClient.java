@@ -28,8 +28,8 @@ public enum MyOkHttpClient {
         okHttpClient.setReadTimeout(Config.OKHTTP_CLIENT_READ_TIMEOUT, TimeUnit.SECONDS);
 
         cookieManager = new CookieManager(
-                new PersistentHttpCookieStore(
-                        MyApplication.getContext()), CookiePolicy.ACCEPT_ALL);
+                new PersistentHttpCookieStore(MyApplication.getContext()),
+                CookiePolicy.ACCEPT_ALL);
 
         okHttpClient.setCookieHandler(cookieManager);
 

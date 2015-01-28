@@ -17,7 +17,9 @@ import org.xml.sax.XMLReader;
 import cl.monsoon.s1next.activity.GalleryActivity;
 
 /**
- * Make ImageSpan clickable and handle `strike` tag.
+ * Adds the {@link android.view.View.OnClickListener}
+ * to {@link android.text.style.ImageSpan} and
+ * handles {@literal <strike>} tag.
  */
 public final class MyTagHandler implements Html.TagHandler {
 
@@ -43,16 +45,17 @@ public final class MyTagHandler implements Html.TagHandler {
         if (!opening) {
             int end = output.length();
 
+            // \uFFFC: OBJECT REPLACEMENT CHARACTER
             int len = "\uFFFC".length();
             ImageSpan imageSpan = output.getSpans(end - len, end, ImageSpan.class)[0];
 
             String url = imageSpan.getSource();
-            // replace \uFFFC (OBJECT REPLACEMENT CHARACTER) to its ImageSpan's source
-            // in order to support url copy (when selected)
+            // replace \uFFFC with ImageSpan's source
+            // in order to support url copy when selected
             output.replace(end - len, end, url);
 
-            // Emoji url don't have domain
-            // skip Emoji url because we don't want Emoji clickable
+            // Emoji urls don't have domain
+            // skip Emoji urls because we don't need to make Emoji clickable
             if (URLUtil.isNetworkUrl(url)) {
 
                 output.removeSpan(imageSpan);
@@ -87,7 +90,7 @@ public final class MyTagHandler implements Html.TagHandler {
     }
 
     /**
-     * See to android.text.HtmlToSpannedConverter#getLast(android.text.Spanned, java.lang.Class)
+     * See android.text.HtmlToSpannedConverter#getLast(android.text.Spanned, java.lang.Class)
      */
     private static <T> T getLastSpan(Spanned text, Class<T> kind) {
         T[] spans = text.getSpans(0, text.length(), kind);

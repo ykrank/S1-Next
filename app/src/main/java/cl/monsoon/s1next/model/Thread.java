@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
- * Ambiguity in naming due to java.lang.Thread.
+ * Ambiguity in naming due to {@link java.lang.Thread}.
  */
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -97,9 +97,6 @@ public final class Thread implements Parcelable {
         dest.writeInt(permission);
     }
 
-    /**
-     * Forum info.
-     */
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ThreadListInfo {
 

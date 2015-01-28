@@ -4,6 +4,9 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
+/**
+ * Exposes {@link android.support.v7.widget.RecyclerView#computeVerticalScrollOffset()}.
+ */
 public class MyRecyclerView extends RecyclerView {
 
     public MyRecyclerView(Context context) {

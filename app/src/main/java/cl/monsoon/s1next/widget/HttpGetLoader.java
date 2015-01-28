@@ -8,6 +8,7 @@ import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.client.HttpResponseException;
 
 import java.io.IOException;
@@ -18,13 +19,13 @@ import cl.monsoon.s1next.singleton.MyObjectExtractor;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
 
 /**
+ * Loads data from the Internet and then extracted into POJO.
+ * <p>
  * Pay attention to https://stackoverflow.com/questions/15897547/loader-unable-to-retain-itself-during-certain-configuration-change
  * We must not use this during certain configuration change.
- * <p>
- * Load data from the Internet and then extracted into POJO.
- * {@see android.content.AsyncTaskLoader}.
  *
  * @param <D> the data type which could be extracted into POJO.
+ * @see android.content.AsyncTaskLoader
  */
 public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncResult<D>> {
 
@@ -65,23 +66,17 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
     public AsyncResult<D> loadInBackground() {
         AsyncResult<D> asyncResult = new AsyncResult<>();
 
-        InputStream in = null;
+        InputStream inputStream = null;
         try {
             // get response body from Internet
-            in = request();
+            inputStream = request();
 
             // JSON mapper
-            asyncResult.data = MyObjectExtractor.readValue(in, mClass);
+            asyncResult.data = MyObjectExtractor.extract(inputStream, mClass);
         } catch (IOException | RemoteException e) {
             asyncResult.exception = e;
         } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException ignored) {
-
-                }
-            }
+            IOUtils.closeQuietly(inputStream);
         }
 
         return asyncResult;
@@ -121,7 +116,7 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
     }
 
     /**
-     * Synchronous get but the {@link HttpGetLoader} is asynchronism.
+     * Synchronous HTTP GET but the {@link HttpGetLoader} is asynchronism.
      */
     InputStream request() throws IOException {
         Request request = new Request.Builder()
@@ -141,7 +136,7 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
     }
 
     /**
-     * Cancel {@link Call} if possible.
+     * Cancels {@link Call} if possible.
      */
     void onReleaseResources() {
         if (mCall != null) {

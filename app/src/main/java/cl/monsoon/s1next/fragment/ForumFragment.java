@@ -63,7 +63,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
                         mRecyclerView,
                         new RecyclerViewHelper.OnItemClickListener() {
                             @Override
-                            public void onItemClick(View view, int position) {
+                            public void onItemClick(@NonNull View view, int position) {
                                 Forum forum = mRecyclerAdapter.getItem(position);
 
                                 Intent intent = new Intent(getActivity(), ThreadListActivity.class);
@@ -73,7 +73,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
                             }
 
                             @Override
-                            public void onItemLongClick(View view, int position) {
+                            public void onItemLongClick(@NonNull View view, int position) {
 
                             }
                         })
@@ -138,22 +138,22 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
         super.onPostExecute(asyncResult);
 
         if (asyncResult.exception != null) {
-            AsyncResult.handleException(asyncResult.exception);
+            asyncResult.handleException();
         } else {
             ForumGroupListWrapper wrapper = asyncResult.data;
             mForumGroupList = wrapper.unwrap();
 
             // after set adapter, host activity
-            // would call changeContent().
+            // would call onToolbarDropDownItemSelected(int).
             mToolbarSpinnerInteractionCallback.setupToolbarDropDown(
                     mForumGroupList.getForumGroupNameList());
         }
     }
 
     /**
-     * Implement {@link cl.monsoon.s1next.activity.ToolbarInterface.OnDropDownItemSelectedListener}.
+     * Implements {@link cl.monsoon.s1next.activity.ToolbarInterface.OnDropDownItemSelectedListener}.
      * <p>
-     * Shows all forums when {@code position == 0} otherwise for each group.
+     * Show all forums when {@code position == 0} otherwise for each group.
      */
     @Override
     public void onToolbarDropDownItemSelected(int position) {
@@ -161,7 +161,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
             mRecyclerAdapter.setDataSet(mForumGroupList.getForumList());
         } else {
             // the first position is "全部"
-            // so position - 1 to correspond each group
+            // so position - 1 to correspond its group
             mRecyclerAdapter.setDataSet(mForumGroupList.getData().get(position - 1).getForumList());
         }
         mRecyclerAdapter.notifyDataSetChanged();

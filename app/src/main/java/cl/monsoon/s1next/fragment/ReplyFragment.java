@@ -2,7 +2,6 @@ package cl.monsoon.s1next.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.Loader;
 import android.text.Editable;
@@ -15,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.okhttp.RequestBody;
@@ -25,16 +23,16 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Quote;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
-import cl.monsoon.s1next.singleton.User;
+import cl.monsoon.s1next.singleton.MyAccount;
 import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ToastUtil;
-import cl.monsoon.s1next.util.TextViewHelper;
+import cl.monsoon.s1next.util.ViewHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.HttpPostLoader;
 
 /**
- * Send the reply via EditView.
+ * Sends the reply via EditView.
  */
 public final class ReplyFragment extends Fragment {
 
@@ -50,8 +48,8 @@ public final class ReplyFragment extends Fragment {
 
     private static final String STATUS_REPLY_SUCCESS = "post_reply_succeed";
 
-    private CharSequence mThreadId;
-    private CharSequence mQuotePostId;
+    private String mThreadId;
+    private String mQuotePostId;
 
     private Quote mQuote;
 
@@ -62,12 +60,12 @@ public final class ReplyFragment extends Fragment {
 
     private MenuItem mMenuReplyPost;
 
-    public static ReplyFragment newInstance(CharSequence threadId, CharSequence quotePostId) {
+    public static ReplyFragment newInstance(String threadId, String quotePostId) {
         ReplyFragment fragment = new ReplyFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putCharSequence(ARG_THREAD_ID, threadId);
-        bundle.putCharSequence(ARG_QUOTE_POST_ID, quotePostId);
+        bundle.putString(ARG_THREAD_ID, threadId);
+        bundle.putString(ARG_QUOTE_POST_ID, quotePostId);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -82,12 +80,12 @@ public final class ReplyFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mThreadId = getArguments().getCharSequence(ARG_THREAD_ID);
-        mQuotePostId = getArguments().getCharSequence(ARG_QUOTE_POST_ID);
+        mThreadId = getArguments().getString(ARG_THREAD_ID);
+        mQuotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
 
         mReplyView = (EditText) view.findViewById(R.id.reply);
-        TextViewHelper.updateTextSize(new TextView[]{mReplyView});
-        TextViewHelper.updateTextColorWhenS1Theme(new TextView[]{mReplyView});
+        ViewHelper.updateTextSize(mReplyView);
+        ViewHelper.updateTextColorWhenS1Theme(mReplyView);
         mReplyView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -134,7 +132,8 @@ public final class ReplyFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_reply_post:
-                ReplyLoaderDialogFragment.newInstance(mThreadId, mQuotePostId, mQuote, mReplyView.getText())
+                ReplyLoaderDialogFragment.newInstance(
+                        mThreadId, mQuotePostId, mQuote, mReplyView.getText().toString())
                         .show(getChildFragmentManager(), ReplyLoaderDialogFragment.TAG);
 
                 return true;
@@ -144,7 +143,7 @@ public final class ReplyFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putParcelable(STATE_QUOTE, mQuote);
@@ -163,14 +162,14 @@ public final class ReplyFragment extends Fragment {
 
         private Quote mQuote;
 
-        public static ReplyLoaderDialogFragment newInstance(CharSequence threadId, CharSequence quotePostId, Quote quote, CharSequence reply) {
+        public static ReplyLoaderDialogFragment newInstance(String threadId, String quotePostId, Quote quote, String reply) {
             ReplyLoaderDialogFragment fragment = new ReplyLoaderDialogFragment();
 
             Bundle bundle = new Bundle();
-            bundle.putCharSequence(ARG_THREAD_ID, threadId);
-            bundle.putCharSequence(ARG_QUOTE_POST_ID, quotePostId);
+            bundle.putString(ARG_THREAD_ID, threadId);
+            bundle.putString(ARG_QUOTE_POST_ID, quotePostId);
             bundle.putParcelable(ARG_QUOTE, quote);
-            bundle.putCharSequence(ARG_REPLY, reply);
+            bundle.putString(ARG_REPLY, reply);
             fragment.setArguments(bundle);
 
             return fragment;
@@ -188,7 +187,7 @@ public final class ReplyFragment extends Fragment {
         }
 
         @Override
-        public void onSaveInstanceState(@NonNull Bundle outState) {
+        public void onSaveInstanceState(Bundle outState) {
             super.onSaveInstanceState(outState);
 
             outState.putParcelable(STATE_QUOTE, mQuote);
@@ -203,9 +202,9 @@ public final class ReplyFragment extends Fragment {
         protected int getStartLoaderId() {
             int loaderId;
             final boolean hasAuthenticityToken =
-                    !TextUtils.isEmpty(User.getAuthenticityToken());
+                    !TextUtils.isEmpty(MyAccount.getAuthenticityToken());
             if (hasAuthenticityToken) {
-                if (TextUtils.isEmpty(getArguments().getCharSequence(ARG_QUOTE_POST_ID))) {
+                if (TextUtils.isEmpty(getArguments().getString(ARG_QUOTE_POST_ID))) {
                     loaderId = ID_LOADER_POST_REPLY;
                 } else {
                     if (mQuote == null) {
@@ -230,12 +229,10 @@ public final class ReplyFragment extends Fragment {
         protected RequestBody getRequestBody(int loaderId) {
             if (loaderId == ID_LOADER_POST_REPLY) {
                 return
-                        Api.getReplyPostBuilder(
-                                getArguments().getCharSequence(ARG_REPLY).toString());
+                        Api.getReplyPostBuilder(getArguments().getString(ARG_REPLY));
             } else if (loaderId == ID_LOADER_POST_QUOTE) {
                 return
-                        Api.getQuotePostBuilder
-                                (mQuote, getArguments().getCharSequence(ARG_REPLY).toString());
+                        Api.getQuotePostBuilder(mQuote, getArguments().getString(ARG_REPLY));
             }
 
             return super.getRequestBody(loaderId);
@@ -254,14 +251,14 @@ public final class ReplyFragment extends Fragment {
                         new HttpGetLoader<>(
                                 getActivity(),
                                 Api.getQuoteHelper(
-                                        getArguments().getCharSequence(ARG_THREAD_ID),
-                                        getArguments().getCharSequence(ARG_QUOTE_POST_ID)),
+                                        getArguments().getString(ARG_THREAD_ID),
+                                        getArguments().getString(ARG_QUOTE_POST_ID)),
                                 Quote.class);
             } else if (id == ID_LOADER_POST_REPLY || id == ID_LOADER_POST_QUOTE) {
                 return
                         new HttpPostLoader<>(
                                 getActivity(),
-                                Api.getPostRely(getArguments().getCharSequence(ARG_THREAD_ID)),
+                                Api.getPostRely(getArguments().getString(ARG_THREAD_ID)),
                                 ResultWrapper.class,
                                 getRequestBody(id));
             }
@@ -274,11 +271,11 @@ public final class ReplyFragment extends Fragment {
         public void onLoadFinished(Loader loader, Object data) {
             AsyncResult asyncResult = ObjectUtil.cast(data, AsyncResult.class);
             if (asyncResult.exception != null) {
-                AsyncResult.handleException(asyncResult.exception);
+                asyncResult.handleException();
             } else {
                 int id = loader.getId();
                 if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
-                    if (TextUtils.isEmpty(getArguments().getCharSequence(ARG_QUOTE_POST_ID))) {
+                    if (TextUtils.isEmpty(getArguments().getString(ARG_QUOTE_POST_ID))) {
                         getLoaderManager().initLoader(ID_LOADER_POST_REPLY, null, this);
                     } else {
                         getLoaderManager().initLoader(ID_LOADER_GET_QUOTE_EXTRA_INFO, null, this);

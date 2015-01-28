@@ -1,7 +1,6 @@
 package cl.monsoon.s1next.util;
 
-import android.content.Context;
-
+import cl.monsoon.s1next.MyApplication;
 import cl.monsoon.s1next.R;
 
 public final class ResourceUtil {
@@ -10,9 +9,9 @@ public final class ResourceUtil {
 
     }
 
-    public static int getToolbarHeight(Context context) {
+    public static int getToolbarHeight() {
         return
-                context.getResources()
+                MyApplication.getContext().getResources()
                         .getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material);
     }
 }

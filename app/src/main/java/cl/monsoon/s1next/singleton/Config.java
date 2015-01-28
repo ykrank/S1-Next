@@ -3,6 +3,9 @@ package cl.monsoon.s1next.singleton;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.support.annotation.ColorRes;
+import android.support.annotation.StringRes;
+
+import java.util.concurrent.TimeUnit;
 
 import cl.monsoon.s1next.MyApplication;
 import cl.monsoon.s1next.R;
@@ -16,15 +19,16 @@ public enum Config {
     public static final int OKHTTP_CLIENT_WRITE_TIMEOUT = 20;
     public static final int OKHTTP_CLIENT_READ_TIMEOUT = 60;
 
+    public static final long COOKIES_MAX_AGE = TimeUnit.DAYS.toSeconds(30);
+
     // 64MB
     public static final int GLIDE_DISK_CACHE_SIZE = 64 * 1024 * 1024;
 
-    /**
-     * Take care of Menu ~ open in browser ~
-     * when these numbers are not default.
-     */
+
     public static final int THREADS_PER_PAGE = 50;
     public static final int POSTS_PER_PAGE = 30;
+
+    public static final int REPLY_NOTIFICATION_MAX_LENGTH = 100;
 
     private static final int LIGHT_THEME_S1 = R.style.LightTheme_S1;
     private static final int LIGHT_THEME_LIGHT_BLUE = R.style.LightTheme_Inverse_LightBlue;
@@ -65,10 +69,10 @@ public enum Config {
     public static void setCurrentTheme(SharedPreferences sharedPreferences) {
         INSTANCE.currentTheme =
                 THEMES[Integer.parseInt(
-                        sharedPreferences.getString(
+                        getString(
+                                sharedPreferences,
                                 SettingsFragment.PREF_KEY_THEME,
-                                MyApplication.getContext()
-                                        .getString(R.string.pref_theme_default_value)))];
+                                R.string.pref_theme_default_value))];
 
         // get current theme's accent color
         TypedArray typedArray =
@@ -112,10 +116,10 @@ public enum Config {
 
     public static void setTextScale(SharedPreferences sharedPreferences) {
         String value =
-                sharedPreferences.getString(
+                getString(
+                        sharedPreferences,
                         SettingsFragment.PREF_KEY_FONT_SIZE,
-                        MyApplication.getContext().
-                                getString(R.string.pref_font_size_default_value));
+                        R.string.pref_font_size_default_value);
 
         INSTANCE.textScale = TextScale.fromString(value).getSize();
     }
@@ -130,10 +134,10 @@ public enum Config {
 
     public static void setAvatarsDownloadStrategy(SharedPreferences sharedPreferences) {
         String value =
-                sharedPreferences.getString(
+                getString(
+                        sharedPreferences,
                         SettingsFragment.PREF_KEY_DOWNLOAD_AVATARS,
-                        MyApplication.getContext()
-                                .getString(R.string.pref_download_avatars_default_value));
+                        R.string.pref_download_avatars_default_value);
 
         INSTANCE.avatarsDownloadStrategy = DownloadStrategy.fromString(value);
     }
@@ -148,10 +152,10 @@ public enum Config {
 
     public static void setImagesDownloadStrategy(SharedPreferences sharedPreferences) {
         String value =
-                sharedPreferences.getString(
+                getString(
+                        sharedPreferences,
                         SettingsFragment.PREF_KEY_DOWNLOAD_IMAGES,
-                        MyApplication.getContext().
-                                getString(R.string.pref_download_images_default_value));
+                        R.string.pref_download_images_default_value);
 
         INSTANCE.imagesDownloadStrategy = DownloadStrategy.fromString(value);
     }
@@ -166,6 +170,12 @@ public enum Config {
                         DownloadStrategy.WIFI
                         && INSTANCE.wifi
                         || downloadStrategy == DownloadStrategy.ALWAYS;
+    }
+
+    private static String getString(SharedPreferences sharedPreferences, String key, @StringRes int defValueResId) {
+        return
+                sharedPreferences.getString(
+                        key, MyApplication.getContext().getString(defValueResId));
     }
 
     public static enum TextScale {

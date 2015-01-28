@@ -10,7 +10,7 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.ColorUtil;
-import cl.monsoon.s1next.util.TextViewHelper;
+import cl.monsoon.s1next.util.ViewHelper;
 
 public final class ForumListRecyclerAdapter extends RecyclerAdapter<Forum, ForumListRecyclerAdapter.ViewHolder> {
 
@@ -40,8 +40,8 @@ public final class ForumListRecyclerAdapter extends RecyclerAdapter<Forum, Forum
         // add today's posts count to each forum
         if (forum.getTodayPosts() != 0) {
             int start = textView.length();
-            TextViewHelper.appendWithTwoSpaces(textView, forum.getTodayPosts());
-            TextViewHelper.setForegroundColor(textView, mSecondaryTextColor, start, textView.length());
+            ViewHelper.concatWithTwoSpaces(textView, forum.getTodayPosts());
+            ViewHelper.setForegroundColor(textView, mSecondaryTextColor, start, textView.length());
         }
     }
 
@@ -58,8 +58,8 @@ public final class ForumListRecyclerAdapter extends RecyclerAdapter<Forum, Forum
             super(itemView);
 
             mTextView = (TextView) itemView;
-            TextViewHelper.updateTextSize(new TextView[]{mTextView});
-            TextViewHelper.updateTextColorWhenS1Theme(new TextView[]{mTextView});
+            ViewHelper.updateTextSize(mTextView);
+            ViewHelper.updateTextColorWhenS1Theme(mTextView);
         }
     }
 }

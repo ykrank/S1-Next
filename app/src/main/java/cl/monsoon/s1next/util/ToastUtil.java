@@ -20,7 +20,7 @@ public final class ToastUtil {
 
     }
 
-    public static void showByText(CharSequence text, @Duration int duration) {
+    public static void showByText(String text, @Duration int duration) {
         Toast.makeText(MyApplication.getContext(), text, duration).show();
     }
 

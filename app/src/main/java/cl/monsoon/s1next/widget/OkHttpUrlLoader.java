@@ -12,9 +12,9 @@ import com.squareup.okhttp.OkHttpClient;
 import java.io.InputStream;
 
 /**
- * A simple model loader for fetching media over http/https using OkHttp.
+ * A simple model loader for fetching media over HTTP/HTTPS using OkHttp.
  * <p>
- * Fork from https://github.com/bumptech/glide/blob/master/integration/okhttp/src/main/java/com/bumptech/glide/integration/okhttp/OkHttpUrlLoader.java
+ * Forked from https://github.com/bumptech/glide/blob/master/integration/okhttp/src/main/java/com/bumptech/glide/integration/okhttp/OkHttpUrlLoader.java
  */
 public final class OkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
 
@@ -30,7 +30,7 @@ public final class OkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream>
     }
 
     /**
-     * The default factory for {@link OkHttpUrlLoader}s.
+     * The default factory for {@link OkHttpUrlLoader}.
      */
     public static class Factory implements ModelLoaderFactory<GlideUrl, InputStream> {
 

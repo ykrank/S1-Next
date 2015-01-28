@@ -13,7 +13,7 @@ import java.util.List;
 import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.ColorUtil;
-import cl.monsoon.s1next.util.TextViewHelper;
+import cl.monsoon.s1next.util.ViewHelper;
 
 public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
 
@@ -26,7 +26,6 @@ public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
         super(context, resource, objects);
 
         this.mResource = resource;
-
         mSecondaryTextColor = ColorUtil.a(Config.getColorAccent(), Config.getSecondaryTextAlpha());
     }
 
@@ -50,9 +49,8 @@ public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
         // add today's posts count to each forum
         if (forum.getTodayPosts() != 0) {
             int start = textView.length();
-            TextViewHelper.appendWithTwoSpaces(textView, forum.getTodayPosts());
-            TextViewHelper.setForegroundColor(
-                    textView, mSecondaryTextColor, start, textView.length());
+            ViewHelper.concatWithTwoSpaces(textView, forum.getTodayPosts());
+            ViewHelper.setForegroundColor(textView, mSecondaryTextColor, start, textView.length());
         }
 
         return convertView;

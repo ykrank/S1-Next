@@ -36,7 +36,7 @@ public final class Post {
     private long time;
 
     @JsonProperty("attachments")
-    private Map<String, Attachment> attachmentMap;
+    private Map<Integer, Attachment> attachmentMap;
 
     public Post() {
 
@@ -76,11 +76,11 @@ public final class Post {
     }
 
     public void setReply(String reply) {
-        // Map colors (see mapColors(String))
-        // and replace "imgwidth" with "img width",
+        // Replaces "imgwidth" with "img width",
         // because some img tags in S1 aren't correct.
         // This may be the best way to deal with it though
         // we may replace something wrong by accident.
+        // Also maps some colors, see mapColors(String).
         this.reply = mapColors(reply).replaceAll("<imgwidth=\"", "<img width=\"");
     }
 
@@ -96,14 +96,12 @@ public final class Post {
         return time;
     }
 
-    /**
-     * Convert seconds to milliseconds.
-     */
     public void setTime(long time) {
+        // convert seconds to milliseconds
         this.time = TimeUnit.SECONDS.toMillis(time);
     }
 
-    public Map<String, Attachment> getAttachmentMap() {
+    public Map<Integer, Attachment> getAttachmentMap() {
         return attachmentMap;
     }
 
@@ -115,10 +113,10 @@ public final class Post {
      * {@link Color} doesn't support all HTML color names.
      * So {@link android.text.Html#fromHtml(String)} won't
      * map some color names for replies in S1.
-     * We need to map these color name to its hex value by ourselves.
+     * We need to map these color names to their hex value.
      */
-    private static String mapColors(CharSequence reply) {
-        // sample: color="sienna"
+    private static String mapColors(String reply) {
+        // example: color="sienna"
         // matcher.group(0): color="sienna"
         // matcher.group(1): sienna
         Pattern pattern = Pattern.compile("color=\"([a-zA-Z]+)\"");
@@ -130,10 +128,10 @@ public final class Post {
             // get color hex value for its color name
             color = COLOR_NAME_MAP.get(matcher.group(1).toLowerCase());
             if (color == null) {
-                // throw new IllegalStateException("COLOR_NAME_MAP" + "must contain " + matcher.group(0));
+                // throw new IllegalStateException("COLOR_NAME_MAP must contain " + matcher.group(1) + " .");
                 continue;
             }
-            // append part of the string and plus its color hex value
+            // append part of the string and its color hex value
             matcher.appendReplacement(stringBuffer, "color=\"" + color + "\"");
         }
         matcher.appendTail(stringBuffer);

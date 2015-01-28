@@ -2,99 +2,76 @@ package cl.monsoon.s1next.model;
 
 import android.text.TextUtils;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import cl.monsoon.s1next.singleton.User;
+import cl.monsoon.s1next.singleton.MyAccount;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Account {
 
-    @JsonProperty("member_username")
-    private String username;
-
-    @JsonProperty("member_uid")
+    @JsonIgnore
     private String uid;
 
-    @JsonProperty("formhash")
+    @JsonIgnore
+    private String username;
+
+    @JsonIgnore
     private String authenticityToken;
 
-    @JsonProperty("readaccess")
+    @JsonIgnore
     private int permission;
 
-    public String getUsername() {
-        return username;
+    public Account() {
+
     }
 
-    /**
-     * Store user info when has logged in (just now or before).
-     */
-    public void setUsername(String username) {
+    @JsonCreator
+    public Account(
+            @JsonProperty("member_uid") String uid,
+            @JsonProperty("member_username") String username,
+            @JsonProperty("formhash") String authenticityToken,
+            @JsonProperty("readaccess") int permission) {
         this.username = username;
+        this.uid = uid;
+        this.authenticityToken = authenticityToken;
+        this.permission = permission;
 
-        final boolean isUserLoggedIn = User.isLoggedIn();
-        if (TextUtils.isEmpty(username)) {
-            if (isUserLoggedIn) {
-                User.setName(null);
-                // user's cookie has expired
-                User.sendLogoutOrExpirationBroadcast();
+        final boolean isUserLoggedInPrevious = MyAccount.isLoggedIn();
+        final boolean hasValidUidNow = !TextUtils.isEmpty(uid);
+        if (isUserLoggedInPrevious) {
+            // if user's cookie has expired
+            if (!hasValidUidNow) {
+                MyAccount.sendCookieExpirationBroadcast();
             }
         } else {
-            if (!isUserLoggedIn) {
-                User.setName(username);
-
-                // we should confirm both username and uid are exist
-                // then send login Broadcast
-                if (uid != null) {
-                    // login in
-                    User.sendLoginBroadcast();
-                }
+            if (hasValidUidNow) {
+                MyAccount.sendLoginBroadcast();
             }
         }
+
+        MyAccount.setUid(uid);
+        MyAccount.setName(username);
+        MyAccount.setAuthenticityToken(authenticityToken);
+        MyAccount.setPermission(permission);
     }
 
     public String getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
-
-        // uid.equals("0") = true when user hasn't logged in
-        if (TextUtils.isEmpty(uid) || "0".equals(uid)) {
-            User.setUid(null);
-        } else {
-            User.setUid(uid);
-
-            // we don't send login Broadcast twice actually
-            if (username != null) {
-                User.sendLoginBroadcast();
-            }
-        }
+    public String getUsername() {
+        return username;
     }
 
     public String getAuthenticityToken() {
         return authenticityToken;
     }
 
-    public void setAuthenticityToken(String authenticityToken) {
-        this.authenticityToken = authenticityToken;
-
-        if (TextUtils.isEmpty(authenticityToken)) {
-            User.setAuthenticityToken(null);
-        } else {
-            User.setAuthenticityToken(authenticityToken);
-        }
-    }
-
     public int getPermission() {
         return permission;
-    }
-
-    public void setPermission(int permission) {
-        this.permission = permission;
-
-        User.setPermission(permission);
     }
 }

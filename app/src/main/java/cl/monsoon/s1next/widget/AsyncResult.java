@@ -12,7 +12,7 @@ import cl.monsoon.s1next.model.Extractable;
 import cl.monsoon.s1next.util.ToastUtil;
 
 /**
- * {@code exception} is not null when load data failed.
+ * A Wrapper for {@link #data} and {@link #exception}.
  *
  * @param <D> the data type which can be be extracted to POJO.
  */
@@ -28,9 +28,8 @@ public final class AsyncResult<D extends Extractable> {
         this.data = data;
     }
 
-    public static void handleException(Throwable exception) {
-        if (exception instanceof HttpResponseException
-                || exception instanceof RemoteException) {
+    public void handleException() {
+        if (exception instanceof HttpResponseException || exception instanceof RemoteException) {
             ToastUtil.showByResId(R.string.message_server_error, Toast.LENGTH_SHORT);
         } else if (exception instanceof IOException) {
             ToastUtil.showByResId(R.string.message_network_error, Toast.LENGTH_SHORT);

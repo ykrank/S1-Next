@@ -15,7 +15,7 @@ import cl.monsoon.s1next.model.mapper.Deserializable;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
 
 /**
- * Use an HTTP POST to send a request body.
+ * Uses an HTTP POST to send a request body.
  *
  * @see HttpGetLoader
  */
@@ -30,7 +30,7 @@ public final class HttpPostLoader<D extends Deserializable> extends HttpGetLoade
     }
 
     /**
-     * Synchronous post but the {@link HttpPostLoader} is asynchronism.
+     * Synchronous HTTP POST but the {@link HttpPostLoader} is asynchronism.
      */
     @Override
     InputStream request() throws IOException {

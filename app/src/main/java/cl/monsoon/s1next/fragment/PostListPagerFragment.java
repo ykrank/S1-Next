@@ -31,10 +31,13 @@ import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.MyRecyclerView;
 
 /**
- * A Fragment representing one of the pages of posts.
- * All activities containing this Fragment must
- * implement {@link cl.monsoon.s1next.fragment.PostListPagerFragment.OnPagerInteractionCallback}.
- * Similar to {@see ThreadListPagerFragment}
+ * A Fragment which includes {@link android.support.v4.view.ViewPager}
+ * to represent each page of thread posts.
+ * <p>
+ * All activities containing this Fragment must implement
+ * {@link cl.monsoon.s1next.fragment.PostListPagerFragment.OnPagerInteractionCallback}.
+ * <p>
+ * Similar to {@link cl.monsoon.s1next.fragment.ThreadListPagerFragment}
  */
 public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
 
@@ -43,11 +46,11 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
 
     /**
      * The serialization (saved instance state) Bundle key representing whether
-     * {@link cl.monsoon.s1next.widget.MyRecyclerView} is loading more when configuration changed.
+     * {@link cl.monsoon.s1next.widget.MyRecyclerView} is loading more when configuration changes.
      */
     private static final String STATE_IS_LOADING_MORE = "is_loading_more";
 
-    private CharSequence mThreadId;
+    private String mThreadId;
     private int mPageNum;
 
     private MyRecyclerView mRecyclerView;
@@ -56,11 +59,11 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
 
     private OnPagerInteractionCallback mOnPagerInteractionCallback;
 
-    public static PostListPagerFragment newInstance(CharSequence threadId, int page) {
+    public static PostListPagerFragment newInstance(String threadId, int page) {
         PostListPagerFragment fragment = new PostListPagerFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putCharSequence(ARG_THREAD_ID, threadId);
+        bundle.putString(ARG_THREAD_ID, threadId);
         bundle.putInt(ARG_PAGE_NUM, page);
         fragment.setArguments(bundle);
 
@@ -76,7 +79,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mThreadId = getArguments().getCharSequence(ARG_THREAD_ID);
+        mThreadId = getArguments().getString(ARG_THREAD_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
         mRecyclerView = (MyRecyclerView) view.findViewById(R.id.recycler_view);
@@ -85,7 +88,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         // linearLayoutManager.setSmoothScrollbarEnabled(false);
-        // if https://code.google.com/p/android/issues/detail?id=78375&q=setSmoothScrollbarEnabled&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars fixed
+        // if https://code.google.com/p/android/issues/detail?id=78375&q=setSmoothScrollbarEnabled&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars has fixed
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerAdapter = new PostListRecyclerAdapter(getActivity());
         mRecyclerView.setAdapter(mRecyclerAdapter);
@@ -94,7 +97,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
         enableToolbarAndFabAutoHideEffect(mRecyclerView, new RecyclerView.OnScrollListener() {
 
             /**
-             * Endless Scrolling with RecyclerView.
+             * Endless scrolling with RecyclerView.
              */
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -212,12 +215,12 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
 
         if (asyncResult.exception != null) {
             if (getUserVisibleHint()) {
-                AsyncResult.handleException(asyncResult.exception);
+                asyncResult.handleException();
             }
         } else {
             PostList postList = asyncResult.data.unwrap();
 
-            // when user has logged out and then has not permission to access this thread
+            // if user has logged out and then has no permission to access this thread
             if (postList.getData().isEmpty()) {
                 String message = asyncResult.data.getResult().getMessage();
                 if (!TextUtils.isEmpty(message)) {
@@ -258,7 +261,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
         public int getTotalPages();
 
         /**
-         * Callback to set actual total pages which used for {@link android.support.v4.view.PagerAdapter}
+         * A callback to set actual total pages which used for {@link android.support.v4.view.PagerAdapter}.
          */
         public void setTotalPages(int i);
     }

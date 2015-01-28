@@ -38,11 +38,16 @@ import cl.monsoon.s1next.model.Post;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.DateUtil;
 import cl.monsoon.s1next.util.ObjectUtil;
-import cl.monsoon.s1next.util.TextViewHelper;
+import cl.monsoon.s1next.util.ViewHelper;
 import cl.monsoon.s1next.widget.GlideImageGetter;
 import cl.monsoon.s1next.widget.MyMovementMethod;
 import cl.monsoon.s1next.widget.MyTagHandler;
 
+/**
+ * This {@link cl.monsoon.s1next.adapter.RecyclerAdapter}
+ * has another item type {@link #TYPE_FOOTER_PROGRESS}
+ * in order to implement endless scrolling.
+ */
 public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, RecyclerView.ViewHolder> {
 
     private static final int TYPE_ITEM = 0;
@@ -60,7 +65,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
 
         setHasStableIds(true);
 
-        // Lading avatars is prior to images in replies
+        // loading avatars is prior to images in replies
         mAvatarRequestBuilder =
                 Glide.with(mContext)
                         .from(String.class)
@@ -114,7 +119,8 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         ItemViewHolder itemViewHolder = ObjectUtil.cast(holder, ItemViewHolder.class);
         ImageView avatarView = itemViewHolder.mAvatar;
 
-        // whether need download avatars depends on settings and Wi-Fi status
+        // whether need to download avatars
+        // depends on settings and Wi-Fi status
         final boolean avatarsDownload = Config.isAvatarsDownload();
         if (avatarsDownload) {
             avatarView.setVisibility(View.VISIBLE);
@@ -148,6 +154,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
             countView.setText(spannable);
             countView.setTag(post.getPartForQuote());
 
+            // add clicking effect for TextView if API >= 16
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 countView.setOnTouchListener(MY_TOUCH_LISTENER);
             }
@@ -164,20 +171,20 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         }
 
         String url;
-        Map<String, Post.Attachment> attachmentMap = post.getAttachmentMap();
+        Map<Integer, Post.Attachment> attachmentMap = post.getAttachmentMap();
         if (attachmentMap != null) {
-            for (Map.Entry<String, Post.Attachment> entry : attachmentMap.entrySet()) {
+            for (Map.Entry<Integer, Post.Attachment> entry : attachmentMap.entrySet()) {
                 Post.Attachment attachment = entry.getValue();
                 url = attachment.getUrl();
 
-                // Replace attach tag with HTML img tag
+                // Replaces attach tag with HTML img tag
                 // in order to display attachment images in TextView.
                 reply = reply.replace(
                         "[attach]" + entry.getKey() + "[/attach]", "<img src=\"" + url + "\" />");
             }
         }
 
-        // use GlideImageGetter to show images
+        // use GlideImageGetter to show images in TextView
         replayView.setText(
                 Html.fromHtml(
                         reply,
@@ -241,14 +248,14 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
             mCount = (TextView) itemView.findViewById(R.id.count);
             mPost = (TextView) itemView.findViewById(R.id.post);
 
-            TextViewHelper.updateTextSize(new TextView[]{mUsername, mTime, mCount, mPost});
-            TextViewHelper.updateTextColorWhenS1Theme(new TextView[]{mUsername, mPost});
+            ViewHelper.updateTextSize(mUsername, mTime, mCount, mPost);
+            ViewHelper.updateTextColorWhenS1Theme(mUsername, mPost);
 
             mCount.setMovementMethod(LinkMovementMethod.getInstance());
             // use custom movement method to provides selection and click
             mPost.setMovementMethod(MyMovementMethod.getInstance());
 
-            // use TouchDelegate to increase mCount's click area
+            // use TouchDelegate to increase mCount's clicking area
             mCount.post(() -> {
                 int halfMinimumTouchTargetSize =
                         mCount.getContext()
@@ -280,10 +287,13 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         }
     };
 
+    /**
+     * Changes the TextView's background when pressing.
+     */
     @SuppressLint("NewApi")
     private static final View.OnTouchListener MY_TOUCH_LISTENER = (v, event) -> {
 
-        TextView textView = (TextView) v;
+        TextView textView = ObjectUtil.cast(v, TextView.class);
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 textView.setBackgroundColor(textView.getHighlightColor());

@@ -12,15 +12,16 @@ public final class StringHelper {
 
     }
 
-    public static String concatWithTwoSpaces(CharSequence title, int value) {
-        return title + TWO_SPACES + value;
+    public static String concatWithTwoSpaces(CharSequence first, int last) {
+        return concatWithTwoSpaces(first.toString(), String.valueOf(last));
     }
 
-    public static String concatWithTwoSpaces(CharSequence title, CharSequence text) {
-        return title + TWO_SPACES + text;
+    public static String concatWithTwoSpaces(CharSequence first, CharSequence last) {
+        return first + TWO_SPACES + last;
     }
 
-    public static String unescapeNonBreakingSpace(String value) {
-        return StringUtils.replace(value, NON_BREAKING_SPACE_ENTITY_NAME, StringUtils.SPACE);
+    public static String unescapeNonBreakingSpace(CharSequence text) {
+        return StringUtils.replace(
+                text.toString(), NON_BREAKING_SPACE_ENTITY_NAME, StringUtils.SPACE);
     }
 }

@@ -7,8 +7,9 @@ import android.graphics.drawable.Drawable;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 
 /**
- * Implement {@link Drawable.Callback } in order to show animated GIF
- * in TextView which used in {@link cl.monsoon.s1next.widget.GlideImageGetter}.
+ * Implements {@link Drawable.Callback} in order to show animated GIFs in the TextView
+ * <p>
+ * Used in {@link cl.monsoon.s1next.widget.GlideImageGetter}.
  */
 final class UrlDrawable extends Drawable implements Drawable.Callback {
 

@@ -18,7 +18,7 @@ import cl.monsoon.s1next.model.Extractable;
 import cl.monsoon.s1next.widget.AsyncResult;
 
 /**
- * Wrap {@link cl.monsoon.s1next.widget.HttpPostLoader}and {@link android.support.v4.app.DialogFragment}.
+ * Wraps {@link cl.monsoon.s1next.widget.HttpPostLoader}and {@link android.support.v4.app.DialogFragment}.
  */
 public abstract class LoaderDialogFragment<D extends Extractable>
         extends DialogFragment
@@ -43,7 +43,7 @@ public abstract class LoaderDialogFragment<D extends Extractable>
 
     /**
      * The serialization (saved instance state) Bundle key representing
-     * current loader id.
+     * the current loader id.
      */
     private static final String STATE_ID_LOADER = "id_loader";
 
@@ -74,7 +74,7 @@ public abstract class LoaderDialogFragment<D extends Extractable>
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putInt(STATE_ID_LOADER, mLoaderId);

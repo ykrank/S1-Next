@@ -24,13 +24,13 @@ import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
-import cl.monsoon.s1next.singleton.User;
+import cl.monsoon.s1next.singleton.MyAccount;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpPostLoader;
 
 /**
- * A login screen that offers login via username/password.
+ * A login screen that offers login via username and password.
  */
 public final class LoginFragment extends Fragment {
 
@@ -105,8 +105,8 @@ public final class LoginFragment extends Fragment {
         mUsernameView.setError(null);
         mPasswordView.setError(null);
 
-        CharSequence username = mUsernameView.getText();
-        CharSequence password = mPasswordView.getText();
+        String username = mUsernameView.getText().toString();
+        String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -132,7 +132,7 @@ public final class LoginFragment extends Fragment {
             focusView.requestFocus();
         } else {
             // start to log in
-            LoginLoaderDialogFragment.newInstance(mUsernameView.getText(), mPasswordView.getText())
+            LoginLoaderDialogFragment.newInstance(username, password)
                     .show(getChildFragmentManager(), LoginLoaderDialogFragment.TAG);
         }
     }
@@ -144,12 +144,12 @@ public final class LoginFragment extends Fragment {
         private static final String ARG_USERNAME = "username";
         private static final String ARG_PASSWORD = "password";
 
-        public static LoginLoaderDialogFragment newInstance(CharSequence username, CharSequence password) {
+        public static LoginLoaderDialogFragment newInstance(String username, String password) {
             LoginLoaderDialogFragment fragment = new LoginLoaderDialogFragment();
 
             Bundle bundle = new Bundle();
-            bundle.putCharSequence(ARG_USERNAME, username);
-            bundle.putCharSequence(ARG_PASSWORD, password);
+            bundle.putString(ARG_USERNAME, username);
+            bundle.putString(ARG_PASSWORD, password);
             fragment.setArguments(bundle);
 
             return fragment;
@@ -169,8 +169,8 @@ public final class LoginFragment extends Fragment {
         protected RequestBody getRequestBody(int loaderId) {
             if (loaderId == ID_LOADER_LOGIN) {
                 return Api.getLoginPostBuilder(
-                        getArguments().getCharSequence(ARG_USERNAME),
-                        getArguments().getCharSequence(ARG_PASSWORD));
+                        getArguments().getString(ARG_USERNAME),
+                        getArguments().getString(ARG_PASSWORD));
             }
 
             return super.getRequestBody(loaderId);
@@ -189,7 +189,7 @@ public final class LoginFragment extends Fragment {
         @Override
         public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> asyncResult) {
             if (asyncResult.exception != null) {
-                AsyncResult.handleException(asyncResult.exception);
+                asyncResult.handleException();
             } else {
                 ResultWrapper wrapper = asyncResult.data;
                 Result result = wrapper.getResult();
@@ -199,8 +199,8 @@ public final class LoginFragment extends Fragment {
                 if (result.getStatus().equals(STATUS_AUTH_SUCCESS)
                         || result.getStatus().equals(STATUS_AUTH_SUCCESS_ALREADY)) {
                     // this authenticity token is not fresh
-                    // we need abandon this token
-                    User.setAuthenticityToken(null);
+                    // we need to abandon this token
+                    MyAccount.setAuthenticityToken(null);
 
                     new Handler().post(() -> getActivity().onBackPressed());
                 }

@@ -68,7 +68,7 @@ public final class GalleryActivity extends ActionBarActivity implements InsetsFr
     @Override
     public void onInsetsChanged(@NonNull Rect insets) {
         mToolbar.setPadding(0, insets.top, 0, 0);
-        mToolbar.getLayoutParams().height = insets.top + ResourceUtil.getToolbarHeight(this);
+        mToolbar.getLayoutParams().height = insets.top + ResourceUtil.getToolbarHeight();
         mToolbar.requestLayout();
     }
 }

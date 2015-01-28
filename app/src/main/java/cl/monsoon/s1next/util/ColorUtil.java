@@ -30,6 +30,9 @@ public final class ColorUtil {
 
     }
 
+    /**
+     * Returns a color-int with specific alpha.
+     */
     @ColorRes
     public static int a(int color, @Alpha int alpha) {
         if (alpha < 0 || alpha > 100) {

@@ -62,7 +62,7 @@ public final class MyMovementMethod extends ArrowKeyMovementMethod {
                 return true;
             }
 
-            // invoke ImageSpan's click event
+            // invoke ImageSpan's clicking event
             MyTagHandler.ImageClickableSpan[] imageClickableSpans =
                     buffer.getSpans(off, off, MyTagHandler.ImageClickableSpan.class);
             if (imageClickableSpans.length != 0) {

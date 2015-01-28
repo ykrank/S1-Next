@@ -26,11 +26,11 @@ import cl.monsoon.s1next.widget.MyRecyclerView;
 
 /**
  * A base Fragment which includes the SwipeRefreshLayout to refresh when loading data.
- * And wrap {@link cl.monsoon.s1next.fragment.headless.HttpGetRetainedFragment} to
- * retain {@link HttpGetRetainedFragment.AsyncHttpGetTask} and data when configuration change.
+ * And wraps {@link cl.monsoon.s1next.fragment.headless.HttpGetRetainedFragment} to
+ * retain {@link HttpGetRetainedFragment.AsyncHttpGetTask} and data when configuration changes.
  * <p>
- * We must reuse or destroy (calling {@link BaseFragment#destroyRetainedFragment()})
- * mHttpGetRetainedFragment if used in {@link android.support.v4.view.ViewPager}
+ * We must reuse or destroy mHttpGetRetainedFragment (calling {@link BaseFragment#destroyRetainedFragment()})
+ * if used in {@link android.support.v4.view.ViewPager}
  * otherwise we would lost mHttpGetRetainedFragment and cause memory leak.
  */
 public abstract class BaseFragment<D extends Extractable>
@@ -40,13 +40,13 @@ public abstract class BaseFragment<D extends Extractable>
         InsetsFrameLayout.OnInsetsCallback {
 
     /**
-     * Use {@link cl.monsoon.s1next.fragment.headless.HttpGetRetainedFragment}
+     * Uses {@link cl.monsoon.s1next.fragment.headless.HttpGetRetainedFragment}
      * to retain AsyncTask and data.
      */
     private HttpGetRetainedFragment<D> mHttpGetRetainedFragment;
 
     /**
-     * Detect swipe gestures and trigger to refresh data.
+     * Detects swipe gestures and triggers to refresh data.
      */
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -58,7 +58,7 @@ public abstract class BaseFragment<D extends Extractable>
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // Indicate that this Fragment would like to
+        // Indicates that this Fragment would like to
         // influence the set of actions in the Toolbar.
         setHasOptionsMenu(true);
 
@@ -86,7 +86,7 @@ public abstract class BaseFragment<D extends Extractable>
             fragmentManager.beginTransaction()
                     .add(mHttpGetRetainedFragment, retainedHttpGetFragmentTag).commit();
         } else {
-            // post data when configuration change and we already have data
+            // post data when configuration changes and we already have data
             D data = mHttpGetRetainedFragment.getData();
             if (data != null) {
                 onPostExecute(new AsyncResult<>(data));
@@ -106,7 +106,7 @@ public abstract class BaseFragment<D extends Extractable>
             mSwipeRefreshLayout.setRefreshing(true);
         }
 
-        // Start to load data when we haven't data
+        // Starts to load data when we haven't data
         // and mHttpGetRetainedFragment isn't running.
         if (!hasData && !isRunning) {
             onRefresh();
@@ -141,7 +141,7 @@ public abstract class BaseFragment<D extends Extractable>
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        // Disable refresh action when SwipeRefreshLayout is still refreshing.
+        // Disables the refresh menu when SwipeRefreshLayout is still refreshing.
         menu.findItem(R.id.menu_refresh).setEnabled(!isRefreshing());
     }
 
@@ -198,9 +198,9 @@ public abstract class BaseFragment<D extends Extractable>
     /**
      * @see cl.monsoon.s1next.activity.BaseActivity#onInsetsChanged(android.graphics.Rect)
      */
-    void setRecyclerViewPadding(@NonNull RecyclerView recyclerView, @NonNull Rect insets, int padding) {
+    void setRecyclerViewPadding(RecyclerView recyclerView, @NonNull Rect insets, int padding) {
         int toolbarHeight =
-                ResourceUtil.getToolbarHeight(getActivity());
+                ResourceUtil.getToolbarHeight();
         recyclerView.setPadding(0, padding + insets.top + toolbarHeight, 0, padding);
 
         updateSwipeRefreshProgressViewPosition(insets);

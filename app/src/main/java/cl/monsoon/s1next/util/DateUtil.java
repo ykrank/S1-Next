@@ -20,9 +20,6 @@ public final class DateUtil {
         return new SimpleDateFormat("y D", Locale.US).format(new Date());
     }
 
-    /**
-     * @see #getDayWithYear()
-     */
     public static String getWeekWithYear() {
         // y year, w week in year
         return new SimpleDateFormat("y w", Locale.US).format(new Date());

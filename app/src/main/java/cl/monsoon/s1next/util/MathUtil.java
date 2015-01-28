@@ -1,5 +1,8 @@
 package cl.monsoon.s1next.util;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public final class MathUtil {
 
     private MathUtil() {
@@ -7,10 +10,6 @@ public final class MathUtil {
     }
 
     public static int divide(int divident, int divisor) {
-        if (divident <= 0) {
-            throw new IllegalStateException("Divident can't less than or equal to 0.");
-        }
-
-        return (divident + divisor - 1) / divisor;
+        return new BigDecimal(divident).divide(new BigDecimal(divisor), RoundingMode.UP).intValue();
     }
 }

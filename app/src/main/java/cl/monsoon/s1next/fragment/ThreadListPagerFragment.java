@@ -33,15 +33,16 @@ import cl.monsoon.s1next.widget.RecyclerViewHelper;
 
 /**
  * A Fragment representing one of the pages of threads.
- * All activities containing this Fragment must
- * implement {@link cl.monsoon.s1next.fragment.ThreadListPagerFragment.OnPagerInteractionCallback}.
+ * <p>
+ * All activities containing this Fragment must implement
+ * {@link cl.monsoon.s1next.fragment.ThreadListPagerFragment.OnPagerInteractionCallback}.
  */
 public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrapper> {
 
     private static final String ARG_FORUM_ID = "forum_id";
     private static final String ARG_PAGE_NUM = "page_num";
 
-    private CharSequence mForumId;
+    private String mForumId;
     private int mPageNum;
 
     private MyRecyclerView mRecyclerView;
@@ -49,11 +50,11 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
 
     private OnPagerInteractionCallback mOnPagerInteractionCallback;
 
-    public static ThreadListPagerFragment newInstance(CharSequence forumId, int page) {
+    public static ThreadListPagerFragment newInstance(String forumId, int page) {
         ThreadListPagerFragment fragment = new ThreadListPagerFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putCharSequence(ARG_FORUM_ID, forumId);
+        bundle.putString(ARG_FORUM_ID, forumId);
         bundle.putInt(ARG_PAGE_NUM, page);
         fragment.setArguments(bundle);
 
@@ -69,7 +70,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mForumId = getArguments().getCharSequence(ARG_FORUM_ID);
+        mForumId = getArguments().getString(ARG_FORUM_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
         mRecyclerView = (MyRecyclerView) view.findViewById(R.id.recycler_view);
@@ -84,12 +85,12 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
                         new RecyclerViewHelper.OnItemClickListener() {
 
                             @Override
-                            public void onItemClick(View view, int position) {
+                            public void onItemClick(@NonNull View view, int position) {
                                 startActivity(view, position, false);
                             }
 
                             @Override
-                            public void onItemLongClick(View view, int position) {
+                            public void onItemLongClick(@NonNull View view, int position) {
                                 // cause NullPointerException sometimes when orientation changes
                                 try {
                                     startActivity(view, position, true);
@@ -99,7 +100,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
                             }
 
                             private void startActivity(View view, int position, boolean shouldGoToLastPage) {
-                                // user has not permission to access this thread
+                                // if user has no permission to access this thread
                                 if (!view.isEnabled()) {
                                     return;
                                 }
@@ -116,11 +117,11 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
                                 cl.monsoon.s1next.model.Thread thread =
                                         mRecyclerAdapter.getItem(position);
 
-                                // Same to SubForumPostListActivity.ARG_THREAD
+                                // same to SubForumPostListActivity.ARG_THREAD
                                 intent.putExtra(PostListActivity.ARG_THREAD, thread);
 
                                 if (shouldGoToLastPage) {
-                                    // Same to SubForumPostListActivity.ARG_SHOULD_GO_TO_LAST_PAGE
+                                    // same to SubForumPostListActivity.ARG_SHOULD_GO_TO_LAST_PAGE
                                     intent.putExtra(PostListActivity.ARG_SHOULD_GO_TO_LAST_PAGE, true);
                                 }
 
@@ -191,12 +192,12 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
 
         if (asyncResult.exception != null) {
             if (getUserVisibleHint()) {
-                AsyncResult.handleException(asyncResult.exception);
+                asyncResult.handleException();
             }
         } else {
             ThreadList threadList = asyncResult.data.unwrap();
 
-            // when user has logged out and then has not permission to access this forum
+            // if user has logged out and then has no permission to access this forum
             if (threadList.getData().isEmpty()) {
                 String message = asyncResult.data.getResult().getMessage();
                 if (!TextUtils.isEmpty(message)) {
@@ -224,7 +225,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     public static interface OnPagerInteractionCallback {
 
         /**
-         * Callback to set actual total pages which used for {@link android.support.v4.view.PagerAdapter}
+         * A callback to set actual total pages which used for {@link android.support.v4.view.PagerAdapter}。
          */
         public void setTotalPages(int i);
     }

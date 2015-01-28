@@ -65,7 +65,6 @@ public class ThreadListActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_sub_forums:
-                //noinspection ConstantConditions
                 mListPopupWindow.setAnchorView(getToolbar().findViewById(R.id.menu_sub_forums));
                 mListPopupWindow.show();
 
@@ -112,12 +111,12 @@ public class ThreadListActivity extends BaseActivity {
         }
 
         // We need to invoke this every times when mSubForumArrayAdapter changes,
-        // but now we only invoke this the first time due to cost-performance.
+        // but now we only invoke this in the first time due to cost-performance.
         // mListPopupWindow.setContentWidth(measureContentWidth(mSubForumArrayAdapter));
     }
 
     /**
-     * Fork from android.widget.Spinner#measureContentWidth(SpinnerAdapter, Drawable).
+     * Forked from android.widget.Spinner#measureContentWidth(SpinnerAdapter, Drawable).
      */
     private int measureContentWidth(SpinnerAdapter spinnerAdapter) {
         if (spinnerAdapter == null) {

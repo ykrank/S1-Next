@@ -67,7 +67,7 @@ public final class SettingsFragment extends PreferenceFragment
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @PreferenceKey String key) {
         switch (key) {
-            // set current strategy
+            // set current theme
             case PREF_KEY_THEME:
                 Config.setCurrentTheme(sharedPreferences);
                 getActivity().sendBroadcast(new Intent(ACTION_CHANGE_THEME));
@@ -79,11 +79,12 @@ public final class SettingsFragment extends PreferenceFragment
                 getActivity().sendBroadcast(new Intent(ACTION_CHANGE_FONT_SIZE));
 
                 break;
-            // change download strategy
+            // change avatars' download strategy
             case PREF_KEY_DOWNLOAD_AVATARS:
                 Config.setAvatarsDownloadStrategy(sharedPreferences);
 
                 break;
+            // change images' download strategy
             case PREF_KEY_DOWNLOAD_IMAGES:
                 Config.setImagesDownloadStrategy(sharedPreferences);
 

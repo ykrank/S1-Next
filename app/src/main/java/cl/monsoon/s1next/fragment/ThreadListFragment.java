@@ -1,7 +1,6 @@
 package cl.monsoon.s1next.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
@@ -20,7 +19,7 @@ import cl.monsoon.s1next.util.StringHelper;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 
 /**
- * An Fragment  which includes {@link android.support.v4.view.ViewPager}
+ * A Fragment which includes {@link android.support.v4.view.ViewPager}
  * to represent each page of thread lists.
  */
 public final class ThreadListFragment extends Fragment
@@ -30,14 +29,10 @@ public final class ThreadListFragment extends Fragment
 
     private static final String ARG_FORUM = "forum";
 
-    private CharSequence mForumTitle;
-    private CharSequence mForumId;
+    private String mForumTitle;
+    private String mForumId;
     private int mTotalPages;
 
-    /**
-     * The {@link FragmentStatePagerAdapter} that will provide
-     * fragments for each page of threads.
-     */
     private PagerAdapter mAdapter;
 
     public static ThreadListFragment newInstance(Forum forum) {
@@ -50,7 +45,6 @@ public final class ThreadListFragment extends Fragment
         return fragment;
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.screen_slide, container, false);
@@ -91,7 +85,7 @@ public final class ThreadListFragment extends Fragment
     }
 
     /**
-     * Implement {@link cl.monsoon.s1next.fragment.ThreadListPagerFragment.OnPagerInteractionCallback}.
+     * Implements {@link cl.monsoon.s1next.fragment.ThreadListPagerFragment.OnPagerInteractionCallback}.
      */
     @Override
     public void setTotalPages(int i) {
@@ -103,7 +97,7 @@ public final class ThreadListFragment extends Fragment
     }
 
     /**
-     * Return a Fragment corresponding to one of the pages of threads.
+     * Returns a Fragment corresponding to one of the pages of threads.
      */
     private class ThreadListPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -118,8 +112,8 @@ public final class ThreadListFragment extends Fragment
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            // We do not reuse Fragment in ViewPager and its retained fragment.
-            // May reuse these both later, but it's not cost-effective nowadays.
+            // We don't reuse Fragment in ViewPager and its retained fragment
+            // because it is not cost-effective nowadays.
             ObjectUtil.cast(object, BaseFragment.class).destroyRetainedFragment();
 
             super.destroyItem(container, position, object);

@@ -241,7 +241,7 @@ public final class PersistentHttpCookieStore implements CookieStore {
     }
 
     /**
-     * Parcel HttpCookie object into a String.
+     * Parcels HttpCookie object into a String.
      */
     private String encodeCookie(HttpCookie httpCookie) {
         if (httpCookie == null) {
@@ -257,7 +257,7 @@ public final class PersistentHttpCookieStore implements CookieStore {
     }
 
     /**
-     * Return HttpCookie from cookie string.
+     * Returns HttpCookie from cookie string.
      */
     private HttpCookie decodeCookie(String s) {
         if (s == null) {

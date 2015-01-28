@@ -10,7 +10,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -43,7 +42,7 @@ import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.list.PostList;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.singleton.Config;
-import cl.monsoon.s1next.singleton.User;
+import cl.monsoon.s1next.singleton.MyAccount;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
 import cl.monsoon.s1next.util.ObjectUtil;
@@ -72,13 +71,13 @@ public class PostListActivity
 
     /**
      * The serialization (saved instance state) Bundle key representing
-     * SeekBar's progress when page flip dialog is showing.
+     * the SeekBar's progress when page flip dialog is showing.
      */
     private static final String STATE_SEEKBAR_PROGRESS = "seekbar_progress";
     private int mSeekBarProgress = -1;
 
-    private CharSequence mThreadId;
-    private CharSequence mThreadTitle;
+    private String mThreadId;
+    private String mThreadTitle;
     private int mTotalPages;
 
     /**
@@ -106,21 +105,6 @@ public class PostListActivity
 
         setNavDrawerIndicatorEnabled(false);
 
-        // not works well
-        //        // Title has marquee effect if thread's title is long.
-        //        TextView title;
-        //        int count = mToolbar.getChildCount();
-        //        for (int i = 0; i < count; i++) {
-        //            View view = mToolbar.getChildAt(i);
-        //            if (view instanceof TextView) {
-        //                title = (TextView) view;
-        //                title.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        //                title.setMarqueeRepeatLimit(-1);
-        //                title.setSelected(true);
-        //                break;
-        //            }
-        //        }
-
         cl.monsoon.s1next.model.Thread thread = getIntent().getParcelableExtra(ARG_THREAD);
         mThreadTitle = thread.getTitle();
         setTitle(StringHelper.concatWithTwoSpaces(mThreadTitle, 1));
@@ -144,9 +128,6 @@ public class PostListActivity
 
             @Override
             public void onPageSelected(int position) {
-                // TODO: We can't see thread page number sometimes because title is long,
-                // so it's better to put a TextView in Toolbar to show thread page number
-                // or make the title marquee.
                 setTitle(StringHelper.concatWithTwoSpaces(mThreadTitle, position + 1));
             }
 
@@ -173,7 +154,7 @@ public class PostListActivity
     protected void onResume() {
         super.onResume();
 
-        // Register broadcast receiver to check whether Wi-Fi is enabled
+        // Registers broadcast receiver to check whether Wi-Fi is enabled
         // when we need to download images.
         if (Config.getAvatarsDownloadStrategy() != Config.DownloadStrategy.NOT
                 || Config.getImagesDownloadStrategy() != Config.DownloadStrategy.NOT) {
@@ -195,8 +176,8 @@ public class PostListActivity
             @Override
             public void onReceive(Context context, Intent intent) {
                 startReplyActivity(
-                        intent.getCharSequenceExtra(ReplyActivity.ARG_QUOTE_POST_ID),
-                        intent.getCharSequenceExtra(ReplyActivity.ARG_QUOTE_POST_COUNT));
+                        intent.getStringExtra(ReplyActivity.ARG_QUOTE_POST_ID),
+                        intent.getStringExtra(ReplyActivity.ARG_QUOTE_POST_COUNT));
             }
         };
         registerReceiver(mQuoteReceiver, new IntentFilter(ACTION_QUOTE));
@@ -236,7 +217,6 @@ public class PostListActivity
                 showThreadAttachmentDialog();
 
                 return true;
-            // show SeekBar to let user to flip page
             case R.id.menu_page_flip:
                 showPageFlipDialog();
 
@@ -278,7 +258,7 @@ public class PostListActivity
     }
 
     /**
-     * Disable flip page menu when {@link cl.monsoon.s1next.activity.PostListActivity#mTotalPages} = 1.
+     * Disables the flip page menu if only has one page.
      */
     private void prepareMenuPageFlip() {
         if (mMenuPageFlip == null) {
@@ -303,7 +283,7 @@ public class PostListActivity
 
         SeekBar seekbar = (SeekBar) view.findViewById(R.id.seekbar);
         seekbar.setProgress(mSeekBarProgress);
-        // seekBar is zero-based!
+        // SeekBar is zero-based!
         seekbar.setMax(mTotalPages - 1);
 
         EditText valueView = (EditText) view.findViewById(R.id.value);
@@ -389,7 +369,7 @@ public class PostListActivity
     }
 
     /**
-     * Implement {@link cl.monsoon.s1next.fragment.PostListPagerFragment.OnPagerInteractionCallback}.
+     * Implements {@link cl.monsoon.s1next.fragment.PostListPagerFragment.OnPagerInteractionCallback}.
      */
     @Override
     public void setTotalPages(int i) {
@@ -403,14 +383,14 @@ public class PostListActivity
     }
 
     /**
-     * Floating action button's {@link android.view.View.OnClickListener}.
+     * {@link com.melnykov.fab.FloatingActionButton#setOnClickListener(android.view.View.OnClickListener)}
      */
     @Override
     public void onClick(View v) {
         startReplyActivity(null, null);
     }
 
-    void startReplyActivity(@Nullable CharSequence quotePostId, @Nullable CharSequence quotePostCount) {
+    void startReplyActivity(String quotePostId, String quotePostCount) {
         if (!checkUserLoggedInStatus()) {
             return;
         }
@@ -428,7 +408,7 @@ public class PostListActivity
 
     private boolean checkUserLoggedInStatus() {
         // show LoginPromptDialog if user hasn't logged in.
-        if (!User.isLoggedIn()) {
+        if (!MyAccount.isLoggedIn()) {
             new LoginPromptDialog().show(getSupportFragmentManager(), LoginPromptDialog.TAG);
 
             return false;
@@ -438,7 +418,7 @@ public class PostListActivity
     }
 
     /**
-     * Return a Fragment corresponding to one of the pages of posts.
+     * Returns a Fragment corresponding to one of the pages of posts.
      */
     private class PostListPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -475,7 +455,7 @@ public class PostListActivity
             ThreadAttachmentDialogFragment fragment = new ThreadAttachmentDialogFragment();
 
             Bundle bundle = new Bundle();
-            bundle.putCharSequence(ARG_ATTACHMENT_TITLE, threadAttachment.getTitle());
+            bundle.putString(ARG_ATTACHMENT_TITLE, threadAttachment.getTitle());
             bundle.putParcelableArrayList(
                     ARG_THREAD_ATTACHMENT_INFO_LIST, threadAttachment.getInfoList());
             fragment.setArguments(bundle);
@@ -488,7 +468,7 @@ public class PostListActivity
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             return
                     new AlertDialog.Builder(getActivity())
-                            .setTitle(getArguments().getCharSequence(ARG_ATTACHMENT_TITLE))
+                            .setTitle(getArguments().getString(ARG_ATTACHMENT_TITLE))
                             .setAdapter(
                                     new ThreadAttachmentInfoListArrayAdapter(
                                             getActivity(),
@@ -507,11 +487,11 @@ public class PostListActivity
 
         public static final String ARG_THREAD_ID = "thread_id";
 
-        public static ThreadFavouritesAddDialogFragment newInstance(CharSequence threadId) {
+        public static ThreadFavouritesAddDialogFragment newInstance(String threadId) {
             ThreadFavouritesAddDialogFragment fragment = new ThreadFavouritesAddDialogFragment();
 
             Bundle bundle = new Bundle();
-            bundle.putCharSequence(ARG_THREAD_ID, threadId);
+            bundle.putString(ARG_THREAD_ID, threadId);
             fragment.setArguments(bundle);
 
             return fragment;
@@ -537,8 +517,8 @@ public class PostListActivity
             alertDialog.setOnShowListener(dialog ->
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v ->
                             LoaderDialogFragment.newInstance(
-                                    getArguments().getCharSequence(ARG_THREAD_ID),
-                                    ((EditText) view.findViewById(R.id.remark)).getText())
+                                    getArguments().getString(ARG_THREAD_ID),
+                                    ((EditText) view.findViewById(R.id.remark)).getText().toString())
                                     .show(getChildFragmentManager(), LoaderDialogFragment.TAG)));
 
             return alertDialog;
@@ -553,12 +533,12 @@ public class PostListActivity
             private static final String STATUS_ADD_TO_FAVOURITES_SUCCESS = "favorite_do_success";
             private static final String STATUS_ADD_TO_FAVOURITES_REPEAT = "favorite_repeat";
 
-            public static LoaderDialogFragment newInstance(CharSequence threadId, CharSequence description) {
+            public static LoaderDialogFragment newInstance(String threadId, String description) {
                 LoaderDialogFragment fragment = new LoaderDialogFragment();
 
                 Bundle bundle = new Bundle();
-                bundle.putCharSequence(ARG_THREAD_ID, threadId);
-                bundle.putCharSequence(ARG_REMARK, description);
+                bundle.putString(ARG_THREAD_ID, threadId);
+                bundle.putString(ARG_REMARK, description);
                 fragment.setArguments(bundle);
 
                 return fragment;
@@ -571,7 +551,7 @@ public class PostListActivity
 
             @Override
             protected int getStartLoaderId() {
-                if (TextUtils.isEmpty(User.getAuthenticityToken())) {
+                if (TextUtils.isEmpty(MyAccount.getAuthenticityToken())) {
                     return ID_LOADER_GET_AUTHENTICITY_TOKEN;
                 } else {
                     return ID_LOADER_ADD_THREAD_TO_FAVOURITES;
@@ -582,8 +562,8 @@ public class PostListActivity
             protected RequestBody getRequestBody(int loaderId) {
                 if (loaderId == ID_LOADER_ADD_THREAD_TO_FAVOURITES) {
                     return Api.getThreadFavouritesAddBuilder(
-                            getArguments().getCharSequence(ARG_THREAD_ID),
-                            getArguments().getCharSequence(ARG_REMARK));
+                            getArguments().getString(ARG_THREAD_ID),
+                            getArguments().getString(ARG_REMARK));
                 }
 
                 return super.getRequestBody(loaderId);
@@ -613,7 +593,7 @@ public class PostListActivity
             public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> data) {
                 AsyncResult asyncResult = ObjectUtil.cast(data, AsyncResult.class);
                 if (asyncResult.exception != null) {
-                    AsyncResult.handleException(asyncResult.exception);
+                    asyncResult.handleException();
                 } else {
                     int id = loader.getId();
                     if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {

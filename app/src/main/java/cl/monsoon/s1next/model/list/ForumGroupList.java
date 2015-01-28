@@ -16,9 +16,6 @@ import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.model.ForumGroup;
 
 /**
- * Sort Forums by {@link cl.monsoon.s1next.model.Forum#getTodayPosts()} desc
- * and group Forums by category.
- * <p>
  * {@link #forumList}:
  * <pre>
  * 游戏论坛
@@ -62,11 +59,16 @@ public final class ForumGroupList extends Account {
     @JsonIgnore
     private final List<ForumGroup> data;
 
+    /**
+     * Sorts Forums by {@link cl.monsoon.s1next.model.Forum#getTodayPosts()} desc
+     * and groups Forums by category.
+     */
     @SuppressWarnings("UnusedDeclaration")
     @JsonCreator
     public ForumGroupList(
             @JsonProperty("catlist") List<ForumGroup> forumGroupList,
             @JsonProperty("forumlist") List<Forum> forumList) {
+        // sort forum list by today's post in reverse ordering
         Collections.sort(forumList, (lhs, rhs) -> -(lhs.getTodayPosts() - rhs.getTodayPosts()));
         this.forumList = forumList;
 

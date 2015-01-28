@@ -11,7 +11,7 @@ import android.widget.FrameLayout;
 /**
  * @see #setOnInsetsCallback(OnInsetsCallback)
  * <p>
- * Fork from https://github.com/google/iosched/blob/master/android/src/main/java/com/google/samples/apps/iosched/ui/widget/ScrimInsetsFrameLayout.java.
+ * Forked from https://github.com/google/iosched/blob/master/android/src/main/java/com/google/samples/apps/iosched/ui/widget/ScrimInsetsFrameLayout.java
  */
 public class InsetsFrameLayout extends FrameLayout {
 
@@ -46,13 +46,13 @@ public class InsetsFrameLayout extends FrameLayout {
     }
 
     /**
-     * Allow the calling container to specify a callback for custom processing
-     * when insets change (i.e. when {@link #fitSystemWindows(Rect)} is called.
+     * Allows the calling container to specify a callback for custom processing
+     * when insets change (i.e. when {@link #fitSystemWindows(Rect)} is called).
      * This is useful for setting padding on UI elements based on UI insets
      * (e.g. the Toolbar or a RecyclerView). When using with ListView or RecyclerView,
      * remember to set clipToPadding to false.
      */
-    public void setOnInsetsCallback(@NonNull OnInsetsCallback onInsetsCallback) {
+    public void setOnInsetsCallback(OnInsetsCallback onInsetsCallback) {
         mOnInsetsCallback = onInsetsCallback;
     }
 

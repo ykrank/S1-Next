@@ -115,16 +115,15 @@ public final class TouchImageView extends ImageView implements View.OnTouchListe
     private void inspectTranslateBounds(Matrix matrix) {
         // We need to set this TouchImageView's layout to
         // match_parent to get its container's width or height.
-        // Or just use TouchImageView#getParent() to get these.
+        // Or just use TouchImageView#getParent() to get those.
         int containerWidth = getWidth();
         int containerHeight = getHeight();
 
-        // get drawable's bounds
         RectF bounds =
                 MatrixHelper.getBounds(
+                        matrix,
                         getDrawable().getIntrinsicWidth(),
-                        getDrawable().getIntrinsicHeight(),
-                        matrix);
+                        getDrawable().getIntrinsicHeight());
 
         float dx = containerWidth - bounds.right;
         float dy = containerHeight - bounds.bottom;
@@ -160,7 +159,7 @@ public final class TouchImageView extends ImageView implements View.OnTouchListe
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (getDrawable() == null || mScaleGestureDetector == null || mGestureDetector == null) {
+        if (getDrawable() == null) {
             return false;
         }
 
@@ -189,18 +188,12 @@ public final class TouchImageView extends ImageView implements View.OnTouchListe
             if (mScaleGestureDetector != null && mScaleGestureDetector.isInProgress()) {
                 return false;
             }
-
             postTranslate(-distanceX, -distanceY);
 
             return true;
         }
     }
 
-    /**
-     * int MSCALE_X = 0
-     * int MTRANS_X = 2
-     * int MTRANS_Y = 5
-     */
     private static class MatrixHelper extends RectF {
 
         private static final float[] VALUES = new float[9];
@@ -211,20 +204,20 @@ public final class TouchImageView extends ImageView implements View.OnTouchListe
         public static float getScale(Matrix matrix) {
             matrix.getValues(VALUES);
 
-            return VALUES[0];
+            return VALUES[Matrix.MSCALE_X];
         }
 
         /**
          * Get drawable's bounds.
          */
-        public static RectF getBounds(int srcWidth, int srcHeight, Matrix matrix) {
+        public static RectF getBounds(Matrix matrix, int srcWidth, int srcHeight) {
             matrix.getValues(VALUES);
 
             RectF rectF = new RectF();
-            rectF.left = VALUES[2];
-            rectF.top = VALUES[5];
-            rectF.right = rectF.left + srcWidth * VALUES[0];
-            rectF.bottom = rectF.top + srcHeight * VALUES[0];
+            rectF.left = VALUES[Matrix.MTRANS_X];
+            rectF.top = VALUES[Matrix.MTRANS_Y];
+            rectF.right = rectF.left + srcWidth * VALUES[Matrix.MSCALE_X];
+            rectF.bottom = rectF.top + srcHeight * VALUES[Matrix.MSCALE_X];
 
             return rectF;
         }

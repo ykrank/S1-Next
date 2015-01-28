@@ -14,7 +14,7 @@ import cl.monsoon.s1next.fragment.ReplyFragment;
 import cl.monsoon.s1next.util.ObjectUtil;
 
 /**
- * An Activity to send a reply.
+ * An Activity which used to send a reply.
  */
 public final class ReplyActivity extends BaseActivity {
 
@@ -34,21 +34,21 @@ public final class ReplyActivity extends BaseActivity {
         setNavDrawerEnabled(false);
         setupNavCrossIcon();
 
-        CharSequence quotePostId = getIntent().getCharSequenceExtra(ARG_QUOTE_POST_ID);
+        String quotePostId = getIntent().getStringExtra(ARG_QUOTE_POST_ID);
         String titlePrefix =
                 TextUtils.isEmpty(quotePostId)
                         ? getString(R.string.reply_activity_title_prefix)
                         : getString(
                                 R.string.reply_activity_quote_title_prefix,
                                 getIntent().getStringExtra(ARG_QUOTE_POST_COUNT));
-        setTitle(titlePrefix + getIntent().getCharSequenceExtra(ARG_THREAD_TITLE));
+        setTitle(titlePrefix + getIntent().getStringExtra(ARG_THREAD_TITLE));
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(ReplyFragment.TAG);
         if (fragment == null) {
             mReplyFragment =
                     ReplyFragment.newInstance(
-                            getIntent().getCharSequenceExtra(ARG_THREAD_ID), quotePostId);
+                            getIntent().getStringExtra(ARG_THREAD_ID), quotePostId);
 
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_layout, mReplyFragment, ReplyFragment.TAG).commit();
@@ -58,7 +58,7 @@ public final class ReplyActivity extends BaseActivity {
     }
 
     /**
-     * Show AlertDialog when reply content is not empty.
+     * Show AlertDialog when reply content is empty.
      */
     @Override
     public void onBackPressed() {

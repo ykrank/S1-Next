@@ -1,7 +1,6 @@
 package cl.monsoon.s1next.util;
 
 import android.support.annotation.ColorRes;
-import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -12,22 +11,22 @@ import cl.monsoon.s1next.MyApplication;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.singleton.Config;
 
-public final class TextViewHelper {
+public final class ViewHelper {
 
-    private TextViewHelper() {
+    private ViewHelper() {
 
     }
 
-    public static void appendWithTwoSpaces(@NonNull TextView textView, int value) {
-        textView.append(StringHelper.TWO_SPACES + value);
+    public static void concatWithTwoSpaces(TextView textView, int text) {
+        concatWithTwoSpaces(textView, String.valueOf(text));
     }
 
-    public static void appendWithTwoSpaces(@NonNull TextView textView, CharSequence text) {
+    public static void concatWithTwoSpaces(TextView textView, String text) {
         textView.append(StringHelper.TWO_SPACES + text);
     }
 
-    public static void setForegroundColor(@NonNull TextView textView, @ColorRes int color, int start, int end) {
-        Spannable spannable = (Spannable) textView.getText();
+    public static void setForegroundColor(TextView textView, @ColorRes int color, int start, int end) {
+        Spannable spannable = Spannable.Factory.getInstance().newSpannable(textView.getText());
         spannable.setSpan(
                 new ForegroundColorSpan(color),
                 start,
@@ -38,20 +37,19 @@ public final class TextViewHelper {
     }
 
     /**
-     * Update TextView's font size depends on
-     * {@link cl.monsoon.s1next.singleton.Config#textScale} (which same to Settings).
+     * Updates the TextViews font size depends on
+     * {@link cl.monsoon.s1next.singleton.Config#textScale}.
      *
      * @param textViewList also works for {@link android.widget.EditText} and {@link android.widget.Button}.
      */
-    public static void updateTextSize(@NonNull TextView[] textViewList) {
+    public static void updateTextSize(TextView... textViewList) {
+        float textScale = Config.getTextScale();
         for (TextView textView : textViewList) {
-            textView.setTextSize(
-                    TypedValue.COMPLEX_UNIT_PX,
-                    textView.getTextSize() * Config.getTextScale());
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textView.getTextSize() * textScale);
         }
     }
 
-    public static void updateTextColorWhenS1Theme(@NonNull TextView[] textViewList) {
+    public static void updateTextColorWhenS1Theme(TextView... textViewList) {
         if (Config.isS1Theme()) {
             int color =
                     MyApplication.getContext()

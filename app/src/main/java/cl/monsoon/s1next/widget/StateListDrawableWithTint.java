@@ -5,15 +5,17 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
 
+/**
+ * Backport of {@link android.view.View#setBackgroundTintList(android.content.res.ColorStateList)}
+ * and {@link android.view.View#setBackgroundTintMode(android.graphics.PorterDuff.Mode)} to API 20 and below.
+ */
 public final class StateListDrawableWithTint extends StateListDrawable {
 
     private final ColorStateList mColorStateList;
     private final PorterDuff.Mode mMode;
 
-    public StateListDrawableWithTint(@DrawableRes Drawable drawable, @NonNull ColorStateList colorStateList, @NonNull PorterDuff.Mode mode) {
+    public StateListDrawableWithTint(Drawable drawable, ColorStateList colorStateList, PorterDuff.Mode mode) {
         this.mColorStateList = colorStateList;
         this.mMode = mode;
 
@@ -22,7 +24,10 @@ public final class StateListDrawableWithTint extends StateListDrawable {
 
     @Override
     protected boolean onStateChange(int[] stateSet) {
-        // mColorStateList is null when constructor invokes super() implicitly
+        // mColorStateList hasn't been initialized when
+        // superclass's constructor (which would call
+        // in our constructor's first line implicitly)
+        // invokes this method
         //noinspection ConstantConditions
         if (mColorStateList != null) {
             int color = mColorStateList.getColorForState(stateSet, Color.TRANSPARENT);

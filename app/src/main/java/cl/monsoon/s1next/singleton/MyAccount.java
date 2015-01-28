@@ -8,24 +8,16 @@ import cl.monsoon.s1next.MyApplication;
 /**
  * Current user.
  */
-public enum User {
+public enum MyAccount {
     INSTANCE;
 
     public static final String ACTION_USER_LOGIN = "user_login";
-    public static final String ACTION_USER_LOGOUT_OR_EXPIRATION = "user_logout_or_expiration";
+    public static final String ACTION_USER_COOKIE_EXPIRATION = "user_logout_or_expiration";
 
-    private volatile String name;
     private volatile String uid;
+    private volatile String name;
     private volatile String authenticityToken;
     private volatile int permission;
-
-    public static String getName() {
-        return INSTANCE.name;
-    }
-
-    public static void setName(String name) {
-        INSTANCE.name = name;
-    }
 
     public static String getUid() {
         return INSTANCE.uid;
@@ -33,6 +25,14 @@ public enum User {
 
     public static void setUid(String uid) {
         INSTANCE.uid = uid;
+    }
+
+    public static String getName() {
+        return INSTANCE.name;
+    }
+
+    public static void setName(String name) {
+        INSTANCE.name = name;
     }
 
     public static String getAuthenticityToken() {
@@ -64,8 +64,8 @@ public enum User {
         MyApplication.getContext().sendBroadcast(new Intent(ACTION_USER_LOGIN));
     }
 
-    public static void sendLogoutOrExpirationBroadcast() {
-        MyApplication.getContext().sendBroadcast(new Intent(ACTION_USER_LOGOUT_OR_EXPIRATION));
+    public static void sendCookieExpirationBroadcast() {
+        MyApplication.getContext().sendBroadcast(new Intent(ACTION_USER_COOKIE_EXPIRATION));
     }
 
     public static interface OnLogoutListener {

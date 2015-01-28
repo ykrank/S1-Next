@@ -9,6 +9,7 @@ import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.client.HttpResponseException;
 
 import java.io.IOException;
@@ -21,9 +22,9 @@ import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 
 /**
- * Load data from the Internet and then extracted into POJO.
- * Also retain {@link HttpGetRetainedFragment.AsyncHttpGetTask}
- * and data when configuration change.
+ * Loads data from the Internet and then extracted into POJO.
+ * Also retains {@link HttpGetRetainedFragment.AsyncHttpGetTask}
+ * and data when configuration changes.
  */
 public class HttpGetRetainedFragment<D extends Extractable> extends DataRetainedFragment<D> {
 
@@ -34,7 +35,7 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
     private Callback<D> mAsyncTaskCallback;
 
     /**
-     * Attach to its host to get its {@link Callback}.
+     * Attaches to its host to get its {@link Callback}.
      */
     @Override
     public void onAttach(Activity activity) {
@@ -74,7 +75,7 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
     }
 
     /**
-     * Execute {@link AsyncHttpGetTask} to load data.
+     * Executes {@link AsyncHttpGetTask} to load data.
      */
     public void execute(String url, Class<D> clazz) {
         if (!isRunning()) {
@@ -115,28 +116,22 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
 
         @Override
         protected AsyncResult<D> doInBackground(Void... params) {
-            AsyncResult<D> result = new AsyncResult<>();
+            AsyncResult<D> asyncResult = new AsyncResult<>();
 
-            InputStream in = null;
+            InputStream inputStream = null;
             try {
                 // get response body from Internet
-                in = request();
+                inputStream = request();
 
                 // JSON mapper
-                result.data = MyObjectExtractor.readValue(in, mClass);
+                asyncResult.data = MyObjectExtractor.extract(inputStream, mClass);
             } catch (IOException | RemoteException e) {
-                result.exception = e;
+                asyncResult.exception = e;
             } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException ignored) {
-
-                    }
-                }
+                IOUtils.closeQuietly(inputStream);
             }
 
-            return result;
+            return asyncResult;
         }
 
         @Override

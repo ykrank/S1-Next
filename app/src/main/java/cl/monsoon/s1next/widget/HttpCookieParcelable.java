@@ -5,9 +5,6 @@ import android.os.Parcelable;
 
 import java.net.HttpCookie;
 
-/**
- * For HttpCookie whose instances can be written to and restored from a Parcel.
- */
 public final class HttpCookieParcelable implements Parcelable {
 
     public static final Creator<HttpCookieParcelable> CREATOR =

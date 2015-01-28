@@ -14,18 +14,16 @@ import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.singleton.Config;
-import cl.monsoon.s1next.util.ObjectUtil;
 
 /**
- * Display image from HTML string in the TextView which uses
- * Glide {@link com.bumptech.glide.request.target.ViewTarget}
- * to make an asynchronous to get to load image.
+ * Implements {@link android.text.Html.ImageGetter}
+ * in order to show images in the TextView.
+ * <p>
+ * Uses {@link com.bumptech.glide.request.target.ViewTarget}
+ * to make an asynchronous HTTP GET to load the image.
  */
 public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callback {
 
@@ -43,12 +41,13 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
 
     @Override
     public Drawable getDrawable(String url) {
-        // whether need download images depends on settings and Wi-Fi status
+        // whether need to download the image
+        // depends on settings and Wi-Fi status
         // but download Emoji at any time
         boolean download = true;
 
-        // Append url prefix if the url is not a network url
-        // because Emoji url hasn't domain.
+        // Appends url prefix if this url is not a network url
+        // because Emoji urls haven't domain.
         if (!URLUtil.isNetworkUrl(url)) {
             url = Api.URL_S1 + url;
         } else if (!Config.isImagesDownload()) {
@@ -70,8 +69,8 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
     }
 
     /**
-     * Implement {@link Drawable.Callback} in order to
-     * redraw the TextView that contains animated GIF.
+     * Implements {@link Drawable.Callback} in order to
+     * redraw the TextView which contains the animated GIFs.
      */
     @Override
     public void invalidateDrawable(Drawable who) {
@@ -100,7 +99,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
 
         @Override
         public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-            // calculate these drawable width to fitXY
+            // calculate this drawable's width & height to fitXY
             int width, height;
             if (getView().getWidth() >= resource.getIntrinsicWidth()) {
                 width = resource.getIntrinsicWidth();
@@ -119,9 +118,9 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
             mDrawable.setDrawable(resource);
 
             if (resource instanceof GifDrawable) {
-                // set callback to drawable in oder to
-                // signal its parent TextView to redraw
-                // to show animated GIF
+                // set callback to drawable in order to
+                // signal its container to be redrawn
+                // to show the animated GIF
                 mDrawable.setCallback((Drawable.Callback) getView().getTag(R.id.callback));
                 resource.setLoopCount(GlideDrawable.LOOP_FOREVER);
                 resource.start();
@@ -131,26 +130,19 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
             getView().invalidate();
         }
 
+        /**
+         * See https://github.com/bumptech/glide/issues/256
+         *
+         * @see com.bumptech.glide.GenericRequestBuilder#into(com.bumptech.glide.request.target.Target)
+         */
         @Override
         public Request getRequest() {
             return null;
         }
 
-        /**
-         * Override to handle request to download
-         * multiple images in queue
-         */
         @Override
         public void setRequest(Request request) {
-            Object tag = view.getTag();
-            List<Request> requestList;
-            if (tag != null) {
-                requestList = ObjectUtil.uncheckedCast(tag);
-            } else {
-                requestList = new ArrayList<>();
-            }
 
-            requestList.add(request);
         }
     }
 }

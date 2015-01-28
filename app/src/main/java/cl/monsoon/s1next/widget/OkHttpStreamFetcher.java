@@ -19,18 +19,17 @@ import cl.monsoon.s1next.R;
 /**
  * Fetches an {@link java.io.InputStream} using the OkHttp library.
  * <p>
- * Fork from https://github.com/bumptech/glide/blob/master/integration/okhttp/src/main/java/com/bumptech/glide/integration/okhttp/OkHttpStreamFetcher.java
+ * Forked from https://github.com/bumptech/glide/blob/master/integration/okhttp/src/main/java/com/bumptech/glide/integration/okhttp/OkHttpStreamFetcher.java
  */
 final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 
-    // see http://tools.ietf.org/html/rfc7231#section-6.1
-    // we need to cache the responses with following status codes
-    private static final int[] CACHEABLE_STATUS_CODES =
-            new int[]{
-                    200, 203, 204, 206,
-                    300, 301,
-                    404, 405, 410, 414, 501
-            };
+    /**
+     * Caches some responses with following status codes.
+     * <p>
+     * See http://tools.ietf.org/html/rfc7231#section-6.1
+     */
+    private static final int[] CACHEABLE_RESPONSE_STATUS_CODES =
+            new int[]{200, 203, 204, 206, 300, 301, 404, 405, 410, 414, 501};
 
     private final OkHttpClient mOkHttpClient;
     private final GlideUrl mGlideUrl;
@@ -53,12 +52,13 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
         Response response = mCall.execute();
         mCall = null;
 
-        // We need to provide InputStream (the default avatar placeholder)
-        // in order to cache some responses whose status code is in CACHEABLE_STATUS_CODES.
-        // But we needn't provide InputStream when response status code is in [200..300),
-        // because we will get it (user avatar) from server.
+        // We need to provide InputStream (the avatar's placeholder InputStream)
+        // if we failed to load avatar from server and the status code is in
+        // CACHEABLE_RESPONSE_STATUS_CODES. So OkHttpStreamFetcher will use
+        // this cached placeholder without sending HTTP GET to get user's avatar.
+        // But we don't need to provide InputStream if we get the avatar successfully.
         if (!response.isSuccessful()
-                && ArrayUtils.contains(CACHEABLE_STATUS_CODES, response.code())) {
+                && ArrayUtils.contains(CACHEABLE_RESPONSE_STATUS_CODES, response.code())) {
             response.body().close();
 
             //noinspection ResourceType
