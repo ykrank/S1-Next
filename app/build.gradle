@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'retrolambda'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 21
@@ -36,6 +36,8 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:1.8.1'
+
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.android.support:support-v13:21.0.3'
     compile 'com.android.support:appcompat-v7:21.0.3'
