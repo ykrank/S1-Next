@@ -41,8 +41,9 @@ public final class Api {
      */
     private static final String URL_QUOTE_HELPER = prefix("forum.php?mod=post&action=reply&inajax=yes");
 
-    private static final String URL_USER_AVATAR_SMALL = prefix("uc_server/data/avatar/%s_avatar_small.jpg");
-    private static final String URL_USER_AVATAR_MEDIUM = prefix("uc_server/data/avatar/%s_avatar_middle.jpg");
+    private static final String URL_USER_AVATAR_PREFIX = prefix("uc_server/data/avatar/");
+    private static final String URL_USER_AVATAR_SMALL = URL_USER_AVATAR_PREFIX + "%s_avatar_small.jpg";
+    private static final String URL_USER_AVATAR_MEDIUM = URL_USER_AVATAR_PREFIX + "%s_avatar_middle.jpg";
 
     /**
      * Opens the browser via {@link android.content.Intent}.
@@ -117,6 +118,10 @@ public final class Api {
                                 + "/" + s.substring(3, 5)
                                 + "/" + s.substring(5, 7)
                                 + "/" + s.substring(7));
+    }
+
+    public static boolean isAvatarUrl(String url) {
+        return url != null && url.startsWith(URL_USER_AVATAR_PREFIX);
     }
 
     public static String getUrlBrowserThreadList(String forumId, int pageNum) {

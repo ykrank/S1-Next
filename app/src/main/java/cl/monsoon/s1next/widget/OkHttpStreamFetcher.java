@@ -9,10 +9,12 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.http.client.HttpResponseException;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.MyApplication;
 import cl.monsoon.s1next.R;
 
@@ -24,7 +26,7 @@ import cl.monsoon.s1next.R;
 final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 
     /**
-     * Caches some responses with following status codes.
+     * According to RFC, we could cache some responses with following status codes.
      * <p>
      * See http://tools.ietf.org/html/rfc7231#section-6.1
      */
@@ -51,19 +53,23 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
         mCall = mOkHttpClient.newCall(request);
         Response response = mCall.execute();
 
-        // We need to provide InputStream (the avatar's placeholder InputStream)
-        // if we failed to load avatar from server and the status code is in
-        // CACHEABLE_RESPONSE_STATUS_CODES. So OkHttpStreamFetcher will use
-        // this cached placeholder without sending HTTP GET to get user's avatar.
-        // But we don't need to provide InputStream if we get the avatar successfully.
-        if (!response.isSuccessful()
-                && ArrayUtils.contains(CACHEABLE_RESPONSE_STATUS_CODES, response.code())) {
-            response.body().close();
+        if (!response.isSuccessful()) {
+            // We need to provide InputStream (the avatar's placeholder InputStream)
+            // if we failed to load avatar from server and the status code is in
+            // CACHEABLE_RESPONSE_STATUS_CODES. So OkHttpStreamFetcher will use
+            // this cached placeholder without sending HTTP GET to get user's avatar.
+            // But we don't need to provide InputStream if we get the avatar successfully.
+            if (Api.isAvatarUrl(mGlideUrl.toString())
+                    && ArrayUtils.contains(CACHEABLE_RESPONSE_STATUS_CODES, response.code())) {
+                response.body().close();
 
-            //noinspection ResourceType
-            mInputStream =
-                    MyApplication.getContext()
-                            .getResources().openRawResource(R.drawable.ic_avatar_placeholder);
+                //noinspection ResourceType
+                mInputStream =
+                        MyApplication.getContext()
+                                .getResources().openRawResource(R.drawable.ic_avatar_placeholder);
+            } else {
+                throw new HttpResponseException(response.code(), response.toString());
+            }
         } else {
             mInputStream = response.body().byteStream();
         }
