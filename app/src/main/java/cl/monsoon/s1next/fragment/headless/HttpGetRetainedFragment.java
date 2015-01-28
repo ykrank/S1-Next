@@ -152,7 +152,6 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
 
             mCall = MyOkHttpClient.get().newCall(request);
             Response response = mCall.execute();
-            mCall = null;
 
             if (!response.isSuccessful()) {
                 response.body().close();

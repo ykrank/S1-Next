@@ -50,7 +50,6 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 
         mCall = mOkHttpClient.newCall(request);
         Response response = mCall.execute();
-        mCall = null;
 
         // We need to provide InputStream (the avatar's placeholder InputStream)
         // if we failed to load avatar from server and the status code is in
