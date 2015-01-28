@@ -12,7 +12,7 @@ public enum MyAccount {
     INSTANCE;
 
     public static final String ACTION_USER_LOGIN = "user_login";
-    public static final String ACTION_USER_COOKIE_EXPIRATION = "user_logout_or_expiration";
+    public static final String ACTION_USER_COOKIE_EXPIRATION = "user_cookie_expiration";
 
     private volatile String uid;
     private volatile String name;
