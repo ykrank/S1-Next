@@ -15,6 +15,10 @@
         android:theme="@style/DarkTheme"
         tools:ignore="UnusedAttribute">
 
+        <meta-data
+            android:name="cl.monsoon.s1next.widget.MyGlideModule"
+            android:value="GlideModule"/>
+
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/activity_label_login"/>

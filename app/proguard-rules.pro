@@ -25,6 +25,9 @@
 # OkHttp
 -dontwarn okio.**
 
+# Glide
+-keepnames class * cl.monsoon.s1next.widget.MyGlideModule
+
 # Gradle Retrolambda Plugin
 -dontwarn java.lang.invoke.*
 

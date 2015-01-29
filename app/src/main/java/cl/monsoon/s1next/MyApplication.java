@@ -6,16 +6,7 @@ import android.content.SharedPreferences;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.GlideBuilder;
-import com.bumptech.glide.load.engine.cache.DiskLruCacheWrapper;
-import com.bumptech.glide.load.model.GlideUrl;
-
-import java.io.InputStream;
-
 import cl.monsoon.s1next.singleton.Config;
-import cl.monsoon.s1next.singleton.MyOkHttpClient;
-import cl.monsoon.s1next.widget.OkHttpUrlLoader;
 
 public final class MyApplication extends Application {
 
@@ -50,19 +41,5 @@ public final class MyApplication extends Application {
         Config.setTextScale(sharedPreferences);
         Config.setAvatarsDownloadStrategy(sharedPreferences);
         Config.setImagesDownloadStrategy(sharedPreferences);
-
-        // set max size of the disk cache for images
-        Glide.setup(
-                new GlideBuilder(this)
-                        .setDiskCache(
-                                DiskLruCacheWrapper.get(
-                                        Glide.getPhotoCacheDir(this),
-                                        Config.GLIDE_DISK_CACHE_SIZE)));
-
-        // register the OkHttp for Glide
-        Glide.get(this).register(
-                GlideUrl.class,
-                InputStream.class,
-                new OkHttpUrlLoader.Factory(MyOkHttpClient.get()));
     }
 }
