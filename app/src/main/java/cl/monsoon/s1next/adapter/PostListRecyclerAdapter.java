@@ -127,7 +127,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
 
             // show user's avatar
             mAvatarRequestBuilder
-                    .load(Api.getUrlAvatarSmall(post.getUserId()))
+                    .load(Api.getAvatarSmallUrl(post.getUserId()))
                     .into(avatarView);
         } else {
             avatarView.setVisibility(View.GONE);

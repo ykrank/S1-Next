@@ -153,7 +153,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.menu_browser:
-                String url = Api.getUrlBrowserPostList(mThreadId, mPageNum);
+                String url = Api.getPostListUrlForBrowser(mThreadId, mPageNum);
 
                 intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
@@ -164,7 +164,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
             case R.id.menu_share:
                 String value =
                         StringHelper.concatWithTwoSpaces(
-                                getThreadTitle(), Api.getUrlBrowserPostList(mThreadId, 1));
+                                getThreadTitle(), Api.getPostListUrlForBrowser(mThreadId, 1));
 
                 intent = new Intent(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_TEXT, value);
@@ -193,7 +193,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
 
     @Override
     public void onRefresh() {
-        execute(Api.getUrlPostList(mThreadId, mPageNum), PostListWrapper.class);
+        execute(Api.getPostListUrl(mThreadId, mPageNum), PostListWrapper.class);
     }
 
     @Override

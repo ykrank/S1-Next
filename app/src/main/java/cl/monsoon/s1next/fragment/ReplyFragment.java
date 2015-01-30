@@ -250,7 +250,7 @@ public final class ReplyFragment extends Fragment {
                 return
                         new HttpGetLoader<>(
                                 getActivity(),
-                                Api.getQuoteHelper(
+                                Api.getQuoteHelperUrl(
                                         getArguments().getString(ARG_THREAD_ID),
                                         getArguments().getString(ARG_QUOTE_POST_ID)),
                                 Quote.class);
@@ -258,7 +258,7 @@ public final class ReplyFragment extends Fragment {
                 return
                         new HttpPostLoader<>(
                                 getActivity(),
-                                Api.getPostRely(getArguments().getString(ARG_THREAD_ID)),
+                                Api.getPostRelyUrl(getArguments().getString(ARG_THREAD_ID)),
                                 ResultWrapper.class,
                                 getRequestBody(id));
             }

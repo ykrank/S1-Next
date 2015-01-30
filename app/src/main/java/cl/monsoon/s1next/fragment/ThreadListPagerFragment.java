@@ -171,7 +171,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
         switch (item.getItemId()) {
             case R.id.menu_browser:
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(Api.getUrlBrowserThreadList(mForumId, mPageNum)));
+                intent.setData(Uri.parse(Api.getThreadListUrlForBrowser(mForumId, mPageNum)));
 
                 startActivity(intent);
 
@@ -183,7 +183,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
 
     @Override
     public void onRefresh() {
-        execute(Api.getUrlThreadList(mForumId, mPageNum), ThreadListWrapper.class);
+        execute(Api.getThreadListUrl(mForumId, mPageNum), ThreadListWrapper.class);
     }
 
     @Override

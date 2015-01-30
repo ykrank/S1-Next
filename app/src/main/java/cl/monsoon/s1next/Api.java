@@ -60,7 +60,7 @@ public final class Api {
         return URL_S1 + suffix;
     }
 
-    public static String getUrlThreadList(String forumId, int pageNum) {
+    public static String getThreadListUrl(String forumId, int pageNum) {
         return
                 Uri.parse(URL_THREAD_LIST).buildUpon()
                         .appendQueryParameter("fid", forumId)
@@ -69,7 +69,7 @@ public final class Api {
                         .toString();
     }
 
-    public static String getUrlPostList(String threadId, int pageNum) {
+    public static String getPostListUrl(String threadId, int pageNum) {
         return
                 Uri.parse(URL_POST_LIST).buildUpon()
                         .appendQueryParameter("tid", threadId)
@@ -78,14 +78,14 @@ public final class Api {
                         .toString();
     }
 
-    public static String getPostRely(String threadId) {
+    public static String getPostRelyUrl(String threadId) {
         return
                 Uri.parse(URL_REPLY).buildUpon()
                         .appendQueryParameter("tid", threadId)
                         .toString();
     }
 
-    public static String getQuoteHelper(String threadId, String quotePostId) {
+    public static String getQuoteHelperUrl(String threadId, String quotePostId) {
         return
                 Uri.parse(URL_QUOTE_HELPER).buildUpon()
                         .appendQueryParameter("tid", threadId)
@@ -93,12 +93,12 @@ public final class Api {
                         .toString();
     }
 
-    public static String getUrlAvatarSmall(String userId) {
-        return formatUrlAvatar(URL_USER_AVATAR_SMALL, userId);
+    public static String getAvatarSmallUrl(String userId) {
+        return formatAvatarUrl(URL_USER_AVATAR_SMALL, userId);
     }
 
-    public static String getUrlAvatarMedium(String userId) {
-        return formatUrlAvatar(URL_USER_AVATAR_MEDIUM, userId);
+    public static String getAvatarMediumUrl(String userId) {
+        return formatAvatarUrl(URL_USER_AVATAR_MEDIUM, userId);
     }
 
     /**
@@ -108,7 +108,7 @@ public final class Api {
      * URL: http://bbs.saraba1st.com/2b/uc_server/data/avatar/%s_avatar_middle.jpg
      * User ID: 123456 -> 000123456 -> 000/12/34/56 -> http://bbs.saraba1st.com/2b/uc_server/data/avatar/000/12/34/56_avatar_middle.jpg
      */
-    private static String formatUrlAvatar(String url, String userId) {
+    private static String formatAvatarUrl(String url, String userId) {
         String s = StringUtils.leftPad(userId, 9, '0');
 
         return
@@ -124,11 +124,11 @@ public final class Api {
         return url != null && url.startsWith(URL_USER_AVATAR_PREFIX);
     }
 
-    public static String getUrlBrowserThreadList(String forumId, int pageNum) {
+    public static String getThreadListUrlForBrowser(String forumId, int pageNum) {
         return String.format(URL_BROWSER_THREAD_LIST, forumId, pageNum);
     }
 
-    public static String getUrlBrowserPostList(String threadId, int pageNum) {
+    public static String getPostListUrlForBrowser(String threadId, int pageNum) {
         return String.format(URL_BROWSER_POST_LIST, threadId, pageNum);
     }
 

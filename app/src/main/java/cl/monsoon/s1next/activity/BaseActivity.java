@@ -494,7 +494,7 @@ public abstract class BaseActivity extends ActionBarActivity
 
         // setup user's avatar
         Glide.with(this)
-                .load(Api.getUrlAvatarMedium(MyAccount.getUid()))
+                .load(Api.getAvatarMediumUrl(MyAccount.getUid()))
                 .signature(new StringSignature(DateUtil.getDayWithYear()))
                 .error(R.drawable.ic_drawer_avatar_placeholder)
                 .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
