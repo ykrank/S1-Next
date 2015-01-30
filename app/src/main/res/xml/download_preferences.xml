@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="pref_key_avatar"
+        android:persistent="false"
+        android:title="@string/pref_avatar">
+
+        <cl.monsoon.s1next.widget.ListPreferenceCompat
+            android:defaultValue="@string/pref_download_avatars_default_value"
+            android:entries="@array/pref_download_avatars_entries"
+            android:entryValues="@array/pref_download_avatars_entry_values"
+            android:key="pref_key_download_avatars"
+            android:summary="%s"
+            android:title="@string/pref_download_avatars"/>
+
+        <cl.monsoon.s1next.widget.ListPreferenceCompat
+            android:defaultValue="@string/pref_avatar_resolution_default_value"
+            android:entries="@array/pref_avatar_resolution_entries"
+            android:entryValues="@array/pref_avatar_resolution_entry_values"
+            android:key="pref_key_avatar_resolution"
+            android:summary="%s"
+            android:title="@string/pref_avatar_resolution"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_key_avatar"
+        android:persistent="false"
+        android:title="@string/pref_image">
+
+        <cl.monsoon.s1next.widget.ListPreferenceCompat
+            android:defaultValue="@string/pref_download_images_default_value"
+            android:entries="@array/pref_download_images_entries"
+            android:entryValues="@array/pref_download_images_entry_values"
+            android:key="pref_key_download_images"
+            android:summary="%s"
+            android:title="@string/pref_download_images"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

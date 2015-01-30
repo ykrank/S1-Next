@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import cl.monsoon.s1next.MyApplication;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.fragment.DownloadSettingsFragment;
 import cl.monsoon.s1next.fragment.SettingsFragment;
 import cl.monsoon.s1next.util.ColorUtil;
 
@@ -23,7 +24,6 @@ public enum Config {
 
     // 64MB
     public static final int GLIDE_DISK_CACHE_SIZE = 64 * 1024 * 1024;
-
 
     public static final int THREADS_PER_PAGE = 50;
     public static final int POSTS_PER_PAGE = 30;
@@ -45,8 +45,9 @@ public enum Config {
     private volatile int currentTheme;
     private volatile int colorAccent;
     private volatile float textScale;
-    private volatile boolean wifi;
+    private volatile boolean hasWifi;
     private volatile DownloadStrategy avatarsDownloadStrategy;
+    private volatile AvatarResolutionStrategy avatarResolutionStrategy;
     private volatile DownloadStrategy imagesDownloadStrategy;
 
     public static boolean isDefaultApplicationTheme() {
@@ -124,52 +125,56 @@ public enum Config {
         INSTANCE.textScale = TextScale.fromString(value).getSize();
     }
 
-    public static void setWifi(boolean wifi) {
-        INSTANCE.wifi = wifi;
-    }
-
-    public static DownloadStrategy getAvatarsDownloadStrategy() {
-        return INSTANCE.avatarsDownloadStrategy;
+    public static void setWifi(boolean hasWifi) {
+        INSTANCE.hasWifi = hasWifi;
     }
 
     public static void setAvatarsDownloadStrategy(SharedPreferences sharedPreferences) {
         String value =
                 getString(
                         sharedPreferences,
-                        SettingsFragment.PREF_KEY_DOWNLOAD_AVATARS,
+                        DownloadSettingsFragment.PREF_KEY_DOWNLOAD_AVATARS,
                         R.string.pref_download_avatars_default_value);
 
         INSTANCE.avatarsDownloadStrategy = DownloadStrategy.fromString(value);
     }
 
     public static boolean isAvatarsDownload() {
-        return isDownload(INSTANCE.avatarsDownloadStrategy);
+        return INSTANCE.avatarsDownloadStrategy.isDownload(INSTANCE.hasWifi);
     }
 
-    public static DownloadStrategy getImagesDownloadStrategy() {
-        return INSTANCE.imagesDownloadStrategy;
+    public static void setAvatarResolutionStrategy(SharedPreferences sharedPreferences) {
+        String value =
+                getString(
+                        sharedPreferences,
+                        DownloadSettingsFragment.PREF_KEY_AVATAR_RESOLUTION,
+                        R.string.pref_avatar_resolution_default_value);
+
+        INSTANCE.avatarResolutionStrategy = AvatarResolutionStrategy.fromString(value);
+    }
+
+    public static boolean isHighResolutionAvatarsDownload() {
+        return INSTANCE.avatarResolutionStrategy.isHigherResolution(Config.INSTANCE.hasWifi);
     }
 
     public static void setImagesDownloadStrategy(SharedPreferences sharedPreferences) {
         String value =
                 getString(
                         sharedPreferences,
-                        SettingsFragment.PREF_KEY_DOWNLOAD_IMAGES,
+                        DownloadSettingsFragment.PREF_KEY_DOWNLOAD_IMAGES,
                         R.string.pref_download_images_default_value);
 
         INSTANCE.imagesDownloadStrategy = DownloadStrategy.fromString(value);
     }
 
     public static boolean isImagesDownload() {
-        return isDownload(INSTANCE.imagesDownloadStrategy);
+        return INSTANCE.imagesDownloadStrategy.isDownload(INSTANCE.hasWifi);
     }
 
-    private static boolean isDownload(DownloadStrategy downloadStrategy) {
+    public static boolean needToTurnWifiOn() {
         return
-                downloadStrategy ==
-                        DownloadStrategy.WIFI
-                        && INSTANCE.wifi
-                        || downloadStrategy == DownloadStrategy.ALWAYS;
+                INSTANCE.avatarsDownloadStrategy != DownloadStrategy.NOT
+                        || INSTANCE.imagesDownloadStrategy != DownloadStrategy.NOT;
     }
 
     private static String getString(SharedPreferences sharedPreferences, String key, @StringRes int defValueResId) {
@@ -198,13 +203,35 @@ public enum Config {
         }
     }
 
-    public static enum DownloadStrategy {
+    private static enum DownloadStrategy {
         NOT, WIFI, ALWAYS;
 
         private static final DownloadStrategy[] VALUES = DownloadStrategy.values();
 
         public static DownloadStrategy fromString(String value) {
             return VALUES[Integer.parseInt(value)];
+        }
+
+        public boolean isDownload(boolean hasWifi) {
+            return
+                    equals(WIFI) && hasWifi
+                            || equals(ALWAYS);
+        }
+    }
+
+    private static enum AvatarResolutionStrategy {
+        LOW, HIGH_WIFI, HIGH;
+
+        private static final AvatarResolutionStrategy[] VALUES = AvatarResolutionStrategy.values();
+
+        public static AvatarResolutionStrategy fromString(String value) {
+            return VALUES[Integer.parseInt(value)];
+        }
+
+        public boolean isHigherResolution(boolean hasWifi) {
+            return
+                    equals(HIGH_WIFI) && hasWifi
+                            || equals(HIGH);
         }
     }
 }

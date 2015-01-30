@@ -66,9 +66,7 @@
                 android:value=".activity.SubForumPostListActivity"/>
         </activity>
 
-        <activity
-            android:name=".activity.SettingsActivity"
-            android:label="@string/settings"/>
+        <activity android:name=".activity.SettingsActivity"/>
 
         <activity
             android:name=".activity.ReplyActivity"

@@ -40,6 +40,7 @@ public final class MyApplication extends Application {
         Config.setCurrentTheme(sharedPreferences);
         Config.setTextScale(sharedPreferences);
         Config.setAvatarsDownloadStrategy(sharedPreferences);
+        Config.setAvatarResolutionStrategy(sharedPreferences);
         Config.setImagesDownloadStrategy(sharedPreferences);
     }
 }

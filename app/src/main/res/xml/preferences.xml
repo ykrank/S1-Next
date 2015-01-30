@@ -7,7 +7,6 @@
 
         <cl.monsoon.s1next.widget.ListPreferenceCompat
             android:defaultValue="@string/pref_theme_default_value"
-            android:dialogTitle="@string/pref_theme"
             android:entries="@array/pref_theme_entries"
             android:entryValues="@array/pref_theme_entry_values"
             android:key="pref_key_theme"
@@ -16,30 +15,17 @@
 
         <cl.monsoon.s1next.widget.ListPreferenceCompat
             android:defaultValue="@string/pref_font_size_default_value"
-            android:dialogTitle="@string/pref_font_size"
             android:entries="@array/pref_font_size_entries"
             android:entryValues="@array/pref_font_size_entry_values"
             android:key="pref_key_font_size"
             android:summary="%s"
             android:title="@string/pref_font_size"/>
 
-        <cl.monsoon.s1next.widget.ListPreferenceCompat
-            android:defaultValue="@string/pref_download_avatars_default_value"
-            android:dialogTitle="@string/pref_download_avatars"
-            android:entries="@array/pref_download_avatars_entries"
-            android:entryValues="@array/pref_download_avatars_entry_values"
-            android:key="pref_key_download_avatars"
-            android:summary="%s"
-            android:title="@string/pref_download_avatars"/>
-
-        <cl.monsoon.s1next.widget.ListPreferenceCompat
-            android:defaultValue="@string/pref_download_images_default_value"
-            android:dialogTitle="@string/pref_download_images"
-            android:entries="@array/pref_download_images_entries"
-            android:entryValues="@array/pref_download_images_entry_values"
-            android:key="pref_key_download_images"
-            android:summary="%s"
-            android:title="@string/pref_download_images"/>
+        <Preference
+            android:key="pref_key_downloads"
+            android:persistent="false"
+            android:summary="@string/pref_downloads_summary"
+            android:title="@string/pref_downloads"/>
 
     </PreferenceCategory>
 

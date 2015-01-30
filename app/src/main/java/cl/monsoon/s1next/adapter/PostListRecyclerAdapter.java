@@ -125,9 +125,13 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         if (avatarsDownload) {
             avatarView.setVisibility(View.VISIBLE);
 
+            String url =
+                    Config.isHighResolutionAvatarsDownload()
+                            ? Api.getAvatarMediumUrl(post.getUserId())
+                            : Api.getAvatarSmallUrl(post.getUserId());
             // show user's avatar
             mAvatarRequestBuilder
-                    .load(Api.getAvatarSmallUrl(post.getUserId()))
+                    .load(url)
                     .into(avatarView);
         } else {
             avatarView.setVisibility(View.GONE);

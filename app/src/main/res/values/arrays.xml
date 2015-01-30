@@ -50,6 +50,18 @@
         <item>2</item>
     </string-array>
 
+    <string-array name="pref_avatar_resolution_entries">
+        <item>@string/pref_avatar_resolution_entries_1</item>
+        <item>@string/pref_avatar_resolution_entries_2</item>
+        <item>@string/pref_avatar_resolution_entries_3</item>
+    </string-array>
+
+    <string-array name="pref_avatar_resolution_entry_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
     <string-array name="pref_download_images_entries">
         <item>@string/pref_download_images_entries_1</item>
         <item>@string/pref_download_images_entries_2</item>

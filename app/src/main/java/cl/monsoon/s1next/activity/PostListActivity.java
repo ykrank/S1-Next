@@ -156,8 +156,7 @@ public class PostListActivity
 
         // Registers broadcast receiver to check whether Wi-Fi is enabled
         // when we need to download images.
-        if (Config.getAvatarsDownloadStrategy() != Config.DownloadStrategy.NOT
-                || Config.getImagesDownloadStrategy() != Config.DownloadStrategy.NOT) {
+        if (Config.needToTurnWifiOn()) {
             Config.setWifi(NetworkUtil.isWifiConnected());
 
             mWifiReceiver = new BroadcastReceiver() {
