@@ -8,7 +8,7 @@ import cl.monsoon.s1next.singleton.Config;
 
 public final class DownloadSettingsFragment extends BaseSettingsFragment {
 
-    public static final String TAG = "DownloadSettingsFragment";
+    public static final String TAG = "download_settings_fragment";
 
     public static final String PREF_KEY_DOWNLOAD_AVATARS = "pref_key_download_avatars";
     public static final String PREF_KEY_AVATAR_RESOLUTION = "pref_key_avatar_resolution";
@@ -17,8 +17,6 @@ public final class DownloadSettingsFragment extends BaseSettingsFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        getActivity().setTitle(R.string.download_settings);
 
         addPreferencesFromResource(R.xml.download_preferences);
     }

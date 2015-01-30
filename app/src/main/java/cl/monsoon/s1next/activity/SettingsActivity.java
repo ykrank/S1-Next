@@ -6,7 +6,8 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.DownloadSettingsFragment;
 import cl.monsoon.s1next.fragment.SettingsFragment;
 
-public final class SettingsActivity extends BaseActivity {
+public final class SettingsActivity extends BaseActivity
+        implements SettingsFragment.onDownloadPreferenceSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,18 +25,25 @@ public final class SettingsActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() != 0) {
+        int backStackEntryCount = getFragmentManager().getBackStackEntryCount();
+        if (backStackEntryCount == 1) {
             getFragmentManager().popBackStack();
+            setTitle(R.string.settings);
 
             return;
+        } else if (backStackEntryCount > 1) {
+            throw
+                    new IllegalStateException(
+                            "backStackEntryCount can't be " + backStackEntryCount + ".");
         }
 
         super.onBackPressed();
     }
 
-    public void onNestedDownloadPreferenceSelected() {
+    public void onDownloadPreferenceSelected() {
         getFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout, new DownloadSettingsFragment(), DownloadSettingsFragment.TAG)
                 .addToBackStack(null).commit();
+        setTitle(R.string.download_settings);
     }
 }
