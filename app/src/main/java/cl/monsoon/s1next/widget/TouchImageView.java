@@ -68,17 +68,17 @@ public final class TouchImageView extends ImageView implements View.OnTouchListe
             return;
         }
 
-        int width = getDrawable().getIntrinsicWidth();
-        int height = getDrawable().getIntrinsicHeight();
-        if (width == -1 || height == -1) {
+        int srcWidth = getDrawable().getIntrinsicWidth();
+        int srcHeight = getDrawable().getIntrinsicHeight();
+        if (srcWidth == -1 || srcHeight == -1) {
             return;
         }
 
         if (mIsFirst) {
             mIsFirst = false;
 
-            int dx = getWidth() - width;
-            int dy = getHeight() - height;
+            int dx = getWidth() - srcWidth;
+            int dy = getHeight() - srcHeight;
             postTranslate(dx / 2, dy / 2);
         }
 
@@ -115,7 +115,7 @@ public final class TouchImageView extends ImageView implements View.OnTouchListe
     private void inspectTranslateBounds(Matrix matrix) {
         // We need to set this TouchImageView's layout to
         // match_parent to get its container's width or height.
-        // Or just use TouchImageView#getParent() to get those.
+        // Or just use TouchImageView#getParent() to get these.
         int containerWidth = getWidth();
         int containerHeight = getHeight();
 

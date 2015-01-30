@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
@@ -99,16 +98,16 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
 
         @Override
         public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-            // calculate this drawable's width & height to fitXY
+            // resize this drawable's width & height to fit its container
+            final int resWidth = resource.getIntrinsicWidth();
+            final int resHeight = resource.getIntrinsicHeight();
             int width, height;
-            if (getView().getWidth() >= resource.getIntrinsicWidth()) {
-                width = resource.getIntrinsicWidth();
-                height = resource.getIntrinsicHeight();
+            if (getView().getWidth() >= resWidth) {
+                width = resWidth;
+                height = resHeight;
             } else {
                 width = getView().getWidth();
-                height =
-                        (int) (resource.getIntrinsicHeight()
-                                / (1.0 * resource.getIntrinsicWidth() / getView().getWidth()));
+                height = (int) (resHeight / (1.0 * resWidth / width));
             }
 
             Rect rect = new Rect(0, 0, width, height);
@@ -117,7 +116,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
             mDrawable.setBounds(rect);
             mDrawable.setDrawable(resource);
 
-            if (resource instanceof GifDrawable) {
+            if (resource.isAnimated()) {
                 // set callback to drawable in order to
                 // signal its container to be redrawn
                 // to show the animated GIF
