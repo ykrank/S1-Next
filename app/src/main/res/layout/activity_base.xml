@@ -57,7 +57,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/ic_drawer_background"/>
 
-        <com.makeramen.RoundedImageView
+        <cl.monsoon.s1next.widget.BezelImageView
             android:id="@+id/drawer_user_avatar"
             android:layout_width="@dimen/drawer_avatar_size"
             android:layout_height="@dimen/drawer_avatar_size"
@@ -65,9 +65,8 @@
             android:layout_marginStart="@dimen/item_padding"
             android:layout_marginTop="@dimen/drawer_avatar_margin_top"
             android:contentDescription="@string/drawer_avatar_content_desc"
-            app:riv_border_color="@color/avatar_border"
-            app:riv_border_width="@dimen/drawer_avatar_border_width"
-            app:riv_oval="true"/>
+            app:borderDrawable="@drawable/selector_rounded_border"
+            app:maskDrawable="@drawable/rounded_mask"/>
 
         <TextView
             android:id="@+id/drawer_username"
