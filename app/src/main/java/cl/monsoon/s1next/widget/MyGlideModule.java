@@ -1,6 +1,7 @@
 package cl.monsoon.s1next.widget;
 
 import android.content.Context;
+import android.preference.PreferenceManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
@@ -22,7 +23,10 @@ public final class MyGlideModule implements GlideModule {
     public void applyOptions(Context context, GlideBuilder builder) {
         // set max size of the disk cache for images
         builder.setDiskCache(
-                new InternalCacheDiskCacheFactory(context, Config.GLIDE_DISK_CACHE_SIZE));
+                new InternalCacheDiskCacheFactory(
+                        context,
+                        Config.getCacheSize(
+                                PreferenceManager.getDefaultSharedPreferences(context))));
     }
 
     @Override

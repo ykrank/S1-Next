@@ -38,6 +38,18 @@
         <item>4</item>
     </string-array>
 
+    <string-array name="pref_download_cache_size_entries" translatable="false">
+        <item>64MB</item>
+        <item>128MB</item>
+        <item>256MB</item>
+    </string-array>
+
+    <string-array name="pref_download_cache_size_entry_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
     <string-array name="pref_download_avatars_entries">
         <item>@string/pref_download_avatars_entries_1</item>
         <item>@string/pref_download_avatars_entries_2</item>

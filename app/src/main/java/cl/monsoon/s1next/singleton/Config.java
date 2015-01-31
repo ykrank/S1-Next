@@ -22,9 +22,6 @@ public enum Config {
 
     public static final long COOKIES_MAX_AGE = TimeUnit.DAYS.toSeconds(30);
 
-    // 64MB
-    public static final int GLIDE_DISK_CACHE_SIZE = 64 * 1024 * 1024;
-
     public static final int THREADS_PER_PAGE = 50;
     public static final int POSTS_PER_PAGE = 30;
 
@@ -129,6 +126,16 @@ public enum Config {
         INSTANCE.hasWifi = hasWifi;
     }
 
+    public static int getCacheSize(SharedPreferences sharedPreferences) {
+        String value =
+                getString(
+                        sharedPreferences,
+                        DownloadSettingsFragment.PREF_DOWNLOAD_CACHE_SIZE,
+                        R.string.pref_download_cache_size_default_value);
+
+        return CacheSize.fromString(value).size;
+    }
+
     public static void setAvatarsDownloadStrategy(SharedPreferences sharedPreferences) {
         String value =
                 getString(
@@ -199,6 +206,23 @@ public enum Config {
         }
 
         public static TextScale fromString(String value) {
+            return VALUES[Integer.parseInt(value)];
+        }
+    }
+
+    private static enum CacheSize {
+        // 64MB, 128MB, 256MB
+        LOW(64), NORMAL(128), HIGH(256);
+
+        private static final CacheSize[] VALUES = CacheSize.values();
+
+        private int size;
+
+        private CacheSize(int size) {
+            this.size = size * 1000 * 1000;
+        }
+
+        public static CacheSize fromString(String value) {
             return VALUES[Integer.parseInt(value)];
         }
     }

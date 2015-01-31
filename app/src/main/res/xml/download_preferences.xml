@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <cl.monsoon.s1next.widget.ListPreferenceCompat
+        android:defaultValue="@string/pref_download_cache_size_default_value"
+        android:entries="@array/pref_download_cache_size_entries"
+        android:entryValues="@array/pref_download_cache_size_entry_values"
+        android:key="pref_key_download_cache_size"
+        android:summary="%s"
+        android:title="@string/pref_download_cache_size"/>
+
     <PreferenceCategory
         android:key="pref_key_avatar"
         android:persistent="false"

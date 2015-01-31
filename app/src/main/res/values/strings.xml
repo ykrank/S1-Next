@@ -78,6 +78,8 @@
     <string name="pref_font_size_default_value" translatable="false">2</string>
     <string name="pref_downloads">Downloads</string>
     <string name="pref_downloads_summary">Avatar &amp; Image</string>
+    <string name="pref_download_cache_size">Cache size</string>
+    <string name="pref_download_cache_size_default_value" translatable="false">1</string>
     <string name="pref_avatar">Avatar</string>
     <string name="pref_download_avatars">Download avatars</string>
     <string name="pref_download_avatars_default_value" translatable="false">2</string>
