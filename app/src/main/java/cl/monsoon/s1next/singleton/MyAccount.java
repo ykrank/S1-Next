@@ -51,8 +51,8 @@ public enum MyAccount {
         INSTANCE.permission = permission;
     }
 
-    public static boolean isLoggedIn() {
-        return !TextUtils.isEmpty(INSTANCE.name);
+    public static boolean hasLoggedIn() {
+        return !TextUtils.isEmpty(INSTANCE.uid);
     }
 
     public static void clear() {

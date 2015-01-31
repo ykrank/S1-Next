@@ -430,7 +430,7 @@ public abstract class BaseActivity extends ActionBarActivity
 
         // Show default avatar and login prompt if user hasn't logged in,
         // else show user's avatar and username.
-        if (MyAccount.isLoggedIn()) {
+        if (MyAccount.hasLoggedIn()) {
             setupDrawerUserView();
         } else {
             setupDrawerLoginPrompt();

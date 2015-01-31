@@ -407,7 +407,7 @@ public class PostListActivity
 
     private boolean checkUserLoggedInStatus() {
         // show LoginPromptDialog if user hasn't logged in.
-        if (!MyAccount.isLoggedIn()) {
+        if (!MyAccount.hasLoggedIn()) {
             new LoginPromptDialog().show(getSupportFragmentManager(), LoginPromptDialog.TAG);
 
             return false;
