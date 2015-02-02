@@ -50,25 +50,25 @@
         <item>2</item>
     </string-array>
 
-    <string-array name="pref_download_avatars_entries">
+    <string-array name="pref_download_avatars_strategy_entries">
         <item>@string/pref_download_avatars_entries_1</item>
         <item>@string/pref_download_avatars_entries_2</item>
         <item>@string/pref_download_avatars_entries_3</item>
     </string-array>
 
-    <string-array name="pref_download_avatars_entry_values" translatable="false">
+    <string-array name="pref_download_avatars_strategy_entry_values" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
     </string-array>
 
-    <string-array name="pref_avatar_resolution_entries">
+    <string-array name="pref_avatar_resolution_strategy_entries">
         <item>@string/pref_avatar_resolution_entries_1</item>
         <item>@string/pref_avatar_resolution_entries_2</item>
         <item>@string/pref_avatar_resolution_entries_3</item>
     </string-array>
 
-    <string-array name="pref_avatar_resolution_entry_values" translatable="false">
+    <string-array name="pref_avatar_resolution_strategy_entry_values" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -86,13 +86,13 @@
         <item>2</item>
     </string-array>
 
-    <string-array name="pref_download_images_entries">
+    <string-array name="pref_download_images_strategy_entries">
         <item>@string/pref_download_images_entries_1</item>
         <item>@string/pref_download_images_entries_2</item>
         <item>@string/pref_download_images_entries_3</item>
     </string-array>
 
-    <string-array name="pref_download_images_entry_values" translatable="false">
+    <string-array name="pref_download_images_strategy_entry_values" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>

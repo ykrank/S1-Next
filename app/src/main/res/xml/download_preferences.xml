@@ -15,18 +15,18 @@
         android:title="@string/pref_avatar">
 
         <cl.monsoon.s1next.widget.ListPreferenceCompat
-            android:defaultValue="@string/pref_download_avatars_default_value"
-            android:entries="@array/pref_download_avatars_entries"
-            android:entryValues="@array/pref_download_avatars_entry_values"
-            android:key="pref_key_download_avatars"
+            android:defaultValue="@string/pref_download_avatars_strategy_default_value"
+            android:entries="@array/pref_download_avatars_strategy_entries"
+            android:entryValues="@array/pref_download_avatars_strategy_entry_values"
+            android:key="pref_key_download_avatars_strategy"
             android:summary="%s"
-            android:title="@string/pref_download_avatars"/>
+            android:title="@string/pref_downloads"/>
 
         <cl.monsoon.s1next.widget.ListPreferenceCompat
-            android:defaultValue="@string/pref_avatar_resolution_default_value"
-            android:entries="@array/pref_avatar_resolution_entries"
-            android:entryValues="@array/pref_avatar_resolution_entry_values"
-            android:key="pref_key_avatar_resolution"
+            android:defaultValue="@string/pref_avatar_resolution_strategy_default_value"
+            android:entries="@array/pref_avatar_resolution_strategy_entries"
+            android:entryValues="@array/pref_avatar_resolution_strategy_entry_values"
+            android:key="pref_key_avatar_resolution_strategy"
             android:summary="%s"
             android:title="@string/pref_avatar_resolution"/>
 
@@ -46,12 +46,12 @@
         android:title="@string/pref_image">
 
         <cl.monsoon.s1next.widget.ListPreferenceCompat
-            android:defaultValue="@string/pref_download_images_default_value"
-            android:entries="@array/pref_download_images_entries"
-            android:entryValues="@array/pref_download_images_entry_values"
-            android:key="pref_key_download_images"
+            android:defaultValue="@string/pref_download_images_strategy_default_value"
+            android:entries="@array/pref_download_images_strategy_entries"
+            android:entryValues="@array/pref_download_images_strategy_entry_values"
+            android:key="pref_key_download_images_strategy"
             android:summary="%s"
-            android:title="@string/pref_download_images"/>
+            android:title="@string/pref_downloads"/>
 
     </PreferenceCategory>
 

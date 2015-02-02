@@ -152,8 +152,8 @@ public enum Config {
         String value =
                 getString(
                         sharedPreferences,
-                        DownloadSettingsFragment.PREF_KEY_DOWNLOAD_AVATARS,
-                        R.string.pref_download_avatars_default_value);
+                        DownloadSettingsFragment.PREF_KEY_DOWNLOAD_AVATARS_STRATEGY,
+                        R.string.pref_download_avatars_strategy_default_value);
 
         INSTANCE.avatarsDownloadStrategy = DownloadStrategy.fromString(value);
     }
@@ -166,8 +166,8 @@ public enum Config {
         String value =
                 getString(
                         sharedPreferences,
-                        DownloadSettingsFragment.PREF_KEY_AVATAR_RESOLUTION,
-                        R.string.pref_avatar_resolution_default_value);
+                        DownloadSettingsFragment.PREF_KEY_AVATAR_RESOLUTION_STRATEGY,
+                        R.string.pref_avatar_resolution_strategy_default_value);
 
         INSTANCE.avatarResolutionStrategy = AvatarResolutionStrategy.fromString(value);
     }
@@ -194,8 +194,8 @@ public enum Config {
         String value =
                 getString(
                         sharedPreferences,
-                        DownloadSettingsFragment.PREF_KEY_DOWNLOAD_IMAGES,
-                        R.string.pref_download_images_default_value);
+                        DownloadSettingsFragment.PREF_KEY_DOWNLOAD_IMAGES_STRATEGY,
+                        R.string.pref_download_images_strategy_default_value);
 
         INSTANCE.imagesDownloadStrategy = DownloadStrategy.fromString(value);
     }
