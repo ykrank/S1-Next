@@ -10,7 +10,7 @@ public final class DownloadSettingsFragment extends BaseSettingsFragment {
 
     public static final String TAG = "download_settings_fragment";
 
-    public static final String PREF_DOWNLOAD_CACHE_SIZE = "pref_download_cache_size";
+    public static final String PREF_KEY_DOWNLOAD_CACHE_SIZE = "pref_key_download_cache_size";
     public static final String PREF_KEY_DOWNLOAD_AVATARS = "pref_key_download_avatars";
     public static final String PREF_KEY_AVATAR_RESOLUTION = "pref_key_avatar_resolution";
     public static final String PREF_KEY_AVATAR_CACHE_INVALIDATION_INTERVAL = "pref_key_avatar_cache_invalidation_interval";

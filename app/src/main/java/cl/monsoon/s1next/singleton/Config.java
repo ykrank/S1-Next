@@ -142,7 +142,7 @@ public enum Config {
         String value =
                 getString(
                         sharedPreferences,
-                        DownloadSettingsFragment.PREF_DOWNLOAD_CACHE_SIZE,
+                        DownloadSettingsFragment.PREF_KEY_DOWNLOAD_CACHE_SIZE,
                         R.string.pref_download_cache_size_default_value);
 
         return CacheSize.fromString(value).size;
