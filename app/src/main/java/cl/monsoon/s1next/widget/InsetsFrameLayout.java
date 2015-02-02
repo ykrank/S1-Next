@@ -13,7 +13,7 @@ import android.widget.FrameLayout;
  * <p>
  * Forked from https://github.com/google/iosched/blob/master/android/src/main/java/com/google/samples/apps/iosched/ui/widget/ScrimInsetsFrameLayout.java
  */
-public class InsetsFrameLayout extends FrameLayout {
+public final class InsetsFrameLayout extends FrameLayout {
 
     private OnInsetsCallback mOnInsetsCallback;
 

@@ -173,7 +173,7 @@ public enum Config {
     }
 
     public static boolean isHighResolutionAvatarsDownload() {
-        return INSTANCE.avatarResolutionStrategy.isHigherResolution(Config.INSTANCE.hasWifi);
+        return INSTANCE.avatarResolutionStrategy.isHigherResolution(INSTANCE.hasWifi);
     }
 
     public static void setAvatarCacheInvalidationInterval(SharedPreferences sharedPreferences) {
@@ -242,7 +242,7 @@ public enum Config {
 
         private static final CacheSize[] VALUES = CacheSize.values();
 
-        private int size;
+        private final int size;
 
         private CacheSize(int size) {
             this.size = size * 1000 * 1000;

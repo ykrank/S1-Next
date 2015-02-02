@@ -34,7 +34,7 @@ public final class AsyncResult<D extends Extractable> {
         } else if (exception instanceof IOException) {
             ToastUtil.showByResId(R.string.message_network_error, Toast.LENGTH_SHORT);
         } else {
-            throw new IllegalStateException("Unhandled exception happened.");
+            throw new IllegalStateException("Unhandled exception happened.", exception);
         }
     }
 }

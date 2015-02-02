@@ -16,7 +16,7 @@ import java.io.InputStream;
  * <p>
  * Forked from https://github.com/bumptech/glide/blob/master/integration/okhttp/src/main/java/com/bumptech/glide/integration/okhttp/OkHttpUrlLoader.java
  */
-public final class OkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
+final class OkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
 
     private final OkHttpClient mOkHttpClient;
 
