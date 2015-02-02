@@ -52,7 +52,7 @@ public enum MyAccount {
     }
 
     public static boolean hasLoggedIn() {
-        return !TextUtils.isEmpty(INSTANCE.uid);
+        return !TextUtils.isEmpty(INSTANCE.uid) && !TextUtils.isEmpty(INSTANCE.name);
     }
 
     public static void clear() {
