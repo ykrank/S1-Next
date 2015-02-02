@@ -5,6 +5,10 @@ import android.content.res.TypedArray;
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
 
+import com.bumptech.glide.load.Key;
+import com.bumptech.glide.signature.StringSignature;
+
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import cl.monsoon.s1next.MyApplication;
@@ -12,6 +16,7 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.DownloadSettingsFragment;
 import cl.monsoon.s1next.fragment.SettingsFragment;
 import cl.monsoon.s1next.util.ColorUtil;
+import cl.monsoon.s1next.util.DateUtil;
 
 public enum Config {
     INSTANCE;
@@ -21,6 +26,12 @@ public enum Config {
     public static final int OKHTTP_CLIENT_READ_TIMEOUT = 60;
 
     public static final long COOKIES_MAX_AGE = TimeUnit.DAYS.toSeconds(30);
+
+    // 1MB
+    static final long AVATAR_URLS_DISK_CACHE_MAX_SIZE = 1000 * 1000;
+
+    static final int AVATAR_URLS_MEMORY_CACHE_MAX_NUMBER = 1000;
+    static final int AVATAR_URL_KEYS_MEMORY_CACHE_MAX_NUMBER = 1000;
 
     public static final int THREADS_PER_PAGE = 50;
     public static final int POSTS_PER_PAGE = 30;
@@ -45,6 +56,7 @@ public enum Config {
     private volatile boolean hasWifi;
     private volatile DownloadStrategy avatarsDownloadStrategy;
     private volatile AvatarResolutionStrategy avatarResolutionStrategy;
+    private volatile AvatarCacheInvalidationInterval avatarCacheInvalidationInterval;
     private volatile DownloadStrategy imagesDownloadStrategy;
 
     public static boolean isDefaultApplicationTheme() {
@@ -164,6 +176,20 @@ public enum Config {
         return INSTANCE.avatarResolutionStrategy.isHigherResolution(Config.INSTANCE.hasWifi);
     }
 
+    public static void setAvatarCacheInvalidationInterval(SharedPreferences sharedPreferences) {
+        String value =
+                getString(
+                        sharedPreferences,
+                        DownloadSettingsFragment.PREF_KEY_AVATAR_CACHE_INVALIDATION_INTERVAL,
+                        R.string.pref_avatar_cache_invalidation_interval_default_value);
+
+        INSTANCE.avatarCacheInvalidationInterval = AvatarCacheInvalidationInterval.fromString(value);
+    }
+
+    public static Key getAvatarCacheInvalidationIntervalSignature() {
+        return INSTANCE.avatarCacheInvalidationInterval.getSignature();
+    }
+
     public static void setImagesDownloadStrategy(SharedPreferences sharedPreferences) {
         String value =
                 getString(
@@ -256,6 +282,32 @@ public enum Config {
             return
                     equals(HIGH_WIFI) && hasWifi
                             || equals(HIGH);
+        }
+    }
+
+    private static enum AvatarCacheInvalidationInterval {
+        EVERY_DAY(DateUtil::today),
+        EVERY_WEEK(DateUtil::dayOfWeek),
+        EVERY_MONTH(DateUtil::dayOfMonth);
+
+        private static final AvatarCacheInvalidationInterval[] VALUES = AvatarCacheInvalidationInterval.values();
+
+        public static AvatarCacheInvalidationInterval fromString(String value) {
+            return VALUES[Integer.parseInt(value)];
+        }
+
+        private final Callable<String> callable;
+
+        private AvatarCacheInvalidationInterval(Callable<String> callable) {
+            this.callable = callable;
+        }
+
+        public Key getSignature() {
+            try {
+                return new StringSignature(callable.call());
+            } catch (Exception e) {
+                throw new RuntimeException("Unknown exception occurs.", e);
+            }
         }
     }
 }

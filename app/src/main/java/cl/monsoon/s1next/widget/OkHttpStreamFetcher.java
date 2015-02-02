@@ -1,6 +1,7 @@
 package cl.monsoon.s1next.widget;
 
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.squareup.okhttp.Call;
@@ -15,8 +16,21 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import cl.monsoon.s1next.Api;
-import cl.monsoon.s1next.MyApplication;
-import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.singleton.Config;
+import cl.monsoon.s1next.singleton.AvatarUrlsCache;
+
+import static java.net.HttpURLConnection.HTTP_BAD_METHOD;
+import static java.net.HttpURLConnection.HTTP_GONE;
+import static java.net.HttpURLConnection.HTTP_MOVED_PERM;
+import static java.net.HttpURLConnection.HTTP_MULT_CHOICE;
+import static java.net.HttpURLConnection.HTTP_NOT_AUTHORITATIVE;
+import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
+import static java.net.HttpURLConnection.HTTP_NOT_IMPLEMENTED;
+import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
+import static java.net.HttpURLConnection.HTTP_OK;
+import static java.net.HttpURLConnection.HTTP_PARTIAL;
+import static java.net.HttpURLConnection.HTTP_REQ_TOO_LONG;
+
 
 /**
  * Fetches an {@link java.io.InputStream} using the OkHttp library.
@@ -31,50 +45,70 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
      * See http://tools.ietf.org/html/rfc7231#section-6.1
      */
     private static final int[] CACHEABLE_RESPONSE_STATUS_CODES =
-            new int[]{200, 203, 204, 206, 300, 301, 404, 405, 410, 414, 501};
+            new int[]{
+                    HTTP_OK,
+                    HTTP_NOT_AUTHORITATIVE,
+                    HTTP_NO_CONTENT,
+                    HTTP_PARTIAL,
+                    HTTP_MULT_CHOICE,
+                    HTTP_MOVED_PERM,
+                    HTTP_NOT_FOUND,
+                    HTTP_BAD_METHOD,
+                    HTTP_GONE,
+                    HTTP_REQ_TOO_LONG,
+                    HTTP_NOT_IMPLEMENTED
+            };
 
     private final OkHttpClient mOkHttpClient;
-    private final GlideUrl mGlideUrl;
+    private final String mUrl;
 
     private Call mCall;
     private InputStream mInputStream;
 
     public OkHttpStreamFetcher(OkHttpClient okHttpClient, GlideUrl glideUrl) {
         this.mOkHttpClient = okHttpClient;
-        this.mGlideUrl = glideUrl;
+        this.mUrl = glideUrl.toString();
     }
 
+    /**
+     * @see cl.monsoon.s1next.singleton.AvatarUrlsCache
+     */
     @Override
     public InputStream loadData(Priority priority) throws IOException {
+        Key key = null;
+        if (Api.isAvatarUrl(mUrl)) {
+            key =
+                    new AvatarUrlsCache.OriginalKey(
+                            mUrl, Config.getAvatarCacheInvalidationIntervalSignature());
+            if (AvatarUrlsCache.has(key)) {
+                throw new IOException("Already have cached this avatar (" + mUrl + ").");
+            }
+        }
+
         Request request = new Request.Builder()
-                .url(mGlideUrl.toString())
+                .url(mUrl)
                 .build();
 
         mCall = mOkHttpClient.newCall(request);
         Response response = mCall.execute();
 
         if (!response.isSuccessful()) {
+            response.body().close();
+
             // We need to provide InputStream (the avatar's placeholder InputStream)
             // if we failed to load avatar from server and the status code is in
             // CACHEABLE_RESPONSE_STATUS_CODES. So OkHttpStreamFetcher will use
             // this cached placeholder without sending HTTP GET to get user's avatar.
             // But we don't need to provide InputStream if we get the avatar successfully.
-            if (Api.isAvatarUrl(mGlideUrl.toString())
+            if (key != null
                     && ArrayUtils.contains(CACHEABLE_RESPONSE_STATUS_CODES, response.code())) {
-                response.body().close();
+                AvatarUrlsCache.put(key);
 
-                //noinspection ResourceType
-                mInputStream =
-                        MyApplication.getContext()
-                                .getResources().openRawResource(R.drawable.ic_avatar_placeholder);
-            } else {
                 throw new HttpResponseException(response.code(), response.toString());
             }
-        } else {
-            mInputStream = response.body().byteStream();
         }
 
-        return mInputStream;
+        return response.body().byteStream();
     }
 
     @Override
@@ -92,7 +126,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 
     @Override
     public String getId() {
-        return mGlideUrl.toString();
+        return mUrl;
     }
 
     @Override

@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import cl.monsoon.s1next.singleton.Config;
 
 public final class MyApplication extends Application {
@@ -34,11 +36,14 @@ public final class MyApplication extends Application {
 
         sContext = getApplicationContext();
 
+        JodaTimeAndroid.init(this);
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // initiate the config depends on settings
         Config.setCurrentTheme(sharedPreferences);
         Config.setTextScale(sharedPreferences);
+        Config.setAvatarCacheInvalidationInterval(sharedPreferences);
         Config.setAvatarsDownloadStrategy(sharedPreferences);
         Config.setAvatarResolutionStrategy(sharedPreferences);
         Config.setImagesDownloadStrategy(sharedPreferences);

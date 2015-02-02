@@ -85,6 +85,8 @@
     <string name="pref_download_avatars_default_value" translatable="false">2</string>
     <string name="pref_avatar_resolution">Avatar resolution</string>
     <string name="pref_avatar_resolution_default_value" translatable="false">0</string>
+    <string name="pref_avatar_cache_invalidation_interval">Avatar cache invalidation interval</string>
+    <string name="pref_avatar_cache_invalidation_interval_default_value" translatable="false">1</string>
     <string name="pref_image">Image</string>
     <string name="pref_download_images">Download images</string>
     <string name="pref_download_images_default_value" translatable="false">1</string>
@@ -114,6 +116,10 @@
     <string name="pref_avatar_resolution_entries_1">Low resolution (Any time)</string>
     <string name="pref_avatar_resolution_entries_2">High resolution (Wi-Fi)</string>
     <string name="pref_avatar_resolution_entries_3">High resolution (Any time)</string>
+
+    <string name="pref_download_cache_invalidation_interval_entries_1">Every day</string>
+    <string name="pref_download_cache_invalidation_interval_entries_2">Every week</string>
+    <string name="pref_download_cache_invalidation_interval_entries_3">Every month</string>
 
     <string name="pref_download_images_entries_1">Do not download images</string>
     <string name="pref_download_images_entries_2">Download images over Wi-Fi only</string>

@@ -35,7 +35,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.signature.StringSignature;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -49,7 +48,6 @@ import cl.monsoon.s1next.fragment.SettingsFragment;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.MyAccount;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
-import cl.monsoon.s1next.util.DateUtil;
 import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.widget.InsetsFrameLayout;
@@ -469,6 +467,7 @@ public abstract class BaseActivity extends ActionBarActivity
         // setup default avatar
         Glide.with(this)
                 .load(R.drawable.ic_drawer_avatar_placeholder)
+                .signature(Config.getAvatarCacheInvalidationIntervalSignature())
                 .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
                 .into(mDrawerUserAvatarView);
 
@@ -495,7 +494,7 @@ public abstract class BaseActivity extends ActionBarActivity
         // setup user's avatar
         Glide.with(this)
                 .load(Api.getAvatarMediumUrl(MyAccount.getUid()))
-                .signature(new StringSignature(DateUtil.getDayWithYear()))
+                .signature(Config.getAvatarCacheInvalidationIntervalSignature())
                 .error(R.drawable.ic_drawer_avatar_placeholder)
                 .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
                 .into(mDrawerUserAvatarView);

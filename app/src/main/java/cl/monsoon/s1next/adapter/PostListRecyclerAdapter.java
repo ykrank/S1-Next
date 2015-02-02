@@ -26,7 +26,6 @@ import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.signature.StringSignature;
 
 import java.util.Map;
 
@@ -36,7 +35,6 @@ import cl.monsoon.s1next.activity.PostListActivity;
 import cl.monsoon.s1next.activity.ReplyActivity;
 import cl.monsoon.s1next.model.Post;
 import cl.monsoon.s1next.singleton.Config;
-import cl.monsoon.s1next.util.DateUtil;
 import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ViewHelper;
 import cl.monsoon.s1next.widget.GlideImageGetter;
@@ -69,7 +67,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         mAvatarRequestBuilder =
                 Glide.with(mContext)
                         .from(String.class)
-                        .signature(new StringSignature(DateUtil.getWeekWithYear()))
+                        .signature(Config.getAvatarCacheInvalidationIntervalSignature())
                         .error(R.drawable.ic_avatar_placeholder)
                         .priority(Priority.HIGH)
                         .transform(new CenterCrop(Glide.get(context).getBitmapPool()));

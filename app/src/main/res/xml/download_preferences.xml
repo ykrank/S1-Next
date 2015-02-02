@@ -30,6 +30,14 @@
             android:summary="%s"
             android:title="@string/pref_avatar_resolution"/>
 
+        <cl.monsoon.s1next.widget.ListPreferenceCompat
+            android:defaultValue="@string/pref_avatar_cache_invalidation_interval_default_value"
+            android:entries="@array/pref_avatar_cache_invalidation_interval_entries"
+            android:entryValues="@array/pref_avatar_cache_invalidation_interval_entry_values"
+            android:key="pref_key_avatar_cache_invalidation_interval"
+            android:summary="%s"
+            android:title="@string/pref_avatar_cache_invalidation_interval"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
