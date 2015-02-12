@@ -51,4 +51,5 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.5.0'
     compile 'com.github.bumptech.glide:glide:3.5.0'
     compile 'com.melnykov:floatingactionbutton:1.1.0'
+    compile 'com.github.chrisbanes.photoview:library:1.2.3'
 }
