@@ -11,7 +11,6 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
@@ -26,6 +25,11 @@ import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+
+import net.danlew.android.joda.DateUtils;
+
+import org.joda.time.Days;
+import org.joda.time.MutableDateTime;
 
 import java.util.Map;
 
@@ -139,9 +143,8 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         itemViewHolder.mTime.setText(
                 DateUtils.getRelativeDateTimeString(
                         mContext,
-                        post.getTime(),
-                        DateUtils.MINUTE_IN_MILLIS,
-                        DateUtils.DAY_IN_MILLIS,
+                        new MutableDateTime(post.getTime()),
+                        Days.ONE,
                         0));
 
         TextView countView = itemViewHolder.mCount;
