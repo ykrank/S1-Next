@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="S1CardView" parent="CardView">
-        <item name="cardBackgroundColor">@color/s1_theme_background</item>
-    </style>
-
     <style name="LightCardView" parent="CardView">
         <item name="cardBackgroundColor">@color/cardview_light_background</item>
     </style>

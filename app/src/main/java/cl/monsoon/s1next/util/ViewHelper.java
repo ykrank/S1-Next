@@ -7,8 +7,6 @@ import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
 import android.widget.TextView;
 
-import cl.monsoon.s1next.MyApplication;
-import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.singleton.Config;
 
 public final class ViewHelper {
@@ -46,17 +44,6 @@ public final class ViewHelper {
         float textScale = Config.getTextScale();
         for (TextView textView : textViewList) {
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textView.getTextSize() * textScale);
-        }
-    }
-
-    public static void updateTextColorWhenS1Theme(TextView... textViewList) {
-        if (Config.isS1Theme()) {
-            int color =
-                    MyApplication.getContext()
-                            .getResources().getColor(R.color.s1_theme_text_color_primary_87);
-            for (TextView textView : textViewList) {
-                textView.setTextColor(color);
-            }
         }
     }
 }

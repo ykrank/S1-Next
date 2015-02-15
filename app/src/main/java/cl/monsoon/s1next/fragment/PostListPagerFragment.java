@@ -23,7 +23,6 @@ import cl.monsoon.s1next.activity.PostListActivity;
 import cl.monsoon.s1next.adapter.PostListRecyclerAdapter;
 import cl.monsoon.s1next.model.list.PostList;
 import cl.monsoon.s1next.model.mapper.PostListWrapper;
-import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.StringHelper;
 import cl.monsoon.s1next.util.ToastUtil;
@@ -83,9 +82,6 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
         mRecyclerView = (MyRecyclerView) view.findViewById(R.id.recycler_view);
-        if (Config.isS1Theme()) {
-            mRecyclerView.setBackgroundResource(R.color.s1_theme_background);
-        }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         // linearLayoutManager.setSmoothScrollbarEnabled(false);
         // if https://code.google.com/p/android/issues/detail?id=78375&q=setSmoothScrollbarEnabled&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars has fixed

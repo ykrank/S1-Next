@@ -85,7 +85,6 @@ public final class ReplyFragment extends Fragment {
 
         mReplyView = (EditText) view.findViewById(R.id.reply);
         ViewHelper.updateTextSize(mReplyView);
-        ViewHelper.updateTextColorWhenS1Theme(mReplyView);
         mReplyView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

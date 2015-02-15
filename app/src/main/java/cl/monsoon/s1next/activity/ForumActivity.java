@@ -103,7 +103,7 @@ public final class ForumActivity extends BaseActivity
             LayoutInflater.from(this).inflate(R.layout.toolbar_spinner, toolbar, true);
             mSpinner = (Spinner) toolbar.findViewById(R.id.spinner);
 
-            if (!Config.isS1Theme() && !Config.isDarkTheme()) {
+            if (!Config.isDarkTheme()) {
                 int colorAccent = Config.getColorAccent();
                 int[][] states =
                         new int[][]{

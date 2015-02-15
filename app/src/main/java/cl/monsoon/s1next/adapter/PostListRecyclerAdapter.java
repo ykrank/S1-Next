@@ -254,7 +254,6 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
             mPost = (TextView) itemView.findViewById(R.id.post);
 
             ViewHelper.updateTextSize(mUsername, mTime, mCount, mPost);
-            ViewHelper.updateTextColorWhenS1Theme(mUsername, mPost);
 
             mCount.setMovementMethod(LinkMovementMethod.getInstance());
             // use custom movement method to provides selection and click

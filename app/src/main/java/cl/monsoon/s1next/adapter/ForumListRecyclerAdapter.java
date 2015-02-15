@@ -59,7 +59,6 @@ public final class ForumListRecyclerAdapter extends RecyclerAdapter<Forum, Forum
 
             mTextView = (TextView) itemView;
             ViewHelper.updateTextSize(mTextView);
-            ViewHelper.updateTextColorWhenS1Theme(mTextView);
         }
     }
 }

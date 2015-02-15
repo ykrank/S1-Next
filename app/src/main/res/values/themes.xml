@@ -24,14 +24,6 @@
         <item name="iconSettings">@drawable/ic_settings_grey600_24dp</item>
     </style>
 
-    <style name="LightTheme.S1">
-        <item name="colorPrimary">@color/s1_theme_color_primary</item>
-        <item name="colorPrimaryDark">@color/s1_theme_color_primary_dark</item>
-        <item name="colorAccent">@color/s1_theme_color_accent</item>
-        <item name="android:windowBackground">@color/s1_theme_background</item>
-        <item name="myCardView">@style/S1CardView</item>
-    </style>
-
     <style name="LightTheme.Inverse">
         <item name="actionModeBackground">?attr/colorPrimary</item>
 

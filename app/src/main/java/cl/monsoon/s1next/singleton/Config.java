@@ -38,13 +38,11 @@ public enum Config {
 
     public static final int REPLY_NOTIFICATION_MAX_LENGTH = 100;
 
-    private static final int LIGHT_THEME_S1 = R.style.LightTheme_S1;
     private static final int LIGHT_THEME_LIGHT_BLUE = R.style.LightTheme_Inverse_LightBlue;
     private static final int LIGHT_THEME_GREEN = R.style.LightTheme_Inverse_Green;
     private static final int DARK_THEME = R.style.DarkTheme;
 
     private static final int[] THEMES = {
-            LIGHT_THEME_S1,
             LIGHT_THEME_LIGHT_BLUE,
             LIGHT_THEME_GREEN,
             DARK_THEME
@@ -62,10 +60,6 @@ public enum Config {
     public static boolean isDefaultApplicationTheme() {
         // default theme in AndroidManifest.xml is DarkTheme
         return INSTANCE.currentTheme == DARK_THEME;
-    }
-
-    public static boolean isS1Theme() {
-        return INSTANCE.currentTheme == LIGHT_THEME_S1;
     }
 
     public static boolean isDarkTheme() {
