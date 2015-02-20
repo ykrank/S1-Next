@@ -233,8 +233,8 @@ public enum Config {
     }
 
     private static enum CacheSize {
-        // 64MB, 128MB, 256MB
-        LOW(64), NORMAL(128), HIGH(256);
+        // 32MB, 64MB, 128MB
+        LOW(32), NORMAL(64), HIGH(128);
 
         private static final CacheSize[] VALUES = CacheSize.values();
 
