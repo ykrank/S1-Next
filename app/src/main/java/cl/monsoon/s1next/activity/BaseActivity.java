@@ -47,6 +47,7 @@ import cl.monsoon.s1next.fragment.SettingsFragment;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.MyAccount;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
+import cl.monsoon.s1next.util.LollipopUtil;
 import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.widget.InsetsFrameLayout;
@@ -102,6 +103,10 @@ public abstract class BaseActivity extends ActionBarActivity
         }
 
         super.onCreate(savedInstanceState);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            LollipopUtil.adjustTaskDescription(this);
+        }
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(SettingsFragment.ACTION_CHANGE_THEME);

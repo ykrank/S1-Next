@@ -98,6 +98,21 @@ public enum Config {
         return INSTANCE.colorAccent;
     }
 
+    /**
+     * @return -1 if the corresponding color doesn't exist.
+     */
+    @ColorRes
+    public static int getColorIdForTaskDescription() {
+        switch (INSTANCE.currentTheme) {
+            case LIGHT_THEME_LIGHT_BLUE:
+                return R.color.light_blue_600;
+            case LIGHT_THEME_GREEN:
+                return R.color.green_600;
+            default:
+                return -1;
+        }
+    }
+
     @ColorUtil.Alpha
     public static int getSecondaryTextAlpha() {
         if (INSTANCE.currentTheme == DARK_THEME) {

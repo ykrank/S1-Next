@@ -12,9 +12,11 @@
     <color name="green_A200">#ff69f0ae</color>
 
     <color name="light_blue_500">#ff03a9f4</color>
+    <color name="light_blue_600">#ff039be5</color>
     <color name="light_blue_700">#ff0288d1</color>
 
     <color name="green_500">#ff4caf50</color>
+    <color name="green_600">#ff43a047</color>
     <color name="green_700">#ff388e3c</color>
     <color name="deep_orange_A200">#ffff6e40</color>
 
