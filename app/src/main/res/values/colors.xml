@@ -21,4 +21,13 @@
     <color name="grey_500">#ff9e9e9e</color>
     <color name="grey_700">#ff616161</color>
 
+    <color name="emoticon_keyboard_tab_background_color_light">#ffe4e7e9</color>
+    <color name="emoticon_keyboard_tab_background_color_dark">#ff21272b</color>
+    <color name="emoticon_keyboard_tab_title_light_26">#8a37474f</color>
+    <color name="emoticon_keyboard_tab_title_light_54">#ff37474f</color>
+    <color name="emoticon_keyboard_tab_title_dark_30">#b3ffffff</color>
+    <color name="emoticon_keyboard_tab_title_dark_70">#ffffffff</color>
+    <color name="emoticon_keyboard_background_color_light">#ffeceff1</color>
+    <color name="emoticon_keyboard_background_color_dark">#ff263238</color>
+
 </resources>

@@ -1,5 +1,10 @@
 package cl.monsoon.s1next.util;
 
+import android.content.res.Resources;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
+import android.util.TypedValue;
+
 import cl.monsoon.s1next.MyApplication;
 import cl.monsoon.s1next.R;
 
@@ -7,6 +12,12 @@ public final class ResourceUtil {
 
     private ResourceUtil() {
 
+    }
+
+    public static int getResourceId(@NonNull Resources.Theme theme, @AttrRes int resId) {
+        TypedValue typedValue = new TypedValue();
+        theme.resolveAttribute(resId, typedValue, true);
+        return typedValue.resourceId;
     }
 
     public static int getToolbarHeight() {

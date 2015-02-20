@@ -1,9 +1,19 @@
 package cl.monsoon.s1next.fragment;
 
+import android.animation.Animator;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.Loader;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -13,23 +23,33 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.squareup.okhttp.RequestBody;
 
+import java.util.List;
+
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.adapter.EmoticonGridRecyclerAdapter;
 import cl.monsoon.s1next.model.Quote;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.singleton.MyAccount;
 import cl.monsoon.s1next.util.ObjectUtil;
+import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.util.ViewHelper;
 import cl.monsoon.s1next.widget.AsyncResult;
+import cl.monsoon.s1next.widget.EmoticonFactory;
 import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.HttpPostLoader;
+import cl.monsoon.s1next.widget.ViewPagerTabs;
 
 /**
  * Sends the reply via EditView.
@@ -43,8 +63,17 @@ public final class ReplyFragment extends Fragment {
      */
     private static final String STATE_QUOTE = "quote";
 
+    /**
+     * The serialization (saved instance state) Bundle key representing whether emoticon
+     * keyboard is showing when configuration changes.
+     */
+    private static final String STATE_IS_EMOTICON_KEYBOARD_SHOWING = "is_emoticon_keyboard_showing";
+
     private static final String ARG_THREAD_ID = "thread_id";
     private static final String ARG_QUOTE_POST_ID = "quote_post_id";
+
+    public static final String ACTION_INSERT_EMOTICON = "insert_emoticon";
+    public static final String ARG_EMOTICON_ENTITY = "emoticon_entity";
 
     private static final String STATUS_REPLY_SUCCESS = "post_reply_succeed";
 
@@ -57,6 +86,13 @@ public final class ReplyFragment extends Fragment {
      * The reply we need to send.
      */
     private EditText mReplyView;
+
+    private boolean mIsEmoticonKeyboardShowing;
+    private MenuItem mMenuEmoticon;
+    private View mEmoticonKeyboard;
+    private ViewPagerTabs mEmoticonKeyboardTabs;
+
+    private BroadcastReceiver mEmoticonReceiver;
 
     private MenuItem mMenuReplyPost;
 
@@ -107,9 +143,39 @@ public final class ReplyFragment extends Fragment {
             }
         });
 
+        setupEmoticonKeyboard();
+
         if (savedInstanceState != null) {
             mQuote = savedInstanceState.getParcelable(STATE_QUOTE);
+
+            mIsEmoticonKeyboardShowing = savedInstanceState.getBoolean(STATE_IS_EMOTICON_KEYBOARD_SHOWING);
+            if (mIsEmoticonKeyboardShowing) {
+                showEmoticonKeyboard();
+            }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mEmoticonReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                mReplyView.getText().replace(
+                        mReplyView.getSelectionStart(),
+                        mReplyView.getSelectionEnd(),
+                        intent.getCharSequenceExtra(ARG_EMOTICON_ENTITY));
+            }
+        };
+        getActivity().registerReceiver(mEmoticonReceiver, new IntentFilter(ACTION_INSERT_EMOTICON));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        getActivity().unregisterReceiver(mEmoticonReceiver);
     }
 
     @Override
@@ -123,6 +189,11 @@ public final class ReplyFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.fragment_reply, menu);
 
+        mMenuEmoticon = menu.findItem(R.id.menu_emoticon);
+        if (mIsEmoticonKeyboardShowing) {
+            setKeyboardIcon();
+        }
+
         mMenuReplyPost = menu.findItem(R.id.menu_reply_post);
         mMenuReplyPost.setEnabled(!TextUtils.isEmpty(mReplyView.getText().toString()));
     }
@@ -130,6 +201,15 @@ public final class ReplyFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_emoticon:
+
+                if (mIsEmoticonKeyboardShowing) {
+                    hideEmoticonKeyboard(true);
+                } else {
+                    showEmoticonKeyboard();
+                }
+
+                return true;
             case R.id.menu_reply_post:
                 ReplyLoaderDialogFragment.newInstance(
                         mThreadId, mQuotePostId, mQuote, mReplyView.getText().toString())
@@ -146,10 +226,225 @@ public final class ReplyFragment extends Fragment {
         super.onSaveInstanceState(outState);
 
         outState.putParcelable(STATE_QUOTE, mQuote);
+        outState.putBoolean(STATE_IS_EMOTICON_KEYBOARD_SHOWING, mIsEmoticonKeyboardShowing);
+    }
+
+    private void setupEmoticonKeyboard() {
+        //noinspection ConstantConditions
+        mEmoticonKeyboard = getView().findViewById(R.id.emoticon_keyboard);
+        ViewPager viewPager = (ViewPager) mEmoticonKeyboard.findViewById(R.id.viewpager);
+        viewPager.setAdapter(new EmoticonPagerAdapter(getActivity()));
+        viewPager.setOnPageChangeListener(new EmoticonKeyboardTabsPagerListener());
+
+        mEmoticonKeyboardTabs = (ViewPagerTabs) mEmoticonKeyboard.findViewById(R.id.emoticon_keyboard_header);
+        mEmoticonKeyboardTabs.setViewPager(viewPager);
+    }
+
+    private void showEmoticonKeyboard() {
+        mIsEmoticonKeyboardShowing = true;
+
+        ViewHelper.setShowSoftInputOnFocus(mReplyView, false);
+        InputMethodManager inputMethodManager =
+                (InputMethodManager)
+                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(mReplyView.getWindowToken(), 0);
+        getActivity().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        mEmoticonKeyboard.setVisibility(View.VISIBLE);
+        // translationYBy(-mEmoticonKeyboard.getHeight())
+        // doesn't work when orientation change
+        mEmoticonKeyboard.animate()
+                .alpha(1)
+                .translationYBy(-mEmoticonKeyboard.getTranslationY())
+                .setInterpolator(new DecelerateInterpolator())
+                .setListener(new EmoticonKeyboardAnimator());
+
+        setKeyboardIcon();
+    }
+
+    public void hideEmoticonKeyboard() {
+        hideEmoticonKeyboard(false);
+    }
+
+    private void hideEmoticonKeyboard(boolean shouldShowKeyboard) {
+        mIsEmoticonKeyboardShowing = false;
+
+        mEmoticonKeyboard.animate()
+                .alpha(0)
+                .translationYBy(mEmoticonKeyboard.getHeight())
+                .setInterpolator(new DecelerateInterpolator())
+                .setListener(new EmoticonKeyboardAnimator() {
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mEmoticonKeyboard.setVisibility(View.GONE);
+
+                        ViewHelper.setShowSoftInputOnFocus(mReplyView, true);
+                        getActivity().getWindow().setSoftInputMode(
+                                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+                        if (shouldShowKeyboard) {
+                            InputMethodManager inputMethodManager =
+                                    (InputMethodManager)
+                                            getActivity().getSystemService(
+                                                    Context.INPUT_METHOD_SERVICE);
+                            inputMethodManager.showSoftInput(
+                                    mReplyView, InputMethodManager.SHOW_IMPLICIT);
+                        }
+
+                        super.onAnimationEnd(animation);
+                    }
+                });
+
+        setEmoticonIcon();
+    }
+
+    private void setEmoticonIcon() {
+        if (mMenuEmoticon != null) {
+            mMenuEmoticon.setIcon(
+                    ResourceUtil.getResourceId(
+                            getActivity().getTheme(), R.attr.menuEmoticon));
+            mMenuEmoticon.setTitle(R.string.menu_emoticon);
+        }
+    }
+
+    private void setKeyboardIcon() {
+        if (mMenuEmoticon != null) {
+            mMenuEmoticon.setIcon(
+                    ResourceUtil.getResourceId(
+                            getActivity().getTheme(), R.attr.menuKeyboard));
+            mMenuEmoticon.setTitle(R.string.menu_keyboard);
+        }
+    }
+
+    public boolean isEmoticonKeyboardShowing() {
+        return mIsEmoticonKeyboardShowing;
     }
 
     public boolean isReplyEmpty() {
         return mReplyView == null || TextUtils.isEmpty(mReplyView.getText().toString());
+    }
+
+    private class EmoticonKeyboardTabsPagerListener implements ViewPager.OnPageChangeListener {
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+            mEmoticonKeyboardTabs.onPageScrollStateChanged(state);
+
+        }
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            mEmoticonKeyboardTabs.onPageScrolled(position, positionOffset, positionOffsetPixels);
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            mEmoticonKeyboardTabs.onPageSelected(position);
+        }
+    }
+
+    private class EmoticonKeyboardAnimator implements Animator.AnimatorListener {
+
+        @Override
+        public void onAnimationStart(Animator animation) {
+            if (mMenuEmoticon != null) {
+                mMenuEmoticon.setEnabled(false);
+            }
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            if (mMenuEmoticon != null) {
+                mMenuEmoticon.setEnabled(true);
+            }
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {
+
+        }
+    }
+
+    public static class EmoticonPagerAdapter extends PagerAdapter {
+
+        private final Context mContext;
+
+        private final float mEmoticonWidth;
+        private final int mEmoticonGridPadding;
+
+        private final EmoticonFactory mEmoticonFactory;
+        private final List<String> mEmoticonTypeTitles;
+
+        public EmoticonPagerAdapter(Context context) {
+            this.mContext = context;
+
+            Resources resources = context.getResources();
+            mEmoticonWidth = resources.getDimension(R.dimen.emoticon_size);
+            mEmoticonGridPadding = resources.getDimensionPixelSize(R.dimen.emoticon_padding);
+
+            mEmoticonFactory = new EmoticonFactory(context);
+            mEmoticonTypeTitles = mEmoticonFactory.getTypeTitles();
+        }
+
+        @Override
+        public int getCount() {
+            return mEmoticonTypeTitles.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mEmoticonTypeTitles.get(position);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            RecyclerView recyclerView = new RecyclerView(mContext);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
+            recyclerView.setLayoutManager(gridLayoutManager);
+            RecyclerView.Adapter recyclerAdapter =
+                    new EmoticonGridRecyclerAdapter(mContext, mEmoticonFactory.getByType(position));
+            recyclerView.setAdapter(recyclerAdapter);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setPadding(0, mEmoticonGridPadding, 0, mEmoticonGridPadding);
+            recyclerView.setClipToPadding(false);
+
+            // auto fit span
+            recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(
+                    new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                        @Override
+                        @SuppressWarnings("deprecation")
+                        public void onGlobalLayout() {
+                            recyclerView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                            int measuredWidth = recyclerView.getMeasuredWidth();
+                            int spanCount = (int) Math.floor(measuredWidth / mEmoticonWidth);
+                            gridLayoutManager.setSpanCount(spanCount);
+                            gridLayoutManager.requestLayout();
+                        }
+                    });
+
+            container.addView(recyclerView);
+
+            return recyclerView;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((View) object);
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
     }
 
     public static class ReplyLoaderDialogFragment extends LoaderDialogFragment {

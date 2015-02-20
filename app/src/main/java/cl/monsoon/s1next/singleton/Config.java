@@ -48,6 +48,8 @@ public enum Config {
             DARK_THEME
     };
 
+    public static final String PREFIX_EMOTICON_ASSET = "file:///android_asset/emoticon/";
+
     private volatile int currentTheme;
     private volatile int colorAccent;
     private volatile float textScale;

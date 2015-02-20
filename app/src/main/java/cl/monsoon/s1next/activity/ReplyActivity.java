@@ -62,7 +62,9 @@ public final class ReplyActivity extends BaseActivity {
      */
     @Override
     public void onBackPressed() {
-        if (mReplyFragment.isReplyEmpty()) {
+        if (mReplyFragment.isEmoticonKeyboardShowing()) {
+            mReplyFragment.hideEmoticonKeyboard();
+        } else if (mReplyFragment.isReplyEmpty()) {
             super.onBackPressed();
         } else {
             new BackPromptDialog().show(getSupportFragmentManager(), BackPromptDialog.TAG);

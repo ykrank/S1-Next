@@ -7,6 +7,20 @@
     <!--<item>Email</item>-->
     <!--</string-array>-->
 
+    <!-- 麻将脸类型 -->
+    <string-array name="emoticon_type">
+        <item>@string/emoticon_face</item>
+        <item>@string/emoticon_dym</item>
+        <item>@string/emoticon_goose</item>
+        <item>@string/emoticon_zdl</item>
+        <item>@string/emoticon_nq</item>
+        <item>@string/emoticon_normal</item>
+        <item>@string/emoticon_flash</item>
+        <item>@string/emoticon_animal</item>
+        <item>@string/emoticon_carton</item>
+        <item>@string/emoticon_bundam</item>
+    </string-array>
+
     <!-- settings -->
     <string-array name="pref_theme_entries">
         <item>@string/pref_theme_entries_1</item>

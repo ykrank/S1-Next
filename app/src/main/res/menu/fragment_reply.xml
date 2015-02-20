@@ -4,9 +4,15 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="cl.monsoon.s1next.fragment.ReplyFragment">
     <item
+        android:id="@+id/menu_emoticon"
+        android:icon="?attr/menuEmoticon"
+        android:orderInCategory="1"
+        android:title="@string/menu_emoticon"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/menu_reply_post"
         android:icon="?attr/menuSend"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         android:title="@string/menu_reply_post"
         app:showAsAction="ifRoom"/>
 </menu>

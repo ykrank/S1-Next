@@ -23,7 +23,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
@@ -344,9 +343,7 @@ public abstract class BaseActivity extends ActionBarActivity
      */
     void setupNavCrossIcon() {
         if (mToolbar != null) {
-            TypedValue typedValue = new TypedValue();
-            getTheme().resolveAttribute(R.attr.menuCross, typedValue, true);
-            mToolbar.setNavigationIcon(typedValue.resourceId);
+            mToolbar.setNavigationIcon(ResourceUtil.getResourceId(getTheme(), R.attr.menuCross));
         }
     }
 
@@ -439,12 +436,10 @@ public abstract class BaseActivity extends ActionBarActivity
         settingsView.setText(getText(R.string.settings));
 
         // set up settings icon
-        TypedValue typedValue = new TypedValue();
-        getTheme().resolveAttribute(R.attr.iconSettings, typedValue, true);
         settingsView.setCompoundDrawablePadding(
                 getResources().getDimensionPixelSize(R.dimen.left_icon_margin_right));
         settingsView.setCompoundDrawablesWithIntrinsicBounds(
-                getResources().getDrawable(typedValue.resourceId), null, null, null);
+                ResourceUtil.getResourceId(getTheme(), R.attr.iconSettings), 0, 0, 0);
 
         // start SettingsActivity if clicked
         settingsView.setOnClickListener(v ->

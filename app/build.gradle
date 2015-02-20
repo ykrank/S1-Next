@@ -47,6 +47,7 @@ dependencies {
     compile 'net.danlew:android.joda:2.7.0'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'commons-io:commons-io:2.4'
+    compile 'org.apache.commons:commons-collections4:4.0'
     compile 'com.squareup.okhttp:okhttp:2.2.0'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.5.0'
     compile 'com.github.bumptech.glide:glide:3.5.0'

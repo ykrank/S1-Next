@@ -15,10 +15,16 @@
         <item name="fabColorNormal">?attr/colorPrimary</item>
         <item name="fabColorPressed">?attr/colorPrimaryDark</item>
 
+        <item name="emoticonKeyboardColor">@color/emoticon_keyboard_background_color_light</item>
+        <item name="emoticonKeyboardTabsBackground">@color/emoticon_keyboard_tab_background_color_light</item>
+        <item name="emoticonKeyboardTabsTitleColor">@color/emoticon_keyboard_tab_title_light</item>
+
         <item name="menuCross">@drawable/ic_menu_close_black_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_black_24dp</item>
         <item name="menuThreadAttachment">@drawable/ic_menu_attachment_black_24dp</item>
         <item name="menuPageFlip">@drawable/selector_menu_swap_horiz_black</item>
+        <item name="menuEmoticon">@drawable/ic_menu_insert_emoticon_black_24dp</item>
+        <item name="menuKeyboard">@drawable/ic_menu_keyboard_black_24dp</item>
         <item name="menuSend">@drawable/selector_menu_send_black</item>
 
         <item name="iconSettings">@drawable/ic_settings_grey600_24dp</item>
@@ -35,6 +41,8 @@
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
         <item name="menuThreadAttachment">@drawable/ic_menu_attachment_white_24dp</item>
         <item name="menuPageFlip">@drawable/selector_menu_swap_horiz_white</item>
+        <item name="menuEmoticon">@drawable/ic_menu_insert_emoticon_white_24dp</item>
+        <item name="menuKeyboard">@drawable/ic_menu_keyboard_white_24dp</item>
         <item name="menuSend">@drawable/selector_menu_send_white</item>
     </style>
 
@@ -59,10 +67,15 @@
         <item name="mySpinnerItemTextColor">@color/abc_primary_text_material_dark</item>
         <item name="fabColorNormal">@color/grey_500</item>
         <item name="fabColorPressed">@color/grey_700</item>
+        <item name="emoticonKeyboardColor">@color/emoticon_keyboard_background_color_dark</item>
+        <item name="emoticonKeyboardTabsBackground">@color/emoticon_keyboard_tab_background_color_dark</item>
+        <item name="emoticonKeyboardTabsTitleColor">@color/emoticon_keyboard_tab_title_dark</item>
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
         <item name="menuPageFlip">@drawable/selector_menu_swap_horiz_white</item>
         <item name="menuThreadAttachment">@drawable/ic_menu_attachment_white_24dp</item>
+        <item name="menuEmoticon">@drawable/ic_menu_insert_emoticon_white_24dp</item>
+        <item name="menuKeyboard">@drawable/ic_menu_keyboard_white_24dp</item>
         <item name="menuSend">@drawable/selector_menu_send_white</item>
         <item name="iconSettings">@drawable/ic_settings_white_24dp</item>
     </style>

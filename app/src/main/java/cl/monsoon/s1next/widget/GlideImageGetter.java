@@ -42,11 +42,11 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
     public Drawable getDrawable(String url) {
         // whether need to download the image
         // depends on settings and Wi-Fi status
-        // but download Emoji at any time
+        // but download emoticon at any time
         boolean download = true;
 
         // Appends url prefix if this url is not a network url
-        // because Emoji urls haven't domain.
+        // because emoticon urls haven't domain.
         if (!URLUtil.isNetworkUrl(url)) {
             url = Api.URL_S1 + url;
         } else if (!Config.isImagesDownload()) {

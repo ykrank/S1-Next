@@ -9,4 +9,8 @@
         <item name="cardBackgroundColor">@color/cardview_dark_background</item>
     </style>
 
+    <style name="EmoticonKeyboardTabTextStyle" parent="Widget.AppCompat.ActionBar.TabText">
+        <item name="android:textColor">?attr/emoticonKeyboardTabsTitleColor</item>
+    </style>
+
 </resources>

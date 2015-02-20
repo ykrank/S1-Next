@@ -29,6 +29,8 @@
     <string name="menu_page_flip">Flip page</string>
     <string name="menu_favourites_add">Add to favourites</string>
     <string name="menu_sub_forums" translatable="false">子版块</string>
+    <string name="menu_emoticon">Emoticon</string>
+    <string name="menu_keyboard">Keyboard</string>
     <string name="menu_reply_post">Reply</string>
 
     <!-- toast -->
@@ -69,6 +71,20 @@
     <string name="prompt_reply">Write something…</string>
     <string name="dialog_progress_message_reply">Replying…</string>
     <string name="dialog_message_reply_back_prompt">Do you want to discard this reply?</string>
+
+    <!-- emoticon -->
+    <string name="emoticon_content_desc" translatable="false">@string/menu_emoticon</string>
+    <!-- Do not translate these Terminology. -->
+    <string name="emoticon_face" translatable="false">麻将脸</string>
+    <string name="emoticon_dym" translatable="false">大姨妈</string>
+    <string name="emoticon_goose" translatable="false">鹅</string>
+    <string name="emoticon_zdl" translatable="false">战斗力</string>
+    <string name="emoticon_nq" translatable="false">扭曲</string>
+    <string name="emoticon_normal" translatable="false">正常向</string>
+    <string name="emoticon_flash" translatable="false">闪光蛋</string>
+    <string name="emoticon_animal" translatable="false">动物</string>
+    <string name="emoticon_carton" translatable="false">动漫</string>
+    <string name="emoticon_bundam" translatable="false">雀高达</string>
 
     <!-- settings -->
     <string name="pref_general">GENERAL</string>

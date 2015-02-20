@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.MenuItem;
 
 import cl.monsoon.s1next.R;
@@ -37,9 +36,7 @@ public final class GalleryActivity extends ActionBarActivity implements InsetsFr
         insetsFrameLayout.setOnInsetsCallback(this);
 
         // set Toolbar's up icon to cross
-        TypedValue typedValue = new TypedValue();
-        getTheme().resolveAttribute(R.attr.menuCross, typedValue, true);
-        mToolbar.setNavigationIcon(typedValue.resourceId);
+        mToolbar.setNavigationIcon(ResourceUtil.getResourceId(getTheme(), R.attr.menuCross));
 
         String url = getIntent().getStringExtra(ARG_IMAGE_URL);
         if (savedInstanceState == null) {
