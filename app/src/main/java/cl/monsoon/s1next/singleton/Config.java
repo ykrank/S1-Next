@@ -302,7 +302,7 @@ public enum Config {
             try {
                 return new StringSignature(callable.call());
             } catch (Exception e) {
-                throw new RuntimeException("Unknown exception occurs.", e);
+                throw new RuntimeException("Failed to invoke Callable#Call().", e);
             }
         }
     }

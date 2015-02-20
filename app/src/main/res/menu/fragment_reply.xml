@@ -10,9 +10,9 @@
         android:title="@string/menu_emoticon"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/menu_reply_post"
+        android:id="@+id/menu_send"
         android:icon="?attr/menuSend"
         android:orderInCategory="2"
-        android:title="@string/menu_reply_post"
+        android:title="@string/menu_send"
         app:showAsAction="ifRoom"/>
 </menu>

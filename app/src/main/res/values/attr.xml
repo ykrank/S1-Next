@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr name="fabColorNormal" format="color"/>
-    <attr name="fabColorPressed" format="color"/>
-
     <attr name="mySpinner" format="reference"/>
     <attr name="mySpinnerItemTextColor" format="color"/>
     <attr name="myCardView" format="reference"/>
+
+    <attr name="fabColorNormal" format="color"/>
+    <attr name="fabColorPressed" format="color"/>
 
     <attr name="emoticonKeyboardColor" format="color"/>
     <attr name="emoticonKeyboardTabsBackground" format="color"/>

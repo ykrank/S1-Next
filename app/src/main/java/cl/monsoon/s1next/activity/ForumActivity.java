@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -100,7 +99,7 @@ public final class ForumActivity extends BaseActivity
             Toolbar toolbar = getToolbar();
 
             // add Spinner to Toolbar
-            LayoutInflater.from(this).inflate(R.layout.toolbar_spinner, toolbar, true);
+            getLayoutInflater().inflate(R.layout.toolbar_spinner, toolbar, true);
             mSpinner = (Spinner) toolbar.findViewById(R.id.spinner);
 
             if (!Config.isDarkTheme()) {

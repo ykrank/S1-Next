@@ -31,7 +31,7 @@
     <string name="menu_sub_forums" translatable="false">子版块</string>
     <string name="menu_emoticon">Emoticon</string>
     <string name="menu_keyboard">Keyboard</string>
-    <string name="menu_reply_post">Reply</string>
+    <string name="menu_send">Send</string>
 
     <!-- toast -->
     <string name="message_network_error">There was a network error</string>

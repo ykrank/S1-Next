@@ -94,7 +94,7 @@ public final class ReplyFragment extends Fragment {
 
     private BroadcastReceiver mEmoticonReceiver;
 
-    private MenuItem mMenuReplyPost;
+    private MenuItem mMenuSend;
 
     public static ReplyFragment newInstance(String threadId, String quotePostId) {
         ReplyFragment fragment = new ReplyFragment();
@@ -134,12 +134,12 @@ public final class ReplyFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (mMenuReplyPost == null) {
+                if (mMenuSend == null) {
                     return;
                 }
 
-                // disable send button because the content of reply is empty
-                mMenuReplyPost.setEnabled(!TextUtils.isEmpty(s.toString()));
+                // disable send menu if the content of reply is empty
+                mMenuSend.setEnabled(!TextUtils.isEmpty(s.toString()));
             }
         });
 
@@ -194,8 +194,8 @@ public final class ReplyFragment extends Fragment {
             setKeyboardIcon();
         }
 
-        mMenuReplyPost = menu.findItem(R.id.menu_reply_post);
-        mMenuReplyPost.setEnabled(!TextUtils.isEmpty(mReplyView.getText().toString()));
+        mMenuSend = menu.findItem(R.id.menu_send);
+        mMenuSend.setEnabled(!TextUtils.isEmpty(mReplyView.getText().toString()));
     }
 
     @Override
@@ -210,7 +210,7 @@ public final class ReplyFragment extends Fragment {
                 }
 
                 return true;
-            case R.id.menu_reply_post:
+            case R.id.menu_send:
                 ReplyLoaderDialogFragment.newInstance(
                         mThreadId, mQuotePostId, mQuote, mReplyView.getText().toString())
                         .show(getChildFragmentManager(), ReplyLoaderDialogFragment.TAG);
