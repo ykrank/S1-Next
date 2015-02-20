@@ -31,8 +31,7 @@
             android:layout_marginRight="@dimen/fab_margin"
             android:visibility="gone"
             app:fab_colorNormal="?attr/fabColorNormal"
-            app:fab_colorPressed="?attr/fabColorPressed"
-            app:fab_colorRipple="?attr/colorControlHighlight"/>
+            app:fab_colorPressed="?attr/fabColorPressed"/>
 
         <include layout="@layout/toolbar"/>
 
