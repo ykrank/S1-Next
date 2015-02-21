@@ -8,6 +8,8 @@
     <attr name="fabColorNormal" format="color"/>
     <attr name="fabColorPressed" format="color"/>
 
+    <attr name="linkBackground"/>
+
     <attr name="emoticonKeyboardColor" format="color"/>
     <attr name="emoticonKeyboardTabsBackground" format="color"/>
     <attr name="emoticonKeyboardTabsTitleColor" format="color"/>
