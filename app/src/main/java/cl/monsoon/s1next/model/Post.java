@@ -82,6 +82,8 @@ public final class Post {
         // we may replace something wrong by accident.
         // Also maps some colors, see mapColors(String).
         this.reply = mapColors(reply).replaceAll("<imgwidth=\"", "<img width=\"");
+
+        processAttachment();
     }
 
     public String getCount() {
@@ -101,8 +103,10 @@ public final class Post {
         this.time = TimeUnit.SECONDS.toMillis(time);
     }
 
-    public Map<Integer, Attachment> getAttachmentMap() {
-        return attachmentMap;
+    public void setAttachmentMap(Map<Integer, Attachment> attachmentMap) {
+        this.attachmentMap = attachmentMap;
+
+        processAttachment();
     }
 
     public Post getPartForQuote() {
@@ -137,6 +141,35 @@ public final class Post {
         matcher.appendTail(stringBuffer);
 
         return stringBuffer.toString();
+    }
+
+    /**
+     * Replaces attach tags with HTML img tags
+     * in order to display attachment images in TextView.
+     * <p>
+     * Also concats the missing img tag from attachment.
+     * See https://github.com/floating-cat/S1-Next/issues/7
+     */
+    private void processAttachment() {
+        if (reply == null || attachmentMap == null) {
+            return;
+        }
+
+        String url;
+        for (Map.Entry<Integer, Post.Attachment> entry : attachmentMap.entrySet()) {
+            Post.Attachment attachment = entry.getValue();
+            url = attachment.getUrl();
+
+            String imgTag = "<img src=\"" + url + "\" />";
+            String replyCopy = reply;
+            // get the original string if there is nothing to replace
+            reply = reply.replace("[attach]" + entry.getKey() + "[/attach]", imgTag);
+            //noinspection StringEquality
+            if (reply == replyCopy) {
+                // concat the missing img tag
+                reply = reply + imgTag;
+            }
+        }
     }
 
     private static final Map<String, String> COLOR_NAME_MAP;

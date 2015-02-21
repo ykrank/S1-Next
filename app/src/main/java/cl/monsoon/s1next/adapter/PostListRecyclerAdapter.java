@@ -27,8 +27,6 @@ import net.danlew.android.joda.DateUtils;
 import org.joda.time.Days;
 import org.joda.time.MutableDateTime;
 
-import java.util.Map;
-
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.PostListActivity;
@@ -163,20 +161,6 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
             replayView.setText(null);
 
             return;
-        }
-
-        String url;
-        Map<Integer, Post.Attachment> attachmentMap = post.getAttachmentMap();
-        if (attachmentMap != null) {
-            for (Map.Entry<Integer, Post.Attachment> entry : attachmentMap.entrySet()) {
-                Post.Attachment attachment = entry.getValue();
-                url = attachment.getUrl();
-
-                // Replaces attach tag with HTML img tag
-                // in order to display attachment images in TextView.
-                reply = reply.replace(
-                        "[attach]" + entry.getKey() + "[/attach]", "<img src=\"" + url + "\" />");
-            }
         }
 
         // use GlideImageGetter to show images in TextView
