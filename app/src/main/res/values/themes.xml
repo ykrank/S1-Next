@@ -46,10 +46,10 @@
         <item name="menuSend">@drawable/selector_menu_send_white</item>
     </style>
 
-    <style name="LightTheme.Inverse.LightBlue">
-        <item name="colorPrimary">@color/light_blue_500</item>
-        <item name="colorPrimaryDark">@color/light_blue_700</item>
-        <item name="colorAccent">@color/pink_A200</item>
+    <style name="LightTheme.Inverse.Amber">
+        <item name="colorPrimary">@color/amber_500</item>
+        <item name="colorPrimaryDark">@color/amber_700</item>
+        <item name="colorAccent">@color/deep_orange_A200</item>
     </style>
 
     <style name="LightTheme.Inverse.Green">
@@ -58,9 +58,18 @@
         <item name="colorAccent">@color/deep_orange_A200</item>
     </style>
 
+    <style name="LightTheme.Inverse.LightBlue">
+        <item name="colorPrimary">@color/light_blue_500</item>
+        <item name="colorPrimaryDark">@color/light_blue_700</item>
+        <item name="colorAccent">@color/pink_A200</item>
+    </style>
+
     <style name="DarkTheme" parent="Theme.AppCompat">
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="colorAccent">@color/teal_200_70</item>
+        <item name="android:textColorPrimary">@drawable/my_abc_primary_text_material_dark</item>
+        <item name="android:textColorLink">@color/teal_200_70</item>
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="myCardView">@style/DarkCardView</item>

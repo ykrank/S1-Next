@@ -17,14 +17,13 @@ public final class LollipopUtil {
     }
 
     /**
-     * Change app title to white in recent apps.
+     * Change app title color in recent apps.
      * <p>
      * See https://stackoverflow.com/questions/26899820/android-5-0-how-to-change-recent-apps-title-color#answer-27703150
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void adjustTaskDescription(Activity activity) {
-        int colorId = Config.getColorIdForTaskDescription();
-        // This theme already has white app title in recent apps if colorId = -1.
+        int colorId = Config.getContrastColorForTaskDescription();
         if (colorId == -1) {
             return;
         }

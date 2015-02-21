@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="swipe_refresh_1">@color/pink_A200</color>
-    <color name="swipe_refresh_2">@color/orange_A200</color>
-    <color name="swipe_refresh_3">@color/light_blue_A200</color>
-    <color name="swipe_refresh_4">@color/green_A200</color>
-
     <color name="pink_A200">#ffff4081</color>
     <color name="orange_A200">#ffffab40</color>
     <color name="light_blue_A200">#ff40c4ff</color>
     <color name="green_A200">#ff69f0ae</color>
+    <color name="deep_orange_A200">#ffff6e40</color>
+
+    <color name="amber_500">#ffffc107</color>
+    <color name="amber_700">#ffffa000</color>
+
+    <color name="green_500">#ff4caf50</color>
+    <color name="green_600">#ff43a047</color>
+    <color name="green_700">#ff388e3c</color>
 
     <color name="light_blue_500">#ff03a9f4</color>
     <color name="light_blue_600">#ff039be5</color>
     <color name="light_blue_700">#ff0288d1</color>
 
-    <color name="green_500">#ff4caf50</color>
-    <color name="green_600">#ff43a047</color>
-    <color name="green_700">#ff388e3c</color>
-    <color name="deep_orange_A200">#ffff6e40</color>
-
     <color name="grey_500">#ff9e9e9e</color>
     <color name="grey_700">#ff616161</color>
+
+    <color name="primary_text_default_material_dark_87">#deffffff</color>
+    <color name="teal_200_70">#b380cbc4</color>
+
+    <color name="swipe_refresh_1">@color/pink_A200</color>
+    <color name="swipe_refresh_2">@color/orange_A200</color>
+    <color name="swipe_refresh_3">@color/light_blue_A200</color>
+    <color name="swipe_refresh_4">@color/green_A200</color>
 
     <color name="emoticon_keyboard_tab_background_color_light">#ffe4e7e9</color>
     <color name="emoticon_keyboard_tab_background_color_dark">#ff21272b</color>

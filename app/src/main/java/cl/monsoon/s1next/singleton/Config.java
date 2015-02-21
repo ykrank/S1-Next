@@ -38,13 +38,15 @@ public enum Config {
 
     public static final int REPLY_NOTIFICATION_MAX_LENGTH = 100;
 
-    private static final int LIGHT_THEME_LIGHT_BLUE = R.style.LightTheme_Inverse_LightBlue;
+    private static final int LIGHT_THEME_AMBER = R.style.LightTheme_Inverse_Amber;
     private static final int LIGHT_THEME_GREEN = R.style.LightTheme_Inverse_Green;
+    private static final int LIGHT_THEME_LIGHT_BLUE = R.style.LightTheme_Inverse_LightBlue;
     private static final int DARK_THEME = R.style.DarkTheme;
 
     private static final int[] THEMES = {
-            LIGHT_THEME_LIGHT_BLUE,
+            LIGHT_THEME_AMBER,
             LIGHT_THEME_GREEN,
+            LIGHT_THEME_LIGHT_BLUE,
             DARK_THEME
     };
 
@@ -99,15 +101,17 @@ public enum Config {
     }
 
     /**
-     * @return -1 if the corresponding color doesn't exist.
+     * @return -1 if we don't need it to change default task description for current theme
+     * or its similar contrast color doesn't exist.
+     * @see cl.monsoon.s1next.util.LollipopUtil#adjustTaskDescription(android.app.Activity)
      */
     @ColorRes
-    public static int getColorIdForTaskDescription() {
+    public static int getContrastColorForTaskDescription() {
         switch (INSTANCE.currentTheme) {
-            case LIGHT_THEME_LIGHT_BLUE:
-                return R.color.light_blue_600;
             case LIGHT_THEME_GREEN:
                 return R.color.green_600;
+            case LIGHT_THEME_LIGHT_BLUE:
+                return R.color.light_blue_600;
             default:
                 return -1;
         }
