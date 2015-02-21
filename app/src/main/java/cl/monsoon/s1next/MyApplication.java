@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 
+import com.bugsnag.android.Bugsnag;
+
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import cl.monsoon.s1next.singleton.Config;
@@ -35,6 +37,8 @@ public final class MyApplication extends Application {
         }
 
         sContext = getApplicationContext();
+
+        Bugsnag.init(this);
 
         JodaTimeAndroid.init(this);
 
