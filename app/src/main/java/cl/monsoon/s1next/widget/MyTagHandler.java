@@ -54,8 +54,10 @@ public final class MyTagHandler implements Html.TagHandler {
             // in order to support url copy when selected
             output.replace(end - len, end, url);
 
-            // Emoticon urls don't have domain
-            // skip emoticon urls because we don't need to make emoticon clickable
+            // image from server doesn't have domain
+            // skip this because we don't want to
+            // make this image (emoticon or something
+            // others) clickable
             if (URLUtil.isNetworkUrl(url)) {
 
                 output.removeSpan(imageSpan);

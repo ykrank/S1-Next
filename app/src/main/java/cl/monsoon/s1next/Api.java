@@ -15,6 +15,8 @@ public final class Api {
 
     public static final String URL_S1 = "http://bbs.saraba1st.com/2b/";
 
+    public static final String URL_EMOTICON_IMAGE_PREFIX = "static/image/smiley/";
+
     public static final String URL_LOGIN = prefix("api/mobile/index.php?module=login&loginsubmit=yes&loginfield=username");
 
     public static final String URL_FORUM = prefix("api/mobile/index.php?module=forumindex");

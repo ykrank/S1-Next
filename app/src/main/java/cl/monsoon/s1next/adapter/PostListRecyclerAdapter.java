@@ -54,7 +54,6 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
     private final Context mContext;
 
     private final DrawableRequestBuilder<String> mAvatarRequestBuilder;
-    private final DrawableRequestBuilder<String> mImageGetterRequestBuilder;
 
     public PostListRecyclerAdapter(Context context) {
         this.mContext = context;
@@ -69,11 +68,6 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
                         .error(R.drawable.ic_avatar_placeholder)
                         .priority(Priority.HIGH)
                         .transform(new CenterCrop(Glide.get(context).getBitmapPool()));
-
-        // used in GlideImageGetter
-        mImageGetterRequestBuilder =
-                Glide.with(mContext)
-                        .from(String.class);
     }
 
     @Override
@@ -167,7 +161,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         replayView.setText(
                 Html.fromHtml(
                         reply,
-                        new GlideImageGetter(replayView, mImageGetterRequestBuilder),
+                        new GlideImageGetter(mContext, replayView),
                         new MyTagHandler(mContext)));
     }
 
