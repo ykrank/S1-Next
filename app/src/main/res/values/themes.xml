@@ -13,7 +13,6 @@
         <item name="mySpinnerItemTextColor">@color/abc_primary_text_material_light</item>
 
         <item name="fabColorNormal">?attr/colorPrimary</item>
-        <item name="fabColorPressed">?attr/colorPrimaryDark</item>
 
         <item name="linkBackground">@drawable/link_pressed_light</item>
 
@@ -52,18 +51,21 @@
         <item name="colorPrimary">@color/amber_500</item>
         <item name="colorPrimaryDark">@color/amber_700</item>
         <item name="colorAccent">@color/deep_orange_A200</item>
+        <item name="fabColorPressed">@color/amber_600</item>
     </style>
 
     <style name="LightTheme.Inverse.Green">
         <item name="colorPrimary">@color/green_500</item>
         <item name="colorPrimaryDark">@color/green_700</item>
         <item name="colorAccent">@color/deep_orange_A200</item>
+        <item name="fabColorPressed">@color/green_600</item>
     </style>
 
     <style name="LightTheme.Inverse.LightBlue">
         <item name="colorPrimary">@color/light_blue_500</item>
         <item name="colorPrimaryDark">@color/light_blue_700</item>
         <item name="colorAccent">@color/pink_A200</item>
+        <item name="fabColorPressed">@color/light_blue_600</item>
     </style>
 
     <style name="DarkTheme" parent="Theme.AppCompat">
@@ -77,7 +79,7 @@
         <item name="myCardView">@style/DarkCardView</item>
         <item name="mySpinnerItemTextColor">@color/abc_primary_text_material_dark</item>
         <item name="fabColorNormal">@color/grey_500</item>
-        <item name="fabColorPressed">@color/grey_700</item>
+        <item name="fabColorPressed">@color/grey_600</item>
         <item name="linkBackground">@drawable/link_pressed_dark</item>
         <item name="emoticonKeyboardColor">@color/emoticon_keyboard_background_color_dark</item>
         <item name="emoticonKeyboardTabsBackground">@color/emoticon_keyboard_tab_background_color_dark</item>
