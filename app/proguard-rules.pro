@@ -26,10 +26,12 @@
 -dontwarn okio.**
 
 # Glide
--keepnames class * cl.monsoon.s1next.widget.MyGlideModule
+-keep class cl.monsoon.s1next.widget.MyGlideModule
+
+# joda-time-android
+-dontwarn org.joda.convert.FromString
+-dontwarn org.joda.convert.ToString
+-dontwarn org.joda.time.tz.ZoneInfoCompiler
 
 # Gradle Retrolambda Plugin
 -dontwarn java.lang.invoke.*
-
-# RoundedImageView
--dontwarn com.makeramen.RoundedTransformationBuilder*
