@@ -244,4 +244,38 @@ public abstract class BaseFragment<D extends Extractable>
             getFragmentManager().beginTransaction().remove(mHttpGetRetainedFragment).commit();
         }
     }
+    protected Map<String, Object> parseUrl(String url){
+        Pattern p = null;
+        Map map = new HashMap();
+        if (url.matches(".*tid=.*")) {
+            url = url.substring(url.indexOf("tid"));
+            String[] temp = url.split("&");
+            for (String t : temp) {
+                //[tid=13213,page=1]
+                map.put(t.substring(0, t.indexOf("=")).trim(), t.substring(t.indexOf("=") + 1, t.length()).trim());
+            }
+        } else if (url.matches(".*thread-\\d{1,}-\\d{1,}-\\d{1,}.*")) {
+            p = Pattern.compile("thread-\\d{1,}-\\d{1,}-\\d{1,}");
+            Matcher m = p.matcher(url);
+            if (m.find()) {
+                url = url.substring(m.start(), m.end());
+            }
+            String[] array = url.split("-");
+            map.put("tid", array[1]);
+            map.put("page", array[2]);
+        } else if (url.matches("\\d{1,}-\\d{1,}-\\d{1,}")) {
+            String[] array = url.split("-");
+            map.put("tid", array[0]);
+            map.put("page", array[1]);
+        } else if (url.matches("\\d{1,}-\\d{1,}")) {
+            String[] array = url.split("-");
+            map.put("tid", array[0]);
+            map.put("page", array[1]);
+        } else if (url.matches("\\d{1,}")) {
+            map.put("tid", url);
+        } else {
+            return null;
+        }
+        return map;
+    }
 }
