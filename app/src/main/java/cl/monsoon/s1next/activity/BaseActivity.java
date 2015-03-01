@@ -452,6 +452,19 @@ public abstract class BaseActivity extends ActionBarActivity
                     Intent intent = new Intent(BaseActivity.this, SettingsActivity.class);
                     startActivity(intent);
                 }));
+
+        //add BackToHome Item
+        TextView backtoHomeView = (TextView) mDrawer.findViewById(R.id.backToHome);
+        backtoHomeView.setText(R.string.backToHome);
+        backtoHomeView.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.left_icon_margin_right));
+        backtoHomeView.setCompoundDrawablesWithIntrinsicBounds(
+                ResourceUtil.getResourceId(getTheme(), R.attr.iconHome), 0, 0, 0);
+        backtoHomeView.setOnClickListener(v->closeDrawer(()->{
+            Intent intent = new Intent(BaseActivity.this, ForumActivity.class);
+            startActivity(intent);
+        }));
+
+
     }
 
     /**
@@ -601,4 +614,6 @@ public abstract class BaseActivity extends ActionBarActivity
         MyAccount.clear();
         MyAccount.sendCookieExpirationBroadcast();
     }
+
+
 }

@@ -77,6 +77,9 @@ public class PostListActivity
     private int mSeekBarProgress = -1;
 
     private String mThreadId;
+
+
+
     private String mThreadTitle;
     private int mTotalPages;
 
@@ -96,6 +99,15 @@ public class PostListActivity
 
     private BroadcastReceiver mQuoteReceiver;
 
+    //Only called when using "Jump to thread"
+    public void setmThreadTitle(String mThreadTitle, int page) {
+        if(TextUtils.isEmpty(this.mThreadTitle)) {
+            this.mThreadTitle = mThreadTitle;
+            setTitle(StringHelper.concatWithTwoSpaces(mThreadTitle, page));
+        }
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +118,7 @@ public class PostListActivity
         setNavDrawerIndicatorEnabled(false);
 
         cl.monsoon.s1next.model.Thread thread = getIntent().getParcelableExtra(ARG_THREAD);
+
         mThreadTitle = thread.getTitle();
         setTitle(StringHelper.concatWithTwoSpaces(mThreadTitle, 1));
         mThreadId = thread.getId();
@@ -117,7 +130,17 @@ public class PostListActivity
 
         setupFloatingActionButton(R.drawable.ic_menu_comment_white_24dp);
 
+        int page = getIntent().getIntExtra("page",-1);
+
+        // Workaround for Url with page
+        if(page!=-1 && page!=0) {
+            mTotalPages = page+1;
+        }
+
+        setupFloatingActionButton(R.drawable.ic_menu_comment_white_24dp);
+
         mViewPager = (ViewPager) container.findViewById(R.id.pager);
+
         mAdapter = new PostListPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -137,10 +160,17 @@ public class PostListActivity
             }
         });
 
+
+        if(page != -1){
+
+            mViewPager.setCurrentItem(page);
+        }
+
         // set ViewPager to last page when true
         if (getIntent().getBooleanExtra(ARG_SHOULD_GO_TO_LAST_PAGE, false)) {
             mViewPager.setCurrentItem(mTotalPages - 1);
         }
+
 
         if (savedInstanceState != null) {
             mSeekBarProgress = savedInstanceState.getInt(STATE_SEEKBAR_PROGRESS);

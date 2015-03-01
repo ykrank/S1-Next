@@ -223,6 +223,8 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                     ToastUtil.showByText(message, Toast.LENGTH_SHORT);
                 }
             } else {
+                String title = postList.getInfo().getTitle();
+                ((PostListActivity)getActivity()).setmThreadTitle(title, mPageNum);
                 int lastItemCount = mRecyclerAdapter.getItemCount();
                 mRecyclerAdapter.setDataSet(postList.getData());
                 if (isFinishedLoadingMore) {

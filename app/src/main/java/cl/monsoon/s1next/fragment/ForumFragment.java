@@ -119,9 +119,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
             case R.id.menu_browser:
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(Api.URL_S1));
-
                 startActivity(intent);
-
                 return true;
         }
 
@@ -166,4 +164,5 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
         }
         mRecyclerAdapter.notifyDataSetChanged();
     }
+
 }
