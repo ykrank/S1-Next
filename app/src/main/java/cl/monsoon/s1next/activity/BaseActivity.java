@@ -461,6 +461,7 @@ public abstract class BaseActivity extends ActionBarActivity
                 ResourceUtil.getResourceId(getTheme(), R.attr.iconHome), 0, 0, 0);
         backtoHomeView.setOnClickListener(v->closeDrawer(()->{
             Intent intent = new Intent(BaseActivity.this, ForumActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }));
 
