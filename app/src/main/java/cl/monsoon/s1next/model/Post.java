@@ -209,6 +209,14 @@ public final class Post {
         @JsonProperty("replies")
         private int replies;
 
+        @JsonProperty("subject")
+        private String title;
+
+        public String getTitle() { return title; }
+
+        public void setTitle(String title) { this.title = title; }
+
+
         public int getReplies() {
             return replies;
         }

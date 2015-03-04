@@ -8,4 +8,7 @@
         android:orderInCategory="10"
         android:title="@string/menu_browser"
         app:showAsAction="never"/>
+
+
+
 </menu>

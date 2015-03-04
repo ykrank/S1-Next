@@ -1,6 +1,8 @@
 package cl.monsoon.s1next.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,15 +11,26 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.BaseActivity;
+import cl.monsoon.s1next.activity.PostListActivity;
 import cl.monsoon.s1next.fragment.headless.HttpGetRetainedFragment;
 import cl.monsoon.s1next.model.Extractable;
+import cl.monsoon.s1next.model.Thread;
 import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
@@ -151,8 +164,11 @@ public abstract class BaseFragment<D extends Extractable>
             case R.id.menu_refresh:
                 mSwipeRefreshLayout.setRefreshing(true);
                 onRefresh();
-
                 return true;
+            case R.id.menu_jump_to_thread:
+                showJumpToThreadDialog();
+                return true;
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -243,5 +259,71 @@ public abstract class BaseFragment<D extends Extractable>
         if (mHttpGetRetainedFragment != null) {
             getFragmentManager().beginTransaction().remove(mHttpGetRetainedFragment).commit();
         }
+    }
+
+    protected void showJumpToThreadDialog(){
+        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_jump_to_thread, (ViewGroup)getActivity().findViewById(R.id.drawer_layout),false);
+        EditText etTid = (EditText) v.findViewById(R.id.etTid);
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.menu_jump_to_thread);
+        builder.setView(v);
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+            Intent intent = new Intent(getActivity(), PostListActivity.class);
+            cl.monsoon.s1next.model.Thread thread = new Thread();
+            thread.setTitle("");
+
+            String str = etTid.getText().toString().trim();
+            Map map = parseUrl(str);
+            if(map == null){
+                Toast.makeText(getActivity(), R.string.message_invalid_input, Toast.LENGTH_LONG).show();
+                return;
+            }
+            thread.setId((String) map.get("tid"));
+            if(map.containsKey("page")){
+                int i = Integer.parseInt((String)map.get("page")) - 1;
+                intent.putExtra("page",i);
+            }
+            intent.putExtra(PostListActivity.ARG_THREAD, thread);
+            startActivity(intent);
+        });
+        builder.setNegativeButton(android.R.string.cancel, null);
+        builder.show();
+    }
+
+    protected Map<String, Object> parseUrl(String url){
+        Pattern p;
+        Map<String, Object> map = new HashMap<>();
+        if (url.matches(".*tid=.*")) {
+            url = url.substring(url.indexOf("tid"));
+            String[] temp = url.split("&");
+            for (String t : temp) {
+                //[tid=13213,page=1]
+                map.put(t.substring(0, t.indexOf("=")).trim(), t.substring(t.indexOf("=") + 1, t.length()).trim());
+            }
+        } else if (url.matches(".*thread-\\d{1,}-\\d{1,}-\\d{1,}.*")) {
+            p = Pattern.compile("thread-\\d{1,}-\\d{1,}-\\d{1,}");
+            Matcher m = p.matcher(url);
+            if (m.find()) {
+                url = url.substring(m.start(), m.end());
+            }
+            String[] array = url.split("-");
+            map.put("tid", array[1]);
+            map.put("page", array[2]);
+        } else if (url.matches("\\d{1,}-\\d{1,}-\\d{1,}")) {
+            String[] array = url.split("-");
+            map.put("tid", array[0]);
+            map.put("page", array[1]);
+        } else if (url.matches("\\d{1,}-\\d{1,}")) {
+            String[] array = url.split("-");
+            map.put("tid", array[0]);
+            map.put("page", array[1]);
+        } else if (url.matches("\\d{1,}")) {
+            map.put("tid", url);
+        } else {
+            return null;
+        }
+        return map;
     }
 }

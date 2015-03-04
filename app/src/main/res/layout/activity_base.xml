@@ -90,6 +90,15 @@
             android:layout_below="@id/drawer_username"
             android:layout_marginTop="@dimen/list_view_padding"/>
 
+        <include
+            android:id="@+id/backToHome"
+            layout="@layout/single_line_list_item"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/single_line_height"
+            android:layout_below="@id/settings"
+            android:layout_marginTop="@dimen/list_view_padding"/>
+
+
     </RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>

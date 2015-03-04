@@ -29,6 +29,7 @@
         <item name="menuSend">@drawable/selector_menu_send_black</item>
 
         <item name="iconSettings">@drawable/ic_settings_grey600_24dp</item>
+        <item name="iconHome">@drawable/ic_menu_home</item>
     </style>
 
     <style name="LightTheme.Inverse">
@@ -92,6 +93,7 @@
         <item name="menuKeyboard">@drawable/ic_menu_keyboard_white_24dp</item>
         <item name="menuSend">@drawable/selector_menu_send_white</item>
         <item name="iconSettings">@drawable/ic_settings_white_24dp</item>
+        <item name="iconHome">@drawable/ic_menu_home_white</item>
     </style>
 
     <style name="GalleryTheme" parent="Theme.AppCompat">

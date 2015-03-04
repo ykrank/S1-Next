@@ -6,4 +6,11 @@
         android:orderInCategory="1"
         android:title="@string/menu_refresh"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_jump_to_thread"
+        android:orderInCategory="20"
+        android:title="@string/menu_jump_to_thread"
+        app:showAsAction="never" />
+
 </menu>
