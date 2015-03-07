@@ -40,4 +40,7 @@
     <color name="emoticon_keyboard_background_color_light">#ffeceff1</color>
     <color name="emoticon_keyboard_background_color_dark">#ff263238</color>
 
+    <color name="photo_view_crop_dim_color">#cc000000</color>
+    <color name="photo_view_crop_highlight_color">#ffffffff</color>
+
 </resources>

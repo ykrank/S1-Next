@@ -10,7 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -19,7 +18,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
 import cl.monsoon.s1next.R;
-import uk.co.senab.photoview.PhotoViewAttacher;
+import cl.monsoon.s1next.widget.PhotoView;
 
 public final class GalleryFragment extends Fragment {
 
@@ -50,21 +49,21 @@ public final class GalleryFragment extends Fragment {
 
         mUrl = getArguments().getString(ARG_IMAGE_URL);
 
-        ImageView imageView = (ImageView) view.findViewById(R.id.picture);
+        PhotoView photoView = (PhotoView) view.findViewById(R.id.picture);
+        photoView.setMaxInitialScaleFactor(1);
+        photoView.enableImageTransforms(true);
+
         Glide.with(getActivity())
                 .load(mUrl)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(new SimpleTarget<GlideDrawable>() {
                     @Override
                     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                        imageView.setImageDrawable(resource);
-
+                        photoView.bindDrawable(resource);
                         if (resource.isAnimated()) {
                             resource.setLoopCount(GlideDrawable.LOOP_FOREVER);
                             resource.start();
                         }
-
-                        new PhotoViewAttacher(imageView);
                     }
                 });
     }

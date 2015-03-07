@@ -49,8 +49,7 @@ dependencies {
     compile 'net.danlew:android.joda:2.7.1'
     compile 'com.squareup.okhttp:okhttp:2.2.0'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.5.1'
-    compile 'com.github.bumptech.glide:glide:3.5.1'
+    compile 'com.github.bumptech.glide:glide:3.5.2'
     compile 'com.melnykov:floatingactionbutton:1.2.0'
-    compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile 'com.bugsnag:bugsnag-android:3.2.5'
 }
