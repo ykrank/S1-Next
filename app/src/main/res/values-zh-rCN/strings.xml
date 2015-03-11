@@ -9,8 +9,12 @@
     <string name="drawer_top_background_content_desc">背景</string>
     <string name="drawer_avatar_content_desc">用户头像</string>
     <string name="dialog_message_log_out">退出登录？</string>
+    <string name="thread_jump">跳转</string>
+    <string name="home">首页</string>
     <string name="settings">设置</string>
-    <string name="backToHome">返回首页</string>
+    <string name="dialog_title_thread_jump">跳转到指定帖子…</string>
+    <string name="prompt_thread_id">帖子ID</string>
+    <string name="action_jump">跳转</string>
     <string name="menu_refresh">刷新</string>
     <string name="menu_share">分享</string>
     <string name="menu_browser">从浏览器中打开</string>
@@ -21,10 +25,8 @@
     <string name="menu_emoticon">表情</string>
     <string name="menu_keyboard">键盘</string>
     <string name="menu_send">发送</string>
-    <string name="menu_jump_to_thread">跳转到指定帖子</string>
     <string name="message_network_error">发生了网络错误</string>
     <string name="message_server_error">无法与服务器进行通信，请稍后再试。</string>
-    <string name="message_invalid_input">非法输入，请检查</string>
     <string name="prompt_username">用户名</string>
     <string name="prompt_password">密码</string>
     <string name="error_field_required">此处不能留空</string>
@@ -32,7 +34,6 @@
     <string name="dialog_seekbar_title_page_flip">前往…</string>
     <string name="dialog_progress_message_favourites_add">添加中…</string>
     <string name="prompt_remark">备注</string>
-    <string name="prompt_thread_id">帖子ID或URL</string>
     <string name="prompt_reply">写点内容吧…</string>
     <string name="dialog_progress_message_reply">回复中…</string>
     <string name="dialog_message_reply_back_prompt">要舍弃这条回复吗？</string>

@@ -17,10 +17,15 @@
     <string name="drawer_avatar_content_desc">User avatar</string>
 
     <string name="dialog_message_log_out">Sign out?</string>
+    <string name="home">Home</string>
+    <string name="thread_jump">Jump</string>
     <string name="settings">Settings</string>
-    <string name="download_settings" translatable="false">@string/pref_downloads</string>
 
-    <string name="backToHome">Back to Home</string>
+    <string name="dialog_title_thread_jump">Jump to thread…</string>
+    <string name="prompt_thread_id">Thread ID</string>
+    <string name="action_jump">Jump</string>
+
+    <string name="download_settings" translatable="false">@string/pref_downloads</string>
 
     <!-- menu button -->
     <string name="menu_refresh">Refresh</string>
@@ -34,12 +39,10 @@
     <string name="menu_emoticon">Emoticon</string>
     <string name="menu_keyboard">Keyboard</string>
     <string name="menu_send">Send</string>
-    <string name="menu_jump_to_thread">Jump to thread</string>
 
     <!-- toast -->
     <string name="message_network_error">There was a network error</string>
     <string name="message_server_error">Couldn\'t communicate with the server, please try again later.</string>
-    <string name="message_invalid_input">Invalid input!</string>
 
     <!-- login -->
     <string name="activity_label_login" translatable="false">@string/action_login</string>
@@ -55,9 +58,6 @@
     <!-- Because other Spinner drop down items fetched from S1 is Chinese,
     so this string is Chinese for all locales. -->
     <string name="toolbar_spinner_drop_down_all_forums_item_title" translatable="false">全部</string>
-
-    <!--jump to thread-->
-    <string name="prompt_thread_id">Thread ID or URL</string>
 
     <!-- thread -->
 

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <attr name="dividerColor" format="color"/>
+
     <attr name="mySpinner" format="reference"/>
     <attr name="mySpinnerItemTextColor" format="color"/>
     <attr name="myCardView" format="reference"/>
@@ -22,8 +24,9 @@
     <attr name="menuKeyboard" format="reference"/>
     <attr name="menuSend" format="reference"/>
 
+    <attr name="iconHome" format="reference"/>
+    <attr name="iconThreadJump" format="reference"/>
     <attr name="iconSettings" format="reference"/>
-    <attr name="iconHome" format="reference" />
 
     <declare-styleable name="BezelImageView">
         <attr name="maskDrawable" format="reference"/>

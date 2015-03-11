@@ -17,10 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.StringUtils;
+
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.PostListActivity;
 import cl.monsoon.s1next.adapter.PostListRecyclerAdapter;
+import cl.monsoon.s1next.model.Post;
 import cl.monsoon.s1next.model.list.PostList;
 import cl.monsoon.s1next.model.mapper.PostListWrapper;
 import cl.monsoon.s1next.util.ObjectUtil;
@@ -34,7 +37,7 @@ import cl.monsoon.s1next.widget.MyRecyclerView;
  * to represent each page of thread posts.
  * <p>
  * All activities containing this Fragment must implement
- * {@link cl.monsoon.s1next.fragment.PostListPagerFragment.OnPagerInteractionCallback}.
+ * {@link cl.monsoon.s1next.fragment.PostListPagerFragment.OnPostListPagerInteractionCallback}.
  * <p>
  * Similar to {@link cl.monsoon.s1next.fragment.ThreadListPagerFragment}
  */
@@ -56,7 +59,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     private PostListRecyclerAdapter mRecyclerAdapter;
     private boolean mIsLoadingMore;
 
-    private OnPagerInteractionCallback mOnPagerInteractionCallback;
+    private OnPostListPagerInteractionCallback mOnPostListPagerInteractionCallback;
 
     public static PostListPagerFragment newInstance(String threadId, int page) {
         PostListPagerFragment fragment = new PostListPagerFragment();
@@ -98,7 +101,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (!mIsLoadingMore
-                        && mPageNum == mOnPagerInteractionCallback.getTotalPages()
+                        && mPageNum == mOnPostListPagerInteractionCallback.getTotalPages()
                         && !mRecyclerView.canScrollVertically(1)
                         && !isRefreshing()) {
 
@@ -119,14 +122,15 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        mOnPagerInteractionCallback = ObjectUtil.cast(activity, OnPagerInteractionCallback.class);
+        mOnPostListPagerInteractionCallback =
+                ObjectUtil.cast(activity, OnPostListPagerInteractionCallback.class);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
 
-        mOnPagerInteractionCallback = null;
+        mOnPostListPagerInteractionCallback = null;
     }
 
     @Override
@@ -183,8 +187,13 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
 
     private CharSequence getThreadTitle() {
         CharSequence title = getActivity().getTitle();
-        // remove two space and page number's length
-        return title.subSequence(0, title.length() - 2 - String.valueOf(mPageNum).length());
+
+        if (TextUtils.isEmpty(title)) {
+            return StringUtils.EMPTY;
+        } else {
+            // remove two space and page number's length
+            return title.subSequence(0, title.length() - 2 - String.valueOf(mPageNum).length());
+        }
     }
 
     @Override
@@ -217,14 +226,13 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
             PostList postList = asyncResult.data.unwrap();
 
             // if user has logged out and then has no permission to access this thread
+            // or this thread is invalid
             if (postList.getData().isEmpty()) {
                 String message = asyncResult.data.getResult().getMessage();
                 if (!TextUtils.isEmpty(message)) {
                     ToastUtil.showByText(message, Toast.LENGTH_SHORT);
                 }
             } else {
-                String title = postList.getInfo().getTitle();
-                ((PostListActivity)getActivity()).setmThreadTitle(title, mPageNum);
                 int lastItemCount = mRecyclerAdapter.getItemCount();
                 mRecyclerAdapter.setDataSet(postList.getData());
                 if (isFinishedLoadingMore) {
@@ -236,7 +244,10 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                     mRecyclerAdapter.notifyDataSetChanged();
                 }
 
-                mOnPagerInteractionCallback.setTotalPages(postList.getInfo().getReplies() + 1);
+                Post.PostListInfo postListInfo = postList.getInfo();
+                mOnPostListPagerInteractionCallback.setThreadTitle(
+                        postListInfo.getTitle(), mPageNum);
+                mOnPostListPagerInteractionCallback.setTotalPages(postListInfo.getReplies() + 1);
             }
 
 
@@ -254,7 +265,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     /**
      * A callback interface that all activities containing this Fragment must implement.
      */
-    public static interface OnPagerInteractionCallback {
+    public static interface OnPostListPagerInteractionCallback {
 
         public int getTotalPages();
 
@@ -262,5 +273,10 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
          * A callback to set actual total pages which used for {@link android.support.v4.view.PagerAdapter}.
          */
         public void setTotalPages(int i);
+
+        /**
+         * Only called when using `Jump to thread` feature.
+         */
+        public void setThreadTitle(String threadTitle, int pageNum);
     }
 }

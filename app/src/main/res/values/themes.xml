@@ -9,6 +9,9 @@
 
         <item name="theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+
+        <item name="dividerColor">@color/divider_black_12</item>
+
         <item name="myCardView">@style/LightCardView</item>
         <item name="mySpinnerItemTextColor">@color/abc_primary_text_material_light</item>
 
@@ -28,8 +31,9 @@
         <item name="menuKeyboard">@drawable/ic_menu_keyboard_black_24dp</item>
         <item name="menuSend">@drawable/selector_menu_send_black</item>
 
+        <item name="iconHome">@drawable/ic_home_grey600_24dp</item>
+        <item name="iconThreadJump">@drawable/ic_open_with_grey600_24dp</item>
         <item name="iconSettings">@drawable/ic_settings_grey600_24dp</item>
-        <item name="iconHome">@drawable/ic_menu_home</item>
     </style>
 
     <style name="LightTheme.Inverse">
@@ -77,6 +81,7 @@
         <item name="android:textColorLink">@color/teal_200_70</item>
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="dividerColor">@color/divider_white_12</item>
         <item name="myCardView">@style/DarkCardView</item>
         <item name="mySpinnerItemTextColor">@color/abc_primary_text_material_dark</item>
         <item name="fabColorNormal">@color/grey_500</item>
@@ -92,8 +97,9 @@
         <item name="menuEmoticon">@drawable/ic_menu_insert_emoticon_white_24dp</item>
         <item name="menuKeyboard">@drawable/ic_menu_keyboard_white_24dp</item>
         <item name="menuSend">@drawable/selector_menu_send_white</item>
+        <item name="iconHome">@drawable/ic_home_white_24dp</item>
+        <item name="iconThreadJump">@drawable/ic_open_with_white_24dp</item>
         <item name="iconSettings">@drawable/ic_settings_white_24dp</item>
-        <item name="iconHome">@drawable/ic_menu_home_white</item>
     </style>
 
     <style name="GalleryTheme" parent="Theme.AppCompat">

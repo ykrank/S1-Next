@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -60,7 +61,7 @@ import cl.monsoon.s1next.widget.InputFilterRange;
  */
 public class PostListActivity
         extends BaseActivity
-        implements PostListPagerFragment.OnPagerInteractionCallback,
+        implements PostListPagerFragment.OnPostListPagerInteractionCallback,
         View.OnClickListener {
 
     public static final String ARG_THREAD = "thread";
@@ -77,8 +78,6 @@ public class PostListActivity
     private int mSeekBarProgress = -1;
 
     private String mThreadId;
-
-
 
     private String mThreadTitle;
     private int mTotalPages;
@@ -99,15 +98,6 @@ public class PostListActivity
 
     private BroadcastReceiver mQuoteReceiver;
 
-    //Only called when using "Jump to thread"
-    public void setmThreadTitle(String mThreadTitle, int page) {
-        if(TextUtils.isEmpty(this.mThreadTitle)) {
-            this.mThreadTitle = mThreadTitle;
-            setTitle(StringHelper.concatWithTwoSpaces(mThreadTitle, page));
-        }
-
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,9 +108,21 @@ public class PostListActivity
         setNavDrawerIndicatorEnabled(false);
 
         cl.monsoon.s1next.model.Thread thread = getIntent().getParcelableExtra(ARG_THREAD);
-
+        // we have no title if we use `Jump to thread` feature
         mThreadTitle = thread.getTitle();
-        setTitle(StringHelper.concatWithTwoSpaces(mThreadTitle, 1));
+        if (TextUtils.isEmpty(mThreadTitle)) {
+            // disable drawer and set navigation icon to cross
+            // because this activity don't use `singleTop` launch
+            // mode here
+            setTitle(null);
+            setupNavCrossIcon();
+            setNavDrawerEnabled(false);
+            ((DrawerLayout)findViewById(R.id.drawer_layout))
+                    .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            findViewById(R.id.drawer).setVisibility(View.GONE);
+        } else {
+            setTitle(mThreadTitle, 1);
+        }
         mThreadId = thread.getId();
         // +1 for original post
         setTotalPages(thread.getReplies() + 1);
@@ -130,17 +132,7 @@ public class PostListActivity
 
         setupFloatingActionButton(R.drawable.ic_menu_comment_white_24dp);
 
-        int page = getIntent().getIntExtra("page",-1);
-
-        // Workaround for Url with page
-        if(page!=-1 && page!=0) {
-            mTotalPages = page+1;
-        }
-
-        setupFloatingActionButton(R.drawable.ic_menu_comment_white_24dp);
-
         mViewPager = (ViewPager) container.findViewById(R.id.pager);
-
         mAdapter = new PostListPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -151,7 +143,7 @@ public class PostListActivity
 
             @Override
             public void onPageSelected(int position) {
-                setTitle(StringHelper.concatWithTwoSpaces(mThreadTitle, position + 1));
+                setTitle(mThreadTitle, position + 1);
             }
 
             @Override
@@ -160,17 +152,10 @@ public class PostListActivity
             }
         });
 
-
-        if(page != -1){
-
-            mViewPager.setCurrentItem(page);
-        }
-
         // set ViewPager to last page when true
         if (getIntent().getBooleanExtra(ARG_SHOULD_GO_TO_LAST_PAGE, false)) {
             mViewPager.setCurrentItem(mTotalPages - 1);
         }
-
 
         if (savedInstanceState != null) {
             mSeekBarProgress = savedInstanceState.getInt(STATE_SEEKBAR_PROGRESS);
@@ -278,6 +263,12 @@ public class PostListActivity
         // mMenuThreadAttachment.setVisible(false) during onCreateOptionsMenu(Menu)
         if (mMenuThreadAttachment != null) {
             mMenuThreadAttachment.setVisible(true);
+        }
+    }
+
+    private void setTitle(CharSequence title, int pageNum) {
+        if (!TextUtils.isEmpty(title)) {
+            setTitle(StringHelper.concatWithTwoSpaces(title, pageNum));
         }
     }
 
@@ -398,7 +389,7 @@ public class PostListActivity
     }
 
     /**
-     * Implements {@link cl.monsoon.s1next.fragment.PostListPagerFragment.OnPagerInteractionCallback}.
+     * Implements {@link cl.monsoon.s1next.fragment.PostListPagerFragment.OnPostListPagerInteractionCallback}.
      */
     @Override
     public void setTotalPages(int i) {
@@ -408,6 +399,13 @@ public class PostListActivity
 
         if (mAdapter != null) {
             runOnUiThread(mAdapter::notifyDataSetChanged);
+        }
+    }
+
+    public void setThreadTitle(String threadTitle, int pageNum) {
+        if (TextUtils.isEmpty(mThreadTitle)) {
+            this.mThreadTitle = threadTitle;
+            setTitle(threadTitle, pageNum + 1);
         }
     }
 

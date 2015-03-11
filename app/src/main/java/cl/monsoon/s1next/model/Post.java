@@ -206,16 +206,19 @@ public final class Post {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class PostListInfo {
 
-        @JsonProperty("replies")
-        private int replies;
-
         @JsonProperty("subject")
         private String title;
 
-        public String getTitle() { return title; }
+        @JsonProperty("replies")
+        private int replies;
 
-        public void setTitle(String title) { this.title = title; }
+        public String getTitle() {
+            return title;
+        }
 
+        public void setTitle(String title) {
+            this.title = title;
+        }
 
         public int getReplies() {
             return replies;

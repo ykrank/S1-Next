@@ -83,21 +83,35 @@
             tools:ignore="NewApi"/>
 
         <include
-            android:id="@+id/settings"
+            android:id="@+id/home"
             layout="@layout/single_line_list_item"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/single_line_height"
+            android:layout_height="@dimen/drawer_item_height"
             android:layout_below="@id/drawer_username"
             android:layout_marginTop="@dimen/list_view_padding"/>
 
-        <include
-            android:id="@+id/backToHome"
-            layout="@layout/single_line_list_item"
+        <View
+            android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/single_line_height"
-            android:layout_below="@id/settings"
+            android:layout_height="@dimen/divider_height"
+            android:layout_below="@id/home"
+            android:background="?attr/dividerColor"
+            android:layout_marginBottom="@dimen/list_view_padding"
             android:layout_marginTop="@dimen/list_view_padding"/>
 
+        <include
+            android:id="@+id/thread_jump"
+            layout="@layout/single_line_list_item"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/drawer_item_height"
+            android:layout_below="@id/divider"/>
+
+        <include
+            android:id="@+id/settings"
+            layout="@layout/single_line_list_item"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/drawer_item_height"
+            android:layout_below="@id/thread_jump"/>
 
     </RelativeLayout>
 

@@ -26,6 +26,9 @@
     <color name="primary_text_default_material_dark_87">#deffffff</color>
     <color name="teal_200_70">#b380cbc4</color>
 
+    <color name="divider_white_12">#1fffffff</color>
+    <color name="divider_black_12">#1f000000</color>
+
     <color name="swipe_refresh_1">@color/pink_A200</color>
     <color name="swipe_refresh_2">@color/orange_A200</color>
     <color name="swipe_refresh_3">@color/light_blue_A200</color>

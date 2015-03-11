@@ -14,11 +14,14 @@
     <dimen name="drawer_avatar_border_width">3dp</dimen>
     <!-- 16dp (avatar margin top) + 64dp (avatar height) + 56dp (username) -->
     <dimen name="drawer_top_height">136dp</dimen>
+    <dimen name="drawer_item_height">48dp</dimen>
 
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="swipe_refresh_progress_view_start">8dp</dimen>
     <dimen name="swipe_refresh_progress_view_end">72dp</dimen>
+
+    <dimen name="divider_height">1dp</dimen>
 
     <dimen name="single_line_height">56dp</dimen>
     <dimen name="two_line_height">72dp</dimen>

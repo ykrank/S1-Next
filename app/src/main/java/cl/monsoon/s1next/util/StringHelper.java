@@ -1,5 +1,7 @@
 package cl.monsoon.s1next.util;
 
+import android.text.TextUtils;
+
 import org.apache.commons.lang3.StringUtils;
 
 public final class StringHelper {
@@ -17,7 +19,11 @@ public final class StringHelper {
     }
 
     public static String concatWithTwoSpaces(CharSequence first, CharSequence last) {
-        return first + TWO_SPACES + last;
+        if (TextUtils.isEmpty(first)) {
+            return last.toString();
+        } else {
+            return first + TWO_SPACES + last;
+        }
     }
 
     public static String unescapeNonBreakingSpace(CharSequence text) {
