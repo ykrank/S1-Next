@@ -102,6 +102,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (!mIsLoadingMore
                         && mPageNum == mPagerCallback.getTotalPages()
+                        && mRecyclerAdapter.getItemCount() != 0
                         && !mRecyclerView.canScrollVertically(1)
                         && !isRefreshing()) {
 
