@@ -54,7 +54,7 @@ public enum AvatarUrlsCache {
     private final LruCache<String, Object> lruCache;
     private final KeyGenerator keyGenerator;
 
-    private AvatarUrlsCache() {
+    AvatarUrlsCache() {
         lruCache = new LruCache<>(Config.AVATAR_URLS_MEMORY_CACHE_MAX_NUMBER);
 
         File file =

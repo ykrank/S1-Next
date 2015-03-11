@@ -5,6 +5,6 @@ import cl.monsoon.s1next.model.Extractable;
 /**
  * Subclass which implements this could be deserialized to POJO.
  */
-public interface Deserializable extends Extractable {
+interface Deserializable extends Extractable {
 
 }

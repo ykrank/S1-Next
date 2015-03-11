@@ -64,6 +64,8 @@ public final class EmoticonFactory {
                 case 9:
                     emoticonTypeMap = getBundamEmoticonMap();
                     break;
+                default:
+                    throw new IllegalArgumentException("Emoticon type can't be " + type + ".");
             }
         }
         mEmoticonType.put(type, emoticonTypeMap);

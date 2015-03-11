@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".MyApplication"
@@ -17,22 +17,22 @@
 
         <meta-data
             android:name="cl.monsoon.s1next.widget.MyGlideModule"
-            android:value="GlideModule"/>
+            android:value="GlideModule" />
 
         <meta-data
             android:name="com.bugsnag.android.API_KEY"
-            android:value="6e8e30660fec3876e701e69587257f60"/>
+            android:value="6e8e30660fec3876e701e69587257f60" />
 
         <activity
             android:name=".activity.LoginActivity"
-            android:label="@string/activity_label_login"/>
+            android:label="@string/activity_label_login" />
 
         <activity
             android:name=".activity.ForumActivity"
             android:launchMode="singleTop">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
@@ -42,7 +42,7 @@
             android:parentActivityName=".activity.ForumActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.ForumActivity"/>
+                android:value=".activity.ForumActivity" />
         </activity>
 
         <activity
@@ -51,7 +51,7 @@
             android:parentActivityName=".activity.ThreadListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.ThreadListActivity"/>
+                android:value=".activity.ThreadListActivity" />
         </activity>
 
         <activity
@@ -59,7 +59,7 @@
             android:parentActivityName=".activity.ThreadListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.ThreadListActivity"/>
+                android:value=".activity.ThreadListActivity" />
         </activity>
 
         <activity
@@ -67,20 +67,20 @@
             android:parentActivityName=".activity.SubForumThreadListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.SubForumPostListActivity"/>
+                android:value=".activity.SubForumPostListActivity" />
         </activity>
 
         <activity
             android:name=".activity.SettingsActivity"
-            android:label="@string/settings"/>
+            android:label="@string/settings" />
 
         <activity
             android:name=".activity.ReplyActivity"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".activity.GalleryActivity"
-            android:theme="@style/GalleryTheme"/>
+            android:theme="@style/GalleryTheme" />
 
     </application>
 

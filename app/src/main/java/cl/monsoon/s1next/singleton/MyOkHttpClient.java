@@ -20,7 +20,7 @@ public enum MyOkHttpClient {
 
     private final CookieManager cookieManager;
 
-    private MyOkHttpClient() {
+    MyOkHttpClient() {
         okHttpClient = new OkHttpClient();
 
         okHttpClient.setConnectTimeout(Config.OKHTTP_CLIENT_CONNECT_TIMEOUT, TimeUnit.SECONDS);

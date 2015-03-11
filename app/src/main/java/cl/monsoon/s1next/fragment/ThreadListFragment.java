@@ -14,8 +14,7 @@ import cl.monsoon.s1next.activity.BaseActivity;
 import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.MathUtil;
-import cl.monsoon.s1next.util.ObjectUtil;
-import cl.monsoon.s1next.util.StringHelper;
+import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 
 /**
@@ -23,9 +22,9 @@ import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
  * to represent each page of thread lists.
  */
 public final class ThreadListFragment extends Fragment
-        implements ThreadListPagerFragment.OnPagerInteractionCallback {
+        implements ThreadListPagerFragment.PagerCallback {
 
-    public static final String TAG = "thread_list_fragment";
+    public static final String TAG = ThreadListFragment.class.getSimpleName();
 
     private static final String ARG_FORUM = "forum";
 
@@ -56,7 +55,7 @@ public final class ThreadListFragment extends Fragment
 
         Forum forum = getArguments().getParcelable(ARG_FORUM);
         mForumTitle = forum.getName();
-        getActivity().setTitle(StringHelper.concatWithTwoSpaces(mForumTitle, 1));
+        getActivity().setTitle(StringUtil.concatWithTwoSpaces(mForumTitle, 1));
         mForumId = forum.getId();
         setTotalPages(forum.getThreads());
 
@@ -69,12 +68,12 @@ public final class ThreadListFragment extends Fragment
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                ObjectUtil.cast(getActivity(), BaseActivity.class).showOrHideToolbarAndFab(true);
+                ((BaseActivity) getActivity()).showOrHideToolbarAndFab(true);
             }
 
             @Override
             public void onPageSelected(int position) {
-                getActivity().setTitle(StringHelper.concatWithTwoSpaces(mForumTitle, position + 1));
+                getActivity().setTitle(StringUtil.concatWithTwoSpaces(mForumTitle, position + 1));
             }
 
             @Override
@@ -85,7 +84,7 @@ public final class ThreadListFragment extends Fragment
     }
 
     /**
-     * Implements {@link cl.monsoon.s1next.fragment.ThreadListPagerFragment.OnPagerInteractionCallback}.
+     * Implements {@link ThreadListPagerFragment.PagerCallback}.
      */
     @Override
     public void setTotalPages(int i) {
@@ -114,7 +113,7 @@ public final class ThreadListFragment extends Fragment
         public void destroyItem(ViewGroup container, int position, Object object) {
             // We don't reuse Fragment in ViewPager and its retained fragment
             // because it is not cost-effective nowadays.
-            ObjectUtil.cast(object, BaseFragment.class).destroyRetainedFragment();
+            ((BaseFragment) object).destroyRetainedFragment();
 
             super.destroyItem(container, position, object);
         }

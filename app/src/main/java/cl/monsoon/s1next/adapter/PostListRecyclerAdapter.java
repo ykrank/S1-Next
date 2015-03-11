@@ -33,8 +33,7 @@ import cl.monsoon.s1next.activity.PostListActivity;
 import cl.monsoon.s1next.activity.ReplyActivity;
 import cl.monsoon.s1next.model.Post;
 import cl.monsoon.s1next.singleton.Config;
-import cl.monsoon.s1next.util.ObjectUtil;
-import cl.monsoon.s1next.util.ViewHelper;
+import cl.monsoon.s1next.util.ViewUtil;
 import cl.monsoon.s1next.widget.GlideImageGetter;
 import cl.monsoon.s1next.widget.MyMovementMethod;
 import cl.monsoon.s1next.widget.MyTagHandler;
@@ -106,7 +105,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
 
         Post post = mList.get(position);
 
-        ItemViewHolder itemViewHolder = ObjectUtil.cast(holder, ItemViewHolder.class);
+        ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
         ImageView avatarView = itemViewHolder.mAvatar;
 
         // whether need to download avatars
@@ -221,7 +220,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
             mCount = (TextView) itemView.findViewById(R.id.count);
             mPost = (TextView) itemView.findViewById(R.id.post);
 
-            ViewHelper.updateTextSize(mUsername, mTime, mCount, mPost);
+            ViewUtil.updateTextSize(mUsername, mTime, mCount, mPost);
 
             mCount.setMovementMethod(LinkMovementMethod.getInstance());
             // use custom movement method to provides selection and click
@@ -251,7 +250,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         public void onClick(View widget) {
             Intent intent = new Intent(PostListActivity.ACTION_QUOTE);
 
-            Post post = ObjectUtil.cast(widget.getTag(), Post.class);
+            Post post = (Post) widget.getTag();
             intent.putExtra(ReplyActivity.ARG_QUOTE_POST_ID, post.getId());
             intent.putExtra(ReplyActivity.ARG_QUOTE_POST_COUNT, post.getCount());
 

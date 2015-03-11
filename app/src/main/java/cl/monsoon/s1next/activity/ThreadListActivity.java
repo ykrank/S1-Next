@@ -15,9 +15,10 @@ import java.util.List;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.adapter.SubForumArrayAdapter;
 import cl.monsoon.s1next.fragment.ThreadListFragment;
+import cl.monsoon.s1next.fragment.ThreadListPagerFragment;
 import cl.monsoon.s1next.model.Forum;
 
-public class ThreadListActivity extends BaseActivity {
+public class ThreadListActivity extends BaseActivity implements ThreadListPagerFragment.SubFormsCallback {
 
     public static final String ARG_FORUM = "forum";
 
@@ -74,6 +75,7 @@ public class ThreadListActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
     public void setupSubForums(List<Forum> forumList) {
         if (mListPopupWindow == null) {
             mListPopupWindow = new ListPopupWindow(this);

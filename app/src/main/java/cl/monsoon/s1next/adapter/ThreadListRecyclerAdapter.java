@@ -12,7 +12,7 @@ import cl.monsoon.s1next.model.Thread;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.MyAccount;
 import cl.monsoon.s1next.util.ColorUtil;
-import cl.monsoon.s1next.util.ViewHelper;
+import cl.monsoon.s1next.util.ViewUtil;
 
 public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, ThreadListRecyclerAdapter.ViewHolder> {
 
@@ -46,7 +46,7 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
 
         if (thread.getPermission() != 0) {
             // add thread's permission hint
-            ViewHelper.concatWithTwoSpaces(
+            ViewUtil.concatWithTwoSpaces(
                     textView,
                     "[" + THREAD_PERMISSION_HINT_PREFIX + thread.getPermission() + "]");
         }
@@ -54,8 +54,8 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
         holder.setTextViewEnabled(MyAccount.getPermission() >= thread.getPermission());
 
         // add thread's replies count to each thread
-        ViewHelper.concatWithTwoSpaces(textView, thread.getReplies());
-        ViewHelper.setForegroundColor(textView, mSecondaryTextColor, start, textView.length());
+        ViewUtil.concatWithTwoSpaces(textView, thread.getReplies());
+        ViewUtil.setForegroundColor(textView, mSecondaryTextColor, start, textView.length());
     }
 
     @Override
@@ -74,7 +74,7 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
             super(itemView);
 
             mTextView = (TextView) itemView;
-            ViewHelper.updateTextSize(mTextView);
+            ViewUtil.updateTextSize(mTextView);
 
             mDefaultTextViewColor = mTextView.getCurrentTextColor();
             mDisabledTextViewColor =

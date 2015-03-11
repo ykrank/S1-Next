@@ -47,24 +47,25 @@ import java.util.List;
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.MyApplication;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.fragment.BaseFragment;
 import cl.monsoon.s1next.fragment.SettingsFragment;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.MyAccount;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
-import cl.monsoon.s1next.util.LollipopUtil;
-import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
+import cl.monsoon.s1next.util.VersionUtil;
 import cl.monsoon.s1next.widget.InsetsFrameLayout;
 import cl.monsoon.s1next.widget.MyRecyclerView;
 
 /**
- * A base Activity which includes the Toolbar tweaks,
- * drop-down navigation, navigation drawer amongst others.
+ * A base Activity which includes the Toolbar tweaks
+ * and navigation drawer amongst others.
  * Also changes theme depends on settings.
  */
 public abstract class BaseActivity extends ActionBarActivity
-        implements MyAccount.OnLogoutListener,
-        InsetsFrameLayout.OnInsetsCallback {
+        implements InsetsFrameLayout.OnInsetsCallback,
+        BaseFragment.InsetsCallback,
+        MyAccount.OnLogoutListener {
 
     private Rect mSystemWindowInsets;
     private final List<InsetsFrameLayout.OnInsetsCallback> onInsetsCallbackList =
@@ -109,7 +110,7 @@ public abstract class BaseActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            LollipopUtil.adjustTaskDescription(this);
+            VersionUtil.changeAppTitleColorToWhiteInRecentApps(this);
         }
 
         IntentFilter intentFilter = new IntentFilter();
@@ -262,18 +263,32 @@ public abstract class BaseActivity extends ActionBarActivity
         }
     }
 
-    public void registerInsetsCallback(@NonNull InsetsFrameLayout.OnInsetsCallback onInsetsCallback) {
+    /**
+     * Implements {@link BaseFragment.InsetsCallback}.
+     */
+    @Override
+    public void register(InsetsFrameLayout.OnInsetsCallback onInsetsCallback) {
         onInsetsCallbackList.add(onInsetsCallback);
     }
 
-    public void unregisterInsetsCallback(@NonNull InsetsFrameLayout.OnInsetsCallback onInsetsCallback) {
+    @Override
+    public void unregister(InsetsFrameLayout.OnInsetsCallback onInsetsCallback) {
         onInsetsCallbackList.remove(onInsetsCallback);
+    }
+
+    @Override
+    public Rect getSystemWindowInsets() {
+        if (mSystemWindowInsets == null) {
+            mSystemWindowInsets = new Rect();
+        }
+
+        return mSystemWindowInsets;
     }
 
     void setupFloatingActionButton(@DrawableRes int resId) {
         mFloatingActionButton = (FloatingActionButton) findViewById(R.id.floating_action_button);
         // subclass need to implement android.view.View.OnClickListener
-        mFloatingActionButton.setOnClickListener(ObjectUtil.cast(this, View.OnClickListener.class));
+        mFloatingActionButton.setOnClickListener((View.OnClickListener) this);
         mFloatingActionButton.setImageResource(resId);
         mFloatingActionButton.setVisibility(View.VISIBLE);
     }
@@ -354,6 +369,14 @@ public abstract class BaseActivity extends ActionBarActivity
         if (mToolbar != null) {
             mToolbar.setNavigationIcon(ResourceUtil.getResourceId(getTheme(), R.attr.menuCross));
         }
+    }
+
+    void setNavDrawerEnabled(boolean enabled) {
+        mHasNavDrawer = enabled;
+    }
+
+    void setNavDrawerIndicatorEnabled(boolean enabled) {
+        mHasNavDrawerIndicator = enabled;
     }
 
     private void setupNavDrawer() {
@@ -512,7 +535,7 @@ public abstract class BaseActivity extends ActionBarActivity
     /**
      * Show user's avatar and username if user has logged in.
      */
-    void setupDrawerUserView() {
+    private void setupDrawerUserView() {
         if (mDrawerTopBackgroundView == null
                 || mDrawerUserAvatarView == null || mDrawerUsernameView == null) {
             return;
@@ -537,25 +560,9 @@ public abstract class BaseActivity extends ActionBarActivity
         return mToolbar;
     }
 
-    public Rect getSystemWindowInsets() {
-        if (mSystemWindowInsets == null) {
-            mSystemWindowInsets = new Rect();
-        }
-
-        return mSystemWindowInsets;
-    }
-
-    void setNavDrawerEnabled(boolean enabled) {
-        mHasNavDrawer = enabled;
-    }
-
-    void setNavDrawerIndicatorEnabled(boolean enabled) {
-        mHasNavDrawerIndicator = enabled;
-    }
-
     public static class ThemeChangeDialog extends DialogFragment {
 
-        private static final String TAG = "theme_change_dialog";
+        private static final String TAG = ThemeChangeDialog.class.getSimpleName();
 
         @NonNull
         @Override
@@ -592,9 +599,7 @@ public abstract class BaseActivity extends ActionBarActivity
                                                             new Intent(SettingsFragment.ACTION_CHANGE_THEME));
                                         }
                                         dismiss();
-                                        ObjectUtil.cast(
-                                                getActivity(),
-                                                BaseActivity.class).closeDrawer(runnable);
+                                        ((BaseActivity) getActivity()).closeDrawer(runnable);
                                     })
                             .create();
         }
@@ -602,7 +607,7 @@ public abstract class BaseActivity extends ActionBarActivity
 
     public static class LogoutDialog extends DialogFragment {
 
-        private static final String TAG = "log_out_dialog";
+        private static final String TAG = LogoutDialog.class.getSimpleName();
 
         @NonNull
         @Override
@@ -613,9 +618,7 @@ public abstract class BaseActivity extends ActionBarActivity
                             .setPositiveButton(
                                     android.R.string.ok,
                                     (dialog, which) ->
-                                            ObjectUtil.cast(
-                                                    getActivity(),
-                                                    MyAccount.OnLogoutListener.class).onLogout())
+                                            ((MyAccount.OnLogoutListener) getActivity()).onLogout())
                             .setNegativeButton(android.R.string.cancel, null)
                             .create();
         }
@@ -631,7 +634,7 @@ public abstract class BaseActivity extends ActionBarActivity
 
     public static class ThreadJumpDialog extends DialogFragment {
 
-        private static final String TAG = "thread_jump_dialog";
+        private static final String TAG = ThreadJumpDialog.class.getSimpleName();
 
         private EditText mThreadIdView;
         private AlertDialog mAlertDialog;

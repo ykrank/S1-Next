@@ -39,8 +39,8 @@ public enum Config {
     public static final int REPLY_NOTIFICATION_MAX_LENGTH = 100;
 
     private static final int LIGHT_THEME_AMBER = R.style.LightTheme_Inverse_Amber;
-    private static final int LIGHT_THEME_GREEN = R.style.LightTheme_Inverse_Green;
-    private static final int LIGHT_THEME_LIGHT_BLUE = R.style.LightTheme_Inverse_LightBlue;
+    public static final int LIGHT_THEME_GREEN = R.style.LightTheme_Inverse_Green;
+    public static final int LIGHT_THEME_LIGHT_BLUE = R.style.LightTheme_Inverse_LightBlue;
     private static final int DARK_THEME = R.style.DarkTheme;
 
     private static final int[] THEMES = {
@@ -98,23 +98,6 @@ public enum Config {
     @ColorRes
     public static int getColorAccent() {
         return INSTANCE.colorAccent;
-    }
-
-    /**
-     * @return -1 if we don't need it to change default task description for current theme
-     * or its similar contrast color doesn't exist.
-     * @see cl.monsoon.s1next.util.LollipopUtil#adjustTaskDescription(android.app.Activity)
-     */
-    @ColorRes
-    public static int getContrastColorForTaskDescription() {
-        switch (INSTANCE.currentTheme) {
-            case LIGHT_THEME_GREEN:
-                return R.color.green_600;
-            case LIGHT_THEME_LIGHT_BLUE:
-                return R.color.light_blue_600;
-            default:
-                return -1;
-        }
     }
 
     @ColorUtil.Alpha
@@ -231,7 +214,7 @@ public enum Config {
                         key, MyApplication.getContext().getString(defValueResId));
     }
 
-    public static enum TextScale {
+    enum TextScale {
         VERY_SMALL(0.8f), SMALL(0.9f), MEDIUM(1f), LARGE(1.1f), VERY_LARGE(1.2f);
 
         private static final TextScale[] VALUES = TextScale.values();
@@ -251,7 +234,7 @@ public enum Config {
         }
     }
 
-    private static enum CacheSize {
+    enum CacheSize {
         // 32MB, 64MB, 128MB
         LOW(32), NORMAL(64), HIGH(128);
 
@@ -259,7 +242,7 @@ public enum Config {
 
         private final int size;
 
-        private CacheSize(int size) {
+        CacheSize(int size) {
             this.size = size * 1000 * 1000;
         }
 
@@ -268,7 +251,7 @@ public enum Config {
         }
     }
 
-    private static enum DownloadStrategy {
+    enum DownloadStrategy {
         NOT, WIFI, ALWAYS;
 
         private static final DownloadStrategy[] VALUES = DownloadStrategy.values();
@@ -284,7 +267,7 @@ public enum Config {
         }
     }
 
-    private static enum AvatarResolutionStrategy {
+    enum AvatarResolutionStrategy {
         LOW, HIGH_WIFI, HIGH;
 
         private static final AvatarResolutionStrategy[] VALUES = AvatarResolutionStrategy.values();
@@ -300,7 +283,7 @@ public enum Config {
         }
     }
 
-    private static enum AvatarCacheInvalidationInterval {
+    enum AvatarCacheInvalidationInterval {
         EVERY_DAY(DateUtil::today),
         EVERY_WEEK(DateUtil::dayOfWeek),
         EVERY_MONTH(DateUtil::dayOfMonth);
@@ -313,7 +296,7 @@ public enum Config {
 
         private final Callable<String> callable;
 
-        private AvatarCacheInvalidationInterval(Callable<String> callable) {
+        AvatarCacheInvalidationInterval(Callable<String> callable) {
             this.callable = callable;
         }
 

@@ -54,10 +54,10 @@ public final class RecyclerViewHelper implements RecyclerView.OnItemTouchListene
 
     }
 
-    public static interface OnItemClickListener {
+    public interface OnItemClickListener {
 
-        public void onItemClick(@NonNull View view, int position);
+        void onItemClick(@NonNull View view, int position);
 
-        public void onItemLongClick(@NonNull View view, int position);
+        void onItemLongClick(@NonNull View view, int position);
     }
 }

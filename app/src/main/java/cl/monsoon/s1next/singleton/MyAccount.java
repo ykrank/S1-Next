@@ -68,8 +68,8 @@ public enum MyAccount {
         MyApplication.getContext().sendBroadcast(new Intent(ACTION_USER_COOKIE_EXPIRATION));
     }
 
-    public static interface OnLogoutListener {
+    public interface OnLogoutListener {
 
-        public void onLogout();
+        void onLogout();
     }
 }

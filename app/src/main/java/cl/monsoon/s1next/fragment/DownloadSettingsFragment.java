@@ -8,7 +8,7 @@ import cl.monsoon.s1next.singleton.Config;
 
 public final class DownloadSettingsFragment extends BaseSettingsFragment {
 
-    public static final String TAG = "download_settings_fragment";
+    public static final String TAG = DownloadSettingsFragment.class.getSimpleName();
 
     public static final String PREF_KEY_DOWNLOAD_CACHE_SIZE = "pref_key_download_cache_size";
     public static final String PREF_KEY_DOWNLOAD_AVATARS_STRATEGY = "pref_key_download_avatars_strategy";

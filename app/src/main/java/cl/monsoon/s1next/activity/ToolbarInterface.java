@@ -4,16 +4,16 @@ import java.util.List;
 
 public interface ToolbarInterface {
 
-    public static interface OnDropDownItemSelectedListener {
+    interface OnDropDownItemSelectedListener {
 
-        public void onToolbarDropDownItemSelected(int position);
+        void onToolbarDropDownItemSelected(int position);
     }
 
-    public static interface SpinnerInteractionCallback {
+    interface SpinnerCallback {
 
         /**
          * Sets up Toolbar's drop down items.
          */
-        public void setupToolbarDropDown(List<? extends CharSequence> dropDownItemList);
+        void setupToolbarDropDown(List<? extends CharSequence> dropDownItemList);
     }
 }

@@ -19,7 +19,6 @@ import java.util.Map;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.ReplyFragment;
 import cl.monsoon.s1next.singleton.Config;
-import cl.monsoon.s1next.util.ObjectUtil;
 
 public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<EmoticonGridRecyclerAdapter.ViewHolder> {
 
@@ -81,7 +80,7 @@ public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<Emot
             Intent intent = new Intent(ReplyFragment.ACTION_INSERT_EMOTICON);
             intent.putExtra(
                     ReplyFragment.ARG_EMOTICON_ENTITY,
-                    ObjectUtil.cast(v.getTag(KEY_EMOTICON_ENTITY), CharSequence.class));
+                    (CharSequence) v.getTag(KEY_EMOTICON_ENTITY));
 
             v.getContext().sendBroadcast(intent);
         }

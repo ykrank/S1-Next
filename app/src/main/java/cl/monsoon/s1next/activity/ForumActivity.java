@@ -18,15 +18,14 @@ import java.util.List;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.ForumFragment;
 import cl.monsoon.s1next.singleton.Config;
-import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.widget.StateListDrawableWithTint;
 
 /**
  * This Activity has Spinner in Toolbar to switch between different forum groups.
  */
 public final class ForumActivity extends BaseActivity
-        implements AdapterView.OnItemSelectedListener,
-        ToolbarInterface.SpinnerInteractionCallback {
+        implements ToolbarInterface.SpinnerCallback,
+        AdapterView.OnItemSelectedListener {
 
     /**
      * The serialization (saved instance state) Bundle key representing
@@ -63,7 +62,7 @@ public final class ForumActivity extends BaseActivity
         }
 
         mOnToolbarDropDownItemSelectedListener =
-                ObjectUtil.cast(fragment, ToolbarInterface.OnDropDownItemSelectedListener.class);
+                (ToolbarInterface.OnDropDownItemSelectedListener) fragment;
     }
 
     @Override
@@ -88,7 +87,7 @@ public final class ForumActivity extends BaseActivity
     }
 
     /**
-     * Implements {@link ToolbarInterface.SpinnerInteractionCallback}.
+     * Implements {@link ToolbarInterface.SpinnerCallback}.
      */
     @Override
     @SuppressWarnings("deprecation")
@@ -136,7 +135,7 @@ public final class ForumActivity extends BaseActivity
         }
     }
 
-    BaseAdapter getSpinnerAdapter(List<? extends CharSequence> dropDownItemList) {
+    private BaseAdapter getSpinnerAdapter(List<? extends CharSequence> dropDownItemList) {
         // don't use dropDownItemList#add(int, E)
         // otherwise we will have multiple "全部"
         // if we invoke this method many times

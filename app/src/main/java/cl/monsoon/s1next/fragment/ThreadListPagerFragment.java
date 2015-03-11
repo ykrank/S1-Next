@@ -16,16 +16,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.List;
+
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.PostListActivity;
 import cl.monsoon.s1next.activity.SubForumPostListActivity;
 import cl.monsoon.s1next.activity.SubForumThreadListActivity;
-import cl.monsoon.s1next.activity.ThreadListActivity;
 import cl.monsoon.s1next.adapter.ThreadListRecyclerAdapter;
+import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.model.list.ThreadList;
 import cl.monsoon.s1next.model.mapper.ThreadListWrapper;
-import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.MyRecyclerView;
@@ -34,8 +35,7 @@ import cl.monsoon.s1next.widget.RecyclerViewHelper;
 /**
  * A Fragment representing one of the pages of threads.
  * <p>
- * All activities containing this Fragment must implement
- * {@link cl.monsoon.s1next.fragment.ThreadListPagerFragment.OnPagerInteractionCallback}.
+ * All activities containing this Fragment must implement {@link PagerCallback}.
  */
 public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrapper> {
 
@@ -48,7 +48,8 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     private MyRecyclerView mRecyclerView;
     private ThreadListRecyclerAdapter mRecyclerAdapter;
 
-    private OnPagerInteractionCallback mOnPagerInteractionCallback;
+    private PagerCallback mPageCallback;
+    private SubFormsCallback mSubFormsCallback;
 
     public static ThreadListPagerFragment newInstance(String forumId, int page) {
         ThreadListPagerFragment fragment = new ThreadListPagerFragment();
@@ -139,16 +140,17 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        mOnPagerInteractionCallback =
-                ObjectUtil.cast(getFragmentManager().findFragmentByTag(
-                        ThreadListFragment.TAG), OnPagerInteractionCallback.class);
+        mPageCallback =
+                (PagerCallback) getFragmentManager().findFragmentByTag(ThreadListFragment.TAG);
+        mSubFormsCallback = (SubFormsCallback) activity;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
 
-        mOnPagerInteractionCallback = null;
+        mPageCallback = null;
+        mSubFormsCallback = null;
     }
 
     @Override
@@ -207,14 +209,11 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
                 mRecyclerAdapter.setDataSet(threadList.getData());
                 mRecyclerAdapter.notifyDataSetChanged();
 
-                mOnPagerInteractionCallback.setTotalPages(
-                        threadList.getThreadsInfo().getThreads());
+                mPageCallback.setTotalPages(threadList.getThreadsInfo().getThreads());
             }
 
             if (!threadList.getSubForumList().isEmpty()) {
-
-                ObjectUtil.cast(getActivity(),
-                        ThreadListActivity.class).setupSubForums(threadList.getSubForumList());
+                mSubFormsCallback.setupSubForums(threadList.getSubForumList());
             }
         }
     }
@@ -222,11 +221,16 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     /**
      * A callback interface that all activities containing this Fragment must implement.
      */
-    public static interface OnPagerInteractionCallback {
+    public interface PagerCallback {
 
         /**
          * A callback to set actual total pages which used for {@link android.support.v4.view.PagerAdapter}。
          */
-        public void setTotalPages(int i);
+        void setTotalPages(int i);
+    }
+
+    public interface SubFormsCallback {
+
+        void setupSubForums(List<Forum> forumList);
     }
 }

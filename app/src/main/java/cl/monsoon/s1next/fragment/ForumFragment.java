@@ -22,7 +22,6 @@ import cl.monsoon.s1next.adapter.ForumListRecyclerAdapter;
 import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.model.list.ForumGroupList;
 import cl.monsoon.s1next.model.mapper.ForumGroupListWrapper;
-import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.MyRecyclerView;
 import cl.monsoon.s1next.widget.RecyclerViewHelper;
@@ -33,13 +32,13 @@ import cl.monsoon.s1next.widget.RecyclerViewHelper;
 public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
         implements ToolbarInterface.OnDropDownItemSelectedListener {
 
-    public static final String TAG = "forum_fragment";
+    public static final String TAG = ForumFragment.class.getSimpleName();
 
     private MyRecyclerView mRecyclerView;
     private ForumListRecyclerAdapter mRecyclerAdapter;
 
     private ForumGroupList mForumGroupList;
-    private ToolbarInterface.SpinnerInteractionCallback mToolbarSpinnerInteractionCallback;
+    private ToolbarInterface.SpinnerCallback mToolbarSpinnerCallback;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,15 +86,14 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        mToolbarSpinnerInteractionCallback =
-                ObjectUtil.cast(activity, ToolbarInterface.SpinnerInteractionCallback.class);
+        mToolbarSpinnerCallback = (ToolbarInterface.SpinnerCallback) activity;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
 
-        mToolbarSpinnerInteractionCallback = null;
+        mToolbarSpinnerCallback = null;
     }
 
     @Override
@@ -145,8 +143,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
 
             // after set adapter, host activity
             // would call onToolbarDropDownItemSelected(int).
-            mToolbarSpinnerInteractionCallback.setupToolbarDropDown(
-                    mForumGroupList.getForumGroupNameList());
+            mToolbarSpinnerCallback.setupToolbarDropDown(mForumGroupList.getForumGroupNameList());
         }
     }
 

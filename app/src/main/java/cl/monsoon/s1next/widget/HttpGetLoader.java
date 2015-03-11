@@ -137,7 +137,7 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
     /**
      * Cancels {@link Call} if possible.
      */
-    void onReleaseResources() {
+    private void onReleaseResources() {
         if (mCall != null) {
             mCall.cancel();
             mCall = null;

@@ -4,7 +4,6 @@
     <style name="GalleryTheme" parent="Theme.AppCompat">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
-
         <item name="windowActionBar">false</item>
         <item name="android:windowBackground">@android:color/black</item>
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>

@@ -58,7 +58,7 @@ public final class PersistentHttpCookieStore implements CookieStore {
 
         // load stored cookies from shared preference
         Set<String> cookiesURL =
-                cookieSP.getStringSet(COOKIES_URI, new HashSet<>());
+                cookieSP.getStringSet(COOKIES_URI, Collections.<String>emptySet());
 
         for (String uri : cookiesURL) {
             Set<String> cookiesName =

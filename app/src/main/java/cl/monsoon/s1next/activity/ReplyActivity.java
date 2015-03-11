@@ -11,7 +11,6 @@ import android.text.TextUtils;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.ReplyFragment;
-import cl.monsoon.s1next.util.ObjectUtil;
 
 /**
  * An Activity which used to send a reply.
@@ -31,8 +30,8 @@ public final class ReplyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity);
 
-        setNavDrawerEnabled(false);
         setupNavCrossIcon();
+        setNavDrawerEnabled(false);
 
         String quotePostId = getIntent().getStringExtra(ARG_QUOTE_POST_ID);
         String titlePrefix =
@@ -53,7 +52,7 @@ public final class ReplyActivity extends BaseActivity {
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_layout, mReplyFragment, ReplyFragment.TAG).commit();
         } else {
-            mReplyFragment = ObjectUtil.cast(fragment, ReplyFragment.class);
+            mReplyFragment = (ReplyFragment) fragment;
         }
     }
 
@@ -73,7 +72,7 @@ public final class ReplyActivity extends BaseActivity {
 
     public static class BackPromptDialog extends DialogFragment {
 
-        private static final String TAG = "back_prompt_dialog";
+        private static final String TAG = BackPromptDialog.class.getSimpleName();
 
         @NonNull
         @Override

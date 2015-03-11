@@ -168,7 +168,7 @@ public final class Api {
                         .build();
     }
 
-    private static class MyFormEncodingBuilderFactory {
+    static class MyFormEncodingBuilderFactory {
 
         private MyFormEncodingBuilderFactory() {
 

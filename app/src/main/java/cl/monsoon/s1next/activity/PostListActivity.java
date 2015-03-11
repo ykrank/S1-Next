@@ -38,6 +38,7 @@ import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.adapter.ThreadAttachmentInfoListArrayAdapter;
 import cl.monsoon.s1next.fragment.BaseFragment;
+import cl.monsoon.s1next.fragment.LoaderDialogFragment;
 import cl.monsoon.s1next.fragment.PostListPagerFragment;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.list.PostList;
@@ -46,8 +47,7 @@ import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.MyAccount;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
-import cl.monsoon.s1next.util.ObjectUtil;
-import cl.monsoon.s1next.util.StringHelper;
+import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
@@ -59,13 +59,11 @@ import cl.monsoon.s1next.widget.InputFilterRange;
  * An Activity which includes {@link android.support.v4.view.ViewPager}
  * to represent each page of post lists.
  */
-public class PostListActivity
-        extends BaseActivity
-        implements PostListPagerFragment.OnPostListPagerInteractionCallback,
+public class PostListActivity extends BaseActivity
+        implements PostListPagerFragment.PagerCallback,
         View.OnClickListener {
 
     public static final String ARG_THREAD = "thread";
-
     public static final String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
 
     public static final String ACTION_QUOTE = "quote";
@@ -268,7 +266,7 @@ public class PostListActivity
 
     private void setTitle(CharSequence title, int pageNum) {
         if (!TextUtils.isEmpty(title)) {
-            setTitle(StringHelper.concatWithTwoSpaces(title, pageNum));
+            setTitle(StringUtil.concatWithTwoSpaces(title, pageNum));
         }
     }
 
@@ -295,7 +293,7 @@ public class PostListActivity
     private void showPageFlipDialog() {
         View view =
                 getLayoutInflater().inflate(
-                        R.layout.dialog_seekbar, (ViewGroup) findViewById(R.id.drawer_layout), false);
+                        R.layout.dialog_page_flip, (ViewGroup) findViewById(R.id.drawer_layout), false);
 
         if (mSeekBarProgress == -1) {
             mSeekBarProgress = mViewPager.getCurrentItem();
@@ -326,7 +324,7 @@ public class PostListActivity
             @Override
             public void afterTextChanged(Editable s) {
                 try {
-                    int value = Integer.parseInt(valueView.getText().toString());
+                    int value = Integer.parseInt(s.toString());
                     if (value - 1 != seekbar.getProgress()) {
                         seekbar.setProgress(value - 1);
                     }
@@ -366,7 +364,7 @@ public class PostListActivity
 
         new AlertDialog.Builder(this)
                 .setView(view)
-                .setTitle(R.string.dialog_seekbar_title_page_flip)
+                .setTitle(R.string.dialog_title_page_flip)
                 .setPositiveButton(
                         getText(android.R.string.ok),
                         (dialog, which) -> {
@@ -389,7 +387,7 @@ public class PostListActivity
     }
 
     /**
-     * Implements {@link cl.monsoon.s1next.fragment.PostListPagerFragment.OnPostListPagerInteractionCallback}.
+     * Implements {@link PostListPagerFragment.PagerCallback}.
      */
     @Override
     public void setTotalPages(int i) {
@@ -402,6 +400,7 @@ public class PostListActivity
         }
     }
 
+    @Override
     public void setThreadTitle(String threadTitle, int pageNum) {
         if (TextUtils.isEmpty(mThreadTitle)) {
             this.mThreadTitle = threadTitle;
@@ -417,7 +416,7 @@ public class PostListActivity
         startReplyActivity(null, null);
     }
 
-    void startReplyActivity(String quotePostId, String quotePostCount) {
+    private void startReplyActivity(String quotePostId, String quotePostCount) {
         if (!checkUserLoggedInStatus()) {
             return;
         }
@@ -460,12 +459,12 @@ public class PostListActivity
 
         @Override
         public Fragment getItem(int i) {
-            return PostListPagerFragment.newInstance(mThreadId, i + 1);
+            return PostListPagerFragment.newInstance(mThreadTitle, mThreadId, i + 1);
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            ObjectUtil.cast(object, BaseFragment.class).destroyRetainedFragment();
+            ((BaseFragment) object).destroyRetainedFragment();
 
             super.destroyItem(container, position, object);
         }
@@ -473,7 +472,7 @@ public class PostListActivity
 
     public static class ThreadAttachmentDialogFragment extends DialogFragment {
 
-        private static final String TAG = "thread_attachment_dialog";
+        private static final String TAG = ThreadAttachmentDialogFragment.class.getSimpleName();
 
         private static final String ARG_ATTACHMENT_TITLE = "attachment_title";
         private static final String ARG_THREAD_ATTACHMENT_INFO_LIST = "thread_attachment_info_list";
@@ -510,7 +509,7 @@ public class PostListActivity
 
     public static class ThreadFavouritesAddDialogFragment extends DialogFragment {
 
-        private static final String TAG = "thread_favourites_add_dialog";
+        private static final String TAG = ThreadFavouritesAddDialogFragment.class.getSimpleName();
 
         public static final String ARG_THREAD_ID = "thread_id";
 
@@ -543,25 +542,26 @@ public class PostListActivity
 
             alertDialog.setOnShowListener(dialog ->
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v ->
-                            LoaderDialogFragment.newInstance(
+                            ThreadFavouritesAddLoaderDialogFragment.newInstance(
                                     getArguments().getString(ARG_THREAD_ID),
                                     ((EditText) view.findViewById(R.id.remark)).getText().toString())
-                                    .show(getChildFragmentManager(), LoaderDialogFragment.TAG)));
+                                    .show(getChildFragmentManager(), ThreadFavouritesAddLoaderDialogFragment.TAG)));
 
             return alertDialog;
         }
 
-        public static class LoaderDialogFragment extends cl.monsoon.s1next.fragment.LoaderDialogFragment<ResultWrapper> {
+        public static class ThreadFavouritesAddLoaderDialogFragment extends LoaderDialogFragment<ResultWrapper> {
 
-            private static final String TAG = "thread_favourites_add_loader_dialog";
+            private static final String TAG = ThreadFavouritesAddLoaderDialogFragment.class.getSimpleName();
 
             private static final String ARG_REMARK = "remark";
 
             private static final String STATUS_ADD_TO_FAVOURITES_SUCCESS = "favorite_do_success";
             private static final String STATUS_ADD_TO_FAVOURITES_REPEAT = "favorite_repeat";
 
-            public static LoaderDialogFragment newInstance(String threadId, String description) {
-                LoaderDialogFragment fragment = new LoaderDialogFragment();
+            public static ThreadFavouritesAddLoaderDialogFragment newInstance(String threadId, String description) {
+                ThreadFavouritesAddLoaderDialogFragment fragment =
+                        new ThreadFavouritesAddLoaderDialogFragment();
 
                 Bundle bundle = new Bundle();
                 bundle.putString(ARG_THREAD_ID, threadId);
@@ -618,9 +618,8 @@ public class PostListActivity
 
             @Override
             public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> data) {
-                AsyncResult asyncResult = ObjectUtil.cast(data, AsyncResult.class);
-                if (asyncResult.exception != null) {
-                    asyncResult.handleException();
+                if (data.exception != null) {
+                    data.handleException();
                 } else {
                     int id = loader.getId();
                     if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
@@ -628,17 +627,14 @@ public class PostListActivity
 
                         return;
                     } else if (id == ID_LOADER_ADD_THREAD_TO_FAVOURITES) {
-                        ResultWrapper wrapper = ObjectUtil.cast(asyncResult.data, ResultWrapper.class);
+                        ResultWrapper wrapper = data.data;
                         Result result = wrapper.getResult();
 
                         ToastUtil.showByText(result.getMessage(), Toast.LENGTH_SHORT);
 
                         if (result.getStatus().equals(STATUS_ADD_TO_FAVOURITES_SUCCESS)
                                 || result.getStatus().equals(STATUS_ADD_TO_FAVOURITES_REPEAT)) {
-                            new Handler().post(() ->
-                                    ObjectUtil.cast(
-                                            getParentFragment(),
-                                            ThreadFavouritesAddDialogFragment.class).dismiss());
+                            new Handler().post(((ThreadFavouritesAddDialogFragment) getParentFragment())::dismiss);
                         }
                     } else {
                         super.onLoadFinished(loader, data);
@@ -657,7 +653,7 @@ public class PostListActivity
 
     public static class LoginPromptDialog extends DialogFragment {
 
-        private static final String TAG = "login_prompt_dialog";
+        private static final String TAG = LoginPromptDialog.class.getSimpleName();
 
         @NonNull
         @Override

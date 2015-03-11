@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import cl.monsoon.s1next.Api;
-import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.AvatarUrlsCache;
+import cl.monsoon.s1next.singleton.Config;
 
 import static java.net.HttpURLConnection.HTTP_BAD_METHOD;
 import static java.net.HttpURLConnection.HTTP_GONE;

@@ -28,14 +28,14 @@ import cl.monsoon.s1next.widget.AsyncResult;
  */
 public class HttpGetRetainedFragment<D extends Extractable> extends DataRetainedFragment<D> {
 
-    public static final String TAG_PREFIX = "retained_fragment_";
+    public static final String TAG_PREFIX = HttpGetRetainedFragment.class.getSimpleName() + "_";
 
     private AsyncHttpGetTask mAsyncHttpGetTask;
 
-    private Callback<D> mAsyncTaskCallback;
+    private AsyncTaskCallback<D> mAsyncTaskCallback;
 
     /**
-     * Attaches to its host to get its {@link Callback}.
+     * Attaches to its host to get its {@link AsyncTaskCallback}.
      */
     @Override
     public void onAttach(Activity activity) {
@@ -44,8 +44,7 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
         // if its host is Activity
         // else its host is Fragment
         if (getTag() == null) {
-            mAsyncTaskCallback =
-                    ObjectUtil.uncheckedCast(ObjectUtil.cast(activity, Callback.class));
+            mAsyncTaskCallback = ObjectUtil.uncheckedCast(activity);
         } else {
             String hostFragmentTag = getTag().substring(TAG_PREFIX.length());
             Fragment fragment = getFragmentManager().findFragmentByTag(hostFragmentTag);
@@ -54,7 +53,7 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
                 throw new IllegalStateException("Can't find Fragment which host this Fragment.");
             }
 
-            mAsyncTaskCallback = ObjectUtil.uncheckedCast(ObjectUtil.cast(fragment, Callback.class));
+            mAsyncTaskCallback = ObjectUtil.uncheckedCast(fragment);
         }
     }
 
@@ -99,9 +98,9 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
     /**
      * A callback interface that all activities containing this Fragment must implement.
      */
-    public static interface Callback<D extends Extractable> {
+    public interface AsyncTaskCallback<D extends Extractable> {
 
-        public void onPostExecute(AsyncResult<D> dAsyncResult);
+        void onPostExecute(AsyncResult<D> dAsyncResult);
     }
 
     private class AsyncHttpGetTask extends AsyncTask<Void, Void, AsyncResult<D>> {

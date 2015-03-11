@@ -20,7 +20,7 @@ public enum MyObjectExtractor {
 
     private final ObjectMapper objectMapper;
 
-    private MyObjectExtractor() {
+    MyObjectExtractor() {
         objectMapper = new ObjectMapper();
     }
 

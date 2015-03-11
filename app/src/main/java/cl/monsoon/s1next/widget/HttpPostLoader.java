@@ -11,7 +11,7 @@ import org.apache.http.client.HttpResponseException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import cl.monsoon.s1next.model.mapper.Deserializable;
+import cl.monsoon.s1next.model.Extractable;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
 
 /**
@@ -19,7 +19,7 @@ import cl.monsoon.s1next.singleton.MyOkHttpClient;
  *
  * @see HttpGetLoader
  */
-public final class HttpPostLoader<D extends Deserializable> extends HttpGetLoader<D> {
+public final class HttpPostLoader<D extends Extractable> extends HttpGetLoader<D> {
 
     private final RequestBody mRequestBody;
 

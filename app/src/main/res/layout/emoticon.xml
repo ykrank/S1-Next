@@ -6,4 +6,4 @@
     android:layout_width="@dimen/emoticon_size"
     android:layout_height="@dimen/emoticon_size"
     android:contentDescription="@string/emoticon_content_desc"
-    android:padding="@dimen/emoticon_padding"/>
+    android:padding="@dimen/emoticon_padding" />

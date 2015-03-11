@@ -47,7 +47,7 @@ public final class Quote implements Extractable, Parcelable {
         return encodedUserId;
     }
 
-    void setEncodedUserId(String encodedUserId) {
+    private void setEncodedUserId(String encodedUserId) {
         this.encodedUserId = encodedUserId;
     }
 
@@ -55,7 +55,7 @@ public final class Quote implements Extractable, Parcelable {
         return quoteMessage;
     }
 
-    void setQuoteMessage(String quoteMessage) {
+    private void setQuoteMessage(String quoteMessage) {
         this.quoteMessage = quoteMessage;
     }
 

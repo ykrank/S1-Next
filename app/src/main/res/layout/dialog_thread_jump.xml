@@ -21,6 +21,6 @@
         android:imeActionId="@+id/ime_jump"
         android:imeActionLabel="@string/action_jump"
         android:imeOptions="actionUnspecified"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
 </LinearLayout>

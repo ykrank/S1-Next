@@ -9,14 +9,13 @@ import android.util.TypedValue;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import cl.monsoon.s1next.singleton.Config;
 
-public final class ViewHelper {
+public final class ViewUtil {
 
-    private ViewHelper() {
+    private ViewUtil() {
 
     }
 
@@ -25,7 +24,7 @@ public final class ViewHelper {
     }
 
     public static void concatWithTwoSpaces(TextView textView, String text) {
-        textView.append(StringHelper.TWO_SPACES + text);
+        textView.append(StringUtil.TWO_SPACES + text);
     }
 
     public static void setForegroundColor(TextView textView, @ColorRes int color, int start, int end) {
@@ -60,12 +59,12 @@ public final class ViewHelper {
             editText.setShowSoftInputOnFocus(show);
         } else {
             try {
-                Method method =
-                        EditText.class.getMethod(
-                                "setShowSoftInputOnFocus", new Class[]{boolean.class});
+                Method method = EditText.class.getMethod("setShowSoftInputOnFocus", boolean.class);
                 method.setAccessible(true);
                 method.invoke(editText, show);
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            } catch (Exception e) {
+                // multi-catch with those reflection exceptions requires API level 19
+                // so we use Exception instead of multi-catch
                 throw new RuntimeException("Failed to invoke TextView#setShowSoftInputOnFocus(boolean).", e);
             }
         }

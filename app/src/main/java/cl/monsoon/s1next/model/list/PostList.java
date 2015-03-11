@@ -15,7 +15,7 @@ import java.util.List;
 
 import cl.monsoon.s1next.model.Account;
 import cl.monsoon.s1next.model.Post;
-import cl.monsoon.s1next.util.StringHelper;
+import cl.monsoon.s1next.util.StringUtil;
 
 /**
  * {@link #data}:
@@ -103,7 +103,7 @@ public final class PostList extends Account {
                     @JsonProperty("unit") String unit) {
                 this.label = label;
                 this.value =
-                        StringHelper.unescapeNonBreakingSpace(value)
+                        StringUtil.unescapeNonBreakingSpace(value)
                                 + StringUtils.defaultString(unit);
             }
 

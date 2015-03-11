@@ -35,10 +35,11 @@ import cl.monsoon.s1next.widget.MyRecyclerView;
  */
 public abstract class BaseFragment<D extends Extractable>
         extends Fragment
-        implements HttpGetRetainedFragment.Callback<D>,
-        SwipeRefreshLayout.OnRefreshListener,
-        InsetsFrameLayout.OnInsetsCallback {
+        implements InsetsFrameLayout.OnInsetsCallback,
+        HttpGetRetainedFragment.AsyncTaskCallback<D>,
+        SwipeRefreshLayout.OnRefreshListener {
 
+    private InsetsCallback mInsetsCallback;
     /**
      * Uses {@link cl.monsoon.s1next.fragment.headless.HttpGetRetainedFragment}
      * to retain AsyncTask and data.
@@ -76,9 +77,7 @@ public abstract class BaseFragment<D extends Extractable>
         Fragment fragment = fragmentManager.findFragmentByTag(retainedHttpGetFragmentTag);
 
         if (fragment != null) {
-            mHttpGetRetainedFragment =
-                    ObjectUtil.uncheckedCast(
-                            ObjectUtil.cast(fragment, HttpGetRetainedFragment.class));
+            mHttpGetRetainedFragment = ObjectUtil.uncheckedCast(fragment);
         }
 
         if (mHttpGetRetainedFragment == null) {
@@ -124,14 +123,16 @@ public abstract class BaseFragment<D extends Extractable>
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        ObjectUtil.cast(activity, BaseActivity.class).registerInsetsCallback(this);
+        mInsetsCallback = (InsetsCallback) activity;
+        mInsetsCallback.register(this);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
 
-        ObjectUtil.cast(getActivity(), BaseActivity.class).unregisterInsetsCallback(this);
+        mInsetsCallback.unregister(this);
+        mInsetsCallback = null;
     }
 
     @Override
@@ -207,13 +208,11 @@ public abstract class BaseFragment<D extends Extractable>
     }
 
     void onInsetsChanged() {
-        onInsetsChanged(ObjectUtil.cast(getActivity(), BaseActivity.class).getSystemWindowInsets());
+        onInsetsChanged(mInsetsCallback.getSystemWindowInsets());
     }
 
     void enableToolbarAndFabAutoHideEffect(MyRecyclerView recyclerView, @Nullable RecyclerView.OnScrollListener onScrollListener) {
-        ObjectUtil.cast(
-                getActivity(),
-                BaseActivity.class).enableToolbarAndFabAutoHideEffect(recyclerView, onScrollListener);
+        ((BaseActivity) getActivity()).enableToolbarAndFabAutoHideEffect(recyclerView, onScrollListener);
     }
 
     boolean isRefreshing() {
@@ -243,5 +242,14 @@ public abstract class BaseFragment<D extends Extractable>
         if (mHttpGetRetainedFragment != null) {
             getFragmentManager().beginTransaction().remove(mHttpGetRetainedFragment).commit();
         }
+    }
+
+    public interface InsetsCallback {
+
+        void register(InsetsFrameLayout.OnInsetsCallback onInsetsCallback);
+
+        void unregister(InsetsFrameLayout.OnInsetsCallback onInsetsCallback);
+
+        Rect getSystemWindowInsets();
     }
 }

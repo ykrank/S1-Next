@@ -41,10 +41,9 @@ import cl.monsoon.s1next.model.Quote;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.singleton.MyAccount;
-import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.util.ToastUtil;
-import cl.monsoon.s1next.util.ViewHelper;
+import cl.monsoon.s1next.util.ViewUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.EmoticonFactory;
 import cl.monsoon.s1next.widget.HttpGetLoader;
@@ -56,7 +55,7 @@ import cl.monsoon.s1next.widget.ViewPagerTabs;
  */
 public final class ReplyFragment extends Fragment {
 
-    public static final String TAG = "reply_fragment";
+    public static final String TAG = ReplyFragment.class.getSimpleName();
 
     /**
      * The serialization (saved instance state) Bundle key representing the quote POJO.
@@ -120,7 +119,7 @@ public final class ReplyFragment extends Fragment {
         mQuotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
 
         mReplyView = (EditText) view.findViewById(R.id.reply);
-        ViewHelper.updateTextSize(mReplyView);
+        ViewUtil.updateTextSize(mReplyView);
         mReplyView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -243,7 +242,7 @@ public final class ReplyFragment extends Fragment {
     private void showEmoticonKeyboard() {
         mIsEmoticonKeyboardShowing = true;
 
-        ViewHelper.setShowSoftInputOnFocus(mReplyView, false);
+        ViewUtil.setShowSoftInputOnFocus(mReplyView, false);
         InputMethodManager inputMethodManager =
                 (InputMethodManager)
                         getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -280,7 +279,7 @@ public final class ReplyFragment extends Fragment {
                     public void onAnimationEnd(Animator animation) {
                         mEmoticonKeyboard.setVisibility(View.GONE);
 
-                        ViewHelper.setShowSoftInputOnFocus(mReplyView, true);
+                        ViewUtil.setShowSoftInputOnFocus(mReplyView, true);
                         getActivity().getWindow().setSoftInputMode(
                                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
@@ -449,7 +448,7 @@ public final class ReplyFragment extends Fragment {
 
     public static class ReplyLoaderDialogFragment extends LoaderDialogFragment {
 
-        private static final String TAG = "reply_loader_dialog";
+        private static final String TAG = ReplyLoaderDialogFragment.class.getSimpleName();
 
         private static final String ARG_QUOTE = "quote";
         private static final String ARG_REPLY = "reply";
@@ -563,7 +562,7 @@ public final class ReplyFragment extends Fragment {
         @Override
         @SuppressWarnings("unchecked")
         public void onLoadFinished(Loader loader, Object data) {
-            AsyncResult asyncResult = ObjectUtil.cast(data, AsyncResult.class);
+            AsyncResult asyncResult = (AsyncResult) data;
             if (asyncResult.exception != null) {
                 asyncResult.handleException();
             } else {
@@ -577,14 +576,14 @@ public final class ReplyFragment extends Fragment {
 
                     return;
                 } else if (id == ID_LOADER_GET_QUOTE_EXTRA_INFO) {
-                    mQuote = ObjectUtil.cast(asyncResult.data, Quote.class);
-                    ObjectUtil.cast(getParentFragment(), ReplyFragment.class).mQuote = mQuote;
+                    mQuote = (Quote) asyncResult.data;
+                    ((ReplyFragment) getParentFragment()).mQuote = this.mQuote;
 
                     getLoaderManager().initLoader(ID_LOADER_POST_QUOTE, null, this);
 
                     return;
                 } else if (id == ID_LOADER_POST_REPLY || id == ID_LOADER_POST_QUOTE) {
-                    ResultWrapper wrapper = ObjectUtil.cast(asyncResult.data, ResultWrapper.class);
+                    ResultWrapper wrapper = (ResultWrapper) asyncResult.data;
                     Result result = wrapper.getResult();
 
                     ToastUtil.showByText(result.getMessage(), Toast.LENGTH_LONG);
