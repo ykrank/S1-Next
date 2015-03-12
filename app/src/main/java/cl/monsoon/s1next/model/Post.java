@@ -123,8 +123,7 @@ public final class Post {
         // example: color="sienna"
         // matcher.group(0): color="sienna"
         // matcher.group(1): sienna
-        Pattern pattern = Pattern.compile("color=\"([a-zA-Z]+)\"");
-        Matcher matcher = pattern.matcher(reply);
+        Matcher matcher = Pattern.compile("color=\"([a-zA-Z]+)\"").matcher(reply);
 
         StringBuffer stringBuffer = new StringBuffer();
         String color;

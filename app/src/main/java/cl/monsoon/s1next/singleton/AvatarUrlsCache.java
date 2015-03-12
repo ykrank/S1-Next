@@ -117,7 +117,7 @@ public enum AvatarUrlsCache {
     /**
      * Forked from {@link com.bumptech.glide.load.engine.cache.SafeKeyGenerator}.
      */
-    public static class KeyGenerator {
+    private static class KeyGenerator {
 
         private final String TAG = "KeyGenerator";
 

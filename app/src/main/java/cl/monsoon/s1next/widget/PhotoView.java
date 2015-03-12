@@ -141,11 +141,11 @@ public final class PhotoView extends View
     /**
      * A matrix to apply the scaling of the photo
      */
-    private Matrix mMatrix = new Matrix();
+    private final Matrix mMatrix = new Matrix();
     /**
      * The original matrix for this image; used to reset any transformations applied by the user
      */
-    private Matrix mOriginalMatrix = new Matrix();
+    private final Matrix mOriginalMatrix = new Matrix();
 
     /**
      * The fixed height of this view. If {@code -1}, calculate the height
@@ -175,7 +175,7 @@ public final class PhotoView extends View
     /**
      * The crop region
      */
-    private Rect mCropRect = new Rect();
+    private final Rect mCropRect = new Rect();
     /**
      * Actual crop size; may differ from {@link #sCropSize} if the screen is smaller
      */
@@ -248,19 +248,19 @@ public final class PhotoView extends View
     /**
      * Source (i.e. the photo size) bounds
      */
-    private RectF mTempSrc = new RectF();
+    private final RectF mTempSrc = new RectF();
     /**
      * Destination (i.e. the display) bounds. The image is scaled to this size.
      */
-    private RectF mTempDst = new RectF();
+    private final RectF mTempDst = new RectF();
     /**
      * Rectangle to handle translations
      */
-    private RectF mTranslateRect = new RectF();
+    private final RectF mTranslateRect = new RectF();
     /**
      * Array to store a copy of the matrix values
      */
-    private float[] mValues = new float[9];
+    private final float[] mValues = new float[9];
 
     /**
      * Track whether a double tap event occurred.

@@ -3,8 +3,6 @@ package cl.monsoon.s1next.widget;
 import android.os.RemoteException;
 import android.widget.Toast;
 
-import org.apache.http.client.HttpResponseException;
-
 import java.io.IOException;
 
 import cl.monsoon.s1next.R;
@@ -29,7 +27,7 @@ public final class AsyncResult<D extends Extractable> {
     }
 
     public void handleException() {
-        if (exception instanceof HttpResponseException || exception instanceof RemoteException) {
+        if (exception instanceof RemoteException) {
             ToastUtil.showByResId(R.string.message_server_error, Toast.LENGTH_SHORT);
         } else if (exception instanceof IOException) {
             ToastUtil.showByResId(R.string.message_network_error, Toast.LENGTH_SHORT);

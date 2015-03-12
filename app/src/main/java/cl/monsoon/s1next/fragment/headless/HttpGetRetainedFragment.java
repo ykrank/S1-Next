@@ -10,7 +10,6 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.client.HttpResponseException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -144,7 +143,7 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
          * {@link HttpGetRetainedFragment.AsyncHttpGetTask}
          * is asynchronism.
          */
-        private InputStream request() throws IOException {
+        private InputStream request() throws IOException, RemoteException {
             Request request = new Request.Builder()
                     .url(mUrl)
                     .build();
@@ -154,7 +153,9 @@ public class HttpGetRetainedFragment<D extends Extractable> extends DataRetained
 
             if (!response.isSuccessful()) {
                 response.body().close();
-                throw new HttpResponseException(response.code(), response.toString());
+                throw
+                        new RemoteException(
+                                "Response (status code " + response.code() + ") is unsuccessful.");
             }
 
             return response.body().byteStream();

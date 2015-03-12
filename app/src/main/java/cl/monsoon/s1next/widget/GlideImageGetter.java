@@ -119,7 +119,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
 
     }
 
-    static class ImageGetterViewTarget extends ViewTarget<TextView, GlideDrawable> {
+    private static class ImageGetterViewTarget extends ViewTarget<TextView, GlideDrawable> {
 
         private final UrlDrawable mDrawable;
 

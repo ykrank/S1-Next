@@ -1,5 +1,7 @@
 package cl.monsoon.s1next.widget;
 
+import android.os.RemoteException;
+
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.data.DataFetcher;
@@ -10,7 +12,6 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.http.client.HttpResponseException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -74,7 +75,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
      * @see cl.monsoon.s1next.singleton.AvatarUrlsCache
      */
     @Override
-    public InputStream loadData(Priority priority) throws IOException {
+    public InputStream loadData(Priority priority) throws IOException, RemoteException {
         Key key = null;
         if (Api.isAvatarUrl(mUrl)) {
             key =
@@ -104,7 +105,9 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
                     && ArrayUtils.contains(CACHEABLE_RESPONSE_STATUS_CODES, response.code())) {
                 AvatarUrlsCache.put(key);
 
-                throw new HttpResponseException(response.code(), response.toString());
+                throw
+                        new RemoteException(
+                                "Response (status code " + response.code() + ") is unsuccessful.");
             }
         }
 

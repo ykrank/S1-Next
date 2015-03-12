@@ -115,7 +115,7 @@ public class PostListActivity extends BaseActivity
             setTitle(null);
             setupNavCrossIcon();
             setNavDrawerEnabled(false);
-            ((DrawerLayout)findViewById(R.id.drawer_layout))
+            ((DrawerLayout) findViewById(R.id.drawer_layout))
                     .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             findViewById(R.id.drawer).setVisibility(View.GONE);
         } else {

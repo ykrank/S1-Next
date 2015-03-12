@@ -372,7 +372,7 @@ public final class ReplyFragment extends Fragment {
         }
     }
 
-    public static class EmoticonPagerAdapter extends PagerAdapter {
+    private static class EmoticonPagerAdapter extends PagerAdapter {
 
         private final Context mContext;
 

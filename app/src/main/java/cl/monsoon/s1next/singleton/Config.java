@@ -214,7 +214,7 @@ public enum Config {
                         key, MyApplication.getContext().getString(defValueResId));
     }
 
-    enum TextScale {
+    private enum TextScale {
         VERY_SMALL(0.8f), SMALL(0.9f), MEDIUM(1f), LARGE(1.1f), VERY_LARGE(1.2f);
 
         private static final TextScale[] VALUES = TextScale.values();
@@ -234,7 +234,7 @@ public enum Config {
         }
     }
 
-    enum CacheSize {
+    private enum CacheSize {
         // 32MB, 64MB, 128MB
         LOW(32), NORMAL(64), HIGH(128);
 
@@ -251,7 +251,7 @@ public enum Config {
         }
     }
 
-    enum DownloadStrategy {
+    private enum DownloadStrategy {
         NOT, WIFI, ALWAYS;
 
         private static final DownloadStrategy[] VALUES = DownloadStrategy.values();
@@ -267,7 +267,7 @@ public enum Config {
         }
     }
 
-    enum AvatarResolutionStrategy {
+    private enum AvatarResolutionStrategy {
         LOW, HIGH_WIFI, HIGH;
 
         private static final AvatarResolutionStrategy[] VALUES = AvatarResolutionStrategy.values();
@@ -283,7 +283,7 @@ public enum Config {
         }
     }
 
-    enum AvatarCacheInvalidationInterval {
+    private enum AvatarCacheInvalidationInterval {
         EVERY_DAY(DateUtil::today),
         EVERY_WEEK(DateUtil::dayOfWeek),
         EVERY_MONTH(DateUtil::dayOfMonth);

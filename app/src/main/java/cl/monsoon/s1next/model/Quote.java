@@ -68,7 +68,6 @@ public final class Quote implements Extractable, Parcelable {
         // example: <input type="hidden" name="noticeauthor" value="d755gUR1jP9eeoTPkiOyz3FxvLzpFLJsSFvJA8uAfBg" />
         Pattern pattern =
                 Pattern.compile("name=\"noticeauthor\"\\svalue=\"(\\p{ASCII}+)\"\\s/>");
-
         Matcher matcher = pattern.matcher(xmlString);
 
         Quote quote = new Quote();

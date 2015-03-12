@@ -9,7 +9,6 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.client.HttpResponseException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -118,7 +117,7 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
     /**
      * Synchronous HTTP GET but the {@link HttpGetLoader} is asynchronism.
      */
-    InputStream request() throws IOException {
+    InputStream request() throws IOException, RemoteException {
         Request request = new Request.Builder()
                 .url(mUrl)
                 .build();
@@ -128,7 +127,9 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
 
         if (!response.isSuccessful()) {
             response.body().close();
-            throw new HttpResponseException(response.code(), response.toString());
+            throw
+                    new RemoteException(
+                            "Response (status code " + response.code() + ") is unsuccessful.");
         }
 
         return response.body().byteStream();

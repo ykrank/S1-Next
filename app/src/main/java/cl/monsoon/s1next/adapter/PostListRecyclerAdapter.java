@@ -203,7 +203,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         notifyItemRemoved(position);
     }
 
-    public static class ItemViewHolder extends RecyclerView.ViewHolder {
+    private static class ItemViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView mAvatar;
         private final TextView mUsername;
@@ -258,7 +258,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         }
     };
 
-    public static class FooterProgressViewHolder extends RecyclerView.ViewHolder {
+    private static class FooterProgressViewHolder extends RecyclerView.ViewHolder {
 
         public FooterProgressViewHolder(View itemView) {
             super(itemView);
