@@ -17,6 +17,7 @@
     <string name="action_jump">跳转</string>
     <string name="menu_refresh">刷新</string>
     <string name="menu_share">分享</string>
+    <string name="menu_title_share">分享到…</string>
     <string name="menu_browser">从浏览器中打开</string>
     <string name="menu_account_new">创建帐户</string>
     <string name="menu_thread_attachment">附件</string>

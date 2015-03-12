@@ -25,9 +25,10 @@
     <string name="prompt_thread_id">Thread ID</string>
     <string name="action_jump">Jump</string>
 
-    <!-- menu button -->
+    <!-- menu -->
     <string name="menu_refresh">Refresh</string>
     <string name="menu_share">Share</string>
+    <string name="menu_title_share">Share with…</string>
     <string name="menu_browser">Open in browser</string>
     <string name="menu_account_new">Create an account</string>
     <string name="menu_thread_attachment">Attachment</string>

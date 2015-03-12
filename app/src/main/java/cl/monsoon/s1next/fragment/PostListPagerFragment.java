@@ -175,7 +175,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                 intent.putExtra(Intent.EXTRA_TEXT, value);
                 intent.setType("text/plain");
 
-                startActivity(intent);
+                startActivity(Intent.createChooser(intent, getString(R.string.menu_title_share)));
 
                 return true;
         }
