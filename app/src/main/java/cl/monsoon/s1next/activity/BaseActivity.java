@@ -222,6 +222,7 @@ public abstract class BaseActivity extends ActionBarActivity
             if (mToolbar != null) {
                 // designate a Toolbar as the ActionBar
                 setSupportActionBar(mToolbar);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
         }
     }
@@ -389,7 +390,6 @@ public abstract class BaseActivity extends ActionBarActivity
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
                 mDrawerLayout,
-                mToolbar,
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close) {
             /**
