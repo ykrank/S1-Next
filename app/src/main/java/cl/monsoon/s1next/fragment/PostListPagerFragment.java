@@ -168,9 +168,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                 if (TextUtils.isEmpty(mThreadTitle)) {
                     value = url;
                 } else {
-                    value =
-                            StringUtil.concatWithTwoSpaces(
-                                    mThreadTitle, getArguments().getString(ARG_THREAD_TITLE));
+                    value = StringUtil.concatWithTwoSpaces(mThreadTitle, url);
                 }
 
                 intent = new Intent(Intent.ACTION_SEND);
