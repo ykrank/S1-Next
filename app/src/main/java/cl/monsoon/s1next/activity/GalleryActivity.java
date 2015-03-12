@@ -30,13 +30,12 @@ public final class GalleryActivity extends ActionBarActivity implements InsetsFr
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         setTitle(null);
+        // set Toolbar's icon to cross
+        mToolbar.setNavigationIcon(ResourceUtil.getResourceId(getTheme(), R.attr.menuCross));
 
         InsetsFrameLayout insetsFrameLayout =
                 (InsetsFrameLayout) findViewById(R.id.insets_frame_layout);
         insetsFrameLayout.setOnInsetsCallback(this);
-
-        // set Toolbar's up icon to cross
-        mToolbar.setNavigationIcon(ResourceUtil.getResourceId(getTheme(), R.attr.menuCross));
 
         String url = getIntent().getStringExtra(ARG_IMAGE_URL);
         if (savedInstanceState == null) {
