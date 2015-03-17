@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -27,6 +28,7 @@ import cl.monsoon.s1next.model.mapper.PostListWrapper;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
+import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.MyRecyclerView;
 
 /**
@@ -104,7 +106,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                         && mPageNum == mPagerCallback.getTotalPages()
                         && mRecyclerAdapter.getItemCount() != 0
                         && !mRecyclerView.canScrollVertically(1)
-                        && !isRefreshing()) {
+                        && !isLoading()) {
 
                     mIsLoadingMore = true;
                     setSwipeRefreshLayoutEnabled(false);
@@ -191,13 +193,19 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     }
 
     @Override
-    public void onRefresh() {
-        execute(Api.getPostListUrl(mThreadId, mPageNum), PostListWrapper.class);
+    public Loader<AsyncResult<PostListWrapper>> onCreateLoader(int id, Bundle args) {
+        super.onCreateLoader(id, args);
+
+        return
+                new HttpGetLoader<>(
+                        getActivity(),
+                        Api.getPostListUrl(mThreadId, mPageNum),
+                        PostListWrapper.class);
     }
 
     @Override
-    public void onPostExecute(AsyncResult<PostListWrapper> asyncResult) {
-        super.onPostExecute(asyncResult);
+    public void onLoadFinished(Loader<AsyncResult<PostListWrapper>> loader, AsyncResult<PostListWrapper> asyncResult) {
+        super.onLoadFinished(loader, asyncResult);
 
         boolean isFinishedLoadingMore = false;
         if (mIsLoadingMore) {

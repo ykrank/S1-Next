@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,6 +24,7 @@ import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.model.list.ForumGroupList;
 import cl.monsoon.s1next.model.mapper.ForumGroupListWrapper;
 import cl.monsoon.s1next.widget.AsyncResult;
+import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.MyRecyclerView;
 import cl.monsoon.s1next.widget.RecyclerViewHelper;
 
@@ -127,13 +129,19 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
     }
 
     @Override
-    public void onRefresh() {
-        execute(Api.URL_FORUM, ForumGroupListWrapper.class);
+    public Loader<AsyncResult<ForumGroupListWrapper>> onCreateLoader(int id, Bundle args) {
+        super.onCreateLoader(id, args);
+
+        return
+                new HttpGetLoader<>(
+                        getActivity(),
+                        Api.URL_FORUM,
+                        ForumGroupListWrapper.class);
     }
 
     @Override
-    public void onPostExecute(AsyncResult<ForumGroupListWrapper> asyncResult) {
-        super.onPostExecute(asyncResult);
+    public void onLoadFinished(Loader<AsyncResult<ForumGroupListWrapper>> loader, AsyncResult<ForumGroupListWrapper> asyncResult) {
+        super.onLoadFinished(loader, asyncResult);
 
         if (asyncResult.exception != null) {
             asyncResult.handleException();

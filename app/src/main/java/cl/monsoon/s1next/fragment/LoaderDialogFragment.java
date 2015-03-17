@@ -63,8 +63,8 @@ public abstract class LoaderDialogFragment<D extends Extractable>
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         int loaderId =
                 mLoaderId != -1
@@ -95,7 +95,7 @@ public abstract class LoaderDialogFragment<D extends Extractable>
     }
 
     @Override
-    public void onLoadFinished(Loader<AsyncResult<D>> loader, AsyncResult<D> data) {
+    public void onLoadFinished(Loader<AsyncResult<D>> loader, AsyncResult<D> asyncResult) {
         throw new IllegalStateException("Loader ID can't be " + loader.getId() + ".");
     }
 }

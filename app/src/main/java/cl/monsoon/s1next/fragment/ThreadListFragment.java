@@ -61,7 +61,7 @@ public final class ThreadListFragment extends Fragment
 
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
         // don't use getChildFragmentManager()
-        // because we can't retain Fragments (HttpGetRetainedFragment)
+        // because we can't retain Fragments (DataRetainedFragment)
         // that are nested in other fragments
         mAdapter = new ThreadListPagerAdapter(getFragmentManager());
         viewPager.setAdapter(mAdapter);
@@ -105,22 +105,22 @@ public final class ThreadListFragment extends Fragment
         }
 
         @Override
+        public int getCount() {
+            return mTotalPages;
+        }
+
+        @Override
         public Fragment getItem(int i) {
             return ThreadListPagerFragment.newInstance(mForumId, i + 1);
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            // We don't reuse Fragment in ViewPager and its retained fragment
+            // We don't reuse Fragment in ViewPager and its retained Fragment
             // because it is not cost-effective nowadays.
             ((BaseFragment) object).destroyRetainedFragment();
 
             super.destroyItem(container, position, object);
-        }
-
-        @Override
-        public int getCount() {
-            return mTotalPages;
         }
     }
 }

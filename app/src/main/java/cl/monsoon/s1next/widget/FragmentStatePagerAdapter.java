@@ -29,8 +29,9 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 /**
- * Adds tag to fragment in order to let {@link cl.monsoon.s1next.fragment.headless.HttpGetRetainedFragment}
- * to know its parent Fragment in ViewPager.
+ * Because we can't retain Fragments that are nested in other fragments.
+ * So we adds tag to Fragments in order to let host Fragment in ViewPager
+ * know its target {@link cl.monsoon.s1next.fragment.headless.DataRetainedFragment}.
  * <p>
  * Forked from https://github.com/android/platform_frameworks_support/blob/62cf5e32ad0d24fffde4c0d0425aa12cd2b054a6/v4/java/android/support/v4/app/FragmentStatePagerAdapter.java
  * Change-Id: I9197cb319a2b1bf070ab1fd8a7abbf9ee01de543

@@ -617,9 +617,9 @@ public class PostListActivity extends BaseActivity
             }
 
             @Override
-            public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> data) {
-                if (data.exception != null) {
-                    data.handleException();
+            public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> asyncResult) {
+                if (asyncResult.exception != null) {
+                    asyncResult.handleException();
                 } else {
                     int id = loader.getId();
                     if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
@@ -627,7 +627,7 @@ public class PostListActivity extends BaseActivity
 
                         return;
                     } else if (id == ID_LOADER_ADD_THREAD_TO_FAVOURITES) {
-                        ResultWrapper wrapper = data.data;
+                        ResultWrapper wrapper = asyncResult.data;
                         Result result = wrapper.getResult();
 
                         ToastUtil.showByText(result.getMessage(), Toast.LENGTH_SHORT);
@@ -637,7 +637,7 @@ public class PostListActivity extends BaseActivity
                             new Handler().post(((ThreadFavouritesAddDialogFragment) getParentFragment())::dismiss);
                         }
                     } else {
-                        super.onLoadFinished(loader, data);
+                        super.onLoadFinished(loader, asyncResult);
                     }
                 }
 
