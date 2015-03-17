@@ -89,7 +89,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
         mRecyclerView = (MyRecyclerView) view.findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         // linearLayoutManager.setSmoothScrollbarEnabled(false);
-        // if https://code.google.com/p/android/issues/detail?id=78375&q=setSmoothScrollbarEnabled&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars has fixed
+        // if https://code.google.com/p/android/issues/detail?id=78375 has fixed
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerAdapter = new PostListRecyclerAdapter(getActivity());
         mRecyclerView.setAdapter(mRecyclerAdapter);
