@@ -225,8 +225,7 @@ public abstract class BaseFragment<D extends Extractable>
      * @see cl.monsoon.s1next.activity.BaseActivity#onInsetsChanged(android.graphics.Rect)
      */
     void setRecyclerViewPadding(RecyclerView recyclerView, @NonNull Rect insets, int padding) {
-        int toolbarHeight =
-                ResourceUtil.getToolbarHeight();
+        int toolbarHeight = ResourceUtil.getToolbarHeight();
         recyclerView.setPadding(0, padding + insets.top + toolbarHeight, 0, padding);
 
         updateSwipeRefreshProgressViewPosition(insets);
