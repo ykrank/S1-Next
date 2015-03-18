@@ -55,7 +55,7 @@ public abstract class BaseFragment<D extends Extractable>
      */
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private boolean mLoading = true;
+    private boolean mLoading;
 
     /**
      * We use retained Fragment to retain data when configuration changes
@@ -95,6 +95,8 @@ public abstract class BaseFragment<D extends Extractable>
             mDataRetainedFragment = new DataRetainedFragment<>();
             fragmentManager.beginTransaction()
                     .add(mDataRetainedFragment, dataRetainedFragmentTag).commit();
+
+            getLoaderManager().initLoader(ID_LOADER, null, this);
         } else {
             mDataRetainedFragment = ObjectUtil.uncheckedCast(fragment);
 
@@ -104,10 +106,12 @@ public abstract class BaseFragment<D extends Extractable>
                 onLoadFinished(null, new AsyncResult<>(mDataRetainedFragment.getData()));
             }
             mLoading = loading;
-        }
 
-        if (mLoading) {
-            getLoaderManager().initLoader(ID_LOADER, null, this);
+            // mDataRetainedFragment.getData() = null and mLoading = false
+            // if this app was killed by system before
+            if (mDataRetainedFragment.getData() == null || mLoading) {
+                getLoaderManager().initLoader(ID_LOADER, null, this);
+            }
         }
     }
 
@@ -243,7 +247,12 @@ public abstract class BaseFragment<D extends Extractable>
 
     @Override
     public void onRefresh() {
-        getLoaderManager().restartLoader(ID_LOADER, null, this);
+        Loader loader = getLoaderManager().getLoader(ID_LOADER);
+        if (loader == null) {
+            getLoaderManager().initLoader(ID_LOADER, null, this);
+        } else {
+            loader.onContentChanged();
+        }
     }
 
     @Override
