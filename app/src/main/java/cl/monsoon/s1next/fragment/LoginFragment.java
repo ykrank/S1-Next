@@ -18,8 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.squareup.okhttp.RequestBody;
-
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Result;
@@ -161,29 +159,15 @@ public final class LoginFragment extends Fragment {
         }
 
         @Override
-        protected int getStartLoaderId() {
-            return ID_LOADER_LOGIN;
-        }
-
-        @Override
-        protected RequestBody getRequestBody(int loaderId) {
-            if (loaderId == ID_LOADER_LOGIN) {
-                return Api.getLoginPostBuilder(
-                        getArguments().getString(ARG_USERNAME),
-                        getArguments().getString(ARG_PASSWORD));
-            }
-
-            return super.getRequestBody(loaderId);
-        }
-
-        @Override
         public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
             return
                     new HttpPostLoader<>(
                             getActivity(),
                             Api.URL_LOGIN,
                             ResultWrapper.class,
-                            getRequestBody(id));
+                            Api.getLoginPostBuilder(
+                                    getArguments().getString(ARG_USERNAME),
+                                    getArguments().getString(ARG_PASSWORD)));
         }
 
         @Override
@@ -207,11 +191,6 @@ public final class LoginFragment extends Fragment {
             }
 
             new Handler().post(this::dismiss);
-        }
-
-        @Override
-        public void onLoaderReset(Loader<AsyncResult<ResultWrapper>> loader) {
-
         }
     }
 }

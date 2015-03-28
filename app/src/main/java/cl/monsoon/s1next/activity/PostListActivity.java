@@ -30,8 +30,6 @@ import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
-import com.squareup.okhttp.RequestBody;
-
 import org.apache.commons.lang3.Range;
 
 import cl.monsoon.s1next.Api;
@@ -586,17 +584,6 @@ public class PostListActivity extends BaseActivity
             }
 
             @Override
-            protected RequestBody getRequestBody(int loaderId) {
-                if (loaderId == ID_LOADER_ADD_THREAD_TO_FAVOURITES) {
-                    return Api.getThreadFavouritesAddBuilder(
-                            getArguments().getString(ARG_THREAD_ID),
-                            getArguments().getString(ARG_REMARK));
-                }
-
-                return super.getRequestBody(loaderId);
-            }
-
-            @Override
             public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
                 if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
                     return
@@ -610,7 +597,9 @@ public class PostListActivity extends BaseActivity
                                     getActivity(),
                                     Api.URL_THREAD_FAVOURITES_ADD,
                                     ResultWrapper.class,
-                                    getRequestBody(id));
+                                    Api.getThreadFavouritesAddBuilder(
+                                            getArguments().getString(ARG_THREAD_ID),
+                                            getArguments().getString(ARG_REMARK)));
                 }
 
                 return super.onCreateLoader(id, args);
@@ -642,11 +631,6 @@ public class PostListActivity extends BaseActivity
                 }
 
                 new Handler().post(this::dismiss);
-            }
-
-            @Override
-            public void onLoaderReset(Loader<AsyncResult<ResultWrapper>> loader) {
-
             }
         }
     }

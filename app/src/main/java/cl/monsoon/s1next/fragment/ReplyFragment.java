@@ -30,8 +30,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.squareup.okhttp.RequestBody;
-
 import java.util.List;
 
 import cl.monsoon.s1next.Api;
@@ -519,19 +517,6 @@ public final class ReplyFragment extends Fragment {
         }
 
         @Override
-        protected RequestBody getRequestBody(int loaderId) {
-            if (loaderId == ID_LOADER_POST_REPLY) {
-                return
-                        Api.getReplyPostBuilder(getArguments().getString(ARG_REPLY));
-            } else if (loaderId == ID_LOADER_POST_QUOTE) {
-                return
-                        Api.getQuotePostBuilder(mQuote, getArguments().getString(ARG_REPLY));
-            }
-
-            return super.getRequestBody(loaderId);
-        }
-
-        @Override
         public Loader onCreateLoader(int id, Bundle args) {
             if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
                 return
@@ -547,13 +532,20 @@ public final class ReplyFragment extends Fragment {
                                         getArguments().getString(ARG_THREAD_ID),
                                         getArguments().getString(ARG_QUOTE_POST_ID)),
                                 Quote.class);
-            } else if (id == ID_LOADER_POST_REPLY || id == ID_LOADER_POST_QUOTE) {
+            } else if (id == ID_LOADER_POST_REPLY) {
                 return
                         new HttpPostLoader<>(
                                 getActivity(),
                                 Api.getPostRelyUrl(getArguments().getString(ARG_THREAD_ID)),
                                 ResultWrapper.class,
-                                getRequestBody(id));
+                                Api.getReplyPostBuilder(getArguments().getString(ARG_REPLY)));
+            } else if (id == ID_LOADER_POST_QUOTE) {
+                return
+                        new HttpPostLoader<>(
+                                getActivity(),
+                                Api.getPostRelyUrl(getArguments().getString(ARG_THREAD_ID)),
+                                ResultWrapper.class,
+                                Api.getQuotePostBuilder(mQuote, getArguments().getString(ARG_REPLY)));
             }
 
             return super.onCreateLoader(id, args);
@@ -597,11 +589,6 @@ public final class ReplyFragment extends Fragment {
             }
 
             new Handler().post(this::dismiss);
-        }
-
-        @Override
-        public void onLoaderReset(Loader loader) {
-
         }
     }
 }

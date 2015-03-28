@@ -9,8 +9,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
-import com.squareup.okhttp.RequestBody;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -24,7 +22,7 @@ public abstract class LoaderDialogFragment<D extends Extractable>
         extends DialogFragment
         implements LoaderManager.LoaderCallbacks<AsyncResult<D>> {
 
-    static final int ID_LOADER_LOGIN = 0;
+    private static final int ID_LOADER_DEFAULT = 0;
     protected static final int ID_LOADER_GET_AUTHENTICITY_TOKEN = 1;
     protected static final int ID_LOADER_ADD_THREAD_TO_FAVOURITES = 2;
     static final int ID_LOADER_POST_REPLY = 3;
@@ -32,7 +30,7 @@ public abstract class LoaderDialogFragment<D extends Extractable>
     static final int ID_LOADER_POST_QUOTE = 5;
 
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({ID_LOADER_LOGIN,
+    @IntDef({ID_LOADER_DEFAULT,
             ID_LOADER_GET_AUTHENTICITY_TOKEN,
             ID_LOADER_ADD_THREAD_TO_FAVOURITES,
             ID_LOADER_POST_REPLY,
@@ -52,10 +50,6 @@ public abstract class LoaderDialogFragment<D extends Extractable>
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            mLoaderId = savedInstanceState.getInt(STATE_ID_LOADER);
-        }
-
         ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage(getProgressMessage());
 
@@ -65,6 +59,10 @@ public abstract class LoaderDialogFragment<D extends Extractable>
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            mLoaderId = savedInstanceState.getInt(STATE_ID_LOADER);
+        }
 
         int loaderId =
                 mLoaderId != -1
@@ -83,10 +81,8 @@ public abstract class LoaderDialogFragment<D extends Extractable>
     protected abstract CharSequence getProgressMessage();
 
     @LoaderId
-    protected abstract int getStartLoaderId();
-
-    protected RequestBody getRequestBody(@LoaderId int loaderId) {
-        throw new IllegalStateException("Loader ID can't be " + loaderId + ".");
+    protected int getStartLoaderId() {
+        return ID_LOADER_DEFAULT;
     }
 
     @Override
@@ -97,5 +93,10 @@ public abstract class LoaderDialogFragment<D extends Extractable>
     @Override
     public void onLoadFinished(Loader<AsyncResult<D>> loader, AsyncResult<D> asyncResult) {
         throw new IllegalStateException("Loader ID can't be " + loader.getId() + ".");
+    }
+
+    @Override
+    public void onLoaderReset(Loader<AsyncResult<D>> loader) {
+
     }
 }
