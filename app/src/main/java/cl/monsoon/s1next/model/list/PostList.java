@@ -29,28 +29,28 @@ import cl.monsoon.s1next.util.StringUtil;
 public final class PostList extends Account {
 
     @JsonProperty("thread")
-    private Post.PostListInfo info;
+    private cl.monsoon.s1next.model.Thread info;
 
     @JsonProperty("threadsortshow")
-    private ThreadAttachment mThreadAttachment;
+    private ThreadAttachment threadAttachment;
 
     @JsonProperty("postlist")
     private List<Post> data;
 
-    public Post.PostListInfo getInfo() {
+    public cl.monsoon.s1next.model.Thread getInfo() {
         return info;
     }
 
-    public void setInfo(Post.PostListInfo info) {
+    public void setInfo(cl.monsoon.s1next.model.Thread info) {
         this.info = info;
     }
 
     public ThreadAttachment getThreadAttachment() {
-        return mThreadAttachment;
+        return threadAttachment;
     }
 
     public void setThreadAttachment(ThreadAttachment threadAttachment) {
-        this.mThreadAttachment = threadAttachment;
+        this.threadAttachment = threadAttachment;
     }
 
     public List<Post> getData() {

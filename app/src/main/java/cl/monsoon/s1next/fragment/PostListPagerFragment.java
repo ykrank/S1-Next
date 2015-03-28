@@ -22,7 +22,6 @@ import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.PostListActivity;
 import cl.monsoon.s1next.adapter.PostListRecyclerAdapter;
-import cl.monsoon.s1next.model.Post;
 import cl.monsoon.s1next.model.list.PostList;
 import cl.monsoon.s1next.model.mapper.PostListWrapper;
 import cl.monsoon.s1next.util.StringUtil;
@@ -246,7 +245,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                     mRecyclerAdapter.notifyDataSetChanged();
                 }
 
-                Post.PostListInfo postListInfo = postList.getInfo();
+                cl.monsoon.s1next.model.Thread postListInfo = postList.getInfo();
                 mPagerCallback.setThreadTitle(postListInfo.getTitle(), mPageNum);
                 mPagerCallback.setTotalPages(postListInfo.getReplies() + 1);
             }

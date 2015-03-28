@@ -203,32 +203,6 @@ public final class Post {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class PostListInfo {
-
-        @JsonProperty("subject")
-        private String title;
-
-        @JsonProperty("replies")
-        private int replies;
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public int getReplies() {
-            return replies;
-        }
-
-        public void setReplies(int replies) {
-            this.replies = replies;
-        }
-    }
-
-    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Attachment {
 
         @JsonIgnore
