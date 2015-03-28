@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="LightTheme" parent="Theme.AppCompat.Light">
-        <!-- Use Toolbar as the ActionBar. -->
-        <item name="windowActionBar">false</item>
+    <style name="LightTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- show contextual action bar -->
         <item name="windowActionModeOverlay">true</item>
 
@@ -73,8 +71,7 @@
         <item name="fabColorPressed">@color/light_blue_600</item>
     </style>
 
-    <style name="DarkTheme" parent="Theme.AppCompat">
-        <item name="windowActionBar">false</item>
+    <style name="DarkTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
         <item name="colorAccent">@color/teal_200_70</item>
         <item name="android:textColorPrimary">@drawable/my_abc_primary_text_material_dark</item>
