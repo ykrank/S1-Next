@@ -28,8 +28,7 @@
             android:label="@string/activity_label_login" />
 
         <activity
-            android:name=".activity.ForumActivity"
-            android:launchMode="singleTop">
+            android:name=".activity.ForumActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -38,20 +37,10 @@
 
         <activity
             android:name=".activity.ThreadListActivity"
-            android:launchMode="singleTop"
             android:parentActivityName=".activity.ForumActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.ForumActivity" />
-        </activity>
-
-        <activity
-            android:name=".activity.SubForumThreadListActivity"
-            android:launchMode="singleTop"
-            android:parentActivityName=".activity.ThreadListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.ThreadListActivity" />
         </activity>
 
         <activity
@@ -60,14 +49,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.ThreadListActivity" />
-        </activity>
-
-        <activity
-            android:name=".activity.SubForumPostListActivity"
-            android:parentActivityName=".activity.SubForumThreadListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.SubForumPostListActivity" />
         </activity>
 
         <activity

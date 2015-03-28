@@ -18,7 +18,6 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -177,11 +176,13 @@ public abstract class BaseActivity extends ActionBarActivity
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (NavUtils.getParentActivityName(this) != null) {
-                    NavUtils.navigateUpFromSameTask(this);
-                } else {
-                    super.onBackPressed();
-                }
+                // according to https://developer.android.com/design/patterns/navigation.html
+                // we should navigate to its hierarchical parent of the current screen
+                // but the hierarchical logical is too complex in our app (sub forum, link redirection)
+                // and sometimes really confuses people
+                // so we use finish() to close the current Activity
+                // looks the newest Google Play does the same way
+                finish();
 
                 return true;
         }

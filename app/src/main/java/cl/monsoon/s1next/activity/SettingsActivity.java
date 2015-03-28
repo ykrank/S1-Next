@@ -6,44 +6,26 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.DownloadSettingsFragment;
 import cl.monsoon.s1next.fragment.SettingsFragment;
 
-public final class SettingsActivity extends BaseActivity
-        implements SettingsFragment.onDownloadPreferenceSelectedListener {
+public final class SettingsActivity extends BaseActivity {
+
+    public static final String ARG_SHOULD_SHOW_DOWNLOAD_SETTINGS = "should_show_download_settings";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity);
 
-        setupNavCrossIcon();
         setNavDrawerEnabled(false);
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.frame_layout, new SettingsFragment()).commit();
+            if (getIntent().getBooleanExtra(ARG_SHOULD_SHOW_DOWNLOAD_SETTINGS, false)) {
+                setTitle(R.string.download_settings);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout, new DownloadSettingsFragment()).commit();
+            } else {
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout, new SettingsFragment()).commit();
+            }
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        int backStackEntryCount = getFragmentManager().getBackStackEntryCount();
-        if (backStackEntryCount == 1) {
-            getFragmentManager().popBackStack();
-            setTitle(R.string.settings);
-
-            return;
-        } else if (backStackEntryCount > 1) {
-            throw
-                    new IllegalStateException(
-                            "backStackEntryCount can't be " + backStackEntryCount + ".");
-        }
-
-        super.onBackPressed();
-    }
-
-    public void onDownloadPreferenceSelected() {
-        getFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout, new DownloadSettingsFragment(), DownloadSettingsFragment.TAG)
-                .addToBackStack(null).commit();
-        setTitle(R.string.download_settings);
     }
 }

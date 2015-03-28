@@ -88,9 +88,9 @@ public class ThreadListActivity extends BaseActivity implements ThreadListPagerF
             mListPopupWindow.setOnItemClickListener((parent, view, position, id) -> {
                 Forum forum = mSubForumArrayAdapter.getItem(position);
 
-                Intent intent =
-                        new Intent(ThreadListActivity.this, SubForumThreadListActivity.class);
-                intent.putExtra(SubForumThreadListActivity.ARG_FORUM, forum);
+                // we use the same activity (ThreadListActivity) for sub forum
+                Intent intent = new Intent(ThreadListActivity.this, ThreadListActivity.class);
+                intent.putExtra(ThreadListActivity.ARG_FORUM, forum);
 
                 startActivity(intent);
 

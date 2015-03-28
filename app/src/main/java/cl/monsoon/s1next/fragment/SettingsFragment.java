@@ -11,6 +11,7 @@ import android.webkit.WebView;
 
 import cl.monsoon.s1next.BuildConfig;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.activity.SettingsActivity;
 import cl.monsoon.s1next.singleton.Config;
 
 public final class SettingsFragment extends BaseSettingsFragment
@@ -31,7 +32,7 @@ public final class SettingsFragment extends BaseSettingsFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addPreferencesFromResource(R.xml.preferences);
+        addPreferencesFromResource(R.xml.main_preferences);
 
         findPreference(PREF_KEY_DOWNLOADS).setOnPreferenceClickListener(this);
         findPreference(PREF_KEY_OPEN_SOURCE_LICENSES).setOnPreferenceClickListener(this);
@@ -62,8 +63,9 @@ public final class SettingsFragment extends BaseSettingsFragment
     public boolean onPreferenceClick(Preference preference) {
         switch (preference.getKey()) {
             case PREF_KEY_DOWNLOADS:
-                ((onDownloadPreferenceSelectedListener) getActivity())
-                        .onDownloadPreferenceSelected();
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                intent.putExtra(SettingsActivity.ARG_SHOULD_SHOW_DOWNLOAD_SETTINGS, true);
+                startActivity(intent);
 
                 break;
             case PREF_KEY_OPEN_SOURCE_LICENSES:
@@ -74,11 +76,6 @@ public final class SettingsFragment extends BaseSettingsFragment
         }
 
         return true;
-    }
-
-    public interface onDownloadPreferenceSelectedListener {
-
-        void onDownloadPreferenceSelected();
     }
 
     public static class OpenSourceLicensesDialog extends DialogFragment {

@@ -22,8 +22,6 @@ import java.util.List;
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.PostListActivity;
-import cl.monsoon.s1next.activity.SubForumPostListActivity;
-import cl.monsoon.s1next.activity.SubForumThreadListActivity;
 import cl.monsoon.s1next.adapter.ThreadListRecyclerAdapter;
 import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.model.list.ThreadList;
@@ -108,23 +106,12 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
                                     return;
                                 }
 
-                                Intent intent;
-                                if (getActivity() instanceof SubForumThreadListActivity) {
-                                    intent =
-                                            new Intent(
-                                                    getActivity(), SubForumPostListActivity.class);
-                                } else {
-                                    intent = new Intent(getActivity(), PostListActivity.class);
-                                }
+                                Intent intent = new Intent(getActivity(), PostListActivity.class);
 
                                 cl.monsoon.s1next.model.Thread thread =
                                         mRecyclerAdapter.getItem(position);
-
-                                // same to SubForumPostListActivity.ARG_THREAD
                                 intent.putExtra(PostListActivity.ARG_THREAD, thread);
-
                                 if (shouldGoToLastPage) {
-                                    // same to SubForumPostListActivity.ARG_SHOULD_GO_TO_LAST_PAGE
                                     intent.putExtra(PostListActivity.ARG_SHOULD_GO_TO_LAST_PAGE, true);
                                 }
 

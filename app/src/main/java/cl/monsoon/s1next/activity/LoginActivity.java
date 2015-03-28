@@ -13,7 +13,6 @@ public final class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity);
 
-        setupNavCrossIcon();
         setNavDrawerEnabled(false);
 
         if (savedInstanceState == null) {

@@ -50,7 +50,7 @@ public final class GalleryActivity extends ActionBarActivity implements InsetsFr
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                super.onBackPressed();
+                finish();
 
                 return true;
         }
