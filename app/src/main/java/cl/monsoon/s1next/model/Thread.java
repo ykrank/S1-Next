@@ -18,8 +18,8 @@ public final class Thread implements Parcelable {
     public static final Parcelable.Creator<Thread> CREATOR =
             new Parcelable.Creator<Thread>() {
                 @Override
-                public Thread createFromParcel(Parcel parcel) {
-                    return new Thread(parcel);
+                public Thread createFromParcel(Parcel source) {
+                    return new Thread(source);
                 }
 
                 @Override
@@ -44,11 +44,11 @@ public final class Thread implements Parcelable {
 
     }
 
-    private Thread(Parcel parcel) {
-        id = parcel.readString();
-        title = parcel.readString();
-        replies = parcel.readInt();
-        permission = parcel.readInt();
+    private Thread(Parcel source) {
+        id = source.readString();
+        title = source.readString();
+        replies = source.readInt();
+        permission = source.readInt();
     }
 
     public String getId() {

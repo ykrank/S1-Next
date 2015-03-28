@@ -10,17 +10,18 @@ import java.util.regex.Pattern;
 
 public final class Quote implements Extractable, Parcelable {
 
-    public static final Parcelable.Creator<Quote> CREATOR = new Parcelable.Creator<Quote>() {
-        @Override
-        public Quote createFromParcel(Parcel source) {
-            return new Quote(source);
-        }
+    public static final Parcelable.Creator<Quote> CREATOR =
+            new Parcelable.Creator<Quote>() {
+                @Override
+                public Quote createFromParcel(Parcel source) {
+                    return new Quote(source);
+                }
 
-        @Override
-        public Quote[] newArray(int size) {
-            return new Quote[size];
-        }
-    };
+                @Override
+                public Quote[] newArray(int size) {
+                    return new Quote[size];
+                }
+            };
 
     /**
      * The quoted user identification which was encoded in server.

@@ -15,8 +15,8 @@ public final class Forum implements Parcelable {
     public static final Parcelable.Creator<Forum> CREATOR =
             new Parcelable.Creator<Forum>() {
                 @Override
-                public Forum createFromParcel(Parcel parcel) {
-                    return new Forum(parcel);
+                public Forum createFromParcel(Parcel source) {
+                    return new Forum(source);
                 }
 
                 @Override
@@ -41,11 +41,11 @@ public final class Forum implements Parcelable {
 
     }
 
-    private Forum(Parcel parcel) {
-        id = parcel.readString();
-        name = parcel.readString();
-        threads = parcel.readInt();
-        todayPosts = parcel.readInt();
+    private Forum(Parcel source) {
+        id = source.readString();
+        name = source.readString();
+        threads = source.readInt();
+        todayPosts = source.readInt();
     }
 
     public String getId() {

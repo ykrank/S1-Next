@@ -112,17 +112,18 @@ public final class PostList extends Account {
                 value = source.readString();
             }
 
-            public static final Parcelable.Creator<Info> CREATOR = new Parcelable.Creator<Info>() {
-                @Override
-                public Info createFromParcel(Parcel source) {
-                    return new Info(source);
-                }
+            public static final Parcelable.Creator<Info> CREATOR =
+                    new Parcelable.Creator<Info>() {
+                        @Override
+                        public Info createFromParcel(Parcel source) {
+                            return new Info(source);
+                        }
 
-                @Override
-                public Info[] newArray(int size) {
-                    return new Info[size];
-                }
-            };
+                        @Override
+                        public Info[] newArray(int size) {
+                            return new Info[size];
+                        }
+                    };
 
             public String getLabel() {
                 return label;

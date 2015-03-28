@@ -11,8 +11,8 @@ public final class HttpCookieParcelable implements Parcelable {
             new Creator<HttpCookieParcelable>() {
 
                 @Override
-                public HttpCookieParcelable createFromParcel(Parcel parcel) {
-                    return new HttpCookieParcelable(parcel);
+                public HttpCookieParcelable createFromParcel(Parcel source) {
+                    return new HttpCookieParcelable(source);
                 }
 
                 @Override
@@ -27,19 +27,19 @@ public final class HttpCookieParcelable implements Parcelable {
         this.mHttpCookie = httpCookie;
     }
 
-    private HttpCookieParcelable(Parcel parcel) {
-        String name = parcel.readString();
-        String value = parcel.readString();
+    private HttpCookieParcelable(Parcel source) {
+        String name = source.readString();
+        String value = source.readString();
         mHttpCookie = new HttpCookie(name, value);
-        mHttpCookie.setComment(parcel.readString());
-        mHttpCookie.setCommentURL(parcel.readString());
-        mHttpCookie.setDiscard(parcel.readByte() != 0);
-        mHttpCookie.setDomain(parcel.readString());
-        mHttpCookie.setMaxAge(parcel.readLong());
-        mHttpCookie.setPath(parcel.readString());
-        mHttpCookie.setPortlist(parcel.readString());
-        mHttpCookie.setSecure(parcel.readByte() != 0);
-        mHttpCookie.setVersion(parcel.readInt());
+        mHttpCookie.setComment(source.readString());
+        mHttpCookie.setCommentURL(source.readString());
+        mHttpCookie.setDiscard(source.readByte() != 0);
+        mHttpCookie.setDomain(source.readString());
+        mHttpCookie.setMaxAge(source.readLong());
+        mHttpCookie.setPath(source.readString());
+        mHttpCookie.setPortlist(source.readString());
+        mHttpCookie.setSecure(source.readByte() != 0);
+        mHttpCookie.setVersion(source.readInt());
     }
 
     public HttpCookie getHttpCookie() {
