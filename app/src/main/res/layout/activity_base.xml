@@ -100,18 +100,11 @@
             android:layout_marginTop="@dimen/list_view_padding" />
 
         <include
-            android:id="@+id/thread_jump"
-            layout="@layout/single_line_list_item"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/drawer_item_height"
-            android:layout_below="@id/divider" />
-
-        <include
             android:id="@+id/settings"
             layout="@layout/single_line_list_item"
             android:layout_width="match_parent"
             android:layout_height="@dimen/drawer_item_height"
-            android:layout_below="@id/thread_jump" />
+            android:layout_below="@id/divider" />
 
     </RelativeLayout>
 

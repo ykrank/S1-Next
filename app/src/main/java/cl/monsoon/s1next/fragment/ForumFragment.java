@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
@@ -23,6 +24,8 @@ import cl.monsoon.s1next.adapter.ForumListRecyclerAdapter;
 import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.model.list.ForumGroupList;
 import cl.monsoon.s1next.model.mapper.ForumGroupListWrapper;
+import cl.monsoon.s1next.util.IntentUtil;
+import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.MyRecyclerView;
@@ -117,10 +120,9 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_browser:
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(Api.URL_S1));
-
-                startActivity(intent);
+                IntentUtil.startViewIntentExcludeOurApp(
+                        getActivity(),
+                        Uri.parse(Api.URL_S1));
 
                 return true;
         }
@@ -144,7 +146,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
         super.onLoadFinished(loader, asyncResult);
 
         if (asyncResult.exception != null) {
-            asyncResult.handleException();
+            ToastUtil.showByResId(asyncResult.getExceptionString(), Toast.LENGTH_SHORT);
         } else {
             ForumGroupListWrapper wrapper = asyncResult.data;
             mForumGroupList = wrapper.unwrap();

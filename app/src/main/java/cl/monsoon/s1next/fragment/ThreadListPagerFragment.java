@@ -26,6 +26,7 @@ import cl.monsoon.s1next.adapter.ThreadListRecyclerAdapter;
 import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.model.list.ThreadList;
 import cl.monsoon.s1next.model.mapper.ThreadListWrapper;
+import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpGetLoader;
@@ -161,10 +162,9 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_browser:
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(Api.getThreadListUrlForBrowser(mForumId, mPageNum)));
-
-                startActivity(intent);
+                IntentUtil.startViewIntentExcludeOurApp(
+                        getActivity(),
+                        Uri.parse(Api.getThreadListUrlForBrowser(mForumId, mPageNum)));
 
                 return true;
         }
@@ -189,7 +189,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
 
         if (asyncResult.exception != null) {
             if (getUserVisibleHint()) {
-                asyncResult.handleException();
+                ToastUtil.showByResId(asyncResult.getExceptionString(), Toast.LENGTH_SHORT);
             }
         } else {
             ThreadList threadList = asyncResult.data.unwrap();

@@ -43,6 +43,8 @@ public enum Config {
     public static final int LIGHT_THEME_LIGHT_BLUE = R.style.LightTheme_Inverse_LightBlue;
     private static final int DARK_THEME = R.style.DarkTheme;
 
+    public static final int TRANSLUCENT_THEME_LIGHT = R.style.TranslucentTheme_Light;
+
     private static final int[] THEMES = {
             LIGHT_THEME_AMBER,
             LIGHT_THEME_GREEN,
@@ -62,7 +64,7 @@ public enum Config {
     private volatile DownloadStrategy imagesDownloadStrategy;
 
     public static boolean isDefaultApplicationTheme() {
-        // default theme in AndroidManifest.xml is DarkTheme
+        // default theme in AndroidManifest.xml is dark theme
         return INSTANCE.currentTheme == DARK_THEME;
     }
 

@@ -173,7 +173,7 @@ public final class LoginFragment extends Fragment {
         @Override
         public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> asyncResult) {
             if (asyncResult.exception != null) {
-                asyncResult.handleException();
+                ToastUtil.showByResId(asyncResult.getExceptionString(), Toast.LENGTH_SHORT);
             } else {
                 ResultWrapper wrapper = asyncResult.data;
                 Result result = wrapper.getResult();

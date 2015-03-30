@@ -30,7 +30,6 @@
         <item name="menuSend">@drawable/selector_menu_send_black</item>
 
         <item name="iconHome">@drawable/ic_home_grey600_24dp</item>
-        <item name="iconThreadJump">@drawable/ic_open_with_grey600_24dp</item>
         <item name="iconSettings">@drawable/ic_settings_grey600_24dp</item>
     </style>
 
@@ -95,8 +94,22 @@
         <item name="menuKeyboard">@drawable/ic_menu_keyboard_white_24dp</item>
         <item name="menuSend">@drawable/selector_menu_send_white</item>
         <item name="iconHome">@drawable/ic_home_white_24dp</item>
-        <item name="iconThreadJump">@drawable/ic_open_with_white_24dp</item>
         <item name="iconSettings">@drawable/ic_settings_white_24dp</item>
+    </style>
+
+    <style name="TranslucentTheme.Light" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- from Theme.Translucent -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+
+    <style name="TranslucentTheme.Dark" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
     </style>
 
     <style name="GalleryTheme" parent="Theme.AppCompat">

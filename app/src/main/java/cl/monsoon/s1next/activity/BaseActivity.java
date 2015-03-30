@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -23,16 +22,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -51,6 +47,7 @@ import cl.monsoon.s1next.fragment.SettingsFragment;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.MyAccount;
 import cl.monsoon.s1next.singleton.MyOkHttpClient;
+import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.util.VersionUtil;
 import cl.monsoon.s1next.widget.InsetsFrameLayout;
@@ -107,10 +104,6 @@ public abstract class BaseActivity extends ActionBarActivity
         }
 
         super.onCreate(savedInstanceState);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            VersionUtil.changeAppTitleColorToWhiteInRecentApps(this);
-        }
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(SettingsFragment.ACTION_CHANGE_THEME);
@@ -476,21 +469,20 @@ public abstract class BaseActivity extends ActionBarActivity
         // back to forum (home) activity if clicked
         homeView.setOnClickListener(v ->
                 closeDrawer(() -> {
-                    Intent intent = new Intent(BaseActivity.this, ForumActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }));
+                    Intent intent;
+                    if (IntentUtil.getComeFromOurAppExtra(getIntent())) {
+                        intent = new Intent(this, ForumActivity.class);
+                        intent.addFlags(
+                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
 
-        // add thread jump item
-        TextView threadJumpView = (TextView) mDrawer.findViewById(R.id.thread_jump);
-        threadJumpView.setText(getText(R.string.thread_jump));
-        threadJumpView.setCompoundDrawablePadding(margin);
-        threadJumpView.setCompoundDrawablesWithIntrinsicBounds(
-                ResourceUtil.getResourceId(getTheme(), R.attr.iconThreadJump), 0, 0, 0);
-        // show ThreadJumpDialog if clicked
-        threadJumpView.setOnClickListener(v ->
-                closeDrawer(() ->
-                        new ThreadJumpDialog().show(getSupportFragmentManager(), ThreadJumpDialog.TAG)));
+                        finish();
+                    } else {
+                        intent = new Intent(BaseActivity.this, ForumActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                }));
 
         // add settings item
         TextView settingsView = (TextView) mDrawer.findViewById(R.id.settings);
@@ -632,76 +624,5 @@ public abstract class BaseActivity extends ActionBarActivity
         MyOkHttpClient.clearCookie();
         MyAccount.clear();
         MyAccount.sendCookieExpirationBroadcast();
-    }
-
-    public static class ThreadJumpDialog extends DialogFragment {
-
-        private static final String TAG = ThreadJumpDialog.class.getSimpleName();
-
-        private EditText mThreadIdView;
-        private AlertDialog mAlertDialog;
-
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            View view =
-                    getActivity().getLayoutInflater()
-                            .inflate(
-                                    R.layout.dialog_thread_jump,
-                                    new LinearLayout(getActivity()),
-                                    false);
-            mThreadIdView = (EditText) view.findViewById(R.id.thread_id);
-
-            mAlertDialog =
-                    new AlertDialog.Builder(getActivity())
-                            .setMessage(R.string.dialog_title_thread_jump)
-                            .setView(view)
-                            .setPositiveButton(android.R.string.ok, null)
-                            .setNegativeButton(android.R.string.cancel, null)
-                            .create();
-
-            // called when an ime action go is performed
-            // not working in some manufacturers
-            mThreadIdView.setOnEditorActionListener((textView, i, keyEvent) -> {
-                if (i == R.id.ime_jump) {
-                    mAlertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
-                    return true;
-                }
-                return false;
-            });
-
-            return mAlertDialog;
-        }
-
-        @Override
-        public void onStart() {
-            super.onStart();
-
-            // prevent the dialog from closing when
-            // a error occurs (thread id is empty)
-            // see https://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked/15619098#answer-15619098
-            mAlertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
-                    .setOnClickListener(v -> {
-                        // reset errors
-                        mThreadIdView.setError(null);
-
-                        String threadId = mThreadIdView.getText().toString();
-                        if (TextUtils.isEmpty(threadId)) {
-                            mThreadIdView.setError(getText(R.string.error_field_required));
-                            mThreadIdView.requestFocus();
-                        } else {
-                            Intent intent = new Intent(getActivity(), PostListActivity.class);
-                            // remove the `singleTop` launch mode
-                            intent.setFlags(0);
-
-                            cl.monsoon.s1next.model.Thread thread = new cl.monsoon.s1next.model.Thread();
-                            thread.setId(threadId);
-                            intent.putExtra(PostListActivity.ARG_THREAD, thread);
-
-                            startActivity(intent);
-                            dismiss();
-                        }
-                    });
-        }
     }
 }

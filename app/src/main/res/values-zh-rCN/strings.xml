@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="intent_title_which_view_application">打开方式</string>
+    <string name="toast_message_chooser_no_applications">没有应用可执行此操作</string>
     <string name="action_login">登录</string>
     <string name="avatar_content_desc">头像</string>
     <string name="picture_content_desc">图片</string>
@@ -9,12 +11,8 @@
     <string name="drawer_top_background_content_desc">背景</string>
     <string name="drawer_avatar_content_desc">用户头像</string>
     <string name="dialog_message_log_out">退出登录？</string>
-    <string name="thread_jump">跳转</string>
     <string name="home">首页</string>
     <string name="settings">设置</string>
-    <string name="dialog_title_thread_jump">跳转到指定帖子…</string>
-    <string name="prompt_thread_id">帖子ID</string>
-    <string name="action_jump">跳转</string>
     <string name="menu_refresh">刷新</string>
     <string name="menu_share">分享</string>
     <string name="menu_title_share">分享到…</string>
@@ -35,6 +33,11 @@
     <string name="dialog_title_page_flip">前往…</string>
     <string name="dialog_progress_message_favourites_add">添加中…</string>
     <string name="prompt_remark">备注</string>
+    <string name="dialog_message_invalid_or_unsupported_link">无效的、或者是并不支持的链接。</string>
+    <string name="period">。</string>
+    <string name="dialog_button_use_a_different_app">使用其他应用</string>
+    <string name="dialog_message_loading">加载中…</string>
+    <string name="dialog_message_thread_not_found">找不到该帖子。</string>
     <string name="prompt_reply">写点内容吧…</string>
     <string name="dialog_progress_message_reply">回复中…</string>
     <string name="dialog_message_reply_back_prompt">要舍弃这条回复吗？</string>

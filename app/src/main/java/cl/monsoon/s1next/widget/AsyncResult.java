@@ -1,13 +1,12 @@
 package cl.monsoon.s1next.widget;
 
 import android.os.RemoteException;
-import android.widget.Toast;
+import android.support.annotation.StringRes;
 
 import java.io.IOException;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Extractable;
-import cl.monsoon.s1next.util.ToastUtil;
 
 /**
  * A Wrapper for {@link #data} and {@link #exception}.
@@ -26,13 +25,16 @@ public final class AsyncResult<D extends Extractable> {
         this.data = data;
     }
 
-    public void handleException() {
+    @StringRes
+    public int getExceptionString() {
         if (exception instanceof RemoteException) {
-            ToastUtil.showByResId(R.string.message_server_error, Toast.LENGTH_SHORT);
+            return R.string.message_server_error;
         } else if (exception instanceof IOException) {
-            ToastUtil.showByResId(R.string.message_network_error, Toast.LENGTH_SHORT);
+            return R.string.message_network_error;
+        } else if (exception == null) {
+            throw new IllegalStateException("Exception can't be null");
         } else {
-            throw new IllegalStateException("Unhandled exception happened.", exception);
+            throw new IllegalStateException("Unknown exception happened.", exception);
         }
     }
 }

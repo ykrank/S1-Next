@@ -24,6 +24,7 @@ import cl.monsoon.s1next.activity.PostListActivity;
 import cl.monsoon.s1next.adapter.PostListRecyclerAdapter;
 import cl.monsoon.s1next.model.list.PostList;
 import cl.monsoon.s1next.model.mapper.PostListWrapper;
+import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
@@ -151,28 +152,23 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        String url;
-        Intent intent;
         switch (item.getItemId()) {
             case R.id.menu_browser:
-                url = Api.getPostListUrlForBrowser(mThreadId, mPageNum);
-
-                intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(url));
-
-                startActivity(intent);
+                IntentUtil.startViewIntentExcludeOurApp(
+                        getActivity(),
+                        Uri.parse(Api.getPostListUrlForBrowser(mThreadId, mPageNum)));
 
                 return true;
             case R.id.menu_share:
                 String value;
-                url = Api.getPostListUrlForBrowser(mThreadId, mPageNum);
+                String url = Api.getPostListUrlForBrowser(mThreadId, mPageNum);
                 if (TextUtils.isEmpty(mThreadTitle)) {
                     value = url;
                 } else {
                     value = StringUtil.concatWithTwoSpaces(mThreadTitle, url);
                 }
 
-                intent = new Intent(Intent.ACTION_SEND);
+                Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_TEXT, value);
                 intent.setType("text/plain");
 
@@ -221,7 +217,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
 
         if (asyncResult.exception != null) {
             if (getUserVisibleHint()) {
-                asyncResult.handleException();
+                ToastUtil.showByResId(asyncResult.getExceptionString(), Toast.LENGTH_SHORT);
             }
         } else {
             PostList postList = asyncResult.data.unwrap();
@@ -246,7 +242,6 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                 }
 
                 cl.monsoon.s1next.model.Thread postListInfo = postList.getInfo();
-                mPagerCallback.setThreadTitle(postListInfo.getTitle(), mPageNum);
                 mPagerCallback.setTotalPages(postListInfo.getReplies() + 1);
             }
 
@@ -272,10 +267,5 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
          * A callback to set actual total pages which used for {@link android.support.v4.view.PagerAdapter}.
          */
         void setTotalPages(int i);
-
-        /**
-         * Only called when using `Jump to thread` feature.
-         */
-        void setThreadTitle(String threadTitle, int pageNum);
     }
 }

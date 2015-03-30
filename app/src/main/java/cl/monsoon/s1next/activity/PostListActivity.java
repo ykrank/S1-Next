@@ -16,7 +16,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -43,6 +42,7 @@ import cl.monsoon.s1next.model.list.PostList;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.singleton.MyAccount;
+import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
 import cl.monsoon.s1next.util.StringUtil;
@@ -104,21 +104,8 @@ public class PostListActivity extends BaseActivity
         setNavDrawerIndicatorEnabled(false);
 
         cl.monsoon.s1next.model.Thread thread = getIntent().getParcelableExtra(ARG_THREAD);
-        // we have no title if we use `Jump to thread` feature
         mThreadTitle = thread.getTitle();
-        if (TextUtils.isEmpty(mThreadTitle)) {
-            // disable drawer and set navigation icon to cross
-            // because this activity don't use `singleTop` launch
-            // mode here
-            setTitle(null);
-            setupNavCrossIcon();
-            setNavDrawerEnabled(false);
-            ((DrawerLayout) findViewById(R.id.drawer_layout))
-                    .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            findViewById(R.id.drawer).setVisibility(View.GONE);
-        } else {
-            setTitle(mThreadTitle, 1);
-        }
+        setTitle(StringUtil.concatWithTwoSpaces(mThreadTitle, 1));
         mThreadId = thread.getId();
         // +1 for original post
         setTotalPages(thread.getReplies() + 1);
@@ -139,7 +126,7 @@ public class PostListActivity extends BaseActivity
 
             @Override
             public void onPageSelected(int position) {
-                setTitle(mThreadTitle, position + 1);
+                setTitle(StringUtil.concatWithTwoSpaces(mThreadTitle, position + 1));
             }
 
             @Override
@@ -223,6 +210,18 @@ public class PostListActivity extends BaseActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                if (IntentUtil.getComeFromOurAppExtra(getIntent())) {
+                    Intent intent = new Intent(this, ForumActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+
+                    finish();
+
+                    return true;
+                }
+
+                break;
             case R.id.menu_thread_attachment:
                 showThreadAttachmentDialog();
 
@@ -259,12 +258,6 @@ public class PostListActivity extends BaseActivity
         // mMenuThreadAttachment.setVisible(false) during onCreateOptionsMenu(Menu)
         if (mMenuThreadAttachment != null) {
             mMenuThreadAttachment.setVisible(true);
-        }
-    }
-
-    private void setTitle(CharSequence title, int pageNum) {
-        if (!TextUtils.isEmpty(title)) {
-            setTitle(StringUtil.concatWithTwoSpaces(title, pageNum));
         }
     }
 
@@ -395,14 +388,6 @@ public class PostListActivity extends BaseActivity
 
         if (mAdapter != null) {
             runOnUiThread(mAdapter::notifyDataSetChanged);
-        }
-    }
-
-    @Override
-    public void setThreadTitle(String threadTitle, int pageNum) {
-        if (TextUtils.isEmpty(mThreadTitle)) {
-            this.mThreadTitle = threadTitle;
-            setTitle(threadTitle, pageNum + 1);
         }
     }
 
@@ -608,7 +593,7 @@ public class PostListActivity extends BaseActivity
             @Override
             public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> asyncResult) {
                 if (asyncResult.exception != null) {
-                    asyncResult.handleException();
+                    ToastUtil.showByResId(asyncResult.getExceptionString(), Toast.LENGTH_SHORT);
                 } else {
                     int id = loader.getId();
                     if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {

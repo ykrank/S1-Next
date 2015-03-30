@@ -556,7 +556,7 @@ public final class ReplyFragment extends Fragment {
         public void onLoadFinished(Loader loader, Object data) {
             AsyncResult asyncResult = (AsyncResult) data;
             if (asyncResult.exception != null) {
-                asyncResult.handleException();
+                ToastUtil.showByResId(asyncResult.getExceptionString(), Toast.LENGTH_SHORT);
             } else {
                 int id = loader.getId();
                 if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {

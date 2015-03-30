@@ -52,6 +52,21 @@
         </activity>
 
         <activity
+            android:name=".activity.PostListGatewayActivity"
+            android:theme="@style/TranslucentTheme.Dark">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="http"
+                    android:host="bbs.saraba1st.com" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".activity.SettingsActivity"
             android:label="@string/settings" />
 
