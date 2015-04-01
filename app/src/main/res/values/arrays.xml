@@ -52,13 +52,13 @@
         <item>4</item>
     </string-array>
 
-    <string-array name="pref_download_cache_size_entries" translatable="false">
+    <string-array name="pref_download_total_cache_size_entries" translatable="false">
         <item>32MB</item>
         <item>64MB</item>
         <item>128MB</item>
     </string-array>
 
-    <string-array name="pref_download_cache_size_entry_values" translatable="false">
+    <string-array name="pref_download_total_cache_size_entry_values" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>

@@ -24,7 +24,7 @@ public final class MyGlideModule implements GlideModule {
         // set max size of the disk cache for images
         builder.setDiskCache(new InternalCacheDiskCacheFactory(
                 context,
-                Setting.Download.getCacheSize(
+                Setting.Download.getTotalCacheSize(
                         PreferenceManager.getDefaultSharedPreferences(context))));
     }
 

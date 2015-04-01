@@ -152,13 +152,13 @@ public final class Setting {
         private volatile AvatarCacheInvalidationInterval avatarCacheInvalidationInterval;
         private volatile DownloadStrategy imagesDownloadStrategy;
 
-        public static int getCacheSize(SharedPreferences sharedPreferences) {
+        public static int getTotalCacheSize(SharedPreferences sharedPreferences) {
             String value = getSharedPreferencesString(
                     sharedPreferences,
-                    DownloadSettingsFragment.PREF_KEY_DOWNLOAD_CACHE_SIZE,
-                    R.string.pref_download_cache_size_default_value);
+                    DownloadSettingsFragment.PREF_KEY_TOTAL_DOWNLOAD_CACHE_SIZE,
+                    R.string.pref_download_total_cache_size_default_value);
 
-            return CacheSize.get(Integer.parseInt(value)).size;
+            return TotalCacheSize.get(Integer.parseInt(value)).size;
         }
 
         public static void setAvatarsDownloadStrategy(SharedPreferences sharedPreferences) {
@@ -218,19 +218,19 @@ public final class Setting {
             return INSTANCE.imagesDownloadStrategy.needDownload(General.INSTANCE.hasWifi);
         }
 
-        private enum CacheSize {
+        private enum TotalCacheSize {
             // 32MB, 64MB, 128MB
             LOW(32), NORMAL(64), HIGH(128);
 
-            private static final CacheSize[] VALUES = CacheSize.values();
+            private static final TotalCacheSize[] VALUES = TotalCacheSize.values();
 
             private final int size;
 
-            CacheSize(int size) {
+            TotalCacheSize(int size) {
                 this.size = size * 1000 * 1000;
             }
 
-            public static CacheSize get(int i) {
+            public static TotalCacheSize get(int i) {
                 return VALUES[i];
             }
         }
