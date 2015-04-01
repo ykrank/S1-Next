@@ -21,8 +21,7 @@ public final class StringUtil {
     }
 
     public static String unescapeNonBreakingSpace(CharSequence text) {
-        return
-                StringUtils.replace(
-                        text.toString(), NON_BREAKING_SPACE_ENTITY_NAME, StringUtils.SPACE);
+        return StringUtils.replace(
+                text.toString(), NON_BREAKING_SPACE_ENTITY_NAME, StringUtils.SPACE);
     }
 }

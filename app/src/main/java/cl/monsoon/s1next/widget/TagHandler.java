@@ -17,15 +17,15 @@ import org.xml.sax.XMLReader;
 import cl.monsoon.s1next.activity.GalleryActivity;
 
 /**
- * Adds the {@link android.view.View.OnClickListener}
+ * Adds  {@link android.view.View.OnClickListener}
  * to {@link android.text.style.ImageSpan} and
  * handles {@literal <strike>} tag.
  */
-public final class MyTagHandler implements Html.TagHandler {
+public final class TagHandler implements Html.TagHandler {
 
     private final Context mContext;
 
-    public MyTagHandler(Context context) {
+    public TagHandler(Context context) {
         this.mContext = context;
     }
 
@@ -39,6 +39,9 @@ public final class MyTagHandler implements Html.TagHandler {
     }
 
     /**
+     * Replace {@link android.view.View.OnClickListener}
+     * with {@link cl.monsoon.s1next.widget.TagHandler.ImageClickableSpan}.
+     * <p>
      * See android.text.HtmlToSpannedConverter#startImg(android.text.SpannableStringBuilder, org.xml.sax.Attributes, android.text.Html.ImageGetter)
      */
     private void handleImg(boolean opening, Editable output) {
@@ -62,8 +65,7 @@ public final class MyTagHandler implements Html.TagHandler {
 
                 output.removeSpan(imageSpan);
                 // make this ImageSpan clickable
-                output.setSpan(
-                        new ImageClickableSpan(mContext, imageSpan.getDrawable(), url),
+                output.setSpan(new ImageClickableSpan(mContext, imageSpan.getDrawable(), url),
                         end - len,
                         output.length(),
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -72,6 +74,8 @@ public final class MyTagHandler implements Html.TagHandler {
     }
 
     /**
+     * Adds {@link StrikethroughSpan} to {@literal <strike>} tag.
+     * <p>
      * See android.text.HtmlToSpannedConverter#handleStartTag(java.lang.String, org.xml.sax.Attributes)
      * See android.text.HtmlToSpannedConverter#handleEndTag(java.lang.String)
      */

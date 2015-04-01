@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.lang.reflect.Method;
 
-import cl.monsoon.s1next.singleton.Config;
+import cl.monsoon.s1next.singleton.Setting;
 
 public final class ViewUtil {
 
@@ -29,8 +29,7 @@ public final class ViewUtil {
 
     public static void setForegroundColor(TextView textView, @ColorRes int color, int start, int end) {
         Spannable spannable = Spannable.Factory.getInstance().newSpannable(textView.getText());
-        spannable.setSpan(
-                new ForegroundColorSpan(color),
+        spannable.setSpan(new ForegroundColorSpan(color),
                 start,
                 end,
                 Spanned.SPAN_INCLUSIVE_INCLUSIVE);
@@ -40,12 +39,12 @@ public final class ViewUtil {
 
     /**
      * Updates the TextViews font size depends on
-     * {@link cl.monsoon.s1next.singleton.Config#textScale}.
+     * {@link cl.monsoon.s1next.singleton.Setting.General#textScale}.
      *
      * @param textViewList also works for {@link android.widget.EditText} and {@link android.widget.Button}.
      */
     public static void updateTextSize(TextView... textViewList) {
-        float textScale = Config.getTextScale();
+        float textScale = Setting.General.getTextScale();
         for (TextView textView : textViewList) {
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textView.getTextSize() * textScale);
         }

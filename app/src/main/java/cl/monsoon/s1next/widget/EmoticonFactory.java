@@ -15,14 +15,12 @@ import cl.monsoon.s1next.R;
 public final class EmoticonFactory {
 
     private final List<String> mEmoticonTypeTitles;
-    private final SparseArray<Map<String, String>> mEmoticonType;
+    private final SparseArray<Map<String, String>> mEmoticons;
 
     public EmoticonFactory(Context context) {
-        mEmoticonTypeTitles =
-                Collections.unmodifiableList(
-                        Arrays.asList(
-                                context.getResources().getStringArray(R.array.emoticon_type)));
-        mEmoticonType = new SparseArray<>();
+        mEmoticonTypeTitles = Collections.unmodifiableList(
+                Arrays.asList(context.getResources().getStringArray(R.array.emoticon_type)));
+        mEmoticons = new SparseArray<>();
     }
 
     public List<String> getTypeTitles() {
@@ -30,8 +28,7 @@ public final class EmoticonFactory {
     }
 
     public Map<String, String> getByType(int type) {
-        Map<String, String> emoticonTypeMap = mEmoticonType.get(type);
-
+        Map<String, String> emoticonTypeMap = mEmoticons.get(type);
         if (emoticonTypeMap == null) {
             switch (type) {
                 case 0:
@@ -68,7 +65,7 @@ public final class EmoticonFactory {
                     throw new IllegalArgumentException("Emoticon type can't be " + type + ".");
             }
         }
-        mEmoticonType.put(type, emoticonTypeMap);
+        mEmoticons.put(type, emoticonTypeMap);
 
         return new LinkedMap<>(emoticonTypeMap);
     }

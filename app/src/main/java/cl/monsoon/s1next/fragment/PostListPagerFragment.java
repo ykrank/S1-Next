@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,9 +26,9 @@ import cl.monsoon.s1next.model.mapper.PostListWrapper;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.util.ToastUtil;
+import cl.monsoon.s1next.view.BaseRecyclerView;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpGetLoader;
-import cl.monsoon.s1next.widget.MyRecyclerView;
 
 /**
  * A Fragment which includes {@link android.support.v4.view.ViewPager}
@@ -47,7 +46,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
 
     /**
      * The serialization (saved instance state) Bundle key representing whether
-     * {@link cl.monsoon.s1next.widget.MyRecyclerView} is loading more when configuration changes.
+     * {@link BaseRecyclerView} is loading more when configuration changes.
      */
     private static final String STATE_IS_LOADING_MORE = "is_loading_more";
 
@@ -55,7 +54,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     private String mThreadId;
     private int mPageNum;
 
-    private MyRecyclerView mRecyclerView;
+    private BaseRecyclerView mRecyclerView;
     private PostListRecyclerAdapter mRecyclerAdapter;
     private boolean mIsLoadingMore;
 
@@ -86,7 +85,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
         mThreadId = getArguments().getString(ARG_THREAD_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
-        mRecyclerView = (MyRecyclerView) view.findViewById(R.id.recycler_view);
+        mRecyclerView = (BaseRecyclerView) view.findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         // linearLayoutManager.setSmoothScrollbarEnabled(false);
         // if https://code.google.com/p/android/issues/detail?id=78375 has fixed
@@ -136,7 +135,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     }
 
     @Override
-    public void onInsetsChanged(@NonNull Rect insets) {
+    public void onInsetsChanged(Rect insets) {
         setRecyclerViewPadding(
                 mRecyclerView,
                 insets,
@@ -154,8 +153,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_browser:
-                IntentUtil.startViewIntentExcludeOurApp(
-                        getActivity(),
+                IntentUtil.startViewIntentExcludeOurApp(getActivity(),
                         Uri.parse(Api.getPostListUrlForBrowser(mThreadId, mPageNum)));
 
                 return true;
@@ -191,11 +189,10 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     public Loader<AsyncResult<PostListWrapper>> onCreateLoader(int id, Bundle args) {
         super.onCreateLoader(id, args);
 
-        return
-                new HttpGetLoader<>(
-                        getActivity(),
-                        Api.getPostListUrl(mThreadId, mPageNum),
-                        PostListWrapper.class);
+        return new HttpGetLoader<>(
+                getActivity(),
+                Api.getPostListUrl(mThreadId, mPageNum),
+                PostListWrapper.class);
     }
 
     @Override
@@ -217,7 +214,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
 
         if (asyncResult.exception != null) {
             if (getUserVisibleHint()) {
-                ToastUtil.showByResId(asyncResult.getExceptionString(), Toast.LENGTH_SHORT);
+                ToastUtil.showByResId(asyncResult.getExceptionStringRes(), Toast.LENGTH_SHORT);
             }
         } else {
             PostList postList = asyncResult.data.unwrap();
@@ -246,8 +243,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
             }
 
             if (postList.getThreadAttachment() != null) {
-                ((PostListActivity) getActivity())
-                        .setupThreadAttachment(postList.getThreadAttachment());
+                ((PostListActivity) getActivity()).setupThreadAttachment(postList.getThreadAttachment());
             }
         }
 

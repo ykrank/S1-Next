@@ -34,20 +34,18 @@ public final class ReplyActivity extends BaseActivity {
         setNavDrawerEnabled(false);
 
         String quotePostId = getIntent().getStringExtra(ARG_QUOTE_POST_ID);
-        String titlePrefix =
-                TextUtils.isEmpty(quotePostId)
-                        ? getString(R.string.reply_activity_title_prefix)
-                        : getString(
-                                R.string.reply_activity_quote_title_prefix,
-                                getIntent().getStringExtra(ARG_QUOTE_POST_COUNT));
+        String titlePrefix = TextUtils.isEmpty(quotePostId)
+                ? getString(R.string.reply_activity_title_prefix)
+                : getString(
+                R.string.reply_activity_quote_title_prefix,
+                getIntent().getStringExtra(ARG_QUOTE_POST_COUNT));
         setTitle(titlePrefix + getIntent().getStringExtra(ARG_THREAD_TITLE));
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(ReplyFragment.TAG);
         if (fragment == null) {
-            mReplyFragment =
-                    ReplyFragment.newInstance(
-                            getIntent().getStringExtra(ARG_THREAD_ID), quotePostId);
+            mReplyFragment = ReplyFragment.newInstance(
+                    getIntent().getStringExtra(ARG_THREAD_ID), quotePostId);
 
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_layout, mReplyFragment, ReplyFragment.TAG).commit();
@@ -78,13 +76,12 @@ public final class ReplyActivity extends BaseActivity {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-            return
-                    new AlertDialog.Builder(getActivity())
-                            .setMessage(R.string.dialog_message_reply_back_prompt)
-                            .setPositiveButton(android.R.string.ok,
-                                    (dialog, which) -> getActivity().finish())
-                            .setNegativeButton(android.R.string.cancel, null)
-                            .create();
+            return new AlertDialog.Builder(getActivity())
+                    .setMessage(R.string.dialog_message_reply_back_prompt)
+                    .setPositiveButton(android.R.string.ok,
+                            (dialog, which) -> getActivity().finish())
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create();
         }
     }
 }

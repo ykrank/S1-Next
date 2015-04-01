@@ -16,9 +16,9 @@ import org.apache.commons.collections4.map.LinkedMap;
 
 import java.util.Map;
 
+import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.ReplyFragment;
-import cl.monsoon.s1next.singleton.Config;
 
 public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<EmoticonGridRecyclerAdapter.ViewHolder> {
 
@@ -32,25 +32,23 @@ public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<Emot
 
         setHasStableIds(true);
 
-        mEmoticonRequestBuilder =
-                Glide.with(context)
-                        .from(Uri.class);
+        mEmoticonRequestBuilder = Glide.with(context).from(Uri.class);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view =
-                LayoutInflater.from(parent.getContext()).inflate(R.layout.emoticon, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.emoticon, parent, false);
 
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mImageView.setTag(KEY_EMOTICON_ENTITY, mEmoticonMap.getValue(position));
+        holder.imageView.setTag(KEY_EMOTICON_ENTITY, mEmoticonMap.getValue(position));
         mEmoticonRequestBuilder
                 .load(Uri.parse(Config.PREFIX_EMOTICON_ASSET + mEmoticonMap.get(position)))
-                .into(holder.mImageView);
+                .into(holder.imageView);
     }
 
     @Override
@@ -65,21 +63,20 @@ public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<Emot
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final ImageView mImageView;
+        private final ImageView imageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            mImageView = (ImageView) itemView;
-            mImageView.setOnClickListener(this);
+            imageView = (ImageView) itemView;
+            imageView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             // send broadcast to notify ReplyFragment that emoticon had been clicked
             Intent intent = new Intent(ReplyFragment.ACTION_INSERT_EMOTICON);
-            intent.putExtra(
-                    ReplyFragment.ARG_EMOTICON_ENTITY,
+            intent.putExtra(ReplyFragment.ARG_EMOTICON_ENTITY,
                     (CharSequence) v.getTag(KEY_EMOTICON_ENTITY));
 
             v.getContext().sendBroadcast(intent);

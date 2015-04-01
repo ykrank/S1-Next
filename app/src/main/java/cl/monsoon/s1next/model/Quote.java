@@ -2,11 +2,12 @@ package cl.monsoon.s1next.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.RemoteException;
 import android.text.TextUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import cl.monsoon.s1next.util.ServerException;
 
 public final class Quote implements Extractable, Parcelable {
 
@@ -63,9 +64,9 @@ public final class Quote implements Extractable, Parcelable {
     /**
      * Extracts XML string into POJO.
      *
-     * @throws android.os.RemoteException if XML parsing error occurs
+     * @throws cl.monsoon.s1next.util.ServerException if XML parsing error occurs
      */
-    public static Quote fromXmlString(String xmlString) throws RemoteException {
+    public static Quote fromXmlString(String xmlString) throws ServerException {
         // example: <input type="hidden" name="noticeauthor" value="d755gUR1jP9eeoTPkiOyz3FxvLzpFLJsSFvJA8uAfBg" />
         Pattern pattern =
                 Pattern.compile("name=\"noticeauthor\"\\svalue=\"(\\p{ASCII}+)\"\\s/>");
@@ -86,7 +87,7 @@ public final class Quote implements Extractable, Parcelable {
 
         if (TextUtils.isEmpty(quote.getEncodedUserId())
                 || TextUtils.isEmpty(quote.getQuoteMessage())) {
-            throw new RemoteException(quote + "'s each field can't be empty.");
+            throw new ServerException(quote + "'s each field can't be empty.");
         }
 
         return quote;

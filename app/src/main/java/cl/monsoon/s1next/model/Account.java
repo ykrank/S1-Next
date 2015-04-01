@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import cl.monsoon.s1next.singleton.MyAccount;
+import cl.monsoon.s1next.singleton.User;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -31,27 +31,27 @@ public class Account {
 
     /**
      * We should confirm that both uid and username have been set,
-     * then send {@link cl.monsoon.s1next.singleton.MyAccount#sendCookieExpirationBroadcast()}
-     * or {@link MyAccount#sendLoginBroadcast()}.
+     * then send {@link User#sendCookieExpirationBroadcast()}
+     * or {@link User#sendLoginBroadcast()}.
      */
     public void setUid(String uid) {
         this.uid = uid;
 
-        final boolean hasUserLoggedIn = MyAccount.hasLoggedIn();
+        final boolean hasUserLoggedIn = User.hasLoggedIn();
         final boolean hasSetUsername = this.username != null;
         if (TextUtils.isEmpty(uid) || INVALID_UID.equals(uid)) {
             // if user's cookie has expired
             if (hasUserLoggedIn) {
                 if (hasSetUsername) {
-                    MyAccount.setUid(null);
-                    MyAccount.setName(null);
-                    MyAccount.sendCookieExpirationBroadcast();
+                    User.setUid(null);
+                    User.setName(null);
+                    User.sendCookieExpirationBroadcast();
                 }
             }
         } else {
-            MyAccount.setUid(uid);
+            User.setUid(uid);
             if (!hasUserLoggedIn && hasSetUsername) {
-                MyAccount.sendLoginBroadcast();
+                User.sendLoginBroadcast();
             }
         }
     }
@@ -66,20 +66,20 @@ public class Account {
     public void setUsername(String username) {
         this.username = username;
 
-        final boolean hasUserLoggedIn = MyAccount.hasLoggedIn();
+        final boolean hasUserLoggedIn = User.hasLoggedIn();
         final boolean hasSetUid = this.uid != null;
         if (TextUtils.isEmpty(username)) {
             if (hasUserLoggedIn) {
                 if (hasSetUid) {
-                    MyAccount.setUid(null);
-                    MyAccount.setName(null);
-                    MyAccount.sendCookieExpirationBroadcast();
+                    User.setUid(null);
+                    User.setName(null);
+                    User.sendCookieExpirationBroadcast();
                 }
             }
         } else {
-            MyAccount.setName(username);
+            User.setName(username);
             if (!hasUserLoggedIn && hasSetUid) {
-                MyAccount.sendLoginBroadcast();
+                User.sendLoginBroadcast();
             }
         }
     }
@@ -91,7 +91,7 @@ public class Account {
     public void setAuthenticityToken(String authenticityToken) {
         this.authenticityToken = authenticityToken;
 
-        MyAccount.setAuthenticityToken(authenticityToken);
+        User.setAuthenticityToken(authenticityToken);
     }
 
     public int getPermission() {
@@ -101,6 +101,6 @@ public class Account {
     public void setPermission(int permission) {
         this.permission = permission;
 
-        MyAccount.setPermission(permission);
+        User.setPermission(permission);
     }
 }

@@ -22,7 +22,7 @@ import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
-import cl.monsoon.s1next.singleton.MyAccount;
+import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpPostLoader;
@@ -160,20 +160,19 @@ public final class LoginFragment extends Fragment {
 
         @Override
         public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
-            return
-                    new HttpPostLoader<>(
-                            getActivity(),
-                            Api.URL_LOGIN,
-                            ResultWrapper.class,
-                            Api.getLoginPostBuilder(
-                                    getArguments().getString(ARG_USERNAME),
-                                    getArguments().getString(ARG_PASSWORD)));
+            return new HttpPostLoader<>(
+                    getActivity(),
+                    Api.URL_LOGIN,
+                    ResultWrapper.class,
+                    Api.getLoginPostBuilder(
+                            getArguments().getString(ARG_USERNAME),
+                            getArguments().getString(ARG_PASSWORD)));
         }
 
         @Override
         public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> asyncResult) {
             if (asyncResult.exception != null) {
-                ToastUtil.showByResId(asyncResult.getExceptionString(), Toast.LENGTH_SHORT);
+                ToastUtil.showByResId(asyncResult.getExceptionStringRes(), Toast.LENGTH_SHORT);
             } else {
                 ResultWrapper wrapper = asyncResult.data;
                 Result result = wrapper.getResult();
@@ -184,7 +183,7 @@ public final class LoginFragment extends Fragment {
                         || result.getStatus().equals(STATUS_AUTH_SUCCESS_ALREADY)) {
                     // this authenticity token is not fresh
                     // we need to abandon this token
-                    MyAccount.setAuthenticityToken(null);
+                    User.setAuthenticityToken(null);
 
                     new Handler().post(() -> getActivity().onBackPressed());
                 }

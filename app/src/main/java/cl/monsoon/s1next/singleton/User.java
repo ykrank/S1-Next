@@ -3,12 +3,12 @@ package cl.monsoon.s1next.singleton;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import cl.monsoon.s1next.MyApplication;
+import cl.monsoon.s1next.App;
 
 /**
  * Current user.
  */
-public enum MyAccount {
+public enum User {
     INSTANCE;
 
     public static final String ACTION_USER_LOGIN = "user_login";
@@ -55,17 +55,17 @@ public enum MyAccount {
         return !TextUtils.isEmpty(INSTANCE.uid) && !TextUtils.isEmpty(INSTANCE.name);
     }
 
-    public static void clear() {
+    public static void reset() {
         INSTANCE.name = INSTANCE.uid = INSTANCE.authenticityToken = null;
         INSTANCE.permission = 0;
     }
 
     public static void sendLoginBroadcast() {
-        MyApplication.getContext().sendBroadcast(new Intent(ACTION_USER_LOGIN));
+        App.getContext().sendBroadcast(new Intent(ACTION_USER_LOGIN));
     }
 
     public static void sendCookieExpirationBroadcast() {
-        MyApplication.getContext().sendBroadcast(new Intent(ACTION_USER_COOKIE_EXPIRATION));
+        App.getContext().sendBroadcast(new Intent(ACTION_USER_COOKIE_EXPIRATION));
     }
 
     public interface OnLogoutListener {

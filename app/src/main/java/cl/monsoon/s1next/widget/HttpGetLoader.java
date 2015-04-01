@@ -1,7 +1,6 @@
 package cl.monsoon.s1next.widget;
 
 import android.content.Context;
-import android.os.RemoteException;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.squareup.okhttp.Call;
@@ -14,8 +13,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import cl.monsoon.s1next.model.Extractable;
-import cl.monsoon.s1next.singleton.MyObjectExtractor;
-import cl.monsoon.s1next.singleton.MyOkHttpClient;
+import cl.monsoon.s1next.singleton.ObjectExtractor;
+import cl.monsoon.s1next.singleton.OkHttpClientManager;
+import cl.monsoon.s1next.util.ServerException;
 
 /**
  * Loads data from the Internet and then extracted into POJO.
@@ -71,8 +71,8 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
             inputStream = request();
 
             // JSON mapper
-            asyncResult.data = MyObjectExtractor.extract(inputStream, mClass);
-        } catch (IOException | RemoteException e) {
+            asyncResult.data = ObjectExtractor.extract(inputStream, mClass);
+        } catch (IOException e) {
             asyncResult.exception = e;
         } finally {
             IOUtils.closeQuietly(inputStream);
@@ -117,19 +117,17 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
     /**
      * Synchronous HTTP GET but the {@link HttpGetLoader} is asynchronism.
      */
-    InputStream request() throws IOException, RemoteException {
+    InputStream request() throws IOException {
         Request request = new Request.Builder()
                 .url(mUrl)
                 .build();
 
-        mCall = MyOkHttpClient.get().newCall(request);
+        mCall = OkHttpClientManager.get().newCall(request);
         Response response = mCall.execute();
 
         if (!response.isSuccessful()) {
             response.body().close();
-            throw
-                    new RemoteException(
-                            "Response (status code " + response.code() + ") is unsuccessful.");
+            throw new ServerException("Response (status code " + response.code() + ") is unsuccessful.");
         }
 
         return response.body().byteStream();

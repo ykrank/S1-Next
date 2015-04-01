@@ -2,7 +2,7 @@
 
 <merge>
 
-    <cl.monsoon.s1next.widget.InsetsFrameLayout
+    <cl.monsoon.s1next.view.InsetsFrameLayout
         android:id="@+id/insets_frame_layout"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -25,6 +25,6 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
-    </cl.monsoon.s1next.widget.InsetsFrameLayout>
+    </cl.monsoon.s1next.view.InsetsFrameLayout>
 
 </merge>

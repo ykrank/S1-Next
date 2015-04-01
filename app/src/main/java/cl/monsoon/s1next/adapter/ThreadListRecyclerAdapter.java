@@ -6,11 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import cl.monsoon.s1next.MyApplication;
+import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Thread;
-import cl.monsoon.s1next.singleton.Config;
-import cl.monsoon.s1next.singleton.MyAccount;
+import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ColorUtil;
 import cl.monsoon.s1next.util.ViewUtil;
 
@@ -19,19 +19,18 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
     private final int mSecondaryTextColor;
 
     private static final String THREAD_PERMISSION_HINT_PREFIX =
-            MyApplication.getContext().getString(R.string.thread_activity_thread_permission);
+            App.getContext().getString(R.string.thread_activity_thread_permission);
 
     public ThreadListRecyclerAdapter() {
         setHasStableIds(true);
 
-        mSecondaryTextColor = ColorUtil.a(Config.getColorAccent(), Config.getSecondaryTextAlpha());
+        mSecondaryTextColor = Setting.Theme.getSecondaryTextColor();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view =
-                LayoutInflater.from(
-                        parent.getContext()).inflate(R.layout.multi_line_list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.multi_line_list_item, parent, false);
 
         return new ViewHolder(view);
     }
@@ -40,18 +39,17 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
     public void onBindViewHolder(ViewHolder holder, int position) {
         Thread thread = mList.get(position);
 
-        TextView textView = holder.mTextView;
+        TextView textView = holder.textView;
         textView.setText(thread.getTitle());
         int start = textView.length();
 
         if (thread.getPermission() != 0) {
             // add thread's permission hint
-            ViewUtil.concatWithTwoSpaces(
-                    textView,
+            ViewUtil.concatWithTwoSpaces(textView,
                     "[" + THREAD_PERMISSION_HINT_PREFIX + thread.getPermission() + "]");
         }
         // disable TextView if user has no permission to access this thread
-        holder.setTextViewEnabled(MyAccount.getPermission() >= thread.getPermission());
+        holder.setTextViewEnabled(User.getPermission() >= thread.getPermission());
 
         // add thread's replies count to each thread
         ViewUtil.concatWithTwoSpaces(textView, thread.getReplies());
@@ -65,7 +63,7 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView mTextView;
+        private final TextView textView;
 
         private final int mDefaultTextViewColor;
         private final int mDisabledTextViewColor;
@@ -73,21 +71,21 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
         public ViewHolder(View itemView) {
             super(itemView);
 
-            mTextView = (TextView) itemView;
-            ViewUtil.updateTextSize(mTextView);
+            textView = (TextView) itemView;
+            ViewUtil.updateTextSize(textView);
 
-            mDefaultTextViewColor = mTextView.getCurrentTextColor();
-            mDisabledTextViewColor =
-                    ColorUtil.a(mDefaultTextViewColor, Config.getDisabledOrHintTextAlpha());
+            mDefaultTextViewColor = textView.getCurrentTextColor();
+            mDisabledTextViewColor = ColorUtil.a(mDefaultTextViewColor,
+                    Setting.Theme.getDisabledOrHintTextAlpha());
         }
 
         public void setTextViewEnabled(Boolean enabled) {
             if (enabled) {
-                mTextView.setTextColor(mDefaultTextViewColor);
+                textView.setTextColor(mDefaultTextViewColor);
             } else {
-                mTextView.setTextColor(mDisabledTextViewColor);
+                textView.setTextColor(mDisabledTextViewColor);
             }
-            mTextView.setEnabled(enabled);
+            textView.setEnabled(enabled);
         }
     }
 }

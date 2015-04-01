@@ -3,7 +3,6 @@ package cl.monsoon.s1next.fragment;
 import android.app.Activity;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,11 +19,10 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.BaseActivity;
 import cl.monsoon.s1next.fragment.headless.DataRetainedFragment;
 import cl.monsoon.s1next.model.Extractable;
-import cl.monsoon.s1next.util.ObjectUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
+import cl.monsoon.s1next.view.BaseRecyclerView;
+import cl.monsoon.s1next.view.InsetsFrameLayout;
 import cl.monsoon.s1next.widget.AsyncResult;
-import cl.monsoon.s1next.widget.InsetsFrameLayout;
-import cl.monsoon.s1next.widget.MyRecyclerView;
 
 /**
  * A base Fragment which includes the SwipeRefreshLayout to refresh when loading data.
@@ -98,7 +96,8 @@ public abstract class BaseFragment<D extends Extractable>
 
             getLoaderManager().initLoader(ID_LOADER, null, this);
         } else {
-            mDataRetainedFragment = ObjectUtil.uncheckedCast(fragment);
+            //noinspection unchecked
+            mDataRetainedFragment = (DataRetainedFragment) fragment;
 
             boolean loading = mLoading;
             if (mDataRetainedFragment.getData() != null) {
@@ -184,7 +183,7 @@ public abstract class BaseFragment<D extends Extractable>
         onInsetsChanged(mInsetsCallback.getSystemWindowInsets());
     }
 
-    void enableToolbarAndFabAutoHideEffect(MyRecyclerView recyclerView, @Nullable RecyclerView.OnScrollListener onScrollListener) {
+    void enableToolbarAndFabAutoHideEffect(BaseRecyclerView recyclerView, @Nullable RecyclerView.OnScrollListener onScrollListener) {
         ((BaseActivity) getActivity()).enableToolbarAndFabAutoHideEffect(recyclerView, onScrollListener);
     }
 
@@ -210,17 +209,15 @@ public abstract class BaseFragment<D extends Extractable>
      * We need to update SwipeRefreshLayout's progress view offset
      * if we have overlay status bar & Toolbar.
      */
-    private void updateSwipeRefreshProgressViewPosition(@NonNull Rect insects) {
+    private void updateSwipeRefreshProgressViewPosition(Rect insects) {
         if (mSwipeRefreshLayout == null) {
             return;
         }
 
-        int start =
-                insects.top
-                        + getResources().getDimensionPixelSize(R.dimen.swipe_refresh_progress_view_start);
-        int end =
-                insects.top
-                        + getResources().getDimensionPixelSize(R.dimen.swipe_refresh_progress_view_end);
+        int start = insects.top
+                + getResources().getDimensionPixelSize(R.dimen.swipe_refresh_progress_view_start);
+        int end = insects.top
+                + getResources().getDimensionPixelSize(R.dimen.swipe_refresh_progress_view_end);
 
         mSwipeRefreshLayout.setProgressViewOffset(false, start, end);
     }
@@ -228,7 +225,7 @@ public abstract class BaseFragment<D extends Extractable>
     /**
      * @see cl.monsoon.s1next.activity.BaseActivity#onInsetsChanged(android.graphics.Rect)
      */
-    void setRecyclerViewPadding(RecyclerView recyclerView, @NonNull Rect insets, int padding) {
+    void setRecyclerViewPadding(RecyclerView recyclerView, Rect insets, int padding) {
         int toolbarHeight = ResourceUtil.getToolbarHeight();
         recyclerView.setPadding(0, padding + insets.top + toolbarHeight, 0, padding);
 

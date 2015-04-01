@@ -8,8 +8,7 @@ import android.widget.TextView;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Forum;
-import cl.monsoon.s1next.singleton.Config;
-import cl.monsoon.s1next.util.ColorUtil;
+import cl.monsoon.s1next.singleton.Setting;
 import cl.monsoon.s1next.util.ViewUtil;
 
 public final class ForumListRecyclerAdapter extends RecyclerAdapter<Forum, ForumListRecyclerAdapter.ViewHolder> {
@@ -19,14 +18,13 @@ public final class ForumListRecyclerAdapter extends RecyclerAdapter<Forum, Forum
     public ForumListRecyclerAdapter() {
         setHasStableIds(true);
 
-        mSecondaryTextColor = ColorUtil.a(Config.getColorAccent(), Config.getSecondaryTextAlpha());
+        mSecondaryTextColor = Setting.Theme.getSecondaryTextColor();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view =
-                LayoutInflater.from(
-                        parent.getContext()).inflate(R.layout.single_line_list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.single_line_list_item, parent, false);
 
         return new ViewHolder(view);
     }
@@ -35,7 +33,7 @@ public final class ForumListRecyclerAdapter extends RecyclerAdapter<Forum, Forum
     public void onBindViewHolder(ViewHolder holder, int position) {
         Forum forum = mList.get(position);
 
-        TextView textView = holder.mTextView;
+        TextView textView = holder.textView;
         textView.setText(forum.getName());
         // add today's posts count to each forum
         if (forum.getTodayPosts() != 0) {
@@ -52,13 +50,13 @@ public final class ForumListRecyclerAdapter extends RecyclerAdapter<Forum, Forum
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView mTextView;
+        private final TextView textView;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            mTextView = (TextView) itemView;
-            ViewUtil.updateTextSize(mTextView);
+            textView = (TextView) itemView;
+            ViewUtil.updateTextSize(textView);
         }
     }
 }

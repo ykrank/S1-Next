@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<cl.monsoon.s1next.widget.PhotoView
+<cl.monsoon.s1next.view.PhotoView
     android:id="@+id/picture"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"

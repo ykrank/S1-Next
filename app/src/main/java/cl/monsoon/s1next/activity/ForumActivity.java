@@ -17,7 +17,7 @@ import java.util.List;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.ForumFragment;
-import cl.monsoon.s1next.singleton.Config;
+import cl.monsoon.s1next.singleton.Setting;
 import cl.monsoon.s1next.widget.StateListDrawableWithTint;
 
 /**
@@ -101,21 +101,19 @@ public final class ForumActivity extends BaseActivity
             getLayoutInflater().inflate(R.layout.toolbar_spinner, toolbar, true);
             mSpinner = (Spinner) toolbar.findViewById(R.id.spinner);
 
-            if (!Config.isDarkTheme()) {
-                int colorAccent = Config.getColorAccent();
-                int[][] states =
-                        new int[][]{
-                                new int[]{android.R.attr.state_enabled, android.R.attr.state_focused},
-                                new int[]{android.R.attr.state_enabled, android.R.attr.state_pressed},
-                        };
+            if (!Setting.Theme.isDarkTheme()) {
+                int colorAccent = Setting.Theme.getCurrentColorAccent();
+                int[][] states = new int[][]{
+                        new int[]{android.R.attr.state_enabled, android.R.attr.state_focused},
+                        new int[]{android.R.attr.state_enabled, android.R.attr.state_pressed},
+                };
                 int[] colors = new int[]{colorAccent, colorAccent};
                 ColorStateList colorStateList = new ColorStateList(states, colors);
 
-                mSpinner.setBackgroundDrawable(
-                        new StateListDrawableWithTint(
-                                getResources().getDrawable(R.drawable.abc_spinner_mtrl_am_alpha),
-                                colorStateList,
-                                PorterDuff.Mode.SRC_ATOP));
+                mSpinner.setBackgroundDrawable(new StateListDrawableWithTint(
+                        getResources().getDrawable(R.drawable.abc_spinner_mtrl_am_alpha),
+                        colorStateList,
+                        PorterDuff.Mode.SRC_ATOP));
             }
             mSpinner.setOnItemSelectedListener(this);
 

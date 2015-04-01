@@ -12,7 +12,7 @@ import android.webkit.WebView;
 import cl.monsoon.s1next.BuildConfig;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.SettingsActivity;
-import cl.monsoon.s1next.singleton.Config;
+import cl.monsoon.s1next.singleton.Setting;
 
 public final class SettingsFragment extends BaseSettingsFragment
         implements Preference.OnPreferenceClickListener {
@@ -46,13 +46,13 @@ public final class SettingsFragment extends BaseSettingsFragment
         switch (key) {
             // set current theme
             case PREF_KEY_THEME:
-                Config.setCurrentTheme(sharedPreferences);
+                Setting.Theme.setCurrentTheme(sharedPreferences);
                 getActivity().sendBroadcast(new Intent(ACTION_CHANGE_THEME));
 
                 break;
             // change font size
             case PREF_KEY_FONT_SIZE:
-                Config.setTextScale(sharedPreferences);
+                Setting.General.setTextScale(sharedPreferences);
                 getActivity().sendBroadcast(new Intent(ACTION_CHANGE_FONT_SIZE));
 
                 break;
@@ -87,14 +87,12 @@ public final class SettingsFragment extends BaseSettingsFragment
             WebView webView = new WebView(getActivity());
             webView.loadUrl("file:///android_asset/NOTICE.html");
 
-            return
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.pref_open_source_licenses)
-                            .setView(webView)
-                            .setPositiveButton(
-                                    android.R.string.ok,
-                                    (dialog, which) -> dialog.dismiss())
-                            .create();
+            return new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.pref_open_source_licenses)
+                    .setView(webView)
+                    .setPositiveButton(android.R.string.ok,
+                            (dialog, which) -> dialog.dismiss())
+                    .create();
         }
     }
 }

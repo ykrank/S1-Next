@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cl.monsoon.s1next.widget;
+package cl.monsoon.s1next.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -96,7 +96,7 @@ public final class ViewPagerTabs extends HorizontalScrollView implements ViewPag
 
         mSidePadding = (int) getResources().getDisplayMetrics().density * TAB_SIDE_PADDING_IN_DPS;
 
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, ATTRS);
+        final TypedArray typedArray = context.obtainStyledAttributes(attrs, ATTRS);
         mTextSize = typedArray.getDimensionPixelSize(0, 0);
         mTextStyle = typedArray.getInt(1, 0);
         mTextColor = typedArray.getColorStateList(2);
@@ -104,9 +104,8 @@ public final class ViewPagerTabs extends HorizontalScrollView implements ViewPag
         typedArray.recycle();
 
         mTabsHeader = new LinearLayout(context);
-        addView(
-                mTabsHeader,
-                new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+        addView(mTabsHeader, new FrameLayout.LayoutParams(
+                LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
     }
 
     public void setViewPager(ViewPager viewPager) {
@@ -117,18 +116,17 @@ public final class ViewPagerTabs extends HorizontalScrollView implements ViewPag
     private void addTabs(PagerAdapter pagerAdapter) {
         mTabsHeader.removeAllViews();
 
-        int count = pagerAdapter.getCount();
+        final int count = pagerAdapter.getCount();
         for (int i = 0; i < count; i++) {
             addTab(pagerAdapter.getPageTitle(i), i);
         }
     }
 
-    private void addTab(CharSequence tabTitle, int position) {
-        TextView textView = new TextView(getContext());
+    private void addTab(CharSequence tabTitle, final int position) {
+        final TextView textView = new TextView(getContext());
         textView.setText(tabTitle);
-        textView.setBackgroundResource(
-                ResourceUtil.getResourceId(
-                        getContext().getTheme(), android.R.attr.selectableItemBackground));
+        textView.setBackgroundResource(ResourceUtil.getResourceId(
+                getContext().getTheme(), android.R.attr.selectableItemBackground));
         textView.setGravity(Gravity.CENTER);
         textView.setOnClickListener(v -> mViewPager.setCurrentItem(getRtlPosition(position)));
 
@@ -147,10 +145,8 @@ public final class ViewPagerTabs extends HorizontalScrollView implements ViewPag
         textView.setAllCaps(mTextAllCaps);
         textView.setPadding(mSidePadding, 0, mSidePadding, 0);
 
-        mTabsHeader.addView(
-                textView,
-                new LinearLayout.LayoutParams(
-                        LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, 1));
+        mTabsHeader.addView(textView, new LinearLayout.LayoutParams(
+                LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, 1));
 
         // default to the first child being selected
         if (position == 0) {
@@ -170,11 +166,11 @@ public final class ViewPagerTabs extends HorizontalScrollView implements ViewPag
         if (mPrevSelected >= 0) {
             mTabsHeader.getChildAt(mPrevSelected).setSelected(false);
         }
-        View selectedChild = mTabsHeader.getChildAt(position);
+        final View selectedChild = mTabsHeader.getChildAt(position);
         selectedChild.setSelected(true);
 
         // update scroll position
-        int scrollPos = selectedChild.getLeft() - (getWidth() - selectedChild.getWidth()) / 2;
+        final int scrollPos = selectedChild.getLeft() - (getWidth() - selectedChild.getWidth()) / 2;
         smoothScrollTo(scrollPos, 0);
         mPrevSelected = position;
     }
@@ -206,21 +202,17 @@ public final class ViewPagerTabs extends HorizontalScrollView implements ViewPag
 
         @Override
         public boolean onLongClick(View v) {
-            int[] location = new int[2];
+            final int[] location = new int[2];
             getLocationOnScreen(location);
 
-            int width = getWidth();
-            int height = getHeight();
-            int screenWidth = getContext().getResources().getDisplayMetrics().widthPixels;
+            final int width = getWidth();
+            final int height = getHeight();
+            final int screenWidth = getContext().getResources().getDisplayMetrics().widthPixels;
 
-            Toast toast =
-                    Toast.makeText(
-                            getContext(),
-                            mViewPager.getAdapter().getPageTitle(mPosition),
-                            Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getContext(),
+                    mViewPager.getAdapter().getPageTitle(mPosition), Toast.LENGTH_SHORT);
             // show the toast under the tab
-            toast.setGravity(
-                    Gravity.TOP | Gravity.CENTER_HORIZONTAL,
+            toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL,
                     location[0] + width / 2 - screenWidth / 2, location[1] + height);
             toast.show();
 

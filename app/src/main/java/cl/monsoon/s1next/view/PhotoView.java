@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cl.monsoon.s1next.widget;
+package cl.monsoon.s1next.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -306,7 +306,7 @@ public final class PhotoView extends View
     }
 
     @Override
-    public boolean onTouchEvent(@NonNull MotionEvent event) {
+    public boolean onTouchEvent(MotionEvent event) {
         if (mScaleGetureDetector == null || mGestureDetector == null) {
             // We're being destroyed; ignore any touch events
             return true;
@@ -382,12 +382,10 @@ public final class PhotoView extends View
                     targetScale = mMinScale;
                     float relativeScale = targetScale / currentScale;
                     // Find the apparent origin for scaling that equals this scale and translate
-                    centerX =
-                            (getWidth() / 2 - relativeScale * mTranslateRect.centerX())
-                                    / (1 - relativeScale);
-                    centerY =
-                            (getHeight() / 2 - relativeScale * mTranslateRect.centerY())
-                                    / (1 - relativeScale);
+                    centerX = (getWidth() / 2 - relativeScale * mTranslateRect.centerX())
+                            / (1 - relativeScale);
+                    centerY = (getHeight() / 2 - relativeScale * mTranslateRect.centerY())
+                            / (1 - relativeScale);
                 } else {
                     targetScale = currentScale * DOUBLE_TAP_SCALE_FACTOR;
                     // Ensure the target scale is within our bounds
@@ -400,18 +398,14 @@ public final class PhotoView extends View
                     if (mTranslateRect.width() <= widthBuffer * 2) {
                         centerX = mTranslateRect.centerX();
                     } else {
-                        centerX =
-                                Math.min(
-                                        Math.max(mTranslateRect.left + widthBuffer, e.getX()),
-                                        mTranslateRect.right - widthBuffer);
+                        centerX = Math.min(Math.max(mTranslateRect.left + widthBuffer, e.getX()),
+                                mTranslateRect.right - widthBuffer);
                     }
                     if (mTranslateRect.height() <= heightBuffer * 2) {
                         centerY = mTranslateRect.centerY();
                     } else {
-                        centerY =
-                                Math.min(
-                                        Math.max(mTranslateRect.top + heightBuffer, e.getY()),
-                                        mTranslateRect.bottom - heightBuffer);
+                        centerY = Math.min(Math.max(mTranslateRect.top + heightBuffer, e.getY()),
+                                mTranslateRect.bottom - heightBuffer);
                     }
                 }
 
@@ -559,10 +553,9 @@ public final class PhotoView extends View
                 return;
             }
 
-            changed =
-                    photoBitmap != null
-                            && (mDrawable.getIntrinsicWidth() != photoBitmap.getWidth()
-                                || mDrawable.getIntrinsicHeight() != photoBitmap.getHeight());
+            changed = photoBitmap != null
+                    && (mDrawable.getIntrinsicWidth() != photoBitmap.getWidth()
+                    || mDrawable.getIntrinsicHeight() != photoBitmap.getHeight());
 
             // Reset mMinScale to ensure the bounds / matrix are recalculated
             mMinScale = 0f;
@@ -702,9 +695,8 @@ public final class PhotoView extends View
             return null;
         }
 
-        final Bitmap croppedBitmap =
-                Bitmap.createBitmap(
-                        (int) CROPPED_SIZE, (int) CROPPED_SIZE, Bitmap.Config.ARGB_8888);
+        final Bitmap croppedBitmap = Bitmap.createBitmap(
+                (int) CROPPED_SIZE, (int) CROPPED_SIZE, Bitmap.Config.ARGB_8888);
         final Canvas croppedCanvas = new Canvas(croppedBitmap);
 
         // scale for the final dimensions
@@ -824,8 +816,7 @@ public final class PhotoView extends View
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (mFixedHeight != -1) {
-            super.onMeasure(
-                    widthMeasureSpec,
+            super.onMeasure(widthMeasureSpec,
                     MeasureSpec.makeMeasureSpec(mFixedHeight, MeasureSpec.AT_MOST));
             setMeasuredDimension(getMeasuredWidth(), mFixedHeight);
         } else {
@@ -895,9 +886,8 @@ public final class PhotoView extends View
         final int vWidth = getWidth();
         final int vHeight = getHeight();
 
-        final boolean fits =
-                (dWidth < 0 || vWidth == dWidth)
-                        && (dHeight < 0 || vHeight == dHeight);
+        final boolean fits = (dWidth < 0 || vWidth == dWidth)
+                && (dHeight < 0 || vHeight == dHeight);
 
         // We need to do the scaling ourself, so have the drawable use its native size.
         mDrawable.setBounds(0, 0, dWidth, dHeight);
@@ -927,9 +917,8 @@ public final class PhotoView extends View
         final int vWidth = mAllowCrop ? sCropSize : getWidth();
         final int vHeight = mAllowCrop ? sCropSize : getHeight();
 
-        final boolean fits =
-                (dWidth < 0 || vWidth == dWidth)
-                        && (dHeight < 0 || vHeight == dHeight);
+        final boolean fits = (dWidth < 0 || vWidth == dWidth)
+                && (dHeight < 0 || vHeight == dHeight);
 
         if (fits && !mAllowCrop) {
             mMatrix.reset();
@@ -941,12 +930,11 @@ public final class PhotoView extends View
             } else {
                 mTempDst.set(0, 0, vWidth, vHeight);
             }
-            RectF scaledDestination =
-                    new RectF(
-                            (vWidth / 2) - (dWidth * mMaxInitialScaleFactor / 2),
-                            (vHeight / 2) - (dHeight * mMaxInitialScaleFactor / 2),
-                            (vWidth / 2) + (dWidth * mMaxInitialScaleFactor / 2),
-                            (vHeight / 2) + (dHeight * mMaxInitialScaleFactor / 2));
+            RectF scaledDestination = new RectF(
+                    (vWidth / 2) - (dWidth * mMaxInitialScaleFactor / 2),
+                    (vHeight / 2) - (dHeight * mMaxInitialScaleFactor / 2),
+                    (vWidth / 2) + (dWidth * mMaxInitialScaleFactor / 2),
+                    (vHeight / 2) + (dHeight * mMaxInitialScaleFactor / 2));
             if (mTempDst.contains(scaledDestination)) {
                 mMatrix.setRectToRect(mTempSrc, scaledDestination, Matrix.ScaleToFit.CENTER);
             } else {

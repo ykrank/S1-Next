@@ -28,7 +28,6 @@ public final class StateListDrawableWithTint extends StateListDrawable {
         // superclass's constructor (which would call
         // in our constructor's first line implicitly)
         // invokes this method
-        //noinspection ConstantConditions
         if (mColorStateList != null) {
             int color = mColorStateList.getColorForState(stateSet, Color.TRANSPARENT);
             setColorFilter(color, mMode);

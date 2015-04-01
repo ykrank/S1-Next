@@ -33,7 +33,7 @@
         android:translationY="@dimen/emoticon_keyboard_height"
         android:visibility="gone">
 
-        <cl.monsoon.s1next.widget.ViewPagerTabs
+        <cl.monsoon.s1next.view.ViewPagerTabs
             android:id="@+id/emoticon_keyboard_header"
             style="@style/EmoticonKeyboardTabTextStyle"
             android:layout_width="match_parent"

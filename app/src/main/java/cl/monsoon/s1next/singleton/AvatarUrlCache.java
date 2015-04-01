@@ -1,6 +1,5 @@
 package cl.monsoon.s1next.singleton;
 
-
 import android.util.Log;
 import android.util.LruCache;
 
@@ -14,24 +13,31 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.BuildConfig;
-import cl.monsoon.s1next.MyApplication;
+import cl.monsoon.s1next.Config;
 
 /**
- * According to RFC, we could cache some responses
- * with specific status codes (like 301, 404 and 405).
- * Glide would cache the images whose response is successful.
- * But we also cache those responses (actually are URLs
- * in implementation) whose status code is cacheable.
+ * We would get 404 status code if user hasn't set up their
+ * avatar (in this case, we use the default avatar for this user).
+ * So we can use this mechanism to cache these user avatars
+ * (because they just use the default avatar).
  * <p>
- * If this cache contains avatar URL that Glide is request,
+ * According to RFC (http://tools.ietf.org/html/rfc7231#section-6.1),
+ * we could cache some responses with specific status codes (like 301, 404 and 405).
+ * Glide only cache the images whose response is successful.
+ * But we also cache those user avatar URLs whose status code
+ * is cacheable in order to tell Glide we use the default
+ * avatar (error placeholder in implementation).
+ * <p>
+ * If this cache contains an avatar URL that Glide requests,
  * just throw an exception to tell Glide to use the error
  * placeholder for this image.
  *
  * @see cl.monsoon.s1next.widget.OkHttpStreamFetcher#CACHEABLE_RESPONSE_STATUS_CODES
  * @see cl.monsoon.s1next.widget.OkHttpStreamFetcher#loadData(com.bumptech.glide.Priority)
  */
-public enum AvatarUrlsCache {
+public enum AvatarUrlCache {
     INSTANCE;
 
     private static final String DISK_CACHE_SUBDIRECTORY = "glide_urls_disk_cache";
@@ -54,14 +60,13 @@ public enum AvatarUrlsCache {
     private final LruCache<String, Object> lruCache;
     private final KeyGenerator keyGenerator;
 
-    AvatarUrlsCache() {
+    AvatarUrlCache() {
         lruCache = new LruCache<>(Config.AVATAR_URLS_MEMORY_CACHE_MAX_NUMBER);
 
-        File file =
-                new File(
-                        MyApplication.getContext().getCacheDir().getPath()
-                                + File.separator
-                                + DISK_CACHE_SUBDIRECTORY);
+        File file = new File(
+                App.getContext().getCacheDir().getPath()
+                        + File.separator
+                        + DISK_CACHE_SUBDIRECTORY);
         try {
             diskLruCache = DiskLruCache.open(
                     file,
@@ -125,13 +130,13 @@ public enum AvatarUrlsCache {
                 new LruCache<>(Config.AVATAR_URL_KEYS_MEMORY_CACHE_MAX_NUMBER);
 
         public String getKey(Key key) {
-            String vale = lruCache.get(key);
-            if (vale == null) {
+            String value = lruCache.get(key);
+            if (value == null) {
                 try {
                     MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
                     key.updateDiskCacheKey(messageDigest);
-                    vale = Util.sha256BytesToHex(messageDigest.digest());
-                    lruCache.put(key, vale);
+                    value = Util.sha256BytesToHex(messageDigest.digest());
+                    lruCache.put(key, value);
                 } catch (NoSuchAlgorithmException e) {
                     throw new RuntimeException("No SHA-256 algorithm support.", e);
                 } catch (UnsupportedEncodingException e) {
@@ -139,7 +144,7 @@ public enum AvatarUrlsCache {
                 }
             }
 
-            return vale;
+            return value;
         }
     }
 

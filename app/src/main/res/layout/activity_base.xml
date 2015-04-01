@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <cl.monsoon.s1next.widget.InsetsFrameLayout
+    <cl.monsoon.s1next.view.InsetsFrameLayout
         android:id="@+id/insets_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -35,7 +35,7 @@
 
         <include layout="@layout/toolbar" />
 
-    </cl.monsoon.s1next.widget.InsetsFrameLayout>
+    </cl.monsoon.s1next.view.InsetsFrameLayout>
 
     <!-- android:layout_gravity="start" tells DrawerLayout to treat
      this as a sliding drawer on the left side for left-to-right
@@ -56,7 +56,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/ic_drawer_background" />
 
-        <cl.monsoon.s1next.widget.BezelImageView
+        <cl.monsoon.s1next.view.BezelImageView
             android:id="@+id/drawer_user_avatar"
             android:layout_width="@dimen/drawer_avatar_size"
             android:layout_height="@dimen/drawer_avatar_size"

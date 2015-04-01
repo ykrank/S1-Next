@@ -1,7 +1,5 @@
 package cl.monsoon.s1next.widget;
 
-import android.os.RemoteException;
-
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.data.DataFetcher;
@@ -17,8 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import cl.monsoon.s1next.Api;
-import cl.monsoon.s1next.singleton.AvatarUrlsCache;
-import cl.monsoon.s1next.singleton.Config;
+import cl.monsoon.s1next.singleton.AvatarUrlCache;
+import cl.monsoon.s1next.singleton.Setting;
 
 import static java.net.HttpURLConnection.HTTP_BAD_METHOD;
 import static java.net.HttpURLConnection.HTTP_GONE;
@@ -45,20 +43,19 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
      * <p>
      * See http://tools.ietf.org/html/rfc7231#section-6.1
      */
-    private static final int[] CACHEABLE_RESPONSE_STATUS_CODES =
-            new int[]{
-                    HTTP_OK,
-                    HTTP_NOT_AUTHORITATIVE,
-                    HTTP_NO_CONTENT,
-                    HTTP_PARTIAL,
-                    HTTP_MULT_CHOICE,
-                    HTTP_MOVED_PERM,
-                    HTTP_NOT_FOUND,
-                    HTTP_BAD_METHOD,
-                    HTTP_GONE,
-                    HTTP_REQ_TOO_LONG,
-                    HTTP_NOT_IMPLEMENTED
-            };
+    private static final int[] CACHEABLE_RESPONSE_STATUS_CODES = new int[]{
+            HTTP_OK,
+            HTTP_NOT_AUTHORITATIVE,
+            HTTP_NO_CONTENT,
+            HTTP_PARTIAL,
+            HTTP_MULT_CHOICE,
+            HTTP_MOVED_PERM,
+            HTTP_NOT_FOUND,
+            HTTP_BAD_METHOD,
+            HTTP_GONE,
+            HTTP_REQ_TOO_LONG,
+            HTTP_NOT_IMPLEMENTED
+    };
 
     private final OkHttpClient mOkHttpClient;
     private final String mUrl;
@@ -72,16 +69,15 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
     }
 
     /**
-     * @see cl.monsoon.s1next.singleton.AvatarUrlsCache
+     * @see AvatarUrlCache
      */
     @Override
-    public InputStream loadData(Priority priority) throws IOException, RemoteException {
+    public InputStream loadData(Priority priority) throws IOException {
         Key key = null;
         if (Api.isAvatarUrl(mUrl)) {
-            key =
-                    new AvatarUrlsCache.OriginalKey(
-                            mUrl, Config.getAvatarCacheInvalidationIntervalSignature());
-            if (AvatarUrlsCache.has(key)) {
+            key = new AvatarUrlCache.OriginalKey(
+                    mUrl, Setting.Download.getAvatarCacheInvalidationIntervalSignature());
+            if (AvatarUrlCache.has(key)) {
                 throw new IOException("Already have cached this avatar (" + mUrl + ").");
             }
         }
@@ -96,19 +92,13 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
         if (!response.isSuccessful()) {
             response.body().close();
 
-            // We need to provide InputStream (the avatar's placeholder InputStream)
-            // if we failed to load avatar from server and the status code is in
-            // CACHEABLE_RESPONSE_STATUS_CODES. So OkHttpStreamFetcher will use
-            // this cached placeholder without sending HTTP GET to get user's avatar.
-            // But we don't need to provide InputStream if we get the avatar successfully.
-            if (key != null
-                    && ArrayUtils.contains(CACHEABLE_RESPONSE_STATUS_CODES, response.code())) {
-                AvatarUrlsCache.put(key);
-
-                throw
-                        new RemoteException(
-                                "Response (status code " + response.code() + ") is unsuccessful.");
+            // if (this this a avatar URL) && (this URL is cacheable)
+            if (key != null && ArrayUtils.contains(
+                    CACHEABLE_RESPONSE_STATUS_CODES, response.code())) {
+                AvatarUrlCache.put(key);
             }
+
+            throw new IOException("Response (status code " + response.code() + ") is unsuccessful.");
         }
 
         return response.body().byteStream();

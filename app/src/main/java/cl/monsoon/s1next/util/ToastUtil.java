@@ -6,7 +6,7 @@ import android.widget.Toast;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import cl.monsoon.s1next.MyApplication;
+import cl.monsoon.s1next.App;
 
 public final class ToastUtil {
 
@@ -21,10 +21,10 @@ public final class ToastUtil {
     }
 
     public static void showByText(String text, @Duration int duration) {
-        Toast.makeText(MyApplication.getContext(), text, duration).show();
+        Toast.makeText(App.getContext(), text, duration).show();
     }
 
     public static void showByResId(int resId, @Duration int duration) {
-        Toast.makeText(MyApplication.getContext(), resId, duration).show();
+        Toast.makeText(App.getContext(), resId, duration).show();
     }
 }

@@ -32,6 +32,7 @@ import android.widget.Toast;
 import org.apache.commons.lang3.Range;
 
 import cl.monsoon.s1next.Api;
+import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.adapter.ThreadAttachmentInfoListArrayAdapter;
 import cl.monsoon.s1next.fragment.BaseFragment;
@@ -40,8 +41,8 @@ import cl.monsoon.s1next.fragment.PostListPagerFragment;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.list.PostList;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
-import cl.monsoon.s1next.singleton.Config;
-import cl.monsoon.s1next.singleton.MyAccount;
+import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
@@ -154,26 +155,24 @@ public class PostListActivity extends BaseActivity
 
         // Registers broadcast receiver to check whether Wi-Fi is enabled
         // when we need to download images.
-        if (Config.needToTurnWifiOn()) {
-            Config.setWifi(NetworkUtil.isWifiConnected());
+        if (Setting.Download.needMonitorWifi()) {
+            Setting.General.setWifi(NetworkUtil.isWifiConnected());
 
             mWifiReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    Config.setWifi(NetworkUtil.isWifiConnected());
+                    Setting.General.setWifi(NetworkUtil.isWifiConnected());
                 }
             };
 
-            IntentFilter intentFilter =
-                    new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+            IntentFilter intentFilter = new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION);
             registerReceiver(mWifiReceiver, intentFilter);
         }
 
         mQuoteReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                startReplyActivity(
-                        intent.getStringExtra(ReplyActivity.ARG_QUOTE_POST_ID),
+                startReplyActivity(intent.getStringExtra(ReplyActivity.ARG_QUOTE_POST_ID),
                         intent.getStringExtra(ReplyActivity.ARG_QUOTE_POST_COUNT));
             }
         };
@@ -282,9 +281,8 @@ public class PostListActivity extends BaseActivity
     }
 
     private void showPageFlipDialog() {
-        View view =
-                getLayoutInflater().inflate(
-                        R.layout.dialog_page_flip, (ViewGroup) findViewById(R.id.drawer_layout), false);
+        View view = getLayoutInflater().inflate(R.layout.dialog_page_flip,
+                (ViewGroup) findViewById(R.id.drawer_layout), false);
 
         if (mSeekBarProgress == -1) {
             mSeekBarProgress = mViewPager.getCurrentItem();
@@ -299,9 +297,9 @@ public class PostListActivity extends BaseActivity
         valueView.setText(String.valueOf(mSeekBarProgress + 1));
         valueView.setEms(String.valueOf(mTotalPages).length());
         // set EditText range filter
-        valueView.setFilters(
-                new InputFilter[]{new InputFilterRange(Range.between(1, mTotalPages))});
+        valueView.setFilters(new InputFilter[]{new InputFilterRange(Range.between(1, mTotalPages))});
         valueView.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -356,8 +354,7 @@ public class PostListActivity extends BaseActivity
         new AlertDialog.Builder(this)
                 .setView(view)
                 .setTitle(R.string.dialog_title_page_flip)
-                .setPositiveButton(
-                        getText(android.R.string.ok),
+                .setPositiveButton(getText(android.R.string.ok),
                         (dialog, which) -> {
                             mSeekBarProgress = -1;
 
@@ -366,8 +363,7 @@ public class PostListActivity extends BaseActivity
                             }
                         }
                 )
-                .setNegativeButton(
-                        getText(android.R.string.cancel),
+                .setNegativeButton(getText(android.R.string.cancel),
                         (dialog, which) -> mSeekBarProgress = -1
                 ).show();
     }
@@ -417,7 +413,7 @@ public class PostListActivity extends BaseActivity
 
     private boolean checkUserLoggedInStatus() {
         // show LoginPromptDialog if user hasn't logged in.
-        if (!MyAccount.hasLoggedIn()) {
+        if (!User.hasLoggedIn()) {
             new LoginPromptDialog().show(getSupportFragmentManager(), LoginPromptDialog.TAG);
 
             return false;
@@ -465,8 +461,8 @@ public class PostListActivity extends BaseActivity
 
             Bundle bundle = new Bundle();
             bundle.putString(ARG_ATTACHMENT_TITLE, threadAttachment.getTitle());
-            bundle.putParcelableArrayList(
-                    ARG_THREAD_ATTACHMENT_INFO_LIST, threadAttachment.getInfoList());
+            bundle.putParcelableArrayList(ARG_THREAD_ATTACHMENT_INFO_LIST,
+                    threadAttachment.getInfoList());
             fragment.setArguments(bundle);
 
             return fragment;
@@ -475,18 +471,16 @@ public class PostListActivity extends BaseActivity
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            return
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(getArguments().getString(ARG_ATTACHMENT_TITLE))
-                            .setAdapter(
-                                    new ThreadAttachmentInfoListArrayAdapter(
-                                            getActivity(),
-                                            R.layout.two_line_list_item,
-                                            getArguments().getParcelableArrayList(
-                                                    ARG_THREAD_ATTACHMENT_INFO_LIST)),
-                                    null)
-                            .setPositiveButton(android.R.string.ok, null)
-                            .create();
+            return new AlertDialog.Builder(getActivity())
+                    .setTitle(getArguments().getString(ARG_ATTACHMENT_TITLE))
+                    .setAdapter(new ThreadAttachmentInfoListArrayAdapter(
+                                    getActivity(),
+                                    R.layout.two_line_list_item,
+                                    getArguments().getParcelableArrayList(
+                                            ARG_THREAD_ATTACHMENT_INFO_LIST)),
+                            null)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .create();
         }
     }
 
@@ -509,19 +503,17 @@ public class PostListActivity extends BaseActivity
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            View view =
-                    getActivity().getLayoutInflater().inflate(
-                            R.layout.dialog_favourites_add,
-                            (ViewGroup) getActivity().findViewById(R.id.drawer_layout),
-                            false);
+            View view = getActivity().getLayoutInflater().inflate(
+                    R.layout.dialog_favourites_add,
+                    (ViewGroup) getActivity().findViewById(R.id.drawer_layout),
+                    false);
 
-            AlertDialog alertDialog =
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.dialog_title_favourites_add)
-                            .setView(view)
-                            .setPositiveButton(android.R.string.ok, null)
-                            .setNegativeButton(android.R.string.cancel, null)
-                            .create();
+            AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.dialog_title_favourites_add)
+                    .setView(view)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create();
 
             alertDialog.setOnShowListener(dialog ->
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v ->
@@ -561,7 +553,7 @@ public class PostListActivity extends BaseActivity
 
             @Override
             protected int getStartLoaderId() {
-                if (TextUtils.isEmpty(MyAccount.getAuthenticityToken())) {
+                if (TextUtils.isEmpty(User.getAuthenticityToken())) {
                     return ID_LOADER_GET_AUTHENTICITY_TOKEN;
                 } else {
                     return ID_LOADER_ADD_THREAD_TO_FAVOURITES;
@@ -571,20 +563,18 @@ public class PostListActivity extends BaseActivity
             @Override
             public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
                 if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
-                    return
-                            new HttpGetLoader<>(
-                                    getActivity(),
-                                    Api.URL_AUTHENTICITY_TOKEN_HELPER,
-                                    ResultWrapper.class);
+                    return new HttpGetLoader<>(
+                            getActivity(),
+                            Api.URL_AUTHENTICITY_TOKEN_HELPER,
+                            ResultWrapper.class);
                 } else if (id == ID_LOADER_ADD_THREAD_TO_FAVOURITES) {
-                    return
-                            new HttpPostLoader<>(
-                                    getActivity(),
-                                    Api.URL_THREAD_FAVOURITES_ADD,
-                                    ResultWrapper.class,
-                                    Api.getThreadFavouritesAddBuilder(
-                                            getArguments().getString(ARG_THREAD_ID),
-                                            getArguments().getString(ARG_REMARK)));
+                    return new HttpPostLoader<>(
+                            getActivity(),
+                            Api.URL_THREAD_FAVOURITES_ADD,
+                            ResultWrapper.class,
+                            Api.getThreadFavouritesAddBuilder(
+                                    getArguments().getString(ARG_THREAD_ID),
+                                    getArguments().getString(ARG_REMARK)));
                 }
 
                 return super.onCreateLoader(id, args);
@@ -593,7 +583,7 @@ public class PostListActivity extends BaseActivity
             @Override
             public void onLoadFinished(Loader<AsyncResult<ResultWrapper>> loader, AsyncResult<ResultWrapper> asyncResult) {
                 if (asyncResult.exception != null) {
-                    ToastUtil.showByResId(asyncResult.getExceptionString(), Toast.LENGTH_SHORT);
+                    ToastUtil.showByResId(asyncResult.getExceptionStringRes(), Toast.LENGTH_SHORT);
                 } else {
                     int id = loader.getId();
                     if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
@@ -628,16 +618,15 @@ public class PostListActivity extends BaseActivity
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-            return
-                    new AlertDialog.Builder(getActivity())
-                            .setMessage(R.string.dialog_message_login_prompt)
-                            .setPositiveButton(R.string.action_login,
-                                    (dialog, which) -> {
-                                        Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                        startActivity(intent);
-                                    })
-                            .setNegativeButton(android.R.string.cancel, null)
-                            .create();
+            return new AlertDialog.Builder(getActivity())
+                    .setMessage(R.string.dialog_message_login_prompt)
+                    .setPositiveButton(R.string.action_login,
+                            (dialog, which) -> {
+                                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                startActivity(intent);
+                            })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create();
         }
     }
 }

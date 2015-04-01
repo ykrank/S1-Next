@@ -10,9 +10,9 @@ import com.bugsnag.android.Bugsnag;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import cl.monsoon.s1next.singleton.Config;
+import cl.monsoon.s1next.singleton.Setting;
 
-public final class MyApplication extends Application {
+public final class App extends Application {
 
     private static Context sContext;
 
@@ -45,11 +45,11 @@ public final class MyApplication extends Application {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // initiate the config depends on settings
-        Config.setCurrentTheme(sharedPreferences);
-        Config.setTextScale(sharedPreferences);
-        Config.setAvatarCacheInvalidationInterval(sharedPreferences);
-        Config.setAvatarsDownloadStrategy(sharedPreferences);
-        Config.setAvatarResolutionStrategy(sharedPreferences);
-        Config.setImagesDownloadStrategy(sharedPreferences);
+        Setting.General.setTextScale(sharedPreferences);
+        Setting.Theme.setCurrentTheme(sharedPreferences);
+        Setting.Download.setAvatarCacheInvalidationInterval(sharedPreferences);
+        Setting.Download.setAvatarsDownloadStrategy(sharedPreferences);
+        Setting.Download.setAvatarResolutionStrategy(sharedPreferences);
+        Setting.Download.setImagesDownloadStrategy(sharedPreferences);
     }
 }

@@ -32,11 +32,11 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.PostListActivity;
 import cl.monsoon.s1next.activity.ReplyActivity;
 import cl.monsoon.s1next.model.Post;
-import cl.monsoon.s1next.singleton.Config;
+import cl.monsoon.s1next.singleton.Setting;
 import cl.monsoon.s1next.util.ViewUtil;
+import cl.monsoon.s1next.widget.CustomMovementMethod;
 import cl.monsoon.s1next.widget.GlideImageGetter;
-import cl.monsoon.s1next.widget.MyMovementMethod;
-import cl.monsoon.s1next.widget.MyTagHandler;
+import cl.monsoon.s1next.widget.TagHandler;
 
 /**
  * This {@link cl.monsoon.s1next.adapter.RecyclerAdapter}
@@ -60,30 +60,25 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         setHasStableIds(true);
 
         // loading avatars is prior to images in replies
-        mAvatarRequestBuilder =
-                Glide.with(mContext)
-                        .from(String.class)
-                        .signature(Config.getAvatarCacheInvalidationIntervalSignature())
-                        .error(R.drawable.ic_avatar_placeholder)
-                        .priority(Priority.HIGH)
-                        .transform(new CenterCrop(Glide.get(context).getBitmapPool()));
+        mAvatarRequestBuilder = Glide.with(mContext)
+                .from(String.class)
+                .signature(Setting.Download.getAvatarCacheInvalidationIntervalSignature())
+                .error(R.drawable.ic_avatar_placeholder)
+                .priority(Priority.HIGH)
+                .transform(new CenterCrop(Glide.get(context).getBitmapPool()));
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_FOOTER_PROGRESS) {
-            View view =
-                    LayoutInflater.from(
-                            parent.getContext())
-                            .inflate(R.layout.fragment_post_list_footer_progress, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.fragment_post_list_footer_progress, parent, false);
 
             return new FooterProgressViewHolder(view);
         }
 
-        View view =
-                LayoutInflater.from(
-                        parent.getContext())
-                        .inflate(R.layout.fragment_post_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.fragment_post_list, parent, false);
 
         return new ItemViewHolder(view);
     }
@@ -106,35 +101,27 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         Post post = mList.get(position);
 
         ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-        ImageView avatarView = itemViewHolder.mAvatar;
+        ImageView avatarView = itemViewHolder.avatar;
 
         // whether need to download avatars
         // depends on settings and Wi-Fi status
-        final boolean avatarsDownload = Config.isAvatarsDownload();
-        if (avatarsDownload) {
+        if (Setting.Download.needDownloadAvatars()) {
             avatarView.setVisibility(View.VISIBLE);
 
-            String url =
-                    Config.isHighResolutionAvatarsDownload()
-                            ? Api.getAvatarMediumUrl(post.getUserId())
-                            : Api.getAvatarSmallUrl(post.getUserId());
+            String url = Setting.Download.needDownloadHighResolutionAvatars()
+                    ? Api.getAvatarMediumUrl(post.getUserId())
+                    : Api.getAvatarSmallUrl(post.getUserId());
             // show user's avatar
-            mAvatarRequestBuilder
-                    .load(url)
-                    .into(avatarView);
+            mAvatarRequestBuilder.load(url).into(avatarView);
         } else {
             avatarView.setVisibility(View.GONE);
         }
 
-        itemViewHolder.mUsername.setText(post.getUsername());
-        itemViewHolder.mTime.setText(
-                DateUtils.getRelativeDateTimeString(
-                        mContext,
-                        new MutableDateTime(post.getTime()),
-                        Days.ONE,
-                        0));
+        itemViewHolder.username.setText(post.getUsername());
+        itemViewHolder.time.setText(DateUtils.getRelativeDateTimeString(
+                mContext, new MutableDateTime(post.getTime()), Days.ONE, 0));
 
-        TextView countView = itemViewHolder.mCount;
+        TextView countView = itemViewHolder.count;
         // there is no need to quote #1
         if ("1".equals(post.getCount())) {
             countView.setText("#1");
@@ -147,21 +134,19 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         }
 
         String reply = post.getReply();
-        TextView replayView = itemViewHolder.mPost;
+        TextView replayView = itemViewHolder.post;
         // some replies are empty
         // like http://bbs.saraba1st.com/2b/thread-1008413-1-1.html#authorposton24836448
         if (TextUtils.isEmpty(reply)) {
             replayView.setText(null);
-
-            return;
+        } else {
+            // use GlideImageGetter to show images in TextView
+            replayView.setText(
+                    Html.fromHtml(
+                            reply,
+                            new GlideImageGetter(mContext, replayView),
+                            new TagHandler(mContext)));
         }
-
-        // use GlideImageGetter to show images in TextView
-        replayView.setText(
-                Html.fromHtml(
-                        reply,
-                        new GlideImageGetter(mContext, replayView),
-                        new MyTagHandler(mContext)));
     }
 
     @Override
@@ -205,41 +190,41 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
 
     private static class ItemViewHolder extends RecyclerView.ViewHolder {
 
-        private final ImageView mAvatar;
-        private final TextView mUsername;
-        private final TextView mTime;
-        private final TextView mCount;
-        private final TextView mPost;
+        private final ImageView avatar;
+        private final TextView username;
+        private final TextView time;
+        private final TextView count;
+        private final TextView post;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
 
-            mAvatar = (ImageView) itemView.findViewById(R.id.avatar);
-            mUsername = (TextView) itemView.findViewById(R.id.username);
-            mTime = (TextView) itemView.findViewById(R.id.time);
-            mCount = (TextView) itemView.findViewById(R.id.count);
-            mPost = (TextView) itemView.findViewById(R.id.post);
+            avatar = (ImageView) itemView.findViewById(R.id.avatar);
+            username = (TextView) itemView.findViewById(R.id.username);
+            time = (TextView) itemView.findViewById(R.id.time);
+            count = (TextView) itemView.findViewById(R.id.count);
+            post = (TextView) itemView.findViewById(R.id.post);
 
-            ViewUtil.updateTextSize(mUsername, mTime, mCount, mPost);
+            ViewUtil.updateTextSize(username, time, count, post);
 
-            mCount.setMovementMethod(LinkMovementMethod.getInstance());
+            count.setMovementMethod(LinkMovementMethod.getInstance());
             // use custom movement method to provides selection and click
-            mPost.setMovementMethod(MyMovementMethod.getInstance());
+            post.setMovementMethod(CustomMovementMethod.getInstance());
 
-            // use TouchDelegate to increase mCount's clicking area
-            mCount.post(() -> {
+            // use TouchDelegate to increase count's clicking area
+            count.post(() -> {
                 int halfMinimumTouchTargetSize =
-                        mCount.getContext()
+                        count.getContext()
                                 .getResources()
                                 .getDimensionPixelSize(
                                         R.dimen.minimum_touch_target_size) / 2;
                 Rect rect = new Rect();
-                mCount.getHitRect(rect);
+                count.getHitRect(rect);
                 rect.top -= halfMinimumTouchTargetSize;
                 rect.right += halfMinimumTouchTargetSize;
                 rect.bottom += halfMinimumTouchTargetSize;
                 rect.left -= halfMinimumTouchTargetSize;
-                itemView.setTouchDelegate(new TouchDelegate(rect, mCount));
+                itemView.setTouchDelegate(new TouchDelegate(rect, count));
             });
         }
     }

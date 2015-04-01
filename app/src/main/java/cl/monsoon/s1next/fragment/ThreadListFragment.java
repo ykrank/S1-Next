@@ -9,10 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.BaseActivity;
 import cl.monsoon.s1next.model.Forum;
-import cl.monsoon.s1next.singleton.Config;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;

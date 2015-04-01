@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -26,9 +25,9 @@ import cl.monsoon.s1next.model.list.ForumGroupList;
 import cl.monsoon.s1next.model.mapper.ForumGroupListWrapper;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.ToastUtil;
+import cl.monsoon.s1next.view.BaseRecyclerView;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpGetLoader;
-import cl.monsoon.s1next.widget.MyRecyclerView;
 import cl.monsoon.s1next.widget.RecyclerViewHelper;
 
 /**
@@ -39,7 +38,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
 
     public static final String TAG = ForumFragment.class.getSimpleName();
 
-    private MyRecyclerView mRecyclerView;
+    private BaseRecyclerView mRecyclerView;
     private ForumListRecyclerAdapter mRecyclerAdapter;
 
     private ForumGroupList mForumGroupList;
@@ -54,20 +53,19 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mRecyclerView = (MyRecyclerView) view.findViewById(R.id.recycler_view);
+        mRecyclerView = (BaseRecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerAdapter = new ForumListRecyclerAdapter();
         mRecyclerView.setAdapter(mRecyclerAdapter);
 
         // the forum list's each element has fixed size
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addOnItemTouchListener(
-                new RecyclerViewHelper(
+        mRecyclerView.addOnItemTouchListener(new RecyclerViewHelper(
                         getActivity(),
                         mRecyclerView,
                         new RecyclerViewHelper.OnItemClickListener() {
                             @Override
-                            public void onItemClick(@NonNull View view, int position) {
+                            public void onItemClick(View view, int position) {
                                 Forum forum = mRecyclerAdapter.getItem(position);
 
                                 Intent intent = new Intent(getActivity(), ThreadListActivity.class);
@@ -77,7 +75,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
                             }
 
                             @Override
-                            public void onItemLongClick(@NonNull View view, int position) {
+                            public void onItemLongClick(View view, int position) {
 
                             }
                         })
@@ -102,7 +100,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
     }
 
     @Override
-    public void onInsetsChanged(@NonNull Rect insets) {
+    public void onInsetsChanged(Rect insets) {
         setRecyclerViewPadding(
                 mRecyclerView,
                 insets,
@@ -120,9 +118,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_browser:
-                IntentUtil.startViewIntentExcludeOurApp(
-                        getActivity(),
-                        Uri.parse(Api.URL_S1));
+                IntentUtil.startViewIntentExcludeOurApp(getActivity(), Uri.parse(Api.URL_S1));
 
                 return true;
         }
@@ -134,11 +130,10 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
     public Loader<AsyncResult<ForumGroupListWrapper>> onCreateLoader(int id, Bundle args) {
         super.onCreateLoader(id, args);
 
-        return
-                new HttpGetLoader<>(
-                        getActivity(),
-                        Api.URL_FORUM,
-                        ForumGroupListWrapper.class);
+        return new HttpGetLoader<>(
+                getActivity(),
+                Api.URL_FORUM,
+                ForumGroupListWrapper.class);
     }
 
     @Override
@@ -146,7 +141,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
         super.onLoadFinished(loader, asyncResult);
 
         if (asyncResult.exception != null) {
-            ToastUtil.showByResId(asyncResult.getExceptionString(), Toast.LENGTH_SHORT);
+            ToastUtil.showByResId(asyncResult.getExceptionStringRes(), Toast.LENGTH_SHORT);
         } else {
             ForumGroupListWrapper wrapper = asyncResult.data;
             mForumGroupList = wrapper.unwrap();

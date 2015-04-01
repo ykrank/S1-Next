@@ -14,7 +14,7 @@ import java.util.List;
 
 import cl.monsoon.s1next.R;
 
-public class IntentUtil {
+public final class IntentUtil {
 
     public static final String ARG_COME_FROM_OUR_APP = "come_from_our_app";
 
@@ -25,10 +25,9 @@ public class IntentUtil {
     /**
      * @see android.text.style.URLSpan#onClick(View)
      */
-    public static boolean isComeFromOurApp(Intent intent, Context context) {
-        return
-                context.getPackageName().equals(
-                        intent.getStringExtra(Browser.EXTRA_APPLICATION_ID));
+    public static boolean isComeFromOurApp(Context context, Intent intent) {
+        return context.getPackageName().equals(
+                intent.getStringExtra(Browser.EXTRA_APPLICATION_ID));
     }
 
     public static boolean getComeFromOurAppExtra(Intent intent) {
@@ -57,12 +56,10 @@ public class IntentUtil {
         if (targetIntentList.isEmpty()) {
             ToastUtil.showByResId(R.string.toast_message_chooser_no_applications, Toast.LENGTH_LONG);
         } else {
-            Intent chooserIntent =
-                    Intent.createChooser(
-                            targetIntentList.remove(0),
-                            context.getString(R.string.intent_title_which_view_application));
-            chooserIntent.putExtra(
-                    Intent.EXTRA_INITIAL_INTENTS,
+            Intent chooserIntent = Intent.createChooser(
+                    targetIntentList.remove(0),
+                    context.getString(R.string.intent_title_which_view_application));
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS,
                     targetIntentList.toArray(new Parcelable[targetIntentList.size()]));
             context.startActivity(chooserIntent);
         }

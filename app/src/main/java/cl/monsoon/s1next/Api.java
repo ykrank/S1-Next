@@ -8,8 +8,7 @@ import com.squareup.okhttp.RequestBody;
 import org.apache.commons.lang3.StringUtils;
 
 import cl.monsoon.s1next.model.Quote;
-import cl.monsoon.s1next.singleton.Config;
-import cl.monsoon.s1next.singleton.MyAccount;
+import cl.monsoon.s1next.singleton.User;
 
 public final class Api {
 
@@ -17,82 +16,78 @@ public final class Api {
 
     public static final String URL_EMOTICON_IMAGE_PREFIX = "static/image/smiley/";
 
-    public static final String URL_LOGIN = prefix("api/mobile/index.php?module=login&loginsubmit=yes&loginfield=username");
+    public static final String URL_LOGIN = prepend("api/mobile/index.php?module=login&loginsubmit=yes&loginfield=username");
 
-    public static final String URL_FORUM = prefix("api/mobile/index.php?module=forumindex");
+    public static final String URL_FORUM = prepend("api/mobile/index.php?module=forumindex");
 
-    private static final String URL_THREAD_LIST = prefix("api/mobile/index.php?module=forumdisplay");
-    private static final String URL_POST_LIST = prefix("api/mobile/index.php?module=viewthread");
+    private static final String URL_THREAD_LIST = prepend("api/mobile/index.php?module=forumdisplay");
+    private static final String URL_POST_LIST = prepend("api/mobile/index.php?module=viewthread");
 
     /**
      * A URL used to get the correct token when we want to request HTTP POST.
      * <p>
-     * The {@link cl.monsoon.s1next.singleton.MyAccount#authenticityToken}
+     * The {@link User#authenticityToken}
      * is not fresh if we have only logged in and haven't browsed
      * any new contents (which means requesting HTTP GET successfully).
      * Otherwise we needn't to use this.
      */
-    public static final String URL_AUTHENTICITY_TOKEN_HELPER = prefix("api/mobile/index.php?module=toplist");
-    private static final String URL_REPLY = prefix("api/mobile/index.php?module=sendreply&replysubmit=yes");
+    public static final String URL_AUTHENTICITY_TOKEN_HELPER = prepend("api/mobile/index.php?module=toplist");
+    private static final String URL_REPLY = prepend("api/mobile/index.php?module=sendreply&replysubmit=yes");
 
-    public static final String URL_THREAD_FAVOURITES_ADD = prefix("api/mobile/index.php?module=favthread&favoritesubmit=yes");
+    public static final String URL_THREAD_FAVOURITES_ADD = prepend("api/mobile/index.php?module=favthread&favoritesubmit=yes");
 
     /**
      * A URL to get the quoted user identification and processed quoted
      * content (with some HTML tags and its origin redirect hyperlink).
      */
-    private static final String URL_QUOTE_HELPER = prefix("forum.php?mod=post&action=reply&inajax=yes");
+    private static final String URL_QUOTE_HELPER = prepend("forum.php?mod=post&action=reply&inajax=yes");
 
-    private static final String URL_USER_AVATAR_PREFIX = prefix("uc_server/data/avatar/");
+    private static final String URL_USER_AVATAR_PREFIX = prepend("uc_server/data/avatar/");
     private static final String URL_USER_AVATAR_SMALL = URL_USER_AVATAR_PREFIX + "%s_avatar_small.jpg";
     private static final String URL_USER_AVATAR_MEDIUM = URL_USER_AVATAR_PREFIX + "%s_avatar_middle.jpg";
 
     /**
      * Opens the browser via {@link android.content.Intent}.
      */
-    public static final String URL_BROWSER_REGISTER = prefix("member.php?mod=register");
-    private static final String URL_BROWSER_THREAD_LIST = prefix("forum-%s-%d.html");
-    private static final String URL_BROWSER_POST_LIST = prefix("thread-%s-%d-1.html");
+    public static final String URL_BROWSER_REGISTER = prepend("member.php?mod=register");
+    private static final String URL_BROWSER_THREAD_LIST = prepend("forum-%s-%d.html");
+    private static final String URL_BROWSER_POST_LIST = prepend("thread-%s-%d-1.html");
 
     private Api() {
 
     }
 
-    private static String prefix(String suffix) {
+    private static String prepend(String suffix) {
         return URL_S1 + suffix;
     }
 
     public static String getThreadListUrl(String forumId, int pageNum) {
-        return
-                Uri.parse(URL_THREAD_LIST).buildUpon()
-                        .appendQueryParameter("fid", forumId)
-                        .appendQueryParameter("page", String.valueOf(pageNum))
-                        .appendQueryParameter("tpp", String.valueOf(Config.THREADS_PER_PAGE))
-                        .toString();
+        return Uri.parse(URL_THREAD_LIST).buildUpon()
+                .appendQueryParameter("fid", forumId)
+                .appendQueryParameter("page", String.valueOf(pageNum))
+                .appendQueryParameter("tpp", String.valueOf(Config.THREADS_PER_PAGE))
+                .toString();
     }
 
     public static String getPostListUrl(String threadId, int pageNum) {
-        return
-                Uri.parse(URL_POST_LIST).buildUpon()
-                        .appendQueryParameter("tid", threadId)
-                        .appendQueryParameter("page", String.valueOf(pageNum))
-                        .appendQueryParameter("ppp", String.valueOf(Config.POSTS_PER_PAGE))
-                        .toString();
+        return Uri.parse(URL_POST_LIST).buildUpon()
+                .appendQueryParameter("tid", threadId)
+                .appendQueryParameter("page", String.valueOf(pageNum))
+                .appendQueryParameter("ppp", String.valueOf(Config.POSTS_PER_PAGE))
+                .toString();
     }
 
     public static String getPostRelyUrl(String threadId) {
-        return
-                Uri.parse(URL_REPLY).buildUpon()
-                        .appendQueryParameter("tid", threadId)
-                        .toString();
+        return Uri.parse(URL_REPLY).buildUpon()
+                .appendQueryParameter("tid", threadId)
+                .toString();
     }
 
     public static String getQuoteHelperUrl(String threadId, String quotePostId) {
-        return
-                Uri.parse(URL_QUOTE_HELPER).buildUpon()
-                        .appendQueryParameter("tid", threadId)
-                        .appendQueryParameter("repquote", quotePostId)
-                        .toString();
+        return Uri.parse(URL_QUOTE_HELPER).buildUpon()
+                .appendQueryParameter("tid", threadId)
+                .appendQueryParameter("repquote", quotePostId)
+                .toString();
     }
 
     public static String getAvatarSmallUrl(String userId) {
@@ -113,13 +108,12 @@ public final class Api {
     private static String formatAvatarUrl(String url, String userId) {
         String s = StringUtils.leftPad(userId, 9, '0');
 
-        return
-                String.format(
-                        url,
-                        s.substring(0, 3)
-                                + "/" + s.substring(3, 5)
-                                + "/" + s.substring(5, 7)
-                                + "/" + s.substring(7));
+        return String.format(
+                url,
+                s.substring(0, 3)
+                        + "/" + s.substring(3, 5)
+                        + "/" + s.substring(5, 7)
+                        + "/" + s.substring(7));
     }
 
     public static boolean isAvatarUrl(String url) {
@@ -135,59 +129,48 @@ public final class Api {
     }
 
     public static RequestBody getLoginPostBuilder(String username, String password) {
-        return
-                new FormEncodingBuilder()
-                        .add("username", username)
-                        .add("password", password)
-                        .add("cookietime", String.valueOf(Config.COOKIES_MAX_AGE))
-                        .build();
+        return new FormEncodingBuilder()
+                .add("username", username)
+                .add("password", password)
+                .add("cookietime", String.valueOf(Config.COOKIES_MAX_AGE))
+                .build();
     }
 
     public static RequestBody getThreadFavouritesAddBuilder(String threadId, String remark) {
-        return
-                MyFormEncodingBuilderFactory.newInstance()
-                        .add("id", threadId)
-                        .add("description", remark)
-                        .build();
+        return FormWithAuthTokenEncodingBuilder.newInstance()
+                .add("id", threadId)
+                .add("description", remark)
+                .build();
     }
 
     public static RequestBody getReplyPostBuilder(String reply) {
-        return
-                MyFormEncodingBuilderFactory.newInstance()
-                        .add("message", reply)
-                        .build();
+        return FormWithAuthTokenEncodingBuilder.newInstance()
+                .add("message", reply)
+                .build();
     }
 
     public static RequestBody getQuotePostBuilder(Quote quote, String reply) {
-        return
-                MyFormEncodingBuilderFactory.newInstance()
-                        .add("noticeauthor", quote.getEncodedUserId())
-                        .add("noticetrimstr", quote.getQuoteMessage())
-                        .add("noticeauthormsg", StringUtils.abbreviate(reply, Config.REPLY_NOTIFICATION_MAX_LENGTH))
-                        .add("message", reply)
-                        .build();
+        return FormWithAuthTokenEncodingBuilder.newInstance()
+                .add("noticeauthor", quote.getEncodedUserId())
+                .add("noticetrimstr", quote.getQuoteMessage())
+                .add("noticeauthormsg", StringUtils.abbreviate(reply, Config.REPLY_NOTIFICATION_MAX_LENGTH))
+                .add("message", reply)
+                .build();
     }
 
-    private static class MyFormEncodingBuilderFactory {
+    private static class FormWithAuthTokenEncodingBuilder {
 
-        private MyFormEncodingBuilderFactory() {
+        private FormWithAuthTokenEncodingBuilder() {
 
         }
 
         private static FormEncodingBuilder newInstance() {
-            return
-                    new FormEncodingBuilder()
-                            .add("formhash", getAuthenticityToken());
-        }
-
-
-        private static String getAuthenticityToken() {
-            String authenticityToken = MyAccount.getAuthenticityToken();
+            String authenticityToken = User.getAuthenticityToken();
             if (authenticityToken == null) {
                 throw new IllegalStateException("AuthenticityToken must not be null.");
             }
 
-            return authenticityToken;
+            return new FormEncodingBuilder().add("formhash", authenticityToken);
         }
     }
 }

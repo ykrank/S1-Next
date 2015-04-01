@@ -30,8 +30,8 @@ public final class ThreadAttachmentInfoListArrayAdapter extends ArrayAdapter<Pos
             convertView = LayoutInflater.from(getContext()).inflate(mResource, parent, false);
 
             viewHolder = new ViewHolder();
-            viewHolder.mLabelView = (TextView) convertView.findViewById(android.R.id.text1);
-            viewHolder.mValueView = (TextView) convertView.findViewById(android.R.id.text2);
+            viewHolder.labelView = (TextView) convertView.findViewById(android.R.id.text1);
+            viewHolder.valueView = (TextView) convertView.findViewById(android.R.id.text2);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -39,8 +39,8 @@ public final class ThreadAttachmentInfoListArrayAdapter extends ArrayAdapter<Pos
 
         PostList.ThreadAttachment.Info info = getItem(position);
 
-        viewHolder.mLabelView.setText(info.getLabel());
-        viewHolder.mValueView.setText(info.getValue());
+        viewHolder.labelView.setText(info.getLabel());
+        viewHolder.valueView.setText(info.getValue());
 
         return convertView;
     }
@@ -58,7 +58,7 @@ public final class ThreadAttachmentInfoListArrayAdapter extends ArrayAdapter<Pos
 
     private static class ViewHolder {
 
-        private TextView mLabelView;
-        private TextView mValueView;
+        private TextView labelView;
+        private TextView valueView;
     }
 }

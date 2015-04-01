@@ -8,7 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.singleton.Config;
+import cl.monsoon.s1next.singleton.Setting;
 
 public final class VersionUtil {
 
@@ -24,16 +24,16 @@ public final class VersionUtil {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void changeAppTitleColorToWhiteInRecentApps(Activity activity) {
         int colorId;
-        switch (Config.getCurrentTheme()) {
+        switch (Setting.Theme.getCurrentTheme()) {
             // We can't find any similar color to change app title
-            // to white for Config.LIGHT_THEME_AMBER.
-            // And we also don't need to provide any color to Config.DARK_THEME
+            // to white for Setting.LIGHT_THEME_AMBER.
+            // And we also don't need to provide any color to Setting.DARK_THEME
             // because the app title is already white in this theme.
-            case Config.LIGHT_THEME_GREEN:
+            case Setting.Theme.LIGHT_THEME_GREEN:
                 colorId = R.color.green_600;
 
                 break;
-            case Config.LIGHT_THEME_LIGHT_BLUE:
+            case Setting.Theme.LIGHT_THEME_LIGHT_BLUE:
                 colorId = R.color.light_blue_600;
 
                 break;
@@ -46,11 +46,10 @@ public final class VersionUtil {
         }
 
         Bitmap bitmap = BitmapFactory.decodeResource(activity.getResources(), R.mipmap.ic_launcher);
-        ActivityManager.TaskDescription taskDescription =
-                new ActivityManager.TaskDescription(
-                        activity.getString(R.string.app_name),
-                        bitmap,
-                        activity.getResources().getColor(colorId));
+        ActivityManager.TaskDescription taskDescription = new ActivityManager.TaskDescription(
+                activity.getString(R.string.app_name),
+                bitmap,
+                activity.getResources().getColor(colorId));
         activity.setTaskDescription(taskDescription);
     }
 }

@@ -18,8 +18,10 @@ import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.target.ViewTarget;
 
 import cl.monsoon.s1next.Api;
+import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.singleton.Config;
+import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.view.UrlDrawable;
 
 /**
  * Implements {@link android.text.Html.ImageGetter}
@@ -43,9 +45,8 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
     }
 
     /**
-     * We download image depends on settings and
-     * Wi-Fi status, but download image from server
-     * (emoticons or something others) at any time
+     * We display image depends on settings and Wi-Fi status,
+     * but display emoticons at any time.
      */
     @Override
     public Drawable getDrawable(String url) {
@@ -88,7 +89,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
             return urlDrawable;
         }
 
-        if (Config.isImagesDownload()) {
+        if (Setting.Download.needDownloadImages()) {
             Glide.with(mContext)
                     .load(url)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)

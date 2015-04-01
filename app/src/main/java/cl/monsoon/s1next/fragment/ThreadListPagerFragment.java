@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -28,9 +27,9 @@ import cl.monsoon.s1next.model.list.ThreadList;
 import cl.monsoon.s1next.model.mapper.ThreadListWrapper;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.ToastUtil;
+import cl.monsoon.s1next.view.BaseRecyclerView;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpGetLoader;
-import cl.monsoon.s1next.widget.MyRecyclerView;
 import cl.monsoon.s1next.widget.RecyclerViewHelper;
 
 /**
@@ -46,7 +45,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     private String mForumId;
     private int mPageNum;
 
-    private MyRecyclerView mRecyclerView;
+    private BaseRecyclerView mRecyclerView;
     private ThreadListRecyclerAdapter mRecyclerAdapter;
 
     private PagerCallback mPageCallback;
@@ -75,51 +74,49 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
         mForumId = getArguments().getString(ARG_FORUM_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
-        mRecyclerView = (MyRecyclerView) view.findViewById(R.id.recycler_view);
+        mRecyclerView = (BaseRecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerAdapter = new ThreadListRecyclerAdapter();
         mRecyclerView.setAdapter(mRecyclerAdapter);
 
-        mRecyclerView.addOnItemTouchListener(
-                new RecyclerViewHelper(
-                        getActivity(),
-                        mRecyclerView,
-                        new RecyclerViewHelper.OnItemClickListener() {
+        mRecyclerView.addOnItemTouchListener(new RecyclerViewHelper(
+                getActivity(),
+                mRecyclerView,
+                new RecyclerViewHelper.OnItemClickListener() {
 
-                            @Override
-                            public void onItemClick(@NonNull View view, int position) {
-                                startActivity(view, position, false);
-                            }
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        startActivity(view, position, false);
+                    }
 
-                            @Override
-                            public void onItemLongClick(@NonNull View view, int position) {
-                                // cause NullPointerException sometimes when orientation changes
-                                try {
-                                    startActivity(view, position, true);
-                                } catch (NullPointerException ignore) {
+                    @Override
+                    public void onItemLongClick(View view, int position) {
+                        // cause NullPointerException sometimes when orientation changes
+                        try {
+                            startActivity(view, position, true);
+                        } catch (NullPointerException ignore) {
 
-                                }
-                            }
-
-                            private void startActivity(View view, int position, boolean shouldGoToLastPage) {
-                                // if user has no permission to access this thread
-                                if (!view.isEnabled()) {
-                                    return;
-                                }
-
-                                Intent intent = new Intent(getActivity(), PostListActivity.class);
-
-                                cl.monsoon.s1next.model.Thread thread =
-                                        mRecyclerAdapter.getItem(position);
-                                intent.putExtra(PostListActivity.ARG_THREAD, thread);
-                                if (shouldGoToLastPage) {
-                                    intent.putExtra(PostListActivity.ARG_SHOULD_GO_TO_LAST_PAGE, true);
-                                }
-
-                                ThreadListPagerFragment.this.startActivity(intent);
-                            }
                         }
-                ));
+                    }
+
+                    private void startActivity(View view, int position, boolean shouldGoToLastPage) {
+                        // if user has no permission to access this thread
+                        if (!view.isEnabled()) {
+                            return;
+                        }
+
+                        Intent intent = new Intent(getActivity(), PostListActivity.class);
+
+                        cl.monsoon.s1next.model.Thread thread = mRecyclerAdapter.getItem(position);
+                        intent.putExtra(PostListActivity.ARG_THREAD, thread);
+                        if (shouldGoToLastPage) {
+                            intent.putExtra(PostListActivity.ARG_SHOULD_GO_TO_LAST_PAGE, true);
+                        }
+
+                        ThreadListPagerFragment.this.startActivity(intent);
+                    }
+                }
+        ));
 
 
         onInsetsChanged();
@@ -130,8 +127,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        mPageCallback =
-                (PagerCallback) getFragmentManager().findFragmentByTag(ThreadListFragment.TAG);
+        mPageCallback = (PagerCallback) getFragmentManager().findFragmentByTag(ThreadListFragment.TAG);
         mSubFormsCallback = (SubFormsCallback) activity;
     }
 
@@ -144,7 +140,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     }
 
     @Override
-    public void onInsetsChanged(@NonNull Rect insets) {
+    public void onInsetsChanged(Rect insets) {
         setRecyclerViewPadding(
                 mRecyclerView,
                 insets,
@@ -162,8 +158,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_browser:
-                IntentUtil.startViewIntentExcludeOurApp(
-                        getActivity(),
+                IntentUtil.startViewIntentExcludeOurApp(getActivity(),
                         Uri.parse(Api.getThreadListUrlForBrowser(mForumId, mPageNum)));
 
                 return true;
@@ -176,11 +171,10 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     public Loader<AsyncResult<ThreadListWrapper>> onCreateLoader(int id, Bundle args) {
         super.onCreateLoader(id, args);
 
-        return
-                new HttpGetLoader<>(
-                        getActivity(),
-                        Api.getThreadListUrl(mForumId, mPageNum),
-                        ThreadListWrapper.class);
+        return new HttpGetLoader<>(
+                getActivity(),
+                Api.getThreadListUrl(mForumId, mPageNum),
+                ThreadListWrapper.class);
     }
 
     @Override
@@ -189,7 +183,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
 
         if (asyncResult.exception != null) {
             if (getUserVisibleHint()) {
-                ToastUtil.showByResId(asyncResult.getExceptionString(), Toast.LENGTH_SHORT);
+                ToastUtil.showByResId(asyncResult.getExceptionStringRes(), Toast.LENGTH_SHORT);
             }
         } else {
             ThreadList threadList = asyncResult.data.unwrap();

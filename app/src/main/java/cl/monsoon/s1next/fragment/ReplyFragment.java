@@ -38,15 +38,15 @@ import cl.monsoon.s1next.adapter.EmoticonGridRecyclerAdapter;
 import cl.monsoon.s1next.model.Quote;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
-import cl.monsoon.s1next.singleton.MyAccount;
+import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.util.ViewUtil;
+import cl.monsoon.s1next.view.ViewPagerTabs;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.EmoticonFactory;
 import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.HttpPostLoader;
-import cl.monsoon.s1next.widget.ViewPagerTabs;
 
 /**
  * Sends the reply via EditView.
@@ -284,10 +284,9 @@ public final class ReplyFragment extends Fragment {
                         if (shouldShowKeyboard) {
                             InputMethodManager inputMethodManager =
                                     (InputMethodManager)
-                                            getActivity().getSystemService(
-                                                    Context.INPUT_METHOD_SERVICE);
-                            inputMethodManager.showSoftInput(
-                                    mReplyView, InputMethodManager.SHOW_IMPLICIT);
+                                            getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            inputMethodManager.showSoftInput(mReplyView,
+                                    InputMethodManager.SHOW_IMPLICIT);
                         }
 
                         super.onAnimationEnd(animation);
@@ -299,18 +298,16 @@ public final class ReplyFragment extends Fragment {
 
     private void setEmoticonIcon() {
         if (mMenuEmoticon != null) {
-            mMenuEmoticon.setIcon(
-                    ResourceUtil.getResourceId(
-                            getActivity().getTheme(), R.attr.menuEmoticon));
+            mMenuEmoticon.setIcon(ResourceUtil.getResourceId(
+                    getActivity().getTheme(), R.attr.menuEmoticon));
             mMenuEmoticon.setTitle(R.string.menu_emoticon);
         }
     }
 
     private void setKeyboardIcon() {
         if (mMenuEmoticon != null) {
-            mMenuEmoticon.setIcon(
-                    ResourceUtil.getResourceId(
-                            getActivity().getTheme(), R.attr.menuKeyboard));
+            mMenuEmoticon.setIcon(ResourceUtil.getResourceId(
+                    getActivity().getTheme(), R.attr.menuKeyboard));
             mMenuEmoticon.setTitle(R.string.menu_keyboard);
         }
     }
@@ -406,8 +403,8 @@ public final class ReplyFragment extends Fragment {
             RecyclerView recyclerView = new RecyclerView(mContext);
             GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
             recyclerView.setLayoutManager(gridLayoutManager);
-            RecyclerView.Adapter recyclerAdapter =
-                    new EmoticonGridRecyclerAdapter(mContext, mEmoticonFactory.getByType(position));
+            RecyclerView.Adapter recyclerAdapter = new EmoticonGridRecyclerAdapter(
+                    mContext, mEmoticonFactory.getByType(position));
             recyclerView.setAdapter(recyclerAdapter);
             recyclerView.setHasFixedSize(true);
             recyclerView.setPadding(0, mEmoticonGridPadding, 0, mEmoticonGridPadding);
@@ -493,7 +490,7 @@ public final class ReplyFragment extends Fragment {
         protected int getStartLoaderId() {
             int loaderId;
             final boolean hasAuthenticityToken =
-                    !TextUtils.isEmpty(MyAccount.getAuthenticityToken());
+                    !TextUtils.isEmpty(User.getAuthenticityToken());
             if (hasAuthenticityToken) {
                 if (TextUtils.isEmpty(getArguments().getString(ARG_QUOTE_POST_ID))) {
                     loaderId = ID_LOADER_POST_REPLY;
@@ -519,33 +516,28 @@ public final class ReplyFragment extends Fragment {
         @Override
         public Loader onCreateLoader(int id, Bundle args) {
             if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
-                return
-                        new HttpGetLoader<>(
-                                getActivity(),
-                                Api.URL_AUTHENTICITY_TOKEN_HELPER,
-                                ResultWrapper.class);
+                return new HttpGetLoader<>(
+                        getActivity(),
+                        Api.URL_AUTHENTICITY_TOKEN_HELPER,
+                        ResultWrapper.class);
             } else if (id == ID_LOADER_GET_QUOTE_EXTRA_INFO) {
-                return
-                        new HttpGetLoader<>(
-                                getActivity(),
-                                Api.getQuoteHelperUrl(
-                                        getArguments().getString(ARG_THREAD_ID),
-                                        getArguments().getString(ARG_QUOTE_POST_ID)),
-                                Quote.class);
+                return new HttpGetLoader<>(
+                        getActivity(),
+                        Api.getQuoteHelperUrl(getArguments().getString(ARG_THREAD_ID),
+                                getArguments().getString(ARG_QUOTE_POST_ID)),
+                        Quote.class);
             } else if (id == ID_LOADER_POST_REPLY) {
-                return
-                        new HttpPostLoader<>(
-                                getActivity(),
-                                Api.getPostRelyUrl(getArguments().getString(ARG_THREAD_ID)),
-                                ResultWrapper.class,
-                                Api.getReplyPostBuilder(getArguments().getString(ARG_REPLY)));
+                return new HttpPostLoader<>(
+                        getActivity(),
+                        Api.getPostRelyUrl(getArguments().getString(ARG_THREAD_ID)),
+                        ResultWrapper.class,
+                        Api.getReplyPostBuilder(getArguments().getString(ARG_REPLY)));
             } else if (id == ID_LOADER_POST_QUOTE) {
-                return
-                        new HttpPostLoader<>(
-                                getActivity(),
-                                Api.getPostRelyUrl(getArguments().getString(ARG_THREAD_ID)),
-                                ResultWrapper.class,
-                                Api.getQuotePostBuilder(mQuote, getArguments().getString(ARG_REPLY)));
+                return new HttpPostLoader<>(
+                        getActivity(),
+                        Api.getPostRelyUrl(getArguments().getString(ARG_THREAD_ID)),
+                        ResultWrapper.class,
+                        Api.getQuotePostBuilder(mQuote, getArguments().getString(ARG_REPLY)));
             }
 
             return super.onCreateLoader(id, args);
@@ -556,7 +548,7 @@ public final class ReplyFragment extends Fragment {
         public void onLoadFinished(Loader loader, Object data) {
             AsyncResult asyncResult = (AsyncResult) data;
             if (asyncResult.exception != null) {
-                ToastUtil.showByResId(asyncResult.getExceptionString(), Toast.LENGTH_SHORT);
+                ToastUtil.showByResId(asyncResult.getExceptionStringRes(), Toast.LENGTH_SHORT);
             } else {
                 int id = loader.getId();
                 if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {

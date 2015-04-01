@@ -5,5 +5,5 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/emoticon_size"
     android:layout_height="@dimen/emoticon_size"
-    android:contentDescription="@string/emoticon_content_desc"
+    android:contentDescription="@null"
     android:padding="@dimen/emoticon_padding" />

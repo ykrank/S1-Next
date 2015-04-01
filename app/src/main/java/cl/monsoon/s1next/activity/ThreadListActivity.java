@@ -42,8 +42,8 @@ public class ThreadListActivity extends BaseActivity implements ThreadListPagerF
         setNavDrawerIndicatorEnabled(false);
 
         if (savedInstanceState == null) {
-            Fragment fragment =
-                    ThreadListFragment.newInstance(getIntent().getParcelableExtra(ARG_FORUM));
+            Fragment fragment = ThreadListFragment.newInstance(
+                    getIntent().getParcelableExtra(ARG_FORUM));
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frame_layout, fragment, ThreadListFragment.TAG).commit();
@@ -81,9 +81,8 @@ public class ThreadListActivity extends BaseActivity implements ThreadListPagerF
             mListPopupWindow = new ListPopupWindow(this);
             mListPopupWindow.setContentWidth(ListPopupWindow.MATCH_PARENT);
 
-            mSubForumArrayAdapter =
-                    new SubForumArrayAdapter(
-                            this, R.layout.popup_menu_dropdown_item, forumList);
+            mSubForumArrayAdapter = new SubForumArrayAdapter(
+                    this, R.layout.popup_menu_dropdown_item, forumList);
             mListPopupWindow.setAdapter(mSubForumArrayAdapter);
             mListPopupWindow.setOnItemClickListener((parent, view, position, id) -> {
                 Forum forum = mSubForumArrayAdapter.getItem(position);
@@ -128,10 +127,8 @@ public class ThreadListActivity extends BaseActivity implements ThreadListPagerF
         int width = 0;
         View itemView = null;
         int itemType = 0;
-        int widthMeasureSpec =
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        int heightMeasureSpec =
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
 
         // Make sure the number of items we'll measure is capped.
         // If it's a huge data set with wildly varying sizes, oh well.
@@ -147,10 +144,9 @@ public class ThreadListActivity extends BaseActivity implements ThreadListPagerF
             }
             itemView = spinnerAdapter.getView(i, itemView, getToolbar());
             if (itemView.getLayoutParams() == null) {
-                itemView.setLayoutParams(
-                        new ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.WRAP_CONTENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT));
+                itemView.setLayoutParams(new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
             }
             itemView.measure(widthMeasureSpec, heightMeasureSpec);
             width = Math.max(width, itemView.getMeasuredWidth());

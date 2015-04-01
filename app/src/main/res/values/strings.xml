@@ -82,7 +82,7 @@
     <string name="dialog_message_reply_back_prompt">Do you want to discard this reply?</string>
 
     <!-- emoticon -->
-    <string name="emoticon_content_desc" translatable="false">@string/menu_emoticon</string>
+
     <!-- Do not translate these Terminology. -->
     <string name="emoticon_face" translatable="false">麻将脸</string>
     <string name="emoticon_dym" translatable="false">大姨妈</string>

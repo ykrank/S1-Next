@@ -40,18 +40,18 @@ import java.util.Collections;
 import java.util.List;
 
 import cl.monsoon.s1next.Api;
-import cl.monsoon.s1next.MyApplication;
+import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.BaseFragment;
 import cl.monsoon.s1next.fragment.SettingsFragment;
-import cl.monsoon.s1next.singleton.Config;
-import cl.monsoon.s1next.singleton.MyAccount;
-import cl.monsoon.s1next.singleton.MyOkHttpClient;
+import cl.monsoon.s1next.singleton.OkHttpClientManager;
+import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.util.VersionUtil;
-import cl.monsoon.s1next.widget.InsetsFrameLayout;
-import cl.monsoon.s1next.widget.MyRecyclerView;
+import cl.monsoon.s1next.view.BaseRecyclerView;
+import cl.monsoon.s1next.view.InsetsFrameLayout;
 
 /**
  * A base Activity which includes the Toolbar tweaks
@@ -61,7 +61,7 @@ import cl.monsoon.s1next.widget.MyRecyclerView;
 public abstract class BaseActivity extends ActionBarActivity
         implements InsetsFrameLayout.OnInsetsCallback,
         BaseFragment.InsetsCallback,
-        MyAccount.OnLogoutListener {
+        User.OnLogoutListener {
 
     private Rect mSystemWindowInsets;
     private final List<InsetsFrameLayout.OnInsetsCallback> onInsetsCallbackList =
@@ -99,8 +99,8 @@ public abstract class BaseActivity extends ActionBarActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (!Config.isDefaultApplicationTheme()) {
-            setTheme(Config.getCurrentTheme());
+        if (!Setting.Theme.isDefaultTheme()) {
+            setTheme(Setting.Theme.getCurrentTheme());
         }
 
         super.onCreate(savedInstanceState);
@@ -123,13 +123,13 @@ public abstract class BaseActivity extends ActionBarActivity
         registerReceiver(mRecreateActivityReceiver, intentFilter);
 
         intentFilter = new IntentFilter();
-        intentFilter.addAction(MyAccount.ACTION_USER_LOGIN);
-        intentFilter.addAction(MyAccount.ACTION_USER_COOKIE_EXPIRATION);
+        intentFilter.addAction(User.ACTION_USER_LOGIN);
+        intentFilter.addAction(User.ACTION_USER_COOKIE_EXPIRATION);
         // change drawer's top area depends on user's login status
         mUserLoginStatusReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(MyAccount.ACTION_USER_LOGIN)) {
+                if (intent.getAction().equals(User.ACTION_USER_LOGIN)) {
                     setupDrawerUserView();
                 } else {
                     setupDrawerLoginPrompt();
@@ -227,7 +227,7 @@ public abstract class BaseActivity extends ActionBarActivity
      * in order to show overlay status bar & Toolbar.
      */
     @Override
-    public void onInsetsChanged(@NonNull Rect insets) {
+    public void onInsetsChanged(Rect insets) {
         mSystemWindowInsets = insets;
 
         int insetsTop = insets.top;
@@ -242,14 +242,14 @@ public abstract class BaseActivity extends ActionBarActivity
 
         if (mDrawerTopBackgroundView != null && mDrawerUserAvatarView != null) {
             // adjust drawer top background & user avatar's layout
-            mDrawerTopBackgroundView.getLayoutParams().height =
-                    insetsTop + getResources().getDimensionPixelSize(R.dimen.drawer_top_height);
+            mDrawerTopBackgroundView.getLayoutParams().height = insetsTop
+                    + getResources().getDimensionPixelSize(R.dimen.drawer_top_height);
             mDrawerTopBackgroundView.requestLayout();
 
             ViewGroup.MarginLayoutParams marginLayoutParams =
                     (ViewGroup.MarginLayoutParams) mDrawerUserAvatarView.getLayoutParams();
-            marginLayoutParams.topMargin =
-                    insetsTop + getResources().getDimensionPixelSize(R.dimen.drawer_avatar_margin_top);
+            marginLayoutParams.topMargin = insetsTop
+                    + getResources().getDimensionPixelSize(R.dimen.drawer_avatar_margin_top);
             mDrawerUserAvatarView.requestLayout();
         }
 
@@ -292,10 +292,10 @@ public abstract class BaseActivity extends ActionBarActivity
      * Also enables {@link cl.monsoon.s1next.activity.BaseActivity#mFloatingActionButton}
      * auto show/hide effect.
      */
-    public void enableToolbarAndFabAutoHideEffect(MyRecyclerView myRecyclerView, @Nullable RecyclerView.OnScrollListener onScrollListener) {
+    public void enableToolbarAndFabAutoHideEffect(BaseRecyclerView baseRecyclerView, @Nullable RecyclerView.OnScrollListener onScrollListener) {
         mToolbarAutoHideMinY = ResourceUtil.getToolbarHeight();
 
-        myRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        baseRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -310,11 +310,11 @@ public abstract class BaseActivity extends ActionBarActivity
                     onScrollListener.onScrolled(recyclerView, dx, dy);
                 }
 
-                // myRecyclerView.computeVerticalScrollOffset() may cause poor performance
+                // baseRecyclerView.computeVerticalScrollOffset() may cause poor performance
                 // so we also check mIsToolbarShown though we will do it later (during showOrHideToolbarAndFab(boolean))
                 if (mIsToolbarShown
                         && dy > 0
-                        && myRecyclerView.computeVerticalScrollOffset() >= mToolbarAutoHideMinY) {
+                        && baseRecyclerView.computeVerticalScrollOffset() >= mToolbarAutoHideMinY) {
                     showOrHideToolbarAndFab(false);
                 } else if (dy < 0) {
                     showOrHideToolbarAndFab(true);
@@ -421,10 +421,8 @@ public abstract class BaseActivity extends ActionBarActivity
         display.getSize(point);
 
         ViewGroup.LayoutParams layoutParams = mDrawer.getLayoutParams();
-        layoutParams.width =
-                point.x -
-                        getResources().getDimensionPixelSize(
-                                R.dimen.abc_action_bar_default_height_material);
+        layoutParams.width = point.x - getResources().getDimensionPixelSize(
+                R.dimen.abc_action_bar_default_height_material);
         mDrawer.requestLayout();
 
         setupNavDrawerItem();
@@ -452,7 +450,7 @@ public abstract class BaseActivity extends ActionBarActivity
 
         // Show default avatar and login prompt if user hasn't logged in,
         // else show user's avatar and username.
-        if (MyAccount.hasLoggedIn()) {
+        if (User.hasLoggedIn()) {
             setupDrawerUserView();
         } else {
             setupDrawerLoginPrompt();
@@ -472,8 +470,8 @@ public abstract class BaseActivity extends ActionBarActivity
                     Intent intent;
                     if (IntentUtil.getComeFromOurAppExtra(getIntent())) {
                         intent = new Intent(this, ForumActivity.class);
-                        intent.addFlags(
-                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
 
                         finish();
@@ -515,7 +513,7 @@ public abstract class BaseActivity extends ActionBarActivity
         // setup default avatar
         Glide.with(this)
                 .load(R.drawable.ic_drawer_avatar_placeholder)
-                .signature(Config.getAvatarCacheInvalidationIntervalSignature())
+                .signature(Setting.Download.getAvatarCacheInvalidationIntervalSignature())
                 .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
                 .into(mDrawerUserAvatarView);
 
@@ -541,14 +539,14 @@ public abstract class BaseActivity extends ActionBarActivity
 
         // setup user's avatar
         Glide.with(this)
-                .load(Api.getAvatarMediumUrl(MyAccount.getUid()))
-                .signature(Config.getAvatarCacheInvalidationIntervalSignature())
+                .load(Api.getAvatarMediumUrl(User.getUid()))
+                .signature(Setting.Download.getAvatarCacheInvalidationIntervalSignature())
                 .error(R.drawable.ic_drawer_avatar_placeholder)
                 .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
                 .into(mDrawerUserAvatarView);
 
         // show logout dialog if clicked
-        mDrawerUsernameView.setText(MyAccount.getName());
+        mDrawerUsernameView.setText(User.getName());
 
         mDrawerTopBackgroundView.setOnClickListener(v ->
                 new LogoutDialog().show(getSupportFragmentManager(), LogoutDialog.TAG));
@@ -568,12 +566,9 @@ public abstract class BaseActivity extends ActionBarActivity
             SharedPreferences sharedPreferences =
                     PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-            int checkedItem =
-                    Integer.parseInt(
-                            sharedPreferences.getString(
-                                    SettingsFragment.PREF_KEY_THEME,
-                                    MyApplication.getContext()
-                                            .getString(R.string.pref_theme_default_value)));
+            int checkedItem = Integer.parseInt(sharedPreferences.getString(
+                    SettingsFragment.PREF_KEY_THEME,
+                    App.getContext().getString(R.string.pref_theme_default_value)));
             return
                     new AlertDialog.Builder(getActivity())
                             .setTitle(R.string.pref_theme)
@@ -585,15 +580,14 @@ public abstract class BaseActivity extends ActionBarActivity
                                         // won't change theme if unchanged
                                         if (which != checkedItem) {
                                             sharedPreferences.edit()
-                                                    .putString(
-                                                            SettingsFragment.PREF_KEY_THEME,
+                                                    .putString(SettingsFragment.PREF_KEY_THEME,
                                                             String.valueOf(which)).apply();
-                                            Config.setCurrentTheme(sharedPreferences);
+                                            Setting.Theme.setCurrentTheme(sharedPreferences);
 
-                                            // We use MyApplication.getContext() instead of getActivity()
+                                            // We use App.getContext() instead of getActivity()
                                             // in order to avoid NullPointerException when out of scope.
-                                            runnable = () -> MyApplication.getContext()
-                                                    .sendBroadcast(
+                                            runnable = () ->
+                                                    App.getContext().sendBroadcast(
                                                             new Intent(SettingsFragment.ACTION_CHANGE_THEME));
                                         }
                                         dismiss();
@@ -616,7 +610,7 @@ public abstract class BaseActivity extends ActionBarActivity
                             .setPositiveButton(
                                     android.R.string.ok,
                                     (dialog, which) ->
-                                            ((MyAccount.OnLogoutListener) getActivity()).onLogout())
+                                            ((User.OnLogoutListener) getActivity()).onLogout())
                             .setNegativeButton(android.R.string.cancel, null)
                             .create();
         }
@@ -625,8 +619,8 @@ public abstract class BaseActivity extends ActionBarActivity
     @Override
     public void onLogout() {
         // clear account cookie and current user's info
-        MyOkHttpClient.clearCookie();
-        MyAccount.clear();
-        MyAccount.sendCookieExpirationBroadcast();
+        OkHttpClientManager.clearCookie();
+        User.reset();
+        User.sendCookieExpirationBroadcast();
     }
 }

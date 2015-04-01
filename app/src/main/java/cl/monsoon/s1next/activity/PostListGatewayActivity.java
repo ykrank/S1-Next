@@ -21,11 +21,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cl.monsoon.s1next.Api;
-import cl.monsoon.s1next.MyApplication;
+import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.LoaderDialogFragment;
 import cl.monsoon.s1next.model.mapper.PostListWrapper;
-import cl.monsoon.s1next.singleton.Config;
+import cl.monsoon.s1next.singleton.Setting;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpGetLoader;
@@ -34,15 +34,15 @@ import cl.monsoon.s1next.widget.HttpGetLoader;
  * An Activity to detect whether the thread link (URI) from Intent is valid.
  * Also show prompt if the thread corresponding to url do not exist.
  * <p>
- * This Activity is only used for intent filter.
+ * This Activity is only used for Intent filter.
  */
 public final class PostListGatewayActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // default theme for this Activity is dark theme
-        if (!Config.isDarkTheme()) {
-            setTheme(Config.TRANSLUCENT_THEME_LIGHT);
+        if (!Setting.Theme.isDarkTheme()) {
+            setTheme(Setting.Theme.TRANSLUCENT_THEME_LIGHT);
         }
 
         super.onCreate(savedInstanceState);
@@ -210,11 +210,10 @@ public final class PostListGatewayActivity extends FragmentActivity {
         @Override
         public Loader<AsyncResult<PostListWrapper>> onCreateLoader(int id, Bundle args) {
             ThreadAnalysis threadAnalysis = getArguments().getParcelable(ARG_THREAD_ANALYSIS);
-            return
-                    new HttpGetLoader<>(
-                            getActivity(),
-                            Api.getPostListUrl(threadAnalysis.mThreadId, threadAnalysis.mJumpPage),
-                            PostListWrapper.class);
+            return new HttpGetLoader<>(
+                    getActivity(),
+                    Api.getPostListUrl(threadAnalysis.mThreadId, threadAnalysis.mJumpPage),
+                    PostListWrapper.class);
         }
 
         @Override
@@ -223,7 +222,7 @@ public final class PostListGatewayActivity extends FragmentActivity {
                 mShouldDismiss = false;
 
                 String exceptionWithPeriod;
-                String exception = getString(asyncResult.getExceptionString());
+                String exception = getString(asyncResult.getExceptionStringRes());
                 String period = getString(R.string.period);
                 // https://developer.android.com/design/style/writing.html#punctuation
                 // we do not use a period after a single sentence in a toast
@@ -249,9 +248,8 @@ public final class PostListGatewayActivity extends FragmentActivity {
                 } else {
                     Intent intent = new Intent(getActivity(), PostListActivity.class);
                     intent.putExtra(PostListActivity.ARG_THREAD, thread);
-                    intent.putExtra(
-                            IntentUtil.ARG_COME_FROM_OUR_APP,
-                            IntentUtil.isComeFromOurApp(getActivity().getIntent(), getActivity()));
+                    intent.putExtra(IntentUtil.ARG_COME_FROM_OUR_APP,
+                            IntentUtil.isComeFromOurApp(getActivity(), getActivity().getIntent()));
                     startActivity(intent);
                 }
             }
@@ -270,7 +268,7 @@ public final class PostListGatewayActivity extends FragmentActivity {
             ErrorPromptDialog fragment = new ErrorPromptDialog();
 
             Bundle bundle = new Bundle();
-            bundle.putString(ARG_MESSAGE, MyApplication.getContext().getString(message));
+            bundle.putString(ARG_MESSAGE, App.getContext().getString(message));
             fragment.setArguments(bundle);
 
             return fragment;
@@ -290,19 +288,18 @@ public final class PostListGatewayActivity extends FragmentActivity {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-            return
-                    new AlertDialog.Builder(getActivity())
-                            .setMessage(getArguments().getString(ARG_MESSAGE))
-                            .setPositiveButton(android.R.string.ok,
-                                    (dialog, which) -> {
-                                        dismiss();
-                                    })
-                            .setNegativeButton(R.string.dialog_button_use_a_different_app,
-                                    (dialog, which) -> {
-                                        IntentUtil.startViewIntentExcludeOurApp(
-                                                getActivity(), getActivity().getIntent().getData());
-                                    })
-                            .create();
+            return new AlertDialog.Builder(getActivity())
+                    .setMessage(getArguments().getString(ARG_MESSAGE))
+                    .setPositiveButton(android.R.string.ok,
+                            (dialog, which) -> {
+                                dismiss();
+                            })
+                    .setNegativeButton(R.string.dialog_button_use_a_different_app,
+                            (dialog, which) -> {
+                                IntentUtil.startViewIntentExcludeOurApp(getActivity(),
+                                        getActivity().getIntent().getData());
+                            })
+                    .create();
         }
 
         @Override

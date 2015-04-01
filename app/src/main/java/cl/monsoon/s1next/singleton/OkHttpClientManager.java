@@ -6,32 +6,37 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.concurrent.TimeUnit;
 
-import cl.monsoon.s1next.MyApplication;
+import cl.monsoon.s1next.App;
+import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.widget.PersistentHttpCookieStore;
 
 /**
  * OkHttpClient singleton.
  */
-public enum MyOkHttpClient {
+public enum OkHttpClientManager {
     INSTANCE;
 
     private final OkHttpClient okHttpClient;
+
+    /**
+     * Used for HTTP POST requests in order to avoid retrying requests.
+     */
     private final OkHttpClient okHttpClientForNonIdempotent;
 
-    private final CookieManager cookieManager;
+    private final CookieManager mCookieManager;
 
-    MyOkHttpClient() {
+    OkHttpClientManager() {
         okHttpClient = new OkHttpClient();
 
         okHttpClient.setConnectTimeout(Config.OKHTTP_CLIENT_CONNECT_TIMEOUT, TimeUnit.SECONDS);
         okHttpClient.setWriteTimeout(Config.OKHTTP_CLIENT_WRITE_TIMEOUT, TimeUnit.SECONDS);
         okHttpClient.setReadTimeout(Config.OKHTTP_CLIENT_READ_TIMEOUT, TimeUnit.SECONDS);
 
-        cookieManager = new CookieManager(
-                new PersistentHttpCookieStore(MyApplication.getContext()),
+        mCookieManager = new CookieManager(
+                new PersistentHttpCookieStore(App.getContext()),
                 CookiePolicy.ACCEPT_ALL);
 
-        okHttpClient.setCookieHandler(cookieManager);
+        okHttpClient.setCookieHandler(mCookieManager);
 
         // this is a shallow copy (including CookieManager reference)
         okHttpClientForNonIdempotent = okHttpClient.clone();
@@ -47,6 +52,6 @@ public enum MyOkHttpClient {
     }
 
     public static void clearCookie() {
-        INSTANCE.cookieManager.getCookieStore().removeAll();
+        INSTANCE.mCookieManager.getCookieStore().removeAll();
     }
 }

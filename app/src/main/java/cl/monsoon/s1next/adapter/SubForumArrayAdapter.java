@@ -11,8 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import cl.monsoon.s1next.model.Forum;
-import cl.monsoon.s1next.singleton.Config;
-import cl.monsoon.s1next.util.ColorUtil;
+import cl.monsoon.s1next.singleton.Setting;
 import cl.monsoon.s1next.util.ViewUtil;
 
 public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
@@ -26,7 +25,7 @@ public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
         super(context, resource, objects);
 
         this.mResource = resource;
-        mSecondaryTextColor = ColorUtil.a(Config.getColorAccent(), Config.getSecondaryTextAlpha());
+        mSecondaryTextColor = Setting.Theme.getSecondaryTextColor();
     }
 
     @Override
@@ -36,7 +35,7 @@ public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
             convertView = LayoutInflater.from(getContext()).inflate(mResource, parent, false);
 
             viewHolder = new ViewHolder();
-            viewHolder.mTextView = (TextView) convertView;
+            viewHolder.textView = (TextView) convertView;
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -44,7 +43,7 @@ public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
 
         Forum forum = getItem(position);
 
-        TextView textView = viewHolder.mTextView;
+        TextView textView = viewHolder.textView;
         textView.setText(forum.getName());
         // add today's posts count to each forum
         if (forum.getTodayPosts() != 0) {
@@ -68,6 +67,6 @@ public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
 
     private static class ViewHolder {
 
-        private TextView mTextView;
+        private TextView textView;
     }
 }

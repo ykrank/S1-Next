@@ -9,8 +9,7 @@ public final class DateUtil {
     }
 
     /**
-     * Used to construct a {@link com.bumptech.glide.signature.StringSignature}
-     * in {@link com.bumptech.glide.DrawableRequestBuilder#signature(com.bumptech.glide.load.Key)}
+     * Used to construct {@link com.bumptech.glide.signature.StringSignature}s
      * to invalidate avatar every day.
      */
     public static String today() {

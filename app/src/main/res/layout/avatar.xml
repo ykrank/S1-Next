@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<cl.monsoon.s1next.widget.BezelImageView
+<cl.monsoon.s1next.view.BezelImageView
     android:id="@+id/avatar"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

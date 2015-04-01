@@ -39,9 +39,8 @@ public final class ColorUtil {
             throw new IllegalArgumentException("Alpha must be between 0 and 100 inclusive.");
         }
 
-        return
-                Color.argb(
-                        (int) (alpha / 100.0 * 255 + 0.5),
-                        Color.red(color), Color.green(color), Color.blue(color));
+        return Color.argb(
+                (int) (alpha / 100.0 * 255 + 0.5),
+                Color.red(color), Color.green(color), Color.blue(color));
     }
 }
