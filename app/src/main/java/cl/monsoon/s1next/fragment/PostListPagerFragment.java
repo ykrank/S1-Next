@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -239,7 +240,7 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                 }
 
                 cl.monsoon.s1next.model.Thread postListInfo = postList.getInfo();
-                mPagerCallback.setTotalPages(postListInfo.getReplies() + 1);
+                new Handler().post(() -> mPagerCallback.setTotalPages(postListInfo.getReplies() + 1));
             }
 
             if (postList.getThreadAttachment() != null) {
