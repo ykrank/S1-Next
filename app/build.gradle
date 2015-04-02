@@ -3,7 +3,7 @@ apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion '22.0.0'
+    buildToolsVersion '22.0.1'
 
     defaultConfig {
         applicationId "cl.monsoon.s1next"
@@ -47,8 +47,8 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'org.apache.commons:commons-collections4:4.0'
     compile 'net.danlew:android.joda:2.7.1'
-    compile 'com.squareup.okhttp:okhttp:2.2.0'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.5.1'
+    compile 'com.squareup.okhttp:okhttp:2.3.0'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.5.2'
     compile 'com.github.bumptech.glide:glide:3.5.2'
     compile 'com.melnykov:floatingactionbutton:1.2.0'
     compile 'com.bugsnag:bugsnag-android:3.2.5'
