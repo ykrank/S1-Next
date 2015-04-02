@@ -3,7 +3,6 @@ package cl.monsoon.s1next.activity;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -15,7 +14,8 @@ import cl.monsoon.s1next.view.InsetsFrameLayout;
 /**
  * An Activity shows an ImageView that supports multi-touch.
  */
-public final class GalleryActivity extends ActionBarActivity implements InsetsFrameLayout.OnInsetsCallback {
+public final class GalleryActivity extends ActionBarActivityCompat
+        implements InsetsFrameLayout.OnInsetsCallback {
 
     public static final String ARG_IMAGE_URL = "image_url";
 
