@@ -67,6 +67,7 @@ public abstract class BaseFragment<D extends Extractable>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // Indicates that this Fragment would like to
@@ -96,7 +97,6 @@ public abstract class BaseFragment<D extends Extractable>
 
             getLoaderManager().initLoader(ID_LOADER, null, this);
         } else {
-            //noinspection unchecked
             mDataRetainedFragment = (DataRetainedFragment) fragment;
 
             boolean loading = mLoading;

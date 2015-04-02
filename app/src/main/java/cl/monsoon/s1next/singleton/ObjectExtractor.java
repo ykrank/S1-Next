@@ -29,9 +29,9 @@ public enum ObjectExtractor {
      *
      * @throws IOException if an I/O error occurs
      */
+    @SuppressWarnings("unchecked")
     public static <D extends Extractable> D extract(InputStream in, Class<D> toValueType) throws IOException {
         if (toValueType.isAssignableFrom(Quote.class)) {
-            //noinspection unchecked
             return (D) parseQuote(in);
         } else {
             return readValue(in, toValueType);
