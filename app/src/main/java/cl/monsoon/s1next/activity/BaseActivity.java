@@ -280,6 +280,9 @@ public abstract class BaseActivity extends ActionBarActivityCompat
 
     void setupFloatingActionButton(@DrawableRes int resId) {
         mFloatingActionButton = (FloatingActionButton) findViewById(R.id.floating_action_button);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            mFloatingActionButton.setShadow(false);
+        }
         // subclass need to implement android.view.View.OnClickListener
         mFloatingActionButton.setOnClickListener((View.OnClickListener) this);
         mFloatingActionButton.setImageResource(resId);
