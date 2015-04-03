@@ -25,7 +25,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.view.animation.DecelerateInterpolator;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -88,6 +89,7 @@ public final class ReplyFragment extends Fragment {
     private MenuItem mMenuEmoticon;
     private View mEmoticonKeyboard;
     private ViewPagerTabs mEmoticonKeyboardTabs;
+    private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
 
     private BroadcastReceiver mEmoticonReceiver;
 
@@ -254,7 +256,7 @@ public final class ReplyFragment extends Fragment {
         mEmoticonKeyboard.animate()
                 .alpha(1)
                 .translationYBy(-mEmoticonKeyboard.getTranslationY())
-                .setInterpolator(new DecelerateInterpolator())
+                .setInterpolator(mInterpolator)
                 .setListener(new EmoticonKeyboardAnimator());
 
         setKeyboardIcon();
@@ -270,7 +272,7 @@ public final class ReplyFragment extends Fragment {
         mEmoticonKeyboard.animate()
                 .alpha(0)
                 .translationYBy(mEmoticonKeyboard.getHeight())
-                .setInterpolator(new DecelerateInterpolator())
+                .setInterpolator(mInterpolator)
                 .setListener(new EmoticonKeyboardAnimator() {
 
                     @Override

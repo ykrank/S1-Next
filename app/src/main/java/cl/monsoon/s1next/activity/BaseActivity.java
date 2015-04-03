@@ -26,7 +26,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.DecelerateInterpolator;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -74,6 +75,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
      * that's why this value always equals to Toolbar's height.
      */
     private int mToolbarAutoHideMinY;
+    private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
 
     private DrawerLayout mDrawerLayout;
     private View mDrawer;
@@ -339,12 +341,12 @@ public abstract class BaseActivity extends ActionBarActivityCompat
             mToolbar.animate()
                     .alpha(1)
                     .translationY(0)
-                    .setInterpolator(new DecelerateInterpolator());
+                    .setInterpolator(mInterpolator);
         } else {
             mToolbar.animate()
                     .alpha(0)
                     .translationY(-mToolbar.getBottom())
-                    .setInterpolator(new DecelerateInterpolator());
+                    .setInterpolator(mInterpolator);
         }
     }
 
