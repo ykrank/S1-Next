@@ -244,12 +244,16 @@ public abstract class BaseFragment<D extends Extractable>
 
     @Override
     public void onRefresh() {
-        Loader loader = getLoaderManager().getLoader(ID_LOADER);
-        if (loader == null) {
-            getLoaderManager().initLoader(ID_LOADER, null, this);
-        } else {
-            loader.onContentChanged();
-        }
+//        Loader loader = getLoaderManager().getLoader(ID_LOADER);
+//        if (loader == null) {
+//            getLoaderManager().initLoader(ID_LOADER, null, this);
+//        } else {
+//            loader.onContentChanged();
+//            mLoading = true;
+//        }
+        // Bug: it looks loader.onContentChanged() doesn't work
+        // when orientation changes
+        getLoaderManager().restartLoader(ID_LOADER, null, this);
     }
 
     @Override

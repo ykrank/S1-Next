@@ -85,6 +85,16 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        // We need retrieve mIsLoadingMore back before initializing Loader.
+        if (savedInstanceState != null) {
+            mIsLoadingMore = savedInstanceState.getBoolean(STATE_IS_LOADING_MORE);
+        }
+
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_base, container, false);
     }
@@ -125,10 +135,6 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
                 }
             }
         });
-
-        if (savedInstanceState != null) {
-            mIsLoadingMore = savedInstanceState.getBoolean(STATE_IS_LOADING_MORE);
-        }
     }
 
     @Override
