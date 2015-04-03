@@ -465,22 +465,22 @@ public abstract class BaseActivity extends ActionBarActivityCompat
         // back to forum (home) activity if clicked
         homeView.setOnClickListener(v ->
                 closeDrawer(() -> {
+                    if (this instanceof ForumActivity) {
+                        return;
+                    }
+
                     Intent intent;
                     if (IntentUtil.getComeFromOurAppExtra(getIntent())) {
                         intent = new Intent(this, ForumActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    } else {
+                        intent = new Intent(BaseActivity.this, ForumActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                                 | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
 
                         finish();
-                    } else {
-                        if (this instanceof ForumActivity) {
-                            return;
-                        }
-
-                        intent = new Intent(BaseActivity.this, ForumActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
                     }
                 }));
 

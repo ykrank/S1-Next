@@ -28,7 +28,8 @@
             android:label="@string/activity_label_login" />
 
         <activity
-            android:name=".activity.ForumActivity">
+            android:name=".activity.ForumActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

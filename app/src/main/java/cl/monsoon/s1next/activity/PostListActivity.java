@@ -234,7 +234,7 @@ public class PostListActivity extends BaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (IntentUtil.getComeFromOurAppExtra(getIntent())) {
+                if (!IntentUtil.getComeFromOurAppExtra(getIntent())) {
                     Intent intent = new Intent(this, ForumActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
