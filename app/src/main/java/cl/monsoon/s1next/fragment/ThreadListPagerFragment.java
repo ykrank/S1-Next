@@ -23,8 +23,8 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.PostListActivity;
 import cl.monsoon.s1next.adapter.ThreadListRecyclerAdapter;
 import cl.monsoon.s1next.model.Forum;
-import cl.monsoon.s1next.model.list.ThreadList;
-import cl.monsoon.s1next.model.mapper.ThreadListWrapper;
+import cl.monsoon.s1next.model.list.Threads;
+import cl.monsoon.s1next.model.mapper.ThreadsWrapper;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.BaseRecyclerView;
@@ -37,7 +37,7 @@ import cl.monsoon.s1next.widget.RecyclerViewHelper;
  * <p>
  * All activities containing this Fragment must implement {@link PagerCallback}.
  */
-public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrapper> {
+public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> {
 
     private static final String ARG_FORUM_ID = "forum_id";
     private static final String ARG_PAGE_NUM = "page_num";
@@ -48,15 +48,15 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     private BaseRecyclerView mRecyclerView;
     private ThreadListRecyclerAdapter mRecyclerAdapter;
 
-    private PagerCallback mPageCallback;
+    private PagerCallback mPagerCallback;
     private SubFormsCallback mSubFormsCallback;
 
-    public static ThreadListPagerFragment newInstance(String forumId, int page) {
+    public static ThreadListPagerFragment newInstance(String forumId, int pageNum) {
         ThreadListPagerFragment fragment = new ThreadListPagerFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString(ARG_FORUM_ID, forumId);
-        bundle.putInt(ARG_PAGE_NUM, page);
+        bundle.putInt(ARG_PAGE_NUM, pageNum);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -127,7 +127,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        mPageCallback = (PagerCallback) getFragmentManager().findFragmentByTag(ThreadListFragment.TAG);
+        mPagerCallback = (PagerCallback) getFragmentManager().findFragmentByTag(ThreadListFragment.TAG);
         mSubFormsCallback = (SubFormsCallback) activity;
     }
 
@@ -135,7 +135,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     public void onDetach() {
         super.onDetach();
 
-        mPageCallback = null;
+        mPagerCallback = null;
         mSubFormsCallback = null;
     }
 
@@ -168,17 +168,17 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
     }
 
     @Override
-    public Loader<AsyncResult<ThreadListWrapper>> onCreateLoader(int id, Bundle args) {
+    public Loader<AsyncResult<ThreadsWrapper>> onCreateLoader(int id, Bundle args) {
         super.onCreateLoader(id, args);
 
         return new HttpGetLoader<>(
                 getActivity(),
                 Api.getThreadListUrl(mForumId, mPageNum),
-                ThreadListWrapper.class);
+                ThreadsWrapper.class);
     }
 
     @Override
-    public void onLoadFinished(Loader<AsyncResult<ThreadListWrapper>> loader, AsyncResult<ThreadListWrapper> asyncResult) {
+    public void onLoadFinished(Loader<AsyncResult<ThreadsWrapper>> loader, AsyncResult<ThreadsWrapper> asyncResult) {
         super.onLoadFinished(loader, asyncResult);
 
         if (asyncResult.exception != null) {
@@ -186,23 +186,23 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
                 ToastUtil.showByResId(asyncResult.getExceptionStringRes(), Toast.LENGTH_SHORT);
             }
         } else {
-            ThreadList threadList = asyncResult.data.unwrap();
+            Threads threads = asyncResult.data.getThreads();
 
             // if user has logged out and then has no permission to access this forum
-            if (threadList.getData().isEmpty()) {
+            if (threads.getThreadList().isEmpty()) {
                 String message = asyncResult.data.getResult().getMessage();
                 if (!TextUtils.isEmpty(message)) {
                     ToastUtil.showByText(message, Toast.LENGTH_SHORT);
                 }
             } else {
-                mRecyclerAdapter.setDataSet(threadList.getData());
+                mRecyclerAdapter.setDataSet(threads.getThreadList());
                 mRecyclerAdapter.notifyDataSetChanged();
 
-                mPageCallback.setTotalPages(threadList.getThreadsInfo().getThreads());
+                mPagerCallback.setTotalPageByThreads(threads.getThreadListInfo().getThreads());
             }
 
-            if (!threadList.getSubForumList().isEmpty()) {
-                mSubFormsCallback.setupSubForums(threadList.getSubForumList());
+            if (!threads.getSubForumList().isEmpty()) {
+                mSubFormsCallback.setupSubForums(threads.getSubForumList());
             }
         }
     }
@@ -215,7 +215,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadListWrappe
         /**
          * A callback to set actual total pages which used for {@link android.support.v4.view.PagerAdapter}。
          */
-        void setTotalPages(int i);
+        void setTotalPageByThreads(int threads);
     }
 
     public interface SubFormsCallback {

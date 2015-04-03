@@ -4,25 +4,25 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cl.monsoon.s1next.model.Result;
-import cl.monsoon.s1next.model.list.ThreadList;
+import cl.monsoon.s1next.model.list.Threads;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class ThreadListWrapper implements Deserializable {
+public final class ThreadsWrapper implements Deserializable {
 
     @JsonProperty("Variables")
-    private ThreadList data;
+    private Threads threads;
 
     @JsonProperty("Message")
     private Result result;
 
-    public ThreadList unwrap() {
-        return data;
+    public Threads getThreads() {
+        return threads;
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public void setData(ThreadList data) {
-        this.data = data;
+    public void setThreads(Threads threads) {
+        this.threads = threads;
     }
 
     public Result getResult() {

@@ -22,6 +22,7 @@ public final class Api {
 
     private static final String URL_THREAD_LIST = prepend("api/mobile/index.php?module=forumdisplay");
     private static final String URL_POST_LIST = prepend("api/mobile/index.php?module=viewthread");
+    private static final String URL_QUOTE_POST_REDIRECT = prepend("forum.php?mod=redirect&goto=findpost");
 
     /**
      * A URL used to get the correct token when we want to request HTTP POST.
@@ -74,6 +75,13 @@ public final class Api {
                 .appendQueryParameter("tid", threadId)
                 .appendQueryParameter("page", String.valueOf(pageNum))
                 .appendQueryParameter("ppp", String.valueOf(Config.POSTS_PER_PAGE))
+                .toString();
+    }
+
+    public static String getQuotePostRedirectUrl(String threadId, String quotePostId) {
+        return Uri.parse(URL_QUOTE_POST_REDIRECT).buildUpon()
+                .appendQueryParameter("ptid", threadId)
+                .appendQueryParameter("pid", quotePostId)
                 .toString();
     }
 

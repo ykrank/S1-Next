@@ -34,10 +34,10 @@
     <string name="dialog_progress_message_favourites_add">添加中…</string>
     <string name="prompt_remark">备注</string>
     <string name="dialog_message_invalid_or_unsupported_link">无效的、或者是并不支持的链接。</string>
-    <string name="period">。</string>
     <string name="dialog_button_use_a_different_app">使用其他应用</string>
     <string name="dialog_message_loading">加载中…</string>
     <string name="dialog_message_thread_not_found">找不到该帖子。</string>
+    <string name="dialog_message_quote_not_found">找不到该引用。</string>
     <string name="prompt_reply">写点内容吧…</string>
     <string name="dialog_progress_message_reply">回复中…</string>
     <string name="dialog_message_reply_back_prompt">要舍弃这条回复吗？</string>

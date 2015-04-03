@@ -106,7 +106,7 @@ public abstract class BaseFragment<D extends Extractable>
             }
             mLoading = loading;
 
-            // mDataRetainedFragment.getData() = null and mLoading = false
+            // mDataRetainedFragment.getThreadList() = null and mLoading = false
             // if this app was killed by system before
             if (mDataRetainedFragment.getData() == null || mLoading) {
                 getLoaderManager().initLoader(ID_LOADER, null, this);

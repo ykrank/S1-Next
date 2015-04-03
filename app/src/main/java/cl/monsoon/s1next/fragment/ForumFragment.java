@@ -21,8 +21,8 @@ import cl.monsoon.s1next.activity.ThreadListActivity;
 import cl.monsoon.s1next.activity.ToolbarInterface;
 import cl.monsoon.s1next.adapter.ForumListRecyclerAdapter;
 import cl.monsoon.s1next.model.Forum;
-import cl.monsoon.s1next.model.list.ForumGroupList;
-import cl.monsoon.s1next.model.mapper.ForumGroupListWrapper;
+import cl.monsoon.s1next.model.list.ForumGroups;
+import cl.monsoon.s1next.model.mapper.ForumGroupsWrapper;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.BaseRecyclerView;
@@ -33,7 +33,7 @@ import cl.monsoon.s1next.widget.RecyclerViewHelper;
 /**
  * A Fragment representing forums.
  */
-public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
+public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
         implements ToolbarInterface.OnDropDownItemSelectedListener {
 
     public static final String TAG = ForumFragment.class.getSimpleName();
@@ -41,7 +41,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
     private BaseRecyclerView mRecyclerView;
     private ForumListRecyclerAdapter mRecyclerAdapter;
 
-    private ForumGroupList mForumGroupList;
+    private ForumGroups mForumGroups;
     private ToolbarInterface.SpinnerCallback mToolbarSpinnerCallback;
 
     @Override
@@ -127,28 +127,28 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
     }
 
     @Override
-    public Loader<AsyncResult<ForumGroupListWrapper>> onCreateLoader(int id, Bundle args) {
+    public Loader<AsyncResult<ForumGroupsWrapper>> onCreateLoader(int id, Bundle args) {
         super.onCreateLoader(id, args);
 
         return new HttpGetLoader<>(
                 getActivity(),
                 Api.URL_FORUM,
-                ForumGroupListWrapper.class);
+                ForumGroupsWrapper.class);
     }
 
     @Override
-    public void onLoadFinished(Loader<AsyncResult<ForumGroupListWrapper>> loader, AsyncResult<ForumGroupListWrapper> asyncResult) {
+    public void onLoadFinished(Loader<AsyncResult<ForumGroupsWrapper>> loader, AsyncResult<ForumGroupsWrapper> asyncResult) {
         super.onLoadFinished(loader, asyncResult);
 
         if (asyncResult.exception != null) {
             ToastUtil.showByResId(asyncResult.getExceptionStringRes(), Toast.LENGTH_SHORT);
         } else {
-            ForumGroupListWrapper wrapper = asyncResult.data;
-            mForumGroupList = wrapper.unwrap();
+            ForumGroupsWrapper wrapper = asyncResult.data;
+            mForumGroups = wrapper.getForumGroups();
 
             // after set adapter, host activity
             // would call onToolbarDropDownItemSelected(int).
-            mToolbarSpinnerCallback.setupToolbarDropDown(mForumGroupList.getForumGroupNameList());
+            mToolbarSpinnerCallback.setupToolbarDropDown(mForumGroups.getForumGroupNameList());
         }
     }
 
@@ -160,11 +160,11 @@ public final class ForumFragment extends BaseFragment<ForumGroupListWrapper>
     @Override
     public void onToolbarDropDownItemSelected(int position) {
         if (position == 0) {
-            mRecyclerAdapter.setDataSet(mForumGroupList.getForumList());
+            mRecyclerAdapter.setDataSet(mForumGroups.getForumList());
         } else {
             // the first position is "全部"
             // so position - 1 to correspond its group
-            mRecyclerAdapter.setDataSet(mForumGroupList.getData().get(position - 1).getForumList());
+            mRecyclerAdapter.setDataSet(mForumGroups.getForumGroupList().get(position - 1).getForumList());
         }
         mRecyclerAdapter.notifyDataSetChanged();
     }

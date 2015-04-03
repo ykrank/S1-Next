@@ -487,6 +487,7 @@ public final class ReplyFragment extends Fragment {
         }
 
         @Override
+        @LoaderId
         protected int getStartLoaderId() {
             int loaderId;
             final boolean hasAuthenticityToken =
@@ -514,7 +515,7 @@ public final class ReplyFragment extends Fragment {
         }
 
         @Override
-        public Loader onCreateLoader(int id, Bundle args) {
+        public Loader onCreateLoader(@LoaderId int id, Bundle args) {
             if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
                 return new HttpGetLoader<>(
                         getActivity(),

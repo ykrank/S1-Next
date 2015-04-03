@@ -35,7 +35,7 @@ public abstract class LoaderDialogFragment<D extends Extractable>
             ID_LOADER_ADD_THREAD_TO_FAVOURITES,
             ID_LOADER_POST_REPLY,
             ID_LOADER_GET_QUOTE_EXTRA_INFO, ID_LOADER_POST_QUOTE})
-    private @interface LoaderId {
+    protected @interface LoaderId {
 
     }
 
@@ -86,7 +86,7 @@ public abstract class LoaderDialogFragment<D extends Extractable>
     }
 
     @Override
-    public Loader<AsyncResult<D>> onCreateLoader(int id, Bundle args) {
+    public Loader<AsyncResult<D>> onCreateLoader(@LoaderId int id, Bundle args) {
         throw new IllegalStateException("Loader ID can't be " + id + ".");
     }
 

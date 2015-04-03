@@ -10,7 +10,7 @@ import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.model.Thread;
 
 /**
- * {@link #data}:
+ * {@link #threadList}:
  * <pre>
  * 帖子1
  * 帖子2
@@ -18,31 +18,31 @@ import cl.monsoon.s1next.model.Thread;
  */
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class ThreadList extends Account {
+public final class Threads extends Account {
 
     @JsonProperty("forum")
-    private Thread.ThreadListInfo threadsInfo;
+    private Thread.ThreadListInfo threadListInfo;
 
     @JsonProperty("forum_threadlist")
-    private List<Thread> data;
+    private List<Thread> threadList;
 
     @JsonProperty("sublist")
     private List<Forum> subForumList;
 
-    public Thread.ThreadListInfo getThreadsInfo() {
-        return threadsInfo;
+    public Thread.ThreadListInfo getThreadListInfo() {
+        return threadListInfo;
     }
 
-    public void setThreadsInfo(Thread.ThreadListInfo threadsInfo) {
-        this.threadsInfo = threadsInfo;
+    public void setThreadListInfo(Thread.ThreadListInfo threadListInfo) {
+        this.threadListInfo = threadListInfo;
     }
 
-    public List<Thread> getData() {
-        return data;
+    public List<Thread> getThreadList() {
+        return threadList;
     }
 
-    public void setData(List<Thread> data) {
-        this.data = data;
+    public void setThreadList(List<Thread> threadList) {
+        this.threadList = threadList;
     }
 
     public List<Forum> getSubForumList() {

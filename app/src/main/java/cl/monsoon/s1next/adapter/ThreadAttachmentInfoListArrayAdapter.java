@@ -10,14 +10,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import cl.monsoon.s1next.model.list.PostList;
+import cl.monsoon.s1next.model.list.Posts;
 
-public final class ThreadAttachmentInfoListArrayAdapter extends ArrayAdapter<PostList.ThreadAttachment.Info> {
+public final class ThreadAttachmentInfoListArrayAdapter extends ArrayAdapter<Posts.ThreadAttachment.Info> {
 
     @LayoutRes
     private final int mResource;
 
-    public ThreadAttachmentInfoListArrayAdapter(Context context, @LayoutRes int resource, List<PostList.ThreadAttachment.Info> objects) {
+    public ThreadAttachmentInfoListArrayAdapter(Context context, @LayoutRes int resource, List<Posts.ThreadAttachment.Info> objects) {
         super(context, resource, objects);
 
         this.mResource = resource;
@@ -37,7 +37,7 @@ public final class ThreadAttachmentInfoListArrayAdapter extends ArrayAdapter<Pos
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        PostList.ThreadAttachment.Info info = getItem(position);
+        Posts.ThreadAttachment.Info info = getItem(position);
 
         viewHolder.labelView.setText(info.getLabel());
         viewHolder.valueView.setText(info.getValue());

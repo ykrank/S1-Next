@@ -31,7 +31,7 @@ import cl.monsoon.s1next.model.ForumGroup;
  * 子论坛
  * </pre>
  * <p>
- * {@link #data}:
+ * {@link #forumGroupList}:
  * <pre>
  * 主论坛
  *   热血魔兽
@@ -48,7 +48,7 @@ import cl.monsoon.s1next.model.ForumGroup;
  * </pre>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class ForumGroupList extends Account {
+public final class ForumGroups extends Account {
 
     @JsonIgnore
     private final List<Forum> forumList;
@@ -57,15 +57,15 @@ public final class ForumGroupList extends Account {
     private final List<String> forumGroupNameList;
 
     @JsonIgnore
-    private final List<ForumGroup> data;
+    private final List<ForumGroup> forumGroupList;
 
     /**
      * Sorts Forums by {@link cl.monsoon.s1next.model.Forum#getTodayPosts()} desc
      * and groups Forums by category.
      */
-    @SuppressWarnings("UnusedDeclaration")
     @JsonCreator
-    public ForumGroupList(
+    @SuppressWarnings("UnusedDeclaration")
+    public ForumGroups(
             @JsonProperty("catlist") List<ForumGroup> forumGroupList,
             @JsonProperty("forumlist") List<Forum> forumList) {
         // sort forum list by today's post in reverse ordering
@@ -88,7 +88,7 @@ public final class ForumGroupList extends Account {
             forumGroup.setForumList(forumOfGroupList);
         }
 
-        this.data = forumGroupList;
+        this.forumGroupList = forumGroupList;
     }
 
     public List<Forum> getForumList() {
@@ -99,7 +99,7 @@ public final class ForumGroupList extends Account {
         return forumGroupNameList;
     }
 
-    public List<ForumGroup> getData() {
-        return data;
+    public List<ForumGroup> getForumGroupList() {
+        return forumGroupList;
     }
 }

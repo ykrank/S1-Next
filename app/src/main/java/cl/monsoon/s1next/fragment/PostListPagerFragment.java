@@ -18,12 +18,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.List;
+
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.activity.PostListActivity;
 import cl.monsoon.s1next.adapter.PostListRecyclerAdapter;
-import cl.monsoon.s1next.model.list.PostList;
-import cl.monsoon.s1next.model.mapper.PostListWrapper;
+import cl.monsoon.s1next.model.Post;
+import cl.monsoon.s1next.model.list.Posts;
+import cl.monsoon.s1next.model.mapper.PostsWrapper;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.util.ToastUtil;
@@ -39,11 +41,15 @@ import cl.monsoon.s1next.widget.HttpGetLoader;
  * <p>
  * Similar to {@link cl.monsoon.s1next.fragment.ThreadListPagerFragment}
  */
-public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
+public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
 
-    private static final String ARG_THREAD_TITLE = "thread_title";
     private static final String ARG_THREAD_ID = "thread_id";
     private static final String ARG_PAGE_NUM = "page_num";
+
+    /**
+     * Used for quote post redirect.
+     */
+    private static final String ARG_QUOTE_POST_ID = "quote_post_id";
 
     /**
      * The serialization (saved instance state) Bundle key representing whether
@@ -51,7 +57,6 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
      */
     private static final String STATE_IS_LOADING_MORE = "is_loading_more";
 
-    private String mThreadTitle;
     private String mThreadId;
     private int mPageNum;
 
@@ -61,13 +66,19 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
 
     private PagerCallback mPagerCallback;
 
-    public static PostListPagerFragment newInstance(String threadTitle, String threadId, int page) {
+    public static PostListPagerFragment newInstance(String threadId, int page) {
+        return newInstance(threadId, page, null);
+    }
+
+    public static PostListPagerFragment newInstance(String threadId, int pageNum, String postId) {
         PostListPagerFragment fragment = new PostListPagerFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putString(ARG_THREAD_TITLE, threadTitle);
         bundle.putString(ARG_THREAD_ID, threadId);
-        bundle.putInt(ARG_PAGE_NUM, page);
+        if (!TextUtils.isEmpty(postId)) {
+            bundle.putString(ARG_QUOTE_POST_ID, postId);
+        }
+        bundle.putInt(ARG_PAGE_NUM, pageNum);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -82,7 +93,6 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mThreadTitle = getArguments().getString(ARG_THREAD_TITLE);
         mThreadId = getArguments().getString(ARG_THREAD_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
@@ -160,11 +170,12 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                 return true;
             case R.id.menu_share:
                 String value;
+                CharSequence title = mPagerCallback.getThreadTitle();
                 String url = Api.getPostListUrlForBrowser(mThreadId, mPageNum);
-                if (TextUtils.isEmpty(mThreadTitle)) {
+                if (TextUtils.isEmpty(title)) {
                     value = url;
                 } else {
-                    value = StringUtil.concatWithTwoSpaces(mThreadTitle, url);
+                    value = StringUtil.concatWithTwoSpaces(title, url);
                 }
 
                 Intent intent = new Intent(Intent.ACTION_SEND);
@@ -187,17 +198,17 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
     }
 
     @Override
-    public Loader<AsyncResult<PostListWrapper>> onCreateLoader(int id, Bundle args) {
+    public Loader<AsyncResult<PostsWrapper>> onCreateLoader(int id, Bundle args) {
         super.onCreateLoader(id, args);
 
         return new HttpGetLoader<>(
                 getActivity(),
                 Api.getPostListUrl(mThreadId, mPageNum),
-                PostListWrapper.class);
+                PostsWrapper.class);
     }
 
     @Override
-    public void onLoadFinished(Loader<AsyncResult<PostListWrapper>> loader, AsyncResult<PostListWrapper> asyncResult) {
+    public void onLoadFinished(Loader<AsyncResult<PostsWrapper>> loader, AsyncResult<PostsWrapper> asyncResult) {
         super.onLoadFinished(loader, asyncResult);
 
         boolean isFinishedLoadingMore = false;
@@ -218,18 +229,19 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                 ToastUtil.showByResId(asyncResult.getExceptionStringRes(), Toast.LENGTH_SHORT);
             }
         } else {
-            PostList postList = asyncResult.data.unwrap();
+            Posts posts = asyncResult.data.getPosts();
+            List<Post> postList = posts.getPostList();
 
             // if user has logged out and then has no permission to access this thread
             // or this thread is invalid
-            if (postList.getData().isEmpty()) {
+            if (postList.isEmpty()) {
                 String message = asyncResult.data.getResult().getMessage();
                 if (!TextUtils.isEmpty(message)) {
                     ToastUtil.showByText(message, Toast.LENGTH_SHORT);
                 }
             } else {
                 int lastItemCount = mRecyclerAdapter.getItemCount();
-                mRecyclerAdapter.setDataSet(postList.getData());
+                mRecyclerAdapter.setDataSet(postList);
                 if (isFinishedLoadingMore) {
                     int newItemCount = mRecyclerAdapter.getItemCount() - lastItemCount;
                     if (newItemCount > 0) {
@@ -237,14 +249,32 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
                     }
                 } else {
                     mRecyclerAdapter.notifyDataSetChanged();
+
+                    String quotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
+                    if (!TextUtils.isEmpty(quotePostId)) {
+                        int length = postList.size();
+                        for (int i = 0; i < length; i++) {
+                            if (quotePostId.equals(postList.get(i).getId())) {
+                                // scroll to quote post
+                                mRecyclerView.scrollToPosition(i);
+                                break;
+                            }
+                        }
+                        // clear this argument after redirect
+                        getArguments().putString(ARG_QUOTE_POST_ID, null);
+                    }
                 }
 
-                cl.monsoon.s1next.model.Thread postListInfo = postList.getInfo();
-                new Handler().post(() -> mPagerCallback.setTotalPages(postListInfo.getReplies() + 1));
+                cl.monsoon.s1next.model.Thread postListInfo = posts.getPostListInfo();
+                // we have not title if we open thread link in our app
+                if (TextUtils.isEmpty(getActivity().getTitle())) {
+                    mPagerCallback.setThreadTitle(postListInfo.getTitle());
+                }
+                new Handler().post(() -> mPagerCallback.setTotalPageByPosts(postListInfo.getReplies() + 1));
             }
 
-            if (postList.getThreadAttachment() != null) {
-                ((PostListActivity) getActivity()).setupThreadAttachment(postList.getThreadAttachment());
+            if (posts.getThreadAttachment() != null) {
+                mPagerCallback.setupThreadAttachment(posts.getThreadAttachment());
             }
         }
 
@@ -263,6 +293,12 @@ public final class PostListPagerFragment extends BaseFragment<PostListWrapper> {
         /**
          * A callback to set actual total pages which used for {@link android.support.v4.view.PagerAdapter}.
          */
-        void setTotalPages(int i);
+        void setTotalPageByPosts(int threads);
+
+        CharSequence getThreadTitle();
+
+        void setThreadTitle(CharSequence title);
+
+        void setupThreadAttachment(Posts.ThreadAttachment threadAttachment);
     }
 }

@@ -159,7 +159,7 @@ public final class LoginFragment extends Fragment {
         }
 
         @Override
-        public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
+        public Loader<AsyncResult<ResultWrapper>> onCreateLoader(@LoaderId int id, Bundle args) {
             return new HttpPostLoader<>(
                     getActivity(),
                     Api.URL_LOGIN,

@@ -39,7 +39,7 @@ import cl.monsoon.s1next.fragment.BaseFragment;
 import cl.monsoon.s1next.fragment.LoaderDialogFragment;
 import cl.monsoon.s1next.fragment.PostListPagerFragment;
 import cl.monsoon.s1next.model.Result;
-import cl.monsoon.s1next.model.list.PostList;
+import cl.monsoon.s1next.model.list.Posts;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.singleton.Setting;
 import cl.monsoon.s1next.singleton.User;
@@ -63,6 +63,12 @@ public class PostListActivity extends BaseActivity
         View.OnClickListener {
 
     public static final String ARG_THREAD = "thread";
+    public static final String ARG_QUOTE_POST_ID = "quote_post_id";
+
+    /**
+     * ARG_JUMP_PAGE takes precedence over {@link #ARG_SHOULD_GO_TO_LAST_PAGE}.
+     */
+    public static final String ARG_JUMP_PAGE = "jump_page";
     public static final String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
 
     public static final String ACTION_QUOTE = "quote";
@@ -86,7 +92,7 @@ public class PostListActivity extends BaseActivity
     private PagerAdapter mAdapter;
     private ViewPager mViewPager;
 
-    private PostList.ThreadAttachment mThreadAttachment;
+    private Posts.ThreadAttachment mThreadAttachment;
     private MenuItem mMenuThreadAttachment;
 
     private MenuItem mMenuPageFlip;
@@ -106,10 +112,17 @@ public class PostListActivity extends BaseActivity
 
         cl.monsoon.s1next.model.Thread thread = getIntent().getParcelableExtra(ARG_THREAD);
         mThreadTitle = thread.getTitle();
-        setTitle(StringUtil.concatWithTwoSpaces(mThreadTitle, 1));
         mThreadId = thread.getId();
-        // +1 for original post
-        setTotalPages(thread.getReplies() + 1);
+
+        final int jumpPage = getIntent().getIntExtra(ARG_JUMP_PAGE, -1);
+        if (jumpPage != -1) {
+            // we do not know the total page if we open this thread by URL
+            // so we set the jump page to total page
+            setTotalPage(jumpPage);
+        } else {
+            // +1 for original post
+            setTotalPageByPosts(thread.getReplies() + 1);
+        }
 
         FrameLayout container = (FrameLayout) findViewById(R.id.frame_layout);
         View.inflate(this, R.layout.screen_slide, container);
@@ -127,7 +140,7 @@ public class PostListActivity extends BaseActivity
 
             @Override
             public void onPageSelected(int position) {
-                setTitle(StringUtil.concatWithTwoSpaces(mThreadTitle, position + 1));
+                updateTitleWithPage();
             }
 
             @Override
@@ -135,9 +148,12 @@ public class PostListActivity extends BaseActivity
 
             }
         });
+        updateTitleWithPage();
 
-        // set ViewPager to last page when true
-        if (getIntent().getBooleanExtra(ARG_SHOULD_GO_TO_LAST_PAGE, false)) {
+        // do not jump to the first page, because this is the default behavior for ViewPager
+        if (jumpPage != -1) {
+            mViewPager.setCurrentItem(jumpPage - 1);
+        } else if (getIntent().getBooleanExtra(ARG_SHOULD_GO_TO_LAST_PAGE, false)) {
             mViewPager.setCurrentItem(mTotalPages - 1);
         }
 
@@ -189,6 +205,14 @@ public class PostListActivity extends BaseActivity
         }
 
         unregisterReceiver(mQuoteReceiver);
+    }
+
+    private void updateTitleWithPage() {
+        if (!TextUtils.isEmpty(mThreadTitle)) {
+            setTitle(StringUtil.concatWithTwoSpaces(mThreadTitle, mViewPager.getCurrentItem() + 1));
+        } else {
+            setTitle(null);
+        }
     }
 
     @Override
@@ -248,7 +272,8 @@ public class PostListActivity extends BaseActivity
         outState.putInt(STATE_SEEKBAR_PROGRESS, mSeekBarProgress);
     }
 
-    public void setupThreadAttachment(PostList.ThreadAttachment threadAttachment) {
+    @Override
+    public void setupThreadAttachment(Posts.ThreadAttachment threadAttachment) {
         this.mThreadAttachment = threadAttachment;
 
         // mMenuThreadAttachment = null when configuration changes (like orientation changes)
@@ -377,14 +402,29 @@ public class PostListActivity extends BaseActivity
      * Implements {@link PostListPagerFragment.PagerCallback}.
      */
     @Override
-    public void setTotalPages(int i) {
-        mTotalPages = MathUtil.divide(i, Config.POSTS_PER_PAGE);
+    public void setTotalPageByPosts(int posts) {
+        setTotalPage(MathUtil.divide(posts, Config.POSTS_PER_PAGE));
+    }
+
+    private void setTotalPage(int i) {
+        mTotalPages = i;
 
         prepareMenuPageFlip();
 
         if (mAdapter != null) {
             runOnUiThread(mAdapter::notifyDataSetChanged);
         }
+    }
+
+    @Override
+    public CharSequence getThreadTitle() {
+        return mThreadTitle;
+    }
+
+    @Override
+    public void setThreadTitle(CharSequence title) {
+        mThreadTitle = title.toString();
+        updateTitleWithPage();
     }
 
     /**
@@ -438,7 +478,15 @@ public class PostListActivity extends BaseActivity
 
         @Override
         public Fragment getItem(int i) {
-            return PostListPagerFragment.newInstance(mThreadTitle, mThreadId, i + 1);
+            int jumpPage = getIntent().getIntExtra(ARG_JUMP_PAGE, -1);
+            String quotePostId = getIntent().getStringExtra(ARG_QUOTE_POST_ID);
+            if (jumpPage - 1 == i && !TextUtils.isEmpty(quotePostId)) {
+                // clear this extra string because we only need to tell PostListPagerFragment once
+                getIntent().putExtra(ARG_QUOTE_POST_ID, (String) null);
+                return PostListPagerFragment.newInstance(mThreadId, i + 1, quotePostId);
+            } else {
+                return PostListPagerFragment.newInstance(mThreadId, i + 1);
+            }
         }
 
         @Override
@@ -456,7 +504,7 @@ public class PostListActivity extends BaseActivity
         private static final String ARG_ATTACHMENT_TITLE = "attachment_title";
         private static final String ARG_THREAD_ATTACHMENT_INFO_LIST = "thread_attachment_info_list";
 
-        public static ThreadAttachmentDialogFragment newInstance(PostList.ThreadAttachment threadAttachment) {
+        public static ThreadAttachmentDialogFragment newInstance(Posts.ThreadAttachment threadAttachment) {
             ThreadAttachmentDialogFragment fragment = new ThreadAttachmentDialogFragment();
 
             Bundle bundle = new Bundle();
@@ -552,6 +600,7 @@ public class PostListActivity extends BaseActivity
             }
 
             @Override
+            @LoaderId
             protected int getStartLoaderId() {
                 if (TextUtils.isEmpty(User.getAuthenticityToken())) {
                     return ID_LOADER_GET_AUTHENTICITY_TOKEN;
@@ -561,7 +610,7 @@ public class PostListActivity extends BaseActivity
             }
 
             @Override
-            public Loader<AsyncResult<ResultWrapper>> onCreateLoader(int id, Bundle args) {
+            public Loader<AsyncResult<ResultWrapper>> onCreateLoader(@LoaderId int id, Bundle args) {
                 if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
                     return new HttpGetLoader<>(
                             getActivity(),

@@ -18,7 +18,7 @@ import cl.monsoon.s1next.model.Post;
 import cl.monsoon.s1next.util.StringUtil;
 
 /**
- * {@link #data}:
+ * {@link #postList}:
  * <pre>
  * 回复1
  * 回复2
@@ -26,23 +26,23 @@ import cl.monsoon.s1next.util.StringUtil;
  */
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class PostList extends Account {
+public final class Posts extends Account {
 
     @JsonProperty("thread")
-    private cl.monsoon.s1next.model.Thread info;
+    private cl.monsoon.s1next.model.Thread postListInfo;
 
     @JsonProperty("threadsortshow")
     private ThreadAttachment threadAttachment;
 
     @JsonProperty("postlist")
-    private List<Post> data;
+    private List<Post> postList;
 
-    public cl.monsoon.s1next.model.Thread getInfo() {
-        return info;
+    public cl.monsoon.s1next.model.Thread getPostListInfo() {
+        return postListInfo;
     }
 
-    public void setInfo(cl.monsoon.s1next.model.Thread info) {
-        this.info = info;
+    public void setPostListInfo(cl.monsoon.s1next.model.Thread postListInfo) {
+        this.postListInfo = postListInfo;
     }
 
     public ThreadAttachment getThreadAttachment() {
@@ -53,12 +53,12 @@ public final class PostList extends Account {
         this.threadAttachment = threadAttachment;
     }
 
-    public List<Post> getData() {
-        return data;
+    public List<Post> getPostList() {
+        return postList;
     }
 
-    public void setData(List<Post> data) {
-        this.data = data;
+    public void setPostList(List<Post> postList) {
+        this.postList = postList;
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

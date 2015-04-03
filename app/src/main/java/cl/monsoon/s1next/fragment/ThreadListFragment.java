@@ -57,7 +57,7 @@ public final class ThreadListFragment extends Fragment
         mForumTitle = forum.getName();
         getActivity().setTitle(StringUtil.concatWithTwoSpaces(mForumTitle, 1));
         mForumId = forum.getId();
-        setTotalPages(forum.getThreads());
+        setTotalPageByThreads(forum.getThreads());
 
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
         // don't use getChildFragmentManager()
@@ -87,8 +87,8 @@ public final class ThreadListFragment extends Fragment
      * Implements {@link ThreadListPagerFragment.PagerCallback}.
      */
     @Override
-    public void setTotalPages(int i) {
-        mTotalPages = MathUtil.divide(i, Config.THREADS_PER_PAGE);
+    public void setTotalPageByThreads(int threads) {
+        mTotalPages = MathUtil.divide(threads, Config.THREADS_PER_PAGE);
 
         if (mAdapter != null) {
             getActivity().runOnUiThread(mAdapter::notifyDataSetChanged);
