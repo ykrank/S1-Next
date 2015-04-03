@@ -34,7 +34,6 @@ import cl.monsoon.s1next.Config;
  * just throw an exception to tell Glide to use the error
  * placeholder for this image.
  *
- * @see cl.monsoon.s1next.widget.OkHttpStreamFetcher#CACHEABLE_RESPONSE_STATUS_CODES
  * @see cl.monsoon.s1next.widget.OkHttpStreamFetcher#loadData(com.bumptech.glide.Priority)
  */
 public enum AvatarUrlCache {

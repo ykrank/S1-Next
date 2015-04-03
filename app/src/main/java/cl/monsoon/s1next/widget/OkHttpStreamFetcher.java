@@ -87,7 +87,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
     /**
      * Forked form {@link com.squareup.okhttp.internal.http.CacheStrategy#isCacheable(Response, Request)}.
      */
-    public static boolean isCacheable(Response response) {
+    private static boolean isCacheable(Response response) {
         // Always go to network for uncacheable response codes (RFC 7231 section 6.1),
         // This implementation doesn't support caching partial content.
         switch (response.code()) {
