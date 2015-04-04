@@ -8,7 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.singleton.Settings;
 
 public final class VersionUtil {
 
@@ -24,16 +24,16 @@ public final class VersionUtil {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void changeAppTitleColorToWhiteInRecentApps(Activity activity) {
         int colorId;
-        switch (Setting.Theme.getCurrentTheme()) {
+        switch (Settings.Theme.getCurrentTheme()) {
             // We can't find any similar color to change app title
-            // to white for Setting.LIGHT_THEME_AMBER.
-            // And we also don't need to provide any color to Setting.DARK_THEME
+            // to white for Settings.LIGHT_THEME_AMBER.
+            // And we also don't need to provide any color to Settings.DARK_THEME
             // because the app title is already white in this theme.
-            case Setting.Theme.LIGHT_THEME_GREEN:
+            case Settings.Theme.LIGHT_THEME_GREEN:
                 colorId = R.color.green_600;
 
                 break;
-            case Setting.Theme.LIGHT_THEME_LIGHT_BLUE:
+            case Settings.Theme.LIGHT_THEME_LIGHT_BLUE:
                 colorId = R.color.light_blue_600;
 
                 break;

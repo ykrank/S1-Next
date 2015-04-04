@@ -44,8 +44,8 @@ import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.BaseFragment;
 import cl.monsoon.s1next.fragment.SettingsFragment;
-import cl.monsoon.s1next.singleton.OkHttpClientManager;
-import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.singleton.OkHttpClientProvider;
+import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
@@ -99,8 +99,8 @@ public abstract class BaseActivity extends ActionBarActivityCompat
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (!Setting.Theme.isDefaultTheme()) {
-            setTheme(Setting.Theme.getCurrentTheme());
+        if (!Settings.Theme.isDefaultTheme()) {
+            setTheme(Settings.Theme.getCurrentTheme());
         }
 
         super.onCreate(savedInstanceState);
@@ -516,7 +516,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
         // setup default avatar
         Glide.with(this)
                 .load(R.drawable.ic_drawer_avatar_placeholder)
-                .signature(Setting.Download.getAvatarCacheInvalidationIntervalSignature())
+                .signature(Settings.Download.getAvatarCacheInvalidationIntervalSignature())
                 .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
                 .into(mDrawerUserAvatarView);
 
@@ -543,7 +543,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
         // setup user's avatar
         Glide.with(this)
                 .load(Api.getAvatarMediumUrl(User.getUid()))
-                .signature(Setting.Download.getAvatarCacheInvalidationIntervalSignature())
+                .signature(Settings.Download.getAvatarCacheInvalidationIntervalSignature())
                 .error(R.drawable.ic_drawer_avatar_placeholder)
                 .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
                 .into(mDrawerUserAvatarView);
@@ -585,7 +585,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
                                             sharedPreferences.edit()
                                                     .putString(SettingsFragment.PREF_KEY_THEME,
                                                             String.valueOf(which)).apply();
-                                            Setting.Theme.setCurrentTheme(sharedPreferences);
+                                            Settings.Theme.setCurrentTheme(sharedPreferences);
 
                                             // We use App.getContext() instead of getActivity()
                                             // in order to avoid NullPointerException when out of scope.
@@ -622,7 +622,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
     @Override
     public void onLogout() {
         // clear account cookie and current user's info
-        OkHttpClientManager.clearCookie();
+        OkHttpClientProvider.clearCookie();
         User.reset();
         User.sendCookieExpirationBroadcast();
     }

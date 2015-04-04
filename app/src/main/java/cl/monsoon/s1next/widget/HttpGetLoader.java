@@ -14,7 +14,7 @@ import java.io.InputStream;
 
 import cl.monsoon.s1next.model.Extractable;
 import cl.monsoon.s1next.singleton.ObjectExtractor;
-import cl.monsoon.s1next.singleton.OkHttpClientManager;
+import cl.monsoon.s1next.singleton.OkHttpClientProvider;
 import cl.monsoon.s1next.util.ServerException;
 
 /**
@@ -122,7 +122,7 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
                 .url(mUrl)
                 .build();
 
-        mCall = OkHttpClientManager.get().newCall(request);
+        mCall = OkHttpClientProvider.get().newCall(request);
         Response response = mCall.execute();
 
         if (!response.isSuccessful()) {

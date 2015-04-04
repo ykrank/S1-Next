@@ -11,8 +11,8 @@ import com.bumptech.glide.module.GlideModule;
 
 import java.io.InputStream;
 
-import cl.monsoon.s1next.singleton.OkHttpClientManager;
-import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.singleton.OkHttpClientProvider;
+import cl.monsoon.s1next.singleton.Settings;
 
 /**
  * Lazily configures Glide.
@@ -24,7 +24,7 @@ public final class MyGlideModule implements GlideModule {
         // set max size of the disk cache for images
         builder.setDiskCache(new InternalCacheDiskCacheFactory(
                 context,
-                Setting.Download.getTotalCacheSize(
+                Settings.Download.getTotalCacheSize(
                         PreferenceManager.getDefaultSharedPreferences(context))));
     }
 
@@ -33,6 +33,6 @@ public final class MyGlideModule implements GlideModule {
         // register the OkHttp for Glide
         glide.register(GlideUrl.class,
                 InputStream.class,
-                new OkHttpUrlLoader.Factory(OkHttpClientManager.get()));
+                new OkHttpUrlLoader.Factory(OkHttpClientProvider.get()));
     }
 }

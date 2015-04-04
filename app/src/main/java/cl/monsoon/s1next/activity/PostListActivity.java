@@ -41,7 +41,7 @@ import cl.monsoon.s1next.fragment.PostListPagerFragment;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.list.Posts;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
-import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.MathUtil;
@@ -171,13 +171,13 @@ public class PostListActivity extends BaseActivity
 
         // Registers broadcast receiver to check whether Wi-Fi is enabled
         // when we need to download images.
-        if (Setting.Download.needMonitorWifi()) {
-            Setting.General.setWifi(NetworkUtil.isWifiConnected());
+        if (Settings.Download.needMonitorWifi()) {
+            Settings.General.setWifi(NetworkUtil.isWifiConnected());
 
             mWifiReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    Setting.General.setWifi(NetworkUtil.isWifiConnected());
+                    Settings.General.setWifi(NetworkUtil.isWifiConnected());
                 }
             };
 

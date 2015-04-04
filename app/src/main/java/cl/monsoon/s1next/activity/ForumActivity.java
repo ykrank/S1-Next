@@ -17,7 +17,7 @@ import java.util.List;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.ForumFragment;
-import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.widget.StateListDrawableWithTint;
 
 /**
@@ -101,8 +101,8 @@ public final class ForumActivity extends BaseActivity
             getLayoutInflater().inflate(R.layout.toolbar_spinner, toolbar, true);
             mSpinner = (Spinner) toolbar.findViewById(R.id.spinner);
 
-            if (!Setting.Theme.isDarkTheme()) {
-                int colorAccent = Setting.Theme.getCurrentColorAccent();
+            if (!Settings.Theme.isDarkTheme()) {
+                int colorAccent = Settings.Theme.getCurrentColorAccent();
                 int[][] states = new int[][]{
                         new int[]{android.R.attr.state_enabled, android.R.attr.state_focused},
                         new int[]{android.R.attr.state_enabled, android.R.attr.state_pressed},

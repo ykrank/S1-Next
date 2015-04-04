@@ -14,7 +14,7 @@ import java.io.InputStream;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.singleton.AvatarUrlCache;
-import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.singleton.Settings;
 
 import static com.squareup.okhttp.internal.http.StatusLine.HTTP_PERM_REDIRECT;
 import static com.squareup.okhttp.internal.http.StatusLine.HTTP_TEMP_REDIRECT;
@@ -57,7 +57,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
         Key key = null;
         if (Api.isAvatarUrl(mUrl)) {
             key = new AvatarUrlCache.OriginalKey(
-                    mUrl, Setting.Download.getAvatarCacheInvalidationIntervalSignature());
+                    mUrl, Settings.Download.getAvatarCacheInvalidationIntervalSignature());
             if (AvatarUrlCache.has(key)) {
                 throw new IOException("Already have cached this avatar (" + mUrl + ").");
             }

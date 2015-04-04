@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import cl.monsoon.s1next.model.Extractable;
-import cl.monsoon.s1next.singleton.OkHttpClientManager;
+import cl.monsoon.s1next.singleton.OkHttpClientProvider;
 
 /**
  * Capture the redirect URL for quote post link.
@@ -58,7 +58,7 @@ public final class HttpRedirectLoader extends HttpGetLoader<HttpRedirectLoader.R
                 .url(mUrl)
                 .build();
 
-        mCall = OkHttpClientManager.get().newCall(request);
+        mCall = OkHttpClientProvider.get().newCall(request);
         Response response = mCall.execute();
         response.body().close();
 

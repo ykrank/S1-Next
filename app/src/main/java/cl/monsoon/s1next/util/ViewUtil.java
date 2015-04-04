@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.lang.reflect.Method;
 
-import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.singleton.Settings;
 
 public final class ViewUtil {
 
@@ -39,12 +39,12 @@ public final class ViewUtil {
 
     /**
      * Updates the TextViews font size depends on
-     * {@link cl.monsoon.s1next.singleton.Setting.General#textScale}.
+     * {@link Settings.General#textScale}.
      *
      * @param textViewList also works for {@link android.widget.EditText} and {@link android.widget.Button}.
      */
     public static void updateTextSize(TextView... textViewList) {
-        float textScale = Setting.General.getTextScale();
+        float textScale = Settings.General.getTextScale();
         for (TextView textView : textViewList) {
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textView.getTextSize() * textScale);
         }

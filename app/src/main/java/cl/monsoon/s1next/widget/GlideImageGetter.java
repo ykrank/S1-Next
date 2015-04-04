@@ -20,7 +20,7 @@ import com.bumptech.glide.request.target.ViewTarget;
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.view.UrlDrawable;
 
 /**
@@ -89,7 +89,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
             return urlDrawable;
         }
 
-        if (Setting.Download.needDownloadImages()) {
+        if (Settings.Download.needDownloadImages()) {
             Glide.with(mContext)
                     .load(url)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)

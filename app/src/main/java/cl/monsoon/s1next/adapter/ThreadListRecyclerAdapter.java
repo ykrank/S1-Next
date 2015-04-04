@@ -9,7 +9,7 @@ import android.widget.TextView;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Thread;
-import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ColorUtil;
 import cl.monsoon.s1next.util.ViewUtil;
@@ -24,7 +24,7 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
     public ThreadListRecyclerAdapter() {
         setHasStableIds(true);
 
-        mSecondaryTextColor = Setting.Theme.getSecondaryTextColor();
+        mSecondaryTextColor = Settings.Theme.getSecondaryTextColor();
     }
 
     @Override
@@ -76,7 +76,7 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
 
             mDefaultTextViewColor = textView.getCurrentTextColor();
             mDisabledTextViewColor = ColorUtil.a(mDefaultTextViewColor,
-                    Setting.Theme.getDisabledOrHintTextAlpha());
+                    Settings.Theme.getDisabledOrHintTextAlpha());
         }
 
         public void setTextViewEnabled(Boolean enabled) {

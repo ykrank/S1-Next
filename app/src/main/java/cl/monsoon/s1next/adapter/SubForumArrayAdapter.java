@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import cl.monsoon.s1next.model.Forum;
-import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.util.ViewUtil;
 
 public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
@@ -25,7 +25,7 @@ public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
         super(context, resource, objects);
 
         this.mResource = resource;
-        mSecondaryTextColor = Setting.Theme.getSecondaryTextColor();
+        mSecondaryTextColor = Settings.Theme.getSecondaryTextColor();
     }
 
     @Override

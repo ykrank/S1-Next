@@ -17,7 +17,7 @@ import cl.monsoon.s1next.fragment.SettingsFragment;
 import cl.monsoon.s1next.util.ColorUtil;
 import cl.monsoon.s1next.util.DateUtil;
 
-public final class Setting {
+public final class Settings {
 
     public enum General {
         INSTANCE;

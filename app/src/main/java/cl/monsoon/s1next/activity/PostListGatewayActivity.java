@@ -26,7 +26,7 @@ import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.LoaderDialogFragment;
 import cl.monsoon.s1next.model.Thread;
-import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpRedirectLoader;
@@ -42,8 +42,8 @@ public final class PostListGatewayActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // default theme for this Activity is dark theme
-        if (!Setting.Theme.isDarkTheme()) {
-            setTheme(Setting.Theme.TRANSLUCENT_THEME_LIGHT);
+        if (!Settings.Theme.isDarkTheme()) {
+            setTheme(Settings.Theme.TRANSLUCENT_THEME_LIGHT);
         }
 
         super.onCreate(savedInstanceState);

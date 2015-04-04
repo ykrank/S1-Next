@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import cl.monsoon.s1next.model.Extractable;
-import cl.monsoon.s1next.singleton.OkHttpClientManager;
+import cl.monsoon.s1next.singleton.OkHttpClientProvider;
 import cl.monsoon.s1next.util.ServerException;
 
 /**
@@ -38,7 +38,7 @@ public final class HttpPostLoader<D extends Extractable> extends HttpGetLoader<D
                 .post(mRequestBody)
                 .build();
 
-        mCall = OkHttpClientManager.getForNonIdempotent().newCall(request);
+        mCall = OkHttpClientProvider.getForNonIdempotent().newCall(request);
         Response response = mCall.execute();
 
         if (!response.isSuccessful()) {

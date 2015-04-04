@@ -13,7 +13,7 @@ import cl.monsoon.s1next.widget.PersistentHttpCookieStore;
 /**
  * OkHttpClient singleton.
  */
-public enum OkHttpClientManager {
+public enum OkHttpClientProvider {
     INSTANCE;
 
     private final OkHttpClient okHttpClient;
@@ -25,7 +25,7 @@ public enum OkHttpClientManager {
 
     private final CookieManager mCookieManager;
 
-    OkHttpClientManager() {
+    OkHttpClientProvider() {
         okHttpClient = new OkHttpClient();
 
         okHttpClient.setConnectTimeout(Config.OKHTTP_CLIENT_CONNECT_TIMEOUT, TimeUnit.SECONDS);

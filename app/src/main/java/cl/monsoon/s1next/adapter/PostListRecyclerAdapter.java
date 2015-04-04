@@ -32,7 +32,7 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.PostListActivity;
 import cl.monsoon.s1next.activity.ReplyActivity;
 import cl.monsoon.s1next.model.Post;
-import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.util.ViewUtil;
 import cl.monsoon.s1next.widget.CustomMovementMethod;
 import cl.monsoon.s1next.widget.GlideImageGetter;
@@ -62,7 +62,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         // loading avatars is prior to images in replies
         mAvatarRequestBuilder = Glide.with(mContext)
                 .from(String.class)
-                .signature(Setting.Download.getAvatarCacheInvalidationIntervalSignature())
+                .signature(Settings.Download.getAvatarCacheInvalidationIntervalSignature())
                 .error(R.drawable.ic_avatar_placeholder)
                 .priority(Priority.HIGH)
                 .transform(new CenterCrop(Glide.get(context).getBitmapPool()));
@@ -105,10 +105,10 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
 
         // whether need to download avatars
         // depends on settings and Wi-Fi status
-        if (Setting.Download.needDownloadAvatars()) {
+        if (Settings.Download.needDownloadAvatars()) {
             avatarView.setVisibility(View.VISIBLE);
 
-            String url = Setting.Download.needDownloadHighResolutionAvatars()
+            String url = Settings.Download.needDownloadHighResolutionAvatars()
                     ? Api.getAvatarMediumUrl(post.getUserId())
                     : Api.getAvatarSmallUrl(post.getUserId());
             // show user's avatar

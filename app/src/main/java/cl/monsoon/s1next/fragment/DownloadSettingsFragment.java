@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.singleton.Settings;
 
 public final class DownloadSettingsFragment extends BaseSettingsFragment {
 
@@ -26,22 +26,22 @@ public final class DownloadSettingsFragment extends BaseSettingsFragment {
         switch (key) {
             // change avatar download strategy
             case PREF_KEY_DOWNLOAD_AVATARS_STRATEGY:
-                Setting.Download.setAvatarsDownloadStrategy(sharedPreferences);
+                Settings.Download.setAvatarsDownloadStrategy(sharedPreferences);
 
                 break;
             // change avatar resolution strategy
             case PREF_KEY_AVATAR_RESOLUTION_STRATEGY:
-                Setting.Download.setAvatarResolutionStrategy(sharedPreferences);
+                Settings.Download.setAvatarResolutionStrategy(sharedPreferences);
 
                 break;
             // change avatar cache invalidation interval
             case PREF_KEY_AVATAR_CACHE_INVALIDATION_INTERVAL:
-                Setting.Download.setAvatarCacheInvalidationInterval(sharedPreferences);
+                Settings.Download.setAvatarCacheInvalidationInterval(sharedPreferences);
 
                 break;
             // change images' download strategy
             case PREF_KEY_DOWNLOAD_IMAGES_STRATEGY:
-                Setting.Download.setImagesDownloadStrategy(sharedPreferences);
+                Settings.Download.setImagesDownloadStrategy(sharedPreferences);
 
                 break;
         }

@@ -12,7 +12,7 @@ import android.webkit.WebView;
 import cl.monsoon.s1next.BuildConfig;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.SettingsActivity;
-import cl.monsoon.s1next.singleton.Setting;
+import cl.monsoon.s1next.singleton.Settings;
 
 public final class SettingsFragment extends BaseSettingsFragment
         implements Preference.OnPreferenceClickListener {
@@ -46,13 +46,13 @@ public final class SettingsFragment extends BaseSettingsFragment
         switch (key) {
             // set current theme
             case PREF_KEY_THEME:
-                Setting.Theme.setCurrentTheme(sharedPreferences);
+                Settings.Theme.setCurrentTheme(sharedPreferences);
                 getActivity().sendBroadcast(new Intent(ACTION_CHANGE_THEME));
 
                 break;
             // change font size
             case PREF_KEY_FONT_SIZE:
-                Setting.General.setTextScale(sharedPreferences);
+                Settings.General.setTextScale(sharedPreferences);
                 getActivity().sendBroadcast(new Intent(ACTION_CHANGE_FONT_SIZE));
 
                 break;
