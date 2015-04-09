@@ -1,7 +1,6 @@
 package cl.monsoon.s1next.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +17,8 @@ import java.util.Map;
 
 import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.fragment.ReplyFragment;
+import cl.monsoon.s1next.event.EmoticonClickEvent;
+import cl.monsoon.s1next.singleton.BusProvider;
 
 public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<EmoticonGridRecyclerAdapter.ViewHolder> {
 
@@ -74,12 +74,8 @@ public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<Emot
 
         @Override
         public void onClick(View v) {
-            // send broadcast to notify ReplyFragment that emoticon had been clicked
-            Intent intent = new Intent(ReplyFragment.ACTION_INSERT_EMOTICON);
-            intent.putExtra(ReplyFragment.ARG_EMOTICON_ENTITY,
-                    (CharSequence) v.getTag(KEY_EMOTICON_ENTITY));
-
-            v.getContext().sendBroadcast(intent);
+            // notify ReplyFragment that emoticon had been clicked
+            BusProvider.get().post(new EmoticonClickEvent((String) v.getTag(KEY_EMOTICON_ENTITY)));
         }
     }
 }

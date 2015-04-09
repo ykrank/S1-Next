@@ -1,18 +1,14 @@
 package cl.monsoon.s1next.singleton;
 
-import android.content.Intent;
 import android.text.TextUtils;
 
-import cl.monsoon.s1next.App;
+import cl.monsoon.s1next.event.UserStatusEvent;
 
 /**
  * Current user.
  */
 public enum User {
     INSTANCE;
-
-    public static final String ACTION_USER_LOGIN = "user_login";
-    public static final String ACTION_USER_COOKIE_EXPIRATION = "user_cookie_expiration";
 
     private volatile String uid;
     private volatile String name;
@@ -60,16 +56,11 @@ public enum User {
         INSTANCE.permission = 0;
     }
 
-    public static void sendLoginBroadcast() {
-        App.getContext().sendBroadcast(new Intent(ACTION_USER_LOGIN));
+    public static void postLoginEvent() {
+        BusProvider.get().post(new UserStatusEvent(UserStatusEvent.USER_LOGIN));
     }
 
-    public static void sendCookieExpirationBroadcast() {
-        App.getContext().sendBroadcast(new Intent(ACTION_USER_COOKIE_EXPIRATION));
-    }
-
-    public interface OnLogoutListener {
-
-        void onLogout();
+    public static void sendCookieExpirationEvent() {
+        BusProvider.get().post(new UserStatusEvent(UserStatusEvent.USER_COOKIE_EXPIRATION));
     }
 }

@@ -31,8 +31,8 @@ public class Account {
 
     /**
      * We should confirm that both uid and username have been set,
-     * then send {@link User#sendCookieExpirationBroadcast()}
-     * or {@link User#sendLoginBroadcast()}.
+     * then send {@link User#sendCookieExpirationEvent()}
+     * or {@link User#postLoginEvent()}.
      */
     public void setUid(String uid) {
         this.uid = uid;
@@ -45,13 +45,13 @@ public class Account {
                 if (hasSetUsername) {
                     User.setUid(null);
                     User.setName(null);
-                    User.sendCookieExpirationBroadcast();
+                    User.sendCookieExpirationEvent();
                 }
             }
         } else {
             User.setUid(uid);
             if (!hasUserLoggedIn && hasSetUsername) {
-                User.sendLoginBroadcast();
+                User.postLoginEvent();
             }
         }
     }
@@ -73,13 +73,13 @@ public class Account {
                 if (hasSetUid) {
                     User.setUid(null);
                     User.setName(null);
-                    User.sendCookieExpirationBroadcast();
+                    User.sendCookieExpirationEvent();
                 }
             }
         } else {
             User.setName(username);
             if (!hasUserLoggedIn && hasSetUid) {
-                User.sendLoginBroadcast();
+                User.postLoginEvent();
             }
         }
     }

@@ -12,6 +12,9 @@ import android.webkit.WebView;
 import cl.monsoon.s1next.BuildConfig;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.SettingsActivity;
+import cl.monsoon.s1next.event.FontSizeChangeEvent;
+import cl.monsoon.s1next.event.ThemeChangeEvent;
+import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.Settings;
 
 public final class SettingsFragment extends BaseSettingsFragment
@@ -19,9 +22,6 @@ public final class SettingsFragment extends BaseSettingsFragment
 
     public static final String PREF_KEY_THEME = "pref_key_theme";
     public static final String PREF_KEY_FONT_SIZE = "pref_key_font_size";
-
-    public static final String ACTION_CHANGE_THEME = "change_theme";
-    public static final String ACTION_CHANGE_FONT_SIZE = "change_font_size";
 
     private static final String PREF_KEY_DOWNLOADS = "pref_key_downloads";
 
@@ -47,13 +47,13 @@ public final class SettingsFragment extends BaseSettingsFragment
             // set current theme
             case PREF_KEY_THEME:
                 Settings.Theme.setCurrentTheme(sharedPreferences);
-                getActivity().sendBroadcast(new Intent(ACTION_CHANGE_THEME));
+                BusProvider.get().post(new ThemeChangeEvent());
 
                 break;
             // change font size
             case PREF_KEY_FONT_SIZE:
                 Settings.General.setTextScale(sharedPreferences);
-                getActivity().sendBroadcast(new Intent(ACTION_CHANGE_FONT_SIZE));
+                BusProvider.get().post(new FontSizeChangeEvent());
 
                 break;
         }

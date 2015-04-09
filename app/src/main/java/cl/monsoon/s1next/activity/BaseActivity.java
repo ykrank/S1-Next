@@ -2,10 +2,7 @@ package cl.monsoon.s1next.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Point;
@@ -34,6 +31,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.melnykov.fab.FloatingActionButton;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,8 +40,12 @@ import java.util.List;
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.event.FontSizeChangeEvent;
+import cl.monsoon.s1next.event.ThemeChangeEvent;
+import cl.monsoon.s1next.event.UserStatusEvent;
 import cl.monsoon.s1next.fragment.BaseFragment;
 import cl.monsoon.s1next.fragment.SettingsFragment;
+import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.OkHttpClientProvider;
 import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.singleton.User;
@@ -58,9 +60,7 @@ import cl.monsoon.s1next.view.InsetsFrameLayout;
  * Also changes theme depends on settings.
  */
 public abstract class BaseActivity extends ActionBarActivityCompat
-        implements InsetsFrameLayout.OnInsetsCallback,
-        BaseFragment.InsetsCallback,
-        User.OnLogoutListener {
+        implements InsetsFrameLayout.OnInsetsCallback, BaseFragment.InsetsCallback {
 
     private Rect mSystemWindowInsets;
     private final List<InsetsFrameLayout.OnInsetsCallback> onInsetsCallbackList =
@@ -89,13 +89,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
 
     private FloatingActionButton mFloatingActionButton;
 
-    /**
-     * Either {@link cl.monsoon.s1next.fragment.SettingsFragment#ACTION_CHANGE_THEME}
-     * or {@link cl.monsoon.s1next.fragment.SettingsFragment#ACTION_CHANGE_FONT_SIZE}.
-     */
-    private BroadcastReceiver mRecreateActivityReceiver;
-
-    private BroadcastReceiver mUserLoginStatusReceiver;
+    private Object mEvents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,38 +99,44 @@ public abstract class BaseActivity extends ActionBarActivityCompat
 
         super.onCreate(savedInstanceState);
 
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(SettingsFragment.ACTION_CHANGE_THEME);
-        intentFilter.addAction(SettingsFragment.ACTION_CHANGE_FONT_SIZE);
-        // recreate this Activity when night mode or font size setting changes
-        mRecreateActivityReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (BaseActivity.this instanceof SettingsActivity
-                        && intent.getAction().equals(SettingsFragment.ACTION_CHANGE_FONT_SIZE)) {
-                    return;
-                }
+        // https://github.com/square/otto/issues/26
+        mEvents = new Object() {
 
+            /**
+             * Recreate this Activity when theme changes.
+             */
+            @Subscribe
+            @SuppressWarnings("unused")
+            public void changeTheme(ThemeChangeEvent event) {
                 recreate();
             }
-        };
-        registerReceiver(mRecreateActivityReceiver, intentFilter);
 
-        intentFilter = new IntentFilter();
-        intentFilter.addAction(User.ACTION_USER_LOGIN);
-        intentFilter.addAction(User.ACTION_USER_COOKIE_EXPIRATION);
-        // change drawer's top area depends on user's login status
-        mUserLoginStatusReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(User.ACTION_USER_LOGIN)) {
+            /**
+             * Recreate this Activity when font size changes.
+             */
+            @Subscribe
+            @SuppressWarnings("unused")
+            public void changeFontSize(FontSizeChangeEvent event) {
+                if (!(BaseActivity.this instanceof SettingsActivity)) {
+                    recreate();
+                }
+            }
+
+            /**
+             * Change drawer's top area depends on user's login status.
+             */
+            @Subscribe
+            @SuppressWarnings("unused")
+            public void updateDrawer(UserStatusEvent event) {
+                if (event.getUserStatus() == UserStatusEvent.USER_LOGIN) {
                     setupDrawerUserView();
                 } else {
                     setupDrawerLoginPrompt();
                 }
             }
         };
-        registerReceiver(mUserLoginStatusReceiver, intentFilter);
+
+        BusProvider.get().register(mEvents);
     }
 
     @Override
@@ -155,8 +155,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
     protected void onDestroy() {
         super.onDestroy();
 
-        unregisterReceiver(mRecreateActivityReceiver);
-        unregisterReceiver(mUserLoginStatusReceiver);
+        BusProvider.get().unregister(mEvents);
     }
 
     @Override
@@ -587,11 +586,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
                                                             String.valueOf(which)).apply();
                                             Settings.Theme.setCurrentTheme(sharedPreferences);
 
-                                            // We use App.getContext() instead of getActivity()
-                                            // in order to avoid NullPointerException when out of scope.
-                                            runnable = () ->
-                                                    App.getContext().sendBroadcast(
-                                                            new Intent(SettingsFragment.ACTION_CHANGE_THEME));
+                                            BusProvider.get().post(new ThemeChangeEvent());
                                         }
                                         dismiss();
                                         ((BaseActivity) getActivity()).closeDrawer(runnable);
@@ -612,18 +607,16 @@ public abstract class BaseActivity extends ActionBarActivityCompat
                             .setMessage(R.string.dialog_message_log_out)
                             .setPositiveButton(
                                     android.R.string.ok,
-                                    (dialog, which) ->
-                                            ((User.OnLogoutListener) getActivity()).onLogout())
+                                    (dialog, which) -> ((BaseActivity) getActivity()).onLogout())
                             .setNegativeButton(android.R.string.cancel, null)
                             .create();
         }
     }
 
-    @Override
-    public void onLogout() {
+    private void onLogout() {
         // clear account cookie and current user's info
         OkHttpClientProvider.clearCookie();
         User.reset();
-        User.sendCookieExpirationBroadcast();
+        User.sendCookieExpirationEvent();
     }
 }

@@ -29,18 +29,22 @@ import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.squareup.otto.Subscribe;
+
 import org.apache.commons.lang3.Range;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.adapter.ThreadAttachmentInfoListArrayAdapter;
+import cl.monsoon.s1next.event.QuoteEvent;
 import cl.monsoon.s1next.fragment.BaseFragment;
 import cl.monsoon.s1next.fragment.LoaderDialogFragment;
 import cl.monsoon.s1next.fragment.PostListPagerFragment;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.list.Posts;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
+import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.IntentUtil;
@@ -71,8 +75,6 @@ public class PostListActivity extends BaseActivity
     public static final String ARG_JUMP_PAGE = "jump_page";
     public static final String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
 
-    public static final String ACTION_QUOTE = "quote";
-
     /**
      * The serialization (saved instance state) Bundle key representing
      * the SeekBar's progress when page flip dialog is showing.
@@ -98,8 +100,6 @@ public class PostListActivity extends BaseActivity
     private MenuItem mMenuPageFlip;
 
     private BroadcastReceiver mWifiReceiver;
-
-    private BroadcastReceiver mQuoteReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,14 +185,7 @@ public class PostListActivity extends BaseActivity
             registerReceiver(mWifiReceiver, intentFilter);
         }
 
-        mQuoteReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                startReplyActivity(intent.getStringExtra(ReplyActivity.ARG_QUOTE_POST_ID),
-                        intent.getStringExtra(ReplyActivity.ARG_QUOTE_POST_COUNT));
-            }
-        };
-        registerReceiver(mQuoteReceiver, new IntentFilter(ACTION_QUOTE));
+        BusProvider.get().register(this);
     }
 
     @Override
@@ -204,7 +197,13 @@ public class PostListActivity extends BaseActivity
             mWifiReceiver = null;
         }
 
-        unregisterReceiver(mQuoteReceiver);
+        BusProvider.get().unregister(this);
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void quote(QuoteEvent event) {
+        startReplyActivity(event.getQuotePostId(), event.getQuotePostCount());
     }
 
     private void updateTitleWithPage() {

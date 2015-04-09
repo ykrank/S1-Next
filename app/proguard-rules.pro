@@ -25,6 +25,12 @@
 # OkHttp
 -dontwarn okio.**
 
+# Otto
+-keepclassmembers class ** {
+    @com.squareup.otto.Subscribe public *;
+    @com.squareup.otto.Produce public *;
+}
+
 # Glide
 -keep class cl.monsoon.s1next.widget.MyGlideModule
 

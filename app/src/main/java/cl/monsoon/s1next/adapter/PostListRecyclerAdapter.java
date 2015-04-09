@@ -1,7 +1,6 @@
 package cl.monsoon.s1next.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -29,9 +28,9 @@ import org.joda.time.MutableDateTime;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.activity.PostListActivity;
-import cl.monsoon.s1next.activity.ReplyActivity;
+import cl.monsoon.s1next.event.QuoteEvent;
 import cl.monsoon.s1next.model.Post;
+import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.util.ViewUtil;
 import cl.monsoon.s1next.widget.CustomMovementMethod;
@@ -128,7 +127,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         } else {
             Spannable spannable = new SpannableString("#" + post.getCount());
             spannable.setSpan(
-                    MY_CLICKABLE_SPAN, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    QUOTE_CLICKABLE_SPAN, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             countView.setText(spannable);
             countView.setTag(post.getPartForQuote());
         }
@@ -229,17 +228,12 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         }
     }
 
-    private static final ClickableSpan MY_CLICKABLE_SPAN = new ClickableSpan() {
+    private static final ClickableSpan QUOTE_CLICKABLE_SPAN = new ClickableSpan() {
 
         @Override
         public void onClick(View widget) {
-            Intent intent = new Intent(PostListActivity.ACTION_QUOTE);
-
             Post post = (Post) widget.getTag();
-            intent.putExtra(ReplyActivity.ARG_QUOTE_POST_ID, post.getId());
-            intent.putExtra(ReplyActivity.ARG_QUOTE_POST_COUNT, post.getCount());
-
-            widget.getContext().sendBroadcast(intent);
+            BusProvider.get().post(new QuoteEvent(post.getId(), post.getCount()));
         }
     };
 

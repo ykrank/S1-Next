@@ -1,10 +1,7 @@
 package cl.monsoon.s1next.fragment;
 
 import android.animation.Animator;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,14 +28,18 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.squareup.otto.Subscribe;
+
 import java.util.List;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.adapter.EmoticonGridRecyclerAdapter;
+import cl.monsoon.s1next.event.EmoticonClickEvent;
 import cl.monsoon.s1next.model.Quote;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
+import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.util.ToastUtil;
@@ -70,9 +71,6 @@ public final class ReplyFragment extends Fragment {
     private static final String ARG_THREAD_ID = "thread_id";
     private static final String ARG_QUOTE_POST_ID = "quote_post_id";
 
-    public static final String ACTION_INSERT_EMOTICON = "insert_emoticon";
-    public static final String ARG_EMOTICON_ENTITY = "emoticon_entity";
-
     private static final String STATUS_REPLY_SUCCESS = "post_reply_succeed";
 
     private String mThreadId;
@@ -90,8 +88,6 @@ public final class ReplyFragment extends Fragment {
     private View mEmoticonKeyboard;
     private ViewPagerTabs mEmoticonKeyboardTabs;
     private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
-
-    private BroadcastReceiver mEmoticonReceiver;
 
     private MenuItem mMenuSend;
 
@@ -158,23 +154,14 @@ public final class ReplyFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        mEmoticonReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                mReplyView.getText().replace(
-                        mReplyView.getSelectionStart(),
-                        mReplyView.getSelectionEnd(),
-                        intent.getCharSequenceExtra(ARG_EMOTICON_ENTITY));
-            }
-        };
-        getActivity().registerReceiver(mEmoticonReceiver, new IntentFilter(ACTION_INSERT_EMOTICON));
+        BusProvider.get().register(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        getActivity().unregisterReceiver(mEmoticonReceiver);
+        BusProvider.get().unregister(this);
     }
 
     @Override
@@ -226,6 +213,15 @@ public final class ReplyFragment extends Fragment {
 
         outState.putParcelable(STATE_QUOTE, mQuote);
         outState.putBoolean(STATE_IS_EMOTICON_KEYBOARD_SHOWING, mIsEmoticonKeyboardShowing);
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void appendEmoticonEntity(EmoticonClickEvent event) {
+        mReplyView.getText().replace(
+                mReplyView.getSelectionStart(),
+                mReplyView.getSelectionEnd(),
+                event.getEmoticonEntity());
     }
 
     private void setupEmoticonKeyboard() {
