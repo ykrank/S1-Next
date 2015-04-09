@@ -16,4 +16,4 @@
     android:paddingStart="@dimen/item_padding"
     android:singleLine="true"
     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-    tools:ignore="NewApi" />
+    tools:ignore="NewApi"/>

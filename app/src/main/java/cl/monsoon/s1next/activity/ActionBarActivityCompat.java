@@ -1,12 +1,15 @@
 package cl.monsoon.s1next.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 
 /**
  * See https://code.google.com/p/android/issues/detail?id=78154
  */
+@SuppressLint("Registered")
 public class ActionBarActivityCompat extends ActionBarActivity {
 
     @Override
@@ -18,7 +21,7 @@ public class ActionBarActivityCompat extends ActionBarActivity {
     }
 
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
+    public boolean onKeyUp(int keyCode, @NonNull KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_MENU
                 && "LGE".equals(Build.BRAND)
                 && Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN) {

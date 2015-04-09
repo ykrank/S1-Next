@@ -2,6 +2,7 @@ package cl.monsoon.s1next.widget;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import java.net.HttpCookie;
 
@@ -11,11 +12,12 @@ public final class HttpCookieParcelable implements Parcelable {
             new Creator<HttpCookieParcelable>() {
 
                 @Override
-                public HttpCookieParcelable createFromParcel(Parcel source) {
+                public HttpCookieParcelable createFromParcel(@NonNull Parcel source) {
                     return new HttpCookieParcelable(source);
                 }
 
                 @Override
+                @NonNull
                 public HttpCookieParcelable[] newArray(int i) {
                     return new HttpCookieParcelable[i];
                 }
@@ -52,7 +54,7 @@ public final class HttpCookieParcelable implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(mHttpCookie.getName());
         dest.writeString(mHttpCookie.getValue());
         dest.writeString(mHttpCookie.getComment());

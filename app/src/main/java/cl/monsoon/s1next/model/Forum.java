@@ -2,6 +2,7 @@ package cl.monsoon.s1next.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,11 +16,12 @@ public final class Forum implements Parcelable {
     public static final Parcelable.Creator<Forum> CREATOR =
             new Parcelable.Creator<Forum>() {
                 @Override
-                public Forum createFromParcel(Parcel source) {
+                public Forum createFromParcel(@NonNull Parcel source) {
                     return new Forum(source);
                 }
 
                 @Override
+                @NonNull
                 public Forum[] newArray(int i) {
                     return new Forum[i];
                 }
@@ -87,7 +89,7 @@ public final class Forum implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(name);
         dest.writeInt(threads);

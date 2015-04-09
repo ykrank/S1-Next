@@ -293,7 +293,6 @@ public final class Settings {
     }
 
     private static String getSharedPreferencesString(SharedPreferences sharedPreferences, String key, @StringRes int defValueResId) {
-        return sharedPreferences.getString(
-                key, App.getContext().getString(defValueResId));
+        return sharedPreferences.getString(key, App.getContext().getString(defValueResId));
     }
 }

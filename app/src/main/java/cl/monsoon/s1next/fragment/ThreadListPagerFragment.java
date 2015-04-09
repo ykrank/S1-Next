@@ -49,7 +49,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
     private ThreadListRecyclerAdapter mRecyclerAdapter;
 
     private PagerCallback mPagerCallback;
-    private SubFormsCallback mSubFormsCallback;
+    private SubForumsCallback mSubForumsCallback;
 
     public static ThreadListPagerFragment newInstance(String forumId, int pageNum) {
         ThreadListPagerFragment fragment = new ThreadListPagerFragment();
@@ -128,7 +128,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
         super.onAttach(activity);
 
         mPagerCallback = (PagerCallback) getFragmentManager().findFragmentByTag(ThreadListFragment.TAG);
-        mSubFormsCallback = (SubFormsCallback) activity;
+        mSubForumsCallback = (SubForumsCallback) activity;
     }
 
     @Override
@@ -136,7 +136,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
         super.onDetach();
 
         mPagerCallback = null;
-        mSubFormsCallback = null;
+        mSubForumsCallback = null;
     }
 
     @Override
@@ -202,7 +202,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
             }
 
             if (!threads.getSubForumList().isEmpty()) {
-                mSubFormsCallback.setupSubForums(threads.getSubForumList());
+                mSubForumsCallback.setupSubForums(threads.getSubForumList());
             }
         }
     }
@@ -218,7 +218,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
         void setTotalPageByThreads(int threads);
     }
 
-    public interface SubFormsCallback {
+    public interface SubForumsCallback {
 
         void setupSubForums(List<Forum> forumList);
     }

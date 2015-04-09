@@ -3,6 +3,7 @@ package cl.monsoon.s1next;
 import java.util.concurrent.TimeUnit;
 
 public final class Config {
+
     public static final String PREFIX_EMOTICON_ASSET = "file:///android_asset/emoticon/";
 
     public static final int OKHTTP_CLIENT_CONNECT_TIMEOUT = 20;

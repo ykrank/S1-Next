@@ -18,7 +18,9 @@
         <item name="linkBackground">@drawable/link_pressed_light</item>
 
         <item name="emoticonKeyboardColor">@color/emoticon_keyboard_background_color_light</item>
-        <item name="emoticonKeyboardTabsBackground">@color/emoticon_keyboard_tab_background_color_light</item>
+        <item name="emoticonKeyboardTabsBackground">
+            @color/emoticon_keyboard_tab_background_color_light
+        </item>
         <item name="emoticonKeyboardTabsTitleColor">@color/emoticon_keyboard_tab_title_light</item>
 
         <item name="menuCross">@drawable/ic_menu_close_black_24dp</item>
@@ -84,7 +86,9 @@
         <item name="fabColorPressed">@color/grey_600</item>
         <item name="linkBackground">@drawable/link_pressed_dark</item>
         <item name="emoticonKeyboardColor">@color/emoticon_keyboard_background_color_dark</item>
-        <item name="emoticonKeyboardTabsBackground">@color/emoticon_keyboard_tab_background_color_dark</item>
+        <item name="emoticonKeyboardTabsBackground">
+            @color/emoticon_keyboard_tab_background_color_dark
+        </item>
         <item name="emoticonKeyboardTabsTitleColor">@color/emoticon_keyboard_tab_title_dark</item>
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>

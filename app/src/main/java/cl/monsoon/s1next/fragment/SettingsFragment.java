@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.support.annotation.NonNull;
 import android.webkit.WebView;
 
 import cl.monsoon.s1next.BuildConfig;
@@ -83,6 +84,7 @@ public final class SettingsFragment extends BaseSettingsFragment
         private static final String TAG = OpenSourceLicensesDialog.class.getSimpleName();
 
         @Override
+        @NonNull
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             WebView webView = new WebView(getActivity());
             webView.loadUrl("file:///android_asset/NOTICE.html");
@@ -90,8 +92,7 @@ public final class SettingsFragment extends BaseSettingsFragment
             return new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.pref_open_source_licenses)
                     .setView(webView)
-                    .setPositiveButton(android.R.string.ok,
-                            (dialog, which) -> dialog.dismiss())
+                    .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
                     .create();
         }
     }

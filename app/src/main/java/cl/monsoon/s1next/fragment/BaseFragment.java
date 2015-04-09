@@ -228,7 +228,6 @@ public abstract class BaseFragment<D extends Extractable>
     void setRecyclerViewPadding(RecyclerView recyclerView, Rect insets, int padding) {
         int toolbarHeight = ResourceUtil.getToolbarHeight();
         recyclerView.setPadding(0, padding + insets.top + toolbarHeight, 0, padding);
-
         updateSwipeRefreshProgressViewPosition(insets);
     }
 

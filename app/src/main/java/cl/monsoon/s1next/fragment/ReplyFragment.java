@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.Loader;
 import android.support.v4.view.PagerAdapter;
@@ -123,7 +124,7 @@ public final class ReplyFragment extends Fragment {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(@NonNull CharSequence s, int start, int before, int count) {
 
             }
 
@@ -272,7 +273,7 @@ public final class ReplyFragment extends Fragment {
                 .setListener(new EmoticonKeyboardAnimator() {
 
                     @Override
-                    public void onAnimationEnd(Animator animation) {
+                    public void onAnimationEnd(@NonNull Animator animation) {
                         mEmoticonKeyboard.setVisibility(View.GONE);
 
                         ViewUtil.setShowSoftInputOnFocus(mReplyView, true);
@@ -348,7 +349,7 @@ public final class ReplyFragment extends Fragment {
         }
 
         @Override
-        public void onAnimationEnd(Animator animation) {
+        public void onAnimationEnd(@NonNull Animator animation) {
             if (mMenuEmoticon != null) {
                 mMenuEmoticon.setEnabled(true);
             }

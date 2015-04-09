@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
@@ -36,7 +37,7 @@ public final class InsetsFrameLayout extends FrameLayout {
 
     @Override
     @SuppressWarnings("deprecation")
-    protected boolean fitSystemWindows(Rect insets) {
+    protected boolean fitSystemWindows(@NonNull Rect insets) {
         if (mOnInsetsCallback != null) {
             mOnInsetsCallback.onInsetsChanged(insets);
         }

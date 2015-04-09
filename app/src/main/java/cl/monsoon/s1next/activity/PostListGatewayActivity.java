@@ -150,11 +150,12 @@ public final class PostListGatewayActivity extends FragmentActivity {
         public static final Parcelable.Creator<ThreadAnalysis> CREATOR =
                 new Parcelable.Creator<ThreadAnalysis>() {
                     @Override
-                    public ThreadAnalysis createFromParcel(Parcel source) {
+                    public ThreadAnalysis createFromParcel(@NonNull Parcel source) {
                         return new ThreadAnalysis(source);
                     }
 
                     @Override
+                    @NonNull
                     public ThreadAnalysis[] newArray(int size) {
                         return new ThreadAnalysis[size];
                     }
@@ -182,7 +183,7 @@ public final class PostListGatewayActivity extends FragmentActivity {
         }
 
         @Override
-        public void writeToParcel(Parcel dest, int flags) {
+        public void writeToParcel(@NonNull Parcel dest, int flags) {
             dest.writeString(threadId);
             dest.writeInt(jumpPage);
             dest.writeString(quotePostId);

@@ -2,6 +2,7 @@ package cl.monsoon.s1next.adapter;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spannable;
@@ -170,6 +171,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         int position = getItemCount() - 1;
         // mList.get(position) = null
         // when configuration changes (like orientation changes)
+        //noinspection ConstantConditions
         if (mList.get(position) != null) {
             mList.add(null);
             notifyItemInserted(position + 1);
@@ -231,7 +233,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
     private static final ClickableSpan QUOTE_CLICKABLE_SPAN = new ClickableSpan() {
 
         @Override
-        public void onClick(View widget) {
+        public void onClick(@NonNull View widget) {
             Post post = (Post) widget.getTag();
             BusProvider.get().post(new QuoteEvent(post.getId(), post.getCount()));
         }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.Html;
 import android.webkit.URLUtil;
 import android.widget.TextView;
@@ -19,7 +20,6 @@ import com.bumptech.glide.request.target.ViewTarget;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.Config;
-import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.view.UrlDrawable;
 
@@ -32,6 +32,8 @@ import cl.monsoon.s1next.view.UrlDrawable;
  */
 public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callback {
 
+    private static final int TAG_DRAWABLE_CALLBACK = Integer.MIN_VALUE;
+
     private final Context mContext;
 
     private final TextView mTextView;
@@ -41,7 +43,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
         this.mTextView = textView;
         // save Drawable.Callback in TextView
         // and get back when finish fetching image form Internet
-        mTextView.setTag(R.id.callback, this);
+        mTextView.setTag(TAG_DRAWABLE_CALLBACK, this);
     }
 
     /**
@@ -106,7 +108,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
      * redraw the TextView which contains the animated GIFs.
      */
     @Override
-    public void invalidateDrawable(Drawable who) {
+    public void invalidateDrawable(@NonNull Drawable who) {
         mTextView.invalidate();
     }
 
@@ -154,7 +156,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
                 // set callback to drawable in order to
                 // signal its container to be redrawn
                 // to show the animated GIF
-                mDrawable.setCallback((Drawable.Callback) getView().getTag(R.id.callback));
+                mDrawable.setCallback((Drawable.Callback) getView().getTag(TAG_DRAWABLE_CALLBACK));
                 resource.setLoopCount(GlideDrawable.LOOP_FOREVER);
                 resource.start();
             }

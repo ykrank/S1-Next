@@ -7,7 +7,7 @@
         android:entryValues="@array/pref_download_total_cache_size_entry_values"
         android:key="pref_key_download_total_cache_size"
         android:summary="%s"
-        android:title="@string/pref_download_total_cache_size" />
+        android:title="@string/pref_download_total_cache_size"/>
 
     <PreferenceCategory
         android:key="pref_key_avatar"
@@ -20,7 +20,7 @@
             android:entryValues="@array/pref_download_avatars_strategy_entry_values"
             android:key="pref_key_download_avatars_strategy"
             android:summary="%s"
-            android:title="@string/pref_downloads" />
+            android:title="@string/pref_downloads"/>
 
         <cl.monsoon.s1next.widget.ListPreferenceCompat
             android:defaultValue="@string/pref_avatar_resolution_strategy_default_value"
@@ -28,7 +28,7 @@
             android:entryValues="@array/pref_avatar_resolution_strategy_entry_values"
             android:key="pref_key_avatar_resolution_strategy"
             android:summary="%s"
-            android:title="@string/pref_avatar_resolution" />
+            android:title="@string/pref_avatar_resolution"/>
 
         <cl.monsoon.s1next.widget.ListPreferenceCompat
             android:defaultValue="@string/pref_avatar_cache_invalidation_interval_default_value"
@@ -36,7 +36,7 @@
             android:entryValues="@array/pref_avatar_cache_invalidation_interval_entry_values"
             android:key="pref_key_avatar_cache_invalidation_interval"
             android:summary="%s"
-            android:title="@string/pref_avatar_cache_invalidation_interval" />
+            android:title="@string/pref_avatar_cache_invalidation_interval"/>
 
     </PreferenceCategory>
 
@@ -51,7 +51,7 @@
             android:entryValues="@array/pref_download_images_strategy_entry_values"
             android:key="pref_key_download_images_strategy"
             android:summary="%s"
-            android:title="@string/pref_downloads" />
+            android:title="@string/pref_downloads"/>
 
     </PreferenceCategory>
 

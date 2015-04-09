@@ -125,7 +125,7 @@ public final class BezelImageView extends ImageView {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         if (mBounds == null) {
             return;
         }

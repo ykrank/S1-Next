@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="cl.monsoon.s1next.fragment.ReplyFragment">
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="cl.monsoon.s1next.fragment.ReplyFragment">
     <item
         android:id="@+id/menu_emoticon"
         android:icon="?attr/menuEmoticon"
         android:orderInCategory="1"
         android:title="@string/menu_emoticon"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/menu_send"
         android:icon="?attr/menuSend"
         android:orderInCategory="2"
         android:title="@string/menu_send"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
 </menu>

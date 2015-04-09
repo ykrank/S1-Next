@@ -19,7 +19,7 @@
         <FrameLayout
             android:id="@+id/frame_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
         <com.melnykov.fab.FloatingActionButton
             android:id="@+id/floating_action_button"
@@ -31,9 +31,9 @@
             android:layout_marginRight="@dimen/fab_margin"
             android:visibility="gone"
             app:fab_colorNormal="?attr/fabColorNormal"
-            app:fab_colorPressed="?attr/fabColorPressed" />
+            app:fab_colorPressed="?attr/fabColorPressed"/>
 
-        <include layout="@layout/toolbar" />
+        <include layout="@layout/toolbar"/>
 
     </cl.monsoon.s1next.view.InsetsFrameLayout>
 
@@ -54,7 +54,7 @@
             android:layout_height="@dimen/drawer_top_height"
             android:contentDescription="@string/drawer_top_background_content_desc"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_drawer_background" />
+            android:src="@drawable/ic_drawer_background"/>
 
         <cl.monsoon.s1next.view.BezelImageView
             android:id="@+id/drawer_user_avatar"
@@ -65,7 +65,7 @@
             android:layout_marginTop="@dimen/drawer_avatar_margin_top"
             android:contentDescription="@string/drawer_avatar_content_desc"
             app:borderDrawable="@drawable/selector_rounded_border"
-            app:maskDrawable="@drawable/rounded_mask" />
+            app:maskDrawable="@drawable/rounded_mask"/>
 
         <TextView
             android:id="@+id/drawer_username"
@@ -80,7 +80,7 @@
             android:singleLine="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@color/abc_primary_text_material_dark"
-            tools:ignore="NewApi" />
+            tools:ignore="NewApi"/>
 
         <include
             android:id="@+id/home"
@@ -88,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/drawer_item_height"
             android:layout_below="@id/drawer_username"
-            android:layout_marginTop="@dimen/list_view_padding" />
+            android:layout_marginTop="@dimen/list_view_padding"/>
 
         <View
             android:id="@+id/divider"
@@ -97,14 +97,14 @@
             android:layout_below="@id/home"
             android:background="?attr/dividerColor"
             android:layout_marginBottom="@dimen/list_view_padding"
-            android:layout_marginTop="@dimen/list_view_padding" />
+            android:layout_marginTop="@dimen/list_view_padding"/>
 
         <include
             android:id="@+id/settings"
             layout="@layout/single_line_list_item"
             android:layout_width="match_parent"
             android:layout_height="@dimen/drawer_item_height"
-            android:layout_below="@id/divider" />
+            android:layout_below="@id/divider"/>
 
     </RelativeLayout>
 

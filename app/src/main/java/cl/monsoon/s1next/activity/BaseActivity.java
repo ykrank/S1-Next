@@ -38,7 +38,6 @@ import java.util.Collections;
 import java.util.List;
 
 import cl.monsoon.s1next.Api;
-import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.event.FontSizeChangeEvent;
 import cl.monsoon.s1next.event.ThemeChangeEvent;
@@ -568,9 +567,10 @@ public abstract class BaseActivity extends ActionBarActivityCompat
             SharedPreferences sharedPreferences =
                     PreferenceManager.getDefaultSharedPreferences(getActivity());
 
+            //noinspection ConstantConditions
             int checkedItem = Integer.parseInt(sharedPreferences.getString(
                     SettingsFragment.PREF_KEY_THEME,
-                    App.getContext().getString(R.string.pref_theme_default_value)));
+                    getString(R.string.pref_theme_default_value)));
             return
                     new AlertDialog.Builder(getActivity())
                             .setTitle(R.string.pref_theme)
@@ -578,7 +578,6 @@ public abstract class BaseActivity extends ActionBarActivityCompat
                                     R.array.pref_theme_entries,
                                     checkedItem,
                                     (dialog, which) -> {
-                                        Runnable runnable = null;
                                         // won't change theme if unchanged
                                         if (which != checkedItem) {
                                             sharedPreferences.edit()
@@ -589,7 +588,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
                                             BusProvider.get().post(new ThemeChangeEvent());
                                         }
                                         dismiss();
-                                        ((BaseActivity) getActivity()).closeDrawer(runnable);
+                                        ((BaseActivity) getActivity()).closeDrawer(null);
                                     })
                             .create();
         }
@@ -602,14 +601,13 @@ public abstract class BaseActivity extends ActionBarActivityCompat
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            return
-                    new AlertDialog.Builder(getActivity())
-                            .setMessage(R.string.dialog_message_log_out)
-                            .setPositiveButton(
-                                    android.R.string.ok,
-                                    (dialog, which) -> ((BaseActivity) getActivity()).onLogout())
-                            .setNegativeButton(android.R.string.cancel, null)
-                            .create();
+            return new AlertDialog.Builder(getActivity())
+                    .setMessage(R.string.dialog_message_log_out)
+                    .setPositiveButton(
+                            android.R.string.ok,
+                            (dialog, which) -> ((BaseActivity) getActivity()).onLogout())
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create();
         }
     }
 

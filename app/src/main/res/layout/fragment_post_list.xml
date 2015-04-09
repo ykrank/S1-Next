@@ -26,7 +26,7 @@
             android:layout_height="@dimen/avatar_size"
             android:layout_marginBottom="@dimen/item_padding"
             android:layout_marginEnd="@dimen/item_padding"
-            android:layout_marginRight="@dimen/item_padding" />
+            android:layout_marginRight="@dimen/item_padding"/>
 
         <TextView
             android:id="@+id/username"
@@ -36,7 +36,7 @@
             android:layout_toRightOf="@id/avatar"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
 
         <TextView
             android:id="@+id/time"
@@ -47,7 +47,7 @@
             android:layout_below="@id/username"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
         <TextView
             android:id="@+id/count"
@@ -57,7 +57,7 @@
             android:layout_alignParentRight="true"
             android:background="?attr/linkBackground"
             android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
         <!-- layout_marginTop = 72dp (two line height with avatar) - 16dp (RelativeLayout's top padding) -->
         <TextView
@@ -68,7 +68,7 @@
             android:layout_marginTop="56dp"
             android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textIsSelectable="true" />
+            android:textIsSelectable="true"/>
 
     </RelativeLayout>
 

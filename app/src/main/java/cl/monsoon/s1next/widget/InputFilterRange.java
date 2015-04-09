@@ -1,5 +1,6 @@
 package cl.monsoon.s1next.widget;
 
+import android.support.annotation.NonNull;
 import android.text.InputFilter;
 import android.text.Spanned;
 
@@ -18,7 +19,7 @@ public final class InputFilterRange implements InputFilter {
     }
 
     @Override
-    public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+    public CharSequence filter(@NonNull CharSequence source, int start, int end, @NonNull Spanned dest, int dstart, int dend) {
         String value = dest.subSequence(0, dstart).toString()
                 + source.subSequence(start, end)
                 + dest.subSequence(dend, dest.length());

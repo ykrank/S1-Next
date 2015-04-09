@@ -176,7 +176,7 @@ public class PostListActivity extends BaseActivity
 
             mWifiReceiver = new BroadcastReceiver() {
                 @Override
-                public void onReceive(Context context, Intent intent) {
+                public void onReceive(@NonNull Context context, @NonNull Intent intent) {
                     Settings.General.setWifi(NetworkUtil.isWifiConnected());
                 }
             };
@@ -330,7 +330,7 @@ public class PostListActivity extends BaseActivity
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(@NonNull CharSequence s, int start, int before, int count) {
 
             }
 
@@ -349,7 +349,7 @@ public class PostListActivity extends BaseActivity
 
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            public void onProgressChanged(@NonNull SeekBar seekBar, int progress, boolean fromUser) {
                 mSeekBarProgress = progress;
 
                 int value = -1;
@@ -370,7 +370,7 @@ public class PostListActivity extends BaseActivity
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void onStopTrackingTouch(@NonNull SeekBar seekBar) {
 
             }
         });
@@ -430,7 +430,7 @@ public class PostListActivity extends BaseActivity
      * {@link com.melnykov.fab.FloatingActionButton#setOnClickListener(android.view.View.OnClickListener)}
      */
     @Override
-    public void onClick(View v) {
+    public void onClick(@NonNull View v) {
         startReplyActivity(null, null);
     }
 

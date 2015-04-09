@@ -15,4 +15,4 @@ is not sure (less than 4) and each line are all primary. -->
     android:includeFontPadding="false"
     android:maxLines="@integer/list_max_line"
     android:padding="@dimen/item_padding"
-    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>

@@ -1,5 +1,6 @@
 package cl.monsoon.s1next.widget;
 
+import android.support.annotation.NonNull;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
@@ -29,7 +30,7 @@ public final class CustomMovementMethod extends ArrowKeyMovementMethod {
      * @see android.text.method.LinkMovementMethod#onTouchEvent(TextView, Spannable, MotionEvent)
      */
     @Override
-    public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
+    public boolean onTouchEvent(@NonNull TextView widget, @NonNull Spannable buffer, @NonNull MotionEvent event) {
         int action = event.getAction();
 
         if (action == MotionEvent.ACTION_UP ||

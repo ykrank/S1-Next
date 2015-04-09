@@ -3,6 +3,7 @@ package cl.monsoon.s1next.widget;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spannable;
@@ -123,7 +124,7 @@ public final class TagHandler implements Html.TagHandler {
         }
 
         @Override
-        public void onClick(View v) {
+        public void onClick(@NonNull View v) {
             Intent intent = new Intent(getContext(), GalleryActivity.class);
             intent.putExtra(GalleryActivity.ARG_IMAGE_URL, getSource());
 
