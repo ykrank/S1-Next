@@ -273,8 +273,20 @@ public final class PostListGatewayActivity extends FragmentActivity {
         public void onLoadFinished(Loader<AsyncResult<HttpRedirectLoader.RedirectUrl>> loader, AsyncResult<HttpRedirectLoader.RedirectUrl> asyncResult) {
             if (asyncResult.exception != null) {
                 mShouldDismiss = false;
+
+                String exception;
+                String exceptionPrefix = getString(asyncResult.getExceptionStringRes());
+                String period = getString(R.string.period);
+                // https://developer.android.com/design/style/writing.html#punctuation
+                // we do not use a period after a single sentence in a toast
+                // se we need add a period to the dialog message
+                if (!exceptionPrefix.endsWith(period)) {
+                    exception = exceptionPrefix;
+                } else {
+                    exception = exceptionPrefix + period;
+                }
                 new Handler().post(() ->
-                        ErrorPromptDialog.newInstance(R.string.dialog_message_quote_not_found)
+                        ErrorPromptDialog.newInstance(exception)
                                 .show(getFragmentManager(), ErrorPromptDialog.TAG));
             } else {
                 int page = parseQuotePostPage(asyncResult.data.getUrl());
@@ -309,10 +321,14 @@ public final class PostListGatewayActivity extends FragmentActivity {
         private static final String ARG_MESSAGE = "message";
 
         public static ErrorPromptDialog newInstance(@StringRes int message) {
+            return newInstance(App.getContext().getString(message));
+        }
+
+        public static ErrorPromptDialog newInstance(String message) {
             ErrorPromptDialog fragment = new ErrorPromptDialog();
 
             Bundle bundle = new Bundle();
-            bundle.putString(ARG_MESSAGE, App.getContext().getString(message));
+            bundle.putString(ARG_MESSAGE, message);
             fragment.setArguments(bundle);
 
             return fragment;
@@ -325,14 +341,11 @@ public final class PostListGatewayActivity extends FragmentActivity {
             return new AlertDialog.Builder(getActivity())
                     .setMessage(getArguments().getString(ARG_MESSAGE))
                     .setPositiveButton(android.R.string.ok,
-                            (dialog, which) -> {
-                                dismiss();
-                            })
+                            (dialog, which) -> dismiss())
                     .setNegativeButton(R.string.dialog_button_use_a_different_app,
-                            (dialog, which) -> {
-                                IntentUtil.startViewIntentExcludeOurApp(getActivity(),
-                                        getActivity().getIntent().getData());
-                            })
+                            (dialog, which) ->
+                                    IntentUtil.startViewIntentExcludeOurApp(getActivity(),
+                                            getActivity().getIntent().getData()))
                     .create();
         }
 
