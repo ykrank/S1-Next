@@ -489,8 +489,7 @@ public final class ReplyFragment extends Fragment {
         @LoaderId
         protected int getStartLoaderId() {
             int loaderId;
-            final boolean hasAuthenticityToken =
-                    !TextUtils.isEmpty(User.getAuthenticityToken());
+            final boolean hasAuthenticityToken = !TextUtils.isEmpty(User.getAuthenticityToken());
             if (hasAuthenticityToken) {
                 if (TextUtils.isEmpty(getArguments().getString(ARG_QUOTE_POST_ID))) {
                     loaderId = ID_LOADER_POST_REPLY;
