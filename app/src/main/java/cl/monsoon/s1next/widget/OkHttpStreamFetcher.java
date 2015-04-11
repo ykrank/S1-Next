@@ -8,6 +8,9 @@ import com.squareup.okhttp.Call;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
+
+import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,6 +45,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
     private final String mUrl;
 
     private Call mCall;
+    private ResponseBody mResponseBody;
     private InputStream mInputStream;
 
     public OkHttpStreamFetcher(OkHttpClient okHttpClient, GlideUrl glideUrl) {
@@ -69,10 +73,9 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 
         mCall = mOkHttpClient.newCall(request);
         Response response = mCall.execute();
+        mResponseBody = response.body();
 
         if (!response.isSuccessful()) {
-            response.body().close();
-
             // if (this this a avatar URL) && (this URL is cacheable)
             if (key != null && isCacheable(response)) {
                 AvatarUrlCache.put(key);
@@ -81,7 +84,8 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
             throw new IOException("Response (status code " + response.code() + ") is unsuccessful.");
         }
 
-        return response.body().byteStream();
+        mInputStream = mResponseBody.byteStream();
+        return mInputStream;
     }
 
     /**
@@ -128,15 +132,8 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 
     @Override
     public void cleanup() {
-        if (mInputStream == null) {
-            return;
-        }
-        try {
-            mInputStream.close();
-            mInputStream = null;
-        } catch (IOException ignored) {
-
-        }
+        IOUtils.closeQuietly(mInputStream);
+        IOUtils.closeQuietly(mResponseBody);
     }
 
     @Override

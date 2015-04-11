@@ -6,6 +6,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
 
 import org.apache.commons.io.IOUtils;
 
@@ -39,6 +40,7 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
      * {@link Call} is the request that has been prepared for execution.
      */
     Call mCall;
+    ResponseBody mResponseBody;
 
     private AsyncResult<D> mAsyncResult;
 
@@ -76,6 +78,7 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
             asyncResult.exception = e;
         } finally {
             IOUtils.closeQuietly(inputStream);
+            IOUtils.closeQuietly(mResponseBody);
         }
 
         return asyncResult;
@@ -124,13 +127,13 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
 
         mCall = OkHttpClientProvider.get().newCall(request);
         Response response = mCall.execute();
+        mResponseBody = response.body();
 
         if (!response.isSuccessful()) {
-            response.body().close();
             throw new ServerException("Response (status code " + response.code() + ") is unsuccessful.");
         }
 
-        return response.body().byteStream();
+        return mResponseBody.byteStream();
     }
 
     /**

@@ -40,9 +40,9 @@ public final class HttpPostLoader<D extends Extractable> extends HttpGetLoader<D
 
         mCall = OkHttpClientProvider.getForNonIdempotent().newCall(request);
         Response response = mCall.execute();
+        mResponseBody = response.body();
 
         if (!response.isSuccessful()) {
-            response.body().close();
             throw new ServerException("Response (status code " + response.code() + ") is unsuccessful.");
         }
 
