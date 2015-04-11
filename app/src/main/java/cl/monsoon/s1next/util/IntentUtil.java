@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Parcelable;
-import android.provider.Browser;
-import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -16,22 +14,8 @@ import cl.monsoon.s1next.R;
 
 public final class IntentUtil {
 
-    public static final String ARG_COME_FROM_OUR_APP = "come_from_our_app";
-
     private IntentUtil() {
 
-    }
-
-    /**
-     * @see android.text.style.URLSpan#onClick(View)
-     */
-    public static boolean isComeFromOurApp(Context context, Intent intent) {
-        return context.getPackageName().equals(
-                intent.getStringExtra(Browser.EXTRA_APPLICATION_ID));
-    }
-
-    public static boolean getComeFromOurAppExtra(Intent intent) {
-        return intent.getBooleanExtra(IntentUtil.ARG_COME_FROM_OUR_APP, false);
     }
 
     public static void startViewIntentExcludeOurApp(Context context, Uri uri) {

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.Browser;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
@@ -38,6 +39,8 @@ import cl.monsoon.s1next.widget.HttpRedirectLoader;
  * This Activity is only used for Intent filter.
  */
 public final class PostListGatewayActivity extends FragmentActivity {
+
+    public static final String ARG_COME_FROM_OTHER_APP = "come_from_other_app";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,8 +142,9 @@ public final class PostListGatewayActivity extends FragmentActivity {
         if (!TextUtils.isEmpty(quotePostId)) {
             intent.putExtra(PostListActivity.ARG_QUOTE_POST_ID, quotePostId);
         }
-        intent.putExtra(IntentUtil.ARG_COME_FROM_OUR_APP,
-                IntentUtil.isComeFromOurApp(this, getIntent()));
+        // see android.text.style.URLSpan#onClick(View)
+        intent.putExtra(ARG_COME_FROM_OTHER_APP,
+                !getPackageName().equals(getIntent().getStringExtra(Browser.EXTRA_APPLICATION_ID)));
 
         startActivity(intent);
     }

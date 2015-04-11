@@ -29,6 +29,7 @@
 
         <activity
             android:name=".activity.ForumActivity"
+            android:taskAffinity="cl.monsoon.s1next.activity.DEFAULT"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

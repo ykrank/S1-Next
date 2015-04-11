@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -48,7 +49,6 @@ import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.OkHttpClientProvider;
 import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.singleton.User;
-import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.view.BaseRecyclerView;
 import cl.monsoon.s1next.view.InsetsFrameLayout;
@@ -472,19 +472,24 @@ public abstract class BaseActivity extends ActionBarActivityCompat
                         return;
                     }
 
-                    Intent intent;
-                    if (IntentUtil.getComeFromOurAppExtra(getIntent())) {
-                        intent = new Intent(this, ForumActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                    } else {
-                        intent = new Intent(BaseActivity.this, ForumActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                    Intent intent = new Intent(this, ForumActivity.class);
+                    // FLAG_ACTIVITY_NEW_TASK only works if this Activity is launched from other apps
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
 
-                        finish();
-                    }
+                    // this is hard to explain why we use finishAffinity() here
+                    //
+                    // Precondition: we set a unique taskAffinity for ForumActivity in AndroidManifest.xml
+                    //
+                    // Scenario 1 (our app): -> start other Activities several times -> Home (by drawer)
+                    //                       -> finish all Activities exclude ForumActivity
+                    //                          (because ForumActivity has a unique taskAffinity)
+                    //
+                    // Scenario 2(other apps): -> PostListActivity (by Intent filter)
+                    //                         -> start other Activities several times -> Home (by drawer)
+                    //                         -> finish all our Activities in this app
+                    //                         -> new task in our app
+                    ActivityCompat.finishAffinity(this);
                 }));
 
         // add settings item

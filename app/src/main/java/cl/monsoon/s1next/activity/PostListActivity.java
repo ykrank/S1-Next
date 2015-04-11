@@ -47,7 +47,6 @@ import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.singleton.User;
-import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
 import cl.monsoon.s1next.util.StringUtil;
@@ -233,7 +232,7 @@ public class PostListActivity extends BaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (!IntentUtil.getComeFromOurAppExtra(getIntent())) {
+                if (getIntent().getBooleanExtra(PostListGatewayActivity.ARG_COME_FROM_OTHER_APP, false)) {
                     Intent intent = new Intent(this, ForumActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
