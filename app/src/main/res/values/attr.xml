@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr name="dividerColor" format="color"/>
+    <attr name="dividerColor" format="color" />
 
-    <attr name="mySpinnerItemTextColor" format="color"/>
-    <attr name="myCardView" format="reference"/>
+    <attr name="mySpinnerItemTextColor" format="color" />
+    <attr name="myCardView" format="reference" />
 
-    <attr name="fabColorNormal" format="color"/>
-    <attr name="fabColorPressed" format="color"/>
+    <attr name="fabColorNormal" format="color" />
+    <attr name="fabColorPressed" format="color" />
 
-    <attr name="linkBackground" format="reference"/>
+    <attr name="linkBackground" format="reference" />
 
-    <attr name="emoticonKeyboardColor" format="color"/>
-    <attr name="emoticonKeyboardTabsBackground" format="color"/>
-    <attr name="emoticonKeyboardTabsTitleColor" format="color"/>
+    <attr name="emoticonKeyboardColor" format="color" />
+    <attr name="emoticonKeyboardTabsBackground" format="color" />
+    <attr name="emoticonKeyboardTabsTitleColor" format="color" />
 
-    <attr name="menuCross" format="reference"/>
-    <attr name="menuPersonAdd" format="reference"/>
-    <attr name="menuThreadAttachment" format="reference"/>
-    <attr name="menuPageFlip" format="reference"/>
-    <attr name="menuEmoticon" format="reference"/>
-    <attr name="menuKeyboard" format="reference"/>
-    <attr name="menuSend" format="reference"/>
+    <attr name="menuCross" format="reference" />
+    <attr name="menuPersonAdd" format="reference" />
+    <attr name="menuThreadAttachment" format="reference" />
+    <attr name="menuPageFlip" format="reference" />
+    <attr name="menuEmoticon" format="reference" />
+    <attr name="menuKeyboard" format="reference" />
+    <attr name="menuSend" format="reference" />
 
-    <attr name="iconHome" format="reference"/>
-    <attr name="iconSettings" format="reference"/>
+    <attr name="iconHome" format="reference" />
+    <attr name="iconSettings" format="reference" />
 
     <declare-styleable name="BezelImageView">
-        <attr name="maskDrawable" format="reference"/>
-        <attr name="borderDrawable" format="reference"/>
+        <attr name="maskDrawable" format="reference" />
+        <attr name="borderDrawable" format="reference" />
     </declare-styleable>
 
 </resources>

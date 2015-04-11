@@ -7,4 +7,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:contentDescription="@string/picture_content_desc"
-    tools:context="cl.monsoon.s1next.fragment.GalleryFragment"/>
+    tools:context="cl.monsoon.s1next.fragment.GalleryFragment" />

@@ -11,7 +11,7 @@
             android:entryValues="@array/pref_theme_entry_values"
             android:key="pref_key_theme"
             android:summary="%s"
-            android:title="@string/pref_theme"/>
+            android:title="@string/pref_theme" />
 
         <cl.monsoon.s1next.widget.ListPreferenceCompat
             android:defaultValue="@string/pref_font_size_default_value"
@@ -19,13 +19,13 @@
             android:entryValues="@array/pref_font_size_entry_values"
             android:key="pref_key_font_size"
             android:summary="%s"
-            android:title="@string/pref_font_size"/>
+            android:title="@string/pref_font_size" />
 
         <Preference
             android:key="pref_key_downloads"
             android:persistent="false"
             android:summary="@string/pref_downloads_summary"
-            android:title="@string/pref_downloads"/>
+            android:title="@string/pref_downloads" />
 
     </PreferenceCategory>
 
@@ -38,12 +38,12 @@
             android:key="pref_key_open_source_licenses"
             android:persistent="false"
             android:summary="@string/pref_open_source_licenses_summary"
-            android:title="@string/pref_open_source_licenses"/>
+            android:title="@string/pref_open_source_licenses" />
 
         <Preference
             android:key="pref_key_version"
             android:persistent="false"
-            android:title="@string/pref_version"/>
+            android:title="@string/pref_version" />
 
     </PreferenceCategory>
 

@@ -8,4 +8,4 @@
     android:layout_height="?attr/dropdownListPreferredItemHeight"
     android:ellipsize="marquee"
     android:singleLine="true"
-    android:textAppearance="?android:attr/textAppearanceSmallPopupMenu"/>
+    android:textAppearance="?android:attr/textAppearanceSmallPopupMenu" />

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context="cl.monsoon.s1next.fragment.ReplyFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="cl.monsoon.s1next.fragment.ReplyFragment">
 
     <!-- see https://stackoverflow.com/questions/4761741/show-soft-keyboard-when-the-device-is-landscape-mode#answer-28618889 -->
     <EditText
@@ -23,7 +23,7 @@
         android:imeOptions="flagNoFullscreen"
         android:inputType="textMultiLine"
         android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
     <LinearLayout
         android:id="@+id/emoticon_keyboard"
@@ -40,13 +40,13 @@
             android:layout_height="@dimen/emoticon_keyboard_header_height"
             android:background="?attr/emoticonKeyboardTabsBackground"
             android:elevation="@dimen/viewpager_tabs_elevation"
-            tools:ignore="UnusedAttribute"/>
+            tools:ignore="UnusedAttribute" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/emoticonKeyboardColor"/>
+            android:background="?attr/emoticonKeyboardColor" />
 
     </LinearLayout>
 
