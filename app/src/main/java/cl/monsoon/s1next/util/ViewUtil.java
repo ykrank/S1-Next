@@ -58,7 +58,12 @@ public final class ViewUtil {
             editText.setShowSoftInputOnFocus(show);
         } else {
             try {
-                Method method = EditText.class.getMethod("setShowSoftInputOnFocus", boolean.class);
+                Method method;
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+                    method = TextView.class.getMethod("setShowSoftInputOnFocus", boolean.class);
+                } else {
+                    method = TextView.class.getMethod("setSoftInputShownOnFocus", boolean.class);
+                }
                 method.setAccessible(true);
                 method.invoke(editText, show);
             } catch (Exception e) {
