@@ -5,6 +5,8 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -83,7 +85,8 @@ public final class Quote implements Extractable, Parcelable {
                     "name=\"noticetrimstr\"\\svalue=\"(.+?)\"\\s/>", Pattern.DOTALL);
             matcher.usePattern(pattern);
             if (matcher.find()) {
-                quote.setQuoteMessage(matcher.group(1));
+                // unescape ampersand (&amp;)
+                quote.setQuoteMessage(StringEscapeUtils.unescapeXml(matcher.group(1)));
             }
         }
 
