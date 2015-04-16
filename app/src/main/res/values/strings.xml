@@ -10,6 +10,7 @@
     <string name="avatar_content_desc">Avatar</string>
     <string name="picture_content_desc">Picture</string>
     <string name="dialog_message_login_prompt">Please sign in first.</string>
+    <string name="dialog_button_text_done">Done</string>
 
     <!-- drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -19,6 +20,8 @@
     <string name="drawer_avatar_content_desc">User avatar</string>
 
     <string name="dialog_message_log_out">Sign out?</string>
+    <string name="dialog_button_text_log_out">Sign out</string>
+
     <string name="home">Home</string>
     <string name="settings">Settings</string>
 
@@ -29,7 +32,7 @@
     <string name="menu_browser">Open in browser</string>
     <string name="menu_account_new">Create an account</string>
     <string name="menu_thread_attachment">Attachment</string>
-    <string name="menu_page_flip">Flip page</string>
+    <string name="menu_page_turning">Page turning</string>
     <string name="menu_favourites_add">Add to favourites</string>
     <string name="menu_sub_forums" translatable="false">子版块</string>
     <string name="menu_emoticon">Emoticon</string>
@@ -61,13 +64,15 @@
     <string name="thread_activity_thread_permission" translatable="false">阅读权限</string>
 
     <!-- post -->
-    <string name="dialog_title_page_flip">Go to…</string>
+    <string name="dialog_title_page_turning" translatable="false">@string/menu_page_turning</string>
+    <string name="dialog_button_text_go">Go</string>
     <string name="dialog_title_favourites_add" translatable="false">@string/menu_favourites_add</string>
+    <string name="dialog_button_text_add">Add</string>
     <string name="dialog_progress_message_favourites_add">Adding…</string>
     <string name="prompt_remark">Remark</string>
 
     <string name="dialog_message_invalid_or_unsupported_link">Invalid or unsupported link.</string>
-    <string name="dialog_button_use_a_different_app">Use a different app</string>
+    <string name="dialog_button_text_use_a_different_app">Use a different app</string>
     <string name="dialog_message_loading">Loading…</string>
     <string name="period">.</string>
     <string name="dialog_message_quote_not_found">This quote could not be found.</string>
@@ -79,7 +84,8 @@
     <string name="reply_activity_quote_title_prefix" translatable="false">"引用#%1$s - "</string>
     <string name="prompt_reply">Write something…</string>
     <string name="dialog_progress_message_reply">Replying…</string>
-    <string name="dialog_message_reply_back_prompt">Do you want to discard this reply?</string>
+    <string name="dialog_message_reply_discard_prompt">Do you want to discard this reply?</string>
+    <string name="dialog_message_text_discard">Discard</string>
 
     <!-- emoticon -->
 
@@ -96,7 +102,7 @@
     <string name="emoticon_bundam" translatable="false">雀高达</string>
 
     <!-- settings -->
-    <string name="pref_general">GENERAL</string>
+    <string name="pref_general">General</string>
     <string name="pref_theme">Theme</string>
     <string name="pref_theme_default_value" translatable="false">0</string>
     <string name="pref_font_size">Font size</string>
@@ -115,7 +121,7 @@
     <string name="pref_image">Image</string>
     <string name="pref_download_images_strategy_default_value" translatable="false">1</string>
 
-    <string name="pref_about">ABOUT</string>
+    <string name="pref_about">About</string>
     <string name="pref_open_source_licenses">Open source licenses</string>
     <string name="pref_open_source_licenses_summary">License details for open source software</string>
     <string name="pref_version">Build Version</string>

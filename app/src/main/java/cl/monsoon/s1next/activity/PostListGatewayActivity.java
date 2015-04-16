@@ -341,12 +341,11 @@ public final class PostListGatewayActivity extends FragmentActivity {
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-
             return new AlertDialog.Builder(getActivity())
                     .setMessage(getArguments().getString(ARG_MESSAGE))
-                    .setPositiveButton(android.R.string.ok,
+                    .setPositiveButton(R.string.dialog_button_text_done,
                             (dialog, which) -> dismiss())
-                    .setNegativeButton(R.string.dialog_button_use_a_different_app,
+                    .setNegativeButton(R.string.dialog_button_text_use_a_different_app,
                             (dialog, which) ->
                                     IntentUtil.startViewIntentExcludeOurApp(getActivity(),
                                             getActivity().getIntent().getData()))

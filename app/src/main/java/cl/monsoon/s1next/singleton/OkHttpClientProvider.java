@@ -32,8 +32,7 @@ public enum OkHttpClientProvider {
         okHttpClient.setWriteTimeout(Config.OKHTTP_CLIENT_WRITE_TIMEOUT, TimeUnit.SECONDS);
         okHttpClient.setReadTimeout(Config.OKHTTP_CLIENT_READ_TIMEOUT, TimeUnit.SECONDS);
 
-        mCookieManager = new CookieManager(
-                new PersistentHttpCookieStore(App.getContext()),
+        mCookieManager = new CookieManager(new PersistentHttpCookieStore(App.getContext()),
                 CookiePolicy.ACCEPT_ALL);
 
         okHttpClient.setCookieHandler(mCookieManager);

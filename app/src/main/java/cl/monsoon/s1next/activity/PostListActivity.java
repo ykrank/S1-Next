@@ -76,7 +76,7 @@ public class PostListActivity extends BaseActivity
 
     /**
      * The serialization (saved instance state) Bundle key representing
-     * the SeekBar's progress when page flip dialog is showing.
+     * the SeekBar's progress when page turning dialog is showing.
      */
     private static final String STATE_SEEKBAR_PROGRESS = "seekbar_progress";
     private int mSeekBarProgress = -1;
@@ -96,7 +96,7 @@ public class PostListActivity extends BaseActivity
     private Posts.ThreadAttachment mThreadAttachment;
     private MenuItem mMenuThreadAttachment;
 
-    private MenuItem mMenuPageFlip;
+    private MenuItem mMenuPageTurning;
 
     private BroadcastReceiver mWifiReceiver;
 
@@ -159,7 +159,7 @@ public class PostListActivity extends BaseActivity
         if (savedInstanceState != null) {
             mSeekBarProgress = savedInstanceState.getInt(STATE_SEEKBAR_PROGRESS);
             if (mSeekBarProgress != -1) {
-                showPageFlipDialog();
+                showPageTurningDialog();
             }
         }
     }
@@ -222,8 +222,8 @@ public class PostListActivity extends BaseActivity
             mMenuThreadAttachment.setVisible(false);
         }
 
-        mMenuPageFlip = menu.findItem(R.id.menu_page_flip);
-        prepareMenuPageFlip();
+        mMenuPageTurning = menu.findItem(R.id.menu_page_turning);
+        preparePageTurningMenu();
 
         return true;
     }
@@ -247,8 +247,8 @@ public class PostListActivity extends BaseActivity
                 showThreadAttachmentDialog();
 
                 return true;
-            case R.id.menu_page_flip:
-                showPageFlipDialog();
+            case R.id.menu_page_turning:
+                showPageTurningDialog();
 
                 return true;
             case R.id.menu_favourites_add:
@@ -289,22 +289,22 @@ public class PostListActivity extends BaseActivity
     }
 
     /**
-     * Disables the flip page menu if only has one page.
+     * Disables the page turning menu if only has one page.
      */
-    private void prepareMenuPageFlip() {
-        if (mMenuPageFlip == null) {
+    private void preparePageTurningMenu() {
+        if (mMenuPageTurning == null) {
             return;
         }
 
         if (mTotalPages == 1) {
-            mMenuPageFlip.setEnabled(false);
+            mMenuPageTurning.setEnabled(false);
         } else {
-            mMenuPageFlip.setEnabled(true);
+            mMenuPageTurning.setEnabled(true);
         }
     }
 
-    private void showPageFlipDialog() {
-        View view = getLayoutInflater().inflate(R.layout.dialog_page_flip,
+    private void showPageTurningDialog() {
+        View view = getLayoutInflater().inflate(R.layout.dialog_page_turning,
                 (ViewGroup) findViewById(R.id.drawer_layout), false);
 
         if (mSeekBarProgress == -1) {
@@ -376,19 +376,17 @@ public class PostListActivity extends BaseActivity
 
         new AlertDialog.Builder(this)
                 .setView(view)
-                .setTitle(R.string.dialog_title_page_flip)
-                .setPositiveButton(getText(android.R.string.ok),
+                .setTitle(R.string.dialog_title_page_turning)
+                .setPositiveButton(getText(R.string.dialog_button_text_go),
                         (dialog, which) -> {
                             mSeekBarProgress = -1;
 
                             if (!TextUtils.isEmpty(valueView.getText())) {
                                 mViewPager.setCurrentItem(seekbar.getProgress());
                             }
-                        }
-                )
-                .setNegativeButton(getText(android.R.string.cancel),
-                        (dialog, which) -> mSeekBarProgress = -1
-                ).show();
+                        })
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> mSeekBarProgress = -1)
+                .show();
     }
 
     @Override
@@ -407,7 +405,7 @@ public class PostListActivity extends BaseActivity
     private void setTotalPage(int i) {
         mTotalPages = i;
 
-        prepareMenuPageFlip();
+        preparePageTurningMenu();
 
         if (mAdapter != null) {
             runOnUiThread(mAdapter::notifyDataSetChanged);
@@ -525,7 +523,7 @@ public class PostListActivity extends BaseActivity
                                     getArguments().getParcelableArrayList(
                                             ARG_THREAD_ATTACHMENT_INFO_LIST)),
                             null)
-                    .setPositiveButton(android.R.string.ok, null)
+                    .setPositiveButton(R.string.dialog_button_text_done, null)
                     .create();
         }
     }
@@ -557,7 +555,7 @@ public class PostListActivity extends BaseActivity
             AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.dialog_title_favourites_add)
                     .setView(view)
-                    .setPositiveButton(android.R.string.ok, null)
+                    .setPositiveButton(R.string.dialog_button_text_add, null)
                     .setNegativeButton(android.R.string.cancel, null)
                     .create();
 
@@ -664,7 +662,6 @@ public class PostListActivity extends BaseActivity
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-
             return new AlertDialog.Builder(getActivity())
                     .setMessage(R.string.dialog_message_login_prompt)
                     .setPositiveButton(R.string.action_login,

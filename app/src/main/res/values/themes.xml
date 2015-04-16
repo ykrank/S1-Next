@@ -24,7 +24,7 @@
         <item name="menuCross">@drawable/ic_menu_close_black_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_black_24dp</item>
         <item name="menuThreadAttachment">@drawable/ic_menu_attachment_black_24dp</item>
-        <item name="menuPageFlip">@drawable/selector_menu_swap_horiz_black</item>
+        <item name="menuPageTurning">@drawable/selector_menu_swap_horiz_black</item>
         <item name="menuEmoticon">@drawable/ic_menu_insert_emoticon_black_24dp</item>
         <item name="menuKeyboard">@drawable/ic_menu_keyboard_black_24dp</item>
         <item name="menuSend">@drawable/selector_menu_send_black</item>
@@ -43,7 +43,7 @@
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
         <item name="menuThreadAttachment">@drawable/ic_menu_attachment_white_24dp</item>
-        <item name="menuPageFlip">@drawable/selector_menu_swap_horiz_white</item>
+        <item name="menuPageTurning">@drawable/selector_menu_swap_horiz_white</item>
         <item name="menuEmoticon">@drawable/ic_menu_insert_emoticon_white_24dp</item>
         <item name="menuKeyboard">@drawable/ic_menu_keyboard_white_24dp</item>
         <item name="menuSend">@drawable/selector_menu_send_white</item>
@@ -88,7 +88,7 @@
         <item name="emoticonKeyboardTabsTitleColor">@color/emoticon_keyboard_tab_title_dark</item>
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
-        <item name="menuPageFlip">@drawable/selector_menu_swap_horiz_white</item>
+        <item name="menuPageTurning">@drawable/selector_menu_swap_horiz_white</item>
         <item name="menuThreadAttachment">@drawable/ic_menu_attachment_white_24dp</item>
         <item name="menuEmoticon">@drawable/ic_menu_insert_emoticon_white_24dp</item>
         <item name="menuKeyboard">@drawable/ic_menu_keyboard_white_24dp</item>

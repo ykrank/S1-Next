@@ -576,26 +576,25 @@ public abstract class BaseActivity extends ActionBarActivityCompat
             int checkedItem = Integer.parseInt(sharedPreferences.getString(
                     SettingsFragment.PREF_KEY_THEME,
                     getString(R.string.pref_theme_default_value)));
-            return
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.pref_theme)
-                            .setSingleChoiceItems(
-                                    R.array.pref_theme_entries,
-                                    checkedItem,
-                                    (dialog, which) -> {
-                                        // won't change theme if unchanged
-                                        if (which != checkedItem) {
-                                            sharedPreferences.edit()
-                                                    .putString(SettingsFragment.PREF_KEY_THEME,
-                                                            String.valueOf(which)).apply();
-                                            Settings.Theme.setCurrentTheme(sharedPreferences);
+            return new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.pref_theme)
+                    .setSingleChoiceItems(
+                            R.array.pref_theme_entries,
+                            checkedItem,
+                            (dialog, which) -> {
+                                // won't change theme if unchanged
+                                if (which != checkedItem) {
+                                    sharedPreferences.edit()
+                                            .putString(SettingsFragment.PREF_KEY_THEME,
+                                                    String.valueOf(which)).apply();
+                                    Settings.Theme.setCurrentTheme(sharedPreferences);
 
-                                            BusProvider.get().post(new ThemeChangeEvent());
-                                        }
-                                        dismiss();
-                                        ((BaseActivity) getActivity()).closeDrawer(null);
-                                    })
-                            .create();
+                                    BusProvider.get().post(new ThemeChangeEvent());
+                                }
+                                dismiss();
+                                ((BaseActivity) getActivity()).closeDrawer(null);
+                            })
+                    .create();
         }
     }
 
@@ -609,7 +608,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
             return new AlertDialog.Builder(getActivity())
                     .setMessage(R.string.dialog_message_log_out)
                     .setPositiveButton(
-                            android.R.string.ok,
+                            R.string.dialog_button_text_log_out,
                             (dialog, which) -> ((BaseActivity) getActivity()).onLogout())
                     .setNegativeButton(android.R.string.cancel, null)
                     .create();
