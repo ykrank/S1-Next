@@ -312,9 +312,9 @@ public class PostListActivity extends BaseActivity
         }
 
         SeekBar seekbar = (SeekBar) view.findViewById(R.id.seekbar);
-        seekbar.setProgress(mSeekBarProgress);
         // SeekBar is zero-based!
         seekbar.setMax(mTotalPages - 1);
+        seekbar.setProgress(mSeekBarProgress);
 
         EditText valueView = (EditText) view.findViewById(R.id.value);
         valueView.setText(String.valueOf(mSeekBarProgress + 1));
