@@ -87,7 +87,7 @@ public final class ReplyFragment extends Fragment {
     private boolean mIsEmoticonKeyboardShowing;
     private MenuItem mMenuEmoticon;
     private View mEmoticonKeyboard;
-    private ViewPagerTabs mEmoticonKeyboardTabs;
+    private ViewPagerTabs mEmoticonKeyboardCategoryTabs;
     private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
 
     private MenuItem mMenuSend;
@@ -228,12 +228,13 @@ public final class ReplyFragment extends Fragment {
     private void setupEmoticonKeyboard() {
         //noinspection ConstantConditions
         mEmoticonKeyboard = getView().findViewById(R.id.emoticon_keyboard);
-        ViewPager viewPager = (ViewPager) mEmoticonKeyboard.findViewById(R.id.viewpager);
+        ViewPager viewPager = (ViewPager) mEmoticonKeyboard.findViewById(R.id.emoticon_keyboard_pager);
         viewPager.setAdapter(new EmoticonPagerAdapter(getActivity()));
         viewPager.setOnPageChangeListener(new EmoticonKeyboardTabsPagerListener());
 
-        mEmoticonKeyboardTabs = (ViewPagerTabs) mEmoticonKeyboard.findViewById(R.id.emoticon_keyboard_header);
-        mEmoticonKeyboardTabs.setViewPager(viewPager);
+        mEmoticonKeyboardCategoryTabs = (ViewPagerTabs) mEmoticonKeyboard.findViewById(
+                R.id.emoticon_keyboard_category_tabs);
+        mEmoticonKeyboardCategoryTabs.setViewPager(viewPager);
     }
 
     private void showEmoticonKeyboard() {
@@ -323,19 +324,17 @@ public final class ReplyFragment extends Fragment {
 
         @Override
         public void onPageScrollStateChanged(int state) {
-            mEmoticonKeyboardTabs.onPageScrollStateChanged(state);
-
+            mEmoticonKeyboardCategoryTabs.onPageScrollStateChanged(state);
         }
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            mEmoticonKeyboardTabs.onPageScrolled(position, positionOffset, positionOffsetPixels);
-
+            mEmoticonKeyboardCategoryTabs.onPageScrolled(position, positionOffset, positionOffsetPixels);
         }
 
         @Override
         public void onPageSelected(int position) {
-            mEmoticonKeyboardTabs.onPageSelected(position);
+            mEmoticonKeyboardCategoryTabs.onPageSelected(position);
         }
     }
 

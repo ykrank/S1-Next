@@ -34,16 +34,16 @@
         android:visibility="gone">
 
         <cl.monsoon.s1next.view.ViewPagerTabs
-            android:id="@+id/emoticon_keyboard_header"
+            android:id="@+id/emoticon_keyboard_category_tabs"
             style="@style/EmoticonKeyboardTabTextStyle"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/emoticon_keyboard_header_height"
+            android:layout_height="@dimen/emoticon_keyboard_category_tabs_height"
             android:background="?attr/emoticonKeyboardTabsBackground"
             android:elevation="@dimen/viewpager_tabs_elevation"
             tools:ignore="UnusedAttribute" />
 
         <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
+            android:id="@+id/emoticon_keyboard_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/emoticonKeyboardColor" />
