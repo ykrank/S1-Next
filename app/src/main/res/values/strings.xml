@@ -23,6 +23,7 @@
     <string name="dialog_button_text_log_out">Sign out</string>
 
     <string name="home">Home</string>
+    <string name="favourites">Favourites</string>
     <string name="settings">Settings</string>
 
     <!-- menu -->

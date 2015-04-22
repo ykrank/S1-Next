@@ -23,7 +23,7 @@ public final class ViewUtil {
         concatWithTwoSpaces(textView, String.valueOf(text));
     }
 
-    public static void concatWithTwoSpaces(TextView textView, String text) {
+    public static void concatWithTwoSpaces(TextView textView, CharSequence text) {
         textView.append(StringUtil.TWO_SPACES + text);
     }
 

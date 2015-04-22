@@ -492,6 +492,27 @@ public abstract class BaseActivity extends ActionBarActivityCompat
                     ActivityCompat.finishAffinity(this);
                 }));
 
+        // add favourites item
+        TextView favouritesView = (TextView) mDrawer.findViewById(R.id.favourites);
+        favouritesView.setText(R.string.favourites);
+        favouritesView.setCompoundDrawablePadding(margin);
+        favouritesView.setCompoundDrawablesWithIntrinsicBounds(
+                ResourceUtil.getResourceId(getTheme(), R.attr.iconFavourites), 0, 0, 0);
+        // start SettingsActivity if clicked
+        favouritesView.setOnClickListener(v ->
+                closeDrawer(() -> {
+                    if (this instanceof FavouriteListActivity) {
+                        return;
+                    }
+
+                    if (User.hasLoggedIn()) {
+                        Intent intent = new Intent(this, FavouriteListActivity.class);
+                        startActivity(intent);
+                    } else {
+                        new LoginPromptDialog().show(getSupportFragmentManager(), LoginPromptDialog.TAG);
+                    }
+                }));
+
         // add settings item
         TextView settingsView = (TextView) mDrawer.findViewById(R.id.settings);
         settingsView.setText(getText(R.string.settings));
@@ -594,6 +615,25 @@ public abstract class BaseActivity extends ActionBarActivityCompat
                                 dismiss();
                                 ((BaseActivity) getActivity()).closeDrawer(null);
                             })
+                    .create();
+        }
+    }
+
+    public static class LoginPromptDialog extends DialogFragment {
+
+        static final String TAG = LoginPromptDialog.class.getSimpleName();
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            return new AlertDialog.Builder(getActivity())
+                    .setMessage(R.string.dialog_message_login_prompt)
+                    .setPositiveButton(R.string.action_login,
+                            (dialog, which) -> {
+                                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                startActivity(intent);
+                            })
+                    .setNegativeButton(android.R.string.cancel, null)
                     .create();
         }
     }

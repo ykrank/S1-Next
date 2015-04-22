@@ -19,6 +19,7 @@ public final class Api {
     public static final String URL_LOGIN = prepend("api/mobile/index.php?module=login&loginsubmit=yes&loginfield=username");
 
     public static final String URL_FORUM = prepend("api/mobile/index.php?module=forumindex");
+    private static final String URL_FAVOURITES = prepend("api/mobile/index.php?module=myfavthread");
 
     private static final String URL_THREAD_LIST = prepend("api/mobile/index.php?module=forumdisplay");
     private static final String URL_POST_LIST = prepend("api/mobile/index.php?module=viewthread");
@@ -60,6 +61,12 @@ public final class Api {
 
     private static String prepend(String suffix) {
         return URL_S1 + suffix;
+    }
+
+    public static String getFavouritesUrl(int pageNum) {
+        return Uri.parse(URL_FAVOURITES).buildUpon()
+                .appendQueryParameter("page", String.valueOf(pageNum))
+                .toString();
     }
 
     public static String getThreadListUrl(String forumId, int pageNum) {

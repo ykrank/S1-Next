@@ -30,6 +30,7 @@
         <item name="menuSend">@drawable/selector_menu_send_black</item>
 
         <item name="iconHome">@drawable/ic_home_grey600_24dp</item>
+        <item name="iconFavourites">@drawable/ic_grade_grey600_24dp</item>
         <item name="iconSettings">@drawable/ic_settings_grey600_24dp</item>
     </style>
 
@@ -94,6 +95,7 @@
         <item name="menuKeyboard">@drawable/ic_menu_keyboard_white_24dp</item>
         <item name="menuSend">@drawable/selector_menu_send_white</item>
         <item name="iconHome">@drawable/ic_home_white_24dp</item>
+        <item name="iconFavourites">@drawable/ic_grade_white_24dp</item>
         <item name="iconSettings">@drawable/ic_settings_white_24dp</item>
     </style>
 

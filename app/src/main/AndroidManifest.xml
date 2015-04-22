@@ -37,6 +37,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activity.FavouriteListActivity" />
+
         <activity
             android:name=".activity.ThreadListActivity"
             android:parentActivityName=".activity.ForumActivity">

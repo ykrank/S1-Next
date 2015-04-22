@@ -90,11 +90,18 @@
             android:layout_below="@id/drawer_username"
             android:layout_marginTop="@dimen/list_view_padding" />
 
+        <include
+            android:id="@+id/favourites"
+            layout="@layout/single_line_list_item"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/drawer_item_height"
+            android:layout_below="@id/home" />
+
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="@dimen/divider_height"
-            android:layout_below="@id/home"
+            android:layout_below="@id/favourites"
             android:background="?attr/dividerColor"
             android:layout_marginBottom="@dimen/list_view_padding"
             android:layout_marginTop="@dimen/list_view_padding" />

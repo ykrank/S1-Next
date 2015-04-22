@@ -654,23 +654,4 @@ public class PostListActivity extends BaseActivity
             }
         }
     }
-
-    public static class LoginPromptDialog extends DialogFragment {
-
-        private static final String TAG = LoginPromptDialog.class.getSimpleName();
-
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            return new AlertDialog.Builder(getActivity())
-                    .setMessage(R.string.dialog_message_login_prompt)
-                    .setPositiveButton(R.string.action_login,
-                            (dialog, which) -> {
-                                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                startActivity(intent);
-                            })
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .create();
-        }
-    }
 }
