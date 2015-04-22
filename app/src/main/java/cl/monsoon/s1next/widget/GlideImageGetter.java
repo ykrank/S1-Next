@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.text.Html;
 import android.webkit.URLUtil;
 import android.widget.TextView;
@@ -108,7 +107,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
      * redraw the TextView which contains the animated GIFs.
      */
     @Override
-    public void invalidateDrawable(@NonNull Drawable who) {
+    public void invalidateDrawable(Drawable who) {
         mTextView.invalidate();
     }
 

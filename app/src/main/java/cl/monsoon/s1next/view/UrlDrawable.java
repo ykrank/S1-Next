@@ -3,7 +3,6 @@ package cl.monsoon.s1next.view;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 
@@ -17,7 +16,7 @@ public final class UrlDrawable extends Drawable implements Drawable.Callback {
     private GlideDrawable mDrawable;
 
     @Override
-    public void draw(@NonNull Canvas canvas) {
+    public void draw(Canvas canvas) {
         if (mDrawable != null) {
             mDrawable.draw(canvas);
         }
@@ -54,7 +53,7 @@ public final class UrlDrawable extends Drawable implements Drawable.Callback {
     }
 
     @Override
-    public void invalidateDrawable(@NonNull Drawable who) {
+    public void invalidateDrawable(Drawable who) {
         if (getCallback() != null) {
             getCallback().invalidateDrawable(who);
         }

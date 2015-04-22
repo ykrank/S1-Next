@@ -12,8 +12,8 @@ import java.util.concurrent.Callable;
 
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.fragment.DownloadSettingsFragment;
-import cl.monsoon.s1next.fragment.SettingsFragment;
+import cl.monsoon.s1next.fragment.DownloadPreferenceFragment;
+import cl.monsoon.s1next.fragment.MainPreferenceFragment;
 import cl.monsoon.s1next.util.ColorUtil;
 import cl.monsoon.s1next.util.DateUtil;
 
@@ -36,7 +36,7 @@ public final class Settings {
         public static void setTextScale(SharedPreferences sharedPreferences) {
             String value = getSharedPreferencesString(
                     sharedPreferences,
-                    SettingsFragment.PREF_KEY_FONT_SIZE,
+                    MainPreferenceFragment.PREF_KEY_FONT_SIZE,
                     R.string.pref_font_size_default_value);
 
             INSTANCE.textScale = TextScale.get(Integer.parseInt(value)).getSize();
@@ -101,7 +101,7 @@ public final class Settings {
             INSTANCE.currentTheme = THEMES[Integer.parseInt(
                     getSharedPreferencesString(
                             sharedPreferences,
-                            SettingsFragment.PREF_KEY_THEME,
+                            MainPreferenceFragment.PREF_KEY_THEME,
                             R.string.pref_theme_default_value))];
 
             // get current theme's accent color
@@ -155,7 +155,7 @@ public final class Settings {
         public static int getTotalCacheSize(SharedPreferences sharedPreferences) {
             String value = getSharedPreferencesString(
                     sharedPreferences,
-                    DownloadSettingsFragment.PREF_KEY_TOTAL_DOWNLOAD_CACHE_SIZE,
+                    DownloadPreferenceFragment.PREF_KEY_TOTAL_DOWNLOAD_CACHE_SIZE,
                     R.string.pref_download_total_cache_size_default_value);
 
             return TotalCacheSize.get(Integer.parseInt(value)).size;
@@ -164,7 +164,7 @@ public final class Settings {
         public static void setAvatarsDownloadStrategy(SharedPreferences sharedPreferences) {
             String value = getSharedPreferencesString(
                     sharedPreferences,
-                    DownloadSettingsFragment.PREF_KEY_DOWNLOAD_AVATARS_STRATEGY,
+                    DownloadPreferenceFragment.PREF_KEY_DOWNLOAD_AVATARS_STRATEGY,
                     R.string.pref_download_avatars_strategy_default_value);
 
             INSTANCE.avatarsDownloadStrategy = DownloadStrategy.get(Integer.parseInt(value));
@@ -177,7 +177,7 @@ public final class Settings {
         public static void setAvatarResolutionStrategy(SharedPreferences sharedPreferences) {
             String value = getSharedPreferencesString(
                     sharedPreferences,
-                    DownloadSettingsFragment.PREF_KEY_AVATAR_RESOLUTION_STRATEGY,
+                    DownloadPreferenceFragment.PREF_KEY_AVATAR_RESOLUTION_STRATEGY,
                     R.string.pref_avatar_resolution_strategy_default_value);
 
             INSTANCE.avatarResolutionStrategy = AvatarResolutionStrategy.get(Integer.parseInt(value));
@@ -195,7 +195,7 @@ public final class Settings {
         public static void setAvatarCacheInvalidationInterval(SharedPreferences sharedPreferences) {
             String value = getSharedPreferencesString(
                     sharedPreferences,
-                    DownloadSettingsFragment.PREF_KEY_AVATAR_CACHE_INVALIDATION_INTERVAL,
+                    DownloadPreferenceFragment.PREF_KEY_AVATAR_CACHE_INVALIDATION_INTERVAL,
                     R.string.pref_avatar_cache_invalidation_interval_default_value);
 
             INSTANCE.avatarCacheInvalidationInterval = AvatarCacheInvalidationInterval.get(Integer.parseInt(value));
@@ -208,7 +208,7 @@ public final class Settings {
         public static void setImagesDownloadStrategy(SharedPreferences sharedPreferences) {
             String value = getSharedPreferencesString(
                     sharedPreferences,
-                    DownloadSettingsFragment.PREF_KEY_DOWNLOAD_IMAGES_STRATEGY,
+                    DownloadPreferenceFragment.PREF_KEY_DOWNLOAD_IMAGES_STRATEGY,
                     R.string.pref_download_images_strategy_default_value);
 
             INSTANCE.imagesDownloadStrategy = DownloadStrategy.get(Integer.parseInt(value));

@@ -2,7 +2,6 @@ package cl.monsoon.s1next.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -17,12 +16,11 @@ public final class Quote implements Extractable, Parcelable {
     public static final Parcelable.Creator<Quote> CREATOR =
             new Parcelable.Creator<Quote>() {
                 @Override
-                public Quote createFromParcel(@NonNull Parcel source) {
+                public Quote createFromParcel(Parcel source) {
                     return new Quote(source);
                 }
 
                 @Override
-                @NonNull
                 public Quote[] newArray(int size) {
                     return new Quote[size];
                 }
@@ -104,7 +102,7 @@ public final class Quote implements Extractable, Parcelable {
     }
 
     @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(encodedUserId);
         dest.writeString(quoteMessage);
     }

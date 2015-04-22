@@ -2,10 +2,9 @@
 
 <merge>
 
-    <cl.monsoon.s1next.view.InsetsFrameLayout
-        android:id="@+id/insets_frame_layout"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <cl.monsoon.s1next.view.InsetsFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/insets_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
@@ -16,10 +15,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"

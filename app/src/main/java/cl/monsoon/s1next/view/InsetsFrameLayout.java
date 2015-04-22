@@ -58,6 +58,6 @@ public final class InsetsFrameLayout extends FrameLayout {
 
     public interface OnInsetsCallback {
 
-        void onInsetsChanged(Rect insets);
+        void onInsetsChanged(@NonNull Rect insets);
     }
 }

@@ -445,7 +445,7 @@ public final class PhotoView extends View
     }
 
     @Override
-    public boolean onScroll(@NonNull MotionEvent e1, @NonNull MotionEvent e2, float distanceX, float distanceY) {
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
         if (mTransformsEnabled && !mScaleRunnable.mRunning) {
             translate(-distanceX, -distanceY);
         }
@@ -454,7 +454,7 @@ public final class PhotoView extends View
     }
 
     @Override
-    public boolean onDown(@NonNull MotionEvent e) {
+    public boolean onDown(MotionEvent e) {
         if (mTransformsEnabled) {
             mTranslateRunnable.stop();
             mSnapRunnable.stop();
@@ -473,7 +473,7 @@ public final class PhotoView extends View
     }
 
     @Override
-    public boolean onScale(@NonNull ScaleGestureDetector detector) {
+    public boolean onScale(ScaleGestureDetector detector) {
         if (mTransformsEnabled) {
             mIsDoubleTouch = false;
             float currentScale = getScale();
@@ -485,7 +485,7 @@ public final class PhotoView extends View
     }
 
     @Override
-    public boolean onScaleBegin(@NonNull ScaleGestureDetector detector) {
+    public boolean onScaleBegin(ScaleGestureDetector detector) {
         if (mTransformsEnabled) {
             mScaleRunnable.stop();
             mIsDoubleTouch = true;
@@ -495,7 +495,7 @@ public final class PhotoView extends View
     }
 
     @Override
-    public void onScaleEnd(@NonNull ScaleGestureDetector detector) {
+    public void onScaleEnd(ScaleGestureDetector detector) {
         // Scale back to the maximum if over-zoomed
         float currentScale = getScale();
         if (currentScale > mMaxScale) {
@@ -747,7 +747,7 @@ public final class PhotoView extends View
     }
 
     @Override
-    protected void onDraw(@NonNull Canvas canvas) {
+    protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         // draw the photo

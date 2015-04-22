@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.support.annotation.NonNull;
 import android.webkit.WebView;
 
 import cl.monsoon.s1next.BuildConfig;
@@ -18,8 +17,7 @@ import cl.monsoon.s1next.event.ThemeChangeEvent;
 import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.Settings;
 
-public final class SettingsFragment extends BaseSettingsFragment
-        implements Preference.OnPreferenceClickListener {
+public final class MainPreferenceFragment extends BasePreferenceFragment implements Preference.OnPreferenceClickListener {
 
     public static final String PREF_KEY_THEME = "pref_key_theme";
     public static final String PREF_KEY_FONT_SIZE = "pref_key_font_size";
@@ -84,7 +82,6 @@ public final class SettingsFragment extends BaseSettingsFragment
         private static final String TAG = OpenSourceLicensesDialog.class.getSimpleName();
 
         @Override
-        @NonNull
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             WebView webView = new WebView(getActivity());
             webView.loadUrl("file:///android_asset/NOTICE.html");
@@ -92,7 +89,7 @@ public final class SettingsFragment extends BaseSettingsFragment
             return new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.pref_open_source_licenses)
                     .setView(webView)
-                    .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                    .setPositiveButton(R.string.dialog_button_text_done, (dialog, which) -> dialog.dismiss())
                     .create();
         }
     }

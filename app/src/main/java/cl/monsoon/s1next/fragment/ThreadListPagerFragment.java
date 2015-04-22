@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -118,7 +120,6 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
                 }
         ));
 
-
         onInsetsChanged();
         enableToolbarAndFabAutoHideEffect(mRecyclerView, null);
     }
@@ -140,7 +141,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
     }
 
     @Override
-    public void onInsetsChanged(Rect insets) {
+    public void onInsetsChanged(@NonNull Rect insets) {
         setRecyclerViewPadding(
                 mRecyclerView,
                 insets,
@@ -151,7 +152,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        inflater.inflate(R.menu.fragment_thread, menu);
+        inflater.inflate(R.menu.fragment_thread_pager, menu);
     }
 
     @Override
@@ -188,7 +189,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
         } else {
             Threads threads = asyncResult.data.getThreads();
 
-            // if user has logged out and then has no permission to access this forum
+            // if user has logged out or has no permission to access this forum
             if (threads.getThreadList().isEmpty()) {
                 String message = asyncResult.data.getResult().getMessage();
                 if (!TextUtils.isEmpty(message)) {
@@ -198,7 +199,8 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
                 mRecyclerAdapter.setDataSet(threads.getThreadList());
                 mRecyclerAdapter.notifyDataSetChanged();
 
-                mPagerCallback.setTotalPageByThreads(threads.getThreadListInfo().getThreads());
+                new Handler().post(() ->
+                        mPagerCallback.setTotalPageByThreads(threads.getThreadListInfo().getThreads()));
             }
 
             if (!threads.getSubForumList().isEmpty()) {

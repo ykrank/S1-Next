@@ -6,7 +6,7 @@ import android.os.Bundle;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.singleton.Settings;
 
-public final class DownloadSettingsFragment extends BaseSettingsFragment {
+public final class DownloadPreferenceFragment extends BasePreferenceFragment {
 
     public static final String PREF_KEY_TOTAL_DOWNLOAD_CACHE_SIZE = "pref_key_download_total_cache_size";
     public static final String PREF_KEY_DOWNLOAD_AVATARS_STRATEGY = "pref_key_download_avatars_strategy";

@@ -96,7 +96,6 @@ public final class ForumActivity extends BaseActivity
             setTitle(null);
 
             Toolbar toolbar = getToolbar();
-
             // add Spinner to Toolbar
             getLayoutInflater().inflate(R.layout.toolbar_spinner, toolbar, true);
             mSpinner = (Spinner) toolbar.findViewById(R.id.spinner);

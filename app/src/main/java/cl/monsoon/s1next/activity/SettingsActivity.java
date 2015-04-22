@@ -3,8 +3,8 @@ package cl.monsoon.s1next.activity;
 import android.os.Bundle;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.fragment.DownloadSettingsFragment;
-import cl.monsoon.s1next.fragment.SettingsFragment;
+import cl.monsoon.s1next.fragment.DownloadPreferenceFragment;
+import cl.monsoon.s1next.fragment.MainPreferenceFragment;
 
 public final class SettingsActivity extends BaseActivity {
 
@@ -21,10 +21,10 @@ public final class SettingsActivity extends BaseActivity {
             if (getIntent().getBooleanExtra(ARG_SHOULD_SHOW_DOWNLOAD_SETTINGS, false)) {
                 setTitle(R.string.download_settings);
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout, new DownloadSettingsFragment()).commit();
+                        .replace(R.id.frame_layout, new DownloadPreferenceFragment()).commit();
             } else {
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout, new SettingsFragment()).commit();
+                        .replace(R.id.frame_layout, new MainPreferenceFragment()).commit();
             }
         }
     }

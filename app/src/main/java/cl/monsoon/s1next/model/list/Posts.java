@@ -2,7 +2,6 @@ package cl.monsoon.s1next.model.list;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -116,12 +115,11 @@ public final class Posts extends Account {
             public static final Parcelable.Creator<Info> CREATOR =
                     new Parcelable.Creator<Info>() {
                         @Override
-                        public Info createFromParcel(@NonNull Parcel source) {
+                        public Info createFromParcel(Parcel source) {
                             return new Info(source);
                         }
 
                         @Override
-                        @NonNull
                         public Info[] newArray(int size) {
                             return new Info[size];
                         }
@@ -141,7 +139,7 @@ public final class Posts extends Account {
             }
 
             @Override
-            public void writeToParcel(@NonNull Parcel dest, int flags) {
+            public void writeToParcel(Parcel dest, int flags) {
                 dest.writeString(label);
                 dest.writeString(value);
             }

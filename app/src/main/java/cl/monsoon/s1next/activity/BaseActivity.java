@@ -15,6 +15,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.RecyclerView;
@@ -44,7 +46,7 @@ import cl.monsoon.s1next.event.FontSizeChangeEvent;
 import cl.monsoon.s1next.event.ThemeChangeEvent;
 import cl.monsoon.s1next.event.UserStatusEvent;
 import cl.monsoon.s1next.fragment.BaseFragment;
-import cl.monsoon.s1next.fragment.SettingsFragment;
+import cl.monsoon.s1next.fragment.MainPreferenceFragment;
 import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.OkHttpClientProvider;
 import cl.monsoon.s1next.singleton.Settings;
@@ -225,7 +227,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
      * in order to show overlay status bar & Toolbar.
      */
     @Override
-    public void onInsetsChanged(Rect insets) {
+    public void onInsetsChanged(@NonNull Rect insets) {
         mSystemWindowInsets = insets;
 
         int insetsTop = insets.top;
@@ -473,23 +475,18 @@ public abstract class BaseActivity extends ActionBarActivityCompat
                     }
 
                     Intent intent = new Intent(this, ForumActivity.class);
-                    // FLAG_ACTIVITY_NEW_TASK only works if this Activity is launched from other apps
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-
-                    // this is hard to explain why we use finishAffinity() here
-                    //
-                    // Precondition: we set a unique taskAffinity for ForumActivity in AndroidManifest.xml
-                    //
-                    // Scenario 1 (our app): -> start other Activities several times -> Home (by drawer)
-                    //                       -> finish all Activities exclude ForumActivity
-                    //                          (because ForumActivity has a unique taskAffinity)
-                    //
-                    // Scenario 2(other apps): -> PostListActivity (by Intent filter)
-                    //                         -> start other Activities several times -> Home (by drawer)
-                    //                         -> finish all our Activities in this app
-                    //                         -> new task in our app
-                    ActivityCompat.finishAffinity(this);
+                    if (NavUtils.shouldUpRecreateTask(this, intent)) {
+                        // finish all our Activities in this app
+                        ActivityCompat.finishAffinity(this);
+                        // this activity is not part of this app's task
+                        // so create a new task when navigating up with
+                        // a synthesized back stack
+                        TaskStackBuilder.create(this)
+                                .addNextIntentWithParentStack(intent)
+                                .startActivities();
+                    } else {
+                        NavUtils.navigateUpTo(this, intent);
+                    }
                 }));
 
         // add favourites item
@@ -505,17 +502,15 @@ public abstract class BaseActivity extends ActionBarActivityCompat
                         return;
                     }
 
-                    if (User.hasLoggedIn()) {
+                    if (checkUserLoggedInStatus()) {
                         Intent intent = new Intent(this, FavouriteListActivity.class);
                         startActivity(intent);
-                    } else {
-                        new LoginPromptDialog().show(getSupportFragmentManager(), LoginPromptDialog.TAG);
                     }
                 }));
 
         // add settings item
         TextView settingsView = (TextView) mDrawer.findViewById(R.id.settings);
-        settingsView.setText(getText(R.string.settings));
+        settingsView.setText(R.string.settings);
         settingsView.setCompoundDrawablePadding(margin);
         settingsView.setCompoundDrawablesWithIntrinsicBounds(
                 ResourceUtil.getResourceId(getTheme(), R.attr.iconSettings), 0, 0, 0);
@@ -595,7 +590,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
 
             //noinspection ConstantConditions
             int checkedItem = Integer.parseInt(sharedPreferences.getString(
-                    SettingsFragment.PREF_KEY_THEME,
+                    MainPreferenceFragment.PREF_KEY_THEME,
                     getString(R.string.pref_theme_default_value)));
             return new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.pref_theme)
@@ -606,7 +601,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
                                 // won't change theme if unchanged
                                 if (which != checkedItem) {
                                     sharedPreferences.edit()
-                                            .putString(SettingsFragment.PREF_KEY_THEME,
+                                            .putString(MainPreferenceFragment.PREF_KEY_THEME,
                                                     String.valueOf(which)).apply();
                                     Settings.Theme.setCurrentTheme(sharedPreferences);
 
@@ -621,7 +616,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
 
     public static class LoginPromptDialog extends DialogFragment {
 
-        static final String TAG = LoginPromptDialog.class.getSimpleName();
+        private static final String TAG = LoginPromptDialog.class.getSimpleName();
 
         @NonNull
         @Override
@@ -636,6 +631,21 @@ public abstract class BaseActivity extends ActionBarActivityCompat
                     .setNegativeButton(android.R.string.cancel, null)
                     .create();
         }
+    }
+
+    /**
+     * Show {@link LoginPromptDialog} if user hasn't logged in.
+     *
+     * @return whether user has logged in
+     */
+    boolean checkUserLoggedInStatus() {
+        if (!User.hasLoggedIn()) {
+            new LoginPromptDialog().show(getSupportFragmentManager(), LoginPromptDialog.TAG);
+
+            return false;
+        }
+
+        return true;
     }
 
     public static class LogoutDialog extends DialogFragment {

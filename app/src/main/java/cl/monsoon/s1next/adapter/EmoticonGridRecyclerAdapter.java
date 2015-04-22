@@ -2,7 +2,6 @@ package cl.monsoon.s1next.adapter;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,7 +73,7 @@ public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<Emot
         }
 
         @Override
-        public void onClick(@NonNull View v) {
+        public void onClick(View v) {
             // notify ReplyFragment that emoticon had been clicked
             BusProvider.get().post(new EmoticonClickEvent((String) v.getTag(TAG_EMOTICON_ENTITY)));
         }

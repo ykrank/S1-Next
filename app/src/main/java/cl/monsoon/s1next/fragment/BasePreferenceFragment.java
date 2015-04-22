@@ -3,7 +3,7 @@ package cl.monsoon.s1next.fragment;
 import android.content.SharedPreferences;
 import android.preference.PreferenceFragment;
 
-public abstract class BaseSettingsFragment extends PreferenceFragment
+public abstract class BasePreferenceFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override

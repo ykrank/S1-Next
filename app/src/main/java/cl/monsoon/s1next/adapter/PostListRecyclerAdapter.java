@@ -2,7 +2,6 @@ package cl.monsoon.s1next.adapter;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spannable;
@@ -118,8 +117,8 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         }
 
         itemViewHolder.username.setText(post.getUsername());
-        itemViewHolder.time.setText(DateUtils.getRelativeDateTimeString(
-                mContext, new MutableDateTime(post.getTime()), Days.ONE, 0));
+        itemViewHolder.datetime.setText(DateUtils.getRelativeDateTimeString(
+                mContext, new MutableDateTime(post.getDatetime()), Days.ONE, 0));
 
         TextView countView = itemViewHolder.count;
         // there is no need to quote #1
@@ -192,7 +191,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
 
         private final ImageView avatar;
         private final TextView username;
-        private final TextView time;
+        private final TextView datetime;
         private final TextView count;
         private final TextView post;
 
@@ -201,11 +200,11 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
 
             avatar = (ImageView) itemView.findViewById(R.id.avatar);
             username = (TextView) itemView.findViewById(R.id.username);
-            time = (TextView) itemView.findViewById(R.id.time);
+            datetime = (TextView) itemView.findViewById(R.id.datetime);
             count = (TextView) itemView.findViewById(R.id.count);
             post = (TextView) itemView.findViewById(R.id.post);
 
-            ViewUtil.updateTextSize(username, time, count, post);
+            ViewUtil.updateTextSize(username, datetime, count, post);
 
             count.setMovementMethod(LinkMovementMethod.getInstance());
             // use custom movement method to provides selection and click
@@ -232,7 +231,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
     private static final ClickableSpan QUOTE_CLICKABLE_SPAN = new ClickableSpan() {
 
         @Override
-        public void onClick(@NonNull View widget) {
+        public void onClick(View widget) {
             Post post = (Post) widget.getTag();
             BusProvider.get().post(new QuoteEvent(post.getId(), post.getCount()));
         }

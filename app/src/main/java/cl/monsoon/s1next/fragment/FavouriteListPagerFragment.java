@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -116,7 +117,7 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
     }
 
     @Override
-    public void onInsetsChanged(Rect insets) {
+    public void onInsetsChanged(@NonNull Rect insets) {
         setRecyclerViewPadding(
                 mRecyclerView,
                 insets,

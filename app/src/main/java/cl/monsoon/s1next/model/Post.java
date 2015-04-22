@@ -33,7 +33,7 @@ public final class Post {
     private String count;
 
     @JsonProperty("dbdateline")
-    private long time;
+    private long datetime;
 
     @JsonProperty("attachments")
     private Map<Integer, Attachment> attachmentMap;
@@ -94,13 +94,13 @@ public final class Post {
         this.count = count;
     }
 
-    public long getTime() {
-        return time;
+    public long getDatetime() {
+        return datetime;
     }
 
-    public void setTime(long time) {
+    public void setDatetime(long datetime) {
         // convert seconds to milliseconds
-        this.time = TimeUnit.SECONDS.toMillis(time);
+        this.datetime = TimeUnit.SECONDS.toMillis(datetime);
     }
 
     public void setAttachmentMap(Map<Integer, Attachment> attachmentMap) {

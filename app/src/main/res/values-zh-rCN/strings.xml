@@ -12,6 +12,7 @@
     <string name="drawer_top_background_content_desc">背景</string>
     <string name="drawer_avatar_content_desc">用户头像</string>
     <string name="dialog_message_log_out">退出登录？</string>
+    <string name="dialog_button_text_log_out">退出</string>
     <string name="home">首页</string>
     <string name="favourites">收藏</string>
     <string name="settings">设置</string>

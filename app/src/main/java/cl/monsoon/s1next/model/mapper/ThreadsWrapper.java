@@ -20,7 +20,6 @@ public final class ThreadsWrapper implements Deserializable {
         return threads;
     }
 
-    @SuppressWarnings("UnusedDeclaration")
     public void setThreads(Threads threads) {
         this.threads = threads;
     }

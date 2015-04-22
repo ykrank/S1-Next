@@ -19,5 +19,5 @@
         android:id="@+id/menu_favourites_add"
         android:orderInCategory="4"
         android:title="@string/menu_favourites_add"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 </menu>

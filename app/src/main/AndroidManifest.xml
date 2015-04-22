@@ -1,7 +1,6 @@
-<manifest
-    package="cl.monsoon.s1next"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="cl.monsoon.s1next">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -29,7 +28,6 @@
 
         <activity
             android:name=".activity.ForumActivity"
-            android:taskAffinity="cl.monsoon.s1next.activity.DEFAULT"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,21 +37,9 @@
 
         <activity android:name=".activity.FavouriteListActivity" />
 
-        <activity
-            android:name=".activity.ThreadListActivity"
-            android:parentActivityName=".activity.ForumActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.ForumActivity" />
-        </activity>
+        <activity android:name=".activity.ThreadListActivity" />
 
-        <activity
-            android:name=".activity.PostListActivity"
-            android:parentActivityName=".activity.ThreadListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.ThreadListActivity" />
-        </activity>
+        <activity android:name=".activity.PostListActivity" />
 
         <activity
             android:name=".activity.PostListGatewayActivity"
@@ -65,8 +51,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="http"
-                    android:host="bbs.saraba1st.com" />
+                    android:host="bbs.saraba1st.com"
+                    android:scheme="http" />
             </intent-filter>
         </activity>
 

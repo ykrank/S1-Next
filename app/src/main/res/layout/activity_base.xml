@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v4.widget.DrawerLayout
-    android:id="@+id/drawer_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -30,8 +30,8 @@
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginRight="@dimen/fab_margin"
             android:visibility="gone"
-            app:fab_colorNormal="?attr/fabColorNormal"
-            app:fab_colorPressed="?attr/fabColorPressed" />
+            fab:fab_colorNormal="?attr/fabColorNormal"
+            fab:fab_colorPressed="?attr/fabColorPressed" />
 
         <include layout="@layout/toolbar" />
 
@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="?attr/android:windowBackground"
+        android:background="?android:attr/windowBackground"
         android:clickable="true">
 
         <ImageView
@@ -102,9 +102,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/divider_height"
             android:layout_below="@id/favourites"
-            android:background="?attr/dividerColor"
             android:layout_marginBottom="@dimen/list_view_padding"
-            android:layout_marginTop="@dimen/list_view_padding" />
+            android:layout_marginTop="@dimen/list_view_padding"
+            android:background="?attr/dividerColor" />
 
         <include
             android:id="@+id/settings"

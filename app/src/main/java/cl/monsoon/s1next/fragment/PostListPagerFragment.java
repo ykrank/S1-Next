@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,7 +40,7 @@ import cl.monsoon.s1next.widget.HttpGetLoader;
  * <p>
  * All activities containing this Fragment must implement {@link PagerCallback}.
  * <p>
- * Similar to {@link cl.monsoon.s1next.fragment.ThreadListPagerFragment}
+ * Similar to {@link cl.monsoon.s1next.fragment.ThreadListPagerFragment}.
  */
 public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
 
@@ -152,7 +153,7 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
     }
 
     @Override
-    public void onInsetsChanged(Rect insets) {
+    public void onInsetsChanged(@NonNull Rect insets) {
         setRecyclerViewPadding(
                 mRecyclerView,
                 insets,
@@ -163,7 +164,7 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        inflater.inflate(R.menu.fragment_post, menu);
+        inflater.inflate(R.menu.fragment_post_pager, menu);
     }
 
     @Override
@@ -238,8 +239,7 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
             Posts posts = asyncResult.data.getPosts();
             List<Post> postList = posts.getPostList();
 
-            // if user has logged out and then has no permission to access this thread
-            // or this thread is invalid
+            // if user has logged out, has no permission to access this thread or this thread is invalid
             if (postList.isEmpty()) {
                 String message = asyncResult.data.getResult().getMessage();
                 if (!TextUtils.isEmpty(message)) {
@@ -276,7 +276,8 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
                 if (TextUtils.isEmpty(getActivity().getTitle())) {
                     mPagerCallback.setThreadTitle(postListInfo.getTitle());
                 }
-                new Handler().post(() -> mPagerCallback.setTotalPageByPosts(postListInfo.getReplies() + 1));
+                new Handler().post(() ->
+                        mPagerCallback.setTotalPageByPosts(postListInfo.getReplies() + 1));
             }
 
             if (posts.getThreadAttachment() != null) {

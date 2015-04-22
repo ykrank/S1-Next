@@ -20,7 +20,6 @@ public final class PostsWrapper implements Deserializable {
         return posts;
     }
 
-    @SuppressWarnings("UnusedDeclaration")
     public void setPosts(Posts posts) {
         this.posts = posts;
     }

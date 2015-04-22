@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.Loader;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -175,7 +176,7 @@ public class PostListActivity extends BaseActivity
 
             mWifiReceiver = new BroadcastReceiver() {
                 @Override
-                public void onReceive(@NonNull Context context, @NonNull Intent intent) {
+                public void onReceive(Context context, Intent intent) {
                     Settings.General.setWifi(NetworkUtil.isWifiConnected());
                 }
             };
@@ -233,9 +234,11 @@ public class PostListActivity extends BaseActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 if (getIntent().getBooleanExtra(PostListGatewayActivity.ARG_COME_FROM_OTHER_APP, false)) {
-                    Intent intent = new Intent(this, ForumActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    // this activity is not part of this app's task
+                    // so create a new task when navigating up
+                    TaskStackBuilder.create(this)
+                            .addNextIntentWithParentStack(new Intent(this, ForumActivity.class))
+                            .startActivities();
 
                     finish();
 
@@ -329,7 +332,7 @@ public class PostListActivity extends BaseActivity
             }
 
             @Override
-            public void onTextChanged(@NonNull CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
 
@@ -348,7 +351,7 @@ public class PostListActivity extends BaseActivity
 
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(@NonNull SeekBar seekBar, int progress, boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mSeekBarProgress = progress;
 
                 int value = -1;
@@ -369,7 +372,7 @@ public class PostListActivity extends BaseActivity
             }
 
             @Override
-            public void onStopTrackingTouch(@NonNull SeekBar seekBar) {
+            public void onStopTrackingTouch(SeekBar seekBar) {
 
             }
         });
@@ -402,8 +405,8 @@ public class PostListActivity extends BaseActivity
         setTotalPage(MathUtil.divide(posts, Config.POSTS_PER_PAGE));
     }
 
-    private void setTotalPage(int i) {
-        mTotalPages = i;
+    private void setTotalPage(int totalPage) {
+        this.mTotalPages = totalPage;
 
         preparePageTurningMenu();
 
@@ -427,7 +430,7 @@ public class PostListActivity extends BaseActivity
      * {@link com.melnykov.fab.FloatingActionButton#setOnClickListener(android.view.View.OnClickListener)}
      */
     @Override
-    public void onClick(@NonNull View v) {
+    public void onClick(View v) {
         startReplyActivity(null, null);
     }
 
@@ -445,17 +448,6 @@ public class PostListActivity extends BaseActivity
         intent.putExtra(ReplyActivity.ARG_QUOTE_POST_COUNT, quotePostCount);
 
         startActivity(intent);
-    }
-
-    private boolean checkUserLoggedInStatus() {
-        // show LoginPromptDialog if user hasn't logged in.
-        if (!User.hasLoggedIn()) {
-            new LoginPromptDialog().show(getSupportFragmentManager(), LoginPromptDialog.TAG);
-
-            return false;
-        }
-
-        return true;
     }
 
     /**

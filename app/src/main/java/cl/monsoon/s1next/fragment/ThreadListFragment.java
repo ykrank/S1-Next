@@ -21,8 +21,7 @@ import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
  * A Fragment which includes {@link android.support.v4.view.ViewPager}
  * to represent each page of thread lists.
  */
-public final class ThreadListFragment extends Fragment
-        implements ThreadListPagerFragment.PagerCallback {
+public final class ThreadListFragment extends Fragment implements ThreadListPagerFragment.PagerCallback {
 
     public static final String TAG = ThreadListFragment.class.getSimpleName();
 
