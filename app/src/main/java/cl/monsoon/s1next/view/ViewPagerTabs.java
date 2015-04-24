@@ -33,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.util.ResourceUtil;
 
 /**
@@ -126,7 +127,7 @@ public final class ViewPagerTabs extends HorizontalScrollView implements ViewPag
         final TextView textView = new TextView(getContext());
         textView.setText(tabTitle);
         textView.setBackgroundResource(ResourceUtil.getResourceId(
-                getContext().getTheme(), android.R.attr.selectableItemBackground));
+                getContext().getTheme(), R.attr.selectableItemBackground));
         textView.setGravity(Gravity.CENTER);
         textView.setOnClickListener(v -> mViewPager.setCurrentItem(getRtlPosition(position)));
 
