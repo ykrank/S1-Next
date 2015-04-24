@@ -30,7 +30,6 @@ import cl.monsoon.s1next.model.mapper.PostsWrapper;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.util.ToastUtil;
-import cl.monsoon.s1next.view.BaseRecyclerView;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpGetLoader;
 
@@ -54,14 +53,14 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
 
     /**
      * The serialization (saved instance state) Bundle key representing whether
-     * {@link BaseRecyclerView} is loading more when configuration changes.
+     * {@link RecyclerView} is loading more when configuration changes.
      */
     private static final String STATE_IS_LOADING_MORE = "is_loading_more";
 
     private String mThreadId;
     private int mPageNum;
 
-    private BaseRecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
     private PostListRecyclerAdapter mRecyclerAdapter;
     private boolean mIsLoadingMore;
 
@@ -107,16 +106,14 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         mThreadId = getArguments().getString(ARG_THREAD_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
-        mRecyclerView = (BaseRecyclerView) view.findViewById(R.id.recycler_view);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        // linearLayoutManager.setSmoothScrollbarEnabled(false);
-        // if https://code.google.com/p/android/issues/detail?id=78375 has fixed
-        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerAdapter = new PostListRecyclerAdapter(getActivity());
         mRecyclerView.setAdapter(mRecyclerAdapter);
 
         onInsetsChanged();
-        enableToolbarAndFabAutoHideEffect(mRecyclerView, new RecyclerView.OnScrollListener() {
+        enableToolbarAndFabAutoHideEffect(mRecyclerView);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             /**
              * Endless scrolling with RecyclerView.

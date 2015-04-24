@@ -15,8 +15,6 @@ public final class SettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity);
 
-        setNavDrawerEnabled(false);
-
         if (savedInstanceState == null) {
             if (getIntent().getBooleanExtra(ARG_SHOULD_SHOW_DOWNLOAD_SETTINGS, false)) {
                 setTitle(R.string.download_settings);

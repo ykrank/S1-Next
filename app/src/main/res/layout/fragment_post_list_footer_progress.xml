@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="?attr/myCardView"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/single_line_height"
+    android:layout_height="@dimen/single_line_height_with_avatar"
     android:gravity="center"
     tools:context="cl.monsoon.s1next.adapter.PostListRecyclerAdapter">
 

@@ -15,7 +15,7 @@ import cl.monsoon.s1next.view.InsetsFrameLayout;
 /**
  * An Activity shows an ImageView that supports multi-touch.
  */
-public final class GalleryActivity extends ActionBarActivityCompat implements InsetsFrameLayout.OnInsetsCallback {
+public final class GalleryActivity extends AppCompatActivityCompat implements InsetsFrameLayout.OnInsetsCallback {
 
     public static final String ARG_IMAGE_URL = "image_url";
 

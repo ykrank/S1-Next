@@ -12,18 +12,16 @@
     <dimen name="drawer_avatar_margin_top">@dimen/item_padding</dimen>
     <dimen name="drawer_avatar_size">64dp</dimen>
     <dimen name="drawer_avatar_border_width">3dp</dimen>
-    <!-- 16dp (avatar margin top) + 64dp (avatar height) + 56dp (username) -->
+    <!-- 16dp (avatar top margin) + 64dp (avatar height) + 48dp (username) + 8dp (username bottom margin)  -->
     <dimen name="drawer_top_height">136dp</dimen>
-    <dimen name="drawer_item_height">48dp</dimen>
 
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="swipe_refresh_progress_view_start">8dp</dimen>
     <dimen name="swipe_refresh_progress_view_end">72dp</dimen>
 
-    <dimen name="divider_height">1dp</dimen>
-
-    <dimen name="single_line_height">56dp</dimen>
+    <dimen name="single_line_height">48dp</dimen>
+    <dimen name="single_line_height_with_avatar">56dp</dimen>
     <dimen name="two_line_height">72dp</dimen>
 
     <dimen name="item_padding">16dp</dimen>
@@ -39,7 +37,6 @@
     <dimen name="viewpager_tabs_elevation">1dp</dimen>
 
     <dimen name="avatar_size">40dp</dimen>
-    <dimen name="left_icon_margin_right">32dp</dimen>
 
     <dimen name="dialog_padding">24dp</dimen>
     <dimen name="dialog_padding_bottom">16dp</dimen>

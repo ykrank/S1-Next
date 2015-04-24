@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr name="dividerColor" format="color" />
-
-    <attr name="mySpinnerItemTextColor" format="color" />
+    <attr name="toolbarTheme" format="color" />
+    <attr name="mySpinnerItemTextColor" format="reference|color" />
     <attr name="myCardView" format="reference" />
-
-    <attr name="fabColorNormal" format="color" />
-    <attr name="fabColorPressed" format="color" />
 
     <attr name="linkBackground" format="reference" />
 

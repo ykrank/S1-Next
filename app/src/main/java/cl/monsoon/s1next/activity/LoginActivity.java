@@ -13,8 +13,6 @@ public final class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity);
 
-        setNavDrawerEnabled(false);
-
         if (savedInstanceState == null) {
             Fragment fragment = new LoginFragment();
 

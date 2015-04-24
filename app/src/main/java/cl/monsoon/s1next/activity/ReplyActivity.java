@@ -32,7 +32,6 @@ public final class ReplyActivity extends BaseActivity {
         setContentView(R.layout.activity);
 
         setupNavCrossIcon();
-        setNavDrawerEnabled(false);
 
         String quotePostId = getIntent().getStringExtra(ARG_QUOTE_POST_ID);
         String titlePrefix = TextUtils.isEmpty(quotePostId)

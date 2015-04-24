@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/drawer_header_background"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/drawer_top_height"
+        android:contentDescription="@string/drawer_top_background_content_desc"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_drawer_background" />
+
+    <cl.monsoon.s1next.view.BezelImageView
+        android:id="@+id/drawer_user_avatar"
+        android:layout_width="@dimen/drawer_avatar_size"
+        android:layout_height="@dimen/drawer_avatar_size"
+        android:layout_marginLeft="@dimen/item_padding"
+        android:layout_marginStart="@dimen/item_padding"
+        android:layout_marginTop="@dimen/drawer_avatar_margin_top"
+        android:contentDescription="@string/drawer_avatar_content_desc"
+        app:borderDrawable="@drawable/selector_rounded_border"
+        app:maskDrawable="@drawable/rounded_mask" />
+
+    <TextView
+        android:id="@+id/drawer_username"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/single_line_height"
+        android:layout_below="@id/drawer_user_avatar"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/list_view_padding"
+        android:paddingLeft="@dimen/item_padding"
+        android:paddingRight="@dimen/item_padding"
+        android:paddingStart="@dimen/item_padding"
+        android:paddingTop="@dimen/list_view_padding"
+        android:singleLine="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="@color/abc_primary_text_material_dark"
+        tools:ignore="NewApi" />
+
+</RelativeLayout>

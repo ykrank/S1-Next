@@ -3,18 +3,21 @@ package cl.monsoon.s1next.singleton;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.support.annotation.ColorRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.StringRes;
+import android.support.v4.graphics.ColorUtils;
 
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.signature.StringSignature;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.concurrent.Callable;
 
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.DownloadPreferenceFragment;
 import cl.monsoon.s1next.fragment.MainPreferenceFragment;
-import cl.monsoon.s1next.util.ColorUtil;
 import cl.monsoon.s1next.util.DateUtil;
 
 public final class Settings {
@@ -67,6 +70,23 @@ public final class Settings {
     public enum Theme {
         INSTANCE;
 
+        private static final int WHITE_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA = (int) (0.26 * 255);
+        private static final int WHITE_BACKGROUND_SECONDARY_TEXT_OR_ICONS_ALPHA = (int) (0.54 * 255);
+
+        private static final int BLACK_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA = (int) (0.30 * 255);
+        private static final int BLACK_BACKGROUND_SECONDARY_TEXT_ALPHA = (int) (0.70 * 255);
+
+        @Retention(RetentionPolicy.SOURCE)
+        @IntDef({
+                WHITE_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA,
+                WHITE_BACKGROUND_SECONDARY_TEXT_OR_ICONS_ALPHA,
+                BLACK_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA,
+                BLACK_BACKGROUND_SECONDARY_TEXT_ALPHA
+        })
+        private @interface Alpha {
+
+        }
+
         private static final int LIGHT_THEME_AMBER = R.style.LightTheme_Inverse_Amber;
         public static final int LIGHT_THEME_GREEN = R.style.LightTheme_Inverse_Green;
         public static final int LIGHT_THEME_LIGHT_BLUE = R.style.LightTheme_Inverse_LightBlue;
@@ -91,6 +111,13 @@ public final class Settings {
 
         public static boolean isDarkTheme() {
             return INSTANCE.currentTheme == DARK_THEME;
+        }
+
+        public static boolean isLightInverseTheme() {
+            int theme = INSTANCE.currentTheme;
+            return theme == LIGHT_THEME_AMBER
+                    || theme == LIGHT_THEME_GREEN
+                    || theme == LIGHT_THEME_LIGHT_BLUE;
         }
 
         public static int getCurrentTheme() {
@@ -121,26 +148,26 @@ public final class Settings {
             return INSTANCE.currentColorAccent;
         }
 
-        @ColorUtil.Alpha
+        @Alpha
         private static int getSecondaryTextAlpha() {
             if (INSTANCE.currentTheme == DARK_THEME) {
-                return ColorUtil.BLACK_BACKGROUND_SECONDARY_TEXT_ALPHA;
+                return BLACK_BACKGROUND_SECONDARY_TEXT_ALPHA;
             } else {
-                return ColorUtil.WHITE_BACKGROUND_SECONDARY_TEXT_OR_ICONS_ALPHA;
+                return WHITE_BACKGROUND_SECONDARY_TEXT_OR_ICONS_ALPHA;
             }
         }
 
-        @ColorUtil.Alpha
+        @Alpha
         public static int getDisabledOrHintTextAlpha() {
             if (INSTANCE.currentTheme == DARK_THEME) {
-                return ColorUtil.BLACK_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA;
+                return BLACK_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA;
             } else {
-                return ColorUtil.WHITE_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA;
+                return WHITE_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA;
             }
         }
 
         public static int getSecondaryTextColor() {
-            return ColorUtil.a(INSTANCE.currentColorAccent, getSecondaryTextAlpha());
+            return ColorUtils.setAlphaComponent(INSTANCE.currentColorAccent, getSecondaryTextAlpha());
         }
     }
 

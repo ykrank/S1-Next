@@ -1,5 +1,6 @@
 package cl.monsoon.s1next.adapter;
 
+import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,6 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Thread;
 import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.singleton.User;
-import cl.monsoon.s1next.util.ColorUtil;
 import cl.monsoon.s1next.util.ViewUtil;
 
 public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, ThreadListRecyclerAdapter.ViewHolder> {
@@ -75,7 +75,7 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
             ViewUtil.updateTextSize(textView);
 
             mDefaultTextViewColor = textView.getCurrentTextColor();
-            mDisabledTextViewColor = ColorUtil.a(mDefaultTextViewColor,
+            mDisabledTextViewColor = ColorUtils.setAlphaComponent(mDefaultTextViewColor,
                     Settings.Theme.getDisabledOrHintTextAlpha());
         }
 

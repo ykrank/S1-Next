@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,7 +27,6 @@ import cl.monsoon.s1next.model.list.ForumGroups;
 import cl.monsoon.s1next.model.mapper.ForumGroupsWrapper;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.ToastUtil;
-import cl.monsoon.s1next.view.BaseRecyclerView;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.RecyclerViewHelper;
@@ -39,7 +39,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
 
     public static final String TAG = ForumFragment.class.getSimpleName();
 
-    private BaseRecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
     private ForumListRecyclerAdapter mRecyclerAdapter;
 
     private ForumGroups mForumGroups;
@@ -54,7 +54,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mRecyclerView = (BaseRecyclerView) view.findViewById(R.id.recycler_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerAdapter = new ForumListRecyclerAdapter();
         mRecyclerView.setAdapter(mRecyclerAdapter);
@@ -83,7 +83,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
         );
 
         onInsetsChanged();
-        enableToolbarAndFabAutoHideEffect(mRecyclerView, null);
+        enableToolbarAndFabAutoHideEffect(mRecyclerView);
     }
 
     @Override

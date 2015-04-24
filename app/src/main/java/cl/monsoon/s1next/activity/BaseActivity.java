@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +12,8 @@ import android.preference.PreferenceManager;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationDrawerView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
@@ -21,7 +22,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Display;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,12 +34,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.melnykov.fab.FloatingActionButton;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
@@ -52,7 +53,6 @@ import cl.monsoon.s1next.singleton.OkHttpClientProvider;
 import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ResourceUtil;
-import cl.monsoon.s1next.view.BaseRecyclerView;
 import cl.monsoon.s1next.view.InsetsFrameLayout;
 
 /**
@@ -60,7 +60,7 @@ import cl.monsoon.s1next.view.InsetsFrameLayout;
  * and navigation drawer amongst others.
  * Also changes theme depends on settings.
  */
-public abstract class BaseActivity extends ActionBarActivityCompat
+public abstract class BaseActivity extends AppCompatActivityCompat
         implements InsetsFrameLayout.OnInsetsCallback, BaseFragment.InsetsCallback {
 
     private Rect mSystemWindowInsets;
@@ -76,15 +76,15 @@ public abstract class BaseActivity extends ActionBarActivityCompat
      * that's why this value always equals to Toolbar's height.
      */
     private int mToolbarAutoHideMinY;
+    private int mFabMarginBottom;
     private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
 
     private DrawerLayout mDrawerLayout;
-    private View mDrawer;
+    private NavigationDrawerView mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
-    private boolean mHasNavDrawer = true;
     private boolean mHasNavDrawerIndicator = true;
 
-    private View mDrawerTopBackgroundView;
+    private View mDrawerHeaderBackgroundView;
     private ImageView mDrawerUserAvatarView;
     private TextView mDrawerUsernameView;
 
@@ -187,13 +187,11 @@ public abstract class BaseActivity extends ActionBarActivityCompat
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        if (mHasNavDrawer) {
-            setupNavDrawer();
+        setupNavDrawer();
 
-            // Syncs the toggle state after onRestoreInstanceState has occurred.
-            if (mDrawerToggle != null) {
-                mDrawerToggle.syncState();
-            }
+        // Syncs the toggle state after onRestoreInstanceState has occurred.
+        if (mDrawerToggle != null) {
+            mDrawerToggle.syncState();
         }
     }
 
@@ -216,6 +214,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
             if (mToolbar != null) {
                 // designate a Toolbar as the ActionBar
                 setSupportActionBar(mToolbar);
+                //noinspection ConstantConditions
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
         }
@@ -240,11 +239,11 @@ public abstract class BaseActivity extends ActionBarActivityCompat
             mToolbar.requestLayout();
         }
 
-        if (mDrawerTopBackgroundView != null && mDrawerUserAvatarView != null) {
+        if (mDrawerHeaderBackgroundView != null && mDrawerUserAvatarView != null) {
             // adjust drawer top background & user avatar's layout
-            mDrawerTopBackgroundView.getLayoutParams().height = insetsTop
+            mDrawerHeaderBackgroundView.getLayoutParams().height = insetsTop
                     + getResources().getDimensionPixelSize(R.dimen.drawer_top_height);
-            mDrawerTopBackgroundView.requestLayout();
+            mDrawerHeaderBackgroundView.requestLayout();
 
             ViewGroup.MarginLayoutParams marginLayoutParams =
                     (ViewGroup.MarginLayoutParams) mDrawerUserAvatarView.getLayoutParams();
@@ -280,86 +279,6 @@ public abstract class BaseActivity extends ActionBarActivityCompat
         return mSystemWindowInsets;
     }
 
-    void setupFloatingActionButton(@DrawableRes int resId) {
-        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.floating_action_button);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            mFloatingActionButton.setShadow(false);
-        }
-        // subclass need to implement android.view.View.OnClickListener
-        mFloatingActionButton.setOnClickListener((View.OnClickListener) this);
-        mFloatingActionButton.setImageResource(resId);
-        mFloatingActionButton.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * Also enables {@link cl.monsoon.s1next.activity.BaseActivity#mFloatingActionButton}
-     * auto show/hide effect.
-     */
-    public void enableToolbarAndFabAutoHideEffect(BaseRecyclerView baseRecyclerView, @Nullable RecyclerView.OnScrollListener onScrollListener) {
-        mToolbarAutoHideMinY = ResourceUtil.getToolbarHeight();
-
-        baseRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (onScrollListener != null) {
-                    onScrollListener.onScrollStateChanged(recyclerView, newState);
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (onScrollListener != null) {
-                    onScrollListener.onScrolled(recyclerView, dx, dy);
-                }
-
-                // baseRecyclerView.computeVerticalScrollOffset() may cause poor performance
-                // so we also check mIsToolbarShown though we will do it later (during showOrHideToolbarAndFab(boolean))
-                if (mIsToolbarShown
-                        && dy > 0
-                        && baseRecyclerView.computeVerticalScrollOffset() >= mToolbarAutoHideMinY) {
-                    showOrHideToolbarAndFab(false);
-                } else if (dy < 0) {
-                    showOrHideToolbarAndFab(true);
-                }
-            }
-        });
-    }
-
-    public void showOrHideToolbarAndFab(boolean show) {
-        if (show == mIsToolbarShown) {
-            return;
-        }
-
-        mIsToolbarShown = show;
-        onToolbarAutoShowOrHide(show);
-        onFloatingActionButtonAutoShowOrHide(show);
-    }
-
-    private void onToolbarAutoShowOrHide(boolean show) {
-        if (show) {
-            mToolbar.animate()
-                    .alpha(1)
-                    .translationY(0)
-                    .setInterpolator(mInterpolator);
-        } else {
-            mToolbar.animate()
-                    .alpha(0)
-                    .translationY(-mToolbar.getBottom())
-                    .setInterpolator(mInterpolator);
-        }
-    }
-
-    private void onFloatingActionButtonAutoShowOrHide(boolean show) {
-        if (mFloatingActionButton != null) {
-            if (show) {
-                mFloatingActionButton.show();
-            } else {
-                mFloatingActionButton.hide();
-            }
-        }
-    }
-
     /**
      * Sets Toolbar's navigation icon to cross.
      */
@@ -367,10 +286,6 @@ public abstract class BaseActivity extends ActionBarActivityCompat
         if (mToolbar != null) {
             mToolbar.setNavigationIcon(ResourceUtil.getResourceId(getTheme(), R.attr.menuCross));
         }
-    }
-
-    void setNavDrawerEnabled(boolean enabled) {
-        mHasNavDrawer = enabled;
     }
 
     void setNavDrawerIndicatorEnabled(boolean enabled) {
@@ -383,7 +298,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
             return;
         }
 
-        mDrawer = mDrawerLayout.findViewById(R.id.drawer);
+        mDrawer = (NavigationDrawerView) mDrawerLayout.findViewById(R.id.drawer);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
                 mDrawerLayout,
@@ -417,17 +332,6 @@ public abstract class BaseActivity extends ActionBarActivityCompat
             mDrawerToggle.setDrawerIndicatorEnabled(false);
         }
 
-        // According to the Google Material Design,
-        // width = screen width - app bar height in mobile.
-        Display display = getWindowManager().getDefaultDisplay();
-        Point point = new Point();
-        display.getSize(point);
-
-        ViewGroup.LayoutParams layoutParams = mDrawer.getLayoutParams();
-        layoutParams.width = point.x - getResources().getDimensionPixelSize(
-                R.dimen.abc_action_bar_default_height_material);
-        mDrawer.requestLayout();
-
         setupNavDrawerItem();
     }
 
@@ -441,15 +345,16 @@ public abstract class BaseActivity extends ActionBarActivityCompat
     }
 
     private void setupNavDrawerItem() {
-        if (mDrawerLayout == null || mDrawer == null) {
+        if (mDrawer == null) {
             return;
         }
 
-        mDrawerTopBackgroundView = mDrawer.findViewById(R.id.drawer_top_background);
-        mDrawerUserAvatarView = (ImageView) mDrawer.findViewById(R.id.drawer_user_avatar);
+        View drawerHeaderView = mDrawer.inflateHeaderView(R.layout.drawer_header);
+        mDrawerHeaderBackgroundView = drawerHeaderView.findViewById(R.id.drawer_header_background);
+        mDrawerUserAvatarView = (ImageView) drawerHeaderView.findViewById(R.id.drawer_user_avatar);
         mDrawerUserAvatarView.setOnClickListener(v ->
                 new ThemeChangeDialog().show(getSupportFragmentManager(), ThemeChangeDialog.TAG));
-        mDrawerUsernameView = (TextView) mDrawer.findViewById(R.id.drawer_username);
+        mDrawerUsernameView = (TextView) drawerHeaderView.findViewById(R.id.drawer_username);
 
         // Show default avatar and login prompt if user hasn't logged in,
         // else show user's avatar and username.
@@ -459,67 +364,77 @@ public abstract class BaseActivity extends ActionBarActivityCompat
             setupDrawerLoginPrompt();
         }
 
-        // add home item
-        TextView homeView = (TextView) mDrawer.findViewById(R.id.home);
-        homeView.setText(R.string.home);
+        Menu drawerMenu = mDrawer.getMenu();
+        getMenuInflater().inflate(R.menu.drawer, drawerMenu);
+        mDrawer.setNavigationItemSelectedListener(item -> {
+            Callable<Void> callable;
+            switch (item.getItemId()) {
+                case R.id.home:
+                    callable = this::onHomeMenuSelected;
 
-        final int margin = getResources().getDimensionPixelSize(R.dimen.left_icon_margin_right);
-        homeView.setCompoundDrawablePadding(margin);
-        homeView.setCompoundDrawablesWithIntrinsicBounds(
-                ResourceUtil.getResourceId(getTheme(), R.attr.iconHome), 0, 0, 0);
-        // back to forum (home) activity if clicked
-        homeView.setOnClickListener(v ->
+                    break;
+                case R.id.favourites:
+                    callable = this::onFavouritesMenuSelected;
+
+                    break;
+                case R.id.settings:
+                    callable = this::onSettingsMenuSelected;
+
+                    break;
+                default:
+                    callable = null;
+            }
+
+            if (callable != null) {
                 closeDrawer(() -> {
-                    if (this instanceof ForumActivity) {
-                        return;
-                    }
+                    try {
+                        callable.call();
+                    } catch (Exception ignored) {
 
-                    Intent intent = new Intent(this, ForumActivity.class);
-                    if (NavUtils.shouldUpRecreateTask(this, intent)) {
-                        // finish all our Activities in this app
-                        ActivityCompat.finishAffinity(this);
-                        // this activity is not part of this app's task
-                        // so create a new task when navigating up with
-                        // a synthesized back stack
-                        TaskStackBuilder.create(this)
-                                .addNextIntentWithParentStack(intent)
-                                .startActivities();
-                    } else {
-                        NavUtils.navigateUpTo(this, intent);
                     }
-                }));
+                });
 
-        // add favourites item
-        TextView favouritesView = (TextView) mDrawer.findViewById(R.id.favourites);
-        favouritesView.setText(R.string.favourites);
-        favouritesView.setCompoundDrawablePadding(margin);
-        favouritesView.setCompoundDrawablesWithIntrinsicBounds(
-                ResourceUtil.getResourceId(getTheme(), R.attr.iconFavourites), 0, 0, 0);
-        // start SettingsActivity if clicked
-        favouritesView.setOnClickListener(v ->
-                closeDrawer(() -> {
-                    if (this instanceof FavouriteListActivity) {
-                        return;
-                    }
+                return true;
+            }
 
-                    if (checkUserLoggedInStatus()) {
-                        Intent intent = new Intent(this, FavouriteListActivity.class);
-                        startActivity(intent);
-                    }
-                }));
+            return false;
+        });
+    }
 
-        // add settings item
-        TextView settingsView = (TextView) mDrawer.findViewById(R.id.settings);
-        settingsView.setText(R.string.settings);
-        settingsView.setCompoundDrawablePadding(margin);
-        settingsView.setCompoundDrawablesWithIntrinsicBounds(
-                ResourceUtil.getResourceId(getTheme(), R.attr.iconSettings), 0, 0, 0);
-        // start SettingsActivity if clicked
-        settingsView.setOnClickListener(v ->
-                closeDrawer(() -> {
-                    Intent intent = new Intent(BaseActivity.this, SettingsActivity.class);
-                    startActivity(intent);
-                }));
+    private Void onHomeMenuSelected() {
+        if (!(this instanceof ForumActivity)) {
+            Intent intent = new Intent(this, ForumActivity.class);
+            if (NavUtils.shouldUpRecreateTask(this, intent)) {
+                // finish all our Activities in this app
+                ActivityCompat.finishAffinity(this);
+                // this activity is not part of this app's task
+                // so create a new task when navigating up with
+                // a synthesized back stack
+                TaskStackBuilder.create(this)
+                        .addNextIntentWithParentStack(intent)
+                        .startActivities();
+            } else {
+                NavUtils.navigateUpTo(this, intent);
+            }
+        }
+
+        return null;
+    }
+
+    private Void onFavouritesMenuSelected() {
+        if (!(this instanceof FavouriteListActivity)) {
+            Intent intent = new Intent(this, FavouriteListActivity.class);
+            startActivity(intent);
+        }
+
+        return null;
+    }
+
+    private Void onSettingsMenuSelected() {
+        Intent intent = new Intent(BaseActivity.this, SettingsActivity.class);
+        startActivity(intent);
+
+        return null;
     }
 
     /**
@@ -527,7 +442,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
      */
     private void setupDrawerLoginPrompt() {
         if (mDrawerLayout == null || mDrawer == null
-                || mDrawerTopBackgroundView == null
+                || mDrawerHeaderBackgroundView == null
                 || mDrawerUserAvatarView == null || mDrawerUsernameView == null) {
             return;
         }
@@ -542,7 +457,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
         // start LoginActivity if clicked
         mDrawerUsernameView.setText(R.string.action_login);
 
-        mDrawerTopBackgroundView.setOnClickListener(v -> {
+        mDrawerHeaderBackgroundView.setOnClickListener(v -> {
             mDrawerLayout.closeDrawer(mDrawer);
 
             Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
@@ -554,7 +469,7 @@ public abstract class BaseActivity extends ActionBarActivityCompat
      * Show user's avatar and username if user has logged in.
      */
     private void setupDrawerUserView() {
-        if (mDrawerTopBackgroundView == null
+        if (mDrawerHeaderBackgroundView == null
                 || mDrawerUserAvatarView == null || mDrawerUsernameView == null) {
             return;
         }
@@ -570,8 +485,77 @@ public abstract class BaseActivity extends ActionBarActivityCompat
         // show logout dialog if clicked
         mDrawerUsernameView.setText(User.getName());
 
-        mDrawerTopBackgroundView.setOnClickListener(v ->
+        mDrawerHeaderBackgroundView.setOnClickListener(v ->
                 new LogoutDialog().show(getSupportFragmentManager(), LogoutDialog.TAG));
+    }
+
+    void setupFloatingActionButton(@DrawableRes int resId) {
+        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.floating_action_button);
+        // subclass need to implement android.view.View.OnClickListener
+        mFloatingActionButton.setOnClickListener((View.OnClickListener) this);
+        mFloatingActionButton.setImageResource(resId);
+        mFloatingActionButton.setVisibility(View.VISIBLE);
+    }
+
+    public void enableToolbarAndFabAutoHideEffect(RecyclerView recyclerView) {
+        mToolbarAutoHideMinY = ResourceUtil.getToolbarHeight();
+        mFabMarginBottom = getResources().getDimensionPixelSize(R.dimen.fab_margin);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                // recyclerView.computeVerticalScrollOffset() may cause poor performance
+                // so we also check mIsToolbarShown though we will do it later (during showOrHideToolbarAndFab(boolean))
+                if (mIsToolbarShown
+                        && dy > 0
+                        && recyclerView.computeVerticalScrollOffset() >= mToolbarAutoHideMinY) {
+                    showOrHideToolbarAndFab(false);
+                } else if (dy < 0) {
+                    showOrHideToolbarAndFab(true);
+                }
+            }
+        });
+    }
+
+    public void showOrHideToolbarAndFab(boolean show) {
+        if (show == mIsToolbarShown) {
+            return;
+        }
+
+        mIsToolbarShown = show;
+        onToolbarAutoShowOrHide(show);
+        onFabAutoShowOrHide(show);
+    }
+
+    private void onToolbarAutoShowOrHide(boolean show) {
+        if (show) {
+            mToolbar.animate()
+                    .alpha(1)
+                    .translationY(0)
+                    .setInterpolator(mInterpolator);
+        } else {
+            mToolbar.animate()
+                    .alpha(0)
+                    .translationY(-mToolbar.getHeight())
+                    .setInterpolator(mInterpolator);
+        }
+    }
+
+    private void onFabAutoShowOrHide(boolean show) {
+        if (mFloatingActionButton != null) {
+            if (show) {
+                mFloatingActionButton.animate()
+                        .alpha(1)
+                        .translationY(0)
+                        .setInterpolator(mInterpolator);
+            } else {
+                mFloatingActionButton.animate()
+                        .alpha(0)
+                        .translationY(mFloatingActionButton.getHeight() + mFabMarginBottom)
+                        .setInterpolator(mInterpolator);
+            }
+        }
     }
 
     Toolbar getToolbar() {

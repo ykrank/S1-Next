@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,7 +30,6 @@ import cl.monsoon.s1next.model.list.Threads;
 import cl.monsoon.s1next.model.mapper.ThreadsWrapper;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.ToastUtil;
-import cl.monsoon.s1next.view.BaseRecyclerView;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.RecyclerViewHelper;
@@ -47,7 +47,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
     private String mForumId;
     private int mPageNum;
 
-    private BaseRecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
     private ThreadListRecyclerAdapter mRecyclerAdapter;
 
     private PagerCallback mPagerCallback;
@@ -76,7 +76,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
         mForumId = getArguments().getString(ARG_FORUM_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
-        mRecyclerView = (BaseRecyclerView) view.findViewById(R.id.recycler_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerAdapter = new ThreadListRecyclerAdapter();
         mRecyclerView.setAdapter(mRecyclerAdapter);
@@ -121,7 +121,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
         ));
 
         onInsetsChanged();
-        enableToolbarAndFabAutoHideEffect(mRecyclerView, null);
+        enableToolbarAndFabAutoHideEffect(mRecyclerView);
     }
 
     @Override

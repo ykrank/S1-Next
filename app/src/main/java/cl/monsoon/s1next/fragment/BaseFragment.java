@@ -3,7 +3,6 @@ package cl.monsoon.s1next.fragment;
 import android.app.Activity;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
@@ -20,7 +19,6 @@ import cl.monsoon.s1next.activity.BaseActivity;
 import cl.monsoon.s1next.fragment.headless.DataRetainedFragment;
 import cl.monsoon.s1next.model.Extractable;
 import cl.monsoon.s1next.util.ResourceUtil;
-import cl.monsoon.s1next.view.BaseRecyclerView;
 import cl.monsoon.s1next.view.InsetsFrameLayout;
 import cl.monsoon.s1next.widget.AsyncResult;
 
@@ -183,8 +181,8 @@ public abstract class BaseFragment<D extends Extractable>
         onInsetsChanged(mInsetsCallback.getSystemWindowInsets());
     }
 
-    void enableToolbarAndFabAutoHideEffect(BaseRecyclerView recyclerView, @Nullable RecyclerView.OnScrollListener onScrollListener) {
-        ((BaseActivity) getActivity()).enableToolbarAndFabAutoHideEffect(recyclerView, onScrollListener);
+    void enableToolbarAndFabAutoHideEffect(RecyclerView recyclerView) {
+        ((BaseActivity) getActivity()).enableToolbarAndFabAutoHideEffect(recyclerView);
     }
 
     private void setupSwipeRefreshLayout() {

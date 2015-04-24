@@ -3,14 +3,14 @@ package cl.monsoon.s1next.activity;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 /**
  * See https://code.google.com/p/android/issues/detail?id=78154
  */
 @SuppressLint("Registered")
-public class ActionBarActivityCompat extends ActionBarActivity {
+public class AppCompatActivityCompat extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

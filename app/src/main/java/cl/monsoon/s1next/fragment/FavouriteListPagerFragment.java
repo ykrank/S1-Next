@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,6 @@ import cl.monsoon.s1next.model.list.Favourites;
 import cl.monsoon.s1next.model.mapper.FavouritesWrapper;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.ToastUtil;
-import cl.monsoon.s1next.view.BaseRecyclerView;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.RecyclerViewHelper;
@@ -42,7 +42,7 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
 
     private int mPageNum;
 
-    private BaseRecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
     private FavouriteListRecyclerAdapter mRecyclerAdapter;
 
     private PagerCallback mPagerCallback;
@@ -68,7 +68,7 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
 
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
-        mRecyclerView = (BaseRecyclerView) view.findViewById(R.id.recycler_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerAdapter = new FavouriteListRecyclerAdapter();
         mRecyclerView.setAdapter(mRecyclerAdapter);
@@ -99,7 +99,7 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
         ));
 
         onInsetsChanged();
-        enableToolbarAndFabAutoHideEffect(mRecyclerView, null);
+        enableToolbarAndFabAutoHideEffect(mRecyclerView);
     }
 
     @Override
