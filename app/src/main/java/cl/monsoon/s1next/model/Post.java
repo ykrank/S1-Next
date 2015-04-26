@@ -131,7 +131,6 @@ public final class Post {
             // get color hex value for its color name
             color = COLOR_NAME_MAP.get(matcher.group(1).toLowerCase());
             if (color == null) {
-                // throw new IllegalStateException("COLOR_NAME_MAP must contain " + matcher.group(1) + " .");
                 continue;
             }
             // append part of the string and its color hex value
@@ -200,6 +199,9 @@ public final class Post {
         COLOR_NAME_MAP.put("palegreen", "#98FB98");
         COLOR_NAME_MAP.put("paleturquoise", "#AFEEEE");
         COLOR_NAME_MAP.put("lightblue", "#ADD8E6");
+
+        // https://code.google.com/p/android/issues/detail?id=75953
+        COLOR_NAME_MAP.put("white", "#FFFFFF");
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
