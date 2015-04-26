@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -129,10 +130,14 @@ public abstract class BaseActivity extends AppCompatActivityCompat
             @Subscribe
             @SuppressWarnings("unused")
             public void updateDrawer(UserStatusEvent event) {
-                if (event.getUserStatus() == UserStatusEvent.USER_LOGIN) {
-                    setupDrawerUserView();
-                } else {
-                    setupDrawerLoginPrompt();
+                if (Looper.myLooper() != Looper.getMainLooper()) {
+                    runOnUiThread(() -> {
+                        if (event.getUserStatus() == UserStatusEvent.USER_LOGIN) {
+                            setupDrawerUserView();
+                        } else {
+                            setupDrawerLoginPrompt();
+                        }
+                    });
                 }
             }
         };
