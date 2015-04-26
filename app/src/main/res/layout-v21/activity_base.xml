@@ -26,11 +26,8 @@
             android:layout_gravity="end|bottom"
             android:layout_marginBottom="@dimen/fab_margin"
             android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginRight="@dimen/fab_margin"
             android:visibility="gone"
             app:backgroundTint="?attr/colorPrimary"
-            app:elevation="0dp"
-            app:pressedTranslationZ="0dp"
             app:rippleColor="@color/ripple_material_dark" />
 
         <include layout="@layout/toolbar" />

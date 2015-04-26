@@ -17,17 +17,21 @@
 package android.support.design.internal;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.design.R;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.internal.view.menu.MenuBuilder;
 import android.support.v7.internal.view.menu.MenuItemImpl;
 import android.support.v7.internal.view.menu.MenuPresenter;
 import android.support.v7.internal.view.menu.MenuView;
 import android.support.v7.internal.view.menu.SubMenuBuilder;
 import android.util.SparseArray;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -206,7 +210,9 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
     }
 
     public void addHeaderView(@NonNull View view) {
+        mMenuView.setAdapter(null);
         mMenuView.addHeaderView(view);
+        mMenuView.setAdapter(mAdapter);
         onHeaderAdded();
     }
 
@@ -296,6 +302,16 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                     if (convertView == null) {
                         convertView = mLayoutInflater.inflate(R.layout.design_drawer_item_separator,
                                 parent, false);
+
+                        Context context = mLayoutInflater.getContext();
+                        int inset = context.getResources().getDimensionPixelSize(
+                                R.dimen.drawer_separator_vertical_margin);
+                        TypedValue typedValue = new TypedValue();
+                        context.getTheme().resolveAttribute(android.R.attr.listDivider,
+                                typedValue, true);
+                        Drawable drawable = ResourcesCompat.getDrawable(context.getResources(),
+                                typedValue.resourceId, context.getTheme());
+                        convertView.setBackground(new InsetDrawable(drawable, 0, inset, 0, inset));
                     }
                     break;
             }
