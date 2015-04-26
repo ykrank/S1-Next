@@ -1,5 +1,7 @@
 package cl.monsoon.s1next.widget;
 
+import android.os.Looper;
+
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.data.DataFetcher;
@@ -44,7 +46,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
     private final OkHttpClient mOkHttpClient;
     private final String mUrl;
 
-    private Call mCall;
+    private volatile Call mCall;
     private ResponseBody mResponseBody;
     private InputStream mInputStream;
 
@@ -144,7 +146,11 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
     @Override
     public void cancel() {
         if (mCall != null) {
-            mCall.cancel();
+            if (Looper.myLooper() != Looper.getMainLooper()) {
+                mCall.cancel();
+            } else {
+                mOkHttpClient.getDispatcher().getExecutorService().execute(mCall::cancel);
+            }
             mCall = null;
         }
     }
