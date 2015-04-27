@@ -426,8 +426,10 @@ public abstract class BaseActivity extends AppCompatActivityCompat
 
     private Void onFavouritesMenuSelected() {
         if (!(this instanceof FavouriteListActivity)) {
-            Intent intent = new Intent(this, FavouriteListActivity.class);
-            startActivity(intent);
+            if (checkUserLoggedInStatus()) {
+                Intent intent = new Intent(this, FavouriteListActivity.class);
+                startActivity(intent);
+            }
         }
 
         return null;
