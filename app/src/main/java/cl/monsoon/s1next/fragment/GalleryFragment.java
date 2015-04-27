@@ -18,6 +18,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.singleton.GL;
 import cl.monsoon.s1next.view.PhotoView;
 
 public final class GalleryFragment extends Fragment {
@@ -53,9 +54,11 @@ public final class GalleryFragment extends Fragment {
         photoView.setMaxInitialScaleFactor(1);
         photoView.enableImageTransforms(true);
 
+        int maxTextureSize = GL.getGlMaxTextureSize();
         Glide.with(getActivity())
                 .load(mUrl)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .override(maxTextureSize, maxTextureSize)
+                .fitCenter()
                 .into(new SimpleTarget<GlideDrawable>() {
 
                     @Override

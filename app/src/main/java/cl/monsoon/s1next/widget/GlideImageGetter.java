@@ -19,6 +19,7 @@ import com.bumptech.glide.request.target.ViewTarget;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.Config;
+import cl.monsoon.s1next.singleton.GL;
 import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.view.UrlDrawable;
 
@@ -91,9 +92,11 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
         }
 
         if (Settings.Download.needDownloadImages()) {
+            int maxTextureSize = GL.getGlMaxTextureSize();
             Glide.with(mContext)
                     .load(url)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .override(maxTextureSize, maxTextureSize)
+                    .fitCenter()
                     .into(new ImageGetterViewTarget(mTextView, urlDrawable));
 
             return urlDrawable;
