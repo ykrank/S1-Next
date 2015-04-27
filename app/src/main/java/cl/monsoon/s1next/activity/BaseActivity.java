@@ -130,14 +130,18 @@ public abstract class BaseActivity extends AppCompatActivityCompat
             @Subscribe
             @SuppressWarnings("unused")
             public void updateDrawer(UserStatusEvent event) {
-                if (Looper.myLooper() != Looper.getMainLooper()) {
-                    runOnUiThread(() -> {
-                        if (event.getUserStatus() == UserStatusEvent.USER_LOGIN) {
-                            setupDrawerUserView();
-                        } else {
-                            setupDrawerLoginPrompt();
-                        }
-                    });
+                if (Looper.myLooper() == Looper.getMainLooper()) {
+                    checkUserStatus(event);
+                } else {
+                    runOnUiThread(() -> checkUserStatus(event));
+                }
+            }
+
+            private void checkUserStatus(UserStatusEvent event) {
+                if (event.getUserStatus() == UserStatusEvent.USER_LOGIN) {
+                    setupDrawerUserView();
+                } else {
+                    setupDrawerLoginPrompt();
                 }
             }
         };
