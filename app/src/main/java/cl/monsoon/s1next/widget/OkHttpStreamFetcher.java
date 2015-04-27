@@ -146,10 +146,10 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
     @Override
     public void cancel() {
         if (mCall != null) {
-            if (Looper.myLooper() != Looper.getMainLooper()) {
-                mCall.cancel();
-            } else {
+            if (Looper.myLooper() == Looper.getMainLooper()) {
                 mOkHttpClient.getDispatcher().getExecutorService().execute(mCall::cancel);
+            } else {
+                mCall.cancel();
             }
             mCall = null;
         }
