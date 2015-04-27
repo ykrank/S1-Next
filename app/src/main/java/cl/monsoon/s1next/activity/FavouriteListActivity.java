@@ -18,8 +18,8 @@ public final class FavouriteListActivity extends BaseActivity {
         if (savedInstanceState == null) {
             Fragment fragment = new FavouriteListFragment();
 
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.frame_layout, fragment, FavouriteListFragment.TAG).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, fragment,
+                    FavouriteListFragment.TAG).commit();
         }
     }
 }

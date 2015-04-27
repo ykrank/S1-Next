@@ -61,10 +61,9 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
 
         // the forum list's each element has fixed size
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addOnItemTouchListener(new RecyclerViewHelper(
-                        getActivity(),
-                        mRecyclerView,
+        mRecyclerView.addOnItemTouchListener(new RecyclerViewHelper(getActivity(), mRecyclerView,
                         new RecyclerViewHelper.OnItemClickListener() {
+
                             @Override
                             public void onItemClick(View view, int position) {
                                 Forum forum = mRecyclerAdapter.getItem(position);
@@ -102,9 +101,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
 
     @Override
     public void onInsetsChanged(@NonNull Rect insets) {
-        setRecyclerViewPadding(
-                mRecyclerView,
-                insets,
+        setRecyclerViewPadding(mRecyclerView, insets,
                 getResources().getDimensionPixelSize(R.dimen.list_view_padding));
     }
 
@@ -131,10 +128,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
     public Loader<AsyncResult<ForumGroupsWrapper>> onCreateLoader(int id, Bundle args) {
         super.onCreateLoader(id, args);
 
-        return new HttpGetLoader<>(
-                getActivity(),
-                Api.URL_FORUM,
-                ForumGroupsWrapper.class);
+        return new HttpGetLoader<>(getActivity(), Api.URL_FORUM, ForumGroupsWrapper.class);
     }
 
     @Override
@@ -165,7 +159,8 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
         } else {
             // the first position is "全部"
             // so position - 1 to correspond its group
-            mRecyclerAdapter.setDataSet(mForumGroups.getForumGroupList().get(position - 1).getForumList());
+            mRecyclerAdapter.setDataSet(mForumGroups.getForumGroupList().get(position - 1)
+                    .getForumList());
         }
         mRecyclerAdapter.notifyDataSetChanged();
     }

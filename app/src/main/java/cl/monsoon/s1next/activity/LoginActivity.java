@@ -16,8 +16,8 @@ public final class LoginActivity extends BaseActivity {
         if (savedInstanceState == null) {
             Fragment fragment = new LoginFragment();
 
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.frame_layout, fragment, LoginFragment.TAG).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, fragment,
+                    LoginFragment.TAG).commit();
         }
     }
 }

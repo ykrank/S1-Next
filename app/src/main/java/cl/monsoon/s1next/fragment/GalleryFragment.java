@@ -57,6 +57,7 @@ public final class GalleryFragment extends Fragment {
                 .load(mUrl)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(new SimpleTarget<GlideDrawable>() {
+
                     @Override
                     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
                         photoView.bindDrawable(resource);

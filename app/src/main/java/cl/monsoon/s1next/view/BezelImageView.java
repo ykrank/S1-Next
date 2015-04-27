@@ -81,8 +81,8 @@ public final class BezelImageView extends ImageView {
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         // attribute initialization
-        final TypedArray typedArray = context.obtainStyledAttributes(
-                attrs, R.styleable.BezelImageView, defStyleAttr, defStyleRes);
+        final TypedArray typedArray = context.obtainStyledAttributes(attrs,
+                R.styleable.BezelImageView, defStyleAttr, defStyleRes);
 
         mMaskDrawable = typedArray.getDrawable(R.styleable.BezelImageView_maskDrawable);
         if (mMaskDrawable != null) {
@@ -155,8 +155,7 @@ public final class BezelImageView extends ImageView {
             if (mMaskDrawable != null) {
                 int saveCount = cacheCanvas.save();
                 mMaskDrawable.draw(cacheCanvas);
-                cacheCanvas.saveLayer(mBoundsF,
-                        mMaskedPaint,
+                cacheCanvas.saveLayer(mBoundsF, mMaskedPaint,
                         Canvas.HAS_ALPHA_LAYER_SAVE_FLAG | Canvas.FULL_COLOR_LAYER_SAVE_FLAG);
                 super.onDraw(cacheCanvas);
                 cacheCanvas.restoreToCount(saveCount);

@@ -117,6 +117,7 @@ public final class ReplyFragment extends Fragment {
         mReplyView = (EditText) view.findViewById(R.id.reply);
         ViewUtil.updateTextSize(mReplyView);
         mReplyView.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -143,7 +144,8 @@ public final class ReplyFragment extends Fragment {
         if (savedInstanceState != null) {
             mQuote = savedInstanceState.getParcelable(STATE_QUOTE);
 
-            mIsEmoticonKeyboardShowing = savedInstanceState.getBoolean(STATE_IS_EMOTICON_KEYBOARD_SHOWING);
+            mIsEmoticonKeyboardShowing = savedInstanceState.getBoolean(
+                    STATE_IS_EMOTICON_KEYBOARD_SHOWING);
             if (mIsEmoticonKeyboardShowing) {
                 showEmoticonKeyboard();
             }
@@ -198,8 +200,8 @@ public final class ReplyFragment extends Fragment {
                 return true;
             case R.id.menu_send:
                 ReplyLoaderDialogFragment.newInstance(
-                        mThreadId, mQuotePostId, mQuote, mReplyView.getText().toString())
-                        .show(getChildFragmentManager(), ReplyLoaderDialogFragment.TAG);
+                        mThreadId, mQuotePostId, mQuote, mReplyView.getText().toString()).show(
+                        getChildFragmentManager(), ReplyLoaderDialogFragment.TAG);
 
                 return true;
         }
@@ -218,16 +220,15 @@ public final class ReplyFragment extends Fragment {
     @Subscribe
     @SuppressWarnings("unused")
     public void appendEmoticonEntity(EmoticonClickEvent event) {
-        mReplyView.getText().replace(
-                mReplyView.getSelectionStart(),
-                mReplyView.getSelectionEnd(),
+        mReplyView.getText().replace(mReplyView.getSelectionStart(), mReplyView.getSelectionEnd(),
                 event.getEmoticonEntity());
     }
 
     private void setupEmoticonKeyboard() {
         //noinspection ConstantConditions
         mEmoticonKeyboard = getView().findViewById(R.id.emoticon_keyboard);
-        ViewPager viewPager = (ViewPager) mEmoticonKeyboard.findViewById(R.id.emoticon_keyboard_pager);
+        ViewPager viewPager = (ViewPager) mEmoticonKeyboard.findViewById(
+                R.id.emoticon_keyboard_pager);
         viewPager.setAdapter(new EmoticonPagerAdapter(getActivity()));
         viewPager.setOnPageChangeListener(new EmoticonKeyboardTabsPagerListener());
 
@@ -240,9 +241,8 @@ public final class ReplyFragment extends Fragment {
         mIsEmoticonKeyboardShowing = true;
 
         ViewUtil.setShowSoftInputOnFocus(mReplyView, false);
-        InputMethodManager inputMethodManager =
-                (InputMethodManager)
-                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(
+                Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(mReplyView.getWindowToken(), 0);
         getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -281,9 +281,8 @@ public final class ReplyFragment extends Fragment {
                                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
                         if (shouldShowKeyboard) {
-                            InputMethodManager inputMethodManager =
-                                    (InputMethodManager)
-                                            getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            InputMethodManager inputMethodManager = (InputMethodManager)
+                                    getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                             inputMethodManager.showSoftInput(mReplyView,
                                     InputMethodManager.SHOW_IMPLICIT);
                         }
@@ -297,16 +296,16 @@ public final class ReplyFragment extends Fragment {
 
     private void setEmoticonIcon() {
         if (mMenuEmoticon != null) {
-            mMenuEmoticon.setIcon(ResourceUtil.getResourceId(
-                    getActivity().getTheme(), R.attr.menuEmoticon));
+            mMenuEmoticon.setIcon(ResourceUtil.getResourceId(getActivity().getTheme(),
+                    R.attr.menuEmoticon));
             mMenuEmoticon.setTitle(R.string.menu_emoticon);
         }
     }
 
     private void setKeyboardIcon() {
         if (mMenuEmoticon != null) {
-            mMenuEmoticon.setIcon(ResourceUtil.getResourceId(
-                    getActivity().getTheme(), R.attr.menuKeyboard));
+            mMenuEmoticon.setIcon(ResourceUtil.getResourceId(getActivity().getTheme(),
+                    R.attr.menuKeyboard));
             mMenuEmoticon.setTitle(R.string.menu_keyboard);
         }
     }
@@ -328,7 +327,8 @@ public final class ReplyFragment extends Fragment {
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            mEmoticonKeyboardCategoryTabs.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            mEmoticonKeyboardCategoryTabs.onPageScrolled(position, positionOffset,
+                    positionOffsetPixels);
         }
 
         @Override
@@ -400,8 +400,8 @@ public final class ReplyFragment extends Fragment {
             RecyclerView recyclerView = new RecyclerView(mContext);
             GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
             recyclerView.setLayoutManager(gridLayoutManager);
-            RecyclerView.Adapter recyclerAdapter = new EmoticonGridRecyclerAdapter(
-                    mContext, mEmoticonFactory.getByType(position));
+            RecyclerView.Adapter recyclerAdapter = new EmoticonGridRecyclerAdapter(mContext,
+                    mEmoticonFactory.getByType(position));
             recyclerView.setAdapter(recyclerAdapter);
             recyclerView.setHasFixedSize(true);
             recyclerView.setPadding(0, mEmoticonGridPadding, 0, mEmoticonGridPadding);
@@ -513,25 +513,20 @@ public final class ReplyFragment extends Fragment {
         @Override
         public Loader onCreateLoader(@LoaderId int id, Bundle args) {
             if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
-                return new HttpGetLoader<>(
-                        getActivity(),
-                        Api.URL_AUTHENTICITY_TOKEN_HELPER,
+                return new HttpGetLoader<>(getActivity(), Api.URL_AUTHENTICITY_TOKEN_HELPER,
                         ResultWrapper.class);
             } else if (id == ID_LOADER_GET_QUOTE_EXTRA_INFO) {
-                return new HttpGetLoader<>(
-                        getActivity(),
+                return new HttpGetLoader<>(getActivity(),
                         Api.getQuoteHelperUrl(getArguments().getString(ARG_THREAD_ID),
                                 getArguments().getString(ARG_QUOTE_POST_ID)),
                         Quote.class);
             } else if (id == ID_LOADER_POST_REPLY) {
-                return new HttpPostLoader<>(
-                        getActivity(),
+                return new HttpPostLoader<>(getActivity(),
                         Api.getPostRelyUrl(getArguments().getString(ARG_THREAD_ID)),
                         ResultWrapper.class,
                         Api.getReplyPostBuilder(getArguments().getString(ARG_REPLY)));
             } else if (id == ID_LOADER_POST_QUOTE) {
-                return new HttpPostLoader<>(
-                        getActivity(),
+                return new HttpPostLoader<>(getActivity(),
                         Api.getPostRelyUrl(getArguments().getString(ARG_THREAD_ID)),
                         ResultWrapper.class,
                         Api.getQuotePostBuilder(mQuote, getArguments().getString(ARG_REPLY)));

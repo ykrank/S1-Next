@@ -151,9 +151,7 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
 
     @Override
     public void onInsetsChanged(@NonNull Rect insets) {
-        setRecyclerViewPadding(
-                mRecyclerView,
-                insets,
+        setRecyclerViewPadding(mRecyclerView, insets,
                 getResources().getDimensionPixelSize(R.dimen.recycler_view_card_padding));
     }
 
@@ -205,9 +203,7 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
     public Loader<AsyncResult<PostsWrapper>> onCreateLoader(int id, Bundle args) {
         super.onCreateLoader(id, args);
 
-        return new HttpGetLoader<>(
-                getActivity(),
-                Api.getPostListUrl(mThreadId, mPageNum),
+        return new HttpGetLoader<>(getActivity(), Api.getPostListUrl(mThreadId, mPageNum),
                 PostsWrapper.class);
     }
 

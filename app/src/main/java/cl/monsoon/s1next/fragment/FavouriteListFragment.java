@@ -46,6 +46,7 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
         mAdapter = new FavouriteListPagerAdapter(getFragmentManager());
         viewPager.setAdapter(mAdapter);
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 ((BaseActivity) getActivity()).showOrHideToolbarAndFab(true);

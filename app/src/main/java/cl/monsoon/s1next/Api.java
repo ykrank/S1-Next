@@ -123,12 +123,10 @@ public final class Api {
     private static String formatAvatarUrl(String url, String userId) {
         String s = StringUtils.leftPad(userId, 9, '0');
 
-        return String.format(
-                url,
-                s.substring(0, 3)
-                        + "/" + s.substring(3, 5)
-                        + "/" + s.substring(5, 7)
-                        + "/" + s.substring(7));
+        return String.format(url, s.substring(0, 3)
+                + "/" + s.substring(3, 5)
+                + "/" + s.substring(5, 7)
+                + "/" + s.substring(7));
     }
 
     public static boolean isAvatarUrl(String url) {
@@ -168,7 +166,8 @@ public final class Api {
         return FormWithAuthTokenEncodingBuilder.newInstance()
                 .add("noticeauthor", quote.getEncodedUserId())
                 .add("noticetrimstr", quote.getQuoteMessage())
-                .add("noticeauthormsg", StringUtils.abbreviate(reply, Config.REPLY_NOTIFICATION_MAX_LENGTH))
+                .add("noticeauthormsg", StringUtils.abbreviate(reply,
+                        Config.REPLY_NOTIFICATION_MAX_LENGTH))
                 .add("message", reply)
                 .build();
     }

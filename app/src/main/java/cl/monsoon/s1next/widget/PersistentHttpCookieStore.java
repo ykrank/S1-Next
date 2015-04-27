@@ -109,8 +109,8 @@ public final class PersistentHttpCookieStore implements CookieStore {
         }
 
         // see https://stackoverflow.com/questions/14034803/misbehavior-when-trying-to-store-a-string-set-using-sharedpreferences
-        Set<String> cookiesName = new HashSet<>(
-                cookieSP.getStringSet(uriString, Collections.<String>emptySet()));
+        Set<String> cookiesName = new HashSet<>(cookieSP.getStringSet(uriString,
+                Collections.<String>emptySet()));
         String cookieNameWithUri = uriString + httpCookie.getName();
         cookiesName.add(cookieNameWithUri);
         editor.putStringSet(uriString, cookiesName);
@@ -209,8 +209,8 @@ public final class PersistentHttpCookieStore implements CookieStore {
             SharedPreferences.Editor editor = cookieSP.edit();
 
             String uriString = uri.toString();
-            Set<String> cookiesName = new HashSet<>(
-                    cookieSP.getStringSet(uriString, Collections.<String>emptySet()));
+            Set<String> cookiesName = new HashSet<>(cookieSP.getStringSet(uriString,
+                    Collections.<String>emptySet()));
             String cookieNameWithURI = uriString + httpCookie.getName();
             cookiesName.remove(cookieNameWithURI);
             editor.putStringSet(uriString, cookiesName);

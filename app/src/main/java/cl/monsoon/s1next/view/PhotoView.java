@@ -51,8 +51,7 @@ import cl.monsoon.s1next.R;
  */
 @SuppressWarnings("UnusedDeclaration")
 public final class PhotoView extends View
-        implements OnGestureListener,
-        OnDoubleTapListener,
+        implements OnGestureListener, OnDoubleTapListener,
         ScaleGestureDetector.OnScaleGestureListener {
 
     public static final int TRANSLATE_NONE = 0;
@@ -816,8 +815,8 @@ public final class PhotoView extends View
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (mFixedHeight != -1) {
-            super.onMeasure(widthMeasureSpec,
-                    MeasureSpec.makeMeasureSpec(mFixedHeight, MeasureSpec.AT_MOST));
+            super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(mFixedHeight,
+                    MeasureSpec.AT_MOST));
             setMeasuredDimension(getMeasuredWidth(), mFixedHeight);
         } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);

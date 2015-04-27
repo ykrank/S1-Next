@@ -150,8 +150,8 @@ public abstract class BaseActivity extends AppCompatActivityCompat
         super.setContentView(layoutResID);
         setUpToolbar();
 
-        InsetsFrameLayout insetsFrameLayout =
-                (InsetsFrameLayout) findViewById(R.id.insets_frame_layout);
+        InsetsFrameLayout insetsFrameLayout = (InsetsFrameLayout) findViewById(
+                R.id.insets_frame_layout);
         if (insetsFrameLayout != null) {
             insetsFrameLayout.setOnInsetsCallback(this);
         }
@@ -250,8 +250,8 @@ public abstract class BaseActivity extends AppCompatActivityCompat
                     + getResources().getDimensionPixelSize(R.dimen.drawer_top_height);
             mDrawerHeaderBackgroundView.requestLayout();
 
-            ViewGroup.MarginLayoutParams marginLayoutParams =
-                    (ViewGroup.MarginLayoutParams) mDrawerUserAvatarView.getLayoutParams();
+            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams)
+                    mDrawerUserAvatarView.getLayoutParams();
             marginLayoutParams.topMargin = insetsTop
                     + getResources().getDimensionPixelSize(R.dimen.drawer_avatar_margin_top);
             mDrawerUserAvatarView.requestLayout();
@@ -304,11 +304,9 @@ public abstract class BaseActivity extends AppCompatActivityCompat
         }
 
         mDrawer = (NavigationDrawerView) mDrawerLayout.findViewById(R.id.drawer);
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,
-                mDrawerLayout,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close) {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+
             /**
              * Only show items in the Toolbar relevant to this screen
              * if the drawer is not showing. Otherwise, let the drawer
@@ -574,8 +572,8 @@ public abstract class BaseActivity extends AppCompatActivityCompat
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            SharedPreferences sharedPreferences =
-                    PreferenceManager.getDefaultSharedPreferences(getActivity());
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                    getActivity());
 
             //noinspection ConstantConditions
             int checkedItem = Integer.parseInt(sharedPreferences.getString(
@@ -589,9 +587,9 @@ public abstract class BaseActivity extends AppCompatActivityCompat
                             (dialog, which) -> {
                                 // won't change theme if unchanged
                                 if (which != checkedItem) {
-                                    sharedPreferences.edit()
-                                            .putString(MainPreferenceFragment.PREF_KEY_THEME,
-                                                    String.valueOf(which)).apply();
+                                    sharedPreferences.edit().putString(
+                                            MainPreferenceFragment.PREF_KEY_THEME,
+                                            String.valueOf(which)).apply();
                                     Settings.Theme.setCurrentTheme(sharedPreferences);
 
                                     BusProvider.get().post(new ThemeChangeEvent());

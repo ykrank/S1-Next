@@ -42,11 +42,11 @@ public class ThreadListActivity extends BaseActivity implements ThreadListPagerF
         setNavDrawerIndicatorEnabled(false);
 
         if (savedInstanceState == null) {
-            Fragment fragment = ThreadListFragment.newInstance(
-                    getIntent().getParcelableExtra(ARG_FORUM));
+            Fragment fragment = ThreadListFragment.newInstance(getIntent().getParcelableExtra(
+                    ARG_FORUM));
 
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.frame_layout, fragment, ThreadListFragment.TAG).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, fragment,
+                    ThreadListFragment.TAG).commit();
         }
     }
 
@@ -81,8 +81,8 @@ public class ThreadListActivity extends BaseActivity implements ThreadListPagerF
             mListPopupWindow = new ListPopupWindow(this);
             mListPopupWindow.setContentWidth(ListPopupWindow.MATCH_PARENT);
 
-            mSubForumArrayAdapter = new SubForumArrayAdapter(
-                    this, R.layout.popup_menu_dropdown_item, forumList);
+            mSubForumArrayAdapter = new SubForumArrayAdapter(this,
+                    R.layout.popup_menu_dropdown_item, forumList);
             mListPopupWindow.setAdapter(mSubForumArrayAdapter);
             mListPopupWindow.setOnItemClickListener((parent, view, position, id) -> {
                 Forum forum = mSubForumArrayAdapter.getItem(position);

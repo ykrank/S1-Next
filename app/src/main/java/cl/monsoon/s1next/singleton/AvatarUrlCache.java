@@ -62,15 +62,10 @@ public enum AvatarUrlCache {
     AvatarUrlCache() {
         lruCache = new LruCache<>(Config.AVATAR_URLS_MEMORY_CACHE_MAX_NUMBER);
 
-        File file = new File(
-                App.getContext().getCacheDir().getPath()
-                        + File.separator
-                        + DISK_CACHE_SUBDIRECTORY);
+        File file = new File(App.getContext().getCacheDir().getPath()
+                + File.separator + DISK_CACHE_SUBDIRECTORY);
         try {
-            diskLruCache = DiskLruCache.open(
-                    file,
-                    BuildConfig.VERSION_CODE,
-                    VALUE_COUNT,
+            diskLruCache = DiskLruCache.open(file, BuildConfig.VERSION_CODE, VALUE_COUNT,
                     Config.AVATAR_URLS_DISK_CACHE_MAX_SIZE);
         } catch (IOException e) {
             throw new RuntimeException("Failed to open the cache in " + file + ".", e);

@@ -66,9 +66,7 @@ public final class TagHandler implements Html.TagHandler {
                 output.removeSpan(imageSpan);
                 // make this ImageSpan clickable
                 output.setSpan(new ImageClickableSpan(mContext, imageSpan.getDrawable(), url),
-                        end - len,
-                        output.length(),
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        end - len, output.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
     }
@@ -90,7 +88,8 @@ public final class TagHandler implements Html.TagHandler {
             output.removeSpan(strike);
 
             if (where != len) {
-                output.setSpan(new StrikethroughSpan(), where, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                output.setSpan(new StrikethroughSpan(), where, len,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
     }

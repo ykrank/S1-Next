@@ -211,9 +211,8 @@ public final class Post {
         private final String url;
 
         @JsonCreator
-        public Attachment(
-                @JsonProperty("url") String urlPrefix,
-                @JsonProperty("attachment") String urlSuffix) {
+        public Attachment(@JsonProperty("url") String urlPrefix,
+                          @JsonProperty("attachment") String urlSuffix) {
             this.url = urlPrefix + urlSuffix;
         }
 

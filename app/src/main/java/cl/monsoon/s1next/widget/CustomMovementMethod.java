@@ -33,8 +33,7 @@ public final class CustomMovementMethod extends ArrowKeyMovementMethod {
     public boolean onTouchEvent(@NonNull TextView widget, @NonNull Spannable buffer, @NonNull MotionEvent event) {
         int action = event.getAction();
 
-        if (action == MotionEvent.ACTION_UP ||
-                action == MotionEvent.ACTION_DOWN) {
+        if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_DOWN) {
             int x = (int) event.getX();
             int y = (int) event.getY();
 
@@ -54,8 +53,7 @@ public final class CustomMovementMethod extends ArrowKeyMovementMethod {
                 if (action == MotionEvent.ACTION_UP) {
                     link[0].onClick(widget);
                 } else {
-                    Selection.setSelection(buffer,
-                            buffer.getSpanStart(link[0]),
+                    Selection.setSelection(buffer, buffer.getSpanStart(link[0]),
                             buffer.getSpanEnd(link[0]));
                 }
 
@@ -63,8 +61,8 @@ public final class CustomMovementMethod extends ArrowKeyMovementMethod {
             }
 
             // invoke ImageClickableSpan's clicking event
-            TagHandler.ImageClickableSpan[] imageClickableSpans =
-                    buffer.getSpans(off, off, TagHandler.ImageClickableSpan.class);
+            TagHandler.ImageClickableSpan[] imageClickableSpans = buffer.getSpans(off, off,
+                    TagHandler.ImageClickableSpan.class);
             if (imageClickableSpans.length != 0) {
                 if (action == MotionEvent.ACTION_UP) {
                     imageClickableSpans[0].onClick(widget);

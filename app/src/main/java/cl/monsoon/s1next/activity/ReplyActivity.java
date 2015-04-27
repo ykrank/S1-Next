@@ -36,19 +36,18 @@ public final class ReplyActivity extends BaseActivity {
         String quotePostId = getIntent().getStringExtra(ARG_QUOTE_POST_ID);
         String titlePrefix = TextUtils.isEmpty(quotePostId)
                 ? getString(R.string.reply_activity_title_prefix)
-                : getString(
-                R.string.reply_activity_quote_title_prefix,
+                : getString(R.string.reply_activity_quote_title_prefix,
                 getIntent().getStringExtra(ARG_QUOTE_POST_COUNT));
         setTitle(titlePrefix + getIntent().getStringExtra(ARG_THREAD_TITLE));
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(ReplyFragment.TAG);
         if (fragment == null) {
-            mReplyFragment = ReplyFragment.newInstance(
-                    getIntent().getStringExtra(ARG_THREAD_ID), quotePostId);
+            mReplyFragment = ReplyFragment.newInstance(getIntent().getStringExtra(ARG_THREAD_ID),
+                    quotePostId);
 
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, mReplyFragment, ReplyFragment.TAG).commit();
+            fragmentManager.beginTransaction().replace(R.id.frame_layout, mReplyFragment,
+                    ReplyFragment.TAG).commit();
         } else {
             mReplyFragment = (ReplyFragment) fragment;
         }
@@ -61,7 +60,8 @@ public final class ReplyActivity extends BaseActivity {
                 if (mReplyFragment.isReplyEmpty()) {
                     finish();
                 } else {
-                    new ReplyDiscardPromptDialog().show(getSupportFragmentManager(), ReplyDiscardPromptDialog.TAG);
+                    new ReplyDiscardPromptDialog().show(getSupportFragmentManager(),
+                            ReplyDiscardPromptDialog.TAG);
                 }
 
                 return true;
@@ -80,7 +80,8 @@ public final class ReplyActivity extends BaseActivity {
         } else if (mReplyFragment.isReplyEmpty()) {
             super.onBackPressed();
         } else {
-            new ReplyDiscardPromptDialog().show(getSupportFragmentManager(), ReplyDiscardPromptDialog.TAG);
+            new ReplyDiscardPromptDialog().show(getSupportFragmentManager(),
+                    ReplyDiscardPromptDialog.TAG);
         }
     }
 

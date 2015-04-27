@@ -37,7 +37,6 @@ public final class RecyclerViewHelper implements RecyclerView.OnItemTouchListene
                                     recyclerView.getChildLayoutPosition(childView));
                         }
                     }
-
                 });
     }
 

@@ -37,8 +37,7 @@ public final class Settings {
         }
 
         public static void setTextScale(SharedPreferences sharedPreferences) {
-            String value = getSharedPreferencesString(
-                    sharedPreferences,
+            String value = getSharedPreferencesString(sharedPreferences,
                     MainPreferenceFragment.PREF_KEY_FONT_SIZE,
                     R.string.pref_font_size_default_value);
 
@@ -125,27 +124,19 @@ public final class Settings {
         }
 
         public static void setCurrentTheme(SharedPreferences sharedPreferences) {
-            INSTANCE.currentTheme = THEMES[Integer.parseInt(
-                    getSharedPreferencesString(
-                            sharedPreferences,
-                            MainPreferenceFragment.PREF_KEY_THEME,
-                            R.string.pref_theme_default_value))];
+            INSTANCE.currentTheme = THEMES[Integer.parseInt(getSharedPreferencesString(
+                    sharedPreferences, MainPreferenceFragment.PREF_KEY_THEME,
+                    R.string.pref_theme_default_value))];
 
             // get current theme's accent color
-            TypedArray typedArray = App.getContext()
-                    .obtainStyledAttributes(
-                            INSTANCE.currentTheme, new int[]{R.attr.colorAccent});
+            TypedArray typedArray = App.getContext().obtainStyledAttributes(INSTANCE.currentTheme,
+                    new int[]{R.attr.colorAccent});
             INSTANCE.currentColorAccent = typedArray.getColor(0, -1);
             typedArray.recycle();
 
             if (INSTANCE.currentColorAccent == -1) {
                 throw new IllegalStateException("Theme accent color can't be -1.");
             }
-        }
-
-        @ColorRes
-        public static int getCurrentColorAccent() {
-            return INSTANCE.currentColorAccent;
         }
 
         @Alpha
@@ -167,7 +158,8 @@ public final class Settings {
         }
 
         public static int getSecondaryTextColor() {
-            return ColorUtils.setAlphaComponent(INSTANCE.currentColorAccent, getSecondaryTextAlpha());
+            return ColorUtils.setAlphaComponent(INSTANCE.currentColorAccent,
+                    getSecondaryTextAlpha());
         }
     }
 
@@ -180,8 +172,7 @@ public final class Settings {
         private volatile DownloadStrategy imagesDownloadStrategy;
 
         public static int getTotalCacheSize(SharedPreferences sharedPreferences) {
-            String value = getSharedPreferencesString(
-                    sharedPreferences,
+            String value = getSharedPreferencesString(sharedPreferences,
                     DownloadPreferenceFragment.PREF_KEY_TOTAL_DOWNLOAD_CACHE_SIZE,
                     R.string.pref_download_total_cache_size_default_value);
 
@@ -189,8 +180,7 @@ public final class Settings {
         }
 
         public static void setAvatarsDownloadStrategy(SharedPreferences sharedPreferences) {
-            String value = getSharedPreferencesString(
-                    sharedPreferences,
+            String value = getSharedPreferencesString(sharedPreferences,
                     DownloadPreferenceFragment.PREF_KEY_DOWNLOAD_AVATARS_STRATEGY,
                     R.string.pref_download_avatars_strategy_default_value);
 
@@ -202,16 +192,17 @@ public final class Settings {
         }
 
         public static void setAvatarResolutionStrategy(SharedPreferences sharedPreferences) {
-            String value = getSharedPreferencesString(
-                    sharedPreferences,
+            String value = getSharedPreferencesString(sharedPreferences,
                     DownloadPreferenceFragment.PREF_KEY_AVATAR_RESOLUTION_STRATEGY,
                     R.string.pref_avatar_resolution_strategy_default_value);
 
-            INSTANCE.avatarResolutionStrategy = AvatarResolutionStrategy.get(Integer.parseInt(value));
+            INSTANCE.avatarResolutionStrategy = AvatarResolutionStrategy.get(
+                    Integer.parseInt(value));
         }
 
         public static boolean needDownloadHighResolutionAvatars() {
-            return INSTANCE.avatarResolutionStrategy.needDownloadHigherResolution(General.INSTANCE.hasWifi);
+            return INSTANCE.avatarResolutionStrategy.needDownloadHigherResolution(
+                    General.INSTANCE.hasWifi);
         }
 
         public static boolean needMonitorWifi() {
@@ -220,12 +211,12 @@ public final class Settings {
         }
 
         public static void setAvatarCacheInvalidationInterval(SharedPreferences sharedPreferences) {
-            String value = getSharedPreferencesString(
-                    sharedPreferences,
+            String value = getSharedPreferencesString(sharedPreferences,
                     DownloadPreferenceFragment.PREF_KEY_AVATAR_CACHE_INVALIDATION_INTERVAL,
                     R.string.pref_avatar_cache_invalidation_interval_default_value);
 
-            INSTANCE.avatarCacheInvalidationInterval = AvatarCacheInvalidationInterval.get(Integer.parseInt(value));
+            INSTANCE.avatarCacheInvalidationInterval = AvatarCacheInvalidationInterval.get(
+                    Integer.parseInt(value));
         }
 
         public static Key getAvatarCacheInvalidationIntervalSignature() {
@@ -233,8 +224,7 @@ public final class Settings {
         }
 
         public static void setImagesDownloadStrategy(SharedPreferences sharedPreferences) {
-            String value = getSharedPreferencesString(
-                    sharedPreferences,
+            String value = getSharedPreferencesString(sharedPreferences,
                     DownloadPreferenceFragment.PREF_KEY_DOWNLOAD_IMAGES_STRATEGY,
                     R.string.pref_download_images_strategy_default_value);
 

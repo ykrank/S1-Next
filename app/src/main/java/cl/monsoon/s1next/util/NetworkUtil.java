@@ -13,11 +13,9 @@ public final class NetworkUtil {
     }
 
     public static boolean isWifiConnected() {
-        ConnectivityManager connectivityManager =
-                (ConnectivityManager)
-                        App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo =
-                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         return networkInfo.isConnected();
     }
 }

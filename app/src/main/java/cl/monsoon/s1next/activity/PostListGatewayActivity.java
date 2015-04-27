@@ -56,15 +56,16 @@ public final class PostListGatewayActivity extends FragmentActivity {
             if (uri != null) {
                 ThreadAnalysis threadAnalysis = parse(uri.toString());
                 if (threadAnalysis == null) {
-                    ErrorPromptDialog.newInstance(R.string.dialog_message_invalid_or_unsupported_link)
-                            .show(getSupportFragmentManager(), ErrorPromptDialog.TAG);
+                    ErrorPromptDialog.newInstance(
+                            R.string.dialog_message_invalid_or_unsupported_link).show(
+                            getSupportFragmentManager(), ErrorPromptDialog.TAG);
                 } else {
                     if (TextUtils.isEmpty(threadAnalysis.quotePostId)) {
                         startPostListActivity(threadAnalysis.threadId, threadAnalysis.jumpPage);
                         finish();
                     } else
-                        QuotePostPageAnalysisDialogFragment.newInstance(threadAnalysis)
-                                .show(getSupportFragmentManager(), QuotePostPageAnalysisDialogFragment.TAG);
+                        QuotePostPageAnalysisDialogFragment.newInstance(threadAnalysis).show(
+                                getSupportFragmentManager(), QuotePostPageAnalysisDialogFragment.TAG);
                 }
             } else {
                 throw new IllegalStateException("Uri can't be null.");
@@ -143,8 +144,8 @@ public final class PostListGatewayActivity extends FragmentActivity {
             intent.putExtra(PostListActivity.ARG_QUOTE_POST_ID, quotePostId);
         }
         // see android.text.style.URLSpan#onClick(View)
-        intent.putExtra(ARG_COME_FROM_OTHER_APP,
-                !getPackageName().equals(getIntent().getStringExtra(Browser.EXTRA_APPLICATION_ID)));
+        intent.putExtra(ARG_COME_FROM_OTHER_APP, !getPackageName().equals(
+                getIntent().getStringExtra(Browser.EXTRA_APPLICATION_ID)));
 
         startActivity(intent);
     }
@@ -267,9 +268,8 @@ public final class PostListGatewayActivity extends FragmentActivity {
 
         @Override
         public Loader<AsyncResult<HttpRedirectLoader.RedirectUrl>> onCreateLoader(@LoaderId int id, Bundle args) {
-            return new HttpRedirectLoader(
-                    getActivity(),
-                    Api.getQuotePostRedirectUrl(mThreadAnalysis.threadId, mThreadAnalysis.quotePostId));
+            return new HttpRedirectLoader(getActivity(), Api.getQuotePostRedirectUrl(
+                    mThreadAnalysis.threadId, mThreadAnalysis.quotePostId));
         }
 
         @Override
@@ -289,8 +289,8 @@ public final class PostListGatewayActivity extends FragmentActivity {
                     exception = exceptionPrefix + period;
                 }
                 new Handler().post(() ->
-                        ErrorPromptDialog.newInstance(exception)
-                                .show(getFragmentManager(), ErrorPromptDialog.TAG));
+                        ErrorPromptDialog.newInstance(exception).show(getFragmentManager(),
+                                ErrorPromptDialog.TAG));
             } else {
                 int page = parseQuotePostPage(asyncResult.data.getUrl());
                 if (page == -1) {

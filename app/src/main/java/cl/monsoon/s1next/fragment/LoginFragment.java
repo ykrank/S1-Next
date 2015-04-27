@@ -130,8 +130,8 @@ public final class LoginFragment extends Fragment {
             focusView.requestFocus();
         } else {
             // start to log in
-            LoginLoaderDialogFragment.newInstance(username, password)
-                    .show(getChildFragmentManager(), LoginLoaderDialogFragment.TAG);
+            LoginLoaderDialogFragment.newInstance(username, password).show(
+                    getChildFragmentManager(), LoginLoaderDialogFragment.TAG);
         }
     }
 
@@ -160,12 +160,8 @@ public final class LoginFragment extends Fragment {
 
         @Override
         public Loader<AsyncResult<ResultWrapper>> onCreateLoader(@LoaderId int id, Bundle args) {
-            return new HttpPostLoader<>(
-                    getActivity(),
-                    Api.URL_LOGIN,
-                    ResultWrapper.class,
-                    Api.getLoginPostBuilder(
-                            getArguments().getString(ARG_USERNAME),
+            return new HttpPostLoader<>(getActivity(), Api.URL_LOGIN, ResultWrapper.class,
+                    Api.getLoginPostBuilder(getArguments().getString(ARG_USERNAME),
                             getArguments().getString(ARG_PASSWORD)));
         }
 

@@ -70,8 +70,7 @@ public final class Quote implements Extractable, Parcelable {
      */
     public static Quote fromXmlString(String xmlString) throws ServerException {
         // example: <input type="hidden" name="noticeauthor" value="d755gUR1jP9eeoTPkiOyz3FxvLzpFLJsSFvJA8uAfBg" />
-        Pattern pattern =
-                Pattern.compile("name=\"noticeauthor\"\\svalue=\"(\\p{ASCII}+)\"\\s/>");
+        Pattern pattern = Pattern.compile("name=\"noticeauthor\"\\svalue=\"(\\p{ASCII}+)\"\\s/>");
         Matcher matcher = pattern.matcher(xmlString);
 
         Quote quote = new Quote();
@@ -79,8 +78,8 @@ public final class Quote implements Extractable, Parcelable {
             quote.setEncodedUserId(matcher.group(1));
 
             // example: <input type="hidden" name="noticetrimstr" value="[quote][size=2][url=forum.php?mod=redirect&amp;goto=findpost&amp;pid=1&amp;ptid=1][color=#999999]VVV 发表于 2014-12-13 10:11[/color][/url][/size]
-            pattern = Pattern.compile(
-                    "name=\"noticetrimstr\"\\svalue=\"(.+?)\"\\s/>", Pattern.DOTALL);
+            pattern = Pattern.compile("name=\"noticetrimstr\"\\svalue=\"(.+?)\"\\s/>",
+                    Pattern.DOTALL);
             matcher.usePattern(pattern);
             if (matcher.find()) {
                 // unescape ampersand (&amp;)

@@ -36,8 +36,8 @@ public final class MainPreferenceFragment extends BasePreferenceFragment impleme
         findPreference(PREF_KEY_DOWNLOADS).setOnPreferenceClickListener(this);
         findPreference(PREF_KEY_OPEN_SOURCE_LICENSES).setOnPreferenceClickListener(this);
 
-        findPreference(PREF_KEY_VERSION).setSummary(
-                getResources().getString(R.string.pref_version_summary, BuildConfig.VERSION_NAME));
+        findPreference(PREF_KEY_VERSION).setSummary(getResources().getString(
+                R.string.pref_version_summary, BuildConfig.VERSION_NAME));
     }
 
     @Override
@@ -68,8 +68,8 @@ public final class MainPreferenceFragment extends BasePreferenceFragment impleme
 
                 break;
             case PREF_KEY_OPEN_SOURCE_LICENSES:
-                new OpenSourceLicensesDialog().show(
-                        getFragmentManager(), OpenSourceLicensesDialog.TAG);
+                new OpenSourceLicensesDialog().show(getFragmentManager(),
+                        OpenSourceLicensesDialog.TAG);
 
                 break;
         }

@@ -53,15 +53,14 @@ public final class ForumActivity extends BaseActivity
         if (savedInstanceState == null) {
             fragment = new ForumFragment();
 
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, fragment, ForumFragment.TAG).commit();
+            fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment,
+                    ForumFragment.TAG).commit();
         } else {
             mSelectedPosition = savedInstanceState.getInt(STATE_SPINNER_SELECTED_POSITION);
             fragment = fragmentManager.findFragmentByTag(ForumFragment.TAG);
         }
 
-        mOnToolbarDropDownItemSelectedListener =
-                (ToolbarInterface.OnDropDownItemSelectedListener) fragment;
+        mOnToolbarDropDownItemSelectedListener = (ToolbarInterface.OnDropDownItemSelectedListener) fragment;
     }
 
     @Override
@@ -100,8 +99,8 @@ public final class ForumActivity extends BaseActivity
             mSpinner = (Spinner) toolbar.findViewById(R.id.spinner);
 
             if (Settings.Theme.isLightInverseTheme()) {
-                ViewCompat.setBackgroundTintList(mSpinner, TintManager.get(getToolbar().getContext()).getTintList(
-                        R.drawable.abc_spinner_mtrl_am_alpha));
+                ViewCompat.setBackgroundTintList(mSpinner, TintManager.get(
+                        getToolbar().getContext()).getTintList(R.drawable.abc_spinner_mtrl_am_alpha));
             }
             mSpinner.setOnItemSelectedListener(this);
 
@@ -132,8 +131,8 @@ public final class ForumActivity extends BaseActivity
         list.add(getResources().getString(R.string.toolbar_spinner_drop_down_all_forums_item_title));
         list.addAll(dropDownItemList);
 
-        ArrayAdapter<CharSequence> arrayAdapter =
-                new ArrayAdapter<>(this, R.layout.toolbar_spinner_item, list);
+        ArrayAdapter<CharSequence> arrayAdapter = new ArrayAdapter<>(this,
+                R.layout.toolbar_spinner_item, list);
         arrayAdapter.setDropDownViewResource(R.layout.toolbar_spinner_dropdown_item);
 
         return arrayAdapter;

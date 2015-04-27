@@ -65,6 +65,7 @@ public final class ThreadListFragment extends Fragment implements ThreadListPage
         mAdapter = new ThreadListPagerAdapter(getFragmentManager());
         viewPager.setAdapter(mAdapter);
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 ((BaseActivity) getActivity()).showOrHideToolbarAndFab(true);

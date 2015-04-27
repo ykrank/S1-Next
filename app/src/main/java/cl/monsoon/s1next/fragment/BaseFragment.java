@@ -30,8 +30,7 @@ import cl.monsoon.s1next.widget.AsyncResult;
  * if used in {@link android.support.v4.view.ViewPager}
  * otherwise we would lost {@link #mDataRetainedFragment} and cause memory leak.
  */
-public abstract class BaseFragment<D extends Extractable>
-        extends Fragment
+public abstract class BaseFragment<D extends Extractable> extends Fragment
         implements InsetsFrameLayout.OnInsetsCallback,
         SwipeRefreshLayout.OnRefreshListener,
         LoaderManager.LoaderCallbacks<AsyncResult<D>> {
@@ -90,8 +89,8 @@ public abstract class BaseFragment<D extends Extractable>
         Fragment fragment = fragmentManager.findFragmentByTag(dataRetainedFragmentTag);
         if (fragment == null) {
             mDataRetainedFragment = new DataRetainedFragment<>();
-            fragmentManager.beginTransaction()
-                    .add(mDataRetainedFragment, dataRetainedFragmentTag).commit();
+            fragmentManager.beginTransaction().add(mDataRetainedFragment,
+                    dataRetainedFragmentTag).commit();
 
             getLoaderManager().initLoader(ID_LOADER, null, this);
         } else {
@@ -189,9 +188,8 @@ public abstract class BaseFragment<D extends Extractable>
         if (getView() != null) {
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh);
             if (mSwipeRefreshLayout != null) {
-                mSwipeRefreshLayout.setColorSchemeResources(
-                        R.color.swipe_refresh_1, R.color.swipe_refresh_2,
-                        R.color.swipe_refresh_3, R.color.swipe_refresh_4);
+                mSwipeRefreshLayout.setColorSchemeResources(R.color.swipe_refresh_1,
+                        R.color.swipe_refresh_2, R.color.swipe_refresh_3, R.color.swipe_refresh_4);
 
                 mSwipeRefreshLayout.setOnRefreshListener(this);
                 mSwipeRefreshLayout.setEnabled(false);

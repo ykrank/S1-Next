@@ -65,9 +65,8 @@ public final class ForumGroups extends Account {
      */
     @JsonCreator
     @SuppressWarnings("UnusedDeclaration")
-    public ForumGroups(
-            @JsonProperty("catlist") List<ForumGroup> forumGroupList,
-            @JsonProperty("forumlist") List<Forum> forumList) {
+    public ForumGroups(@JsonProperty("catlist") List<ForumGroup> forumGroupList,
+                       @JsonProperty("forumlist") List<Forum> forumList) {
         // sort forum list by today's post in reverse ordering
         Collections.sort(forumList, (lhs, rhs) -> -(lhs.getTodayPosts() - rhs.getTodayPosts()));
         this.forumList = forumList;

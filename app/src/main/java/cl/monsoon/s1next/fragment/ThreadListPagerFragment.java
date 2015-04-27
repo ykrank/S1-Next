@@ -81,9 +81,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
         mRecyclerAdapter = new ThreadListRecyclerAdapter();
         mRecyclerView.setAdapter(mRecyclerAdapter);
 
-        mRecyclerView.addOnItemTouchListener(new RecyclerViewHelper(
-                getActivity(),
-                mRecyclerView,
+        mRecyclerView.addOnItemTouchListener(new RecyclerViewHelper(getActivity(), mRecyclerView,
                 new RecyclerViewHelper.OnItemClickListener() {
 
                     @Override
@@ -128,7 +126,8 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        mPagerCallback = (PagerCallback) getFragmentManager().findFragmentByTag(ThreadListFragment.TAG);
+        mPagerCallback = (PagerCallback) getFragmentManager().findFragmentByTag(
+                ThreadListFragment.TAG);
         mSubForumsCallback = (SubForumsCallback) activity;
     }
 
@@ -142,9 +141,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
 
     @Override
     public void onInsetsChanged(@NonNull Rect insets) {
-        setRecyclerViewPadding(
-                mRecyclerView,
-                insets,
+        setRecyclerViewPadding(mRecyclerView, insets,
                 getResources().getDimensionPixelSize(R.dimen.list_view_padding));
     }
 
@@ -172,9 +169,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
     public Loader<AsyncResult<ThreadsWrapper>> onCreateLoader(int id, Bundle args) {
         super.onCreateLoader(id, args);
 
-        return new HttpGetLoader<>(
-                getActivity(),
-                Api.getThreadListUrl(mForumId, mPageNum),
+        return new HttpGetLoader<>(getActivity(), Api.getThreadListUrl(mForumId, mPageNum),
                 ThreadsWrapper.class);
     }
 
@@ -200,7 +195,8 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
                 mRecyclerAdapter.notifyDataSetChanged();
 
                 new Handler().post(() ->
-                        mPagerCallback.setTotalPageByThreads(threads.getThreadListInfo().getThreads()));
+                        mPagerCallback.setTotalPageByThreads(
+                                threads.getThreadListInfo().getThreads()));
             }
 
             if (!threads.getSubForumList().isEmpty()) {
@@ -215,7 +211,8 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
     public interface PagerCallback {
 
         /**
-         * A callback to set actual total pages which used for {@link android.support.v4.view.PagerAdapter}。
+         * A callback to set actual total pages
+         * which used for {@link android.support.v4.view.PagerAdapter}。
          */
         void setTotalPageByThreads(int threads);
     }

@@ -23,16 +23,14 @@ public final class MyGlideModule implements GlideModule {
     public void applyOptions(Context context, GlideBuilder builder) {
         // set max size of the disk cache for images
         builder.setDiskCache(new InternalCacheDiskCacheFactory(
-                context,
-                Settings.Download.getTotalCacheSize(
-                        PreferenceManager.getDefaultSharedPreferences(context))));
+                context, Settings.Download.getTotalCacheSize(
+                PreferenceManager.getDefaultSharedPreferences(context))));
     }
 
     @Override
     public void registerComponents(Context context, Glide glide) {
         // register the OkHttp for Glide
-        glide.register(GlideUrl.class,
-                InputStream.class,
+        glide.register(GlideUrl.class, InputStream.class,
                 new OkHttpUrlLoader.Factory(OkHttpClientProvider.get()));
     }
 }

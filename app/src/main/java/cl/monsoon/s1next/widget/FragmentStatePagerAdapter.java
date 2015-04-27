@@ -96,8 +96,7 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
         mFragments.set(position, fragment);
 
         // here we did to add a tag to the Fragment!
-        mCurTransaction.add(container.getId(),
-                fragment,
+        mCurTransaction.add(container.getId(), fragment,
                 "android:FragmentStatePagerAdapter:" + container.getId() + ":" + position);
 
         return fragment;

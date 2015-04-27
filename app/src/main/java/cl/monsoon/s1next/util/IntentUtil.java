@@ -23,11 +23,9 @@ public final class IntentUtil {
         intent.setData(uri);
 
         // find all target Intents except our app
-        List<ResolveInfo> resolveInfoList =
-                context.getPackageManager().queryIntentActivities(intent, 0);
         List<Intent> targetIntentList = new ArrayList<>();
         String ourAppPackageName = context.getPackageName();
-        for (ResolveInfo resolveInfo : resolveInfoList) {
+        for (ResolveInfo resolveInfo : context.getPackageManager().queryIntentActivities(intent, 0)) {
             String packageName = resolveInfo.activityInfo.packageName;
             if (!packageName.equals(ourAppPackageName)) {
                 Intent targetIntent = new Intent(Intent.ACTION_VIEW);
@@ -40,11 +38,10 @@ public final class IntentUtil {
         if (targetIntentList.isEmpty()) {
             ToastUtil.showByResId(R.string.toast_message_chooser_no_applications, Toast.LENGTH_LONG);
         } else {
-            Intent chooserIntent = Intent.createChooser(
-                    targetIntentList.remove(0),
+            Intent chooserIntent = Intent.createChooser(targetIntentList.remove(0),
                     context.getString(R.string.intent_title_which_view_application));
-            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS,
-                    targetIntentList.toArray(new Parcelable[targetIntentList.size()]));
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetIntentList.toArray(
+                    new Parcelable[targetIntentList.size()]));
             context.startActivity(chooserIntent);
         }
     }

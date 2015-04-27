@@ -126,8 +126,8 @@ public final class ViewPagerTabs extends HorizontalScrollView implements ViewPag
     private void addTab(CharSequence tabTitle, final int position) {
         final TextView textView = new TextView(getContext());
         textView.setText(tabTitle);
-        textView.setBackgroundResource(ResourceUtil.getResourceId(
-                getContext().getTheme(), R.attr.selectableItemBackground));
+        textView.setBackgroundResource(ResourceUtil.getResourceId(getContext().getTheme(),
+                R.attr.selectableItemBackground));
         textView.setGravity(Gravity.CENTER);
         textView.setOnClickListener(v -> mViewPager.setCurrentItem(getRtlPosition(position)));
 

@@ -32,16 +32,16 @@ public final class GalleryActivity extends AppCompatActivityCompat implements In
         // set Toolbar's icon to cross
         mToolbar.setNavigationIcon(ResourceUtil.getResourceId(getTheme(), R.attr.menuCross));
 
-        InsetsFrameLayout insetsFrameLayout =
-                (InsetsFrameLayout) findViewById(R.id.insets_frame_layout);
+        InsetsFrameLayout insetsFrameLayout = (InsetsFrameLayout) findViewById(
+                R.id.insets_frame_layout);
         insetsFrameLayout.setOnInsetsCallback(this);
 
         String url = getIntent().getStringExtra(ARG_IMAGE_URL);
         if (savedInstanceState == null) {
             Fragment fragment = GalleryFragment.newInstance(url);
 
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.frame_layout, fragment, GalleryFragment.TAG).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, fragment,
+                    GalleryFragment.TAG).commit();
         }
     }
 

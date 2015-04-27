@@ -29,9 +29,7 @@ public final class ViewUtil {
 
     public static void setForegroundColor(TextView textView, @ColorRes int color, int start, int end) {
         Spannable spannable = Spannable.Factory.getInstance().newSpannable(textView.getText());
-        spannable.setSpan(new ForegroundColorSpan(color),
-                start,
-                end,
+        spannable.setSpan(new ForegroundColorSpan(color), start, end,
                 Spanned.SPAN_INCLUSIVE_INCLUSIVE);
 
         textView.setText(spannable);
@@ -40,8 +38,6 @@ public final class ViewUtil {
     /**
      * Updates the TextViews font size depends on
      * {@link Settings.General#textScale}.
-     *
-     * @param textViewList also works for {@link android.widget.EditText} and {@link android.widget.Button}.
      */
     public static void updateTextSize(TextView... textViewList) {
         float textScale = Settings.General.getTextScale();

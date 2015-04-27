@@ -76,8 +76,8 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
             return new FooterProgressViewHolder(view);
         }
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.fragment_post_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_post_list,
+                parent, false);
 
         return new ItemViewHolder(view);
     }
@@ -126,8 +126,8 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
             countView.setText("#1");
         } else {
             Spannable spannable = new SpannableString("#" + post.getCount());
-            spannable.setSpan(
-                    QUOTE_CLICKABLE_SPAN, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannable.setSpan(QUOTE_CLICKABLE_SPAN, 0, spannable.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             countView.setText(spannable);
             countView.setTag(post.getPartForQuote());
         }
@@ -140,9 +140,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
             replayView.setText(null);
         } else {
             // use GlideImageGetter to show images in TextView
-            replayView.setText(Html.fromHtml(
-                    reply,
-                    new GlideImageGetter(mContext, replayView),
+            replayView.setText(Html.fromHtml(reply, new GlideImageGetter(mContext, replayView),
                     new TagHandler(mContext)));
         }
     }
@@ -212,11 +210,8 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
 
             // use TouchDelegate to increase count's clicking area
             count.post(() -> {
-                int halfMinimumTouchTargetSize =
-                        count.getContext()
-                                .getResources()
-                                .getDimensionPixelSize(
-                                        R.dimen.minimum_touch_target_size) / 2;
+                int halfMinimumTouchTargetSize = count.getContext().getResources()
+                        .getDimensionPixelSize(R.dimen.minimum_touch_target_size) / 2;
                 Rect rect = new Rect();
                 count.getHitRect(rect);
                 rect.top -= halfMinimumTouchTargetSize;

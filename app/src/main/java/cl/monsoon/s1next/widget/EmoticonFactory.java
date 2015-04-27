@@ -18,8 +18,8 @@ public final class EmoticonFactory {
     private final SparseArray<Map<String, String>> mEmoticons;
 
     public EmoticonFactory(Context context) {
-        mEmoticonTypeTitles = Collections.unmodifiableList(
-                Arrays.asList(context.getResources().getStringArray(R.array.emoticon_type)));
+        mEmoticonTypeTitles = Collections.unmodifiableList(Arrays.asList(
+                context.getResources().getStringArray(R.array.emoticon_type)));
         mEmoticons = new SparseArray<>();
     }
 

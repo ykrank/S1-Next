@@ -62,8 +62,8 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
     public InputStream loadData(Priority priority) throws IOException {
         Key key = null;
         if (Api.isAvatarUrl(mUrl)) {
-            key = new AvatarUrlCache.OriginalKey(
-                    mUrl, Settings.Download.getAvatarCacheInvalidationIntervalSignature());
+            key = new AvatarUrlCache.OriginalKey(mUrl,
+                    Settings.Download.getAvatarCacheInvalidationIntervalSignature());
             if (AvatarUrlCache.has(key)) {
                 throw new IOException("Already have cached this avatar (" + mUrl + ").");
             }

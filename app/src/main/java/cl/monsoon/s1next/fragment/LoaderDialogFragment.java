@@ -64,10 +64,9 @@ public abstract class LoaderDialogFragment<D extends Extractable>
             mLoaderId = savedInstanceState.getInt(STATE_ID_LOADER);
         }
 
-        int loaderId =
-                mLoaderId != -1
-                        ? mLoaderId
-                        : getStartLoaderId();
+        int loaderId = mLoaderId != -1
+                ? mLoaderId
+                : getStartLoaderId();
         getLoaderManager().initLoader(loaderId, null, this);
     }
 

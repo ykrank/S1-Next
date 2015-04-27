@@ -73,9 +73,7 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
         mRecyclerAdapter = new FavouriteListRecyclerAdapter();
         mRecyclerView.setAdapter(mRecyclerAdapter);
 
-        mRecyclerView.addOnItemTouchListener(new RecyclerViewHelper(
-                getActivity(),
-                mRecyclerView,
+        mRecyclerView.addOnItemTouchListener(new RecyclerViewHelper(getActivity(), mRecyclerView,
                 new RecyclerViewHelper.OnItemClickListener() {
 
                     @Override
@@ -106,7 +104,8 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        mPagerCallback = (PagerCallback) getFragmentManager().findFragmentByTag(FavouriteListFragment.TAG);
+        mPagerCallback = (PagerCallback) getFragmentManager().findFragmentByTag(
+                FavouriteListFragment.TAG);
     }
 
     @Override
@@ -118,9 +117,7 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
 
     @Override
     public void onInsetsChanged(@NonNull Rect insets) {
-        setRecyclerViewPadding(
-                mRecyclerView,
-                insets,
+        setRecyclerViewPadding(mRecyclerView, insets,
                 getResources().getDimensionPixelSize(R.dimen.list_view_padding));
     }
 
@@ -128,9 +125,7 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
     public Loader<AsyncResult<FavouritesWrapper>> onCreateLoader(int id, Bundle args) {
         super.onCreateLoader(id, args);
 
-        return new HttpGetLoader<>(
-                getActivity(),
-                Api.getFavouritesUrl(mPageNum),
+        return new HttpGetLoader<>(getActivity(), Api.getFavouritesUrl(mPageNum),
                 FavouritesWrapper.class);
     }
 
@@ -168,7 +163,8 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
     public interface PagerCallback {
 
         /**
-         * A callback to set actual total pages which used for {@link android.support.v4.view.PagerAdapter}。
+         * A callback to set actual total pages
+         * which used for {@link android.support.v4.view.PagerAdapter}。
          */
         void setTotalPage(int totalPage);
     }

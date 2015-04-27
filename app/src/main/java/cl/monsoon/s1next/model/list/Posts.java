@@ -95,16 +95,14 @@ public final class Posts extends Account {
             @JsonIgnore
             private final String value;
 
-            @SuppressWarnings("UnusedDeclaration")
             @JsonCreator
-            public Info(
-                    @JsonProperty("title") String label,
-                    @JsonProperty("value") String value,
-                    @JsonProperty("unit") String unit) {
+            @SuppressWarnings("UnusedDeclaration")
+            public Info(@JsonProperty("title") String label,
+                        @JsonProperty("value") String value,
+                        @JsonProperty("unit") String unit) {
                 this.label = label;
-                this.value =
-                        StringUtil.unescapeNonBreakingSpace(value)
-                                + StringUtils.defaultString(unit);
+                this.value = StringUtil.unescapeNonBreakingSpace(value)
+                        + StringUtils.defaultString(unit);
             }
 
             private Info(Parcel source) {

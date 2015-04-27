@@ -133,6 +133,7 @@ public class PostListActivity extends BaseActivity
         mAdapter = new PostListPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 showOrHideToolbarAndFab(true);
@@ -256,8 +257,8 @@ public class PostListActivity extends BaseActivity
                 return true;
             case R.id.menu_favourites_add:
                 if (checkUserLoggedInStatus()) {
-                    ThreadFavouritesAddDialogFragment.newInstance(mThreadId)
-                            .show(getSupportFragmentManager(), ThreadFavouritesAddDialogFragment.TAG);
+                    ThreadFavouritesAddDialogFragment.newInstance(mThreadId).show(
+                            getSupportFragmentManager(), ThreadFavouritesAddDialogFragment.TAG);
                 }
 
                 return true;
@@ -287,8 +288,8 @@ public class PostListActivity extends BaseActivity
     }
 
     private void showThreadAttachmentDialog() {
-        ThreadAttachmentDialogFragment.newInstance(mThreadAttachment)
-                .show(getSupportFragmentManager(), ThreadAttachmentDialogFragment.TAG);
+        ThreadAttachmentDialogFragment.newInstance(mThreadAttachment).show(
+                getSupportFragmentManager(), ThreadAttachmentDialogFragment.TAG);
     }
 
     /**
@@ -427,7 +428,7 @@ public class PostListActivity extends BaseActivity
     }
 
     /**
-     * {@link com.melnykov.fab.FloatingActionButton#setOnClickListener(android.view.View.OnClickListener)}
+     * {@link android.support.design.widget.FloatingActionButton#setOnClickListener(android.view.View.OnClickListener)}
      */
     @Override
     public void onClick(View v) {
@@ -510,8 +511,7 @@ public class PostListActivity extends BaseActivity
             return new AlertDialog.Builder(getActivity())
                     .setTitle(getArguments().getString(ARG_ATTACHMENT_TITLE))
                     .setAdapter(new ThreadAttachmentInfoListArrayAdapter(
-                                    getActivity(),
-                                    R.layout.two_line_list_item,
+                                    getActivity(), R.layout.two_line_list_item,
                                     getArguments().getParcelableArrayList(
                                             ARG_THREAD_ATTACHMENT_INFO_LIST)),
                             null)
@@ -539,10 +539,8 @@ public class PostListActivity extends BaseActivity
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            View view = getActivity().getLayoutInflater().inflate(
-                    R.layout.dialog_favourites_add,
-                    (ViewGroup) getActivity().findViewById(R.id.drawer_layout),
-                    false);
+            View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_favourites_add,
+                    (ViewGroup) getActivity().findViewById(R.id.drawer_layout), false);
 
             AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.dialog_title_favourites_add)
@@ -556,7 +554,8 @@ public class PostListActivity extends BaseActivity
                             ThreadFavouritesAddLoaderDialogFragment.newInstance(
                                     getArguments().getString(ARG_THREAD_ID),
                                     ((EditText) view.findViewById(R.id.remark)).getText().toString())
-                                    .show(getChildFragmentManager(), ThreadFavouritesAddLoaderDialogFragment.TAG)));
+                                    .show(getChildFragmentManager(),
+                                            ThreadFavouritesAddLoaderDialogFragment.TAG)));
 
             return alertDialog;
         }
@@ -600,18 +599,13 @@ public class PostListActivity extends BaseActivity
             @Override
             public Loader<AsyncResult<ResultWrapper>> onCreateLoader(@LoaderId int id, Bundle args) {
                 if (id == ID_LOADER_GET_AUTHENTICITY_TOKEN) {
-                    return new HttpGetLoader<>(
-                            getActivity(),
-                            Api.URL_AUTHENTICITY_TOKEN_HELPER,
+                    return new HttpGetLoader<>(getActivity(), Api.URL_AUTHENTICITY_TOKEN_HELPER,
                             ResultWrapper.class);
                 } else if (id == ID_LOADER_ADD_THREAD_TO_FAVOURITES) {
-                    return new HttpPostLoader<>(
-                            getActivity(),
-                            Api.URL_THREAD_FAVOURITES_ADD,
-                            ResultWrapper.class,
-                            Api.getThreadFavouritesAddBuilder(
-                                    getArguments().getString(ARG_THREAD_ID),
-                                    getArguments().getString(ARG_REMARK)));
+                    return new HttpPostLoader<>(getActivity(), Api.URL_THREAD_FAVOURITES_ADD,
+                            ResultWrapper.class, Api.getThreadFavouritesAddBuilder(
+                            getArguments().getString(ARG_THREAD_ID),
+                            getArguments().getString(ARG_REMARK)));
                 }
 
                 return super.onCreateLoader(id, args);
