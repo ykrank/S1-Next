@@ -31,8 +31,6 @@
     </style>
 
     <style name="LightTheme.Inverse">
-        <item name="actionModeBackground">?attr/colorPrimary</item>
-
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
 
