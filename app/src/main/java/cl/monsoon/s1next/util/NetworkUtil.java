@@ -16,6 +16,6 @@ public final class NetworkUtil {
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        return networkInfo.isConnected();
+        return networkInfo != null && networkInfo.isConnected();
     }
 }
