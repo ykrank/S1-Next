@@ -39,12 +39,12 @@ tasks.withType(JavaCompile) {
 dependencies {
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.0.2'
 
-    compile 'com.android.support:support-v4:22.1.0'
-    compile 'com.android.support:appcompat-v7:22.1.0'
+    compile 'com.android.support:support-v4:22.1.1'
+    compile 'com.android.support:appcompat-v7:22.1.1'
     compile project(':support-design')
-    compile 'com.android.support:recyclerview-v7:22.1.0'
-    compile 'com.android.support:cardview-v7:22.1.0'
-    compile 'com.android.support:support-annotations:22.1.0'
+    compile 'com.android.support:recyclerview-v7:22.1.1'
+    compile 'com.android.support:cardview-v7:22.1.1'
+    compile 'com.android.support:support-annotations:22.1.1'
 
     compile 'commons-io:commons-io:2.4'
     compile 'org.apache.commons:commons-lang3:3.3.2'
