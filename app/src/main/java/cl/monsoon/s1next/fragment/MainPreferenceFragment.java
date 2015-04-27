@@ -1,12 +1,12 @@
 package cl.monsoon.s1next.fragment;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.support.v7.app.AlertDialog;
 import android.webkit.WebView;
 
 import cl.monsoon.s1next.BuildConfig;
