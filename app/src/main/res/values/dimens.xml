@@ -27,12 +27,18 @@
     <dimen name="item_padding">16dp</dimen>
 
     <dimen name="list_view_padding">8dp</dimen>
-    <!-- half of card view divider padding -->
-    <dimen name="recycler_view_card_padding">4dp</dimen>
 
-    <dimen name="card_view_horizontal_margin">8dp</dimen>
-    <!-- actually both 4dp, but CardView has padding 2dp in pre-Lollipop -->
-    <dimen name="card_view_vertical_margin">2dp</dimen>
+    <!--Before L, CardView adds padding to its content and draws shadows to that area.
+    This padding amount is equal to maxCardElevation + (1 - cos45) * cornerRadius on the
+    sides and maxCardElevation * 1.5 + (1 - cos45) * cornerRadius on top and bottom.-->
+    <!--<dimen name="card_view_margin">8dp</dimen>-->
+
+    <!-- 8dp (cardView margin) - ((2 + (1 - cos45) * 2))dp ≈ 5.05dp -->
+    <dimen name="card_view_horizontal_margin">5.05dp</dimen>
+    <!-- 4dp (half of cardView margin) - (2 * 1.5 + (1 - cos45) * 2)dp ≈ 0.05dp -->
+    <dimen name="card_view_vertical_margin">0.05dp</dimen>
+    <!-- 8dp (cardView margin) - (2 * 1.5 + (1 - cos45) * 2)dp = 4.05dp -->
+    <dimen name="recycler_view_card_padding">4.05dp</dimen>
 
     <dimen name="viewpager_tabs_elevation">1dp</dimen>
 
