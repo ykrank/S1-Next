@@ -16,7 +16,7 @@ import javax.microedition.khronos.opengles.GL10;
 public enum GL {
     INSTANCE;
 
-    public static final int GL_TEXTURE_SIZE_MINIMUM = 2048;
+    private static final int GL_TEXTURE_SIZE_MINIMUM = 2048;
 
     private volatile int glMaxTextureSize = -1;
 
