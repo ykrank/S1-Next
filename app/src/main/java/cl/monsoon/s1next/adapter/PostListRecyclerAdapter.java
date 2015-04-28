@@ -124,12 +124,18 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         // there is no need to quote #1
         if ("1".equals(post.getCount())) {
             countView.setText("#1");
+            countView.setClickable(false);
+            countView.setLongClickable(false);
+            countView.setFocusable(false);
         } else {
             Spannable spannable = new SpannableString("#" + post.getCount());
             spannable.setSpan(QUOTE_CLICKABLE_SPAN, 0, spannable.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             countView.setText(spannable);
             countView.setTag(post.getPartForQuote());
+            countView.setClickable(true);
+            countView.setLongClickable(true);
+            countView.setFocusable(true);
         }
 
         String reply = post.getReply();
