@@ -27,7 +27,7 @@
             android:layout_marginBottom="@dimen/fab_margin"
             android:layout_marginEnd="@dimen/fab_margin"
             android:visibility="gone"
-            app:backgroundTint="?attr/colorPrimary"
+            app:backgroundTint="?attr/fabBackgroundTint"
             app:rippleColor="@color/ripple_material_dark" />
 
         <include layout="@layout/toolbar" />

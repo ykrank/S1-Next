@@ -129,11 +129,13 @@
     <string name="pref_version_summary" translatable="false">v%1$s</string>
 
     <!-- array -->
-    <string name="pref_theme_entries_1">Amber</string>
-    <string name="pref_theme_entries_2">Green</string>
-    <string name="pref_theme_entries_3">Light blue</string>
-    <string name="pref_theme_entries_4">Imperfect dark</string>
-    <string name="pref_theme_entries_5">Imperfect black</string>
+    <string name="pref_theme_entries_1">Light</string>
+    <string name="pref_theme_entries_2">Amber</string>
+    <string name="pref_theme_entries_3">Green</string>
+    <string name="pref_theme_entries_4">Light blue</string>
+    <string name="pref_theme_entries_5">Dark</string>
+    <string name="pref_theme_entries_6">Imperfect dark</string>
+    <string name="pref_theme_entries_7">Imperfect black</string>
 
     <string name="pref_font_size_entries_1">Very small</string>
     <string name="pref_font_size_entries_2">Small</string>

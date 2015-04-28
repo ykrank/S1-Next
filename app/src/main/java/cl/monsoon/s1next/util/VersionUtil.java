@@ -27,13 +27,11 @@ final class VersionUtil {
         switch (Settings.Theme.getCurrentTheme()) {
             // We can't find any similar color to change app title to
             // white for Settings.LIGHT_THEME_AMBER.
-            // Also we don't need to provide any color for dark themes
-            // because the app title is already white in these themes.
-            case Settings.Theme.LIGHT_THEME_GREEN:
+            case Settings.Theme.LIGHT_THEME_INVERSE_GREEN:
                 colorId = R.color.green_600;
 
                 break;
-            case Settings.Theme.LIGHT_THEME_LIGHT_BLUE:
+            case Settings.Theme.LIGHT_THEME_INVERSE_LIGHT_BLUE:
                 colorId = R.color.light_blue_600;
 
                 break;

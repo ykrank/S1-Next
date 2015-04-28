@@ -85,20 +85,24 @@ public final class Settings {
 
         }
 
-        private static final int LIGHT_THEME_AMBER = R.style.LightTheme_Inverse_Amber;
-        public static final int LIGHT_THEME_GREEN = R.style.LightTheme_Inverse_Green;
-        public static final int LIGHT_THEME_LIGHT_BLUE = R.style.LightTheme_Inverse_LightBlue;
+        private static final int LIGHT_THEME = R.style.LightTheme;
+        private static final int LIGHT_THEME_INVERSE_AMBER = R.style.LightTheme_Inverse_Amber;
+        public static final int LIGHT_THEME_INVERSE_GREEN = R.style.LightTheme_Inverse_Green;
+        public static final int LIGHT_THEME_INVERSE_LIGHT_BLUE = R.style.LightTheme_Inverse_LightBlue;
         private static final int DARK_THEME = R.style.DarkTheme;
-        private static final int DARK_THEME_BLACK = R.style.DarkTheme_Black;
+        private static final int DARK_THEME_IMPERFECT = R.style.DarkTheme_Imperfect;
+        private static final int DARK_THEME_IMPERFECT_BLACK = R.style.DarkTheme_Imperfect_Black;
 
         public static final int TRANSLUCENT_THEME_LIGHT = R.style.TranslucentTheme_Light;
 
         private static final int[] THEMES = {
-                LIGHT_THEME_AMBER,
-                LIGHT_THEME_GREEN,
-                LIGHT_THEME_LIGHT_BLUE,
+                LIGHT_THEME,
+                LIGHT_THEME_INVERSE_AMBER,
+                LIGHT_THEME_INVERSE_GREEN,
+                LIGHT_THEME_INVERSE_LIGHT_BLUE,
                 DARK_THEME,
-                DARK_THEME_BLACK
+                DARK_THEME_IMPERFECT,
+                DARK_THEME_IMPERFECT_BLACK
         };
 
         private volatile int currentTheme;
@@ -112,14 +116,15 @@ public final class Settings {
         public static boolean isDarkTheme() {
             int theme = INSTANCE.currentTheme;
             return theme == DARK_THEME
-                    || theme == DARK_THEME_BLACK;
+                    || theme == DARK_THEME_IMPERFECT
+                    || theme == DARK_THEME_IMPERFECT_BLACK;
         }
 
         public static boolean isLightInverseTheme() {
             int theme = INSTANCE.currentTheme;
-            return theme == LIGHT_THEME_AMBER
-                    || theme == LIGHT_THEME_GREEN
-                    || theme == LIGHT_THEME_LIGHT_BLUE;
+            return theme == LIGHT_THEME_INVERSE_AMBER
+                    || theme == LIGHT_THEME_INVERSE_GREEN
+                    || theme == LIGHT_THEME_INVERSE_LIGHT_BLUE;
         }
 
         public static int getCurrentTheme() {

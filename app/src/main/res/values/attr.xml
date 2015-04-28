@@ -2,6 +2,7 @@
 <resources>
 
     <attr name="toolbarTheme" format="reference" />
+    <attr name="fabBackgroundTint" format="color|reference" />
     <attr name="myCardView" format="reference" />
     <attr name="mySpinnerItemTextColor" format="color" />
     <attr name="linkBackground" format="color|reference" />
