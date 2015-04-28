@@ -27,6 +27,7 @@
         <item>@string/pref_theme_entries_2</item>
         <item>@string/pref_theme_entries_3</item>
         <item>@string/pref_theme_entries_4</item>
+        <item>@string/pref_theme_entries_5</item>
     </string-array>
 
     <string-array name="pref_theme_entry_values" translatable="false">
@@ -34,6 +35,7 @@
         <item>1</item>
         <item>2</item>
         <item>3</item>
+        <item>4</item>
     </string-array>
 
     <string-array name="pref_font_size_entries">

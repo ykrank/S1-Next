@@ -2,7 +2,6 @@ package cl.monsoon.s1next.singleton;
 
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
-import android.support.annotation.ColorRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.StringRes;
 import android.support.v4.graphics.ColorUtils;
@@ -90,6 +89,7 @@ public final class Settings {
         public static final int LIGHT_THEME_GREEN = R.style.LightTheme_Inverse_Green;
         public static final int LIGHT_THEME_LIGHT_BLUE = R.style.LightTheme_Inverse_LightBlue;
         private static final int DARK_THEME = R.style.DarkTheme;
+        private static final int DARK_THEME_BLACK = R.style.DarkTheme_Black;
 
         public static final int TRANSLUCENT_THEME_LIGHT = R.style.TranslucentTheme_Light;
 
@@ -97,7 +97,8 @@ public final class Settings {
                 LIGHT_THEME_AMBER,
                 LIGHT_THEME_GREEN,
                 LIGHT_THEME_LIGHT_BLUE,
-                DARK_THEME
+                DARK_THEME,
+                DARK_THEME_BLACK
         };
 
         private volatile int currentTheme;
@@ -105,11 +106,13 @@ public final class Settings {
 
         public static boolean isDefaultTheme() {
             // default theme in AndroidManifest.xml is dark theme
-            return isDarkTheme();
+            return INSTANCE.currentTheme == DARK_THEME;
         }
 
         public static boolean isDarkTheme() {
-            return INSTANCE.currentTheme == DARK_THEME;
+            int theme = INSTANCE.currentTheme;
+            return theme == DARK_THEME
+                    || theme == DARK_THEME_BLACK;
         }
 
         public static boolean isLightInverseTheme() {
@@ -141,7 +144,7 @@ public final class Settings {
 
         @Alpha
         private static int getSecondaryTextAlpha() {
-            if (INSTANCE.currentTheme == DARK_THEME) {
+            if (isDarkTheme()) {
                 return BLACK_BACKGROUND_SECONDARY_TEXT_ALPHA;
             } else {
                 return WHITE_BACKGROUND_SECONDARY_TEXT_OR_ICONS_ALPHA;
@@ -150,7 +153,7 @@ public final class Settings {
 
         @Alpha
         public static int getDisabledOrHintTextAlpha() {
-            if (INSTANCE.currentTheme == DARK_THEME) {
+            if (isDarkTheme()) {
                 return BLACK_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA;
             } else {
                 return WHITE_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA;

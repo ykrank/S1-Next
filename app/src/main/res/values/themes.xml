@@ -70,7 +70,7 @@
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="myCardView">@style/DarkCardView</item>
-        <item name="mySpinnerItemTextColor">?android:textColorPrimary</item>
+        <item name="mySpinnerItemTextColor">@color/abc_primary_text_material_dark</item>
         <item name="linkBackground">@drawable/link_pressed_dark</item>
         <item name="emoticonKeyboardColor">@color/emoticon_keyboard_background_color_dark</item>
         <item name="emoticonKeyboardTabsBackground">@color/emoticon_keyboard_tab_background_color_dark</item>
@@ -85,6 +85,13 @@
         <item name="iconHome">@drawable/ic_home_white_24dp</item>
         <item name="iconFavourites">@drawable/ic_grade_white_24dp</item>
         <item name="iconSettings">@drawable/ic_settings_white_24dp</item>
+    </style>
+
+    <style name="DarkTheme.Black">
+        <item name="colorPrimary">@android:color/black</item>
+        <item name="colorPrimaryDark">@android:color/black</item>
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="myCardView">@style/DarkCardView.Black</item>
     </style>
 
     <style name="TranslucentTheme.Light" parent="Theme.AppCompat.Light.NoActionBar">

@@ -25,10 +25,10 @@ final class VersionUtil {
     public static void changeAppTitleColorToWhiteInRecentApps(Activity activity) {
         int colorId;
         switch (Settings.Theme.getCurrentTheme()) {
-            // We can't find any similar color to change app title
-            // to white for Settings.LIGHT_THEME_AMBER.
-            // And we also don't need to provide any color to Settings.DARK_THEME
-            // because the app title is already white in this theme.
+            // We can't find any similar color to change app title to
+            // white for Settings.LIGHT_THEME_AMBER.
+            // Also we don't need to provide any color for dark themes
+            // because the app title is already white in these themes.
             case Settings.Theme.LIGHT_THEME_GREEN:
                 colorId = R.color.green_600;
 
