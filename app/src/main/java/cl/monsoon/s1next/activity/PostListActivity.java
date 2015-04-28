@@ -17,22 +17,16 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.Loader;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Editable;
-import android.text.InputFilter;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
-
-import org.apache.commons.lang3.Range;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.Config;
@@ -41,6 +35,7 @@ import cl.monsoon.s1next.adapter.ThreadAttachmentInfoListArrayAdapter;
 import cl.monsoon.s1next.event.QuoteEvent;
 import cl.monsoon.s1next.fragment.BaseFragment;
 import cl.monsoon.s1next.fragment.LoaderDialogFragment;
+import cl.monsoon.s1next.fragment.PageTurningDialogFragment;
 import cl.monsoon.s1next.fragment.PostListPagerFragment;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.list.Posts;
@@ -56,7 +51,6 @@ import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.HttpPostLoader;
-import cl.monsoon.s1next.widget.InputFilterRange;
 
 /**
  * An Activity which includes {@link android.support.v4.view.ViewPager}
@@ -74,13 +68,6 @@ public class PostListActivity extends BaseActivity
      */
     public static final String ARG_JUMP_PAGE = "jump_page";
     public static final String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
-
-    /**
-     * The serialization (saved instance state) Bundle key representing
-     * the SeekBar's progress when page turning dialog is showing.
-     */
-    private static final String STATE_SEEKBAR_PROGRESS = "seekbar_progress";
-    private int mSeekBarProgress = -1;
 
     private String mThreadId;
 
@@ -156,13 +143,6 @@ public class PostListActivity extends BaseActivity
             mViewPager.setCurrentItem(jumpPage - 1);
         } else if (getIntent().getBooleanExtra(ARG_SHOULD_GO_TO_LAST_PAGE, false)) {
             mViewPager.setCurrentItem(mTotalPages - 1);
-        }
-
-        if (savedInstanceState != null) {
-            mSeekBarProgress = savedInstanceState.getInt(STATE_SEEKBAR_PROGRESS);
-            if (mSeekBarProgress != -1) {
-                showPageTurningDialog();
-            }
         }
     }
 
@@ -248,11 +228,13 @@ public class PostListActivity extends BaseActivity
 
                 break;
             case R.id.menu_thread_attachment:
-                showThreadAttachmentDialog();
+                ThreadAttachmentDialogFragment.newInstance(mThreadAttachment).show(
+                        getSupportFragmentManager(), ThreadAttachmentDialogFragment.TAG);
 
                 return true;
             case R.id.menu_page_turning:
-                showPageTurningDialog();
+                new PostListPageTurningDialogFragment(mViewPager.getCurrentItem(), mTotalPages).show(
+                        getSupportFragmentManager(), PageTurningDialogFragment.TAG);
 
                 return true;
             case R.id.menu_favourites_add:
@@ -268,13 +250,6 @@ public class PostListActivity extends BaseActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putInt(STATE_SEEKBAR_PROGRESS, mSeekBarProgress);
-    }
-
-    @Override
     public void setupThreadAttachment(Posts.ThreadAttachment threadAttachment) {
         this.mThreadAttachment = threadAttachment;
 
@@ -285,11 +260,6 @@ public class PostListActivity extends BaseActivity
         if (mMenuThreadAttachment != null) {
             mMenuThreadAttachment.setVisible(true);
         }
-    }
-
-    private void showThreadAttachmentDialog() {
-        ThreadAttachmentDialogFragment.newInstance(mThreadAttachment).show(
-                getSupportFragmentManager(), ThreadAttachmentDialogFragment.TAG);
     }
 
     /**
@@ -305,92 +275,6 @@ public class PostListActivity extends BaseActivity
         } else {
             mMenuPageTurning.setEnabled(true);
         }
-    }
-
-    private void showPageTurningDialog() {
-        View view = getLayoutInflater().inflate(R.layout.dialog_page_turning,
-                (ViewGroup) findViewById(R.id.drawer_layout), false);
-
-        if (mSeekBarProgress == -1) {
-            mSeekBarProgress = mViewPager.getCurrentItem();
-        }
-
-        SeekBar seekbar = (SeekBar) view.findViewById(R.id.seekbar);
-        // SeekBar is zero-based!
-        seekbar.setMax(mTotalPages - 1);
-        seekbar.setProgress(mSeekBarProgress);
-
-        EditText valueView = (EditText) view.findViewById(R.id.value);
-        valueView.setText(String.valueOf(mSeekBarProgress + 1));
-        valueView.setEms(String.valueOf(mTotalPages).length());
-        // set EditText range filter
-        valueView.setFilters(new InputFilter[]{new InputFilterRange(Range.between(1, mTotalPages))});
-        valueView.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                try {
-                    int value = Integer.parseInt(s.toString());
-                    if (value - 1 != seekbar.getProgress()) {
-                        seekbar.setProgress(value - 1);
-                    }
-                } catch (NumberFormatException ignored) {
-
-                }
-            }
-        });
-
-        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mSeekBarProgress = progress;
-
-                int value = -1;
-                try {
-                    value = Integer.parseInt(valueView.getText().toString());
-                } catch (NumberFormatException ignored) {
-
-                }
-
-                if (progress + 1 != value) {
-                    valueView.setText(String.valueOf(progress + 1));
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        new AlertDialog.Builder(this)
-                .setView(view)
-                .setTitle(R.string.dialog_title_page_turning)
-                .setPositiveButton(getText(R.string.dialog_button_text_go),
-                        (dialog, which) -> {
-                            mSeekBarProgress = -1;
-
-                            if (!TextUtils.isEmpty(valueView.getText())) {
-                                mViewPager.setCurrentItem(seekbar.getProgress());
-                            }
-                        })
-                .setNegativeButton(android.R.string.cancel, (dialog, which) -> mSeekBarProgress = -1)
-                .show();
     }
 
     @Override
@@ -517,6 +401,23 @@ public class PostListActivity extends BaseActivity
                             null)
                     .setPositiveButton(R.string.dialog_button_text_done, null)
                     .create();
+        }
+    }
+
+    public static class PostListPageTurningDialogFragment extends PageTurningDialogFragment {
+        public PostListPageTurningDialogFragment() {
+            // Every fragment must have an empty constructor, so it
+            // can be instantiated when restoring its activity's state.
+        }
+
+        @SuppressWarnings("ValidFragment")
+        public PostListPageTurningDialogFragment(int currentPage, int totalPages) {
+            super(currentPage, totalPages);
+        }
+
+        @Override
+        protected void onPageTurning(int page) {
+            ((PostListActivity) getActivity()).mViewPager.setCurrentItem(page);
         }
     }
 
