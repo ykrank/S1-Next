@@ -1,16 +1,22 @@
 package cl.monsoon.s1next.fragment;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.BaseActivity;
+import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 
@@ -27,7 +33,12 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
     private CharSequence mTitle;
     private int mTotalPages;
 
+    /**
+     * The {@link FragmentStatePagerAdapter} will provide
+     * fragments for each page of favourites.
+     */
     private PagerAdapter mAdapter;
+    private ViewPager mViewPager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,10 +53,10 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
         getActivity().setTitle(StringUtil.concatWithTwoSpaces(mTitle, 1));
         setTotalPage(1);
 
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
+        mViewPager = (ViewPager) view.findViewById(R.id.pager);
         mAdapter = new FavouriteListPagerAdapter(getFragmentManager());
-        viewPager.setAdapter(mAdapter);
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mViewPager.setAdapter(mAdapter);
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -62,6 +73,38 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
 
             }
         });
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.fragment_favourites, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_page_turning:
+                new FavouriteListPageTurningDialogFragment(mViewPager.getCurrentItem(), mTotalPages)
+                        .show(getChildFragmentManager(), PageTurningDialogFragment.TAG);
+
+                return true;
+            case R.id.menu_browser:
+                IntentUtil.startViewIntentExcludeOurApp(getActivity(),
+                        Uri.parse(Api.getFavouritesListUrlForBrowser(mViewPager.getCurrentItem() + 1)));
+
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -100,6 +143,23 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
             ((BaseFragment) object).destroyRetainedFragment();
 
             super.destroyItem(container, position, object);
+        }
+    }
+
+    public static class FavouriteListPageTurningDialogFragment extends PageTurningDialogFragment {
+        public FavouriteListPageTurningDialogFragment() {
+            // Every fragment must have an empty constructor, so it
+            // can be instantiated when restoring its activity's state.
+        }
+
+        @SuppressWarnings("ValidFragment")
+        public FavouriteListPageTurningDialogFragment(int currentPage, int totalPages) {
+            super(currentPage, totalPages);
+        }
+
+        @Override
+        protected void onPageTurning(int page) {
+            ((FavouriteListFragment) getParentFragment()).mViewPager.setCurrentItem(page);
         }
     }
 }

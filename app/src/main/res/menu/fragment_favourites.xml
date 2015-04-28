@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="cl.monsoon.s1next.fragment.FavouriteListFragment">
+    <item
+        android:id="@+id/menu_page_turning"
+        android:icon="?attr/menuPageTurning"
+        android:orderInCategory="2"
+        android:title="@string/menu_page_turning"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_browser"
+        android:orderInCategory="10"
+        android:title="@string/menu_browser"
+        app:showAsAction="never" />
+</menu>

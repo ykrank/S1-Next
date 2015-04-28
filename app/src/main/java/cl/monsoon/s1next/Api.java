@@ -52,6 +52,7 @@ public final class Api {
      * Opens the browser via {@link android.content.Intent}.
      */
     public static final String URL_BROWSER_REGISTER = prepend("member.php?mod=register");
+    private static final String URL_BROWSER_FAVOURITES = prepend("home.php?mod=space&do=favorite");
     private static final String URL_BROWSER_THREAD_LIST = prepend("forum-%s-%d.html");
     private static final String URL_BROWSER_POST_LIST = prepend("thread-%s-%d-1.html");
 
@@ -131,6 +132,12 @@ public final class Api {
 
     public static boolean isAvatarUrl(String url) {
         return url != null && url.startsWith(URL_USER_AVATAR_PREFIX);
+    }
+
+    public static String getFavouritesListUrlForBrowser(int pageNum) {
+        return Uri.parse(URL_BROWSER_FAVOURITES).buildUpon()
+                .appendQueryParameter("page", String.valueOf(pageNum))
+                .toString();
     }
 
     public static String getThreadListUrlForBrowser(String forumId, int pageNum) {
