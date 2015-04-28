@@ -18,6 +18,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.singleton.GL;
+import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.view.PhotoView;
 
 public final class GalleryFragment extends Fragment {
@@ -89,10 +90,7 @@ public final class GalleryFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_browser:
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(mUrl));
-
-                startActivity(intent);
+                IntentUtil.startViewIntentExcludeOurApp(getActivity(),Uri.parse(mUrl));
 
                 return true;
         }

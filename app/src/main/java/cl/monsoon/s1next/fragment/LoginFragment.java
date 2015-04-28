@@ -1,6 +1,5 @@
 package cl.monsoon.s1next.fragment;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +22,7 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.singleton.User;
+import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.HttpPostLoader;
@@ -87,10 +87,8 @@ public final class LoginFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_account_add:
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(Api.URL_BROWSER_REGISTER));
-
-                startActivity(intent);
+                IntentUtil.startViewIntentExcludeOurApp(getActivity(),
+                        Uri.parse(Api.URL_BROWSER_REGISTER));
 
                 return true;
         }
