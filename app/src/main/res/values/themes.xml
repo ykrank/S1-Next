@@ -65,7 +65,7 @@
     <style name="DarkTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
         <item name="colorAccent">@color/teal_200_70</item>
-        <item name="android:textColorPrimary">@drawable/my_abc_primary_text_material_dark</item>
+        <item name="android:textColor">@color/white_69p</item>
         <item name="android:textColorLink">@color/teal_200_70</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
