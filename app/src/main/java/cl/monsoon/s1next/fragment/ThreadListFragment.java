@@ -1,18 +1,24 @@
 package cl.monsoon.s1next.fragment;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.activity.BaseActivity;
 import cl.monsoon.s1next.model.Forum;
+import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
@@ -31,7 +37,12 @@ public final class ThreadListFragment extends Fragment implements ThreadListPage
     private String mForumId;
     private int mTotalPages;
 
+    /**
+     * The {@link FragmentStatePagerAdapter} will provide
+     * fragments for each page of threads.
+     */
     private PagerAdapter mAdapter;
+    private ViewPager mViewPager;
 
     public static ThreadListFragment newInstance(Forum forum) {
         ThreadListFragment fragment = new ThreadListFragment();
@@ -58,13 +69,13 @@ public final class ThreadListFragment extends Fragment implements ThreadListPage
         mForumId = forum.getId();
         setTotalPageByThreads(forum.getThreads());
 
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
+        mViewPager = (ViewPager) view.findViewById(R.id.pager);
         // don't use getChildFragmentManager()
         // because we can't retain Fragments (DataRetainedFragment)
         // that are nested in other fragments
         mAdapter = new ThreadListPagerAdapter(getFragmentManager());
-        viewPager.setAdapter(mAdapter);
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mViewPager.setAdapter(mAdapter);
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -81,6 +92,33 @@ public final class ThreadListFragment extends Fragment implements ThreadListPage
 
             }
         });
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.fragment_thread, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_browser:
+                IntentUtil.startViewIntentExcludeOurApp(getActivity(),
+                        Uri.parse(Api.getThreadListUrlForBrowser(mForumId, mViewPager.getCurrentItem())));
+
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**

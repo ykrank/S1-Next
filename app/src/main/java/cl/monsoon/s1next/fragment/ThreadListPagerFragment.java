@@ -146,26 +146,6 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-        inflater.inflate(R.menu.fragment_thread_pager, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_browser:
-                IntentUtil.startViewIntentExcludeOurApp(getActivity(),
-                        Uri.parse(Api.getThreadListUrlForBrowser(mForumId, mPageNum)));
-
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public Loader<AsyncResult<ThreadsWrapper>> onCreateLoader(int id, Bundle args) {
         super.onCreateLoader(id, args);
 
