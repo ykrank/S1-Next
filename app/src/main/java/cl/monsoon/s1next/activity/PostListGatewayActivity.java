@@ -251,7 +251,7 @@ public final class PostListGatewayActivity extends FragmentActivity {
 
         @Override
         protected CharSequence getProgressMessage() {
-            return getString(R.string.dialog_message_loading);
+            return getString(R.string.dialog_message_processing);
         }
 
         @Override
