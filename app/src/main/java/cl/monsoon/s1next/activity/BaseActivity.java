@@ -360,7 +360,8 @@ public abstract class BaseActivity extends AppCompatActivityCompat
         mDrawerHeaderBackgroundView = drawerHeaderView.findViewById(R.id.drawer_header_background);
         mDrawerUserAvatarView = (ImageView) drawerHeaderView.findViewById(R.id.drawer_user_avatar);
         mDrawerUserAvatarView.setOnClickListener(v ->
-                new ThemeChangeDialog().show(getSupportFragmentManager(), ThemeChangeDialog.TAG));
+                new ThemeChangeDialogFragment().show(getSupportFragmentManager(),
+                        ThemeChangeDialogFragment.TAG));
         mDrawerUsernameView = (TextView) drawerHeaderView.findViewById(R.id.drawer_username);
 
         // Show default avatar and login prompt if user hasn't logged in,
@@ -495,7 +496,7 @@ public abstract class BaseActivity extends AppCompatActivityCompat
         mDrawerUsernameView.setText(User.getName());
 
         mDrawerHeaderBackgroundView.setOnClickListener(v ->
-                new LogoutDialog().show(getSupportFragmentManager(), LogoutDialog.TAG));
+                new LogoutDialogFragment().show(getSupportFragmentManager(), LogoutDialogFragment.TAG));
     }
 
     void setupFloatingActionButton(@DrawableRes int resId) {
@@ -571,9 +572,9 @@ public abstract class BaseActivity extends AppCompatActivityCompat
         return mToolbar;
     }
 
-    public static class ThemeChangeDialog extends DialogFragment {
+    public static class ThemeChangeDialogFragment extends DialogFragment {
 
-        private static final String TAG = ThemeChangeDialog.class.getSimpleName();
+        private static final String TAG = ThemeChangeDialogFragment.class.getSimpleName();
 
         @NonNull
         @Override
@@ -606,9 +607,9 @@ public abstract class BaseActivity extends AppCompatActivityCompat
         }
     }
 
-    public static class LoginPromptDialog extends DialogFragment {
+    public static class LoginPromptDialogFragment extends DialogFragment {
 
-        private static final String TAG = LoginPromptDialog.class.getSimpleName();
+        private static final String TAG = LoginPromptDialogFragment.class.getSimpleName();
 
         @NonNull
         @Override
@@ -626,13 +627,14 @@ public abstract class BaseActivity extends AppCompatActivityCompat
     }
 
     /**
-     * Show {@link LoginPromptDialog} if user hasn't logged in.
+     * Show {@link LoginPromptDialogFragment} if user hasn't logged in.
      *
      * @return whether user has logged in
      */
     boolean checkUserLoggedInStatus() {
         if (!User.hasLoggedIn()) {
-            new LoginPromptDialog().show(getSupportFragmentManager(), LoginPromptDialog.TAG);
+            new LoginPromptDialogFragment().show(getSupportFragmentManager(),
+                    LoginPromptDialogFragment.TAG);
 
             return false;
         }
@@ -640,9 +642,9 @@ public abstract class BaseActivity extends AppCompatActivityCompat
         return true;
     }
 
-    public static class LogoutDialog extends DialogFragment {
+    public static class LogoutDialogFragment extends DialogFragment {
 
-        private static final String TAG = LogoutDialog.class.getSimpleName();
+        private static final String TAG = LogoutDialogFragment.class.getSimpleName();
 
         @NonNull
         @Override

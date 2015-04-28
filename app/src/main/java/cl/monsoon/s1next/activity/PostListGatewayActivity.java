@@ -56,9 +56,9 @@ public final class PostListGatewayActivity extends FragmentActivity {
             if (uri != null) {
                 ThreadAnalysis threadAnalysis = parse(uri.toString());
                 if (threadAnalysis == null) {
-                    ErrorPromptDialog.newInstance(
+                    ErrorPromptDialogFragment.newInstance(
                             R.string.dialog_message_invalid_or_unsupported_link).show(
-                            getSupportFragmentManager(), ErrorPromptDialog.TAG);
+                            getSupportFragmentManager(), ErrorPromptDialogFragment.TAG);
                 } else {
                     if (TextUtils.isEmpty(threadAnalysis.quotePostId)) {
                         startPostListActivity(threadAnalysis.threadId, threadAnalysis.jumpPage);
@@ -289,15 +289,16 @@ public final class PostListGatewayActivity extends FragmentActivity {
                     exception = exceptionPrefix + period;
                 }
                 new Handler().post(() ->
-                        ErrorPromptDialog.newInstance(exception).show(getFragmentManager(),
-                                ErrorPromptDialog.TAG));
+                        ErrorPromptDialogFragment.newInstance(exception).show(getFragmentManager(),
+                                ErrorPromptDialogFragment.TAG));
             } else {
                 int page = parseQuotePostPage(asyncResult.data.getUrl());
                 if (page == -1) {
                     mShouldDismiss = false;
                     new Handler().post(() ->
-                            ErrorPromptDialog.newInstance(R.string.dialog_message_quote_not_found)
-                                    .show(getFragmentManager(), ErrorPromptDialog.TAG));
+                            ErrorPromptDialogFragment.newInstance(
+                                    R.string.dialog_message_quote_not_found)
+                                    .show(getFragmentManager(), ErrorPromptDialogFragment.TAG));
                 } else {
                     ((PostListGatewayActivity) getActivity()).startPostListActivity(
                             mThreadAnalysis.threadId, page, mThreadAnalysis.quotePostId);
@@ -317,18 +318,18 @@ public final class PostListGatewayActivity extends FragmentActivity {
         }
     }
 
-    public static class ErrorPromptDialog extends DialogFragment {
+    public static class ErrorPromptDialogFragment extends DialogFragment {
 
-        private static final String TAG = ErrorPromptDialog.class.getSimpleName();
+        private static final String TAG = ErrorPromptDialogFragment.class.getSimpleName();
 
         private static final String ARG_MESSAGE = "message";
 
-        public static ErrorPromptDialog newInstance(@StringRes int message) {
+        public static ErrorPromptDialogFragment newInstance(@StringRes int message) {
             return newInstance(App.getContext().getString(message));
         }
 
-        public static ErrorPromptDialog newInstance(String message) {
-            ErrorPromptDialog fragment = new ErrorPromptDialog();
+        public static ErrorPromptDialogFragment newInstance(String message) {
+            ErrorPromptDialogFragment fragment = new ErrorPromptDialogFragment();
 
             Bundle bundle = new Bundle();
             bundle.putString(ARG_MESSAGE, message);

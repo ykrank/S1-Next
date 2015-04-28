@@ -68,8 +68,8 @@ public final class MainPreferenceFragment extends BasePreferenceFragment impleme
 
                 break;
             case PREF_KEY_OPEN_SOURCE_LICENSES:
-                new OpenSourceLicensesDialog().show(getFragmentManager(),
-                        OpenSourceLicensesDialog.TAG);
+                new OpenSourceLicensesDialogFragment().show(getFragmentManager(),
+                        OpenSourceLicensesDialogFragment.TAG);
 
                 break;
         }
@@ -77,9 +77,9 @@ public final class MainPreferenceFragment extends BasePreferenceFragment impleme
         return true;
     }
 
-    public static class OpenSourceLicensesDialog extends DialogFragment {
+    public static class OpenSourceLicensesDialogFragment extends DialogFragment {
 
-        private static final String TAG = OpenSourceLicensesDialog.class.getSimpleName();
+        private static final String TAG = OpenSourceLicensesDialogFragment.class.getSimpleName();
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {

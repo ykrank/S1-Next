@@ -60,8 +60,8 @@ public final class ReplyActivity extends BaseActivity {
                 if (mReplyFragment.isReplyEmpty()) {
                     finish();
                 } else {
-                    new ReplyDiscardPromptDialog().show(getSupportFragmentManager(),
-                            ReplyDiscardPromptDialog.TAG);
+                    new ReplyDiscardPromptDialogFragment().show(getSupportFragmentManager(),
+                            ReplyDiscardPromptDialogFragment.TAG);
                 }
 
                 return true;
@@ -80,14 +80,14 @@ public final class ReplyActivity extends BaseActivity {
         } else if (mReplyFragment.isReplyEmpty()) {
             super.onBackPressed();
         } else {
-            new ReplyDiscardPromptDialog().show(getSupportFragmentManager(),
-                    ReplyDiscardPromptDialog.TAG);
+            new ReplyDiscardPromptDialogFragment().show(getSupportFragmentManager(),
+                    ReplyDiscardPromptDialogFragment.TAG);
         }
     }
 
-    public static class ReplyDiscardPromptDialog extends DialogFragment {
+    public static class ReplyDiscardPromptDialogFragment extends DialogFragment {
 
-        private static final String TAG = ReplyDiscardPromptDialog.class.getSimpleName();
+        private static final String TAG = ReplyDiscardPromptDialogFragment.class.getSimpleName();
 
         @NonNull
         @Override
