@@ -601,7 +601,6 @@ public abstract class BaseActivity extends AppCompatActivityCompat
                                     BusProvider.get().post(new ThemeChangeEvent());
                                 }
                                 dismiss();
-                                ((BaseActivity) getActivity()).closeDrawer(null);
                             })
                     .create();
         }
