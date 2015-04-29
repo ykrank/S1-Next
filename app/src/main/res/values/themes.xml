@@ -88,9 +88,9 @@
     </style>
 
     <style name="DarkTheme.Imperfect">
-        <item name="colorAccent">@color/teal_200_70</item>
+        <item name="colorAccent">@color/dark_cyan</item>
         <item name="android:textColorPrimary">@color/white_69p</item>
-        <item name="android:textColorLink">@color/teal_200_70</item>
+        <item name="android:textColorLink">@color/teal_200_70p</item>
         <item name="mySpinnerItemTextColor">@color/abc_primary_text_material_dark</item>
     </style>
 

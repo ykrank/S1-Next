@@ -18,7 +18,8 @@
     <color name="light_blue_600">#ff039be5</color>
     <color name="light_blue_700">#ff0288d1</color>
 
-    <color name="teal_200_70">#b380cbc4</color>
+    <color name="dark_cyan">#ff5a8e89</color>
+    <color name="teal_200_70p">#b380cbc4</color>
     <color name="white_69p">#b1ffffff</color>
 
     <color name="swipe_refresh_1">@color/pink_A200</color>
