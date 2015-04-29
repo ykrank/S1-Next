@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="intent_title_which_view_application">打开方式</string>
-    <string name="toast_message_chooser_no_applications">没有应用可执行此操作</string>
+    <string name="message_chooser_no_applications">没有应用可执行此操作</string>
     <string name="action_login">登录</string>
     <string name="avatar_content_desc">头像</string>
     <string name="picture_content_desc">图片</string>
