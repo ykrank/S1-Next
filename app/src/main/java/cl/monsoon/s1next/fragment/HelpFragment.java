@@ -1,14 +1,27 @@
 package cl.monsoon.s1next.fragment;
 
+import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
+import cl.monsoon.s1next.BuildConfig;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.util.ToastUtil;
 
 public final class HelpFragment extends Fragment {
 
@@ -45,6 +58,43 @@ public final class HelpFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.fragment_help, menu);
+        menu.findItem(R.id.menu_version).setTitle(getString(R.string.menu_version,
+                BuildConfig.VERSION_NAME));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_open_source_licenses:
+                new OpenSourceLicensesDialogFragment().show(getFragmentManager(),
+                        OpenSourceLicensesDialogFragment.TAG);
+
+                return true;
+            case R.id.menu_version:
+                ClipboardManager clipboardManager = (ClipboardManager) getActivity().getSystemService(
+                        Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("simple text", item.getTitle());
+                clipboardManager.setPrimaryClip(clipData);
+                ToastUtil.showByResId(R.string.message_version_number_copied, Toast.LENGTH_SHORT);
+
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -53,5 +103,23 @@ public final class HelpFragment extends Fragment {
 
     public WebView getWebView() {
         return mWebView;
+    }
+
+    public static class OpenSourceLicensesDialogFragment extends DialogFragment {
+
+        private static final String TAG = OpenSourceLicensesDialogFragment.class.getSimpleName();
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            WebView webView = new WebView(getActivity());
+            webView.loadUrl("file:///android_asset/NOTICE.html");
+
+            return new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.menu_open_source_licenses)
+                    .setView(webView)
+                    .setPositiveButton(R.string.dialog_button_text_done, (dialog, which) -> dialog.dismiss())
+                    .create();
+        }
     }
 }

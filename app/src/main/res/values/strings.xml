@@ -123,12 +123,6 @@
     <string name="pref_image">Image</string>
     <string name="pref_download_images_strategy_default_value" translatable="false">1</string>
 
-    <string name="pref_about">About</string>
-    <string name="pref_open_source_licenses">Open source licenses</string>
-    <string name="pref_open_source_licenses_summary">License details for open source software</string>
-    <string name="pref_version">Build Version</string>
-    <string name="pref_version_summary" translatable="false">v%1$s</string>
-
     <!-- array -->
     <string name="pref_theme_entries_1">Light</string>
     <string name="pref_theme_entries_2">Amber</string>
@@ -159,5 +153,10 @@
     <string name="pref_download_images_entries_1">Do not download images</string>
     <string name="pref_download_images_entries_2">Download images over Wi-Fi only</string>
     <string name="pref_download_images_entries_3">Download images at any time</string>
+
+    <!-- help -->
+    <string name="menu_open_source_licenses">Open source licenses</string>
+    <string name="menu_version">Version %1$s</string>
+    <string name="message_version_number_copied">Version number copied</string>
 
 </resources>

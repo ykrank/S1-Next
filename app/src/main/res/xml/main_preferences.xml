@@ -29,22 +29,4 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:key="pref_key_about"
-        android:persistent="false"
-        android:title="@string/pref_about">
-
-        <Preference
-            android:key="pref_key_open_source_licenses"
-            android:persistent="false"
-            android:summary="@string/pref_open_source_licenses_summary"
-            android:title="@string/pref_open_source_licenses" />
-
-        <Preference
-            android:key="pref_key_version"
-            android:persistent="false"
-            android:title="@string/pref_version" />
-
-    </PreferenceCategory>
-
 </PreferenceScreen>
