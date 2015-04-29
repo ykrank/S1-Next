@@ -18,7 +18,7 @@ import cl.monsoon.s1next.fragment.ThreadListFragment;
 import cl.monsoon.s1next.fragment.ThreadListPagerFragment;
 import cl.monsoon.s1next.model.Forum;
 
-public class ThreadListActivity extends BaseActivity implements ThreadListPagerFragment.SubForumsCallback {
+public final class ThreadListActivity extends BaseActivity implements ThreadListPagerFragment.SubForumsCallback {
 
     public static final String ARG_FORUM = "forum";
 

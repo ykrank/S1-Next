@@ -56,7 +56,7 @@ import cl.monsoon.s1next.widget.HttpPostLoader;
  * An Activity which includes {@link android.support.v4.view.ViewPager}
  * to represent each page of post lists.
  */
-public class PostListActivity extends BaseActivity
+public final class PostListActivity extends BaseActivity
         implements PostListPagerFragment.PagerCallback,
         View.OnClickListener {
 

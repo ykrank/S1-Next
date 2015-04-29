@@ -441,7 +441,7 @@ public abstract class BaseActivity extends AppCompatActivityCompat
     }
 
     private Void onSettingsMenuSelected() {
-        Intent intent = new Intent(BaseActivity.this, SettingsActivity.class);
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
 
         return null;
@@ -470,7 +470,7 @@ public abstract class BaseActivity extends AppCompatActivityCompat
         mDrawerHeaderBackgroundView.setOnClickListener(v -> {
             mDrawerLayout.closeDrawer(mDrawer);
 
-            Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         });
     }

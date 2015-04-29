@@ -35,6 +35,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/settings" />
+
         <activity android:name=".activity.FavouriteListActivity" />
 
         <activity android:name=".activity.ThreadListActivity" />
@@ -55,10 +59,6 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".activity.SettingsActivity"
-            android:label="@string/settings" />
 
         <activity
             android:name=".activity.ReplyActivity"

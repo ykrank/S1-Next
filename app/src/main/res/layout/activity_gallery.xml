@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<merge xmlns:app="http://schemas.android.com/apk/res-auto">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <cl.monsoon.s1next.view.InsetsFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <cl.monsoon.s1next.view.InsetsFrameLayout
         android:id="@+id/insets_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

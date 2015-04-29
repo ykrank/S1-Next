@@ -1,6 +1,5 @@
 package cl.monsoon.s1next.fragment;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -90,7 +89,7 @@ public final class GalleryFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_browser:
-                IntentUtil.startViewIntentExcludeOurApp(getActivity(),Uri.parse(mUrl));
+                IntentUtil.startViewIntentExcludeOurApp(getActivity(), Uri.parse(mUrl));
 
                 return true;
         }
