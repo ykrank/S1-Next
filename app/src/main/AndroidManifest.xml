@@ -39,6 +39,10 @@
             android:name=".activity.SettingsActivity"
             android:label="@string/settings" />
 
+        <activity
+            android:name=".activity.HelpActivity"
+            android:label="@string/help" />
+
         <activity android:name=".activity.FavouriteListActivity" />
 
         <activity android:name=".activity.ThreadListActivity" />

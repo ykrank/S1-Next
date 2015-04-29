@@ -13,5 +13,9 @@
             android:id="@+id/settings"
             android:icon="?attr/iconSettings"
             android:title="@string/settings" />
+        <item
+            android:id="@+id/help"
+            android:icon="?attr/iconHelp"
+            android:title="@string/help" />
     </group>
 </menu>

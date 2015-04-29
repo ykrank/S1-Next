@@ -389,6 +389,10 @@ public abstract class BaseActivity extends AppCompatActivityCompat
                     callable = this::onSettingsMenuSelected;
 
                     break;
+                case R.id.help:
+                    callable = this::onHelpMenuSelected;
+
+                    break;
                 default:
                     callable = null;
             }
@@ -442,6 +446,13 @@ public abstract class BaseActivity extends AppCompatActivityCompat
 
     private Void onSettingsMenuSelected() {
         Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+
+        return null;
+    }
+
+    private Void onHelpMenuSelected() {
+        Intent intent = new Intent(this, HelpActivity.class);
         startActivity(intent);
 
         return null;

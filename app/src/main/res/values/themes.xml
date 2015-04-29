@@ -27,6 +27,7 @@
         <item name="iconHome">@drawable/ic_home_grey600_24dp</item>
         <item name="iconFavourites">@drawable/ic_grade_grey600_24dp</item>
         <item name="iconSettings">@drawable/ic_settings_grey600_24dp</item>
+        <item name="iconHelp">@drawable/ic_help_grey600_24dp</item>
     </style>
 
     <style name="LightTheme.Inverse">
@@ -85,6 +86,7 @@
         <item name="iconHome">@drawable/ic_home_white_24dp</item>
         <item name="iconFavourites">@drawable/ic_grade_white_24dp</item>
         <item name="iconSettings">@drawable/ic_settings_white_24dp</item>
+        <item name="iconHelp">@drawable/ic_help_white_24dp</item>
     </style>
 
     <style name="DarkTheme.Imperfect">

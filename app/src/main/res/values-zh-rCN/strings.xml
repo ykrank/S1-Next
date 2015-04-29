@@ -16,6 +16,7 @@
     <string name="home">首页</string>
     <string name="favourites">收藏</string>
     <string name="settings">设置</string>
+    <string name="help">帮助</string>
     <string name="menu_refresh">刷新</string>
     <string name="menu_share">分享</string>
     <string name="menu_title_share">分享到…</string>

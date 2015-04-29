@@ -25,6 +25,7 @@
     <string name="home">Home</string>
     <string name="favourites">Favourites</string>
     <string name="settings">Settings</string>
+    <string name="help">Help</string>
 
     <!-- menu -->
     <string name="menu_refresh">Refresh</string>
