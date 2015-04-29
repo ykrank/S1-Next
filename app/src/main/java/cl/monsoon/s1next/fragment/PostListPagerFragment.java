@@ -85,16 +85,6 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        // We need retrieve mIsLoadingMore back before initializing Loader.
-        if (savedInstanceState != null) {
-            mIsLoadingMore = savedInstanceState.getBoolean(STATE_IS_LOADING_MORE);
-        }
-
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_base, container, false);
     }
@@ -136,6 +126,16 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        // We need retrieve mIsLoadingMore back before initializing Loader.
+        if (savedInstanceState != null) {
+            mIsLoadingMore = savedInstanceState.getBoolean(STATE_IS_LOADING_MORE);
+        }
+
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
@@ -147,12 +147,6 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         super.onDetach();
 
         mPagerCallback = null;
-    }
-
-    @Override
-    public void onInsetsChanged(@NonNull Rect insets) {
-        setRecyclerViewPadding(mRecyclerView, insets,
-                getResources().getDimensionPixelSize(R.dimen.recycler_view_card_padding));
     }
 
     @Override
@@ -197,6 +191,12 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         super.onSaveInstanceState(outState);
 
         outState.putBoolean(STATE_IS_LOADING_MORE, mIsLoadingMore);
+    }
+
+    @Override
+    public void onInsetsChanged(@NonNull Rect insets) {
+        setRecyclerViewPadding(mRecyclerView, insets,
+                getResources().getDimensionPixelSize(R.dimen.recycler_view_card_padding));
     }
 
     @Override

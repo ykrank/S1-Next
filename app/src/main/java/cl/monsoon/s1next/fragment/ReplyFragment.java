@@ -153,6 +153,13 @@ public final class ReplyFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
@@ -164,13 +171,6 @@ public final class ReplyFragment extends Fragment {
         super.onPause();
 
         BusProvider.get().unregister(this);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        setHasOptionsMenu(true);
     }
 
     @Override

@@ -148,13 +148,6 @@ public abstract class BaseFragment<D extends Extractable> extends Fragment
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putBoolean(STATE_IS_LOADER_LOADING, mLoading);
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.fragment_base, menu);
     }
@@ -176,6 +169,13 @@ public abstract class BaseFragment<D extends Extractable> extends Fragment
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean(STATE_IS_LOADER_LOADING, mLoading);
     }
 
     void onInsetsChanged() {

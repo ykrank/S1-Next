@@ -100,12 +100,6 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
     }
 
     @Override
-    public void onInsetsChanged(@NonNull Rect insets) {
-        setRecyclerViewPadding(mRecyclerView, insets,
-                getResources().getDimensionPixelSize(R.dimen.list_view_padding));
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
@@ -122,6 +116,12 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onInsetsChanged(@NonNull Rect insets) {
+        setRecyclerViewPadding(mRecyclerView, insets,
+                getResources().getDimensionPixelSize(R.dimen.list_view_padding));
     }
 
     @Override
