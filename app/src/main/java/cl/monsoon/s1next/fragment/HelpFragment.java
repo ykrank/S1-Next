@@ -14,6 +14,8 @@ public final class HelpFragment extends Fragment {
 
     public static final String TAG = HelpFragment.class.getSimpleName();
 
+    private static final String mURL = "http://monsoon.cl/S1-Next/HELP.html";
+
     private WebView mWebView;
 
     @Override
@@ -26,7 +28,6 @@ public final class HelpFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mWebView = (WebView) view.findViewById(R.id.webView);
-        mWebView.loadUrl("https://raw.githubusercontent.com/floating-cat/S1-Next/master/HELP.html");
         mWebView.setWebViewClient(new WebViewClient() {
 
             @Override
@@ -35,6 +36,19 @@ public final class HelpFragment extends Fragment {
                 webView.setVisibility(View.VISIBLE);
             }
         });
+
+        if (savedInstanceState == null) {
+            mWebView.loadUrl(mURL);
+        } else {
+            mWebView.restoreState(savedInstanceState);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        mWebView.saveState(outState);
     }
 
     public WebView getWebView() {

@@ -20,6 +20,9 @@ public final class HelpActivity extends BaseActivity {
 
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, mHelpFragment,
                     HelpFragment.TAG).commit();
+        } else {
+            mHelpFragment = (HelpFragment) getSupportFragmentManager().findFragmentByTag(
+                    HelpFragment.TAG);
         }
     }
 
