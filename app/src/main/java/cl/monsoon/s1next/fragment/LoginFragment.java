@@ -86,7 +86,7 @@ public final class LoginFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_account_add:
+            case R.id.menu_account_new:
                 IntentUtil.startViewIntentExcludeOurApp(getActivity(),
                         Uri.parse(Api.URL_BROWSER_REGISTER));
 

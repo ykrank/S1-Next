@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cl.monsoon.s1next.fragment.LoginFragment">
     <item
-        android:id="@+id/menu_account_add"
+        android:id="@+id/menu_account_new"
         android:icon="?attr/menuPersonAdd"
         android:orderInCategory="1"
         android:title="@string/menu_account_new"
