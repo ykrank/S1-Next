@@ -30,8 +30,10 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
 
     public static final String TAG = FavouriteListFragment.class.getSimpleName();
 
+    private static final String STATE_TOTAL_PAGES = "total_pages";
+
     private CharSequence mTitle;
-    private int mTotalPages;
+    private int mTotalPages = 1;
 
     /**
      * The {@link FragmentStatePagerAdapter} will provide
@@ -51,7 +53,9 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
 
         mTitle = getText(R.string.favourites);
         getActivity().setTitle(StringUtil.concatWithTwoSpaces(mTitle, 1));
-        setTotalPage(1);
+        if (savedInstanceState != null) {
+            mTotalPages = savedInstanceState.getInt(STATE_TOTAL_PAGES);
+        }
 
         mViewPager = (ViewPager) view.findViewById(R.id.pager);
         mAdapter = new FavouriteListPagerAdapter(getFragmentManager());
@@ -80,6 +84,13 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
         super.onActivityCreated(savedInstanceState);
 
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(STATE_TOTAL_PAGES, mTotalPages);
     }
 
     @Override
