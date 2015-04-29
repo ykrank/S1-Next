@@ -9,13 +9,13 @@ android {
         applicationId "cl.monsoon.s1next"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 4
-        versionName "0.4.0"
+        versionCode 3
+        versionName "0.3.0"
     }
     buildTypes {
         debug {
             applicationIdSuffix '.debug'
-            versionNameSuffix '-SNAPSHOT'
+            versionNameSuffix '-DEBUG'
         }
         release {
             minifyEnabled true
