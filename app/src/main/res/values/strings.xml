@@ -155,6 +155,7 @@
     <string name="pref_download_images_entries_3">Download images at any time</string>
 
     <!-- help -->
+    <string name="menu_view_in_google_play_store">View in Google Play Store</string>
     <string name="menu_open_source_licenses">Open source licenses</string>
     <string name="menu_version">Version %1$s</string>
     <string name="message_version_number_copied">Version number copied</string>

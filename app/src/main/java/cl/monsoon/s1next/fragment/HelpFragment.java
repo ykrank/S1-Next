@@ -1,9 +1,12 @@
 package cl.monsoon.s1next.fragment;
 
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -76,6 +79,24 @@ public final class HelpFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_view_in_google_play_store:
+                String packageName = getActivity().getPackageName();
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("market://details?id=" + packageName));
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException exception) {
+                    intent.setData(Uri.parse("https://play.google.com/store/apps/details?id="
+                            + packageName));
+                    try {
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        ToastUtil.showByResId(R.string.message_chooser_no_applications,
+                                Toast.LENGTH_SHORT);
+                    }
+                }
+
+                return true;
             case R.id.menu_open_source_licenses:
                 new OpenSourceLicensesDialogFragment().show(getFragmentManager(),
                         OpenSourceLicensesDialogFragment.TAG);

@@ -4,13 +4,18 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="cl.monsoon.s1next.fragment.HelpFragment">
     <item
-        android:id="@+id/menu_open_source_licenses"
+        android:id="@+id/menu_view_in_google_play_store"
         android:orderInCategory="1"
+        android:title="@string/menu_view_in_google_play_store"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_open_source_licenses"
+        android:orderInCategory="2"
         android:title="@string/menu_open_source_licenses"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/menu_version"
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         android:title="@null"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 </menu>
