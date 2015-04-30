@@ -21,9 +21,9 @@ public final class DeviceUtil {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
         if (model.startsWith(manufacturer)) {
-            return StringUtils.capitalize(model);
+            return model;
         } else {
-            return StringUtils.capitalize((manufacturer) + StringUtils.SPACE + model);
+            return manufacturer + StringUtils.SPACE + model;
         }
     }
 
