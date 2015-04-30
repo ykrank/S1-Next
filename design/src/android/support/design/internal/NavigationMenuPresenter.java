@@ -278,6 +278,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
         }
 
         @Override
+        @SuppressWarnings("deprecation")
         public View getView(int position, View convertView, ViewGroup parent) {
             NavigationMenuItem item = getItem(position);
             int viewType = getItemViewType(position);
@@ -311,7 +312,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                                 typedValue, true);
                         Drawable drawable = ResourcesCompat.getDrawable(context.getResources(),
                                 typedValue.resourceId, context.getTheme());
-                        convertView.setBackground(new InsetDrawable(drawable, 0, inset, 0, inset));
+                        convertView.setBackgroundDrawable(new InsetDrawable(drawable, 0, inset, 0, inset));
                     }
                     break;
             }
