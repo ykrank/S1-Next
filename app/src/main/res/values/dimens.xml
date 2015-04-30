@@ -53,7 +53,6 @@
     <!-- 36dp (emoticon keyboard header) + 160dp (48dp*3 three lines of emoticons + 8dp*2 top/bottom padding of emoticon grid) -->
     <dimen name="emoticon_keyboard_height">196dp</dimen>
     <dimen name="emoticon_keyboard_category_tabs_height">36dp</dimen>
-    <dimen name="emoticon_size">48dp</dimen>
     <dimen name="emoticon_padding">8dp</dimen>
 
     <dimen name="photo_view_crop_width">280dp</dimen>

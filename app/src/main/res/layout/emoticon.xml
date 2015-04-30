@@ -2,7 +2,7 @@
 
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     style="?attr/android:borderlessButtonStyle"
-    android:layout_width="@dimen/emoticon_size"
-    android:layout_height="@dimen/emoticon_size"
+    android:layout_width="@dimen/minimum_touch_target_size"
+    android:layout_height="@dimen/minimum_touch_target_size"
     android:contentDescription="@null"
     android:padding="@dimen/emoticon_padding" />

@@ -378,7 +378,7 @@ public final class ReplyFragment extends Fragment {
             this.mContext = context;
 
             Resources resources = context.getResources();
-            mEmoticonWidth = resources.getDimension(R.dimen.emoticon_size);
+            mEmoticonWidth = resources.getDimension(R.dimen.minimum_touch_target_size);
             mEmoticonGridPadding = resources.getDimensionPixelSize(R.dimen.emoticon_padding);
 
             mEmoticonFactory = new EmoticonFactory(context);
