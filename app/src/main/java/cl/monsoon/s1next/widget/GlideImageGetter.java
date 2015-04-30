@@ -1,6 +1,10 @@
 package cl.monsoon.s1next.widget;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -9,6 +13,9 @@ import android.webkit.URLUtil;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
+import com.bumptech.glide.load.resource.bitmap.TransformationUtils;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.RequestListener;
@@ -58,8 +65,12 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
             // We may have this image in assets if this is emoticon.
             if (url.startsWith(Api.URL_EMOTICON_IMAGE_PREFIX)) {
                 String assetSuffix = url.substring(Api.URL_EMOTICON_IMAGE_PREFIX.length());
+                SizeMultiplierBitmapTransformation sizeMultiplierBitmapTransformation =
+                        new SizeMultiplierBitmapTransformation(mContext,
+                                mContext.getResources().getDisplayMetrics().density);
                 Glide.with(mContext)
                         .load(Uri.parse(Config.PREFIX_EMOTICON_ASSET + assetSuffix))
+                        .transform(sizeMultiplierBitmapTransformation)
                         .listener(new RequestListener<Uri, GlideDrawable>() {
 
                             /**
@@ -70,6 +81,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
                                 // append domain to this url
                                 Glide.with(mContext)
                                         .load(Api.URL_S1 + url)
+                                        .transform(sizeMultiplierBitmapTransformation)
                                         .into(new ImageGetterViewTarget(mTextView, urlDrawable));
 
                                 return true;
@@ -82,8 +94,10 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
                         })
                         .into(new ImageGetterViewTarget(mTextView, urlDrawable));
             } else {
+                int maxTextureSize = GL.getGlMaxTextureSize();
                 Glide.with(mContext)
                         .load(Api.URL_S1 + url)
+                        .override(maxTextureSize, maxTextureSize)
                         .into(new ImageGetterViewTarget(mTextView, urlDrawable));
             }
 
@@ -179,6 +193,54 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
         @Override
         public void setRequest(Request request) {
 
+        }
+    }
+
+    private static class SizeMultiplierBitmapTransformation extends BitmapTransformation {
+
+        private float mSizeMultiplier;
+
+        public SizeMultiplierBitmapTransformation(Context context, float sizeMultiplier) {
+            super(context);
+
+            this.mSizeMultiplier = sizeMultiplier;
+        }
+
+        /**
+         * Forked from {@link com.bumptech.glide.load.resource.bitmap.TransformationUtils#fitCenter(Bitmap, BitmapPool, int, int)}.
+         */
+        @Override
+        protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
+            int targetWidth = (int) (mSizeMultiplier * toTransform.getWidth());
+            int targetHeight = (int) (mSizeMultiplier * toTransform.getHeight());
+
+            Bitmap.Config config = getSafeConfig(toTransform);
+            Bitmap toReuse = pool.get(targetWidth, targetHeight, config);
+            if (toReuse == null) {
+                toReuse = Bitmap.createBitmap(targetWidth, targetHeight, config);
+            }
+            // We don't add or remove alpha, so keep the alpha setting of the Bitmap we were given.
+            TransformationUtils.setAlpha(toTransform, toReuse);
+
+            Canvas canvas = new Canvas(toReuse);
+            Matrix matrix = new Matrix();
+            matrix.setScale(mSizeMultiplier, mSizeMultiplier);
+            Paint paint = new Paint(TransformationUtils.PAINT_FLAGS);
+            canvas.drawBitmap(toTransform, matrix, paint);
+
+            return toReuse;
+        }
+
+        @Override
+        public String getId() {
+            return SizeMultiplierBitmapTransformation.class.getName();
+        }
+
+        /**
+         * Copied from {@link com.bumptech.glide.load.resource.bitmap.TransformationUtils#getSafeConfig(Bitmap)}.
+         */
+        private static Bitmap.Config getSafeConfig(Bitmap bitmap) {
+            return bitmap.getConfig() != null ? bitmap.getConfig() : Bitmap.Config.ARGB_8888;
         }
     }
 }
