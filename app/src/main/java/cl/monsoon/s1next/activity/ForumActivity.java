@@ -88,7 +88,6 @@ public final class ForumActivity extends BaseActivity
      * Implements {@link ToolbarInterface.SpinnerCallback}.
      */
     @Override
-    @SuppressWarnings("deprecation")
     public void setupToolbarDropDown(List<? extends CharSequence> dropDownItemList) {
         if (mSpinner == null) {
             setTitle(null);

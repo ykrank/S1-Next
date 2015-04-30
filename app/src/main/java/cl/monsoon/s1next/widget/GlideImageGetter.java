@@ -198,7 +198,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
 
     private static class SizeMultiplierBitmapTransformation extends BitmapTransformation {
 
-        private float mSizeMultiplier;
+        private final float mSizeMultiplier;
 
         public SizeMultiplierBitmapTransformation(Context context, float sizeMultiplier) {
             super(context);
