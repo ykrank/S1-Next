@@ -46,6 +46,7 @@ public final class App extends Application {
 
         // initiate the config depends on settings
         Settings.General.setTextScale(sharedPreferences);
+        Settings.General.setSignature(sharedPreferences);
         Settings.Theme.setCurrentTheme(sharedPreferences);
         Settings.Download.setAvatarCacheInvalidationInterval(sharedPreferences);
         Settings.Download.setAvatarsDownloadStrategy(sharedPreferences);

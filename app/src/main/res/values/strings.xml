@@ -85,6 +85,7 @@
     <string name="reply_activity_title_prefix" translatable="false">"回复主题 - "</string>
     <string name="reply_activity_quote_title_prefix" translatable="false">"引用#%1$s - "</string>
     <string name="prompt_reply">Write something…</string>
+    <string name="signature">— from %1$s</string>
     <string name="dialog_progress_message_reply">Replying…</string>
     <string name="dialog_message_reply_discard_prompt">Do you want to discard this reply?</string>
     <string name="dialog_message_text_discard">Discard</string>
@@ -109,6 +110,9 @@
     <string name="pref_theme_default_value" translatable="false">1</string>
     <string name="pref_font_size">Font size</string>
     <string name="pref_font_size_default_value" translatable="false">2</string>
+    <string name="pref_signature">Signature</string>
+
+    <string name="pref_advanced">Advanced</string>
     <string name="download_settings" translatable="false">@string/pref_downloads</string>
     <string name="pref_downloads">Downloads</string>
     <string name="pref_downloads_summary">Avatar &amp; Image</string>

@@ -22,6 +22,18 @@
             android:summary="%s"
             android:title="@string/pref_font_size" />
 
+        <SwitchPreference
+            android:defaultValue="@bool/pref_signature_default_value"
+            android:key="pref_key_signature"
+            android:title="@string/pref_signature" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_key_advanced"
+        android:persistent="false"
+        android:title="@string/pref_advanced">
+
         <Preference
             android:key="pref_key_downloads"
             android:persistent="false"

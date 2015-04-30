@@ -40,7 +40,9 @@ import cl.monsoon.s1next.model.Quote;
 import cl.monsoon.s1next.model.Result;
 import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.singleton.BusProvider;
+import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.singleton.User;
+import cl.monsoon.s1next.util.DeviceUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.util.ViewUtil;
@@ -199,8 +201,13 @@ public final class ReplyFragment extends Fragment {
 
                 return true;
             case R.id.menu_send:
+                StringBuilder stringBuilder = new StringBuilder(mReplyView.getText());
+                if (Settings.General.hasSignature()) {
+                    stringBuilder.append("\n\n").append(DeviceUtil.getSignature());
+                }
+
                 ReplyLoaderDialogFragment.newInstance(
-                        mThreadId, mQuotePostId, mQuote, mReplyView.getText().toString()).show(
+                        mThreadId, mQuotePostId, mQuote, stringBuilder.toString()).show(
                         getChildFragmentManager(), ReplyLoaderDialogFragment.TAG);
 
                 return true;

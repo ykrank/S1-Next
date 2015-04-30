@@ -44,12 +44,15 @@
     <string name="period">。</string>
     <string name="dialog_message_quote_not_found">找不到该引用。</string>
     <string name="prompt_reply">写点内容吧…</string>
+    <string name="signature">—— 来自 %1$s</string>
     <string name="dialog_progress_message_reply">回复中…</string>
     <string name="dialog_message_reply_discard_prompt">要舍弃这条回复吗？</string>
     <string name="dialog_message_text_discard">舍弃</string>
     <string name="pref_general">常规</string>
     <string name="pref_theme">主题</string>
     <string name="pref_font_size">字体大小</string>
+    <string name="pref_signature">尾巴</string>
+    <string name="pref_advanced">高级</string>
     <string name="pref_downloads">下载</string>
     <string name="pref_downloads_summary">头像 &amp; 图片</string>
     <string name="pref_download_total_cache_size">总缓存大小</string>

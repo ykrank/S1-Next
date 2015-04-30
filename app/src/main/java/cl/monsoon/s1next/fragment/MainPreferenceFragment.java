@@ -11,11 +11,13 @@ import cl.monsoon.s1next.event.FontSizeChangeEvent;
 import cl.monsoon.s1next.event.ThemeChangeEvent;
 import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.Settings;
+import cl.monsoon.s1next.util.DeviceUtil;
 
 public final class MainPreferenceFragment extends BasePreferenceFragment implements Preference.OnPreferenceClickListener {
 
     public static final String PREF_KEY_THEME = "pref_key_theme";
     public static final String PREF_KEY_FONT_SIZE = "pref_key_font_size";
+    public static final String PREF_KEY_SIGNATURE = "pref_key_signature";
 
     private static final String PREF_KEY_DOWNLOADS = "pref_key_downloads";
 
@@ -26,6 +28,7 @@ public final class MainPreferenceFragment extends BasePreferenceFragment impleme
         addPreferencesFromResource(R.xml.main_preferences);
 
         findPreference(PREF_KEY_DOWNLOADS).setOnPreferenceClickListener(this);
+        findPreference(PREF_KEY_SIGNATURE).setSummary(DeviceUtil.getSignature());
     }
 
     @Override
@@ -41,6 +44,11 @@ public final class MainPreferenceFragment extends BasePreferenceFragment impleme
             case PREF_KEY_FONT_SIZE:
                 Settings.General.setTextScale(sharedPreferences);
                 BusProvider.get().post(new FontSizeChangeEvent());
+
+                break;
+            // enable/disable signature
+            case PREF_KEY_SIGNATURE:
+                Settings.General.setSignature(sharedPreferences);
 
                 break;
         }

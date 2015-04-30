@@ -26,6 +26,7 @@ public final class Settings {
 
         private volatile boolean hasWifi;
         private volatile float textScale;
+        private volatile boolean hasSignature;
 
         public static void setWifi(boolean hasWifi) {
             INSTANCE.hasWifi = hasWifi;
@@ -41,6 +42,16 @@ public final class Settings {
                     R.string.pref_font_size_default_value);
 
             INSTANCE.textScale = TextScale.get(Integer.parseInt(value)).getSize();
+        }
+
+        public static boolean hasSignature() {
+            return INSTANCE.hasSignature;
+        }
+
+        public static void setSignature(SharedPreferences sharedPreferences) {
+            INSTANCE.hasSignature = sharedPreferences.getBoolean(
+                    MainPreferenceFragment.PREF_KEY_SIGNATURE,
+                    App.getContext().getResources().getBoolean(R.bool.pref_signature_default_value));
         }
 
         private enum TextScale {
