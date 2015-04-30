@@ -192,7 +192,6 @@ public final class ReplyFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_emoticon:
-
                 if (mIsEmoticonKeyboardShowing) {
                     hideEmoticonKeyboard(true);
                 } else {
