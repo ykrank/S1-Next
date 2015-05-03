@@ -55,7 +55,7 @@ public final class ViewUtil {
         } else {
             try {
                 Method method;
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     method = TextView.class.getMethod("setShowSoftInputOnFocus", boolean.class);
                 } else {
                     method = TextView.class.getMethod("setSoftInputShownOnFocus", boolean.class);
