@@ -88,7 +88,7 @@ public class NavigationDrawerView extends ScrimInsetsFrameLayout {
         //noinspection deprecation
         setBackgroundDrawable(a.getDrawable(R.styleable.NavigationDrawerView_android_background));
         ViewCompat.setElevation(this,
-                a.getDimensionPixelSize(R.styleable.NavigationDrawerView_android_elevation, 0));
+                a.getDimensionPixelSize(R.styleable.NavigationDrawerView_elevation, 0));
         ViewCompat.setFitsSystemWindows(this,
                 a.getBoolean(R.styleable.NavigationDrawerView_android_fitsSystemWindows, false));
         mMaxWidth = a.getDimensionPixelSize(R.styleable.NavigationDrawerView_android_maxWidth, 0);

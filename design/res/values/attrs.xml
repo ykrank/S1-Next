@@ -40,7 +40,7 @@
     </declare-styleable>
 
     <declare-styleable name="NavigationDrawerView">
-        <attr name="android:elevation" />
+        <attr name="elevation" />
         <attr name="android:background" />
         <attr name="android:fitsSystemWindows" />
         <attr name="android:maxWidth" />

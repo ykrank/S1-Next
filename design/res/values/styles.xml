@@ -31,7 +31,7 @@
     </style>
 
     <style name="Widget.Design.NavigationDrawerView" parent="">
-        <item name="android:elevation">@dimen/drawer_elevation</item>
+        <item name="elevation">@dimen/drawer_elevation</item>
         <item name="android:background">?android:attr/windowBackground</item>
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:maxWidth">@dimen/drawer_max_width</item>
