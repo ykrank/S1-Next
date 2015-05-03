@@ -6,6 +6,7 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.util.ContentLengthInputStream;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -44,7 +45,7 @@ import static java.net.HttpURLConnection.HTTP_REQ_TOO_LONG;
 final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 
     private final OkHttpClient mOkHttpClient;
-    private final String mUrl;
+    private final GlideUrl mGlideUrl;
 
     private volatile Call mCall;
     private ResponseBody mResponseBody;
@@ -52,7 +53,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 
     public OkHttpStreamFetcher(OkHttpClient okHttpClient, GlideUrl glideUrl) {
         this.mOkHttpClient = okHttpClient;
-        this.mUrl = glideUrl.toString();
+        this.mGlideUrl = glideUrl;
     }
 
     /**
@@ -61,16 +62,17 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
     @Override
     public InputStream loadData(Priority priority) throws IOException {
         Key key = null;
-        if (Api.isAvatarUrl(mUrl)) {
-            key = new AvatarUrlCache.OriginalKey(mUrl,
+        String url = mGlideUrl.toStringUrl();
+        if (Api.isAvatarUrl(url)) {
+            key = new AvatarUrlCache.OriginalKey(url,
                     Settings.Download.getAvatarCacheInvalidationIntervalSignature());
             if (AvatarUrlCache.has(key)) {
-                throw new IOException("Already have cached this avatar (" + mUrl + ").");
+                throw new IOException("Already have cached this avatar (" + url + ").");
             }
         }
 
         Request request = new Request.Builder()
-                .url(mUrl)
+                .url(url)
                 .build();
 
         mCall = mOkHttpClient.newCall(request);
@@ -86,8 +88,32 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
             throw new IOException("Response (status code " + response.code() + ") is unsuccessful.");
         }
 
-        mInputStream = mResponseBody.byteStream();
+        long contentLength = mResponseBody.contentLength();
+        mInputStream = ContentLengthInputStream.obtain(mResponseBody.byteStream(), contentLength);
         return mInputStream;
+    }
+
+    @Override
+    public void cleanup() {
+        IOUtils.closeQuietly(mInputStream);
+        IOUtils.closeQuietly(mResponseBody);
+    }
+
+    @Override
+    public String getId() {
+        return mGlideUrl.getCacheKey();
+    }
+
+    @Override
+    public void cancel() {
+        if (mCall != null) {
+            if (Looper.myLooper() == Looper.getMainLooper()) {
+                mOkHttpClient.getDispatcher().getExecutorService().execute(mCall::cancel);
+            } else {
+                mCall.cancel();
+            }
+            mCall = null;
+        }
     }
 
     /**
@@ -130,28 +156,5 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
         }
 
         return true;
-    }
-
-    @Override
-    public void cleanup() {
-        IOUtils.closeQuietly(mInputStream);
-        IOUtils.closeQuietly(mResponseBody);
-    }
-
-    @Override
-    public String getId() {
-        return mUrl;
-    }
-
-    @Override
-    public void cancel() {
-        if (mCall != null) {
-            if (Looper.myLooper() == Looper.getMainLooper()) {
-                mOkHttpClient.getDispatcher().getExecutorService().execute(mCall::cancel);
-            } else {
-                mCall.cancel();
-            }
-            mCall = null;
-        }
     }
 }

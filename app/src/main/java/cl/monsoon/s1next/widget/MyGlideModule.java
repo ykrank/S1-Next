@@ -8,9 +8,11 @@ import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.module.GlideModule;
+import com.bumptech.glide.request.target.ViewTarget;
 
 import java.io.InputStream;
 
+import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.singleton.OkHttpClientProvider;
 import cl.monsoon.s1next.singleton.Settings;
 
@@ -25,6 +27,8 @@ public final class MyGlideModule implements GlideModule {
         builder.setDiskCache(new InternalCacheDiskCacheFactory(
                 context, Settings.Download.getTotalCacheSize(
                 PreferenceManager.getDefaultSharedPreferences(context))));
+
+        ViewTarget.setTagId(R.id.glide_tag);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package cl.monsoon.s1next.singleton;
 
-import android.util.Log;
 import android.util.LruCache;
 
 import com.bumptech.glide.disklrucache.DiskLruCache;
@@ -118,8 +117,6 @@ public enum AvatarUrlCache {
      */
     private static class KeyGenerator {
 
-        private final String TAG = "KeyGenerator";
-
         private final LruCache<Key, String> lruCache =
                 new LruCache<>(Config.AVATAR_URL_KEYS_MEMORY_CACHE_MAX_NUMBER);
 
@@ -131,10 +128,8 @@ public enum AvatarUrlCache {
                     key.updateDiskCacheKey(messageDigest);
                     value = Util.sha256BytesToHex(messageDigest.digest());
                     lruCache.put(key, value);
-                } catch (NoSuchAlgorithmException e) {
-                    throw new RuntimeException("No SHA-256 algorithm support.", e);
-                } catch (UnsupportedEncodingException e) {
-                    Log.w(TAG, "Unsupported encoding exception.", e);
+                } catch (NoSuchAlgorithmException | UnsupportedEncodingException ignored) {
+
                 }
             }
 
