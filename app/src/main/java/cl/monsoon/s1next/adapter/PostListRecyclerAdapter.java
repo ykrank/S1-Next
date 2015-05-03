@@ -132,7 +132,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
             spannable.setSpan(QUOTE_CLICKABLE_SPAN, 0, spannable.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             countView.setText(spannable);
-            countView.setTag(post.getPartForQuote());
+            countView.setTag(R.id.post_tag, post.getPartForQuote());
             countView.setClickable(true);
             countView.setLongClickable(true);
             countView.setFocusable(true);
@@ -233,7 +233,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
 
         @Override
         public void onClick(View widget) {
-            Post post = (Post) widget.getTag();
+            Post post = (Post) widget.getTag(R.id.post_tag);
             BusProvider.get().post(new QuoteEvent(post.getId(), post.getCount()));
         }
     };

@@ -327,9 +327,10 @@ public abstract class BaseActivity extends AppCompatActivityCompat
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
 
-                if (drawerView.getTag() instanceof Runnable) {
-                    Runnable runnable = (Runnable) drawerView.getTag();
-                    drawerView.setTag(null);
+                Object tag = drawerView.getTag(R.id.drawer_runnable_tag);
+                if (tag instanceof Runnable) {
+                    Runnable runnable = (Runnable) tag;
+                    drawerView.setTag(R.id.drawer_runnable_tag, null);
                     runnable.run();
                 }
             }
@@ -345,7 +346,7 @@ public abstract class BaseActivity extends AppCompatActivityCompat
     private void closeDrawer(@Nullable Runnable runnable) {
         if (mDrawerLayout != null && mDrawer != null) {
             mDrawerLayout.post(() -> {
-                mDrawer.setTag(runnable);
+                mDrawer.setTag(R.id.drawer_runnable_tag, runnable);
                 mDrawerLayout.closeDrawer(mDrawer);
             });
         }

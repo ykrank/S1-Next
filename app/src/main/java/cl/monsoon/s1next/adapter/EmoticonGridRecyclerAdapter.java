@@ -22,8 +22,6 @@ import cl.monsoon.s1next.singleton.BusProvider;
 
 public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<EmoticonGridRecyclerAdapter.ViewHolder> {
 
-    private static final int TAG_EMOTICON_ENTITY = Integer.MIN_VALUE;
-
     private final LinkedMap<String, String> mEmoticonMap;
     private final DrawableRequestBuilder<Uri> mEmoticonRequestBuilder;
 
@@ -45,7 +43,7 @@ public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<Emot
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.imageView.setTag(TAG_EMOTICON_ENTITY, mEmoticonMap.getValue(position));
+        holder.imageView.setTag(R.id.emoticon_entity_tag, mEmoticonMap.getValue(position));
         mEmoticonRequestBuilder
                 .load(Uri.parse(Config.PREFIX_EMOTICON_ASSET + mEmoticonMap.get(position)))
                 .into(holder.imageView);
@@ -75,7 +73,7 @@ public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<Emot
         @Override
         public void onClick(View v) {
             // notify ReplyFragment that emoticon had been clicked
-            BusProvider.get().post(new EmoticonClickEvent((String) v.getTag(TAG_EMOTICON_ENTITY)));
+            BusProvider.get().post(new EmoticonClickEvent((String) v.getTag(R.id.emoticon_entity_tag)));
         }
     }
 }
