@@ -55,7 +55,8 @@
 
     <item name="line_spacing_multiplier" format="float" type="dimen">1.2</item>
 
-    <!-- 36dp (emoticon keyboard header) + 160dp (48dp*3 three lines of emoticons + 8dp*2 top/bottom padding of emoticon grid) -->
+    <!-- 36dp (emoticon keyboard header) + 160dp (48dp * 3 three lines of emoticons
+    + 8dp * 2 top/bottom padding of emoticon grid) -->
     <dimen name="emoticon_keyboard_height">196dp</dimen>
     <dimen name="emoticon_keyboard_category_tabs_height">36dp</dimen>
     <dimen name="emoticon_padding">8dp</dimen>
