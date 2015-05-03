@@ -23,5 +23,5 @@ doesn't remove all extra space. -->
     android:paddingRight="@dimen/item_padding"
     android:paddingStart="@dimen/item_padding"
     android:paddingTop="14.5dp"
-    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+    android:textAppearance="@style/TextAppearance.Dense.Subhead"
     tools:ignore="NewApi" />

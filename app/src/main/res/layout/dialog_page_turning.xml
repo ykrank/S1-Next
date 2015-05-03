@@ -28,6 +28,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:inputType="number"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+        android:textAppearance="@style/TextAppearance.Dense.Subhead" />
 
 </LinearLayout>

@@ -17,4 +17,16 @@
         <item name="android:textColor">?attr/emoticonKeyboardTabsTitleColor</item>
     </style>
 
+    <style name="TextAppearance.Dense.Subhead" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textSize">@dimen/dense_text_size_subheader</item>
+    </style>
+
+    <style name="TextAppearance.Dense.Body2" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:textSize">@dimen/dense_text_size_body_2</item>
+    </style>
+
+    <style name="TextAppearance.Dense.Small" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">@dimen/dense_text_size_small</item>
+    </style>
+
 </resources>
