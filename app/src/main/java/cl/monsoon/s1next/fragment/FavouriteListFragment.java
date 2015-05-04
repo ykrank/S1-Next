@@ -42,6 +42,8 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
     private PagerAdapter mAdapter;
     private ViewPager mViewPager;
 
+    private MenuItem mMenuPageTurning;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.screen_slide, container, false);
@@ -98,6 +100,9 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.fragment_favourites, menu);
+
+        mMenuPageTurning = menu.findItem(R.id.menu_page_turning);
+        preparePageTurningMenu();
     }
 
     @Override
@@ -119,11 +124,28 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
     }
 
     /**
+     * Disables the page turning menu if only has one page.
+     */
+    private void preparePageTurningMenu() {
+        if (mMenuPageTurning == null) {
+            return;
+        }
+
+        if (mTotalPages == 1) {
+            mMenuPageTurning.setEnabled(false);
+        } else {
+            mMenuPageTurning.setEnabled(true);
+        }
+    }
+
+    /**
      * Implements {@link FavouriteListPagerFragment.PagerCallback}.
      */
     @Override
     public void setTotalPage(int totalPage) {
         this.mTotalPages = totalPage;
+
+        preparePageTurningMenu();
 
         if (mAdapter != null) {
             getActivity().runOnUiThread(mAdapter::notifyDataSetChanged);
