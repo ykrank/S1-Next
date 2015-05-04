@@ -14,13 +14,13 @@ import android.widget.TextView;
  * A movement method that provides selection and clicking on links,
  * also invokes {@link TagHandler.ImageClickableSpan}'s clicking event.
  */
-public final class CustomMovementMethod extends ArrowKeyMovementMethod {
+public final class MyMovementMethod extends ArrowKeyMovementMethod {
 
-    private static CustomMovementMethod sInstance;
+    private static MyMovementMethod sInstance;
 
     public static MovementMethod getInstance() {
         if (sInstance == null) {
-            sInstance = new CustomMovementMethod();
+            sInstance = new MyMovementMethod();
         }
 
         return sInstance;
