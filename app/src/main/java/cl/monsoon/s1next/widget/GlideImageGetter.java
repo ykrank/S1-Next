@@ -149,7 +149,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
                 height = resHeight;
             } else {
                 width = getView().getWidth();
-                height = (int) (resHeight / (1.0 * resWidth / width));
+                height = (int) (resHeight / ((float) resWidth / width));
             }
 
             Rect rect = new Rect(0, 0, width, height);

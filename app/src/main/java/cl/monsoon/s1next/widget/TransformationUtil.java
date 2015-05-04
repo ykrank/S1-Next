@@ -80,7 +80,7 @@ public final class TransformationUtil {
         protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
             final int resWidth = toTransform.getWidth();
             final int resHeight = toTransform.getHeight();
-            float maxTextureSize = GL.getGlMaxTextureSize() * 1.0f;
+            float maxTextureSize = GL.getGlMaxTextureSize();
 
             float sizeMultiplier = Math.min(maxTextureSize / resWidth, maxTextureSize / resHeight);
             if (sizeMultiplier < 1) {
