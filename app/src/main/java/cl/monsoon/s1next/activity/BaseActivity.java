@@ -21,6 +21,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -61,7 +62,7 @@ import cl.monsoon.s1next.view.InsetsFrameLayout;
  * and navigation drawer amongst others.
  * Also changes theme depends on settings.
  */
-public abstract class BaseActivity extends AppCompatActivityCompat
+public abstract class BaseActivity extends AppCompatActivity
         implements InsetsFrameLayout.OnInsetsCallback, BaseFragment.InsetsCallback {
 
     private Rect mSystemWindowInsets;
