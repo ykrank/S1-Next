@@ -1,7 +1,6 @@
 package cl.monsoon.s1next.util;
 
 import android.os.Build;
-import android.support.annotation.ColorRes;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -27,7 +26,7 @@ public final class ViewUtil {
         textView.append(StringUtil.TWO_SPACES + text);
     }
 
-    public static void setForegroundColor(TextView textView, @ColorRes int color, int start, int end) {
+    public static void setForegroundColor(TextView textView, int color, int start, int end) {
         Spannable spannable = Spannable.Factory.getInstance().newSpannable(textView.getText());
         spannable.setSpan(new ForegroundColorSpan(color), start, end,
                 Spanned.SPAN_INCLUSIVE_INCLUSIVE);

@@ -22,6 +22,8 @@ public final class App extends Application {
 
     @Override
     public void onCreate() {
+        super.onCreate();
+
         // enable StrictMode when debug
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(

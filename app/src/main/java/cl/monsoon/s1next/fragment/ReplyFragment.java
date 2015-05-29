@@ -236,7 +236,7 @@ public final class ReplyFragment extends Fragment {
         ViewPager viewPager = (ViewPager) mEmoticonKeyboard.findViewById(
                 R.id.emoticon_keyboard_pager);
         viewPager.setAdapter(new EmoticonPagerAdapter(getActivity()));
-        viewPager.setOnPageChangeListener(new EmoticonKeyboardTabsPagerListener());
+        viewPager.addOnPageChangeListener(new EmoticonKeyboardTabsPagerListener());
 
         mEmoticonKeyboardCategoryTabs = (ViewPagerTabs) mEmoticonKeyboard.findViewById(
                 R.id.emoticon_keyboard_category_tabs);

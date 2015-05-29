@@ -62,7 +62,7 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
         mViewPager = (ViewPager) view.findViewById(R.id.pager);
         mAdapter = new FavouriteListPagerAdapter(getFragmentManager());
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

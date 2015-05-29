@@ -2,14 +2,14 @@
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="cl.monsoon.s1next.activity.GalleryActivity">
 
     <cl.monsoon.s1next.view.InsetsFrameLayout
         android:id="@+id/insets_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        tools:context="cl.monsoon.s1next.activity.GalleryActivity">
+        android:fitsSystemWindows="true">
 
         <FrameLayout
             android:id="@+id/frame_layout"

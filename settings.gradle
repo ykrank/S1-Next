@@ -1,2 +1,1 @@
-include ':app', ':support-design'
-project(':support-design').projectDir = new File(rootDir, 'design')
+include ':app'

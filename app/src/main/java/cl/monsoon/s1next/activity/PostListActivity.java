@@ -119,7 +119,7 @@ public final class PostListActivity extends BaseActivity
         mViewPager = (ViewPager) container.findViewById(R.id.pager);
         mAdapter = new PostListPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

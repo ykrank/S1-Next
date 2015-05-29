@@ -6,7 +6,6 @@
         <item name="windowActionModeOverlay">true</item>
 
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
-        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
 
         <item name="fabBackgroundTint">?attr/colorAccent</item>
         <item name="myCardView">@style/LightCardView</item>
@@ -35,7 +34,6 @@
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
 
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="fabBackgroundTint">?attr/colorPrimary</item>
         <item name="mySpinnerItemTextColor">?android:textColorPrimaryInverse</item>
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
@@ -68,7 +66,6 @@
     <style name="DarkTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="fabBackgroundTint">?attr/colorAccent</item>
         <item name="myCardView">@style/DarkCardView</item>
         <item name="mySpinnerItemTextColor">?android:textColorPrimary</item>

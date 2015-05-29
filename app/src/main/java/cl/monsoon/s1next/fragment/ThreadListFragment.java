@@ -75,7 +75,7 @@ public final class ThreadListFragment extends Fragment implements ThreadListPage
         // that are nested in other fragments
         mAdapter = new ThreadListPagerAdapter(getFragmentManager());
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
