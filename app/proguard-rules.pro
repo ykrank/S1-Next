@@ -15,6 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
 # Jackson databind
 -keep public class cl.monsoon.s1next.model.** { *; }
 
