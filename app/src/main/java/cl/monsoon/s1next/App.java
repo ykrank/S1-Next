@@ -8,8 +8,6 @@ import android.preference.PreferenceManager;
 
 import com.bugsnag.android.Bugsnag;
 
-import net.danlew.android.joda.JodaTimeAndroid;
-
 import cl.monsoon.s1next.singleton.Settings;
 
 public final class App extends Application {
@@ -41,8 +39,6 @@ public final class App extends Application {
         sContext = getApplicationContext();
 
         Bugsnag.init(this);
-
-        JodaTimeAndroid.init(this);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 

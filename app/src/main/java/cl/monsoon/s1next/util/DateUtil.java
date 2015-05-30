@@ -1,6 +1,9 @@
 package cl.monsoon.s1next.util;
 
-import org.joda.time.LocalDate;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public final class DateUtil {
 
@@ -13,14 +16,38 @@ public final class DateUtil {
      * to invalidate avatar every day.
      */
     public static String today() {
-        return new LocalDate().toString();
+        return getSimpleDateFormatInstance().format(new Date());
     }
 
+    /**
+     * Used to construct {@link com.bumptech.glide.signature.StringSignature}s
+     * to invalidate avatar every week.
+     */
     public static String dayOfWeek() {
-        return new LocalDate().dayOfWeek().withMinimumValue().toString();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+        return getSimpleDateFormatInstance().format(calendar.getTime());
     }
 
+    /**
+     * Used to construct {@link com.bumptech.glide.signature.StringSignature}s
+     * to invalidate avatar every month.
+     */
     public static String dayOfMonth() {
-        return new LocalDate().dayOfMonth().withMinimumValue().toString();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        return getSimpleDateFormatInstance().format(calendar.getTime());
+    }
+
+    private static class SimpleDateFormatHolder {
+
+        private static final String TEMPLATE = "yyyy-MM-dd";
+
+        private static final SimpleDateFormat INSTANCE = new SimpleDateFormat(TEMPLATE, Locale.getDefault());
+    }
+
+    private static synchronized SimpleDateFormat getSimpleDateFormatInstance() {
+        return SimpleDateFormatHolder.INSTANCE;
     }
 }

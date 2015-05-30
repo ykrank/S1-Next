@@ -39,10 +39,5 @@
     public *;
 }
 
-# joda-time-android
--dontwarn org.joda.convert.FromString
--dontwarn org.joda.convert.ToString
--dontwarn org.joda.time.tz.ZoneInfoCompiler
-
 # Gradle Retrolambda Plugin
 -dontwarn java.lang.invoke.*
