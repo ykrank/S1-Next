@@ -1,13 +1,13 @@
 package cl.monsoon.s1next.model;
 
 import android.graphics.Color;
+import android.support.v4.util.SimpleArrayMap;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -170,10 +170,10 @@ public final class Post {
         }
     }
 
-    private static final Map<String, String> COLOR_NAME_MAP;
+    private static final SimpleArrayMap<String, String> COLOR_NAME_MAP;
 
     static {
-        COLOR_NAME_MAP = new HashMap<>();
+        COLOR_NAME_MAP = new SimpleArrayMap<>();
 
         COLOR_NAME_MAP.put("sienna", "#A0522D");
         COLOR_NAME_MAP.put("darkolivegreen", "#556B2F");
