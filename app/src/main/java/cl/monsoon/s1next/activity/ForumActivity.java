@@ -103,9 +103,8 @@ public final class ForumActivity extends BaseActivity
             }
             mSpinner.setOnItemSelectedListener(this);
 
-            // We disable clicking in Spinner
-            // and let its parents LinearLayout to handle
-            // clicking event in order to increase clickable area.
+            // let spinner's parent to handle clicking event in order
+            // to increase clickable area.
             View spinnerView = toolbar.findViewById(R.id.toolbar_layout);
             spinnerView.setOnClickListener(v -> mSpinner.performClick());
         }
