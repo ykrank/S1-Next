@@ -3,8 +3,6 @@ package cl.monsoon.s1next.activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.internal.widget.TintManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,7 +15,6 @@ import java.util.List;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.ForumFragment;
-import cl.monsoon.s1next.singleton.Settings;
 
 /**
  * This Activity has Spinner in Toolbar to switch between different forum groups.
@@ -97,12 +94,7 @@ public final class ForumActivity extends BaseActivity
             getLayoutInflater().inflate(R.layout.toolbar_spinner, toolbar, true);
             mSpinner = (Spinner) toolbar.findViewById(R.id.spinner);
 
-            if (Settings.Theme.isLightInverseTheme()) {
-                ViewCompat.setBackgroundTintList(mSpinner, TintManager.get(
-                        getToolbar().getContext()).getTintList(R.drawable.abc_spinner_mtrl_am_alpha));
-            }
             mSpinner.setOnItemSelectedListener(this);
-
             // let spinner's parent to handle clicking event in order
             // to increase clickable area.
             View spinnerView = toolbar.findViewById(R.id.toolbar_layout);

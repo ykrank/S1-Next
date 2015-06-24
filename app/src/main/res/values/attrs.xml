@@ -2,9 +2,9 @@
 <resources>
 
     <attr name="toolbarTheme" format="reference" />
+    <attr name="spinnerPopupBackground" format="color|reference" />
     <attr name="fabBackgroundTint" format="color|reference" />
     <attr name="myCardView" format="reference" />
-    <attr name="mySpinnerItemTextColor" format="color" />
     <attr name="linkBackground" format="color|reference" />
     <attr name="emoticonKeyboardColor" format="color|reference" />
     <attr name="emoticonKeyboardTabsBackground" format="color|reference" />

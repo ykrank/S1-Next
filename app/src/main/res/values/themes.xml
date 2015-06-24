@@ -7,10 +7,10 @@
 
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="spinnerPopupBackground">@color/background_material_light</item>
 
         <item name="fabBackgroundTint">?attr/colorAccent</item>
         <item name="myCardView">@style/LightCardView</item>
-        <item name="mySpinnerItemTextColor">?android:textColorPrimary</item>
         <item name="linkBackground">@drawable/link_pressed_light</item>
         <item name="emoticonKeyboardColor">@color/emoticon_keyboard_background_color_light</item>
         <item name="emoticonKeyboardTabsBackground">@color/emoticon_keyboard_tab_background_color_light</item>
@@ -36,8 +36,9 @@
 
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="spinnerPopupBackground">@color/background_material_light</item>
+
         <item name="fabBackgroundTint">?attr/colorPrimary</item>
-        <item name="mySpinnerItemTextColor">?android:textColorPrimaryInverse</item>
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
         <item name="menuThreadAttachment">@drawable/ic_menu_attachment_white_24dp</item>
@@ -69,9 +70,9 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="spinnerPopupBackground">@color/background_material_dark</item>
         <item name="fabBackgroundTint">?attr/colorAccent</item>
         <item name="myCardView">@style/DarkCardView</item>
-        <item name="mySpinnerItemTextColor">?android:textColorPrimary</item>
         <item name="linkBackground">@drawable/link_pressed_dark</item>
         <item name="emoticonKeyboardColor">@color/emoticon_keyboard_background_color_dark</item>
         <item name="emoticonKeyboardTabsBackground">@color/emoticon_keyboard_tab_background_color_dark</item>
@@ -93,7 +94,6 @@
         <item name="colorAccent">@color/dark_cyan</item>
         <item name="android:textColorPrimary">@color/white_69p</item>
         <item name="android:textColorLink">@color/teal_200_70p</item>
-        <item name="mySpinnerItemTextColor">@color/abc_primary_text_material_dark</item>
     </style>
 
     <style name="DarkTheme.Imperfect.Black">
