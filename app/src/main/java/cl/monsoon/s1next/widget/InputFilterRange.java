@@ -3,7 +3,8 @@ package cl.monsoon.s1next.widget;
 import android.text.InputFilter;
 import android.text.Spanned;
 
-import org.apache.commons.lang3.Range;
+import com.google.common.collect.Range;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**

@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.SeekBar;
 
-import org.apache.commons.lang3.Range;
+import com.google.common.collect.Range;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.widget.InputFilterRange;
@@ -64,7 +64,7 @@ public abstract class PageTurningDialogFragment extends DialogFragment {
         valueView.setText(String.valueOf(mSeekBarProgress + 1));
         valueView.setEms(String.valueOf(totalPage).length());
         // set EditText range filter
-        valueView.setFilters(new InputFilter[]{new InputFilterRange(Range.between(1, totalPage))});
+        valueView.setFilters(new InputFilter[]{new InputFilterRange(Range.closed(1, totalPage))});
         valueView.addTextChangedListener(new TextWatcher() {
 
             @Override

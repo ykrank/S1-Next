@@ -3,11 +3,12 @@ package cl.monsoon.s1next.singleton;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.apache.commons.io.IOUtils;
+import com.google.common.base.Charsets;
+import com.google.common.io.CharStreams;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import cl.monsoon.s1next.model.Extractable;
 import cl.monsoon.s1next.model.Quote;
@@ -40,8 +41,7 @@ public enum ObjectExtractor {
 
     private static Quote parseQuote(InputStream in) throws IOException {
         try {
-            String s = IOUtils.toString(in);
-            return Quote.fromXmlString(s);
+            return Quote.fromXmlString(CharStreams.toString(new InputStreamReader(in, Charsets.UTF_8)));
         } catch (NullPointerException e) {
             throw new ServerException(e);
         }

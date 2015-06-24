@@ -388,7 +388,7 @@ public final class ReplyFragment extends Fragment {
             mEmoticonGridPadding = resources.getDimensionPixelSize(R.dimen.emoticon_padding);
 
             mEmoticonFactory = new EmoticonFactory(context);
-            mEmoticonTypeTitles = mEmoticonFactory.getTypeTitles();
+            mEmoticonTypeTitles = mEmoticonFactory.getEmotionTypeTitles();
         }
 
         @Override
@@ -407,7 +407,7 @@ public final class ReplyFragment extends Fragment {
             GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1);
             recyclerView.setLayoutManager(gridLayoutManager);
             RecyclerView.Adapter recyclerAdapter = new EmoticonGridRecyclerAdapter(mContext,
-                    mEmoticonFactory.getByType(position));
+                    mEmoticonFactory.getEmoticonsByIndex(position));
             recyclerView.setAdapter(recyclerAdapter);
             recyclerView.setHasFixedSize(true);
             recyclerView.setPadding(0, mEmoticonGridPadding, 0, mEmoticonGridPadding);

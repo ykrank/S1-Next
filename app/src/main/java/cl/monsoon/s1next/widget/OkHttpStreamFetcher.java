@@ -7,13 +7,12 @@ import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.util.ContentLengthInputStream;
+import com.google.common.io.Closeables;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
-
-import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -95,8 +94,12 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 
     @Override
     public void cleanup() {
-        IOUtils.closeQuietly(mInputStream);
-        IOUtils.closeQuietly(mResponseBody);
+        Closeables.closeQuietly(mInputStream);
+        try {
+            Closeables.close(mResponseBody, true);
+        } catch (IOException ignored) {
+
+        }
     }
 
     @Override

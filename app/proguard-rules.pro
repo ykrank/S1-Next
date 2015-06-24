@@ -16,6 +16,11 @@
 #   public *;
 #}
 
+# Guava
+# https://github.com/google/guava/wiki/UsingProGuardWithGuava
+-dontwarn sun.misc.Unsafe
+-dontwarn com.google.common.collect.MinMaxPriorityQueue
+
 # Jackson databind
 -keep public class cl.monsoon.s1next.model.** { *; }
 

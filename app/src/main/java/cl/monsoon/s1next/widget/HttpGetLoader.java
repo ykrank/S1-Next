@@ -3,12 +3,11 @@ package cl.monsoon.s1next.widget;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
+import com.google.common.io.Closeables;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
-
-import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -77,8 +76,12 @@ public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncR
         } catch (IOException e) {
             asyncResult.exception = e;
         } finally {
-            IOUtils.closeQuietly(inputStream);
-            IOUtils.closeQuietly(mResponseBody);
+            Closeables.closeQuietly(inputStream);
+            try {
+                Closeables.close(mResponseBody, true);
+            } catch (IOException ignored) {
+
+            }
         }
 
         return asyncResult;

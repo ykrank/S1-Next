@@ -3,6 +3,7 @@ package cl.monsoon.s1next.adapter;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 
-import org.apache.commons.collections4.map.LinkedMap;
-
-import java.util.Map;
+import java.util.List;
 
 import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
@@ -22,11 +21,11 @@ import cl.monsoon.s1next.singleton.BusProvider;
 
 public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<EmoticonGridRecyclerAdapter.ViewHolder> {
 
-    private final LinkedMap<String, String> mEmoticonMap;
+    private final List<Pair<String, String>> mEmoticons;
     private final DrawableRequestBuilder<Uri> mEmoticonRequestBuilder;
 
-    public EmoticonGridRecyclerAdapter(Context context, Map<String, String> emoticonMap) {
-        this.mEmoticonMap = new LinkedMap<>(emoticonMap);
+    public EmoticonGridRecyclerAdapter(Context context, List<Pair<String, String>> emoticons) {
+        this.mEmoticons = emoticons;
 
         setHasStableIds(true);
 
@@ -43,15 +42,15 @@ public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<Emot
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.imageView.setTag(R.id.emoticon_entity_tag, mEmoticonMap.getValue(position));
+        holder.imageView.setTag(R.id.emoticon_entity_tag, mEmoticons.get(position).second);
         mEmoticonRequestBuilder
-                .load(Uri.parse(Config.PREFIX_EMOTICON_ASSET + mEmoticonMap.get(position)))
+                .load(Uri.parse(Config.PREFIX_EMOTICON_ASSET + mEmoticons.get(position).first))
                 .into(holder.imageView);
     }
 
     @Override
     public int getItemCount() {
-        return mEmoticonMap.size();
+        return mEmoticons.size();
     }
 
     @Override
