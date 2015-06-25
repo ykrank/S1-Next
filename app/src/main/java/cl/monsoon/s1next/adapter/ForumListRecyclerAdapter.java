@@ -56,7 +56,6 @@ public final class ForumListRecyclerAdapter extends RecyclerAdapter<Forum, Forum
             super(itemView);
 
             textView = (TextView) itemView;
-            ViewUtil.updateTextSize(textView);
         }
     }
 }

@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.model.Favourite;
-import cl.monsoon.s1next.util.ViewUtil;
 
 /**
  * Similar to {@link cl.monsoon.s1next.adapter.ForumListRecyclerAdapter}.
@@ -48,7 +47,6 @@ public final class FavouriteListRecyclerAdapter extends RecyclerAdapter<Favourit
             super(itemView);
 
             textView = (TextView) itemView;
-            ViewUtil.updateTextSize(textView);
         }
     }
 }

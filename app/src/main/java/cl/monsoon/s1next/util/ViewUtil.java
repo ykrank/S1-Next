@@ -4,13 +4,10 @@ import android.os.Build;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.util.TypedValue;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.lang.reflect.Method;
-
-import cl.monsoon.s1next.singleton.Settings;
 
 public final class ViewUtil {
 
@@ -32,17 +29,6 @@ public final class ViewUtil {
                 Spanned.SPAN_INCLUSIVE_INCLUSIVE);
 
         textView.setText(spannable);
-    }
-
-    /**
-     * Updates the TextViews font size depends on
-     * {@link Settings.General#textScale}.
-     */
-    public static void updateTextSize(TextView... textViewList) {
-        float textScale = Settings.General.getTextScale();
-        for (TextView textView : textViewList) {
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textView.getTextSize() * textScale);
-        }
     }
 
     /**

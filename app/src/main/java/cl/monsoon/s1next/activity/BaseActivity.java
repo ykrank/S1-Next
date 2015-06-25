@@ -119,9 +119,7 @@ public abstract class BaseActivity extends AppCompatActivity
             @Subscribe
             @SuppressWarnings("unused")
             public void changeFontSize(FontSizeChangeEvent event) {
-                if (!(BaseActivity.this instanceof SettingsActivity)) {
-                    recreate();
-                }
+                recreate();
             }
 
             /**

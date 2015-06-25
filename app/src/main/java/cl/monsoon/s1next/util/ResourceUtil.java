@@ -2,6 +2,7 @@ package cl.monsoon.s1next.util;
 
 import android.content.res.Resources;
 import android.support.annotation.AttrRes;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
 import cl.monsoon.s1next.App;
@@ -22,5 +23,18 @@ public final class ResourceUtil {
     public static int getToolbarHeight() {
         return App.getContext().getResources().getDimensionPixelSize(
                 R.dimen.abc_action_bar_default_height_material);
+    }
+
+    /**
+     * Set the scaling factor for fonts displayed on the display.
+     *
+     * @param scale the scaling factor.
+     */
+    public static void setScaledDensity(Resources resources, float scale) {
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        // https://android.googlesource.com/platform/packages/apps/Settings/+/master/src/com/android/settings/Display.java#99
+        displayMetrics.scaledDensity = displayMetrics.density
+                * resources.getConfiguration().fontScale
+                * scale;
     }
 }

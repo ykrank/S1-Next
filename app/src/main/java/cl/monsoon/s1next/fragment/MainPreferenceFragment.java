@@ -12,6 +12,7 @@ import cl.monsoon.s1next.event.ThemeChangeEvent;
 import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.util.DeviceUtil;
+import cl.monsoon.s1next.util.ResourceUtil;
 
 public final class MainPreferenceFragment extends BasePreferenceFragment implements Preference.OnPreferenceClickListener {
 
@@ -43,6 +44,7 @@ public final class MainPreferenceFragment extends BasePreferenceFragment impleme
             // change font size
             case PREF_KEY_FONT_SIZE:
                 Settings.General.setTextScale(sharedPreferences);
+                ResourceUtil.setScaledDensity(getResources(), Settings.General.getTextScale());
                 BusProvider.get().post(new FontSizeChangeEvent());
 
                 break;

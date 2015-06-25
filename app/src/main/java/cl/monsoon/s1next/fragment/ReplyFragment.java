@@ -117,7 +117,6 @@ public final class ReplyFragment extends Fragment {
         mQuotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
 
         mReplyView = (EditText) view.findViewById(R.id.reply);
-        ViewUtil.updateTextSize(mReplyView);
         mReplyView.addTextChangedListener(new TextWatcher() {
 
             @Override

@@ -72,7 +72,6 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
             super(itemView);
 
             textView = (TextView) itemView;
-            ViewUtil.updateTextSize(textView);
 
             mDefaultTextViewColor = textView.getCurrentTextColor();
             mDisabledTextViewColor = ColorUtils.setAlphaComponent(mDefaultTextViewColor,
