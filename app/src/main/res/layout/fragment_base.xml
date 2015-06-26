@@ -9,9 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
-            layout="@layout/recycler_view" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/list_view_padding"
+            android:paddingTop="@dimen/list_view_padding"
+            android:scrollbars="vertical" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

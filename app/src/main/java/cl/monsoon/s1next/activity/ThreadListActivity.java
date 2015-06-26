@@ -36,7 +36,6 @@ public final class ThreadListActivity extends BaseActivity implements ThreadList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        enableWindowTranslucentStatus();
         setContentView(R.layout.activity_base);
 
         setNavDrawerIndicatorEnabled(false);

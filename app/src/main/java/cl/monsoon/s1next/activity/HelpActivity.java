@@ -13,7 +13,7 @@ public final class HelpActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity);
+        setContentView(R.layout.activity_base_without_drawer);
 
         if (savedInstanceState == null) {
             mHelpFragment = new HelpFragment();

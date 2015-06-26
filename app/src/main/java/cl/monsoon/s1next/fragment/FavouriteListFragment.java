@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.activity.BaseActivity;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
@@ -66,7 +65,7 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                ((BaseActivity) getActivity()).showOrHideToolbarAndFab(true);
+
             }
 
             @Override

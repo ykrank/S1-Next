@@ -16,6 +16,6 @@
     <!-- 16dp (half of cardView margin) - (2 * 1.5 + (1 - cos45) * 2)dp ≈ 12.05dp -->
     <dimen name="card_view_vertical_margin">12.05dp</dimen>
     <!-- 32dp (cardView margin) - (2 * 1.5 + (1 - cos45) * 2)dp = 28.05dp -->
-    <dimen name="recycler_view_card_padding">28.05dp</dimen>
+    <dimen name="recycler_view_padding_for_card">28.05dp</dimen>
 
 </resources>

@@ -5,7 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Rect;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -22,14 +22,11 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Interpolator;
+import android.view.WindowInsets;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,9 +34,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.squareup.otto.Subscribe;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.Callable;
 
 import cl.monsoon.s1next.Api;
@@ -47,49 +41,30 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.event.FontSizeChangeEvent;
 import cl.monsoon.s1next.event.ThemeChangeEvent;
 import cl.monsoon.s1next.event.UserStatusEvent;
-import cl.monsoon.s1next.fragment.BaseFragment;
 import cl.monsoon.s1next.fragment.MainPreferenceFragment;
 import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.OkHttpClientProvider;
 import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ResourceUtil;
-import cl.monsoon.s1next.view.InsetsFrameLayout;
 
 /**
- * A base Activity which includes the Toolbar tweaks
+ * A base Activity which includes the Toolbar
  * and navigation drawer amongst others.
  * Also changes theme depends on settings.
  */
-public abstract class BaseActivity extends AppCompatActivity
-        implements InsetsFrameLayout.OnInsetsCallback, BaseFragment.InsetsCallback {
-
-    private Rect mSystemWindowInsets;
-    private final List<InsetsFrameLayout.OnInsetsCallback> onInsetsCallbackList =
-            Collections.synchronizedList(new ArrayList<>());
+public abstract class BaseActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    private boolean mIsToolbarShown = true;
-
-    /**
-     * We need to set up overlay Toolbar if we want to enable Toolbar's auto show/hide effect.
-     * We could start hiding Toolbar if main content has been full covered by Toolbar,
-     * that's why this value always equals to Toolbar's height.
-     */
-    private int mToolbarAutoHideMinY;
-    private int mFabMarginBottom;
-    private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
 
     private DrawerLayout mDrawerLayout;
-    private NavigationView mDrawer;
+    private NavigationView mNavigationView;
     private ActionBarDrawerToggle mDrawerToggle;
     private boolean mHasNavDrawerIndicator = true;
 
     private View mDrawerHeaderBackgroundView;
     private ImageView mDrawerUserAvatarView;
     private TextView mDrawerUsernameView;
-
-    private FloatingActionButton mFloatingActionButton;
 
     private Object mEvents;
 
@@ -151,12 +126,6 @@ public abstract class BaseActivity extends AppCompatActivity
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
         setUpToolbar();
-
-        InsetsFrameLayout insetsFrameLayout = (InsetsFrameLayout) findViewById(
-                R.id.insets_frame_layout);
-        if (insetsFrameLayout != null) {
-            insetsFrameLayout.setOnInsetsCallback(this);
-        }
     }
 
     @Override
@@ -209,12 +178,6 @@ public abstract class BaseActivity extends AppCompatActivity
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    void enableWindowTranslucentStatus() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-    }
-
     private void setUpToolbar() {
         if (mToolbar == null) {
             mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -225,65 +188,6 @@ public abstract class BaseActivity extends AppCompatActivity
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
         }
-    }
-
-    /**
-     * This method only useful if API >= 19 (which we can enable translucent status bar).
-     * But we don't use `fitsSystemWindows` to adjust layout
-     * in order to show overlay status bar & Toolbar.
-     */
-    @Override
-    public void onInsetsChanged(@NonNull Rect insets) {
-        mSystemWindowInsets = insets;
-
-        int insetsTop = insets.top;
-
-        if (mToolbar != null) {
-            // We need to set Toolbar's padding
-            // instead of translucent/transparent status bar.
-            mToolbar.setPadding(0, insetsTop, 0, 0);
-            mToolbar.getLayoutParams().height = insetsTop + ResourceUtil.getToolbarHeight();
-            mToolbar.requestLayout();
-        }
-
-        if (mDrawerHeaderBackgroundView != null && mDrawerUserAvatarView != null) {
-            // adjust drawer top background & user avatar's layout
-            mDrawerHeaderBackgroundView.getLayoutParams().height = insetsTop
-                    + getResources().getDimensionPixelSize(R.dimen.drawer_top_height);
-            mDrawerHeaderBackgroundView.requestLayout();
-
-            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams)
-                    mDrawerUserAvatarView.getLayoutParams();
-            marginLayoutParams.topMargin = insetsTop
-                    + getResources().getDimensionPixelSize(R.dimen.drawer_avatar_margin_top);
-            mDrawerUserAvatarView.requestLayout();
-        }
-
-        for (InsetsFrameLayout.OnInsetsCallback onInsetsCallback : onInsetsCallbackList) {
-            onInsetsCallback.onInsetsChanged(insets);
-        }
-    }
-
-    /**
-     * Implements {@link BaseFragment.InsetsCallback}.
-     */
-    @Override
-    public void register(InsetsFrameLayout.OnInsetsCallback onInsetsCallback) {
-        onInsetsCallbackList.add(onInsetsCallback);
-    }
-
-    @Override
-    public void unregister(InsetsFrameLayout.OnInsetsCallback onInsetsCallback) {
-        onInsetsCallbackList.remove(onInsetsCallback);
-    }
-
-    @Override
-    public Rect getSystemWindowInsets() {
-        if (mSystemWindowInsets == null) {
-            mSystemWindowInsets = new Rect();
-        }
-
-        return mSystemWindowInsets;
     }
 
     /**
@@ -305,21 +209,9 @@ public abstract class BaseActivity extends AppCompatActivity
             return;
         }
 
-        mDrawer = (NavigationView) mDrawerLayout.findViewById(R.id.drawer);
+        mNavigationView = (NavigationView) mDrawerLayout.findViewById(R.id.navigation_view);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
-
-            /**
-             * Only show items in the Toolbar relevant to this screen
-             * if the drawer is not showing. Otherwise, let the drawer
-             * decide what to show in the Toolbar.
-             */
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-
-                showOrHideToolbarAndFab(true);
-            }
 
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -342,22 +234,44 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     private void closeDrawer(@Nullable Runnable runnable) {
-        if (mDrawerLayout != null && mDrawer != null) {
+        if (mDrawerLayout != null && mNavigationView != null) {
             mDrawerLayout.post(() -> {
-                mDrawer.setTag(R.id.drawer_runnable_tag, runnable);
-                mDrawerLayout.closeDrawer(mDrawer);
+                mNavigationView.setTag(R.id.drawer_runnable_tag, runnable);
+                mDrawerLayout.closeDrawer(mNavigationView);
             });
         }
     }
 
     private void setupNavDrawerItem() {
-        if (mDrawer == null) {
+        if (mNavigationView == null) {
             return;
         }
 
         View drawerHeaderView = findViewById(R.id.drawer_header);
         mDrawerHeaderBackgroundView = findViewById(R.id.drawer_header_background);
         mDrawerUserAvatarView = (ImageView) drawerHeaderView.findViewById(R.id.drawer_user_avatar);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // let DrawerLayout draw the insets area for the status bar
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            // add status bar height to drawer's header
+            mDrawerLayout.setOnApplyWindowInsetsListener((v, insets) -> {
+
+                int insetsTop = insets.getSystemWindowInsetTop();
+
+                mDrawerHeaderBackgroundView.getLayoutParams().height = insetsTop
+                        + getResources().getDimensionPixelSize(R.dimen.drawer_top_height);
+                ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams)
+                        mDrawerUserAvatarView.getLayoutParams();
+                marginLayoutParams.topMargin = insetsTop
+                        + getResources().getDimensionPixelSize(R.dimen.drawer_avatar_margin_top);
+
+                // see https://github.com/android/platform_frameworks_support/blob/master/v4/api21/android/support/v4/widget/DrawerLayoutCompatApi21.java#L86
+                // add DrawerLayout's default View.OnApplyWindowInsetsListener implementation
+                ((DrawerLayout) v).setChildInsets(new WindowInsets(insets), insetsTop > 0);
+                return insets.consumeSystemWindowInsets();
+            });
+        }
+
         mDrawerUserAvatarView.setOnClickListener(v ->
                 new ThemeChangeDialogFragment().show(getSupportFragmentManager(),
                         ThemeChangeDialogFragment.TAG));
@@ -371,7 +285,7 @@ public abstract class BaseActivity extends AppCompatActivity
             setupDrawerLoginPrompt();
         }
 
-        mDrawer.setNavigationItemSelectedListener(item -> {
+        mNavigationView.setNavigationItemSelectedListener(item -> {
             Callable<Void> callable;
             switch (item.getItemId()) {
                 case R.id.home:
@@ -459,7 +373,7 @@ public abstract class BaseActivity extends AppCompatActivity
      * Show default avatar and login prompt if user hasn't logged in.
      */
     private void setupDrawerLoginPrompt() {
-        if (mDrawerLayout == null || mDrawer == null
+        if (mDrawerLayout == null || mNavigationView == null
                 || mDrawerHeaderBackgroundView == null
                 || mDrawerUserAvatarView == null || mDrawerUsernameView == null) {
             return;
@@ -476,7 +390,7 @@ public abstract class BaseActivity extends AppCompatActivity
         mDrawerUsernameView.setText(R.string.action_login);
 
         mDrawerHeaderBackgroundView.setOnClickListener(v -> {
-            mDrawerLayout.closeDrawer(mDrawer);
+            mDrawerLayout.closeDrawer(mNavigationView);
 
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
@@ -507,73 +421,18 @@ public abstract class BaseActivity extends AppCompatActivity
                 new LogoutDialogFragment().show(getSupportFragmentManager(), LogoutDialogFragment.TAG));
     }
 
+    /**
+     * Subclass must have to implement {@link android.view.View.OnClickListener}
+     * in order to use this method.
+     */
     void setupFloatingActionButton(@DrawableRes int resId) {
-        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.floating_action_button);
-        // subclass need to implement android.view.View.OnClickListener
-        mFloatingActionButton.setOnClickListener((View.OnClickListener) this);
-        mFloatingActionButton.setImageResource(resId);
-        mFloatingActionButton.setVisibility(View.VISIBLE);
-    }
+        ViewGroup container = (ViewGroup) findViewById(R.id.coordinator_layout);
+        FloatingActionButton floatingActionButton = (FloatingActionButton)
+                getLayoutInflater().inflate(R.layout.floating_action_button, container, false);
+        container.addView(floatingActionButton);
 
-    public void enableToolbarAndFabAutoHideEffect(RecyclerView recyclerView) {
-        mToolbarAutoHideMinY = ResourceUtil.getToolbarHeight();
-        mFabMarginBottom = getResources().getDimensionPixelSize(R.dimen.fab_margin);
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                // recyclerView.computeVerticalScrollOffset() may cause poor performance
-                // so we also check mIsToolbarShown though we will do it later (during showOrHideToolbarAndFab(boolean))
-                if (mIsToolbarShown
-                        && dy > 0
-                        && recyclerView.computeVerticalScrollOffset() >= mToolbarAutoHideMinY) {
-                    showOrHideToolbarAndFab(false);
-                } else if (dy < 0) {
-                    showOrHideToolbarAndFab(true);
-                }
-            }
-        });
-    }
-
-    public void showOrHideToolbarAndFab(boolean show) {
-        if (show == mIsToolbarShown) {
-            return;
-        }
-
-        mIsToolbarShown = show;
-        onToolbarAutoShowOrHide(show);
-        onFabAutoShowOrHide(show);
-    }
-
-    private void onToolbarAutoShowOrHide(boolean show) {
-        if (show) {
-            mToolbar.animate()
-                    .alpha(1)
-                    .translationY(0)
-                    .setInterpolator(mInterpolator);
-        } else {
-            mToolbar.animate()
-                    .alpha(0)
-                    .translationY(-mToolbar.getHeight())
-                    .setInterpolator(mInterpolator);
-        }
-    }
-
-    private void onFabAutoShowOrHide(boolean show) {
-        if (mFloatingActionButton != null) {
-            if (show) {
-                mFloatingActionButton.animate()
-                        .alpha(1)
-                        .translationY(0)
-                        .setInterpolator(mInterpolator);
-            } else {
-                mFloatingActionButton.animate()
-                        .alpha(0)
-                        .translationY(mFloatingActionButton.getHeight() + mFabMarginBottom)
-                        .setInterpolator(mInterpolator);
-            }
-        }
+        floatingActionButton.setOnClickListener((View.OnClickListener) this);
+        floatingActionButton.setImageResource(resId);
     }
 
     Toolbar getToolbar() {

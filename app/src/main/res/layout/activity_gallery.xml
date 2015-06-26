@@ -5,11 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cl.monsoon.s1next.activity.GalleryActivity">
 
-    <cl.monsoon.s1next.view.InsetsFrameLayout
-        android:id="@+id/insets_frame_layout"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:layout_height="match_parent">
 
         <FrameLayout
             android:id="@+id/frame_layout"
@@ -23,6 +21,6 @@
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    </cl.monsoon.s1next.view.InsetsFrameLayout>
+    </FrameLayout>
 
 </merge>

@@ -12,8 +12,6 @@
 
     <dimen name="minimum_touch_target_size">48dp</dimen>
 
-    <dimen name="toolbar_elevation">4dp</dimen>
-
     <dimen name="drawer_avatar_margin_top">@dimen/item_padding</dimen>
     <dimen name="drawer_avatar_size">64dp</dimen>
     <dimen name="drawer_avatar_border_width">3dp</dimen>
@@ -21,9 +19,6 @@
     <dimen name="drawer_top_height">136dp</dimen>
 
     <dimen name="fab_margin">16dp</dimen>
-
-    <dimen name="swipe_refresh_progress_view_start">8dp</dimen>
-    <dimen name="swipe_refresh_progress_view_end">72dp</dimen>
 
     <dimen name="single_line_height">48dp</dimen>
     <dimen name="single_line_height_with_avatar">56dp</dimen>
@@ -43,7 +38,7 @@
     <!-- 4dp (half of cardView margin) - (2 * 1.5 + (1 - cos45) * 2)dp ≈ 0.05dp -->
     <dimen name="card_view_vertical_margin">0.05dp</dimen>
     <!-- 8dp (cardView margin) - (2 * 1.5 + (1 - cos45) * 2)dp = 4.05dp -->
-    <dimen name="recycler_view_card_padding">4.05dp</dimen>
+    <dimen name="recycler_view_padding_for_card">4.05dp</dimen>
 
     <dimen name="viewpager_tabs_elevation">1dp</dimen>
 

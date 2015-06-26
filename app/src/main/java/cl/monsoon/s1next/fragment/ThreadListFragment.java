@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.activity.BaseActivity;
 import cl.monsoon.s1next.model.Forum;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.MathUtil;
@@ -79,7 +78,7 @@ public final class ThreadListFragment extends Fragment implements ThreadListPage
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                ((BaseActivity) getActivity()).showOrHideToolbarAndFab(true);
+
             }
 
             @Override

@@ -2,10 +2,8 @@ package cl.monsoon.s1next.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,7 +40,6 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
     private String mForumId;
     private int mPageNum;
 
-    private RecyclerView mRecyclerView;
     private ThreadListRecyclerAdapter mRecyclerAdapter;
 
     private PagerCallback mPagerCallback;
@@ -71,12 +68,12 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
         mForumId = getArguments().getString(ARG_FORUM_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerAdapter = new ThreadListRecyclerAdapter();
-        mRecyclerView.setAdapter(mRecyclerAdapter);
+        recyclerView.setAdapter(mRecyclerAdapter);
 
-        mRecyclerView.addOnItemTouchListener(new RecyclerViewHelper(getActivity(), mRecyclerView,
+        recyclerView.addOnItemTouchListener(new RecyclerViewHelper(getActivity(), recyclerView,
                 new RecyclerViewHelper.OnItemClickListener() {
 
                     @Override
@@ -112,9 +109,6 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
                     }
                 }
         ));
-
-        onInsetsChanged();
-        enableToolbarAndFabAutoHideEffect(mRecyclerView);
     }
 
     @Override
@@ -132,12 +126,6 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
 
         mPagerCallback = null;
         mSubForumsCallback = null;
-    }
-
-    @Override
-    public void onInsetsChanged(@NonNull Rect insets) {
-        setRecyclerViewPadding(mRecyclerView, insets,
-                getResources().getDimensionPixelSize(R.dimen.list_view_padding));
     }
 
     @Override

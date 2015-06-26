@@ -2,10 +2,8 @@ package cl.monsoon.s1next.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,7 +37,6 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
 
     public static final String TAG = ForumFragment.class.getSimpleName();
 
-    private RecyclerView mRecyclerView;
     private ForumListRecyclerAdapter mRecyclerAdapter;
 
     private ForumGroups mForumGroups;
@@ -54,14 +51,14 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerAdapter = new ForumListRecyclerAdapter();
-        mRecyclerView.setAdapter(mRecyclerAdapter);
+        recyclerView.setAdapter(mRecyclerAdapter);
 
         // the forum list's each element has fixed size
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addOnItemTouchListener(new RecyclerViewHelper(getActivity(), mRecyclerView,
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addOnItemTouchListener(new RecyclerViewHelper(getActivity(), recyclerView,
                         new RecyclerViewHelper.OnItemClickListener() {
 
                             @Override
@@ -80,9 +77,6 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
                             }
                         })
         );
-
-        onInsetsChanged();
-        enableToolbarAndFabAutoHideEffect(mRecyclerView);
     }
 
     @Override
@@ -116,12 +110,6 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onInsetsChanged(@NonNull Rect insets) {
-        setRecyclerViewPadding(mRecyclerView, insets,
-                getResources().getDimensionPixelSize(R.dimen.list_view_padding));
     }
 
     @Override

@@ -12,7 +12,6 @@ public final class FavouriteListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        enableWindowTranslucentStatus();
         setContentView(R.layout.activity_base);
 
         if (savedInstanceState == null) {

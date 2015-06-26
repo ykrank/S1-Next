@@ -5,9 +5,6 @@ import android.support.annotation.AttrRes;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
-import cl.monsoon.s1next.App;
-import cl.monsoon.s1next.R;
-
 public final class ResourceUtil {
 
     private ResourceUtil() {
@@ -18,11 +15,6 @@ public final class ResourceUtil {
         TypedValue typedValue = new TypedValue();
         theme.resolveAttribute(resId, typedValue, true);
         return typedValue.resourceId;
-    }
-
-    public static int getToolbarHeight() {
-        return App.getContext().getResources().getDimensionPixelSize(
-                R.dimen.abc_action_bar_default_height_material);
     }
 
     /**

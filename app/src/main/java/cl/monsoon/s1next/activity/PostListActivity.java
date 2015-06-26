@@ -92,7 +92,6 @@ public final class PostListActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        enableWindowTranslucentStatus();
         setContentView(R.layout.activity_base);
 
         setNavDrawerIndicatorEnabled(false);
@@ -123,7 +122,7 @@ public final class PostListActivity extends BaseActivity
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                showOrHideToolbarAndFab(true);
+
             }
 
             @Override

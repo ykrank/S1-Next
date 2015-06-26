@@ -2,11 +2,9 @@ package cl.monsoon.s1next.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -97,12 +95,14 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        // we need to adjust RecyclerView's top/bottom padding
+        // because its child views (CardView) has top/bottom margin
+        int padding = getResources().getDimensionPixelSize(R.dimen.recycler_view_padding_for_card);
+        mRecyclerView.setPadding(0, padding, 0, padding);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerAdapter = new PostListRecyclerAdapter(getActivity());
         mRecyclerView.setAdapter(mRecyclerAdapter);
 
-        onInsetsChanged();
-        enableToolbarAndFabAutoHideEffect(mRecyclerView);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             /**
@@ -191,12 +191,6 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         super.onSaveInstanceState(outState);
 
         outState.putBoolean(STATE_IS_LOADING_MORE, mIsLoadingMore);
-    }
-
-    @Override
-    public void onInsetsChanged(@NonNull Rect insets) {
-        setRecyclerViewPadding(mRecyclerView, insets,
-                getResources().getDimensionPixelSize(R.dimen.recycler_view_card_padding));
     }
 
     @Override

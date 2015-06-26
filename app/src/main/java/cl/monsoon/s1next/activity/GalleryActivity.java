@@ -1,9 +1,8 @@
 package cl.monsoon.s1next.activity;
 
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -11,31 +10,34 @@ import android.view.MenuItem;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.fragment.GalleryFragment;
 import cl.monsoon.s1next.util.ResourceUtil;
-import cl.monsoon.s1next.view.InsetsFrameLayout;
 
 /**
  * An Activity shows an ImageView that supports multi-touch.
  */
-public final class GalleryActivity extends AppCompatActivity implements InsetsFrameLayout.OnInsetsCallback {
+public final class GalleryActivity extends AppCompatActivity {
 
     public static final String ARG_IMAGE_URL = "image_url";
-
-    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         setTitle(null);
         // set Toolbar's icon to cross
-        mToolbar.setNavigationIcon(ResourceUtil.getResourceId(getTheme(), R.attr.menuCross));
+        toolbar.setNavigationIcon(ResourceUtil.getResourceId(getTheme(), R.attr.menuCross));
 
-        InsetsFrameLayout insetsFrameLayout = (InsetsFrameLayout) findViewById(
-                R.id.insets_frame_layout);
-        insetsFrameLayout.setOnInsetsCallback(this);
+        // set Toolbar's padding because we use `android:windowTranslucentStatus` in this Activity
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar, (v, insets) -> {
+            int top = insets.getSystemWindowInsetTop();
+            v.setPadding(0, top, 0, 0);
+            v.getLayoutParams().height = v.getContext().getResources().getDimensionPixelSize(
+                    R.dimen.abc_action_bar_default_height_material) + top;
+
+            return insets.consumeSystemWindowInsets();
+        });
 
         String url = getIntent().getStringExtra(ARG_IMAGE_URL);
         if (savedInstanceState == null) {
@@ -56,15 +58,5 @@ public final class GalleryActivity extends AppCompatActivity implements InsetsFr
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * @see cl.monsoon.s1next.activity.BaseActivity#onInsetsChanged(android.graphics.Rect)
-     */
-    @Override
-    public void onInsetsChanged(@NonNull Rect insets) {
-        mToolbar.setPadding(0, insets.top, 0, 0);
-        mToolbar.getLayoutParams().height = insets.top + ResourceUtil.getToolbarHeight();
-        mToolbar.requestLayout();
     }
 }

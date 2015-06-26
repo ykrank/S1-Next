@@ -1,25 +1,19 @@
 package cl.monsoon.s1next.fragment;
 
-import android.app.Activity;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.activity.BaseActivity;
 import cl.monsoon.s1next.fragment.headless.DataRetainedFragment;
 import cl.monsoon.s1next.model.Extractable;
-import cl.monsoon.s1next.util.ResourceUtil;
-import cl.monsoon.s1next.view.InsetsFrameLayout;
 import cl.monsoon.s1next.widget.AsyncResult;
 
 /**
@@ -31,8 +25,7 @@ import cl.monsoon.s1next.widget.AsyncResult;
  * otherwise we would lost {@link #mDataRetainedFragment} and cause memory leak.
  */
 public abstract class BaseFragment<D extends Extractable> extends Fragment
-        implements InsetsFrameLayout.OnInsetsCallback,
-        SwipeRefreshLayout.OnRefreshListener,
+        implements SwipeRefreshLayout.OnRefreshListener,
         LoaderManager.LoaderCallbacks<AsyncResult<D>> {
 
     private static final int ID_LOADER = 0;
@@ -42,8 +35,6 @@ public abstract class BaseFragment<D extends Extractable> extends Fragment
      * {@link Loader} is loading data when configuration changes.
      */
     private static final String STATE_IS_LOADER_LOADING = "is_loader_loading";
-
-    private InsetsCallback mInsetsCallback;
 
     /**
      * Detects swipe gestures and triggers to refresh data.
@@ -132,22 +123,6 @@ public abstract class BaseFragment<D extends Extractable> extends Fragment
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        mInsetsCallback = (InsetsCallback) activity;
-        mInsetsCallback.register(this);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-        mInsetsCallback.unregister(this);
-        mInsetsCallback = null;
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.fragment_base, menu);
     }
@@ -178,14 +153,6 @@ public abstract class BaseFragment<D extends Extractable> extends Fragment
         outState.putBoolean(STATE_IS_LOADER_LOADING, mLoading);
     }
 
-    void onInsetsChanged() {
-        onInsetsChanged(mInsetsCallback.getSystemWindowInsets());
-    }
-
-    void enableToolbarAndFabAutoHideEffect(RecyclerView recyclerView) {
-        ((BaseActivity) getActivity()).enableToolbarAndFabAutoHideEffect(recyclerView);
-    }
-
     private void setupSwipeRefreshLayout() {
         if (getView() != null) {
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh);
@@ -201,32 +168,6 @@ public abstract class BaseFragment<D extends Extractable> extends Fragment
         }
 
         throw new IllegalStateException("Can't set up SwipeRefreshLayout.");
-    }
-
-    /**
-     * We need to update SwipeRefreshLayout's progress view offset
-     * if we have overlay status bar & Toolbar.
-     */
-    private void updateSwipeRefreshProgressViewPosition(Rect insects) {
-        if (mSwipeRefreshLayout == null) {
-            return;
-        }
-
-        int start = insects.top
-                + getResources().getDimensionPixelSize(R.dimen.swipe_refresh_progress_view_start);
-        int end = insects.top
-                + getResources().getDimensionPixelSize(R.dimen.swipe_refresh_progress_view_end);
-
-        mSwipeRefreshLayout.setProgressViewOffset(false, start, end);
-    }
-
-    /**
-     * @see cl.monsoon.s1next.activity.BaseActivity#onInsetsChanged(android.graphics.Rect)
-     */
-    void setRecyclerViewPadding(RecyclerView recyclerView, Rect insets, int padding) {
-        int toolbarHeight = ResourceUtil.getToolbarHeight();
-        recyclerView.setPadding(0, padding + insets.top + toolbarHeight, 0, padding);
-        updateSwipeRefreshProgressViewPosition(insets);
     }
 
     void setSwipeRefreshLayoutEnabled(boolean enabled) {
@@ -279,14 +220,5 @@ public abstract class BaseFragment<D extends Extractable> extends Fragment
         if (mDataRetainedFragment != null) {
             getFragmentManager().beginTransaction().remove(mDataRetainedFragment).commit();
         }
-    }
-
-    public interface InsetsCallback {
-
-        void register(InsetsFrameLayout.OnInsetsCallback onInsetsCallback);
-
-        void unregister(InsetsFrameLayout.OnInsetsCallback onInsetsCallback);
-
-        Rect getSystemWindowInsets();
     }
 }
