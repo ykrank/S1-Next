@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="LightTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.Light" parent="Base.Theme.Light"/>
+    <style name="Theme.Light.Inverse.Amber" parent="Base.Theme.Light.Inverse.Amber"/>
+    <style name="Theme.Light.Inverse.Green" parent="Base.Theme.Light.Inverse.Green"/>
+    <style name="Theme.Light.Inverse.LightBlue" parent="Base.Theme.Light.Inverse.LightBlue"/>
+
+    <style name="Theme.Dark" parent="Base.Theme.Dark"/>
+    <style name="Theme.Dark.Imperfect" parent="Base.Theme.Dark.Imperfect"/>
+    <style name="Theme.Dark.Imperfect.Black" parent="Base.Theme.Dark.Imperfect.Black"/>
+
+    <style name="Theme.Translucent.Light" parent="Base.Theme.Translucent.Light"/>
+    <style name="Theme.Translucent.Dark" parent="Base.Theme.Translucent.Dark"/>
+
+    <style name="Theme.Gallery" parent="Base.Theme.Gallery"/>
+
+
+    <style name="Base.Theme.Light" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- show contextual action bar -->
         <item name="windowActionModeOverlay">true</item>
 
@@ -30,7 +45,7 @@
         <item name="iconHelp">@drawable/ic_help_grey600_24dp</item>
     </style>
 
-    <style name="LightTheme.Inverse">
+    <style name="Base.Theme.Light.Inverse">
         <!-- https://code.google.com/p/android/issues/detail?id=169657 -->
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
 
@@ -48,25 +63,25 @@
         <item name="menuSend">@drawable/selector_menu_send_white</item>
     </style>
 
-    <style name="LightTheme.Inverse.Amber">
+    <style name="Base.Theme.Light.Inverse.Amber">
         <item name="colorPrimary">@color/amber_500</item>
         <item name="colorPrimaryDark">@color/amber_700</item>
         <item name="colorAccent">@color/deep_orange_A200</item>
     </style>
 
-    <style name="LightTheme.Inverse.Green">
+    <style name="Base.Theme.Light.Inverse.Green">
         <item name="colorPrimary">@color/green_500</item>
         <item name="colorPrimaryDark">@color/green_700</item>
         <item name="colorAccent">@color/deep_orange_A200</item>
     </style>
 
-    <style name="LightTheme.Inverse.LightBlue">
+    <style name="Base.Theme.Light.Inverse.LightBlue">
         <item name="colorPrimary">@color/light_blue_500</item>
         <item name="colorPrimaryDark">@color/light_blue_700</item>
         <item name="colorAccent">@color/pink_A200</item>
     </style>
 
-    <style name="DarkTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="Base.Theme.Dark" parent="Theme.AppCompat.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
@@ -90,20 +105,20 @@
         <item name="iconHelp">@drawable/ic_help_white_24dp</item>
     </style>
 
-    <style name="DarkTheme.Imperfect">
+    <style name="Base.Theme.Dark.Imperfect">
         <item name="colorAccent">@color/dark_cyan</item>
         <item name="android:textColorPrimary">@color/white_69p</item>
         <item name="android:textColorLink">@color/teal_200_70p</item>
     </style>
 
-    <style name="DarkTheme.Imperfect.Black">
+    <style name="Base.Theme.Dark.Imperfect.Black">
         <item name="colorPrimary">@android:color/black</item>
         <item name="colorPrimaryDark">@android:color/black</item>
         <item name="android:windowBackground">@android:color/black</item>
         <item name="myCardView">@style/DarkCardView.Black</item>
     </style>
 
-    <style name="TranslucentTheme.Light" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Base.Theme.Translucent.Light" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- from Theme.Translucent -->
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
@@ -111,14 +126,14 @@
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
     </style>
 
-    <style name="TranslucentTheme.Dark" parent="Theme.AppCompat.NoActionBar">
+    <style name="Base.Theme.Translucent.Dark" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
     </style>
 
-    <style name="GalleryTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="Base.Theme.Gallery" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@android:color/black</item>
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
     </style>

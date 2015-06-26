@@ -96,15 +96,15 @@ public final class Settings {
 
         }
 
-        private static final int LIGHT_THEME = R.style.LightTheme;
-        private static final int LIGHT_THEME_INVERSE_AMBER = R.style.LightTheme_Inverse_Amber;
-        public static final int LIGHT_THEME_INVERSE_GREEN = R.style.LightTheme_Inverse_Green;
-        public static final int LIGHT_THEME_INVERSE_LIGHT_BLUE = R.style.LightTheme_Inverse_LightBlue;
-        private static final int DARK_THEME = R.style.DarkTheme;
-        private static final int DARK_THEME_IMPERFECT = R.style.DarkTheme_Imperfect;
-        private static final int DARK_THEME_IMPERFECT_BLACK = R.style.DarkTheme_Imperfect_Black;
+        private static final int LIGHT_THEME = R.style.Theme_Light;
+        private static final int LIGHT_THEME_INVERSE_AMBER = R.style.Theme_Light_Inverse_Amber;
+        public static final int LIGHT_THEME_INVERSE_GREEN = R.style.Theme_Light_Inverse_Green;
+        public static final int LIGHT_THEME_INVERSE_LIGHT_BLUE = R.style.Theme_Light_Inverse_LightBlue;
+        private static final int DARK_THEME = R.style.Theme_Dark;
+        private static final int DARK_THEME_IMPERFECT = R.style.Theme_Dark_Imperfect;
+        private static final int DARK_THEME_IMPERFECT_BLACK = R.style.Theme_Dark_Imperfect_Black;
 
-        public static final int TRANSLUCENT_THEME_LIGHT = R.style.TranslucentTheme_Light;
+        public static final int TRANSLUCENT_THEME_LIGHT = R.style.Theme_Translucent_Light;
 
         private static final int[] THEMES = {
                 LIGHT_THEME,
@@ -129,13 +129,6 @@ public final class Settings {
             return theme == DARK_THEME
                     || theme == DARK_THEME_IMPERFECT
                     || theme == DARK_THEME_IMPERFECT_BLACK;
-        }
-
-        public static boolean isLightInverseTheme() {
-            int theme = INSTANCE.currentTheme;
-            return theme == LIGHT_THEME_INVERSE_AMBER
-                    || theme == LIGHT_THEME_INVERSE_GREEN
-                    || theme == LIGHT_THEME_INVERSE_LIGHT_BLUE;
         }
 
         public static int getCurrentTheme() {

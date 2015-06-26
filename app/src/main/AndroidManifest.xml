@@ -11,7 +11,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/DarkTheme"
+        android:theme="@style/Theme.Dark"
         tools:ignore="UnusedAttribute">
 
         <meta-data
@@ -51,7 +51,7 @@
 
         <activity
             android:name=".activity.PostListGatewayActivity"
-            android:theme="@style/TranslucentTheme.Dark">
+            android:theme="@style/Theme.Translucent.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -70,7 +70,7 @@
 
         <activity
             android:name=".activity.GalleryActivity"
-            android:theme="@style/GalleryTheme" />
+            android:theme="@style/Theme.Gallery" />
 
     </application>
 
