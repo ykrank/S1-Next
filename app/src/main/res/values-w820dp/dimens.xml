@@ -11,11 +11,11 @@
     sides and maxCardElevation * 1.5 + (1 - cos45) * cornerRadius on top and bottom.-->
     <!--<dimen name="card_view_margin">32dp</dimen>-->
 
-    <!-- 32dp (cardView margin) - ((2 + (1 - cos45) * 2))dp ≈ 29.05dp -->
+    <!-- 32dp (CardView margin) - ((2 + (1 - cos45) * 2))dp ≈ 29.05dp -->
     <dimen name="card_view_horizontal_margin">29.05dp</dimen>
-    <!-- 16dp (half of cardView margin) - (2 * 1.5 + (1 - cos45) * 2)dp ≈ 12.05dp -->
+    <!-- 16dp (half of CardView margin) - (2 * 1.5 + (1 - cos45) * 2)dp ≈ 12.05dp -->
     <dimen name="card_view_vertical_margin">12.05dp</dimen>
-    <!-- 32dp (cardView margin) - (2 * 1.5 + (1 - cos45) * 2)dp = 28.05dp -->
+    <!-- 32dp (CardView margin) - (2 * 1.5 + (1 - cos45) * 2)dp = 28.05dp -->
     <dimen name="recycler_view_padding_for_card">28.05dp</dimen>
 
 </resources>
