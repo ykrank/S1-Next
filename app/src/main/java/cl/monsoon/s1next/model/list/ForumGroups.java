@@ -71,16 +71,16 @@ public final class ForumGroups extends Account {
         Collections.sort(forumList, (lhs, rhs) -> -(lhs.getTodayPosts() - rhs.getTodayPosts()));
         this.forumList = forumList;
 
-        SparseArray<Forum> forumSparseArray = new SparseArray<>();
+        SparseArray<Forum> forumSparseArray = new SparseArray<>(forumList.size());
         for (Forum forum : forumList) {
             forumSparseArray.put(Integer.parseInt(forum.getId()), forum);
         }
 
-        this.forumGroupNameList = new ArrayList<>();
+        this.forumGroupNameList = new ArrayList<>(forumGroupList.size());
         for (ForumGroup forumGroup : forumGroupList) {
             this.forumGroupNameList.add(forumGroup.getName());
 
-            List<Forum> forumOfGroupList = new ArrayList<>();
+            List<Forum> forumOfGroupList = new ArrayList<>(forumGroup.getForumIds().size());
             for (Integer id : forumGroup.getForumIds()) {
                 forumOfGroupList.add(forumSparseArray.get(id));
             }

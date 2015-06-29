@@ -245,8 +245,7 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
 
                     String quotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
                     if (!TextUtils.isEmpty(quotePostId)) {
-                        int length = postList.size();
-                        for (int i = 0; i < length; i++) {
+                        for (int i = 0, length = postList.size(); i < length; i++) {
                             if (quotePostId.equals(postList.get(i).getId())) {
                                 // scroll to quote post
                                 mRecyclerView.scrollToPosition(i);

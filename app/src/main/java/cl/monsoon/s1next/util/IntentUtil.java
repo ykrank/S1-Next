@@ -23,9 +23,11 @@ public final class IntentUtil {
         intent.setData(uri);
 
         // find all target Intents except our app
-        List<Intent> targetIntentList = new ArrayList<>();
+        List<ResolveInfo> resolveInfonList = context.getPackageManager().queryIntentActivities(
+                intent, 0);
+        List<Intent> targetIntentList = new ArrayList<>(resolveInfonList.size());
         String ourAppPackageName = context.getPackageName();
-        for (ResolveInfo resolveInfo : context.getPackageManager().queryIntentActivities(intent, 0)) {
+        for (ResolveInfo resolveInfo : resolveInfonList) {
             String packageName = resolveInfo.activityInfo.packageName;
             if (!packageName.equals(ourAppPackageName)) {
                 Intent targetIntent = new Intent(Intent.ACTION_VIEW);

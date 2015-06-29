@@ -99,7 +99,7 @@ public final class PersistentHttpCookieStore implements CookieStore {
 
         SharedPreferences.Editor editor = cookieSP.edit();
         if (isUriNew) {
-            Set<String> uris = new HashSet<>();
+            Set<String> uris = new HashSet<>(map.size() + 1);
             for (URI i : map.keySet()) {
                 uris.add(i.toString());
             }
