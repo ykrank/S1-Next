@@ -1,9 +1,11 @@
 package cl.monsoon.s1next.util;
 
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -15,15 +17,39 @@ public final class ViewUtil {
 
     }
 
-    public static void concatWithTwoSpaces(TextView textView, int text) {
-        concatWithTwoSpaces(textView, String.valueOf(text));
+    /**
+     * Concatenates with the specified text (two spaces and appendix) to the TextView.
+     *
+     * @param text the String that is concatenated to the TextView
+     */
+    public static void concatWithTwoSpacesForRtlSupport(TextView textView, CharSequence text) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
+                && textView.getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+            textView.append(StringUtil.TWO_SPACES + text, 0, 0);
+        } else {
+            textView.append(StringUtil.TWO_SPACES + text);
+        }
     }
 
-    public static void concatWithTwoSpaces(TextView textView, CharSequence text) {
-        textView.append(StringUtil.TWO_SPACES + text);
+    /**
+     * Concatenates with the specified text (two spaces and appendix) to the TextView.
+     *
+     * @param text      the String that is concatenated to the TextView
+     * @param textColor the <code>text</code> color
+     */
+    public static void concatWithTwoSpacesForRtlSupport(TextView textView, CharSequence text, @ColorInt int textColor) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
+                && textView.getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+            textView.setText(text + StringUtil.TWO_SPACES + textView.getText());
+            ViewUtil.setForegroundColor(textView, textColor, 0, text.length());
+        } else {
+            int start = textView.length();
+            textView.append(StringUtil.TWO_SPACES + text);
+            ViewUtil.setForegroundColor(textView, textColor, start, textView.length());
+        }
     }
 
-    public static void setForegroundColor(TextView textView, int color, int start, int end) {
+    private static void setForegroundColor(TextView textView, int color, int start, int end) {
         Spannable spannable = Spannable.Factory.getInstance().newSpannable(textView.getText());
         spannable.setSpan(new ForegroundColorSpan(color), start, end,
                 Spanned.SPAN_INCLUSIVE_INCLUSIVE);

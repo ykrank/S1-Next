@@ -47,9 +47,8 @@ public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
         textView.setText(forum.getName());
         // add today's posts count to each forum
         if (forum.getTodayPosts() != 0) {
-            int start = textView.length();
-            ViewUtil.concatWithTwoSpaces(textView, forum.getTodayPosts());
-            ViewUtil.setForegroundColor(textView, mSecondaryTextColor, start, textView.length());
+            ViewUtil.concatWithTwoSpacesForRtlSupport(textView, String.valueOf(forum.getTodayPosts()),
+                    mSecondaryTextColor);
         }
 
         return convertView;

@@ -41,19 +41,17 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
 
         TextView textView = holder.textView;
         textView.setText(thread.getTitle());
-        int start = textView.length();
-
         if (thread.getPermission() != 0) {
             // add thread's permission hint
-            ViewUtil.concatWithTwoSpaces(textView,
+            ViewUtil.concatWithTwoSpacesForRtlSupport(textView,
                     "[" + THREAD_PERMISSION_HINT_PREFIX + thread.getPermission() + "]");
         }
         // disable TextView if user has no permission to access this thread
         holder.setTextViewEnabled(User.getPermission() >= thread.getPermission());
 
         // add thread's replies count to each thread
-        ViewUtil.concatWithTwoSpaces(textView, thread.getReplies());
-        ViewUtil.setForegroundColor(textView, mSecondaryTextColor, start, textView.length());
+        ViewUtil.concatWithTwoSpacesForRtlSupport(textView, String.valueOf(thread.getReplies()),
+                mSecondaryTextColor);
     }
 
     @Override
