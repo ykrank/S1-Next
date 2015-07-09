@@ -29,7 +29,7 @@ import cl.monsoon.s1next.model.Post;
 import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.widget.GlideImageGetter;
-import cl.monsoon.s1next.widget.MyMovementMethod;
+import cl.monsoon.s1next.widget.CustomMovementMethod;
 import cl.monsoon.s1next.widget.TagHandler;
 
 /**
@@ -205,7 +205,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
 
             count.setMovementMethod(LinkMovementMethod.getInstance());
             // use custom movement method to provides selection and click
-            post.setMovementMethod(MyMovementMethod.getInstance());
+            post.setMovementMethod(CustomMovementMethod.getInstance());
 
             // use TouchDelegate to increase count's clicking area
             count.post(() -> {

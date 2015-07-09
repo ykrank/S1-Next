@@ -19,7 +19,7 @@ import cl.monsoon.s1next.singleton.Settings;
 /**
  * Lazily configures Glide.
  */
-public final class MyGlideModule implements GlideModule {
+public final class AppGlideModule implements GlideModule {
 
     @Override
     public void applyOptions(Context context, GlideBuilder builder) {
