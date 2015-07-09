@@ -96,8 +96,8 @@ public final class ForumActivity extends BaseActivity
             mSpinner.setOnItemSelectedListener(this);
             // let spinner's parent to handle clicking event in order
             // to increase clickable area.
-            View spinnerView = toolbar.findViewById(R.id.toolbar_layout);
-            spinnerView.setOnClickListener(v -> mSpinner.performClick());
+            View spinnerContainer = toolbar.findViewById(R.id.spinner_container);
+            spinnerContainer.setOnClickListener(v -> mSpinner.performClick());
         }
 
         mSpinner.setAdapter(getSpinnerAdapter(dropDownItemList));

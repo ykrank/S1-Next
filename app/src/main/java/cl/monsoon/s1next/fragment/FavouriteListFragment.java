@@ -58,7 +58,7 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
             mTotalPages = savedInstanceState.getInt(STATE_TOTAL_PAGES);
         }
 
-        mViewPager = (ViewPager) view.findViewById(R.id.pager);
+        mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
         mAdapter = new FavouriteListPagerAdapter(getFragmentManager());
         mViewPager.setAdapter(mAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

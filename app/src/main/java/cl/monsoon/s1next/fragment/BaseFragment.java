@@ -207,7 +207,7 @@ public abstract class BaseFragment<D extends Extractable> extends Fragment
         mSwipeRefreshLayout.setRefreshing(false);
         mSwipeRefreshLayout.setEnabled(true);
         //noinspection ConstantConditions
-        getView().findViewById(R.id.progressBar).setVisibility(View.GONE);
+        getView().findViewById(R.id.progress_bar).setVisibility(View.GONE);
         mLoading = false;
     }
 

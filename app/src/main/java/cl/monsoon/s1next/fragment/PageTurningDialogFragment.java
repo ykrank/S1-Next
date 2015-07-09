@@ -55,7 +55,7 @@ public abstract class PageTurningDialogFragment extends DialogFragment {
         }
         int totalPage = getArguments().getInt(ARG_TOTAL_PAGES);
 
-        SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekBar);
+        SeekBar seekBar = (SeekBar) view.findViewById(R.id.seek_bar);
         // SeekBar is zero-based!
         seekBar.setMax(totalPage - 1);
         seekBar.setProgress(mSeekBarProgress);

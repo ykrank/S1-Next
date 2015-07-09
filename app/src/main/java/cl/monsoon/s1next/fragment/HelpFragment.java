@@ -43,12 +43,12 @@ public final class HelpFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mWebView = (WebView) view.findViewById(R.id.webView);
+        mWebView = (WebView) view.findViewById(R.id.web_view);
         mWebView.setWebViewClient(new WebViewClient() {
 
             @Override
             public void onPageFinished(WebView webView, String url) {
-                view.findViewById(R.id.progressBar).setVisibility(View.GONE);
+                view.findViewById(R.id.progress_bar).setVisibility(View.GONE);
                 webView.setVisibility(View.VISIBLE);
             }
         });

@@ -68,7 +68,7 @@ public final class ThreadListFragment extends Fragment implements ThreadListPage
         mForumId = forum.getId();
         setTotalPageByThreads(forum.getThreads());
 
-        mViewPager = (ViewPager) view.findViewById(R.id.pager);
+        mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
         // don't use getChildFragmentManager()
         // because we can't retain Fragments (DataRetainedFragment)
         // that are nested in other fragments

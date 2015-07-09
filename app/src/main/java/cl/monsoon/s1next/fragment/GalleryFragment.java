@@ -50,7 +50,7 @@ public final class GalleryFragment extends Fragment {
 
         mUrl = getArguments().getString(ARG_IMAGE_URL);
 
-        PhotoView photoView = (PhotoView) view.findViewById(R.id.picture);
+        PhotoView photoView = (PhotoView) view.findViewById(R.id.photo_view);
         photoView.setMaxInitialScaleFactor(1);
         photoView.enableImageTransforms(true);
 

@@ -115,7 +115,7 @@ public final class PostListActivity extends BaseActivity
 
         setupFloatingActionButton(R.drawable.ic_menu_comment_white_24dp);
 
-        mViewPager = (ViewPager) container.findViewById(R.id.pager);
+        mViewPager = (ViewPager) container.findViewById(R.id.view_pager);
         mAdapter = new PostListPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
