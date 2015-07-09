@@ -23,7 +23,7 @@ public final class ForumListRecyclerAdapter extends RecyclerAdapter<Forum, Forum
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_line_list_item,
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_single_line_text,
                 parent, false);
 
         return new ViewHolder(view);

@@ -81,7 +81,7 @@ public final class ThreadListActivity extends BaseActivity implements ThreadList
             mListPopupWindow.setContentWidth(ListPopupWindow.MATCH_PARENT);
 
             mSubForumArrayAdapter = new SubForumArrayAdapter(this,
-                    R.layout.popup_menu_dropdown_item, forumList);
+                    R.layout.item_popup_menu_dropdown, forumList);
             mListPopupWindow.setAdapter(mSubForumArrayAdapter);
             mListPopupWindow.setOnItemClickListener((parent, view, position, id) -> {
                 Forum forum = mSubForumArrayAdapter.getItem(position);

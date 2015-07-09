@@ -29,7 +29,7 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.multi_line_list_item,
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_multi_line_text,
                 parent, false);
 
         return new ViewHolder(view);

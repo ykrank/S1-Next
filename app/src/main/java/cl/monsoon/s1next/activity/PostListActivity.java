@@ -394,7 +394,7 @@ public final class PostListActivity extends BaseActivity
             return new AlertDialog.Builder(getActivity())
                     .setTitle(getArguments().getString(ARG_ATTACHMENT_TITLE))
                     .setAdapter(new ThreadAttachmentInfoListArrayAdapter(
-                                    getActivity(), R.layout.two_line_list_item,
+                                    getActivity(), R.layout.item_two_line_text,
                                     getArguments().getParcelableArrayList(
                                             ARG_THREAD_ATTACHMENT_INFO_LIST)),
                             null)

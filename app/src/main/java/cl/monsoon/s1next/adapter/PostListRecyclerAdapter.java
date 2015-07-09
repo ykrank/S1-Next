@@ -66,13 +66,13 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_FOOTER_PROGRESS) {
             View view = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.fragment_post_list_footer_progress, parent, false);
+                    R.layout.item_post_footer_progress, parent, false);
 
             return new FooterProgressViewHolder(view);
         }
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_post_list,
-                parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent,
+                false);
 
         return new ItemViewHolder(view);
     }

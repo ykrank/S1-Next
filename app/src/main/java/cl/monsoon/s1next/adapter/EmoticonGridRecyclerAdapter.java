@@ -34,7 +34,7 @@ public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<Emot
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.emoticon, parent,
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_emoticon, parent,
                 false);
 
         return new ViewHolder(view);
