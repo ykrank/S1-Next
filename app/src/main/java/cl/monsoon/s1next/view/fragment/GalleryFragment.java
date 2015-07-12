@@ -18,8 +18,8 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.util.IntentUtil;
+import cl.monsoon.s1next.util.TransformationUtil;
 import cl.monsoon.s1next.widget.PhotoView;
-import cl.monsoon.s1next.widget.TransformationUtil;
 
 public final class GalleryFragment extends Fragment {
 
