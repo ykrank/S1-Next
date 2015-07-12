@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cl.monsoon.s1next.fragment.HelpFragment">
+    tools:context="cl.monsoon.s1next.view.fragment.HelpFragment">
 
     <WebView
         android:id="@+id/web_view"

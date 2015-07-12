@@ -15,9 +15,9 @@ import java.util.concurrent.Callable;
 
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.fragment.DownloadPreferenceFragment;
-import cl.monsoon.s1next.fragment.MainPreferenceFragment;
 import cl.monsoon.s1next.util.DateUtil;
+import cl.monsoon.s1next.view.fragment.DownloadPreferenceFragment;
+import cl.monsoon.s1next.view.fragment.MainPreferenceFragment;
 
 public final class Settings {
 

@@ -23,11 +23,11 @@
             android:value="6e8e30660fec3876e701e69587257f60" />
 
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".view.activity.LoginActivity"
             android:label="@string/activity_label_login" />
 
         <activity
-            android:name=".activity.ForumActivity"
+            android:name=".view.activity.ForumActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,21 +36,21 @@
         </activity>
 
         <activity
-            android:name=".activity.SettingsActivity"
+            android:name=".view.activity.SettingsActivity"
             android:label="@string/settings" />
 
         <activity
-            android:name=".activity.HelpActivity"
+            android:name=".view.activity.HelpActivity"
             android:label="@string/help" />
 
-        <activity android:name=".activity.FavouriteListActivity" />
+        <activity android:name=".view.activity.FavouriteListActivity" />
 
-        <activity android:name=".activity.ThreadListActivity" />
+        <activity android:name=".view.activity.ThreadListActivity" />
 
-        <activity android:name=".activity.PostListActivity" />
+        <activity android:name=".view.activity.PostListActivity" />
 
         <activity
-            android:name=".activity.PostListGatewayActivity"
+            android:name=".view.activity.PostListGatewayActivity"
             android:theme="@style/Theme.Translucent.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -65,11 +65,11 @@
         </activity>
 
         <activity
-            android:name=".activity.ReplyActivity"
+            android:name=".view.activity.ReplyActivity"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".activity.GalleryActivity"
+            android:name=".view.activity.GalleryActivity"
             android:theme="@style/Theme.Gallery" />
 
     </application>

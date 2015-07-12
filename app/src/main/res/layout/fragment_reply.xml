@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="cl.monsoon.s1next.fragment.ReplyFragment">
+    tools:context="cl.monsoon.s1next.view.fragment.ReplyFragment">
 
     <!-- see https://stackoverflow.com/questions/18774542/android-set-margin-padding-for-contents-text-instead-of-a-container-edittext#answer-18794624 -->
     <ScrollView
@@ -40,7 +40,7 @@
         android:translationY="@dimen/emoticon_keyboard_height"
         android:visibility="gone">
 
-        <cl.monsoon.s1next.view.ViewPagerTabs
+        <cl.monsoon.s1next.widget.ViewPagerTabs
             android:id="@+id/emoticon_keyboard_category_tabs"
             style="@style/EmoticonKeyboardTabTextStyle"
             android:layout_width="match_parent"

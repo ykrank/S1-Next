@@ -16,7 +16,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_drawer_background" />
 
-    <cl.monsoon.s1next.view.BezelImageView
+    <cl.monsoon.s1next.widget.BezelImageView
         android:id="@+id/drawer_user_avatar"
         android:layout_width="@dimen/drawer_avatar_size"
         android:layout_height="@dimen/drawer_avatar_size"

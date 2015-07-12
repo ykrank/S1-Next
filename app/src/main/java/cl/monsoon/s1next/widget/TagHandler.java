@@ -14,7 +14,7 @@ import android.webkit.URLUtil;
 
 import org.xml.sax.XMLReader;
 
-import cl.monsoon.s1next.activity.GalleryActivity;
+import cl.monsoon.s1next.view.activity.GalleryActivity;
 
 /**
  * Adds  {@link android.view.View.OnClickListener}

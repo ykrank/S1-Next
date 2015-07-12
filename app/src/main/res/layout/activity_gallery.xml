@@ -3,7 +3,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="cl.monsoon.s1next.activity.GalleryActivity">
+    tools:context="cl.monsoon.s1next.view.activity.GalleryActivity">
 
     <FrameLayout
         android:layout_width="match_parent"

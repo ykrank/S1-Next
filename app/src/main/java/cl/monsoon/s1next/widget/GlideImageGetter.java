@@ -21,7 +21,6 @@ import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.singleton.Settings;
-import cl.monsoon.s1next.view.UrlDrawable;
 
 /**
  * Implements {@link android.text.Html.ImageGetter}
