@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.model.Favourite;
+import cl.monsoon.s1next.data.api.model.Favourite;
 
 /**
  * Similar to {@link cl.monsoon.s1next.view.adapter.ForumListRecyclerAdapter}.

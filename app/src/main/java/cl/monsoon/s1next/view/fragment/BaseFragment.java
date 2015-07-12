@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.model.Extractable;
+import cl.monsoon.s1next.data.api.model.Extractable;
 import cl.monsoon.s1next.view.fragment.headless.DataRetainedFragment;
 import cl.monsoon.s1next.widget.AsyncResult;
 

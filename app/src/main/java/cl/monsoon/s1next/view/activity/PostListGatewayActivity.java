@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.model.Thread;
+import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.view.fragment.LoaderDialogFragment;
@@ -135,7 +135,7 @@ public final class PostListGatewayActivity extends FragmentActivity {
     private void startPostListActivity(String threadId, int jumpPage, String quotePostId) {
         Intent intent = new Intent(this, PostListActivity.class);
 
-        cl.monsoon.s1next.model.Thread thread = new Thread();
+        Thread thread = new Thread();
         thread.setId(threadId);
         thread.setTitle(StringUtils.EMPTY);
         intent.putExtra(PostListActivity.ARG_THREAD, thread);

@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.model.Forum;
+import cl.monsoon.s1next.data.api.model.Forum;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.StringUtil;

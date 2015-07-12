@@ -13,7 +13,7 @@ import android.widget.SpinnerAdapter;
 import java.util.List;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.model.Forum;
+import cl.monsoon.s1next.data.api.model.Forum;
 import cl.monsoon.s1next.view.adapter.SubForumArrayAdapter;
 import cl.monsoon.s1next.view.fragment.ThreadListFragment;
 import cl.monsoon.s1next.view.fragment.ThreadListPagerFragment;

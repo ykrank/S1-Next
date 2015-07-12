@@ -21,9 +21,9 @@ import java.util.List;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.model.Post;
-import cl.monsoon.s1next.model.list.Posts;
-import cl.monsoon.s1next.model.mapper.PostsWrapper;
+import cl.monsoon.s1next.data.api.model.Post;
+import cl.monsoon.s1next.data.api.model.list.Posts;
+import cl.monsoon.s1next.data.api.model.mapper.PostsWrapper;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.util.ToastUtil;
@@ -257,7 +257,7 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
                     }
                 }
 
-                cl.monsoon.s1next.model.Thread postListInfo = posts.getPostListInfo();
+                cl.monsoon.s1next.data.api.model.Thread postListInfo = posts.getPostListInfo();
                 // we have not title if we open thread link in our app
                 if (TextUtils.isEmpty(getActivity().getTitle())) {
                     mPagerCallback.setThreadTitle(postListInfo.getTitle());

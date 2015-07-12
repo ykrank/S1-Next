@@ -19,8 +19,8 @@ import android.widget.Toast;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.model.Result;
-import cl.monsoon.s1next.model.mapper.ResultWrapper;
+import cl.monsoon.s1next.data.api.model.Result;
+import cl.monsoon.s1next.data.api.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.ToastUtil;

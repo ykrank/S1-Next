@@ -24,8 +24,8 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.data.api.model.Post;
 import cl.monsoon.s1next.event.QuoteEvent;
-import cl.monsoon.s1next.model.Post;
 import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.widget.CustomMovementMethod;

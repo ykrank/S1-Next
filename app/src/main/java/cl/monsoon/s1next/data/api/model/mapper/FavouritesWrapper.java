@@ -1,27 +1,27 @@
-package cl.monsoon.s1next.model.mapper;
+package cl.monsoon.s1next.data.api.model.mapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import cl.monsoon.s1next.model.Result;
-import cl.monsoon.s1next.model.list.Threads;
+import cl.monsoon.s1next.data.api.model.Result;
+import cl.monsoon.s1next.data.api.model.list.Favourites;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class ThreadsWrapper implements Deserializable {
+public final class FavouritesWrapper implements Deserializable {
 
     @JsonProperty("Variables")
-    private Threads threads;
+    private Favourites favourites;
 
     @JsonProperty("Message")
     private Result result;
 
-    public Threads getThreads() {
-        return threads;
+    public Favourites getFavourites() {
+        return favourites;
     }
 
-    public void setThreads(Threads threads) {
-        this.threads = threads;
+    public void setFavourites(Favourites favourites) {
+        this.favourites = favourites;
     }
 
     public Result getResult() {

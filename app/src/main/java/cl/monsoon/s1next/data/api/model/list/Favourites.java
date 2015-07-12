@@ -1,12 +1,12 @@
-package cl.monsoon.s1next.model.list;
+package cl.monsoon.s1next.data.api.model.list;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-import cl.monsoon.s1next.model.Account;
-import cl.monsoon.s1next.model.Favourite;
+import cl.monsoon.s1next.data.api.model.Account;
+import cl.monsoon.s1next.data.api.model.Favourite;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)

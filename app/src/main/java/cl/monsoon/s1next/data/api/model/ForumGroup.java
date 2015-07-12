@@ -1,4 +1,4 @@
-package cl.monsoon.s1next.model;
+package cl.monsoon.s1next.data.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

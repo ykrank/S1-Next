@@ -1,10 +1,10 @@
-package cl.monsoon.s1next.model.mapper;
+package cl.monsoon.s1next.data.api.model.mapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import cl.monsoon.s1next.model.Account;
-import cl.monsoon.s1next.model.Result;
+import cl.monsoon.s1next.data.api.model.Account;
+import cl.monsoon.s1next.data.api.model.Result;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)

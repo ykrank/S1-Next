@@ -1,4 +1,4 @@
-package cl.monsoon.s1next.model.list;
+package cl.monsoon.s1next.data.api.model.list;
 
 import android.util.SparseArray;
 
@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import cl.monsoon.s1next.model.Account;
-import cl.monsoon.s1next.model.Forum;
-import cl.monsoon.s1next.model.ForumGroup;
+import cl.monsoon.s1next.data.api.model.Account;
+import cl.monsoon.s1next.data.api.model.Forum;
+import cl.monsoon.s1next.data.api.model.ForumGroup;
 
 /**
  * {@link #forumList}:
@@ -60,7 +60,7 @@ public final class ForumGroups extends Account {
     private final List<ForumGroup> forumGroupList;
 
     /**
-     * Sorts Forums by {@link cl.monsoon.s1next.model.Forum#getTodayPosts()} desc
+     * Sorts Forums by {@link Forum#getTodayPosts()} desc
      * and groups Forums by category.
      */
     @JsonCreator

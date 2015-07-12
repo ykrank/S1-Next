@@ -7,7 +7,7 @@ import com.squareup.okhttp.RequestBody;
 
 import org.apache.commons.lang3.StringUtils;
 
-import cl.monsoon.s1next.model.Quote;
+import cl.monsoon.s1next.data.api.model.Quote;
 import cl.monsoon.s1next.singleton.User;
 
 public final class Api {

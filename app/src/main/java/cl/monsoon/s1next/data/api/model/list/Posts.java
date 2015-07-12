@@ -1,4 +1,4 @@
-package cl.monsoon.s1next.model.list;
+package cl.monsoon.s1next.data.api.model.list;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -13,8 +13,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import cl.monsoon.s1next.model.Account;
-import cl.monsoon.s1next.model.Post;
+import cl.monsoon.s1next.data.api.model.Account;
+import cl.monsoon.s1next.data.api.model.Post;
+import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.util.StringUtil;
 
 /**
@@ -29,7 +30,7 @@ import cl.monsoon.s1next.util.StringUtil;
 public final class Posts extends Account {
 
     @JsonProperty("thread")
-    private cl.monsoon.s1next.model.Thread postListInfo;
+    private Thread postListInfo;
 
     @JsonProperty("threadsortshow")
     private ThreadAttachment threadAttachment;
@@ -37,11 +38,11 @@ public final class Posts extends Account {
     @JsonProperty("postlist")
     private List<Post> postList;
 
-    public cl.monsoon.s1next.model.Thread getPostListInfo() {
+    public Thread getPostListInfo() {
         return postListInfo;
     }
 
-    public void setPostListInfo(cl.monsoon.s1next.model.Thread postListInfo) {
+    public void setPostListInfo(Thread postListInfo) {
         this.postListInfo = postListInfo;
     }
 

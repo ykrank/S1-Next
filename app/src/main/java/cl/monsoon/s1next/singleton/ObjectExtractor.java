@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import cl.monsoon.s1next.model.Extractable;
-import cl.monsoon.s1next.model.Quote;
+import cl.monsoon.s1next.data.api.model.Extractable;
+import cl.monsoon.s1next.data.api.model.Quote;
 import cl.monsoon.s1next.util.ServerException;
 
 public enum ObjectExtractor {

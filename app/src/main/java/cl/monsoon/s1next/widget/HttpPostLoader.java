@@ -9,7 +9,7 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.io.InputStream;
 
-import cl.monsoon.s1next.model.Extractable;
+import cl.monsoon.s1next.data.api.model.Extractable;
 import cl.monsoon.s1next.singleton.OkHttpClientProvider;
 import cl.monsoon.s1next.util.ServerException;
 

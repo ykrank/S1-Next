@@ -17,9 +17,9 @@ import java.util.List;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.model.Forum;
-import cl.monsoon.s1next.model.list.Threads;
-import cl.monsoon.s1next.model.mapper.ThreadsWrapper;
+import cl.monsoon.s1next.data.api.model.Forum;
+import cl.monsoon.s1next.data.api.model.list.Threads;
+import cl.monsoon.s1next.data.api.model.mapper.ThreadsWrapper;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.activity.PostListActivity;
 import cl.monsoon.s1next.view.adapter.ThreadListRecyclerAdapter;
@@ -99,7 +99,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
 
                         Intent intent = new Intent(getActivity(), PostListActivity.class);
 
-                        cl.monsoon.s1next.model.Thread thread = mRecyclerAdapter.getItem(position);
+                        cl.monsoon.s1next.data.api.model.Thread thread = mRecyclerAdapter.getItem(position);
                         intent.putExtra(PostListActivity.ARG_THREAD, thread);
                         if (shouldGoToLastPage) {
                             intent.putExtra(PostListActivity.ARG_SHOULD_GO_TO_LAST_PAGE, true);

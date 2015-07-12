@@ -1,4 +1,4 @@
-package cl.monsoon.s1next.model;
+package cl.monsoon.s1next.data.api.model;
 
 import android.graphics.Color;
 import android.support.v4.util.SimpleArrayMap;

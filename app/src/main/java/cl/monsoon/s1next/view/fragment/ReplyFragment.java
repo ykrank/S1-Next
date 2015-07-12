@@ -34,10 +34,10 @@ import java.util.List;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.data.api.model.Quote;
+import cl.monsoon.s1next.data.api.model.Result;
+import cl.monsoon.s1next.data.api.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.event.EmoticonClickEvent;
-import cl.monsoon.s1next.model.Quote;
-import cl.monsoon.s1next.model.Result;
-import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.singleton.User;

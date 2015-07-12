@@ -31,10 +31,10 @@ import com.squareup.otto.Subscribe;
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.data.api.model.Result;
+import cl.monsoon.s1next.data.api.model.list.Posts;
+import cl.monsoon.s1next.data.api.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.event.QuoteEvent;
-import cl.monsoon.s1next.model.Result;
-import cl.monsoon.s1next.model.list.Posts;
-import cl.monsoon.s1next.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.singleton.User;
@@ -96,7 +96,7 @@ public final class PostListActivity extends BaseActivity
 
         setNavDrawerIndicatorEnabled(false);
 
-        cl.monsoon.s1next.model.Thread thread = getIntent().getParcelableExtra(ARG_THREAD);
+        cl.monsoon.s1next.data.api.model.Thread thread = getIntent().getParcelableExtra(ARG_THREAD);
         mThreadTitle = thread.getTitle();
         mThreadId = thread.getId();
 

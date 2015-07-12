@@ -12,7 +12,7 @@ import android.support.v4.content.Loader;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import cl.monsoon.s1next.model.Extractable;
+import cl.monsoon.s1next.data.api.model.Extractable;
 import cl.monsoon.s1next.widget.AsyncResult;
 
 /**

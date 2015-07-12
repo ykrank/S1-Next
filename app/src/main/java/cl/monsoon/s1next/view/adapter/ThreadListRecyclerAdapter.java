@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.model.Thread;
+import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ViewUtil;

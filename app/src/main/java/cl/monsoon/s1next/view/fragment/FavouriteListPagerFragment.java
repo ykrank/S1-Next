@@ -15,10 +15,10 @@ import android.widget.Toast;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.model.Favourite;
-import cl.monsoon.s1next.model.Thread;
-import cl.monsoon.s1next.model.list.Favourites;
-import cl.monsoon.s1next.model.mapper.FavouritesWrapper;
+import cl.monsoon.s1next.data.api.model.Favourite;
+import cl.monsoon.s1next.data.api.model.Thread;
+import cl.monsoon.s1next.data.api.model.list.Favourites;
+import cl.monsoon.s1next.data.api.model.mapper.FavouritesWrapper;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.activity.PostListActivity;
@@ -78,7 +78,7 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
                         Intent intent = new Intent(getActivity(), PostListActivity.class);
 
                         Favourite favourite = mRecyclerAdapter.getItem(position);
-                        cl.monsoon.s1next.model.Thread thread = new Thread();
+                        Thread thread = new Thread();
                         thread.setId(favourite.getId());
                         thread.setTitle(favourite.getTitle());
                         intent.putExtra(PostListActivity.ARG_THREAD, thread);
