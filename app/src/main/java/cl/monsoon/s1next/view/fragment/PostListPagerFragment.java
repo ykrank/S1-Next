@@ -262,11 +262,8 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
                 if (TextUtils.isEmpty(getActivity().getTitle())) {
                     mPagerCallback.setThreadTitle(postListInfo.getTitle());
                 }
-                new Handler().post(() -> {
-                    if (mPagerCallback != null) {
-                        mPagerCallback.setTotalPageByPosts(postListInfo.getReplies() + 1);
-                    }
-                });
+                new Handler().post(() ->
+                        mPagerCallback.setTotalPageByPosts(postListInfo.getReplies() + 1));
             }
 
             if (posts.getThreadAttachment() != null) {
