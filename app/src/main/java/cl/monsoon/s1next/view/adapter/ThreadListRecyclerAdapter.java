@@ -1,5 +1,6 @@
 package cl.monsoon.s1next.view.adapter;
 
+import android.content.Context;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +11,7 @@ import android.widget.TextView;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Thread;
-import cl.monsoon.s1next.singleton.Settings;
+import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ViewUtil;
 
@@ -19,12 +20,15 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
     private final int mSecondaryTextColor;
 
     private static final String THREAD_PERMISSION_HINT_PREFIX =
-            App.getContext().getString(R.string.thread_activity_thread_permission);
+            App.get().getString(R.string.thread_activity_thread_permission);
 
-    public ThreadListRecyclerAdapter() {
+    private final ThemeManager mThemeManager;
+
+    public ThreadListRecyclerAdapter(Context context) {
         setHasStableIds(true);
 
-        mSecondaryTextColor = Settings.Theme.getSecondaryTextColor();
+        mThemeManager = App.getAppComponent(context).getThemeManager();
+        mSecondaryTextColor = mThemeManager.getSecondaryTextColor();
     }
 
     @Override
@@ -32,7 +36,7 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_multi_line_text,
                 parent, false);
 
-        return new ViewHolder(view);
+        return new ViewHolder(view, mThemeManager);
     }
 
     @Override
@@ -66,14 +70,14 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
         private final int mDefaultTextViewColor;
         private final int mDisabledTextViewColor;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, ThemeManager themeManager) {
             super(itemView);
 
             textView = (TextView) itemView;
 
             mDefaultTextViewColor = textView.getCurrentTextColor();
             mDisabledTextViewColor = ColorUtils.setAlphaComponent(mDefaultTextViewColor,
-                    Settings.Theme.getDisabledOrHintTextAlpha());
+                    themeManager.getDisabledOrHintTextAlpha());
         }
 
         public void setTextViewEnabled(Boolean enabled) {

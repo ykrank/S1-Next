@@ -18,8 +18,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import cl.monsoon.s1next.Api;
+import cl.monsoon.s1next.App;
+import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.singleton.AvatarUrlCache;
-import cl.monsoon.s1next.singleton.Settings;
 
 import static com.squareup.okhttp.internal.http.StatusLine.HTTP_PERM_REDIRECT;
 import static com.squareup.okhttp.internal.http.StatusLine.HTTP_TEMP_REDIRECT;
@@ -43,6 +44,8 @@ import static java.net.HttpURLConnection.HTTP_REQ_TOO_LONG;
  */
 final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 
+    final DownloadPreferencesManager mDownloadPreferencesManager;
+
     private final OkHttpClient mOkHttpClient;
     private final GlideUrl mGlideUrl;
 
@@ -53,6 +56,8 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
     public OkHttpStreamFetcher(OkHttpClient okHttpClient, GlideUrl glideUrl) {
         this.mOkHttpClient = okHttpClient;
         this.mGlideUrl = glideUrl;
+
+        mDownloadPreferencesManager = App.get().getAppComponent().getDownloadPreferencesManager();
     }
 
     /**
@@ -64,7 +69,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
         String url = mGlideUrl.toStringUrl();
         if (Api.isAvatarUrl(url)) {
             key = new AvatarUrlCache.OriginalKey(url,
-                    Settings.Download.getAvatarCacheInvalidationIntervalSignature());
+                    mDownloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature());
             if (AvatarUrlCache.has(key)) {
                 throw new IOException("Already have cached this avatar (" + url + ").");
             }

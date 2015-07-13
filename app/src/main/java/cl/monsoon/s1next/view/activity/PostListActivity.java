@@ -28,15 +28,19 @@ import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
+import javax.inject.Inject;
+
 import cl.monsoon.s1next.Api;
+import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.data.Wifi;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.list.Posts;
 import cl.monsoon.s1next.data.api.model.mapper.ResultWrapper;
+import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.event.QuoteEvent;
 import cl.monsoon.s1next.singleton.BusProvider;
-import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
@@ -69,6 +73,12 @@ public final class PostListActivity extends BaseActivity
     public static final String ARG_JUMP_PAGE = "jump_page";
     public static final String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
 
+    @Inject
+    DownloadPreferencesManager mDownloadPreferencesManager;
+
+    @Inject
+    Wifi mWifi;
+
     private String mThreadId;
 
     private String mThreadTitle;
@@ -91,8 +101,8 @@ public final class PostListActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_base);
+        App.getAppComponent(this).inject(this);
 
         setNavDrawerIndicatorEnabled(false);
 
@@ -151,13 +161,13 @@ public final class PostListActivity extends BaseActivity
 
         // Registers broadcast receiver to check whether Wi-Fi is enabled
         // when we need to download images.
-        if (Settings.Download.needMonitorWifi()) {
-            Settings.General.setWifi(NetworkUtil.isWifiConnected());
+        if (mDownloadPreferencesManager.shouldMonitorWifi()) {
+            mWifi.setWifiEnabled(NetworkUtil.isWifiConnected());
 
             mWifiReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    Settings.General.setWifi(NetworkUtil.isWifiConnected());
+                    mWifi.setWifiEnabled(NetworkUtil.isWifiConnected());
                 }
             };
 

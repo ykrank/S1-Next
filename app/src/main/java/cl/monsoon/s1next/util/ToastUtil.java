@@ -21,10 +21,10 @@ public final class ToastUtil {
     }
 
     public static void showByText(String text, @Duration int duration) {
-        Toast.makeText(App.getContext(), text, duration).show();
+        Toast.makeText(App.get(), text, duration).show();
     }
 
     public static void showByResId(int resId, @Duration int duration) {
-        Toast.makeText(App.getContext(), resId, duration).show();
+        Toast.makeText(App.get(), resId, duration).show();
     }
 }

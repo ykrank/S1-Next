@@ -14,7 +14,7 @@ public final class DeviceUtil {
     }
 
     public static String getSignature() {
-        return App.getContext().getString(R.string.signature, getDeviceNameWithVersion());
+        return App.get().getString(R.string.signature, getDeviceNameWithVersion());
     }
 
     private static String getDeviceName() {

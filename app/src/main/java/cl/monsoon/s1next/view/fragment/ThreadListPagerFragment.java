@@ -70,7 +70,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerAdapter = new ThreadListRecyclerAdapter();
+        mRecyclerAdapter = new ThreadListRecyclerAdapter(getActivity());
         recyclerView.setAdapter(mRecyclerAdapter);
 
         recyclerView.addOnItemTouchListener(new RecyclerViewHelper(getActivity(), recyclerView,

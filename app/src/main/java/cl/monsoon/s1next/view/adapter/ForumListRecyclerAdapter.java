@@ -1,24 +1,25 @@
 package cl.monsoon.s1next.view.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Forum;
-import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.util.ViewUtil;
 
 public final class ForumListRecyclerAdapter extends RecyclerAdapter<Forum, ForumListRecyclerAdapter.ViewHolder> {
 
     private final int mSecondaryTextColor;
 
-    public ForumListRecyclerAdapter() {
+    public ForumListRecyclerAdapter(Context context) {
         setHasStableIds(true);
 
-        mSecondaryTextColor = Settings.Theme.getSecondaryTextColor();
+        mSecondaryTextColor = App.getAppComponent(context).getThemeManager().getSecondaryTextColor();
     }
 
     @Override

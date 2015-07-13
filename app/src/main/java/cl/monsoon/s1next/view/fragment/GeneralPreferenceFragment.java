@@ -5,52 +5,59 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 
+import javax.inject.Inject;
+
+import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
+import cl.monsoon.s1next.data.pref.GeneralPreferencesRepository;
+import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.event.FontSizeChangeEvent;
 import cl.monsoon.s1next.event.ThemeChangeEvent;
 import cl.monsoon.s1next.singleton.BusProvider;
-import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.util.DeviceUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.view.activity.SettingsActivity;
 
-public final class MainPreferenceFragment extends BasePreferenceFragment implements Preference.OnPreferenceClickListener {
-
-    public static final String PREF_KEY_THEME = "pref_key_theme";
-    public static final String PREF_KEY_FONT_SIZE = "pref_key_font_size";
-    public static final String PREF_KEY_SIGNATURE = "pref_key_signature";
+public final class GeneralPreferenceFragment extends BasePreferenceFragment implements Preference.OnPreferenceClickListener {
 
     private static final String PREF_KEY_DOWNLOADS = "pref_key_downloads";
+
+    @Inject
+    GeneralPreferencesManager mGeneralPreferencesManager;
+
+    @Inject
+    ThemeManager mThemeManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.getAppComponent(getActivity()).inject(this);
 
-        addPreferencesFromResource(R.xml.main_preferences);
+        addPreferencesFromResource(R.xml.general_preferences);
 
         findPreference(PREF_KEY_DOWNLOADS).setOnPreferenceClickListener(this);
-        findPreference(PREF_KEY_SIGNATURE).setSummary(DeviceUtil.getSignature());
+        findPreference(GeneralPreferencesRepository.PREF_KEY_SIGNATURE).setSummary(
+                DeviceUtil.getSignature());
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
-            // set current theme
-            case PREF_KEY_THEME:
-                Settings.Theme.setCurrentTheme(sharedPreferences);
+            case GeneralPreferencesRepository.PREF_KEY_THEME:
+                mThemeManager.invalidateTheme();
                 BusProvider.get().post(new ThemeChangeEvent());
 
                 break;
-            // change font size
-            case PREF_KEY_FONT_SIZE:
-                Settings.General.setTextScale(sharedPreferences);
-                ResourceUtil.setScaledDensity(getResources(), Settings.General.getTextScale());
+            case GeneralPreferencesRepository.PREF_KEY_FONT_SIZE:
+                mGeneralPreferencesManager.invalidateTextScale();
+                ResourceUtil.setScaledDensity(getResources(),
+                        mGeneralPreferencesManager.getTextScale());
                 BusProvider.get().post(new FontSizeChangeEvent());
 
                 break;
-            // enable/disable signature
-            case PREF_KEY_SIGNATURE:
-                Settings.General.setSignature(sharedPreferences);
+            case GeneralPreferencesRepository.PREF_KEY_SIGNATURE:
+                mGeneralPreferencesManager.invalidateSignatureEnabled();
 
                 break;
         }

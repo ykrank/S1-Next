@@ -22,11 +22,13 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Thread;
-import cl.monsoon.s1next.singleton.Settings;
+import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.view.fragment.LoaderDialogFragment;
 import cl.monsoon.s1next.widget.AsyncResult;
@@ -40,13 +42,17 @@ import cl.monsoon.s1next.widget.HttpRedirectLoader;
  */
 public final class PostListGatewayActivity extends FragmentActivity {
 
+    @Inject
+    ThemeManager mThemeManager;
+
     public static final String ARG_COME_FROM_OTHER_APP = "come_from_other_app";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        App.getAppComponent(this).inject(this);
         // default theme for this Activity is dark theme
-        if (!Settings.Theme.isDarkTheme()) {
-            setTheme(Settings.Theme.TRANSLUCENT_THEME_LIGHT);
+        if (!mThemeManager.isDarkTheme()) {
+            setTheme(ThemeManager.TRANSLUCENT_THEME_LIGHT);
         }
 
         super.onCreate(savedInstanceState);
@@ -325,7 +331,7 @@ public final class PostListGatewayActivity extends FragmentActivity {
         private static final String ARG_MESSAGE = "message";
 
         public static ErrorPromptDialogFragment newInstance(@StringRes int message) {
-            return newInstance(App.getContext().getString(message));
+            return newInstance(App.get().getString(message));
         }
 
         public static ErrorPromptDialogFragment newInstance(String message) {

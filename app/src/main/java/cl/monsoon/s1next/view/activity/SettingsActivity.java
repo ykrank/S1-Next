@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.view.fragment.DownloadPreferenceFragment;
-import cl.monsoon.s1next.view.fragment.MainPreferenceFragment;
+import cl.monsoon.s1next.view.fragment.GeneralPreferenceFragment;
 
 public final class SettingsActivity extends BaseActivity {
 
@@ -22,7 +22,7 @@ public final class SettingsActivity extends BaseActivity {
                         new DownloadPreferenceFragment()).commit();
             } else {
                 getFragmentManager().beginTransaction().replace(R.id.frame_layout,
-                        new MainPreferenceFragment()).commit();
+                        new GeneralPreferenceFragment()).commit();
             }
         }
     }

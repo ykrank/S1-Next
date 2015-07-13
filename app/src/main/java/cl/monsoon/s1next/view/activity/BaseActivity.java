@@ -1,15 +1,14 @@
 package cl.monsoon.s1next.view.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
-import android.preference.PreferenceManager;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,17 +35,20 @@ import com.squareup.otto.Subscribe;
 
 import java.util.concurrent.Callable;
 
+import javax.inject.Inject;
+
 import cl.monsoon.s1next.Api;
+import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
+import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.event.FontSizeChangeEvent;
 import cl.monsoon.s1next.event.ThemeChangeEvent;
 import cl.monsoon.s1next.event.UserStatusEvent;
 import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.OkHttpClientProvider;
-import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ResourceUtil;
-import cl.monsoon.s1next.view.fragment.MainPreferenceFragment;
 
 /**
  * A base Activity which includes the Toolbar
@@ -54,6 +56,12 @@ import cl.monsoon.s1next.view.fragment.MainPreferenceFragment;
  * Also changes theme depends on settings.
  */
 public abstract class BaseActivity extends AppCompatActivity {
+
+    @Inject
+    DownloadPreferencesManager mDownloadPreferencesManager;
+
+    @Inject
+    ThemeManager mThemeManager;
 
     private Toolbar mToolbar;
 
@@ -70,8 +78,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (!Settings.Theme.isDefaultTheme()) {
-            setTheme(Settings.Theme.getCurrentTheme());
+        App.getAppComponent(this).inject(this);
+        if (!mThemeManager.isDefaultTheme()) {
+            setTheme(mThemeManager.getThemeStyle());
         }
 
         super.onCreate(savedInstanceState);
@@ -382,7 +391,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         // setup default avatar
         Glide.with(this)
                 .load(R.drawable.ic_drawer_avatar_placeholder)
-                .signature(Settings.Download.getAvatarCacheInvalidationIntervalSignature())
+                .signature(mDownloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
                 .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
                 .into(mDrawerUserAvatarView);
 
@@ -409,7 +418,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         // setup user's avatar
         Glide.with(this)
                 .load(Api.getAvatarMediumUrl(User.getUid()))
-                .signature(Settings.Download.getAvatarCacheInvalidationIntervalSignature())
+                .signature(mDownloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
                 .error(R.drawable.ic_drawer_avatar_placeholder)
                 .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
                 .into(mDrawerUserAvatarView);
@@ -443,16 +452,19 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         private static final String TAG = ThemeChangeDialogFragment.class.getSimpleName();
 
+        ThemeManager mThemeManager;
+
+        @Override
+        public void onAttach(Activity activity) {
+            super.onAttach(activity);
+
+            mThemeManager = App.getAppComponent(activity).getThemeManager();
+        }
+
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-                    getActivity());
-
-            //noinspection ConstantConditions
-            int checkedItem = Integer.parseInt(sharedPreferences.getString(
-                    MainPreferenceFragment.PREF_KEY_THEME,
-                    getString(R.string.pref_theme_default_value)));
+            int checkedItem = mThemeManager.getThemeIndex();
             return new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.pref_theme)
                     .setSingleChoiceItems(
@@ -461,10 +473,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                             (dialog, which) -> {
                                 // won't change theme if unchanged
                                 if (which != checkedItem) {
-                                    sharedPreferences.edit().putString(
-                                            MainPreferenceFragment.PREF_KEY_THEME,
-                                            String.valueOf(which)).apply();
-                                    Settings.Theme.setCurrentTheme(sharedPreferences);
+                                    mThemeManager.applyTheme(checkedItem);
+                                    mThemeManager.setThemeByIndex(checkedItem);
 
                                     BusProvider.get().post(new ThemeChangeEvent());
                                 }

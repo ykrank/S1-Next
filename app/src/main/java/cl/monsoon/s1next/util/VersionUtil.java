@@ -6,8 +6,9 @@ import android.app.ActivityManager;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 
+import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.singleton.Settings;
+import cl.monsoon.s1next.data.pref.ThemeManager;
 
 final class VersionUtil {
 
@@ -22,24 +23,16 @@ final class VersionUtil {
      */
     @SuppressWarnings("unused")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void changeAppTitleColorToWhiteInRecentApps(Activity activity) {
+    public static void changeAppTitleColorToWhiteInRecentAppsForInverseTheme(Activity activity) {
         int colorId;
-        switch (Settings.Theme.getCurrentTheme()) {
-            // We can't find any similar color to change app title to
-            // white for Settings.LIGHT_THEME_AMBER.
-            case Settings.Theme.LIGHT_THEME_INVERSE_GREEN:
-                colorId = R.color.green_600;
-
-                break;
-            case Settings.Theme.LIGHT_THEME_INVERSE_LIGHT_BLUE:
-                colorId = R.color.light_blue_600;
-
-                break;
-            default:
-                colorId = -1;
-        }
-
-        if (colorId == -1) {
+        ThemeManager.Theme currentTheme = App.getAppComponent(activity).getThemeManager().getTheme();
+        // We can't find any similar color to change app title to
+        // white for ThemeManager.Theme.LIGHT_THEME_INVERSE_AMBER.
+        if (currentTheme == ThemeManager.Theme.LIGHT_THEME_INVERSE_GREEN) {
+            colorId = R.color.green_600;
+        } else if (currentTheme == ThemeManager.Theme.LIGHT_THEME_INVERSE_LIGHT_BLUE) {
+            colorId = R.color.light_blue_600;
+        } else {
             return;
         }
 

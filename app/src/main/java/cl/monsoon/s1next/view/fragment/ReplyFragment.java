@@ -1,6 +1,7 @@
 package cl.monsoon.s1next.view.fragment;
 
 import android.animation.Animator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -32,14 +33,17 @@ import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import cl.monsoon.s1next.Api;
+import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Quote;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.mapper.ResultWrapper;
+import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
 import cl.monsoon.s1next.event.EmoticonClickEvent;
 import cl.monsoon.s1next.singleton.BusProvider;
-import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.DeviceUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
@@ -75,6 +79,9 @@ public final class ReplyFragment extends Fragment {
 
     private static final String STATUS_REPLY_SUCCESS = "post_reply_succeed";
 
+    @Inject
+    GeneralPreferencesManager mGeneralPreferencesManager;
+
     private String mThreadId;
     private String mQuotePostId;
 
@@ -102,6 +109,12 @@ public final class ReplyFragment extends Fragment {
         fragment.setArguments(bundle);
 
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        App.getAppComponent(activity).inject(this);
     }
 
     @Override
@@ -200,7 +213,7 @@ public final class ReplyFragment extends Fragment {
                 return true;
             case R.id.menu_send:
                 StringBuilder stringBuilder = new StringBuilder(mReplyView.getText());
-                if (Settings.General.hasSignature()) {
+                if (mGeneralPreferencesManager.isSignatureEnabled()) {
                     stringBuilder.append("\n\n").append(DeviceUtil.getSignature());
                 }
 

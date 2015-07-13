@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
@@ -29,6 +30,7 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE'
     }
 }
@@ -39,6 +41,11 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
+    compile 'com.google.dagger:dagger:2.0.1'
+    apt 'com.google.dagger:dagger-compiler:2.0.1'
+    // https://github.com/google/dagger/issues/95
+    compile 'javax.annotation:javax.annotation-api:1.2'
+    
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.0.4'
 
     ext.supportVersion = "22.2.0"

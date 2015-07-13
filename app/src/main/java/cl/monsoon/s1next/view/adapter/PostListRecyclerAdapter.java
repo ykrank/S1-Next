@@ -23,11 +23,12 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
 import cl.monsoon.s1next.Api;
+import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Post;
+import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.event.QuoteEvent;
 import cl.monsoon.s1next.singleton.BusProvider;
-import cl.monsoon.s1next.singleton.Settings;
 import cl.monsoon.s1next.widget.CustomMovementMethod;
 import cl.monsoon.s1next.widget.GlideImageGetter;
 import cl.monsoon.s1next.widget.TagHandler;
@@ -42,6 +43,8 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER_PROGRESS = Integer.MIN_VALUE;
 
+    final DownloadPreferencesManager mDownloadPreferencesManager;
+
     private boolean mHasFooterProgress;
 
     private final Context mContext;
@@ -50,13 +53,14 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
 
     public PostListRecyclerAdapter(Context context) {
         this.mContext = context;
+        mDownloadPreferencesManager = App.getAppComponent(context).getDownloadPreferencesManager();
 
         setHasStableIds(true);
 
         // loading avatars is prior to images in replies
         mAvatarRequestBuilder = Glide.with(mContext)
                 .from(String.class)
-                .signature(Settings.Download.getAvatarCacheInvalidationIntervalSignature())
+                .signature(mDownloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
                 .error(R.drawable.ic_avatar_placeholder)
                 .priority(Priority.HIGH)
                 .transform(new CenterCrop(Glide.get(context).getBitmapPool()));
@@ -99,10 +103,10 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
 
         // whether need to download avatars
         // depends on settings and Wi-Fi status
-        if (Settings.Download.needDownloadAvatars()) {
+        if (mDownloadPreferencesManager.isAvatarsDownloaded()) {
             avatarView.setVisibility(View.VISIBLE);
 
-            String url = Settings.Download.needDownloadHighResolutionAvatars()
+            String url = mDownloadPreferencesManager.isHighResolutionAvatarsDownloaded()
                     ? Api.getAvatarMediumUrl(post.getUserId())
                     : Api.getAvatarSmallUrl(post.getUserId());
             // show user's avatar
