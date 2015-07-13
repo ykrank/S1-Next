@@ -33,7 +33,7 @@ public final class AppGlideModule implements GlideModule {
     @Override
     public void registerComponents(Context context, Glide glide) {
         // register the OkHttp for Glide
-        glide.register(GlideUrl.class, InputStream.class,
-                new OkHttpUrlLoader.Factory(OkHttpClientProvider.get()));
+        glide.register(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(
+                OkHttpClientProvider.get()));
     }
 }

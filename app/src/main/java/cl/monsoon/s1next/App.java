@@ -45,16 +45,14 @@ public final class App extends Application {
 
         // enable StrictMode when debug
         if (BuildConfig.DEBUG) {
-            StrictMode.setThreadPolicy(
-                    new StrictMode.ThreadPolicy.Builder()
-                            .detectAll()
-                            .penaltyLog()
-                            .build());
-            StrictMode.setVmPolicy(
-                    new StrictMode.VmPolicy.Builder()
-                            .detectAll()
-                            .penaltyLog()
-                            .build());
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build());
         }
 
         sApp = this;
