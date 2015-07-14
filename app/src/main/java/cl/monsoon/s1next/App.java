@@ -10,6 +10,7 @@ import com.bugsnag.android.Bugsnag;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
@@ -17,6 +18,7 @@ import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.view.activity.BaseActivity;
 import cl.monsoon.s1next.view.activity.PostListActivity;
 import cl.monsoon.s1next.view.activity.PostListGatewayActivity;
+import cl.monsoon.s1next.view.adapter.ThreadListRecyclerAdapter;
 import cl.monsoon.s1next.view.fragment.DownloadPreferenceFragment;
 import cl.monsoon.s1next.view.fragment.GeneralPreferenceFragment;
 import cl.monsoon.s1next.view.fragment.ReplyFragment;
@@ -87,6 +89,8 @@ public final class App extends Application {
 
         ThemeManager getThemeManager();
 
+        User getUser();
+
         void inject(App app);
 
         void inject(BaseActivity activity);
@@ -100,5 +104,7 @@ public final class App extends Application {
         void inject(DownloadPreferenceFragment fragment);
 
         void inject(ReplyFragment fragment);
+
+        void inject(ThreadListRecyclerAdapter adapter);
     }
 }

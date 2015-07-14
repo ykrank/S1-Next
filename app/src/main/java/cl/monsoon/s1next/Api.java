@@ -7,8 +7,8 @@ import com.squareup.okhttp.RequestBody;
 
 import org.apache.commons.lang3.StringUtils;
 
+import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.api.model.Quote;
-import cl.monsoon.s1next.singleton.User;
 
 public final class Api {
 
@@ -186,7 +186,7 @@ public final class Api {
         }
 
         private static FormEncodingBuilder newInstance() {
-            String authenticityToken = User.getAuthenticityToken();
+            String authenticityToken = App.get().getAppComponent().getUser().getAuthenticityToken();
             if (authenticityToken == null) {
                 throw new IllegalStateException("AuthenticityToken must not be null.");
             }

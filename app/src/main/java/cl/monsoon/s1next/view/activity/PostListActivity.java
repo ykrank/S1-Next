@@ -41,7 +41,6 @@ import cl.monsoon.s1next.data.api.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.event.QuoteEvent;
 import cl.monsoon.s1next.singleton.BusProvider;
-import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
 import cl.monsoon.s1next.util.StringUtil;
@@ -499,7 +498,8 @@ public final class PostListActivity extends BaseActivity
             @Override
             @LoaderId
             protected int getStartLoaderId() {
-                if (TextUtils.isEmpty(User.getAuthenticityToken())) {
+                if (TextUtils.isEmpty(App.getAppComponent(getActivity()).getUser()
+                        .getAuthenticityToken())) {
                     return ID_LOADER_GET_AUTHENTICITY_TOKEN;
                 } else {
                     return ID_LOADER_ADD_THREAD_TO_FAVOURITES;

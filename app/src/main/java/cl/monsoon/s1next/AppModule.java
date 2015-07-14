@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 
 import javax.inject.Singleton;
 
+import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.Wifi;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesRepository;
@@ -65,6 +66,12 @@ public final class AppModule {
     @Singleton
     DownloadPreferencesManager provideDownloadPreferencesManager(DownloadPreferencesRepository downloadPreferencesProvider, Wifi wifi) {
         return new DownloadPreferencesManager(downloadPreferencesProvider, wifi);
+    }
+
+    @Provides
+    @Singleton
+    User providerUser() {
+        return new User();
     }
 
     @Provides

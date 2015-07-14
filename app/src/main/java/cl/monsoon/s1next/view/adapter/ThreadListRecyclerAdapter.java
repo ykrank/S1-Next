@@ -8,26 +8,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.data.pref.ThemeManager;
-import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ViewUtil;
 
 public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, ThreadListRecyclerAdapter.ViewHolder> {
 
-    private final int mSecondaryTextColor;
-
     private static final String THREAD_PERMISSION_HINT_PREFIX =
             App.get().getString(R.string.thread_activity_thread_permission);
 
-    private final ThemeManager mThemeManager;
+    @Inject
+    ThemeManager mThemeManager;
+
+    @Inject
+    User mUser;
+
+    private final int mSecondaryTextColor;
 
     public ThreadListRecyclerAdapter(Context context) {
         setHasStableIds(true);
 
-        mThemeManager = App.getAppComponent(context).getThemeManager();
+        App.getAppComponent(context).inject(this);
         mSecondaryTextColor = mThemeManager.getSecondaryTextColor();
     }
 
@@ -51,7 +57,7 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
                     "[" + THREAD_PERMISSION_HINT_PREFIX + thread.getPermission() + "]");
         }
         // disable TextView if user has no permission to access this thread
-        holder.setTextViewEnabled(User.getPermission() >= thread.getPermission());
+        holder.setTextViewEnabled(mUser.getPermission() >= thread.getPermission());
 
         // add thread's replies count to each thread
         ViewUtil.concatWithTwoSpacesForRtlSupport(textView, String.valueOf(thread.getReplies()),

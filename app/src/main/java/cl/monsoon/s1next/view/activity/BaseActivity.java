@@ -40,6 +40,7 @@ import javax.inject.Inject;
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.event.FontSizeChangeEvent;
@@ -47,7 +48,6 @@ import cl.monsoon.s1next.event.ThemeChangeEvent;
 import cl.monsoon.s1next.event.UserStatusEvent;
 import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.singleton.OkHttpClientProvider;
-import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.ResourceUtil;
 
 /**
@@ -62,6 +62,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Inject
     ThemeManager mThemeManager;
+
+    @Inject
+    User mUser;
 
     private Toolbar mToolbar;
 
@@ -288,7 +291,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         // Show default avatar and login prompt if user hasn't logged in,
         // else show user's avatar and username.
-        if (User.hasLoggedIn()) {
+        if (mUser.isLogged()) {
             setupDrawerUserView();
         } else {
             setupDrawerLoginPrompt();
@@ -417,14 +420,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         // setup user's avatar
         Glide.with(this)
-                .load(Api.getAvatarMediumUrl(User.getUid()))
+                .load(Api.getAvatarMediumUrl(mUser.getUid()))
                 .signature(mDownloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
                 .error(R.drawable.ic_drawer_avatar_placeholder)
                 .transform(new CenterCrop(Glide.get(this).getBitmapPool()))
                 .into(mDrawerUserAvatarView);
 
         // show logout dialog if clicked
-        mDrawerUsernameView.setText(User.getName());
+        mDrawerUsernameView.setText(mUser.getName());
 
         mDrawerHeaderBackgroundView.setOnClickListener(v ->
                 new LogoutDialogFragment().show(getSupportFragmentManager(), LogoutDialogFragment.TAG));
@@ -509,7 +512,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @return whether user has logged in
      */
     boolean checkUserLoggedInStatus() {
-        if (!User.hasLoggedIn()) {
+        if (!mUser.isLogged()) {
             new LoginPromptDialogFragment().show(getSupportFragmentManager(),
                     LoginPromptDialogFragment.TAG);
 
@@ -539,7 +542,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void onLogout() {
         // clear account cookie and current user's info
         OkHttpClientProvider.clearCookie();
-        User.reset();
+        mUser.setLogged(false);
         User.sendCookieExpirationEvent();
     }
 }

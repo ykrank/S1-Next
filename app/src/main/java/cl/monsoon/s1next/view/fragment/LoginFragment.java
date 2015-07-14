@@ -18,10 +18,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import cl.monsoon.s1next.Api;
+import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.mapper.ResultWrapper;
-import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;
@@ -177,7 +177,7 @@ public final class LoginFragment extends Fragment {
                         || result.getStatus().equals(STATUS_AUTH_SUCCESS_ALREADY)) {
                     // this authenticity token is not fresh
                     // we need to abandon this token
-                    User.setAuthenticityToken(null);
+                    App.getAppComponent(loader.getContext()).getUser().setAuthenticityToken(null);
 
                     new Handler().post(() -> getActivity().onBackPressed());
                 }

@@ -44,7 +44,6 @@ import cl.monsoon.s1next.data.api.model.mapper.ResultWrapper;
 import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
 import cl.monsoon.s1next.event.EmoticonClickEvent;
 import cl.monsoon.s1next.singleton.BusProvider;
-import cl.monsoon.s1next.singleton.User;
 import cl.monsoon.s1next.util.DeviceUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.util.ToastUtil;
@@ -505,7 +504,8 @@ public final class ReplyFragment extends Fragment {
         @LoaderId
         protected int getStartLoaderId() {
             int loaderId;
-            final boolean hasAuthenticityToken = !TextUtils.isEmpty(User.getAuthenticityToken());
+            final boolean hasAuthenticityToken = !TextUtils.isEmpty(App.getAppComponent(
+                    getActivity()).getUser().getAuthenticityToken());
             if (hasAuthenticityToken) {
                 if (TextUtils.isEmpty(getArguments().getString(ARG_QUOTE_POST_ID))) {
                     loaderId = ID_LOADER_POST_REPLY;
