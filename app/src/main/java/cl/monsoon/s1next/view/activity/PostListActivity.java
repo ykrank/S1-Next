@@ -46,6 +46,7 @@ import cl.monsoon.s1next.util.NetworkUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.adapter.ThreadAttachmentInfoListArrayAdapter;
+import cl.monsoon.s1next.view.dialog.LoginPromptDialogFragment;
 import cl.monsoon.s1next.view.fragment.BaseFragment;
 import cl.monsoon.s1next.view.fragment.LoaderDialogFragment;
 import cl.monsoon.s1next.view.fragment.PageTurningDialogFragment;
@@ -103,7 +104,7 @@ public final class PostListActivity extends BaseActivity
         setContentView(R.layout.activity_base);
         App.getAppComponent(this).inject(this);
 
-        setNavDrawerIndicatorEnabled(false);
+        setDrawerIndicatorEnabled(false);
 
         cl.monsoon.s1next.data.api.model.Thread thread = getIntent().getParcelableExtra(ARG_THREAD);
         mThreadTitle = thread.getTitle();
@@ -246,7 +247,7 @@ public final class PostListActivity extends BaseActivity
 
                 return true;
             case R.id.menu_favourites_add:
-                if (checkUserLoggedInStatus()) {
+                if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeed(this, mUser)) {
                     ThreadFavouritesAddDialogFragment.newInstance(mThreadId).show(
                             getSupportFragmentManager(), ThreadFavouritesAddDialogFragment.TAG);
                 }
@@ -328,7 +329,7 @@ public final class PostListActivity extends BaseActivity
     }
 
     private void startReplyActivity(String quotePostId, String quotePostCount) {
-        if (!checkUserLoggedInStatus()) {
+        if (LoginPromptDialogFragment.showLoginPromptDialogIfNeed(this, mUser)) {
             return;
         }
 

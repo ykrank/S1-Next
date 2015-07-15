@@ -14,6 +14,7 @@ import cl.monsoon.s1next.data.pref.DownloadPreferencesRepository;
 import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
 import cl.monsoon.s1next.data.pref.GeneralPreferencesRepository;
 import cl.monsoon.s1next.data.pref.ThemeManager;
+import cl.monsoon.s1next.viewmodel.UserViewModel;
 import dagger.Module;
 import dagger.Provides;
 
@@ -70,8 +71,14 @@ public final class AppModule {
 
     @Provides
     @Singleton
-    User providerUser() {
-        return new User();
+    User providerUser(UserViewModel userViewModel) {
+        return userViewModel.getUser();
+    }
+
+    @Provides
+    @Singleton
+    UserViewModel providerUserViewModel() {
+        return new UserViewModel();
     }
 
     @Provides

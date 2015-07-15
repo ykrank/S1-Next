@@ -22,6 +22,7 @@ import cl.monsoon.s1next.view.adapter.ThreadListRecyclerAdapter;
 import cl.monsoon.s1next.view.fragment.DownloadPreferenceFragment;
 import cl.monsoon.s1next.view.fragment.GeneralPreferenceFragment;
 import cl.monsoon.s1next.view.fragment.ReplyFragment;
+import cl.monsoon.s1next.viewmodel.UserViewModel;
 import dagger.Component;
 
 public final class App extends Application {
@@ -90,6 +91,8 @@ public final class App extends Application {
         ThemeManager getThemeManager();
 
         User getUser();
+
+        UserViewModel getUserViewModel();
 
         void inject(App app);
 

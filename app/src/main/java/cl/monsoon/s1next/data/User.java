@@ -1,9 +1,6 @@
 package cl.monsoon.s1next.data;
 
-import cl.monsoon.s1next.event.UserStatusEvent;
-import cl.monsoon.s1next.singleton.BusProvider;
-
-public final class User {
+public class User {
 
     private volatile String uid;
 
@@ -53,13 +50,5 @@ public final class User {
 
     public void setLogged(boolean logged) {
         this.logged = logged;
-    }
-
-    public static void postLoginEvent() {
-        BusProvider.get().post(new UserStatusEvent(UserStatusEvent.USER_LOGIN));
-    }
-
-    public static void sendCookieExpirationEvent() {
-        BusProvider.get().post(new UserStatusEvent(UserStatusEvent.USER_COOKIE_EXPIRATION));
     }
 }

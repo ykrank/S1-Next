@@ -38,27 +38,26 @@ public class Account {
 
     /**
      * We should confirm that both uid and username have been set,
-     * then send {@link User#sendCookieExpirationEvent()}
-     * or {@link User#postLoginEvent()}.
+     * then change user's login status.
      */
     public void setUid(String uid) {
         this.uid = uid;
 
-        final boolean hasUserLoggedIn = mUser.isLogged();
-        final boolean hasSetUsername = this.username != null;
-        if (TextUtils.isEmpty(uid) || INVALID_UID.equals(uid)) {
+        final boolean isLogged = mUser.isLogged();
+        final boolean hasSetUsername = !TextUtils.isEmpty(mUser.getName());
+        if (INVALID_UID.equals(uid) || TextUtils.isEmpty(uid)) {
             // if user's cookie has expired
-            if (hasUserLoggedIn) {
+            if (isLogged) {
                 if (hasSetUsername) {
                     mUser.setUid(null);
                     mUser.setName(null);
-                    User.sendCookieExpirationEvent();
+                    mUser.setLogged(false);
                 }
             }
         } else {
             mUser.setUid(uid);
-            if (!hasUserLoggedIn && hasSetUsername) {
-                User.postLoginEvent();
+            if (!isLogged && hasSetUsername) {
+                mUser.setLogged(true);
             }
         }
     }
@@ -73,20 +72,20 @@ public class Account {
     public void setUsername(String username) {
         this.username = username;
 
-        final boolean hasUserLoggedIn = mUser.isLogged();
-        final boolean hasSetUid = this.uid != null;
+        final boolean isLogged = mUser.isLogged();
+        final boolean hasSetUid = !TextUtils.isEmpty(mUser.getUid());
         if (TextUtils.isEmpty(username)) {
-            if (hasUserLoggedIn) {
+            if (isLogged) {
                 if (hasSetUid) {
                     mUser.setUid(null);
                     mUser.setName(null);
-                    User.sendCookieExpirationEvent();
+                    mUser.setLogged(false);
                 }
             }
         } else {
             mUser.setName(username);
-            if (!hasUserLoggedIn && hasSetUid) {
-                User.postLoginEvent();
+            if (!isLogged && hasSetUid) {
+                mUser.setLogged(true);
             }
         }
     }

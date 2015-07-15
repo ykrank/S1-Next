@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.android.databinding'
 
 android {
     compileSdkVersion 22
@@ -47,6 +48,8 @@ dependencies {
     compile 'javax.annotation:javax.annotation-api:1.2'
     
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.0.4'
+
+    apt 'com.android.databinding:compiler:1.0-rc0'
 
     ext.supportVersion = "22.2.0"
     compile "com.android.support:support-v4:$supportVersion"
