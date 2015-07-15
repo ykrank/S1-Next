@@ -52,7 +52,7 @@ import static java.net.HttpURLConnection.HTTP_REQ_TOO_LONG;
  */
 final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 
-    final DownloadPreferencesManager mDownloadPreferencesManager;
+    private final DownloadPreferencesManager mDownloadPreferencesManager;
 
     private final OkHttpClient mOkHttpClient;
     private final GlideUrl mGlideUrl;

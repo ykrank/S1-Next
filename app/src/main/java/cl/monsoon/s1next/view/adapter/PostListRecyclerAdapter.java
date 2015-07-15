@@ -43,7 +43,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER_PROGRESS = Integer.MIN_VALUE;
 
-    final DownloadPreferencesManager mDownloadPreferencesManager;
+    private final DownloadPreferencesManager mDownloadPreferencesManager;
 
     private boolean mHasFooterProgress;
 

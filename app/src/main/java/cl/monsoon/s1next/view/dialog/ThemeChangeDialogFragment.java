@@ -8,8 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 
-import javax.inject.Inject;
-
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.pref.ThemeManager;
@@ -20,8 +18,7 @@ public final class ThemeChangeDialogFragment extends DialogFragment {
 
     private static final String TAG = ThemeChangeDialogFragment.class.getSimpleName();
 
-    @Inject
-    ThemeManager mThemeManager;
+    private ThemeManager mThemeManager;
 
     public static void showThemeChangeDialog(FragmentActivity fragmentActivity) {
         new ThemeChangeDialogFragment().show(fragmentActivity.getSupportFragmentManager(),

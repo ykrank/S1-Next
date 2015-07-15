@@ -14,7 +14,7 @@ public class Account {
 
     private static final String INVALID_UID = "0";
 
-    User mUser;
+    final User mUser;
 
     @JsonProperty("member_uid")
     private String uid;

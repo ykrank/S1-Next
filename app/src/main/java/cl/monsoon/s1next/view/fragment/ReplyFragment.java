@@ -33,8 +33,6 @@ import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
@@ -78,8 +76,7 @@ public final class ReplyFragment extends Fragment {
 
     private static final String STATUS_REPLY_SUCCESS = "post_reply_succeed";
 
-    @Inject
-    GeneralPreferencesManager mGeneralPreferencesManager;
+    private GeneralPreferencesManager mGeneralPreferencesManager;
 
     private String mThreadId;
     private String mQuotePostId;
@@ -113,7 +110,7 @@ public final class ReplyFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        App.getAppComponent(activity).inject(this);
+        mGeneralPreferencesManager = App.getAppComponent(activity).getGeneralPreferencesManager();
     }
 
     @Override

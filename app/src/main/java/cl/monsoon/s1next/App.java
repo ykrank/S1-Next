@@ -7,7 +7,6 @@ import android.os.StrictMode;
 
 import com.bugsnag.android.Bugsnag;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import cl.monsoon.s1next.data.User;
@@ -17,11 +16,8 @@ import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.view.activity.BaseActivity;
 import cl.monsoon.s1next.view.activity.PostListActivity;
-import cl.monsoon.s1next.view.activity.PostListGatewayActivity;
 import cl.monsoon.s1next.view.adapter.ThreadListRecyclerAdapter;
-import cl.monsoon.s1next.view.fragment.DownloadPreferenceFragment;
 import cl.monsoon.s1next.view.fragment.GeneralPreferenceFragment;
-import cl.monsoon.s1next.view.fragment.ReplyFragment;
 import cl.monsoon.s1next.viewmodel.UserViewModel;
 import dagger.Component;
 
@@ -29,8 +25,7 @@ public final class App extends Application {
 
     private static App sApp;
 
-    @Inject
-    GeneralPreferencesManager mGeneralPreferencesManager;
+    private GeneralPreferencesManager mGeneralPreferencesManager;
 
     private AppComponent mAppComponent;
 
@@ -63,7 +58,7 @@ public final class App extends Application {
         mAppComponent = DaggerApp_AppComponent.builder()
                 .appModule(new AppModule(this))
                 .build();
-        mAppComponent.inject(this);
+        mGeneralPreferencesManager = mAppComponent.getGeneralPreferencesManager();
 
         Bugsnag.init(this);
 
@@ -86,6 +81,8 @@ public final class App extends Application {
     @Component(modules = AppModule.class)
     public interface AppComponent {
 
+        GeneralPreferencesManager getGeneralPreferencesManager();
+
         DownloadPreferencesManager getDownloadPreferencesManager();
 
         ThemeManager getThemeManager();
@@ -94,19 +91,11 @@ public final class App extends Application {
 
         UserViewModel getUserViewModel();
 
-        void inject(App app);
-
         void inject(BaseActivity activity);
 
         void inject(PostListActivity activity);
 
-        void inject(PostListGatewayActivity activity);
-
         void inject(GeneralPreferenceFragment fragment);
-
-        void inject(DownloadPreferenceFragment fragment);
-
-        void inject(ReplyFragment fragment);
 
         void inject(ThreadListRecyclerAdapter adapter);
     }

@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
-import cl.monsoon.s1next.data.pref.GeneralPreferencesRepository;
 import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.event.FontSizeChangeEvent;
 import cl.monsoon.s1next.event.ThemeChangeEvent;
@@ -20,6 +19,10 @@ import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.view.activity.SettingsActivity;
 
 public final class GeneralPreferenceFragment extends BasePreferenceFragment implements Preference.OnPreferenceClickListener {
+
+    public static final String PREF_KEY_THEME = "pref_key_theme";
+    public static final String PREF_KEY_FONT_SIZE = "pref_key_font_size";
+    public static final String PREF_KEY_SIGNATURE = "pref_key_signature";
 
     private static final String PREF_KEY_DOWNLOADS = "pref_key_downloads";
 
@@ -37,26 +40,26 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment impl
         addPreferencesFromResource(R.xml.general_preferences);
 
         findPreference(PREF_KEY_DOWNLOADS).setOnPreferenceClickListener(this);
-        findPreference(GeneralPreferencesRepository.PREF_KEY_SIGNATURE).setSummary(
+        findPreference(PREF_KEY_SIGNATURE).setSummary(
                 DeviceUtil.getSignature());
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
-            case GeneralPreferencesRepository.PREF_KEY_THEME:
+            case PREF_KEY_THEME:
                 mThemeManager.invalidateTheme();
                 BusProvider.get().post(new ThemeChangeEvent());
 
                 break;
-            case GeneralPreferencesRepository.PREF_KEY_FONT_SIZE:
+            case PREF_KEY_FONT_SIZE:
                 mGeneralPreferencesManager.invalidateTextScale();
                 ResourceUtil.setScaledDensity(getResources(),
                         mGeneralPreferencesManager.getTextScale());
                 BusProvider.get().post(new FontSizeChangeEvent());
 
                 break;
-            case GeneralPreferencesRepository.PREF_KEY_SIGNATURE:
+            case PREF_KEY_SIGNATURE:
                 mGeneralPreferencesManager.invalidateSignatureEnabled();
 
                 break;

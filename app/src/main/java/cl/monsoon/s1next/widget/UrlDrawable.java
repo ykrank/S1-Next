@@ -11,7 +11,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
  * <p>
  * Used in {@link cl.monsoon.s1next.widget.GlideImageGetter}.
  */
-public final class UrlDrawable extends Drawable implements Drawable.Callback {
+final class UrlDrawable extends Drawable implements Drawable.Callback {
 
     private GlideDrawable mDrawable;
 

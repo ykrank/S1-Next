@@ -10,7 +10,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
-import android.view.View;
 
 import cl.monsoon.s1next.R;
 
@@ -21,7 +20,7 @@ public abstract class DrawerLayoutPresenter {
      */
     private static final int DRAWER_SETTLE_DURATION = 256;
 
-    protected final FragmentActivity mFragmentActivity;
+    final FragmentActivity mFragmentActivity;
 
     private final DrawerLayout mDrawerLayout;
     private final NavigationView mNavigationView;
@@ -29,7 +28,7 @@ public abstract class DrawerLayoutPresenter {
 
     private boolean mDrawerIndicatorEnabled = true;
 
-    public DrawerLayoutPresenter(FragmentActivity fragmentActivity, DrawerLayout drawerLayout, NavigationView navigationView) {
+    DrawerLayoutPresenter(FragmentActivity fragmentActivity, DrawerLayout drawerLayout, NavigationView navigationView) {
         this.mFragmentActivity = fragmentActivity;
         this.mDrawerLayout = drawerLayout;
         this.mNavigationView = navigationView;
@@ -73,13 +72,7 @@ public abstract class DrawerLayoutPresenter {
 
     private void setupNavDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(mFragmentActivity, mDrawerLayout,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-            }
-        };
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(mDrawerIndicatorEnabled);
 
@@ -91,7 +84,7 @@ public abstract class DrawerLayoutPresenter {
      *
      * @param runnable execute this after drawer view closing.
      */
-    protected final void closeDrawer(Runnable runnable) {
+    final void closeDrawer(Runnable runnable) {
         mDrawerLayout.closeDrawer(GravityCompat.START);
         new Handler().postDelayed(runnable::run, DRAWER_SETTLE_DURATION);
     }

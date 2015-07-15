@@ -39,8 +39,8 @@ import cl.monsoon.s1next.widget.BezelImageView;
 public final class DrawerLayoutPresenterConcrete extends DrawerLayoutPresenter
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    final User mUser;
-    final UserViewModel mUserViewModel;
+    private final User mUser;
+    private final UserViewModel mUserViewModel;
 
     public DrawerLayoutPresenterConcrete(FragmentActivity activity, DrawerLayout drawerLayout, NavigationView navigationView) {
         super(activity, drawerLayout, navigationView);
