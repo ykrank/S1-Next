@@ -14,7 +14,7 @@ import cl.monsoon.s1next.view.activity.LoginActivity;
 
 public final class LoginPromptDialogFragment extends DialogFragment {
 
-    private static final String TAG = LoginPromptDialogFragment.class.getSimpleName();
+    private static final String TAG = LoginPromptDialogFragment.class.getName();
 
     /**
      * Show {@link LoginPromptDialogFragment} if user hasn't logged in.

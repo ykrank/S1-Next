@@ -28,7 +28,7 @@ import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
  */
 public final class ThreadListFragment extends Fragment implements ThreadListPagerFragment.PagerCallback {
 
-    public static final String TAG = ThreadListFragment.class.getSimpleName();
+    public static final String TAG = ThreadListFragment.class.getName();
 
     private static final String ARG_FORUM = "forum";
 

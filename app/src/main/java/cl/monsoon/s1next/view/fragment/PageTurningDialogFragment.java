@@ -20,7 +20,7 @@ import cl.monsoon.s1next.widget.InputFilterRange;
 
 public abstract class PageTurningDialogFragment extends DialogFragment {
 
-    public static final String TAG = PageTurningDialogFragment.class.getSimpleName();
+    public static final String TAG = PageTurningDialogFragment.class.getName();
 
     private static final String ARG_CURRENT_PAGE = "current_page";
     private static final String ARG_TOTAL_PAGES = "total_pages";

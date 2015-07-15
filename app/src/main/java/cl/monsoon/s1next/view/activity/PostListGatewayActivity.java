@@ -229,7 +229,7 @@ public final class PostListGatewayActivity extends FragmentActivity {
      */
     public static class QuotePostPageAnalysisDialogFragment extends LoaderDialogFragment<HttpRedirectLoader.RedirectUrl> {
 
-        private static final String TAG = QuotePostPageAnalysisDialogFragment.class.getSimpleName();
+        private static final String TAG = QuotePostPageAnalysisDialogFragment.class.getName();
 
         private static final String ARG_THREAD_ANALYSIS = "thread_analysis";
 
@@ -325,7 +325,7 @@ public final class PostListGatewayActivity extends FragmentActivity {
 
     public static class ErrorPromptDialogFragment extends DialogFragment {
 
-        private static final String TAG = ErrorPromptDialogFragment.class.getSimpleName();
+        private static final String TAG = ErrorPromptDialogFragment.class.getName();
 
         private static final String ARG_MESSAGE = "message";
 

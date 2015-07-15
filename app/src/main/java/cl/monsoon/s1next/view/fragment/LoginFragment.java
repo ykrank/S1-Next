@@ -32,7 +32,7 @@ import cl.monsoon.s1next.widget.HttpPostLoader;
  */
 public final class LoginFragment extends Fragment {
 
-    public static final String TAG = LoginFragment.class.getSimpleName();
+    public static final String TAG = LoginFragment.class.getName();
 
     /**
      * For desktop is "login_succeed".
@@ -135,7 +135,7 @@ public final class LoginFragment extends Fragment {
 
     public static class LoginLoaderDialogFragment extends LoaderDialogFragment<ResultWrapper> {
 
-        private static final String TAG = LoginLoaderDialogFragment.class.getSimpleName();
+        private static final String TAG = LoginLoaderDialogFragment.class.getName();
 
         private static final String ARG_USERNAME = "username";
         private static final String ARG_PASSWORD = "password";

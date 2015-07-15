@@ -28,7 +28,7 @@ import cl.monsoon.s1next.util.ToastUtil;
 
 public final class HelpFragment extends Fragment {
 
-    public static final String TAG = HelpFragment.class.getSimpleName();
+    public static final String TAG = HelpFragment.class.getName();
 
     private static final String mURL = "http://monsoon.cl/S1-Next/HELP.html";
 
@@ -128,7 +128,7 @@ public final class HelpFragment extends Fragment {
 
     public static class OpenSourceLicensesDialogFragment extends DialogFragment {
 
-        private static final String TAG = OpenSourceLicensesDialogFragment.class.getSimpleName();
+        private static final String TAG = OpenSourceLicensesDialogFragment.class.getName();
 
         @NonNull
         @Override

@@ -14,7 +14,7 @@ import cl.monsoon.s1next.singleton.OkHttpClientProvider;
 
 public final class LogoutDialogFragment extends DialogFragment {
 
-    private static final String TAG = LogoutDialogFragment.class.getSimpleName();
+    private static final String TAG = LogoutDialogFragment.class.getName();
 
     /**
      * Show {@link LogoutDialogFragment} if user has logged in.

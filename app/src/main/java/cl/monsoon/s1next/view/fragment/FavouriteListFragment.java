@@ -27,7 +27,7 @@ import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
  */
 public final class FavouriteListFragment extends Fragment implements FavouriteListPagerFragment.PagerCallback {
 
-    public static final String TAG = FavouriteListFragment.class.getSimpleName();
+    public static final String TAG = FavouriteListFragment.class.getName();
 
     private static final String STATE_TOTAL_PAGES = "total_pages";
 

@@ -58,7 +58,7 @@ import cl.monsoon.s1next.widget.ViewPagerTabs;
  */
 public final class ReplyFragment extends Fragment {
 
-    public static final String TAG = ReplyFragment.class.getSimpleName();
+    public static final String TAG = ReplyFragment.class.getName();
 
     /**
      * The serialization (saved instance state) Bundle key representing the quote POJO.
@@ -454,7 +454,7 @@ public final class ReplyFragment extends Fragment {
 
     public static class ReplyLoaderDialogFragment extends LoaderDialogFragment {
 
-        private static final String TAG = ReplyLoaderDialogFragment.class.getSimpleName();
+        private static final String TAG = ReplyLoaderDialogFragment.class.getName();
 
         private static final String ARG_QUOTE = "quote";
         private static final String ARG_REPLY = "reply";

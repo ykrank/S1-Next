@@ -12,7 +12,7 @@ import cl.monsoon.s1next.data.api.model.Extractable;
  */
 public class DataRetainedFragment<D extends Extractable> extends Fragment {
 
-    public static final String TAG = DataRetainedFragment.class.getSimpleName();
+    public static final String TAG = DataRetainedFragment.class.getName();
 
     // the data we want to retain
     private D data;

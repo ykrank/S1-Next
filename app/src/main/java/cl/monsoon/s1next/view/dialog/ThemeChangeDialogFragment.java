@@ -16,7 +16,7 @@ import cl.monsoon.s1next.singleton.BusProvider;
 
 public final class ThemeChangeDialogFragment extends DialogFragment {
 
-    private static final String TAG = ThemeChangeDialogFragment.class.getSimpleName();
+    private static final String TAG = ThemeChangeDialogFragment.class.getName();
 
     private ThemeManager mThemeManager;
 

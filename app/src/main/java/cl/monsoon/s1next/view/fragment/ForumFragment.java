@@ -35,7 +35,7 @@ import cl.monsoon.s1next.widget.RecyclerViewHelper;
 public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
         implements ToolbarInterface.OnDropDownItemSelectedListener {
 
-    public static final String TAG = ForumFragment.class.getSimpleName();
+    public static final String TAG = ForumFragment.class.getName();
 
     private ForumListRecyclerAdapter mRecyclerAdapter;
 

@@ -381,7 +381,7 @@ public final class PostListActivity extends BaseActivity
 
     public static class ThreadAttachmentDialogFragment extends DialogFragment {
 
-        private static final String TAG = ThreadAttachmentDialogFragment.class.getSimpleName();
+        private static final String TAG = ThreadAttachmentDialogFragment.class.getName();
 
         private static final String ARG_ATTACHMENT_TITLE = "attachment_title";
         private static final String ARG_THREAD_ATTACHMENT_INFO_LIST = "thread_attachment_info_list";
@@ -432,7 +432,7 @@ public final class PostListActivity extends BaseActivity
 
     public static class ThreadFavouritesAddDialogFragment extends DialogFragment {
 
-        private static final String TAG = ThreadFavouritesAddDialogFragment.class.getSimpleName();
+        private static final String TAG = ThreadFavouritesAddDialogFragment.class.getName();
 
         public static final String ARG_THREAD_ID = "thread_id";
 
@@ -472,7 +472,7 @@ public final class PostListActivity extends BaseActivity
 
         public static class ThreadFavouritesAddLoaderDialogFragment extends LoaderDialogFragment<ResultWrapper> {
 
-            private static final String TAG = ThreadFavouritesAddLoaderDialogFragment.class.getSimpleName();
+            private static final String TAG = ThreadFavouritesAddLoaderDialogFragment.class.getName();
 
             private static final String ARG_REMARK = "remark";
 

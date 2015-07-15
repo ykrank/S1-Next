@@ -87,7 +87,7 @@ public final class ReplyActivity extends BaseActivity {
 
     public static class ReplyDiscardPromptDialogFragment extends DialogFragment {
 
-        private static final String TAG = ReplyDiscardPromptDialogFragment.class.getSimpleName();
+        private static final String TAG = ReplyDiscardPromptDialogFragment.class.getName();
 
         @NonNull
         @Override
