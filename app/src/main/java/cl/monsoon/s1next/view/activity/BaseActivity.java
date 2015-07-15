@@ -96,6 +96,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     @CallSuper
+    public void setContentView(View view, ViewGroup.LayoutParams params) {
+        super.setContentView(view, params);
+        setUpToolbar();
+    }
+
+    @Override
+    @CallSuper
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
