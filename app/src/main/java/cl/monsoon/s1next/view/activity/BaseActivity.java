@@ -2,6 +2,7 @@ package cl.monsoon.s1next.view.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.DrawableRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -52,6 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private Object mEvents;
 
     @Override
+    @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
         App.getAppComponent(this).inject(this);
         if (!mThemeManager.isDefaultTheme()) {
@@ -86,12 +88,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    @CallSuper
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
         setUpToolbar();
     }
 
     @Override
+    @CallSuper
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
@@ -99,6 +103,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    @CallSuper
     protected void onDestroy() {
         super.onDestroy();
 
@@ -106,6 +111,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    @CallSuper
     public boolean onOptionsItemSelected(MenuItem item) {
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app drawer touch event.
@@ -130,6 +136,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    @CallSuper
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
@@ -178,7 +185,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Subclass must have to implement {@link android.view.View.OnClickListener}
      * in order to use this method.
      */
-    void setupFloatingActionButton(@DrawableRes int resId) {
+    final void setupFloatingActionButton(@DrawableRes int resId) {
         ViewGroup container = (ViewGroup) findViewById(R.id.coordinator_layout);
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getLayoutInflater().inflate(R.layout.floating_action_button, container, false);
