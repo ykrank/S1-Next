@@ -1,7 +1,6 @@
 package cl.monsoon.s1next.widget;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.Html;
@@ -107,26 +106,19 @@ public final class TagHandler implements Html.TagHandler {
         }
     }
 
-    public static class ImageClickableSpan extends ImageSpan implements View.OnClickListener {
+    static class ImageClickableSpan extends ImageSpan implements View.OnClickListener {
 
         private final Context mContext;
 
-        ImageClickableSpan(Context context, Drawable d, String source) {
+        private ImageClickableSpan(Context context, Drawable d, String source) {
             super(d, source);
 
             this.mContext = context;
         }
 
-        public Context getContext() {
-            return mContext;
-        }
-
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getContext(), GalleryActivity.class);
-            intent.putExtra(GalleryActivity.ARG_IMAGE_URL, getSource());
-
-            getContext().startActivity(intent);
+            GalleryActivity.startGalleryActivity(mContext, getSource());
         }
     }
 

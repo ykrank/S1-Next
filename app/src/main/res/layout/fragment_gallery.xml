@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<cl.monsoon.s1next.widget.PhotoView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/photo_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:contentDescription="@string/picture_content_desc"
-    tools:context="cl.monsoon.s1next.view.fragment.GalleryFragment" />
