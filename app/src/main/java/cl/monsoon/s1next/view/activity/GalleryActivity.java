@@ -8,8 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.view.fragment.GalleryFragment;
+import cl.monsoon.s1next.view.internal.ToolbarPresenter;
 
 /**
  * An Activity shows an ImageView that supports multi-touch.
@@ -24,10 +24,9 @@ public final class GalleryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gallery);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        ToolbarPresenter toolbarPresenter = new ToolbarPresenter(this, toolbar);
         setTitle(null);
-        // set Toolbar's icon to cross
-        toolbar.setNavigationIcon(ResourceUtil.getResourceId(getTheme(), R.attr.menuCross));
+        toolbarPresenter.setupNavCrossIcon();
 
         // set Toolbar's padding because we use `android:windowTranslucentStatus` in this Activity
         ViewCompat.setOnApplyWindowInsetsListener(toolbar, (v, insets) -> {

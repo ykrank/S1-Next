@@ -24,9 +24,9 @@ import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.event.FontSizeChangeEvent;
 import cl.monsoon.s1next.event.ThemeChangeEvent;
 import cl.monsoon.s1next.singleton.BusProvider;
-import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.view.internal.DrawerLayoutPresenter;
 import cl.monsoon.s1next.view.internal.DrawerLayoutPresenterConcrete;
+import cl.monsoon.s1next.view.internal.ToolbarPresenter;
 
 /**
  * A base Activity which includes the Toolbar
@@ -44,7 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Inject
     User mUser;
 
-    private Toolbar mToolbar;
+    private ToolbarPresenter mToolbarPresenter;
 
     private DrawerLayoutPresenter mDrawerLayoutPresenter;
     private boolean mDrawerIndicatorEnabled = true;
@@ -139,24 +139,21 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void setUpToolbar() {
-        if (mToolbar == null) {
-            mToolbar = (Toolbar) findViewById(R.id.toolbar);
-            if (mToolbar != null) {
-                // designate a Toolbar as the ActionBar
-                setSupportActionBar(mToolbar);
-                //noinspection ConstantConditions
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            }
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            mToolbarPresenter = new ToolbarPresenter(this, toolbar);
         }
     }
 
     /**
      * Sets Toolbar's navigation icon to cross.
      */
-    void setupNavCrossIcon() {
-        if (mToolbar != null) {
-            mToolbar.setNavigationIcon(ResourceUtil.getResourceId(getTheme(), R.attr.menuCross));
-        }
+    final void setupNavCrossIcon() {
+        mToolbarPresenter.setupNavCrossIcon();
+    }
+
+    final Toolbar getToolbar() {
+        return mToolbarPresenter.getToolbar();
     }
 
     private void setupDrawer() {
@@ -189,9 +186,5 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         floatingActionButton.setOnClickListener((View.OnClickListener) this);
         floatingActionButton.setImageResource(resId);
-    }
-
-    Toolbar getToolbar() {
-        return mToolbar;
     }
 }
