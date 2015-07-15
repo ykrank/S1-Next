@@ -45,7 +45,7 @@ public final class ThemeChangeDialogFragment extends DialogFragment {
                             // won't change theme if unchanged
                             if (which != checkedItem) {
                                 mThemeManager.applyTheme(checkedItem);
-                                mThemeManager.setThemeByIndex(checkedItem);
+                                mThemeManager.setThemeByIndex(which);
 
                                 BusProvider.get().post(new ThemeChangeEvent());
                             }
