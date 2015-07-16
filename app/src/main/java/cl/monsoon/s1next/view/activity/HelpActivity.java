@@ -41,7 +41,7 @@ public final class HelpActivity extends BaseActivity {
         mWebView.setWebViewClient(new WebViewClient() {
 
             @Override
-            public void onPageFinished(WebView webView, String url) {
+            public void onPageFinished(WebView view, String url) {
                 viewModel.finishedLoading.set(true);
             }
         });
