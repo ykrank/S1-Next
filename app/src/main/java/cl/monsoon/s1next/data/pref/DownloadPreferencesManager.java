@@ -121,11 +121,12 @@ public final class DownloadPreferencesManager {
 
     /**
      * Check whether we should monitor the Wi-Fi status.
-     * We needn't monitor the Wi-Fi status if we needn't/should download images.
+     * We needn't monitor the Wi-Fi status if we needn't/should
+     * download avatars or images.
      */
     public boolean shouldMonitorWifi() {
-        return mAvatarsDownloadStrategyMemorized.get() != DownloadStrategy.NOT
-                || mImagesDownloadStrategyMemorized.get() != DownloadStrategy.NOT;
+        return mAvatarsDownloadStrategyMemorized.get() == DownloadStrategy.WIFI
+                || mImagesDownloadStrategyMemorized.get() == DownloadStrategy.WIFI;
     }
 
     private enum TotalDownloadCacheSize {
