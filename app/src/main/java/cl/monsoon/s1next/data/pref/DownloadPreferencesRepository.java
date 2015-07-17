@@ -8,7 +8,6 @@ import cl.monsoon.s1next.view.fragment.DownloadPreferenceFragment;
 
 public final class DownloadPreferencesRepository extends BasePreferencesRepository {
 
-
     public DownloadPreferencesRepository(Context context, SharedPreferences sharedPreferences) {
         super(context, sharedPreferences);
     }

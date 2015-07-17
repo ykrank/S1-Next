@@ -19,32 +19,32 @@ public final class DownloadPreferencesManager {
 
         @Override
         public DownloadStrategy get() {
-            return DownloadStrategy.get(Integer.parseInt(
-                    mDownloadPreferencesProvider.getAvatarsDownloadStrategyString()));
+            return DownloadStrategy.VALUES[Integer.parseInt(
+                    mDownloadPreferencesProvider.getAvatarsDownloadStrategyString())];
         }
     };
     private final Supplier<AvatarResolutionStrategy> mAvatarResolutionStrategySupplier = new Supplier<AvatarResolutionStrategy>() {
 
         @Override
         public AvatarResolutionStrategy get() {
-            return AvatarResolutionStrategy.get(Integer.parseInt(
-                    mDownloadPreferencesProvider.getAvatarResolutionStrategyString()));
+            return AvatarResolutionStrategy.VALUES[Integer.parseInt(
+                    mDownloadPreferencesProvider.getAvatarResolutionStrategyString())];
         }
     };
     private final Supplier<AvatarCacheInvalidationInterval> mAvatarCacheInvalidationIntervalSupplier = new Supplier<AvatarCacheInvalidationInterval>() {
 
         @Override
         public AvatarCacheInvalidationInterval get() {
-            return AvatarCacheInvalidationInterval.get(Integer.parseInt(
-                    mDownloadPreferencesProvider.getAvatarCacheInvalidationIntervalString()));
+            return AvatarCacheInvalidationInterval.VALUES[Integer.parseInt(
+                    mDownloadPreferencesProvider.getAvatarCacheInvalidationIntervalString())];
         }
     };
     private final Supplier<DownloadStrategy> mImagesDownloadStrategySupplier = new Supplier<DownloadStrategy>() {
 
         @Override
         public DownloadStrategy get() {
-            return DownloadStrategy.get(Integer.parseInt(
-                    mDownloadPreferencesProvider.getImagesDownloadStrategyString()));
+            return DownloadStrategy.VALUES[Integer.parseInt(
+                    mDownloadPreferencesProvider.getImagesDownloadStrategyString())];
         }
     };
 
@@ -59,28 +59,30 @@ public final class DownloadPreferencesManager {
     }
 
     public int getTotalDownloadCacheSize() {
-        return TotalDownloadCacheSize.get(Integer.parseInt(
-                mDownloadPreferencesProvider.getTotalDownloadCacheSizeString())).size;
+        return TotalDownloadCacheSize.VALUES[Integer.parseInt(
+                mDownloadPreferencesProvider.getTotalDownloadCacheSizeString())].size;
     }
 
     public void invalidateAvatarsDownloadStrategy() {
         mAvatarsDownloadStrategyMemorized = Suppliers.memoize(mAvatarsDownloadStrategySupplier);
     }
 
-    public boolean isAvatarsDownloaded() {
-        return mAvatarsDownloadStrategyMemorized.get().needDownload(mWifi.isWifiEnabled());
+    public boolean isAvatarsDownload() {
+        return mAvatarsDownloadStrategyMemorized.get().isDownload(mWifi.isWifiEnabled());
     }
 
     public void invalidateAvatarsResolutionStrategy() {
         mAvatarResolutionStrategyMemorized = Suppliers.memoize(mAvatarResolutionStrategySupplier);
     }
 
-    public boolean isHighResolutionAvatarsDownloaded() {
-        return mAvatarResolutionStrategyMemorized.get().needDownloadHigherResolution(mWifi.isWifiEnabled());
+    public boolean isHighResolutionAvatarsDownload() {
+        return mAvatarResolutionStrategyMemorized.get().isHigherResolutionDownload(
+                mWifi.isWifiEnabled());
     }
 
-    public void invalidateAvatarsCacheInvalidationIntervalStrategy() {
-        mAvatarCacheInvalidationIntervalMemorized = Suppliers.memoize(mAvatarCacheInvalidationIntervalSupplier);
+    public void invalidateAvatarsCacheInvalidationInterval() {
+        mAvatarCacheInvalidationIntervalMemorized = Suppliers.memoize(
+                mAvatarCacheInvalidationIntervalSupplier);
     }
 
     public Key getAvatarCacheInvalidationIntervalSignature() {
@@ -92,7 +94,7 @@ public final class DownloadPreferencesManager {
     }
 
     public boolean isImagesDownload() {
-        return mImagesDownloadStrategyMemorized.get().needDownload(mWifi.isWifiEnabled());
+        return mImagesDownloadStrategyMemorized.get().isDownload(mWifi.isWifiEnabled());
     }
 
     public boolean shouldMonitorWifi() {
@@ -111,10 +113,6 @@ public final class DownloadPreferencesManager {
         TotalDownloadCacheSize(int size) {
             this.size = size * 1000 * 1000;
         }
-
-        private static TotalDownloadCacheSize get(int i) {
-            return VALUES[i];
-        }
     }
 
     private enum DownloadStrategy {
@@ -122,11 +120,7 @@ public final class DownloadPreferencesManager {
 
         private static final DownloadStrategy[] VALUES = DownloadStrategy.values();
 
-        private static DownloadStrategy get(int i) {
-            return VALUES[i];
-        }
-
-        private boolean needDownload(boolean hasWifi) {
+        private boolean isDownload(boolean hasWifi) {
             return equals(WIFI) && hasWifi
                     || equals(ALWAYS);
         }
@@ -137,11 +131,7 @@ public final class DownloadPreferencesManager {
 
         private static final AvatarResolutionStrategy[] VALUES = AvatarResolutionStrategy.values();
 
-        private static AvatarResolutionStrategy get(int i) {
-            return VALUES[i];
-        }
-
-        private boolean needDownloadHigherResolution(boolean hasWifi) {
+        private boolean isHigherResolutionDownload(boolean hasWifi) {
             return equals(HIGH_WIFI) && hasWifi
                     || equals(HIGH);
         }
@@ -158,10 +148,6 @@ public final class DownloadPreferencesManager {
 
         AvatarCacheInvalidationInterval(Callable<String> callable) {
             this.callable = callable;
-        }
-
-        private static AvatarCacheInvalidationInterval get(int i) {
-            return VALUES[i];
         }
 
         private Key getSignature() {

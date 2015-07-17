@@ -21,7 +21,8 @@ public final class GeneralPreferencesRepository extends BasePreferencesRepositor
     }
 
     public String getFontSizeString() {
-        return getSharedPreferencesString(GeneralPreferenceFragment.PREF_KEY_FONT_SIZE, R.string.pref_font_size_default_value);
+        return getSharedPreferencesString(GeneralPreferenceFragment.PREF_KEY_FONT_SIZE,
+                R.string.pref_font_size_default_value);
     }
 
     public boolean isSignatureEnabled() {

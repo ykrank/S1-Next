@@ -103,10 +103,10 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
 
         // whether need to download avatars
         // depends on settings and Wi-Fi status
-        if (mDownloadPreferencesManager.isAvatarsDownloaded()) {
+        if (mDownloadPreferencesManager.isAvatarsDownload()) {
             avatarView.setVisibility(View.VISIBLE);
 
-            String url = mDownloadPreferencesManager.isHighResolutionAvatarsDownloaded()
+            String url = mDownloadPreferencesManager.isHighResolutionAvatarsDownload()
                     ? Api.getAvatarMediumUrl(post.getUserId())
                     : Api.getAvatarSmallUrl(post.getUserId());
             // show user's avatar

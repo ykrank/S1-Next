@@ -50,7 +50,8 @@ public final class ThemeManager {
 
         @Override
         public Theme get() {
-            Theme theme = Theme.get(Integer.parseInt(mGeneralPreferencesProvider.getThemeString()));
+            Theme theme = Theme.VALUES.get(Integer.parseInt(
+                    mGeneralPreferencesProvider.getThemeString()));
 
             // get current theme's accent color
             TypedArray typedArray = mContext.obtainStyledAttributes(theme.style,
@@ -89,11 +90,11 @@ public final class ThemeManager {
     }
 
     public int getThemeIndex() {
-        return Theme.indexOf(getTheme());
+        return Theme.VALUES.indexOf(getTheme());
     }
 
     public void setThemeByIndex(int i) {
-        mThemeMemorized = Suppliers.ofInstance(Theme.get(i));
+        mThemeMemorized = Suppliers.ofInstance(Theme.VALUES.get(i));
     }
 
     public boolean isDefaultTheme() {
@@ -147,14 +148,6 @@ public final class ThemeManager {
 
         Theme(@StyleRes int style) {
             this.style = style;
-        }
-
-        private static Theme get(int i) {
-            return VALUES.get(i);
-        }
-
-        private static int indexOf(Theme theme) {
-            return VALUES.indexOf(theme);
         }
     }
 }

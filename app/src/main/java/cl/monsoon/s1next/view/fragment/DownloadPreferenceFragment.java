@@ -44,7 +44,7 @@ public final class DownloadPreferenceFragment extends BasePreferenceFragment {
 
                 break;
             case PREF_KEY_AVATAR_CACHE_INVALIDATION_INTERVAL:
-                mDownloadPreferencesManager.invalidateAvatarsCacheInvalidationIntervalStrategy();
+                mDownloadPreferencesManager.invalidateAvatarsCacheInvalidationInterval();
 
                 break;
             case PREF_KEY_DOWNLOAD_IMAGES_STRATEGY:

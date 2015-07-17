@@ -11,7 +11,8 @@ public final class GeneralPreferencesManager {
 
         @Override
         public Float get() {
-            return TextScale.get(Integer.parseInt(mGeneralPreferencesProvider.getFontSizeString())).scale;
+            return TextScale.VALUES[Integer.parseInt(mGeneralPreferencesProvider.getFontSizeString())]
+                    .scale;
         }
     };
     private final Supplier<Boolean> mSignatureEnabledSupplier = new Supplier<Boolean>() {
@@ -54,10 +55,6 @@ public final class GeneralPreferencesManager {
 
         TextScale(float scale) {
             this.scale = scale;
-        }
-
-        private static TextScale get(int i) {
-            return VALUES[i];
         }
     }
 }
