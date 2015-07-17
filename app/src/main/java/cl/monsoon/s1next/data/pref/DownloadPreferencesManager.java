@@ -10,11 +10,17 @@ import java.util.concurrent.Callable;
 import cl.monsoon.s1next.data.Wifi;
 import cl.monsoon.s1next.util.DateUtil;
 
+/**
+ * A manager manage the download preferences that are associated with settings.
+ */
 public final class DownloadPreferencesManager {
 
     private final DownloadPreferencesRepository mDownloadPreferencesProvider;
     private final Wifi mWifi;
 
+    /**
+     * Lazy Initialization.
+     */
     private final Supplier<DownloadStrategy> mAvatarsDownloadStrategySupplier = new Supplier<DownloadStrategy>() {
 
         @Override
@@ -63,6 +69,9 @@ public final class DownloadPreferencesManager {
                 mDownloadPreferencesProvider.getTotalDownloadCacheSizeString())].size;
     }
 
+    /**
+     * Used for invalidating the avatars' download strategy if settings change.
+     */
     public void invalidateAvatarsDownloadStrategy() {
         mAvatarsDownloadStrategyMemorized = Suppliers.memoize(mAvatarsDownloadStrategySupplier);
     }
@@ -71,6 +80,9 @@ public final class DownloadPreferencesManager {
         return mAvatarsDownloadStrategyMemorized.get().isDownload(mWifi.isWifiEnabled());
     }
 
+    /**
+     * Used for invalidating the avatars' resolution strategy if settings change.
+     */
     public void invalidateAvatarsResolutionStrategy() {
         mAvatarResolutionStrategyMemorized = Suppliers.memoize(mAvatarResolutionStrategySupplier);
     }
@@ -80,6 +92,10 @@ public final class DownloadPreferencesManager {
                 mWifi.isWifiEnabled());
     }
 
+    /**
+     * Used for invalidating the avatars' cache invalidation interval preference
+     * if settings change.
+     */
     public void invalidateAvatarsCacheInvalidationInterval() {
         mAvatarCacheInvalidationIntervalMemorized = Suppliers.memoize(
                 mAvatarCacheInvalidationIntervalSupplier);
@@ -89,14 +105,24 @@ public final class DownloadPreferencesManager {
         return mAvatarCacheInvalidationIntervalMemorized.get().getSignature();
     }
 
+    /**
+     * Used for invalidating the images' download strategy if settings change.
+     */
     public void invalidateImagesDownloadStrategy() {
         mImagesDownloadStrategyMemorized = Suppliers.memoize(mImagesDownloadStrategySupplier);
     }
 
+    /**
+     * Check whether we need to download images.
+     */
     public boolean isImagesDownload() {
         return mImagesDownloadStrategyMemorized.get().isDownload(mWifi.isWifiEnabled());
     }
 
+    /**
+     * Check whether we should monitor the Wi-Fi status.
+     * We needn't monitor the Wi-Fi status if we needn't/should download images.
+     */
     public boolean shouldMonitorWifi() {
         return mAvatarsDownloadStrategyMemorized.get() != DownloadStrategy.NOT
                 || mImagesDownloadStrategyMemorized.get() != DownloadStrategy.NOT;
@@ -150,6 +176,12 @@ public final class DownloadPreferencesManager {
             this.callable = callable;
         }
 
+        /**
+         * Get a string signature in order to invalidate avatar every day/week/month.
+         *
+         * @return A {@link Key} representing the string signature
+         * of date that will be mixed in to the cache key.
+         */
         private Key getSignature() {
             try {
                 return new StringSignature(callable.call());

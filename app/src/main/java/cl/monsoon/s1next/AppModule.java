@@ -18,6 +18,9 @@ import cl.monsoon.s1next.viewmodel.UserViewModel;
 import dagger.Module;
 import dagger.Provides;
 
+/**
+ * Provides instances of the objects when we need to inject.
+ */
 @Module
 final class AppModule {
 

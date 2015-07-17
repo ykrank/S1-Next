@@ -18,6 +18,9 @@ import java.util.List;
 
 import cl.monsoon.s1next.R;
 
+/**
+ * A manager manage the theme preference that is associated with settings.
+ */
 public final class ThemeManager {
 
     /**
@@ -27,16 +30,17 @@ public final class ThemeManager {
 
     public static final int TRANSLUCENT_THEME_LIGHT = R.style.Theme_Translucent_Light;
 
-    private static final int WHITE_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA = (int) (0.26 * 255);
-    private static final int WHITE_BACKGROUND_SECONDARY_TEXT_OR_ICONS_ALPHA = (int) (0.54 * 255);
-    private static final int BLACK_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA = (int) (0.30 * 255);
+    // https://www.google.com/design/spec/style/color.html#color-ui-color-application
+    private static final int WHITE_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA = (int) (0.26 * 255);
+    private static final int WHITE_BACKGROUND_SECONDARY_TEXT_ALPHA = (int) (0.54 * 255);
+    private static final int BLACK_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA = (int) (0.30 * 255);
     private static final int BLACK_BACKGROUND_SECONDARY_TEXT_ALPHA = (int) (0.70 * 255);
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
-            WHITE_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA,
-            WHITE_BACKGROUND_SECONDARY_TEXT_OR_ICONS_ALPHA,
-            BLACK_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA,
+            WHITE_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA,
+            WHITE_BACKGROUND_SECONDARY_TEXT_ALPHA,
+            BLACK_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA,
             BLACK_BACKGROUND_SECONDARY_TEXT_ALPHA
     })
     private @interface BackgroundAlphaDef {
@@ -46,6 +50,9 @@ public final class ThemeManager {
     private final Context mContext;
     private final GeneralPreferencesRepository mGeneralPreferencesProvider;
 
+    /**
+     * Lazy Initialization.
+     */
     private final Supplier<Theme> mThemeSupplier = new Supplier<Theme>() {
 
         @Override
@@ -72,10 +79,18 @@ public final class ThemeManager {
         this.mGeneralPreferencesProvider = generalPreferencesProvider;
     }
 
+    /**
+     * Used for invalidating the theme preference if settings change.
+     */
     public void invalidateTheme() {
         mThemeMemorized = Suppliers.memoize(mThemeSupplier);
     }
 
+    /**
+     * Commit theme preference change for settings.
+     *
+     * @param index The theme index.
+     */
     public void applyTheme(int index) {
         mGeneralPreferencesProvider.applyThemeString(String.valueOf(index));
     }
@@ -110,7 +125,7 @@ public final class ThemeManager {
     }
 
     @ColorInt
-    public int getSecondaryTextColor() {
+    public int getGentleAccentColor() {
         return ColorUtils.setAlphaComponent(mColorAccent, getSecondaryTextAlpha());
     }
 
@@ -119,16 +134,16 @@ public final class ThemeManager {
         if (isDarkTheme()) {
             return BLACK_BACKGROUND_SECONDARY_TEXT_ALPHA;
         } else {
-            return WHITE_BACKGROUND_SECONDARY_TEXT_OR_ICONS_ALPHA;
+            return WHITE_BACKGROUND_SECONDARY_TEXT_ALPHA;
         }
     }
 
     @BackgroundAlphaDef
-    public int getDisabledOrHintTextAlpha() {
+    public int getHintOrDisabledTextAlpha() {
         if (isDarkTheme()) {
-            return BLACK_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA;
+            return BLACK_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA;
         } else {
-            return WHITE_BACKGROUND_DISABLED_OR_HINT_TEXT_ALPHA;
+            return WHITE_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA;
         }
     }
 

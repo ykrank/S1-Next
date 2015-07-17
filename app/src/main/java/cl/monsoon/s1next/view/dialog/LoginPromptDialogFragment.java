@@ -12,6 +12,9 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.view.activity.LoginActivity;
 
+/**
+ * A dialog shows login prompt.
+ */
 public final class LoginPromptDialogFragment extends DialogFragment {
 
     private static final String TAG = LoginPromptDialogFragment.class.getName();

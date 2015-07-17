@@ -14,6 +14,9 @@ import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.event.ThemeChangeEvent;
 import cl.monsoon.s1next.singleton.BusProvider;
 
+/**
+ * A dialog which used to change theme.
+ */
 public final class ThemeChangeDialogFragment extends DialogFragment {
 
     private static final String TAG = ThemeChangeDialogFragment.class.getName();
@@ -28,7 +31,6 @@ public final class ThemeChangeDialogFragment extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
         mThemeManager = App.getAppComponent(activity).getThemeManager();
     }
 

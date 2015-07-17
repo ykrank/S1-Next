@@ -13,6 +13,9 @@ import android.view.MenuItem;
 
 import cl.monsoon.s1next.R;
 
+/**
+ * A helper class warps drawer.
+ */
 public abstract class DrawerLayoutPresenter {
 
     /**

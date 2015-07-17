@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.view.fragment.GeneralPreferenceFragment;
 
+/**
+ * A helper class for retrieving the general preferences from {@link SharedPreferences}.
+ */
 public final class GeneralPreferencesRepository extends BasePreferencesRepository {
 
     public GeneralPreferencesRepository(Context context, SharedPreferences sharedPreferences) {
@@ -16,8 +19,13 @@ public final class GeneralPreferencesRepository extends BasePreferencesRepositor
         return getSharedPreferencesString(GeneralPreferenceFragment.PREF_KEY_THEME, R.string.pref_theme_default_value);
     }
 
-    public void applyThemeString(String index) {
-        mSharedPreferences.edit().putString(GeneralPreferenceFragment.PREF_KEY_THEME, index).apply();
+    /**
+     * Commit theme preference change for settings.
+     *
+     * @param key The new value for the theme preference.
+     */
+    public void applyThemeString(String key) {
+        mSharedPreferences.edit().putString(GeneralPreferenceFragment.PREF_KEY_THEME, key).apply();
     }
 
     public String getFontSizeString() {

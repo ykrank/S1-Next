@@ -51,6 +51,7 @@ public final class GalleryActivity extends AppCompatActivity {
         toolbarPresenter.setupNavCrossIcon();
 
         // set Toolbar's padding because we use `android:windowTranslucentStatus` in this Activity
+        // we only use translucent status if API >= 21
         ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar, (v, insets) -> {
             int top = insets.getSystemWindowInsetTop();
             v.setPadding(0, top, 0, 0);
@@ -104,6 +105,7 @@ public final class GalleryActivity extends AppCompatActivity {
                     @Override
                     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
                         photoView.bindDrawable(resource);
+                        // start animation if this image is a GIF
                         if (resource.isAnimated()) {
                             resource.setLoopCount(GlideDrawable.LOOP_FOREVER);
                             resource.start();

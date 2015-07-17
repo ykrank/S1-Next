@@ -30,6 +30,9 @@ public final class GeneralPreferencesManager {
         this.mGeneralPreferencesProvider = generalPreferencesProvider;
     }
 
+    /**
+     * Used for invalidating the text scale preference if settings change.
+     */
     public void invalidateTextScale() {
         mTextScaleMemorized = Suppliers.memoize(mTextScaleSupplier);
     }
@@ -38,6 +41,9 @@ public final class GeneralPreferencesManager {
         return mTextScaleMemorized.get();
     }
 
+    /**
+     * Used for invalidating the signature preference if settings change.
+     */
     public void invalidateSignatureEnabled() {
         mSignatureEnabledMemorized = Suppliers.memoize(mSignatureEnabledSupplier);
     }

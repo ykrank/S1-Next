@@ -18,14 +18,13 @@ public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
 
     @LayoutRes
     private final int mResource;
-
-    private final int mSecondaryTextColor;
+    private final int mGentleAccentColor;
 
     public SubForumArrayAdapter(Context context, @LayoutRes int resource, List<Forum> objects) {
         super(context, resource, objects);
 
         this.mResource = resource;
-        mSecondaryTextColor = App.getAppComponent(context).getThemeManager().getSecondaryTextColor();
+        mGentleAccentColor = App.getAppComponent(context).getThemeManager().getGentleAccentColor();
     }
 
     @Override
@@ -48,7 +47,7 @@ public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
         // add today's posts count to each forum
         if (forum.getTodayPosts() != 0) {
             ViewUtil.concatWithTwoSpacesForRtlSupport(textView, String.valueOf(forum.getTodayPosts()),
-                    mSecondaryTextColor);
+                    mGentleAccentColor);
         }
 
         return convertView;

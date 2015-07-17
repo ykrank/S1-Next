@@ -8,6 +8,9 @@ import com.google.common.base.Preconditions;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.util.ResourceUtil;
 
+/**
+ * A helper class warps Toolbar.
+ */
 public final class ToolbarPresenter {
 
     private final AppCompatActivity mAppCompatActivity;

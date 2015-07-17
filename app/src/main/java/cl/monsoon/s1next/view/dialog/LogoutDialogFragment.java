@@ -12,6 +12,10 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.singleton.OkHttpClientProvider;
 
+/**
+ * A dialog shows logout prompt.
+ * Logs out if user clicks the logout button.
+ */
 public final class LogoutDialogFragment extends DialogFragment {
 
     private static final String TAG = LogoutDialogFragment.class.getName();
@@ -42,8 +46,10 @@ public final class LogoutDialogFragment extends DialogFragment {
                 .create();
     }
 
+    /**
+     * Clear user's cookies and current user's info.
+     */
     private void logout() {
-        // clear user cookie and current user's info
         OkHttpClientProvider.clearCookie();
         App.getAppComponent(getActivity()).getUser().setLogged(false);
     }

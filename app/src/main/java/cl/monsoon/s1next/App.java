@@ -62,7 +62,7 @@ public final class App extends Application {
 
         Bugsnag.init(this);
 
-        // initiate the config depends on settings
+        // set scaling factor for fonts
         ResourceUtil.setScaledDensity(getResources(), mGeneralPreferencesManager.getTextScale());
     }
 
@@ -77,6 +77,10 @@ public final class App extends Application {
         return mAppComponent;
     }
 
+    /**
+     * Indicates the class where this module is going to inject dependencies
+     * or the dependencies we want to get.
+     */
     @Singleton
     @Component(modules = AppModule.class)
     public interface AppComponent {

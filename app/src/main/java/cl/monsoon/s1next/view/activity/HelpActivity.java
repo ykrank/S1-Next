@@ -21,14 +21,28 @@ import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.dialog.OpenSourceLicensesDialogFragment;
 import cl.monsoon.s1next.viewmodel.WebPageViewModel;
 
+/**
+ * An Activity shows a help page.
+ * <p>
+ * Also some related controls are provided in overflow menu:
+ * 1.Bring users to our apps to Android marketplaces or Google Play website.
+ * 2.See open sources licenses information.
+ * 3.See version number.
+ */
 public final class HelpActivity extends BaseActivity {
 
     private static final String HELP_PAGE_URL = "http://monsoon.cl/S1-Next/HELP.html";
 
+    // https://developer.android.com/distribute/tools/promote/linking.html#OpeningDetails
     private static final String ANDROID_APP_MARKET_LINK = "market://details?id=%s";
     private static final String ANDROID_WEB_SITE_MARKET_LINK = "http://play.google.com/store/apps/details?id=%s";
 
     private WebView mWebView;
+
+    public static void startHelpActivity(Context context) {
+        Intent intent = new Intent(context, HelpActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +61,7 @@ public final class HelpActivity extends BaseActivity {
         });
 
         // restore the state of WebView on configuration change
+        // see http://www.devahead.com/blog/2012/01/preserving-the-state-of-an-android-webview-on-screen-orientation-change/
         if (savedInstanceState == null) {
             mWebView.loadUrl(HELP_PAGE_URL);
         } else {
@@ -72,12 +87,15 @@ public final class HelpActivity extends BaseActivity {
                 String packageName = getPackageName();
                 intent.setData(Uri.parse(String.format(ANDROID_APP_MARKET_LINK, packageName)));
                 try {
+                    // link our app in Android marketplaces
                     startActivity(intent);
                 } catch (ActivityNotFoundException exception) {
                     intent.setData(Uri.parse(String.format(ANDROID_WEB_SITE_MARKET_LINK, packageName)));
                     try {
+                        // link our app in Google Play website if user hasn't installed any Android marketplaces
                         startActivity(intent);
                     } catch (ActivityNotFoundException e) {
+                        // show Toast if user hasn't installed any Android marketplaces or browsers
                         ToastUtil.showByResId(R.string.message_chooser_no_applications,
                                 Toast.LENGTH_SHORT);
                     }
@@ -85,10 +103,12 @@ public final class HelpActivity extends BaseActivity {
 
                 return true;
             case R.id.menu_open_source_licenses:
+                // show OpenSourceLicensesDialogFragment
                 OpenSourceLicensesDialogFragment.showOpenSourceLicensesDialog(this);
 
                 return true;
             case R.id.menu_version:
+                // copy version number to clipboard though it make no sense actually
                 ClipboardManager clipboardManager = (ClipboardManager) getSystemService(
                         Context.CLIPBOARD_SERVICE);
                 ClipData clipData = ClipData.newPlainText("simple text", item.getTitle());

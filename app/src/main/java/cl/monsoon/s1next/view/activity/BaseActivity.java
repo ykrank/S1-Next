@@ -56,6 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
         App.getAppComponent(this).inject(this);
+        // change the theme depends on preference
         if (!mThemeManager.isDefaultTheme()) {
             setTheme(mThemeManager.getThemeStyle());
         }

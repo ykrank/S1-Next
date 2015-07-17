@@ -28,13 +28,13 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
     @Inject
     User mUser;
 
-    private final int mSecondaryTextColor;
+    private final int mGentleTextColor;
 
     public ThreadListRecyclerAdapter(Context context) {
         setHasStableIds(true);
 
         App.getAppComponent(context).inject(this);
-        mSecondaryTextColor = mThemeManager.getSecondaryTextColor();
+        mGentleTextColor = mThemeManager.getGentleAccentColor();
     }
 
     @Override
@@ -61,7 +61,7 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
 
         // add thread's replies count to each thread
         ViewUtil.concatWithTwoSpacesForRtlSupport(textView, String.valueOf(thread.getReplies()),
-                mSecondaryTextColor);
+                mGentleTextColor);
     }
 
     @Override
@@ -83,7 +83,7 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
 
             mDefaultTextViewColor = textView.getCurrentTextColor();
             mDisabledTextViewColor = ColorUtils.setAlphaComponent(mDefaultTextViewColor,
-                    themeManager.getDisabledOrHintTextAlpha());
+                    themeManager.getHintOrDisabledTextAlpha());
         }
 
         public void setTextViewEnabled(Boolean enabled) {

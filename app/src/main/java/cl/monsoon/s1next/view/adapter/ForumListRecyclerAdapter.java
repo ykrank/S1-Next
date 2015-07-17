@@ -14,12 +14,12 @@ import cl.monsoon.s1next.util.ViewUtil;
 
 public final class ForumListRecyclerAdapter extends RecyclerAdapter<Forum, ForumListRecyclerAdapter.ViewHolder> {
 
-    private final int mSecondaryTextColor;
+    private final int mGentleAccentColor;
 
     public ForumListRecyclerAdapter(Context context) {
         setHasStableIds(true);
 
-        mSecondaryTextColor = App.getAppComponent(context).getThemeManager().getSecondaryTextColor();
+        mGentleAccentColor = App.getAppComponent(context).getThemeManager().getGentleAccentColor();
     }
 
     @Override
@@ -39,7 +39,7 @@ public final class ForumListRecyclerAdapter extends RecyclerAdapter<Forum, Forum
         // add today's posts count to each forum
         if (forum.getTodayPosts() != 0) {
             ViewUtil.concatWithTwoSpacesForRtlSupport(textView, String.valueOf(forum.getTodayPosts()),
-                    mSecondaryTextColor);
+                    mGentleAccentColor);
         }
     }
 

@@ -36,6 +36,9 @@ import cl.monsoon.s1next.view.dialog.ThemeChangeDialogFragment;
 import cl.monsoon.s1next.viewmodel.UserViewModel;
 import cl.monsoon.s1next.widget.BezelImageView;
 
+/**
+ * Implement the concrete UI logic for {@link DrawerLayoutPresenter}.
+ */
 public final class DrawerLayoutPresenterConcrete extends DrawerLayoutPresenter
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -60,12 +63,12 @@ public final class DrawerLayoutPresenterConcrete extends DrawerLayoutPresenter
                 R.id.drawer_header));
         binding.setUserViewModel(mUserViewModel);
 
+        // let drawer display over the status bar if API >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // let DrawerLayout draw the insets area for the status bar
             mFragmentActivity.getWindow().setStatusBarColor(Color.TRANSPARENT);
             // add status bar height to drawer's header
             drawerLayout.setOnApplyWindowInsetsListener((v, insets) -> {
-
                 int insetsTop = insets.getSystemWindowInsetTop();
 
                 binding.drawerHeaderBackground.getLayoutParams().height = insetsTop
@@ -84,6 +87,8 @@ public final class DrawerLayoutPresenterConcrete extends DrawerLayoutPresenter
             });
         }
 
+        // Starts LoginActivity if user hasn't logged in,
+        // otherwise show LogoutDialogFragment.
         binding.drawerHeaderBackground.setOnClickListener(v -> {
             if (!LogoutDialogFragment.showLogoutDialogIfNeed(mFragmentActivity, mUser)) {
                 closeDrawer(() -> {
@@ -93,6 +98,7 @@ public final class DrawerLayoutPresenterConcrete extends DrawerLayoutPresenter
             }
         });
 
+        // show ThemeChangeDialogFragment
         binding.drawerUserAvatar.setOnClickListener(v ->
                 ThemeChangeDialogFragment.showThemeChangeDialog(mFragmentActivity));
     }
@@ -136,16 +142,17 @@ public final class DrawerLayoutPresenterConcrete extends DrawerLayoutPresenter
         }
 
         Intent intent = new Intent(mFragmentActivity, ForumActivity.class);
+        // if this activity is not part of this app's task
         if (NavUtils.shouldUpRecreateTask(mFragmentActivity, intent)) {
-            // finish all our Activities in this app
+            // finish all our Activities in that app
             ActivityCompat.finishAffinity(mFragmentActivity);
-            // this activity is not part of this app's task
-            // so create a new task when navigating up with
+            // create a new task when navigating up with
             // a synthesized back stack
             TaskStackBuilder.create(mFragmentActivity)
                     .addNextIntentWithParentStack(intent)
                     .startActivities();
         } else {
+            // back to ForumActivity (main Activity)
             NavUtils.navigateUpTo(mFragmentActivity, intent);
         }
     }
@@ -155,6 +162,8 @@ public final class DrawerLayoutPresenterConcrete extends DrawerLayoutPresenter
             return;
         }
 
+        // Starts FavouriteListActivity if user has logged in,
+        // otherwise show LoginPromptDialogFragment.
         if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeed(mFragmentActivity, mUser)) {
             Intent intent = new Intent(mFragmentActivity, FavouriteListActivity.class);
             mFragmentActivity.startActivity(intent);
@@ -162,13 +171,14 @@ public final class DrawerLayoutPresenterConcrete extends DrawerLayoutPresenter
     }
 
     private void onSettingsMenuSelected() {
+        // starts SettingsActivity
         Intent intent = new Intent(mFragmentActivity, SettingsActivity.class);
         mFragmentActivity.startActivity(intent);
     }
 
     private void onHelpMenuSelected() {
-        Intent intent = new Intent(mFragmentActivity, HelpActivity.class);
-        mFragmentActivity.startActivity(intent);
+        // starts HelpActivity
+        HelpActivity.startHelpActivity(mFragmentActivity);
     }
 
     /**
