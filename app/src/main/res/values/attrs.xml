@@ -6,9 +6,8 @@
     <attr name="fabBackgroundTint" format="color|reference" />
     <attr name="cardViewStyle" format="reference" />
     <attr name="linkBackground" format="color|reference" />
-    <attr name="emoticonKeyboardColor" format="color|reference" />
-    <attr name="emoticonKeyboardTabsBackground" format="color|reference" />
-    <attr name="emoticonKeyboardTabsTitleColor" format="color" />
+    <attr name="emoticonKeyboardTabLayoutBackground" format="color|reference" />
+    <attr name="emoticonKeyboardBackground" format="color|reference" />
 
     <attr name="menuCross" format="reference" />
     <attr name="menuPersonAdd" format="reference" />

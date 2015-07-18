@@ -13,8 +13,10 @@
         <item name="cardBackgroundColor">@android:color/black</item>
     </style>
 
-    <style name="EmoticonKeyboardTabTextStyle" parent="Widget.AppCompat.ActionBar.TabText">
-        <item name="android:textColor">?attr/emoticonKeyboardTabsTitleColor</item>
+    <style name="EmoticonKeyboardTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabMode">scrollable</item>
+        <item name="tabIndicatorColor">@null</item>
+        <item name="tabIndicatorHeight">0dp</item>
     </style>
 
     <style name="TextAppearance.Dense.Subhead" parent="TextAppearance.AppCompat.Subhead">

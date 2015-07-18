@@ -40,20 +40,20 @@
         android:translationY="@dimen/emoticon_keyboard_height"
         android:visibility="gone">
 
-        <cl.monsoon.s1next.widget.ViewPagerTabs
-            android:id="@+id/emoticon_keyboard_category_tabs"
-            style="@style/EmoticonKeyboardTabTextStyle"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/emoticon_keyboard_tab_layout"
+            style="@style/EmoticonKeyboardTabLayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/emoticon_keyboard_category_tabs_height"
-            android:background="?attr/emoticonKeyboardTabsBackground"
-            android:elevation="@dimen/viewpager_tabs_elevation"
+            android:layout_height="@dimen/emoticon_keyboard_tab_layout_height"
+            android:background="?attr/emoticonKeyboardTabLayoutBackground"
+            android:elevation="@dimen/emoticon_keyboard_tab_layout_elevation"
             tools:ignore="UnusedAttribute" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/emoticon_keyboard_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/emoticonKeyboardColor" />
+            android:background="?attr/emoticonKeyboardBackground" />
 
     </LinearLayout>
 

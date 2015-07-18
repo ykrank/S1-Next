@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.Loader;
 import android.support.v4.view.PagerAdapter;
@@ -51,7 +52,6 @@ import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.EmoticonFactory;
 import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.HttpPostLoader;
-import cl.monsoon.s1next.widget.ViewPagerTabs;
 
 /**
  * Sends the reply via EditView.
@@ -91,7 +91,6 @@ public final class ReplyFragment extends Fragment {
     private boolean mIsEmoticonKeyboardShowing;
     private MenuItem mMenuEmoticon;
     private View mEmoticonKeyboard;
-    private ViewPagerTabs mEmoticonKeyboardCategoryTabs;
     private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
 
     private MenuItem mMenuSend;
@@ -244,11 +243,10 @@ public final class ReplyFragment extends Fragment {
         ViewPager viewPager = (ViewPager) mEmoticonKeyboard.findViewById(
                 R.id.emoticon_keyboard_pager);
         viewPager.setAdapter(new EmoticonPagerAdapter(getActivity()));
-        viewPager.addOnPageChangeListener(new EmoticonKeyboardTabsPagerListener());
 
-        mEmoticonKeyboardCategoryTabs = (ViewPagerTabs) mEmoticonKeyboard.findViewById(
-                R.id.emoticon_keyboard_category_tabs);
-        mEmoticonKeyboardCategoryTabs.setViewPager(viewPager);
+        TabLayout tabLayout = (TabLayout) mEmoticonKeyboard.findViewById(
+                R.id.emoticon_keyboard_tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     private void showEmoticonKeyboard() {
@@ -330,25 +328,6 @@ public final class ReplyFragment extends Fragment {
 
     public boolean isReplyEmpty() {
         return mReplyView == null || TextUtils.isEmpty(mReplyView.getText().toString());
-    }
-
-    private class EmoticonKeyboardTabsPagerListener implements ViewPager.OnPageChangeListener {
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-            mEmoticonKeyboardCategoryTabs.onPageScrollStateChanged(state);
-        }
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            mEmoticonKeyboardCategoryTabs.onPageScrolled(position, positionOffset,
-                    positionOffsetPixels);
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-            mEmoticonKeyboardCategoryTabs.onPageSelected(position);
-        }
     }
 
     private class EmoticonKeyboardAnimator implements Animator.AnimatorListener {

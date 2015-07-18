@@ -27,9 +27,8 @@
         <item name="fabBackgroundTint">?attr/colorAccent</item>
         <item name="cardViewStyle">@style/LightCardView</item>
         <item name="linkBackground">@drawable/link_focused_or_pressed_light</item>
-        <item name="emoticonKeyboardColor">@color/emoticon_keyboard_background_color_light</item>
-        <item name="emoticonKeyboardTabsBackground">@color/emoticon_keyboard_tab_background_color_light</item>
-        <item name="emoticonKeyboardTabsTitleColor">@color/emoticon_keyboard_tab_title_light</item>
+        <item name="emoticonKeyboardTabLayoutBackground">@color/emoticon_keyboard_tab_layout_background_light</item>
+        <item name="emoticonKeyboardBackground">@color/emoticon_keyboard_background_light</item>
 
         <item name="menuCross">@drawable/ic_menu_close_black_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_black_24dp</item>
@@ -89,9 +88,8 @@
         <item name="fabBackgroundTint">?attr/colorAccent</item>
         <item name="cardViewStyle">@style/DarkCardView</item>
         <item name="linkBackground">@drawable/link_focused_or_pressed_dark</item>
-        <item name="emoticonKeyboardColor">@color/emoticon_keyboard_background_color_dark</item>
-        <item name="emoticonKeyboardTabsBackground">@color/emoticon_keyboard_tab_background_color_dark</item>
-        <item name="emoticonKeyboardTabsTitleColor">@color/emoticon_keyboard_tab_title_dark</item>
+        <item name="emoticonKeyboardTabLayoutBackground">@color/emoticon_keyboard_tab_layout_background_dark</item>
+        <item name="emoticonKeyboardBackground">@color/emoticon_keyboard_background_dark</item>
         <item name="menuCross">@drawable/ic_menu_close_white_24dp</item>
         <item name="menuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
         <item name="menuPageTurning">@drawable/selector_menu_swap_horiz_white</item>
