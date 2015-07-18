@@ -16,7 +16,8 @@ public final class GeneralPreferencesRepository extends BasePreferencesRepositor
     }
 
     public String getThemeString() {
-        return getSharedPreferencesString(GeneralPreferenceFragment.PREF_KEY_THEME, R.string.pref_theme_default_value);
+        return getSharedPreferencesString(GeneralPreferenceFragment.PREF_KEY_THEME,
+                R.string.pref_theme_default_value);
     }
 
     /**
