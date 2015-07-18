@@ -13,6 +13,8 @@ import cl.monsoon.s1next.R;
 
 public final class EmoticonFactory {
 
+    public static final String ASSET_PATH_EMOTICON = "file:///android_asset/image/emoticon/";
+
     private final List<String> mEmoticonTypeTitles;
     private final SparseArray<List<Pair<String, String>>> mEmoticons;
 
@@ -604,7 +606,7 @@ public final class EmoticonFactory {
         return builder.build();
     }
 
-    private ImmutableList.Builder<Pair<String, String>> add(ImmutableList.Builder<Pair<String, String>> builder, String emoticonAssetSuffix, String emoticonEntity) {
-        return builder.add(new Pair<>(emoticonAssetSuffix, emoticonEntity));
+    private ImmutableList.Builder<Pair<String, String>> add(ImmutableList.Builder<Pair<String, String>> builder, String emoticonFileName, String emoticonEntity) {
+        return builder.add(new Pair<>(ASSET_PATH_EMOTICON + emoticonFileName, emoticonEntity));
     }
 }

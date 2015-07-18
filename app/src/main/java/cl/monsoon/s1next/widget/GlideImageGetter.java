@@ -19,7 +19,6 @@ import com.bumptech.glide.request.target.ViewTarget;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.App;
-import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.util.TransformationUtil;
 
@@ -56,12 +55,12 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
         if (!URLUtil.isNetworkUrl(url)) {
             // We may have this image in assets if this is emoticon.
             if (url.startsWith(Api.URL_EMOTICON_IMAGE_PREFIX)) {
-                String assetSuffix = url.substring(Api.URL_EMOTICON_IMAGE_PREFIX.length());
+                String emoticonFileName = url.substring(Api.URL_EMOTICON_IMAGE_PREFIX.length());
                 TransformationUtil.SizeMultiplierBitmapTransformation sizeMultiplierBitmapTransformation =
                         new TransformationUtil.SizeMultiplierBitmapTransformation(mContext,
                                 mContext.getResources().getDisplayMetrics().density);
                 Glide.with(mContext)
-                        .load(Uri.parse(Config.PREFIX_EMOTICON_ASSET + assetSuffix))
+                        .load(Uri.parse(EmoticonFactory.ASSET_PATH_EMOTICON + emoticonFileName))
                         .transform(sizeMultiplierBitmapTransformation)
                         .listener(new RequestListener<Uri, GlideDrawable>() {
 

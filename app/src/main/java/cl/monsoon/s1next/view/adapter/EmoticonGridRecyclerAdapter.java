@@ -14,7 +14,6 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.event.EmoticonClickEvent;
 import cl.monsoon.s1next.singleton.BusProvider;
@@ -44,7 +43,7 @@ public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<Emot
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.imageView.setTag(R.id.emoticon_entity_tag, mEmoticons.get(position).second);
         mEmoticonRequestBuilder
-                .load(Uri.parse(Config.PREFIX_EMOTICON_ASSET + mEmoticons.get(position).first))
+                .load(Uri.parse(mEmoticons.get(position).first))
                 .into(holder.imageView);
     }
 
