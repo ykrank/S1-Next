@@ -49,7 +49,7 @@ dependencies {
     
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.0.4'
 
-    apt 'com.android.databinding:compiler:1.0-rc0'
+    apt 'com.android.databinding:compiler:1.0-rc1'
 
     ext.supportVersion = "22.2.1"
     compile "com.android.support:design:$supportVersion"
