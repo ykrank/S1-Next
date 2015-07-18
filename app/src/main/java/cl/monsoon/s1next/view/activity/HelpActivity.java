@@ -18,7 +18,6 @@ import cl.monsoon.s1next.BuildConfig;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.databinding.ActivityHelpBinding;
 import cl.monsoon.s1next.util.ToastUtil;
-import cl.monsoon.s1next.view.dialog.OpenSourceLicensesDialogFragment;
 import cl.monsoon.s1next.viewmodel.WebPageViewModel;
 
 /**
@@ -103,8 +102,7 @@ public final class HelpActivity extends BaseActivity {
 
                 return true;
             case R.id.menu_open_source_licenses:
-                // show OpenSourceLicensesDialogFragment
-                OpenSourceLicensesDialogFragment.showOpenSourceLicensesDialog(this);
+                OpenSourceLicensesActivity.startOpenSourceLicensesActivity(this);
 
                 return true;
             case R.id.menu_version:

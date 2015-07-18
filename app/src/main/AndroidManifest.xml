@@ -72,6 +72,12 @@
             android:name=".view.activity.GalleryActivity"
             android:theme="@style/Theme.Gallery" />
 
+        <activity
+            android:name=".view.activity.OpenSourceLicensesActivity"
+            android:label="@string/open_source_licenses" />
+
+        <activity android:name=".view.activity.OpenSourceLicenseDetailActivity" />
+
     </application>
 
 </manifest>
