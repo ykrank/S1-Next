@@ -2,6 +2,7 @@ package cl.monsoon.s1next.view.fragment;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceFragment;
+import android.support.annotation.CallSuper;
 
 /**
  * A helper class for registering/unregistering
@@ -11,6 +12,7 @@ public abstract class BasePreferenceFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
+    @CallSuper
     public void onResume() {
         super.onResume();
 
@@ -18,6 +20,7 @@ public abstract class BasePreferenceFragment extends PreferenceFragment
     }
 
     @Override
+    @CallSuper
     public void onPause() {
         super.onPause();
 

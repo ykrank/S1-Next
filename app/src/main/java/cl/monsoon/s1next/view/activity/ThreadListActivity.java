@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SpinnerAdapter;
 
+import com.google.common.base.Preconditions;
+
 import java.util.List;
 
 import cl.monsoon.s1next.R;
@@ -65,7 +67,8 @@ public final class ThreadListActivity extends BaseActivity implements ThreadList
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_sub_forums:
-                mListPopupWindow.setAnchorView(getToolbar().findViewById(R.id.menu_sub_forums));
+                mListPopupWindow.setAnchorView(Preconditions.checkNotNull(getToolbar()).findViewById(
+                        R.id.menu_sub_forums));
                 mListPopupWindow.show();
 
                 return true;
@@ -135,13 +138,14 @@ public final class ThreadListActivity extends BaseActivity implements ThreadList
         int end = Math.min(spinnerAdapter.getCount(), start + MAX_ITEMS_MEASURED);
         int count = end - start;
         start = Math.max(0, start - (MAX_ITEMS_MEASURED - count));
+        ViewGroup parent = getToolbar();
         for (int i = start; i < end; i++) {
             int positionType = spinnerAdapter.getItemViewType(i);
             if (positionType != itemType) {
                 itemType = positionType;
                 itemView = null;
             }
-            itemView = spinnerAdapter.getView(i, itemView, getToolbar());
+            itemView = spinnerAdapter.getView(i, itemView, parent);
             if (itemView.getLayoutParams() == null) {
                 itemView.setLayoutParams(new ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
