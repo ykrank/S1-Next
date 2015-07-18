@@ -63,7 +63,7 @@ public final class DrawerLayoutPresenterConcrete extends DrawerLayoutPresenter
                 R.id.drawer_header));
         binding.setUserViewModel(mUserViewModel);
 
-        // let drawer display over the status bar if API >= 21
+        // let status bar display over drawer if API >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // let DrawerLayout draw the insets area for the status bar
             mFragmentActivity.getWindow().setStatusBarColor(Color.TRANSPARENT);
@@ -98,7 +98,6 @@ public final class DrawerLayoutPresenterConcrete extends DrawerLayoutPresenter
             }
         });
 
-        // show ThemeChangeDialogFragment
         binding.drawerUserAvatar.setOnClickListener(v ->
                 ThemeChangeDialogFragment.showThemeChangeDialog(mFragmentActivity));
     }
