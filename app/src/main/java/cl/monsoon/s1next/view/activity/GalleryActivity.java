@@ -62,9 +62,7 @@ public final class GalleryActivity extends AppCompatActivity {
         });
 
         mImageUrl = getIntent().getStringExtra(ARG_IMAGE_URL);
-        ImageViewModel viewModel = new ImageViewModel();
-        viewModel.imageUrl.set(mImageUrl);
-        binding.setImageViewModel(viewModel);
+        binding.setImageViewModel(new ImageViewModel(mImageUrl));
     }
 
     @Override
