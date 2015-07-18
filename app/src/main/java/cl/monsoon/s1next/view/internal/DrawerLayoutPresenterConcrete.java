@@ -171,13 +171,10 @@ public final class DrawerLayoutPresenterConcrete extends DrawerLayoutPresenter
     }
 
     private void onSettingsMenuSelected() {
-        // starts SettingsActivity
-        Intent intent = new Intent(mFragmentActivity, SettingsActivity.class);
-        mFragmentActivity.startActivity(intent);
+        SettingsActivity.startSettingsActivity(mFragmentActivity);
     }
 
     private void onHelpMenuSelected() {
-        // starts HelpActivity
         HelpActivity.startHelpActivity(mFragmentActivity);
     }
 

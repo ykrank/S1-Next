@@ -225,7 +225,7 @@ public final class PostListGatewayActivity extends FragmentActivity {
     }
 
     /**
-     * Get the quote post's page in the thread.
+     * Gets the quote post's page in the thread.
      */
     public static class QuotePostPageAnalysisDialogFragment extends LoaderDialogFragment<HttpRedirectLoader.RedirectUrl> {
 

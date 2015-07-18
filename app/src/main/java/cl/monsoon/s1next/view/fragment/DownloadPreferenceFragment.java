@@ -8,6 +8,11 @@ import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 
+/**
+ * An Activity includes download settings that allow users
+ * to modify download features and behaviors such as cache
+ * size and avatars/images download strategy.
+ */
 public final class DownloadPreferenceFragment extends BasePreferenceFragment {
 
     public static final String PREF_KEY_TOTAL_DOWNLOAD_CACHE_SIZE = "pref_key_download_total_cache_size";
@@ -21,15 +26,13 @@ public final class DownloadPreferenceFragment extends BasePreferenceFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
         mDownloadPreferencesManager = App.getAppComponent(activity).getDownloadPreferencesManager();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        addPreferencesFromResource(R.xml.download_preferences);
+        addPreferencesFromResource(R.xml.preference_download);
     }
 
     @Override

@@ -178,7 +178,7 @@ public final class DownloadPreferencesManager {
         }
 
         /**
-         * Get a string signature in order to invalidate avatar every day/week/month.
+         * Gets a string signature in order to invalidate avatar every day/week/month.
          *
          * @return A {@link Key} representing the string signature
          * of date that will be mixed in to the cache key.

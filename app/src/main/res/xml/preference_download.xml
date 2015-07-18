@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="cl.monsoon.s1next.view.fragment.DownloadPreferenceFragment">
 
     <cl.monsoon.s1next.widget.ListPreferenceCompat
         android:defaultValue="@string/pref_download_total_cache_size_default_value"

@@ -13,10 +13,16 @@ public final class DeviceUtil {
 
     }
 
+    /**
+     * Gets the string signature which is used for reply (append this to last line of the reply).
+     */
     public static String getSignature() {
         return App.get().getString(R.string.signature, getDeviceNameWithVersion());
     }
 
+    /**
+     * Forked from https://stackoverflow.com/questions/1995439/get-android-phone-model-programmatically/26117427#answer-12707479
+     */
     private static String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;

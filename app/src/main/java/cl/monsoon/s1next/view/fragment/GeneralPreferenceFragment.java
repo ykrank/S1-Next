@@ -1,6 +1,6 @@
 package cl.monsoon.s1next.view.fragment;
 
-import android.content.Intent;
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -18,7 +18,13 @@ import cl.monsoon.s1next.util.DeviceUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.view.activity.SettingsActivity;
 
-public final class GeneralPreferenceFragment extends BasePreferenceFragment implements Preference.OnPreferenceClickListener {
+/**
+ * An Activity includes general settings that allow users
+ * to modify general features and behaviors such as theme
+ * and font size.
+ */
+public final class GeneralPreferenceFragment extends BasePreferenceFragment
+        implements Preference.OnPreferenceClickListener {
 
     public static final String PREF_KEY_THEME = "pref_key_theme";
     public static final String PREF_KEY_FONT_SIZE = "pref_key_font_size";
@@ -33,15 +39,18 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment impl
     ThemeManager mThemeManager;
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        App.getAppComponent(getActivity()).inject(this);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        App.getAppComponent(getActivity()).inject(this);
-
-        addPreferencesFromResource(R.xml.general_preferences);
+        addPreferencesFromResource(R.xml.preference_general);
 
         findPreference(PREF_KEY_DOWNLOADS).setOnPreferenceClickListener(this);
-        findPreference(PREF_KEY_SIGNATURE).setSummary(
-                DeviceUtil.getSignature());
+        findPreference(PREF_KEY_SIGNATURE).setSummary(DeviceUtil.getSignature());
     }
 
     @Override
@@ -54,6 +63,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment impl
                 break;
             case PREF_KEY_FONT_SIZE:
                 mGeneralPreferencesManager.invalidateTextScale();
+                // change scaling factor for fonts
                 ResourceUtil.setScaledDensity(getResources(),
                         mGeneralPreferencesManager.getTextScale());
                 BusProvider.get().post(new FontSizeChangeEvent());
@@ -70,9 +80,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment impl
     public boolean onPreferenceClick(Preference preference) {
         switch (preference.getKey()) {
             case PREF_KEY_DOWNLOADS:
-                Intent intent = new Intent(getActivity(), SettingsActivity.class);
-                intent.putExtra(SettingsActivity.ARG_SHOULD_SHOW_DOWNLOAD_SETTINGS, true);
-                startActivity(intent);
+                SettingsActivity.startDownloadSettingsActivity(preference.getContext());
 
                 break;
         }
