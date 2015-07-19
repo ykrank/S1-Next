@@ -22,7 +22,7 @@ public final class LoginPromptDialogFragment extends DialogFragment {
     /**
      * Show {@link LoginPromptDialogFragment} if user hasn't logged in.
      *
-     * @return whether need to show dialog
+     * @return {@code true} if we need to show dialog, {@code false} otherwise.
      */
     public static boolean showLoginPromptDialogIfNeed(FragmentActivity fragmentActivity, User user) {
         if (!user.isLogged()) {
