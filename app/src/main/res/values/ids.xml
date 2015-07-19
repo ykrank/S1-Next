@@ -3,6 +3,7 @@
 
     <item name="glide_tag" type="id" />
 
+    <item name="drawer_runnable_tag" type="id" />
     <item name="drawable_callback_tag" type="id" />
     <item name="post_tag" type="id" />
     <item name="emoticon_entity_tag" type="id" />

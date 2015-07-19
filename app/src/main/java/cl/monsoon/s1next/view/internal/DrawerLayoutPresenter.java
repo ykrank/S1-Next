@@ -2,14 +2,15 @@ package cl.monsoon.s1next.view.internal;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.CallSuper;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
+import android.view.View;
 
 import cl.monsoon.s1next.R;
 
@@ -17,11 +18,6 @@ import cl.monsoon.s1next.R;
  * A helper class warps drawer.
  */
 public abstract class DrawerLayoutPresenter {
-
-    /**
-     * Same to {@link android.support.v4.widget.ViewDragHelper#BASE_SETTLE_DURATION}.
-     */
-    private static final int DRAWER_SETTLE_DURATION = 256;
 
     final FragmentActivity mFragmentActivity;
 
@@ -75,7 +71,23 @@ public abstract class DrawerLayoutPresenter {
 
     private void setupNavDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(mFragmentActivity, mDrawerLayout,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+
+            /**
+             * @see DrawerLayoutPresenter#closeDrawer(Runnable)
+             */
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+
+                Object tag = drawerView.getTag(R.id.drawer_runnable_tag);
+                if (tag != null) {
+                    Runnable runnable = (Runnable) tag;
+                    drawerView.setTag(R.id.drawer_runnable_tag, null);
+                    runnable.run();
+                }
+            }
+        };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(mDrawerIndicatorEnabled);
 
@@ -85,11 +97,11 @@ public abstract class DrawerLayoutPresenter {
     /**
      * Close the drawer view.
      *
-     * @param runnable execute this after drawer view closing.
+     * @param runnable Execute this during the {@link ActionBarDrawerToggle#onDrawerClosed(View)}.
      */
-    final void closeDrawer(Runnable runnable) {
+    final void closeDrawer(@Nullable Runnable runnable) {
+        mNavigationView.setTag(R.id.drawer_runnable_tag, runnable);
         mDrawerLayout.closeDrawer(GravityCompat.START);
-        new Handler().postDelayed(runnable::run, DRAWER_SETTLE_DURATION);
     }
 
     protected abstract void setupNavDrawerItem(DrawerLayout drawerLayout, NavigationView navigationView);
