@@ -96,7 +96,10 @@ public final class OpenSourceLicensesFragment extends PreferenceFragment {
                 {"Javax.annotation API", "CDDL+GPL"},
                 {"OkHttp", "APACHE_LICENSE"},
                 {"Otto", "OTTO"},
-                {"Retrolambda", "APACHE_LICENSE"}
+                {"Retrofit", "RETROFIT"},
+                {"Retrolambda", "APACHE_LICENSE"},
+                {"RxAndroid", "APACHE_LICENSE"},
+                {"RxJava", "RXJAVA"}
         };
     }
 
