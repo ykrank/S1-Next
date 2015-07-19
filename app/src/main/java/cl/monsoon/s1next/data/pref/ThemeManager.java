@@ -59,13 +59,7 @@ public final class ThemeManager {
         public Theme get() {
             Theme theme = Theme.VALUES.get(Integer.parseInt(
                     mGeneralPreferencesProvider.getThemeString()));
-
-            // get current theme's accent color
-            TypedArray typedArray = mContext.obtainStyledAttributes(theme.style,
-                    new int[]{R.attr.colorAccent});
-            mColorAccent = typedArray.getColor(0, -1);
-            typedArray.recycle();
-            Preconditions.checkState(mColorAccent != -1);
+            invalidateAccentColor(theme);
 
             return theme;
         }
@@ -109,7 +103,9 @@ public final class ThemeManager {
     }
 
     public void setThemeByIndex(int i) {
-        mThemeMemorized = Suppliers.ofInstance(Theme.VALUES.get(i));
+        Theme theme = Theme.VALUES.get(i);
+        mThemeMemorized = Suppliers.ofInstance(theme);
+        invalidateAccentColor(theme);
     }
 
     public boolean isDefaultTheme() {
@@ -122,6 +118,18 @@ public final class ThemeManager {
         return theme == Theme.DARK_THEME
                 || theme == Theme.DARK_THEME_IMPERFECT
                 || theme == Theme.DARK_THEME_IMPERFECT_BLACK;
+    }
+
+    /**
+     * Used for invalidating the accent color if theme changes.
+     */
+    private void invalidateAccentColor(Theme theme) {
+        // get current theme's accent color
+        TypedArray typedArray = mContext.obtainStyledAttributes(theme.style,
+                new int[]{R.attr.colorAccent});
+        mColorAccent = typedArray.getColor(0, -1);
+        typedArray.recycle();
+        Preconditions.checkState(mColorAccent != -1);
     }
 
     @ColorInt
