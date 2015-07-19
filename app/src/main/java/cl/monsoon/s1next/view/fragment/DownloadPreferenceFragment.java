@@ -1,6 +1,5 @@
 package cl.monsoon.s1next.view.fragment;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -24,15 +23,11 @@ public final class DownloadPreferenceFragment extends BasePreferenceFragment {
     private DownloadPreferencesManager mDownloadPreferencesManager;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mDownloadPreferencesManager = App.getAppComponent(activity).getDownloadPreferencesManager();
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preference_download);
+        mDownloadPreferencesManager = App.getAppComponent(getActivity())
+                .getDownloadPreferencesManager();
     }
 
     @Override

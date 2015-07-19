@@ -21,24 +21,18 @@ public final class ThemeChangeDialogFragment extends DialogFragment {
 
     private static final String TAG = ThemeChangeDialogFragment.class.getName();
 
-    private ThemeManager mThemeManager;
-
     public static void showThemeChangeDialog(FragmentActivity fragmentActivity) {
         new ThemeChangeDialogFragment().show(fragmentActivity.getSupportFragmentManager(),
                 ThemeChangeDialogFragment.TAG);
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mThemeManager = App.getAppComponent(activity).getThemeManager();
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        int checkedItem = mThemeManager.getThemeIndex();
-        return new AlertDialog.Builder(getActivity())
+        Activity activity = getActivity();
+        ThemeManager themeManager = App.getAppComponent(activity).getThemeManager();
+        int checkedItem = themeManager.getThemeIndex();
+        return new AlertDialog.Builder(activity)
                 .setTitle(R.string.pref_theme)
                 .setSingleChoiceItems(
                         R.array.pref_theme_entries,
@@ -46,8 +40,8 @@ public final class ThemeChangeDialogFragment extends DialogFragment {
                         (dialog, which) -> {
                             // won't change theme if unchanged
                             if (which != checkedItem) {
-                                mThemeManager.applyTheme(which);
-                                mThemeManager.setThemeByIndex(which);
+                                themeManager.applyTheme(which);
+                                themeManager.setThemeByIndex(which);
 
                                 BusProvider.get().post(new ThemeChangeEvent());
                             }

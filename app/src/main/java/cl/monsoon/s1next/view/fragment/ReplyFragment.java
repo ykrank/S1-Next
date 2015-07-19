@@ -1,7 +1,6 @@
 package cl.monsoon.s1next.view.fragment;
 
 import android.animation.Animator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -107,12 +106,6 @@ public final class ReplyFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mGeneralPreferencesManager = App.getAppComponent(activity).getGeneralPreferencesManager();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_reply, container, false);
     }
@@ -120,6 +113,7 @@ public final class ReplyFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mGeneralPreferencesManager = App.getAppComponent(getActivity()).getGeneralPreferencesManager();
 
         mThreadId = getArguments().getString(ARG_THREAD_ID);
         mQuotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
