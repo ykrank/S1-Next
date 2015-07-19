@@ -12,13 +12,12 @@ import android.support.v4.content.Loader;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import cl.monsoon.s1next.data.api.model.Extractable;
 import cl.monsoon.s1next.widget.AsyncResult;
 
 /**
  * Wraps {@link cl.monsoon.s1next.widget.HttpPostLoader}and {@link android.support.v4.app.DialogFragment}.
  */
-public abstract class LoaderDialogFragment<D extends Extractable>
+public abstract class LoaderDialogFragment<D>
         extends DialogFragment
         implements LoaderManager.LoaderCallbacks<AsyncResult<D>> {
 

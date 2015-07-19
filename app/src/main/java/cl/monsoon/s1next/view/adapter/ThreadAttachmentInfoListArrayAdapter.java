@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import cl.monsoon.s1next.data.api.model.list.Posts;
+import cl.monsoon.s1next.data.api.model.collection.Posts;
 
 public final class ThreadAttachmentInfoListArrayAdapter extends ArrayAdapter<Posts.ThreadAttachment.Info> {
 

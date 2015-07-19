@@ -157,18 +157,18 @@ public final class PostListGatewayActivity extends FragmentActivity {
 
     private static class ThreadAnalysis implements Parcelable {
 
-        public static final Parcelable.Creator<ThreadAnalysis> CREATOR =
-                new Parcelable.Creator<ThreadAnalysis>() {
-                    @Override
-                    public ThreadAnalysis createFromParcel(Parcel source) {
-                        return new ThreadAnalysis(source);
-                    }
+        public static final Parcelable.Creator<ThreadAnalysis> CREATOR = new Parcelable.Creator<ThreadAnalysis>() {
 
-                    @Override
-                    public ThreadAnalysis[] newArray(int size) {
-                        return new ThreadAnalysis[size];
-                    }
-                };
+            @Override
+            public ThreadAnalysis createFromParcel(Parcel source) {
+                return new ThreadAnalysis(source);
+            }
+
+            @Override
+            public ThreadAnalysis[] newArray(int size) {
+                return new ThreadAnalysis[size];
+            }
+        };
 
         private final String threadId;
         private final int jumpPage;

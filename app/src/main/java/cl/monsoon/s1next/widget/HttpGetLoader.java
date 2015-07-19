@@ -12,7 +12,6 @@ import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.io.InputStream;
 
-import cl.monsoon.s1next.data.api.model.Extractable;
 import cl.monsoon.s1next.singleton.ObjectExtractor;
 import cl.monsoon.s1next.singleton.OkHttpClientProvider;
 import cl.monsoon.s1next.util.ServerException;
@@ -26,7 +25,7 @@ import cl.monsoon.s1next.util.ServerException;
  * @param <D> the data type which could be extracted into POJO.
  * @see android.content.AsyncTaskLoader
  */
-public class HttpGetLoader<D extends Extractable> extends AsyncTaskLoader<AsyncResult<D>> {
+public class HttpGetLoader<D> extends AsyncTaskLoader<AsyncResult<D>> {
 
     final String mUrl;
 

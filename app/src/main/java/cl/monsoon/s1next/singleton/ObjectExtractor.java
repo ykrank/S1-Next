@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import cl.monsoon.s1next.data.api.model.Extractable;
 import cl.monsoon.s1next.data.api.model.Quote;
 import cl.monsoon.s1next.util.ServerException;
 
@@ -31,7 +30,7 @@ public enum ObjectExtractor {
      * @throws IOException if an I/O error occurs
      */
     @SuppressWarnings("unchecked")
-    public static <D extends Extractable> D extract(InputStream in, Class<D> toValueType) throws IOException {
+    public static <D> D extract(InputStream in, Class<D> toValueType) throws IOException {
         if (toValueType.isAssignableFrom(Quote.class)) {
             return (D) parseQuote(in);
         } else {
@@ -47,7 +46,7 @@ public enum ObjectExtractor {
         }
     }
 
-    private static <D extends Extractable> D readValue(InputStream in, Class<D> toValueType) throws IOException {
+    private static <D> D readValue(InputStream in, Class<D> toValueType) throws IOException {
         try {
             return INSTANCE.mObjectMapper.readValue(in, toValueType);
         } catch (JsonParseException | JsonMappingException e) {

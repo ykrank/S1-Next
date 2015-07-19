@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.data.api.model.Extractable;
 import cl.monsoon.s1next.view.fragment.headless.DataRetainedFragment;
 import cl.monsoon.s1next.widget.AsyncResult;
 
@@ -24,7 +23,7 @@ import cl.monsoon.s1next.widget.AsyncResult;
  * if used in {@link android.support.v4.view.ViewPager}
  * otherwise we would lost {@link #mDataRetainedFragment} and cause memory leak.
  */
-public abstract class BaseFragment<D extends Extractable> extends Fragment
+public abstract class BaseFragment<D> extends Fragment
         implements SwipeRefreshLayout.OnRefreshListener,
         LoaderManager.LoaderCallbacks<AsyncResult<D>> {
 

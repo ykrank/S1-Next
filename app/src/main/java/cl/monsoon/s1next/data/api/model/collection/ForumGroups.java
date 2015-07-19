@@ -1,4 +1,4 @@
-package cl.monsoon.s1next.data.api.model.list;
+package cl.monsoon.s1next.data.api.model.collection;
 
 import android.util.SparseArray;
 
@@ -13,40 +13,8 @@ import java.util.List;
 
 import cl.monsoon.s1next.data.api.model.Account;
 import cl.monsoon.s1next.data.api.model.Forum;
-import cl.monsoon.s1next.data.api.model.ForumGroup;
+import cl.monsoon.s1next.data.api.model.ForumCategoryByIds;
 
-/**
- * {@link #forumList}:
- * <pre>
- * 游戏论坛
- * 手游页游
- * 动漫论坛
- * …
- * </pre>
- * <p>
- * {@link #forumGroupNameList}:
- * <pre>
- * 主论坛
- * 主题公园
- * 子论坛
- * </pre>
- * <p>
- * {@link #forumGroupList}:
- * <pre>
- * 主论坛
- *   热血魔兽
- *   DOTA
- *   …
- * 主论坛
- *   游戏论坛
- *   手游页游
- *   …
- * 主题公园
- *   任天堂专区
- *   异度传说
- *   …
- * </pre>
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class ForumGroups extends Account {
 
@@ -57,7 +25,7 @@ public final class ForumGroups extends Account {
     private final List<String> forumGroupNameList;
 
     @JsonIgnore
-    private final List<ForumGroup> forumGroupList;
+    private final List<List<Forum>> forumGroupList;
 
     /**
      * Sorts Forums by {@link Forum#getTodayPosts()} desc
@@ -65,9 +33,9 @@ public final class ForumGroups extends Account {
      */
     @JsonCreator
     @SuppressWarnings("UnusedDeclaration")
-    public ForumGroups(@JsonProperty("catlist") List<ForumGroup> forumGroupList,
+    public ForumGroups(@JsonProperty("catlist") List<ForumCategoryByIds> forumGroupByIdsList,
                        @JsonProperty("forumlist") List<Forum> forumList) {
-        // sort forum list by today's post in reverse ordering
+        // sort forum list by today's post count in descending order
         Collections.sort(forumList, (lhs, rhs) -> -(lhs.getTodayPosts() - rhs.getTodayPosts()));
         this.forumList = forumList;
 
@@ -76,18 +44,17 @@ public final class ForumGroups extends Account {
             forumSparseArray.put(Integer.parseInt(forum.getId()), forum);
         }
 
-        this.forumGroupNameList = new ArrayList<>(forumGroupList.size());
-        for (ForumGroup forumGroup : forumGroupList) {
-            this.forumGroupNameList.add(forumGroup.getName());
+        this.forumGroupNameList = new ArrayList<>(forumGroupByIdsList.size());
+        this.forumGroupList = new ArrayList<>();
+        for (ForumCategoryByIds forumCategoryByIds : forumGroupByIdsList) {
+            this.forumGroupNameList.add(forumCategoryByIds.getName());
 
-            List<Forum> forumOfGroupList = new ArrayList<>(forumGroup.getForumIds().size());
-            for (Integer id : forumGroup.getForumIds()) {
-                forumOfGroupList.add(forumSparseArray.get(id));
+            List<Forum> oneCategoryForumList = new ArrayList<>(forumCategoryByIds.getForumIds().size());
+            for (Integer id : forumCategoryByIds.getForumIds()) {
+                oneCategoryForumList.add(forumSparseArray.get(id));
             }
-            forumGroup.setForumList(forumOfGroupList);
+            forumGroupList.add(oneCategoryForumList);
         }
-
-        this.forumGroupList = forumGroupList;
     }
 
     public List<Forum> getForumList() {
@@ -98,7 +65,7 @@ public final class ForumGroups extends Account {
         return forumGroupNameList;
     }
 
-    public List<ForumGroup> getForumGroupList() {
+    public List<List<Forum>> getForumGroupList() {
         return forumGroupList;
     }
 }

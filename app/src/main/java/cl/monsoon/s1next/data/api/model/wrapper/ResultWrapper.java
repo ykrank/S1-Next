@@ -1,28 +1,20 @@
-package cl.monsoon.s1next.data.api.model.mapper;
+package cl.monsoon.s1next.data.api.model.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import cl.monsoon.s1next.data.api.model.Account;
 import cl.monsoon.s1next.data.api.model.Result;
-import cl.monsoon.s1next.data.api.model.list.Favourites;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class FavouritesWrapper implements Deserializable {
-
-    @JsonProperty("Variables")
-    private Favourites favourites;
+public final class ResultWrapper {
 
     @JsonProperty("Message")
     private Result result;
 
-    public Favourites getFavourites() {
-        return favourites;
-    }
-
-    public void setFavourites(Favourites favourites) {
-        this.favourites = favourites;
-    }
+    @JsonProperty("Variables")
+    private Account account;
 
     public Result getResult() {
         return result;
@@ -30,5 +22,13 @@ public final class FavouritesWrapper implements Deserializable {
 
     public void setResult(Result result) {
         this.result = result;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

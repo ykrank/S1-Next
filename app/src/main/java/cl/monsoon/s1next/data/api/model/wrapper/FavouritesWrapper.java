@@ -1,27 +1,27 @@
-package cl.monsoon.s1next.data.api.model.mapper;
+package cl.monsoon.s1next.data.api.model.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cl.monsoon.s1next.data.api.model.Result;
-import cl.monsoon.s1next.data.api.model.list.Posts;
+import cl.monsoon.s1next.data.api.model.collection.Favourites;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class PostsWrapper implements Deserializable {
+public final class FavouritesWrapper {
 
     @JsonProperty("Variables")
-    private Posts posts;
+    private Favourites favourites;
 
     @JsonProperty("Message")
     private Result result;
 
-    public Posts getPosts() {
-        return posts;
+    public Favourites getFavourites() {
+        return favourites;
     }
 
-    public void setPosts(Posts posts) {
-        this.posts = posts;
+    public void setFavourites(Favourites favourites) {
+        this.favourites = favourites;
     }
 
     public Result getResult() {

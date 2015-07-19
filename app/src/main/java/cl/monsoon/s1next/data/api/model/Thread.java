@@ -15,18 +15,18 @@ import org.apache.commons.lang3.StringEscapeUtils;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class Thread implements Parcelable {
 
-    public static final Parcelable.Creator<Thread> CREATOR =
-            new Parcelable.Creator<Thread>() {
-                @Override
-                public Thread createFromParcel(Parcel source) {
-                    return new Thread(source);
-                }
+    public static final Parcelable.Creator<Thread> CREATOR = new Parcelable.Creator<Thread>() {
 
-                @Override
-                public Thread[] newArray(int i) {
-                    return new Thread[i];
-                }
-            };
+        @Override
+        public Thread createFromParcel(Parcel source) {
+            return new Thread(source);
+        }
+
+        @Override
+        public Thread[] newArray(int i) {
+            return new Thread[i];
+        }
+    };
 
     @JsonProperty("tid")
     private String id;

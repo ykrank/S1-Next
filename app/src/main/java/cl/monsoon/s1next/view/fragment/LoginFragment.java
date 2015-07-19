@@ -21,7 +21,7 @@ import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Result;
-import cl.monsoon.s1next.data.api.model.mapper.ResultWrapper;
+import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.widget.AsyncResult;

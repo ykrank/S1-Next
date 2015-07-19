@@ -11,20 +11,20 @@ import java.util.regex.Pattern;
 
 import cl.monsoon.s1next.util.ServerException;
 
-public final class Quote implements Extractable, Parcelable {
+public final class Quote implements Parcelable {
 
-    public static final Parcelable.Creator<Quote> CREATOR =
-            new Parcelable.Creator<Quote>() {
-                @Override
-                public Quote createFromParcel(Parcel source) {
-                    return new Quote(source);
-                }
+    public static final Parcelable.Creator<Quote> CREATOR = new Parcelable.Creator<Quote>() {
 
-                @Override
-                public Quote[] newArray(int size) {
-                    return new Quote[size];
-                }
-            };
+        @Override
+        public Quote createFromParcel(Parcel source) {
+            return new Quote(source);
+        }
+
+        @Override
+        public Quote[] newArray(int size) {
+            return new Quote[size];
+        }
+    };
 
     /**
      * The quoted user identification which was encoded in server.
@@ -64,9 +64,9 @@ public final class Quote implements Extractable, Parcelable {
     }
 
     /**
-     * Extracts XML string into POJO.
+     * Extracts XML string into {@link Quote} POJO.
      *
-     * @throws cl.monsoon.s1next.util.ServerException if XML parsing error occurs
+     * @throws ServerException if XML parsing error occurs.
      */
     public static Quote fromXmlString(String xmlString) throws ServerException {
         // example: <input type="hidden" name="noticeauthor" value="d755gUR1jP9eeoTPkiOyz3FxvLzpFLJsSFvJA8uAfBg" />

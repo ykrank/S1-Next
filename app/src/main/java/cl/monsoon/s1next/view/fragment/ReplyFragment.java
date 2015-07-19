@@ -39,7 +39,7 @@ import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Quote;
 import cl.monsoon.s1next.data.api.model.Result;
-import cl.monsoon.s1next.data.api.model.mapper.ResultWrapper;
+import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
 import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
 import cl.monsoon.s1next.event.EmoticonClickEvent;
 import cl.monsoon.s1next.singleton.BusProvider;

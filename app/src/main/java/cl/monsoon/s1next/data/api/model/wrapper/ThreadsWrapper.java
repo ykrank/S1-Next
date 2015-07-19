@@ -1,20 +1,28 @@
-package cl.monsoon.s1next.data.api.model.mapper;
+package cl.monsoon.s1next.data.api.model.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import cl.monsoon.s1next.data.api.model.Account;
 import cl.monsoon.s1next.data.api.model.Result;
+import cl.monsoon.s1next.data.api.model.collection.Threads;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class ResultWrapper implements Deserializable {
+public final class ThreadsWrapper {
+
+    @JsonProperty("Variables")
+    private Threads threads;
 
     @JsonProperty("Message")
     private Result result;
 
-    @JsonProperty("Variables")
-    private Account account;
+    public Threads getThreads() {
+        return threads;
+    }
+
+    public void setThreads(Threads threads) {
+        this.threads = threads;
+    }
 
     public Result getResult() {
         return result;
@@ -22,13 +30,5 @@ public final class ResultWrapper implements Deserializable {
 
     public void setResult(Result result) {
         this.result = result;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
     }
 }

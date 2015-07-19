@@ -19,6 +19,7 @@ package cl.monsoon.s1next.widget;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Base64;
 
 import java.net.CookieStore;
@@ -266,6 +267,63 @@ public final class PersistentHttpCookieStore implements CookieStore {
         parcel.unmarshall(bytes, 0, bytes.length);
         parcel.setDataPosition(0);
 
-        return HttpCookieParcelable.CREATOR.createFromParcel(parcel).getHttpCookie();
+        return HttpCookieParcelable.CREATOR.createFromParcel(parcel).httpCookie;
+    }
+
+    private static class HttpCookieParcelable implements Parcelable {
+
+        private static final Creator<HttpCookieParcelable> CREATOR = new Creator<HttpCookieParcelable>() {
+
+            @Override
+            public HttpCookieParcelable createFromParcel(Parcel source) {
+                return new HttpCookieParcelable(source);
+            }
+
+            @Override
+            public HttpCookieParcelable[] newArray(int i) {
+                return new HttpCookieParcelable[i];
+            }
+        };
+
+        private final HttpCookie httpCookie;
+
+        private HttpCookieParcelable(HttpCookie httpCookie) {
+            this.httpCookie = httpCookie;
+        }
+
+        private HttpCookieParcelable(Parcel source) {
+            String name = source.readString();
+            String value = source.readString();
+            httpCookie = new HttpCookie(name, value);
+            httpCookie.setComment(source.readString());
+            httpCookie.setCommentURL(source.readString());
+            httpCookie.setDiscard(source.readByte() != 0);
+            httpCookie.setDomain(source.readString());
+            httpCookie.setMaxAge(source.readLong());
+            httpCookie.setPath(source.readString());
+            httpCookie.setPortlist(source.readString());
+            httpCookie.setSecure(source.readByte() != 0);
+            httpCookie.setVersion(source.readInt());
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(httpCookie.getName());
+            dest.writeString(httpCookie.getValue());
+            dest.writeString(httpCookie.getComment());
+            dest.writeString(httpCookie.getCommentURL());
+            dest.writeByte((byte) (httpCookie.getDiscard() ? 1 : 0));
+            dest.writeString(httpCookie.getDomain());
+            dest.writeLong(httpCookie.getMaxAge());
+            dest.writeString(httpCookie.getPath());
+            dest.writeString(httpCookie.getPortlist());
+            dest.writeByte((byte) (httpCookie.getSecure() ? 1 : 0));
+            dest.writeInt(httpCookie.getVersion());
+        }
     }
 }

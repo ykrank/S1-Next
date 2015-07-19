@@ -1,27 +1,27 @@
-package cl.monsoon.s1next.data.api.model.mapper;
+package cl.monsoon.s1next.data.api.model.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cl.monsoon.s1next.data.api.model.Result;
-import cl.monsoon.s1next.data.api.model.list.Threads;
+import cl.monsoon.s1next.data.api.model.collection.Posts;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class ThreadsWrapper implements Deserializable {
+public final class PostsWrapper {
 
     @JsonProperty("Variables")
-    private Threads threads;
+    private Posts posts;
 
     @JsonProperty("Message")
     private Result result;
 
-    public Threads getThreads() {
-        return threads;
+    public Posts getPosts() {
+        return posts;
     }
 
-    public void setThreads(Threads threads) {
-        this.threads = threads;
+    public void setPosts(Posts posts) {
+        this.posts = posts;
     }
 
     public Result getResult() {

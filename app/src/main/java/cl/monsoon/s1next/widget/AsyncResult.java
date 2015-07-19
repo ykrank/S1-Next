@@ -5,7 +5,6 @@ import android.support.annotation.StringRes;
 import java.io.IOException;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.data.api.model.Extractable;
 import cl.monsoon.s1next.util.ServerException;
 
 /**
@@ -13,7 +12,7 @@ import cl.monsoon.s1next.util.ServerException;
  *
  * @param <D> the data type which can be be extracted to POJO.
  */
-public final class AsyncResult<D extends Extractable> {
+public final class AsyncResult<D> {
 
     public D data;
 

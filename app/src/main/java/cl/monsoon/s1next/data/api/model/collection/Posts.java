@@ -1,4 +1,4 @@
-package cl.monsoon.s1next.data.api.model.list;
+package cl.monsoon.s1next.data.api.model.collection;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -18,19 +18,12 @@ import cl.monsoon.s1next.data.api.model.Post;
 import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.util.StringUtil;
 
-/**
- * {@link #postList}:
- * <pre>
- * 回复1
- * 回复2
- * </pre>
- */
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class Posts extends Account {
 
     @JsonProperty("thread")
-    private Thread postListInfo;
+    private cl.monsoon.s1next.data.api.model.Thread postListInfo;
 
     @JsonProperty("threadsortshow")
     private ThreadAttachment threadAttachment;
@@ -90,6 +83,19 @@ public final class Posts extends Account {
         @JsonIgnoreProperties(ignoreUnknown = true)
         public static class Info implements Parcelable {
 
+            public static final Parcelable.Creator<Info> CREATOR = new Parcelable.Creator<Info>() {
+
+                @Override
+                public Info createFromParcel(Parcel source) {
+                    return new Info(source);
+                }
+
+                @Override
+                public Info[] newArray(int size) {
+                    return new Info[size];
+                }
+            };
+
             @JsonIgnore
             private final String label;
 
@@ -110,19 +116,6 @@ public final class Posts extends Account {
                 label = source.readString();
                 value = source.readString();
             }
-
-            public static final Parcelable.Creator<Info> CREATOR =
-                    new Parcelable.Creator<Info>() {
-                        @Override
-                        public Info createFromParcel(Parcel source) {
-                            return new Info(source);
-                        }
-
-                        @Override
-                        public Info[] newArray(int size) {
-                            return new Info[size];
-                        }
-                    };
 
             public String getLabel() {
                 return label;

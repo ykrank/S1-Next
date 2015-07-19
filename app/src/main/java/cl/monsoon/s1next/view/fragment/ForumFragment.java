@@ -18,8 +18,8 @@ import android.widget.Toast;
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Forum;
-import cl.monsoon.s1next.data.api.model.list.ForumGroups;
-import cl.monsoon.s1next.data.api.model.mapper.ForumGroupsWrapper;
+import cl.monsoon.s1next.data.api.model.collection.ForumGroups;
+import cl.monsoon.s1next.data.api.model.wrapper.ForumGroupsWrapper;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.activity.ThreadListActivity;
@@ -147,8 +147,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
         } else {
             // the first position is "全部"
             // so position - 1 to correspond its group
-            mRecyclerAdapter.setDataSet(mForumGroups.getForumGroupList().get(position - 1)
-                    .getForumList());
+            mRecyclerAdapter.setDataSet(mForumGroups.getForumGroupList().get(position - 1));
         }
         mRecyclerAdapter.notifyDataSetChanged();
     }

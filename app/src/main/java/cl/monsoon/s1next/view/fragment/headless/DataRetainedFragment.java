@@ -3,14 +3,12 @@ package cl.monsoon.s1next.view.fragment.headless;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import cl.monsoon.s1next.data.api.model.Extractable;
-
 /**
  * Used to retain data when configuration change.
  *
  * @param <D> the data type which could be extracted to POJO.
  */
-public class DataRetainedFragment<D extends Extractable> extends Fragment {
+public class DataRetainedFragment<D> extends Fragment {
 
     public static final String TAG = DataRetainedFragment.class.getName();
 

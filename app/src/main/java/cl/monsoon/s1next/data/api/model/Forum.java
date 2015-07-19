@@ -12,18 +12,18 @@ import org.apache.commons.lang3.StringEscapeUtils;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class Forum implements Parcelable {
 
-    public static final Parcelable.Creator<Forum> CREATOR =
-            new Parcelable.Creator<Forum>() {
-                @Override
-                public Forum createFromParcel(Parcel source) {
-                    return new Forum(source);
-                }
+    public static final Parcelable.Creator<Forum> CREATOR = new Parcelable.Creator<Forum>() {
 
-                @Override
-                public Forum[] newArray(int i) {
-                    return new Forum[i];
-                }
-            };
+        @Override
+        public Forum createFromParcel(Parcel source) {
+            return new Forum(source);
+        }
+
+        @Override
+        public Forum[] newArray(int i) {
+            return new Forum[i];
+        }
+    };
 
     @JsonProperty("fid")
     private String id;

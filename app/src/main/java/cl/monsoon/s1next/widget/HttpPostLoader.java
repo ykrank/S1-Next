@@ -9,7 +9,6 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.io.InputStream;
 
-import cl.monsoon.s1next.data.api.model.Extractable;
 import cl.monsoon.s1next.singleton.OkHttpClientProvider;
 import cl.monsoon.s1next.util.ServerException;
 
@@ -18,7 +17,7 @@ import cl.monsoon.s1next.util.ServerException;
  *
  * @see HttpGetLoader
  */
-public final class HttpPostLoader<D extends Extractable> extends HttpGetLoader<D> {
+public final class HttpPostLoader<D> extends HttpGetLoader<D> {
 
     private final RequestBody mRequestBody;
 
