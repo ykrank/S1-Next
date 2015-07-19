@@ -26,8 +26,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.squareup.otto.Subscribe;
-
 import javax.inject.Inject;
 
 import cl.monsoon.s1next.Api;
@@ -38,9 +36,8 @@ import cl.monsoon.s1next.data.Wifi;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.collection.Posts;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
+import cl.monsoon.s1next.data.event.QuoteEvent;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
-import cl.monsoon.s1next.event.QuoteEvent;
-import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
 import cl.monsoon.s1next.util.StringUtil;
@@ -52,9 +49,11 @@ import cl.monsoon.s1next.view.fragment.LoaderDialogFragment;
 import cl.monsoon.s1next.view.fragment.PageTurningDialogFragment;
 import cl.monsoon.s1next.view.fragment.PostListPagerFragment;
 import cl.monsoon.s1next.widget.AsyncResult;
+import cl.monsoon.s1next.widget.EventBus;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.HttpPostLoader;
+import rx.Subscription;
 
 /**
  * An Activity which includes {@link android.support.v4.view.ViewPager}
@@ -72,6 +71,9 @@ public final class PostListActivity extends BaseActivity
      */
     public static final String ARG_JUMP_PAGE = "jump_page";
     public static final String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
+
+    @Inject
+    EventBus mEventBus;
 
     @Inject
     DownloadPreferencesManager mDownloadPreferencesManager;
@@ -97,6 +99,8 @@ public final class PostListActivity extends BaseActivity
     private MenuItem mMenuPageTurning;
 
     private BroadcastReceiver mWifiReceiver;
+
+    private Subscription mEventBusSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,7 +179,12 @@ public final class PostListActivity extends BaseActivity
             registerReceiver(mWifiReceiver, intentFilter);
         }
 
-        BusProvider.get().register(this);
+        mEventBusSubscription = mEventBus.get().subscribe(o -> {
+            if (o instanceof QuoteEvent) {
+                QuoteEvent quoteEvent = (QuoteEvent) o;
+                startReplyActivity(quoteEvent.getQuotePostId(), quoteEvent.getQuotePostCount());
+            }
+        });
     }
 
     @Override
@@ -187,13 +196,7 @@ public final class PostListActivity extends BaseActivity
             mWifiReceiver = null;
         }
 
-        BusProvider.get().unregister(this);
-    }
-
-    @Subscribe
-    @SuppressWarnings("unused")
-    public void quote(QuoteEvent event) {
-        startReplyActivity(event.getQuotePostId(), event.getQuotePostCount());
+        mEventBusSubscription.unsubscribe();
     }
 
     private void updateTitleWithPage() {

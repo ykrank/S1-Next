@@ -9,14 +9,14 @@ import javax.inject.Inject;
 
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.data.event.FontSizeChangeEvent;
+import cl.monsoon.s1next.data.event.ThemeChangeEvent;
 import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
-import cl.monsoon.s1next.event.FontSizeChangeEvent;
-import cl.monsoon.s1next.event.ThemeChangeEvent;
-import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.util.DeviceUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.view.activity.SettingsActivity;
+import cl.monsoon.s1next.widget.EventBus;
 
 /**
  * An Activity includes general settings that allow users
@@ -31,6 +31,9 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
     public static final String PREF_KEY_SIGNATURE = "pref_key_signature";
 
     private static final String PREF_KEY_DOWNLOADS = "pref_key_downloads";
+
+    @Inject
+    EventBus mEventBus;
 
     @Inject
     GeneralPreferencesManager mGeneralPreferencesManager;
@@ -54,7 +57,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
         switch (key) {
             case PREF_KEY_THEME:
                 mThemeManager.invalidateTheme();
-                BusProvider.get().post(new ThemeChangeEvent());
+                mEventBus.post(new ThemeChangeEvent());
 
                 break;
             case PREF_KEY_FONT_SIZE:
@@ -62,7 +65,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
                 // change scaling factor for fonts
                 ResourceUtil.setScaledDensity(getResources(),
                         mGeneralPreferencesManager.getTextScale());
-                BusProvider.get().post(new FontSizeChangeEvent());
+                mEventBus.post(new FontSizeChangeEvent());
 
                 break;
             case PREF_KEY_SIGNATURE:

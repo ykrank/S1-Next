@@ -26,9 +26,8 @@ import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Post;
+import cl.monsoon.s1next.data.event.QuoteEvent;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
-import cl.monsoon.s1next.event.QuoteEvent;
-import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.widget.CustomMovementMethod;
 import cl.monsoon.s1next.widget.GlideImageGetter;
 import cl.monsoon.s1next.widget.TagHandler;
@@ -231,7 +230,8 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
         @Override
         public void onClick(View widget) {
             Post post = (Post) widget.getTag(R.id.post_tag);
-            BusProvider.get().post(new QuoteEvent(post.getId(), post.getCount()));
+            App.getAppComponent(widget.getContext()).getEventBus().post(new QuoteEvent(post.getId(),
+                    post.getCount()));
         }
     };
 

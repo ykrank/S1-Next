@@ -14,21 +14,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.squareup.otto.Subscribe;
-
 import javax.inject.Inject;
 
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.User;
+import cl.monsoon.s1next.data.event.FontSizeChangeEvent;
+import cl.monsoon.s1next.data.event.ThemeChangeEvent;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
-import cl.monsoon.s1next.event.FontSizeChangeEvent;
-import cl.monsoon.s1next.event.ThemeChangeEvent;
-import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.view.internal.DrawerLayoutPresenter;
 import cl.monsoon.s1next.view.internal.DrawerLayoutPresenterConcrete;
 import cl.monsoon.s1next.view.internal.ToolbarPresenter;
+import cl.monsoon.s1next.widget.EventBus;
+import rx.Subscription;
 
 /**
  * A base Activity which includes the Toolbar
@@ -36,6 +35,9 @@ import cl.monsoon.s1next.view.internal.ToolbarPresenter;
  * Also changes theme depends on settings.
  */
 public abstract class BaseActivity extends AppCompatActivity {
+
+    @Inject
+    EventBus mEventBus;
 
     @Inject
     DownloadPreferencesManager mDownloadPreferencesManager;
@@ -51,7 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private DrawerLayoutPresenter mDrawerLayoutPresenter;
     private boolean mDrawerIndicatorEnabled = true;
 
-    private Object mEvents;
+    private Subscription mEventBusSubscription;
 
     @Override
     @CallSuper
@@ -64,29 +66,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        // https://github.com/square/otto/issues/26
-        mEvents = new Object() {
-
-            /**
-             * Recreate this Activity when theme changes.
-             */
-            @Subscribe
-            @SuppressWarnings("unused")
-            public void changeTheme(ThemeChangeEvent event) {
+        mEventBusSubscription = mEventBus.get().subscribe(o -> {
+            // recreate this Activity when theme or font size changes
+            if (o instanceof ThemeChangeEvent || o instanceof FontSizeChangeEvent) {
                 recreate();
             }
-
-            /**
-             * Recreate this Activity when font size changes.
-             */
-            @Subscribe
-            @SuppressWarnings("unused")
-            public void changeFontSize(FontSizeChangeEvent event) {
-                recreate();
-            }
-        };
-
-        BusProvider.get().register(mEvents);
+        });
     }
 
     @Override
@@ -116,7 +101,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        BusProvider.get().unregister(mEvents);
+        mEventBusSubscription.unsubscribe();
     }
 
     @Override

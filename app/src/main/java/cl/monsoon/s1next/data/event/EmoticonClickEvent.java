@@ -1,4 +1,4 @@
-package cl.monsoon.s1next.event;
+package cl.monsoon.s1next.data.event;
 
 public final class EmoticonClickEvent {
 

@@ -15,6 +15,7 @@ import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
 import cl.monsoon.s1next.data.pref.GeneralPreferencesRepository;
 import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.viewmodel.UserViewModel;
+import cl.monsoon.s1next.widget.EventBus;
 import dagger.Module;
 import dagger.Provides;
 
@@ -28,6 +29,12 @@ final class AppModule {
 
     public AppModule(Application application) {
         this.mApplication = application;
+    }
+
+    @Provides
+    @Singleton
+    EventBus providerEventBus() {
+        return new EventBus();
     }
 
     @Provides

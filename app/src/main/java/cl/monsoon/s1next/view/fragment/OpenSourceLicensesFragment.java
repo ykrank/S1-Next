@@ -95,7 +95,6 @@ public final class OpenSourceLicensesFragment extends PreferenceFragment {
                 {"Jackson databind", "APACHE_LICENSE"},
                 {"Javax.annotation API", "CDDL+GPL"},
                 {"OkHttp", "APACHE_LICENSE"},
-                {"Otto", "OTTO"},
                 {"Retrofit", "RETROFIT"},
                 {"Retrolambda", "APACHE_LICENSE"},
                 {"RxAndroid", "APACHE_LICENSE"},

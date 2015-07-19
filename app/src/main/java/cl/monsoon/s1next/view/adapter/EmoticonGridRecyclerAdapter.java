@@ -14,9 +14,9 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.event.EmoticonClickEvent;
-import cl.monsoon.s1next.singleton.BusProvider;
+import cl.monsoon.s1next.data.event.EmoticonClickEvent;
 
 public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<EmoticonGridRecyclerAdapter.ViewHolder> {
 
@@ -71,7 +71,8 @@ public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<Emot
         @Override
         public void onClick(View v) {
             // notify ReplyFragment that emoticon had been clicked
-            BusProvider.get().post(new EmoticonClickEvent((String) v.getTag(R.id.emoticon_entity_tag)));
+            App.getAppComponent(imageView.getContext()).getEventBus().post(new EmoticonClickEvent(
+                    (String) v.getTag(R.id.emoticon_entity_tag)));
         }
     }
 }

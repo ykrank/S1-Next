@@ -29,8 +29,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.squareup.otto.Subscribe;
-
 import java.util.List;
 
 import cl.monsoon.s1next.Api;
@@ -39,9 +37,8 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Quote;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
+import cl.monsoon.s1next.data.event.EmoticonClickEvent;
 import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
-import cl.monsoon.s1next.event.EmoticonClickEvent;
-import cl.monsoon.s1next.singleton.BusProvider;
 import cl.monsoon.s1next.util.DeviceUtil;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.util.ToastUtil;
@@ -51,6 +48,7 @@ import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.EmoticonFactory;
 import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.HttpPostLoader;
+import rx.Subscription;
 
 /**
  * Sends the reply via EditView.
@@ -93,6 +91,8 @@ public final class ReplyFragment extends Fragment {
     private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
 
     private MenuItem mMenuSend;
+
+    private Subscription mEventBusSubscription;
 
     public static ReplyFragment newInstance(String threadId, String quotePostId) {
         ReplyFragment fragment = new ReplyFragment();
@@ -166,14 +166,19 @@ public final class ReplyFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        BusProvider.get().register(this);
+        mEventBusSubscription = App.getAppComponent(getActivity()).getEventBus().get().subscribe(o -> {
+            if (o instanceof EmoticonClickEvent) {
+                mReplyView.getText().replace(mReplyView.getSelectionStart(),
+                        mReplyView.getSelectionEnd(), ((EmoticonClickEvent) o).getEmoticonEntity());
+            }
+        });
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        BusProvider.get().unregister(this);
+        mEventBusSubscription.unsubscribe();
     }
 
     @Override
@@ -222,13 +227,6 @@ public final class ReplyFragment extends Fragment {
 
         outState.putParcelable(STATE_QUOTE, mQuote);
         outState.putBoolean(STATE_IS_EMOTICON_KEYBOARD_SHOWING, mIsEmoticonKeyboardShowing);
-    }
-
-    @Subscribe
-    @SuppressWarnings("unused")
-    public void appendEmoticonEntity(EmoticonClickEvent event) {
-        mReplyView.getText().replace(mReplyView.getSelectionStart(), mReplyView.getSelectionEnd(),
-                event.getEmoticonEntity());
     }
 
     private void setupEmoticonKeyboard() {

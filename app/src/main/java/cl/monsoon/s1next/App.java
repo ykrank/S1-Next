@@ -17,8 +17,10 @@ import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.view.activity.BaseActivity;
 import cl.monsoon.s1next.view.activity.PostListActivity;
 import cl.monsoon.s1next.view.adapter.ThreadListRecyclerAdapter;
+import cl.monsoon.s1next.view.dialog.ThemeChangeDialogFragment;
 import cl.monsoon.s1next.view.fragment.GeneralPreferenceFragment;
 import cl.monsoon.s1next.viewmodel.UserViewModel;
+import cl.monsoon.s1next.widget.EventBus;
 import dagger.Component;
 
 public final class App extends Application {
@@ -85,6 +87,8 @@ public final class App extends Application {
     @Component(modules = AppModule.class)
     public interface AppComponent {
 
+        EventBus getEventBus();
+
         GeneralPreferencesManager getGeneralPreferencesManager();
 
         DownloadPreferencesManager getDownloadPreferencesManager();
@@ -100,6 +104,8 @@ public final class App extends Application {
         void inject(PostListActivity activity);
 
         void inject(GeneralPreferenceFragment fragment);
+
+        void inject(ThemeChangeDialogFragment fragment);
 
         void inject(ThreadListRecyclerAdapter adapter);
     }
