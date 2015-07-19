@@ -203,7 +203,7 @@ public final class ReplyFragment extends Fragment {
             case R.id.menu_send:
                 StringBuilder stringBuilder = new StringBuilder(mReplyView.getText());
                 if (mGeneralPreferencesManager.isSignatureEnabled()) {
-                    stringBuilder.append("\n\n").append(DeviceUtil.getSignature());
+                    stringBuilder.append("\n\n").append(DeviceUtil.getSignature(getActivity()));
                 }
 
                 ReplyLoaderDialogFragment.newInstance(

@@ -18,7 +18,8 @@ public final class ViewUtil {
     }
 
     /**
-     * Concatenates with the specified text (two spaces and appendix) to the TextView.
+     * Concatenates with the specified text (two spaces and appendix) to the TextView
+     * with RTL support.
      *
      * @param text the String that is concatenated to the TextView
      */
@@ -32,7 +33,8 @@ public final class ViewUtil {
     }
 
     /**
-     * Concatenates with the specified text (two spaces and appendix) to the TextView.
+     * Concatenates with the specified text (two spaces and appendix) to the TextView
+     * with RTL support.
      *
      * @param text      the String that is concatenated to the TextView
      * @param textColor the <code>text</code> color
@@ -49,6 +51,9 @@ public final class ViewUtil {
         }
     }
 
+    /**
+     * Sets foreground color for {@code textView}.
+     */
     private static void setForegroundColor(TextView textView, int color, int start, int end) {
         Spannable spannable = Spannable.Factory.getInstance().newSpannable(textView.getText());
         spannable.setSpan(new ForegroundColorSpan(color), start, end,
@@ -58,7 +63,9 @@ public final class ViewUtil {
     }
 
     /**
-     * @see android.widget.EditText#setShowSoftInputOnFocus(boolean)
+     * Backports {@link TextView#setShowSoftInputOnFocus} to API 20 and below.
+     *
+     * @see TextView#setShowSoftInputOnFocus(boolean)
      */
     public static void setShowSoftInputOnFocus(EditText editText, Boolean show) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

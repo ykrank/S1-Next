@@ -9,6 +9,10 @@ public final class MathUtil {
 
     }
 
+    /**
+     * Returns a new {@code BigDecimal} whose value is {@code divident / divisor}
+     * with {@link RoundingMode#UP} mode.
+     */
     public static int divide(int divident, int divisor) {
         return new BigDecimal(divident).divide(new BigDecimal(divisor), RoundingMode.UP).intValue();
     }

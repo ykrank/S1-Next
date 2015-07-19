@@ -40,11 +40,6 @@ public final class DateUtil {
         return getSimpleDateFormatInstance().format(calendar.getTime());
     }
 
-    /**
-     * Initialization on Demand Holder.
-     *
-     * See https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom
-     */
     private static class SimpleDateFormatHolder {
 
         private static final String TEMPLATE = "yyyy-MM-dd";
@@ -52,6 +47,11 @@ public final class DateUtil {
         private static final SimpleDateFormat INSTANCE = new SimpleDateFormat(TEMPLATE, Locale.getDefault());
     }
 
+    /**
+     * Initialization on Demand Holder.
+     * <p>
+     * See https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom
+     */
     private static synchronized SimpleDateFormat getSimpleDateFormatInstance() {
         return SimpleDateFormatHolder.INSTANCE;
     }

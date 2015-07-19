@@ -1,10 +1,10 @@
 package cl.monsoon.s1next.util;
 
+import android.content.Context;
 import android.os.Build;
 
 import org.apache.commons.lang3.StringUtils;
 
-import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 
 public final class DeviceUtil {
@@ -16,8 +16,8 @@ public final class DeviceUtil {
     /**
      * Gets the string signature which is used for reply (append this to last line of the reply).
      */
-    public static String getSignature() {
-        return App.get().getString(R.string.signature, getDeviceNameWithVersion());
+    public static String getSignature(Context context) {
+        return context.getString(R.string.signature, getDeviceNameWithVersion());
     }
 
     /**

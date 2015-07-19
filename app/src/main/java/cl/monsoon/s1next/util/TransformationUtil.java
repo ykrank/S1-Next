@@ -28,7 +28,11 @@ public final class TransformationUtil {
     }
 
     /**
+     * Applies a multiplier to the {@code toTransform}'s size.
+     * <p>
      * Forked from {@link com.bumptech.glide.load.resource.bitmap.TransformationUtils#fitCenter(Bitmap, BitmapPool, int, int)}.
+     *
+     * @param sizeMultiplier The multiplier to apply to the {@code toTransform}'s dimensions.
      */
     private static Bitmap sizeMultiplier(BitmapPool pool, Bitmap toTransform, float sizeMultiplier) {
         final int targetWidth = (int) (sizeMultiplier * toTransform.getWidth());
@@ -58,6 +62,10 @@ public final class TransformationUtil {
         return bitmap.getConfig() != null ? bitmap.getConfig() : Bitmap.Config.ARGB_8888;
     }
 
+    /**
+     * A {@link com.bumptech.glide.load.Transformation} for transforming {@link android.graphics.Bitmap}'s
+     * size with a multiplier.
+     */
     public static class SizeMultiplierBitmapTransformation extends BitmapTransformation {
 
         private final float mSizeMultiplier;
@@ -79,6 +87,10 @@ public final class TransformationUtil {
         }
     }
 
+    /**
+     * A {@link com.bumptech.glide.load.Transformation} for transforming {@link android.graphics.Bitmap}'s
+     * size not to exceed the OpenGl texture size limit.
+     */
     public static class GlMaxTextureSizeBitmapTransformation extends BitmapTransformation {
 
         public GlMaxTextureSizeBitmapTransformation(Context context) {
@@ -104,6 +116,9 @@ public final class TransformationUtil {
             return GlMaxTextureSizeBitmapTransformation.class.getName();
         }
 
+        /**
+         * A calculator for getting OpenGL texture size limit.
+         */
         private enum GlMaxTextureCalculator {
             INSTANCE;
 

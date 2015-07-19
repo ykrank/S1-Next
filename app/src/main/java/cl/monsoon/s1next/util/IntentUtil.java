@@ -28,6 +28,11 @@ public final class IntentUtil {
 
     }
 
+    /**
+     * Opens a uri in Android's web browser or other app which can handle this Intent.
+     *
+     * @param uri The Uri of the data the intent is targeting.
+     */
     public static void startViewIntentExcludeOurApp(Context context, Uri uri) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(uri);

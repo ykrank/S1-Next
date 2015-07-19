@@ -12,16 +12,36 @@ public final class StringUtil {
 
     }
 
+    /**
+     * Concatenates {@code first} and {@code second} with {@link #TWO_SPACES}.
+     * <p>
+     * <pre>
+     * StringUtil.concatWithTwoSpaces("a", 1) = "a  1"
+     * </pre>
+     *
+     * @return A new string which is the concatenation of this string, two spaces
+     * and the specified string.
+     */
     public static String concatWithTwoSpaces(CharSequence first, int last) {
-        return concatWithTwoSpaces(first.toString(), String.valueOf(last));
+        return concatWithTwoSpaces(first, String.valueOf(last));
     }
 
+    /**
+     * @see #concatWithTwoSpaces(CharSequence, int)
+     */
     public static String concatWithTwoSpaces(CharSequence first, CharSequence last) {
         return first + TWO_SPACES + last;
     }
 
-    public static String unescapeNonBreakingSpace(CharSequence text) {
-        return StringUtils.replace(text.toString(), NON_BREAKING_SPACE_ENTITY_NAME,
+    /**
+     * Replaces all occurrences of the {@link #NON_BREAKING_SPACE_ENTITY_NAME}
+     * within the space.
+     *
+     * @param text The text to search and replace in.
+     * @return The text with any replacements processed.
+     */
+    public static String unescapeNonBreakingSpace(String text) {
+        return StringUtils.replace(text, NON_BREAKING_SPACE_ENTITY_NAME,
                 StringUtils.SPACE);
     }
 }

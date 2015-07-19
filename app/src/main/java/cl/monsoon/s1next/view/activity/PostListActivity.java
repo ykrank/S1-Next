@@ -162,12 +162,12 @@ public final class PostListActivity extends BaseActivity
         // Registers broadcast receiver to check whether Wi-Fi is enabled
         // when we need to download images.
         if (mDownloadPreferencesManager.shouldMonitorWifi()) {
-            mWifi.setWifiEnabled(NetworkUtil.isWifiConnected());
+            mWifi.setWifiEnabled(NetworkUtil.isWifiConnected(this));
 
             mWifiReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    mWifi.setWifiEnabled(NetworkUtil.isWifiConnected());
+                    mWifi.setWifiEnabled(NetworkUtil.isWifiConnected(PostListActivity.this));
                 }
             };
 
