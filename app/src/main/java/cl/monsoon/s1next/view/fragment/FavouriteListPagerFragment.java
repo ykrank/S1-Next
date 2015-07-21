@@ -17,7 +17,7 @@ import cl.monsoon.s1next.data.api.model.wrapper.FavouritesWrapper;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.activity.PostListActivity;
-import cl.monsoon.s1next.view.adapter.FavouriteListRecyclerAdapter;
+import cl.monsoon.s1next.view.adapter.FavouriteListRecyclerViewAdapter;
 import cl.monsoon.s1next.widget.RecyclerViewHelper;
 import rx.Observable;
 
@@ -34,7 +34,7 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
 
     private int mPageNum;
 
-    private FavouriteListRecyclerAdapter mRecyclerAdapter;
+    private FavouriteListRecyclerViewAdapter mRecyclerAdapter;
 
     private PagerCallback mPagerCallback;
 
@@ -56,7 +56,7 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerAdapter = new FavouriteListRecyclerAdapter();
+        mRecyclerAdapter = new FavouriteListRecyclerViewAdapter();
         recyclerView.setAdapter(mRecyclerAdapter);
 
         recyclerView.addOnItemTouchListener(new RecyclerViewHelper(getActivity(), recyclerView,

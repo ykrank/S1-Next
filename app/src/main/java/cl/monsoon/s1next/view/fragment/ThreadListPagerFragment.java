@@ -17,7 +17,7 @@ import cl.monsoon.s1next.data.api.model.collection.Threads;
 import cl.monsoon.s1next.data.api.model.wrapper.ThreadsWrapper;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.activity.PostListActivity;
-import cl.monsoon.s1next.view.adapter.ThreadListRecyclerAdapter;
+import cl.monsoon.s1next.view.adapter.ThreadListRecyclerViewAdapter;
 import cl.monsoon.s1next.widget.RecyclerViewHelper;
 import rx.Observable;
 
@@ -34,7 +34,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
     private String mForumId;
     private int mPageNum;
 
-    private ThreadListRecyclerAdapter mRecyclerAdapter;
+    private ThreadListRecyclerViewAdapter mRecyclerAdapter;
 
     private PagerCallback mPagerCallback;
     private SubForumsCallback mSubForumsCallback;
@@ -59,7 +59,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerAdapter = new ThreadListRecyclerAdapter(getActivity());
+        mRecyclerAdapter = new ThreadListRecyclerViewAdapter(getActivity());
         recyclerView.setAdapter(mRecyclerAdapter);
 
         recyclerView.addOnItemTouchListener(new RecyclerViewHelper(getActivity(), recyclerView,

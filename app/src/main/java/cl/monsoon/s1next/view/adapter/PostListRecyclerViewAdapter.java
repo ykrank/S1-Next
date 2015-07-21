@@ -33,11 +33,11 @@ import cl.monsoon.s1next.widget.GlideImageGetter;
 import cl.monsoon.s1next.widget.TagHandler;
 
 /**
- * This {@link cl.monsoon.s1next.view.adapter.RecyclerAdapter}
+ * This {@link BaseRecyclerViewAdapter}
  * has another item type {@link #TYPE_FOOTER_PROGRESS}
  * in order to implement endless scrolling.
  */
-public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, RecyclerView.ViewHolder> {
+public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Post, RecyclerView.ViewHolder> {
 
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER_PROGRESS = Integer.MIN_VALUE;
@@ -50,7 +50,7 @@ public final class PostListRecyclerAdapter extends RecyclerAdapter<Post, Recycle
 
     private final DrawableRequestBuilder<String> mAvatarRequestBuilder;
 
-    public PostListRecyclerAdapter(Context context) {
+    public PostListRecyclerViewAdapter(Context context) {
         this.mContext = context;
         mDownloadPreferencesManager = App.getAppComponent(context).getDownloadPreferencesManager();
 

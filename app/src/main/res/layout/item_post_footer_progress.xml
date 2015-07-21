@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/single_line_height_with_avatar"
     android:gravity="center"
-    tools:context="cl.monsoon.s1next.view.adapter.PostListRecyclerAdapter">
+    tools:context="cl.monsoon.s1next.view.adapter.PostListRecyclerViewAdapter">
 
     <ProgressBar
         android:layout_width="wrap_content"

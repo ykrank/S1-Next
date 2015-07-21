@@ -10,11 +10,11 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Favourite;
 
 /**
- * Similar to {@link cl.monsoon.s1next.view.adapter.ForumListRecyclerAdapter}.
+ * Similar to {@link ForumListRecyclerViewAdapter}.
  */
-public final class FavouriteListRecyclerAdapter extends RecyclerAdapter<Favourite, FavouriteListRecyclerAdapter.ViewHolder> {
+public final class FavouriteListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Favourite, FavouriteListRecyclerViewAdapter.ViewHolder> {
 
-    public FavouriteListRecyclerAdapter() {
+    public FavouriteListRecyclerViewAdapter() {
         setHasStableIds(true);
     }
 

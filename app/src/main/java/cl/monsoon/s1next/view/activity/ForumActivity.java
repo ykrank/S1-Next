@@ -1,9 +1,10 @@
 package cl.monsoon.s1next.view.activity;
 
+import android.databinding.BindingAdapter;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,29 +15,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.databinding.ToolbarSpinnerBinding;
 import cl.monsoon.s1next.view.fragment.ForumFragment;
+import cl.monsoon.s1next.view.internal.ToolbarDropDownInterface;
+import cl.monsoon.s1next.viewmodel.DropDownItemListViewModel;
 
 /**
+ * A Activity shows the forum groups.
+ * <p>
  * This Activity has Spinner in Toolbar to switch between different forum groups.
  */
 public final class ForumActivity extends BaseActivity
-        implements ToolbarInterface.SpinnerCallback,
+        implements ToolbarDropDownInterface.Callback,
         AdapterView.OnItemSelectedListener {
 
     /**
      * The serialization (saved instance state) Bundle key representing
      * the position of the selected spinner item.
      */
-    private static final String STATE_SPINNER_SELECTED_POSITION = "selected_position";
+    private static final String STATE_SPINNER_SELECTED_POSITION = "spinner_selected_position";
 
-    private Spinner mSpinner;
+    private ToolbarSpinnerBinding mToolbarSpinnerBinding;
 
     /**
-     * Stores the selected Spinner position.
+     * Stores selected Spinner position.
      */
     private int mSelectedPosition = 0;
 
-    private ToolbarInterface.OnDropDownItemSelectedListener mOnToolbarDropDownItemSelectedListener;
+    private ToolbarDropDownInterface.OnItemSelectedListener onItemSelectedListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,15 +54,14 @@ public final class ForumActivity extends BaseActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null) {
             fragment = new ForumFragment();
-
-            fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment,
-                    ForumFragment.TAG).commit();
+            fragmentManager.beginTransaction().add(R.id.frame_layout, fragment, ForumFragment.TAG)
+                    .commit();
         } else {
             mSelectedPosition = savedInstanceState.getInt(STATE_SPINNER_SELECTED_POSITION);
             fragment = fragmentManager.findFragmentByTag(ForumFragment.TAG);
         }
 
-        mOnToolbarDropDownItemSelectedListener = (ToolbarInterface.OnDropDownItemSelectedListener) fragment;
+        onItemSelectedListener = (ToolbarDropDownInterface.OnItemSelectedListener) fragment;
     }
 
     @Override
@@ -66,13 +71,10 @@ public final class ForumActivity extends BaseActivity
         outState.putInt(STATE_SPINNER_SELECTED_POSITION, mSelectedPosition);
     }
 
-    /**
-     * Implements {@link android.widget.AdapterView.OnItemSelectedListener}.
-     */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         mSelectedPosition = position;
-        mOnToolbarDropDownItemSelectedListener.onToolbarDropDownItemSelected(mSelectedPosition);
+        onItemSelectedListener.onToolbarDropDownItemSelected(mSelectedPosition);
     }
 
     @Override
@@ -80,50 +82,54 @@ public final class ForumActivity extends BaseActivity
 
     }
 
-    /**
-     * Implements {@link ToolbarInterface.SpinnerCallback}.
-     */
     @Override
     public void setupToolbarDropDown(List<? extends CharSequence> dropDownItemList) {
-        if (mSpinner == null) {
+        if (mToolbarSpinnerBinding == null) {
             setTitle(null);
 
-            Toolbar toolbar = getToolbar();
             // add Spinner to Toolbar
-            getLayoutInflater().inflate(R.layout.toolbar_spinner, toolbar, true);
-            mSpinner = (Spinner) toolbar.findViewById(R.id.spinner);
-
-            mSpinner.setOnItemSelectedListener(this);
+            mToolbarSpinnerBinding = DataBindingUtil.inflate(getLayoutInflater(),
+                    R.layout.toolbar_spinner, getToolbar(), true);
+            mToolbarSpinnerBinding.spinner.setOnItemSelectedListener(this);
             // let spinner's parent to handle clicking event in order
-            // to increase clickable area.
-            View spinnerContainer = toolbar.findViewById(R.id.spinner_container);
-            spinnerContainer.setOnClickListener(v -> mSpinner.performClick());
+            // to increase spinner's clicking area.
+            mToolbarSpinnerBinding.spinnerContainer.setOnClickListener(v ->
+                    mToolbarSpinnerBinding.spinner.performClick());
+            mToolbarSpinnerBinding.setDropDownItemListViewModel(new DropDownItemListViewModel());
         }
 
-        mSpinner.setAdapter(getSpinnerAdapter(dropDownItemList));
-        // invalid index may occurs when user's login status has changed
-        if (mSpinner.getAdapter().getCount() - 1 < mSelectedPosition) {
-            mSpinner.setSelection(0, false);
+        DropDownItemListViewModel viewModel = mToolbarSpinnerBinding.getDropDownItemListViewModel();
+        viewModel.setSelectedItemPosition(mSelectedPosition);
+        viewModel.dropDownItemList.clear();
+        viewModel.dropDownItemList.addAll(dropDownItemList);
+    }
+
+    @BindingAdapter({"dropDownItemList", "selectedItemPosition"})
+    public static void setForumGroupNameList(Spinner spinner, List<CharSequence> dropDownItemList, int selectedItemPosition) {
+        spinner.setAdapter(getSpinnerAdapter(spinner, dropDownItemList));
+        // invalid position may occurs when user's login status has changed
+        if (spinner.getAdapter().getCount() - 1 < selectedItemPosition) {
+            spinner.setSelection(0, false);
         } else {
-            mSpinner.setSelection(mSelectedPosition, false);
+            spinner.setSelection(selectedItemPosition, false);
         }
     }
 
-    private BaseAdapter getSpinnerAdapter(List<? extends CharSequence> dropDownItemList) {
+    private static BaseAdapter getSpinnerAdapter(Spinner spinner, List<CharSequence> dropDownItemList) {
         // don't use dropDownItemList#add(int, E)
         // otherwise we will have multiple "全部"
-        // if we invoke this method many times
+        // if we call this method many times
 
         List<CharSequence> list = new ArrayList<>();
         // the first drop-down item is "全部"
         // and other items fetched from S1
-        list.add(getResources().getString(R.string.toolbar_spinner_drop_down_all_forums_item_title));
+        list.add(spinner.getContext().getString(
+                R.string.toolbar_spinner_drop_down_all_forums_item_title));
         list.addAll(dropDownItemList);
 
-        ArrayAdapter<CharSequence> arrayAdapter = new ArrayAdapter<>(this,
+        ArrayAdapter<CharSequence> arrayAdapter = new ArrayAdapter<>(spinner.getContext(),
                 R.layout.toolbar_spinner_item, list);
         arrayAdapter.setDropDownViewResource(R.layout.toolbar_spinner_dropdown_item);
-
         return arrayAdapter;
     }
 }

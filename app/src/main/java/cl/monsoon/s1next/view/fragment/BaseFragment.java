@@ -7,6 +7,7 @@ import android.support.annotation.CallSuper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -247,6 +248,10 @@ public abstract class BaseFragment<D> extends Fragment {
      */
     private void finallyDo() {
         mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FINISH);
+    }
+
+    final RecyclerView getRecyclerView() {
+        return mFragmentBaseBinding.recyclerView;
     }
 
     /**

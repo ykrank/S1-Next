@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="cl.monsoon.s1next.view.adapter.ForumListRecyclerViewAdapter">
+
+    <data>
+
+        <variable
+            name="forumViewModel"
+            type="cl.monsoon.s1next.viewmodel.ForumViewModel" />
+
+        <variable
+            name="gentleAccentColor"
+            type="Integer" />
+    </data>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/single_line_height"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:onClick="@{forumViewModel.goToThisForum()}"
+        android:paddingEnd="@dimen/item_padding"
+        android:paddingLeft="@dimen/item_padding"
+        android:paddingRight="@dimen/item_padding"
+        android:paddingStart="@dimen/item_padding"
+        android:singleLine="true"
+        android:textAppearance="@style/TextAppearance.Dense.Subhead"
+        app:forum="@{forumViewModel.forum}"
+        app:gentleAccentColor="@{gentleAccentColor}"
+        tools:ignore="NewApi" />
+
+</layout>

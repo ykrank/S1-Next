@@ -5,11 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class RecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
+public abstract class BaseRecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 
     List<T> mList;
 
-    RecyclerAdapter() {
+    BaseRecyclerViewAdapter() {
         this.mList = Collections.emptyList();
     }
 

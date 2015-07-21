@@ -1,5 +1,6 @@
 package cl.monsoon.s1next.view.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,7 +23,7 @@ import cl.monsoon.s1next.view.fragment.ThreadListPagerFragment;
 
 public final class ThreadListActivity extends BaseActivity implements ThreadListPagerFragment.SubForumsCallback {
 
-    public static final String ARG_FORUM = "forum";
+    private static final String ARG_FORUM = "forum";
 
     /**
      * Only measure this many items to get a decent max width.
@@ -33,6 +34,13 @@ public final class ThreadListActivity extends BaseActivity implements ThreadList
 
     private ListPopupWindow mListPopupWindow;
     private SubForumArrayAdapter mSubForumArrayAdapter;
+
+    public static void startThreadListActivity(Context context, Forum forum) {
+        Intent intent = new Intent(context, ThreadListActivity.class);
+        intent.putExtra(ThreadListActivity.ARG_FORUM, forum);
+
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

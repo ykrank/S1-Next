@@ -11,7 +11,7 @@
     android:layout_marginRight="@dimen/card_view_horizontal_margin"
     android:layout_marginStart="@dimen/card_view_horizontal_margin"
     android:layout_marginTop="@dimen/card_view_vertical_margin"
-    tools:context="cl.monsoon.s1next.view.adapter.PostListRecyclerAdapter">
+    tools:context="cl.monsoon.s1next.view.adapter.PostListRecyclerViewAdapter">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -23,7 +23,7 @@ import cl.monsoon.s1next.data.api.model.wrapper.PostsWrapper;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.util.ToastUtil;
-import cl.monsoon.s1next.view.adapter.PostListRecyclerAdapter;
+import cl.monsoon.s1next.view.adapter.PostListRecyclerViewAdapter;
 import rx.Observable;
 
 /**
@@ -54,7 +54,7 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
     private int mPageNum;
 
     private RecyclerView mRecyclerView;
-    private PostListRecyclerAdapter mRecyclerAdapter;
+    private PostListRecyclerViewAdapter mRecyclerAdapter;
     private boolean mIsLoadingMore;
 
     private PagerCallback mPagerCallback;
@@ -90,7 +90,7 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         int padding = getResources().getDimensionPixelSize(R.dimen.recycler_view_padding_for_card);
         mRecyclerView.setPadding(0, padding, 0, padding);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerAdapter = new PostListRecyclerAdapter(getActivity());
+        mRecyclerAdapter = new PostListRecyclerViewAdapter(getActivity());
         mRecyclerView.setAdapter(mRecyclerAdapter);
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

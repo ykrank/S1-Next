@@ -17,7 +17,7 @@ import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.util.ViewUtil;
 
-public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, ThreadListRecyclerAdapter.ViewHolder> {
+public final class ThreadListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Thread, ThreadListRecyclerViewAdapter.ViewHolder> {
 
     private static final String THREAD_PERMISSION_HINT_PREFIX =
             App.get().getString(R.string.thread_activity_thread_permission);
@@ -30,7 +30,7 @@ public final class ThreadListRecyclerAdapter extends RecyclerAdapter<Thread, Thr
 
     private final int mGentleTextColor;
 
-    public ThreadListRecyclerAdapter(Context context) {
+    public ThreadListRecyclerViewAdapter(Context context) {
         setHasStableIds(true);
 
         App.getAppComponent(context).inject(this);
