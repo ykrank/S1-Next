@@ -16,8 +16,5 @@ public final class Config {
     public static final int AVATAR_URLS_MEMORY_CACHE_MAX_NUMBER = 1000;
     public static final int AVATAR_URL_KEYS_MEMORY_CACHE_MAX_NUMBER = 1000;
 
-    public static final int THREADS_PER_PAGE = 50;
-    public static final int POSTS_PER_PAGE = 30;
-
     public static final int REPLY_NOTIFICATION_MAX_LENGTH = 100;
 }

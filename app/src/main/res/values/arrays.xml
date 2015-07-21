@@ -7,6 +7,13 @@
     <!--<item>Email</item>-->
     <!--</string-array>-->
 
+    <integer-array name="swipe_refresh_layout_color_scheme">
+        <item>@color/swipe_refresh_1</item>
+        <item>@color/swipe_refresh_2</item>
+        <item>@color/swipe_refresh_3</item>
+        <item>@color/swipe_refresh_4</item>
+    </integer-array>
+
     <!-- 麻将脸类型 -->
     <string-array name="emoticon_type">
         <item>@string/emoticon_face</item>

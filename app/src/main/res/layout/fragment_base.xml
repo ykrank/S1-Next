@@ -1,29 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="cl.monsoon.s1next.view.fragment.BaseFragment">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
+    <data>
+
+        <variable
+            name="loadingViewModel"
+            type="cl.monsoon.s1next.viewmodel.LoadingViewModel" />
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="@dimen/list_view_padding"
-            android:paddingTop="@dimen/list_view_padding"
-            android:scrollbars="vertical" />
+            android:visibility="@{loadingViewModel.swipeRefreshLayoutVisibility}"
+            app:colorSchemeResources="@{@intArray/swipe_refresh_layout_color_scheme}"
+            app:enable="@{!loadingViewModel.pullToUpRefresh}"
+            app:refreshing="@{loadingViewModel.swipeRefresh}">
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/list_view_padding"
+                android:paddingTop="@dimen/list_view_padding"
+                android:scrollbars="vertical" />
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
-</FrameLayout>
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{loadingViewModel.progressVisibility}" />
+
+    </FrameLayout>
+
+</layout>

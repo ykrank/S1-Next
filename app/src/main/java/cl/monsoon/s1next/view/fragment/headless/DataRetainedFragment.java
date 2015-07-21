@@ -4,33 +4,23 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 /**
- * Used to retain data when configuration change.
+ * Used to retain data when configuration changes.
+ * <p>
+ * see https://developer.android.com/guide/topics/resources/runtime-changes.html#RetainingAnObject
  *
- * @param <D> the data type which could be extracted to POJO.
+ * @param <D> The data we want to retain when configuration changes.
  */
 public class DataRetainedFragment<D> extends Fragment {
 
     public static final String TAG = DataRetainedFragment.class.getName();
 
-    // the data we want to retain
-    private D data;
+    public D data;
 
-    /**
-     * {@link Fragment#onCreate} method is only called once for this fragment
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // retain this fragment
         setRetainInstance(true);
-    }
-
-    public D getData() {
-        return data;
-    }
-
-    public void setData(D data) {
-        this.data = data;
     }
 }

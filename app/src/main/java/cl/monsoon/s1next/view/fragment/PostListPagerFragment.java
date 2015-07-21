@@ -4,17 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.List;
@@ -28,8 +24,7 @@ import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.adapter.PostListRecyclerAdapter;
-import cl.monsoon.s1next.widget.AsyncResult;
-import cl.monsoon.s1next.widget.HttpGetLoader;
+import rx.Observable;
 
 /**
  * A Fragment which includes {@link android.support.v4.view.ViewPager}
@@ -83,11 +78,6 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_base, container, false);
-    }
-
-    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -117,9 +107,8 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
                         && !isLoading()) {
 
                     mIsLoadingMore = true;
-                    setSwipeRefreshLayoutEnabled(false);
                     mRecyclerAdapter.showFooterProgress();
-                    onRefresh();
+                    startPullToRefresh();
                 }
             }
         });
@@ -194,85 +183,81 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
     }
 
     @Override
-    public Loader<AsyncResult<PostsWrapper>> onCreateLoader(int id, Bundle args) {
-        super.onCreateLoader(id, args);
-
-        return new HttpGetLoader<>(getActivity(), Api.getPostListUrl(mThreadId, mPageNum),
-                PostsWrapper.class);
+    Observable<PostsWrapper> getSourceObservable() {
+        return mS1Service.getPostsWrapper(mThreadId, mPageNum);
     }
 
     @Override
-    public void onLoadFinished(Loader<AsyncResult<PostsWrapper>> loader, AsyncResult<PostsWrapper> asyncResult) {
-        super.onLoadFinished(loader, asyncResult);
+    void onNext(PostsWrapper data) {
+        super.onNext(data);
 
         boolean isFinishedLoadingMore = false;
         if (mIsLoadingMore) {
             // mRecyclerAdapter.getItemCount() = 0
             // when configuration changes (like orientation changes)
-            if (mRecyclerAdapter.getItemCount() == 0) {
-                setSwipeRefreshLayoutEnabled(false);
-            } else {
+            if (mRecyclerAdapter.getItemCount() != 0) {
                 mRecyclerAdapter.hideFooterProgress();
                 mIsLoadingMore = false;
                 isFinishedLoadingMore = true;
             }
         }
 
-        if (asyncResult.exception != null) {
-            if (getUserVisibleHint()) {
-                ToastUtil.showByResId(asyncResult.getExceptionStringRes(), Toast.LENGTH_SHORT);
+        Posts posts = data.getPosts();
+        List<Post> postList = posts.getPostList();
+
+        // if user has logged out, has no permission to access this thread or this thread is invalid
+        if (postList.isEmpty()) {
+            String message = data.getResult().getMessage();
+            if (!TextUtils.isEmpty(message)) {
+                ToastUtil.showByText(message, Toast.LENGTH_SHORT);
             }
         } else {
-            Posts posts = asyncResult.data.getPosts();
-            List<Post> postList = posts.getPostList();
-
-            // if user has logged out, has no permission to access this thread or this thread is invalid
-            if (postList.isEmpty()) {
-                String message = asyncResult.data.getResult().getMessage();
-                if (!TextUtils.isEmpty(message)) {
-                    ToastUtil.showByText(message, Toast.LENGTH_SHORT);
+            int lastItemCount = mRecyclerAdapter.getItemCount();
+            mRecyclerAdapter.setDataSet(postList);
+            if (isFinishedLoadingMore) {
+                int newItemCount = mRecyclerAdapter.getItemCount() - lastItemCount;
+                if (newItemCount > 0) {
+                    mRecyclerAdapter.notifyItemRangeInserted(lastItemCount, newItemCount);
                 }
             } else {
-                int lastItemCount = mRecyclerAdapter.getItemCount();
-                mRecyclerAdapter.setDataSet(postList);
-                if (isFinishedLoadingMore) {
-                    int newItemCount = mRecyclerAdapter.getItemCount() - lastItemCount;
-                    if (newItemCount > 0) {
-                        mRecyclerAdapter.notifyItemRangeInserted(lastItemCount, newItemCount);
-                    }
-                } else {
-                    mRecyclerAdapter.notifyDataSetChanged();
+                mRecyclerAdapter.notifyDataSetChanged();
 
-                    String quotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
-                    if (!TextUtils.isEmpty(quotePostId)) {
-                        for (int i = 0, length = postList.size(); i < length; i++) {
-                            if (quotePostId.equals(postList.get(i).getId())) {
-                                // scroll to quote post
-                                mRecyclerView.scrollToPosition(i);
-                                break;
-                            }
+                String quotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
+                if (!TextUtils.isEmpty(quotePostId)) {
+                    for (int i = 0, length = postList.size(); i < length; i++) {
+                        if (quotePostId.equals(postList.get(i).getId())) {
+                            // scroll to quote post
+                            mRecyclerView.scrollToPosition(i);
+                            break;
                         }
-                        // clear this argument after redirect
-                        getArguments().putString(ARG_QUOTE_POST_ID, null);
                     }
+                    // clear this argument after redirect
+                    getArguments().putString(ARG_QUOTE_POST_ID, null);
                 }
-
-                cl.monsoon.s1next.data.api.model.Thread postListInfo = posts.getPostListInfo();
-                // we have not title if we open thread link in our app
-                if (TextUtils.isEmpty(getActivity().getTitle())) {
-                    mPagerCallback.setThreadTitle(postListInfo.getTitle());
-                }
-                new Handler().post(() ->
-                        mPagerCallback.setTotalPageByPosts(postListInfo.getReplies() + 1));
             }
 
-            if (posts.getThreadAttachment() != null) {
-                mPagerCallback.setupThreadAttachment(posts.getThreadAttachment());
+            cl.monsoon.s1next.data.api.model.Thread postListInfo = posts.getPostListInfo();
+            // we have not title if we open thread link in our app
+            if (TextUtils.isEmpty(getActivity().getTitle())) {
+                mPagerCallback.setThreadTitle(postListInfo.getTitle());
             }
+            mPagerCallback.setTotalPageByPosts(postListInfo.getReplies() + 1);
         }
 
+        if (posts.getThreadAttachment() != null) {
+            mPagerCallback.setupThreadAttachment(posts.getThreadAttachment());
+        }
+    }
+
+    @Override
+    void onError(Throwable throwable) {
         if (mIsLoadingMore) {
-            mRecyclerAdapter.showFooterProgress();
+            mRecyclerAdapter.hideFooterProgress();
+            mIsLoadingMore = false;
+        }
+
+        if (getUserVisibleHint()) {
+            super.onError(throwable);
         }
     }
 

@@ -5,10 +5,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.squareup.okhttp.OkHttpClient;
+
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Singleton;
 
 import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.Wifi;
+import cl.monsoon.s1next.data.api.S1Service;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesRepository;
 import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
@@ -16,8 +23,12 @@ import cl.monsoon.s1next.data.pref.GeneralPreferencesRepository;
 import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.viewmodel.UserViewModel;
 import cl.monsoon.s1next.widget.EventBus;
+import cl.monsoon.s1next.widget.PersistentHttpCookieStore;
 import dagger.Module;
 import dagger.Provides;
+import retrofit.JacksonConverterFactory;
+import retrofit.ObservableCallAdapterFactory;
+import retrofit.Retrofit;
 
 /**
  * Provides instances of the objects when we need to inject.
@@ -33,14 +44,35 @@ final class AppModule {
 
     @Provides
     @Singleton
-    EventBus providerEventBus() {
-        return new EventBus();
+    Context provideContext() {
+        return mApplication;
     }
 
     @Provides
     @Singleton
-    Context provideContext() {
-        return mApplication;
+    S1Service providerRetrofit(Context context) {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.setConnectTimeout(20, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(20, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
+
+        CookieManager cookieManager = new CookieManager(new PersistentHttpCookieStore(context),
+                CookiePolicy.ACCEPT_ALL);
+        okHttpClient.setCookieHandler(cookieManager);
+
+        return new Retrofit.Builder()
+                .client(okHttpClient)
+                .baseUrl(S1Service.BASE_URL)
+                .converterFactory(JacksonConverterFactory.create())
+                .callAdapterFactory(ObservableCallAdapterFactory.create())
+                .build()
+                .create(S1Service.class);
+    }
+
+    @Provides
+    @Singleton
+    EventBus providerEventBus() {
+        return new EventBus();
     }
 
     @Provides

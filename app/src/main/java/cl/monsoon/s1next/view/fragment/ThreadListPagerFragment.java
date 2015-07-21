@@ -3,19 +3,14 @@ package cl.monsoon.s1next.view.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.List;
 
-import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Forum;
 import cl.monsoon.s1next.data.api.model.collection.Threads;
@@ -23,9 +18,8 @@ import cl.monsoon.s1next.data.api.model.wrapper.ThreadsWrapper;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.activity.PostListActivity;
 import cl.monsoon.s1next.view.adapter.ThreadListRecyclerAdapter;
-import cl.monsoon.s1next.widget.AsyncResult;
-import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.RecyclerViewHelper;
+import rx.Observable;
 
 /**
  * A Fragment representing one of the pages of threads.
@@ -54,11 +48,6 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
         fragment.setArguments(bundle);
 
         return fragment;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_base, container, false);
     }
 
     @Override
@@ -129,42 +118,38 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
     }
 
     @Override
-    public Loader<AsyncResult<ThreadsWrapper>> onCreateLoader(int id, Bundle args) {
-        super.onCreateLoader(id, args);
-
-        return new HttpGetLoader<>(getActivity(), Api.getThreadListUrl(mForumId, mPageNum),
-                ThreadsWrapper.class);
+    Observable<ThreadsWrapper> getSourceObservable() {
+        return mS1Service.getThreadsWrapper(mForumId, mPageNum);
     }
 
     @Override
-    public void onLoadFinished(Loader<AsyncResult<ThreadsWrapper>> loader, AsyncResult<ThreadsWrapper> asyncResult) {
-        super.onLoadFinished(loader, asyncResult);
+    void onNext(ThreadsWrapper data) {
+        super.onNext(data);
 
-        if (asyncResult.exception != null) {
-            if (getUserVisibleHint()) {
-                ToastUtil.showByResId(asyncResult.getExceptionStringRes(), Toast.LENGTH_SHORT);
+        Threads threads = data.getThreads();
+
+        // if user has logged out or has no permission to access this forum
+        if (threads.getThreadList().isEmpty()) {
+            String message = data.getResult().getMessage();
+            if (!TextUtils.isEmpty(message)) {
+                ToastUtil.showByText(message, Toast.LENGTH_SHORT);
             }
         } else {
-            Threads threads = asyncResult.data.getThreads();
+            mRecyclerAdapter.setDataSet(threads.getThreadList());
+            mRecyclerAdapter.notifyDataSetChanged();
 
-            // if user has logged out or has no permission to access this forum
-            if (threads.getThreadList().isEmpty()) {
-                String message = asyncResult.data.getResult().getMessage();
-                if (!TextUtils.isEmpty(message)) {
-                    ToastUtil.showByText(message, Toast.LENGTH_SHORT);
-                }
-            } else {
-                mRecyclerAdapter.setDataSet(threads.getThreadList());
-                mRecyclerAdapter.notifyDataSetChanged();
+            mPagerCallback.setTotalPageByThreads(threads.getThreadListInfo().getThreads());
+        }
 
-                new Handler().post(() ->
-                        mPagerCallback.setTotalPageByThreads(
-                                threads.getThreadListInfo().getThreads()));
-            }
+        if (!threads.getSubForumList().isEmpty()) {
+            mSubForumsCallback.setupSubForums(threads.getSubForumList());
+        }
+    }
 
-            if (!threads.getSubForumList().isEmpty()) {
-                mSubForumsCallback.setupSubForums(threads.getSubForumList());
-            }
+    @Override
+    void onError(Throwable throwable) {
+        if (getUserVisibleHint()) {
+            super.onError(throwable);
         }
     }
 

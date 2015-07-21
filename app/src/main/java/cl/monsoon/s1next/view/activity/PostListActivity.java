@@ -30,9 +30,9 @@ import javax.inject.Inject;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.App;
-import cl.monsoon.s1next.Config;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.Wifi;
+import cl.monsoon.s1next.data.api.S1Service;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.collection.Posts;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
@@ -299,7 +299,7 @@ public final class PostListActivity extends BaseActivity
      */
     @Override
     public void setTotalPageByPosts(int posts) {
-        setTotalPage(MathUtil.divide(posts, Config.POSTS_PER_PAGE));
+        setTotalPage(MathUtil.divide(posts, S1Service.POSTS_PER_PAGE));
     }
 
     private void setTotalPage(int totalPage) {

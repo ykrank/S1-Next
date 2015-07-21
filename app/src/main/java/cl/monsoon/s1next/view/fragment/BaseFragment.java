@@ -1,61 +1,78 @@
 package cl.monsoon.s1next.view.fragment;
 
+import android.databinding.BindingAdapter;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
+import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.data.api.S1Service;
+import cl.monsoon.s1next.databinding.FragmentBaseBinding;
+import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.fragment.headless.DataRetainedFragment;
-import cl.monsoon.s1next.widget.AsyncResult;
+import cl.monsoon.s1next.viewmodel.LoadingViewModel;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
- * A base Fragment which includes the SwipeRefreshLayout to refresh when loading data.
- * Also wraps {@link LoaderManager.LoaderCallbacks} to load data asynchronously.
+ * A base Fragment includes {@link SwipeRefreshLayout} to refresh when loading data.
+ * Also wraps {@link retrofit.Retrofit} to load data asynchronously.
  * <p>
- * We must reuse or destroy {@link #mDataRetainedFragment} (calling {@link BaseFragment#destroyRetainedFragment()})
- * if used in {@link android.support.v4.view.ViewPager}
- * otherwise we would lost {@link #mDataRetainedFragment} and cause memory leak.
+ * We must call {@link #destroyRetainedFragment()}) if used in {@link android.support.v4.view.ViewPager}
+ * otherwise leads memory leak.
+ *
+ * @param <D> The data we want to load.
  */
-public abstract class BaseFragment<D> extends Fragment
-        implements SwipeRefreshLayout.OnRefreshListener,
-        LoaderManager.LoaderCallbacks<AsyncResult<D>> {
-
-    private static final int ID_LOADER = 0;
+public abstract class BaseFragment<D> extends Fragment {
 
     /**
-     * The serialization (saved instance state) Bundle key representing whether
-     * {@link Loader} is loading data when configuration changes.
+     * The serialization (saved instance state) Bundle key representing
+     * current loading state.
      */
-    private static final String STATE_IS_LOADER_LOADING = "is_loader_loading";
+    private static final String STATE_LOADING_VIEW_MODEL = "loading_view_model";
+
+    private FragmentBaseBinding mFragmentBaseBinding;
+    private LoadingViewModel mLoadingViewModel;
 
     /**
-     * Detects swipe gestures and triggers to refresh data.
-     */
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-
-    private boolean mLoading;
-
-    /**
-     * We use retained Fragment to retain data when configuration changes
-     * due to https://stackoverflow.com/questions/15897547/loader-unable-to-retain-itself-during-certain-configuration-change
+     * We use retained Fragment to retain data when configuration changes.
      */
     private DataRetainedFragment<D> mDataRetainedFragment;
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    S1Service mS1Service;
+    private Subscription mRetrofitSubscription;
 
-        setupSwipeRefreshLayout();
+    @Override
+    public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mFragmentBaseBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_base, container,
+                false);
+        return mFragmentBaseBinding.getRoot();
     }
 
     @Override
+    @CallSuper
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mS1Service = App.getAppComponent(getActivity()).getS1Service();
+
+        mFragmentBaseBinding.swipeRefreshLayout.setOnRefreshListener(this::startSwipeRefresh);
+    }
+
+    @Override
+    @CallSuper
     @SuppressWarnings("unchecked")
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -63,17 +80,19 @@ public abstract class BaseFragment<D> extends Fragment
         // influence the set of actions in the Toolbar.
         setHasOptionsMenu(true);
 
-        if (savedInstanceState != null) {
-            mLoading = savedInstanceState.getBoolean(STATE_IS_LOADER_LOADING);
+        if (savedInstanceState == null) {
+            mLoadingViewModel = new LoadingViewModel();
+        } else {
+            mLoadingViewModel = savedInstanceState.getParcelable(STATE_LOADING_VIEW_MODEL);
         }
 
         // because we can't retain Fragments that are nested in other Fragments
         // so we need to confirm this Fragment has unique tag in order to compose
         // a new unique tag for its retained Fragment.
-        // Without this, we could get its retained Fragment back.
+        // Without this, we couldn't get its retained Fragment back.
         String thisFragmentTag = getTag();
         if (thisFragmentTag == null) {
-            throw new IllegalStateException("Must add a tag to" + this + ".");
+            throw new IllegalStateException("Must add a tag to " + this + ".");
         }
 
         String dataRetainedFragmentTag = DataRetainedFragment.TAG + "_" + thisFragmentTag;
@@ -81,63 +100,58 @@ public abstract class BaseFragment<D> extends Fragment
         Fragment fragment = fragmentManager.findFragmentByTag(dataRetainedFragmentTag);
         if (fragment == null) {
             mDataRetainedFragment = new DataRetainedFragment<>();
-            fragmentManager.beginTransaction().add(mDataRetainedFragment,
-                    dataRetainedFragmentTag).commit();
+            fragmentManager.beginTransaction().add(mDataRetainedFragment, dataRetainedFragmentTag)
+                    .commit();
 
-            getLoaderManager().initLoader(ID_LOADER, null, this);
+            // start to load data because we start this Fragment the first time
+            // or the retained Fragment was killed by system
+            mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FIRST_TIME);
         } else {
             mDataRetainedFragment = (DataRetainedFragment) fragment;
 
-            boolean loading = mLoading;
-            if (mDataRetainedFragment.getData() != null) {
-                // get data back from retained Fragment when configuration changes
-                onLoadFinished(null, new AsyncResult<>(mDataRetainedFragment.getData()));
+            // get data back from retained Fragment when configuration changes
+            if (mDataRetainedFragment.data != null) {
+                int loading = mLoadingViewModel.getLoading();
+                onNext(mDataRetainedFragment.data);
+                mLoadingViewModel.setLoading(loading);
             }
-            mLoading = loading;
+        }
 
-            // mDataRetainedFragment.getThreadList() = null and mLoading = false
-            // if this app was killed by system before
-            if (mDataRetainedFragment.getData() == null || mLoading) {
-                getLoaderManager().initLoader(ID_LOADER, null, this);
-            }
+        mFragmentBaseBinding.setLoadingViewModel(mLoadingViewModel);
+        if (isLoading()) {
+            onLoading();
         }
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    @CallSuper
+    public void onDestroy() {
+        super.onDestroy();
 
-        // refresh when Loader is still loading data
-        if (mLoading && mSwipeRefreshLayout.isEnabled()) {
-            // see https://code.google.com/p/android/issues/detail?id=77712
-            mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(true));
+        if (mRetrofitSubscription != null) {
+            mRetrofitSubscription.unsubscribe();
         }
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-
-        mSwipeRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
+    @CallSuper
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.fragment_base, menu);
     }
 
     @Override
+    @CallSuper
     public void onPrepareOptionsMenu(Menu menu) {
-        // Disables the refresh menu when Loader is loading data.
-        menu.findItem(R.id.menu_refresh).setEnabled(!mLoading);
+        // Disables the refresh menu when loading data.
+        menu.findItem(R.id.menu_refresh).setEnabled(!isLoading());
     }
 
     @Override
+    @CallSuper
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_refresh:
-                mSwipeRefreshLayout.setRefreshing(true);
-                onRefresh();
+                startSwipeRefresh();
 
                 return true;
         }
@@ -146,78 +160,112 @@ public abstract class BaseFragment<D> extends Fragment
     }
 
     @Override
+    @CallSuper
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putBoolean(STATE_IS_LOADER_LOADING, mLoading);
+        outState.putParcelable(STATE_LOADING_VIEW_MODEL, mLoadingViewModel);
     }
 
-    private void setupSwipeRefreshLayout() {
-        if (getView() != null) {
-            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh);
-            if (mSwipeRefreshLayout != null) {
-                mSwipeRefreshLayout.setColorSchemeResources(R.color.swipe_refresh_1,
-                        R.color.swipe_refresh_2, R.color.swipe_refresh_3, R.color.swipe_refresh_4);
-
-                mSwipeRefreshLayout.setOnRefreshListener(this);
-                mSwipeRefreshLayout.setEnabled(false);
-
-                return;
-            }
-        }
-
-        throw new IllegalStateException("Can't set up SwipeRefreshLayout.");
+    /**
+     * Whether we are loading data now.
+     */
+    final boolean isLoading() {
+        return mLoadingViewModel.getLoading() != LoadingViewModel.LOADING_FINISH;
     }
 
-    void setSwipeRefreshLayoutEnabled(boolean enabled) {
-        if (mSwipeRefreshLayout != null) {
-            mSwipeRefreshLayout.setEnabled(enabled);
-        }
+    /**
+     * Show refresh progress and start to load new data.
+     */
+    private void startSwipeRefresh() {
+        mLoadingViewModel.setLoading(LoadingViewModel.LOADING_SWIPE_REFRESH);
+        onLoading();
     }
 
-    Boolean isLoading() {
-        return mLoading;
+    /**
+     * Disable {@link SwipeRefreshLayout} and start to load new data.
+     * <p>
+     * Subclass should add {@link android.widget.ProgressBar} to {@link android.support.v7.widget.RecyclerView}
+     * by itself.
+     */
+    final void startPullToRefresh() {
+        mLoadingViewModel.setLoading(LoadingViewModel.LOADING_PULL_UP_TO_REFRESH);
+        onLoading();
     }
 
-    @Override
-    public void onRefresh() {
-//        Loader loader = getLoaderManager().getLoader(ID_LOADER);
-//        if (loader == null) {
-//            getLoaderManager().initLoader(ID_LOADER, null, this);
-//        } else {
-//            loader.onContentChanged();
-//            mLoading = true;
-//        }
-        // Bug: it looks loader.onContentChanged() doesn't work
-        // when orientation changes
-        getLoaderManager().restartLoader(ID_LOADER, null, this);
+    /**
+     * Start to load new data.
+     * <p>
+     * Subclass should implement {@link #getSourceObservable()}
+     * in oder to provider its own data source {@link Observable}.
+     */
+    final void onLoading() {
+        mRetrofitSubscription = getSourceObservable()
+                .subscribeOn(Schedulers.io())
+                .finallyDo(this::finallyDo)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onNext, this::onError);
     }
 
-    @Override
-    public Loader<AsyncResult<D>> onCreateLoader(int id, Bundle args) {
-        mLoading = true;
+    /**
+     * Subclass should implement this in order to provider its
+     * data source {@link Observable}.
+     * <p>
+     * The data source {@link Observable} often comes from network
+     * or database.
+     *
+     * @return The data source {@link Observable}.
+     */
+    abstract Observable<D> getSourceObservable();
 
-        return null;
+    /**
+     * Called when a data was emitted from {@link #getSourceObservable()}.
+     * <p>
+     * Actually this method was only called once during loading (if no error occurs)
+     * because we only emit data once from {@link #getSourceObservable()}.
+     *
+     * @see Subscription
+     */
+    @CallSuper
+    void onNext(D data) {
+        mDataRetainedFragment.data = data;
     }
 
-    @Override
-    public void onLoadFinished(Loader<AsyncResult<D>> loader, AsyncResult<D> asyncResult) {
-        mDataRetainedFragment.setData(asyncResult.data);
-        mSwipeRefreshLayout.setRefreshing(false);
-        mSwipeRefreshLayout.setEnabled(true);
-        //noinspection ConstantConditions
-        getView().findViewById(R.id.progress_bar).setVisibility(View.GONE);
-        mLoading = false;
+    /**
+     * Called when an error occurs during data loading.
+     * <p>
+     * This stops the {@link #getSourceObservable()} and it will not make
+     * further calls to {@link #onNext(Object)}.
+     */
+    void onError(Throwable throwable) {
+        ToastUtil.showByText(throwable.toString(), Toast.LENGTH_LONG);
     }
 
-    @Override
-    public void onLoaderReset(Loader<AsyncResult<D>> loader) {
-
+    /**
+     * Called if it will not make further calls to {@link #onNext(Object)}
+     * or {@link #onError(Throwable)} occurred during data loading.
+     */
+    private void finallyDo() {
+        mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FINISH);
     }
 
-    public void destroyRetainedFragment() {
+    /**
+     * We must call this if used in {@link android.support.v4.view.ViewPager}
+     * otherwise leads memory leak.
+     */
+    public final void destroyRetainedFragment() {
         if (mDataRetainedFragment != null) {
             getFragmentManager().beginTransaction().remove(mDataRetainedFragment).commit();
         }
+    }
+
+    @BindingAdapter("colorSchemeResources")
+    public static void setColorSchemeResources(SwipeRefreshLayout swipeRefreshLayout, int[] colors) {
+        swipeRefreshLayout.setColorSchemeColors(colors);
+    }
+
+    @BindingAdapter("enable")
+    public static void setEnabled(SwipeRefreshLayout swipeRefreshLayout, boolean enabled) {
+        swipeRefreshLayout.setEnabled(enabled);
     }
 }

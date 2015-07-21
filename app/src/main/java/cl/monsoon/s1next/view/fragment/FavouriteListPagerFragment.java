@@ -3,17 +3,12 @@ package cl.monsoon.s1next.view.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
-import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Favourite;
 import cl.monsoon.s1next.data.api.model.Thread;
@@ -23,9 +18,8 @@ import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.activity.PostListActivity;
 import cl.monsoon.s1next.view.adapter.FavouriteListRecyclerAdapter;
-import cl.monsoon.s1next.widget.AsyncResult;
-import cl.monsoon.s1next.widget.HttpGetLoader;
 import cl.monsoon.s1next.widget.RecyclerViewHelper;
+import rx.Observable;
 
 /**
  * A Fragment representing one of the pages of favourites.
@@ -52,11 +46,6 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
         fragment.setArguments(bundle);
 
         return fragment;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_base, container, false);
     }
 
     @Override
@@ -110,38 +99,35 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
     }
 
     @Override
-    public Loader<AsyncResult<FavouritesWrapper>> onCreateLoader(int id, Bundle args) {
-        super.onCreateLoader(id, args);
-
-        return new HttpGetLoader<>(getActivity(), Api.getFavouritesUrl(mPageNum),
-                FavouritesWrapper.class);
+    Observable<FavouritesWrapper> getSourceObservable() {
+        return mS1Service.getFavouritesWrapper(mPageNum);
     }
 
     @Override
-    public void onLoadFinished(Loader<AsyncResult<FavouritesWrapper>> loader, AsyncResult<FavouritesWrapper> asyncResult) {
-        super.onLoadFinished(loader, asyncResult);
+    void onNext(FavouritesWrapper data) {
+        super.onNext(data);
 
-        if (asyncResult.exception != null) {
-            if (getUserVisibleHint()) {
-                ToastUtil.showByResId(asyncResult.getExceptionStringRes(), Toast.LENGTH_SHORT);
+        Favourites favourites = data.getFavourites();
+
+        // if user has logged out
+        if (favourites.getFavouriteList() == null) {
+            String message = data.getResult().getMessage();
+            if (!TextUtils.isEmpty(message)) {
+                ToastUtil.showByText(message, Toast.LENGTH_SHORT);
             }
         } else {
-            Favourites favourites = asyncResult.data.getFavourites();
+            mRecyclerAdapter.setDataSet(favourites.getFavouriteList());
+            mRecyclerAdapter.notifyDataSetChanged();
 
-            // if user has logged out
-            if (favourites.getFavouriteList() == null) {
-                String message = asyncResult.data.getResult().getMessage();
-                if (!TextUtils.isEmpty(message)) {
-                    ToastUtil.showByText(message, Toast.LENGTH_SHORT);
-                }
-            } else {
-                mRecyclerAdapter.setDataSet(favourites.getFavouriteList());
-                mRecyclerAdapter.notifyDataSetChanged();
+            mPagerCallback.setTotalPage(MathUtil.divide(favourites.getTotal(),
+                    favourites.getFavouritesPerPage()));
+        }
+    }
 
-                new Handler().post(() ->
-                        mPagerCallback.setTotalPage(MathUtil.divide(favourites.getTotal(),
-                                favourites.getFavouritesPerPage())));
-            }
+    @Override
+    void onError(Throwable throwable) {
+        if (getUserVisibleHint()) {
+            super.onError(throwable);
         }
     }
 

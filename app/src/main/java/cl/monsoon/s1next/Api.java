@@ -18,11 +18,6 @@ public final class Api {
 
     public static final String URL_LOGIN = prepend("api/mobile/index.php?module=login&loginsubmit=yes&loginfield=username");
 
-    public static final String URL_FORUM = prepend("api/mobile/index.php?module=forumindex");
-    private static final String URL_FAVOURITES = prepend("api/mobile/index.php?module=myfavthread");
-
-    private static final String URL_THREAD_LIST = prepend("api/mobile/index.php?module=forumdisplay");
-    private static final String URL_POST_LIST = prepend("api/mobile/index.php?module=viewthread");
     private static final String URL_QUOTE_POST_REDIRECT = prepend("forum.php?mod=redirect&goto=findpost");
 
     /**
@@ -62,28 +57,6 @@ public final class Api {
 
     private static String prepend(String suffix) {
         return URL_S1 + suffix;
-    }
-
-    public static String getFavouritesUrl(int pageNum) {
-        return Uri.parse(URL_FAVOURITES).buildUpon()
-                .appendQueryParameter("page", String.valueOf(pageNum))
-                .toString();
-    }
-
-    public static String getThreadListUrl(String forumId, int pageNum) {
-        return Uri.parse(URL_THREAD_LIST).buildUpon()
-                .appendQueryParameter("fid", forumId)
-                .appendQueryParameter("page", String.valueOf(pageNum))
-                .appendQueryParameter("tpp", String.valueOf(Config.THREADS_PER_PAGE))
-                .toString();
-    }
-
-    public static String getPostListUrl(String threadId, int pageNum) {
-        return Uri.parse(URL_POST_LIST).buildUpon()
-                .appendQueryParameter("tid", threadId)
-                .appendQueryParameter("page", String.valueOf(pageNum))
-                .appendQueryParameter("ppp", String.valueOf(Config.POSTS_PER_PAGE))
-                .toString();
     }
 
     public static String getQuotePostRedirectUrl(String threadId, String quotePostId) {
