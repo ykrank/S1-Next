@@ -6,7 +6,7 @@ import android.databinding.ObservableList;
 
 public final class DropDownItemListViewModel {
 
-    public ObservableList<CharSequence> dropDownItemList = new ObservableArrayList<>();
+    public final ObservableList<CharSequence> dropDownItemList = new ObservableArrayList<>();
 
     private int selectedItemPosition;
 
