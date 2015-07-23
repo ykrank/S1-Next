@@ -89,7 +89,7 @@ public final class GalleryActivity extends AppCompatActivity {
     }
 
     @BindingAdapter("url")
-    public static void loadImage(PhotoView photoView, String url) {
+    public static void loadImage(PhotoView photoView, CharSequence url) {
         photoView.setMaxInitialScaleFactor(1);
         photoView.enableImageTransforms(true);
 

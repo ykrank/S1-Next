@@ -27,7 +27,7 @@ public final class OpenSourceLicenseDetailActivity extends BaseActivity {
     private static final String EXTRA_LIBRARY_OR_FILE_NAME = "library_or_file_name";
     private static final String EXTRA_LICENSE_FILE_PATH = "license_file_path";
 
-    public static void startOpenSourceLicenseDetailActivity(Context context, CharSequence libraryOrFileName, String licenseFilePath) {
+    public static void startOpenSourceLicenseDetailActivity(Context context, CharSequence libraryOrFileName, CharSequence licenseFilePath) {
         Intent intent = new Intent(context, OpenSourceLicenseDetailActivity.class);
         intent.putExtra(EXTRA_LIBRARY_OR_FILE_NAME, libraryOrFileName);
         intent.putExtra(EXTRA_LICENSE_FILE_PATH, licenseFilePath);
@@ -44,7 +44,7 @@ public final class OpenSourceLicenseDetailActivity extends BaseActivity {
         CharSequence libraryOrFileName = intent.getCharSequenceExtra(EXTRA_LIBRARY_OR_FILE_NAME);
         setTitle(libraryOrFileName);
 
-        binding.setLicenseAssetViewModel(new LicenseAssetViewModel(intent.getStringExtra(
+        binding.setLicenseAssetViewModel(new LicenseAssetViewModel(intent.getCharSequenceExtra(
                 EXTRA_LICENSE_FILE_PATH)));
     }
 
@@ -54,9 +54,9 @@ public final class OpenSourceLicenseDetailActivity extends BaseActivity {
     }
 
     @BindingAdapter("filePath")
-    public static void loadLicense(TextView textView, String filePath) {
+    public static void loadLicense(TextView textView, CharSequence filePath) {
         try {
-            InputStream inputStream = textView.getContext().getAssets().open(filePath);
+            InputStream inputStream = textView.getContext().getAssets().open(filePath.toString());
             textView.setText(CharStreams.toString(new InputStreamReader(inputStream, Charsets.UTF_8)));
         } catch (IOException e) {
             throw new IllegalStateException("Can't find license.", e);

@@ -6,9 +6,9 @@ import android.text.method.ScrollingMovementMethod;
 
 public final class LicenseAssetViewModel {
 
-    public final ObservableField<String> filePath = new ObservableField<>();
+    public final ObservableField<CharSequence> filePath = new ObservableField<>();
 
-    public LicenseAssetViewModel(String filePath) {
+    public LicenseAssetViewModel(CharSequence filePath) {
         this.filePath.set(filePath);
     }
 
