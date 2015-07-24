@@ -35,7 +35,7 @@ public final class ForumListRecyclerViewAdapter extends BaseRecyclerViewAdapter<
         BindingViewHolder holder = new BindingViewHolder(binding);
         holder.itemForumBinding.setGentleAccentColor(mGentleAccentColor);
 
-        return new BindingViewHolder(binding);
+        return holder;
     }
 
     @Override
@@ -61,7 +61,7 @@ public final class ForumListRecyclerViewAdapter extends BaseRecyclerViewAdapter<
 
     public static class BindingViewHolder extends RecyclerView.ViewHolder {
 
-        private ItemForumBinding itemForumBinding;
+        private final ItemForumBinding itemForumBinding;
 
         public BindingViewHolder(ItemForumBinding itemForumBinding) {
             super(itemForumBinding.getRoot());

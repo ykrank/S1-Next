@@ -239,7 +239,6 @@ public final class PostListGatewayActivity extends FragmentActivity {
 
         public static QuotePostPageAnalysisDialogFragment newInstance(ThreadAnalysis threadAnalysis) {
             QuotePostPageAnalysisDialogFragment fragment = new QuotePostPageAnalysisDialogFragment();
-
             Bundle bundle = new Bundle();
             bundle.putParcelable(ARG_THREAD_ANALYSIS, threadAnalysis);
             fragment.setArguments(bundle);
@@ -335,7 +334,6 @@ public final class PostListGatewayActivity extends FragmentActivity {
 
         public static ErrorPromptDialogFragment newInstance(String message) {
             ErrorPromptDialogFragment fragment = new ErrorPromptDialogFragment();
-
             Bundle bundle = new Bundle();
             bundle.putString(ARG_MESSAGE, message);
             fragment.setArguments(bundle);

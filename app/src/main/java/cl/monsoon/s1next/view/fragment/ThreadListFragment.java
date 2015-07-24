@@ -34,7 +34,6 @@ public final class ThreadListFragment extends BaseViewPagerFragment
 
     public static ThreadListFragment newInstance(Forum forum) {
         ThreadListFragment fragment = new ThreadListFragment();
-
         Bundle bundle = new Bundle();
         bundle.putParcelable(ARG_FORUM, forum);
         fragment.setArguments(bundle);

@@ -47,7 +47,7 @@ public final class ThreadListRecyclerViewAdapter extends BaseRecyclerViewAdapter
         holder.itemThreadBinding.setThemeManager(mThemeManager);
         holder.itemThreadBinding.setUserViewModel(mUserViewModel);
 
-        return new BindingViewHolder(binding);
+        return holder;
     }
 
     @Override
@@ -58,7 +58,7 @@ public final class ThreadListRecyclerViewAdapter extends BaseRecyclerViewAdapter
 
     @Override
     public long getItemId(int position) {
-        return Long.parseLong(mList.get(position).getId());
+        return Long.parseLong(getItem(position).getId());
     }
 
     @BindingAdapter({"themeManager", "thread", "user"})

@@ -400,7 +400,6 @@ public final class PostListActivity extends BaseActivity
 
         public static ThreadAttachmentDialogFragment newInstance(Posts.ThreadAttachment threadAttachment) {
             ThreadAttachmentDialogFragment fragment = new ThreadAttachmentDialogFragment();
-
             Bundle bundle = new Bundle();
             bundle.putString(ARG_ATTACHMENT_TITLE, threadAttachment.getTitle());
             bundle.putParcelableArrayList(ARG_THREAD_ATTACHMENT_INFO_LIST,
@@ -433,7 +432,6 @@ public final class PostListActivity extends BaseActivity
 
         public static ThreadFavouritesAddDialogFragment newInstance(String threadId) {
             ThreadFavouritesAddDialogFragment fragment = new ThreadFavouritesAddDialogFragment();
-
             Bundle bundle = new Bundle();
             bundle.putString(ARG_THREAD_ID, threadId);
             fragment.setArguments(bundle);
@@ -445,7 +443,7 @@ public final class PostListActivity extends BaseActivity
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_favourites_add,
-                    (ViewGroup) getActivity().findViewById(R.id.drawer_layout), false);
+                    (ViewGroup) getView(), false);
 
             AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.dialog_title_favourites_add)
@@ -477,7 +475,6 @@ public final class PostListActivity extends BaseActivity
             public static ThreadFavouritesAddLoaderDialogFragment newInstance(String threadId, String description) {
                 ThreadFavouritesAddLoaderDialogFragment fragment =
                         new ThreadFavouritesAddLoaderDialogFragment();
-
                 Bundle bundle = new Bundle();
                 bundle.putString(ARG_THREAD_ID, threadId);
                 bundle.putString(ARG_REMARK, description);

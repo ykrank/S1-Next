@@ -142,7 +142,6 @@ public final class LoginFragment extends Fragment {
 
         public static LoginLoaderDialogFragment newInstance(String username, String password) {
             LoginLoaderDialogFragment fragment = new LoginLoaderDialogFragment();
-
             Bundle bundle = new Bundle();
             bundle.putString(ARG_USERNAME, username);
             bundle.putString(ARG_PASSWORD, password);

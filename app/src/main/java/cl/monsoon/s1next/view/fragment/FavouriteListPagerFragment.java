@@ -33,7 +33,6 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
 
     public static FavouriteListPagerFragment newInstance(int pageNum) {
         FavouriteListPagerFragment fragment = new FavouriteListPagerFragment();
-
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_PAGE_NUM, pageNum);
         fragment.setArguments(bundle);

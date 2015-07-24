@@ -96,7 +96,6 @@ public final class ReplyFragment extends Fragment {
 
     public static ReplyFragment newInstance(String threadId, String quotePostId) {
         ReplyFragment fragment = new ReplyFragment();
-
         Bundle bundle = new Bundle();
         bundle.putString(ARG_THREAD_ID, threadId);
         bundle.putString(ARG_QUOTE_POST_ID, quotePostId);
@@ -434,7 +433,6 @@ public final class ReplyFragment extends Fragment {
 
         public static ReplyLoaderDialogFragment newInstance(String threadId, String quotePostId, Quote quote, String reply) {
             ReplyLoaderDialogFragment fragment = new ReplyLoaderDialogFragment();
-
             Bundle bundle = new Bundle();
             bundle.putString(ARG_THREAD_ID, threadId);
             bundle.putString(ARG_QUOTE_POST_ID, quotePostId);

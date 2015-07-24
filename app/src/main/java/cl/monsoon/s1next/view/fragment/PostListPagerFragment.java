@@ -65,7 +65,6 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
 
     public static PostListPagerFragment newInstance(String threadId, int pageNum, String postId) {
         PostListPagerFragment fragment = new PostListPagerFragment();
-
         Bundle bundle = new Bundle();
         bundle.putString(ARG_THREAD_ID, threadId);
         if (!TextUtils.isEmpty(postId)) {

@@ -38,7 +38,6 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
 
     public static ThreadListPagerFragment newInstance(String forumId, int pageNum) {
         ThreadListPagerFragment fragment = new ThreadListPagerFragment();
-
         Bundle bundle = new Bundle();
         bundle.putString(ARG_FORUM_ID, forumId);
         bundle.putInt(ARG_PAGE_NUM, pageNum);
