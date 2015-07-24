@@ -9,10 +9,8 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.SeekBar;
 
-import com.google.common.collect.Range;
-
 import cl.monsoon.s1next.BR;
-import cl.monsoon.s1next.widget.InputFilterRange;
+import cl.monsoon.s1next.widget.RangeInputFilter;
 
 public final class PageTurningViewModel extends BaseObservable {
 
@@ -68,7 +66,7 @@ public final class PageTurningViewModel extends BaseObservable {
 
     public InputFilter[] getFilters() {
         // SeekBar max is zero-based
-        return new InputFilter[]{new InputFilterRange(Range.closed(1, seekBarMax.get() + 1))};
+        return new InputFilter[]{new RangeInputFilter(1, seekBarMax.get() + 1)};
     }
 
     public TextWatcher getTextWatcher() {
