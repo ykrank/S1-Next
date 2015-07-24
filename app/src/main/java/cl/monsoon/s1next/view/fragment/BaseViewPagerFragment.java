@@ -20,6 +20,7 @@ import cl.monsoon.s1next.databinding.FragmentViewPagerBinding;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.view.dialog.PageTurningDialogFragment;
+import cl.monsoon.s1next.view.internal.PagerCallback;
 import cl.monsoon.s1next.viewmodel.ViewPagerViewModel;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 
@@ -27,7 +28,8 @@ import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
  * A base Fragment wraps {@link ViewPager} and provides related methods.
  */
 public abstract class BaseViewPagerFragment extends Fragment
-        implements PageTurningDialogFragment.OnPageTurnedListener {
+        implements PageTurningDialogFragment.OnPageTurnedListener,
+        PagerCallback {
 
     /**
      * The serialization (saved instance state) Bundle key representing
@@ -111,7 +113,7 @@ public abstract class BaseViewPagerFragment extends Fragment
         return mFragmentViewPagerBinding.getViewPagerViewModel().totalPage.get();
     }
 
-    final void setTotalPage(int page) {
+    public final void setTotalPage(int page) {
         mFragmentViewPagerBinding.getViewPagerViewModel().totalPage.set(page);
         preparePageTurningMenu();
     }

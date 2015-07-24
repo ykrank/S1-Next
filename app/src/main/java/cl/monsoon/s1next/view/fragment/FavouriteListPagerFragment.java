@@ -1,7 +1,6 @@
 package cl.monsoon.s1next.view.fragment;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,24 +8,18 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
-import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.data.api.model.Favourite;
-import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.data.api.model.collection.Favourites;
 import cl.monsoon.s1next.data.api.model.wrapper.FavouritesWrapper;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.ToastUtil;
-import cl.monsoon.s1next.view.activity.PostListActivity;
 import cl.monsoon.s1next.view.adapter.FavouriteListRecyclerViewAdapter;
-import cl.monsoon.s1next.widget.RecyclerViewHelper;
+import cl.monsoon.s1next.view.internal.PagerCallback;
 import rx.Observable;
 
 /**
  * A Fragment representing one of the pages of favourites.
  * <p>
- * All activities containing this Fragment must implement {@link PagerCallback}.
- * <p>
- * Similar to {@link cl.monsoon.s1next.view.fragment.ThreadListPagerFragment}.
+ * Activity or Fragment containing this must implement {@link PagerCallback}.
  */
 public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWrapper> {
 
@@ -49,46 +42,24 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        mPageNum = getArguments().getInt(ARG_PAGE_NUM);
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerAdapter = new FavouriteListRecyclerViewAdapter();
-        recyclerView.setAdapter(mRecyclerAdapter);
-
-        recyclerView.addOnItemTouchListener(new RecyclerViewHelper(getActivity(), recyclerView,
-                new RecyclerViewHelper.OnItemClickListener() {
-
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(getActivity(), PostListActivity.class);
-
-                        Favourite favourite = mRecyclerAdapter.getItem(position);
-                        Thread thread = new Thread();
-                        thread.setId(favourite.getId());
-                        thread.setTitle(favourite.getTitle());
-                        intent.putExtra(PostListActivity.ARG_THREAD, thread);
-
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onItemLongClick(View view, int position) {
-
-                    }
-                }
-        ));
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
         mPagerCallback = (PagerCallback) getFragmentManager().findFragmentByTag(
                 FavouriteListFragment.TAG);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mPageNum = getArguments().getInt(ARG_PAGE_NUM);
+
+        RecyclerView recyclerView = getRecyclerView();
+        Activity activity = getActivity();
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        mRecyclerAdapter = new FavouriteListRecyclerViewAdapter(activity);
+        recyclerView.setAdapter(mRecyclerAdapter);
     }
 
     @Override
@@ -108,10 +79,9 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
         super.onNext(data);
 
         Favourites favourites = data.getFavourites();
-
-        // if user has logged out
         if (favourites.getFavouriteList() == null) {
             String message = data.getResult().getMessage();
+            // if user has logged out
             if (!TextUtils.isEmpty(message)) {
                 ToastUtil.showByText(message, Toast.LENGTH_SHORT);
             }
@@ -119,6 +89,7 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
             mRecyclerAdapter.setDataSet(favourites.getFavouriteList());
             mRecyclerAdapter.notifyDataSetChanged();
 
+            // update total page
             mPagerCallback.setTotalPage(MathUtil.divide(favourites.getTotal(),
                     favourites.getFavouritesPerPage()));
         }
@@ -129,17 +100,5 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
         if (getUserVisibleHint()) {
             super.onError(throwable);
         }
-    }
-
-    /**
-     * A callback interface that all activities containing this Fragment must implement.
-     */
-    public interface PagerCallback {
-
-        /**
-         * A callback to set actual total pages
-         * which used for {@link android.support.v4.view.PagerAdapter}。
-         */
-        void setTotalPage(int totalPage);
     }
 }

@@ -1,52 +1,53 @@
 package cl.monsoon.s1next.view.adapter;
 
+import android.app.Activity;
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Favourite;
+import cl.monsoon.s1next.databinding.ItemFavouriteBinding;
+import cl.monsoon.s1next.viewmodel.FavouriteViewModel;
 
-/**
- * Similar to {@link ForumListRecyclerViewAdapter}.
- */
-public final class FavouriteListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Favourite, FavouriteListRecyclerViewAdapter.ViewHolder> {
+public final class FavouriteListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Favourite, FavouriteListRecyclerViewAdapter.BindingViewHolder> {
 
-    public FavouriteListRecyclerViewAdapter() {
+    private final LayoutInflater mLayoutInflater;
+
+    public FavouriteListRecyclerViewAdapter(Activity activity) {
+        mLayoutInflater = activity.getLayoutInflater();
+
         setHasStableIds(true);
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_multi_line_text,
-                parent, false);
+    public BindingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        ItemFavouriteBinding binding = DataBindingUtil.inflate(mLayoutInflater,
+                R.layout.item_favourite, parent, false);
 
-        return new ViewHolder(view);
+        return new BindingViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Favourite favourite = mList.get(position);
-
-        TextView textView = holder.textView;
-        textView.setText(favourite.getTitle());
+    public void onBindViewHolder(BindingViewHolder holder, int position) {
+        holder.itemFavouriteBinding.setFavouriteViewModel(new FavouriteViewModel(getItem(position)));
+        holder.itemFavouriteBinding.executePendingBindings();
     }
 
     @Override
     public long getItemId(int position) {
-        return Long.parseLong(mList.get(position).getId());
+        return Long.parseLong(getItem(position).getId());
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class BindingViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView textView;
+        private final ItemFavouriteBinding itemFavouriteBinding;
 
-        public ViewHolder(View itemView) {
-            super(itemView);
+        public BindingViewHolder(ItemFavouriteBinding itemFavouriteBinding) {
+            super(itemFavouriteBinding.getRoot());
 
-            textView = (TextView) itemView;
+            this.itemFavouriteBinding = itemFavouriteBinding;
         }
     }
 }
