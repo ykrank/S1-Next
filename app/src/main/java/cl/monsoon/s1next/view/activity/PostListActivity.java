@@ -44,9 +44,9 @@ import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.adapter.ThreadAttachmentInfoListArrayAdapter;
 import cl.monsoon.s1next.view.dialog.LoginPromptDialogFragment;
+import cl.monsoon.s1next.view.dialog.PageTurningDialogFragment;
 import cl.monsoon.s1next.view.fragment.BaseFragment;
 import cl.monsoon.s1next.view.fragment.LoaderDialogFragment;
-import cl.monsoon.s1next.view.fragment.PageTurningDialogFragment;
 import cl.monsoon.s1next.view.fragment.PostListPagerFragment;
 import cl.monsoon.s1next.widget.AsyncResult;
 import cl.monsoon.s1next.widget.EventBus;
@@ -245,7 +245,7 @@ public final class PostListActivity extends BaseActivity
 
                 return true;
             case R.id.menu_page_turning:
-                new PostListPageTurningDialogFragment(mViewPager.getCurrentItem(), mTotalPages).show(
+                new PostListPageTurningDialogFragment(mTotalPages, mViewPager.getCurrentItem()).show(
                         getSupportFragmentManager(), PageTurningDialogFragment.TAG);
 
                 return true;

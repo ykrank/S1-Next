@@ -17,6 +17,7 @@ import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.StringUtil;
+import cl.monsoon.s1next.view.dialog.PageTurningDialogFragment;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 
 /**
@@ -108,7 +109,7 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_page_turning:
-                new FavouriteListPageTurningDialogFragment(mViewPager.getCurrentItem(), mTotalPages)
+                new FavouriteListPageTurningDialogFragment(mTotalPages, mViewPager.getCurrentItem())
                         .show(getChildFragmentManager(), PageTurningDialogFragment.TAG);
 
                 return true;

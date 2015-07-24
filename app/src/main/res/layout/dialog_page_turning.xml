@@ -1,33 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/dialog_padding_bottom"
-    android:paddingEnd="@dimen/dialog_padding"
-    android:paddingLeft="@dimen/dialog_padding"
-    android:paddingRight="@dimen/dialog_padding"
-    android:paddingStart="@dimen/dialog_padding"
-    android:paddingTop="@dimen/dialog_padding"
-    tools:context="cl.monsoon.s1next.view.activity.PostListActivity">
+    tools:context="cl.monsoon.s1next.view.dialog.PageTurningDialogFragment">
 
-    <SeekBar
-        android:id="@+id/seek_bar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
+    <data>
 
-    <Space
-        android:layout_width="@dimen/dialog_divider_padding"
-        android:layout_height="wrap_content" />
+        <variable
+            name="pageTurningViewModel"
+            type="cl.monsoon.s1next.viewmodel.PageTurningViewModel" />
+    </data>
 
-    <EditText
-        android:id="@+id/value"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:inputType="number"
-        android:textAppearance="@style/TextAppearance.Dense.Subhead" />
+        android:paddingBottom="@dimen/dialog_padding_bottom"
+        android:paddingEnd="@dimen/dialog_padding"
+        android:paddingLeft="@dimen/dialog_padding"
+        android:paddingRight="@dimen/dialog_padding"
+        android:paddingStart="@dimen/dialog_padding"
+        android:paddingTop="@dimen/dialog_padding">
 
-</LinearLayout>
+        <SeekBar
+            android:id="@+id/seek_bar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="@{pageTurningViewModel.seekBarMax}"
+            android:progress="@{pageTurningViewModel.seekBarProgress}"
+            app:onSeekBarChangeListener="@{pageTurningViewModel.onSeekBarChangeListener}" />
+
+        <Space
+            android:layout_width="@dimen/dialog_divider_padding"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:inputType="number"
+            android:text="@{pageTurningViewModel.seekBarProgressText}"
+            android:textAppearance="@style/TextAppearance.Dense.Subhead"
+            app:addTextChangedListener="@{pageTurningViewModel.textWatcher}"
+            app:filters="@{pageTurningViewModel.filters}" />
+
+    </LinearLayout>
+
+</layout>
