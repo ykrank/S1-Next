@@ -5,7 +5,7 @@
     tools:context="cl.monsoon.s1next.view.activity.ThreadListActivity">
     <item
         android:id="@+id/menu_sub_forums"
-        android:orderInCategory="2"
+        android:orderInCategory="0"
         android:title="@string/menu_sub_forums"
         app:showAsAction="always" />
 </menu>

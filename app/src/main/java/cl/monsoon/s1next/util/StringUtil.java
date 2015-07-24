@@ -27,6 +27,21 @@ public final class StringUtil {
     }
 
     /**
+     * <pre>
+     * StringUtil.concatWithTwoSpaces(1, "a") = "1  a"
+     * </pre>
+     *
+     * @see #concatWithTwoSpaces(CharSequence, int)
+     */
+    public static String concatWithTwoSpaces(int first, CharSequence last) {
+        return concatWithTwoSpaces(String.valueOf(first), last);
+    }
+
+    /**
+     * <pre>
+     * StringUtil.concatWithTwoSpaces("a", "b") = "a  b"
+     * </pre>
+     *
      * @see #concatWithTwoSpaces(CharSequence, int)
      */
     public static String concatWithTwoSpaces(CharSequence first, CharSequence last) {

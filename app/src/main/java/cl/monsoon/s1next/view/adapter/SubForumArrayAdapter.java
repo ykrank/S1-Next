@@ -1,6 +1,6 @@
 package cl.monsoon.s1next.view.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,22 +16,25 @@ import cl.monsoon.s1next.util.ViewUtil;
 
 public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
 
+    private final LayoutInflater mLayoutInflater;
     @LayoutRes
     private final int mResource;
+
     private final int mGentleAccentColor;
 
-    public SubForumArrayAdapter(Context context, @LayoutRes int resource, List<Forum> objects) {
-        super(context, resource, objects);
+    public SubForumArrayAdapter(Activity activity, @LayoutRes int resource, List<Forum> objects) {
+        super(activity, resource, objects);
 
+        mLayoutInflater = activity.getLayoutInflater();
         this.mResource = resource;
-        mGentleAccentColor = App.getAppComponent(context).getThemeManager().getGentleAccentColor();
+        mGentleAccentColor = App.getAppComponent(activity).getThemeManager().getGentleAccentColor();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(mResource, parent, false);
+            convertView = mLayoutInflater.inflate(mResource, parent, false);
 
             viewHolder = new ViewHolder();
             viewHolder.textView = (TextView) convertView;

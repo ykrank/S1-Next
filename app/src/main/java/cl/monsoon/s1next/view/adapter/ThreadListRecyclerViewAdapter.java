@@ -1,10 +1,10 @@
 package cl.monsoon.s1next.view.adapter;
 
-import android.content.Context;
-import android.support.v4.graphics.ColorUtils;
+import android.app.Activity;
+import android.databinding.BindingAdapter;
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -15,53 +15,45 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.data.pref.ThemeManager;
+import cl.monsoon.s1next.databinding.ItemThreadBinding;
 import cl.monsoon.s1next.util.ViewUtil;
+import cl.monsoon.s1next.viewmodel.ThreadViewModel;
+import cl.monsoon.s1next.viewmodel.UserViewModel;
 
-public final class ThreadListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Thread, ThreadListRecyclerViewAdapter.ViewHolder> {
-
-    private static final String THREAD_PERMISSION_HINT_PREFIX =
-            App.get().getString(R.string.thread_activity_thread_permission);
+public final class ThreadListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Thread, ThreadListRecyclerViewAdapter.BindingViewHolder> {
 
     @Inject
     ThemeManager mThemeManager;
 
     @Inject
-    User mUser;
+    UserViewModel mUserViewModel;
 
-    private final int mGentleTextColor;
+    private final LayoutInflater mLayoutInflater;
 
-    public ThreadListRecyclerViewAdapter(Context context) {
+    public ThreadListRecyclerViewAdapter(Activity activity) {
+        App.getAppComponent(activity).inject(this);
+        mLayoutInflater = activity.getLayoutInflater();
+
         setHasStableIds(true);
-
-        App.getAppComponent(context).inject(this);
-        mGentleTextColor = mThemeManager.getGentleAccentColor();
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_multi_line_text,
+    public BindingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        ItemThreadBinding binding = DataBindingUtil.inflate(mLayoutInflater, R.layout.item_thread,
                 parent, false);
+        BindingViewHolder holder = new BindingViewHolder(binding);
+        // we do not use view model for ThemeManager
+        // because theme changes only when Activity recreated
+        holder.itemThreadBinding.setThemeManager(mThemeManager);
+        holder.itemThreadBinding.setUserViewModel(mUserViewModel);
 
-        return new ViewHolder(view, mThemeManager);
+        return new BindingViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Thread thread = mList.get(position);
-
-        TextView textView = holder.textView;
-        textView.setText(thread.getTitle());
-        if (thread.getPermission() != 0) {
-            // add thread's permission hint
-            ViewUtil.concatWithTwoSpacesForRtlSupport(textView,
-                    "[" + THREAD_PERMISSION_HINT_PREFIX + thread.getPermission() + "]");
-        }
-        // disable TextView if user has no permission to access this thread
-        holder.setTextViewEnabled(mUser.getPermission() >= thread.getPermission());
-
-        // add thread's replies count to each thread
-        ViewUtil.concatWithTwoSpacesForRtlSupport(textView, String.valueOf(thread.getReplies()),
-                mGentleTextColor);
+    public void onBindViewHolder(BindingViewHolder holder, int position) {
+        holder.itemThreadBinding.setThreadViewModel(new ThreadViewModel(getItem(position)));
+        holder.itemThreadBinding.executePendingBindings();
     }
 
     @Override
@@ -69,30 +61,33 @@ public final class ThreadListRecyclerViewAdapter extends BaseRecyclerViewAdapter
         return Long.parseLong(mList.get(position).getId());
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        private final TextView textView;
-
-        private final int mDefaultTextViewColor;
-        private final int mDisabledTextViewColor;
-
-        public ViewHolder(View itemView, ThemeManager themeManager) {
-            super(itemView);
-
-            textView = (TextView) itemView;
-
-            mDefaultTextViewColor = textView.getCurrentTextColor();
-            mDisabledTextViewColor = ColorUtils.setAlphaComponent(mDefaultTextViewColor,
-                    themeManager.getHintOrDisabledTextAlpha());
+    @BindingAdapter({"themeManager", "thread", "user"})
+    public static void setText(TextView textView, ThemeManager themeManager, Thread thread, User user) {
+        textView.setText(thread.getTitle());
+        if (thread.getPermission() != 0) {
+            // add thread's permission hint
+            ViewUtil.concatWithTwoSpacesForRtlSupport(textView,
+                    "[" + textView.getContext().getString(R.string.thread_permission_hint)
+                            + thread.getPermission() + "]");
         }
+        // disable TextView if user has no permission to access this thread
+        boolean hasPermission = user.getPermission() >= thread.getPermission();
+        textView.setEnabled(hasPermission);
 
-        public void setTextViewEnabled(Boolean enabled) {
-            if (enabled) {
-                textView.setTextColor(mDefaultTextViewColor);
-            } else {
-                textView.setTextColor(mDisabledTextViewColor);
-            }
-            textView.setEnabled(enabled);
+        // add thread's replies count to each thread
+        ViewUtil.concatWithTwoSpacesForRtlSupport(textView, String.valueOf(thread.getReplies()),
+                hasPermission ? themeManager.getGentleAccentColor()
+                        : themeManager.getHintOrDisabledGentleAccentColor());
+    }
+
+    public static class BindingViewHolder extends RecyclerView.ViewHolder {
+
+        private final ItemThreadBinding itemThreadBinding;
+
+        public BindingViewHolder(ItemThreadBinding itemThreadBinding) {
+            super(itemThreadBinding.getRoot());
+
+            this.itemThreadBinding = itemThreadBinding;
         }
     }
 }

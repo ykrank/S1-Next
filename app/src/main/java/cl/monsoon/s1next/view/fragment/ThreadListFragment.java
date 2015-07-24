@@ -6,12 +6,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.common.base.Preconditions;
 
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
@@ -19,29 +20,21 @@ import cl.monsoon.s1next.data.api.S1Service;
 import cl.monsoon.s1next.data.api.model.Forum;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.MathUtil;
-import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 
 /**
- * A Fragment which includes {@link android.support.v4.view.ViewPager}
+ * A Fragment includes {@link android.support.v4.view.ViewPager}
  * to represent each page of thread lists.
  */
-public final class ThreadListFragment extends Fragment implements ThreadListPagerFragment.PagerCallback {
+public final class ThreadListFragment extends BaseViewPagerFragment
+        implements ThreadListPagerFragment.PagerCallback {
 
     public static final String TAG = ThreadListFragment.class.getName();
 
     private static final String ARG_FORUM = "forum";
 
-    private String mForumTitle;
+    private String mForumName;
     private String mForumId;
-    private int mTotalPages;
-
-    /**
-     * The {@link FragmentStatePagerAdapter} will provide
-     * fragments for each page of threads.
-     */
-    private PagerAdapter mAdapter;
-    private ViewPager mViewPager;
 
     public static ThreadListFragment newInstance(Forum forum) {
         ThreadListFragment fragment = new ThreadListFragment();
@@ -54,50 +47,22 @@ public final class ThreadListFragment extends Fragment implements ThreadListPage
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.screen_slide, container, false);
-    }
-
-    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Forum forum = getArguments().getParcelable(ARG_FORUM);
-        mForumTitle = forum.getName();
-        getActivity().setTitle(StringUtil.concatWithTwoSpaces(mForumTitle, 1));
+        Forum forum = Preconditions.checkNotNull(getArguments().getParcelable(ARG_FORUM));
+        mForumName = forum.getName();
+        getActivity().setTitle(getTitleWithPage(1));
         mForumId = forum.getId();
         setTotalPageByThreads(forum.getThreads());
 
-        mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
         // don't use getChildFragmentManager()
         // because we can't retain Fragments (DataRetainedFragment)
         // that are nested in other fragments
-        mAdapter = new ThreadListPagerAdapter(getFragmentManager());
-        mViewPager.setAdapter(mAdapter);
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                getActivity().setTitle(StringUtil.concatWithTwoSpaces(mForumTitle, position + 1));
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        setHasOptionsMenu(true);
+        PagerAdapter pagerAdapter = new ThreadListPagerAdapter(getFragmentManager());
+        ViewPager viewPager = getViewPager();
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.addOnPageChangeListener(this);
     }
 
     @Override
@@ -112,7 +77,8 @@ public final class ThreadListFragment extends Fragment implements ThreadListPage
         switch (item.getItemId()) {
             case R.id.menu_browser:
                 IntentUtil.startViewIntentExcludeOurApp(getActivity(),
-                        Uri.parse(Api.getThreadListUrlForBrowser(mForumId, mViewPager.getCurrentItem())));
+                        Uri.parse(Api.getThreadListUrlForBrowser(mForumId,
+                                getViewPager().getCurrentItem())));
 
                 return true;
         }
@@ -120,16 +86,14 @@ public final class ThreadListFragment extends Fragment implements ThreadListPage
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Implements {@link ThreadListPagerFragment.PagerCallback}.
-     */
+    @Override
+    protected CharSequence getTitleWithoutPageNumber() {
+        return mForumName;
+    }
+
     @Override
     public void setTotalPageByThreads(int threads) {
-        mTotalPages = MathUtil.divide(threads, S1Service.THREADS_PER_PAGE);
-
-        if (mAdapter != null) {
-            getActivity().runOnUiThread(mAdapter::notifyDataSetChanged);
-        }
+        setTotalPage(MathUtil.divide(threads, S1Service.THREADS_PER_PAGE));
     }
 
     /**
@@ -143,7 +107,7 @@ public final class ThreadListFragment extends Fragment implements ThreadListPage
 
         @Override
         public int getCount() {
-            return mTotalPages;
+            return getTotalPage();
         }
 
         @Override

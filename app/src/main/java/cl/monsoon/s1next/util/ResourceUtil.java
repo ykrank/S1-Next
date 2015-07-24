@@ -1,10 +1,12 @@
 package cl.monsoon.s1next.util;
 
 import android.content.res.Resources;
+import android.os.Build;
 import android.support.annotation.AnyRes;
 import android.support.annotation.AttrRes;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.View;
 
 public final class ResourceUtil {
 
@@ -37,5 +39,13 @@ public final class ResourceUtil {
         displayMetrics.scaledDensity = displayMetrics.density
                 * resources.getConfiguration().fontScale
                 * scale;
+    }
+
+    /**
+     * Whether current layout direction is from Right to Left.
+     */
+    public static boolean isRTL(Resources resources) {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
+                && resources.getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
     }
 }

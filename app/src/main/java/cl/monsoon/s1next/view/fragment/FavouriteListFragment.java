@@ -17,7 +17,6 @@ import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.StringUtil;
-import cl.monsoon.s1next.view.dialog.PageTurningDialogFragment;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 
 /**
@@ -46,7 +45,7 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.screen_slide, container, false);
+        return inflater.inflate(R.layout.fragment_view_pager, container, false);
     }
 
     @Override
@@ -109,8 +108,8 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_page_turning:
-                new FavouriteListPageTurningDialogFragment(mTotalPages, mViewPager.getCurrentItem())
-                        .show(getChildFragmentManager(), PageTurningDialogFragment.TAG);
+//                new FavouriteListPageTurningDialogFragment(mTotalPages, mViewPager.getCurrentItem())
+//                        .show(getChildFragmentManager(), PageTurningDialogFragment.TAG);
 
                 return true;
             case R.id.menu_browser:
@@ -176,23 +175,6 @@ public final class FavouriteListFragment extends Fragment implements FavouriteLi
             ((BaseFragment) object).destroyRetainedFragment();
 
             super.destroyItem(container, position, object);
-        }
-    }
-
-    public static class FavouriteListPageTurningDialogFragment extends PageTurningDialogFragment {
-        public FavouriteListPageTurningDialogFragment() {
-            // Every fragment must have an empty constructor, so it
-            // can be instantiated when restoring its activity's state.
-        }
-
-        @SuppressWarnings("ValidFragment")
-        public FavouriteListPageTurningDialogFragment(int currentPage, int totalPages) {
-            super(currentPage, totalPages);
-        }
-
-        @Override
-        protected void onPageTurning(int page) {
-            ((FavouriteListFragment) getParentFragment()).mViewPager.setCurrentItem(page);
         }
     }
 }

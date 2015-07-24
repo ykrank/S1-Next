@@ -137,6 +137,11 @@ public final class ThemeManager {
         return ColorUtils.setAlphaComponent(mColorAccent, getSecondaryTextAlpha());
     }
 
+    @ColorInt
+    public int getHintOrDisabledGentleAccentColor() {
+        return ColorUtils.setAlphaComponent(mColorAccent, getHintOrDisabledTextAlpha());
+    }
+
     @BackgroundAlphaDef
     private int getSecondaryTextAlpha() {
         if (isDarkTheme()) {
@@ -147,7 +152,7 @@ public final class ThemeManager {
     }
 
     @BackgroundAlphaDef
-    public int getHintOrDisabledTextAlpha() {
+    private int getHintOrDisabledTextAlpha() {
         if (isDarkTheme()) {
             return BLACK_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA;
         } else {

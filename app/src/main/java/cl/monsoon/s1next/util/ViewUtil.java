@@ -5,7 +5,6 @@ import android.support.annotation.ColorInt;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,8 +23,7 @@ public final class ViewUtil {
      * @param text the String that is concatenated to the TextView
      */
     public static void concatWithTwoSpacesForRtlSupport(TextView textView, CharSequence text) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
-                && textView.getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+        if (ResourceUtil.isRTL(textView.getResources())) {
             textView.append(StringUtil.TWO_SPACES + text, 0, 0);
         } else {
             textView.append(StringUtil.TWO_SPACES + text);
@@ -40,8 +38,7 @@ public final class ViewUtil {
      * @param textColor the <code>text</code> color
      */
     public static void concatWithTwoSpacesForRtlSupport(TextView textView, CharSequence text, @ColorInt int textColor) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
-                && textView.getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+        if (ResourceUtil.isRTL(textView.getResources())) {
             textView.setText(text + StringUtil.TWO_SPACES + textView.getText());
             ViewUtil.setForegroundColor(textView, textColor, 0, text.length());
         } else {

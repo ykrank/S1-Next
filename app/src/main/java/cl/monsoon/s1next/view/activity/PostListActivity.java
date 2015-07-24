@@ -44,7 +44,6 @@ import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.adapter.ThreadAttachmentInfoListArrayAdapter;
 import cl.monsoon.s1next.view.dialog.LoginPromptDialogFragment;
-import cl.monsoon.s1next.view.dialog.PageTurningDialogFragment;
 import cl.monsoon.s1next.view.fragment.BaseFragment;
 import cl.monsoon.s1next.view.fragment.LoaderDialogFragment;
 import cl.monsoon.s1next.view.fragment.PostListPagerFragment;
@@ -70,7 +69,7 @@ public final class PostListActivity extends BaseActivity
      * ARG_JUMP_PAGE takes precedence over {@link #ARG_SHOULD_GO_TO_LAST_PAGE}.
      */
     public static final String ARG_JUMP_PAGE = "jump_page";
-    public static final String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
+    private static final String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
 
     @Inject
     EventBus mEventBus;
@@ -102,6 +101,16 @@ public final class PostListActivity extends BaseActivity
 
     private Subscription mEventBusSubscription;
 
+    public static void startPostListActivity(Context context, cl.monsoon.s1next.data.api.model.Thread thread, boolean shouldGoToLastPage) {
+        Intent intent = new Intent(context, PostListActivity.class);
+        intent.putExtra(PostListActivity.ARG_THREAD, thread);
+        if (shouldGoToLastPage) {
+            intent.putExtra(PostListActivity.ARG_SHOULD_GO_TO_LAST_PAGE, true);
+        }
+
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,7 +134,7 @@ public final class PostListActivity extends BaseActivity
         }
 
         FrameLayout container = (FrameLayout) findViewById(R.id.frame_layout);
-        View.inflate(this, R.layout.screen_slide, container);
+        View.inflate(this, R.layout.fragment_view_pager, container);
 
         setupFloatingActionButton(R.drawable.ic_menu_comment_white_24dp);
 
@@ -245,8 +254,8 @@ public final class PostListActivity extends BaseActivity
 
                 return true;
             case R.id.menu_page_turning:
-                new PostListPageTurningDialogFragment(mTotalPages, mViewPager.getCurrentItem()).show(
-                        getSupportFragmentManager(), PageTurningDialogFragment.TAG);
+//                new PostListPageTurningDialogFragment(mTotalPages, mViewPager.getCurrentItem()).show(
+//                        getSupportFragmentManager(), PageTurningDialogFragment.TAG);
 
                 return true;
             case R.id.menu_favourites_add:
@@ -413,23 +422,6 @@ public final class PostListActivity extends BaseActivity
                             null)
                     .setPositiveButton(R.string.dialog_button_text_done, null)
                     .create();
-        }
-    }
-
-    public static class PostListPageTurningDialogFragment extends PageTurningDialogFragment {
-        public PostListPageTurningDialogFragment() {
-            // Every fragment must have an empty constructor, so it
-            // can be instantiated when restoring its activity's state.
-        }
-
-        @SuppressWarnings("ValidFragment")
-        public PostListPageTurningDialogFragment(int currentPage, int totalPages) {
-            super(currentPage, totalPages);
-        }
-
-        @Override
-        protected void onPageTurning(int page) {
-            ((PostListActivity) getActivity()).mViewPager.setCurrentItem(page);
         }
     }
 

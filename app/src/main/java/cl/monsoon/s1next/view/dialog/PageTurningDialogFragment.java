@@ -1,5 +1,6 @@
 package cl.monsoon.s1next.view.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.databinding.BindingAdapter;
@@ -22,10 +23,10 @@ import cl.monsoon.s1next.viewmodel.PageTurningViewModel;
  * A dialog shows {@link SeekBar} and {@link EditText} to
  * display the page number you want to go to.
  * <p>
- * Subclass should implement {@link #onPageTurning(int)}
- * to handle the page turning event.
+ * Host class should implement {@link PageTurningDialogFragment.OnPageTurnedListener}
+ * in order to to handle the page turning event.
  */
-public abstract class PageTurningDialogFragment extends DialogFragment {
+public final class PageTurningDialogFragment extends DialogFragment {
 
     public static final String TAG = PageTurningDialogFragment.class.getName();
 
@@ -45,6 +46,7 @@ public abstract class PageTurningDialogFragment extends DialogFragment {
         // can be instantiated when restoring its activity's state.
     }
 
+    @SuppressLint("ValidFragment")
     public PageTurningDialogFragment(int totalPages, int currentPage) {
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_TOTAL_PAGES, totalPages);
@@ -76,7 +78,8 @@ public abstract class PageTurningDialogFragment extends DialogFragment {
                 .setPositiveButton(getText(R.string.dialog_button_text_go),
                         (dialog, which) -> {
                             if (!TextUtils.isEmpty(binding.value.getText())) {
-                                onPageTurning(mPageTurningViewModel.getSeekBarProgress());
+                                ((OnPageTurnedListener) getParentFragment()).onPageTurned(
+                                        mPageTurningViewModel.getSeekBarProgress());
                             }
                         })
                 .setNegativeButton(android.R.string.cancel, null)
@@ -91,8 +94,6 @@ public abstract class PageTurningDialogFragment extends DialogFragment {
         outState.putInt(STATE_SEEK_BAR_PROGRESS, mPageTurningViewModel.getSeekBarProgress());
     }
 
-    protected abstract void onPageTurning(int page);
-
     @BindingAdapter("onSeekBarChangeListener")
     public static void setOnSeekBarChangeListener(SeekBar seekBar, SeekBar.OnSeekBarChangeListener seekBarChangeListener) {
         seekBar.setOnSeekBarChangeListener(seekBarChangeListener);
@@ -106,5 +107,18 @@ public abstract class PageTurningDialogFragment extends DialogFragment {
     @BindingAdapter("addTextChangedListener")
     public static void addTextChangedListener(EditText editText, TextWatcher textWatcher) {
         editText.addTextChangedListener(textWatcher);
+    }
+
+    /**
+     * Callback interface for responding to page turning.
+     */
+    public interface OnPageTurnedListener {
+
+        /**
+         * This method will be invoked when a page is selected.
+         *
+         * @param position Position index of the new selected page.
+         */
+        void onPageTurned(int position);
     }
 }

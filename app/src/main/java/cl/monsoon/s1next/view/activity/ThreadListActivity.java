@@ -21,6 +21,9 @@ import cl.monsoon.s1next.view.adapter.SubForumArrayAdapter;
 import cl.monsoon.s1next.view.fragment.ThreadListFragment;
 import cl.monsoon.s1next.view.fragment.ThreadListPagerFragment;
 
+/**
+ * An Activity shows the thread lists.
+ */
 public final class ThreadListActivity extends BaseActivity implements ThreadListPagerFragment.SubForumsCallback {
 
     private static final String ARG_FORUM = "forum";
@@ -31,7 +34,6 @@ public final class ThreadListActivity extends BaseActivity implements ThreadList
     private static final int MAX_ITEMS_MEASURED = 15;
 
     private MenuItem mMenuSubForums;
-
     private ListPopupWindow mListPopupWindow;
     private SubForumArrayAdapter mSubForumArrayAdapter;
 
@@ -45,7 +47,6 @@ public final class ThreadListActivity extends BaseActivity implements ThreadList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_base);
 
         setDrawerIndicatorEnabled(false);
@@ -53,8 +54,7 @@ public final class ThreadListActivity extends BaseActivity implements ThreadList
         if (savedInstanceState == null) {
             Fragment fragment = ThreadListFragment.newInstance(getIntent().getParcelableExtra(
                     ARG_FORUM));
-
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, fragment,
+            getSupportFragmentManager().beginTransaction().add(R.id.frame_layout, fragment,
                     ThreadListFragment.TAG).commit();
         }
     }
