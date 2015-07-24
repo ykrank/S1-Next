@@ -246,7 +246,8 @@ public abstract class BaseFragment<D> extends Fragment {
      * Called if it will not make further calls to {@link #onNext(Object)}
      * or {@link #onError(Throwable)} occurred during data loading.
      */
-    private void finallyDo() {
+    @CallSuper
+    void finallyDo() {
         mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FINISH);
     }
 
