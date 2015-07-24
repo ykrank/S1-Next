@@ -41,8 +41,6 @@ public final class PageTurningViewModel extends BaseObservable {
 
     public void setSeekBarProgress(int seekBarProgress) {
         this.seekBarProgress = seekBarProgress;
-        notifyPropertyChanged(BR.seekBarProgress);
-        notifyPropertyChanged(BR.seekBarProgressText);
     }
 
     public SeekBar.OnSeekBarChangeListener getOnSeekBarChangeListener() {
@@ -52,6 +50,7 @@ public final class PageTurningViewModel extends BaseObservable {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (progress != PageTurningViewModel.this.seekBarProgress) {
                     setSeekBarProgress(progress);
+                    notifyPropertyChanged(BR.seekBarProgressText);
                 }
             }
 
@@ -92,6 +91,7 @@ public final class PageTurningViewModel extends BaseObservable {
                     int progress = Integer.parseInt(value) - 1;
                     if (progress != PageTurningViewModel.this.seekBarProgress) {
                         setSeekBarProgress(progress);
+                        notifyPropertyChanged(BR.seekBarProgress);
                     }
                 }
             }
