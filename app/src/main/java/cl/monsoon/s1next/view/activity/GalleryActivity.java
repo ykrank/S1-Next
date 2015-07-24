@@ -69,7 +69,7 @@ public final class GalleryActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_gallery, menu);
 
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override

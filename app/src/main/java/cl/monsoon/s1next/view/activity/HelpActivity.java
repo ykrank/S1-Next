@@ -75,7 +75,7 @@ public final class HelpActivity extends BaseActivity {
         menu.findItem(R.id.menu_version).setTitle(getString(R.string.menu_version,
                 BuildConfig.VERSION_NAME));
 
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
