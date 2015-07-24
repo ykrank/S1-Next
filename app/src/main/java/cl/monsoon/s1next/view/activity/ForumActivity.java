@@ -21,7 +21,7 @@ import cl.monsoon.s1next.view.internal.ToolbarDropDownInterface;
 import cl.monsoon.s1next.viewmodel.DropDownItemListViewModel;
 
 /**
- * A Activity shows the forum groups.
+ * An Activity shows the forum groups.
  * <p>
  * This Activity has Spinner in Toolbar to switch between different forum groups.
  */
