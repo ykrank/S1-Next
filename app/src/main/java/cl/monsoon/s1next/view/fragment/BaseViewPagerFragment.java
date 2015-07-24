@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -20,13 +21,19 @@ import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.view.dialog.PageTurningDialogFragment;
 import cl.monsoon.s1next.viewmodel.ViewPagerViewModel;
+import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 
 /**
  * A base Fragment wraps {@link ViewPager} and provides related methods.
  */
 public abstract class BaseViewPagerFragment extends Fragment
-        implements ViewPager.OnPageChangeListener,
-        PageTurningDialogFragment.OnPageTurnedListener {
+        implements PageTurningDialogFragment.OnPageTurnedListener {
+
+    /**
+     * The serialization (saved instance state) Bundle key representing
+     * the total pages.
+     */
+    private static final String STATE_TOTAL_PAGES = "total_pages";
 
     private FragmentViewPagerBinding mFragmentViewPagerBinding;
 
@@ -45,10 +52,17 @@ public abstract class BaseViewPagerFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
 
         ViewPagerViewModel viewModel = new ViewPagerViewModel();
-        viewModel.totalPage.set(1);
+        if (savedInstanceState != null) {
+            viewModel.totalPage.set(savedInstanceState.getInt(STATE_TOTAL_PAGES));
+        } else {
+            viewModel.totalPage.set(1);
+        }
         mFragmentViewPagerBinding.setViewPagerViewModel(viewModel);
 
-        mFragmentViewPagerBinding.viewPager.addOnPageChangeListener(this);
+        // don't use getChildFragmentManager()
+        // because we can't retain Fragments (DataRetainedFragment)
+        // that are nested in other fragments
+        mFragmentViewPagerBinding.viewPager.setAdapter(getPagerAdapter(getFragmentManager()));
     }
 
     @Override
@@ -74,8 +88,8 @@ public abstract class BaseViewPagerFragment extends Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_page_turning:
-                new PageTurningDialogFragment(getTotalPage(), getViewPager().getCurrentItem())
-                        .show(getChildFragmentManager(), PageTurningDialogFragment.TAG);
+                new PageTurningDialogFragment(getTotalPage(), getCurrentPage()).show(
+                        getChildFragmentManager(), PageTurningDialogFragment.TAG);
 
                 return true;
         }
@@ -83,11 +97,17 @@ public abstract class BaseViewPagerFragment extends Fragment
         return super.onOptionsItemSelected(item);
     }
 
-    final ViewPager getViewPager() {
-        return mFragmentViewPagerBinding.viewPager;
+    @Override
+    @CallSuper
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(STATE_TOTAL_PAGES, getTotalPage());
     }
 
-    final int getTotalPage() {
+    abstract BaseFragmentStatePagerAdapter getPagerAdapter(FragmentManager fragmentManager);
+
+    private int getTotalPage() {
         return mFragmentViewPagerBinding.getViewPagerViewModel().totalPage.get();
     }
 
@@ -96,27 +116,14 @@ public abstract class BaseViewPagerFragment extends Fragment
         preparePageTurningMenu();
     }
 
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    @CallSuper
-    public void onPageSelected(int position) {
-        // position is zero-based
-        getActivity().setTitle(getTitleWithPage(position + 1));
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
+    final int getCurrentPage() {
+        return mFragmentViewPagerBinding.viewPager.getCurrentItem();
     }
 
     @Override
     @CallSuper
     public void onPageTurned(int position) {
-        getViewPager().setCurrentItem(position);
+        mFragmentViewPagerBinding.viewPager.setCurrentItem(position);
     }
 
     /**
@@ -134,21 +141,61 @@ public abstract class BaseViewPagerFragment extends Fragment
         }
     }
 
-    final CharSequence getTitleWithPage(int pageNumber) {
+    private void setTitleWithPosition(int position) {
+        String titleWithPosition;
         if (ResourceUtil.isRTL(getResources())) {
-            return StringUtil.concatWithTwoSpaces(pageNumber, getTitleWithoutPageNumber());
+            titleWithPosition = StringUtil.concatWithTwoSpaces(position + 1,
+                    getTitleWithoutPosition());
         } else {
-            return StringUtil.concatWithTwoSpaces(getTitleWithoutPageNumber(), pageNumber);
+            titleWithPosition = StringUtil.concatWithTwoSpaces(getTitleWithoutPosition(),
+                    position + 1);
         }
+
+        getActivity().setTitle(titleWithPosition);
     }
 
-    abstract CharSequence getTitleWithoutPageNumber();
+    abstract CharSequence getTitleWithoutPosition();
 
     @BindingAdapter("totalPage")
     public static void setTotalPage(ViewPager viewPager, int totalPage) {
         PagerAdapter pagerAdapter = viewPager.getAdapter();
         if (pagerAdapter != null) {
             pagerAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * A base {@link FragmentStatePagerAdapter} wraps some implement.
+     */
+    abstract class BaseFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
+
+        public BaseFragmentStatePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public final int getCount() {
+            return getTotalPage();
+        }
+
+        @Override
+        @CallSuper
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            setTitleWithPosition(position);
+
+            super.setPrimaryItem(container, position, object);
+        }
+
+        @Override
+        @CallSuper
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            if (object instanceof BaseFragment) {
+                // We don't reuse Fragment in ViewPager and its retained Fragment
+                // because it is not cost-effective nowadays.
+                ((BaseFragment) object).destroyRetainedFragment();
+            }
+
+            super.destroyItem(container, position, object);
         }
     }
 }
