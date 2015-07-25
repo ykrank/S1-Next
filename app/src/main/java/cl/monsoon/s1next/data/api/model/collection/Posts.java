@@ -23,7 +23,7 @@ import cl.monsoon.s1next.util.StringUtil;
 public final class Posts extends Account {
 
     @JsonProperty("thread")
-    private cl.monsoon.s1next.data.api.model.Thread postListInfo;
+    private Thread postListInfo;
 
     @JsonProperty("threadsortshow")
     private ThreadAttachment threadAttachment;

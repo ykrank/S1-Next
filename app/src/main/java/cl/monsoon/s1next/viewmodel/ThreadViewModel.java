@@ -3,13 +3,14 @@ package cl.monsoon.s1next.viewmodel;
 import android.databinding.ObservableField;
 import android.view.View;
 
+import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.view.activity.PostListActivity;
 
 public final class ThreadViewModel {
 
-    public ObservableField<cl.monsoon.s1next.data.api.model.Thread> thread = new ObservableField<>();
+    public ObservableField<Thread> thread = new ObservableField<>();
 
-    public ThreadViewModel(cl.monsoon.s1next.data.api.model.Thread thread) {
+    public ThreadViewModel(Thread thread) {
         this.thread.set(thread);
     }
 
