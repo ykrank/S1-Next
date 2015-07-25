@@ -89,7 +89,7 @@ public final class ForumActivity extends BaseActivity
 
             // add Spinner to Toolbar
             mToolbarSpinnerBinding = DataBindingUtil.inflate(getLayoutInflater(),
-                    R.layout.toolbar_spinner, getToolbar(), true);
+                    R.layout.toolbar_spinner, getToolbar().get(), true);
             mToolbarSpinnerBinding.spinner.setOnItemSelectedListener(this);
             // let spinner's parent to handle clicking event in order
             // to increase spinner's clicking area.

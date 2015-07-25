@@ -4,7 +4,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -13,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.common.base.Optional;
 
 import javax.inject.Inject;
 
@@ -153,9 +154,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         mToolbarPresenter.setupNavCrossIcon();
     }
 
-    @Nullable
-    final Toolbar getToolbar() {
-        return mToolbarPresenter.getToolbar();
+    final Optional<Toolbar> getToolbar() {
+        if (mToolbarPresenter == null) {
+            return Optional.absent();
+        } else {
+            return Optional.of(mToolbarPresenter.getToolbar());
+        }
     }
 
     private void setupDrawer() {
