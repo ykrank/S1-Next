@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/home"
-        android:icon="?attr/iconHome"
-        android:title="@string/home" />
-    <item
-        android:id="@+id/favourites"
-        android:icon="?attr/iconFavourites"
-        android:title="@string/favourites" />
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/home"
+            android:icon="?attr/iconHome"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/favourites"
+            android:icon="?attr/iconFavourites"
+            android:title="@string/favourites" />
+    </group>
     <group android:id="@+id/sub_header">
         <item
             android:id="@+id/settings"

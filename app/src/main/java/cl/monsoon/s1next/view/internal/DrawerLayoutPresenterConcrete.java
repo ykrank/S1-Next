@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
@@ -53,9 +54,10 @@ public final class DrawerLayoutPresenterConcrete extends DrawerLayoutPresenter
 
     @Override
     protected void setupNavDrawerItem(DrawerLayout drawerLayout, NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(this);
-
         setupNavDrawerHeader(drawerLayout, navigationView);
+
+        navigationView.setNavigationItemSelectedListener(this);
+        setupNavDrawerItemChecked(navigationView);
     }
 
     private void setupNavDrawerHeader(DrawerLayout drawerLayout, NavigationView navigationView) {
@@ -133,6 +135,21 @@ public final class DrawerLayoutPresenterConcrete extends DrawerLayoutPresenter
         }
 
         return false;
+    }
+
+    private void setupNavDrawerItemChecked(NavigationView navigationView) {
+        MenuItem menuItem = null;
+        Menu menu = navigationView.getMenu();
+        if (mFragmentActivity instanceof ForumActivity) {
+            menuItem = menu.findItem(R.id.home);
+        } else if (mFragmentActivity instanceof FavouriteListActivity) {
+            menuItem = menu.findItem(R.id.favourites);
+        }
+        // SettingsActivity and HelpActivity don't have drawer
+        // so it's no need to set checked theirs MenuItem
+        if (menuItem != null) {
+            menuItem.setChecked(true);
+        }
     }
 
     private void onHomeMenuSelected() {
