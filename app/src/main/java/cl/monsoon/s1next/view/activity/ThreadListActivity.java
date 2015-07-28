@@ -88,17 +88,13 @@ public final class ThreadListActivity extends BaseActivity implements ThreadList
             mListPopupWindow = new ListPopupWindow(this);
             mListPopupWindow.setContentWidth(ListPopupWindow.MATCH_PARENT);
 
-            mSubForumArrayAdapter = new SubForumArrayAdapter(this,
-                    R.layout.item_popup_menu_dropdown, forumList);
+            mSubForumArrayAdapter = new SubForumArrayAdapter(this, R.layout.item_popup_menu_dropdown,
+                    forumList);
             mListPopupWindow.setAdapter(mSubForumArrayAdapter);
             mListPopupWindow.setOnItemClickListener((parent, view, position, id) -> {
-                Forum forum = mSubForumArrayAdapter.getItem(position);
-
                 // we use the same activity (ThreadListActivity) for sub forum
-                Intent intent = new Intent(ThreadListActivity.this, ThreadListActivity.class);
-                intent.putExtra(ThreadListActivity.ARG_FORUM, forum);
-
-                startActivity(intent);
+                ThreadListActivity.startThreadListActivity(this, mSubForumArrayAdapter.getItem(
+                        position));
 
                 mListPopupWindow.dismiss();
             });
