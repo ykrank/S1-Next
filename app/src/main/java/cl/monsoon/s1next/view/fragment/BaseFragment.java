@@ -105,7 +105,6 @@ public abstract class BaseFragment<D> extends Fragment {
                     .commit();
 
             // start to load data because we start this Fragment the first time
-            // or the retained Fragment was killed by system
             mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FIRST_TIME);
         } else {
             mDataRetainedFragment = (DataRetainedFragment) fragment;
@@ -115,6 +114,10 @@ public abstract class BaseFragment<D> extends Fragment {
                 int loading = mLoadingViewModel.getLoading();
                 onNext(mDataRetainedFragment.data);
                 mLoadingViewModel.setLoading(loading);
+            } else {
+                // start to load data because the retained Fragment was killed by system
+                // and we have no data to load
+                mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FIRST_TIME);
             }
         }
 
