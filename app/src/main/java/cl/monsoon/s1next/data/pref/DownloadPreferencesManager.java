@@ -5,8 +5,6 @@ import com.bumptech.glide.signature.StringSignature;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 
-import java.util.concurrent.Callable;
-
 import cl.monsoon.s1next.data.Wifi;
 import cl.monsoon.s1next.util.DateUtil;
 
@@ -171,10 +169,10 @@ public final class DownloadPreferencesManager {
 
         private static final AvatarCacheInvalidationInterval[] VALUES = AvatarCacheInvalidationInterval.values();
 
-        private final Callable<String> callable;
+        private final Supplier<String> supplier;
 
-        AvatarCacheInvalidationInterval(Callable<String> callable) {
-            this.callable = callable;
+        AvatarCacheInvalidationInterval(Supplier<String> supplier) {
+            this.supplier = supplier;
         }
 
         /**
@@ -184,11 +182,7 @@ public final class DownloadPreferencesManager {
          * of date that will be mixed in to the cache key.
          */
         private Key getSignature() {
-            try {
-                return new StringSignature(callable.call());
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to generate a string signature.", e);
-            }
+            return new StringSignature(supplier.get());
         }
     }
 }
