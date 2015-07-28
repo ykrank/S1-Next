@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.api.model.Quote;
+import cl.monsoon.s1next.data.api.model.ThreadLink;
 
 public final class Api {
 
@@ -59,10 +60,10 @@ public final class Api {
         return URL_S1 + suffix;
     }
 
-    public static String getQuotePostRedirectUrl(String threadId, String quotePostId) {
+    public static String getQuotePostRedirectUrl(ThreadLink threadLink) {
         return Uri.parse(URL_QUOTE_POST_REDIRECT).buildUpon()
-                .appendQueryParameter("ptid", threadId)
-                .appendQueryParameter("pid", quotePostId)
+                .appendQueryParameter("ptid", threadLink.getThreadId())
+                .appendQueryParameter("pid", threadLink.getQuotePostId().get())
                 .toString();
     }
 

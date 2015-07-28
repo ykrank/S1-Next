@@ -50,7 +50,7 @@ final class AppModule {
 
     @Provides
     @Singleton
-    S1Service providerRetrofit(Context context) {
+    OkHttpClient providerOkHttpClient(Context context) {
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setConnectTimeout(20, TimeUnit.SECONDS);
         okHttpClient.setWriteTimeout(20, TimeUnit.SECONDS);
@@ -60,6 +60,12 @@ final class AppModule {
                 CookiePolicy.ACCEPT_ALL);
         okHttpClient.setCookieHandler(cookieManager);
 
+        return okHttpClient;
+    }
+
+    @Provides
+    @Singleton
+    S1Service providerRetrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(S1Service.BASE_URL)

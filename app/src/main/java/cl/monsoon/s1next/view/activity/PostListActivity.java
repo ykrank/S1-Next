@@ -1,5 +1,6 @@
 package cl.monsoon.s1next.view.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -9,6 +10,7 @@ import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Browser;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -26,6 +28,8 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.inject.Inject;
 
 import cl.monsoon.s1next.Api;
@@ -34,6 +38,8 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.Wifi;
 import cl.monsoon.s1next.data.api.S1Service;
 import cl.monsoon.s1next.data.api.model.Result;
+import cl.monsoon.s1next.data.api.model.Thread;
+import cl.monsoon.s1next.data.api.model.ThreadLink;
 import cl.monsoon.s1next.data.api.model.collection.Posts;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
 import cl.monsoon.s1next.data.event.QuoteEvent;
@@ -62,13 +68,13 @@ public final class PostListActivity extends BaseActivity
         implements PostListPagerFragment.PagerCallback,
         View.OnClickListener {
 
-    public static final String ARG_THREAD = "thread";
-    public static final String ARG_QUOTE_POST_ID = "quote_post_id";
-
+    private static final String ARG_THREAD = "thread";
+    private static final String ARG_QUOTE_POST_ID = "quote_post_id";
     /**
      * ARG_JUMP_PAGE takes precedence over {@link #ARG_SHOULD_GO_TO_LAST_PAGE}.
      */
-    public static final String ARG_JUMP_PAGE = "jump_page";
+    private static final String ARG_JUMP_PAGE = "jump_page";
+    private static final String ARG_COME_FROM_OTHER_APP = "come_from_other_app";
     private static final String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
 
     @Inject
@@ -109,6 +115,23 @@ public final class PostListActivity extends BaseActivity
         }
 
         context.startActivity(intent);
+    }
+
+    public static void startPostListActivity(Activity activity, ThreadLink threadLink) {
+        Intent intent = new Intent(activity, PostListActivity.class);
+        Thread thread = new Thread();
+        thread.setId(threadLink.getThreadId());
+        thread.setTitle(StringUtils.EMPTY);
+        intent.putExtra(ARG_THREAD, thread);
+        intent.putExtra(ARG_JUMP_PAGE, threadLink.getJumpPage());
+        if (threadLink.getQuotePostId().isPresent()) {
+            intent.putExtra(ARG_QUOTE_POST_ID, threadLink.getQuotePostId().get());
+        }
+        intent.putExtra(ARG_COME_FROM_OTHER_APP, !activity.getPackageName().equals(
+                // see android.text.style.URLSpan#onClick(View)
+                activity.getIntent().getStringExtra(Browser.EXTRA_APPLICATION_ID)));
+
+        activity.startActivity(intent);
     }
 
     @Override
@@ -235,7 +258,7 @@ public final class PostListActivity extends BaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (getIntent().getBooleanExtra(PostListGatewayActivity.ARG_COME_FROM_OTHER_APP, false)) {
+                if (getIntent().getBooleanExtra(ARG_COME_FROM_OTHER_APP, false)) {
                     // this activity is not part of this app's task
                     // so create a new task when navigating up
                     TaskStackBuilder.create(this)

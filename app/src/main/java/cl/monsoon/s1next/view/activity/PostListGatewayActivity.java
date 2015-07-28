@@ -2,23 +2,22 @@ package cl.monsoon.s1next.view.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.provider.Browser;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.Loader;
-import android.text.TextUtils;
 
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,12 +26,12 @@ import javax.inject.Inject;
 import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.data.api.model.Thread;
+import cl.monsoon.s1next.data.api.model.ThreadLink;
 import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.util.IntentUtil;
-import cl.monsoon.s1next.view.fragment.LoaderDialogFragment;
-import cl.monsoon.s1next.widget.AsyncResult;
-import cl.monsoon.s1next.widget.HttpRedirectLoader;
+import cl.monsoon.s1next.view.dialog.ProgressDialogFragment;
+import rx.Observable;
+import rx.Subscriber;
 
 /**
  * An Activity to detect whether the thread link (URI) from Intent is valid.
@@ -45,8 +44,6 @@ public final class PostListGatewayActivity extends FragmentActivity {
     @Inject
     ThemeManager mThemeManager;
 
-    public static final String ARG_COME_FROM_OTHER_APP = "come_from_other_app";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // default theme for this Activity is dark theme
@@ -58,168 +55,20 @@ public final class PostListGatewayActivity extends FragmentActivity {
 
         if (savedInstanceState == null) {
             Uri uri = getIntent().getData();
-            if (uri != null) {
-                ThreadAnalysis threadAnalysis = parse(uri.toString());
-                if (threadAnalysis == null) {
-                    ErrorPromptDialogFragment.newInstance(
-                            R.string.dialog_message_invalid_or_unsupported_link).show(
-                            getSupportFragmentManager(), ErrorPromptDialogFragment.TAG);
+            Optional<ThreadLink> threadLink = ThreadLink.parse(uri.toString());
+            if (threadLink.isPresent()) {
+                ThreadLink threadLinkInstance = threadLink.get();
+                if (threadLinkInstance.getQuotePostId().isPresent()) {
+                    QuotePostPageParserDialogFragment.newInstance(threadLinkInstance).show(
+                            getSupportFragmentManager(), QuotePostPageParserDialogFragment.TAG);
                 } else {
-                    if (TextUtils.isEmpty(threadAnalysis.quotePostId)) {
-                        startPostListActivity(threadAnalysis.threadId, threadAnalysis.jumpPage);
-                        finish();
-                    } else
-                        QuotePostPageAnalysisDialogFragment.newInstance(threadAnalysis).show(
-                                getSupportFragmentManager(), QuotePostPageAnalysisDialogFragment.TAG);
+                    PostListActivity.startPostListActivity(this, threadLinkInstance);
+                    finish();
                 }
             } else {
-                throw new IllegalStateException("Uri can't be null.");
-            }
-        }
-    }
-
-    private static ThreadAnalysis parse(String url) {
-        // example: http://bbs.saraba1st.com/2b/forum.php?mod=redirect&goto=findpost&pid=27217893&ptid=1074030
-        Pattern pattern = Pattern.compile("ptid=(\\d+)");
-        Matcher matcher = pattern.matcher(url);
-        if (matcher.find()) {
-            ThreadAnalysis.Builder builder = new ThreadAnalysis.Builder(matcher.group(1));
-
-            matcher.usePattern(Pattern.compile("pid=(\\d+)"));
-            if (matcher.find()) {
-                builder.quotePostId(matcher.group(1));
-            }
-
-            return builder.build();
-        }
-
-        // example: http://bbs.saraba1st.com/2b/thread-1074030-1-1.html
-        matcher.usePattern(Pattern.compile("thread-(\\d+)-(\\d+)"));
-        if (matcher.find()) {
-            return new ThreadAnalysis.Builder(matcher.group(1))
-                    .jumpPage(Integer.parseInt(matcher.group(2)))
-                    .build();
-        }
-
-        // example:
-        // http://bbs.saraba1st.com/2b/forum.php?mod=viewthread&tid=1074030
-        matcher.usePattern(Pattern.compile("tid=(\\d+)"));
-        if (matcher.find()) {
-            ThreadAnalysis.Builder builder = new ThreadAnalysis.Builder(matcher.group(1));
-
-            // example: http://bbs.saraba1st.com/2b/forum.php?mod=viewthread&tid=1074030&page=7
-            matcher.usePattern(Pattern.compile("page=(\\d+)"));
-            if (matcher.find()) {
-                builder.jumpPage(Integer.parseInt(matcher.group(1)));
-            }
-
-            return builder.build();
-        }
-
-        // example: http://bbs.saraba1st.com/2b/archiver/tid-1074030.html
-        matcher.usePattern(Pattern.compile("tid-(\\d+)"));
-        if (matcher.find()) {
-            ThreadAnalysis.Builder builder = new ThreadAnalysis.Builder(matcher.group(1));
-
-            // example: http://bbs.saraba1st.com/2b/archiver/tid-1074030.html?page=7
-            matcher.usePattern(Pattern.compile("page=(\\d+)"));
-            if (matcher.find()) {
-                builder.jumpPage(Integer.parseInt(matcher.group(1)));
-            }
-
-            return builder.build();
-        }
-
-        return null;
-    }
-
-    private void startPostListActivity(String threadId, int jumpPage) {
-        startPostListActivity(threadId, jumpPage, null);
-    }
-
-    private void startPostListActivity(String threadId, int jumpPage, String quotePostId) {
-        Intent intent = new Intent(this, PostListActivity.class);
-
-        Thread thread = new Thread();
-        thread.setId(threadId);
-        thread.setTitle(StringUtils.EMPTY);
-        intent.putExtra(PostListActivity.ARG_THREAD, thread);
-        intent.putExtra(PostListActivity.ARG_JUMP_PAGE, jumpPage);
-        if (!TextUtils.isEmpty(quotePostId)) {
-            intent.putExtra(PostListActivity.ARG_QUOTE_POST_ID, quotePostId);
-        }
-        // see android.text.style.URLSpan#onClick(View)
-        intent.putExtra(ARG_COME_FROM_OTHER_APP, !getPackageName().equals(
-                getIntent().getStringExtra(Browser.EXTRA_APPLICATION_ID)));
-
-        startActivity(intent);
-    }
-
-    private static class ThreadAnalysis implements Parcelable {
-
-        public static final Parcelable.Creator<ThreadAnalysis> CREATOR = new Parcelable.Creator<ThreadAnalysis>() {
-
-            @Override
-            public ThreadAnalysis createFromParcel(Parcel source) {
-                return new ThreadAnalysis(source);
-            }
-
-            @Override
-            public ThreadAnalysis[] newArray(int size) {
-                return new ThreadAnalysis[size];
-            }
-        };
-
-        private final String threadId;
-        private final int jumpPage;
-        private final String quotePostId;
-
-        private ThreadAnalysis(Parcel source) {
-            threadId = source.readString();
-            jumpPage = source.readInt();
-            quotePostId = source.readString();
-        }
-
-        private ThreadAnalysis(Builder builder) {
-            this.threadId = builder.threadId;
-            this.jumpPage = builder.jumpPage;
-            this.quotePostId = builder.quotePostId;
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(threadId);
-            dest.writeInt(jumpPage);
-            dest.writeString(quotePostId);
-        }
-
-        public static class Builder {
-
-            private final String threadId;
-            private int jumpPage = 1;
-            private String quotePostId;
-
-            public Builder(String threadId) {
-                this.threadId = threadId;
-            }
-
-            public Builder jumpPage(int jumpPage) {
-                this.jumpPage = jumpPage;
-                return this;
-            }
-
-            public Builder quotePostId(String quotePostId) {
-                this.quotePostId = quotePostId;
-                return this;
-            }
-
-            public ThreadAnalysis build() {
-                return new ThreadAnalysis(this);
+                ErrorPromptDialogFragment.newInstance(this,
+                        R.string.dialog_message_invalid_or_unsupported_link).show(
+                        getSupportFragmentManager(), ErrorPromptDialogFragment.TAG);
             }
         }
     }
@@ -227,30 +76,77 @@ public final class PostListGatewayActivity extends FragmentActivity {
     /**
      * Gets the quote post's page in the thread.
      */
-    public static class QuotePostPageAnalysisDialogFragment extends LoaderDialogFragment<HttpRedirectLoader.RedirectUrl> {
+    public static class QuotePostPageParserDialogFragment extends ProgressDialogFragment<String> {
 
-        private static final String TAG = QuotePostPageAnalysisDialogFragment.class.getName();
+        private static final String TAG = QuotePostPageParserDialogFragment.class.getName();
 
-        private static final String ARG_THREAD_ANALYSIS = "thread_analysis";
+        private static final String ARG_THREAD_LINK = "thread_link";
 
-        private ThreadAnalysis mThreadAnalysis;
-
-        private boolean mShouldDismiss = true;
-
-        public static QuotePostPageAnalysisDialogFragment newInstance(ThreadAnalysis threadAnalysis) {
-            QuotePostPageAnalysisDialogFragment fragment = new QuotePostPageAnalysisDialogFragment();
+        private static QuotePostPageParserDialogFragment newInstance(ThreadLink threadLink) {
+            QuotePostPageParserDialogFragment fragment = new QuotePostPageParserDialogFragment();
             Bundle bundle = new Bundle();
-            bundle.putParcelable(ARG_THREAD_ANALYSIS, threadAnalysis);
+            bundle.putParcelable(ARG_THREAD_LINK, threadLink);
             fragment.setArguments(bundle);
 
             return fragment;
         }
 
         @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+        protected Observable<String> getSourceObservable() {
+            return Observable.create(new Observable.OnSubscribe<String>() {
+                @Override
+                public void call(Subscriber<? super String> subscriber) {
+                    ThreadLink threadLink = getArguments().getParcelable(ARG_THREAD_LINK);
+                    // get the redirect URL for quote post link.
+                    Request request = new Request.Builder()
+                            .url(Api.getQuotePostRedirectUrl(threadLink))
+                            .build();
+                    Call call = App.getAppComponent(getActivity()).getOkHttpClient().newCall(request);
+                    try {
+                        Response response = call.execute();
+                        response.body().close();
+                        subscriber.onNext(response.request().urlString());
+                        subscriber.onCompleted();
+                    } catch (IOException e) {
+                        subscriber.onError(e);
+                    } finally {
+                        call.cancel();
+                    }
+                }
+            });
+        }
 
-            mThreadAnalysis = getArguments().getParcelable(ARG_THREAD_ANALYSIS);
+        @Override
+        protected void onNext(String url) {
+            Optional<Integer> jumpPage = parseQuotePostPage(url);
+            if (jumpPage.isPresent()) {
+                ThreadLink threadLink = Preconditions.checkNotNull(getArguments().getParcelable(
+                        ARG_THREAD_LINK));
+                ThreadLink threadLinkWithJumpPage = new ThreadLink.Builder(threadLink.getThreadId())
+                        .jumpPage(jumpPage.get())
+                        .quotePostId(threadLink.getQuotePostId().get())
+                        .build();
+                dismiss();
+                PostListActivity.startPostListActivity(getActivity(), threadLinkWithJumpPage);
+                getActivity().finish();
+            } else {
+                dismiss();
+                ErrorPromptDialogFragment.newInstance(getActivity(),
+                        R.string.dialog_message_quote_not_found).show(getFragmentManager(),
+                        ErrorPromptDialogFragment.TAG);
+            }
+        }
+
+        @Override
+        protected void onError(Throwable throwable) {
+            dismiss();
+            ErrorPromptDialogFragment.newInstance(throwable.toString()).show(getFragmentManager(),
+                    ErrorPromptDialogFragment.TAG);
+        }
+
+        @Override
+        protected void finallyDo() {
+
         }
 
         @Override
@@ -258,81 +154,37 @@ public final class PostListGatewayActivity extends FragmentActivity {
             return getString(R.string.dialog_message_processing);
         }
 
-        @Override
-        public void onDismiss(DialogInterface dialog) {
-            super.onDismiss(dialog);
-
-            if (mShouldDismiss) {
-                // getActivity() = null when configuration changes (like orientation changes)
-                if (getActivity() != null) {
-                    getActivity().finish();
-                }
-            }
-        }
-
-        @Override
-        public Loader<AsyncResult<HttpRedirectLoader.RedirectUrl>> onCreateLoader(@LoaderId int id, Bundle args) {
-            return new HttpRedirectLoader(getActivity(), Api.getQuotePostRedirectUrl(
-                    mThreadAnalysis.threadId, mThreadAnalysis.quotePostId));
-        }
-
-        @Override
-        public void onLoadFinished(Loader<AsyncResult<HttpRedirectLoader.RedirectUrl>> loader, AsyncResult<HttpRedirectLoader.RedirectUrl> asyncResult) {
-            if (asyncResult.exception != null) {
-                mShouldDismiss = false;
-
-                String exception;
-                String exceptionPrefix = getString(asyncResult.getExceptionStringRes());
-                String period = getString(R.string.period);
-                // https://developer.android.com/design/style/writing.html#punctuation
-                // we do not use a period after a single sentence in a toast
-                // se we need add a period to the dialog message
-                if (!exceptionPrefix.endsWith(period)) {
-                    exception = exceptionPrefix;
-                } else {
-                    exception = exceptionPrefix + period;
-                }
-                new Handler().post(() ->
-                        ErrorPromptDialogFragment.newInstance(exception).show(getFragmentManager(),
-                                ErrorPromptDialogFragment.TAG));
-            } else {
-                int page = parseQuotePostPage(asyncResult.data.getUrl());
-                if (page == -1) {
-                    mShouldDismiss = false;
-                    new Handler().post(() ->
-                            ErrorPromptDialogFragment.newInstance(
-                                    R.string.dialog_message_quote_not_found)
-                                    .show(getFragmentManager(), ErrorPromptDialogFragment.TAG));
-                } else {
-                    ((PostListGatewayActivity) getActivity()).startPostListActivity(
-                            mThreadAnalysis.threadId, page, mThreadAnalysis.quotePostId);
-                }
-                new Handler().post(QuotePostPageAnalysisDialogFragment.this::dismiss);
-            }
-        }
-
-        private static int parseQuotePostPage(String url) {
+        /**
+         * Parses redirect link in order to get quote post page.
+         *
+         * @param url The redirect link.
+         */
+        private Optional<Integer> parseQuotePostPage(String url) {
             // example: http://bbs.saraba1st.com/2b/forum.php?mod=viewthread&tid=1074030&page=1#pid27217893
             Pattern pattern = Pattern.compile("page=(\\d+)");
             Matcher matcher = pattern.matcher(url);
             if (matcher.find()) {
-                return Integer.parseInt(matcher.group(1));
+                return Optional.of(Integer.parseInt(matcher.group(1)));
             }
-            return -1;
+            return Optional.absent();
         }
     }
 
+    /**
+     * A dialog shows error prompt if the thread link is invalid.
+     * Clicks the negative button can let user open this thread link in browser.
+     */
     public static class ErrorPromptDialogFragment extends DialogFragment {
 
         private static final String TAG = ErrorPromptDialogFragment.class.getName();
 
         private static final String ARG_MESSAGE = "message";
 
-        public static ErrorPromptDialogFragment newInstance(@StringRes int message) {
-            return newInstance(App.get().getString(message));
+        private static ErrorPromptDialogFragment newInstance(Context context, @StringRes int message) {
+            return newInstance(context.getString(message));
         }
 
-        public static ErrorPromptDialogFragment newInstance(String message) {
+        private static ErrorPromptDialogFragment newInstance(String message) {
             ErrorPromptDialogFragment fragment = new ErrorPromptDialogFragment();
             Bundle bundle = new Bundle();
             bundle.putString(ARG_MESSAGE, message);
