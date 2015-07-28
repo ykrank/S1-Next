@@ -1,6 +1,7 @@
 package cl.monsoon.s1next.data.api.model;
 
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.support.v4.util.SimpleArrayMap;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -71,6 +72,12 @@ public final class Post {
         this.userId = userId;
     }
 
+    /**
+     * Replies are null sometimes.
+     * <p>
+     * See https://github.com/floating-cat/S1-Next/issues/6
+     */
+    @Nullable
     public String getReply() {
         return reply;
     }

@@ -138,8 +138,6 @@ public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter<P
 
         String reply = post.getReply();
         TextView replayView = itemViewHolder.post;
-        // some replies are empty
-        // like http://bbs.saraba1st.com/2b/thread-1008413-1-1.html#authorposton24836448
         if (TextUtils.isEmpty(reply)) {
             replayView.setText(null);
         } else {
