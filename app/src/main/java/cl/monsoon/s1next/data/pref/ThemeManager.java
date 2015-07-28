@@ -109,7 +109,6 @@ public final class ThemeManager {
     }
 
     public boolean isDefaultTheme() {
-        // default theme in AndroidManifest.xml is dark theme
         return getTheme() == DEFAULT_THEME;
     }
 
