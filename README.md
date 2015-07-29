@@ -4,9 +4,13 @@
 
 This is the Android Client for [STAGE1](http://bbs.saraba1st.com/2b/forum.php).
 
-## LICENSE
+## License
 
-[Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+[Apache License, Version 2.0](LICENSE.txt)
+
+## Third-party Licenses
+
+See [Licenses](app/src/main/assets/text/license)
 
 ## Alternatives
 
