@@ -4,9 +4,9 @@ import android.databinding.ObservableField;
 
 public final class ImageViewModel {
 
-    public final ObservableField<CharSequence> url = new ObservableField<>();
+    public final ObservableField<String> url = new ObservableField<>();
 
-    public ImageViewModel(CharSequence url) {
+    public ImageViewModel(String url) {
         this.url.set(url);
     }
 }

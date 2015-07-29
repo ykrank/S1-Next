@@ -35,7 +35,7 @@ public final class OpenSourceLicensesFragment extends PreferenceFragment {
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
         OpenSourceLicenseDetailActivity.startOpenSourceLicenseDetailActivity(preference.getContext(),
-                preference.getTitle(), preference.peekExtras().getString(
+                preference.getTitle().toString(), preference.peekExtras().getString(
                         EXTRAS_LIBRARY_OR_FILE_OPEN_SOURCE_LICENSE_FILE_PATH));
 
         return true;
