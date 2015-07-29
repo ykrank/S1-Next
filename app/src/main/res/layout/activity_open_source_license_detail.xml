@@ -8,8 +8,8 @@
     <data>
 
         <variable
-            name="licenseAssetViewModel"
-            type="cl.monsoon.s1next.viewmodel.LicenseAssetViewModel" />
+            name="textAssetViewModel"
+            type="cl.monsoon.s1next.viewmodel.TextAssetViewModel" />
     </data>
 
     <LinearLayout
@@ -19,11 +19,16 @@
 
         <include layout="@layout/app_bar_layout" />
 
-        <TextView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:filePath="@{licenseAssetViewModel.filePath}"
-            app:movementMethod="@{licenseAssetViewModel.scrollingMovementMethod}" />
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:filePath="@{textAssetViewModel.filePath}" />
+
+        </ScrollView>
 
     </LinearLayout>
 

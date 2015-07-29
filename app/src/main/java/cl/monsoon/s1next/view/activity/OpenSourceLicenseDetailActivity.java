@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.databinding.ActivityOpenSourceLicenseDetailBinding;
-import cl.monsoon.s1next.viewmodel.LicenseAssetViewModel;
+import cl.monsoon.s1next.viewmodel.TextAssetViewModel;
 
 /**
  * An Activity shows the open source license for corresponding library or file.
@@ -34,7 +34,7 @@ public final class OpenSourceLicenseDetailActivity extends BaseActivity {
         String libraryOrFileName = intent.getStringExtra(EXTRA_LIBRARY_OR_FILE_NAME);
         setTitle(libraryOrFileName);
 
-        binding.setLicenseAssetViewModel(new LicenseAssetViewModel(intent.getStringExtra(
+        binding.setLicenseAssetViewModel(new TextAssetViewModel(intent.getStringExtra(
                 EXTRA_LICENSE_FILE_PATH)));
     }
 }
