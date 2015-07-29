@@ -34,7 +34,7 @@ public final class OpenSourceLicenseDetailActivity extends BaseActivity {
         String libraryOrFileName = intent.getStringExtra(EXTRA_LIBRARY_OR_FILE_NAME);
         setTitle(libraryOrFileName);
 
-        binding.setLicenseAssetViewModel(new TextAssetViewModel(intent.getStringExtra(
+        binding.setTextAssetViewModel(new TextAssetViewModel(intent.getStringExtra(
                 EXTRA_LICENSE_FILE_PATH)));
     }
 }
