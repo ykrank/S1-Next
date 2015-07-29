@@ -47,7 +47,7 @@ dependencies {
     // https://github.com/google/dagger/issues/95
     compile 'javax.annotation:javax.annotation-api:1.2'
 
-    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.0.4'
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.0.5'
 
     apt 'com.android.databinding:compiler:1.0-rc1'
 
@@ -67,5 +67,5 @@ dependencies {
 
     compile 'com.bugsnag:bugsnag-android:3.2.6'
     compile 'com.github.bumptech.glide:glide:3.6.1'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.0-rc4'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.0'
 }
