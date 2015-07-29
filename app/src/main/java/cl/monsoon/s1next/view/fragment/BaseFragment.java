@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.common.base.Preconditions;
+
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.S1Service;
@@ -91,12 +93,8 @@ public abstract class BaseFragment<D> extends Fragment {
         // so we need to confirm this Fragment has unique tag in order to compose
         // a new unique tag for its retained Fragment.
         // Without this, we couldn't get its retained Fragment back.
-        String thisFragmentTag = getTag();
-        if (thisFragmentTag == null) {
-            throw new IllegalStateException("Must add a tag to " + this + ".");
-        }
-
-        String dataRetainedFragmentTag = DataRetainedFragment.TAG + "_" + thisFragmentTag;
+        String dataRetainedFragmentTag = DataRetainedFragment.TAG + "_" +
+                Preconditions.checkNotNull(getTag(), "Must add a tag to " + this + ".");
         FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(dataRetainedFragmentTag);
         if (fragment == null) {
@@ -123,7 +121,7 @@ public abstract class BaseFragment<D> extends Fragment {
 
         mFragmentBaseBinding.setLoadingViewModel(mLoadingViewModel);
         if (isLoading()) {
-            onLoading();
+            load();
         }
     }
 
@@ -183,7 +181,7 @@ public abstract class BaseFragment<D> extends Fragment {
      */
     private void startSwipeRefresh() {
         mLoadingViewModel.setLoading(LoadingViewModel.LOADING_SWIPE_REFRESH);
-        onLoading();
+        load();
     }
 
     /**
@@ -194,7 +192,7 @@ public abstract class BaseFragment<D> extends Fragment {
      */
     final void startPullToRefresh() {
         mLoadingViewModel.setLoading(LoadingViewModel.LOADING_PULL_UP_TO_REFRESH);
-        onLoading();
+        load();
     }
 
     /**
@@ -203,7 +201,7 @@ public abstract class BaseFragment<D> extends Fragment {
      * Subclass should implement {@link #getSourceObservable()}
      * in oder to provider its own data source {@link Observable}.
      */
-    final void onLoading() {
+    private void load() {
         mRetrofitSubscription = getSourceObservable()
                 .subscribeOn(Schedulers.io())
                 .finallyDo(this::finallyDo)

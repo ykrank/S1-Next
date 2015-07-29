@@ -71,7 +71,7 @@ public abstract class ProgressDialogFragment<D> extends DialogFragment {
     }
 
     /**
-     * @see BaseFragment#onLoading()
+     * @see BaseFragment#load()
      */
     private void request() {
         mSubscription = getSourceObservable()
