@@ -42,18 +42,15 @@ public final class ThemeChangeDialogFragment extends DialogFragment {
         int checkedItem = mThemeManager.getThemeIndex();
         return new AlertDialog.Builder(activity)
                 .setTitle(R.string.pref_theme)
-                .setSingleChoiceItems(
-                        R.array.pref_theme_entries,
-                        checkedItem,
-                        (dialog, which) -> {
-                            // won't change theme if unchanged
-                            if (which != checkedItem) {
-                                mThemeManager.applyTheme(which);
-                                mThemeManager.setThemeByIndex(which);
-                                mEventBus.post(new ThemeChangeEvent());
-                            }
-                            dismiss();
-                        })
+                .setSingleChoiceItems(R.array.pref_theme_entries, checkedItem, (dialog, which) -> {
+                    // won't change theme if unchanged
+                    if (which != checkedItem) {
+                        mThemeManager.applyTheme(which);
+                        mThemeManager.setThemeByIndex(which);
+                        mEventBus.post(new ThemeChangeEvent());
+                    }
+                    dismiss();
+                })
                 .create();
     }
 }
