@@ -17,8 +17,6 @@ public final class Api {
 
     public static final String URL_EMOTICON_IMAGE_PREFIX = "static/image/smiley/";
 
-    public static final String URL_LOGIN = prepend("api/mobile/index.php?module=login&loginsubmit=yes&loginfield=username");
-
     private static final String URL_QUOTE_POST_REDIRECT = prepend("forum.php?mod=redirect&goto=findpost");
 
     /**
@@ -120,14 +118,6 @@ public final class Api {
 
     public static String getPostListUrlForBrowser(String threadId, int pageNum) {
         return String.format(URL_BROWSER_POST_LIST, threadId, pageNum);
-    }
-
-    public static RequestBody getLoginPostBuilder(String username, String password) {
-        return new FormEncodingBuilder()
-                .add("username", username)
-                .add("password", password)
-                .add("cookietime", String.valueOf(Config.COOKIES_MAX_AGE))
-                .build();
     }
 
     public static RequestBody getThreadFavouritesAddBuilder(String threadId, String remark) {

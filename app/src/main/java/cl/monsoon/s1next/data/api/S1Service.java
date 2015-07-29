@@ -3,14 +3,21 @@ package cl.monsoon.s1next.data.api;
 import cl.monsoon.s1next.data.api.model.wrapper.FavouritesWrapper;
 import cl.monsoon.s1next.data.api.model.wrapper.ForumGroupsWrapper;
 import cl.monsoon.s1next.data.api.model.wrapper.PostsWrapper;
+import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
 import cl.monsoon.s1next.data.api.model.wrapper.ThreadsWrapper;
+import retrofit.http.Field;
+import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Query;
 import rx.Observable;
 
 public interface S1Service {
 
     String BASE_URL = "http://bbs.saraba1st.com/2b/api/mobile/";
+
+    //    int COOKIES_MAX_AGE = Ints.checkedCast(TimeUnit.DAYS.toSeconds(30));
+    int COOKIES_MAX_AGE = 2592000;
 
     int THREADS_PER_PAGE = 50;
     int POSTS_PER_PAGE = 30;
@@ -26,4 +33,8 @@ public interface S1Service {
 
     @GET("index.php?module=viewthread&ppp=" + POSTS_PER_PAGE)
     Observable<PostsWrapper> getPostsWrapper(@Query("tid") String threadId, @Query("page") int page);
+
+    @FormUrlEncoded
+    @POST("index.php?module=login&loginsubmit=yes&loginfield=username&cookietime=" + COOKIES_MAX_AGE)
+    Observable<ResultWrapper> login(@Field("username") String username, @Field("password") String password);
 }
