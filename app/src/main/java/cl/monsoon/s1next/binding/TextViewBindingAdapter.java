@@ -1,7 +1,6 @@
 package cl.monsoon.s1next.binding;
 
 import android.databinding.BindingAdapter;
-import android.text.method.MovementMethod;
 import android.widget.TextView;
 
 import com.google.common.base.Charsets;
@@ -19,11 +18,6 @@ import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.util.ViewUtil;
 
 public final class TextViewBindingAdapter {
-
-    @BindingAdapter("movementMethod")
-    public static void setMovementMethod(TextView textView, MovementMethod movementMethod) {
-        textView.setMovementMethod(movementMethod);
-    }
 
     @BindingAdapter("filePath")
     public static void loadLicense(TextView textView, String filePath) {

@@ -21,8 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="@{loadingViewModel.swipeRefreshLayoutVisibility}"
-            app:colorSchemeResources="@{@intArray/swipe_refresh_layout_color_scheme}"
-            app:enable="@{!loadingViewModel.pullToUpRefresh}"
+            app:colorSchemeColors="@{@intArray/swipe_refresh_layout_color_scheme}"
+            app:enabled="@{!loadingViewModel.pullToUpRefresh}"
             app:refreshing="@{loadingViewModel.swipeRefresh}">
 
             <android.support.v7.widget.RecyclerView
