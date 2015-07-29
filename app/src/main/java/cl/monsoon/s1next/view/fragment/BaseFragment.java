@@ -1,6 +1,5 @@
 package cl.monsoon.s1next.view.fragment;
 
-import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -264,15 +263,5 @@ public abstract class BaseFragment<D> extends Fragment {
         if (mDataRetainedFragment != null) {
             getFragmentManager().beginTransaction().remove(mDataRetainedFragment).commit();
         }
-    }
-
-    @BindingAdapter("colorSchemeResources")
-    public static void setColorSchemeResources(SwipeRefreshLayout swipeRefreshLayout, int[] colors) {
-        swipeRefreshLayout.setColorSchemeColors(colors);
-    }
-
-    @BindingAdapter("enable")
-    public static void setEnabled(SwipeRefreshLayout swipeRefreshLayout, boolean enabled) {
-        swipeRefreshLayout.setEnabled(enabled);
     }
 }

@@ -1,12 +1,10 @@
 package cl.monsoon.s1next.view.fragment;
 
-import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -157,14 +155,6 @@ public abstract class BaseViewPagerFragment extends Fragment
     }
 
     abstract CharSequence getTitleWithoutPosition();
-
-    @BindingAdapter("totalPage")
-    public static void setTotalPage(ViewPager viewPager, int totalPage) {
-        PagerAdapter pagerAdapter = viewPager.getAdapter();
-        if (pagerAdapter != null) {
-            pagerAdapter.notifyDataSetChanged();
-        }
-    }
 
     /**
      * A base {@link FragmentStatePagerAdapter} wraps some implement.

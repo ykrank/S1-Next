@@ -2,18 +2,8 @@ package cl.monsoon.s1next.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.text.method.MovementMethod;
-import android.widget.TextView;
-
-import com.google.common.base.Charsets;
-import com.google.common.io.CharStreams;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.databinding.ActivityOpenSourceLicenseDetailBinding;
@@ -46,20 +36,5 @@ public final class OpenSourceLicenseDetailActivity extends BaseActivity {
 
         binding.setLicenseAssetViewModel(new LicenseAssetViewModel(intent.getStringExtra(
                 EXTRA_LICENSE_FILE_PATH)));
-    }
-
-    @BindingAdapter("movementMethod")
-    public static void setMovementMethod(TextView textView, MovementMethod movementMethod) {
-        textView.setMovementMethod(movementMethod);
-    }
-
-    @BindingAdapter("filePath")
-    public static void loadLicense(TextView textView, String filePath) {
-        try {
-            InputStream inputStream = textView.getContext().getAssets().open(filePath);
-            textView.setText(CharStreams.toString(new InputStreamReader(inputStream, Charsets.UTF_8)));
-        } catch (IOException e) {
-            throw new IllegalStateException("Can't find license.", e);
-        }
     }
 }

@@ -3,15 +3,12 @@ package cl.monsoon.s1next.view.dialog;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.text.InputFilter;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.SeekBar;
 
@@ -92,21 +89,6 @@ public final class PageTurningDialogFragment extends DialogFragment {
         super.onSaveInstanceState(outState);
 
         outState.putInt(STATE_SEEK_BAR_PROGRESS, mPageTurningViewModel.getSeekBarProgress());
-    }
-
-    @BindingAdapter("onSeekBarChangeListener")
-    public static void setOnSeekBarChangeListener(SeekBar seekBar, SeekBar.OnSeekBarChangeListener seekBarChangeListener) {
-        seekBar.setOnSeekBarChangeListener(seekBarChangeListener);
-    }
-
-    @BindingAdapter("filters")
-    public static void setFilters(EditText editText, InputFilter[] inputFilters) {
-        editText.setFilters(inputFilters);
-    }
-
-    @BindingAdapter("addTextChangedListener")
-    public static void addTextChangedListener(EditText editText, TextWatcher textWatcher) {
-        editText.addTextChangedListener(textWatcher);
     }
 
     /**
