@@ -13,16 +13,16 @@ public abstract class BasePreferenceFragment extends PreferenceFragment
 
     @Override
     @CallSuper
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
 
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     @CallSuper
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
 
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
