@@ -1,6 +1,5 @@
 package cl.monsoon.s1next.view.fragment;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -45,11 +44,10 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preference_general);
-        Activity activity = getActivity();
-        App.getAppComponent(activity).inject(this);
+        App.getAppComponent(getActivity()).inject(this);
 
         findPreference(PREF_KEY_DOWNLOADS).setOnPreferenceClickListener(this);
-        findPreference(PREF_KEY_SIGNATURE).setSummary(DeviceUtil.getSignature(activity));
+        findPreference(PREF_KEY_SIGNATURE).setSummary(DeviceUtil.getSignature(getActivity()));
     }
 
     @Override

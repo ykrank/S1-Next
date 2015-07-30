@@ -37,9 +37,8 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
         super.onViewCreated(view, savedInstanceState);
 
         RecyclerView recyclerView = getRecyclerView();
-        Activity activity = getActivity();
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        mRecyclerAdapter = new ForumListRecyclerViewAdapter(activity);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerAdapter = new ForumListRecyclerViewAdapter(getActivity());
         recyclerView.setAdapter(mRecyclerAdapter);
 
         // the forum list's each element has fixed size

@@ -1,6 +1,5 @@
 package cl.monsoon.s1next.view.dialog;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -37,10 +36,9 @@ public final class ThemeChangeDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Activity activity = getActivity();
-        App.getAppComponent(activity).inject(this);
+        App.getAppComponent(getActivity()).inject(this);
         int checkedItem = mThemeManager.getThemeIndex();
-        return new AlertDialog.Builder(activity)
+        return new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.pref_theme)
                 .setSingleChoiceItems(R.array.pref_theme_entries, checkedItem, (dialog, which) -> {
                     // won't change theme if unchanged

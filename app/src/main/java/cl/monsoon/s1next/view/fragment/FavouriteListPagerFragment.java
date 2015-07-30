@@ -55,9 +55,8 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
         RecyclerView recyclerView = getRecyclerView();
-        Activity activity = getActivity();
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        mRecyclerAdapter = new FavouriteListRecyclerViewAdapter(activity);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerAdapter = new FavouriteListRecyclerViewAdapter(getActivity());
         recyclerView.setAdapter(mRecyclerAdapter);
     }
 
