@@ -18,11 +18,11 @@ import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.view.activity.BaseActivity;
-import cl.monsoon.s1next.view.activity.PostListActivity;
 import cl.monsoon.s1next.view.adapter.ThreadListRecyclerViewAdapter;
 import cl.monsoon.s1next.view.dialog.LoginDialogFragment;
 import cl.monsoon.s1next.view.dialog.ThemeChangeDialogFragment;
 import cl.monsoon.s1next.view.fragment.GeneralPreferenceFragment;
+import cl.monsoon.s1next.view.fragment.PostListFragment;
 import cl.monsoon.s1next.viewmodel.UserViewModel;
 import cl.monsoon.s1next.widget.EventBus;
 import dagger.Component;
@@ -111,7 +111,7 @@ public final class App extends Application {
 
         void inject(BaseActivity activity);
 
-        void inject(PostListActivity activity);
+        void inject(PostListFragment fragment);
 
         void inject(GeneralPreferenceFragment fragment);
 

@@ -180,17 +180,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         mDrawerIndicatorEnabled = enabled;
     }
 
-    /**
-     * Subclass must have to implement {@link android.view.View.OnClickListener}
-     * in order to use this method.
-     */
-    final void setupFloatingActionButton(@DrawableRes int resId) {
+    public final void setupFloatingActionButton(@DrawableRes int resId, View.OnClickListener onClickListener) {
         ViewGroup container = (ViewGroup) findViewById(R.id.coordinator_layout);
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getLayoutInflater().inflate(R.layout.floating_action_button, container, false);
         container.addView(floatingActionButton);
 
-        floatingActionButton.setOnClickListener((View.OnClickListener) this);
+        floatingActionButton.setOnClickListener(onClickListener);
         floatingActionButton.setImageResource(resId);
     }
 }

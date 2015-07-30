@@ -1,76 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="?attr/cardViewStyle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/card_view_vertical_margin"
-    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
-    android:layout_marginLeft="@dimen/card_view_horizontal_margin"
-    android:layout_marginRight="@dimen/card_view_horizontal_margin"
-    android:layout_marginStart="@dimen/card_view_horizontal_margin"
-    android:layout_marginTop="@dimen/card_view_vertical_margin"
     tools:context="cl.monsoon.s1next.view.adapter.PostListRecyclerViewAdapter">
 
-    <RelativeLayout
+    <data>
+
+        <import type="cl.monsoon.s1next.widget.CustomMovementMethod" />
+
+        <import type="android.text.method.LinkMovementMethod" />
+    </data>
+
+    <android.support.v7.widget.CardView
+        style="?attr/cardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/item_padding">
+        android:layout_marginBottom="@dimen/card_view_vertical_margin"
+        android:layout_marginEnd="@dimen/card_view_horizontal_margin"
+        android:layout_marginLeft="@dimen/card_view_horizontal_margin"
+        android:layout_marginRight="@dimen/card_view_horizontal_margin"
+        android:layout_marginStart="@dimen/card_view_horizontal_margin"
+        android:layout_marginTop="@dimen/card_view_vertical_margin">
 
-        <include
-            android:id="@id/avatar"
-            layout="@layout/avatar"
-            android:layout_width="@dimen/avatar_size"
-            android:layout_height="@dimen/avatar_size"
-            android:layout_marginBottom="@dimen/item_padding"
-            android:layout_marginEnd="@dimen/item_padding"
-            android:layout_marginRight="@dimen/item_padding" />
-
-        <TextView
-            android:id="@+id/username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/avatar"
-            android:layout_toRightOf="@id/avatar"
-            android:ellipsize="end"
-            android:includeFontPadding="false"
-            android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.Dense.Subhead" />
-
-        <TextView
-            android:id="@+id/datetime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/username"
-            android:layout_alignStart="@id/username"
-            android:layout_below="@id/username"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.Dense.Small" />
-
-        <TextView
-            android:id="@+id/count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:background="?attr/linkBackground"
-            android:includeFontPadding="false"
-            android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.Dense.Small" />
-
-        <!-- layout_marginTop = 72dp (two line height with avatar) - 16dp (RelativeLayout's top padding) -->
-        <TextView
-            android:id="@+id/post"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="56dp"
-            android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
-            android:textAppearance="@style/TextAppearance.Dense.Body2"
-            android:textIsSelectable="true" />
+            android:layout_height="wrap_content"
+            android:padding="@dimen/item_padding">
 
-    </RelativeLayout>
+            <cl.monsoon.s1next.widget.BezelImageView
+                android:id="@+id/avatar"
+                android:layout_width="@dimen/avatar_size"
+                android:layout_height="@dimen/avatar_size"
+                android:layout_marginBottom="@dimen/item_padding"
+                android:layout_marginEnd="@dimen/item_padding"
+                android:layout_marginRight="@dimen/item_padding"
+                android:contentDescription="@string/avatar_content_desc"
+                app:maskDrawable="@drawable/rounded_mask" />
 
-</android.support.v7.widget.CardView>
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/avatar"
+                android:layout_toRightOf="@id/avatar"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.Dense.Subhead" />
+
+            <TextView
+                android:id="@+id/datetime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/username"
+                android:layout_alignStart="@id/username"
+                android:layout_below="@id/username"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.Dense.Small" />
+
+            <TextView
+                android:id="@+id/count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="?attr/linkBackground"
+                android:includeFontPadding="false"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.Dense.Small"
+                app:increaseClickingArea="@{@dimen/minimum_touch_target_size}"
+                app:movementMethod="@{LinkMovementMethod.instance}" />
+
+            <!-- layout_marginTop = 72dp (two line height with avatar) - 16dp (RelativeLayout's top padding) -->
+            <!-- use custom movement method to provides selection and click -->
+            <TextView
+                android:id="@+id/post"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="56dp"
+                android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
+                android:textAppearance="@style/TextAppearance.Dense.Body2"
+                android:textIsSelectable="true"
+                app:movementMethod="@{CustomMovementMethod.instance}" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</layout>

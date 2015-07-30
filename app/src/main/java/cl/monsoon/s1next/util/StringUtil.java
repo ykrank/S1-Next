@@ -1,5 +1,7 @@
 package cl.monsoon.s1next.util;
 
+import android.support.annotation.Nullable;
+
 import org.apache.commons.lang3.StringUtils;
 
 public final class StringUtil {
@@ -44,7 +46,10 @@ public final class StringUtil {
      *
      * @see #concatWithTwoSpaces(CharSequence, int)
      */
-    public static String concatWithTwoSpaces(CharSequence first, CharSequence last) {
+    public static String concatWithTwoSpaces(@Nullable CharSequence first, CharSequence last) {
+        if (first==null) {
+            return last.toString();
+        }
         return first + TWO_SPACES + last;
     }
 

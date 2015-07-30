@@ -7,22 +7,30 @@ import java.util.List;
 
 public abstract class BaseRecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 
-    List<T> mList;
+    private List<T> mList;
 
     BaseRecyclerViewAdapter() {
         this.mList = Collections.emptyList();
-    }
-
-    @Override
-    public int getItemCount() {
-        return mList.size();
     }
 
     public void setDataSet(List<T> list) {
         this.mList = list;
     }
 
-    public T getItem(int i) {
+    void addItem(T t) {
+        mList.add(t);
+    }
+
+    T getItem(int i) {
         return mList.get(i);
+    }
+
+    T removeItem(int position) {
+        return mList.remove(position);
+    }
+
+    @Override
+    public int getItemCount() {
+        return mList.size();
     }
 }

@@ -180,6 +180,13 @@ public abstract class BaseFragment<D> extends Fragment {
     }
 
     /**
+     * Whether we are pull up to refresh.
+     */
+    final boolean isPullUpToRefresh() {
+        return mLoadingViewModel.getLoading() == LoadingViewModel.LOADING_PULL_UP_TO_REFRESH;
+    }
+
+    /**
      * Show refresh progress and start to load new data.
      */
     private void startSwipeRefresh() {

@@ -36,6 +36,7 @@ public abstract class BaseViewPagerFragment extends Fragment
     private static final String STATE_TOTAL_PAGES = "total_pages";
 
     private FragmentViewPagerBinding mFragmentViewPagerBinding;
+    private ViewPager mViewPager;
 
     private MenuItem mMenuPageTurning;
 
@@ -43,6 +44,7 @@ public abstract class BaseViewPagerFragment extends Fragment
     public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mFragmentViewPagerBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_view_pager,
                 container, false);
+        mViewPager = mFragmentViewPagerBinding.viewPager;
         return mFragmentViewPagerBinding.getRoot();
     }
 
@@ -62,7 +64,7 @@ public abstract class BaseViewPagerFragment extends Fragment
         // don't use getChildFragmentManager()
         // because we can't retain Fragments (DataRetainedFragment)
         // that are nested in other fragments
-        mFragmentViewPagerBinding.viewPager.setAdapter(getPagerAdapter(getFragmentManager()));
+        mViewPager.setAdapter(getPagerAdapter(getFragmentManager()));
     }
 
     @Override
@@ -88,7 +90,7 @@ public abstract class BaseViewPagerFragment extends Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_page_turning:
-                new PageTurningDialogFragment(getTotalPage(), getCurrentPage()).show(
+                new PageTurningDialogFragment(getTotalPages(), getCurrentPage()).show(
                         getChildFragmentManager(), PageTurningDialogFragment.TAG);
 
                 return true;
@@ -102,12 +104,16 @@ public abstract class BaseViewPagerFragment extends Fragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt(STATE_TOTAL_PAGES, getTotalPage());
+        outState.putInt(STATE_TOTAL_PAGES, getTotalPages());
+    }
+
+    ViewPager getViewPager() {
+        return mViewPager;
     }
 
     abstract BaseFragmentStatePagerAdapter getPagerAdapter(FragmentManager fragmentManager);
 
-    private int getTotalPage() {
+    int getTotalPages() {
         return mFragmentViewPagerBinding.getViewPagerViewModel().totalPage.get();
     }
 
@@ -117,13 +123,13 @@ public abstract class BaseViewPagerFragment extends Fragment
     }
 
     final int getCurrentPage() {
-        return mFragmentViewPagerBinding.viewPager.getCurrentItem();
+        return mViewPager.getCurrentItem();
     }
 
     @Override
     @CallSuper
     public void onPageTurned(int position) {
-        mFragmentViewPagerBinding.viewPager.setCurrentItem(position);
+        mViewPager.setCurrentItem(position);
     }
 
     /**
@@ -134,7 +140,7 @@ public abstract class BaseViewPagerFragment extends Fragment
             return;
         }
 
-        if (getTotalPage() == 1) {
+        if (getTotalPages() == 1) {
             mMenuPageTurning.setEnabled(false);
         } else {
             mMenuPageTurning.setEnabled(true);
@@ -142,15 +148,19 @@ public abstract class BaseViewPagerFragment extends Fragment
     }
 
     private void setTitleWithPosition(int position) {
-        String titleWithPosition;
-        if (ResourceUtil.isRTL(getResources())) {
-            titleWithPosition = StringUtil.concatWithTwoSpaces(position + 1,
-                    getTitleWithoutPosition());
-        } else {
-            titleWithPosition = StringUtil.concatWithTwoSpaces(getTitleWithoutPosition(),
-                    position + 1);
+        CharSequence titleWithoutPosition = getTitleWithoutPosition();
+        if (titleWithoutPosition == null) {
+            getActivity().setTitle(null);
+
+            return;
         }
 
+        String titleWithPosition;
+        if (ResourceUtil.isRTL(getResources())) {
+            titleWithPosition = StringUtil.concatWithTwoSpaces(position + 1, titleWithoutPosition);
+        } else {
+            titleWithPosition = StringUtil.concatWithTwoSpaces(titleWithoutPosition, position + 1);
+        }
         getActivity().setTitle(titleWithPosition);
     }
 
@@ -167,7 +177,7 @@ public abstract class BaseViewPagerFragment extends Fragment
 
         @Override
         public final int getCount() {
-            return getTotalPage();
+            return getTotalPages();
         }
 
         @Override

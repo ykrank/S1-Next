@@ -1,6 +1,9 @@
 package cl.monsoon.s1next.binding;
 
 import android.databinding.BindingAdapter;
+import android.graphics.Rect;
+import android.view.TouchDelegate;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.common.base.Charsets;
@@ -18,6 +21,19 @@ import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.util.ViewUtil;
 
 public final class TextViewBindingAdapter {
+
+    @BindingAdapter("increaseClickingArea")
+    public static void increaseClickingArea(TextView textView, float size) {
+        int halfSize = (int) (size / 2 + 0.5);
+        Rect rect = new Rect();
+        textView.getHitRect(rect);
+        rect.top -= halfSize;
+        rect.right += halfSize;
+        rect.bottom += halfSize;
+        rect.left -= halfSize;
+        // use TouchDelegate to increase count's clicking area
+        ((View) textView.getParent()).setTouchDelegate(new TouchDelegate(rect, textView));
+    }
 
     @BindingAdapter("filePath")
     public static void loadLicense(TextView textView, String filePath) {

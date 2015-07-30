@@ -49,4 +49,8 @@ public interface S1Service {
      */
     @GET("index.php?module=toplist")
     Observable<VoidElement> refreshAuthenticityToken();
+
+    @FormUrlEncoded
+    @POST("index.php?module=favthread&favoritesubmit=yes")
+    Observable<ResultWrapper> addThreadFavorite(@Field("formhash") String authenticityToken, @Field("id") String threadId, @Field("description") String remark);
 }
