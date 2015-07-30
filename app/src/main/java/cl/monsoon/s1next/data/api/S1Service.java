@@ -1,5 +1,7 @@
 package cl.monsoon.s1next.data.api;
 
+import cl.monsoon.s1next.data.User;
+import cl.monsoon.s1next.data.api.model.VoidElement;
 import cl.monsoon.s1next.data.api.model.wrapper.FavouritesWrapper;
 import cl.monsoon.s1next.data.api.model.wrapper.ForumGroupsWrapper;
 import cl.monsoon.s1next.data.api.model.wrapper.PostsWrapper;
@@ -37,4 +39,14 @@ public interface S1Service {
     @FormUrlEncoded
     @POST("index.php?module=login&loginsubmit=yes&loginfield=username&cookietime=" + COOKIES_MAX_AGE)
     Observable<ResultWrapper> login(@Field("username") String username, @Field("password") String password);
+
+    /**
+     * Refreshes the correct authenticity token after login.
+     * <p>
+     * The {@link User#authenticityToken}
+     * is not fresh if we have only logged in and haven't browsed
+     * any new contents (which means requesting HTTP GET successfully).
+     */
+    @GET("index.php?module=toplist")
+    Observable<VoidElement> refreshAuthenticityToken();
 }

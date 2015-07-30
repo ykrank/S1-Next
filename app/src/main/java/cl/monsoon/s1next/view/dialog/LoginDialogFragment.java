@@ -57,8 +57,13 @@ public final class LoginDialogFragment extends ProgressDialogFragment<ResultWrap
 
     @Override
     protected Observable<ResultWrapper> getSourceObservable() {
-        return mS1Service.login(getArguments().getString(ARG_USERNAME), getArguments().getString(
-                ARG_PASSWORD));
+        Bundle bundle = getArguments();
+        String username = bundle.getString(ARG_USERNAME);
+        String password = bundle.getString(ARG_PASSWORD);
+        // the authenticity token is not fresh after login
+        // so we need to refresh authenticity token
+        return Observable.zip(mS1Service.login(username, password),
+                mS1Service.refreshAuthenticityToken(), (resultWrapper, aVoid) -> resultWrapper);
     }
 
     @Override
@@ -68,10 +73,6 @@ public final class LoginDialogFragment extends ProgressDialogFragment<ResultWrap
 
         if (result.getStatus().equals(STATUS_AUTH_SUCCESS)
                 || result.getStatus().equals(STATUS_AUTH_SUCCESS_ALREADY)) {
-            // this authenticity token is not fresh
-            // we need to abandon this token
-            mUser.setAuthenticityToken(null);
-
             getActivity().finish();
         }
     }
