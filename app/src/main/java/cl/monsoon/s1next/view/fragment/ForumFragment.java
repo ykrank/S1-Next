@@ -62,7 +62,6 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-
         inflater.inflate(R.menu.fragment_forum, menu);
     }
 
