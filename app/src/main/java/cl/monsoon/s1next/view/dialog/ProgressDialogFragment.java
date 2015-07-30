@@ -8,6 +8,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.widget.Toast;
 
+import cl.monsoon.s1next.App;
+import cl.monsoon.s1next.data.api.S1Service;
+import cl.monsoon.s1next.data.api.UserValidator;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.fragment.BaseFragment;
 import rx.Observable;
@@ -26,12 +29,17 @@ import rx.schedulers.Schedulers;
  */
 public abstract class ProgressDialogFragment<D> extends DialogFragment {
 
+    S1Service mS1Service;
+    private UserValidator mUserValidator;
+
     private Subscription mSubscription;
 
     @Override
     @CallSuper
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mS1Service = App.getAppComponent(getActivity()).getS1Service();
+        mUserValidator = App.getAppComponent(getActivity()).getUserValidator();
 
         // retain this Fragment
         setRetainInstance(true);
@@ -76,8 +84,9 @@ public abstract class ProgressDialogFragment<D> extends DialogFragment {
     private void request() {
         mSubscription = getSourceObservable()
                 .subscribeOn(Schedulers.io())
-                .finallyDo(this::finallyDo)
                 .observeOn(AndroidSchedulers.mainThread())
+                .map(d -> UserValidator.validateIntercept(mUserValidator, d))
+                .finallyDo(this::finallyDo)
                 .subscribe(this::onNext, this::onError);
     }
 

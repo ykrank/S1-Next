@@ -16,6 +16,7 @@ import javax.inject.Singleton;
 import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.Wifi;
 import cl.monsoon.s1next.data.api.S1Service;
+import cl.monsoon.s1next.data.api.UserValidator;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesRepository;
 import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
@@ -121,6 +122,12 @@ final class AppModule {
     @Singleton
     User providerUser(UserViewModel userViewModel) {
         return userViewModel.getUser();
+    }
+
+    @Provides
+    @Singleton
+    UserValidator providerUserValidator(User user) {
+        return new UserValidator(user);
     }
 
     @Provides

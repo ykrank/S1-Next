@@ -20,6 +20,7 @@ import com.google.common.base.Preconditions;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.S1Service;
+import cl.monsoon.s1next.data.api.UserValidator;
 import cl.monsoon.s1next.databinding.FragmentBaseBinding;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.fragment.headless.DataRetainedFragment;
@@ -55,6 +56,8 @@ public abstract class BaseFragment<D> extends Fragment {
     private DataRetainedFragment<D> mDataRetainedFragment;
 
     S1Service mS1Service;
+    private UserValidator mUserValidator;
+
     private Subscription mRetrofitSubscription;
 
     @Override
@@ -69,6 +72,7 @@ public abstract class BaseFragment<D> extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mS1Service = App.getAppComponent(getActivity()).getS1Service();
+        mUserValidator = App.getAppComponent(getActivity()).getUserValidator();
 
         mFragmentBaseBinding.swipeRefreshLayout.setOnRefreshListener(this::startSwipeRefresh);
     }
@@ -203,8 +207,9 @@ public abstract class BaseFragment<D> extends Fragment {
     private void load() {
         mRetrofitSubscription = getSourceObservable()
                 .subscribeOn(Schedulers.io())
-                .finallyDo(this::finallyDo)
                 .observeOn(AndroidSchedulers.mainThread())
+                .map(d -> UserValidator.validateIntercept(mUserValidator, d))
+                .finallyDo(this::finallyDo)
                 .subscribe(this::onNext, this::onError);
     }
 

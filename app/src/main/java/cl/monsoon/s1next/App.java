@@ -12,6 +12,7 @@ import javax.inject.Singleton;
 
 import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.api.S1Service;
+import cl.monsoon.s1next.data.api.UserValidator;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
@@ -103,6 +104,8 @@ public final class App extends Application {
         ThemeManager getThemeManager();
 
         User getUser();
+
+        UserValidator getUserValidator();
 
         UserViewModel getUserViewModel();
 
