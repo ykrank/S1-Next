@@ -1,7 +1,8 @@
 package cl.monsoon.s1next.widget;
 
-import android.support.annotation.UiThread;
+import android.support.annotation.MainThread;
 
+import cl.monsoon.s1next.util.LooperUtil;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 import rx.subjects.Subject;
@@ -15,13 +16,15 @@ public final class EventBus {
 
     private final Subject<Object, Object> eventBus = PublishSubject.create();
 
-    @UiThread
+    @MainThread
     public void post(Object o) {
+        LooperUtil.enforceOnMainThread();
         eventBus.onNext(o);
     }
 
-    @UiThread
+    @MainThread
     public Observable<Object> get() {
+        LooperUtil.enforceOnMainThread();
         return eventBus;
     }
 }
