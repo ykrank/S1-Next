@@ -8,7 +8,7 @@ import cl.monsoon.s1next.view.activity.PostListActivity;
 
 public final class ThreadViewModel {
 
-    public ObservableField<Thread> thread = new ObservableField<>();
+    public final ObservableField<Thread> thread = new ObservableField<>();
 
     public ThreadViewModel(Thread thread) {
         this.thread.set(thread);

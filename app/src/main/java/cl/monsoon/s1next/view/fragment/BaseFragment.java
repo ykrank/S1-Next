@@ -71,8 +71,9 @@ public abstract class BaseFragment<D> extends Fragment {
     @CallSuper
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mS1Service = App.getAppComponent(getActivity()).getS1Service();
-        mUserValidator = App.getAppComponent(getActivity()).getUserValidator();
+        App.AppComponent appComponent = App.getAppComponent(getActivity());
+        mS1Service = appComponent.getS1Service();
+        mUserValidator = appComponent.getUserValidator();
 
         mFragmentBaseBinding.swipeRefreshLayout.setOnRefreshListener(this::startSwipeRefresh);
     }
@@ -258,8 +259,7 @@ public abstract class BaseFragment<D> extends Fragment {
      * Called if it will not make further calls to {@link #onNext(Object)}
      * or {@link #onError(Throwable)} occurred during data loading.
      */
-    @CallSuper
-    void finallyDo() {
+    private void finallyDo() {
         mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FINISH);
     }
 

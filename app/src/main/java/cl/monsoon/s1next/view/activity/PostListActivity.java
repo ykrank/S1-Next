@@ -42,7 +42,7 @@ public final class PostListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
-        setDrawerIndicatorEnabled(false);
+        disableDrawerIndicator();
 
         if (savedInstanceState == null) {
             Fragment fragment;

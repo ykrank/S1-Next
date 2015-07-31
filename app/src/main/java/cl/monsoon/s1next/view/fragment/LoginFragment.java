@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.databinding.FragmentLoginBinding;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.view.dialog.LoginDialogFragment;

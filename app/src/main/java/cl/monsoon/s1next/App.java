@@ -20,6 +20,7 @@ import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.view.activity.BaseActivity;
 import cl.monsoon.s1next.view.adapter.ThreadListRecyclerViewAdapter;
 import cl.monsoon.s1next.view.dialog.LoginDialogFragment;
+import cl.monsoon.s1next.view.dialog.LogoutDialogFragment;
 import cl.monsoon.s1next.view.dialog.ThemeChangeDialogFragment;
 import cl.monsoon.s1next.view.fragment.GeneralPreferenceFragment;
 import cl.monsoon.s1next.view.fragment.PostListFragment;
@@ -92,23 +93,23 @@ public final class App extends Application {
     @Component(modules = AppModule.class)
     public interface AppComponent {
 
-        S1Service getS1Service();
-
         OkHttpClient getOkHttpClient();
 
+        S1Service getS1Service();
+
         EventBus getEventBus();
-
-        GeneralPreferencesManager getGeneralPreferencesManager();
-
-        DownloadPreferencesManager getDownloadPreferencesManager();
-
-        ThemeManager getThemeManager();
 
         User getUser();
 
         UserValidator getUserValidator();
 
         UserViewModel getUserViewModel();
+
+        GeneralPreferencesManager getGeneralPreferencesManager();
+
+        DownloadPreferencesManager getDownloadPreferencesManager();
+
+        ThemeManager getThemeManager();
 
         void inject(BaseActivity activity);
 
@@ -118,9 +119,11 @@ public final class App extends Application {
 
         void inject(GeneralPreferenceFragment fragment);
 
-        void inject(ThemeChangeDialogFragment fragment);
-
         void inject(LoginDialogFragment fragment);
+
+        void inject(LogoutDialogFragment fragment);
+
+        void inject(ThemeChangeDialogFragment fragment);
 
         void inject(ThreadListRecyclerViewAdapter adapter);
     }

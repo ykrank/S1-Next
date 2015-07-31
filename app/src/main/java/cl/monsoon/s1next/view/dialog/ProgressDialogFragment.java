@@ -38,8 +38,9 @@ public abstract class ProgressDialogFragment<D> extends DialogFragment {
     @CallSuper
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mS1Service = App.getAppComponent(getActivity()).getS1Service();
-        mUserValidator = App.getAppComponent(getActivity()).getUserValidator();
+        App.AppComponent appComponent = App.getAppComponent(getActivity());
+        mS1Service = appComponent.getS1Service();
+        mUserValidator = appComponent.getUserValidator();
 
         // retain this Fragment
         setRetainInstance(true);
@@ -93,24 +94,24 @@ public abstract class ProgressDialogFragment<D> extends DialogFragment {
     /**
      * @see BaseFragment#getSourceObservable()
      */
-    protected abstract Observable<D> getSourceObservable();
+    abstract Observable<D> getSourceObservable();
 
     /**
      * @see BaseFragment#onNext(Object)
      */
-    protected abstract void onNext(D data);
+    abstract void onNext(D data);
 
     /**
      * @see BaseFragment#onError(Throwable)
      */
-    protected void onError(Throwable throwable) {
+    void onError(Throwable throwable) {
         ToastUtil.showByText(throwable.toString(), Toast.LENGTH_LONG);
     }
 
     /**
      * @see BaseFragment#finallyDo()
      */
-    protected void finallyDo() {
+    void finallyDo() {
         dismiss();
     }
 

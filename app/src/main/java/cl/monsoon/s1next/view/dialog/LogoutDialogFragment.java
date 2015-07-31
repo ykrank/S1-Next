@@ -7,10 +7,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 
+import java.net.CookieManager;
+
+import javax.inject.Inject;
+
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.User;
-import cl.monsoon.s1next.singleton.OkHttpClientProvider;
 
 /**
  * A dialog shows logout prompt.
@@ -19,6 +22,12 @@ import cl.monsoon.s1next.singleton.OkHttpClientProvider;
 public final class LogoutDialogFragment extends DialogFragment {
 
     private static final String TAG = LogoutDialogFragment.class.getName();
+
+    @Inject
+    CookieManager mCookieManager;
+
+    @Inject
+    User mUser;
 
     /**
      * Show {@link LogoutDialogFragment} if user has logged in.
@@ -39,6 +48,7 @@ public final class LogoutDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        App.getAppComponent(getActivity()).inject(this);
         return new AlertDialog.Builder(getActivity())
                 .setMessage(R.string.dialog_message_log_out)
                 .setPositiveButton(R.string.dialog_button_text_log_out, (dialog, which) -> logout())
@@ -50,7 +60,7 @@ public final class LogoutDialogFragment extends DialogFragment {
      * Clear user's cookies and current user's info.
      */
     private void logout() {
-        OkHttpClientProvider.clearCookie();
-        App.getAppComponent(getActivity()).getUser().setLogged(false);
+        mCookieManager.getCookieStore().removeAll();
+        mUser.setLogged(false);
     }
 }

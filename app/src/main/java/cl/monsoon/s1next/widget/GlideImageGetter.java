@@ -17,9 +17,9 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.target.ViewTarget;
 
-import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.util.TransformationUtil;
 
 /**
@@ -71,7 +71,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
                             public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
                                 // append domain to this url
                                 Glide.with(mContext)
-                                        .load(Api.URL_S1 + url)
+                                        .load(Api.BASE_URL + url)
                                         .transform(sizeMultiplierBitmapTransformation)
                                         .into(new ImageGetterViewTarget(mTextView, urlDrawable));
 
@@ -86,7 +86,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
                         .into(new ImageGetterViewTarget(mTextView, urlDrawable));
             } else {
                 Glide.with(mContext)
-                        .load(Api.URL_S1 + url)
+                        .load(Api.BASE_URL + url)
                         .transform(new TransformationUtil.GlMaxTextureSizeBitmapTransformation(
                                 mContext))
                         .into(new ImageGetterViewTarget(mTextView, urlDrawable));

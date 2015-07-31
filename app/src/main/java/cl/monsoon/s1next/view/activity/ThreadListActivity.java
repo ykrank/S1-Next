@@ -47,7 +47,7 @@ public final class ThreadListActivity extends BaseActivity implements ThreadList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
-        setDrawerIndicatorEnabled(false);
+        disableDrawerIndicator();
 
         if (savedInstanceState == null) {
             Fragment fragment = ThreadListFragment.newInstance(getIntent().getParcelableExtra(

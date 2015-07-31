@@ -47,7 +47,7 @@ public final class StringUtil {
      * @see #concatWithTwoSpaces(CharSequence, int)
      */
     public static String concatWithTwoSpaces(@Nullable CharSequence first, CharSequence last) {
-        if (first==null) {
+        if (first == null) {
             return last.toString();
         }
         return first + TWO_SPACES + last;

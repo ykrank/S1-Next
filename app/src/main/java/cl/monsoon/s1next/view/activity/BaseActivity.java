@@ -41,13 +41,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     EventBus mEventBus;
 
     @Inject
+    User mUser;
+
+    @Inject
     DownloadPreferencesManager mDownloadPreferencesManager;
 
     @Inject
     ThemeManager mThemeManager;
-
-    @Inject
-    User mUser;
 
     private ToolbarPresenter mToolbarPresenter;
 
@@ -176,8 +176,8 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Call this method before {@link #onPostCreate(Bundle)}
      * otherwise it doesn't works.
      */
-    final void setDrawerIndicatorEnabled(boolean enabled) {
-        mDrawerIndicatorEnabled = enabled;
+    final void disableDrawerIndicator() {
+        mDrawerIndicatorEnabled = false;
     }
 
     public final void setupFloatingActionButton(@DrawableRes int resId, View.OnClickListener onClickListener) {

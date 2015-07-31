@@ -22,9 +22,9 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.google.common.base.Preconditions;
 
-import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.api.model.Post;
 import cl.monsoon.s1next.data.event.QuoteEvent;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;

@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.data.api.S1Service;
+import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.api.model.Quote;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
@@ -59,7 +59,7 @@ public final class ReplyRequestDialogFragment extends ProgressDialogFragment<Res
                 Quote quote = Quote.fromXmlString(s);
                 return mS1Service.replyQuote(authenticityToken, threadId, reply,
                         quote.getEncodedUserId(), quote.getQuoteMessage(),
-                        StringUtils.abbreviate(reply, S1Service.REPLY_NOTIFICATION_MAX_LENGTH));
+                        StringUtils.abbreviate(reply, Api.REPLY_NOTIFICATION_MAX_LENGTH));
             });
         }
     }

@@ -13,7 +13,6 @@ import java.io.InputStream;
 
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.singleton.OkHttpClientProvider;
 
 /**
  * Lazily configures Glide.
@@ -34,6 +33,6 @@ public final class AppGlideModule implements GlideModule {
     public void registerComponents(Context context, Glide glide) {
         // register the OkHttp for Glide
         glide.register(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(
-                OkHttpClientProvider.get()));
+                App.getAppComponent(context).getOkHttpClient()));
     }
 }

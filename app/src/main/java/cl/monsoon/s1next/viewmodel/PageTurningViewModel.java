@@ -15,7 +15,7 @@ import cl.monsoon.s1next.widget.RangeInputFilter;
 public final class PageTurningViewModel extends BaseObservable {
 
     private final ObservableInt seekBarMax = new ObservableInt();
-    public int seekBarProgress;
+    private int seekBarProgress;
 
     public PageTurningViewModel(int seekBarMax, int seekBarProgress) {
         this.seekBarMax.set(seekBarMax);

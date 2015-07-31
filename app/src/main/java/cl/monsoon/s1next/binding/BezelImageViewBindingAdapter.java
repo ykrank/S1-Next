@@ -6,10 +6,10 @@ import android.databinding.BindingAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
-import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.User;
+import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.widget.BezelImageView;
 

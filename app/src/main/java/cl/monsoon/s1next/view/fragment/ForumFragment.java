@@ -10,8 +10,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.api.model.collection.ForumGroups;
 import cl.monsoon.s1next.data.api.model.wrapper.ForumGroupsWrapper;
 import cl.monsoon.s1next.util.IntentUtil;
@@ -69,7 +69,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_browser:
-                IntentUtil.startViewIntentExcludeOurApp(getActivity(), Uri.parse(Api.URL_S1));
+                IntentUtil.startViewIntentExcludeOurApp(getActivity(), Uri.parse(Api.BASE_URL));
 
                 return true;
         }

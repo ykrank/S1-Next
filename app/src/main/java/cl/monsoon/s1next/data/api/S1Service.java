@@ -1,6 +1,5 @@
 package cl.monsoon.s1next.data.api;
 
-import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.api.model.VoidElement;
 import cl.monsoon.s1next.data.api.model.wrapper.FavouritesWrapper;
 import cl.monsoon.s1next.data.api.model.wrapper.ForumGroupsWrapper;
@@ -16,55 +15,38 @@ import rx.Observable;
 
 public interface S1Service {
 
-    String BASE_URL = "http://bbs.saraba1st.com/2b/api/mobile/";
-
-    //    int COOKIES_MAX_AGE = Ints.checkedCast(TimeUnit.DAYS.toSeconds(30));
-    int COOKIES_MAX_AGE = 2592000;
-
-    int THREADS_PER_PAGE = 50;
-    int POSTS_PER_PAGE = 30;
-
-    int REPLY_NOTIFICATION_MAX_LENGTH = 100;
-
-    @GET("index.php?module=forumindex")
+    @GET(Api.URL_FORUM)
     Observable<ForumGroupsWrapper> getForumGroupsWrapper();
 
-    @GET("index.php?module=myfavthread")
+    @GET(Api.URL_FAVOURITES)
     Observable<FavouritesWrapper> getFavouritesWrapper(@Query("page") int page);
 
-    @GET("index.php?module=forumdisplay&tpp=" + THREADS_PER_PAGE)
+    @GET(Api.URL_THREAD_LIST)
     Observable<ThreadsWrapper> getThreadsWrapper(@Query("fid") String forumId, @Query("page") int page);
 
-    @GET("index.php?module=viewthread&ppp=" + POSTS_PER_PAGE)
+    @GET(Api.URL_POST_LIST)
     Observable<PostsWrapper> getPostsWrapper(@Query("tid") String threadId, @Query("page") int page);
 
     @FormUrlEncoded
-    @POST("index.php?module=login&loginsubmit=yes&loginfield=username&cookietime=" + COOKIES_MAX_AGE)
+    @POST(Api.URL_LOGIN)
     Observable<ResultWrapper> login(@Field("username") String username, @Field("password") String password);
 
-    /**
-     * Refreshes the correct authenticity token after login.
-     * <p>
-     * The {@link User#authenticityToken}
-     * is not fresh if we have only logged in and haven't browsed
-     * any new contents (which means requesting HTTP GET successfully).
-     */
-    @GET("index.php?module=toplist")
+    @GET(Api.URL_AUTHENTICITY_TOKEN_HELPER)
     Observable<VoidElement> refreshAuthenticityToken();
 
     @FormUrlEncoded
-    @POST("index.php?module=favthread&favoritesubmit=yes")
+    @POST(Api.URL_THREAD_FAVOURITES_ADD)
     Observable<ResultWrapper> addThreadFavorite(@Field("formhash") String authenticityToken, @Field("id") String threadId, @Field("description") String remark);
 
     @FormUrlEncoded
-    @POST("index.php?module=sendreply&replysubmit=yes")
+    @POST(Api.URL_REPLY)
     Observable<ResultWrapper> reply(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("message") String reply);
 
-    @GET(BASE_URL + "forum.php?mod=post&action=reply&inajax=yes")
+    @GET(Api.URL_QUOTE_HELPER)
     Observable<String> getQuoteInfo(@Query("tid") String threadId, @Query("repquote") String quotePostId);
 
     @FormUrlEncoded
-    @POST("index.php?module=sendreply&replysubmit=yes")
+    @POST(Api.URL_REPLY)
     Observable<ResultWrapper> replyQuote(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("message") String reply,
                                          @Field("noticeauthor") String encodedUserId, @Field("noticetrimstr") String quoteMessage, @Field("noticeauthormsg") String replyNotification);
 }

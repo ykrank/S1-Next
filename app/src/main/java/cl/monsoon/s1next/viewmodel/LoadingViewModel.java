@@ -53,7 +53,7 @@ public final class LoadingViewModel extends BaseObservable implements Parcelable
 
     }
 
-    public LoadingViewModel(Parcel source) {
+    private LoadingViewModel(Parcel source) {
         loading = source.readInt();
     }
 

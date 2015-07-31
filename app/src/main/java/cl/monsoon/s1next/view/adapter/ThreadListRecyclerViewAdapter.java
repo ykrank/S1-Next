@@ -19,10 +19,10 @@ import cl.monsoon.s1next.viewmodel.UserViewModel;
 public final class ThreadListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Thread, ThreadListRecyclerViewAdapter.BindingViewHolder> {
 
     @Inject
-    ThemeManager mThemeManager;
+    UserViewModel mUserViewModel;
 
     @Inject
-    UserViewModel mUserViewModel;
+    ThemeManager mThemeManager;
 
     private final LayoutInflater mLayoutInflater;
 

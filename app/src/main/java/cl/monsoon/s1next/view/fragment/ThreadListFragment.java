@@ -11,9 +11,8 @@ import android.view.View;
 
 import com.google.common.base.Preconditions;
 
-import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.data.api.S1Service;
+import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.api.model.Forum;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.MathUtil;
@@ -86,7 +85,7 @@ public final class ThreadListFragment extends BaseViewPagerFragment
 
     @Override
     public void setTotalPageByThreads(int threads) {
-        setTotalPage(MathUtil.divide(threads, S1Service.THREADS_PER_PAGE));
+        setTotalPage(MathUtil.divide(threads, Api.THREADS_PER_PAGE));
     }
 
     /**

@@ -25,12 +25,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 
-import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.Wifi;
-import cl.monsoon.s1next.data.api.S1Service;
+import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.data.api.model.ThreadLink;
 import cl.monsoon.s1next.data.api.model.collection.Posts;
@@ -74,13 +73,13 @@ public final class PostListFragment extends BaseViewPagerFragment
     EventBus mEventBus;
 
     @Inject
-    DownloadPreferencesManager mDownloadPreferencesManager;
-
-    @Inject
     Wifi mWifi;
 
     @Inject
     User mUser;
+
+    @Inject
+    DownloadPreferencesManager mDownloadPreferencesManager;
 
     private String mThreadId;
     private String mThreadTitle;
@@ -276,7 +275,7 @@ public final class PostListFragment extends BaseViewPagerFragment
 
     @Override
     public void setTotalPageByPosts(int threads) {
-        setTotalPage(MathUtil.divide(threads, S1Service.POSTS_PER_PAGE));
+        setTotalPage(MathUtil.divide(threads, Api.POSTS_PER_PAGE));
     }
 
     @Override

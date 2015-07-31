@@ -24,10 +24,9 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.BuildConfig;
-import cl.monsoon.s1next.Config;
+import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 
 import static com.squareup.okhttp.internal.http.StatusLine.HTTP_PERM_REDIRECT;
@@ -193,7 +192,9 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
     private enum AvatarUrlsCache {
         INSTANCE;
 
+        private static final int MEMORY_CACHE_MAX_NUMBER = 1000;
         private static final String DISK_CACHE_DIRECTORY = "avatar_urls_disk_cache";
+        private static final long DISK_CACHE_MAX_SIZE = 1000 * 1000;
         private static final int VALUE_COUNT = 1;
 
         /**
@@ -214,13 +215,13 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
         private final KeyGenerator keyGenerator;
 
         AvatarUrlsCache() {
-            lruCache = new LruCache<>(Config.AVATAR_URLS_MEMORY_CACHE_MAX_NUMBER);
+            lruCache = new LruCache<>(MEMORY_CACHE_MAX_NUMBER);
 
             File file = new File(App.get().getCacheDir().getPath()
                     + File.separator + DISK_CACHE_DIRECTORY);
             try {
                 diskLruCache = DiskLruCache.open(file, BuildConfig.VERSION_CODE, VALUE_COUNT,
-                        Config.AVATAR_URLS_DISK_CACHE_MAX_SIZE);
+                        DISK_CACHE_MAX_SIZE);
             } catch (IOException e) {
                 throw new RuntimeException("Failed to open the cache in " + file + ".", e);
             }
@@ -272,8 +273,9 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
          */
         private static class KeyGenerator {
 
-            private final LruCache<Key, String> lruCache =
-                    new LruCache<>(Config.AVATAR_URL_KEYS_MEMORY_CACHE_MAX_NUMBER);
+            private static final int AVATAR_URL_KEYS_MEMORY_CACHE_MAX_NUMBER = 1000;
+
+            private final LruCache<Key, String> lruCache = new LruCache<>(AVATAR_URL_KEYS_MEMORY_CACHE_MAX_NUMBER);
 
             public String getKey(Key key) {
                 String value = lruCache.get(key);

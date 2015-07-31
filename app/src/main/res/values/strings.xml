@@ -76,7 +76,6 @@
     <string name="dialog_message_invalid_or_unsupported_link">Invalid or unsupported link.</string>
     <string name="dialog_button_text_use_a_different_app">Use a different app</string>
     <string name="dialog_message_processing">Processing…</string>
-    <string name="period">.</string>
     <string name="dialog_message_quote_not_found">This quote could not be found.</string>
 
     <!-- reply -->

@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import cl.monsoon.s1next.Api;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.api.model.ThreadLink;
 import cl.monsoon.s1next.view.activity.PostListActivity;
 import rx.Observable;
