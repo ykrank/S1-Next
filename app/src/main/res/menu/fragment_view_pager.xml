@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="cl.monsoon.s1next.view.fragment.ViewPagerFragment">
+    tools:context="cl.monsoon.s1next.view.fragment.BaseViewPagerFragment">
     <item
         android:id="@+id/menu_page_turning"
         android:icon="?attr/menuPageTurning"
