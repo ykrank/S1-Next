@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -73,7 +73,7 @@ public final class ReplyFragment extends Fragment {
     @Nullable
     private MenuItem mMenuEmoticon;
     private View mEmoticonKeyboard;
-    private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
+    private final Interpolator mInterpolator = new FastOutSlowInInterpolator();
 
     private MenuItem mMenuSend;
 
