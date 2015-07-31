@@ -1,60 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="cl.monsoon.s1next.view.fragment.ReplyFragment">
 
-    <!-- see https://stackoverflow.com/questions/18774542/android-set-margin-padding-for-contents-text-instead-of-a-container-edittext#answer-18794624 -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <!-- see https://stackoverflow.com/questions/4761741/show-soft-keyboard-when-the-device-is-landscape-mode#answer-28618889 -->
-        <EditText
-            android:id="@+id/reply"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:gravity="start"
-            android:hint="@string/prompt_reply"
-            android:imeOptions="flagNoFullscreen"
-            android:inputType="textMultiLine"
-            android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:textAppearance="@style/TextAppearance.Dense.Body2" />
-
-    </ScrollView>
-
     <LinearLayout
-        android:id="@+id/emoticon_keyboard"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/emoticon_keyboard_height"
-        android:orientation="vertical"
-        android:translationY="@dimen/emoticon_keyboard_height"
-        android:visibility="gone">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/emoticon_keyboard_tab_layout"
-            style="@style/EmoticonKeyboardTabLayout"
+        <!-- see https://stackoverflow.com/questions/18774542/android-set-margin-padding-for-contents-text-instead-of-a-container-edittext#answer-18794624 -->
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/emoticon_keyboard_tab_layout_height"
-            android:background="?attr/emoticonKeyboardTabLayoutBackground"
-            android:elevation="@dimen/emoticon_keyboard_tab_layout_elevation"
-            tools:ignore="UnusedAttribute" />
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/emoticon_keyboard_pager"
+            <!-- see https://stackoverflow.com/questions/4761741/show-soft-keyboard-when-the-device-is-landscape-mode#answer-28618889 -->
+            <EditText
+                android:id="@+id/reply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="start"
+                android:hint="@string/prompt_reply"
+                android:imeOptions="flagNoFullscreen"
+                android:inputType="textMultiLine"
+                android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:textAppearance="@style/TextAppearance.Dense.Body2" />
+
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/emoticon_keyboard"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/emoticonKeyboardBackground" />
+            android:layout_height="@dimen/emoticon_keyboard_height"
+            android:orientation="vertical"
+            android:translationY="@dimen/emoticon_keyboard_height"
+            android:visibility="gone">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/emoticon_keyboard_tab_layout"
+                style="@style/EmoticonKeyboardTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/emoticon_keyboard_tab_layout_height"
+                android:background="?attr/emoticonKeyboardTabLayoutBackground"
+                android:elevation="@dimen/emoticon_keyboard_tab_layout_elevation"
+                tools:ignore="UnusedAttribute" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/emoticon_keyboard_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/emoticonKeyboardBackground" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</layout>

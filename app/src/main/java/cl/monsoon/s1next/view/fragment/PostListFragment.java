@@ -307,14 +307,8 @@ public final class PostListFragment extends BaseViewPagerFragment
             return;
         }
 
-        Intent intent = new Intent(getActivity(), ReplyActivity.class);
-        intent.putExtra(ReplyActivity.ARG_THREAD_ID, mThreadId);
-        intent.putExtra(ReplyActivity.ARG_THREAD_TITLE, mThreadTitle);
-
-        intent.putExtra(ReplyActivity.ARG_QUOTE_POST_ID, quotePostId);
-        intent.putExtra(ReplyActivity.ARG_QUOTE_POST_COUNT, quotePostCount);
-
-        startActivity(intent);
+        ReplyActivity.startReplyActivity(getActivity(), mThreadId, mThreadTitle, quotePostId,
+                quotePostCount);
     }
 
     /**

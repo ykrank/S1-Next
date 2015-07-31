@@ -23,6 +23,7 @@ import cl.monsoon.s1next.view.dialog.LoginDialogFragment;
 import cl.monsoon.s1next.view.dialog.ThemeChangeDialogFragment;
 import cl.monsoon.s1next.view.fragment.GeneralPreferenceFragment;
 import cl.monsoon.s1next.view.fragment.PostListFragment;
+import cl.monsoon.s1next.view.fragment.ReplyFragment;
 import cl.monsoon.s1next.viewmodel.UserViewModel;
 import cl.monsoon.s1next.widget.EventBus;
 import dagger.Component;
@@ -112,6 +113,8 @@ public final class App extends Application {
         void inject(BaseActivity activity);
 
         void inject(PostListFragment fragment);
+
+        void inject(ReplyFragment fragment);
 
         void inject(GeneralPreferenceFragment fragment);
 

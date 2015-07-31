@@ -1,6 +1,6 @@
 package cl.monsoon.s1next.view.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
@@ -20,30 +20,28 @@ import cl.monsoon.s1next.data.event.EmoticonClickEvent;
 
 public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<EmoticonGridRecyclerAdapter.ViewHolder> {
 
+    private final LayoutInflater mLayoutInflater;
+
     private final List<Pair<String, String>> mEmoticons;
     private final DrawableRequestBuilder<Uri> mEmoticonRequestBuilder;
 
-    public EmoticonGridRecyclerAdapter(Context context, List<Pair<String, String>> emoticons) {
+    public EmoticonGridRecyclerAdapter(Activity activity, List<Pair<String, String>> emoticons) {
+        mLayoutInflater = activity.getLayoutInflater();
         this.mEmoticons = emoticons;
+        mEmoticonRequestBuilder = Glide.with(activity).from(Uri.class);
 
         setHasStableIds(true);
-
-        mEmoticonRequestBuilder = Glide.with(context).from(Uri.class);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_emoticon, parent,
-                false);
-
-        return new ViewHolder(view);
+        return new ViewHolder(mLayoutInflater.inflate(R.layout.item_emoticon, parent, false));
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.imageView.setTag(R.id.emoticon_entity_tag, mEmoticons.get(position).second);
-        mEmoticonRequestBuilder
-                .load(Uri.parse(mEmoticons.get(position).first))
+        mEmoticonRequestBuilder.load(Uri.parse(mEmoticons.get(position).first))
                 .into(holder.imageView);
     }
 
@@ -71,7 +69,7 @@ public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<Emot
         @Override
         public void onClick(View v) {
             // notify ReplyFragment that emoticon had been clicked
-            App.getAppComponent(imageView.getContext()).getEventBus().post(new EmoticonClickEvent(
+            App.getAppComponent(v.getContext()).getEventBus().post(new EmoticonClickEvent(
                     (String) v.getTag(R.id.emoticon_entity_tag)));
         }
     }

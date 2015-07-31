@@ -24,6 +24,8 @@ public interface S1Service {
     int THREADS_PER_PAGE = 50;
     int POSTS_PER_PAGE = 30;
 
+    int REPLY_NOTIFICATION_MAX_LENGTH = 100;
+
     @GET("index.php?module=forumindex")
     Observable<ForumGroupsWrapper> getForumGroupsWrapper();
 
@@ -53,4 +55,16 @@ public interface S1Service {
     @FormUrlEncoded
     @POST("index.php?module=favthread&favoritesubmit=yes")
     Observable<ResultWrapper> addThreadFavorite(@Field("formhash") String authenticityToken, @Field("id") String threadId, @Field("description") String remark);
+
+    @FormUrlEncoded
+    @POST("index.php?module=sendreply&replysubmit=yes")
+    Observable<ResultWrapper> reply(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("message") String reply);
+
+    @GET(BASE_URL + "forum.php?mod=post&action=reply&inajax=yes")
+    Observable<String> getQuoteInfo(@Query("tid") String threadId, @Query("repquote") String quotePostId);
+
+    @FormUrlEncoded
+    @POST("index.php?module=sendreply&replysubmit=yes")
+    Observable<ResultWrapper> replyQuote(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("message") String reply,
+                                         @Field("noticeauthor") String encodedUserId, @Field("noticetrimstr") String quoteMessage, @Field("noticeauthormsg") String replyNotification);
 }
