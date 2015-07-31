@@ -30,15 +30,15 @@ import cl.monsoon.s1next.view.dialog.ThemeChangeDialogFragment;
 import cl.monsoon.s1next.viewmodel.UserViewModel;
 
 /**
- * Implement the concrete UI logic for {@link DrawerLayoutPresenter}.
+ * Implement the concrete UI logic for {@link DrawerLayoutDelegate}.
  */
-public final class DrawerLayoutPresenterConcrete extends DrawerLayoutPresenter
+public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private final User mUser;
     private final UserViewModel mUserViewModel;
 
-    public DrawerLayoutPresenterConcrete(FragmentActivity activity, DrawerLayout drawerLayout, NavigationView navigationView) {
+    public DrawerLayoutDelegateConcrete(FragmentActivity activity, DrawerLayout drawerLayout, NavigationView navigationView) {
         super(activity, drawerLayout, navigationView);
         mUserViewModel = App.getAppComponent(activity).getUserViewModel();
         mUser = mUserViewModel.getUser();

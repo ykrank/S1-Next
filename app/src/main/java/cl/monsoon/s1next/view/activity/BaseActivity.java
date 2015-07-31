@@ -24,9 +24,9 @@ import cl.monsoon.s1next.data.event.FontSizeChangeEvent;
 import cl.monsoon.s1next.data.event.ThemeChangeEvent;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
-import cl.monsoon.s1next.view.internal.DrawerLayoutPresenter;
-import cl.monsoon.s1next.view.internal.DrawerLayoutPresenterConcrete;
-import cl.monsoon.s1next.view.internal.ToolbarPresenter;
+import cl.monsoon.s1next.view.internal.DrawerLayoutDelegate;
+import cl.monsoon.s1next.view.internal.DrawerLayoutDelegateConcrete;
+import cl.monsoon.s1next.view.internal.ToolbarDelegate;
 import cl.monsoon.s1next.widget.EventBus;
 import rx.Subscription;
 
@@ -49,9 +49,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Inject
     ThemeManager mThemeManager;
 
-    private ToolbarPresenter mToolbarPresenter;
+    private ToolbarDelegate mToolbarDelegate;
 
-    private DrawerLayoutPresenter mDrawerLayoutPresenter;
+    private DrawerLayoutDelegate mDrawerLayoutDelegate;
     private boolean mDrawerIndicatorEnabled = true;
 
     private Subscription mEventBusSubscription;
@@ -110,7 +110,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app drawer touch event.
-        if (mDrawerLayoutPresenter != null && mDrawerLayoutPresenter.onOptionsItemSelected(item)) {
+        if (mDrawerLayoutDelegate != null && mDrawerLayoutDelegate.onOptionsItemSelected(item)) {
             return true;
         }
 
@@ -135,15 +135,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        if (mDrawerLayoutPresenter != null) {
-            mDrawerLayoutPresenter.onConfigurationChanged(newConfig);
+        if (mDrawerLayoutDelegate != null) {
+            mDrawerLayoutDelegate.onConfigurationChanged(newConfig);
         }
     }
 
     private void setUpToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-            mToolbarPresenter = new ToolbarPresenter(this, toolbar);
+            mToolbarDelegate = new ToolbarDelegate(this, toolbar);
         }
     }
 
@@ -151,24 +151,24 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Sets Toolbar's navigation icon to cross.
      */
     final void setupNavCrossIcon() {
-        mToolbarPresenter.setupNavCrossIcon();
+        mToolbarDelegate.setupNavCrossIcon();
     }
 
     final Optional<Toolbar> getToolbar() {
-        if (mToolbarPresenter == null) {
+        if (mToolbarDelegate == null) {
             return Optional.absent();
         } else {
-            return Optional.of(mToolbarPresenter.getToolbar());
+            return Optional.of(mToolbarDelegate.getToolbar());
         }
     }
 
     private void setupDrawer() {
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawerLayout != null) {
-            mDrawerLayoutPresenter = new DrawerLayoutPresenterConcrete(this, drawerLayout,
+            mDrawerLayoutDelegate = new DrawerLayoutDelegateConcrete(this, drawerLayout,
                     (NavigationView) findViewById(R.id.navigation_view));
-            mDrawerLayoutPresenter.setDrawerIndicatorEnabled(mDrawerIndicatorEnabled);
-            mDrawerLayoutPresenter.onPostCreate();
+            mDrawerLayoutDelegate.setDrawerIndicatorEnabled(mDrawerIndicatorEnabled);
+            mDrawerLayoutDelegate.onPostCreate();
         }
     }
 

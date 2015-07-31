@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.databinding.ActivityGalleryBinding;
 import cl.monsoon.s1next.util.IntentUtil;
-import cl.monsoon.s1next.view.internal.ToolbarPresenter;
+import cl.monsoon.s1next.view.internal.ToolbarDelegate;
 import cl.monsoon.s1next.viewmodel.ImageViewModel;
 
 /**
@@ -37,9 +37,9 @@ public final class GalleryActivity extends AppCompatActivity {
         ActivityGalleryBinding binding = DataBindingUtil.setContentView(this,
                 R.layout.activity_gallery);
 
-        ToolbarPresenter toolbarPresenter = new ToolbarPresenter(this, binding.toolbar);
+        ToolbarDelegate toolbarDelegate = new ToolbarDelegate(this, binding.toolbar);
         setTitle(null);
-        toolbarPresenter.setupNavCrossIcon();
+        toolbarDelegate.setupNavCrossIcon();
 
         // set Toolbar's padding because we use `android:windowTranslucentStatus` in this Activity
         // we only use translucent status if API >= 21

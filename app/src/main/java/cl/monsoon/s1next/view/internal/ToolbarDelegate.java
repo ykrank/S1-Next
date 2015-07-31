@@ -9,14 +9,15 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.util.ResourceUtil;
 
 /**
- * A helper class warps Toolbar.
+ * THis class represents a delegate which you can use to add
+ * {@link Toolbar} to {@link AppCompatActivity}.
  */
-public final class ToolbarPresenter {
+public final class ToolbarDelegate {
 
     private final AppCompatActivity mAppCompatActivity;
     private final Toolbar mToolbar;
 
-    public ToolbarPresenter(AppCompatActivity appCompatActivity, Toolbar toolbar) {
+    public ToolbarDelegate(AppCompatActivity appCompatActivity, Toolbar toolbar) {
         this.mAppCompatActivity = appCompatActivity;
         this.mToolbar = toolbar;
 

@@ -15,9 +15,10 @@ import android.view.View;
 import cl.monsoon.s1next.R;
 
 /**
- * A helper class warps drawer.
+ * THis class represents a delegate which you can use to add
+ * {@link DrawerLayout} to {@link FragmentActivity}.
  */
-public abstract class DrawerLayoutPresenter {
+public abstract class DrawerLayoutDelegate {
 
     final FragmentActivity mFragmentActivity;
 
@@ -27,7 +28,7 @@ public abstract class DrawerLayoutPresenter {
 
     private boolean mDrawerIndicatorEnabled = true;
 
-    DrawerLayoutPresenter(FragmentActivity fragmentActivity, DrawerLayout drawerLayout, NavigationView navigationView) {
+    DrawerLayoutDelegate(FragmentActivity fragmentActivity, DrawerLayout drawerLayout, NavigationView navigationView) {
         this.mFragmentActivity = fragmentActivity;
         this.mDrawerLayout = drawerLayout;
         this.mNavigationView = navigationView;
@@ -74,7 +75,7 @@ public abstract class DrawerLayoutPresenter {
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
             /**
-             * @see DrawerLayoutPresenter#closeDrawer(Runnable)
+             * @see DrawerLayoutDelegate#closeDrawer(Runnable)
              */
             @Override
             public void onDrawerClosed(View drawerView) {
