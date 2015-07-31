@@ -94,6 +94,7 @@ public final class OpenSourceLicensesFragment extends PreferenceFragment {
                 {"Guava", "APACHE_LICENSE"},
                 {"Jackson databind", "APACHE_LICENSE"},
                 {"Javax.annotation API", "CDDL+GPL"},
+                {"LeakCanary", "LEAKCANARY"},
                 {"OkHttp", "APACHE_LICENSE"},
                 {"Retrofit", "RETROFIT"},
                 {"Retrolambda", "APACHE_LICENSE"},

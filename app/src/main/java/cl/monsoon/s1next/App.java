@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.StrictMode;
 
 import com.bugsnag.android.Bugsnag;
+import com.squareup.leakcanary.LeakCanary;
 import com.squareup.okhttp.OkHttpClient;
 
 import javax.inject.Singleton;
@@ -60,6 +61,7 @@ public final class App extends Application {
                     .penaltyLog()
                     .build());
         }
+        LeakCanary.install(this);
 
         sApp = this;
 
