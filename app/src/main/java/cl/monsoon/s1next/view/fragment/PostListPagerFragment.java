@@ -184,8 +184,15 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
 
     public interface PagerCallback {
 
+        /**
+         * Gets {@link android.support.v4.view.PagerAdapter#getCount()}.
+         */
         int getTotalPages();
 
+        /**
+         * A callback to set actual total pages
+         * which used for {@link android.support.v4.view.PagerAdapter}。
+         */
         void setTotalPageByPosts(int threads);
 
         void setThreadTitle(CharSequence title);

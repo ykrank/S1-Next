@@ -124,9 +124,6 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
 
     public interface SubForumsCallback {
 
-        /**
-         * A callback to setup sub forums.
-         */
         void setupSubForums(List<Forum> forumList);
     }
 }
