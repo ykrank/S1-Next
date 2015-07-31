@@ -16,22 +16,32 @@
 #   public *;
 #}
 
+-keepattributes *Annotation*, Signature
+
+# Android Design Support library
+# https://stackoverflow.com/questions/30562330/using-appcompat-layout-behavior-with-string-appbar-scrolling-view-behavior#answer-30846201
+-keep public class * extends android.support.design.widget.CoordinatorLayout$Behavior { *; }
+
 # Guava
 # https://github.com/google/guava/wiki/UsingProGuardWithGuava
 -dontwarn sun.misc.Unsafe
 -dontwarn com.google.common.collect.MinMaxPriorityQueue
 
 # Jackson databind
--keep public class cl.monsoon.s1next.model.** { *; }
+-keep public class cl.monsoon.s1next.data.api.model.** { *; }
 
--keepattributes *Annotation*, Signature
 -keepnames class com.fasterxml.jackson.** { *; }
 -dontwarn com.fasterxml.jackson.databind.**
 
-# OkHttp
--dontwarn okio.**
+# Okio
+# https://github.com/square/okio/issues/144
+-dontwarn java.nio.file.Files
+-dontwarn java.nio.file.Path
+-dontwarn java.nio.file.OpenOption
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 
 # Glide
+# https://github.com/bumptech/glide#user-content-proguard
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
     **[] $VALUES;
@@ -39,4 +49,5 @@
 }
 
 # Gradle Retrolambda Plugin
+# https://github.com/evant/gradle-retrolambda#user-content-proguard
 -dontwarn java.lang.invoke.*
