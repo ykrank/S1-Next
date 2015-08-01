@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Html;
+import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.TextView;
 
@@ -17,6 +18,10 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.target.ViewTarget;
 
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
+
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.Api;
@@ -28,19 +33,34 @@ import cl.monsoon.s1next.util.TransformationUtil;
  * <p>
  * Uses {@link com.bumptech.glide.request.target.ViewTarget}
  * to make an asynchronous HTTP GET to load the image.
+ * <p>
+ * Forked from https://github.com/goofyz/testGlide/pull/1
+ * See https://github.com/bumptech/glide/issues/550
  */
-public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callback {
+public final class GlideImageGetter
+        implements Html.ImageGetter, View.OnAttachStateChangeListener,
+        Drawable.Callback {
 
     private final Context mContext;
 
     private final TextView mTextView;
 
+    /**
+     * Weak {@link java.util.HashSet}.
+     */
+    private final Set<ViewTarget> mViewTargetSet = Collections.newSetFromMap(new WeakHashMap<>());
+
     public GlideImageGetter(Context context, TextView textView) {
         this.mContext = context;
         this.mTextView = textView;
+
         // save Drawable.Callback in TextView
-        // and get back when finish fetching image form Internet
+        // and get back when finish fetching image
+        // see https://github.com/goofyz/testGlide/pull/1 for more details
         mTextView.setTag(R.id.tag_drawable_callback, this);
+        // add this listener in order to clean any pending images loading
+        // and set drawable callback tag to null when detached from window
+        mTextView.addOnAttachStateChangeListener(this);
     }
 
     /**
@@ -50,6 +70,9 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
     @Override
     public Drawable getDrawable(String url) {
         UrlDrawable urlDrawable = new UrlDrawable();
+        ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
+                urlDrawable);
+        mViewTargetSet.add(imageGetterViewTarget);
 
         // url has no domain if it comes from server.
         if (!URLUtil.isNetworkUrl(url)) {
@@ -73,7 +96,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
                                 Glide.with(mContext)
                                         .load(Api.BASE_URL + url)
                                         .transform(sizeMultiplierBitmapTransformation)
-                                        .into(new ImageGetterViewTarget(mTextView, urlDrawable));
+                                        .into(imageGetterViewTarget);
 
                                 return true;
                             }
@@ -83,13 +106,13 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
                                 return false;
                             }
                         })
-                        .into(new ImageGetterViewTarget(mTextView, urlDrawable));
+                        .into(imageGetterViewTarget);
             } else {
                 Glide.with(mContext)
                         .load(Api.BASE_URL + url)
                         .transform(new TransformationUtil.GlMaxTextureSizeBitmapTransformation(
                                 mContext))
-                        .into(new ImageGetterViewTarget(mTextView, urlDrawable));
+                        .into(imageGetterViewTarget);
             }
 
             return urlDrawable;
@@ -106,6 +129,23 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
         } else {
             return null;
         }
+    }
+
+    @Override
+    public void onViewAttachedToWindow(View v) {
+
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(View v) {
+        // cancels any pending images loading
+        for (ViewTarget viewTarget : mViewTargetSet) {
+            Glide.clear(viewTarget);
+        }
+        mViewTargetSet.clear();
+        v.removeOnAttachStateChangeListener(this);
+
+        v.setTag(R.id.tag_drawable_callback, null);
     }
 
     /**
@@ -131,6 +171,8 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
 
         private final UrlDrawable mDrawable;
 
+        private Request mRequest;
+
         private ImageGetterViewTarget(TextView view, UrlDrawable drawable) {
             super(view);
 
@@ -143,11 +185,12 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
             final int resWidth = resource.getIntrinsicWidth();
             final int resHeight = resource.getIntrinsicHeight();
             int width, height;
-            if (getView().getWidth() >= resWidth) {
+            TextView textView = getView();
+            if (textView.getWidth() >= resWidth) {
                 width = resWidth;
                 height = resHeight;
             } else {
-                width = getView().getWidth();
+                width = textView.getWidth();
                 height = (int) (resHeight / ((float) resWidth / width));
             }
 
@@ -161,29 +204,28 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
                 // set callback to drawable in order to
                 // signal its container to be redrawn
                 // to show the animated GIF
-                mDrawable.setCallback((Drawable.Callback) getView().getTag(
-                        R.id.tag_drawable_callback));
+                mDrawable.setCallback((Drawable.Callback) textView.getTag(R.id.tag_drawable_callback));
                 resource.setLoopCount(GlideDrawable.LOOP_FOREVER);
                 resource.start();
             }
 
-            getView().setText(getView().getText());
-            getView().invalidate();
+            textView.setText(textView.getText());
+            textView.invalidate();
         }
 
         /**
-         * See https://github.com/bumptech/glide/issues/256
+         * See https://github.com/bumptech/glide/issues/550#issuecomment-123693051
          *
          * @see com.bumptech.glide.GenericRequestBuilder#into(com.bumptech.glide.request.target.Target)
          */
         @Override
         public Request getRequest() {
-            return null;
+            return mRequest;
         }
 
         @Override
         public void setRequest(Request request) {
-
+            this.mRequest = request;
         }
     }
 }
