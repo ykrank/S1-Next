@@ -11,6 +11,9 @@ import java.util.List;
 
 import cl.monsoon.s1next.R;
 
+/**
+ * A factory provides emotions.
+ */
 public final class EmoticonFactory {
 
     public static final String ASSET_PATH_EMOTICON = "file:///android_asset/image/emoticon/";

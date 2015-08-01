@@ -195,7 +195,6 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
         private static final int MEMORY_CACHE_MAX_NUMBER = 1000;
         private static final String DISK_CACHE_DIRECTORY = "avatar_urls_disk_cache";
         private static final long DISK_CACHE_MAX_SIZE = 1000 * 1000;
-        private static final int VALUE_COUNT = 1;
 
         /**
          * We only cache the avatar URLs as keys.
@@ -220,7 +219,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
             File file = new File(App.get().getCacheDir().getPath()
                     + File.separator + DISK_CACHE_DIRECTORY);
             try {
-                diskLruCache = DiskLruCache.open(file, BuildConfig.VERSION_CODE, VALUE_COUNT,
+                diskLruCache = DiskLruCache.open(file, BuildConfig.VERSION_CODE, 1,
                         DISK_CACHE_MAX_SIZE);
             } catch (IOException e) {
                 throw new RuntimeException("Failed to open the cache in " + file + ".", e);

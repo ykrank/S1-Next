@@ -10,7 +10,6 @@ import android.util.AttributeSet;
 /**
  * See https://android.googlesource.com/platform/frameworks/base/+/94c02a1a1a6d7e6900e5a459e9cc699b9510e5a2
  */
-@SuppressWarnings("UnusedDeclaration")
 final class ListPreferenceCompat extends ListPreference {
 
     public ListPreferenceCompat(Context context) {
@@ -32,7 +31,7 @@ final class ListPreferenceCompat extends ListPreference {
     }
 
     /**
-     * setValue() was not calling {@link #notifyChanged()} before android-4.4.
+     * setValue() was not calling {@link #notifyChanged()} before android 4.4.
      */
     @Override
     public void setValue(String value) {

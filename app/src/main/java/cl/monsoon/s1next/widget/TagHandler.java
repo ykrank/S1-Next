@@ -16,7 +16,7 @@ import org.xml.sax.XMLReader;
 import cl.monsoon.s1next.view.activity.GalleryActivity;
 
 /**
- * Adds  {@link android.view.View.OnClickListener}
+ * Adds {@link android.view.View.OnClickListener}
  * to {@link android.text.style.ImageSpan} and
  * handles {@literal <strike>} tag.
  */

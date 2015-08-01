@@ -184,11 +184,7 @@ public final class BezelImageView extends ImageView {
         }
 
         if (isDuplicateParentStateEnabled()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                this.postInvalidateOnAnimation();
-            } else {
-                ViewCompat.postInvalidateOnAnimation(this);
-            }
+            ViewCompat.postInvalidateOnAnimation(this);
         }
     }
 
