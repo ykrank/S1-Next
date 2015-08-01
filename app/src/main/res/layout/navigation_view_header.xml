@@ -24,7 +24,7 @@
             android:layout_height="@dimen/drawer_top_height"
             android:contentDescription="@string/drawer_top_background_content_desc"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_drawer_background" />
+            android:src="@drawable/ic_drawer_header_background" />
 
         <cl.monsoon.s1next.widget.BezelImageView
             android:id="@+id/drawer_user_avatar"
