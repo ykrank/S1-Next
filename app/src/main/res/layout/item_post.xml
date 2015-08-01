@@ -47,7 +47,8 @@
                 android:ellipsize="end"
                 android:includeFontPadding="false"
                 android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.Dense.Subhead" />
+                android:textAppearance="@style/TextAppearance.Dense.Subhead"
+                android:textIsSelectable="true" />
 
             <TextView
                 android:id="@+id/datetime"
