@@ -22,6 +22,10 @@ import cl.monsoon.s1next.util.ViewUtil;
 
 public final class TextViewBindingAdapter {
 
+    private TextViewBindingAdapter() {
+
+    }
+
     @BindingAdapter("increaseClickingArea")
     public static void increaseClickingArea(TextView textView, float size) {
         int halfSize = (int) (size / 2 + 0.5);

@@ -12,6 +12,10 @@ import cl.monsoon.s1next.R;
 
 public final class SpinnerBindingAdapter {
 
+    private SpinnerBindingAdapter() {
+
+    }
+
     @BindingAdapter({"dropDownItemList", "selectedItemPosition"})
     public static void setForumGroupNameList(Spinner spinner, List<CharSequence> dropDownItemList, int selectedItemPosition) {
         spinner.setAdapter(getSpinnerAdapter(spinner, dropDownItemList));

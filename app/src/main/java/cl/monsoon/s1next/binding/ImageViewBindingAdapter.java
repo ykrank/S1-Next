@@ -12,6 +12,10 @@ import cl.monsoon.s1next.R;
 
 public final class ImageViewBindingAdapter {
 
+    private ImageViewBindingAdapter() {
+
+    }
+
     @BindingAdapter("imageDrawable")
     public static void setImageDrawable(ImageView imageView, Drawable drawable) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

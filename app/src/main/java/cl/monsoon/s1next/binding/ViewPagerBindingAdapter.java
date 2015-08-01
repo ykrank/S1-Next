@@ -6,6 +6,10 @@ import android.support.v4.view.ViewPager;
 
 public final class ViewPagerBindingAdapter {
 
+    private ViewPagerBindingAdapter() {
+
+    }
+
     @BindingAdapter("totalPage")
     public static void setTotalPage(ViewPager viewPager, int totalPage) {
         PagerAdapter pagerAdapter = viewPager.getAdapter();

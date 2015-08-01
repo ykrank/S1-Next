@@ -15,6 +15,10 @@ import cl.monsoon.s1next.widget.BezelImageView;
 
 public final class BezelImageViewBindingAdapter {
 
+    private BezelImageViewBindingAdapter() {
+
+    }
+
     /**
      * Show default avatar if user hasn't logged in,
      * otherwise show user's avatar.
