@@ -26,7 +26,7 @@ public final class AppGlideModule implements GlideModule {
                 context, App.getAppComponent(context).getDownloadPreferencesManager()
                 .getTotalDownloadCacheSize()));
 
-        ViewTarget.setTagId(R.id.glide_tag);
+        ViewTarget.setTagId(R.id.tag_glide);
     }
 
     @Override

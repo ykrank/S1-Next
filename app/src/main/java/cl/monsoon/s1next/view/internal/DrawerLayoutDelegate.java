@@ -81,10 +81,10 @@ public abstract class DrawerLayoutDelegate {
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
 
-                Object tag = drawerView.getTag(R.id.drawer_runnable_tag);
+                Object tag = drawerView.getTag(R.id.tag_drawer_runnable);
                 if (tag != null) {
                     Runnable runnable = (Runnable) tag;
-                    drawerView.setTag(R.id.drawer_runnable_tag, null);
+                    drawerView.setTag(R.id.tag_drawer_runnable, null);
                     runnable.run();
                 }
             }
@@ -101,7 +101,7 @@ public abstract class DrawerLayoutDelegate {
      * @param runnable Execute this during the {@link ActionBarDrawerToggle#onDrawerClosed(View)}.
      */
     final void closeDrawer(@Nullable Runnable runnable) {
-        mNavigationView.setTag(R.id.drawer_runnable_tag, runnable);
+        mNavigationView.setTag(R.id.tag_drawer_runnable, runnable);
         mDrawerLayout.closeDrawer(GravityCompat.START);
     }
 

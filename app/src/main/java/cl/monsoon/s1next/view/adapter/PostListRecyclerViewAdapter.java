@@ -121,7 +121,7 @@ public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter<P
             countView.setClickable(false);
             countView.setLongClickable(false);
             countView.setFocusable(false);
-            countView.setTag(R.id.post_tag, null);
+            countView.setTag(R.id.tag_post, null);
         } else {
             Spannable spannable = new SpannableString("#" + post.getCount());
             spannable.setSpan(QUOTE_CLICKABLE_SPAN, 0, spannable.length(),
@@ -130,7 +130,7 @@ public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter<P
             countView.setClickable(true);
             countView.setLongClickable(true);
             countView.setFocusable(true);
-            countView.setTag(R.id.post_tag, post.getPartForQuote());
+            countView.setTag(R.id.tag_post, post.getPartForQuote());
         }
 
         String reply = post.getReply();
@@ -195,7 +195,7 @@ public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter<P
 
         @Override
         public void onClick(View widget) {
-            Post post = (Post) widget.getTag(R.id.post_tag);
+            Post post = (Post) widget.getTag(R.id.tag_post);
             App.getAppComponent(widget.getContext()).getEventBus().post(new QuoteEvent(post.getId(),
                     post.getCount()));
         }

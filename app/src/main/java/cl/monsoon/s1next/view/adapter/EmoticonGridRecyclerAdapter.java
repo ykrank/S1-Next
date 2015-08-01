@@ -40,7 +40,7 @@ public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<Emot
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.imageView.setTag(R.id.emoticon_entity_tag, mEmoticons.get(position).second);
+        holder.imageView.setTag(R.id.tag_emoticon_entity, mEmoticons.get(position).second);
         mEmoticonRequestBuilder.load(Uri.parse(mEmoticons.get(position).first))
                 .into(holder.imageView);
     }
@@ -70,7 +70,7 @@ public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<Emot
         public void onClick(View v) {
             // notify ReplyFragment that emoticon had been clicked
             App.getAppComponent(v.getContext()).getEventBus().post(new EmoticonClickEvent(
-                    (String) v.getTag(R.id.emoticon_entity_tag)));
+                    (String) v.getTag(R.id.tag_emoticon_entity)));
         }
     }
 }

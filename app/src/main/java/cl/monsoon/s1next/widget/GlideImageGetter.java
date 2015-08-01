@@ -40,7 +40,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
         this.mTextView = textView;
         // save Drawable.Callback in TextView
         // and get back when finish fetching image form Internet
-        mTextView.setTag(R.id.drawable_callback_tag, this);
+        mTextView.setTag(R.id.tag_drawable_callback, this);
     }
 
     /**
@@ -162,7 +162,7 @@ public final class GlideImageGetter implements Html.ImageGetter, Drawable.Callba
                 // signal its container to be redrawn
                 // to show the animated GIF
                 mDrawable.setCallback((Drawable.Callback) getView().getTag(
-                        R.id.drawable_callback_tag));
+                        R.id.tag_drawable_callback));
                 resource.setLoopCount(GlideDrawable.LOOP_FOREVER);
                 resource.start();
             }
