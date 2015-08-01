@@ -1,6 +1,5 @@
 package cl.monsoon.s1next.widget;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.Html;
@@ -21,12 +20,6 @@ import cl.monsoon.s1next.view.activity.GalleryActivity;
  * handles {@literal <strike>} tag.
  */
 public final class TagHandler implements Html.TagHandler {
-
-    private final Context mContext;
-
-    public TagHandler(Context context) {
-        this.mContext = context;
-    }
 
     @Override
     public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
@@ -64,7 +57,7 @@ public final class TagHandler implements Html.TagHandler {
 
                 output.removeSpan(imageSpan);
                 // make this ImageSpan clickable
-                output.setSpan(new ImageClickableSpan(mContext, imageSpan.getDrawable(), url),
+                output.setSpan(new ImageClickableSpan(imageSpan.getDrawable(), url),
                         end - len, output.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
@@ -108,17 +101,13 @@ public final class TagHandler implements Html.TagHandler {
 
     static class ImageClickableSpan extends ImageSpan implements View.OnClickListener {
 
-        private final Context mContext;
-
-        private ImageClickableSpan(Context context, Drawable d, String source) {
+        private ImageClickableSpan(Drawable d, String source) {
             super(d, source);
-
-            this.mContext = context;
         }
 
         @Override
         public void onClick(View v) {
-            GalleryActivity.startGalleryActivity(mContext, getSource());
+            GalleryActivity.startGalleryActivity(v.getContext(), getSource());
         }
     }
 

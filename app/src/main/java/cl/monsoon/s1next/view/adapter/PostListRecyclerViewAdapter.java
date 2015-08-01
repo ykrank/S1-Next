@@ -140,7 +140,7 @@ public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter<P
         } else {
             // use GlideImageGetter to show images in TextView
             replayView.setText(Html.fromHtml(reply, new GlideImageGetter(mContext, replayView),
-                    new TagHandler(mContext)));
+                    new TagHandler()));
         }
     }
 
