@@ -1,6 +1,5 @@
 package cl.monsoon.s1next.data.api;
 
-import cl.monsoon.s1next.data.api.model.VoidElement;
 import cl.monsoon.s1next.data.api.model.wrapper.FavouritesWrapper;
 import cl.monsoon.s1next.data.api.model.wrapper.ForumGroupsWrapper;
 import cl.monsoon.s1next.data.api.model.wrapper.PostsWrapper;
@@ -32,7 +31,7 @@ public interface S1Service {
     Observable<ResultWrapper> login(@Field("username") String username, @Field("password") String password);
 
     @GET(Api.URL_AUTHENTICITY_TOKEN_HELPER)
-    Observable<VoidElement> refreshAuthenticityToken();
+    Observable<ResultWrapper> refreshAuthenticityToken();
 
     @FormUrlEncoded
     @POST(Api.URL_THREAD_FAVOURITES_ADD)
