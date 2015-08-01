@@ -68,13 +68,17 @@ public final class ReplyFragment extends Fragment {
 
     private boolean mIsEmoticonKeyboardShowing;
     /**
-     * {@code mMenuEmoticon} is nullable before {@link #onCreateOptionsMenu(Menu, MenuInflater)}.
+     * {@code mMenuEmoticon} is null before {@link #onCreateOptionsMenu(Menu, MenuInflater)}.
      */
     @Nullable
     private MenuItem mMenuEmoticon;
     private View mEmoticonKeyboard;
     private final Interpolator mInterpolator = new FastOutSlowInInterpolator();
 
+    /**
+     * {@code mMenuSend} is null when configuration changes.
+     */
+    @Nullable
     private MenuItem mMenuSend;
 
     private Subscription mEventBusSubscription;
@@ -120,8 +124,10 @@ public final class ReplyFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                // disable send menu if the content of reply is empty
-                mMenuSend.setEnabled(!TextUtils.isEmpty(s.toString()));
+                if (mMenuSend != null) {
+                    // disable send menu if the content of reply is empty
+                    mMenuSend.setEnabled(!TextUtils.isEmpty(s.toString()));
+                }
             }
         });
 
@@ -171,8 +177,7 @@ public final class ReplyFragment extends Fragment {
             setKeyboardIcon();
         }
 
-        mMenuSend = menu.findItem(R.id.menu_send);
-        mMenuSend.setEnabled(!TextUtils.isEmpty(mReplyView.getText()));
+        mMenuSend = menu.findItem(R.id.menu_send).setEnabled(!TextUtils.isEmpty(mReplyView.getText()));
     }
 
     @Override
