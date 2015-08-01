@@ -79,9 +79,9 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
             case PREF_KEY_DOWNLOADS:
                 SettingsActivity.startDownloadSettingsActivity(preference.getContext());
 
-                break;
+                return true;
         }
 
-        return true;
+        return false;
     }
 }
