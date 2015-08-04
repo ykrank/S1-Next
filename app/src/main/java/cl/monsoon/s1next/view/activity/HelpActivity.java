@@ -55,7 +55,7 @@ public final class HelpActivity extends BaseActivity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                viewModel.finishedLoading.set(true);
+                viewModel.setFinishedLoading(true);
             }
         });
 

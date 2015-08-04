@@ -1,17 +1,22 @@
 package cl.monsoon.s1next.viewmodel;
 
-import android.databinding.ObservableBoolean;
+import android.databinding.BaseObservable;
 import android.view.View;
 
-public final class WebPageViewModel {
+public final class WebPageViewModel extends BaseObservable {
 
-    public final ObservableBoolean finishedLoading = new ObservableBoolean();
+    private boolean finishedLoading;
+
+    public void setFinishedLoading(boolean finishedLoading) {
+        this.finishedLoading = finishedLoading;
+        notifyChange();
+    }
 
     public int getWebViewVisibility() {
-        return finishedLoading.get() ? View.VISIBLE : View.GONE;
+        return finishedLoading ? View.VISIBLE : View.INVISIBLE;
     }
 
     public int getProgressBarVisibility() {
-        return finishedLoading.get() ? View.GONE : View.VISIBLE;
+        return finishedLoading ? View.GONE : View.VISIBLE;
     }
 }
