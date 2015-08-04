@@ -7,8 +7,8 @@
     <style name="Theme.Light.Inverse.LightBlue" parent="Base.Theme.Light.Inverse.LightBlue"/>
 
     <style name="Theme.Dark" parent="Base.Theme.Dark"/>
-    <style name="Theme.Dark.Imperfect" parent="Base.Theme.Dark.Imperfect"/>
-    <style name="Theme.Dark.Imperfect.Black" parent="Base.Theme.Dark.Imperfect.Black"/>
+    <style name="Theme.Dark.NightMode" parent="Base.Theme.Dark.NightMode"/>
+    <style name="Theme.Dark.NightMode.Amoled" parent="Base.Theme.Dark.NightMode.Amoled"/>
 
     <style name="Theme.Translucent.Light" parent="Base.Theme.Translucent.Light"/>
     <style name="Theme.Translucent.Dark" parent="Base.Theme.Translucent.Dark"/>
@@ -105,14 +105,14 @@
         <item name="iconHelp">@drawable/ic_help_white_24dp</item>
     </style>
 
-    <style name="Base.Theme.Dark.Imperfect">
+    <style name="Base.Theme.Dark.NightMode">
         <item name="colorAccent">@color/dark_cyan</item>
         <item name="android:textColorPrimary">@color/white_69p</item>
         <item name="android:textColorLink">@color/teal_200_70p</item>
         <item name="drawerHeaderUsernameTextColor">@color/white_69p</item>
     </style>
 
-    <style name="Base.Theme.Dark.Imperfect.Black">
+    <style name="Base.Theme.Dark.NightMode.Amoled">
         <item name="colorPrimary">@android:color/black</item>
         <item name="colorPrimaryDark">@android:color/black</item>
         <item name="android:windowBackground">@android:color/black</item>

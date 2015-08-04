@@ -115,8 +115,8 @@ public final class ThemeManager {
     public boolean isDarkTheme() {
         Theme theme = getTheme();
         return theme == Theme.DARK_THEME
-                || theme == Theme.DARK_THEME_IMPERFECT
-                || theme == Theme.DARK_THEME_IMPERFECT_BLACK;
+                || theme == Theme.DARK_THEME_NIGHT_MODE
+                || theme == Theme.DARK_THEME_NIGHT_MODE_AMOLED;
     }
 
     /**
@@ -165,8 +165,8 @@ public final class ThemeManager {
         LIGHT_THEME_INVERSE_GREEN(R.style.Theme_Light_Inverse_Green),
         LIGHT_THEME_INVERSE_LIGHT_BLUE(R.style.Theme_Light_Inverse_LightBlue),
         DARK_THEME(R.style.Theme_Dark),
-        DARK_THEME_IMPERFECT(R.style.Theme_Dark_Imperfect),
-        DARK_THEME_IMPERFECT_BLACK(R.style.Theme_Dark_Imperfect_Black);
+        DARK_THEME_NIGHT_MODE(R.style.Theme_Dark_NightMode),
+        DARK_THEME_NIGHT_MODE_AMOLED(R.style.Theme_Dark_NightMode_Amoled);
 
         private static final List<Theme> VALUES = Arrays.asList(Theme.values());
 
