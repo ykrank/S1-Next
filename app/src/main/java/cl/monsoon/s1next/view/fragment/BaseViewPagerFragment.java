@@ -78,7 +78,6 @@ public abstract class BaseViewPagerFragment extends Fragment
     @Override
     @CallSuper
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_view_pager, menu);
 
         mMenuPageTurning = menu.findItem(R.id.menu_page_turning);
