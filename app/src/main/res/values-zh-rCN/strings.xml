@@ -64,8 +64,8 @@
     <string name="pref_theme_entries_3">绿色</string>
     <string name="pref_theme_entries_4">淡蓝色</string>
     <string name="pref_theme_entries_5">黑色</string>
-    <string name="pref_theme_entries_6">不纯粹的黑色</string>
-    <string name="pref_theme_entries_7">不纯粹的纯黑</string>
+    <string name="pref_theme_entries_6">夜间模式</string>
+    <string name="pref_theme_entries_7">夜间模式（AMOLED 版）</string>
     <string name="pref_font_size_entries_1">极小</string>
     <string name="pref_font_size_entries_2">小</string>
     <string name="pref_font_size_entries_3">中</string>

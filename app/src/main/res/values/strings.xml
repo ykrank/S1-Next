@@ -132,14 +132,14 @@
     <string name="pref_theme_entries_3">Green</string>
     <string name="pref_theme_entries_4">Light blue</string>
     <string name="pref_theme_entries_5">Dark</string>
-    <string name="pref_theme_entries_6">Imperfect dark</string>
-    <string name="pref_theme_entries_7">Imperfect black</string>
+    <string name="pref_theme_entries_6">Night mode</string>
+    <string name="pref_theme_entries_7">Night mode (AMOLED Version)</string>
 
     <string name="pref_font_size_entries_1">Very small</string>
     <string name="pref_font_size_entries_2">Small</string>
     <string name="pref_font_size_entries_3">Medium</string>
     <string name="pref_font_size_entries_4">Large</string>
-    <string name="pref_font_size_entries_5">Very Large</string>
+    <string name="pref_font_size_entries_5">Very large</string>
 
     <string name="pref_download_avatars_entries_1">Do not download avatars</string>
     <string name="pref_download_avatars_entries_2">Download avatars over Wi-Fi only</string>
