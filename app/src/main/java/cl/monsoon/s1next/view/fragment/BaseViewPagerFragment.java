@@ -3,7 +3,6 @@ package cl.monsoon.s1next.view.fragment;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -12,6 +11,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.trello.rxlifecycle.components.support.RxFragment;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.databinding.FragmentViewPagerBinding;
@@ -25,7 +26,7 @@ import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 /**
  * A base Fragment wraps {@link ViewPager} and provides related methods.
  */
-public abstract class BaseViewPagerFragment extends Fragment
+public abstract class BaseViewPagerFragment extends RxFragment
         implements PageTurningDialogFragment.OnPageTurnedListener,
         PagerCallback {
 

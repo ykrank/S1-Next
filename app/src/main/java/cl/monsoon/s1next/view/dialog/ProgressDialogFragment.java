@@ -8,13 +8,15 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.widget.Toast;
 
+import com.trello.rxlifecycle.FragmentEvent;
+import com.trello.rxlifecycle.components.support.RxDialogFragment;
+
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.data.api.S1Service;
 import cl.monsoon.s1next.data.api.UserValidator;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.fragment.BaseFragment;
 import rx.Observable;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -27,12 +29,10 @@ import rx.schedulers.Schedulers;
  *
  * @param <D> The data we want to request.
  */
-public abstract class ProgressDialogFragment<D> extends DialogFragment {
+public abstract class ProgressDialogFragment<D> extends RxDialogFragment {
 
     S1Service mS1Service;
     private UserValidator mUserValidator;
-
-    private Subscription mSubscription;
 
     @Override
     @CallSuper
@@ -69,21 +69,11 @@ public abstract class ProgressDialogFragment<D> extends DialogFragment {
         super.onDestroyView();
     }
 
-    @Override
-    @CallSuper
-    public void onDestroy() {
-        super.onDestroy();
-
-        if (mSubscription != null) {
-            mSubscription.unsubscribe();
-        }
-    }
-
     /**
      * @see BaseFragment#load()
      */
     private void request() {
-        mSubscription = getSourceObservable()
+        getSourceObservable().compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(d -> UserValidator.validateIntercept(mUserValidator, d))

@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.common.base.Preconditions;
+import com.trello.rxlifecycle.FragmentEvent;
+import com.trello.rxlifecycle.components.support.RxFragment;
 
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
@@ -26,7 +28,6 @@ import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.fragment.headless.DataRetainedFragment;
 import cl.monsoon.s1next.viewmodel.LoadingViewModel;
 import rx.Observable;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -39,7 +40,7 @@ import rx.schedulers.Schedulers;
  *
  * @param <D> The data we want to load.
  */
-public abstract class BaseFragment<D> extends Fragment {
+public abstract class BaseFragment<D> extends RxFragment {
 
     /**
      * The serialization (saved instance state) Bundle key representing
@@ -57,8 +58,6 @@ public abstract class BaseFragment<D> extends Fragment {
 
     S1Service mS1Service;
     private UserValidator mUserValidator;
-
-    private Subscription mRetrofitSubscription;
 
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -126,16 +125,6 @@ public abstract class BaseFragment<D> extends Fragment {
         mFragmentBaseBinding.setLoadingViewModel(mLoadingViewModel);
         if (isLoading()) {
             load();
-        }
-    }
-
-    @Override
-    @CallSuper
-    public void onDestroy() {
-        super.onDestroy();
-
-        if (mRetrofitSubscription != null) {
-            mRetrofitSubscription.unsubscribe();
         }
     }
 
@@ -213,7 +202,7 @@ public abstract class BaseFragment<D> extends Fragment {
      * in oder to provider its own data source {@link Observable}.
      */
     private void load() {
-        mRetrofitSubscription = getSourceObservable()
+        getSourceObservable().compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(d -> UserValidator.validateIntercept(mUserValidator, d))
@@ -237,8 +226,6 @@ public abstract class BaseFragment<D> extends Fragment {
      * <p>
      * Actually this method was only called once during loading (if no error occurs)
      * because we only emit data once from {@link #getSourceObservable()}.
-     *
-     * @see Subscription
      */
     @CallSuper
     void onNext(D data) {

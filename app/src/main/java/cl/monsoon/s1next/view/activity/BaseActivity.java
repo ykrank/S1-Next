@@ -7,13 +7,14 @@ import android.support.annotation.DrawableRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.common.base.Optional;
+import com.trello.rxlifecycle.ActivityEvent;
+import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import javax.inject.Inject;
 
@@ -28,14 +29,13 @@ import cl.monsoon.s1next.view.internal.DrawerLayoutDelegate;
 import cl.monsoon.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import cl.monsoon.s1next.view.internal.ToolbarDelegate;
 import cl.monsoon.s1next.widget.EventBus;
-import rx.Subscription;
 
 /**
  * A base Activity which includes the Toolbar
  * and navigation drawer amongst others.
  * Also changes theme depends on settings.
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends RxAppCompatActivity {
 
     @Inject
     EventBus mEventBus;
@@ -54,8 +54,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     private DrawerLayoutDelegate mDrawerLayoutDelegate;
     private boolean mDrawerIndicatorEnabled = true;
 
-    private Subscription mEventBusSubscription;
-
     @Override
     @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +65,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        mEventBusSubscription = mEventBus.get().subscribe(o -> {
+        mEventBus.get().compose(bindUntilEvent(ActivityEvent.DESTROY)).subscribe(o -> {
             // recreate this Activity when theme or font size changes
             if (o instanceof ThemeChangeEvent || o instanceof FontSizeChangeEvent) {
                 recreate();
@@ -95,14 +93,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onPostCreate(savedInstanceState);
 
         setupDrawer();
-    }
-
-    @Override
-    @CallSuper
-    protected void onDestroy() {
-        super.onDestroy();
-
-        mEventBusSubscription.unsubscribe();
     }
 
     @Override

@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.common.base.Preconditions;
+import com.trello.rxlifecycle.FragmentEvent;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -46,7 +47,6 @@ import cl.monsoon.s1next.view.dialog.LoginPromptDialogFragment;
 import cl.monsoon.s1next.view.dialog.ThreadAttachmentDialogFragment;
 import cl.monsoon.s1next.view.dialog.ThreadFavouritesAddDialogFragment;
 import cl.monsoon.s1next.widget.EventBus;
-import rx.Subscription;
 
 
 /**
@@ -88,8 +88,6 @@ public final class PostListFragment extends BaseViewPagerFragment
     private MenuItem mMenuThreadAttachment;
 
     private BroadcastReceiver mWifiReceiver;
-
-    private Subscription mEventBusSubscription;
 
     public static PostListFragment newInstance(Thread thread, boolean shouldGoToLastPage) {
         PostListFragment fragment = new PostListFragment();
@@ -171,7 +169,7 @@ public final class PostListFragment extends BaseViewPagerFragment
             activity.registerReceiver(mWifiReceiver, intentFilter);
         }
 
-        mEventBusSubscription = mEventBus.get().subscribe(o -> {
+        mEventBus.get().compose(bindUntilEvent(FragmentEvent.DESTROY)).subscribe(o -> {
             if (o instanceof QuoteEvent) {
                 QuoteEvent quoteEvent = (QuoteEvent) o;
                 startReplyActivity(quoteEvent.getQuotePostId(), quoteEvent.getQuotePostCount());
@@ -187,8 +185,6 @@ public final class PostListFragment extends BaseViewPagerFragment
             getActivity().unregisterReceiver(mWifiReceiver);
             mWifiReceiver = null;
         }
-
-        mEventBusSubscription.unsubscribe();
     }
 
     @Override

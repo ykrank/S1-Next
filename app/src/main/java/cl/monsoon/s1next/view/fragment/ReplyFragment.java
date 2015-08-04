@@ -6,7 +6,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.text.Editable;
@@ -23,6 +22,9 @@ import android.view.animation.Interpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.trello.rxlifecycle.FragmentEvent;
+import com.trello.rxlifecycle.components.support.RxFragment;
+
 import javax.inject.Inject;
 
 import cl.monsoon.s1next.App;
@@ -36,12 +38,11 @@ import cl.monsoon.s1next.util.ViewUtil;
 import cl.monsoon.s1next.view.adapter.EmoticonPagerAdapter;
 import cl.monsoon.s1next.view.dialog.ReplyRequestDialogFragment;
 import cl.monsoon.s1next.widget.EventBus;
-import rx.Subscription;
 
 /**
  * A Fragment shows {@link EditText} to let the user enter reply.
  */
-public final class ReplyFragment extends Fragment {
+public final class ReplyFragment extends RxFragment {
 
     public static final String TAG = ReplyFragment.class.getName();
 
@@ -80,8 +81,6 @@ public final class ReplyFragment extends Fragment {
      */
     @Nullable
     private MenuItem mMenuSend;
-
-    private Subscription mEventBusSubscription;
 
     public static ReplyFragment newInstance(String threadId, @Nullable String quotePostId) {
         ReplyFragment fragment = new ReplyFragment();
@@ -153,19 +152,12 @@ public final class ReplyFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        mEventBusSubscription = mEventBus.get().subscribe(o -> {
+        mEventBus.get().compose(bindUntilEvent(FragmentEvent.DESTROY)).subscribe(o -> {
             if (o instanceof EmoticonClickEvent) {
                 mReplyView.getText().replace(mReplyView.getSelectionStart(),
                         mReplyView.getSelectionEnd(), ((EmoticonClickEvent) o).getEmoticonEntity());
             }
         });
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        mEventBusSubscription.unsubscribe();
     }
 
     @Override
