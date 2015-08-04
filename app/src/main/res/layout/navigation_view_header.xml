@@ -52,7 +52,7 @@
             android:singleLine="true"
             android:text="@{userViewModel.user.logged ? userViewModel.user.name : @string/action_login}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="@color/abc_primary_text_material_dark"
+            android:textColor="?attr/drawerHeaderUsernameTextColor"
             tools:ignore="NewApi" />
 
     </RelativeLayout>
