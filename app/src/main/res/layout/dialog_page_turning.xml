@@ -42,7 +42,7 @@
             android:gravity="center"
             android:inputType="number"
             android:text="@{pageTurningViewModel.seekBarProgressText}"
-            android:textAppearance="@style/TextAppearance.Dense.Subhead"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             app:addTextChangedListener="@{pageTurningViewModel.textWatcher}"
             app:filters="@{pageTurningViewModel.filters}" />
 

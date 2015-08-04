@@ -19,15 +19,22 @@
         <item name="tabIndicatorHeight">0dp</item>
     </style>
 
-    <style name="TextAppearance.Dense.Subhead" parent="TextAppearance.AppCompat.Subhead">
+    <!-- Dense language scripts that require extra line height to accommodate larger glyphs,
+    including Chinese, Japanese, and Korean. -->
+    <!-- https://www.google.com/design/spec/style/typography.html -->
+    <style name="TextAppearance.AppCompat.Subhead" parent="Base.TextAppearance.AppCompat.Subhead">
         <item name="android:textSize">@dimen/dense_text_size_subheader</item>
     </style>
 
-    <style name="TextAppearance.Dense.Body2" parent="TextAppearance.AppCompat.Body2">
+    <style name="TextAppearance.AppCompat.Body1" parent="Base.TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">@dimen/dense_text_size_body_1</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Body2" parent="Base.TextAppearance.AppCompat.Body2">
         <item name="android:textSize">@dimen/dense_text_size_body_2</item>
     </style>
 
-    <style name="TextAppearance.Dense.Small" parent="TextAppearance.AppCompat.Small">
+    <style name="TextAppearance.AppCompat.Small" parent="Base.TextAppearance.AppCompat.Small">
         <item name="android:textSize">@dimen/dense_text_size_small</item>
     </style>
 

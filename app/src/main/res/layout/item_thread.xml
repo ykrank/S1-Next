@@ -42,7 +42,7 @@
         android:paddingRight="@dimen/item_padding"
         android:paddingStart="@dimen/item_padding"
         android:paddingTop="14.5dp"
-        android:textAppearance="@style/TextAppearance.Dense.Subhead"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:onClickListener="@{threadViewModel.goToThisThread()}"
         app:onLongClickListener="@{threadViewModel.goToThisThreadLastPage()}"
         app:themeManager="@{themeManager}"

@@ -5,8 +5,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <!-- https://www.google.com/design/spec/style/typography.html -->
     <dimen name="dense_text_size_subheader">17sp</dimen>
+    <dimen name="dense_text_size_body_1">15sp</dimen>
     <dimen name="dense_text_size_body_2">15sp</dimen>
     <dimen name="dense_text_size_small">15sp</dimen>
 

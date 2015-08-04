@@ -47,7 +47,7 @@
                 android:ellipsize="end"
                 android:includeFontPadding="false"
                 android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.Dense.Subhead"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 android:textIsSelectable="true" />
 
             <TextView
@@ -59,7 +59,7 @@
                 android:layout_below="@id/username"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.Dense.Small" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
             <TextView
                 android:id="@+id/count"
@@ -70,7 +70,7 @@
                 android:background="?attr/linkBackground"
                 android:includeFontPadding="false"
                 android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.Dense.Small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 app:increaseClickingArea="@{@dimen/minimum_touch_target_size}"
                 app:movementMethod="@{LinkMovementMethod.instance}" />
 
@@ -83,7 +83,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="56dp"
                 android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
-                android:textAppearance="@style/TextAppearance.Dense.Body2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textIsSelectable="true"
                 app:movementMethod="@{CustomMovementMethod.instance}" />
 

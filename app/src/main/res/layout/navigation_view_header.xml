@@ -51,7 +51,7 @@
             android:paddingTop="@dimen/list_view_padding"
             android:singleLine="true"
             android:text="@{userViewModel.user.logged ? userViewModel.user.name : @string/action_login}"
-            android:textAppearance="@style/TextAppearance.Dense.Body2"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@color/abc_primary_text_material_dark"
             tools:ignore="NewApi" />
 

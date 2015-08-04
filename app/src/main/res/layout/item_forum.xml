@@ -29,7 +29,7 @@
         android:paddingRight="@dimen/item_padding"
         android:paddingStart="@dimen/item_padding"
         android:singleLine="true"
-        android:textAppearance="@style/TextAppearance.Dense.Subhead"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:forum="@{forumViewModel.forum}"
         app:gentleAccentColor="@{gentleAccentColor}"
         tools:ignore="NewApi" />
