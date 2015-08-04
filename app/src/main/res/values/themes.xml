@@ -22,7 +22,6 @@
 
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="drawerHeaderUsernameTextColor">@color/abc_primary_text_material_dark</item>
         <item name="spinnerPopupBackground">@color/background_material_light</item>
 
         <item name="fabBackgroundTint">?attr/colorAccent</item>
@@ -85,7 +84,6 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="drawerHeaderUsernameTextColor">@color/abc_primary_text_material_dark</item>
         <item name="spinnerPopupBackground">@color/background_material_dark</item>
         <item name="fabBackgroundTint">?attr/colorAccent</item>
         <item name="cardViewStyle">@style/CardView.Dark</item>
@@ -109,7 +107,6 @@
         <item name="colorAccent">@color/dark_cyan</item>
         <item name="android:textColorPrimary">@color/white_69p</item>
         <item name="android:textColorLink">@color/teal_200_70p</item>
-        <item name="drawerHeaderUsernameTextColor">@color/white_69p</item>
     </style>
 
     <style name="Base.Theme.Dark.NightMode.Amoled">
