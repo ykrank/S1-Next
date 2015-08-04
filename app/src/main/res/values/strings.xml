@@ -133,7 +133,7 @@
     <string name="pref_theme_entries_4">Light blue</string>
     <string name="pref_theme_entries_5">Dark</string>
     <string name="pref_theme_entries_6">Night mode</string>
-    <string name="pref_theme_entries_7">Night mode (AMOLED Version)</string>
+    <string name="pref_theme_entries_7">Night mode (AMOLED version)</string>
 
     <string name="pref_font_size_entries_1">Very small</string>
     <string name="pref_font_size_entries_2">Small</string>
