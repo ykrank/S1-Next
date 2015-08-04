@@ -5,7 +5,7 @@
         <item name="cardBackgroundColor">@android:color/black</item>
     </style>
 
-    <style name="EmoticonKeyboardTabLayout" parent="Widget.Design.TabLayout">
+    <style name="Widget.Design.TabLayout.Keyboard" parent="Widget.Design.TabLayout">
         <item name="tabMode">scrollable</item>
         <item name="tabIndicatorColor">@null</item>
         <item name="tabIndicatorHeight">0dp</item>

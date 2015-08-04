@@ -44,7 +44,7 @@
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/emoticon_keyboard_tab_layout"
-                style="@style/EmoticonKeyboardTabLayout"
+                style="@style/Widget.Design.TabLayout.Keyboard"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/emoticon_keyboard_tab_layout_height"
                 android:background="?attr/emoticonKeyboardTabLayoutBackground"
