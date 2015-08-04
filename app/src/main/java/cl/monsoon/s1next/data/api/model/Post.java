@@ -160,12 +160,9 @@ public final class Post {
             return;
         }
 
-        String url;
         for (Map.Entry<Integer, Post.Attachment> entry : attachmentMap.entrySet()) {
             Post.Attachment attachment = entry.getValue();
-            url = attachment.getUrl();
-
-            String imgTag = "<img src=\"" + url + "\" />";
+            String imgTag = "<img src=\"" + attachment.getUrl() + "\" />";
             String replyCopy = reply;
             // get the original string if there is nothing to replace
             reply = reply.replace("[attach]" + entry.getKey() + "[/attach]", imgTag);
