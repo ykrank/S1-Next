@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="LightCardView" parent="CardView">
-        <item name="cardBackgroundColor">@color/cardview_light_background</item>
-    </style>
-
-    <style name="DarkCardView" parent="CardView">
-        <item name="cardBackgroundColor">@color/cardview_dark_background</item>
-    </style>
-
-    <style name="DarkCardView.Black" parent="CardView">
+    <style name="CardView.Dark.NightMode.Amoled" parent="CardView">
         <item name="cardBackgroundColor">@android:color/black</item>
     </style>
 

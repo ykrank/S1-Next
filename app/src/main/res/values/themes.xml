@@ -26,7 +26,7 @@
         <item name="spinnerPopupBackground">@color/background_material_light</item>
 
         <item name="fabBackgroundTint">?attr/colorAccent</item>
-        <item name="cardViewStyle">@style/LightCardView</item>
+        <item name="cardViewStyle">@style/CardView.Light</item>
         <item name="linkBackground">@drawable/link_focused_or_pressed_light</item>
         <item name="emoticonKeyboardTabLayoutBackground">@color/emoticon_keyboard_tab_layout_background_light</item>
         <item name="emoticonKeyboardBackground">@color/emoticon_keyboard_background_light</item>
@@ -88,7 +88,7 @@
         <item name="drawerHeaderUsernameTextColor">@color/abc_primary_text_material_dark</item>
         <item name="spinnerPopupBackground">@color/background_material_dark</item>
         <item name="fabBackgroundTint">?attr/colorAccent</item>
-        <item name="cardViewStyle">@style/DarkCardView</item>
+        <item name="cardViewStyle">@style/CardView.Dark</item>
         <item name="linkBackground">@drawable/link_focused_or_pressed_dark</item>
         <item name="emoticonKeyboardTabLayoutBackground">@color/emoticon_keyboard_tab_layout_background_dark</item>
         <item name="emoticonKeyboardBackground">@color/emoticon_keyboard_background_dark</item>
@@ -116,7 +116,7 @@
         <item name="colorPrimary">@android:color/black</item>
         <item name="colorPrimaryDark">@android:color/black</item>
         <item name="android:windowBackground">@android:color/black</item>
-        <item name="cardViewStyle">@style/DarkCardView.Black</item>
+        <item name="cardViewStyle">@style/CardView.Dark.NightMode.Amoled</item>
     </style>
 
     <style name="Base.Theme.Translucent.Light" parent="Theme.AppCompat.Light.NoActionBar">
