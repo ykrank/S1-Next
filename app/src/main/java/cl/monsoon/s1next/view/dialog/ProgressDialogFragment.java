@@ -102,7 +102,7 @@ public abstract class ProgressDialogFragment<D> extends RxDialogFragment {
      * @see BaseFragment#finallyDo()
      */
     void finallyDo() {
-        dismiss();
+        dismissAllowingStateLoss();
     }
 
     protected abstract CharSequence getProgressMessage();

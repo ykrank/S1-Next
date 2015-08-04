@@ -49,7 +49,7 @@ public final class ThreadFavouritesAddRequestDialogFragment extends ProgressDial
         if (result.getStatus().equals(STATUS_ADD_TO_FAVOURITES_SUCCESS)
                 || result.getStatus().equals(STATUS_ADD_TO_FAVOURITES_REPEAT)) {
             ((ThreadFavouritesAddDialogFragment) getFragmentManager().findFragmentByTag(
-                    ThreadFavouritesAddDialogFragment.TAG)).dismiss();
+                    ThreadFavouritesAddDialogFragment.TAG)).dismissAllowingStateLoss();
         }
     }
 

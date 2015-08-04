@@ -73,11 +73,11 @@ public final class QuotePostPageParserDialogFragment extends ProgressDialogFragm
                     .jumpPage(jumpPage.get())
                     .quotePostId(threadLink.getQuotePostId().get())
                     .build();
-            dismiss();
+            dismissAllowingStateLoss();
             PostListActivity.startPostListActivity(getActivity(), threadLinkWithJumpPage);
             getActivity().finish();
         } else {
-            dismiss();
+            dismissAllowingStateLoss();
             ThreadLinkInvalidPromptDialogFragment.newInstance(getActivity(),
                     R.string.dialog_message_quote_not_found).show(getFragmentManager(),
                     ThreadLinkInvalidPromptDialogFragment.TAG);
@@ -86,7 +86,7 @@ public final class QuotePostPageParserDialogFragment extends ProgressDialogFragm
 
     @Override
     protected void onError(Throwable throwable) {
-        dismiss();
+        dismissAllowingStateLoss();
         ThreadLinkInvalidPromptDialogFragment.newInstance(throwable.toString()).show(getFragmentManager(),
                 ThreadLinkInvalidPromptDialogFragment.TAG);
     }
