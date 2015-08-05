@@ -30,4 +30,6 @@
         <item name="android:textSize">@dimen/dense_text_size_small</item>
     </style>
 
+    <style name="Animation.Recreate" parent="android:Animation.Toast" />
+
 </resources>
