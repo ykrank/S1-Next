@@ -67,8 +67,8 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
         mRecyclerView = getRecyclerView();
-        // we need to adjust RecyclerView's top/bottom padding
-        // because its child views (CardView) has top/bottom margin
+        // we need to adjust RecyclerView's paddings
+        // because its child views (CardView) has margins
         int padding = getResources().getDimensionPixelSize(R.dimen.recycler_view_padding_for_card);
         mRecyclerView.setPadding(0, padding, 0, padding);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

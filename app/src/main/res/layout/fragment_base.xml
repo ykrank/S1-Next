@@ -30,9 +30,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:paddingBottom="@dimen/list_view_padding"
-                android:paddingTop="@dimen/list_view_padding"
-                android:scrollbars="vertical" />
+                android:paddingBottom="@dimen/recycler_view_vertical_padding"
+                android:paddingEnd="@dimen/recycler_view_horizontal_padding"
+                android:paddingLeft="@dimen/recycler_view_horizontal_padding"
+                android:paddingRight="@dimen/recycler_view_horizontal_padding"
+                android:paddingStart="@dimen/recycler_view_horizontal_padding"
+                android:paddingTop="@dimen/recycler_view_vertical_padding"
+                android:scrollbars="vertical"
+                tools:ignore="NewApi" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
 

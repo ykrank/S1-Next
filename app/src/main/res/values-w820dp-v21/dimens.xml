@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <dimen name="card_view_horizontal_margin">32dp</dimen>
-    <dimen name="card_view_vertical_margin">16dp</dimen>
-    <dimen name="recycler_view_padding_for_card">16dp</dimen>
-
-</resources>
