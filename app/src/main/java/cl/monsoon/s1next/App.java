@@ -43,7 +43,7 @@ public final class App extends Application {
     }
 
     public static AppComponent getAppComponent(Context context) {
-        return ((App) context.getApplicationContext()).getAppComponent();
+        return ((App) context.getApplicationContext()).mAppComponent;
     }
 
     @Override
@@ -81,10 +81,6 @@ public final class App extends Application {
         super.onConfigurationChanged(newConfig);
 
         ResourceUtil.setScaledDensity(getResources(), mGeneralPreferencesManager.getTextScale());
-    }
-
-    public AppComponent getAppComponent() {
-        return mAppComponent;
     }
 
     /**

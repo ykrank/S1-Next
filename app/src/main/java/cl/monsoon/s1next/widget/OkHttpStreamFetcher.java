@@ -64,7 +64,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
         this.mOkHttpClient = okHttpClient;
         this.mGlideUrl = glideUrl;
 
-        mDownloadPreferencesManager = App.get().getAppComponent().getDownloadPreferencesManager();
+        mDownloadPreferencesManager = App.getAppComponent(App.get()).getDownloadPreferencesManager();
     }
 
     @Override
