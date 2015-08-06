@@ -67,7 +67,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
         mEventBus.get().compose(bindUntilEvent(ActivityEvent.DESTROY)).subscribe(o -> {
             // recreate this Activity when theme or font size changes
-            if (o instanceof ThemeChangeEvent ) {
+            if (o instanceof ThemeChangeEvent || o instanceof FontSizeChangeEvent) {
                 getWindow().setWindowAnimations(R.style.Animation_Recreate);
                 recreate();
             }
