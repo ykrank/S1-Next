@@ -2,6 +2,7 @@ package cl.monsoon.s1next.view.adapter;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -65,7 +66,11 @@ public final class EmoticonPagerAdapter extends PagerAdapter {
                     @Override
                     @SuppressWarnings("deprecation")
                     public void onGlobalLayout() {
-                        recyclerView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        } else {
+                            recyclerView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        }
                         int measuredWidth = recyclerView.getMeasuredWidth();
                         int spanCount = (int) Math.floor(measuredWidth / mEmoticonWidth);
                         gridLayoutManager.setSpanCount(spanCount);
