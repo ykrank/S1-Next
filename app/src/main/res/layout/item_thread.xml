@@ -12,12 +12,12 @@
             type="cl.monsoon.s1next.viewmodel.ThreadViewModel" />
 
         <variable
-            name="themeManager"
-            type="cl.monsoon.s1next.data.pref.ThemeManager" />
-
-        <variable
             name="userViewModel"
             type="cl.monsoon.s1next.viewmodel.UserViewModel" />
+
+        <variable
+            name="themeManager"
+            type="cl.monsoon.s1next.data.pref.ThemeManager" />
 
     </data>
 

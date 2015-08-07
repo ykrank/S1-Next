@@ -25,13 +25,14 @@ public final class FavouriteListRecyclerViewAdapter extends BaseRecyclerViewAdap
     public BindingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ItemFavouriteBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_favourite, parent, false);
+        binding.setFavouriteViewModel(new FavouriteViewModel());
 
         return new BindingViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(BindingViewHolder holder, int position) {
-        holder.itemFavouriteBinding.setFavouriteViewModel(new FavouriteViewModel(getItem(position)));
+        holder.itemFavouriteBinding.getFavouriteViewModel().favourite.set(getItem(position));
         holder.itemFavouriteBinding.executePendingBindings();
     }
 

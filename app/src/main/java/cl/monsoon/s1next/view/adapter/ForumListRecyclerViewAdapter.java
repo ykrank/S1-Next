@@ -31,13 +31,14 @@ public final class ForumListRecyclerViewAdapter extends BaseRecyclerViewAdapter<
                 R.layout.item_forum, parent, false);
         BindingViewHolder holder = new BindingViewHolder(binding);
         holder.itemForumBinding.setGentleAccentColor(mGentleAccentColor);
+        holder.itemForumBinding.setForumViewModel(new ForumViewModel());
 
         return holder;
     }
 
     @Override
     public void onBindViewHolder(BindingViewHolder holder, int position) {
-        holder.itemForumBinding.setForumViewModel(new ForumViewModel(getItem(position)));
+        holder.itemForumBinding.getForumViewModel().forum.set(getItem(position));
         holder.itemForumBinding.executePendingBindings();
     }
 

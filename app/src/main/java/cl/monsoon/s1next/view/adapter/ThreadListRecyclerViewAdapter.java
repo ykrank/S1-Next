@@ -40,15 +40,16 @@ public final class ThreadListRecyclerViewAdapter extends BaseRecyclerViewAdapter
         BindingViewHolder holder = new BindingViewHolder(binding);
         // we do not use view model for ThemeManager
         // because theme changes only when Activity recreated
-        holder.itemThreadBinding.setThemeManager(mThemeManager);
         holder.itemThreadBinding.setUserViewModel(mUserViewModel);
+        holder.itemThreadBinding.setThemeManager(mThemeManager);
+        holder.itemThreadBinding.setThreadViewModel(new ThreadViewModel());
 
         return holder;
     }
 
     @Override
     public void onBindViewHolder(BindingViewHolder holder, int position) {
-        holder.itemThreadBinding.setThreadViewModel(new ThreadViewModel(getItem(position)));
+        holder.itemThreadBinding.getThreadViewModel().thread.set(getItem(position));
         holder.itemThreadBinding.executePendingBindings();
     }
 

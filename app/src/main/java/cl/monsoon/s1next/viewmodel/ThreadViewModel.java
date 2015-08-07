@@ -10,10 +10,6 @@ public final class ThreadViewModel {
 
     public final ObservableField<Thread> thread = new ObservableField<>();
 
-    public ThreadViewModel(Thread thread) {
-        this.thread.set(thread);
-    }
-
     public View.OnClickListener goToThisThread() {
         return v -> goToThisThread(v, false);
     }

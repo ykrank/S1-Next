@@ -12,10 +12,6 @@ public final class FavouriteViewModel {
 
     public final ObservableField<Favourite> favourite = new ObservableField<>();
 
-    public FavouriteViewModel(Favourite Favourite) {
-        this.favourite.set(Favourite);
-    }
-
     public View.OnClickListener goToThisFavourite() {
         return v -> {
             Thread thread = new Thread();

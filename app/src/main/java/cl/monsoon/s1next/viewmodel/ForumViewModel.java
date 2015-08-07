@@ -11,10 +11,6 @@ public final class ForumViewModel {
 
     public final ObservableField<Forum> forum = new ObservableField<>();
 
-    public ForumViewModel(Forum forum) {
-        this.forum.set(forum);
-    }
-
     public View.OnClickListener goToThisForum() {
         return v -> ThreadListActivity.startThreadListActivity(v.getContext(), forum.get());
     }
