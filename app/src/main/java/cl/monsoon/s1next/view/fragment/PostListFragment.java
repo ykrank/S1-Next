@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.Browser;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -297,7 +298,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         startReplyActivity(null, null);
     }
 
-    private void startReplyActivity(String quotePostId, String quotePostCount) {
+    private void startReplyActivity(@Nullable String quotePostId, @Nullable String quotePostCount) {
         if (LoginPromptDialogFragment.showLoginPromptDialogIfNeed(getActivity(), mUser)) {
             return;
         }
