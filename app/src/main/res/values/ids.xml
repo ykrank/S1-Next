@@ -5,7 +5,6 @@
 
     <item name="tag_drawer_runnable" type="id" />
     <item name="tag_drawable_callback" type="id" />
-    <item name="tag_post" type="id" />
     <item name="tag_emoticon_entity" type="id" />
 
 </resources>

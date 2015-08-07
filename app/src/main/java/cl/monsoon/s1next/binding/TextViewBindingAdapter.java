@@ -2,6 +2,13 @@ package cl.monsoon.s1next.binding;
 
 import android.databinding.BindingAdapter;
 import android.graphics.Rect;
+import android.support.annotation.Nullable;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.format.DateUtils;
+import android.text.style.ClickableSpan;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.widget.TextView;
@@ -16,9 +23,14 @@ import java.io.InputStreamReader;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.api.model.Forum;
+import cl.monsoon.s1next.data.api.model.Post;
 import cl.monsoon.s1next.data.api.model.Thread;
+import cl.monsoon.s1next.data.event.QuoteEvent;
 import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.util.ViewUtil;
+import cl.monsoon.s1next.widget.EventBus;
+import cl.monsoon.s1next.widget.GlideImageGetter;
+import cl.monsoon.s1next.widget.TagHandler;
 
 public final class TextViewBindingAdapter {
 
@@ -76,5 +88,47 @@ public final class TextViewBindingAdapter {
         ViewUtil.concatWithTwoSpacesForRtlSupport(textView, String.valueOf(thread.getReplies()),
                 hasPermission ? themeManager.getGentleAccentColor()
                         : themeManager.getHintOrDisabledGentleAccentColor());
+    }
+
+    @BindingAdapter("datetime")
+    public static void setText(TextView textView, long datetime) {
+        textView.setText(DateUtils.getRelativeDateTimeString(textView.getContext(), datetime,
+                DateUtils.MINUTE_IN_MILLIS, DateUtils.DAY_IN_MILLIS, 0));
+    }
+
+    @BindingAdapter({"eventBus", "post"})
+    public static void setText(TextView textView, EventBus eventBus, Post post) {
+        // there is no need to quote #1
+        if ("1".equals(post.getCount())) {
+            textView.setText("#1");
+            textView.setClickable(false);
+            textView.setLongClickable(false);
+            textView.setFocusable(false);
+        } else {
+            Spannable spannable = new SpannableString("#" + post.getCount());
+            ClickableSpan clickableSpan = new ClickableSpan() {
+                @Override
+                public void onClick(View widget) {
+                    eventBus.post(new QuoteEvent(post.getId(), post.getCount()));
+                }
+            };
+            spannable.setSpan(clickableSpan, 0, spannable.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textView.setText(spannable);
+            textView.setClickable(true);
+            textView.setLongClickable(true);
+            textView.setFocusable(true);
+        }
+    }
+
+    @BindingAdapter("reply")
+    public static void setText(TextView textView, @Nullable String reply) {
+        if (TextUtils.isEmpty(reply)) {
+            textView.setText(null);
+        } else {
+            // use GlideImageGetter to show images in TextView
+            textView.setText(Html.fromHtml(reply, new GlideImageGetter(textView.getContext(),
+                    textView), new TagHandler()));
+        }
     }
 }

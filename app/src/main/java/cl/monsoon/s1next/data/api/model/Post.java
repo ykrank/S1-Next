@@ -43,11 +43,6 @@ public final class Post {
 
     }
 
-    private Post(String id, String count) {
-        this.id = id;
-        this.count = count;
-    }
-
     public String getId() {
         return id;
     }
@@ -114,10 +109,6 @@ public final class Post {
         this.attachmentMap = attachmentMap;
 
         processAttachment();
-    }
-
-    public Post getPartForQuote() {
-        return new Post(id, count);
     }
 
     /**

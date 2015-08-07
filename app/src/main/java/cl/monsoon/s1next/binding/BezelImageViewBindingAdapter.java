@@ -2,7 +2,9 @@ package cl.monsoon.s1next.binding;
 
 import android.content.Context;
 import android.databinding.BindingAdapter;
+import android.view.View;
 
+import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
@@ -43,6 +45,29 @@ public final class BezelImageViewBindingAdapter {
                     .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
                     .transform(new CenterCrop(Glide.get(context).getBitmapPool()))
                     .into(bezelImageView);
+        }
+    }
+
+    @BindingAdapter({"avatarDrawableRequestBuilder", "downloadPreferencesManager", "userId"})
+    public static void loadAvatar(BezelImageView bezelImageView,
+                                  DrawableRequestBuilder<String> avatarDrawableRequestBuilder,
+                                  DownloadPreferencesManager downloadPreferencesManager,
+                                  String userId) {
+        // whether need to download avatars
+        // depends on settings and Wi-Fi status
+        if (downloadPreferencesManager.isAvatarsDownload()) {
+            bezelImageView.setVisibility(View.VISIBLE);
+
+            String url = downloadPreferencesManager.isHighResolutionAvatarsDownload()
+                    ? Api.getAvatarMediumUrl(userId)
+                    : Api.getAvatarSmallUrl(userId);
+            // show user's avatar
+            avatarDrawableRequestBuilder.signature(
+                    downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
+                    .load(url)
+                    .into(bezelImageView);
+        } else {
+            bezelImageView.setVisibility(View.GONE);
         }
     }
 }
