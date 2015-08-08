@@ -259,6 +259,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         return new PostListPagerAdapter(fragmentManager);
     }
 
+    @Nullable
     @Override
     CharSequence getTitleWithoutPosition() {
         return mThreadTitle;
