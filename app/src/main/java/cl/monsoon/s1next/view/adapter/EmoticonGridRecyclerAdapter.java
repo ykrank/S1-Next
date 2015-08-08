@@ -1,13 +1,12 @@
 package cl.monsoon.s1next.view.adapter;
 
 import android.app.Activity;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
@@ -16,33 +15,43 @@ import java.util.List;
 
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.data.event.EmoticonClickEvent;
+import cl.monsoon.s1next.databinding.ItemEmoticonBinding;
+import cl.monsoon.s1next.viewmodel.EmoticonViewModel;
+import cl.monsoon.s1next.widget.EventBus;
 
-public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<EmoticonGridRecyclerAdapter.ViewHolder> {
+public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<EmoticonGridRecyclerAdapter.BindingViewHolder> {
 
     private final LayoutInflater mLayoutInflater;
 
     private final List<Pair<String, String>> mEmoticons;
     private final DrawableRequestBuilder<Uri> mEmoticonRequestBuilder;
 
+    private final EventBus mEventBus;
+
     public EmoticonGridRecyclerAdapter(Activity activity, List<Pair<String, String>> emoticons) {
         mLayoutInflater = activity.getLayoutInflater();
         this.mEmoticons = emoticons;
         mEmoticonRequestBuilder = Glide.with(activity).from(Uri.class);
+        mEventBus = App.getAppComponent(activity).getEventBus();
 
         setHasStableIds(true);
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(mLayoutInflater.inflate(R.layout.item_emoticon, parent, false));
+    public BindingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        ItemEmoticonBinding binding = DataBindingUtil.inflate(mLayoutInflater,
+                R.layout.item_emoticon, parent, false);
+        binding.setEventBus(mEventBus);
+        binding.setDrawableRequestBuilder(mEmoticonRequestBuilder);
+        binding.setEmoticonViewModel(new EmoticonViewModel());
+
+        return new BindingViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.imageView.setTag(R.id.tag_emoticon_entity, mEmoticons.get(position).second);
-        mEmoticonRequestBuilder.load(Uri.parse(mEmoticons.get(position).first))
-                .into(holder.imageView);
+    public void onBindViewHolder(BindingViewHolder holder, int position) {
+        holder.itemEmoticonBinding.getEmoticonViewModel().emoticon.set(mEmoticons.get(position));
+        holder.itemEmoticonBinding.executePendingBindings();
     }
 
     @Override
@@ -55,22 +64,14 @@ public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<Emot
         return position;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class BindingViewHolder extends RecyclerView.ViewHolder {
 
-        private final ImageView imageView;
+        private final ItemEmoticonBinding itemEmoticonBinding;
 
-        public ViewHolder(View itemView) {
-            super(itemView);
+        public BindingViewHolder(ItemEmoticonBinding itemEmoticonBinding) {
+            super(itemEmoticonBinding.getRoot());
 
-            imageView = (ImageView) itemView;
-            imageView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            // notify ReplyFragment that emoticon had been clicked
-            App.getAppComponent(v.getContext()).getEventBus().post(new EmoticonClickEvent(
-                    (String) v.getTag(R.id.tag_emoticon_entity)));
+            this.itemEmoticonBinding = itemEmoticonBinding;
         }
     }
 }

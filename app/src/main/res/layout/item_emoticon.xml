@@ -1,8 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="?attr/android:borderlessButtonStyle"
-    android:layout_width="@dimen/minimum_touch_target_size"
-    android:layout_height="@dimen/minimum_touch_target_size"
-    android:contentDescription="@null"
-    android:padding="@dimen/emoticon_padding" />
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="cl.monsoon.s1next.view.adapter.EmoticonGridRecyclerAdapter">
+
+    <data>
+
+        <import type="android.net.Uri" />
+
+        <variable
+            name="emoticonViewModel"
+            type="cl.monsoon.s1next.viewmodel.EmoticonViewModel" />
+
+        <variable
+            name="eventBus"
+            type="cl.monsoon.s1next.widget.EventBus" />
+
+        <variable
+            name="drawableRequestBuilder"
+            type="com.bumptech.glide.DrawableRequestBuilder&lt;Uri>" />
+
+    </data>
+
+    <!-- @{emoticonViewModel.emoticon.first} doesn't work due to generic (Pair<String, String>) -->
+    <ImageView
+        android:id="@+id/image_view"
+        style="?attr/android:borderlessButtonStyle"
+        android:layout_width="@dimen/minimum_touch_target_size"
+        android:layout_height="@dimen/minimum_touch_target_size"
+        android:contentDescription="@null"
+        android:padding="@dimen/emoticon_padding"
+        app:emoticon="@{emoticonViewModel.emoticon}"
+        app:emoticonDrawableRequestBuilder="@{drawableRequestBuilder}"
+        app:onClickListener="@{emoticonViewModel.clickEmotion(eventBus)}" />
+
+</layout>

@@ -4,9 +4,13 @@ import android.content.res.ColorStateList;
 import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.ColorInt;
+import android.util.Pair;
 import android.widget.ImageView;
+
+import com.bumptech.glide.DrawableRequestBuilder;
 
 import cl.monsoon.s1next.R;
 
@@ -28,5 +32,11 @@ public final class ImageViewBindingAdapter {
         } else {
             imageView.setImageDrawable(drawable);
         }
+    }
+
+    @BindingAdapter({"emoticon", "emoticonDrawableRequestBuilder"})
+    public static void loadEmoticon(ImageView imageView, Pair<String, String> emoticon,
+                                    DrawableRequestBuilder<Uri> emoticonDrawableRequestBuilder) {
+        emoticonDrawableRequestBuilder.load(Uri.parse(emoticon.first)).into(imageView);
     }
 }
