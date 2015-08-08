@@ -29,6 +29,8 @@ public final class QuotePostPageParserDialogFragment extends ProgressDialogFragm
 
     private static final String ARG_THREAD_LINK = "thread_link";
 
+    private boolean mShouldFinishActivity = true;
+
     public static QuotePostPageParserDialogFragment newInstance(ThreadLink threadLink) {
         QuotePostPageParserDialogFragment fragment = new QuotePostPageParserDialogFragment();
         Bundle bundle = new Bundle();
@@ -36,6 +38,15 @@ public final class QuotePostPageParserDialogFragment extends ProgressDialogFragm
         fragment.setArguments(bundle);
 
         return fragment;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (mShouldFinishActivity) {
+            getActivity().finish();
+        }
     }
 
     @Override
@@ -73,27 +84,20 @@ public final class QuotePostPageParserDialogFragment extends ProgressDialogFragm
                     .jumpPage(jumpPage.get())
                     .quotePostId(threadLink.getQuotePostId().get())
                     .build();
-            dismissAllowingStateLoss();
             PostListActivity.startPostListActivity(getActivity(), threadLinkWithJumpPage);
-            getActivity().finish();
         } else {
-            dismissAllowingStateLoss();
             ThreadLinkInvalidPromptDialogFragment.newInstance(getActivity(),
                     R.string.dialog_message_quote_not_found).show(getFragmentManager(),
                     ThreadLinkInvalidPromptDialogFragment.TAG);
+            mShouldFinishActivity = false;
         }
     }
 
     @Override
     protected void onError(Throwable throwable) {
-        dismissAllowingStateLoss();
         ThreadLinkInvalidPromptDialogFragment.newInstance(throwable.toString()).show(getFragmentManager(),
                 ThreadLinkInvalidPromptDialogFragment.TAG);
-    }
-
-    @Override
-    protected void finallyDo() {
-
+        mShouldFinishActivity = false;
     }
 
     @Override
