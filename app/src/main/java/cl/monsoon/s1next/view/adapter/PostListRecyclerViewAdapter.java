@@ -46,15 +46,14 @@ public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter<P
     public PostListRecyclerViewAdapter(Activity activity) {
         App.getAppComponent(activity).inject(this);
         mLayoutInflater = activity.getLayoutInflater();
-
-        setHasStableIds(true);
-
         // loading avatars is prior to images in replies
         mAvatarRequestBuilder = Glide.with(activity)
                 .from(String.class)
                 .error(R.drawable.ic_avatar_placeholder)
                 .priority(Priority.HIGH)
                 .transform(new CenterCrop(Glide.get(activity).getBitmapPool()));
+
+        setHasStableIds(true);
     }
 
     @Override
