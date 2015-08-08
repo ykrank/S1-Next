@@ -26,7 +26,7 @@ import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 /**
  * A base Fragment wraps {@link ViewPager} and provides related methods.
  */
-public abstract class BaseViewPagerFragment extends RxFragment
+abstract class BaseViewPagerFragment extends RxFragment
         implements PageTurningDialogFragment.OnPageTurnedListener,
         PagerCallback {
 

@@ -37,7 +37,7 @@ public final class PageTurningViewModel extends BaseObservable {
         return String.valueOf(seekBarProgress + 1);
     }
 
-    public void setSeekBarProgress(int seekBarProgress) {
+    private void setSeekBarProgress(int seekBarProgress) {
         this.seekBarProgress = seekBarProgress;
     }
 

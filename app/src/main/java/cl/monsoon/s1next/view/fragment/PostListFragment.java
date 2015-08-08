@@ -21,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.common.base.Preconditions;
-import com.trello.rxlifecycle.FragmentEvent;
 
 import org.apache.commons.lang3.StringUtils;
 

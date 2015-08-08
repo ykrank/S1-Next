@@ -29,7 +29,7 @@ import rx.schedulers.Schedulers;
  *
  * @param <D> The data we want to request.
  */
-public abstract class ProgressDialogFragment<D> extends RxDialogFragment {
+abstract class ProgressDialogFragment<D> extends RxDialogFragment {
 
     S1Service mS1Service;
     private UserValidator mUserValidator;

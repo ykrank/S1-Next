@@ -8,7 +8,7 @@ import android.support.annotation.CallSuper;
  * A helper class for registering/unregistering
  * {@link android.content.SharedPreferences.OnSharedPreferenceChangeListener}.
  */
-public abstract class BasePreferenceFragment extends PreferenceFragment
+abstract class BasePreferenceFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
