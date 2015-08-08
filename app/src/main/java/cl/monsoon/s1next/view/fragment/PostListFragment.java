@@ -170,7 +170,7 @@ public final class PostListFragment extends BaseViewPagerFragment
             activity.registerReceiver(mWifiReceiver, intentFilter);
         }
 
-        mEventBus.get().compose(bindUntilEvent(FragmentEvent.DESTROY)).subscribe(o -> {
+        mEventBus.get().compose(bindToLifecycle()).subscribe(o -> {
             if (o instanceof QuoteEvent) {
                 QuoteEvent quoteEvent = (QuoteEvent) o;
                 startReplyActivity(quoteEvent.getQuotePostId(), quoteEvent.getQuotePostCount());

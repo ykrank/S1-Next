@@ -22,7 +22,6 @@ import android.view.animation.Interpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.trello.rxlifecycle.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
 import javax.inject.Inject;
@@ -152,7 +151,7 @@ public final class ReplyFragment extends RxFragment {
     public void onResume() {
         super.onResume();
 
-        mEventBus.get().compose(bindUntilEvent(FragmentEvent.DESTROY)).subscribe(o -> {
+        mEventBus.get().compose(bindToLifecycle()).subscribe(o -> {
             if (o instanceof EmoticonClickEvent) {
                 mReplyView.getText().replace(mReplyView.getSelectionStart(),
                         mReplyView.getSelectionEnd(), ((EmoticonClickEvent) o).getEmoticonEntity());

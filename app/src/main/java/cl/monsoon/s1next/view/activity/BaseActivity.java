@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.common.base.Optional;
-import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import javax.inject.Inject;
@@ -65,7 +64,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        mEventBus.get().compose(bindUntilEvent(ActivityEvent.DESTROY)).subscribe(o -> {
+        mEventBus.get().compose(bindToLifecycle()).subscribe(o -> {
             // recreate this Activity when theme or font size changes
             if (o instanceof ThemeChangeEvent || o instanceof FontSizeChangeEvent) {
                 getWindow().setWindowAnimations(R.style.Animation_Recreate);
