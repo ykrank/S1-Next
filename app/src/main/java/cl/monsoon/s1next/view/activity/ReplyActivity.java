@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
+import org.apache.commons.lang3.StringUtils;
+
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.view.dialog.ReplyDiscardPromptDialogFragment;
 import cl.monsoon.s1next.view.fragment.ReplyFragment;
@@ -26,7 +28,7 @@ public final class ReplyActivity extends BaseActivity {
 
     private ReplyFragment mReplyFragment;
 
-    public static void startReplyActivity(Context context, String threadId, String threadTitle, @Nullable String quotePostId, @Nullable String quotePostCount) {
+    public static void startReplyActivity(Context context, String threadId, @Nullable String threadTitle, @Nullable String quotePostId, @Nullable String quotePostCount) {
         Intent intent = new Intent(context, ReplyActivity.class);
         intent.putExtra(ARG_THREAD_ID, threadId);
         intent.putExtra(ARG_THREAD_TITLE, threadTitle);
@@ -50,7 +52,8 @@ public final class ReplyActivity extends BaseActivity {
                 ? getString(R.string.reply_activity_title_prefix)
                 : getString(R.string.reply_activity_quote_title_prefix,
                 intent.getStringExtra(ARG_QUOTE_POST_COUNT));
-        setTitle(titlePrefix + intent.getStringExtra(ARG_THREAD_TITLE));
+        setTitle(titlePrefix + StringUtils.defaultString(intent.getStringExtra(ARG_THREAD_TITLE),
+                StringUtils.EMPTY));
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(ReplyFragment.TAG);

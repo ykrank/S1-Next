@@ -6,7 +6,6 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -149,9 +148,9 @@ abstract class BaseViewPagerFragment extends RxFragment
         }
     }
 
-    private void setTitleWithPosition(int position) {
+    final void setTitleWithPosition(int position) {
         CharSequence titleWithoutPosition = getTitleWithoutPosition();
-        if (TextUtils.isEmpty(titleWithoutPosition)) {
+        if (titleWithoutPosition == null) {
             getActivity().setTitle(null);
 
             return;

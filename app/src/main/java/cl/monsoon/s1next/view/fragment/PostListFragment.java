@@ -22,8 +22,6 @@ import android.view.View;
 
 import com.google.common.base.Preconditions;
 
-import org.apache.commons.lang3.StringUtils;
-
 import javax.inject.Inject;
 
 import cl.monsoon.s1next.App;
@@ -82,6 +80,7 @@ public final class PostListFragment extends BaseViewPagerFragment
     DownloadPreferencesManager mDownloadPreferencesManager;
 
     private String mThreadId;
+    @Nullable
     private String mThreadTitle;
 
     private Posts.ThreadAttachment mThreadAttachment;
@@ -102,7 +101,6 @@ public final class PostListFragment extends BaseViewPagerFragment
     public static PostListFragment newInstance(Activity activity, ThreadLink threadLink) {
         Thread thread = new Thread();
         thread.setId(threadLink.getThreadId());
-        thread.setTitle(StringUtils.EMPTY);
 
         PostListFragment fragment = new PostListFragment();
         Bundle bundle = new Bundle();
@@ -126,6 +124,7 @@ public final class PostListFragment extends BaseViewPagerFragment
 
         Bundle bundle = getArguments();
         Thread thread = Preconditions.checkNotNull(bundle.getParcelable(ARG_THREAD));
+        // thread title is null if this thread comes from ThreadLink
         mThreadTitle = thread.getTitle();
         mThreadId = thread.getId();
 
@@ -278,6 +277,7 @@ public final class PostListFragment extends BaseViewPagerFragment
     @Override
     public void setThreadTitle(CharSequence title) {
         mThreadTitle = title.toString();
+        setTitleWithPosition(getCurrentPage());
     }
 
     @Override

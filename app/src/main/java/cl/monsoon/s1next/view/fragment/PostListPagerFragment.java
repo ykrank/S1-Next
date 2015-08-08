@@ -160,7 +160,7 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
 
             Thread postListInfo = posts.getPostListInfo();
             // we have not title if we open thread link in our app
-            if (TextUtils.isEmpty(getActivity().getTitle())) {
+            if (getActivity().getTitle() == null) {
                 mPagerCallback.setThreadTitle(postListInfo.getTitle());
             }
             mPagerCallback.setTotalPageByPosts(postListInfo.getReplies() + 1);
