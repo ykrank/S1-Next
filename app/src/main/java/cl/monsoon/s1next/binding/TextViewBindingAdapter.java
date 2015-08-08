@@ -40,15 +40,21 @@ public final class TextViewBindingAdapter {
 
     @BindingAdapter("increaseClickingArea")
     public static void increaseClickingArea(TextView textView, float size) {
-        int halfSize = (int) (size / 2 + 0.5);
-        Rect rect = new Rect();
-        textView.getHitRect(rect);
-        rect.top -= halfSize;
-        rect.right += halfSize;
-        rect.bottom += halfSize;
-        rect.left -= halfSize;
-        // use TouchDelegate to increase count's clicking area
-        ((View) textView.getParent()).setTouchDelegate(new TouchDelegate(rect, textView));
+        // fork from https://stackoverflow.com/questions/1343222/is-there-an-example-of-how-to-use-a-touchdelegate-in-android-to-increase-the-siz#answer-1343796
+        View parent = (View) textView.getParent();
+        // post in the parent's message queue to make sure the parent
+        // lays out its children before we call View#getHitRect()
+        parent.post(() -> {
+            final int halfSize = (int) (size / 2 + 0.5);
+            Rect rect = new Rect();
+            textView.getHitRect(rect);
+            rect.top -= halfSize;
+            rect.right += halfSize;
+            rect.bottom += halfSize;
+            rect.left -= halfSize;
+            // use TouchDelegate to increase count's clicking area
+            parent.setTouchDelegate(new TouchDelegate(rect, textView));
+        });
     }
 
     @BindingAdapter("filePath")
