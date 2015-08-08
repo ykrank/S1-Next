@@ -55,7 +55,7 @@ public final class ReplyRequestDialogFragment extends ProgressDialogFragment<Res
         if (TextUtils.isEmpty(quotePostId)) {
             return mS1Service.reply(authenticityToken, threadId, reply);
         } else {
-            return mS1Service.getQuoteInfo(threadId, quotePostId).switchMap(s -> {
+            return mS1Service.getQuoteInfo(threadId, quotePostId).flatMap(s -> {
                 Quote quote = Quote.fromXmlString(s);
                 return mS1Service.replyQuote(authenticityToken, threadId, reply,
                         quote.getEncodedUserId(), quote.getQuoteMessage(),
