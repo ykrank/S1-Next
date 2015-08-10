@@ -48,7 +48,6 @@
                 android:id="@+id/avatar"
                 android:layout_width="@dimen/avatar_size"
                 android:layout_height="@dimen/avatar_size"
-                android:layout_marginBottom="@dimen/item_padding"
                 android:layout_marginEnd="@dimen/item_padding"
                 android:layout_marginRight="@dimen/item_padding"
                 android:contentDescription="@string/avatar_content_desc"
@@ -97,9 +96,8 @@
             <!-- use custom movement method to provides selection and click -->
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="56dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/single_line_height_with_avatar"
                 android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textIsSelectable="true"
