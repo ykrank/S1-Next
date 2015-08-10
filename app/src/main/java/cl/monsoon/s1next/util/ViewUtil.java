@@ -24,7 +24,7 @@ public final class ViewUtil {
      */
     public static void concatWithTwoSpacesForRtlSupport(TextView textView, CharSequence text) {
         if (ResourceUtil.isRTL(textView.getResources())) {
-            textView.append(StringUtil.TWO_SPACES + text, 0, 0);
+            textView.setText(text + StringUtil.TWO_SPACES + textView.getText());
         } else {
             textView.append(StringUtil.TWO_SPACES + text);
         }
