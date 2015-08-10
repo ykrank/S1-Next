@@ -3,7 +3,6 @@ package cl.monsoon.s1next.view.dialog;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
@@ -36,9 +35,9 @@ final class ThreadFavouritesAddRequestDialogFragment extends ProgressDialogFragm
 
     @Override
     protected Observable<ResultWrapper> getSourceObservable() {
-        String authenticityToken = App.getAppComponent(getActivity()).getUser().getAuthenticityToken();
-        return mS1Service.addThreadFavorite(authenticityToken, getArguments().getString(
-                ARG_THREAD_ID), getArguments().getString(ARG_REMARK));
+        return flatMapedWithAuthenticityToken(s ->
+                mS1Service.addThreadFavorite(s, getArguments().getString(ARG_THREAD_ID),
+                        getArguments().getString(ARG_REMARK)));
     }
 
     @Override

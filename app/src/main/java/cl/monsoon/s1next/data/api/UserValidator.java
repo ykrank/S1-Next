@@ -28,7 +28,7 @@ public final class UserValidator {
      * @param <D> The data type.
      * @return Original data.
      */
-    public static <D> D validateIntercept(UserValidator userValidator, D d) {
+    public <D> D validateIntercept(D d) {
         Account account = null;
         if (d instanceof PostsWrapper) {
             account = ((PostsWrapper) d).getPosts();
@@ -43,7 +43,7 @@ public final class UserValidator {
         }
 
         if (account != null) {
-            userValidator.validate(account);
+            validate(account);
         }
 
         return d;
@@ -52,7 +52,7 @@ public final class UserValidator {
     /**
      * Checks current user's login status and updates {@link User}'s in our app.
      */
-    private void validate(Account account) {
+    public void validate(Account account) {
         final boolean logged = mUser.isLogged();
         String uid = account.getUid();
         if (INVALID_UID.equals(uid) || TextUtils.isEmpty(uid)) {

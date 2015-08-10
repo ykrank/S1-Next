@@ -1,15 +1,9 @@
 package cl.monsoon.s1next.view.dialog;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import javax.inject.Inject;
-
-import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.data.User;
-import cl.monsoon.s1next.data.api.S1Service;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
 import cl.monsoon.s1next.util.ToastUtil;
@@ -33,12 +27,6 @@ public final class LoginDialogFragment extends ProgressDialogFragment<ResultWrap
     private static final String STATUS_AUTH_SUCCESS = "location_login_succeed_mobile";
     private static final String STATUS_AUTH_SUCCESS_ALREADY = "login_succeed";
 
-    @Inject
-    S1Service mS1Service;
-
-    @Inject
-    User mUser;
-
     public static LoginDialogFragment newInstance(String username, String password) {
         LoginDialogFragment fragment = new LoginDialogFragment();
         Bundle bundle = new Bundle();
@@ -50,23 +38,15 @@ public final class LoginDialogFragment extends ProgressDialogFragment<ResultWrap
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        App.getAppComponent(activity).inject(this);
-    }
-
-    @Override
     protected Observable<ResultWrapper> getSourceObservable() {
         String username = getArguments().getString(ARG_USERNAME);
         String password = getArguments().getString(ARG_PASSWORD);
-        // the authenticity token is not fresh after login
-        // so we need to refresh authenticity token
-        return mS1Service.login(username, password).flatMap(resultWrapper ->
-                mS1Service.refreshAuthenticityToken().map((ResultWrapper resultWrapper2) -> {
-                    String newAuthenticityToken = resultWrapper2.getAccount().getAuthenticityToken();
-                    resultWrapper.getAccount().setAuthenticityToken(newAuthenticityToken);
-                    return resultWrapper;
-                }));
+        return mS1Service.login(username, password).map(resultWrapper -> {
+            // the authenticity token is not fresh after login
+            resultWrapper.getAccount().setAuthenticityToken(null);
+            mUserValidator.validate(resultWrapper.getAccount());
+            return resultWrapper;
+        });
     }
 
     @Override

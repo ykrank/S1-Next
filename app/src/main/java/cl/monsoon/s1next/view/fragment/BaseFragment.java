@@ -205,7 +205,7 @@ public abstract class BaseFragment<D> extends RxFragment {
         getSourceObservable().compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(d -> UserValidator.validateIntercept(mUserValidator, d))
+                .map(mUserValidator::validateIntercept)
                 .finallyDo(this::finallyDo)
                 .subscribe(this::onNext, this::onError);
     }

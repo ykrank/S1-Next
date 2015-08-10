@@ -7,7 +7,6 @@ import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
 
-import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.api.model.Quote;
@@ -47,19 +46,19 @@ public final class ReplyRequestDialogFragment extends ProgressDialogFragment<Res
 
     @Override
     protected Observable<ResultWrapper> getSourceObservable() {
-        String authenticityToken = App.getAppComponent(getActivity()).getUser().getAuthenticityToken();
         String threadId = getArguments().getString(ARG_THREAD_ID);
         String quotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
         String reply = getArguments().getString(ARG_REPLY);
 
         if (TextUtils.isEmpty(quotePostId)) {
-            return mS1Service.reply(authenticityToken, threadId, reply);
+            return flatMapedWithAuthenticityToken(s -> mS1Service.reply(s, threadId, reply));
         } else {
             return mS1Service.getQuoteInfo(threadId, quotePostId).flatMap(s -> {
                 Quote quote = Quote.fromXmlString(s);
-                return mS1Service.replyQuote(authenticityToken, threadId, reply,
-                        quote.getEncodedUserId(), quote.getQuoteMessage(),
-                        StringUtils.abbreviate(reply, Api.REPLY_NOTIFICATION_MAX_LENGTH));
+                return flatMapedWithAuthenticityToken(s1 ->
+                        mS1Service.replyQuote(s1, threadId, reply, quote.getEncodedUserId(),
+                                quote.getQuoteMessage(), StringUtils.abbreviate(reply,
+                                        Api.REPLY_NOTIFICATION_MAX_LENGTH)));
             });
         }
     }
