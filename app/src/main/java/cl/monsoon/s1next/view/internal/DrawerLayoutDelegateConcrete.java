@@ -1,6 +1,7 @@
 package cl.monsoon.s1next.view.internal;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Build;
@@ -65,13 +66,12 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
             drawerLayout.setOnApplyWindowInsetsListener((v, insets) -> {
                 int insetsTop = insets.getSystemWindowInsetTop();
 
+                Resources resources = v.getContext().getResources();
                 binding.drawerHeaderBackground.getLayoutParams().height = insetsTop
-                        + mFragmentActivity.getResources().getDimensionPixelSize(
-                        R.dimen.drawer_top_height);
+                        + resources.getDimensionPixelSize(R.dimen.drawer_top_height);
                 ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams)
                         binding.drawerUserAvatar.getLayoutParams();
-                marginLayoutParams.topMargin = insetsTop
-                        + mFragmentActivity.getResources().getDimensionPixelSize(
+                marginLayoutParams.topMargin = insetsTop + resources.getDimensionPixelSize(
                         R.dimen.drawer_avatar_margin_top);
 
                 // see https://github.com/android/platform_frameworks_support/blob/master/v4/api21/android/support/v4/widget/DrawerLayoutCompatApi21.java#L86
