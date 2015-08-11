@@ -23,12 +23,12 @@ import cl.monsoon.s1next.R;
  */
 public final class ThemeManager {
 
-    /**
-     * Default theme in AndroidManifest.xml is dark theme.
-     */
-    private static final Theme DEFAULT_THEME = Theme.DARK_THEME;
+    public static final int TRANSLUCENT_THEME_DARK = R.style.Theme_Translucent_Dark;
 
-    public static final int TRANSLUCENT_THEME_LIGHT = R.style.Theme_Translucent_Light;
+    /**
+     * Default theme in AndroidManifest.xml is light theme.
+     */
+    private static final Theme DEFAULT_THEME = Theme.LIGHT_THEME;
 
     // https://www.google.com/design/spec/style/color.html#color-ui-color-application
     private static final int WHITE_BACKGROUND_SECONDARY_TEXT_ALPHA = (int) (0.54 * 255);
