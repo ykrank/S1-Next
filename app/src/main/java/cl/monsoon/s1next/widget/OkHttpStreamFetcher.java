@@ -194,7 +194,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 
         private static final int MEMORY_CACHE_MAX_NUMBER = 1000;
         private static final String DISK_CACHE_DIRECTORY = "avatar_urls_disk_cache";
-        private static final long DISK_CACHE_MAX_SIZE = 1000 * 1000;
+        private static final long DISK_CACHE_MAX_SIZE = 1000 * 1000; // 1MB
 
         /**
          * We only cache the avatar URLs as keys.
