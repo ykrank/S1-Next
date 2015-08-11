@@ -1,12 +1,13 @@
 package cl.monsoon.s1next.view.fragment;
 
-import android.animation.Animator;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -227,10 +228,11 @@ public final class ReplyFragment extends RxFragment {
         mEmoticonKeyboard.setVisibility(View.VISIBLE);
         // translationYBy(-mEmoticonKeyboard.getHeight())
         // doesn't work when orientation change
-        mEmoticonKeyboard.animate()
+        ViewCompat.animate(mEmoticonKeyboard)
                 .alpha(1)
                 .translationYBy(-mEmoticonKeyboard.getTranslationY())
                 .setInterpolator(mInterpolator)
+                .withLayer()
                 .setListener(new EmoticonKeyboardAnimator());
 
         setKeyboardIcon();
@@ -241,14 +243,15 @@ public final class ReplyFragment extends RxFragment {
     }
 
     private void hideEmoticonKeyboard(boolean shouldShowKeyboard) {
-        mEmoticonKeyboard.animate()
+        ViewCompat.animate(mEmoticonKeyboard)
                 .alpha(0)
                 .translationYBy(mEmoticonKeyboard.getHeight())
                 .setInterpolator(mInterpolator)
+                .withLayer()
                 .setListener(new EmoticonKeyboardAnimator() {
 
                     @Override
-                    public void onAnimationEnd(Animator animation) {
+                    public void onAnimationEnd(View view) {
                         mEmoticonKeyboard.setVisibility(View.GONE);
 
                         ViewUtil.setShowSoftInputOnFocus(mReplyView, true);
@@ -262,7 +265,7 @@ public final class ReplyFragment extends RxFragment {
                                     InputMethodManager.SHOW_IMPLICIT);
                         }
 
-                        super.onAnimationEnd(animation);
+                        super.onAnimationEnd(view);
                     }
                 });
 
@@ -294,29 +297,24 @@ public final class ReplyFragment extends RxFragment {
         return mReplyView == null || TextUtils.isEmpty(mReplyView.getText());
     }
 
-    private class EmoticonKeyboardAnimator implements Animator.AnimatorListener {
+    private class EmoticonKeyboardAnimator implements ViewPropertyAnimatorListener {
 
         @Override
-        public void onAnimationStart(Animator animation) {
+        public void onAnimationStart(View view) {
             if (mMenuEmoticon != null) {
                 mMenuEmoticon.setEnabled(false);
             }
         }
 
         @Override
-        public void onAnimationEnd(Animator animation) {
+        public void onAnimationEnd(View view) {
             if (mMenuEmoticon != null) {
                 mMenuEmoticon.setEnabled(true);
             }
         }
 
         @Override
-        public void onAnimationCancel(Animator animation) {
-
-        }
-
-        @Override
-        public void onAnimationRepeat(Animator animation) {
+        public void onAnimationCancel(View view) {
 
         }
     }
