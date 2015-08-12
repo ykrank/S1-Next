@@ -3,6 +3,6 @@
 
     <dimen name="card_view_horizontal_margin">8dp</dimen>
     <dimen name="card_view_vertical_margin">4dp</dimen>
-    <dimen name="recycler_view_padding_for_card">4dp</dimen>
+    <dimen name="recycler_view_vertical_padding_for_card_view">4dp</dimen>
 
 </resources>

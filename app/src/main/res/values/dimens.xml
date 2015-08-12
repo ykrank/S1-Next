@@ -27,9 +27,6 @@
 
     <dimen name="list_view_padding">8dp</dimen>
 
-    <dimen name="recycler_view_horizontal_padding">0dp</dimen>
-    <dimen name="recycler_view_vertical_padding">8dp</dimen>
-
     <!--Before L, CardView adds padding to its content and draws shadows to that area.
     This padding amount is equal to maxCardElevation + (1 - cos45) * cornerRadius on the
     sides and maxCardElevation * 1.5 + (1 - cos45) * cornerRadius on top and bottom.-->
@@ -39,7 +36,7 @@
     <!-- 4dp (half of CardView margin) - (2 * 1.5 + (1 - cos45) * 2)dp ≈ 0.05dp -->
     <dimen name="card_view_vertical_margin">0.05dp</dimen>
     <!-- 8dp (CardView margin) - (2 * 1.5 + (1 - cos45) * 2)dp - 0.05dp (CardView vertical margin) = 4dp -->
-    <dimen name="recycler_view_padding_for_card">4dp</dimen>
+    <dimen name="recycler_view_vertical_padding_for_card_view">4dp</dimen>
 
     <dimen name="avatar_size">40dp</dimen>
 
