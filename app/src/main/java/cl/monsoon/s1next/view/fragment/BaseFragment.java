@@ -29,7 +29,6 @@ import cl.monsoon.s1next.view.fragment.headless.DataRetainedFragment;
 import cl.monsoon.s1next.viewmodel.LoadingViewModel;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * A base Fragment includes {@link SwipeRefreshLayout} to refresh when loading data.
@@ -203,7 +202,6 @@ public abstract class BaseFragment<D> extends RxFragment {
      */
     private void load() {
         getSourceObservable().compose(bindUntilEvent(FragmentEvent.DESTROY))
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(mUserValidator::validateIntercept)
                 .finallyDo(this::finallyDo)

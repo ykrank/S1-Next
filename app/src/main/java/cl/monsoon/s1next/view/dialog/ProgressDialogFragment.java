@@ -23,7 +23,6 @@ import cl.monsoon.s1next.view.fragment.BaseFragment;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * A dialog shows {@link ProgressDialog}.
@@ -82,7 +81,6 @@ abstract class ProgressDialogFragment<D> extends RxDialogFragment {
      */
     private void request() {
         getSourceObservable().compose(bindUntilEvent(FragmentEvent.DESTROY))
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .finallyDo(this::finallyDo)
                 .subscribe(this::onNext, this::onError);
