@@ -4,8 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cl.monsoon.s1next.view.activity.GalleryActivity">
     <item
-        android:id="@+id/menu_browser"
+        android:id="@+id/menu_download"
         android:orderInCategory="1"
+        android:title="@string/menu_download"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_browser"
+        android:orderInCategory="2"
         android:title="@string/menu_browser"
         app:showAsAction="never" />
 </menu>

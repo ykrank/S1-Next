@@ -1,10 +1,12 @@
 package cl.monsoon.s1next.view.activity;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -68,6 +70,17 @@ public final class GalleryActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+
+                return true;
+            case R.id.menu_download:
+                DownloadManager downloadManager = (DownloadManager)
+                        getSystemService(Context.DOWNLOAD_SERVICE);
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(mImageUrl));
+                request.setNotificationVisibility(
+                        DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                        mImageUrl.substring(mImageUrl.lastIndexOf("/") + 1));
+                downloadManager.enqueue(request);
 
                 return true;
             case R.id.menu_browser:
