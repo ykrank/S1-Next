@@ -13,6 +13,8 @@
     <string name="drawer_avatar_content_desc">用户头像</string>
     <string name="dialog_message_log_out">退出登录？</string>
     <string name="dialog_button_text_log_out">退出</string>
+    <string name="message_network_error">发生了网络错误</string>
+    <string name="message_server_error">无法与服务器进行通信，请稍后再试。</string>
     <string name="home">首页</string>
     <string name="favourites">收藏</string>
     <string name="settings">设置</string>
@@ -28,8 +30,6 @@
     <string name="menu_emoticon">表情</string>
     <string name="menu_keyboard">键盘</string>
     <string name="menu_send">发送</string>
-    <string name="message_network_error">发生了网络错误</string>
-    <string name="message_server_error">无法与服务器进行通信，请稍后再试。</string>
     <string name="prompt_username">用户名</string>
     <string name="prompt_password">密码</string>
     <string name="error_field_required">此处不能留空</string>
