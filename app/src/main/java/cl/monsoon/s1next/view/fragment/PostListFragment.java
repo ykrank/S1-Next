@@ -221,7 +221,7 @@ public final class PostListFragment extends BaseViewPagerFragment
 
                 return true;
             case R.id.menu_favourites_add:
-                if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeed(activity, mUser)) {
+                if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(activity, mUser)) {
                     ThreadFavouritesAddDialogFragment.newInstance(mThreadId).show(
                             activity.getSupportFragmentManager(),
                             ThreadFavouritesAddDialogFragment.TAG);
@@ -305,7 +305,7 @@ public final class PostListFragment extends BaseViewPagerFragment
     }
 
     private void startReplyActivity(@Nullable String quotePostId, @Nullable String quotePostCount) {
-        if (LoginPromptDialogFragment.showLoginPromptDialogIfNeed(getActivity(), mUser)) {
+        if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(getActivity(), mUser)) {
             return;
         }
 

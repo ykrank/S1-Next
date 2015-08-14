@@ -84,7 +84,7 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
         // Starts LoginActivity if user hasn't logged in,
         // otherwise show LogoutDialogFragment.
         binding.drawerHeaderBackground.setOnClickListener(v -> {
-            if (!LogoutDialogFragment.showLogoutDialogIfNeed(mFragmentActivity, mUser)) {
+            if (!LogoutDialogFragment.showLogoutDialogIfNeeded(mFragmentActivity, mUser)) {
                 closeDrawer(() -> {
                     Intent intent = new Intent(v.getContext(), LoginActivity.class);
                     v.getContext().startActivity(intent);
@@ -172,7 +172,7 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
 
         // Starts FavouriteListActivity if user has logged in,
         // otherwise show LoginPromptDialogFragment.
-        if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeed(mFragmentActivity, mUser)) {
+        if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(mFragmentActivity, mUser)) {
             Intent intent = new Intent(mFragmentActivity, FavouriteListActivity.class);
             mFragmentActivity.startActivity(intent);
         }
