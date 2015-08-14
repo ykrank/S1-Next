@@ -34,6 +34,7 @@ import cl.monsoon.s1next.data.api.model.ThreadLink;
 import cl.monsoon.s1next.data.api.model.collection.Posts;
 import cl.monsoon.s1next.data.event.QuoteEvent;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
+import cl.monsoon.s1next.util.ClipboardUtil;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
@@ -227,9 +228,9 @@ public final class PostListFragment extends BaseViewPagerFragment
                 }
 
                 return true;
-            case R.id.menu_browser:
-                IntentUtil.startViewIntentExcludeOurApp(activity, Uri.parse(
-                        Api.getPostListUrlForBrowser(mThreadId, getCurrentPage())));
+            case R.id.menu_link:
+                ClipboardUtil.copyTextAndShowToastPrompt(activity, Api.getPostListUrlForBrowser(
+                        mThreadId, getCurrentPage()), R.string.message_thread_link_copy);
 
                 return true;
             case R.id.menu_share:
@@ -246,6 +247,11 @@ public final class PostListFragment extends BaseViewPagerFragment
                 intent.setType("text/plain");
 
                 startActivity(Intent.createChooser(intent, getString(R.string.menu_title_share)));
+
+                return true;
+            case R.id.menu_browser:
+                IntentUtil.startViewIntentExcludeOurApp(activity, Uri.parse(
+                        Api.getPostListUrlForBrowser(mThreadId, getCurrentPage())));
 
                 return true;
         }

@@ -32,6 +32,7 @@
 
     <!-- menu -->
     <string name="menu_refresh">Refresh</string>
+    <string name="menu_link">Link</string>
     <string name="menu_share">Share</string>
     <string name="menu_title_share">Share with…</string>
     <string name="menu_browser">Open in browser</string>
@@ -76,6 +77,8 @@
     <string name="dialog_button_text_use_a_different_app">Use a different app</string>
     <string name="dialog_message_processing">Processing…</string>
     <string name="dialog_message_quote_not_found">This quote could not be found.</string>
+
+    <string name="message_thread_link_copy">Thread link copied to clipboard</string>
 
     <!-- reply -->
 

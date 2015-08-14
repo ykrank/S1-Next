@@ -20,6 +20,7 @@
     <string name="settings">设置</string>
     <string name="help">帮助</string>
     <string name="menu_refresh">刷新</string>
+    <string name="menu_link">链接</string>
     <string name="menu_share">分享</string>
     <string name="menu_title_share">分享到…</string>
     <string name="menu_browser">从浏览器中打开</string>
@@ -42,6 +43,7 @@
     <string name="dialog_button_text_use_a_different_app">使用其他应用</string>
     <string name="dialog_message_processing">解析中…</string>
     <string name="dialog_message_quote_not_found">找不到该引用。</string>
+    <string name="message_thread_link_copy">帖子的链接已复制到剪切板</string>
     <string name="prompt_reply">写点内容吧…</string>
     <string name="signature">—— 来自 %1$s</string>
     <string name="dialog_progress_message_reply">回复中…</string>

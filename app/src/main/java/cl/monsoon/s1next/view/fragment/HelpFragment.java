@@ -1,9 +1,6 @@
 package cl.monsoon.s1next.view.fragment;
 
 import android.content.ActivityNotFoundException;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -22,6 +19,7 @@ import android.widget.Toast;
 import cl.monsoon.s1next.BuildConfig;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.databinding.FragmentHelpBinding;
+import cl.monsoon.s1next.util.ClipboardUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.activity.OpenSourceLicensesActivity;
 import cl.monsoon.s1next.viewmodel.WebPageViewModel;
@@ -122,11 +120,8 @@ public final class HelpFragment extends Fragment {
                 return true;
             case R.id.menu_version:
                 // copy version number to clipboard though it make no sense actually
-                ClipboardManager clipboardManager = (ClipboardManager)
-                        getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clipData = ClipData.newPlainText("simple text", item.getTitle());
-                clipboardManager.setPrimaryClip(clipData);
-                ToastUtil.showByResId(R.string.message_version_number_copied, Toast.LENGTH_SHORT);
+                ClipboardUtil.copyTextAndShowToastPrompt(getActivity(), item.getTitle(),
+                        R.string.message_version_number_copied);
 
                 return true;
         }
