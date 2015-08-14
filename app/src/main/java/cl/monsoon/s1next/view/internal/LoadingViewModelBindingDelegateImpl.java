@@ -8,7 +8,7 @@ import cl.monsoon.s1next.viewmodel.LoadingViewModel;
 
 public final class LoadingViewModelBindingDelegateImpl implements LoadingViewModelBindingDelegate {
 
-    private FragmentBaseBinding mFragmentBaseBinding;
+    private final FragmentBaseBinding mFragmentBaseBinding;
 
     public LoadingViewModelBindingDelegateImpl(FragmentBaseBinding fragmentBaseBinding) {
         this.mFragmentBaseBinding = fragmentBaseBinding;
