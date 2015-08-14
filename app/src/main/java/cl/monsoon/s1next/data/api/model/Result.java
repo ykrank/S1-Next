@@ -3,6 +3,8 @@ package cl.monsoon.s1next.data.api.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import cl.monsoon.s1next.data.api.DiscuzMessageFormatter;
+
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class Result {
@@ -26,6 +28,6 @@ public final class Result {
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.message = DiscuzMessageFormatter.addFullStopIfNeeded(message);
     }
 }
