@@ -15,7 +15,7 @@ import android.view.View;
 import cl.monsoon.s1next.R;
 
 /**
- * THis class represents a delegate which you can use to add
+ * This class represents a delegate which you can use to add
  * {@link DrawerLayout} to {@link FragmentActivity}.
  */
 public abstract class DrawerLayoutDelegate {
