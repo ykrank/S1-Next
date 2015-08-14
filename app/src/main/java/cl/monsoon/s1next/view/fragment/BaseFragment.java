@@ -26,6 +26,8 @@ import cl.monsoon.s1next.data.api.UserValidator;
 import cl.monsoon.s1next.databinding.FragmentBaseBinding;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.fragment.headless.DataRetainedFragment;
+import cl.monsoon.s1next.view.internal.LoadingViewModelBindingDelegate;
+import cl.monsoon.s1next.view.internal.LoadingViewModelBindingDelegateImpl;
 import cl.monsoon.s1next.viewmodel.LoadingViewModel;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -47,7 +49,7 @@ public abstract class BaseFragment<D> extends RxFragment {
      */
     private static final String STATE_LOADING_VIEW_MODEL = "loading_view_model";
 
-    private FragmentBaseBinding mFragmentBaseBinding;
+    private LoadingViewModelBindingDelegate mLoadingViewModelBindingDelegate;
     private LoadingViewModel mLoadingViewModel;
 
     /**
@@ -60,9 +62,11 @@ public abstract class BaseFragment<D> extends RxFragment {
 
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mFragmentBaseBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_base, container,
-                false);
-        return mFragmentBaseBinding.getRoot();
+        FragmentBaseBinding fragmentBaseBinding = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_base, container, false);
+        mLoadingViewModelBindingDelegate = new LoadingViewModelBindingDelegateImpl(
+                fragmentBaseBinding);
+        return fragmentBaseBinding.getRoot();
     }
 
     @Override
@@ -73,7 +77,8 @@ public abstract class BaseFragment<D> extends RxFragment {
         mS1Service = appComponent.getS1Service();
         mUserValidator = appComponent.getUserValidator();
 
-        mFragmentBaseBinding.swipeRefreshLayout.setOnRefreshListener(this::startSwipeRefresh);
+        mLoadingViewModelBindingDelegate.getSwipeRefreshLayout().setOnRefreshListener(
+                this::startSwipeRefresh);
     }
 
     @Override
@@ -121,7 +126,7 @@ public abstract class BaseFragment<D> extends RxFragment {
             }
         }
 
-        mFragmentBaseBinding.setLoadingViewModel(mLoadingViewModel);
+        mLoadingViewModelBindingDelegate.setLoadingViewModel(mLoadingViewModel);
         if (isLoading()) {
             load();
         }
@@ -249,7 +254,7 @@ public abstract class BaseFragment<D> extends RxFragment {
     }
 
     final RecyclerView getRecyclerView() {
-        return mFragmentBaseBinding.recyclerView;
+        return mLoadingViewModelBindingDelegate.getRecyclerView();
     }
 
     /**
