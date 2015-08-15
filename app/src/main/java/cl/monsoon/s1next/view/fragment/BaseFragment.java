@@ -107,7 +107,7 @@ public abstract class BaseFragment<D> extends RxFragment {
         if (fragment == null) {
             mDataRetainedFragment = new DataRetainedFragment<>();
             fragmentManager.beginTransaction().add(mDataRetainedFragment, dataRetainedFragmentTag)
-                    .commit();
+                    .commitAllowingStateLoss();
 
             // start to load data because we start this Fragment the first time
             mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FIRST_TIME);
