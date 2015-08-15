@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -127,7 +128,7 @@ public final class Post {
         String color;
         while (matcher.find()) {
             // get color hex value for its color name
-            color = COLOR_NAME_MAP.get(matcher.group(1).toLowerCase());
+            color = COLOR_NAME_MAP.get(matcher.group(1).toLowerCase(Locale.US));
             if (color == null) {
                 continue;
             }
