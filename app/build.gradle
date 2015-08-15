@@ -5,7 +5,7 @@ apply plugin: 'com.android.databinding'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion '23 rc3'
+    buildToolsVersion '22.0.1'
 
     defaultConfig {
         applicationId "cl.monsoon.s1next"
