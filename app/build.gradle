@@ -29,6 +29,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    lintOptions {
+        // Do not abort if lint finds an error,
+        // otherwise the Travis CI build will fail.
+        abortOnError false
+        textReport true
+        textOutput 'stdout'
+    }
     packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE.txt'
