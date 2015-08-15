@@ -29,10 +29,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    dexOptions {
+        preDexLibraries = Boolean.valueOf(System.getProperty("pre-dex-libraries", "true"))
+    }
     lintOptions {
-        // Do not abort if lint finds an error,
-        // otherwise the Travis CI build will fail.
-        abortOnError false
+        abortOnError = Boolean.valueOf(System.getProperty("abort-on-error", "true"))
         textReport true
         textOutput 'stdout'
     }

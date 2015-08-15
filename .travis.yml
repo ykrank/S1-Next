@@ -9,6 +9,9 @@ android:
 jdk:
   - oraclejdk8
 
+script:
+  - ./gradlew clean check -Dpre-dex-libraries=false -Dabort-on-error=false
+
 notifications:
   email: false
 
