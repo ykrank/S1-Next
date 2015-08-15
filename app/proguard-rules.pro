@@ -16,8 +16,6 @@
 #   public *;
 #}
 
--keepattributes *Annotation*, Signature
-
 # Android Design Support library
 # https://stackoverflow.com/questions/30562330/using-appcompat-layout-behavior-with-string-appbar-scrolling-view-behavior#answer-30846201
 -keep public class * extends android.support.design.widget.CoordinatorLayout$Behavior { *; }
@@ -30,8 +28,8 @@
 # Jackson databind
 -keep public class cl.monsoon.s1next.data.api.model.** { *; }
 
+-dontwarn com.fasterxml.jackson.databind.ext.DOMSerializer
 -keepnames class com.fasterxml.jackson.** { *; }
--dontwarn com.fasterxml.jackson.databind.**
 
 # Okio
 # https://github.com/square/okio/issues/144
@@ -51,3 +49,6 @@
 # Gradle Retrolambda Plugin
 # https://github.com/evant/gradle-retrolambda#user-content-proguard
 -dontwarn java.lang.invoke.*
+
+# Retrofit
+-keepattributes Signature
