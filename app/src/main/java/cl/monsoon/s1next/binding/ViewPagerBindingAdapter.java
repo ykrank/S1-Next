@@ -10,8 +10,8 @@ public final class ViewPagerBindingAdapter {
 
     }
 
-    @BindingAdapter("totalPage")
-    public static void setTotalPage(ViewPager viewPager, int totalPage) {
+    @BindingAdapter("totalPages")
+    public static void setTotalPages(ViewPager viewPager, int totalPages) {
         PagerAdapter pagerAdapter = viewPager.getAdapter();
         if (pagerAdapter != null) {
             pagerAdapter.notifyDataSetChanged();

@@ -57,9 +57,9 @@ abstract class BaseViewPagerFragment extends RxFragment
 
         ViewPagerViewModel viewModel = new ViewPagerViewModel();
         if (savedInstanceState != null) {
-            viewModel.totalPage.set(savedInstanceState.getInt(STATE_TOTAL_PAGES));
+            viewModel.totalPages.set(savedInstanceState.getInt(STATE_TOTAL_PAGES));
         } else {
-            viewModel.totalPage.set(1);
+            viewModel.totalPages.set(1);
         }
         mFragmentViewPagerBinding.setViewPagerViewModel(viewModel);
 
@@ -115,11 +115,11 @@ abstract class BaseViewPagerFragment extends RxFragment
     abstract BaseFragmentStatePagerAdapter getPagerAdapter(FragmentManager fragmentManager);
 
     int getTotalPages() {
-        return mFragmentViewPagerBinding.getViewPagerViewModel().totalPage.get();
+        return mFragmentViewPagerBinding.getViewPagerViewModel().totalPages.get();
     }
 
-    public final void setTotalPages(int page) {
-        mFragmentViewPagerBinding.getViewPagerViewModel().totalPage.set(page);
+    public final void setTotalPages(int totalPages) {
+        mFragmentViewPagerBinding.getViewPagerViewModel().totalPages.set(totalPages);
         preparePageTurningMenu();
     }
 

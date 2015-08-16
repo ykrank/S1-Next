@@ -4,5 +4,5 @@ import android.databinding.ObservableInt;
 
 public final class ViewPagerViewModel {
 
-    public final ObservableInt totalPage = new ObservableInt();
+    public final ObservableInt totalPages = new ObservableInt();
 }
