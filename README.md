@@ -1,6 +1,6 @@
 # S1 Next
 
-[![GitHub version](https://badge.fury.io/gh/floating-cat%2FS1-Next.svg)](http://badge.fury.io/gh/floating-cat%2FS1-Next)
+[![GitHub version](https://badge.fury.io/gh/floating-cat%2FS1-Next.svg)](http://badge.fury.io/gh/floating-cat%2FS1-Next) [![Build Status](https://travis-ci.org/floating-cat/S1-Next.svg?branch=master)](https://travis-ci.org/floating-cat/S1-Next)
 
 This is the Android Client for [STAGE1](http://bbs.saraba1st.com/2b/forum.php).
 
