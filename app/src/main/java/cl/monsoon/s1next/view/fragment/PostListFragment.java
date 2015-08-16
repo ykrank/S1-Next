@@ -129,8 +129,8 @@ public final class PostListFragment extends BaseViewPagerFragment
         mThreadTitle = thread.getTitle();
         mThreadId = thread.getId();
 
-        final int jumpPage = bundle.getInt(ARG_JUMP_PAGE, -1);
-        if (jumpPage != -1) {
+        final int jumpPage = bundle.getInt(ARG_JUMP_PAGE);
+        if (jumpPage != 0) {
             // we do not know the total page if we open this thread by URL
             // so we set the jump page to total page
             setTotalPage(jumpPage);
