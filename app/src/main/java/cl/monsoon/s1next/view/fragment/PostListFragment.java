@@ -8,12 +8,9 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.provider.Browser;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,7 +36,6 @@ import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
 import cl.monsoon.s1next.util.StringUtil;
-import cl.monsoon.s1next.view.activity.ForumActivity;
 import cl.monsoon.s1next.view.activity.PostListActivity;
 import cl.monsoon.s1next.view.activity.ReplyActivity;
 import cl.monsoon.s1next.view.dialog.LoginPromptDialogFragment;
@@ -66,7 +62,6 @@ public final class PostListFragment extends BaseViewPagerFragment
      */
     private static final String ARG_JUMP_PAGE = "jump_page";
     private static final String ARG_QUOTE_POST_ID = "quote_post_id";
-    private static final String ARG_COME_FROM_OTHER_APP = "come_from_other_app";
 
     @Inject
     EventBus mEventBus;
@@ -99,7 +94,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         return fragment;
     }
 
-    public static PostListFragment newInstance(Activity activity, ThreadLink threadLink) {
+    public static PostListFragment newInstance(ThreadLink threadLink) {
         Thread thread = new Thread();
         thread.setId(threadLink.getThreadId());
 
@@ -110,9 +105,6 @@ public final class PostListFragment extends BaseViewPagerFragment
         if (threadLink.getQuotePostId().isPresent()) {
             bundle.putString(ARG_QUOTE_POST_ID, threadLink.getQuotePostId().get());
         }
-        bundle.putBoolean(ARG_COME_FROM_OTHER_APP, !activity.getPackageName().equals(
-                // see android.text.style.URLSpan#onClick(View)
-                activity.getIntent().getStringExtra(Browser.EXTRA_APPLICATION_ID)));
         fragment.setArguments(bundle);
 
         return fragment;
@@ -198,38 +190,23 @@ public final class PostListFragment extends BaseViewPagerFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        FragmentActivity activity = getActivity();
         switch (item.getItemId()) {
-            case android.R.id.home:
-                if (getArguments().getBoolean(ARG_COME_FROM_OTHER_APP, false)) {
-                    // this activity is not part of this app's task
-                    // so create a new task when navigating up
-                    TaskStackBuilder.create(activity)
-                            .addNextIntentWithParentStack(new Intent(activity, ForumActivity.class))
-                            .startActivities();
-
-                    activity.finish();
-
-                    return true;
-                }
-
-                break;
             case R.id.menu_thread_attachment:
                 ThreadAttachmentDialogFragment.newInstance(mThreadAttachment).show(
-                        activity.getSupportFragmentManager(),
+                        getActivity().getSupportFragmentManager(),
                         ThreadAttachmentDialogFragment.TAG);
 
                 return true;
             case R.id.menu_favourites_add:
-                if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(activity, mUser)) {
+                if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(getActivity(), mUser)) {
                     ThreadFavouritesAddDialogFragment.newInstance(mThreadId).show(
-                            activity.getSupportFragmentManager(),
+                            getActivity().getSupportFragmentManager(),
                             ThreadFavouritesAddDialogFragment.TAG);
                 }
 
                 return true;
             case R.id.menu_link:
-                ClipboardUtil.copyTextAndShowToastPrompt(activity, Api.getPostListUrlForBrowser(
+                ClipboardUtil.copyTextAndShowToastPrompt(getActivity(), Api.getPostListUrlForBrowser(
                         mThreadId, getCurrentPage()), R.string.message_thread_link_copy);
 
                 return true;
@@ -250,7 +227,7 @@ public final class PostListFragment extends BaseViewPagerFragment
 
                 return true;
             case R.id.menu_browser:
-                IntentUtil.startViewIntentExcludeOurApp(activity, Uri.parse(
+                IntentUtil.startViewIntentExcludeOurApp(getActivity(), Uri.parse(
                         Api.getPostListUrlForBrowser(mThreadId, getCurrentPage())));
 
                 return true;

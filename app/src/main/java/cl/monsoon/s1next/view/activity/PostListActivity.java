@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Browser;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.TaskStackBuilder;
+import android.view.MenuItem;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Thread;
@@ -21,6 +24,7 @@ public final class PostListActivity extends BaseActivity {
     private static final String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
 
     private static final String ARG_THREAD_LINK = "thread_link";
+    private static final String ARG_COME_FROM_OTHER_APP = "come_from_other_app";
 
     public static void startPostListActivity(Context context, Thread thread, boolean shouldGoToLastPage) {
         Intent intent = new Intent(context, PostListActivity.class);
@@ -33,6 +37,9 @@ public final class PostListActivity extends BaseActivity {
     public static void startPostListActivity(Activity activity, ThreadLink threadLink) {
         Intent intent = new Intent(activity, PostListActivity.class);
         intent.putExtra(ARG_THREAD_LINK, threadLink);
+        intent.putExtra(ARG_COME_FROM_OTHER_APP, !activity.getPackageName().equals(
+                // see android.text.style.URLSpan#onClick(View)
+                activity.getIntent().getStringExtra(Browser.EXTRA_APPLICATION_ID)));
 
         activity.startActivity(intent);
     }
@@ -49,8 +56,7 @@ public final class PostListActivity extends BaseActivity {
             Intent intent = getIntent();
             Thread thread = intent.getParcelableExtra(ARG_THREAD);
             if (thread == null) {
-                fragment = PostListFragment.newInstance(this, intent.getParcelableExtra(
-                        ARG_THREAD_LINK));
+                fragment = PostListFragment.newInstance(intent.getParcelableExtra(ARG_THREAD_LINK));
             } else {
                 fragment = PostListFragment.newInstance(thread, intent.getBooleanExtra(
                         ARG_SHOULD_GO_TO_LAST_PAGE, false));
@@ -58,5 +64,24 @@ public final class PostListActivity extends BaseActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.frame_layout, fragment,
                     PostListFragment.TAG).commit();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (getIntent().getBooleanExtra(PostListActivity.ARG_COME_FROM_OTHER_APP, false)) {
+                    // this activity is not part of this app's task
+                    // so create a new task when navigating up
+                    TaskStackBuilder.create(this)
+                            .addNextIntentWithParentStack(new Intent(this, ForumActivity.class))
+                            .startActivities();
+                    finish();
+
+                    return true;
+                }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
