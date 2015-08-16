@@ -29,7 +29,7 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
 
         mTitle = getText(R.string.favourites);
         if (savedInstanceState != null) {
-            setTotalPage(1);
+            setTotalPages(1);
         }
     }
 

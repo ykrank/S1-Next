@@ -125,7 +125,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         if (jumpPage != 0) {
             // we do not know the total page if we open this thread by URL
             // so we set the jump page to total page
-            setTotalPage(jumpPage);
+            setTotalPages(jumpPage);
             getViewPager().setCurrentItem(jumpPage - 1);
         } else {
             // +1 for original post
@@ -254,7 +254,7 @@ public final class PostListFragment extends BaseViewPagerFragment
 
     @Override
     public void setTotalPageByPosts(int threads) {
-        setTotalPage(MathUtil.divide(threads, Api.POSTS_PER_PAGE));
+        setTotalPages(MathUtil.divide(threads, Api.POSTS_PER_PAGE));
     }
 
     @Override

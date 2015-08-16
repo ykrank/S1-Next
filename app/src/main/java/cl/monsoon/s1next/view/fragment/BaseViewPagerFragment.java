@@ -118,7 +118,7 @@ abstract class BaseViewPagerFragment extends RxFragment
         return mFragmentViewPagerBinding.getViewPagerViewModel().totalPage.get();
     }
 
-    public final void setTotalPage(int page) {
+    public final void setTotalPages(int page) {
         mFragmentViewPagerBinding.getViewPagerViewModel().totalPage.set(page);
         preparePageTurningMenu();
     }

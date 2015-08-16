@@ -88,7 +88,7 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
             mRecyclerAdapter.notifyDataSetChanged();
 
             // update total page
-            mPagerCallback.setTotalPage(MathUtil.divide(favourites.getTotal(),
+            mPagerCallback.setTotalPages(MathUtil.divide(favourites.getTotal(),
                     favourites.getFavouritesPerPage()));
         }
     }

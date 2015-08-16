@@ -85,7 +85,7 @@ public final class ThreadListFragment extends BaseViewPagerFragment
 
     @Override
     public void setTotalPageByThreads(int threads) {
-        setTotalPage(MathUtil.divide(threads, Api.THREADS_PER_PAGE));
+        setTotalPages(MathUtil.divide(threads, Api.THREADS_PER_PAGE));
     }
 
     /**
