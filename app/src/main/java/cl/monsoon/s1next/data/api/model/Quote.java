@@ -55,8 +55,8 @@ public final class Quote {
             }
         }
 
-        Preconditions.checkState(TextUtils.isEmpty(quote.getEncodedUserId())
-                || TextUtils.isEmpty(quote.getQuoteMessage()), "Can not get the quote information.");
+        Preconditions.checkState(!TextUtils.isEmpty(quote.getEncodedUserId())
+                && !TextUtils.isEmpty(quote.getQuoteMessage()), "Can not get the quote information.");
 
         return quote;
     }

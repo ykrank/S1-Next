@@ -75,8 +75,16 @@ dependencies {
 
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'com.trello:rxlifecycle-components:0.1.0'
-    compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-SNAPSHOT'
-    compile 'com.squareup.retrofit:converter-jackson:2.0.0-SNAPSHOT'
+    compile('com.github.square:retrofit:71b0a9e56a'){
+        exclude module: 'adapter-rxjava-mock'
+        exclude module: 'converter-gson'
+        exclude module: 'converter-moshi'
+        exclude module: 'converter-protobuf'
+        exclude module: 'converter-simplexml'
+        exclude module: 'converter-wire'
+        exclude module: 'retrofit-mock'
+        exclude module: 'samples'
+    }
 
     compile 'com.bugsnag:bugsnag-android:3.2.6'
     compile 'com.github.bumptech.glide:glide:3.6.1'

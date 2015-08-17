@@ -26,6 +26,7 @@ import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.viewmodel.UserViewModel;
 import cl.monsoon.s1next.widget.EventBus;
 import cl.monsoon.s1next.widget.PersistentHttpCookieStore;
+import cl.monsoon.s1next.widget.ToStringConverterFactory;
 import dagger.Module;
 import dagger.Provides;
 import retrofit.JacksonConverterFactory;
@@ -74,8 +75,9 @@ final class AppModule {
         return new Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(Api.BASE_URL)
-                .converterFactory(JacksonConverterFactory.create())
-                .callAdapterFactory(ObservableCallAdapterFactory.create())
+                .addCallAdapterFactory(ObservableCallAdapterFactory.create())
+                .addConverterFactory(new ToStringConverterFactory())
+                .addConverterFactory(JacksonConverterFactory.create())
                 .build()
                 .create(S1Service.class);
     }
