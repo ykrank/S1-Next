@@ -12,9 +12,11 @@ import android.view.View;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.Api;
+import cl.monsoon.s1next.data.api.model.Forum;
 import cl.monsoon.s1next.data.api.model.collection.ForumGroups;
 import cl.monsoon.s1next.data.api.model.wrapper.ForumGroupsWrapper;
 import cl.monsoon.s1next.util.IntentUtil;
+import cl.monsoon.s1next.view.activity.ThreadListActivity;
 import cl.monsoon.s1next.view.adapter.ForumListRecyclerViewAdapter;
 import cl.monsoon.s1next.view.internal.ToolbarDropDownInterface;
 import rx.Observable;
@@ -68,6 +70,14 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_ether:
+                Forum forum = new Forum();
+                forum.setId("75");
+                forum.setName("外野");
+                forum.setThreads(10 * Api.THREADS_PER_PAGE);
+                ThreadListActivity.startThreadListActivity(getActivity(), forum);
+
+                return true;
             case R.id.menu_browser:
                 IntentUtil.startViewIntentExcludeOurApp(getActivity(), Uri.parse(Api.BASE_URL));
 
