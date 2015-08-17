@@ -10,5 +10,6 @@
     app:backgroundTint="?attr/fabBackgroundTint"
     app:layout_anchor="@id/frame_layout"
     app:layout_anchorGravity="bottom|right|end"
+    app:layout_behavior="cl.monsoon.s1next.widget.ScrollAwareFABBehavior"
     app:rippleColor="@color/ripple_material_dark"
     tools:ignore="RtlCompat" />
