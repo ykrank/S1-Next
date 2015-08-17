@@ -12,13 +12,9 @@ public final class ToastUtil {
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({Toast.LENGTH_SHORT, Toast.LENGTH_LONG})
-    private @interface DurationDef {
+    private @interface DurationDef {}
 
-    }
-
-    private ToastUtil() {
-
-    }
+    private ToastUtil() {}
 
     /**
      * Show a standard toast that just contains a text view.

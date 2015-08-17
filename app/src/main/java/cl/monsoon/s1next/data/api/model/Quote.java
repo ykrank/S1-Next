@@ -23,9 +23,7 @@ public final class Quote {
      */
     private String quoteMessage;
 
-    private Quote() {
-
-    }
+    private Quote() {}
 
     public String getEncodedUserId() {
         return encodedUserId;

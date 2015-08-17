@@ -9,9 +9,7 @@ import android.widget.Toast;
 
 public final class ClipboardUtil {
 
-    private ClipboardUtil() {
-
-    }
+    private ClipboardUtil() {}
 
     /**
      * @param text  The actual text we want to copy.

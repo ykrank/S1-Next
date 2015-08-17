@@ -132,9 +132,7 @@ public final class GlideImageGetter
     }
 
     @Override
-    public void onViewAttachedToWindow(View v) {
-
-    }
+    public void onViewAttachedToWindow(View v) {}
 
     @Override
     public void onViewDetachedFromWindow(View v) {
@@ -158,14 +156,10 @@ public final class GlideImageGetter
     }
 
     @Override
-    public void scheduleDrawable(Drawable who, Runnable what, long when) {
-
-    }
+    public void scheduleDrawable(Drawable who, Runnable what, long when) {}
 
     @Override
-    public void unscheduleDrawable(Drawable who, Runnable what) {
-
-    }
+    public void unscheduleDrawable(Drawable who, Runnable what) {}
 
     private static class ImageGetterViewTarget extends ViewTarget<TextView, GlideDrawable> {
 

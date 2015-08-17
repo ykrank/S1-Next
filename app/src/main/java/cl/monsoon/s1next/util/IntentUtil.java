@@ -24,9 +24,7 @@ public final class IntentUtil {
      */
     private static final String ANDROID_RESOLVER_ACTIVITY = "com.android.internal.app.ResolverActivity";
 
-    private IntentUtil() {
-
-    }
+    private IntentUtil() {}
 
     /**
      * Opens a uri in Android's web browser or other app which can handle this Intent.

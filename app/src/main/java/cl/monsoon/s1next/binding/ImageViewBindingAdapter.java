@@ -16,9 +16,7 @@ import cl.monsoon.s1next.R;
 
 public final class ImageViewBindingAdapter {
 
-    private ImageViewBindingAdapter() {
-
-    }
+    private ImageViewBindingAdapter() {}
 
     @BindingAdapter("imageDrawable")
     public static void setImageDrawable(ImageView imageView, Drawable drawable) {

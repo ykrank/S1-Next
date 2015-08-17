@@ -73,9 +73,7 @@ public final class ForumActivity extends BaseActivity
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+    public void onNothingSelected(AdapterView<?> parent) {}
 
     @Override
     public void setupToolbarDropDown(List<? extends CharSequence> dropDownItemList) {

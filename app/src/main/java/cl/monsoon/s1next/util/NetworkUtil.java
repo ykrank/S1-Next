@@ -6,9 +6,7 @@ import android.net.NetworkInfo;
 
 public final class NetworkUtil {
 
-    private NetworkUtil() {
-
-    }
+    private NetworkUtil() {}
 
     /**
      * Check whether the Wi-Fi network connectivity exists and whtether it is possible to

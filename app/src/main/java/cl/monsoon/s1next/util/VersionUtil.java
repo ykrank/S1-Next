@@ -12,9 +12,7 @@ import cl.monsoon.s1next.data.pref.ThemeManager;
 
 final class VersionUtil {
 
-    private VersionUtil() {
-
-    }
+    private VersionUtil() {}
 
     /**
      * Changes app title color to white in recent apps.

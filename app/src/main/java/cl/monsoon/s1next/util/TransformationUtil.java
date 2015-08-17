@@ -23,9 +23,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 public final class TransformationUtil {
 
-    private TransformationUtil() {
-
-    }
+    private TransformationUtil() {}
 
     /**
      * Applies a multiplier to the {@code toTransform}'s size.

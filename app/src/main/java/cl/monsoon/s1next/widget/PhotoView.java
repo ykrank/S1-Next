@@ -434,14 +434,10 @@ public final class PhotoView extends View
     }
 
     @Override
-    public void onLongPress(MotionEvent e) {
-
-    }
+    public void onLongPress(MotionEvent e) {}
 
     @Override
-    public void onShowPress(MotionEvent e) {
-
-    }
+    public void onShowPress(MotionEvent e) {}
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {

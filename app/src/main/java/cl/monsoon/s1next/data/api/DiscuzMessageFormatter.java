@@ -5,9 +5,7 @@ public final class DiscuzMessageFormatter {
     private static final String FULLWIDTH_COMMA = "，";
     private static final String FULLWIDTH_FULL_STOP = "。";
 
-    private DiscuzMessageFormatter() {
-
-    }
+    private DiscuzMessageFormatter() {}
 
     /**
      * We need to add a full stop after a non-single sentence.

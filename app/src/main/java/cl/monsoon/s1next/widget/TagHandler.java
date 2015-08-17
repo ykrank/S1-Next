@@ -111,7 +111,5 @@ public final class TagHandler implements Html.TagHandler {
         }
     }
 
-    private static class Strike {
-
-    }
+    private static class Strike {}
 }

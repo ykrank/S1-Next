@@ -40,9 +40,7 @@ public final class Thread implements Parcelable {
     @JsonProperty("readperm")
     private int permission;
 
-    public Thread() {
-
-    }
+    public Thread() {}
 
     private Thread(Parcel source) {
         id = source.readString();

@@ -10,9 +10,7 @@ public final class StringUtil {
 
     private static final String NON_BREAKING_SPACE_ENTITY_NAME = "&nbsp;";
 
-    private StringUtil() {
-
-    }
+    private StringUtil() {}
 
     /**
      * Concatenates {@code first} and {@code second} with {@link #TWO_SPACES}.

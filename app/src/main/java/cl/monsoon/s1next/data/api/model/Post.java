@@ -40,9 +40,7 @@ public final class Post {
     @JsonProperty("attachments")
     private Map<Integer, Attachment> attachmentMap;
 
-    public Post() {
-
-    }
+    public Post() {}
 
     public String getId() {
         return id;

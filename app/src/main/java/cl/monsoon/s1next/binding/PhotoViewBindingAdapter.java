@@ -13,9 +13,7 @@ import cl.monsoon.s1next.widget.PhotoView;
 
 public final class PhotoViewBindingAdapter {
 
-    private PhotoViewBindingAdapter() {
-
-    }
+    private PhotoViewBindingAdapter() {}
 
     @BindingAdapter("url")
     public static void loadImage(PhotoView photoView, String url) {

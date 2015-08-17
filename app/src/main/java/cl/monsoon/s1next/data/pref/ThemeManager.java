@@ -43,9 +43,7 @@ public final class ThemeManager {
             BLACK_BACKGROUND_SECONDARY_TEXT_ALPHA,
             BLACK_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA
     })
-    private @interface BackgroundAlphaDef {
-
-    }
+    private @interface BackgroundAlphaDef {}
 
     private final Context mContext;
     private final GeneralPreferencesRepository mGeneralPreferencesProvider;

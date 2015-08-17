@@ -34,9 +34,7 @@ import cl.monsoon.s1next.widget.TagHandler;
 
 public final class TextViewBindingAdapter {
 
-    private TextViewBindingAdapter() {
-
-    }
+    private TextViewBindingAdapter() {}
 
     @BindingAdapter("increaseClickingArea")
     public static void increaseClickingArea(TextView textView, float size) {

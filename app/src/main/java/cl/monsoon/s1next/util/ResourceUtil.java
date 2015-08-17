@@ -10,9 +10,7 @@ import android.view.View;
 
 public final class ResourceUtil {
 
-    private ResourceUtil() {
-
-    }
+    private ResourceUtil() {}
 
     /**
      * Retrieves the resource id in the Theme.

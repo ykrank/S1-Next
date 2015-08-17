@@ -54,9 +54,7 @@ public final class Api {
     private static final String URL_BROWSER_THREAD_LIST = prepend("forum-%s-%d.html");
     private static final String URL_BROWSER_POST_LIST = prepend("thread-%s-%d-1.html");
 
-    private Api() {
-
-    }
+    private Api() {}
 
     private static String prepend(String suffix) {
         return BASE_URL + suffix;

@@ -43,15 +43,11 @@ public final class LoadingViewModel extends BaseObservable implements Parcelable
             LOADING_SWIPE_REFRESH,
             LOADING_PULL_UP_TO_REFRESH
     })
-    private @interface LoadingDef {
-
-    }
+    private @interface LoadingDef {}
 
     private int loading;
 
-    public LoadingViewModel() {
-
-    }
+    public LoadingViewModel() {}
 
     private LoadingViewModel(Parcel source) {
         loading = source.readInt();

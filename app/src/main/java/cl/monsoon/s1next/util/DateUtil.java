@@ -7,9 +7,7 @@ import java.util.Locale;
 
 public final class DateUtil {
 
-    private DateUtil() {
-
-    }
+    private DateUtil() {}
 
     /**
      * Used to construct {@link com.bumptech.glide.signature.StringSignature}s
