@@ -5,7 +5,6 @@
     tools:context="cl.monsoon.s1next.view.fragment.GeneralPreferenceFragment">
 
     <PreferenceCategory
-        android:key="pref_key_general"
         android:persistent="false"
         android:title="@string/pref_general">
 
@@ -33,7 +32,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="pref_key_advanced"
         android:persistent="false"
         android:title="@string/pref_advanced">
 

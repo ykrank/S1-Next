@@ -13,7 +13,6 @@
         android:title="@string/pref_download_total_cache_size" />
 
     <PreferenceCategory
-        android:key="pref_key_avatar"
         android:persistent="false"
         android:title="@string/pref_avatar">
 
@@ -44,7 +43,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="pref_key_avatar"
         android:persistent="false"
         android:title="@string/pref_image">
 
