@@ -284,8 +284,8 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
                         key.updateDiskCacheKey(messageDigest);
                         value = Util.sha256BytesToHex(messageDigest.digest());
                         lruCache.put(key, value);
-                    } catch (NoSuchAlgorithmException | UnsupportedEncodingException ignored) {
-
+                    } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                        throw new RuntimeException(e);
                     }
                 }
 
