@@ -50,7 +50,7 @@ public final class DownloadPreferenceFragment extends BasePreferenceFragment {
 
                 break;
             default:
-                throw new IllegalStateException("Unknown shared preference key: " + key + ".");
+                // fall through
         }
     }
 }

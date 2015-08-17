@@ -71,7 +71,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
 
                 break;
             default:
-                throw new IllegalStateException("Unknown shared preference key: " + key + ".");
+                // fall through
         }
     }
 
