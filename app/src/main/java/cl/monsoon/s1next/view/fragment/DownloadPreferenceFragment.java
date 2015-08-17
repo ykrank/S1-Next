@@ -49,6 +49,8 @@ public final class DownloadPreferenceFragment extends BasePreferenceFragment {
                 mDownloadPreferencesManager.invalidateImagesDownloadStrategy();
 
                 break;
+            default:
+                throw new IllegalStateException("Unknown shared preference key: " + key + ".");
         }
     }
 }

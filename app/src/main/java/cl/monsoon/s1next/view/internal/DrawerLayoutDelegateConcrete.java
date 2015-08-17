@@ -117,16 +117,11 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
 
                 break;
             default:
-                runnable = null;
+                throw new IllegalStateException("Unknown menu item ID: " + menuItem.getItemId() + ".");
         }
+        closeDrawer(runnable::run);
 
-        if (runnable != null) {
-            closeDrawer(runnable::run);
-
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     private void setupNavDrawerItemChecked(NavigationView navigationView) {

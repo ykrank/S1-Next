@@ -70,6 +70,8 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
                 mGeneralPreferencesManager.invalidateSignatureEnabled();
 
                 break;
+            default:
+                throw new IllegalStateException("Unknown shared preference key: " + key + ".");
         }
     }
 

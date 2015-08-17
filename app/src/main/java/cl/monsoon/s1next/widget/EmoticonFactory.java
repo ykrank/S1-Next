@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Pair;
 import android.util.SparseArray;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
@@ -32,8 +31,6 @@ public final class EmoticonFactory {
     }
 
     public List<Pair<String, String>> getEmoticonsByIndex(int index) {
-        Preconditions.checkElementIndex(index, mEmoticonTypeTitles.size());
-
         List<Pair<String, String>> emoticons = mEmoticons.get(index);
         if (emoticons == null) {
             switch (index) {
@@ -67,6 +64,8 @@ public final class EmoticonFactory {
                 case 9:
                     emoticons = getBundamEmoticonList();
                     break;
+                default:
+                    throw new IllegalStateException("Unknown emoticon index: " + index + ".");
             }
         }
         mEmoticons.put(index, emoticons);
