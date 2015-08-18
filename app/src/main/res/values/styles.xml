@@ -30,6 +30,8 @@
         <item name="android:textSize">@dimen/dense_text_size_small</item>
     </style>
 
-    <style name="Animation.Recreate" parent="android:Animation.Toast" />
+    <style name="Animation.Recreate" parent="android:Animation">
+        <item name="android:windowExitAnimation">@anim/activity_exit</item>
+    </style>
 
 </resources>
