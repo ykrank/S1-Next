@@ -28,7 +28,8 @@
 
         <activity
             android:name=".view.activity.LoginActivity"
-            android:label="@string/activity_label_login" />
+            android:label="@string/activity_label_login"
+            android:windowSoftInputMode="stateVisible|adjustNothing" />
 
         <activity
             android:name=".view.activity.ForumActivity"
