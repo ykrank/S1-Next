@@ -52,3 +52,6 @@
 
 # Retrofit
 -keepattributes Signature
+
+# RxJava
+-keep class rx.internal.util.unsafe.** { *; }
