@@ -21,7 +21,7 @@ import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.view.dialog.LoginDialogFragment;
 
 /**
- * A login screen that offers login via username and password.
+ * A Fragment offers login via username and password.
  */
 public final class LoginFragment extends Fragment {
 
