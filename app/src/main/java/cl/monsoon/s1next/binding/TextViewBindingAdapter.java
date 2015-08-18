@@ -55,10 +55,10 @@ public final class TextViewBindingAdapter {
         });
     }
 
-    @BindingAdapter("filePath")
-    public static void loadLicense(TextView textView, String filePath) {
+    @BindingAdapter("textPath")
+    public static void loadText(TextView textView, String textPath) {
         try {
-            InputStream inputStream = textView.getContext().getAssets().open(filePath);
+            InputStream inputStream = textView.getContext().getAssets().open(textPath);
             textView.setText(CharStreams.toString(new InputStreamReader(inputStream, Charsets.UTF_8)));
         } catch (IOException e) {
             throw new IllegalStateException("Can't find license.", e);

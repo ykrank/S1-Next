@@ -1,7 +1,6 @@
 package cl.monsoon.s1next.widget;
 
 import android.content.Context;
-import android.util.Pair;
 import android.util.SparseArray;
 
 import com.google.common.collect.ImmutableList;
@@ -9,6 +8,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.data.api.model.Emoticon;
 
 /**
  * A factory provides emotions.
@@ -18,7 +18,7 @@ public final class EmoticonFactory {
     public static final String ASSET_PATH_EMOTICON = "file:///android_asset/image/emoticon/";
 
     private final List<String> mEmoticonTypeTitles;
-    private final SparseArray<List<Pair<String, String>>> mEmoticons;
+    private final SparseArray<List<Emoticon>> mEmoticons;
 
     public EmoticonFactory(Context context) {
         mEmoticonTypeTitles = ImmutableList.copyOf(context.getResources().getStringArray(
@@ -30,8 +30,8 @@ public final class EmoticonFactory {
         return mEmoticonTypeTitles;
     }
 
-    public List<Pair<String, String>> getEmoticonsByIndex(int index) {
-        List<Pair<String, String>> emoticons = mEmoticons.get(index);
+    public List<Emoticon> getEmoticonsByIndex(int index) {
+        List<Emoticon> emoticons = mEmoticons.get(index);
         if (emoticons == null) {
             switch (index) {
                 case 0:
@@ -73,8 +73,8 @@ public final class EmoticonFactory {
         return emoticons;
     }
 
-    private List<Pair<String, String>> getFaceEmoticonList() {
-        ImmutableList.Builder<Pair<String, String>> builder = ImmutableList.builder();
+    private List<Emoticon> getFaceEmoticonList() {
+        ImmutableList.Builder<Emoticon> builder = ImmutableList.builder();
         add(builder, "face/91.gif", "[s:185]");
         add(builder, "face/64.gif", "{:3_562:}");
         add(builder, "face/63.gif", "{:3_563:}");
@@ -272,8 +272,8 @@ public final class EmoticonFactory {
         return builder.build();
     }
 
-    private List<Pair<String, String>> getDymEmoticonList() {
-        ImmutableList.Builder<Pair<String, String>> builder = ImmutableList.builder();
+    private List<Emoticon> getDymEmoticonList() {
+        ImmutableList.Builder<Emoticon> builder = ImmutableList.builder();
         add(builder, "dym/154.gif", "[s:1324]");
         add(builder, "dym/152.gif", "[s:1325]");
         add(builder, "dym/153.gif", "[s:1326]");
@@ -286,8 +286,8 @@ public final class EmoticonFactory {
         return builder.build();
     }
 
-    private List<Pair<String, String>> getGooseEmoticonList() {
-        ImmutableList.Builder<Pair<String, String>> builder = ImmutableList.builder();
+    private List<Emoticon> getGooseEmoticonList() {
+        ImmutableList.Builder<Emoticon> builder = ImmutableList.builder();
         add(builder, "goose/186.gif", "[s:1539]");
         add(builder, "goose/180.gif", "[s:1519]");
         add(builder, "goose/157.gif", "[s:1518]");
@@ -367,8 +367,8 @@ public final class EmoticonFactory {
         return builder.build();
     }
 
-    private List<Pair<String, String>> getZdlEmoticonList() {
-        ImmutableList.Builder<Pair<String, String>> builder = ImmutableList.builder();
+    private List<Emoticon> getZdlEmoticonList() {
+        ImmutableList.Builder<Emoticon> builder = ImmutableList.builder();
         add(builder, "zdl/158.gif", "[s:1284]");
         add(builder, "zdl/161.gif", "[s:1283]");
         add(builder, "zdl/162.gif", "[s:1285]");
@@ -379,8 +379,8 @@ public final class EmoticonFactory {
         return builder.build();
     }
 
-    private List<Pair<String, String>> getNqEmoticonList() {
-        ImmutableList.Builder<Pair<String, String>> builder = ImmutableList.builder();
+    private List<Emoticon> getNqEmoticonList() {
+        ImmutableList.Builder<Emoticon> builder = ImmutableList.builder();
         add(builder, "nq/016.gif", "[s:1290]");
         add(builder, "nq/010.gif", "[s:1304]");
         add(builder, "nq/009.gif", "[s:1303]");
@@ -400,8 +400,8 @@ public final class EmoticonFactory {
         return builder.build();
     }
 
-    private List<Pair<String, String>> getNornamlEmoticonList() {
-        ImmutableList.Builder<Pair<String, String>> builder = ImmutableList.builder();
+    private List<Emoticon> getNornamlEmoticonList() {
+        ImmutableList.Builder<Emoticon> builder = ImmutableList.builder();
         add(builder, "normal/058.gif", "[s:1409]");
         add(builder, "normal/026.gif", "[s:1423]");
         add(builder, "normal/110.gif", "[s:1424]");
@@ -512,8 +512,8 @@ public final class EmoticonFactory {
         return builder.build();
     }
 
-    private List<Pair<String, String>> getFlashEmoticonList() {
-        ImmutableList.Builder<Pair<String, String>> builder = ImmutableList.builder();
+    private List<Emoticon> getFlashEmoticonList() {
+        ImmutableList.Builder<Emoticon> builder = ImmutableList.builder();
         add(builder, "flash/135.gif", "[s:1343]");
         add(builder, "flash/128.gif", "[s:1353]");
         add(builder, "flash/129.gif", "[s:1352]");
@@ -529,8 +529,8 @@ public final class EmoticonFactory {
         return builder.build();
     }
 
-    private List<Pair<String, String>> getAnimalEmoticonList() {
-        ImmutableList.Builder<Pair<String, String>> builder = ImmutableList.builder();
+    private List<Emoticon> getAnimalEmoticonList() {
+        ImmutableList.Builder<Emoticon> builder = ImmutableList.builder();
         add(builder, "animal/140.gif", "[s:1333]");
         add(builder, "animal/137.gif", "[s:1342]");
         add(builder, "animal/142.gif", "[s:1341]");
@@ -545,8 +545,8 @@ public final class EmoticonFactory {
         return builder.build();
     }
 
-    private List<Pair<String, String>> getCartonEmoticonList() {
-        ImmutableList.Builder<Pair<String, String>> builder = ImmutableList.builder();
+    private List<Emoticon> getCartonEmoticonList() {
+        ImmutableList.Builder<Emoticon> builder = ImmutableList.builder();
         add(builder, "carton/173.gif", "[s:1306]");
         add(builder, "carton/169.gif", "[s:1322]");
         add(builder, "carton/176.gif", "[s:1321]");
@@ -568,8 +568,8 @@ public final class EmoticonFactory {
         return builder.build();
     }
 
-    private List<Pair<String, String>> getBundamEmoticonList() {
-        ImmutableList.Builder<Pair<String, String>> builder = ImmutableList.builder();
+    private List<Emoticon> getBundamEmoticonList() {
+        ImmutableList.Builder<Emoticon> builder = ImmutableList.builder();
         add(builder, "bundam/7.png", "[s:1240]");
         add(builder, "bundam/17.png", "[s:1259]");
         add(builder, "bundam/16.png", "[s:1260]");
@@ -608,7 +608,7 @@ public final class EmoticonFactory {
         return builder.build();
     }
 
-    private ImmutableList.Builder<Pair<String, String>> add(ImmutableList.Builder<Pair<String, String>> builder, String emoticonFileName, String emoticonEntity) {
-        return builder.add(new Pair<>(ASSET_PATH_EMOTICON + emoticonFileName, emoticonEntity));
+    private ImmutableList.Builder<Emoticon> add(ImmutableList.Builder<Emoticon> builder, String emoticonFileName, String emoticonEntity) {
+        return builder.add(new Emoticon(ASSET_PATH_EMOTICON + emoticonFileName, emoticonEntity));
     }
 }

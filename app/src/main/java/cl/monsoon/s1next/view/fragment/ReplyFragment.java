@@ -226,7 +226,7 @@ public final class ReplyFragment extends RxFragment {
         // doesn't work when orientation change
         ViewCompat.animate(mEmoticonKeyboard)
                 .alpha(1)
-                .translationYBy(-mEmoticonKeyboard.getTranslationY())
+                .translationY(0)
                 .setInterpolator(mInterpolator)
                 .withLayer()
                 .setListener(new EmoticonKeyboardAnimator());
@@ -241,7 +241,7 @@ public final class ReplyFragment extends RxFragment {
     private void hideEmoticonKeyboard(boolean shouldShowKeyboard) {
         ViewCompat.animate(mEmoticonKeyboard)
                 .alpha(0)
-                .translationYBy(mEmoticonKeyboard.getHeight())
+                .translationY(mEmoticonKeyboard.getHeight())
                 .setInterpolator(mInterpolator)
                 .withLayer()
                 .setListener(new EmoticonKeyboardAnimator() {

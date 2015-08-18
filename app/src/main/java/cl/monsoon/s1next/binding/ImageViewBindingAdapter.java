@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
-import android.util.Pair;
 import android.widget.ImageView;
 
 import com.bumptech.glide.DrawableRequestBuilder;
@@ -33,9 +32,10 @@ public final class ImageViewBindingAdapter {
         }
     }
 
-    @BindingAdapter({"emoticon", "emoticonDrawableRequestBuilder"})
-    public static void loadEmoticon(ImageView imageView, Pair<String, String> emoticon,
-                                    DrawableRequestBuilder<Uri> emoticonDrawableRequestBuilder) {
-        emoticonDrawableRequestBuilder.load(Uri.parse(emoticon.first)).into(imageView);
+    @BindingAdapter({"emoticonDrawableRequestBuilder", "emoticonImagePath"})
+    public static void loadEmoticon(ImageView imageView,
+                                    DrawableRequestBuilder<Uri> emoticonDrawableRequestBuilder,
+                                    String emoticonImagePath) {
+        emoticonDrawableRequestBuilder.load(Uri.parse(emoticonImagePath)).into(imageView);
     }
 }

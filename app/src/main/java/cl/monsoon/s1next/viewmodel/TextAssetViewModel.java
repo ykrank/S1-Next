@@ -2,9 +2,9 @@ package cl.monsoon.s1next.viewmodel;
 
 public final class TextAssetViewModel {
 
-    public final String filePath;
+    public final String textPath;
 
-    public TextAssetViewModel(String filePath) {
-        this.filePath = filePath;
+    public TextAssetViewModel(String textPath) {
+        this.textPath = textPath;
     }
 }

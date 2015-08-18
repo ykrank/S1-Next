@@ -23,7 +23,6 @@
 
     </data>
 
-    <!-- @{emoticonViewModel.emoticon.first} doesn't work due to generic (Pair<String, String>) -->
     <ImageView
         android:id="@+id/image_view"
         style="?attr/android:borderlessButtonStyle"
@@ -31,8 +30,8 @@
         android:layout_height="@dimen/minimum_touch_target_size"
         android:contentDescription="@null"
         android:padding="@dimen/emoticon_padding"
-        app:emoticon="@{emoticonViewModel.emoticon}"
         app:emoticonDrawableRequestBuilder="@{drawableRequestBuilder}"
+        app:emoticonImagePath="@{emoticonViewModel.emoticon.imagePath}"
         app:onClickListener="@{emoticonViewModel.clickEmotion(eventBus)}" />
 
 </layout>
