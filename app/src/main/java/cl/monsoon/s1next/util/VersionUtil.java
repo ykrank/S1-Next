@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
@@ -37,7 +38,7 @@ final class VersionUtil {
         ActivityManager.TaskDescription taskDescription = new ActivityManager.TaskDescription(
                 activity.getString(R.string.app_name),
                 BitmapFactory.decodeResource(activity.getResources(), R.mipmap.ic_launcher),
-                activity.getResources().getColor(colorId));
+                ContextCompat.getColor(activity, colorId));
         activity.setTaskDescription(taskDescription);
     }
 }
