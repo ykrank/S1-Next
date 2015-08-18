@@ -1,12 +1,17 @@
 package cl.monsoon.s1next.view.activity;
 
+import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresPermission;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -22,6 +27,8 @@ import cl.monsoon.s1next.viewmodel.ImageViewModel;
  * An Activity shows an ImageView that supports multi-touch.
  */
 public final class GalleryActivity extends AppCompatActivity {
+
+    private final static int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 0;
 
     private static final String ARG_IMAGE_URL = "image_url";
 
@@ -73,14 +80,17 @@ public final class GalleryActivity extends AppCompatActivity {
 
                 return true;
             case R.id.menu_download:
-                DownloadManager downloadManager = (DownloadManager)
-                        getSystemService(Context.DOWNLOAD_SERVICE);
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(mImageUrl));
-                request.setNotificationVisibility(
-                        DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
-                        mImageUrl.substring(mImageUrl.lastIndexOf("/") + 1));
-                downloadManager.enqueue(request);
+                if (ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                        PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUEST_CODE_WRITE_EXTERNAL_STORAGE);
+
+                    return true;
+                }
+
+                downloadImage();
 
                 return true;
             case R.id.menu_browser:
@@ -90,5 +100,28 @@ public final class GalleryActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CODE_WRITE_EXTERNAL_STORAGE) {
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                downloadImage();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    private void downloadImage() {
+        DownloadManager downloadManager = (DownloadManager)
+                getSystemService(Context.DOWNLOAD_SERVICE);
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(mImageUrl));
+        request.setNotificationVisibility(
+                DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                mImageUrl.substring(mImageUrl.lastIndexOf("/") + 1));
+        downloadManager.enqueue(request);
     }
 }
