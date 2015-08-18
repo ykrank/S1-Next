@@ -31,6 +31,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.ScaleGestureDetectorCompat;
 import android.util.AttributeSet;
@@ -1152,18 +1153,18 @@ public final class PhotoView extends View
         if (!sInitialized) {
             sInitialized = true;
 
-            Resources resources = context.getApplicationContext().getResources();
+            Resources resources = context.getResources();
 
             sCropSize = resources.getDimensionPixelSize(R.dimen.photo_view_crop_width);
 
             sCropDimPaint = new Paint();
             sCropDimPaint.setAntiAlias(true);
-            sCropDimPaint.setColor(resources.getColor(R.color.photo_view_crop_dim_color));
+            sCropDimPaint.setColor(ContextCompat.getColor(context, R.color.photo_view_crop_dim_color));
             sCropDimPaint.setStyle(Style.FILL);
 
             sCropPaint = new Paint();
             sCropPaint.setAntiAlias(true);
-            sCropPaint.setColor(resources.getColor(R.color.photo_view_crop_highlight_color));
+            sCropPaint.setColor(ContextCompat.getColor(context, R.color.photo_view_crop_dim_color));
             sCropPaint.setStyle(Style.STROKE);
             sCropPaint.setStrokeWidth(resources.getDimension(R.dimen.photo_view_crop_stroke_width));
 

@@ -7,6 +7,7 @@ import android.graphics.drawable.RippleDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.ColorInt;
+import android.support.v4.content.ContextCompat;
 import android.util.Pair;
 import android.widget.ImageView;
 
@@ -21,7 +22,7 @@ public final class ImageViewBindingAdapter {
     @BindingAdapter("imageDrawable")
     public static void setImageDrawable(ImageView imageView, Drawable drawable) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            @ColorInt int rippleColor = imageView.getContext().getResources().getColor(
+            @ColorInt int rippleColor = ContextCompat.getColor(imageView.getContext(),
                     R.color.ripple_material_dark);
             // add ripple effect
             RippleDrawable rippleDrawable = new RippleDrawable(ColorStateList.valueOf(rippleColor),
