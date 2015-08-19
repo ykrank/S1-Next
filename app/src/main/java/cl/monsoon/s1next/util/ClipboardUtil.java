@@ -5,7 +5,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.annotation.StringRes;
-import android.widget.Toast;
 
 public final class ClipboardUtil {
 
@@ -21,6 +20,6 @@ public final class ClipboardUtil {
         ClipData clipData = ClipData.newPlainText("simple text", text);
         clipboardManager.setPrimaryClip(clipData);
 
-        ToastUtil.showByResId(resId, Toast.LENGTH_SHORT);
+        ToastUtil.showLongToastByResId(activity, resId);
     }
 }

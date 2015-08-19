@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Parcelable;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +66,7 @@ public final class IntentUtil {
         }
 
         if (targetIntentList.isEmpty()) {
-            ToastUtil.showByResId(R.string.message_chooser_no_applications, Toast.LENGTH_SHORT);
+            ToastUtil.showLongToastByResId(context, R.string.message_chooser_no_applications);
         } else {
             Intent chooserIntent = Intent.createChooser(targetIntentList.remove(0),
                     context.getString(R.string.intent_title_which_view_application));

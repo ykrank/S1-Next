@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import cl.monsoon.s1next.BuildConfig;
 import cl.monsoon.s1next.R;
@@ -108,8 +107,8 @@ public final class HelpFragment extends Fragment {
                         startActivity(intent);
                     } catch (ActivityNotFoundException e) {
                         // show Toast if user hasn't installed any Android marketplaces or browsers
-                        ToastUtil.showByResId(R.string.message_chooser_no_applications,
-                                Toast.LENGTH_SHORT);
+                        ToastUtil.showLongToastByResId(getActivity(),
+                                R.string.message_chooser_no_applications);
                     }
                 }
 

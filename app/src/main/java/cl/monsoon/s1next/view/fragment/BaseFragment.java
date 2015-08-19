@@ -7,13 +7,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.common.base.Preconditions;
 import com.trello.rxlifecycle.FragmentEvent;
@@ -23,6 +23,7 @@ import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.S1Service;
 import cl.monsoon.s1next.data.api.UserValidator;
+import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.databinding.FragmentBaseBinding;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.fragment.headless.DataRetainedFragment;
@@ -236,13 +237,34 @@ public abstract class BaseFragment<D> extends RxFragment {
     }
 
     /**
+     * A helper method consumes {@link Result}.
+     * <p>
+     * Sometimes we can not get data if we have logged out or
+     * have no permission to access this data.
+     * This method is only used during {@link #onNext(Object)}.
+     *
+     * @param result The data's result we get.
+     */
+    final void consumeResult(Result result) {
+        if (getUserVisibleHint()) {
+            String message = result.getMessage();
+            if (!TextUtils.isEmpty(message)) {
+                ToastUtil.showLongToastByText(getActivity(), message);
+            }
+        }
+    }
+
+    /**
      * Called when an error occurs during data loading.
      * <p>
      * This stops the {@link #getSourceObservable()} and it will not make
      * further calls to {@link #onNext(Object)}.
      */
+    @CallSuper
     void onError(Throwable throwable) {
-        ToastUtil.showByText(throwable.toString(), Toast.LENGTH_LONG);
+        if (getUserVisibleHint()) {
+            ToastUtil.showLongToastByText(getActivity(), throwable.toString());
+        }
     }
 
     /**

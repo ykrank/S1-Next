@@ -3,7 +3,6 @@ package cl.monsoon.s1next.view.dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,7 +11,6 @@ import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.api.model.Quote;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
-import cl.monsoon.s1next.util.ToastUtil;
 import rx.Observable;
 
 /**
@@ -66,7 +64,7 @@ public final class ReplyRequestDialogFragment extends ProgressDialogFragment<Res
     @Override
     protected void onNext(ResultWrapper data) {
         Result result = data.getResult();
-        ToastUtil.showByText(result.getMessage(), Toast.LENGTH_LONG);
+        showApplicationToastForResultMessage(result);
 
         if (result.getStatus().equals(STATUS_REPLY_SUCCESS)) {
             getActivity().finish();

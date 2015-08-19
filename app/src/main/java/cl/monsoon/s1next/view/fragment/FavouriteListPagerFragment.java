@@ -4,14 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import cl.monsoon.s1next.data.api.model.collection.Favourites;
 import cl.monsoon.s1next.data.api.model.wrapper.FavouritesWrapper;
 import cl.monsoon.s1next.util.MathUtil;
-import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.adapter.FavouriteListRecyclerViewAdapter;
 import cl.monsoon.s1next.view.internal.PagerCallback;
 import rx.Observable;
@@ -74,29 +71,18 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
 
     @Override
     void onNext(FavouritesWrapper data) {
-        super.onNext(data);
-
         Favourites favourites = data.getFavourites();
         if (favourites.getFavouriteList() == null) {
-            String message = data.getResult().getMessage();
-            // if user has logged out
-            if (!TextUtils.isEmpty(message)) {
-                ToastUtil.showByText(message, Toast.LENGTH_SHORT);
-            }
+            consumeResult(data.getResult());
         } else {
+            super.onNext(data);
+
             mRecyclerAdapter.setDataSet(favourites.getFavouriteList());
             mRecyclerAdapter.notifyDataSetChanged();
 
             // update total page
             mPagerCallback.setTotalPages(MathUtil.divide(favourites.getTotal(),
                     favourites.getFavouritesPerPage()));
-        }
-    }
-
-    @Override
-    void onError(Throwable throwable) {
-        if (getUserVisibleHint()) {
-            super.onError(throwable);
         }
     }
 }

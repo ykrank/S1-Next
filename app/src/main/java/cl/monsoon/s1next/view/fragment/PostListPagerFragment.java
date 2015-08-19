@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -15,7 +14,6 @@ import cl.monsoon.s1next.data.api.model.Post;
 import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.data.api.model.collection.Posts;
 import cl.monsoon.s1next.data.api.model.wrapper.PostsWrapper;
-import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.adapter.PostListRecyclerViewAdapter;
 import rx.Observable;
 
@@ -115,8 +113,6 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
 
     @Override
     void onNext(PostsWrapper data) {
-        super.onNext(data);
-
         boolean pullUpToRefresh = isPullUpToRefresh();
         if (pullUpToRefresh) {
             // mRecyclerAdapter.getItemCount() = 0
@@ -130,11 +126,10 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         List<Post> postList = posts.getPostList();
         // if user has logged out, has no permission to access this thread or this thread is invalid
         if (postList.isEmpty()) {
-            String message = data.getResult().getMessage();
-            if (!TextUtils.isEmpty(message)) {
-                ToastUtil.showByText(message, Toast.LENGTH_SHORT);
-            }
+            consumeResult(data.getResult());
         } else {
+            super.onNext(data);
+
             int lastItemCount = mRecyclerAdapter.getItemCount();
             mRecyclerAdapter.setDataSet(postList);
             if (pullUpToRefresh) {
@@ -165,10 +160,9 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
                 mPagerCallback.setThreadTitle(postListInfo.getTitle());
             }
             mPagerCallback.setTotalPageByPosts(postListInfo.getReplies() + 1);
-        }
-
-        if (posts.getThreadAttachment() != null) {
-            mPagerCallback.setupThreadAttachment(posts.getThreadAttachment());
+            if (posts.getThreadAttachment() != null) {
+                mPagerCallback.setupThreadAttachment(posts.getThreadAttachment());
+            }
         }
     }
 
@@ -178,9 +172,7 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
             mRecyclerAdapter.hideFooterProgress();
         }
 
-        if (getUserVisibleHint()) {
-            super.onError(throwable);
-        }
+        super.onError(throwable);
     }
 
     public interface PagerCallback {

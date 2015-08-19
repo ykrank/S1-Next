@@ -4,16 +4,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.List;
 
 import cl.monsoon.s1next.data.api.model.Forum;
 import cl.monsoon.s1next.data.api.model.collection.Threads;
 import cl.monsoon.s1next.data.api.model.wrapper.ThreadsWrapper;
-import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.adapter.ThreadListRecyclerViewAdapter;
 import rx.Observable;
 
@@ -83,33 +80,19 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
 
     @Override
     void onNext(ThreadsWrapper data) {
-        super.onNext(data);
-
         Threads threads = data.getThreads();
-
         if (threads.getThreadList().isEmpty()) {
-            String message = data.getResult().getMessage();
-            // if user has logged out or has no permission to access this forum
-            if (!TextUtils.isEmpty(message)) {
-                ToastUtil.showByText(message, Toast.LENGTH_SHORT);
-            }
+            consumeResult(data.getResult());
         } else {
+            super.onNext(data);
+
             mRecyclerAdapter.setDataSet(threads.getThreadList());
             mRecyclerAdapter.notifyDataSetChanged();
 
             // update total page
             mPagerCallback.setTotalPageByThreads(threads.getThreadListInfo().getThreads());
-        }
 
-        if (!threads.getSubForumList().isEmpty()) {
             mSubForumsCallback.setupSubForums(threads.getSubForumList());
-        }
-    }
-
-    @Override
-    void onError(Throwable throwable) {
-        if (getUserVisibleHint()) {
-            super.onError(throwable);
         }
     }
 

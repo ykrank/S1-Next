@@ -1,12 +1,10 @@
 package cl.monsoon.s1next.view.dialog;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
-import cl.monsoon.s1next.util.ToastUtil;
 import rx.Observable;
 
 /**
@@ -43,7 +41,7 @@ public final class ThreadFavouritesAddRequestDialogFragment extends ProgressDial
     @Override
     protected void onNext(ResultWrapper data) {
         Result result = data.getResult();
-        ToastUtil.showByText(result.getMessage(), Toast.LENGTH_SHORT);
+        showApplicationToastForResultMessage(result);
 
         if (result.getStatus().equals(STATUS_ADD_TO_FAVOURITES_SUCCESS)
                 || result.getStatus().equals(STATUS_ADD_TO_FAVOURITES_REPEAT)) {

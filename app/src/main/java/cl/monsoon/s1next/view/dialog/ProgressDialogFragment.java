@@ -7,7 +7,6 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.trello.rxlifecycle.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxDialogFragment;
@@ -17,6 +16,7 @@ import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.api.S1Service;
 import cl.monsoon.s1next.data.api.UserValidator;
 import cl.monsoon.s1next.data.api.model.Account;
+import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.fragment.BaseFragment;
@@ -125,10 +125,21 @@ abstract class ProgressDialogFragment<D> extends RxDialogFragment {
     abstract void onNext(D data);
 
     /**
+     * A helper method shows toast for {@link Result} message.
+     * <p>
+     * This method is only used during {@link #onNext(Object)}.
+     *
+     * @param result The data's result we get.
+     */
+    final void showApplicationToastForResultMessage(Result result) {
+        ToastUtil.showLongToastByText(getActivity().getApplicationContext(), result.getMessage());
+    }
+
+    /**
      * @see BaseFragment#onError(Throwable)
      */
     void onError(Throwable throwable) {
-        ToastUtil.showByText(throwable.toString(), Toast.LENGTH_LONG);
+        ToastUtil.showLongToastByText(getActivity().getApplicationContext(), throwable.toString());
     }
 
     /**
