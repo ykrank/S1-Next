@@ -50,7 +50,6 @@ import cl.monsoon.s1next.R;
  * Forked from https://android.googlesource.com/platform/frameworks/opt/photoviewer/+/master/src/com/android/ex/photo/views/PhotoView.java
  * blob: b87f6a14e80c61140af3e8619c8626831191cbc0
  */
-@SuppressWarnings("UnusedDeclaration")
 public final class PhotoView extends View
         implements OnGestureListener, OnDoubleTapListener,
         ScaleGestureDetector.OnScaleGestureListener {

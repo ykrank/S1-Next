@@ -25,7 +25,6 @@ import android.view.View;
 /**
  * Forked from https://github.com/ianhanniballake/cheesesquare/blob/scroll_aware_fab/app/src/main/java/com/support/android/designlibdemo/ScrollAwareFABBehavior.java
  */
-@SuppressWarnings("unused")
 public final class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
 
     public ScrollAwareFABBehavior(Context context, AttributeSet attrs) {}
