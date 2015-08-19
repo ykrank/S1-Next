@@ -2,6 +2,7 @@ package cl.monsoon.s1next.data.api.model;
 
 import android.text.TextUtils;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -59,5 +60,19 @@ public final class Quote {
                 && !TextUtils.isEmpty(quote.getQuoteMessage()), "Can not get the quote information.");
 
         return quote;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Quote quote = (Quote) o;
+        return Objects.equal(encodedUserId, quote.encodedUserId) &&
+                Objects.equal(quoteMessage, quote.quoteMessage);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(encodedUserId, quoteMessage);
     }
 }

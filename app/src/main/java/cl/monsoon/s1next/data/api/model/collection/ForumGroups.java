@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Objects;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,5 +68,21 @@ public final class ForumGroups extends Account {
 
     public List<List<Forum>> getForumGroupList() {
         return forumGroupList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        ForumGroups that = (ForumGroups) o;
+        return Objects.equal(forumList, that.forumList) &&
+                Objects.equal(forumGroupNameList, that.forumGroupNameList) &&
+                Objects.equal(forumGroupList, that.forumGroupList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(super.hashCode(), forumList, forumGroupNameList, forumGroupList);
     }
 }

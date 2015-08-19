@@ -2,6 +2,7 @@ package cl.monsoon.s1next.data.api.model.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Objects;
 
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.collection.Posts;
@@ -30,5 +31,19 @@ public final class PostsWrapper {
 
     public void setResult(Result result) {
         this.result = result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PostsWrapper that = (PostsWrapper) o;
+        return Objects.equal(posts, that.posts) &&
+                Objects.equal(result, that.result);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(posts, result);
     }
 }

@@ -2,6 +2,7 @@ package cl.monsoon.s1next.data.api.model.collection;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Objects;
 
 import java.util.List;
 
@@ -43,5 +44,21 @@ public final class Favourites extends Account {
 
     public void setFavouriteList(List<Favourite> favouriteList) {
         this.favouriteList = favouriteList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Favourites that = (Favourites) o;
+        return Objects.equal(favouritesPerPage, that.favouritesPerPage) &&
+                Objects.equal(total, that.total) &&
+                Objects.equal(favouriteList, that.favouriteList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(super.hashCode(), favouritesPerPage, total, favouriteList);
     }
 }

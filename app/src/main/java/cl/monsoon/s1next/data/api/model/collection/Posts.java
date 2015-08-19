@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -55,6 +56,22 @@ public final class Posts extends Account {
         this.postList = postList;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Posts posts = (Posts) o;
+        return Objects.equal(postListInfo, posts.postListInfo) &&
+                Objects.equal(threadAttachment, posts.threadAttachment) &&
+                Objects.equal(postList, posts.postList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(super.hashCode(), postListInfo, threadAttachment, postList);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ThreadAttachment {
 
@@ -78,6 +95,20 @@ public final class Posts extends Account {
 
         public void setInfoList(ArrayList<Info> infoList) {
             this.infoList = infoList;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ThreadAttachment that = (ThreadAttachment) o;
+            return Objects.equal(title, that.title) &&
+                    Objects.equal(infoList, that.infoList);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(title, infoList);
         }
 
         @JsonIgnoreProperties(ignoreUnknown = true)
@@ -123,6 +154,20 @@ public final class Posts extends Account {
 
             public String getValue() {
                 return value;
+            }
+
+            @Override
+            public boolean equals(Object o) {
+                if (this == o) return true;
+                if (o == null || getClass() != o.getClass()) return false;
+                Info info = (Info) o;
+                return Objects.equal(label, info.label) &&
+                        Objects.equal(value, info.value);
+            }
+
+            @Override
+            public int hashCode() {
+                return Objects.hashCode(label, value);
             }
 
             @Override

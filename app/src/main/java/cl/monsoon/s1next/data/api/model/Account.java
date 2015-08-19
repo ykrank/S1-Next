@@ -2,6 +2,7 @@ package cl.monsoon.s1next.data.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Objects;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -49,5 +50,21 @@ public class Account {
 
     public void setPermission(int permission) {
         this.permission = permission;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return Objects.equal(permission, account.permission) &&
+                Objects.equal(uid, account.uid) &&
+                Objects.equal(username, account.username) &&
+                Objects.equal(authenticityToken, account.authenticityToken);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(uid, username, authenticityToken, permission);
     }
 }

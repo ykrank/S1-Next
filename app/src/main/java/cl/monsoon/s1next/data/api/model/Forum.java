@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Objects;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -77,6 +78,22 @@ public final class Forum implements Parcelable {
 
     public void setTodayPosts(int todayPosts) {
         this.todayPosts = todayPosts;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Forum forum = (Forum) o;
+        return Objects.equal(threads, forum.threads) &&
+                Objects.equal(todayPosts, forum.todayPosts) &&
+                Objects.equal(id, forum.id) &&
+                Objects.equal(name, forum.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, name, threads, todayPosts);
     }
 
     @Override

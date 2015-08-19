@@ -2,6 +2,7 @@ package cl.monsoon.s1next.data.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Objects;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -27,5 +28,19 @@ public final class Favourite {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Favourite favourite = (Favourite) o;
+        return Objects.equal(id, favourite.id) &&
+                Objects.equal(title, favourite.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, title);
     }
 }

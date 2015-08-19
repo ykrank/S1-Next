@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Objects;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -95,6 +96,22 @@ public final class Thread implements Parcelable {
         dest.writeInt(permission);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Thread thread = (Thread) o;
+        return Objects.equal(replies, thread.replies) &&
+                Objects.equal(permission, thread.permission) &&
+                Objects.equal(id, thread.id) &&
+                Objects.equal(title, thread.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, title, replies, permission);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ThreadListInfo {
 
@@ -107,6 +124,19 @@ public final class Thread implements Parcelable {
 
         public void setThreads(int threads) {
             this.threads = threads;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ThreadListInfo that = (ThreadListInfo) o;
+            return Objects.equal(threads, that.threads);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(threads);
         }
     }
 }

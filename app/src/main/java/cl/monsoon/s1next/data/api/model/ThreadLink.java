@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
@@ -103,6 +104,21 @@ public final class ThreadLink implements Parcelable {
 
     public int getJumpPage() {
         return jumpPage;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ThreadLink that = (ThreadLink) o;
+        return Objects.equal(jumpPage, that.jumpPage) &&
+                Objects.equal(threadId, that.threadId) &&
+                Objects.equal(quotePostId, that.quotePostId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(threadId, jumpPage, quotePostId);
     }
 
     @Override

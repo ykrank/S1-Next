@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Objects;
 
 import java.util.Locale;
 import java.util.Map;
@@ -108,6 +109,25 @@ public final class Post {
         this.attachmentMap = attachmentMap;
 
         processAttachment();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equal(datetime, post.datetime) &&
+                Objects.equal(id, post.id) &&
+                Objects.equal(username, post.username) &&
+                Objects.equal(userId, post.userId) &&
+                Objects.equal(reply, post.reply) &&
+                Objects.equal(count, post.count) &&
+                Objects.equal(attachmentMap, post.attachmentMap);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, username, userId, reply, count, datetime, attachmentMap);
     }
 
     /**
@@ -212,6 +232,19 @@ public final class Post {
 
         public String getUrl() {
             return url;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Attachment that = (Attachment) o;
+            return Objects.equal(url, that.url);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(url);
         }
     }
 }
