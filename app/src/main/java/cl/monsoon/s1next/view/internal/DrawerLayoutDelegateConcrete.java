@@ -121,7 +121,7 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
         }
         closeDrawer(runnable::run);
 
-        return true;
+        return false;
     }
 
     private void setupNavDrawerItemChecked(NavigationView navigationView) {
