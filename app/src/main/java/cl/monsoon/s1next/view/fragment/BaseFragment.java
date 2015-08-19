@@ -249,7 +249,7 @@ public abstract class BaseFragment<D> extends RxFragment {
         if (getUserVisibleHint()) {
             String message = result.getMessage();
             if (!TextUtils.isEmpty(message)) {
-                ToastUtil.showLongToastByText(getActivity(), message);
+                ToastUtil.showShortToastByText(getActivity(), message);
             }
         }
     }
@@ -263,7 +263,7 @@ public abstract class BaseFragment<D> extends RxFragment {
     @CallSuper
     void onError(Throwable throwable) {
         if (getUserVisibleHint()) {
-            ToastUtil.showLongToastByText(getActivity(), throwable.toString());
+            ToastUtil.showShortToastByText(getActivity(), throwable.toString());
         }
     }
 

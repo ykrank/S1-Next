@@ -132,14 +132,14 @@ abstract class ProgressDialogFragment<D> extends RxDialogFragment {
      * @param result The data's result we get.
      */
     final void showApplicationToastForResultMessage(Result result) {
-        ToastUtil.showLongToastByText(getActivity().getApplicationContext(), result.getMessage());
+        ToastUtil.showShortToastByText(getActivity().getApplicationContext(), result.getMessage());
     }
 
     /**
      * @see BaseFragment#onError(Throwable)
      */
     void onError(Throwable throwable) {
-        ToastUtil.showLongToastByText(getActivity().getApplicationContext(), throwable.toString());
+        ToastUtil.showShortToastByText(getActivity().getApplicationContext(), throwable.toString());
     }
 
     /**
