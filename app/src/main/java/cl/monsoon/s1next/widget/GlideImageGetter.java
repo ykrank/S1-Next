@@ -38,8 +38,7 @@ import cl.monsoon.s1next.util.TransformationUtil;
  * See https://github.com/bumptech/glide/issues/550
  */
 public final class GlideImageGetter
-        implements Html.ImageGetter, View.OnAttachStateChangeListener,
-        Drawable.Callback {
+        implements Html.ImageGetter, View.OnAttachStateChangeListener, Drawable.Callback {
 
     private final Context mContext;
 
