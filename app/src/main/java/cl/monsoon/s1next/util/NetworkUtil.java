@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.support.annotation.Nullable;
 
 public final class NetworkUtil {
 
@@ -22,20 +21,23 @@ public final class NetworkUtil {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(
                 Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            for (Network network : connectivityManager.getAllNetworks()) {
-                if (isNetworkInfoConnected(connectivityManager.getNetworkInfo(network))) {
-                    return true;
+            Network[] networks = connectivityManager.getAllNetworks();
+            if (networks != null) {
+                for (Network network : connectivityManager.getAllNetworks()) {
+                    NetworkInfo networkInfo = connectivityManager.getNetworkInfo(network);
+                    if (networkInfo != null &&
+                            networkInfo.getType() == ConnectivityManager.TYPE_WIFI
+                            && networkInfo.isConnected()) {
+                        return true;
+                    }
                 }
             }
         } else {
-            return isNetworkInfoConnected(connectivityManager.getNetworkInfo(
-                    ConnectivityManager.TYPE_WIFI));
+            NetworkInfo networkInfo = connectivityManager.getNetworkInfo(
+                    ConnectivityManager.TYPE_WIFI);
+            return networkInfo != null && networkInfo.isConnected();
         }
 
         return false;
-    }
-
-    private static boolean isNetworkInfoConnected(@Nullable NetworkInfo networkInfo) {
-        return networkInfo != null && networkInfo.isConnected();
     }
 }
