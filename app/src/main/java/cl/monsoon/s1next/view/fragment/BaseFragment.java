@@ -207,9 +207,9 @@ public abstract class BaseFragment<D> extends RxFragment {
      */
     private void load() {
         getSourceObservable().compose(bindUntilEvent(FragmentEvent.DESTROY))
-                .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(mUserValidator::validateIntercept)
                 .finallyDo(this::finallyDo)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onNext, this::onError);
     }
 

@@ -81,8 +81,8 @@ abstract class ProgressDialogFragment<D> extends RxDialogFragment {
      */
     private void request() {
         getSourceObservable().compose(bindUntilEvent(FragmentEvent.DESTROY))
-                .observeOn(AndroidSchedulers.mainThread())
                 .finallyDo(this::finallyDo)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onNext, this::onError);
     }
 
