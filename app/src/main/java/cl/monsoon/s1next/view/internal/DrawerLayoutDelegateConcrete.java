@@ -50,7 +50,8 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
         setupNavDrawerHeader(drawerLayout, navigationView);
 
         navigationView.setNavigationItemSelectedListener(this);
-        setupNavDrawerItemChecked(navigationView);
+        // due to https://code.google.com/p/android/issues/detail?id=183161
+        // setupNavDrawerItemChecked(navigationView);
     }
 
     private void setupNavDrawerHeader(DrawerLayout drawerLayout, NavigationView navigationView) {
