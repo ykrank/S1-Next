@@ -75,7 +75,7 @@ dependencies {
 
     compile 'io.reactivex:rxjava:1.0.14'
     compile 'io.reactivex:rxandroid:1.0.1'
-    compile 'com.trello:rxlifecycle-components:0.1.0'
+    compile 'com.trello:rxlifecycle-components:0.2.0'
     compile('com.github.square:retrofit:71b0a9e56a'){
         exclude module: 'adapter-rxjava-mock'
         exclude module: 'converter-gson'
