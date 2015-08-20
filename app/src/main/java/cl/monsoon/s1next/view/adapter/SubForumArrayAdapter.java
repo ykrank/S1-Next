@@ -58,7 +58,7 @@ public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
         return Long.parseLong(getItem(position).getId());
     }
 
-    private static class ViewHolder {
+    private final static class ViewHolder {
 
         private TextView textView;
     }

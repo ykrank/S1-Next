@@ -121,7 +121,7 @@ public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter<P
         notifyItemRemoved(position);
     }
 
-    private static class ItemViewBindingHolder extends RecyclerView.ViewHolder {
+    private final static class ItemViewBindingHolder extends RecyclerView.ViewHolder {
 
         private final ItemPostBinding itemPostBinding;
 
@@ -132,7 +132,7 @@ public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter<P
         }
     }
 
-    private static class FooterProgressViewHolder extends RecyclerView.ViewHolder {
+    private final static class FooterProgressViewHolder extends RecyclerView.ViewHolder {
 
         public FooterProgressViewHolder(View itemView) {
             super(itemView);

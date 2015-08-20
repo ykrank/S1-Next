@@ -1184,7 +1184,7 @@ public final class PhotoView extends View
     /**
      * Runnable that animates an image scale operation.
      */
-    private static class ScaleRunnable implements Runnable {
+    private final static class ScaleRunnable implements Runnable {
 
         private final PhotoView mHeader;
 
@@ -1264,7 +1264,7 @@ public final class PhotoView extends View
     /**
      * Runnable that animates an image translation operation.
      */
-    private static class TranslateRunnable implements Runnable {
+    private final static class TranslateRunnable implements Runnable {
 
         private static final float DECELERATION_RATE = 1000f;
         private static final long NEVER = -1L;
@@ -1368,7 +1368,7 @@ public final class PhotoView extends View
     /**
      * Runnable that animates an image translation operation.
      */
-    private static class SnapRunnable implements Runnable {
+    private final static class SnapRunnable implements Runnable {
 
         private static final long NEVER = -1L;
 
@@ -1461,7 +1461,7 @@ public final class PhotoView extends View
     /**
      * Runnable that animates an image rotation operation.
      */
-    private static class RotateRunnable implements Runnable {
+    private final static class RotateRunnable implements Runnable {
 
         private static final long NEVER = -1L;
 

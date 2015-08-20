@@ -47,7 +47,7 @@ public final class ForumListRecyclerViewAdapter extends BaseRecyclerViewAdapter<
         return Long.parseLong(getItem(position).getId());
     }
 
-    public static class BindingViewHolder extends RecyclerView.ViewHolder {
+    public final static class BindingViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemForumBinding itemForumBinding;
 

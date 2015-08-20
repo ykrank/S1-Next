@@ -73,7 +73,7 @@ public final class Posts extends Account {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class ThreadAttachment {
+    public final static class ThreadAttachment {
 
         @JsonProperty("threadsortname")
         private String title;
@@ -112,7 +112,7 @@ public final class Posts extends Account {
         }
 
         @JsonIgnoreProperties(ignoreUnknown = true)
-        public static class Info implements Parcelable {
+        public final static class Info implements Parcelable {
 
             public static final Parcelable.Creator<Info> CREATOR = new Parcelable.Creator<Info>() {
 

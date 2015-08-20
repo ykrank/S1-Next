@@ -64,7 +64,7 @@ public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<Emot
         return position;
     }
 
-    public static class BindingViewHolder extends RecyclerView.ViewHolder {
+    public final static class BindingViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemEmoticonBinding itemEmoticonBinding;
 

@@ -138,7 +138,7 @@ public final class ThreadLink implements Parcelable {
         }
     }
 
-    public static class Builder {
+    public final static class Builder {
 
         private final String threadId;
         private int jumpPage = 1;

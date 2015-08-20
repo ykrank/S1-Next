@@ -270,7 +270,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
         /**
          * Forked from {@link com.bumptech.glide.load.engine.cache.SafeKeyGenerator}.
          */
-        private static class KeyGenerator {
+        private final static class KeyGenerator {
 
             private static final int AVATAR_URL_KEYS_MEMORY_CACHE_MAX_NUMBER = 1000;
 
@@ -297,7 +297,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
     /**
      * Forked from {@link com.bumptech.glide.load.engine.OriginalKey}.
      */
-    private static class OriginalKey implements Key {
+    private final static class OriginalKey implements Key {
 
         private final String id;
         private final Key signature;

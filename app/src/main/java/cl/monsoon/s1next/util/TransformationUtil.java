@@ -64,7 +64,7 @@ public final class TransformationUtil {
      * A {@link com.bumptech.glide.load.Transformation} for transforming {@link android.graphics.Bitmap}'s
      * size with a multiplier.
      */
-    public static class SizeMultiplierBitmapTransformation extends BitmapTransformation {
+    public final static class SizeMultiplierBitmapTransformation extends BitmapTransformation {
 
         private final float mSizeMultiplier;
 
@@ -89,7 +89,7 @@ public final class TransformationUtil {
      * A {@link com.bumptech.glide.load.Transformation} for transforming {@link android.graphics.Bitmap}'s
      * size not to exceed the OpenGl texture size limit.
      */
-    public static class GlMaxTextureSizeBitmapTransformation extends BitmapTransformation {
+    public final static class GlMaxTextureSizeBitmapTransformation extends BitmapTransformation {
 
         public GlMaxTextureSizeBitmapTransformation(Context context) {
             super(context);
