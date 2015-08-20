@@ -29,7 +29,7 @@
         <activity
             android:name=".view.activity.LoginActivity"
             android:label="@string/activity_label_login"
-            android:windowSoftInputMode="stateVisible" />
+            android:windowSoftInputMode="stateVisible|adjustPan" />
 
         <activity
             android:name=".view.activity.ForumActivity"
@@ -48,11 +48,17 @@
             android:name=".view.activity.HelpActivity"
             android:label="@string/help" />
 
-        <activity android:name=".view.activity.FavouriteListActivity" />
+        <activity
+            android:name=".view.activity.FavouriteListActivity"
+            android:windowSoftInputMode="adjustPan" />
 
-        <activity android:name=".view.activity.ThreadListActivity" />
+        <activity
+            android:name=".view.activity.ThreadListActivity"
+            android:windowSoftInputMode="adjustPan" />
 
-        <activity android:name=".view.activity.PostListActivity" />
+        <activity
+            android:name=".view.activity.PostListActivity"
+            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".view.activity.PostListGatewayActivity"
