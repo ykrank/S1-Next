@@ -19,7 +19,8 @@ import cl.monsoon.s1next.databinding.ItemEmoticonBinding;
 import cl.monsoon.s1next.viewmodel.EmoticonViewModel;
 import cl.monsoon.s1next.widget.EventBus;
 
-public final class EmoticonGridRecyclerAdapter extends RecyclerView.Adapter<EmoticonGridRecyclerAdapter.BindingViewHolder> {
+public final class EmoticonGridRecyclerAdapter
+        extends RecyclerView.Adapter<EmoticonGridRecyclerAdapter.BindingViewHolder> {
 
     private final LayoutInflater mLayoutInflater;
 

@@ -11,7 +11,8 @@ import cl.monsoon.s1next.data.api.model.Favourite;
 import cl.monsoon.s1next.databinding.ItemFavouriteBinding;
 import cl.monsoon.s1next.viewmodel.FavouriteViewModel;
 
-public final class FavouriteListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Favourite, FavouriteListRecyclerViewAdapter.BindingViewHolder> {
+public final class FavouriteListRecyclerViewAdapter
+        extends BaseRecyclerViewAdapter<Favourite, FavouriteListRecyclerViewAdapter.BindingViewHolder> {
 
     private final LayoutInflater mLayoutInflater;
 

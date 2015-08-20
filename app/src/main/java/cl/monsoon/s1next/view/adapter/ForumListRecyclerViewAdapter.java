@@ -12,7 +12,8 @@ import cl.monsoon.s1next.data.api.model.Forum;
 import cl.monsoon.s1next.databinding.ItemForumBinding;
 import cl.monsoon.s1next.viewmodel.ForumViewModel;
 
-public final class ForumListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Forum, ForumListRecyclerViewAdapter.BindingViewHolder> {
+public final class ForumListRecyclerViewAdapter
+        extends BaseRecyclerViewAdapter<Forum, ForumListRecyclerViewAdapter.BindingViewHolder> {
 
     private final LayoutInflater mLayoutInflater;
 

@@ -5,7 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import java.util.Collections;
 import java.util.List;
 
-abstract class BaseRecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
+abstract class BaseRecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder>
+        extends RecyclerView.Adapter<VH> {
 
     private List<T> mList;
 

@@ -28,7 +28,8 @@ import cl.monsoon.s1next.widget.EventBus;
  * has another item type {@link #TYPE_FOOTER_PROGRESS}
  * in order to implement pull up to refresh.
  */
-public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Post, RecyclerView.ViewHolder> {
+public final class PostListRecyclerViewAdapter
+        extends BaseRecyclerViewAdapter<Post, RecyclerView.ViewHolder> {
 
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER_PROGRESS = Integer.MIN_VALUE;

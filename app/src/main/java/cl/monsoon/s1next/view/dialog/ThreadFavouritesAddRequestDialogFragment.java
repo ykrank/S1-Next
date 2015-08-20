@@ -10,7 +10,8 @@ import rx.Observable;
 /**
  * A dialog requests to add thread to user's favourites.
  */
-public final class ThreadFavouritesAddRequestDialogFragment extends ProgressDialogFragment<ResultWrapper> {
+public final class ThreadFavouritesAddRequestDialogFragment
+        extends ProgressDialogFragment<ResultWrapper> {
 
     public static final String TAG = ThreadFavouritesAddRequestDialogFragment.class.getName();
 

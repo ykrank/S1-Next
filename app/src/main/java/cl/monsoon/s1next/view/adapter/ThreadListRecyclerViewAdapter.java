@@ -16,7 +16,8 @@ import cl.monsoon.s1next.databinding.ItemThreadBinding;
 import cl.monsoon.s1next.viewmodel.ThreadViewModel;
 import cl.monsoon.s1next.viewmodel.UserViewModel;
 
-public final class ThreadListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Thread, ThreadListRecyclerViewAdapter.BindingViewHolder> {
+public final class ThreadListRecyclerViewAdapter
+        extends BaseRecyclerViewAdapter<Thread, ThreadListRecyclerViewAdapter.BindingViewHolder> {
 
     @Inject
     UserViewModel mUserViewModel;

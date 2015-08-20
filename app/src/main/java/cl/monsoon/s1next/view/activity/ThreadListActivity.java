@@ -22,7 +22,8 @@ import cl.monsoon.s1next.view.fragment.ThreadListPagerFragment;
 /**
  * An Activity shows the thread lists.
  */
-public final class ThreadListActivity extends BaseActivity implements ThreadListPagerFragment.SubForumsCallback {
+public final class ThreadListActivity extends BaseActivity
+        implements ThreadListPagerFragment.SubForumsCallback {
 
     private static final String ARG_FORUM = "forum";
 

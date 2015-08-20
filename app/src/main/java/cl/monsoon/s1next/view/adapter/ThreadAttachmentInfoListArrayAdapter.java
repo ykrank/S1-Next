@@ -12,7 +12,8 @@ import java.util.List;
 
 import cl.monsoon.s1next.data.api.model.collection.Posts;
 
-public final class ThreadAttachmentInfoListArrayAdapter extends ArrayAdapter<Posts.ThreadAttachment.Info> {
+public final class ThreadAttachmentInfoListArrayAdapter
+        extends ArrayAdapter<Posts.ThreadAttachment.Info> {
 
     @LayoutRes
     private final int mResource;
