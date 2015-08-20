@@ -53,8 +53,8 @@ public final class ReplyRequestDialogFragment extends ProgressDialogFragment<Res
         } else {
             return mS1Service.getQuoteInfo(threadId, quotePostId).flatMap(s -> {
                 Quote quote = Quote.fromXmlString(s);
-                return flatMapedWithAuthenticityToken(s1 ->
-                        mS1Service.replyQuote(s1, threadId, reply, quote.getEncodedUserId(),
+                return flatMapedWithAuthenticityToken(token ->
+                        mS1Service.replyQuote(token, threadId, reply, quote.getEncodedUserId(),
                                 quote.getQuoteMessage(), StringUtils.abbreviate(reply,
                                         Api.REPLY_NOTIFICATION_MAX_LENGTH)));
             });

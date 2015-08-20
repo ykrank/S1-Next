@@ -2,7 +2,6 @@ package cl.monsoon.s1next.view.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -40,10 +39,8 @@ public final class LoginPromptDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getContext())
                 .setMessage(R.string.dialog_message_login_prompt)
-                .setPositiveButton(R.string.action_login, (dialog, which) -> {
-                    Intent intent = new Intent(getContext(), LoginActivity.class);
-                    startActivity(intent);
-                })
+                .setPositiveButton(R.string.action_login, (dialog, which) ->
+                        LoginActivity.startLoginActivity(getContext()))
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
     }
