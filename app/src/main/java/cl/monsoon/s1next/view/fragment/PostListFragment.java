@@ -1,6 +1,5 @@
 package cl.monsoon.s1next.view.fragment;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -113,7 +112,7 @@ public final class PostListFragment extends BaseViewPagerFragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        App.getAppComponent(getActivity()).inject(this);
+        App.getAppComponent(getContext()).inject(this);
 
         Bundle bundle = getArguments();
         Thread thread = Preconditions.checkNotNull(bundle.getParcelable(ARG_THREAD));
@@ -144,21 +143,21 @@ public final class PostListFragment extends BaseViewPagerFragment
     public void onResume() {
         super.onResume();
 
-        Activity activity = getActivity();
+        Context context = getContext();
         // Registers broadcast receiver to check whether Wi-Fi is enabled
         // when we need to download images.
         if (mDownloadPreferencesManager.shouldMonitorWifi()) {
-            mWifi.setWifiEnabled(NetworkUtil.isWifiConnected(activity));
+            mWifi.setWifiEnabled(NetworkUtil.isWifiConnected(context));
 
             mWifiReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    mWifi.setWifiEnabled(NetworkUtil.isWifiConnected(activity));
+                    mWifi.setWifiEnabled(NetworkUtil.isWifiConnected(context));
                 }
             };
 
             IntentFilter intentFilter = new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-            activity.registerReceiver(mWifiReceiver, intentFilter);
+            context.registerReceiver(mWifiReceiver, intentFilter);
         }
 
         mEventBus.get().compose(bindToLifecycle()).subscribe(o -> {
@@ -174,7 +173,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         super.onPause();
 
         if (mWifiReceiver != null) {
-            getActivity().unregisterReceiver(mWifiReceiver);
+            getContext().unregisterReceiver(mWifiReceiver);
             mWifiReceiver = null;
         }
     }
@@ -206,7 +205,7 @@ public final class PostListFragment extends BaseViewPagerFragment
 
                 return true;
             case R.id.menu_link:
-                ClipboardUtil.copyTextAndShowToastPrompt(getActivity(), Api.getPostListUrlForBrowser(
+                ClipboardUtil.copyTextAndShowToastPrompt(getContext(), Api.getPostListUrlForBrowser(
                         mThreadId, getCurrentPage()), R.string.message_thread_link_copy);
 
                 return true;
@@ -227,7 +226,7 @@ public final class PostListFragment extends BaseViewPagerFragment
 
                 return true;
             case R.id.menu_browser:
-                IntentUtil.startViewIntentExcludeOurApp(getActivity(), Uri.parse(
+                IntentUtil.startViewIntentExcludeOurApp(getContext(), Uri.parse(
                         Api.getPostListUrlForBrowser(mThreadId, getCurrentPage())));
 
                 return true;
@@ -286,7 +285,7 @@ public final class PostListFragment extends BaseViewPagerFragment
             return;
         }
 
-        ReplyActivity.startReplyActivity(getActivity(), mThreadId, mThreadTitle, quotePostId,
+        ReplyActivity.startReplyActivity(getContext(), mThreadId, mThreadTitle, quotePostId,
                 quotePostCount);
     }
 

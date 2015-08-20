@@ -74,7 +74,7 @@ public abstract class BaseFragment<D> extends RxFragment {
     @CallSuper
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        App.AppComponent appComponent = App.getAppComponent(getActivity());
+        App.AppComponent appComponent = App.getAppComponent(getContext());
         mS1Service = appComponent.getS1Service();
         mUserValidator = appComponent.getUserValidator();
 
@@ -249,7 +249,7 @@ public abstract class BaseFragment<D> extends RxFragment {
         if (getUserVisibleHint()) {
             String message = result.getMessage();
             if (!TextUtils.isEmpty(message)) {
-                ToastUtil.showShortToastByText(getActivity(), message);
+                ToastUtil.showShortToastByText(getContext(), message);
             }
         }
     }
@@ -263,7 +263,7 @@ public abstract class BaseFragment<D> extends RxFragment {
     @CallSuper
     void onError(Throwable throwable) {
         if (getUserVisibleHint()) {
-            ToastUtil.showShortToastByText(getActivity(), throwable.toString());
+            ToastUtil.showShortToastByText(getContext(), throwable.toString());
         }
     }
 

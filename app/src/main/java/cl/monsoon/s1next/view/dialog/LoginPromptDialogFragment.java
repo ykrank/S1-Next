@@ -38,10 +38,10 @@ public final class LoginPromptDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new AlertDialog.Builder(getActivity())
+        return new AlertDialog.Builder(getContext())
                 .setMessage(R.string.dialog_message_login_prompt)
                 .setPositiveButton(R.string.action_login, (dialog, which) -> {
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
                     startActivity(intent);
                 })
                 .setNegativeButton(android.R.string.cancel, null)

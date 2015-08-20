@@ -60,7 +60,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
         RecyclerView recyclerView = getRecyclerView();
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerAdapter = new ThreadListRecyclerViewAdapter(getActivity());
         recyclerView.setAdapter(mRecyclerAdapter);
     }

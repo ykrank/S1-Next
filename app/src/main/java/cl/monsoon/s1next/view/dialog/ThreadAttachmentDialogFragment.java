@@ -33,9 +33,9 @@ public final class ThreadAttachmentDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new AlertDialog.Builder(getActivity())
+        return new AlertDialog.Builder(getContext())
                 .setTitle(getArguments().getString(ARG_ATTACHMENT_TITLE))
-                .setAdapter(new ThreadAttachmentInfoListArrayAdapter(getActivity(),
+                .setAdapter(new ThreadAttachmentInfoListArrayAdapter(getContext(),
                         R.layout.item_two_line_text, getArguments().getParcelableArrayList(
                         ARG_THREAD_ATTACHMENT_INFO_LIST)), null)
                 .setPositiveButton(R.string.dialog_button_text_done, null)

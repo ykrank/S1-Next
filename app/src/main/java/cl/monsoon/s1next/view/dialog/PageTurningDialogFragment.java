@@ -69,7 +69,7 @@ public final class PageTurningDialogFragment extends DialogFragment {
                 seekBarProgress);
         binding.setPageTurningViewModel(mPageTurningViewModel);
 
-        return new AlertDialog.Builder(getActivity())
+        return new AlertDialog.Builder(getContext())
                 .setTitle(R.string.dialog_title_page_turning)
                 .setView(binding.getRoot())
                 .setPositiveButton(getText(R.string.dialog_button_text_go),

@@ -36,9 +36,9 @@ public final class ThemeChangeDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        App.getAppComponent(getActivity()).inject(this);
+        App.getAppComponent(getContext()).inject(this);
         int checkedItem = mThemeManager.getThemeIndex();
-        return new AlertDialog.Builder(getActivity())
+        return new AlertDialog.Builder(getContext())
                 .setTitle(R.string.pref_theme)
                 .setSingleChoiceItems(R.array.pref_theme_entries, checkedItem, (dialog, which) -> {
                     // won't change theme if unchanged

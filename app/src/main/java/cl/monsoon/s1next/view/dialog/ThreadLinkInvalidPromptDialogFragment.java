@@ -39,11 +39,11 @@ public final class ThreadLinkInvalidPromptDialogFragment extends DialogFragment 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new AlertDialog.Builder(getActivity())
+        return new AlertDialog.Builder(getContext())
                 .setMessage(getArguments().getString(ARG_MESSAGE))
                 .setPositiveButton(R.string.dialog_button_text_done, (dialog, which) -> dismiss())
                 .setNegativeButton(R.string.dialog_button_text_use_a_different_app, (dialog, which) ->
-                        IntentUtil.startViewIntentExcludeOurApp(getActivity(),
+                        IntentUtil.startViewIntentExcludeOurApp(getContext(),
                                 getActivity().getIntent().getData()))
                 .create();
     }

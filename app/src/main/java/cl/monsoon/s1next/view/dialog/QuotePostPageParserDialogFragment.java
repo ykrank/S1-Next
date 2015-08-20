@@ -63,7 +63,7 @@ public final class QuotePostPageParserDialogFragment extends ProgressDialogFragm
                         .build();
 
                 // forked from https://github.com/square/retrofit/blob/9cd5dfa0e0c66704ab035835259fde2721511237/retrofit-adapters/rxjava/src/main/java/retrofit/ObservableCallAdapterFactory.java#L88
-                Call call = App.getAppComponent(getActivity()).getOkHttpClient().newCall(request);
+                Call call = App.getAppComponent(getContext()).getOkHttpClient().newCall(request);
                 // attempt to cancel the call if it is still in-flight on unsubscription.
                 subscriber.add(Subscriptions.create(call::cancel));
 
@@ -107,7 +107,7 @@ public final class QuotePostPageParserDialogFragment extends ProgressDialogFragm
                     .build();
             PostListActivity.startPostListActivity(getActivity(), threadLinkWithJumpPage);
         } else {
-            ThreadLinkInvalidPromptDialogFragment.newInstance(getActivity(),
+            ThreadLinkInvalidPromptDialogFragment.newInstance(getContext(),
                     R.string.dialog_message_quote_not_found).show(getFragmentManager(),
                     ThreadLinkInvalidPromptDialogFragment.TAG);
             mShouldFinishActivity = false;

@@ -95,7 +95,7 @@ public final class HelpFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.menu_view_in_google_play_store:
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                String packageName = getActivity().getPackageName();
+                String packageName = getContext().getPackageName();
                 intent.setData(Uri.parse(String.format(ANDROID_APP_MARKET_LINK, packageName)));
                 try {
                     // link our app in Android marketplaces
@@ -107,19 +107,19 @@ public final class HelpFragment extends Fragment {
                         startActivity(intent);
                     } catch (ActivityNotFoundException e) {
                         // show Toast if user hasn't installed any Android marketplaces or browsers
-                        ToastUtil.showShortToastByResId(getActivity(),
+                        ToastUtil.showShortToastByResId(getContext(),
                                 R.string.message_chooser_no_applications);
                     }
                 }
 
                 return true;
             case R.id.menu_open_source_licenses:
-                OpenSourceLicensesActivity.startOpenSourceLicensesActivity(getActivity());
+                OpenSourceLicensesActivity.startOpenSourceLicensesActivity(getContext());
 
                 return true;
             case R.id.menu_version:
                 // copy version number to clipboard though it make no sense actually
-                ClipboardUtil.copyTextAndShowToastPrompt(getActivity(), item.getTitle(),
+                ClipboardUtil.copyTextAndShowToastPrompt(getContext(), item.getTitle(),
                         R.string.message_version_number_copied);
 
                 return true;

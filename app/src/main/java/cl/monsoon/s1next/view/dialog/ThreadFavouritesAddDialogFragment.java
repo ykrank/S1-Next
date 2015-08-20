@@ -36,7 +36,7 @@ public final class ThreadFavouritesAddDialogFragment extends DialogFragment {
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_favourites_add,
                 (ViewGroup) getView(), false);
 
-        AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext())
                 .setTitle(R.string.dialog_title_favourites_add)
                 .setView(view)
                 .setPositiveButton(R.string.dialog_button_text_add, null)

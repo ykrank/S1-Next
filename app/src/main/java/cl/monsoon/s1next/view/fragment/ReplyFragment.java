@@ -104,7 +104,7 @@ public final class ReplyFragment extends RxFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        App.getAppComponent(getActivity()).inject(this);
+        App.getAppComponent(getContext()).inject(this);
 
         mThreadId = getArguments().getString(ARG_THREAD_ID);
         mQuotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
@@ -182,7 +182,7 @@ public final class ReplyFragment extends RxFragment {
             case R.id.menu_send:
                 StringBuilder stringBuilder = new StringBuilder(mReplyView.getText());
                 if (mGeneralPreferencesManager.isSignatureEnabled()) {
-                    stringBuilder.append("\n\n").append(DeviceUtil.getSignature(getActivity()));
+                    stringBuilder.append("\n\n").append(DeviceUtil.getSignature(getContext()));
                 }
 
                 ReplyRequestDialogFragment.newInstance(mThreadId, mQuotePostId,
@@ -215,7 +215,7 @@ public final class ReplyFragment extends RxFragment {
 
         // hide keyboard
         ViewUtil.setShowSoftInputOnFocus(mReplyView, false);
-        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(
+        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(mReplyView.getWindowToken(), 0);
         getActivity().getWindow().setSoftInputMode(
@@ -256,7 +256,7 @@ public final class ReplyFragment extends RxFragment {
 
                         if (shouldShowKeyboard) {
                             InputMethodManager inputMethodManager = (InputMethodManager)
-                                    getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                             inputMethodManager.showSoftInput(mReplyView,
                                     InputMethodManager.SHOW_IMPLICIT);
                         }
@@ -271,7 +271,7 @@ public final class ReplyFragment extends RxFragment {
 
     private void setEmoticonIcon() {
         if (mMenuEmoticon != null) {
-            mMenuEmoticon.setIcon(ResourceUtil.getResourceId(getActivity().getTheme(),
+            mMenuEmoticon.setIcon(ResourceUtil.getResourceId(getContext().getTheme(),
                     R.attr.menuEmoticon));
             mMenuEmoticon.setTitle(R.string.menu_emoticon);
         }
@@ -279,7 +279,7 @@ public final class ReplyFragment extends RxFragment {
 
     private void setKeyboardIcon() {
         if (mMenuEmoticon != null) {
-            mMenuEmoticon.setIcon(ResourceUtil.getResourceId(getActivity().getTheme(),
+            mMenuEmoticon.setIcon(ResourceUtil.getResourceId(getContext().getTheme(),
                     R.attr.menuKeyboard));
             mMenuEmoticon.setTitle(R.string.menu_keyboard);
         }

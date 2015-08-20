@@ -70,7 +70,7 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         int padding = getResources().getDimensionPixelSize(
                 R.dimen.recycler_view_vertical_padding_for_card_view);
         mRecyclerView.setPadding(0, padding, 0, padding);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerAdapter = new PostListRecyclerViewAdapter(getActivity());
         mRecyclerView.setAdapter(mRecyclerAdapter);
 

@@ -48,8 +48,8 @@ public final class LogoutDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        App.getAppComponent(getActivity()).inject(this);
-        return new AlertDialog.Builder(getActivity())
+        App.getAppComponent(getContext()).inject(this);
+        return new AlertDialog.Builder(getContext())
                 .setMessage(R.string.dialog_message_log_out)
                 .setPositiveButton(R.string.dialog_button_text_log_out, (dialog, which) -> logout())
                 .setNegativeButton(android.R.string.cancel, null)

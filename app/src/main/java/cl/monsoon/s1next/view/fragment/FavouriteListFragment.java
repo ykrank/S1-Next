@@ -43,7 +43,7 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_browser:
-                IntentUtil.startViewIntentExcludeOurApp(getActivity(), Uri.parse(
+                IntentUtil.startViewIntentExcludeOurApp(getContext(), Uri.parse(
                         Api.getFavouritesListUrlForBrowser(getCurrentPage() + 1)));
 
                 return true;

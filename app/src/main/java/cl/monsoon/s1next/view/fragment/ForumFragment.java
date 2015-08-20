@@ -39,7 +39,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
         super.onViewCreated(view, savedInstanceState);
 
         RecyclerView recyclerView = getRecyclerView();
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerAdapter = new ForumListRecyclerViewAdapter(getActivity());
         recyclerView.setAdapter(mRecyclerAdapter);
 
@@ -75,11 +75,11 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
                 forum.setId("75");
                 forum.setName("外野");
                 forum.setThreads(10 * Api.THREADS_PER_PAGE);
-                ThreadListActivity.startThreadListActivity(getActivity(), forum);
+                ThreadListActivity.startThreadListActivity(getContext(), forum);
 
                 return true;
             case R.id.menu_browser:
-                IntentUtil.startViewIntentExcludeOurApp(getActivity(), Uri.parse(Api.BASE_URL));
+                IntentUtil.startViewIntentExcludeOurApp(getContext(), Uri.parse(Api.BASE_URL));
 
                 return true;
         }

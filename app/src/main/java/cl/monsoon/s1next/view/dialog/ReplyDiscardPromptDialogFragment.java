@@ -19,7 +19,7 @@ public final class ReplyDiscardPromptDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new AlertDialog.Builder(getActivity())
+        return new AlertDialog.Builder(getContext())
                 .setMessage(R.string.dialog_message_reply_discard_prompt)
                 .setPositiveButton(R.string.dialog_message_text_discard, (dialog, which) ->
                         getActivity().finish())

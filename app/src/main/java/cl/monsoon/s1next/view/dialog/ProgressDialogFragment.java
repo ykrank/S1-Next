@@ -44,7 +44,7 @@ abstract class ProgressDialogFragment<D> extends RxDialogFragment {
     @CallSuper
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        App.AppComponent appComponent = App.getAppComponent(getActivity());
+        App.AppComponent appComponent = App.getAppComponent(getContext());
         mS1Service = appComponent.getS1Service();
         mUser = appComponent.getUser();
         mUserValidator = appComponent.getUserValidator();
@@ -58,7 +58,7 @@ abstract class ProgressDialogFragment<D> extends RxDialogFragment {
     @NonNull
     @Override
     public final Dialog onCreateDialog(Bundle savedInstanceState) {
-        ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage(getProgressMessage());
 
         return progressDialog;
@@ -132,14 +132,14 @@ abstract class ProgressDialogFragment<D> extends RxDialogFragment {
      * @param result The data's result we get.
      */
     final void showApplicationToastForResultMessage(Result result) {
-        ToastUtil.showShortToastByText(getActivity().getApplicationContext(), result.getMessage());
+        ToastUtil.showShortToastByText(getContext().getApplicationContext(), result.getMessage());
     }
 
     /**
      * @see BaseFragment#onError(Throwable)
      */
     void onError(Throwable throwable) {
-        ToastUtil.showShortToastByText(getActivity().getApplicationContext(), throwable.toString());
+        ToastUtil.showShortToastByText(getContext().getApplicationContext(), throwable.toString());
     }
 
     /**
