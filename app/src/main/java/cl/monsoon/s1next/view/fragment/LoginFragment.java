@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -46,9 +47,9 @@ public final class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // called when an ime action is performed
-        // not working in some manufacturers
         mPasswordView.setOnEditorActionListener((textView, i, keyEvent) -> {
-            if (i == R.id.ime_login) {
+            if (i == getResources().getInteger(R.integer.ime_action_id_login) ||
+                    i == EditorInfo.IME_ACTION_DONE) {
                 prepareLogin();
                 return true;
             }

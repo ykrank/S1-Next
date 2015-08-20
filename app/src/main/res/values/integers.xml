@@ -4,4 +4,7 @@
     <!-- according to the Google Material design, list tiles can only contain up to three lines of text -->
     <integer name="list_max_line">3</integer>
 
+    <!-- https://stackoverflow.com/questions/23713604/why-does-setting-imeactionid-with-a-predefined-id-resource-create-an-error/23740834#answer-23740834 -->
+    <integer name="ime_action_id_login">77</integer>
+
 </resources>
