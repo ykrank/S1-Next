@@ -58,9 +58,8 @@
     <!-- forum -->
 
     <!-- Because other Spinner drop down items fetched from S1 are Chinese,
-    so these strings are Chinese for all locales. -->
+    so this string is Chinese for all locales. -->
     <string name="toolbar_spinner_drop_down_all_forums_item_title" translatable="false">全部</string>
-    <string name="menu_ether" translatable="false">或成最大输家</string>
 
     <!-- thread -->
 

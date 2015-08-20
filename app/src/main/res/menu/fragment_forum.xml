@@ -4,11 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cl.monsoon.s1next.view.fragment.ForumFragment">
     <item
-        android:id="@+id/menu_ether"
-        android:orderInCategory="9"
-        android:title="@string/menu_ether"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/menu_browser"
         android:orderInCategory="10"
         android:title="@string/menu_browser"
