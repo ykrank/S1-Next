@@ -9,13 +9,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- see https://stackoverflow.com/questions/18774542/android-set-margin-padding-for-contents-text-instead-of-a-container-edittext#answer-18794624 -->
+        <!-- see http://stackoverflow.com/a/18794624 -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <!-- see https://stackoverflow.com/questions/4761741/show-soft-keyboard-when-the-device-is-landscape-mode#answer-28618889 -->
+            <!-- see http://stackoverflow.com/a/28618889 -->
             <EditText
                 android:id="@+id/reply"
                 android:layout_width="match_parent"

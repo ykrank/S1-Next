@@ -19,7 +19,7 @@ public final class DeviceUtil {
     }
 
     /**
-     * Forked from https://stackoverflow.com/questions/1995439/get-android-phone-model-programmatically/26117427#answer-12707479
+     * Forked from http://stackoverflow.com/a/12707479
      */
     private static String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;

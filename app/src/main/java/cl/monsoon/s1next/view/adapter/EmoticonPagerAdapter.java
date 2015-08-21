@@ -59,7 +59,7 @@ public final class EmoticonPagerAdapter extends PagerAdapter {
         recyclerView.setAdapter(recyclerAdapter);
 
         // auto fit grid
-        // forked from https://stackoverflow.com/questions/26666143/recyclerview-gridlayoutmanager-how-to-auto-detect-span-count#answer-27000759
+        // forked from http://stackoverflow.com/a/27000759
         recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
 

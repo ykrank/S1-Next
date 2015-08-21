@@ -17,7 +17,7 @@
 #}
 
 # Android Design Support library
-# https://stackoverflow.com/questions/30562330/using-appcompat-layout-behavior-with-string-appbar-scrolling-view-behavior#answer-30846201
+# http://stackoverflow.com/a/30846201
 -keep public class * extends android.support.design.widget.CoordinatorLayout$Behavior { *; }
 
 # Guava

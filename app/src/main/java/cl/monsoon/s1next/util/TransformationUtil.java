@@ -145,7 +145,7 @@ public final class TransformationUtil {
 
             /**
              * Forked from https://github.com/android/platform_frameworks_base/blob/master/services/core/java/com/android/server/display/ColorFade.java
-             * and https://stackoverflow.com/questions/26985858/gles10-glgetintegerv-returns-0-in-lollipop-only
+             * and http://stackoverflow.com/q/26985858
              */
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
             private int getGl20MaxTextureSize() {

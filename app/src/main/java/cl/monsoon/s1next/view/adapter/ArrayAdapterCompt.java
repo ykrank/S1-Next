@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * See http://stackoverflow.com/a/32066279/2331527
+ * See http://stackoverflow.com/a/32066279
  */
 public final class ArrayAdapterCompt<T> extends ArrayAdapter<T> implements ThemedSpinnerAdapter {
 

@@ -100,7 +100,7 @@ public final class PersistentHttpCookieStore implements CookieStore {
 
         if (isUriNew) {
             // add new cookie's URL string
-            // see https://stackoverflow.com/questions/14034803/misbehavior-when-trying-to-store-a-string-set-using-sharedpreferences
+            // see http://stackoverflow.com/q/14034803
             Set<String> cookiesURL = new HashSet<>(cookieSP.getStringSet(COOKIES_URI,
                     Collections.<String>emptySet()));
             cookiesURL.add(uriString);

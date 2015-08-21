@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Constrains input from entering a value which is out of the range.
  * <p>
- * Forked from https://stackoverflow.com/questions/14212518/is-there-any-way-to-define-a-min-and-max-value-for-edittext-in-android
+ * Forked from http://stackoverflow.com/q/14212518
  */
 public final class RangeInputFilter implements InputFilter {
 

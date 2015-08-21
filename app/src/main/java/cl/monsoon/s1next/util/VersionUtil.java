@@ -18,7 +18,7 @@ final class VersionUtil {
     /**
      * Changes app title color to white in recent apps.
      * <p>
-     * See https://stackoverflow.com/questions/26899820/android-5-0-how-to-change-recent-apps-title-color#answer-27703150
+     * See http://stackoverflow.com/a/27703150
      */
     @SuppressWarnings("unused")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
