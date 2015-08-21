@@ -1,6 +1,8 @@
 package cl.monsoon.s1next.binding;
 
+import android.content.Context;
 import android.databinding.BindingAdapter;
+import android.os.Build;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Spinner;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.view.adapter.ArrayAdapterCompt;
 
 public final class SpinnerBindingAdapter {
 
@@ -37,9 +40,15 @@ public final class SpinnerBindingAdapter {
                 R.string.toolbar_spinner_drop_down_all_forums_item_title));
         list.addAll(dropDownItemList);
 
-        ArrayAdapter<CharSequence> arrayAdapter = new ArrayAdapter<>(spinner.getContext(),
-                R.layout.toolbar_spinner_item, list);
+        ArrayAdapter<CharSequence> arrayAdapter;
+        Context context = spinner.getContext();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            arrayAdapter = new ArrayAdapter<>(context, R.layout.toolbar_spinner_item, list);
+        } else {
+            arrayAdapter = new ArrayAdapterCompt<>(context, R.layout.toolbar_spinner_item, list);
+        }
         arrayAdapter.setDropDownViewResource(R.layout.toolbar_spinner_dropdown_item);
+
         return arrayAdapter;
     }
 }

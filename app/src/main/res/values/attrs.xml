@@ -2,7 +2,6 @@
 <resources>
 
     <attr name="toolbarTheme" format="reference" />
-    <attr name="spinnerPopupBackground" format="color|reference" />
     <attr name="fabBackgroundTint" format="color|reference" />
     <attr name="cardViewStyle" format="reference" />
     <attr name="linkBackground" format="color|reference" />

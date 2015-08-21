@@ -17,14 +17,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/selectableItemBackground"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:theme="?attr/toolbarTheme">
 
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:popupBackground="?attr/spinnerPopupBackground"
-            android:theme="?attr/toolbarTheme"
             app:dropDownItemList="@{dropDownItemListViewModel.dropDownItemList}"
             app:selectedItemPosition="@{dropDownItemListViewModel.selectedItemPosition}" />
 
