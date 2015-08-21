@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.view.adapter.ArrayAdapterCompt;
+import cl.monsoon.s1next.view.adapter.ArrayAdapterCompat;
 
 public final class SpinnerBindingAdapter {
 
@@ -45,7 +45,7 @@ public final class SpinnerBindingAdapter {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             arrayAdapter = new ArrayAdapter<>(context, R.layout.toolbar_spinner_item, list);
         } else {
-            arrayAdapter = new ArrayAdapterCompt<>(context, R.layout.toolbar_spinner_item, list);
+            arrayAdapter = new ArrayAdapterCompat<>(context, R.layout.toolbar_spinner_item, list);
         }
         arrayAdapter.setDropDownViewResource(R.layout.toolbar_spinner_dropdown_item);
 

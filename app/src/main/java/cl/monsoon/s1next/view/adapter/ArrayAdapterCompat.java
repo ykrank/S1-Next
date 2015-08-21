@@ -16,14 +16,14 @@ import java.util.List;
 /**
  * See http://stackoverflow.com/a/32066279
  */
-public final class ArrayAdapterCompt<T> extends ArrayAdapter<T> implements ThemedSpinnerAdapter {
+public final class ArrayAdapterCompat<T> extends ArrayAdapter<T> implements ThemedSpinnerAdapter {
 
     @LayoutRes
     private int mDropDownResource;
 
     private final ThemedSpinnerAdapter.Helper mDropDownHelper;
 
-    public ArrayAdapterCompt(Context context, int resource, List<T> objects) {
+    public ArrayAdapterCompat(Context context, int resource, List<T> objects) {
         super(context, resource, objects);
         mDropDownResource = resource;
 
