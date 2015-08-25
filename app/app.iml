@@ -110,7 +110,6 @@
     <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
     <orderEntry type="library" exported="" name="guava-19.0-rc1" level="project" />
     <orderEntry type="library" exported="" name="haha-2.0.2" level="project" />
-    <orderEntry type="library" exported="" name="adapter-rxjava-71b0a9e56a" level="project" />
     <orderEntry type="library" exported="" name="antlr4-4.5" level="project" />
     <orderEntry type="library" exported="" name="jsr305-3.0.0" level="project" />
     <orderEntry type="library" exported="" name="leakcanary-watcher-1.4-SNAPSHOT" level="project" />
@@ -120,6 +119,7 @@
     <orderEntry type="library" exported="" name="antlr4-runtime-4.5" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-23.0.0" level="project" />
     <orderEntry type="library" exported="" name="antlr-runtime-3.5.2" level="project" />
+    <orderEntry type="library" exported="" name="retrofit-2.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" exported="" name="jackson-annotations-2.6.0" level="project" />
     <orderEntry type="library" exported="" name="library-1.0-rc1" level="project" />
     <orderEntry type="library" exported="" name="rxlifecycle-components-0.2.0" level="project" />
@@ -127,12 +127,13 @@
     <orderEntry type="library" exported="" name="commons-lang3-3.4" level="project" />
     <orderEntry type="library" exported="" name="support-v4-23.0.0" level="project" />
     <orderEntry type="library" exported="" name="leakcanary-analyzer-1.4-SNAPSHOT" level="project" />
-    <orderEntry type="library" exported="" name="okio-1.5.0" level="project" />
     <orderEntry type="library" exported="" name="glide-3.6.1" level="project" />
+    <orderEntry type="library" exported="" name="okio-1.5.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.0.0" level="project" />
     <orderEntry type="library" exported="" name="adapters-1.0-rc1" level="project" />
     <orderEntry type="library" exported="" name="compilerCommon-1.0-rc1" level="project" />
     <orderEntry type="library" exported="" name="compiler-1.0-rc1" level="project" />
+    <orderEntry type="library" exported="" name="converter-jackson-2.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" exported="" name="jackson-core-2.6.1" level="project" />
     <orderEntry type="library" exported="" name="leakcanary-android-1.4-SNAPSHOT" level="project" />
     <orderEntry type="library" exported="" name="javax.annotation-api-1.2" level="project" />
@@ -143,12 +144,10 @@
     <orderEntry type="library" exported="" name="baseLibrary-1.0-rc1" level="project" />
     <orderEntry type="library" exported="" name="design-23.0.0" level="project" />
     <orderEntry type="library" exported="" name="jackson-databind-2.6.1" level="project" />
-    <orderEntry type="library" exported="" name="ST4-4.0.8" level="project" />
+    <orderEntry type="library" exported="" name="adapter-rxjava-2.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" exported="" name="rxjava-1.0.14" level="project" />
-    <orderEntry type="library" exported="" name="retrofit-71b0a9e56a" level="project" />
-    <orderEntry type="library" exported="" name="1_retrofit-71b0a9e56a" level="project" />
+    <orderEntry type="library" exported="" name="ST4-4.0.8" level="project" />
     <orderEntry type="library" exported="" name="commons-codec-1.10" level="project" />
     <orderEntry type="library" exported="" name="kotlin-stdlib-0.12.613" level="project" />
-    <orderEntry type="library" exported="" name="converter-jackson-71b0a9e56a" level="project" />
   </component>
 </module>

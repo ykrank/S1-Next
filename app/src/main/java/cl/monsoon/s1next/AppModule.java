@@ -30,8 +30,8 @@ import cl.monsoon.s1next.widget.ToStringConverterFactory;
 import dagger.Module;
 import dagger.Provides;
 import retrofit.JacksonConverterFactory;
-import retrofit.ObservableCallAdapterFactory;
 import retrofit.Retrofit;
+import retrofit.RxJavaCallAdapterFactory;
 
 /**
  * Provides instances of the objects when we need to inject.
@@ -75,9 +75,9 @@ final class AppModule {
         return new Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(Api.BASE_URL)
-                .addCallAdapterFactory(ObservableCallAdapterFactory.create())
-                .addConverterFactory(new ToStringConverterFactory())
+                .addConverter(String.class, new ToStringConverterFactory())
                 .addConverterFactory(JacksonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build()
                 .create(S1Service.class);
     }
