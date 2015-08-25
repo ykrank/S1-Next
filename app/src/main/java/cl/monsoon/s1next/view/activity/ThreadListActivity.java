@@ -87,7 +87,6 @@ public final class ThreadListActivity extends BaseActivity
     public void setupSubForums(List<Forum> forumList) {
         if (mListPopupWindow == null) {
             mListPopupWindow = new ListPopupWindow(this);
-            mListPopupWindow.setContentWidth(ListPopupWindow.MATCH_PARENT);
 
             mSubForumArrayAdapter = new SubForumArrayAdapter(this, R.layout.item_popup_menu_dropdown,
                     forumList);
