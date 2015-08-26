@@ -61,9 +61,6 @@ final class AppModule {
     @Singleton
     OkHttpClient providerOkHttpClient(CookieManager cookieManager) {
         OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(20, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(20, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
         okHttpClient.setCookieHandler(cookieManager);
 
         return okHttpClient;
