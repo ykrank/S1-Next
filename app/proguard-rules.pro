@@ -52,6 +52,7 @@
 
 # Retrofit
 -keepattributes Signature
+-dontwarn retrofit.Platform$Java8
 
 # RxJava
 -keep class rx.internal.util.unsafe.** { *; }
