@@ -78,7 +78,7 @@ public final class OpenSourceLicensesFragment extends PreferenceFragment {
     }
 
     /**
-     * Get each library's name and its license's name.
+     * Gets each library's name and its license's name.
      */
     private String[][] getLibrariesInfos() {
         return new String[][]{
@@ -105,7 +105,7 @@ public final class OpenSourceLicensesFragment extends PreferenceFragment {
     }
 
     /**
-     * Get each file's name and its license's name.
+     * Gets each file's name and its license's name.
      */
     private String[][] getFilesInfo() {
         return new String[][]{

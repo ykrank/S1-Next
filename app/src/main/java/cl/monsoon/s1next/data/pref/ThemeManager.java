@@ -79,7 +79,7 @@ public final class ThemeManager {
     }
 
     /**
-     * Commit theme preference change for settings.
+     * Commits theme preference change for settings.
      *
      * @param index The theme index.
      */

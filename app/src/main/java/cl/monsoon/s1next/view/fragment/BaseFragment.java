@@ -199,7 +199,7 @@ public abstract class BaseFragment<D> extends RxFragment {
     }
 
     /**
-     * Whether we are pull up to refresh.
+     * Whether we are pulling up to refresh.
      */
     final boolean isPullUpToRefresh() {
         return mLoadingViewModel.getLoading() == LoadingViewModel.LOADING_PULL_UP_TO_REFRESH;
@@ -214,7 +214,7 @@ public abstract class BaseFragment<D> extends RxFragment {
     }
 
     /**
-     * Disable {@link SwipeRefreshLayout} and start to load new data.
+     * Disables {@link SwipeRefreshLayout} and start to load new data.
      * <p>
      * Subclass should add {@link android.widget.ProgressBar} to {@link android.support.v7.widget.RecyclerView}
      * by itself.
@@ -225,7 +225,7 @@ public abstract class BaseFragment<D> extends RxFragment {
     }
 
     /**
-     * Start to load new data.
+     * Starts to load new data.
      * <p>
      * Subclass should implement {@link #getSourceObservable()}
      * in oder to provider its own data source {@link Observable}.

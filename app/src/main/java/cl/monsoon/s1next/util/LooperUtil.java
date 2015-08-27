@@ -9,7 +9,7 @@ public final class LooperUtil {
     private LooperUtil() {}
 
     /**
-     * Enforce the method caller on main thread.
+     * Enforces the method caller on main thread.
      */
     public static void enforceOnMainThread() {
         Preconditions.checkState(Looper.myLooper() == Looper.getMainLooper(),

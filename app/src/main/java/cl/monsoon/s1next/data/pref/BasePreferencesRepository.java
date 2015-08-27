@@ -18,7 +18,7 @@ abstract class BasePreferencesRepository {
     }
 
     /**
-     * Retrieve a String value from the preferences.
+     * Retrieves a String value from the preferences.
      *
      * @param key            The name of the preference to retrieve.
      * @param defStringResId The resource id of the string which returns

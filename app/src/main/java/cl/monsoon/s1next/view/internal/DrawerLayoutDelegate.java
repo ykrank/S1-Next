@@ -64,7 +64,7 @@ public abstract class DrawerLayoutDelegate {
     }
 
     /**
-     * Enable or disable the drawer indicator. The indicator defaults to enabled.
+     * Enables or disable the drawer indicator. The indicator defaults to enabled.
      */
     public final void setDrawerIndicatorEnabled(boolean enabled) {
         mDrawerIndicatorEnabled = enabled;
@@ -96,9 +96,9 @@ public abstract class DrawerLayoutDelegate {
     }
 
     /**
-     * Close the drawer view.
+     * Closes the drawer view.
      *
-     * @param runnable Execute this during the {@link ActionBarDrawerToggle#onDrawerClosed(View)}.
+     * @param runnable Executes this during the {@link ActionBarDrawerToggle#onDrawerClosed(View)}.
      */
     final void closeDrawer(@Nullable Runnable runnable) {
         mNavigationView.setTag(R.id.tag_drawer_runnable, runnable);

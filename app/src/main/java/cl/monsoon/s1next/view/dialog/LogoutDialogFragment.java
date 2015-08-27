@@ -57,7 +57,7 @@ public final class LogoutDialogFragment extends DialogFragment {
     }
 
     /**
-     * Clear user's cookies and current user's info.
+     * Clears user's cookies and current user's info.
      */
     private void logout() {
         mCookieManager.getCookieStore().removeAll();

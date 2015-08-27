@@ -31,7 +31,7 @@ public final class TagHandler implements Html.TagHandler {
     }
 
     /**
-     * Replace {@link android.view.View.OnClickListener}
+     * Replaces {@link android.view.View.OnClickListener}
      * with {@link cl.monsoon.s1next.widget.TagHandler.ImageClickableSpan}.
      * <p>
      * See android.text.HtmlToSpannedConverter#startImg(android.text.SpannableStringBuilder, org.xml.sax.Attributes, android.text.Html.ImageGetter)

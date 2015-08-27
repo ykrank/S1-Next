@@ -127,11 +127,10 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                // according to https://developer.android.com/design/patterns/navigation.html
-                // we should navigate to its hierarchical parent of the current screen
-                // but the hierarchical logical is too complex in our app (sub forum, link redirection)
-                // and sometimes really confuses people
-                // so we use finish() to close the current Activity
+                // According to https://developer.android.com/design/patterns/navigation.html
+                // we should navigate to its hierarchical parent of the current screen.
+                // But the hierarchical logical is too complex in our app (sub forum, link redirection),
+                // so we use finish() to close the current Activity.
                 // looks the newest Google Play does the same way
                 finish();
 

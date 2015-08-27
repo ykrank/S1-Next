@@ -11,7 +11,7 @@ public final class NetworkUtil {
     private NetworkUtil() {}
 
     /**
-     * Check whether the Wi-Fi network connectivity exists and whtether it is possible to
+     * Checks whether the Wi-Fi network connectivity exists and whtether it is possible to
      * establish connections and pass data.
      *
      * @return {@code true} if the Wi-FI network connectivity exists, {@code false} otherwise.

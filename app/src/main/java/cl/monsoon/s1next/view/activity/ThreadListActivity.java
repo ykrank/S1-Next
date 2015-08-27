@@ -28,7 +28,7 @@ public final class ThreadListActivity extends BaseActivity
     private static final String ARG_FORUM = "forum";
 
     /**
-     * Only measure this many items to get a decent max width.
+     * Only measures this many items to get a decent max width.
      */
     private static final int MAX_ITEMS_MEASURED = 15;
 

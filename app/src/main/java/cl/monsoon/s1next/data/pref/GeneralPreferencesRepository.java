@@ -21,7 +21,7 @@ public final class GeneralPreferencesRepository extends BasePreferencesRepositor
     }
 
     /**
-     * Commit theme preference change for settings.
+     * Commits theme preference change for settings.
      *
      * @param key The new value for the theme preference.
      */

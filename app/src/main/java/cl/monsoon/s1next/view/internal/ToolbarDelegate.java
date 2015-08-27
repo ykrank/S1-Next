@@ -9,7 +9,7 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.util.ResourceUtil;
 
 /**
- * THis class represents a delegate which you can use to add
+ * This class represents a delegate which you can use to add
  * {@link Toolbar} to {@link AppCompatActivity}.
  */
 public final class ToolbarDelegate {

@@ -111,14 +111,14 @@ public final class DownloadPreferencesManager {
     }
 
     /**
-     * Check whether we need to download images.
+     * Checks whether we need to download images.
      */
     public boolean isImagesDownload() {
         return mImagesDownloadStrategyMemorized.get().isDownload(mWifi.isWifiEnabled());
     }
 
     /**
-     * Check whether we should monitor the Wi-Fi status.
+     * Checks whether we should monitor the Wi-Fi status.
      * We needn't monitor the Wi-Fi status if we needn't/should
      * download avatars or images.
      */
