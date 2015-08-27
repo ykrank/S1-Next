@@ -1,6 +1,5 @@
 package cl.monsoon.s1next;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -9,7 +8,6 @@ import com.squareup.okhttp.OkHttpClient;
 
 import java.net.CookieManager;
 import java.net.CookiePolicy;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
@@ -39,16 +37,22 @@ import retrofit.RxJavaCallAdapterFactory;
 @Module
 final class AppModule {
 
-    private final Application mApplication;
+    private final App mApp;
 
-    public AppModule(Application application) {
-        this.mApplication = application;
+    public AppModule(App app) {
+        this.mApp = app;
     }
 
     @Provides
     @Singleton
     Context provideContext() {
-        return mApplication;
+        return mApp;
+    }
+
+    @Provides
+    @Singleton
+    App provideApp() {
+        return mApp;
     }
 
     @Provides
@@ -111,8 +115,8 @@ final class AppModule {
 
     @Provides
     @Singleton
-    SharedPreferences provideSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(mApplication);
+    SharedPreferences provideSharedPreferences(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     @Provides

@@ -285,8 +285,8 @@ public final class PostListFragment extends BaseViewPagerFragment
             return;
         }
 
-        ReplyActivity.startReplyActivity(getContext(), mThreadId, mThreadTitle, quotePostId,
-                quotePostCount);
+        ReplyActivity.startReplyActivityForResultMessage(getActivity(), mThreadId, mThreadTitle,
+                quotePostId, quotePostCount);
     }
 
     /**

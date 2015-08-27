@@ -16,9 +16,8 @@ import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.api.S1Service;
 import cl.monsoon.s1next.data.api.UserValidator;
 import cl.monsoon.s1next.data.api.model.Account;
-import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
-import cl.monsoon.s1next.util.ToastUtil;
+import cl.monsoon.s1next.view.activity.BaseActivity;
 import cl.monsoon.s1next.view.fragment.BaseFragment;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -125,21 +124,10 @@ abstract class ProgressDialogFragment<D> extends RxDialogFragment {
     abstract void onNext(D data);
 
     /**
-     * A helper method shows toast for {@link Result} message.
-     * <p>
-     * This method is only used during {@link #onNext(Object)}.
-     *
-     * @param result The data's result we get.
-     */
-    final void showApplicationToastForResultMessage(Result result) {
-        ToastUtil.showShortToastByText(getContext().getApplicationContext(), result.getMessage());
-    }
-
-    /**
      * @see BaseFragment#onError(Throwable)
      */
     void onError(Throwable throwable) {
-        ToastUtil.showShortToastByText(getContext().getApplicationContext(), throwable.toString());
+        ((BaseActivity) getActivity()).showText(throwable.toString());
     }
 
     /**

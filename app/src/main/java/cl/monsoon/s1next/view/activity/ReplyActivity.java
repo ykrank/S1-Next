@@ -1,6 +1,6 @@
 package cl.monsoon.s1next.view.activity;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,15 +28,16 @@ public final class ReplyActivity extends BaseActivity {
 
     private ReplyFragment mReplyFragment;
 
-    public static void startReplyActivity(Context context, String threadId, @Nullable String threadTitle, @Nullable String quotePostId, @Nullable String quotePostCount) {
-        Intent intent = new Intent(context, ReplyActivity.class);
+    public static void startReplyActivityForResultMessage(Activity activity, String threadId, @Nullable String threadTitle,
+                                                          @Nullable String quotePostId, @Nullable String quotePostCount) {
+        Intent intent = new Intent(activity, ReplyActivity.class);
         intent.putExtra(ARG_THREAD_ID, threadId);
         intent.putExtra(ARG_THREAD_TITLE, threadTitle);
 
         intent.putExtra(ARG_QUOTE_POST_ID, quotePostId);
         intent.putExtra(ARG_QUOTE_POST_COUNT, quotePostCount);
 
-        context.startActivity(intent);
+        BaseActivity.startActivityForResultMessage(activity, intent);
     }
 
     @Override

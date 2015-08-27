@@ -1,5 +1,6 @@
 package cl.monsoon.s1next.view.dialog;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -11,6 +12,7 @@ import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.api.model.Quote;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
+import cl.monsoon.s1next.view.activity.BaseActivity;
 import rx.Observable;
 
 /**
@@ -64,10 +66,12 @@ public final class ReplyRequestDialogFragment extends ProgressDialogFragment<Res
     @Override
     protected void onNext(ResultWrapper data) {
         Result result = data.getResult();
-        showApplicationToastForResultMessage(result);
-
+        Activity activity = getActivity();
         if (result.getStatus().equals(STATUS_REPLY_SUCCESS)) {
-            getActivity().finish();
+            BaseActivity.setResultMessage(activity, result.getMessage());
+            activity.finish();
+        } else {
+            ((BaseActivity) activity).showText(result.getMessage());
         }
     }
 }

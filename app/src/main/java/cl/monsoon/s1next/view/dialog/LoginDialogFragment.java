@@ -1,10 +1,12 @@
 package cl.monsoon.s1next.view.dialog;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
+import cl.monsoon.s1next.view.activity.BaseActivity;
 import rx.Observable;
 
 /**
@@ -50,11 +52,13 @@ public final class LoginDialogFragment extends ProgressDialogFragment<ResultWrap
     @Override
     protected void onNext(ResultWrapper data) {
         Result result = data.getResult();
-        showApplicationToastForResultMessage(data.getResult());
-
+        Activity activity = getActivity();
         if (result.getStatus().equals(STATUS_AUTH_SUCCESS)
                 || result.getStatus().equals(STATUS_AUTH_SUCCESS_ALREADY)) {
-            getActivity().finish();
+            BaseActivity.setResultMessage(activity, result.getMessage());
+            activity.finish();
+        } else {
+            ((BaseActivity) activity).showText(result.getMessage());
         }
     }
 

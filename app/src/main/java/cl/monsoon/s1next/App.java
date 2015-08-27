@@ -27,6 +27,7 @@ import cl.monsoon.s1next.view.fragment.GeneralPreferenceFragment;
 import cl.monsoon.s1next.view.fragment.PostListFragment;
 import cl.monsoon.s1next.view.fragment.ReplyFragment;
 import cl.monsoon.s1next.viewmodel.UserViewModel;
+import cl.monsoon.s1next.widget.AppActivityLifecycleCallbacks;
 import cl.monsoon.s1next.widget.EventBus;
 import dagger.Component;
 
@@ -37,6 +38,8 @@ public final class App extends Application {
     private GeneralPreferencesManager mGeneralPreferencesManager;
 
     private AppComponent mAppComponent;
+
+    private AppActivityLifecycleCallbacks mAppActivityLifecycleCallbacks;
 
     public static App get() {
         return sApp;
@@ -64,6 +67,8 @@ public final class App extends Application {
         LeakCanary.install(this);
 
         sApp = this;
+        mAppActivityLifecycleCallbacks = new AppActivityLifecycleCallbacks();
+        registerActivityLifecycleCallbacks(mAppActivityLifecycleCallbacks);
 
         mAppComponent = DaggerApp_AppComponent.builder()
                 .appModule(new AppModule(this))
@@ -81,6 +86,10 @@ public final class App extends Application {
         super.onConfigurationChanged(newConfig);
 
         ResourceUtil.setScaledDensity(getResources(), mGeneralPreferencesManager.getTextScale());
+    }
+
+    public boolean isAppVisible() {
+        return mAppActivityLifecycleCallbacks.isAppVisible();
     }
 
     /**

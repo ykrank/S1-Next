@@ -107,7 +107,7 @@ public final class HelpFragment extends Fragment {
                         startActivity(intent);
                     } catch (ActivityNotFoundException e) {
                         // show Toast if user hasn't installed any Android marketplaces or browsers
-                        ToastUtil.showShortToastByResId(getContext(),
+                        ToastUtil.showLongToastByResId(getContext(),
                                 R.string.message_chooser_no_applications);
                     }
                 }

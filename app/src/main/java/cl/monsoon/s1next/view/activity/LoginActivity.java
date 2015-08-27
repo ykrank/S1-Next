@@ -1,6 +1,6 @@
 package cl.monsoon.s1next.view.activity;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,9 +9,9 @@ import cl.monsoon.s1next.view.fragment.LoginFragment;
 
 public final class LoginActivity extends BaseActivity {
 
-    public static void startLoginActivity(Context context) {
-        Intent intent = new Intent(context, LoginActivity.class);
-        context.startActivity(intent);
+    public static void startLoginActivityForResultMessage(Activity activity) {
+        Intent intent = new Intent(activity, LoginActivity.class);
+        BaseActivity.startActivityForResultMessage(activity, intent);
     }
 
     @Override

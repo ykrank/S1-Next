@@ -66,7 +66,7 @@ public final class IntentUtil {
         }
 
         if (targetIntentList.isEmpty()) {
-            ToastUtil.showShortToastByResId(context, R.string.message_chooser_no_applications);
+            ToastUtil.showLongToastByResId(context, R.string.message_chooser_no_applications);
         } else {
             Intent chooserIntent = Intent.createChooser(targetIntentList.remove(0),
                     context.getString(R.string.intent_title_which_view_application));

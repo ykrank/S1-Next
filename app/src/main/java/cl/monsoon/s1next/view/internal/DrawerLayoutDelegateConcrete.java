@@ -86,7 +86,7 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
         // otherwise show LogoutDialogFragment.
         binding.drawerHeaderBackground.setOnClickListener(v -> {
             if (!LogoutDialogFragment.showLogoutDialogIfNeeded(mFragmentActivity, mUser)) {
-                closeDrawer(() -> LoginActivity.startLoginActivity(v.getContext()));
+                closeDrawer(() -> LoginActivity.startLoginActivityForResultMessage(mFragmentActivity));
             }
         });
 

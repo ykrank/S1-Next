@@ -3,6 +3,7 @@ package cl.monsoon.s1next.view.fragment;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,13 +20,15 @@ import com.google.common.base.Preconditions;
 import com.trello.rxlifecycle.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
+import java.lang.ref.WeakReference;
+
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.S1Service;
 import cl.monsoon.s1next.data.api.UserValidator;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.databinding.FragmentBaseBinding;
-import cl.monsoon.s1next.util.ToastUtil;
+import cl.monsoon.s1next.view.activity.BaseActivity;
 import cl.monsoon.s1next.view.fragment.headless.DataRetainedFragment;
 import cl.monsoon.s1next.view.internal.LoadingViewModelBindingDelegate;
 import cl.monsoon.s1next.view.internal.LoadingViewModelBindingDelegateImpl;
@@ -60,6 +63,8 @@ public abstract class BaseFragment<D> extends RxFragment {
 
     S1Service mS1Service;
     private UserValidator mUserValidator;
+
+    private WeakReference<Snackbar> mSnackbar;
 
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -167,6 +172,22 @@ public abstract class BaseFragment<D> extends RxFragment {
         outState.putParcelable(STATE_LOADING_VIEW_MODEL, mLoadingViewModel);
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        // see http://stackoverflow.com/a/9779971
+        if (isVisible() && !isVisibleToUser) {
+            // dismiss SnackBar when current Fragment hid
+            if (mSnackbar != null) {
+                Snackbar snackbar = mSnackbar.get();
+                if (snackbar != null && snackbar.isShown()) {
+                    snackbar.dismiss();
+                }
+            }
+        }
+    }
+
     /**
      * Whether we are loading data now.
      */
@@ -249,7 +270,8 @@ public abstract class BaseFragment<D> extends RxFragment {
         if (getUserVisibleHint()) {
             String message = result.getMessage();
             if (!TextUtils.isEmpty(message)) {
-                ToastUtil.showShortToastByText(getContext(), message);
+                Snackbar snackbar = ((BaseActivity) getActivity()).showSnackBarIfVisible(message);
+                mSnackbar = new WeakReference<>(snackbar);
             }
         }
     }
@@ -263,7 +285,9 @@ public abstract class BaseFragment<D> extends RxFragment {
     @CallSuper
     void onError(Throwable throwable) {
         if (getUserVisibleHint()) {
-            ToastUtil.showShortToastByText(getContext(), throwable.toString());
+            Snackbar snackbar = ((BaseActivity) getActivity()).showSnackBarIfVisible(
+                    throwable.getMessage());
+            mSnackbar = new WeakReference<>(snackbar);
         }
     }
 

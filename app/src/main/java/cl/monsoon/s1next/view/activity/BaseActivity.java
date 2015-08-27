@@ -1,11 +1,14 @@
 package cl.monsoon.s1next.view.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.DrawableRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -24,6 +27,8 @@ import cl.monsoon.s1next.data.event.FontSizeChangeEvent;
 import cl.monsoon.s1next.data.event.ThemeChangeEvent;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
+import cl.monsoon.s1next.util.SnackBarUtil;
+import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.internal.DrawerLayoutDelegate;
 import cl.monsoon.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import cl.monsoon.s1next.view.internal.ToolbarDelegate;
@@ -35,6 +40,12 @@ import cl.monsoon.s1next.widget.EventBus;
  * Also changes theme depends on settings.
  */
 public abstract class BaseActivity extends RxAppCompatActivity {
+
+    private static final int REQUEST_CODE_MESSAGE_IF_SUCCESS = 0;
+    private static final String EXTRA_MESSAGE = "message";
+
+    @Inject
+    App mApp;
 
     @Inject
     EventBus mEventBus;
@@ -52,6 +63,16 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
     private DrawerLayoutDelegate mDrawerLayoutDelegate;
     private boolean mDrawerIndicatorEnabled = true;
+
+    public static void startActivityForResultMessage(Activity activity, Intent intent) {
+        activity.startActivityForResult(intent, REQUEST_CODE_MESSAGE_IF_SUCCESS);
+    }
+
+    public static void setResultMessage(Activity activity, CharSequence message) {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_MESSAGE, message);
+        activity.setResult(Activity.RESULT_OK, intent);
+    }
 
     @Override
     @CallSuper
@@ -130,6 +151,16 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_MESSAGE_IF_SUCCESS) {
+            if (resultCode == Activity.RESULT_OK) {
+                showText(data.getStringExtra(EXTRA_MESSAGE));
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void setUpToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -178,5 +209,33 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
         floatingActionButton.setOnClickListener(onClickListener);
         floatingActionButton.setImageResource(resId);
+    }
+
+    /**
+     * Show a {@link Snackbar} if current {@link android.app.Activity} is visible,
+     * otherwise show a {@link android.widget.Toast}.
+     *
+     * @param text The text to show.
+     */
+    public final void showText(CharSequence text) {
+        if (mApp.isAppVisible()) {
+            SnackBarUtil.showLongSnackBar(findViewById(R.id.coordinator_layout), text);
+        } else {
+            ToastUtil.showLongToastByText(getApplicationContext(), text);
+        }
+    }
+
+    /**
+     * Show a {@link Snackbar} if current {@link android.app.Activity} is visible.
+     *
+     * @param text The text to show.
+     * @return The displayed {@link Snackbar} if current {@link android.app.Activity} is visible,
+     * otherwise {@code null}.
+     */
+    public final Snackbar showSnackBarIfVisible(CharSequence text) {
+        if (mApp.isAppVisible()) {
+            return SnackBarUtil.showLongSnackBar(findViewById(R.id.coordinator_layout), text);
+        }
+        return null;
     }
 }
