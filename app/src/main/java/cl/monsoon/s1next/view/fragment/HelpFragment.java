@@ -86,8 +86,11 @@ public final class HelpFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.activity_help, menu);
 
-        menu.findItem(R.id.menu_version).setTitle(getString(R.string.menu_version,
-                BuildConfig.VERSION_NAME));
+        // see http://stackoverflow.com/q/10919240
+        if (isAdded()) {
+            menu.findItem(R.id.menu_version).setTitle(getString(R.string.menu_version,
+                    BuildConfig.VERSION_NAME));
+        }
     }
 
     @Override
