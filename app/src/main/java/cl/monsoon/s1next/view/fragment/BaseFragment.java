@@ -126,11 +126,14 @@ public abstract class BaseFragment<D> extends RxFragment {
                 onNext(mDataRetainedFragment.data);
                 mLoadingViewModel.setLoading(loading);
             } else {
-                // start to load data because the retained Fragment was killed by system
-                // and we have no data to load
-                mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FIRST_TIME);
+                if (!mDataRetainedFragment.stale) {
+                    // start to load data because the retained Fragment was killed by system
+                    // and we have no data to load
+                    mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FIRST_TIME);
+                }
             }
         }
+        mDataRetainedFragment.stale = true;
 
         mLoadingViewModelBindingDelegate.setLoadingViewModel(mLoadingViewModel);
         if (isLoading()) {

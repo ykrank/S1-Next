@@ -16,6 +16,12 @@ public class DataRetainedFragment<D> extends Fragment {
 
     public D data;
 
+    /**
+     * {@code stale} is false if this {@link DataRetainedFragment} was created
+     * for the first time or killed by system, otherwise true.
+     */
+    public boolean stale;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
