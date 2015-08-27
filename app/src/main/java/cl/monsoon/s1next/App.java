@@ -65,6 +65,7 @@ public final class App extends Application {
                     .build());
         }
         LeakCanary.install(this);
+        Bugsnag.init(this);
 
         sApp = this;
         mAppActivityLifecycleCallbacks = new AppActivityLifecycleCallbacks();
@@ -74,9 +75,6 @@ public final class App extends Application {
                 .appModule(new AppModule(this))
                 .build();
         mGeneralPreferencesManager = mAppComponent.getGeneralPreferencesManager();
-
-        Bugsnag.init(this);
-
         // set scaling factor for fonts
         ResourceUtil.setScaledDensity(getResources(), mGeneralPreferencesManager.getTextScale());
     }

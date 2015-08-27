@@ -194,7 +194,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     }
 
     /**
-     * Call this method before {@link #onPostCreate(Bundle)}
+     * Calls this method before {@link #onPostCreate(Bundle)}
      * otherwise it doesn't works.
      */
     final void disableDrawerIndicator() {
