@@ -72,6 +72,10 @@ public final class HelpFragment extends Fragment {
             mWebView.loadUrl(HELP_PAGE_URL);
         } else {
             mWebView.restoreState(savedInstanceState);
+            // if we rotate the screen very fast
+            if (mWebView.getUrl() == null) {
+                mWebView.loadUrl(HELP_PAGE_URL);
+            }
         }
     }
 
