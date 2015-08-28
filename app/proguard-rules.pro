@@ -16,10 +16,6 @@
 #   public *;
 #}
 
-# Android Design Support library
-# http://stackoverflow.com/a/30846201
--keep public class * extends android.support.design.widget.CoordinatorLayout$Behavior { *; }
-
 # Guava
 # https://github.com/google/guava/wiki/UsingProGuardWithGuava
 -dontwarn sun.misc.Unsafe
