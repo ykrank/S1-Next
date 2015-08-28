@@ -23,7 +23,7 @@ public final class OpenSourceLicensesActivity extends BaseActivity {
         setContentView(R.layout.activity_base_without_drawer);
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction().add(R.id.frame_layout,
+            getSupportFragmentManager().beginTransaction().add(R.id.frame_layout,
                     new OpenSourceLicensesFragment()).commit();
         }
     }

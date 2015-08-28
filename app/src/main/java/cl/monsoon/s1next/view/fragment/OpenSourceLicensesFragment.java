@@ -2,17 +2,16 @@ package cl.monsoon.s1next.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
-import android.support.annotation.NonNull;
 import android.support.annotation.Size;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceCategory;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceScreen;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.view.activity.OpenSourceLicenseDetailActivity;
 
-public final class OpenSourceLicensesFragment extends PreferenceFragment {
+public final class OpenSourceLicensesFragment extends PreferenceFragmentCompat {
 
     private static final String PREF_KEY_LIBRARIES = "pref_key_libraries";
     private static final String PREF_KEY_FILES = "pref_key_files";
@@ -23,8 +22,7 @@ public final class OpenSourceLicensesFragment extends PreferenceFragment {
     private static final String ASSET_PATH_OPEN_SOURCE_LICENSES_FILE = "text/license/file/";
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle bundle, String s) {
         addPreferencesFromResource(R.xml.preference_open_souce_licenses);
 
         PreferenceScreen preferenceScreen = getPreferenceScreen();
@@ -33,7 +31,7 @@ public final class OpenSourceLicensesFragment extends PreferenceFragment {
     }
 
     @Override
-    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
+    public boolean onPreferenceTreeClick(Preference preference) {
         OpenSourceLicenseDetailActivity.startOpenSourceLicenseDetailActivity(preference.getContext(),
                 preference.getTitle().toString(), preference.peekExtras().getString(
                         EXTRAS_LIBRARY_OR_FILE_OPEN_SOURCE_LICENSE_FILE_PATH));

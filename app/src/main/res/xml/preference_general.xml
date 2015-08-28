@@ -8,7 +8,7 @@
         android:persistent="false"
         android:title="@string/pref_general">
 
-        <cl.monsoon.s1next.widget.ListPreferenceCompat
+        <ListPreference
             android:defaultValue="@string/pref_theme_default_value"
             android:entries="@array/pref_theme_entries"
             android:entryValues="@array/pref_theme_entry_values"
@@ -16,7 +16,7 @@
             android:summary="%s"
             android:title="@string/pref_theme" />
 
-        <cl.monsoon.s1next.widget.ListPreferenceCompat
+        <ListPreference
             android:defaultValue="@string/pref_font_size_default_value"
             android:entries="@array/pref_font_size_entries"
             android:entryValues="@array/pref_font_size_entry_values"

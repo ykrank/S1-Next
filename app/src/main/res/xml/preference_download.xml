@@ -4,7 +4,7 @@
     android:persistent="false"
     tools:context="cl.monsoon.s1next.view.fragment.DownloadPreferenceFragment">
 
-    <cl.monsoon.s1next.widget.ListPreferenceCompat
+    <ListPreference
         android:defaultValue="@string/pref_download_total_cache_size_default_value"
         android:entries="@array/pref_download_total_cache_size_entries"
         android:entryValues="@array/pref_download_total_cache_size_entry_values"
@@ -16,7 +16,7 @@
         android:persistent="false"
         android:title="@string/pref_avatar">
 
-        <cl.monsoon.s1next.widget.ListPreferenceCompat
+        <ListPreference
             android:defaultValue="@string/pref_download_avatars_strategy_default_value"
             android:entries="@array/pref_download_avatars_strategy_entries"
             android:entryValues="@array/pref_download_avatars_strategy_entry_values"
@@ -24,7 +24,7 @@
             android:summary="%s"
             android:title="@string/pref_downloads" />
 
-        <cl.monsoon.s1next.widget.ListPreferenceCompat
+        <ListPreference
             android:defaultValue="@string/pref_avatar_resolution_strategy_default_value"
             android:entries="@array/pref_avatar_resolution_strategy_entries"
             android:entryValues="@array/pref_avatar_resolution_strategy_entry_values"
@@ -32,7 +32,7 @@
             android:summary="%s"
             android:title="@string/pref_avatar_resolution" />
 
-        <cl.monsoon.s1next.widget.ListPreferenceCompat
+        <ListPreference
             android:defaultValue="@string/pref_avatar_cache_invalidation_interval_default_value"
             android:entries="@array/pref_avatar_cache_invalidation_interval_entries"
             android:entryValues="@array/pref_avatar_cache_invalidation_interval_entry_values"
@@ -46,7 +46,7 @@
         android:persistent="false"
         android:title="@string/pref_image">
 
-        <cl.monsoon.s1next.widget.ListPreferenceCompat
+        <ListPreference
             android:defaultValue="@string/pref_download_images_strategy_default_value"
             android:entries="@array/pref_download_images_strategy_entries"
             android:entryValues="@array/pref_download_images_strategy_entry_values"

@@ -2,7 +2,7 @@ package cl.monsoon.s1next.view.fragment;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
+import android.support.v7.preference.Preference;
 
 import javax.inject.Inject;
 
@@ -41,13 +41,12 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
     ThemeManager mThemeManager;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle bundle, String s) {
         addPreferencesFromResource(R.xml.preference_general);
-        App.getAppComponent(getActivity()).inject(this);
+        App.getAppComponent(getContext()).inject(this);
 
         findPreference(PREF_KEY_DOWNLOADS).setOnPreferenceClickListener(this);
-        findPreference(PREF_KEY_SIGNATURE).setSummary(DeviceUtil.getSignature(getActivity()));
+        findPreference(PREF_KEY_SIGNATURE).setSummary(DeviceUtil.getSignature(getContext()));
     }
 
     @Override
@@ -82,6 +81,8 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
                 SettingsActivity.startDownloadSettingsActivity(preference.getContext());
 
                 return true;
+            default:
+                // fall through
         }
 
         return false;
