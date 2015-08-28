@@ -10,20 +10,21 @@ import cl.monsoon.s1next.data.api.model.ThreadLink;
 public final class Api {
 
     public static final String BASE_URL = "http://bbs.saraba1st.com/2b/";
+    public static final String BASE_API_URL = "http://bbs.saraba1st.com/2b/api/mobile/";
 
     public static final int THREADS_PER_PAGE = 50;
     public static final int POSTS_PER_PAGE = 30;
 
     public static final int REPLY_NOTIFICATION_MAX_LENGTH = 100;
 
-    static final String URL_FORUM = "api/mobile/index.php?module=forumindex";
-    static final String URL_FAVOURITES = "api/mobile/index.php?module=myfavthread";
-    static final String URL_THREAD_LIST = "api/mobile/index.php?module=forumdisplay&tpp=" + THREADS_PER_PAGE;
-    static final String URL_POST_LIST = "api/mobile/index.php?module=viewthread&ppp=" + POSTS_PER_PAGE;
+    static final String URL_FORUM = "index.php?module=forumindex";
+    static final String URL_FAVOURITES = "index.php?module=myfavthread";
+    static final String URL_THREAD_LIST = "index.php?module=forumdisplay&tpp=" + THREADS_PER_PAGE;
+    static final String URL_POST_LIST = "index.php?module=viewthread&ppp=" + POSTS_PER_PAGE;
 
     private static final String URL_QUOTE_POST_REDIRECT = prepend("forum.php?mod=redirect&goto=findpost");
 
-    static final String URL_LOGIN = "api/mobile/index.php?module=login&loginsubmit=yes&loginfield=username&cookietime=2592000";
+    static final String URL_LOGIN = "index.php?module=login&loginsubmit=yes&loginfield=username&cookietime=2592000";
     /**
      * A URL used to get the correct authenticity token after login.
      * <p>
@@ -31,9 +32,9 @@ public final class Api {
      * is not fresh if we have only logged in and haven't browsed
      * any new contents (which means requesting HTTP GET successfully).
      */
-    static final String URL_AUTHENTICITY_TOKEN_HELPER = "api/mobile/index.php?module=toplist";
-    static final String URL_THREAD_FAVOURITES_ADD = "api/mobile/index.php?module=favthread&favoritesubmit=yes";
-    static final String URL_REPLY = "api/mobile/index.php?module=sendreply&replysubmit=yes";
+    static final String URL_AUTHENTICITY_TOKEN_HELPER = "index.php?module=toplist";
+    static final String URL_THREAD_FAVOURITES_ADD = "index.php?module=favthread&favoritesubmit=yes";
+    static final String URL_REPLY = "index.php?module=sendreply&replysubmit=yes";
     /**
      * A URL to get the quoted user identification and processed quoted
      * content (with some HTML tags and its origin redirect hyperlink).

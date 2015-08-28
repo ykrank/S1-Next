@@ -75,7 +75,7 @@ final class AppModule {
     S1Service providerRetrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .client(okHttpClient)
-                .baseUrl(Api.BASE_URL)
+                .baseUrl(Api.BASE_API_URL)
                 .addConverter(String.class, new ToStringConverterFactory())
                 .addConverterFactory(JacksonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
