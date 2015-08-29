@@ -8,7 +8,7 @@ import java.io.IOException;
 
 import retrofit.Converter;
 
-public final class ToStringConverterFactory implements Converter<String> {
+public final class ToStringConverter implements Converter<String> {
 
     @Override
     public String fromBody(ResponseBody body) throws IOException {
