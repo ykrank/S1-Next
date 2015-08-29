@@ -19,6 +19,6 @@ public final class ClipboardUtil {
         ClipData clipData = ClipData.newPlainText("simple text", text);
         clipboardManager.setPrimaryClip(clipData);
 
-        ToastUtil.showLongToastByResId(context, resId);
+        ToastUtil.showShortToastByResId(context, resId);
     }
 }

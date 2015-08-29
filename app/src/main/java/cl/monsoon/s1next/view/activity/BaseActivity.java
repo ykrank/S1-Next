@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.common.base.Optional;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
@@ -28,7 +29,6 @@ import cl.monsoon.s1next.data.event.FontSizeChangeEvent;
 import cl.monsoon.s1next.data.event.ThemeChangeEvent;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
-import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.internal.DrawerLayoutDelegate;
 import cl.monsoon.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import cl.monsoon.s1next.view.internal.ToolbarDelegate;
@@ -220,7 +220,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         if (mApp.isAppVisible()) {
             Snackbar.make(findViewById(R.id.coordinator_layout), text, Snackbar.LENGTH_LONG).show();
         } else {
-            ToastUtil.showLongToastByText(getApplicationContext(), text);
+            Toast.makeText(this, text, Toast.LENGTH_LONG).show();
         }
     }
 
