@@ -64,7 +64,7 @@ public abstract class BaseFragment<D> extends RxFragment {
     S1Service mS1Service;
     private UserValidator mUserValidator;
 
-    private WeakReference<Snackbar> mSnackbar;
+    private WeakReference<Snackbar> mRetrySnackbar;
 
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -181,13 +181,8 @@ public abstract class BaseFragment<D> extends RxFragment {
 
         // see http://stackoverflow.com/a/9779971
         if (isVisible() && !isVisibleToUser) {
-            // dismiss SnackBar when current Fragment hid
-            if (mSnackbar != null) {
-                Snackbar snackbar = mSnackbar.get();
-                if (snackbar != null && snackbar.isShown()) {
-                    snackbar.dismiss();
-                }
-            }
+            // dismiss retry SnackBar when current Fragment hid
+            dismissRetrySnackBar();
         }
     }
 
@@ -231,6 +226,7 @@ public abstract class BaseFragment<D> extends RxFragment {
      * in oder to provider its own data source {@link Observable}.
      */
     private void load() {
+        dismissRetrySnackBar();
         getSourceObservable().compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(mUserValidator::validateIntercept)
@@ -273,8 +269,7 @@ public abstract class BaseFragment<D> extends RxFragment {
         if (getUserVisibleHint()) {
             String message = result.getMessage();
             if (!TextUtils.isEmpty(message)) {
-                Snackbar snackbar = ((BaseActivity) getActivity()).showSnackBarIfVisible(message);
-                mSnackbar = new WeakReference<>(snackbar);
+                showRetrySnackBar(message);
             }
         }
     }
@@ -288,9 +283,7 @@ public abstract class BaseFragment<D> extends RxFragment {
     @CallSuper
     void onError(Throwable throwable) {
         if (getUserVisibleHint()) {
-            Snackbar snackbar = ((BaseActivity) getActivity()).showSnackBarIfVisible(
-                    throwable.getMessage());
-            mSnackbar = new WeakReference<>(snackbar);
+            showRetrySnackBar(throwable.getMessage());
         }
     }
 
@@ -300,6 +293,23 @@ public abstract class BaseFragment<D> extends RxFragment {
      */
     private void finallyDo() {
         mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FINISH);
+    }
+
+    private void showRetrySnackBar(String message) {
+        Snackbar snackbar = ((BaseActivity) getActivity()).showSnackBarIfVisible(message,
+                R.string.snackbar_action_retry, isPullUpToRefresh()
+                        ? v -> startPullToRefresh()
+                        : v -> startSwipeRefresh());
+        mRetrySnackbar = new WeakReference<>(snackbar);
+    }
+
+    private void dismissRetrySnackBar() {
+        if (mRetrySnackbar != null) {
+            Snackbar snackbar = mRetrySnackbar.get();
+            if (snackbar != null && snackbar.isShown()) {
+                snackbar.dismiss();
+            }
+        }
     }
 
     final RecyclerView getRecyclerView() {

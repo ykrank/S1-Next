@@ -74,6 +74,8 @@
     <string name="dialog_progress_message_favourites_add">Adding…</string>
     <string name="prompt_remark">Remark</string>
 
+    <string name="snackbar_action_retry">Retry</string>
+
     <string name="dialog_message_invalid_or_unsupported_link">Invalid or unsupported link.</string>
     <string name="dialog_button_text_use_a_different_app">Use a different app</string>
     <string name="dialog_message_processing">Processing…</string>

@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -27,7 +28,6 @@ import cl.monsoon.s1next.data.event.FontSizeChangeEvent;
 import cl.monsoon.s1next.data.event.ThemeChangeEvent;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
-import cl.monsoon.s1next.util.SnackBarUtil;
 import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.internal.DrawerLayoutDelegate;
 import cl.monsoon.s1next.view.internal.DrawerLayoutDelegateConcrete;
@@ -218,7 +218,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
      */
     public final void showText(CharSequence text) {
         if (mApp.isAppVisible()) {
-            SnackBarUtil.showLongSnackBar(findViewById(R.id.coordinator_layout), text);
+            Snackbar.make(findViewById(R.id.coordinator_layout), text, Snackbar.LENGTH_LONG).show();
         } else {
             ToastUtil.showLongToastByText(getApplicationContext(), text);
         }
@@ -227,13 +227,19 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     /**
      * Show a {@link Snackbar} if current {@link android.app.Activity} is visible.
      *
-     * @param text The text to show.
+     * @param text            The text to show.
+     * @param actionResId     The action string resource to display.
+     * @param onClickListener Callback to be invoked when the action is clicked.
      * @return The displayed {@link Snackbar} if current {@link android.app.Activity} is visible,
      * otherwise {@code null}.
      */
-    public final Snackbar showSnackBarIfVisible(CharSequence text) {
+    public final Snackbar showSnackBarIfVisible(CharSequence text, @StringRes int actionResId, View.OnClickListener onClickListener) {
         if (mApp.isAppVisible()) {
-            return SnackBarUtil.showLongSnackBar(findViewById(R.id.coordinator_layout), text);
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator_layout), text,
+                    Snackbar.LENGTH_LONG);
+            snackbar.setAction(actionResId, onClickListener);
+            snackbar.show();
+            return snackbar;
         }
         return null;
     }
