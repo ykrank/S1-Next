@@ -19,6 +19,7 @@ import android.support.v4.view.WindowInsetsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import java.lang.reflect.Method;
 
@@ -55,13 +56,11 @@ public final class GalleryActivity extends AppCompatActivity {
         setTitle(null);
         toolbarDelegate.setupNavCrossIcon();
 
-        // set Toolbar's padding because we use `android:windowTranslucentStatus` in this Activity
+        // set Toolbar's top margin because we use `android:windowTranslucentStatus` in this Activity
         // we only use translucent status if API >= 21
         ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar, (v, insets) -> {
-            int top = insets.getSystemWindowInsetTop();
-            v.setPadding(0, top, 0, 0);
-            v.getLayoutParams().height = v.getContext().getResources().getDimensionPixelSize(
-                    R.dimen.abc_action_bar_default_height_material) + top;
+            ((ViewGroup.MarginLayoutParams) v.getLayoutParams()).topMargin =
+                    insets.getSystemWindowInsetTop();
 
             // see CoordinatorLayout#setWindowInsets(WindowInsetsCompat)
             // add CoordinatorLayout's default View.OnApplyWindowInsetsListener implementation
