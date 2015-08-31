@@ -71,7 +71,7 @@ public final class ReplyRequestDialogFragment extends ProgressDialogFragment<Res
             BaseActivity.setResultMessage(activity, result.getMessage());
             activity.finish();
         } else {
-            ((BaseActivity) activity).showLongText(result.getMessage());
+            showLongText(result.getMessage());
         }
     }
 }

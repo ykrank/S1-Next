@@ -17,8 +17,8 @@ import cl.monsoon.s1next.data.api.S1Service;
 import cl.monsoon.s1next.data.api.UserValidator;
 import cl.monsoon.s1next.data.api.model.Account;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
-import cl.monsoon.s1next.view.activity.BaseActivity;
 import cl.monsoon.s1next.view.fragment.BaseFragment;
+import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -127,7 +127,7 @@ abstract class ProgressDialogFragment<D> extends RxDialogFragment {
      * @see BaseFragment#onError(Throwable)
      */
     void onError(Throwable throwable) {
-        ((BaseActivity) getActivity()).showLongText(throwable.toString());
+        showLongText(throwable.getMessage());
     }
 
     /**
@@ -135,6 +135,13 @@ abstract class ProgressDialogFragment<D> extends RxDialogFragment {
      */
     private void finallyDo() {
         dismissAllowingStateLoss();
+    }
+
+    /**
+     * @see cl.monsoon.s1next.view.activity.BaseActivity#showLongText(CharSequence)
+     */
+    final void showLongText(CharSequence text) {
+        ((CoordinatorLayoutAnchorDelegate) getActivity()).showLongText(text);
     }
 
     protected abstract CharSequence getProgressMessage();

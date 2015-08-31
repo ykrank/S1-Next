@@ -29,6 +29,7 @@ import cl.monsoon.s1next.data.event.ThemeChangeEvent;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
+import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegateImpl;
 import cl.monsoon.s1next.view.internal.DrawerLayoutDelegate;
 import cl.monsoon.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import cl.monsoon.s1next.view.internal.ToolbarDelegate;
@@ -39,7 +40,8 @@ import cl.monsoon.s1next.widget.EventBus;
  * and navigation drawer amongst others.
  * Also changes theme depends on settings.
  */
-public abstract class BaseActivity extends RxAppCompatActivity {
+public abstract class BaseActivity extends RxAppCompatActivity
+        implements CoordinatorLayoutAnchorDelegate {
 
     private static final int REQUEST_CODE_MESSAGE_IF_SUCCESS = 0;
     private static final String EXTRA_MESSAGE = "message";
@@ -202,10 +204,11 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     }
 
     private void setupCoordinatorLayoutAnchorDelegate() {
-        mCoordinatorLayoutAnchorDelegate = new CoordinatorLayoutAnchorDelegate(
+        mCoordinatorLayoutAnchorDelegate = new CoordinatorLayoutAnchorDelegateImpl(
                 (CoordinatorLayout) findViewById(R.id.coordinator_layout));
     }
 
+    @Override
     public final void setupFloatingActionButton(@DrawableRes int resId, View.OnClickListener onClickListener) {
         mCoordinatorLayoutAnchorDelegate.setupFloatingActionButton(resId, onClickListener);
     }
@@ -213,6 +216,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     /**
      * @see CoordinatorLayoutAnchorDelegate#showLongText(CharSequence)
      */
+    @Override
     public final void showLongText(CharSequence text) {
         mCoordinatorLayoutAnchorDelegate.showLongText(text);
     }
@@ -220,7 +224,8 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     /**
      * @see CoordinatorLayoutAnchorDelegate#showLongSnackbarIfVisible(CharSequence, int, View.OnClickListener)
      */
-    public final Snackbar showSnackbarIfVisible(CharSequence text, @StringRes int actionResId, View.OnClickListener onClickListener) {
+    @Override
+    public final Optional<Snackbar> showLongSnackbarIfVisible(CharSequence text, @StringRes int actionResId, View.OnClickListener onClickListener) {
         return mCoordinatorLayoutAnchorDelegate.showLongSnackbarIfVisible(text, actionResId,
                 onClickListener);
     }
@@ -228,6 +233,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     /**
      * @see CoordinatorLayoutAnchorDelegate#showShortSnackbar(int)
      */
+    @Override
     public final void showShortSnackbar(@StringRes int resId) {
         mCoordinatorLayoutAnchorDelegate.showShortSnackbar(resId);
     }

@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.trello.rxlifecycle.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxFragment;
@@ -28,8 +29,8 @@ import cl.monsoon.s1next.data.api.S1Service;
 import cl.monsoon.s1next.data.api.UserValidator;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.databinding.FragmentBaseBinding;
-import cl.monsoon.s1next.view.activity.BaseActivity;
 import cl.monsoon.s1next.view.fragment.headless.DataRetainedFragment;
+import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import cl.monsoon.s1next.view.internal.LoadingViewModelBindingDelegate;
 import cl.monsoon.s1next.view.internal.LoadingViewModelBindingDelegateImpl;
 import cl.monsoon.s1next.viewmodel.LoadingViewModel;
@@ -296,11 +297,14 @@ public abstract class BaseFragment<D> extends RxFragment {
     }
 
     private void showRetrySnackBar(String message) {
-        Snackbar snackbar = ((BaseActivity) getActivity()).showSnackbarIfVisible(message,
-                R.string.snackbar_action_retry, isPullUpToRefresh()
-                        ? v -> startPullToRefresh()
-                        : v -> startSwipeRefresh());
-        mRetrySnackbar = new WeakReference<>(snackbar);
+        Optional<Snackbar> snackbar = ((CoordinatorLayoutAnchorDelegate) getActivity())
+                .showLongSnackbarIfVisible(message, R.string.snackbar_action_retry,
+                        isPullUpToRefresh()
+                                ? v -> startPullToRefresh()
+                                : v -> startSwipeRefresh());
+        if (snackbar.isPresent()) {
+            mRetrySnackbar = new WeakReference<>(snackbar.get());
+        }
     }
 
     private void dismissRetrySnackBar() {

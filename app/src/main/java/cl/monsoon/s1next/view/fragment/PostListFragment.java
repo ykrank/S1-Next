@@ -35,12 +35,11 @@ import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
 import cl.monsoon.s1next.util.StringUtil;
-import cl.monsoon.s1next.view.activity.BaseActivity;
-import cl.monsoon.s1next.view.activity.PostListActivity;
 import cl.monsoon.s1next.view.activity.ReplyActivity;
 import cl.monsoon.s1next.view.dialog.LoginPromptDialogFragment;
 import cl.monsoon.s1next.view.dialog.ThreadAttachmentDialogFragment;
 import cl.monsoon.s1next.view.dialog.ThreadFavouritesAddDialogFragment;
+import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import cl.monsoon.s1next.widget.EventBus;
 
 
@@ -135,7 +134,7 @@ public final class PostListFragment extends BaseViewPagerFragment
             }
         }
 
-        ((PostListActivity) getActivity()).setupFloatingActionButton(
+        ((CoordinatorLayoutAnchorDelegate) getActivity()).setupFloatingActionButton(
                 R.drawable.ic_menu_comment_white_24dp, this);
 
     }
@@ -208,7 +207,8 @@ public final class PostListFragment extends BaseViewPagerFragment
             case R.id.menu_link:
                 ClipboardUtil.copyText(getContext(), Api.getPostListUrlForBrowser(mThreadId,
                         getCurrentPage()));
-                ((BaseActivity) getActivity()).showShortSnackbar(R.string.message_thread_link_copy);
+                ((CoordinatorLayoutAnchorDelegate) getActivity()).showShortSnackbar(
+                        R.string.message_thread_link_copy);
 
                 return true;
             case R.id.menu_share:
