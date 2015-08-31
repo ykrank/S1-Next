@@ -233,7 +233,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
      * @return The displayed {@link Snackbar} if current {@link android.app.Activity} is visible,
      * otherwise {@code null}.
      */
-    public final Snackbar showSnackBarIfVisible(CharSequence text, @StringRes int actionResId, View.OnClickListener onClickListener) {
+    public final Snackbar showSnackbarIfVisible(CharSequence text, @StringRes int actionResId, View.OnClickListener onClickListener) {
         if (mApp.isAppVisible()) {
             Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator_layout), text,
                     Snackbar.LENGTH_LONG);
@@ -242,5 +242,14 @@ public abstract class BaseActivity extends RxAppCompatActivity {
             return snackbar;
         }
         return null;
+    }
+
+    /**
+     * Show a short {@link Snackbar}.
+     *
+     * @param resId The resource id of the string resource to show for {@link Snackbar}.
+     */
+    public final void showShortSnackbar(@StringRes int resId) {
+        Snackbar.make(findViewById(R.id.coordinator_layout), resId, Snackbar.LENGTH_SHORT).show();
     }
 }

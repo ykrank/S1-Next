@@ -20,6 +20,7 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.databinding.FragmentHelpBinding;
 import cl.monsoon.s1next.util.ClipboardUtil;
 import cl.monsoon.s1next.util.ToastUtil;
+import cl.monsoon.s1next.view.activity.BaseActivity;
 import cl.monsoon.s1next.view.activity.OpenSourceLicensesActivity;
 import cl.monsoon.s1next.viewmodel.WebPageViewModel;
 
@@ -126,7 +127,8 @@ public final class HelpFragment extends Fragment {
                 return true;
             case R.id.menu_version:
                 // copy version number to clipboard though it make no sense actually
-                ClipboardUtil.copyTextAndShowToastPrompt(getContext(), item.getTitle(),
+                ClipboardUtil.copyText(getContext(), item.getTitle());
+                ((BaseActivity) getActivity()).showShortSnackbar(
                         R.string.message_version_number_copied);
 
                 return true;

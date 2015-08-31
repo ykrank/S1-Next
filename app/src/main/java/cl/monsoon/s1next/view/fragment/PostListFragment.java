@@ -35,6 +35,7 @@ import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.MathUtil;
 import cl.monsoon.s1next.util.NetworkUtil;
 import cl.monsoon.s1next.util.StringUtil;
+import cl.monsoon.s1next.view.activity.BaseActivity;
 import cl.monsoon.s1next.view.activity.PostListActivity;
 import cl.monsoon.s1next.view.activity.ReplyActivity;
 import cl.monsoon.s1next.view.dialog.LoginPromptDialogFragment;
@@ -205,8 +206,9 @@ public final class PostListFragment extends BaseViewPagerFragment
 
                 return true;
             case R.id.menu_link:
-                ClipboardUtil.copyTextAndShowToastPrompt(getContext(), Api.getPostListUrlForBrowser(
-                        mThreadId, getCurrentPage()), R.string.message_thread_link_copy);
+                ClipboardUtil.copyText(getContext(), Api.getPostListUrlForBrowser(mThreadId,
+                        getCurrentPage()));
+                ((BaseActivity) getActivity()).showShortSnackbar(R.string.message_thread_link_copy);
 
                 return true;
             case R.id.menu_share:

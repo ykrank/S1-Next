@@ -296,7 +296,7 @@ public abstract class BaseFragment<D> extends RxFragment {
     }
 
     private void showRetrySnackBar(String message) {
-        Snackbar snackbar = ((BaseActivity) getActivity()).showSnackBarIfVisible(message,
+        Snackbar snackbar = ((BaseActivity) getActivity()).showSnackbarIfVisible(message,
                 R.string.snackbar_action_retry, isPullUpToRefresh()
                         ? v -> startPullToRefresh()
                         : v -> startSwipeRefresh());
