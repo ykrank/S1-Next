@@ -12,16 +12,16 @@
             type="cl.monsoon.s1next.viewmodel.TextAssetViewModel" />
     </data>
 
-    <LinearLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <include layout="@layout/app_bar_layout" />
 
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <TextView
                 android:layout_width="match_parent"
@@ -29,8 +29,8 @@
                 android:textIsSelectable="true"
                 app:textPath="@{textAssetViewModel.textPath}" />
 
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
 
-    </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
 </layout>
