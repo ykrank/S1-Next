@@ -127,7 +127,7 @@ abstract class ProgressDialogFragment<D> extends RxDialogFragment {
      * @see BaseFragment#onError(Throwable)
      */
     void onError(Throwable throwable) {
-        ((BaseActivity) getActivity()).showText(throwable.toString());
+        ((BaseActivity) getActivity()).showLongText(throwable.toString());
     }
 
     /**

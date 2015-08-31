@@ -51,12 +51,6 @@ final class AppModule {
 
     @Provides
     @Singleton
-    App provideApp() {
-        return mApp;
-    }
-
-    @Provides
-    @Singleton
     CookieManager providerCookieManager(Context context) {
         return new CookieManager(new PersistentHttpCookieStore(context), CookiePolicy.ACCEPT_ALL);
     }

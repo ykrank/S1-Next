@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
@@ -15,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.common.base.Optional;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
@@ -29,6 +28,7 @@ import cl.monsoon.s1next.data.event.FontSizeChangeEvent;
 import cl.monsoon.s1next.data.event.ThemeChangeEvent;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
+import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import cl.monsoon.s1next.view.internal.DrawerLayoutDelegate;
 import cl.monsoon.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import cl.monsoon.s1next.view.internal.ToolbarDelegate;
@@ -43,9 +43,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
     private static final int REQUEST_CODE_MESSAGE_IF_SUCCESS = 0;
     private static final String EXTRA_MESSAGE = "message";
-
-    @Inject
-    App mApp;
 
     @Inject
     EventBus mEventBus;
@@ -63,6 +60,8 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
     private DrawerLayoutDelegate mDrawerLayoutDelegate;
     private boolean mDrawerIndicatorEnabled = true;
+
+    private CoordinatorLayoutAnchorDelegate mCoordinatorLayoutAnchorDelegate;
 
     public static void startActivityForResultMessage(Activity activity, Intent intent) {
         activity.startActivityForResult(intent, REQUEST_CODE_MESSAGE_IF_SUCCESS);
@@ -99,6 +98,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
         setUpToolbar();
+        setupCoordinatorLayoutAnchorDelegate();
     }
 
     @Override
@@ -106,6 +106,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     public void setContentView(View view, ViewGroup.LayoutParams params) {
         super.setContentView(view, params);
         setUpToolbar();
+        setupCoordinatorLayoutAnchorDelegate();
     }
 
     @Override
@@ -154,7 +155,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_MESSAGE_IF_SUCCESS) {
             if (resultCode == Activity.RESULT_OK) {
-                showText(data.getStringExtra(EXTRA_MESSAGE));
+                showLongText(data.getStringExtra(EXTRA_MESSAGE));
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -200,56 +201,34 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         mDrawerIndicatorEnabled = false;
     }
 
+    private void setupCoordinatorLayoutAnchorDelegate() {
+        mCoordinatorLayoutAnchorDelegate = new CoordinatorLayoutAnchorDelegate(
+                (CoordinatorLayout) findViewById(R.id.coordinator_layout));
+    }
+
     public final void setupFloatingActionButton(@DrawableRes int resId, View.OnClickListener onClickListener) {
-        ViewGroup container = (ViewGroup) findViewById(R.id.coordinator_layout);
-        FloatingActionButton floatingActionButton = (FloatingActionButton)
-                getLayoutInflater().inflate(R.layout.floating_action_button, container, false);
-        container.addView(floatingActionButton);
-
-        floatingActionButton.setOnClickListener(onClickListener);
-        floatingActionButton.setImageResource(resId);
+        mCoordinatorLayoutAnchorDelegate.setupFloatingActionButton(resId, onClickListener);
     }
 
     /**
-     * Show a {@link Snackbar} if current {@link android.app.Activity} is visible,
-     * otherwise show a {@link android.widget.Toast}.
-     *
-     * @param text The text to show.
+     * @see CoordinatorLayoutAnchorDelegate#showLongText(CharSequence)
      */
-    public final void showText(CharSequence text) {
-        if (mApp.isAppVisible()) {
-            Snackbar.make(findViewById(R.id.coordinator_layout), text, Snackbar.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, text, Toast.LENGTH_LONG).show();
-        }
+    public final void showLongText(CharSequence text) {
+        mCoordinatorLayoutAnchorDelegate.showLongText(text);
     }
 
     /**
-     * Show a {@link Snackbar} if current {@link android.app.Activity} is visible.
-     *
-     * @param text            The text to show.
-     * @param actionResId     The action string resource to display.
-     * @param onClickListener Callback to be invoked when the action is clicked.
-     * @return The displayed {@link Snackbar} if current {@link android.app.Activity} is visible,
-     * otherwise {@code null}.
+     * @see CoordinatorLayoutAnchorDelegate#showLongSnackbarIfVisible(CharSequence, int, View.OnClickListener)
      */
     public final Snackbar showSnackbarIfVisible(CharSequence text, @StringRes int actionResId, View.OnClickListener onClickListener) {
-        if (mApp.isAppVisible()) {
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator_layout), text,
-                    Snackbar.LENGTH_LONG);
-            snackbar.setAction(actionResId, onClickListener);
-            snackbar.show();
-            return snackbar;
-        }
-        return null;
+        return mCoordinatorLayoutAnchorDelegate.showLongSnackbarIfVisible(text, actionResId,
+                onClickListener);
     }
 
     /**
-     * Show a short {@link Snackbar}.
-     *
-     * @param resId The resource id of the string resource to show for {@link Snackbar}.
+     * @see CoordinatorLayoutAnchorDelegate#showShortSnackbar(int)
      */
     public final void showShortSnackbar(@StringRes int resId) {
-        Snackbar.make(findViewById(R.id.coordinator_layout), resId, Snackbar.LENGTH_SHORT).show();
+        mCoordinatorLayoutAnchorDelegate.showShortSnackbar(resId);
     }
 }
