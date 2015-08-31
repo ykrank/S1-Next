@@ -108,6 +108,9 @@
     <string name="emoticon_carton" translatable="false">动漫</string>
     <string name="emoticon_bundam" translatable="false">雀高达</string>
 
+    <!-- gallery -->
+    <string name="snackbar_action_downloading">Downloading…</string>
+
     <!-- settings -->
     <string name="pref_general">General</string>
     <string name="pref_theme">Theme</string>

@@ -51,6 +51,7 @@
     <string name="dialog_progress_message_reply">回复中…</string>
     <string name="dialog_message_reply_discard_prompt">要舍弃这条回复吗？</string>
     <string name="dialog_message_text_discard">舍弃</string>
+    <string name="snackbar_action_downloading">下载中…</string>
     <string name="pref_general">常规</string>
     <string name="pref_theme">主题</string>
     <string name="pref_font_size">字体大小</string>

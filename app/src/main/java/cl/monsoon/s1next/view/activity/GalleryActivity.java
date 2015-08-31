@@ -11,11 +11,16 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresPermission;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.WindowInsetsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.lang.reflect.Method;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.databinding.ActivityGalleryBinding;
@@ -58,6 +63,21 @@ public final class GalleryActivity extends AppCompatActivity {
             v.getLayoutParams().height = v.getContext().getResources().getDimensionPixelSize(
                     R.dimen.abc_action_bar_default_height_material) + top;
 
+            // see CoordinatorLayout#setWindowInsets(WindowInsetsCompat)
+            // add CoordinatorLayout's default View.OnApplyWindowInsetsListener implementation
+            try {
+                Method method = CoordinatorLayout.class.getDeclaredMethod("setWindowInsets",
+                        WindowInsetsCompat.class);
+                method.setAccessible(true);
+                // use 0 px top inset because we want to have translucent status bar
+                WindowInsetsCompat insetsWithoutZeroTop = insets.replaceSystemWindowInsets(
+                        insets.getSystemWindowInsetLeft(), 0, insets.getSystemWindowInsetRight(),
+                        insets.getSystemWindowInsetBottom());
+                method.invoke(binding.coordinatorLayout, insetsWithoutZeroTop);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to invoke CoordinatorLayout#setWindowInsets(" +
+                        "WindowInsetsCompat).", e);
+            }
             return insets.consumeSystemWindowInsets();
         });
 
@@ -123,5 +143,8 @@ public final class GalleryActivity extends AppCompatActivity {
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
                 mImageUrl.substring(mImageUrl.lastIndexOf("/") + 1));
         downloadManager.enqueue(request);
+
+        Snackbar.make(findViewById(R.id.coordinator_layout), R.string.snackbar_action_downloading,
+                Snackbar.LENGTH_SHORT).show();
     }
 }
