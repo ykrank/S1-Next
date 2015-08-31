@@ -30,7 +30,7 @@ public final class SettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base_without_drawer);
+        setContentView(R.layout.activity_base_without_drawer_and_scrolling_effect);
 
         if (savedInstanceState == null) {
             if (getIntent().getBooleanExtra(ARG_SHOW_DOWNLOAD_SETTINGS, false)) {
