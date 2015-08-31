@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import javax.inject.Inject;
@@ -99,7 +100,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
     @CallSuper
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-        setUpToolbar();
+        setupToolbar();
         setupCoordinatorLayoutAnchorDelegate();
     }
 
@@ -107,7 +108,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
     @CallSuper
     public void setContentView(View view, ViewGroup.LayoutParams params) {
         super.setContentView(view, params);
-        setUpToolbar();
+        setupToolbar();
         setupCoordinatorLayoutAnchorDelegate();
     }
 
@@ -163,7 +164,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void setUpToolbar() {
+    private void setupToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             mToolbarDelegate = new ToolbarDelegate(this, toolbar);
@@ -205,7 +206,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     private void setupCoordinatorLayoutAnchorDelegate() {
         mCoordinatorLayoutAnchorDelegate = new CoordinatorLayoutAnchorDelegateImpl(
-                (CoordinatorLayout) findViewById(R.id.coordinator_layout));
+                (CoordinatorLayout) Preconditions.checkNotNull(findViewById(R.id.coordinator_layout)));
     }
 
     @Override
