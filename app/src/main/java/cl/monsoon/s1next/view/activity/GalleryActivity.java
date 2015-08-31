@@ -69,9 +69,10 @@ public final class GalleryActivity extends AppCompatActivity
             ((ViewGroup.MarginLayoutParams) v.getLayoutParams()).topMargin =
                     insets.getSystemWindowInsetTop();
 
-            // see CoordinatorLayout#setWindowInsets(WindowInsetsCompat)
-            // add CoordinatorLayout's default View.OnApplyWindowInsetsListener implementation
+            // see http://stackoverflow.com/q/31492040
             try {
+                // see CoordinatorLayout#setWindowInsets(WindowInsetsCompat)
+                // add CoordinatorLayout's default View.OnApplyWindowInsetsListener implementation
                 Method method = CoordinatorLayout.class.getDeclaredMethod("setWindowInsets",
                         WindowInsetsCompat.class);
                 method.setAccessible(true);
@@ -84,6 +85,7 @@ public final class GalleryActivity extends AppCompatActivity
                 throw new RuntimeException("Failed to invoke CoordinatorLayout#setWindowInsets(" +
                         "WindowInsetsCompat).", e);
             }
+
             return insets.consumeSystemWindowInsets();
         });
 
