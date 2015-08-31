@@ -7,11 +7,13 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Parcelable;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 
 public final class IntentUtil {
 
@@ -66,7 +68,13 @@ public final class IntentUtil {
         }
 
         if (targetIntentList.isEmpty()) {
-            ToastUtil.showShortToastByResId(context, R.string.message_chooser_no_applications);
+            if (context instanceof CoordinatorLayoutAnchorDelegate) {
+                ((CoordinatorLayoutAnchorDelegate) context).showShortSnackbar(
+                        R.string.message_chooser_no_applications);
+            } else {
+                Toast.makeText(context, R.string.message_chooser_no_applications,
+                        Toast.LENGTH_SHORT).show();
+            }
         } else {
             Intent chooserIntent = Intent.createChooser(targetIntentList.remove(0),
                     context.getString(R.string.intent_title_which_view_application));

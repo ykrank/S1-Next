@@ -9,8 +9,10 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresPermission;
+import android.support.annotation.StringRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -19,20 +21,25 @@ import android.support.v4.view.WindowInsetsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.common.base.Optional;
 
 import java.lang.reflect.Method;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.databinding.ActivityGalleryBinding;
 import cl.monsoon.s1next.util.IntentUtil;
+import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import cl.monsoon.s1next.view.internal.ToolbarDelegate;
 import cl.monsoon.s1next.viewmodel.ImageViewModel;
 
 /**
  * An Activity shows an ImageView that supports multi-touch.
  */
-public final class GalleryActivity extends AppCompatActivity {
+public final class GalleryActivity extends AppCompatActivity
+        implements CoordinatorLayoutAnchorDelegate {
 
     private final static int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 0;
 
@@ -143,7 +150,26 @@ public final class GalleryActivity extends AppCompatActivity {
                 mImageUrl.substring(mImageUrl.lastIndexOf("/") + 1));
         downloadManager.enqueue(request);
 
-        Snackbar.make(findViewById(R.id.coordinator_layout), R.string.snackbar_action_downloading,
-                Snackbar.LENGTH_SHORT).show();
+        showShortSnackbar(R.string.snackbar_action_downloading);
+    }
+
+    @Override
+    public void setupFloatingActionButton(@DrawableRes int resId, View.OnClickListener onClickListener) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void showLongText(CharSequence text) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Optional<Snackbar> showLongSnackbarIfVisible(CharSequence text, @StringRes int actionResId, View.OnClickListener onClickListener) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void showShortSnackbar(@StringRes int resId) {
+        Snackbar.make(findViewById(R.id.coordinator_layout), resId, Snackbar.LENGTH_SHORT).show();
     }
 }

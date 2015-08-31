@@ -19,7 +19,6 @@ import cl.monsoon.s1next.BuildConfig;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.databinding.FragmentHelpBinding;
 import cl.monsoon.s1next.util.ClipboardUtil;
-import cl.monsoon.s1next.util.ToastUtil;
 import cl.monsoon.s1next.view.activity.OpenSourceLicensesActivity;
 import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import cl.monsoon.s1next.viewmodel.WebPageViewModel;
@@ -114,8 +113,8 @@ public final class HelpFragment extends Fragment {
                         // link our app in Google Play website if user hasn't installed any Android marketplaces
                         startActivity(intent);
                     } catch (ActivityNotFoundException e) {
-                        // show Toast if user hasn't installed any Android marketplaces or browsers
-                        ToastUtil.showShortToastByResId(getContext(),
+                        // show Snackbar if user hasn't installed any Android marketplaces or browsers
+                        ((CoordinatorLayoutAnchorDelegate) getActivity()).showShortSnackbar(
                                 R.string.message_chooser_no_applications);
                     }
                 }
