@@ -214,26 +214,17 @@ public abstract class BaseActivity extends RxAppCompatActivity
         mCoordinatorLayoutAnchorDelegate.setupFloatingActionButton(resId, onClickListener);
     }
 
-    /**
-     * @see CoordinatorLayoutAnchorDelegate#showLongText(CharSequence)
-     */
     @Override
     public final void showLongText(CharSequence text) {
         mCoordinatorLayoutAnchorDelegate.showLongText(text);
     }
 
-    /**
-     * @see CoordinatorLayoutAnchorDelegate#showLongSnackbarIfVisible(CharSequence, int, View.OnClickListener)
-     */
     @Override
     public final Optional<Snackbar> showLongSnackbarIfVisible(CharSequence text, @StringRes int actionResId, View.OnClickListener onClickListener) {
         return mCoordinatorLayoutAnchorDelegate.showLongSnackbarIfVisible(text, actionResId,
                 onClickListener);
     }
 
-    /**
-     * @see CoordinatorLayoutAnchorDelegate#showShortSnackbar(int)
-     */
     @Override
     public final void showShortSnackbar(@StringRes int resId) {
         mCoordinatorLayoutAnchorDelegate.showShortSnackbar(resId);
