@@ -7,12 +7,11 @@ public final class GeneralPreferencesManager {
 
     private final GeneralPreferencesRepository mGeneralPreferencesProvider;
 
-    private final Supplier<Float> mTextScaleSupplier = new Supplier<Float>() {
+    private final Supplier<Float> mFontScaleSupplier = new Supplier<Float>() {
 
         @Override
         public Float get() {
-            return TextScale.VALUES[Integer.parseInt(mGeneralPreferencesProvider.getFontSizeString())]
-                    .scale;
+            return Float.parseFloat(mGeneralPreferencesProvider.getFontSizeString());
         }
     };
     private final Supplier<Boolean> mSignatureEnabledSupplier = new Supplier<Boolean>() {
@@ -23,7 +22,7 @@ public final class GeneralPreferencesManager {
         }
     };
 
-    private volatile Supplier<Float> mTextScaleMemorized = Suppliers.memoize(mTextScaleSupplier);
+    private volatile Supplier<Float> mFontScaleMemorized = Suppliers.memoize(mFontScaleSupplier);
     private volatile Supplier<Boolean> mSignatureEnabledMemorized = Suppliers.memoize(mSignatureEnabledSupplier);
 
     public GeneralPreferencesManager(GeneralPreferencesRepository generalPreferencesProvider) {
@@ -31,14 +30,14 @@ public final class GeneralPreferencesManager {
     }
 
     /**
-     * Used for invalidating the text scale preference if settings change.
+     * Used for invalidating the font scale preference if settings change.
      */
-    public void invalidateTextScale() {
-        mTextScaleMemorized = Suppliers.memoize(mTextScaleSupplier);
+    public void invalidateFontScale() {
+        mFontScaleMemorized = Suppliers.memoize(mFontScaleSupplier);
     }
 
-    public float getTextScale() {
-        return mTextScaleMemorized.get();
+    public float getFontScale() {
+        return mFontScaleMemorized.get();
     }
 
     /**
@@ -50,17 +49,5 @@ public final class GeneralPreferencesManager {
 
     public boolean isSignatureEnabled() {
         return mSignatureEnabledMemorized.get();
-    }
-
-    private enum TextScale {
-        VERY_SMALL(0.8f), SMALL(0.9f), MEDIUM(1f), LARGE(1.1f), VERY_LARGE(1.2f);
-
-        private static final TextScale[] VALUES = TextScale.values();
-
-        private final float scale;
-
-        TextScale(float scale) {
-            this.scale = scale;
-        }
     }
 }

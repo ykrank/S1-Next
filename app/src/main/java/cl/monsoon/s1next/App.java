@@ -76,14 +76,14 @@ public final class App extends Application {
                 .build();
         mGeneralPreferencesManager = mAppComponent.getGeneralPreferencesManager();
         // set scaling factor for fonts
-        ResourceUtil.setScaledDensity(getResources(), mGeneralPreferencesManager.getTextScale());
+        ResourceUtil.setScaledDensity(getResources(), mGeneralPreferencesManager.getFontScale());
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        ResourceUtil.setScaledDensity(getResources(), mGeneralPreferencesManager.getTextScale());
+        ResourceUtil.setScaledDensity(getResources(), mGeneralPreferencesManager.getFontScale());
     }
 
     public boolean isAppVisible() {

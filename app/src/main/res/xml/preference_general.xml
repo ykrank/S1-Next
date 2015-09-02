@@ -20,7 +20,7 @@
             android:defaultValue="@string/pref_font_size_default_value"
             android:entries="@array/pref_font_size_entries"
             android:entryValues="@array/pref_font_size_entry_values"
-            android:key="pref_key_font_size"
+            android:key="pref_key_font_size_v2"
             android:summary="%s"
             android:title="@string/pref_font_size" />
 

@@ -26,7 +26,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
         implements Preference.OnPreferenceClickListener {
 
     public static final String PREF_KEY_THEME = "pref_key_theme";
-    public static final String PREF_KEY_FONT_SIZE = "pref_key_font_size";
+    public static final String PREF_KEY_FONT_SIZE = "pref_key_font_size_v2";
     public static final String PREF_KEY_SIGNATURE = "pref_key_signature";
 
     private static final String PREF_KEY_DOWNLOADS = "pref_key_downloads";
@@ -58,10 +58,10 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
 
                 break;
             case PREF_KEY_FONT_SIZE:
-                mGeneralPreferencesManager.invalidateTextScale();
+                mGeneralPreferencesManager.invalidateFontScale();
                 // change scaling factor for fonts
                 ResourceUtil.setScaledDensity(getResources(),
-                        mGeneralPreferencesManager.getTextScale());
+                        mGeneralPreferencesManager.getFontScale());
                 mEventBus.post(new FontSizeChangeEvent());
 
                 break;

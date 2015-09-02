@@ -116,7 +116,7 @@
     <string name="pref_theme">Theme</string>
     <string name="pref_theme_default_value" translatable="false">1</string>
     <string name="pref_font_size">Font size</string>
-    <string name="pref_font_size_default_value" translatable="false">2</string>
+    <string name="pref_font_size_default_value" translatable="false">1.0</string>
     <string name="pref_signature">Signature</string>
 
     <string name="pref_advanced">Advanced</string>
@@ -143,11 +143,10 @@
     <string name="pref_theme_entries_6">Night mode</string>
     <string name="pref_theme_entries_7">Night mode (AMOLED version)</string>
 
-    <string name="pref_font_size_entries_1">Very small</string>
-    <string name="pref_font_size_entries_2">Small</string>
-    <string name="pref_font_size_entries_3">Medium</string>
-    <string name="pref_font_size_entries_4">Large</string>
-    <string name="pref_font_size_entries_5">Very large</string>
+    <string name="pref_font_size_entries_1">Small</string>
+    <string name="pref_font_size_entries_2">Normal</string>
+    <string name="pref_font_size_entries_3">Large</string>
+    <string name="pref_font_size_entries_4">Huge</string>
 
     <string name="pref_download_avatars_entries_1">Do not download avatars</string>
     <string name="pref_download_avatars_entries_2">Download avatars over Wi-Fi only</string>

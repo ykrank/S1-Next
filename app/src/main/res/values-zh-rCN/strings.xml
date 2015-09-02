@@ -71,11 +71,10 @@
     <string name="pref_theme_entries_5">黑色</string>
     <string name="pref_theme_entries_6">夜间模式</string>
     <string name="pref_theme_entries_7">夜间模式（AMOLED 版）</string>
-    <string name="pref_font_size_entries_1">极小</string>
-    <string name="pref_font_size_entries_2">小</string>
-    <string name="pref_font_size_entries_3">中</string>
-    <string name="pref_font_size_entries_4">大</string>
-    <string name="pref_font_size_entries_5">极大</string>
+    <string name="pref_font_size_entries_1">小</string>
+    <string name="pref_font_size_entries_2">普通</string>
+    <string name="pref_font_size_entries_3">大</string>
+    <string name="pref_font_size_entries_4">超大</string>
     <string name="pref_download_cache_invalidation_interval_entries_1">每天</string>
     <string name="pref_download_cache_invalidation_interval_entries_2">每星期</string>
     <string name="pref_download_cache_invalidation_interval_entries_3">每月</string>
