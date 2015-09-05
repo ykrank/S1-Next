@@ -13,6 +13,7 @@ android {
         targetSdkVersion 23
         versionCode 6
         versionName "0.4.2"
+        generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi', 'xxxhdpi']
     }
     buildTypes {
         debug {
