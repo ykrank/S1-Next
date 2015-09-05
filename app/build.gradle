@@ -8,11 +8,11 @@ android {
     buildToolsVersion '23.0.1'
 
     defaultConfig {
-        applicationId "cl.monsoon.s1next"
+        applicationId 'cl.monsoon.s1next'
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 6
-        versionName "0.4.2"
+        versionName '0.4.2'
         generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi', 'xxxhdpi']
     }
     buildTypes {
@@ -31,10 +31,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     dexOptions {
-        preDexLibraries = Boolean.valueOf(System.getProperty("pre-dex-libraries", "true"))
+        preDexLibraries = Boolean.valueOf(System.getProperty('pre-dex-libraries', 'true'))
     }
     lintOptions {
-        abortOnError = Boolean.valueOf(System.getProperty("abort-on-error", "true"))
+        abortOnError = Boolean.valueOf(System.getProperty('abort-on-error', 'true'))
         textReport true
         textOutput 'stdout'
     }
@@ -48,7 +48,7 @@ android {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-    options.compilerArgs << "-Xlint:unchecked"
+    options.compilerArgs << '-Xlint:unchecked'
 }
 
 dependencies {
@@ -64,7 +64,7 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-SNAPSHOT'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-SNAPSHOT'
 
-    ext.supportVersion = "23.0.1"
+    ext.supportVersion = '23.0.1'
     compile "com.android.support:design:$supportVersion"
     compile "com.android.support:recyclerview-v7:$supportVersion"
     compile "com.android.support:cardview-v7:$supportVersion"
