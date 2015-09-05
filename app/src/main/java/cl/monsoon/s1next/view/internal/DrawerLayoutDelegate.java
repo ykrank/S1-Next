@@ -71,8 +71,21 @@ public abstract class DrawerLayoutDelegate {
     }
 
     private void setupNavDrawer() {
+        // see http://stackoverflow.com/a/32414488
         mDrawerToggle = new ActionBarDrawerToggle(mFragmentActivity, mDrawerLayout,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+
+                super.onDrawerSlide(drawerView, 0);
+            }
 
             /**
              * @see DrawerLayoutDelegate#closeDrawer(Runnable)
