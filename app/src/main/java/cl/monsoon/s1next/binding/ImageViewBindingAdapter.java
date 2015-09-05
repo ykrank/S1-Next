@@ -1,5 +1,6 @@
 package cl.monsoon.s1next.binding;
 
+import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
@@ -21,8 +22,8 @@ public final class ImageViewBindingAdapter {
     @BindingAdapter("imageDrawable")
     public static void setImageDrawable(ImageView imageView, Drawable drawable) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            @ColorInt int rippleColor = ContextCompat.getColor(imageView.getContext(),
-                    R.color.ripple_material_dark);
+            @SuppressLint("PrivateResource") @ColorInt int rippleColor = ContextCompat.getColor(
+                    imageView.getContext(), R.color.ripple_material_dark);
             // add ripple effect
             RippleDrawable rippleDrawable = new RippleDrawable(ColorStateList.valueOf(rippleColor),
                     drawable, null);

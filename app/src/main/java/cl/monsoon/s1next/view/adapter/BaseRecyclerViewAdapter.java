@@ -26,8 +26,8 @@ abstract class BaseRecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder>
         return mList.get(i);
     }
 
-    T removeItem(int position) {
-        return mList.remove(position);
+    void removeItem(int position) {
+        mList.remove(position);
     }
 
     @Override

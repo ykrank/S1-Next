@@ -66,7 +66,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     private CoordinatorLayoutAnchorDelegate mCoordinatorLayoutAnchorDelegate;
 
-    public static void startActivityForResultMessage(Activity activity, Intent intent) {
+    static void startActivityForResultMessage(Activity activity, Intent intent) {
         activity.startActivityForResult(intent, REQUEST_CODE_MESSAGE_IF_SUCCESS);
     }
 

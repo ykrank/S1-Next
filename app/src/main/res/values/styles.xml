@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Preference.Overlay" parent="PreferenceThemeOverlay.v14" />
 
@@ -16,19 +16,19 @@
     <!-- Dense language scripts that require extra line height to accommodate larger glyphs,
     including Chinese, Japanese, and Korean. -->
     <!-- https://www.google.com/design/spec/style/typography.html -->
-    <style name="TextAppearance.AppCompat.Subhead" parent="Base.TextAppearance.AppCompat.Subhead">
+    <style name="TextAppearance.AppCompat.Subhead" parent="Base.TextAppearance.AppCompat.Subhead" tools:ignore="PrivateResource">
         <item name="android:textSize">@dimen/dense_text_size_subheader</item>
     </style>
 
-    <style name="TextAppearance.AppCompat.Body1" parent="Base.TextAppearance.AppCompat.Body1">
+    <style name="TextAppearance.AppCompat.Body1" parent="Base.TextAppearance.AppCompat.Body1" tools:ignore="PrivateResource">
         <item name="android:textSize">@dimen/dense_text_size_body_1</item>
     </style>
 
-    <style name="TextAppearance.AppCompat.Body2" parent="Base.TextAppearance.AppCompat.Body2">
+    <style name="TextAppearance.AppCompat.Body2" parent="Base.TextAppearance.AppCompat.Body2" tools:ignore="PrivateResource">
         <item name="android:textSize">@dimen/dense_text_size_body_2</item>
     </style>
 
-    <style name="TextAppearance.AppCompat.Small" parent="Base.TextAppearance.AppCompat.Small">
+    <style name="TextAppearance.AppCompat.Small" parent="Base.TextAppearance.AppCompat.Small" tools:ignore="PrivateResource">
         <item name="android:textSize">@dimen/dense_text_size_small</item>
     </style>
 

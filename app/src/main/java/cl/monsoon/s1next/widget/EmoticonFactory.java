@@ -608,7 +608,7 @@ public final class EmoticonFactory {
         return builder.build();
     }
 
-    private ImmutableList.Builder<Emoticon> add(ImmutableList.Builder<Emoticon> builder, String emoticonFileName, String emoticonEntity) {
-        return builder.add(new Emoticon(ASSET_PATH_EMOTICON + emoticonFileName, emoticonEntity));
+    private void add(ImmutableList.Builder<Emoticon> builder, String emoticonFileName, String emoticonEntity) {
+        builder.add(new Emoticon(ASSET_PATH_EMOTICON + emoticonFileName, emoticonEntity));
     }
 }

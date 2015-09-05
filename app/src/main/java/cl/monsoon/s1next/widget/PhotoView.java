@@ -54,10 +54,10 @@ public final class PhotoView extends View
         implements OnGestureListener, OnDoubleTapListener,
         ScaleGestureDetector.OnScaleGestureListener {
 
-    public static final int TRANSLATE_NONE = 0;
-    public static final int TRANSLATE_X_ONLY = 1;
-    public static final int TRANSLATE_Y_ONLY = 2;
-    public static final int TRANSLATE_BOTH = 3;
+    private static final int TRANSLATE_NONE = 0;
+    private static final int TRANSLATE_X_ONLY = 1;
+    private static final int TRANSLATE_Y_ONLY = 2;
+    private static final int TRANSLATE_BOTH = 3;
 
     /**
      * Zoom animation duration; in milliseconds
