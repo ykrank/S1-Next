@@ -272,7 +272,7 @@ public final class ReplyFragment extends RxFragment {
     private void setEmoticonIcon() {
         if (mMenuEmoticon != null) {
             mMenuEmoticon.setIcon(ResourceUtil.getResourceId(getContext().getTheme(),
-                    R.attr.menuEmoticon));
+                    R.attr.iconMenuEmoticon));
             mMenuEmoticon.setTitle(R.string.menu_emoticon);
         }
     }
@@ -280,7 +280,7 @@ public final class ReplyFragment extends RxFragment {
     private void setKeyboardIcon() {
         if (mMenuEmoticon != null) {
             mMenuEmoticon.setIcon(ResourceUtil.getResourceId(getContext().getTheme(),
-                    R.attr.menuKeyboard));
+                    R.attr.iconMenuKeyboard));
             mMenuEmoticon.setTitle(R.string.menu_keyboard);
         }
     }

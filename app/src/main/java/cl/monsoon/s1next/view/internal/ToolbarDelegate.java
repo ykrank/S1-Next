@@ -41,7 +41,7 @@ public final class ToolbarDelegate {
      */
     public void setupNavCrossIcon() {
         mToolbar.setNavigationIcon(ResourceUtil.getResourceId(mAppCompatActivity.getTheme(),
-                R.attr.menuCross));
+                R.attr.iconClose));
     }
 
     public Toolbar getToolbar() {

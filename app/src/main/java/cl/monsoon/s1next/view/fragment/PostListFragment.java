@@ -135,7 +135,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         }
 
         ((CoordinatorLayoutAnchorDelegate) getActivity()).setupFloatingActionButton(
-                R.drawable.ic_menu_comment_white_24dp, this);
+                R.drawable.ic_insert_comment_black_24dp, this);
 
     }
 

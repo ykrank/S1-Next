@@ -3,21 +3,21 @@
     <group>
         <item
             android:id="@+id/home"
-            android:icon="?attr/iconHome"
+            android:icon="?attr/iconMenuHome"
             android:title="@string/home" />
         <item
             android:id="@+id/favourites"
-            android:icon="?attr/iconFavourites"
+            android:icon="?attr/iconMenuFavourites"
             android:title="@string/favourites" />
     </group>
     <group android:id="@+id/sub_header">
         <item
             android:id="@+id/settings"
-            android:icon="?attr/iconSettings"
+            android:icon="?attr/iconMenuSettings"
             android:title="@string/settings" />
         <item
             android:id="@+id/help"
-            android:icon="?attr/iconHelp"
+            android:icon="?attr/iconMenuHelp"
             android:title="@string/help" />
     </group>
 </menu>

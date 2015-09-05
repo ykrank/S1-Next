@@ -5,7 +5,7 @@
     tools:context="cl.monsoon.s1next.view.fragment.LoginFragment">
     <item
         android:id="@+id/menu_account_new"
-        android:icon="?attr/menuPersonAdd"
+        android:icon="?attr/iconMenuPersonAdd"
         android:orderInCategory="1"
         android:title="@string/menu_account_new"
         app:showAsAction="ifRoom" />

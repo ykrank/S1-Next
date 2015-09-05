@@ -5,13 +5,13 @@
     tools:context="cl.monsoon.s1next.view.fragment.ReplyFragment">
     <item
         android:id="@+id/menu_emoticon"
-        android:icon="?attr/menuEmoticon"
+        android:icon="?attr/iconMenuEmoticon"
         android:orderInCategory="1"
         android:title="@string/menu_emoticon"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_send"
-        android:icon="?attr/menuSend"
+        android:icon="?attr/iconMenuSend"
         android:orderInCategory="2"
         android:title="@string/menu_send"
         app:showAsAction="ifRoom" />

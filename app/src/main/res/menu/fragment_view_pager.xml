@@ -5,7 +5,7 @@
     tools:context="cl.monsoon.s1next.view.fragment.BaseViewPagerFragment">
     <item
         android:id="@+id/menu_page_turning"
-        android:icon="?attr/menuPageTurning"
+        android:icon="?attr/iconMenuPageTurning"
         android:orderInCategory="2"
         android:title="@string/menu_page_turning"
         app:showAsAction="ifRoom" />

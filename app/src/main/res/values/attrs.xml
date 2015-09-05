@@ -8,18 +8,19 @@
     <attr name="emoticonKeyboardTabLayoutBackground" format="color|reference" />
     <attr name="emoticonKeyboardBackground" format="color|reference" />
 
-    <attr name="menuCross" format="reference" />
-    <attr name="menuPersonAdd" format="reference" />
-    <attr name="menuThreadAttachment" format="reference" />
-    <attr name="menuPageTurning" format="reference" />
-    <attr name="menuEmoticon" format="reference" />
-    <attr name="menuKeyboard" format="reference" />
-    <attr name="menuSend" format="reference" />
+    <attr name="iconClose" format="reference" />
 
-    <attr name="iconHome" format="reference" />
-    <attr name="iconFavourites" format="reference" />
-    <attr name="iconSettings" format="reference" />
-    <attr name="iconHelp" format="reference" />
+    <attr name="iconMenuHome" format="reference" />
+    <attr name="iconMenuFavourites" format="reference" />
+    <attr name="iconMenuSettings" format="reference" />
+    <attr name="iconMenuHelp" format="reference" />
+
+    <attr name="iconMenuPageTurning" format="reference" />
+    <attr name="iconMenuPersonAdd" format="reference" />
+    <attr name="iconMenuThreadAttachment" format="reference" />
+    <attr name="iconMenuEmoticon" format="reference" />
+    <attr name="iconMenuKeyboard" format="reference" />
+    <attr name="iconMenuSend" format="reference" />
 
     <declare-styleable name="BezelImageView">
         <attr name="maskDrawable" format="reference" />
