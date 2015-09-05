@@ -22,7 +22,7 @@
 
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14</item>
+        <item name="preferenceTheme">@style/Preference.Overlay</item>
 
         <item name="fabBackgroundTint">?attr/colorAccent</item>
         <item name="cardViewStyle">@style/CardView.Light</item>
@@ -83,7 +83,7 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14</item>
+        <item name="preferenceTheme">@style/Preference.Overlay</item>
         <item name="fabBackgroundTint">?attr/colorAccent</item>
         <item name="cardViewStyle">@style/CardView.Dark</item>
         <item name="linkBackground">@drawable/link_focused_or_pressed_dark</item>

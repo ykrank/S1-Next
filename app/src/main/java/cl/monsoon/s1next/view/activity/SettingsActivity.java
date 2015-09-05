@@ -35,10 +35,10 @@ public final class SettingsActivity extends BaseActivity {
         if (savedInstanceState == null) {
             if (getIntent().getBooleanExtra(ARG_SHOW_DOWNLOAD_SETTINGS, false)) {
                 setTitle(R.string.download_settings);
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,
+                getFragmentManager().beginTransaction().replace(R.id.frame_layout,
                         new DownloadPreferenceFragment()).commit();
             } else {
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,
+                getFragmentManager().beginTransaction().replace(R.id.frame_layout,
                         new GeneralPreferenceFragment()).commit();
             }
         }

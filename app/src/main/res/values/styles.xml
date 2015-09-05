@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Preference.Overlay" parent="PreferenceThemeOverlay.v14" />
+
     <style name="CardView.Dark.NightMode.Amoled" parent="CardView">
         <item name="cardBackgroundColor">@android:color/black</item>
     </style>
