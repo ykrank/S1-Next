@@ -4,12 +4,19 @@
     <dimen name="activity_horizontal_padding">16dp</dimen>
     <dimen name="activity_vertical_padding">16dp</dimen>
 
-    <dimen name="dense_text_size_subheader">17sp</dimen>
-    <dimen name="dense_text_size_body_1">15sp</dimen>
-    <dimen name="dense_text_size_body_2">15sp</dimen>
-    <dimen name="dense_text_size_small">15sp</dimen>
-
     <dimen name="minimum_touch_target_size">48dp</dimen>
+
+    <dimen name="single_line_height">48dp</dimen>
+    <dimen name="avatar_size">40dp</dimen>
+    <dimen name="single_line_height_with_avatar">56dp</dimen>
+    <dimen name="two_line_height">72dp</dimen>
+
+    <dimen name="item_padding">16dp</dimen>
+    <dimen name="list_view_padding">8dp</dimen>
+
+    <dimen name="dialog_padding">24dp</dimen>
+    <dimen name="dialog_padding_bottom">16dp</dimen>
+    <dimen name="dialog_divider_padding">8dp</dimen>
 
     <dimen name="drawer_avatar_margin_top">@dimen/item_padding</dimen>
     <dimen name="drawer_avatar_size">64dp</dimen>
@@ -18,14 +25,6 @@
     <dimen name="drawer_top_height">136dp</dimen>
 
     <dimen name="fab_margin">16dp</dimen>
-
-    <dimen name="single_line_height">48dp</dimen>
-    <dimen name="single_line_height_with_avatar">56dp</dimen>
-    <dimen name="two_line_height">72dp</dimen>
-
-    <dimen name="item_padding">16dp</dimen>
-
-    <dimen name="list_view_padding">8dp</dimen>
 
     <!--Before L, CardView adds padding to its content and draws shadows to that area.
     This padding amount is equal to maxCardElevation + (1 - cos45) * cornerRadius on the
@@ -38,14 +37,6 @@
     <!-- 8dp (CardView margin) - (2 * 1.5 + (1 - cos45) * 2)dp - 0.05dp (CardView vertical margin) = 4dp -->
     <dimen name="recycler_view_vertical_padding_for_card_view">4dp</dimen>
 
-    <dimen name="avatar_size">40dp</dimen>
-
-    <dimen name="dialog_padding">24dp</dimen>
-    <dimen name="dialog_padding_bottom">16dp</dimen>
-    <dimen name="dialog_divider_padding">8dp</dimen>
-
-    <item name="line_spacing_multiplier" format="float" type="dimen">1.2</item>
-
     <!-- 36dp (emoticon keyboard header) + 160dp (48dp * 3 three lines of emoticons
     + 8dp * 2 top/bottom padding of emoticon grid) -->
     <dimen name="emoticon_keyboard_height">196dp</dimen>
@@ -55,5 +46,12 @@
 
     <dimen name="photo_view_crop_width">280dp</dimen>
     <dimen name="photo_view_crop_stroke_width">1dp</dimen>
+
+    <dimen name="dense_text_size_subheader">17sp</dimen>
+    <dimen name="dense_text_size_body_1">15sp</dimen>
+    <dimen name="dense_text_size_body_2">15sp</dimen>
+    <dimen name="dense_text_size_small">15sp</dimen>
+
+    <item name="line_spacing_multiplier" format="float" type="dimen">1.2</item>
 
 </resources>
