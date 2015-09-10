@@ -19,8 +19,8 @@ import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.view.activity.BaseActivity;
-import cl.monsoon.s1next.view.adapter.PostListRecyclerViewAdapter;
-import cl.monsoon.s1next.view.adapter.ThreadListRecyclerViewAdapter;
+import cl.monsoon.s1next.view.adapter.delegate.PostAdapterDelegate;
+import cl.monsoon.s1next.view.adapter.delegate.ThreadAdapterDelegate;
 import cl.monsoon.s1next.view.dialog.LogoutDialogFragment;
 import cl.monsoon.s1next.view.dialog.ThemeChangeDialogFragment;
 import cl.monsoon.s1next.view.fragment.GeneralPreferenceFragment;
@@ -128,8 +128,8 @@ public final class App extends Application {
 
         void inject(ThemeChangeDialogFragment fragment);
 
-        void inject(ThreadListRecyclerViewAdapter adapter);
+        void inject(ThreadAdapterDelegate delegate);
 
-        void inject(PostListRecyclerViewAdapter adapter);
+        void inject(PostAdapterDelegate delegate);
     }
 }

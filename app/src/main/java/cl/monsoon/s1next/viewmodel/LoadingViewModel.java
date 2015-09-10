@@ -4,7 +4,6 @@ import android.databinding.BaseObservable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
-import android.view.View;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -43,7 +42,7 @@ public final class LoadingViewModel extends BaseObservable implements Parcelable
             LOADING_SWIPE_REFRESH,
             LOADING_PULL_UP_TO_REFRESH
     })
-    private @interface LoadingDef {}
+    public  @interface LoadingDef {}
 
     private int loading;
 
@@ -67,16 +66,12 @@ public final class LoadingViewModel extends BaseObservable implements Parcelable
         return loading == LOADING_SWIPE_REFRESH;
     }
 
-    public boolean isPullToUpRefresh() {
-        return loading == LOADING_PULL_UP_TO_REFRESH;
+    public boolean isSwipeRefreshLayoutEnabled() {
+        return loading != LOADING_FIRST_TIME && loading != LOADING_PULL_UP_TO_REFRESH;
     }
 
-    public int getProgressVisibility() {
-        return loading == LOADING_FIRST_TIME ? View.VISIBLE : View.GONE;
-    }
-
-    public int getSwipeRefreshLayoutVisibility() {
-        return loading == LOADING_FIRST_TIME ? View.INVISIBLE : View.VISIBLE;
+    public Boolean isLoadingFirstTime() {
+        return loading == LOADING_FIRST_TIME;
     }
 
     @Override

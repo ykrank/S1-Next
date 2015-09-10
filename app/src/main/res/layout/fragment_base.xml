@@ -12,36 +12,25 @@
             type="cl.monsoon.s1next.viewmodel.LoadingViewModel" />
     </data>
 
-    <FrameLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:colorSchemeColors="@{@intArray/swipe_refresh_layout_color_scheme}"
+        app:enabled="@{loadingViewModel.swipeRefreshLayoutEnabled}"
+        app:refreshing="@{loadingViewModel.swipeRefresh}">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_layout"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{loadingViewModel.swipeRefreshLayoutVisibility}"
-            app:colorSchemeColors="@{@intArray/swipe_refresh_layout_color_scheme}"
-            app:enabled="@{!loadingViewModel.pullToUpRefresh}"
-            app:refreshing="@{loadingViewModel.swipeRefresh}">
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/list_view_padding"
+            android:paddingTop="@dimen/list_view_padding"
+            android:scrollbars="vertical"
+            app:loading="@{loadingViewModel.loading}"
+            app:loadingFirstTime="@{loadingViewModel.loadingFirstTime}" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingBottom="@dimen/list_view_padding"
-                android:paddingTop="@dimen/list_view_padding"
-                android:scrollbars="vertical" />
-
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="@{loadingViewModel.progressVisibility}" />
-
-    </FrameLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </layout>

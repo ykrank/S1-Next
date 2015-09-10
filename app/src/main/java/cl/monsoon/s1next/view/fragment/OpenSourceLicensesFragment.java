@@ -80,6 +80,7 @@ public final class OpenSourceLicensesFragment extends PreferenceFragment {
      */
     private String[][] getLibrariesInfos() {
         return new String[][]{
+                {"AdapterDelegates", "ADAPTER_DELEGATES"},
                 {"Android Support Library", "ANDROID_SUPPORT"},
                 {"Apache Commons Lang", "APACHE_LICENSE"},
                 {"Bugsnag Android", "BUGSNAG_ANDROID"},

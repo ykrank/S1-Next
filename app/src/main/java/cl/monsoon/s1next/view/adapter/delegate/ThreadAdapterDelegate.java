@@ -1,10 +1,15 @@
-package cl.monsoon.s1next.view.adapter;
+package cl.monsoon.s1next.view.adapter.delegate;
 
 import android.app.Activity;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import com.hannesdorfmann.adapterdelegates.AbsAdapterDelegate;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -16,8 +21,7 @@ import cl.monsoon.s1next.databinding.ItemThreadBinding;
 import cl.monsoon.s1next.viewmodel.ThreadViewModel;
 import cl.monsoon.s1next.viewmodel.UserViewModel;
 
-public final class ThreadListRecyclerViewAdapter
-        extends BaseRecyclerViewAdapter<Thread, ThreadListRecyclerViewAdapter.BindingViewHolder> {
+public final class ThreadAdapterDelegate extends AbsAdapterDelegate<List<Object>> {
 
     @Inject
     UserViewModel mUserViewModel;
@@ -27,17 +31,23 @@ public final class ThreadListRecyclerViewAdapter
 
     private final LayoutInflater mLayoutInflater;
 
-    public ThreadListRecyclerViewAdapter(Activity activity) {
+    public ThreadAdapterDelegate(Activity activity, int viewType) {
+        super(viewType);
+
         App.getAppComponent(activity).inject(this);
         mLayoutInflater = activity.getLayoutInflater();
-
-        setHasStableIds(true);
     }
 
     @Override
-    public BindingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public boolean isForViewType(@NonNull List<Object> objectList, int i) {
+        return objectList.get(i) instanceof Thread;
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup) {
         ItemThreadBinding binding = DataBindingUtil.inflate(mLayoutInflater, R.layout.item_thread,
-                parent, false);
+                viewGroup, false);
         BindingViewHolder holder = new BindingViewHolder(binding);
         // we do not use view model for ThemeManager
         // because theme changes only when Activity recreated
@@ -49,17 +59,13 @@ public final class ThreadListRecyclerViewAdapter
     }
 
     @Override
-    public void onBindViewHolder(BindingViewHolder holder, int position) {
-        holder.itemThreadBinding.getThreadViewModel().thread.set(getItem(position));
-        holder.itemThreadBinding.executePendingBindings();
+    public void onBindViewHolder(@NonNull List<Object> objectList, int i, @NonNull RecyclerView.ViewHolder viewHolder) {
+        ItemThreadBinding binding = ((BindingViewHolder) viewHolder).itemThreadBinding;
+        binding.getThreadViewModel().thread.set((Thread) objectList.get(i));
+        binding.executePendingBindings();
     }
 
-    @Override
-    public long getItemId(int position) {
-        return Long.parseLong(getItem(position).getId());
-    }
-
-    public final static class BindingViewHolder extends RecyclerView.ViewHolder {
+    private final static class BindingViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemThreadBinding itemThreadBinding;
 

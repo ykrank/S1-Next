@@ -15,7 +15,7 @@ import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.api.model.collection.ForumGroups;
 import cl.monsoon.s1next.data.api.model.wrapper.ForumGroupsWrapper;
 import cl.monsoon.s1next.util.IntentUtil;
-import cl.monsoon.s1next.view.adapter.ForumListRecyclerViewAdapter;
+import cl.monsoon.s1next.view.adapter.ForumRecyclerViewAdapter;
 import cl.monsoon.s1next.view.internal.ToolbarDropDownInterface;
 import rx.Observable;
 
@@ -27,7 +27,7 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
 
     public static final String TAG = ForumFragment.class.getName();
 
-    private ForumListRecyclerViewAdapter mRecyclerAdapter;
+    private ForumRecyclerViewAdapter mRecyclerAdapter;
     private ForumGroups mForumGroups;
 
     private ToolbarDropDownInterface.Callback mToolbarCallback;
@@ -38,11 +38,8 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
 
         RecyclerView recyclerView = getRecyclerView();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerAdapter = new ForumListRecyclerViewAdapter(getActivity());
+        mRecyclerAdapter = new ForumRecyclerViewAdapter(getActivity());
         recyclerView.setAdapter(mRecyclerAdapter);
-
-        // the forum list's each element has fixed size
-        recyclerView.setHasFixedSize(true);
     }
 
     @Override

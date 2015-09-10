@@ -81,9 +81,9 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (!isPullUpToRefresh()
                         && mPageNum == mPagerCallback.getTotalPages()
-                        && mRecyclerAdapter.getItemCount() != 0
-                        && !mRecyclerView.canScrollVertically(1)
-                        && !isLoading()) {
+                        && !isLoading()
+                        && mRecyclerView.isNestedScrollingEnabled()
+                        && !mRecyclerView.canScrollVertically(1)) {
 
                     mRecyclerAdapter.showFooterProgress();
                     startPullToRefresh();

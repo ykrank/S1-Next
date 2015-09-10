@@ -11,7 +11,7 @@ import java.util.List;
 import cl.monsoon.s1next.data.api.model.Forum;
 import cl.monsoon.s1next.data.api.model.collection.Threads;
 import cl.monsoon.s1next.data.api.model.wrapper.ThreadsWrapper;
-import cl.monsoon.s1next.view.adapter.ThreadListRecyclerViewAdapter;
+import cl.monsoon.s1next.view.adapter.ThreadRecyclerViewAdapter;
 import rx.Observable;
 
 /**
@@ -28,7 +28,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
     private String mForumId;
     private int mPageNum;
 
-    private ThreadListRecyclerViewAdapter mRecyclerAdapter;
+    private ThreadRecyclerViewAdapter mRecyclerAdapter;
 
     private PagerCallback mPagerCallback;
     private SubForumsCallback mSubForumsCallback;
@@ -61,7 +61,7 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
 
         RecyclerView recyclerView = getRecyclerView();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerAdapter = new ThreadListRecyclerViewAdapter(getActivity());
+        mRecyclerAdapter = new ThreadRecyclerViewAdapter(getActivity());
         recyclerView.setAdapter(mRecyclerAdapter);
     }
 

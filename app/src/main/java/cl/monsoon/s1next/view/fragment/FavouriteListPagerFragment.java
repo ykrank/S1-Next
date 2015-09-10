@@ -9,7 +9,7 @@ import android.view.View;
 import cl.monsoon.s1next.data.api.model.collection.Favourites;
 import cl.monsoon.s1next.data.api.model.wrapper.FavouritesWrapper;
 import cl.monsoon.s1next.util.MathUtil;
-import cl.monsoon.s1next.view.adapter.FavouriteListRecyclerViewAdapter;
+import cl.monsoon.s1next.view.adapter.FavouriteRecyclerViewAdapter;
 import cl.monsoon.s1next.view.internal.PagerCallback;
 import rx.Observable;
 
@@ -24,7 +24,7 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
 
     private int mPageNum;
 
-    private FavouriteListRecyclerViewAdapter mRecyclerAdapter;
+    private FavouriteRecyclerViewAdapter mRecyclerAdapter;
 
     private PagerCallback mPagerCallback;
 
@@ -53,7 +53,7 @@ public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWra
 
         RecyclerView recyclerView = getRecyclerView();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerAdapter = new FavouriteListRecyclerViewAdapter(getActivity());
+        mRecyclerAdapter = new FavouriteRecyclerViewAdapter(getActivity());
         recyclerView.setAdapter(mRecyclerAdapter);
     }
 

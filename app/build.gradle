@@ -84,4 +84,6 @@ dependencies {
     compile 'com.bugsnag:bugsnag-android:3.2.6'
     compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.6.1'
+
+    compile 'com.hannesdorfmann:adapterdelegates:1.0.2'
 }
