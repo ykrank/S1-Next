@@ -1,5 +1,6 @@
 package cl.monsoon.s1next.util;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.text.Spannable;
@@ -20,6 +21,7 @@ public final class ViewUtil {
      *
      * @param text the String that is concatenated to the TextView
      */
+    @SuppressLint("SetTextI18n")
     public static void concatWithTwoSpacesForRtlSupport(TextView textView, CharSequence text) {
         if (ResourceUtil.isRTL(textView.getResources())) {
             textView.setText(text + StringUtil.TWO_SPACES + textView.getText());
@@ -35,6 +37,7 @@ public final class ViewUtil {
      * @param text      the String that is concatenated to the TextView
      * @param textColor the <code>text</code> color
      */
+    @SuppressLint("SetTextI18n")
     public static void concatWithTwoSpacesForRtlSupport(TextView textView, CharSequence text, @ColorInt int textColor) {
         if (ResourceUtil.isRTL(textView.getResources())) {
             textView.setText(text + StringUtil.TWO_SPACES + textView.getText());
