@@ -77,7 +77,8 @@ public abstract class DrawerLayoutDelegate {
 
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-
+                // do not call super.onDrawerSlide(drawerView, slideOffset)
+                // in order to disable ActionBarDrawerToggle's animation
             }
 
             @Override
