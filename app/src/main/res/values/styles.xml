@@ -3,10 +3,6 @@
 
     <style name="Preference.Overlay" parent="PreferenceThemeOverlay.v14" />
 
-    <style name="CardView.Dark.NightMode.Amoled" parent="CardView">
-        <item name="cardBackgroundColor">@android:color/black</item>
-    </style>
-
     <style name="Widget.Design.TabLayout.Keyboard" parent="Widget.Design.TabLayout">
         <item name="tabMode">scrollable</item>
         <item name="tabIndicatorColor">@null</item>

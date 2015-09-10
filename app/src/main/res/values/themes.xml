@@ -17,6 +17,9 @@
 
 
     <style name="Base.Theme.Light" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="backgroundColor">@color/cardview_light_background</item>
+        <item name="backgroundContainerColor">@color/background_container_light</item>
+        <item name="android:colorBackground">?attr/backgroundColor</item>
         <!-- show contextual action bar -->
         <item name="windowActionModeOverlay">true</item>
 
@@ -25,7 +28,6 @@
         <item name="preferenceTheme">@style/Preference.Overlay</item>
 
         <item name="fabBackgroundTint">?attr/colorAccent</item>
-        <item name="cardViewStyle">@style/CardView.Light</item>
         <item name="linkBackground">@drawable/link_focused_or_pressed_light</item>
         <item name="emoticonKeyboardTabLayoutBackground">@color/emoticon_keyboard_tab_layout_background_light</item>
         <item name="emoticonKeyboardBackground">@color/emoticon_keyboard_background_light</item>
@@ -81,12 +83,14 @@
     </style>
 
     <style name="Base.Theme.Dark" parent="Theme.AppCompat.NoActionBar">
+        <item name="backgroundColor">@color/cardview_dark_background</item>
+        <item name="backgroundContainerColor">@color/background_container_dark</item>
+        <item name="android:colorBackground">?attr/backgroundColor</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="preferenceTheme">@style/Preference.Overlay</item>
         <item name="fabBackgroundTint">?attr/colorAccent</item>
-        <item name="cardViewStyle">@style/CardView.Dark</item>
         <item name="linkBackground">@drawable/link_focused_or_pressed_dark</item>
         <item name="emoticonKeyboardTabLayoutBackground">@color/emoticon_keyboard_tab_layout_background_dark</item>
         <item name="emoticonKeyboardBackground">@color/emoticon_keyboard_background_dark</item>
@@ -110,10 +114,10 @@
     </style>
 
     <style name="Base.Theme.Dark.NightMode.Amoled">
+        <item name="backgroundColor">@android:color/black</item>
+        <item name="backgroundContainerColor">@android:color/black</item>
         <item name="colorPrimary">@android:color/black</item>
         <item name="colorPrimaryDark">@android:color/black</item>
-        <item name="android:windowBackground">@android:color/black</item>
-        <item name="cardViewStyle">@style/CardView.Dark.NightMode.Amoled</item>
     </style>
 
     <style name="Base.Theme.Translucent.Light" parent="Theme.AppCompat.Light.NoActionBar">

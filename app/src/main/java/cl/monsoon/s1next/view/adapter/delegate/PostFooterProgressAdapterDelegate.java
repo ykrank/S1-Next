@@ -13,6 +13,7 @@ import java.util.List;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.view.adapter.item.PostFooterProgressItem;
+import cl.monsoon.s1next.widget.VerticalDividerItemDecoration;
 
 public final class PostFooterProgressAdapterDelegate extends AbsAdapterDelegate<List<Object>> {
 
@@ -39,7 +40,8 @@ public final class PostFooterProgressAdapterDelegate extends AbsAdapterDelegate<
     @Override
     public void onBindViewHolder(@NonNull List<Object> objects, int i, @NonNull RecyclerView.ViewHolder viewHolder) {}
 
-    private final static class FooterProgressViewHolder extends RecyclerView.ViewHolder {
+    private final static class FooterProgressViewHolder extends RecyclerView.ViewHolder
+            implements VerticalDividerItemDecoration.Undecorated {
 
         public FooterProgressViewHolder(View itemView) {
             super(itemView);

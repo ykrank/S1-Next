@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <attr name="backgroundColor" format="color|reference"/>
+    <attr name="backgroundContainerColor" format="color|reference"/>
+
     <attr name="toolbarTheme" format="reference" />
     <attr name="fabBackgroundTint" format="color|reference" />
-    <attr name="cardViewStyle" format="reference" />
     <attr name="linkBackground" format="color|reference" />
     <attr name="emoticonKeyboardTabLayoutBackground" format="color|reference" />
     <attr name="emoticonKeyboardBackground" format="color|reference" />

@@ -9,12 +9,12 @@ import android.view.View;
 
 import java.util.List;
 
-import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Post;
 import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.data.api.model.collection.Posts;
 import cl.monsoon.s1next.data.api.model.wrapper.PostsWrapper;
 import cl.monsoon.s1next.view.adapter.PostListRecyclerViewAdapter;
+import cl.monsoon.s1next.widget.VerticalDividerItemDecoration;
 import rx.Observable;
 
 /**
@@ -65,13 +65,11 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
         mRecyclerView = getRecyclerView();
-        // we need to adjust RecyclerView's paddings
-        // because its child views (CardView) has margins
-        int padding = getResources().getDimensionPixelSize(
-                R.dimen.recycler_view_vertical_padding_for_card_view);
-        mRecyclerView.setPadding(0, padding, 0, padding);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerAdapter = new PostListRecyclerViewAdapter(getActivity());
+        mRecyclerView.setPadding(0, 0, 0, 0);
+        Activity activity = getActivity();
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        mRecyclerView.addItemDecoration(new VerticalDividerItemDecoration(activity));
+        mRecyclerAdapter = new PostListRecyclerViewAdapter(activity);
         mRecyclerView.setAdapter(mRecyclerAdapter);
 
         // add pull up to refresh to RecyclerView

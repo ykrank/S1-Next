@@ -2,14 +2,13 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="?attr/cardViewStyle"
     android:layout_width="match_parent"
     android:layout_height="@dimen/single_line_height_with_avatar"
-    android:gravity="center"
     tools:context="cl.monsoon.s1next.view.adapter.delegate.PostFooterProgressAdapterDelegate">
 
     <ProgressBar
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>
