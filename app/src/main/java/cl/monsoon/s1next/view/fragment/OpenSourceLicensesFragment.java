@@ -90,6 +90,7 @@ public final class OpenSourceLicensesFragment extends PreferenceFragment {
                 {"Glide", "GLIDE"},
                 {"Gradle Android Apt Plugin", "UNLICENSE"},
                 {"Gradle Retrolambda Plugin", "GRADLE_RETROLAMBDA_PLUGIN"},
+                {"Gradle Versions Plugin", "APACHE_LICENSE"},
                 {"Guava", "APACHE_LICENSE"},
                 {"Jackson databind", "APACHE_LICENSE"},
                 {"Javax.annotation API", "CDDL+GPL"},
