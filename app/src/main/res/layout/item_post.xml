@@ -68,13 +68,14 @@
             app:datetime="@{postViewModel.post.datetime}" />
 
         <!-- enable `textIsSelectable` in order to add click effect -->
+        <!-- see https://code.google.com/p/android/issues/detail?id=13895 -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:includeFontPadding="false"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textIsSelectable="true"
             app:eventBus="@{eventBus}"
