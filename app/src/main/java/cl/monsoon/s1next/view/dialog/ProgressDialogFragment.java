@@ -105,7 +105,7 @@ abstract class ProgressDialogFragment<D> extends RxDialogFragment {
         if (TextUtils.isEmpty(authenticityToken)) {
             return mS1Service.refreshAuthenticityToken().flatMap(resultWrapper -> {
                 Account account = resultWrapper.getAccount();
-                // return the ResultWrapper if we can not get the authenticity token
+                // return the ResultWrapper if we cannot get the authenticity token
                 // (if account has expired or network error)
                 if (TextUtils.isEmpty(account.getAuthenticityToken())) {
                     return Observable.just(resultWrapper);

@@ -261,7 +261,7 @@ public abstract class BaseFragment<D> extends RxFragment {
     /**
      * A helper method consumes {@link Result}.
      * <p>
-     * Sometimes we can not get data if we have logged out or
+     * Sometimes we cannot get data if we have logged out or
      * have no permission to access this data.
      * This method is only used during {@link #onNext(Object)}.
      *
