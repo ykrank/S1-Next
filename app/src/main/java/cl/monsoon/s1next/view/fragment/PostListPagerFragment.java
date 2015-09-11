@@ -127,14 +127,23 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         } else {
             super.onNext(data);
 
-            int lastItemCount = mRecyclerAdapter.getItemCount();
-            mRecyclerAdapter.setDataSet(postList);
             if (pullUpToRefresh) {
-                int newItemCount = mRecyclerAdapter.getItemCount() - lastItemCount;
-                if (newItemCount > 0) {
-                    mRecyclerAdapter.notifyItemRangeInserted(lastItemCount, newItemCount);
+                final int oldItemCount = mRecyclerAdapter.getItemCount();
+                // notify data set change if someone deleted their posts
+                if (mRecyclerAdapter.getItemId(oldItemCount - 1)
+                        != Long.parseLong(postList.get(postList.size() - 1).getId())) {
+                    mRecyclerAdapter.setDataSet(postList);
+                    mRecyclerAdapter.notifyDataSetChanged();
+                } else {
+                    mRecyclerAdapter.setDataSet(postList);
+
+                    int newItemCount = mRecyclerAdapter.getItemCount() - oldItemCount;
+                    if (newItemCount > 0) {
+                        mRecyclerAdapter.notifyItemRangeInserted(oldItemCount, newItemCount);
+                    }
                 }
             } else {
+                mRecyclerAdapter.setDataSet(postList);
                 mRecyclerAdapter.notifyDataSetChanged();
 
                 String quotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
