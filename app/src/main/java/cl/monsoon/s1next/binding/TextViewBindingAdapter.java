@@ -2,19 +2,22 @@ package cl.monsoon.s1next.binding;
 
 import android.databinding.BindingAdapter;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
-import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -102,26 +105,20 @@ public final class TextViewBindingAdapter {
 
     @BindingAdapter({"eventBus", "post"})
     public static void setText(TextView textView, EventBus eventBus, Post post) {
+        String text = "#" + post.getCount();
         // there is no need to quote #1
         if ("1".equals(post.getCount())) {
-            textView.setText("#1");
-            textView.setClickable(false);
-            textView.setLongClickable(false);
-            textView.setFocusable(false);
+            textView.setText(text);
         } else {
-            Spannable spannable = new SpannableString("#" + post.getCount());
-            ClickableSpan clickableSpan = new ClickableSpan() {
+            Spannable spannable = new SpannableString(text);
+            URLSpan urlSpan = new URLSpan(StringUtils.EMPTY) {
                 @Override
-                public void onClick(View widget) {
+                public void onClick(@NonNull View widget) {
                     eventBus.post(new QuoteEvent(post.getId(), post.getCount()));
                 }
             };
-            spannable.setSpan(clickableSpan, 0, spannable.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannable.setSpan(urlSpan, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textView.setText(spannable);
-            textView.setClickable(true);
-            textView.setLongClickable(true);
-            textView.setFocusable(true);
         }
     }
 

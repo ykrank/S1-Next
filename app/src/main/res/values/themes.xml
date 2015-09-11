@@ -28,7 +28,6 @@
         <item name="preferenceTheme">@style/Preference.Overlay</item>
 
         <item name="fabBackgroundTint">?attr/colorAccent</item>
-        <item name="linkBackground">@drawable/link_focused_or_pressed_light</item>
         <item name="emoticonKeyboardTabLayoutBackground">@color/emoticon_keyboard_tab_layout_background_light</item>
         <item name="emoticonKeyboardBackground">@color/emoticon_keyboard_background_light</item>
 
@@ -91,7 +90,6 @@
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="preferenceTheme">@style/Preference.Overlay</item>
         <item name="fabBackgroundTint">?attr/colorAccent</item>
-        <item name="linkBackground">@drawable/link_focused_or_pressed_dark</item>
         <item name="emoticonKeyboardTabLayoutBackground">@color/emoticon_keyboard_tab_layout_background_dark</item>
         <item name="emoticonKeyboardBackground">@color/emoticon_keyboard_background_dark</item>
         <item name="iconClose">@drawable/ic_close_white_24dp</item>

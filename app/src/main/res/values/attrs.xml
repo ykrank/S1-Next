@@ -6,7 +6,6 @@
 
     <attr name="toolbarTheme" format="reference" />
     <attr name="fabBackgroundTint" format="color|reference" />
-    <attr name="linkBackground" format="color|reference" />
     <attr name="emoticonKeyboardTabLayoutBackground" format="color|reference" />
     <attr name="emoticonKeyboardBackground" format="color|reference" />
 
