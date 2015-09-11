@@ -43,7 +43,7 @@
             app:avatarDrawableRequestBuilder="@{drawableRequestBuilder}"
             app:downloadPreferencesManager="@{downloadPreferencesManager}"
             app:maskDrawable="@drawable/rounded_mask"
-            app:userId="@{postViewModel.post.userId}"/>
+            app:userId="@{postViewModel.post.userId}" />
 
         <TextView
             android:id="@+id/username"
@@ -55,7 +55,7 @@
             android:singleLine="true"
             android:text="@{postViewModel.post.username}"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            android:textIsSelectable="true"/>
+            android:textIsSelectable="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
             android:layout_below="@id/username"
             android:singleLine="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            app:datetime="@{postViewModel.post.datetime}"/>
+            app:datetime="@{postViewModel.post.datetime}" />
 
         <!-- enable `textIsSelectable` in order to add click effect -->
         <TextView
@@ -80,7 +80,7 @@
             app:eventBus="@{eventBus}"
             app:increaseClickingArea="@{@dimen/minimum_touch_target_size}"
             app:movementMethod="@{LinkMovementMethod.instance}"
-            app:post="@{postViewModel.post}"/>
+            app:post="@{postViewModel.post}" />
 
         <!-- layout_marginTop = 72dp (two line height with avatar) - 16dp (RelativeLayout's top padding) -->
         <!-- use custom movement method to provides selection and click -->
@@ -92,7 +92,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textIsSelectable="true"
             app:movementMethod="@{CustomMovementMethod.instance}"
-            app:reply="@{postViewModel.post.reply}"/>
+            app:reply="@{postViewModel.post.reply}" />
 
     </RelativeLayout>
 

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Light" parent="Base.Theme.Light"/>
-    <style name="Theme.Light.Inverse.Amber" parent="Base.Theme.Light.Inverse.Amber"/>
-    <style name="Theme.Light.Inverse.Green" parent="Base.Theme.Light.Inverse.Green"/>
-    <style name="Theme.Light.Inverse.LightBlue" parent="Base.Theme.Light.Inverse.LightBlue"/>
+    <style name="Theme.Light" parent="Base.Theme.Light" />
+    <style name="Theme.Light.Inverse.Amber" parent="Base.Theme.Light.Inverse.Amber" />
+    <style name="Theme.Light.Inverse.Green" parent="Base.Theme.Light.Inverse.Green" />
+    <style name="Theme.Light.Inverse.LightBlue" parent="Base.Theme.Light.Inverse.LightBlue" />
 
-    <style name="Theme.Dark" parent="Base.Theme.Dark"/>
-    <style name="Theme.Dark.NightMode" parent="Base.Theme.Dark.NightMode"/>
-    <style name="Theme.Dark.NightMode.Amoled" parent="Base.Theme.Dark.NightMode.Amoled"/>
+    <style name="Theme.Dark" parent="Base.Theme.Dark" />
+    <style name="Theme.Dark.NightMode" parent="Base.Theme.Dark.NightMode" />
+    <style name="Theme.Dark.NightMode.Amoled" parent="Base.Theme.Dark.NightMode.Amoled" />
 
-    <style name="Theme.Translucent.Light" parent="Base.Theme.Translucent.Light"/>
-    <style name="Theme.Translucent.Dark" parent="Base.Theme.Translucent.Dark"/>
+    <style name="Theme.Translucent.Light" parent="Base.Theme.Translucent.Light" />
+    <style name="Theme.Translucent.Dark" parent="Base.Theme.Translucent.Dark" />
 
-    <style name="Theme.Gallery" parent="Base.Theme.Gallery"/>
+    <style name="Theme.Gallery" parent="Base.Theme.Gallery" />
 
 
     <style name="Base.Theme.Light" parent="Theme.AppCompat.Light.NoActionBar">
