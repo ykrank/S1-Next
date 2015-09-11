@@ -54,6 +54,8 @@ public abstract class BaseFragment<D> extends RxFragment {
      */
     private static final String STATE_LOADING_VIEW_MODEL = "loading_view_model";
 
+    S1Service mS1Service;
+
     private LoadingViewModelBindingDelegate mLoadingViewModelBindingDelegate;
     private LoadingViewModel mLoadingViewModel;
 
@@ -62,7 +64,6 @@ public abstract class BaseFragment<D> extends RxFragment {
      */
     private DataRetainedFragment<D> mDataRetainedFragment;
 
-    S1Service mS1Service;
     private UserValidator mUserValidator;
 
     private WeakReference<Snackbar> mRetrySnackbar;
@@ -292,7 +293,8 @@ public abstract class BaseFragment<D> extends RxFragment {
      * Called if it will not make further calls to {@link #onNext(Object)}
      * or {@link #onError(Throwable)} occurred during data loading.
      */
-    private void finallyDo() {
+    @CallSuper
+    void finallyDo() {
         mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FINISH);
     }
 

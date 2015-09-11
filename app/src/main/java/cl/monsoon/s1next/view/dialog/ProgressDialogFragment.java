@@ -36,8 +36,9 @@ abstract class ProgressDialogFragment<D> extends RxDialogFragment {
 
     S1Service mS1Service;
 
-    private User mUser;
     UserValidator mUserValidator;
+
+    private User mUser;
 
     @Override
     @CallSuper
@@ -133,7 +134,8 @@ abstract class ProgressDialogFragment<D> extends RxDialogFragment {
     /**
      * @see BaseFragment#finallyDo()
      */
-    private void finallyDo() {
+    @CallSuper
+    void finallyDo() {
         dismissAllowingStateLoss();
     }
 
