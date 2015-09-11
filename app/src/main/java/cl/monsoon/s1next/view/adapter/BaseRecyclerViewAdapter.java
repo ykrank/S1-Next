@@ -95,6 +95,6 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
     }
 
     final Object removeItem(int position) {
-        return mItems.add(position);
+        return mItems.remove(position);
     }
 }
