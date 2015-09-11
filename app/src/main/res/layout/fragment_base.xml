@@ -28,7 +28,6 @@
             android:paddingBottom="@dimen/list_view_padding"
             android:paddingTop="@dimen/list_view_padding"
             android:scrollbars="vertical"
-            app:loading="@{loadingViewModel.loading}"
             app:loadingFirstTime="@{loadingViewModel.loadingFirstTime}" />
 
     </android.support.v4.widget.SwipeRefreshLayout>

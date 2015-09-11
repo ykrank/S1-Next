@@ -22,37 +22,4 @@ public final class RecyclerViewBindingAdapter {
             }
         }
     }
-
-    /**
-     * Disables nested scrolling if all child views are fully visible when current
-     * {@link LoadingViewModel#loading} status changed.
-     */
-    @BindingAdapter("loading")
-    public static void setNestedScrollingEnabled(RecyclerView recyclerView, @LoadingViewModel.LoadingDef int loading) {
-        switch (loading) {
-            case LoadingViewModel.LOADING_FIRST_TIME:
-                // disable nested scrolling because we only show a Progress
-                recyclerView.setNestedScrollingEnabled(false);
-                break;
-            case LoadingViewModel.LOADING_SWIPE_REFRESH:
-                // do nothing because only SwipeRefreshLayout has been shown
-                break;
-            default:
-                // disable nested scrolling if the first and last child items
-                // are fully visible or no child items exists
-                recyclerView.post(() -> {
-                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager)
-                            recyclerView.getLayoutManager();
-                    int firstCompletelyVisibleItemPosition =
-                            linearLayoutManager.findFirstCompletelyVisibleItemPosition();
-                    int itemCount = linearLayoutManager.getItemCount();
-
-                    boolean isChildViewsFullyVisible = firstCompletelyVisibleItemPosition == 0
-                            && linearLayoutManager.findLastCompletelyVisibleItemPosition()
-                            == itemCount - 1;
-                    recyclerView.setNestedScrollingEnabled(!(isChildViewsFullyVisible
-                            || itemCount == 0));
-                });
-        }
-    }
 }
