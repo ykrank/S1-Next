@@ -39,14 +39,12 @@ public final class ProgressAdapterDelegate extends AbsAdapterDelegate<List<Objec
 
     @Override
     public void onBindViewHolder(@NonNull List<Object> objects, int i, @NonNull RecyclerView.ViewHolder viewHolder) {
-        viewHolder.itemView.setVisibility(View.GONE);
         // match_parent doesn't work for RecyclerView's item
         viewHolder.itemView.post(() -> {
             ViewGroup.LayoutParams layoutParams = viewHolder.itemView.getLayoutParams();
             View view = (View) viewHolder.itemView.getParent();
-            layoutParams.width = view.getWidth() - view.getPaddingLeft() - view.getPaddingRight();
             layoutParams.height = view.getHeight() - view.getPaddingTop() - view.getPaddingBottom();
-            viewHolder.itemView.setVisibility(View.VISIBLE);
+            mLayoutInflater.inflate(R.layout.progress_bar, (ViewGroup) viewHolder.itemView, true);
         });
     }
 
