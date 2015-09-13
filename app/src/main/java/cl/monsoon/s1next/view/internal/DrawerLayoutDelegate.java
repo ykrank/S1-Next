@@ -71,14 +71,13 @@ public abstract class DrawerLayoutDelegate {
     }
 
     private void setupNavDrawer() {
-        // see http://stackoverflow.com/a/32414488
+        // see http://stackoverflow.com/a/27487357
         mDrawerToggle = new ActionBarDrawerToggle(mFragmentActivity, mDrawerLayout,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                // do not call super.onDrawerSlide(drawerView, slideOffset)
-                // in order to disable ActionBarDrawerToggle's animation
+                super.onDrawerSlide(drawerView, 0);
             }
 
             @Override
