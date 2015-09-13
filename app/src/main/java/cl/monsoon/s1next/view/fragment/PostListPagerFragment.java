@@ -82,7 +82,6 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
                         && !isLoading()
                         && mRecyclerAdapter.getItemCount() != 0
                         && !mRecyclerView.canScrollVertically(1)) {
-                    mRecyclerAdapter.showFooterProgress();
                     startPullToRefresh();
                 }
             }
@@ -101,6 +100,12 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         super.onDetach();
 
         mPagerCallback = null;
+    }
+
+    @Override
+    void startPullToRefresh() {
+        mRecyclerAdapter.showFooterProgress();
+        super.startPullToRefresh();
     }
 
     @Override

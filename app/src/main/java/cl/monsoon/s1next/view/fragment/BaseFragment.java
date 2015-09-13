@@ -213,10 +213,12 @@ public abstract class BaseFragment<D> extends RxFragment {
     /**
      * Disables {@link SwipeRefreshLayout} and start to load new data.
      * <p>
-     * Subclass should add {@link android.widget.ProgressBar} to {@link android.support.v7.widget.RecyclerView}
-     * by itself.
+     * Subclass should override this method and add {@link android.widget.ProgressBar}
+     * to {@code getRecyclerView()} in order to let {@link #showRetrySnackBar(String)}
+     * work.
      */
-    final void startPullToRefresh() {
+    @CallSuper
+    void startPullToRefresh() {
         mLoadingViewModel.setLoading(LoadingViewModel.LOADING_PULL_UP_TO_REFRESH);
         load();
     }
