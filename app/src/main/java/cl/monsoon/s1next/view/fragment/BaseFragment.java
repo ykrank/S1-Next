@@ -302,8 +302,8 @@ public abstract class BaseFragment<D> extends RxFragment {
         Optional<Snackbar> snackbar = ((CoordinatorLayoutAnchorDelegate) getActivity())
                 .showLongSnackbarIfVisible(message, R.string.snackbar_action_retry,
                         isPullUpToRefresh()
-                                ? v -> {if (!isLoading()) startPullToRefresh();}
-                                : v -> {if (!isLoading()) startSwipeRefresh();});
+                                ? v -> startPullToRefresh()
+                                : v -> startSwipeRefresh());
         if (snackbar.isPresent()) {
             mRetrySnackbar = new WeakReference<>(snackbar.get());
         }
