@@ -17,6 +17,7 @@ import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.api.model.ThreadLink;
+import cl.monsoon.s1next.util.ErrorUtil;
 import cl.monsoon.s1next.view.activity.PostListActivity;
 import rx.Observable;
 import rx.Subscriber;
@@ -116,8 +117,8 @@ public final class QuotePostPageParserDialogFragment extends ProgressDialogFragm
 
     @Override
     protected void onError(Throwable throwable) {
-        ThreadLinkInvalidPromptDialogFragment.newInstance(throwable.toString()).show(getFragmentManager(),
-                ThreadLinkInvalidPromptDialogFragment.TAG);
+        ThreadLinkInvalidPromptDialogFragment.newInstance(getContext(), ErrorUtil.parse(throwable))
+                .show(getFragmentManager(), ThreadLinkInvalidPromptDialogFragment.TAG);
         mShouldFinishActivity = false;
     }
 

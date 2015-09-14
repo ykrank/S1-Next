@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 
@@ -17,6 +18,7 @@ import cl.monsoon.s1next.data.api.S1Service;
 import cl.monsoon.s1next.data.api.UserValidator;
 import cl.monsoon.s1next.data.api.model.Account;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
+import cl.monsoon.s1next.util.ErrorUtil;
 import cl.monsoon.s1next.view.fragment.BaseFragment;
 import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import rx.Observable;
@@ -128,7 +130,7 @@ abstract class ProgressDialogFragment<D> extends RxDialogFragment {
      * @see BaseFragment#onError(Throwable)
      */
     void onError(Throwable throwable) {
-        showLongText(throwable.getMessage());
+        showLongText(ErrorUtil.parse(throwable));
     }
 
     /**
@@ -144,6 +146,10 @@ abstract class ProgressDialogFragment<D> extends RxDialogFragment {
      */
     final void showLongText(CharSequence text) {
         ((CoordinatorLayoutAnchorDelegate) getActivity()).showLongText(text);
+    }
+
+    private void showLongText(@StringRes int textResId) {
+        showLongText(getString(textResId));
     }
 
     protected abstract CharSequence getProgressMessage();

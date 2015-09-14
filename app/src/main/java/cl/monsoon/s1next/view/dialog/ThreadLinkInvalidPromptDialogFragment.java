@@ -23,24 +23,24 @@ public final class ThreadLinkInvalidPromptDialogFragment extends DialogFragment 
 
     private static final String ARG_MESSAGE = "message";
 
-    public static ThreadLinkInvalidPromptDialogFragment newInstance(String message) {
+    public static ThreadLinkInvalidPromptDialogFragment newInstance(CharSequence text) {
         ThreadLinkInvalidPromptDialogFragment fragment = new ThreadLinkInvalidPromptDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(ARG_MESSAGE, message);
+        bundle.putCharSequence(ARG_MESSAGE, text);
         fragment.setArguments(bundle);
 
         return fragment;
     }
 
-    public static ThreadLinkInvalidPromptDialogFragment newInstance(Context context, @StringRes int message) {
-        return newInstance(context.getString(message));
+    public static ThreadLinkInvalidPromptDialogFragment newInstance(Context context, @StringRes int textResId) {
+        return newInstance(context.getText(textResId));
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getContext())
-                .setMessage(getArguments().getString(ARG_MESSAGE))
+                .setMessage(getArguments().getCharSequence(ARG_MESSAGE))
                 .setPositiveButton(R.string.dialog_button_text_done, (dialog, which) -> dismiss())
                 .setNegativeButton(R.string.dialog_button_text_use_a_different_app, (dialog, which) ->
                         IntentUtil.startViewIntentExcludeOurApp(getContext(),

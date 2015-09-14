@@ -14,6 +14,7 @@
 
     <string name="message_network_error">There was a network error</string>
     <string name="message_server_error">Couldn\'t communicate with the server, please try again later.</string>
+    <string name="message_unknown_error">Unknown error occurred</string>
 
     <!-- drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>

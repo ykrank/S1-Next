@@ -3,6 +3,7 @@ package cl.monsoon.s1next.view.fragment;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -29,6 +30,7 @@ import cl.monsoon.s1next.data.api.S1Service;
 import cl.monsoon.s1next.data.api.UserValidator;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.databinding.FragmentBaseBinding;
+import cl.monsoon.s1next.util.ErrorUtil;
 import cl.monsoon.s1next.view.fragment.headless.DataRetainedFragment;
 import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import cl.monsoon.s1next.view.internal.LoadingViewModelBindingDelegate;
@@ -214,7 +216,7 @@ public abstract class BaseFragment<D> extends RxFragment {
      * Disables {@link SwipeRefreshLayout} and start to load new data.
      * <p>
      * Subclass should override this method and add {@link android.widget.ProgressBar}
-     * to {@code getRecyclerView()} in order to let {@link #showRetrySnackBar(String)}
+     * to {@code getRecyclerView()} in order to let {@link #showRetrySnackBar(CharSequence)}
      * work.
      */
     @CallSuper
@@ -287,7 +289,7 @@ public abstract class BaseFragment<D> extends RxFragment {
     @CallSuper
     void onError(Throwable throwable) {
         if (getUserVisibleHint()) {
-            showRetrySnackBar(throwable.getMessage());
+            showRetrySnackBar(ErrorUtil.parse(throwable));
         }
     }
 
@@ -300,15 +302,19 @@ public abstract class BaseFragment<D> extends RxFragment {
         mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FINISH);
     }
 
-    private void showRetrySnackBar(String message) {
+    private void showRetrySnackBar(CharSequence text) {
         Optional<Snackbar> snackbar = ((CoordinatorLayoutAnchorDelegate) getActivity())
-                .showLongSnackbarIfVisible(message, R.string.snackbar_action_retry,
+                .showLongSnackbarIfVisible(text, R.string.snackbar_action_retry,
                         isPullUpToRefresh()
                                 ? v -> startPullToRefresh()
                                 : v -> startSwipeRefresh());
         if (snackbar.isPresent()) {
             mRetrySnackbar = new WeakReference<>(snackbar.get());
         }
+    }
+
+    private void showRetrySnackBar(@StringRes int textResId) {
+        showRetrySnackBar(getString(textResId));
     }
 
     private void dismissRetrySnackBar() {
