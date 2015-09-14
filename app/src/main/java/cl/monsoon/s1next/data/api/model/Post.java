@@ -24,10 +24,10 @@ public final class Post {
     private String id;
 
     @JsonProperty("author")
-    private String username;
+    private String authorName;
 
     @JsonProperty("authorid")
-    private String userId;
+    private String authorId;
 
     @JsonProperty("message")
     private String reply;
@@ -51,20 +51,20 @@ public final class Post {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getAuthorName() {
+        return authorName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getAuthorId() {
+        return authorId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
     }
 
     /**
@@ -118,8 +118,8 @@ public final class Post {
         Post post = (Post) o;
         return Objects.equal(datetime, post.datetime) &&
                 Objects.equal(id, post.id) &&
-                Objects.equal(username, post.username) &&
-                Objects.equal(userId, post.userId) &&
+                Objects.equal(authorName, post.authorName) &&
+                Objects.equal(authorId, post.authorId) &&
                 Objects.equal(reply, post.reply) &&
                 Objects.equal(count, post.count) &&
                 Objects.equal(attachmentMap, post.attachmentMap);
@@ -127,7 +127,7 @@ public final class Post {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, username, userId, reply, count, datetime, attachmentMap);
+        return Objects.hashCode(id, authorName, authorId, reply, count, datetime, attachmentMap);
     }
 
     /**

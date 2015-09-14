@@ -46,19 +46,19 @@ public final class BezelImageViewBindingAdapter {
         }
     }
 
-    @BindingAdapter({"avatarDrawableRequestBuilder", "downloadPreferencesManager", "userId"})
+    @BindingAdapter({"avatarDrawableRequestBuilder", "downloadPreferencesManager", "authorId"})
     public static void loadAvatar(BezelImageView bezelImageView,
                                   DrawableRequestBuilder<String> avatarDrawableRequestBuilder,
                                   DownloadPreferencesManager downloadPreferencesManager,
-                                  String userId) {
+                                  String authorId) {
         // whether need to download avatars
         // depends on settings and Wi-Fi status
         if (downloadPreferencesManager.isAvatarsDownload()) {
             bezelImageView.setVisibility(View.VISIBLE);
 
             String url = downloadPreferencesManager.isHighResolutionAvatarsDownload()
-                    ? Api.getAvatarMediumUrl(userId)
-                    : Api.getAvatarSmallUrl(userId);
+                    ? Api.getAvatarMediumUrl(authorId)
+                    : Api.getAvatarSmallUrl(authorId);
             // show user's avatar
             avatarDrawableRequestBuilder.signature(
                     downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
