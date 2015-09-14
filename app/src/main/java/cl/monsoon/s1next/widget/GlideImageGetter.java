@@ -160,7 +160,7 @@ public final class GlideImageGetter
     @Override
     public void unscheduleDrawable(Drawable who, Runnable what) {}
 
-    private final static class ImageGetterViewTarget extends ViewTarget<TextView, GlideDrawable> {
+    private static final class ImageGetterViewTarget extends ViewTarget<TextView, GlideDrawable> {
 
         private final UrlDrawable mDrawable;
 

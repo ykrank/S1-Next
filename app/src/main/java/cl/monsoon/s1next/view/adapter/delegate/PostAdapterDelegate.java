@@ -75,7 +75,7 @@ public final class PostAdapterDelegate extends AbsAdapterDelegate<List<Object>> 
         binding.executePendingBindings();
     }
 
-    private final static class ItemViewBindingHolder extends RecyclerView.ViewHolder {
+    private static final class ItemViewBindingHolder extends RecyclerView.ViewHolder {
 
         private final ItemPostBinding itemPostBinding;
 

@@ -99,7 +99,7 @@ public final class TagHandler implements Html.TagHandler {
         }
     }
 
-    final static class ImageClickableSpan extends ImageSpan implements View.OnClickListener {
+    static final class ImageClickableSpan extends ImageSpan implements View.OnClickListener {
 
         private ImageClickableSpan(Drawable d, String source) {
             super(d, source);
@@ -111,5 +111,5 @@ public final class TagHandler implements Html.TagHandler {
         }
     }
 
-    private final static class Strike {}
+    private static final class Strike {}
 }

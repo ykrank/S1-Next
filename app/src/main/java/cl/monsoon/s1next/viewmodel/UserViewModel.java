@@ -12,7 +12,7 @@ public final class UserViewModel extends BaseObservable {
         return user;
     }
 
-    private final static class ObservableUser extends User {
+    private static final class ObservableUser extends User {
 
         private final BaseObservable mBaseObservable;
 

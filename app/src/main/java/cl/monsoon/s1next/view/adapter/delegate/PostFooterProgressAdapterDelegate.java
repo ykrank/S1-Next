@@ -40,7 +40,7 @@ public final class PostFooterProgressAdapterDelegate extends AbsAdapterDelegate<
     @Override
     public void onBindViewHolder(@NonNull List<Object> objects, int i, @NonNull RecyclerView.ViewHolder viewHolder) {}
 
-    private final static class FooterProgressViewHolder extends RecyclerView.ViewHolder
+    private static final class FooterProgressViewHolder extends RecyclerView.ViewHolder
             implements VerticalDividerItemDecoration.Undecorated {
 
         public FooterProgressViewHolder(View itemView) {

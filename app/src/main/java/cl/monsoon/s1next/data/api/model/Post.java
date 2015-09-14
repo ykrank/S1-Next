@@ -219,7 +219,7 @@ public final class Post {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public final static class Attachment {
+    public static final class Attachment {
 
         @JsonIgnore
         private final String url;

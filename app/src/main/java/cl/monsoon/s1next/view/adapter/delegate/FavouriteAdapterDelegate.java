@@ -48,7 +48,7 @@ public final class FavouriteAdapterDelegate extends AbsAdapterDelegate<List<Obje
         binding.executePendingBindings();
     }
 
-    private final static class BindingViewHolder extends RecyclerView.ViewHolder {
+    private static final class BindingViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemFavouriteBinding itemFavouriteBinding;
 

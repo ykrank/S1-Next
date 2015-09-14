@@ -48,7 +48,7 @@ public final class ProgressAdapterDelegate extends AbsAdapterDelegate<List<Objec
         });
     }
 
-    private static class ProgressViewHolder extends RecyclerView.ViewHolder
+    private static final class ProgressViewHolder extends RecyclerView.ViewHolder
             implements VerticalDividerItemDecoration.Undecorated {
 
         public ProgressViewHolder(View itemView) {

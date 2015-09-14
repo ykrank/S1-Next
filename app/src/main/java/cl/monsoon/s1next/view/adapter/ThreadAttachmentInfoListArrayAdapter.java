@@ -57,7 +57,7 @@ public final class ThreadAttachmentInfoListArrayAdapter
     }
 
 
-    private final static class ViewHolder {
+    private static final class ViewHolder {
 
         private TextView labelView;
         private TextView valueView;

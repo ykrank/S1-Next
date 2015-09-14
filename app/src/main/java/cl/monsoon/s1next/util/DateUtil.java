@@ -38,7 +38,7 @@ public final class DateUtil {
         return getSimpleDateFormatInstance().format(calendar.getTime());
     }
 
-    private final static class SimpleDateFormatHolder {
+    private static final class SimpleDateFormatHolder {
 
         private static final String TEMPLATE = "yyyy-MM-dd";
 

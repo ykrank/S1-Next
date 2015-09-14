@@ -41,7 +41,7 @@ import cl.monsoon.s1next.viewmodel.ImageViewModel;
 public final class GalleryActivity extends AppCompatActivity
         implements CoordinatorLayoutAnchorDelegate {
 
-    private final static int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 0;
+    private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 0;
 
     private static final String ARG_IMAGE_URL = "image_url";
 

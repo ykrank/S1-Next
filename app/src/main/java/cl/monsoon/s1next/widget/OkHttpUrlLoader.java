@@ -32,7 +32,7 @@ final class OkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
     /**
      * The default factory for {@link OkHttpUrlLoader}.
      */
-    public final static class Factory implements ModelLoaderFactory<GlideUrl, InputStream> {
+    public static final class Factory implements ModelLoaderFactory<GlideUrl, InputStream> {
 
         private final OkHttpClient mOkHttpClient;
 

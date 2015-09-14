@@ -270,7 +270,7 @@ public final class PersistentHttpCookieStore implements CookieStore {
         return HttpCookieParcelable.CREATOR.createFromParcel(parcel).httpCookie;
     }
 
-    private final static class HttpCookieParcelable implements Parcelable {
+    private static final class HttpCookieParcelable implements Parcelable {
 
         private static final Creator<HttpCookieParcelable> CREATOR = new Creator<HttpCookieParcelable>() {
 

@@ -113,7 +113,7 @@ public final class Thread implements Parcelable {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public final static class ThreadListInfo {
+    public static final class ThreadListInfo {
 
         @JsonProperty("threads")
         private int threads;

@@ -65,7 +65,7 @@ public final class ThreadAdapterDelegate extends AbsAdapterDelegate<List<Object>
         binding.executePendingBindings();
     }
 
-    private final static class BindingViewHolder extends RecyclerView.ViewHolder {
+    private static final class BindingViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemThreadBinding itemThreadBinding;
 
