@@ -8,6 +8,7 @@ import com.squareup.okhttp.OkHttpClient;
 
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
@@ -59,6 +60,9 @@ final class AppModule {
     @Singleton
     OkHttpClient providerOkHttpClient(CookieManager cookieManager) {
         OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.setConnectTimeout(17, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(17, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(77, TimeUnit.SECONDS);
         okHttpClient.setCookieHandler(cookieManager);
 
         return okHttpClient;
