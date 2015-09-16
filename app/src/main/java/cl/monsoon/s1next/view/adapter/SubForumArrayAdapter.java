@@ -43,7 +43,7 @@ public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        TextViewBindingAdapter.showForum(viewHolder.textView, getItem(position), mGentleAccentColor);
+        TextViewBindingAdapter.setForum(viewHolder.textView, getItem(position), mGentleAccentColor);
 
         return convertView;
     }

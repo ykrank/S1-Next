@@ -59,7 +59,7 @@ public final class TextViewBindingAdapter {
     }
 
     @BindingAdapter("textPath")
-    public static void loadText(TextView textView, String textPath) {
+    public static void loadTextAsset(TextView textView, String textPath) {
         try {
             InputStream inputStream = textView.getContext().getAssets().open(textPath);
             textView.setText(CharStreams.toString(new InputStreamReader(inputStream, Charsets.UTF_8)));
@@ -69,7 +69,7 @@ public final class TextViewBindingAdapter {
     }
 
     @BindingAdapter({"forum", "gentleAccentColor"})
-    public static void showForum(TextView textView, Forum forum, int gentleAccentColor) {
+    public static void setForum(TextView textView, Forum forum, int gentleAccentColor) {
         textView.setText(forum.getName());
         // add today's posts count to each forum
         if (forum.getTodayPosts() != 0) {
@@ -79,7 +79,7 @@ public final class TextViewBindingAdapter {
     }
 
     @BindingAdapter({"themeManager", "thread", "user"})
-    public static void setText(TextView textView, ThemeManager themeManager, Thread thread, User user) {
+    public static void setThread(TextView textView, ThemeManager themeManager, Thread thread, User user) {
         textView.setText(thread.getTitle());
         if (thread.getPermission() != 0) {
             // add thread's permission hint
@@ -98,13 +98,13 @@ public final class TextViewBindingAdapter {
     }
 
     @BindingAdapter("datetime")
-    public static void setText(TextView textView, long datetime) {
+    public static void setDatetime(TextView textView, long datetime) {
         textView.setText(DateUtils.getRelativeDateTimeString(textView.getContext(), datetime,
                 DateUtils.MINUTE_IN_MILLIS, DateUtils.DAY_IN_MILLIS, 0));
     }
 
     @BindingAdapter({"eventBus", "post"})
-    public static void setText(TextView textView, EventBus eventBus, Post post) {
+    public static void setCount(TextView textView, EventBus eventBus, Post post) {
         String text = "#" + post.getCount();
         // there is no need to quote #1
         if ("1".equals(post.getCount())) {
@@ -123,7 +123,7 @@ public final class TextViewBindingAdapter {
     }
 
     @BindingAdapter("reply")
-    public static void setText(TextView textView, @Nullable String reply) {
+    public static void setReply(TextView textView, @Nullable String reply) {
         if (TextUtils.isEmpty(reply)) {
             textView.setText(null);
         } else {

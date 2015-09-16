@@ -21,8 +21,7 @@ import cl.monsoon.s1next.viewmodel.DropDownItemListViewModel;
  * This Activity has Spinner in Toolbar to switch between different forum groups.
  */
 public final class ForumActivity extends BaseActivity
-        implements ToolbarDropDownInterface.Callback,
-        AdapterView.OnItemSelectedListener {
+        implements ToolbarDropDownInterface.Callback, AdapterView.OnItemSelectedListener {
 
     /**
      * The serialization (saved instance state) Bundle key representing

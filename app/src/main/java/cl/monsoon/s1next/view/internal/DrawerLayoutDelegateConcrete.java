@@ -31,7 +31,7 @@ import cl.monsoon.s1next.view.dialog.ThemeChangeDialogFragment;
 import cl.monsoon.s1next.viewmodel.UserViewModel;
 
 /**
- * Implement the concrete UI logic for {@link DrawerLayoutDelegate}.
+ * Implements the concrete UI logic for {@link DrawerLayoutDelegate}.
  */
 public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
         implements NavigationView.OnNavigationItemSelectedListener {

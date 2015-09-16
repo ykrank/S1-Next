@@ -48,8 +48,7 @@ import cl.monsoon.s1next.widget.EventBus;
  * to represent each page of post lists.
  */
 public final class PostListFragment extends BaseViewPagerFragment
-        implements PostListPagerFragment.PagerCallback,
-        View.OnClickListener {
+        implements PostListPagerFragment.PagerCallback, View.OnClickListener {
 
     public static final String TAG = PostListFragment.class.getName();
 
@@ -136,7 +135,6 @@ public final class PostListFragment extends BaseViewPagerFragment
 
         ((CoordinatorLayoutAnchorDelegate) getActivity()).setupFloatingActionButton(
                 R.drawable.ic_insert_comment_black_24dp, this);
-
     }
 
     @Override

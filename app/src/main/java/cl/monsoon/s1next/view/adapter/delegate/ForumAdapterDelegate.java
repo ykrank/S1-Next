@@ -40,11 +40,10 @@ public final class ForumAdapterDelegate extends AbsAdapterDelegate<List<Object>>
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup) {
         ItemForumBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_forum, viewGroup, false);
-        BindingViewHolder holder = new BindingViewHolder(binding);
-        holder.itemForumBinding.setGentleAccentColor(mGentleAccentColor);
-        holder.itemForumBinding.setForumViewModel(new ForumViewModel());
+        binding.setGentleAccentColor(mGentleAccentColor);
+        binding.setForumViewModel(new ForumViewModel());
 
-        return holder;
+        return new BindingViewHolder(binding);
     }
 
     @Override

@@ -48,14 +48,13 @@ public final class ThreadAdapterDelegate extends AbsAdapterDelegate<List<Object>
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup) {
         ItemThreadBinding binding = DataBindingUtil.inflate(mLayoutInflater, R.layout.item_thread,
                 viewGroup, false);
-        BindingViewHolder holder = new BindingViewHolder(binding);
         // we do not use view model for ThemeManager
         // because theme changes only when Activity recreated
-        holder.itemThreadBinding.setUserViewModel(mUserViewModel);
-        holder.itemThreadBinding.setThemeManager(mThemeManager);
-        holder.itemThreadBinding.setThreadViewModel(new ThreadViewModel());
+        binding.setUserViewModel(mUserViewModel);
+        binding.setThemeManager(mThemeManager);
+        binding.setThreadViewModel(new ThreadViewModel());
 
-        return holder;
+        return new BindingViewHolder(binding);
     }
 
     @Override

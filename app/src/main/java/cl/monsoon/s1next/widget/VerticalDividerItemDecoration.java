@@ -57,7 +57,5 @@ public final class VerticalDividerItemDecoration extends RecyclerView.ItemDecora
      * A marker interface that any {@link android.support.v7.widget.RecyclerView.ViewHolder}
      * implements this interface would not decorated with divider.
      */
-    public interface Undecorated {
-
-    }
+    public interface Undecorated {}
 }

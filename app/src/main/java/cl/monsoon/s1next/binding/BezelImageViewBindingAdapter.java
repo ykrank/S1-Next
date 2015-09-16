@@ -24,7 +24,7 @@ public final class BezelImageViewBindingAdapter {
      * otherwise show user's avatar.
      */
     @BindingAdapter("user")
-    public static void loadAvatar(BezelImageView bezelImageView, User user) {
+    public static void loadUserAvatar(BezelImageView bezelImageView, User user) {
         Context context = bezelImageView.getContext();
         DownloadPreferencesManager downloadPreferencesManager = App.getAppComponent(context)
                 .getDownloadPreferencesManager();
@@ -47,10 +47,10 @@ public final class BezelImageViewBindingAdapter {
     }
 
     @BindingAdapter({"avatarDrawableRequestBuilder", "downloadPreferencesManager", "authorId"})
-    public static void loadAvatar(BezelImageView bezelImageView,
-                                  DrawableRequestBuilder<String> avatarDrawableRequestBuilder,
-                                  DownloadPreferencesManager downloadPreferencesManager,
-                                  String authorId) {
+    public static void loadAuthorAvatar(BezelImageView bezelImageView,
+                                        DrawableRequestBuilder<String> avatarDrawableRequestBuilder,
+                                        DownloadPreferencesManager downloadPreferencesManager,
+                                        String authorId) {
         // whether need to download avatars
         // depends on settings and Wi-Fi status
         if (downloadPreferencesManager.isAvatarsDownload()) {

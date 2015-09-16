@@ -1,11 +1,9 @@
 package cl.monsoon.s1next.binding;
 
 import android.databinding.BindingAdapter;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import cl.monsoon.s1next.view.adapter.BaseRecyclerViewAdapter;
-import cl.monsoon.s1next.viewmodel.LoadingViewModel;
 
 public final class RecyclerViewBindingAdapter {
 

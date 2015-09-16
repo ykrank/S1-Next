@@ -24,7 +24,7 @@ public final class ImageViewBindingAdapter {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             @SuppressLint("PrivateResource") @ColorInt int rippleColor = ContextCompat.getColor(
                     imageView.getContext(), R.color.ripple_material_dark);
-            // add ripple effect
+            // add ripple effect if API >= 21
             RippleDrawable rippleDrawable = new RippleDrawable(ColorStateList.valueOf(rippleColor),
                     drawable, null);
             imageView.setImageDrawable(rippleDrawable);
