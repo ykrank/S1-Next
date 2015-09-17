@@ -29,6 +29,7 @@ import cl.monsoon.s1next.view.fragment.ReplyFragment;
 import cl.monsoon.s1next.viewmodel.UserViewModel;
 import cl.monsoon.s1next.widget.AppActivityLifecycleCallbacks;
 import cl.monsoon.s1next.widget.EventBus;
+import cl.monsoon.s1next.widget.WifiBroadcastReceiver;
 import dagger.Component;
 
 public final class App extends Application {
@@ -68,12 +69,12 @@ public final class App extends Application {
         Bugsnag.init(this);
 
         sApp = this;
-        mAppActivityLifecycleCallbacks = new AppActivityLifecycleCallbacks();
-        registerActivityLifecycleCallbacks(mAppActivityLifecycleCallbacks);
-
         mAppComponent = DaggerApp_AppComponent.builder()
                 .appModule(new AppModule(this))
                 .build();
+        mAppActivityLifecycleCallbacks = new AppActivityLifecycleCallbacks(this);
+        registerActivityLifecycleCallbacks(mAppActivityLifecycleCallbacks);
+
         mGeneralPreferencesManager = mAppComponent.getGeneralPreferencesManager();
         // set scaling factor for fonts
         ResourceUtil.setScaledDensity(getResources(), mGeneralPreferencesManager.getFontScale());
@@ -131,5 +132,7 @@ public final class App extends Application {
         void inject(ThreadAdapterDelegate delegate);
 
         void inject(PostAdapterDelegate delegate);
+
+        void inject(WifiBroadcastReceiver wifiBroadcastReceiver);
     }
 }

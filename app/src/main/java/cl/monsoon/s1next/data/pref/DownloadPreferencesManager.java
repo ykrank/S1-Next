@@ -118,11 +118,11 @@ public final class DownloadPreferencesManager {
     }
 
     /**
-     * Checks whether we should monitor the Wi-Fi status.
+     * Checks whether we need to monitor the Wi-Fi status.
      * We needn't monitor the Wi-Fi status if we needn't/should
      * download avatars or images.
      */
-    public boolean shouldMonitorWifi() {
+    public boolean needMonitorWifi() {
         return mAvatarsDownloadStrategyMemorized.get() == DownloadStrategy.WIFI
                 || mImagesDownloadStrategyMemorized.get() == DownloadStrategy.WIFI;
     }

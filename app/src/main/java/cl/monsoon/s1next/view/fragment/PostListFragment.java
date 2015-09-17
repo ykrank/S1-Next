@@ -1,11 +1,7 @@
 package cl.monsoon.s1next.view.fragment;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,17 +19,14 @@ import javax.inject.Inject;
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.User;
-import cl.monsoon.s1next.data.Wifi;
 import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.data.api.model.ThreadLink;
 import cl.monsoon.s1next.data.api.model.collection.Posts;
 import cl.monsoon.s1next.data.event.QuoteEvent;
-import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.util.ClipboardUtil;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.MathUtil;
-import cl.monsoon.s1next.util.NetworkUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.view.activity.ReplyActivity;
 import cl.monsoon.s1next.view.dialog.LoginPromptDialogFragment;
@@ -65,13 +58,7 @@ public final class PostListFragment extends BaseViewPagerFragment
     EventBus mEventBus;
 
     @Inject
-    Wifi mWifi;
-
-    @Inject
     User mUser;
-
-    @Inject
-    DownloadPreferencesManager mDownloadPreferencesManager;
 
     private String mThreadId;
     @Nullable
@@ -79,8 +66,6 @@ public final class PostListFragment extends BaseViewPagerFragment
 
     private Posts.ThreadAttachment mThreadAttachment;
     private MenuItem mMenuThreadAttachment;
-
-    private BroadcastReceiver mWifiReceiver;
 
     public static PostListFragment newInstance(Thread thread, boolean shouldGoToLastPage) {
         PostListFragment fragment = new PostListFragment();
@@ -141,39 +126,12 @@ public final class PostListFragment extends BaseViewPagerFragment
     public void onResume() {
         super.onResume();
 
-        Context context = getContext();
-        // Registers broadcast receiver to check whether Wi-Fi is enabled
-        // when we need to download images.
-        if (mDownloadPreferencesManager.shouldMonitorWifi()) {
-            mWifi.setWifiEnabled(NetworkUtil.isWifiConnected(context));
-
-            mWifiReceiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    mWifi.setWifiEnabled(NetworkUtil.isWifiConnected(context));
-                }
-            };
-
-            IntentFilter intentFilter = new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-            context.registerReceiver(mWifiReceiver, intentFilter);
-        }
-
         mEventBus.get().compose(bindToLifecycle()).subscribe(o -> {
             if (o instanceof QuoteEvent) {
                 QuoteEvent quoteEvent = (QuoteEvent) o;
                 startReplyActivity(quoteEvent.getQuotePostId(), quoteEvent.getQuotePostCount());
             }
         });
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        if (mWifiReceiver != null) {
-            getContext().unregisterReceiver(mWifiReceiver);
-            mWifiReceiver = null;
-        }
     }
 
     @Override

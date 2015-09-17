@@ -13,12 +13,14 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.data.api.model.ThreadLink;
 import cl.monsoon.s1next.view.fragment.PostListFragment;
+import cl.monsoon.s1next.widget.WifiBroadcastReceiver;
 
 /**
  * An Activity which includes {@link android.support.v4.view.ViewPager}
  * to represent each page of post lists.
  */
-public final class PostListActivity extends BaseActivity {
+public final class PostListActivity extends BaseActivity
+        implements WifiBroadcastReceiver.NeedMonitorWifi {
 
     private static final String ARG_THREAD = "thread";
     private static final String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
