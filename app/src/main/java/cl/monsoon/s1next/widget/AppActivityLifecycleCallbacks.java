@@ -10,7 +10,7 @@ public final class AppActivityLifecycleCallbacks implements Application.Activity
     /**
      * Forked from http://stackoverflow.com/a/13809991
      */
-    private int visibleCount;
+    private int mVisibleCount;
 
     private WifiBroadcastReceiver mWifiBroadcastReceiver;
     private int mNeedMonitorWifiActivityCount;
@@ -24,7 +24,7 @@ public final class AppActivityLifecycleCallbacks implements Application.Activity
 
     @Override
     public void onActivityStarted(Activity activity) {
-        visibleCount++;
+        mVisibleCount++;
     }
 
     @Override
@@ -49,7 +49,7 @@ public final class AppActivityLifecycleCallbacks implements Application.Activity
 
     @Override
     public void onActivityStopped(Activity activity) {
-        visibleCount--;
+        mVisibleCount--;
     }
 
     @Override
@@ -59,6 +59,6 @@ public final class AppActivityLifecycleCallbacks implements Application.Activity
     public void onActivityDestroyed(Activity activity) {}
 
     public boolean isAppVisible() {
-        return visibleCount > 0;
+        return mVisibleCount > 0;
     }
 }
