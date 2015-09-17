@@ -18,8 +18,8 @@ import android.webkit.WebViewClient;
 import cl.monsoon.s1next.BuildConfig;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.databinding.FragmentHelpBinding;
-import cl.monsoon.s1next.util.ClipboardUtil;
 import cl.monsoon.s1next.view.activity.OpenSourceLicensesActivity;
+import cl.monsoon.s1next.view.dialog.VersionInfoDialogFragment;
 import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import cl.monsoon.s1next.viewmodel.WebPageViewModel;
 
@@ -89,12 +89,6 @@ public final class HelpFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.activity_help, menu);
-
-        // see http://stackoverflow.com/q/10919240
-        if (isAdded()) {
-            menu.findItem(R.id.menu_version).setTitle(getString(R.string.menu_version,
-                    BuildConfig.VERSION_NAME));
-        }
     }
 
     @Override
@@ -124,11 +118,9 @@ public final class HelpFragment extends Fragment {
                 OpenSourceLicensesActivity.startOpenSourceLicensesActivity(getContext());
 
                 return true;
-            case R.id.menu_version:
-                // copy version number to clipboard though it make no sense actually
-                ClipboardUtil.copyText(getContext(), item.getTitle());
-                ((CoordinatorLayoutAnchorDelegate) getActivity()).showShortSnackbar(
-                        R.string.message_version_number_copied);
+            case R.id.menu_version_info:
+                new VersionInfoDialogFragment().show(getFragmentManager(),
+                        VersionInfoDialogFragment.TAG);
 
                 return true;
         }

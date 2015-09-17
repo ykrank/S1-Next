@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_icon_content_desc">应用图标</string>
     <string name="intent_title_which_view_application">打开方式</string>
     <string name="message_chooser_no_applications">没有应用可执行此操作</string>
     <string name="action_login">登录</string>
@@ -92,6 +93,6 @@
     <string name="open_source_licenses">开放源代码许可</string>
     <string name="pref_libraries">类库</string>
     <string name="pref_files">文件</string>
-    <string name="menu_version">版本 %1$s</string>
-    <string name="message_version_number_copied">版本号已复制</string>
+    <string name="menu_version_info">版本信息</string>
+    <string name="version">版本 %1$s</string>
 </resources>

@@ -14,8 +14,8 @@
         android:title="@string/open_source_licenses"
         app:showAsAction="never" />
     <item
-        android:id="@+id/menu_version"
+        android:id="@+id/menu_version_info"
         android:orderInCategory="3"
-        android:title="@null"
+        android:title="@string/menu_version_info"
         app:showAsAction="never" />
 </menu>
