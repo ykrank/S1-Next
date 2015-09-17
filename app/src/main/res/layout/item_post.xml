@@ -63,6 +63,7 @@
             android:layout_alignLeft="@id/author_name"
             android:layout_alignStart="@id/author_name"
             android:layout_below="@id/author_name"
+            android:layout_marginTop="@dimen/subtitle_margin_top"
             android:singleLine="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:datetime="@{postViewModel.post.datetime}" />

@@ -29,7 +29,6 @@ import cl.monsoon.s1next.data.api.model.Forum;
 import cl.monsoon.s1next.data.api.model.Post;
 import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.data.event.QuoteEvent;
-import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.util.ViewUtil;
 import cl.monsoon.s1next.widget.EventBus;
 import cl.monsoon.s1next.widget.GlideImageGetter;
@@ -78,8 +77,8 @@ public final class TextViewBindingAdapter {
         }
     }
 
-    @BindingAdapter({"themeManager", "thread", "user"})
-    public static void setThread(TextView textView, ThemeManager themeManager, Thread thread, User user) {
+    @BindingAdapter("thread")
+    public static void setThread(TextView textView, Thread thread) {
         textView.setText(thread.getTitle());
         if (thread.getPermission() != 0) {
             // add thread's permission hint
@@ -87,14 +86,6 @@ public final class TextViewBindingAdapter {
                     "[" + textView.getContext().getString(R.string.thread_permission_hint)
                             + thread.getPermission() + "]");
         }
-        // disable TextView if user has no permission to access this thread
-        boolean hasPermission = user.getPermission() >= thread.getPermission();
-        textView.setEnabled(hasPermission);
-
-        // add thread's replies count to each thread
-        ViewUtil.concatWithTwoSpacesForRtlSupport(textView, String.valueOf(thread.getReplies()),
-                hasPermission ? themeManager.getGentleAccentColor()
-                        : themeManager.getHintOrDisabledGentleAccentColor());
     }
 
     @BindingAdapter("datetime")

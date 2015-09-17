@@ -134,26 +134,12 @@ public final class ThemeManager {
         return ColorUtils.setAlphaComponent(mColorAccent, getSecondaryTextAlpha());
     }
 
-    @ColorInt
-    public int getHintOrDisabledGentleAccentColor() {
-        return ColorUtils.setAlphaComponent(mColorAccent, getHintOrDisabledTextAlpha());
-    }
-
     @BackgroundAlphaDef
     private int getSecondaryTextAlpha() {
         if (isDarkTheme()) {
             return BLACK_BACKGROUND_SECONDARY_TEXT_ALPHA;
         } else {
             return WHITE_BACKGROUND_SECONDARY_TEXT_ALPHA;
-        }
-    }
-
-    @BackgroundAlphaDef
-    private int getHintOrDisabledTextAlpha() {
-        if (isDarkTheme()) {
-            return BLACK_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA;
-        } else {
-            return WHITE_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA;
         }
     }
 

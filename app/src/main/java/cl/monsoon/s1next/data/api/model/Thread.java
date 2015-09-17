@@ -35,6 +35,12 @@ public final class Thread implements Parcelable {
     @JsonProperty("subject")
     private String title;
 
+    @JsonProperty("author")
+    private String authorName;
+
+    @JsonProperty("authorid")
+    private String authorId;
+
     @JsonProperty("replies")
     private int replies;
 
@@ -65,6 +71,22 @@ public final class Thread implements Parcelable {
     public void setTitle(String title) {
         // unescape some basic XML entities
         this.title = StringEscapeUtils.unescapeXml(title);
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+
+    public String getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
     }
 
     public int getReplies() {

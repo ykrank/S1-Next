@@ -5,8 +5,11 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.DimenRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import cl.monsoon.s1next.util.ResourceUtil;
 
 public final class VerticalDividerItemDecoration extends RecyclerView.ItemDecoration {
 
@@ -14,10 +17,21 @@ public final class VerticalDividerItemDecoration extends RecyclerView.ItemDecora
 
     private final Drawable mDivider;
 
+    private final boolean mRtl;
+    private int mStartBound;
+
     public VerticalDividerItemDecoration(Context context) {
         TypedArray typedArray = context.obtainStyledAttributes(ATTRS);
         mDivider = typedArray.getDrawable(0);
         typedArray.recycle();
+
+        mRtl = ResourceUtil.isRTL(context.getResources());
+    }
+
+    public VerticalDividerItemDecoration(Context context, @DimenRes int startBoundResId) {
+        this(context);
+
+        mStartBound = context.getResources().getDimensionPixelSize(startBoundResId);
     }
 
     @Override
@@ -36,7 +50,11 @@ public final class VerticalDividerItemDecoration extends RecyclerView.ItemDecora
                         (int) childView.getTranslationY();
                 final int bottom = top + mDivider.getIntrinsicHeight();
 
-                mDivider.setBounds(left, top, right, bottom);
+                if (mRtl) {
+                    mDivider.setBounds(left, top, right - mStartBound, bottom);
+                } else {
+                    mDivider.setBounds(left + mStartBound, top, right, bottom);
+                }
                 mDivider.draw(c);
             }
         }

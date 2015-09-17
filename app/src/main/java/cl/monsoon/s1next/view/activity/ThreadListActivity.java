@@ -18,12 +18,13 @@ import cl.monsoon.s1next.data.api.model.Forum;
 import cl.monsoon.s1next.view.adapter.SubForumArrayAdapter;
 import cl.monsoon.s1next.view.fragment.ThreadListFragment;
 import cl.monsoon.s1next.view.fragment.ThreadListPagerFragment;
+import cl.monsoon.s1next.widget.WifiBroadcastReceiver;
 
 /**
  * An Activity shows the thread lists.
  */
 public final class ThreadListActivity extends BaseActivity
-        implements ThreadListPagerFragment.SubForumsCallback {
+        implements ThreadListPagerFragment.SubForumsCallback, WifiBroadcastReceiver.NeedMonitorWifi {
 
     private static final String ARG_FORUM = "forum";
 
