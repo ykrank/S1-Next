@@ -13,6 +13,7 @@ public final class AppActivityLifecycleCallbacks implements Application.Activity
     private int visibleCount;
 
     private WifiBroadcastReceiver mWifiBroadcastReceiver;
+    private int mNeedMonitorWifiActivityCount;
 
     public AppActivityLifecycleCallbacks(Context context) {
         mWifiBroadcastReceiver = new WifiBroadcastReceiver(context);
@@ -29,14 +30,20 @@ public final class AppActivityLifecycleCallbacks implements Application.Activity
     @Override
     public void onActivityResumed(Activity activity) {
         if (activity instanceof WifiBroadcastReceiver.NeedMonitorWifi) {
-            mWifiBroadcastReceiver.registerIfNeeded();
+            if (mNeedMonitorWifiActivityCount == 0) {
+                mWifiBroadcastReceiver.registerIfNeeded();
+            }
+            mNeedMonitorWifiActivityCount++;
         }
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
         if (activity instanceof WifiBroadcastReceiver.NeedMonitorWifi) {
-            mWifiBroadcastReceiver.unregisterIfNeeded();
+            mNeedMonitorWifiActivityCount--;
+            if (mNeedMonitorWifiActivityCount == 0) {
+                mWifiBroadcastReceiver.unregisterIfNeeded();
+            }
         }
     }
 
