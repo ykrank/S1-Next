@@ -70,6 +70,9 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
                 Resources resources = v.getContext().getResources();
                 binding.drawerHeaderBackground.getLayoutParams().height = insetsTop
                         + resources.getDimensionPixelSize(R.dimen.drawer_top_height);
+                binding.drawerHeaderBackgroundScrim.getLayoutParams().height =
+                        binding.drawerHeaderBackground.getLayoutParams().height;
+
                 ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams)
                         binding.drawerUserAvatar.getLayoutParams();
                 marginLayoutParams.topMargin = insetsTop + resources.getDimensionPixelSize(

@@ -26,6 +26,12 @@
             android:scaleType="centerCrop"
             app:imageDrawable="@{@drawable/ic_drawer_header_background}" />
 
+        <View
+            android:id="@+id/drawer_header_background_scrim"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/drawer_top_height"
+            android:background="@drawable/scrim" />
+
         <cl.monsoon.s1next.widget.BezelImageView
             android:id="@+id/drawer_user_avatar"
             android:layout_width="@dimen/drawer_avatar_size"
@@ -52,8 +58,8 @@
             android:singleLine="true"
             android:text="@{userViewModel.user.logged ? userViewModel.user.name : @string/action_login}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="@color/abc_primary_text_material_dark"
-            tools:ignore="NewApi,PrivateResource" />
+            android:textColor="?attr/drawerTextColor"
+            tools:ignore="NewApi" />
 
     </RelativeLayout>
 

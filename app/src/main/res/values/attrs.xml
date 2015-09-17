@@ -5,6 +5,8 @@
     <attr name="backgroundContainerColor" format="color|reference" />
 
     <attr name="toolbarTheme" format="reference" />
+
+    <attr name="drawerTextColor" format="color" />
     <attr name="fabBackgroundTint" format="color|reference" />
     <attr name="emoticonKeyboardTabLayoutBackground" format="color|reference" />
     <attr name="emoticonKeyboardBackground" format="color|reference" />

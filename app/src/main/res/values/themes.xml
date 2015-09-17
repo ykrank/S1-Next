@@ -27,6 +27,7 @@
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="preferenceTheme">@style/Preference.Overlay</item>
 
+        <item name="drawerTextColor">?android:attr/textColorPrimaryInverse</item>
         <item name="fabBackgroundTint">?attr/colorAccent</item>
         <item name="emoticonKeyboardTabLayoutBackground">@color/emoticon_keyboard_tab_layout_background_light</item>
         <item name="emoticonKeyboardBackground">@color/emoticon_keyboard_background_light</item>
@@ -89,6 +90,7 @@
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="preferenceTheme">@style/Preference.Overlay</item>
+        <item name="drawerTextColor">?android:attr/textColorPrimary</item>
         <item name="fabBackgroundTint">?attr/colorAccent</item>
         <item name="emoticonKeyboardTabLayoutBackground">@color/emoticon_keyboard_tab_layout_background_dark</item>
         <item name="emoticonKeyboardBackground">@color/emoticon_keyboard_background_dark</item>
