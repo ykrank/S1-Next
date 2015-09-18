@@ -36,7 +36,9 @@ public final class HelpFragment extends Fragment {
 
     private static final String HELP_PAGE_URL = "http://monsoon.cl/S1-Next/HELP.html";
 
-    // https://developer.android.com/distribute/tools/promote/linking.html#OpeningDetails
+    /**
+     * https://developer.android.com/distribute/tools/promote/linking.html#OpeningDetails
+     */
     private static final String ANDROID_APP_MARKET_LINK = "market://details?id=%s";
     private static final String ANDROID_WEB_SITE_MARKET_LINK = "http://play.google.com/store/apps/details?id=%s";
 

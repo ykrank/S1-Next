@@ -30,7 +30,9 @@ public final class ThemeManager {
      */
     private static final Theme DEFAULT_THEME = Theme.LIGHT_THEME;
 
-    // https://www.google.com/design/spec/style/color.html#color-ui-color-application
+    /**
+     * https://www.google.com/design/spec/style/color.html#color-ui-color-application
+     */
     private static final int WHITE_BACKGROUND_SECONDARY_TEXT_ALPHA = (int) (0.54 * 255);
     private static final int WHITE_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA = (int) (0.26 * 255);
     private static final int BLACK_BACKGROUND_SECONDARY_TEXT_ALPHA = (int) (0.70 * 255);
@@ -64,6 +66,7 @@ public final class ThemeManager {
     };
 
     private volatile Supplier<Theme> mThemeMemorized = Suppliers.memoize(mThemeSupplier);
+    @ColorInt
     private volatile int mColorAccent;
 
     public ThemeManager(Context context, GeneralPreferencesRepository generalPreferencesProvider) {
