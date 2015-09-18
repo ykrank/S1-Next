@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import cl.monsoon.s1next.BuildConfig;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.databinding.FragmentHelpBinding;
 import cl.monsoon.s1next.view.activity.OpenSourceLicensesActivity;
@@ -66,13 +65,13 @@ public final class HelpFragment extends Fragment {
             }
         });
 
-        // restore the state of WebView on configuration change
+        // restore the state of WebView when configuration changes
         // see http://www.devahead.com/blog/2012/01/preserving-the-state-of-an-android-webview-on-screen-orientation-change/
         if (savedInstanceState == null) {
             mWebView.loadUrl(HELP_PAGE_URL);
         } else {
             mWebView.restoreState(savedInstanceState);
-            // if we rotate the screen very fast
+            // if we haven't finished loading before
             if (mWebView.getUrl() == null) {
                 mWebView.loadUrl(HELP_PAGE_URL);
             }
