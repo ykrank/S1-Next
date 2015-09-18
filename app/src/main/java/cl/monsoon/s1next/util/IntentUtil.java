@@ -6,7 +6,9 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.BundleCompat;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -24,6 +26,11 @@ public final class IntentUtil {
      * https://github.com/android/platform_frameworks_base/blob/master/core/java/com/android/internal/app/ResolverActivity.java
      */
     private static final String ANDROID_RESOLVER_ACTIVITY = "com.android.internal.app.ResolverActivity";
+
+    /**
+     * https://developer.chrome.com/multidevice/android/customtabs
+     */
+    private static final String EXTRA_CUSTOM_TABS_SESSION = "android.support.customtabs.extra.SESSION";
 
     private IntentUtil() {}
 
@@ -47,6 +54,7 @@ public final class IntentUtil {
             if (!activityInfo.name.equals(ANDROID_RESOLVER_ACTIVITY)
                     && !packageName.equals(ourAppPackageName)) {
                 intent.setClassName(packageName, activityInfo.name);
+                putCustomTabsExtra(intent);
                 context.startActivity(intent);
 
                 return;
@@ -76,11 +84,28 @@ public final class IntentUtil {
                         Toast.LENGTH_SHORT).show();
             }
         } else {
+            putCustomTabsExtra(targetIntentList);
             Intent chooserIntent = Intent.createChooser(targetIntentList.remove(0),
                     context.getString(R.string.intent_title_which_view_application));
             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetIntentList.toArray(
                     new Parcelable[targetIntentList.size()]));
             context.startActivity(chooserIntent);
+        }
+    }
+
+    private static void putCustomTabsExtra(Intent intent) {
+        // enable Custom Tabs if supported
+        Bundle bundle = new Bundle();
+        BundleCompat.putBinder(bundle, EXTRA_CUSTOM_TABS_SESSION, null);
+        intent.putExtras(bundle);
+    }
+
+    private static void putCustomTabsExtra(List<Intent> intentList) {
+        // enable Custom Tabs if supported
+        Bundle bundle = new Bundle();
+        BundleCompat.putBinder(bundle, EXTRA_CUSTOM_TABS_SESSION, null);
+        for (Intent intent : intentList) {
+            intent.putExtras(bundle);
         }
     }
 }
