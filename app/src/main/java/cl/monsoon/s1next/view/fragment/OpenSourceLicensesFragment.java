@@ -93,7 +93,7 @@ public final class OpenSourceLicensesFragment extends PreferenceFragment {
                 {"Gradle Versions Plugin", "APACHE_LICENSE_2.0"},
                 {"Guava", "APACHE_LICENSE_2.0"},
                 {"Jackson databind", "APACHE_LICENSE_2.0"},
-                {"Javax.annotation API", "CDDL+GPL"},
+                {"JSR-250 Common Annotations for the JavaTM Platform", "CDDL_1.0"},
                 {"LeakCanary", "LEAKCANARY"},
                 {"OkHttp", "APACHE_LICENSE_2.0"},
                 {"Retrofit", "RETROFIT"},
