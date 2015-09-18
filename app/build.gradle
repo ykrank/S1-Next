@@ -61,8 +61,6 @@ dependencies {
 
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.0.6'
 
-    apt 'com.android.databinding:compiler:1.0-rc1'
-
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-SNAPSHOT'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-SNAPSHOT'
 
