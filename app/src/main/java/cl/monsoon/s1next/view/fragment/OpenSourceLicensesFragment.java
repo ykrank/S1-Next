@@ -83,24 +83,24 @@ public final class OpenSourceLicensesFragment extends PreferenceFragment {
                 {"AdapterDelegates", "ADAPTER_DELEGATES"},
                 {"Android Support Library", "ANDROID_SUPPORT"},
                 {"Apache Commons Lang", "APACHE_LICENSE_2.0"},
+                {"android-apt", "UNLICENSE"},
                 {"Bugsnag Android", "BUGSNAG_ANDROID"},
                 {"Dagger 2", "DAGGER_2"},
                 {"Data Binding", "ANDROID_SUPPORT"},
-                {"FindBugs Jsr305", "GNU_LESSER_GPL"},
+                {"FindBugs-jsr305", "APACHE_LICENSE_2.0"},
                 {"Glide", "GLIDE"},
-                {"Gradle Android Apt Plugin", "UNLICENSE"},
                 {"Gradle Retrolambda Plugin", "GRADLE_RETROLAMBDA_PLUGIN"},
                 {"Gradle Versions Plugin", "APACHE_LICENSE_2.0"},
                 {"Guava", "APACHE_LICENSE_2.0"},
-                {"Jackson databind", "APACHE_LICENSE_2.0"},
+                {"jackson-databind", "APACHE_LICENSE_2.0"},
                 {"JSR-250 Common Annotations for the JavaTM Platform", "CDDL_1.0"},
                 {"LeakCanary", "LEAKCANARY"},
                 {"OkHttp", "APACHE_LICENSE_2.0"},
                 {"Retrofit", "RETROFIT"},
                 {"Retrolambda", "APACHE_LICENSE_2.0"},
-                {"RxAndroid", "APACHE_LICENSE_2.0"},
-                {"RxJava", "RXJAVA"},
-                {"RxLifecycle", "RXLIFECYCLE"}
+                {"RxAndroid", "RX_ANDROID"},
+                {"RxJava", "RX_JAVA"},
+                {"RxLifecycle", "RX_LIFECYCLE"}
         };
     }
 
