@@ -17,21 +17,10 @@ public final class VerticalDividerItemDecoration extends RecyclerView.ItemDecora
 
     private final Drawable mDivider;
 
-    private final boolean mRtl;
-    private int mStartBound;
-
     public VerticalDividerItemDecoration(Context context) {
         TypedArray typedArray = context.obtainStyledAttributes(ATTRS);
         mDivider = typedArray.getDrawable(0);
         typedArray.recycle();
-
-        mRtl = ResourceUtil.isRTL(context.getResources());
-    }
-
-    public VerticalDividerItemDecoration(Context context, @DimenRes int startBoundResId) {
-        this(context);
-
-        mStartBound = context.getResources().getDimensionPixelSize(startBoundResId);
     }
 
     @Override
@@ -50,11 +39,7 @@ public final class VerticalDividerItemDecoration extends RecyclerView.ItemDecora
                         (int) childView.getTranslationY();
                 final int bottom = top + mDivider.getIntrinsicHeight();
 
-                if (mRtl) {
-                    mDivider.setBounds(left, top, right - mStartBound, bottom);
-                } else {
-                    mDivider.setBounds(left + mStartBound, top, right, bottom);
-                }
+                mDivider.setBounds(left, top, right, bottom);
                 mDivider.draw(c);
             }
         }

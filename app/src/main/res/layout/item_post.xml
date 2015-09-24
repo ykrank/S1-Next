@@ -54,7 +54,7 @@
             android:includeFontPadding="false"
             android:singleLine="true"
             android:text="@{postViewModel.post.authorName}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textIsSelectable="true" />
 
         <TextView
@@ -64,9 +64,10 @@
             android:layout_alignStart="@id/author_name"
             android:layout_below="@id/author_name"
             android:layout_marginTop="@dimen/subtitle_margin_top"
+            android:includeFontPadding="false"
             android:singleLine="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            app:datetime="@{postViewModel.post.datetime}" />
+            app:relativeDateTime="@{postViewModel.post.datetime}" />
 
         <!-- enable `textIsSelectable` in order to add click effect -->
         <!-- see https://code.google.com/p/android/issues/detail?id=13895 -->
@@ -91,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/single_line_height_with_avatar"
             android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textIsSelectable="true"
             app:movementMethod="@{CustomMovementMethod.instance}"
             app:reply="@{postViewModel.post.reply}" />

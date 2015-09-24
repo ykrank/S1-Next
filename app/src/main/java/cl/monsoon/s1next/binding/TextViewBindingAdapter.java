@@ -29,6 +29,7 @@ import cl.monsoon.s1next.data.api.model.Forum;
 import cl.monsoon.s1next.data.api.model.Post;
 import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.data.event.QuoteEvent;
+import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.util.ViewUtil;
 import cl.monsoon.s1next.widget.EventBus;
 import cl.monsoon.s1next.widget.GlideImageGetter;
@@ -77,8 +78,8 @@ public final class TextViewBindingAdapter {
         }
     }
 
-    @BindingAdapter("thread")
-    public static void setThread(TextView textView, Thread thread) {
+    @BindingAdapter({"themeManager", "thread", "user"})
+    public static void setThread(TextView textView, ThemeManager themeManager, Thread thread, User user) {
         textView.setText(thread.getTitle());
         if (thread.getPermission() != 0) {
             // add thread's permission hint
@@ -86,10 +87,14 @@ public final class TextViewBindingAdapter {
                     "[" + textView.getContext().getString(R.string.thread_permission_hint)
                             + thread.getPermission() + "]");
         }
+        // add thread's replies count to each thread
+        ViewUtil.concatWithTwoSpacesForRtlSupport(textView, String.valueOf(thread.getReplies()),
+                user.getPermission() >= thread.getPermission() ? themeManager.getGentleAccentColor()
+                        : themeManager.getHintOrDisabledGentleAccentColor());
     }
 
-    @BindingAdapter("datetime")
-    public static void setDatetime(TextView textView, long datetime) {
+    @BindingAdapter("relativeDateTime")
+    public static void setRelativeDateTime(TextView textView, long datetime) {
         textView.setText(DateUtils.getRelativeDateTimeString(textView.getContext(), datetime,
                 DateUtils.MINUTE_IN_MILLIS, DateUtils.DAY_IN_MILLIS, 0));
     }

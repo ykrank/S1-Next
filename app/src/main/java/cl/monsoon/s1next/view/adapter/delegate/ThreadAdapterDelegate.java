@@ -34,6 +34,9 @@ public final class ThreadAdapterDelegate extends AbsAdapterDelegate<List<Object>
     @Inject
     DownloadPreferencesManager mDownloadPreferencesManager;
 
+    @Inject
+    ThemeManager mThemeManager;
+
     private final LayoutInflater mLayoutInflater;
 
     private final DrawableRequestBuilder<String> mAvatarRequestBuilder;
@@ -65,6 +68,7 @@ public final class ThreadAdapterDelegate extends AbsAdapterDelegate<List<Object>
         binding.setUserViewModel(mUserViewModel);
         binding.setDownloadPreferencesManager(mDownloadPreferencesManager);
         binding.setDrawableRequestBuilder(mAvatarRequestBuilder);
+        binding.setThemeManager(mThemeManager);
         binding.setThreadViewModel(new ThreadViewModel());
 
         return new BindingViewHolder(binding);

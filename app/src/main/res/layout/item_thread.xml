@@ -20,16 +20,25 @@
             type="cl.monsoon.s1next.data.pref.DownloadPreferencesManager" />
 
         <variable
+            name="themeManager"
+            type="cl.monsoon.s1next.data.pref.ThemeManager" />
+
+        <variable
             name="drawableRequestBuilder"
             type="com.bumptech.glide.DrawableRequestBuilder&lt;String>" />
     </data>
 
+    <!-- May change this TextView padding or height after because we
+    can't find any spec in the Google Material Design whose line count
+    is not sure (less than 4) and each line are all primary.
+    We set top/bottom padding to 14.5dp because `includeFontPadding`
+    doesn't remove all extra space. -->
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
         android:enabled="@{userViewModel.user.permission >= threadViewModel.thread.permission}"
-        android:padding="@dimen/item_padding"
+        android:padding="14.5dp"
         app:onClickListener="@{threadViewModel.goToThisThread()}"
         app:onLongClickListener="@{threadViewModel.goToThisThreadLastPage()}">
 
@@ -51,18 +60,10 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/avatar"
             android:layout_toRightOf="@id/avatar"
+            android:duplicateParentState="true"
             android:includeFontPadding="false"
             android:text="@{threadViewModel.thread.authorName}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:includeFontPadding="false"
-            android:text="@{@string/thread_replies(threadViewModel.thread.replies)}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -73,10 +74,13 @@
             android:layout_marginTop="@dimen/subtitle_margin_top"
             android:duplicateParentState="true"
             android:ellipsize="end"
+            android:includeFontPadding="false"
             android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
             android:maxLines="@integer/list_max_line"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            app:thread="@{threadViewModel.thread}" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:themeManager="@{themeManager}"
+            app:thread="@{threadViewModel.thread}"
+            app:user="@{userViewModel.user}" />
 
     </RelativeLayout>
 
