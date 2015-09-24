@@ -79,7 +79,7 @@ public final class ThreadLink implements Parcelable {
         // or http://bbs.saraba1st.com/2b/archiver/tid-1074030.html
         matcher.usePattern(Pattern.compile("tid(=|-)(\\d+)"));
         if (matcher.find()) {
-            Builder builder = new Builder(matcher.group(1));
+            Builder builder = new Builder(matcher.group(2));
 
             // example: http://bbs.saraba1st.com/2b/forum.php?mod=viewthread&tid=1074030&page=7
             // or http://bbs.saraba1st.com/2b/archiver/tid-1074030.html?page=7
