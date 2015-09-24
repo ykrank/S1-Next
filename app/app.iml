@@ -76,7 +76,8 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dependency-cache" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dex" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dex-cache" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.databinding/library/1.0-rc1/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.databinding/adapters/1.0-rc2/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.databinding/library/1.0-rc2/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.0.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/design/23.0.1/jars" />
@@ -111,51 +112,40 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="rxlifecycle-0.3.0" level="project" />
     <orderEntry type="library" exported="" name="bugsnag-android-3.2.6" level="project" />
-    <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
     <orderEntry type="library" exported="" name="okio-1.6.0" level="project" />
-    <orderEntry type="library" exported="" name="antlr4-4.5" level="project" />
-    <orderEntry type="library" exported="" name="okhttp-2.5.0" level="project" />
-    <orderEntry type="library" exported="" name="antlr4-annotations-4.5" level="project" />
-    <orderEntry type="library" exported="" name="antlr4-runtime-4.5" level="project" />
-    <orderEntry type="library" exported="" name="jackson-annotations-2.6.0" level="project" />
-    <orderEntry type="library" exported="" name="library-1.0-rc1" level="project" />
-    <orderEntry type="library" exported="" name="org.abego.treelayout.core-1.0.1" level="project" />
-    <orderEntry type="library" exported="" name="commons-lang3-3.4" level="project" />
-    <orderEntry type="library" exported="" name="adapterdelegates-1.0.2" level="project" />
-    <orderEntry type="library" exported="" name="leakcanary-analyzer-1.4-SNAPSHOT" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-23.0.1" level="project" />
-    <orderEntry type="library" exported="" name="glide-3.6.1" level="project" />
-    <orderEntry type="library" exported="" name="compilerCommon-1.0-rc1" level="project" />
-    <orderEntry type="library" exported="" name="adapter-rxjava-2.0.0-beta1" level="project" />
-    <orderEntry type="library" exported="" name="compiler-1.0-rc1" level="project" />
-    <orderEntry type="library" exported="" name="guava-18.0" level="project" />
-    <orderEntry type="library" exported="" name="retrofit-2.0.0-beta1" level="project" />
-    <orderEntry type="library" exported="" name="cardview-v7-23.0.1" level="project" />
-    <orderEntry type="library" exported="" name="dagger-2.0.1" level="project" />
-    <orderEntry type="library" exported="" name="baseLibrary-1.0-rc1" level="project" />
-    <orderEntry type="library" exported="" name="design-23.0.1" level="project" />
-    <orderEntry type="library" exported="" name="preference-v14-23.0.1" level="project" />
-    <orderEntry type="library" exported="" name="commons-codec-1.10" level="project" />
-    <orderEntry type="library" exported="" name="kotlin-stdlib-0.12.613" level="project" />
-    <orderEntry type="library" exported="" name="kotlin-runtime-0.12.613" level="project" />
     <orderEntry type="library" exported="" name="haha-2.0.2" level="project" />
-    <orderEntry type="library" exported="" name="converter-jackson-2.0.0-beta1" level="project" />
+    <orderEntry type="library" exported="" name="okhttp-2.5.0" level="project" />
     <orderEntry type="library" exported="" name="preference-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="jsr305-3.0.0" level="project" />
     <orderEntry type="library" exported="" name="leakcanary-watcher-1.4-SNAPSHOT" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-23.0.1" level="project" />
-    <orderEntry type="library" exported="" name="antlr-runtime-3.5.2" level="project" />
+    <orderEntry type="library" exported="" name="jackson-annotations-2.6.0" level="project" />
+    <orderEntry type="library" exported="" name="retrofit-2.0.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="library-1.0-rc2" level="project" />
     <orderEntry type="library" exported="" name="rxlifecycle-components-0.3.0" level="project" />
+    <orderEntry type="library" exported="" name="commons-lang3-3.4" level="project" />
+    <orderEntry type="library" exported="" name="adapterdelegates-1.0.2" level="project" />
     <orderEntry type="library" exported="" name="jsr250-api-1.0" level="project" />
+    <orderEntry type="library" exported="" name="leakcanary-analyzer-1.4-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="glide-3.6.1" level="project" />
+    <orderEntry type="library" exported="" name="adapters-1.0-rc2" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-23.0.1" level="project" />
-    <orderEntry type="library" exported="" name="adapters-1.0-rc1" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.0.1" level="project" />
-    <orderEntry type="library" exported="" name="jackson-core-2.6.1" level="project" />
+    <orderEntry type="library" exported="" name="jackson-core-2.6.2" level="project" />
+    <orderEntry type="library" exported="" name="compiler-1.0-rc2" level="project" />
+    <orderEntry type="library" exported="" name="converter-jackson-2.0.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="guava-18.0" level="project" />
     <orderEntry type="library" exported="" name="leakcanary-android-1.4-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="cardview-v7-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="dagger-2.0.1" level="project" />
     <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
+    <orderEntry type="library" exported="" name="baseLibrary-1.0-rc2" level="project" />
     <orderEntry type="library" exported="" name="rxandroid-1.0.1" level="project" />
-    <orderEntry type="library" exported="" name="jackson-databind-2.6.1" level="project" />
-    <orderEntry type="library" exported="" name="ST4-4.0.8" level="project" />
+    <orderEntry type="library" exported="" name="jackson-databind-2.6.2" level="project" />
+    <orderEntry type="library" exported="" name="design-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="preference-v14-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="adapter-rxjava-2.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" exported="" name="rxjava-1.0.14" level="project" />
     <orderEntry type="library" exported="" name="rxbinding-0.2.0" level="project" />
   </component>
