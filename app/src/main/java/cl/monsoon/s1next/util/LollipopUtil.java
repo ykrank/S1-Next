@@ -11,9 +11,9 @@ import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.pref.ThemeManager;
 
-final class VersionUtil {
+final class LollipopUtil {
 
-    private VersionUtil() {}
+    private LollipopUtil() {}
 
     /**
      * Changes app title color to white in recent apps.
