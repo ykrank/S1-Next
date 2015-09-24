@@ -2,16 +2,23 @@ package cl.monsoon.s1next.view.internal;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import cl.monsoon.s1next.databinding.FragmentBaseBinding;
 import cl.monsoon.s1next.viewmodel.LoadingViewModel;
 
-public final class LoadingViewModelBindingDelegateImpl implements LoadingViewModelBindingDelegate {
+public final class LoadingViewModelBindingDelegateBaseImpl
+        implements LoadingViewModelBindingDelegate {
 
     private final FragmentBaseBinding mFragmentBaseBinding;
 
-    public LoadingViewModelBindingDelegateImpl(FragmentBaseBinding fragmentBaseBinding) {
+    public LoadingViewModelBindingDelegateBaseImpl(FragmentBaseBinding fragmentBaseBinding) {
         this.mFragmentBaseBinding = fragmentBaseBinding;
+    }
+
+    @Override
+    public View getRootView() {
+        return mFragmentBaseBinding.getRoot();
     }
 
     @Override

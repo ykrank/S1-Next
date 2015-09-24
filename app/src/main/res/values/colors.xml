@@ -24,7 +24,7 @@
 
     <color name="black_30p">#4d000000</color>
 
-    <color name="background_container_light">#e2e2e2</color>
+    <color name="background_container_light">#eeeeee</color>
     <color name="background_container_dark">#303030</color>
 
     <color name="swipe_refresh_1">@color/pink_A200</color>

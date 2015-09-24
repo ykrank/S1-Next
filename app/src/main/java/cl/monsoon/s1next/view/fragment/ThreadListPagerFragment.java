@@ -8,12 +8,10 @@ import android.view.View;
 
 import java.util.List;
 
-import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Forum;
 import cl.monsoon.s1next.data.api.model.collection.Threads;
 import cl.monsoon.s1next.data.api.model.wrapper.ThreadsWrapper;
 import cl.monsoon.s1next.view.adapter.ThreadRecyclerViewAdapter;
-import cl.monsoon.s1next.widget.VerticalDividerItemDecoration;
 import rx.Observable;
 
 /**

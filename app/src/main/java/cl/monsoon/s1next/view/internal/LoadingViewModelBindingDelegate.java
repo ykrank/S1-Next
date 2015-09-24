@@ -2,6 +2,7 @@ package cl.monsoon.s1next.view.internal;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import cl.monsoon.s1next.viewmodel.LoadingViewModel;
 
@@ -11,6 +12,8 @@ import cl.monsoon.s1next.viewmodel.LoadingViewModel;
  * in implementation.
  */
 public interface LoadingViewModelBindingDelegate {
+
+    View getRootView();
 
     SwipeRefreshLayout getSwipeRefreshLayout();
 

@@ -28,6 +28,17 @@
             type="com.bumptech.glide.DrawableRequestBuilder&lt;String>" />
     </data>
 
+    <android.support.v7.widget.CardView
+        style="?attr/cardViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/card_view_vertical_margin"
+        android:layout_marginEnd="@dimen/card_view_horizontal_margin"
+        android:layout_marginLeft="@dimen/card_view_horizontal_margin"
+        android:layout_marginRight="@dimen/card_view_horizontal_margin"
+        android:layout_marginStart="@dimen/card_view_horizontal_margin"
+        android:layout_marginTop="@dimen/card_view_vertical_margin">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -98,5 +109,7 @@
             app:reply="@{postViewModel.post.reply}" />
 
     </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
 
 </layout>

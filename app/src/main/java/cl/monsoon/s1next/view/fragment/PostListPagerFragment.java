@@ -1,20 +1,26 @@
 package cl.monsoon.s1next.view.fragment;
 
 import android.app.Activity;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.List;
 
+import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Post;
 import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.data.api.model.collection.Posts;
 import cl.monsoon.s1next.data.api.model.wrapper.PostsWrapper;
+import cl.monsoon.s1next.databinding.FragmentBaseCardViewContainerBinding;
 import cl.monsoon.s1next.view.adapter.PostListRecyclerViewAdapter;
-import cl.monsoon.s1next.widget.VerticalDividerItemDecoration;
+import cl.monsoon.s1next.view.internal.LoadingViewModelBindingDelegate;
+import cl.monsoon.s1next.view.internal.LoadingViewModelBindingDelegateBaseCardViewContainerImpl;
 import rx.Observable;
 
 /**
@@ -65,11 +71,8 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
 
         mRecyclerView = getRecyclerView();
-        mRecyclerView.setPadding(0, 0, 0, 0);
-        Activity activity = getActivity();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        mRecyclerView.addItemDecoration(new VerticalDividerItemDecoration(activity));
-        mRecyclerAdapter = new PostListRecyclerViewAdapter(activity);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerAdapter = new PostListRecyclerViewAdapter(getActivity());
         mRecyclerView.setAdapter(mRecyclerAdapter);
 
         // add pull up to refresh to RecyclerView
@@ -100,6 +103,13 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         super.onDetach();
 
         mPagerCallback = null;
+    }
+
+    @Override
+    LoadingViewModelBindingDelegate getLoadingViewModelBindingDelegateImpl(LayoutInflater inflater, ViewGroup container) {
+        FragmentBaseCardViewContainerBinding binding = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_base_card_view_container, container, false);
+        return new LoadingViewModelBindingDelegateBaseCardViewContainerImpl(binding);
     }
 
     @Override

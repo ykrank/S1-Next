@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="loadingViewModel"
+            type="cl.monsoon.s1next.viewmodel.LoadingViewModel" />
+    </data>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:colorSchemeColors="@{@intArray/swipe_refresh_layout_color_scheme}"
+        app:enabled="@{loadingViewModel.swipeRefreshLayoutEnabled}"
+        app:refreshing="@{loadingViewModel.swipeRefresh}">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/recycler_view_vertical_padding_for_card_view"
+            android:paddingTop="@dimen/recycler_view_vertical_padding_for_card_view"
+            android:background="?attr/backgroundContainerColor"
+            android:scrollbars="vertical"
+            app:loadingFirstTime="@{loadingViewModel.loadingFirstTime}" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</layout>

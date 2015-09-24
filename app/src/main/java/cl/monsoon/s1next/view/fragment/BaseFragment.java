@@ -34,7 +34,7 @@ import cl.monsoon.s1next.util.ErrorUtil;
 import cl.monsoon.s1next.view.fragment.headless.DataRetainedFragment;
 import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import cl.monsoon.s1next.view.internal.LoadingViewModelBindingDelegate;
-import cl.monsoon.s1next.view.internal.LoadingViewModelBindingDelegateImpl;
+import cl.monsoon.s1next.view.internal.LoadingViewModelBindingDelegateBaseImpl;
 import cl.monsoon.s1next.viewmodel.LoadingViewModel;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -72,11 +72,9 @@ public abstract class BaseFragment<D> extends RxFragment {
 
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentBaseBinding fragmentBaseBinding = DataBindingUtil.inflate(inflater,
-                R.layout.fragment_base, container, false);
-        mLoadingViewModelBindingDelegate = new LoadingViewModelBindingDelegateImpl(
-                fragmentBaseBinding);
-        return fragmentBaseBinding.getRoot();
+        mLoadingViewModelBindingDelegate = getLoadingViewModelBindingDelegateImpl(inflater,
+                container);
+        return mLoadingViewModelBindingDelegate.getRootView();
     }
 
     @Override
@@ -188,6 +186,17 @@ public abstract class BaseFragment<D> extends RxFragment {
             // dismiss retry SnackBar when current Fragment hid
             dismissRetrySnackBar();
         }
+    }
+
+    /**
+     * Subclass can override this in order to provider different
+     * layout for {@link LoadingViewModelBindingDelegate}.
+     */
+    LoadingViewModelBindingDelegate getLoadingViewModelBindingDelegateImpl(LayoutInflater inflater,
+                                                                           ViewGroup container) {
+        FragmentBaseBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_base,
+                container, false);
+        return new LoadingViewModelBindingDelegateBaseImpl(binding);
     }
 
     /**

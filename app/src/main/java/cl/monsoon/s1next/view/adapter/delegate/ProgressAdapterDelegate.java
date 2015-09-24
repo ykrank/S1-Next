@@ -13,7 +13,6 @@ import java.util.List;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.view.adapter.item.ProgressItem;
-import cl.monsoon.s1next.widget.VerticalDividerItemDecoration;
 
 public final class ProgressAdapterDelegate extends AbsAdapterDelegate<List<Object>> {
 
@@ -48,8 +47,7 @@ public final class ProgressAdapterDelegate extends AbsAdapterDelegate<List<Objec
         });
     }
 
-    private static final class ProgressViewHolder extends RecyclerView.ViewHolder
-            implements VerticalDividerItemDecoration.Undecorated {
+    private static final class ProgressViewHolder extends RecyclerView.ViewHolder {
 
         public ProgressViewHolder(View itemView) {
             super(itemView);
