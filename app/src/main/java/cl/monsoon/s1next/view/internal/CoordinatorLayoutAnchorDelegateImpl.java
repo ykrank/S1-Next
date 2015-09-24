@@ -41,7 +41,8 @@ public final class CoordinatorLayoutAnchorDelegateImpl implements CoordinatorLay
         if (mApp.isAppVisible()) {
             Snackbar.make(mCoordinatorLayout, text, Snackbar.LENGTH_LONG).show();
         } else {
-            Toast.makeText(mCoordinatorLayout.getContext(), text, Toast.LENGTH_LONG).show();
+            Toast.makeText(mCoordinatorLayout.getContext().getApplicationContext(), text,
+                    Toast.LENGTH_LONG).show();
         }
     }
 
