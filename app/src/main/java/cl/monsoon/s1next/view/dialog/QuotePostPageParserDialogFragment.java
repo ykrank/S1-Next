@@ -78,11 +78,15 @@ public final class QuotePostPageParserDialogFragment extends ProgressDialogFragm
                         try {
                             subscriber.onNext(response.request().urlString());
                         } catch (Throwable t) {
-                            subscriber.onError(t);
+                            //noinspection ConstantConditions
+                            if (!subscriber.isUnsubscribed()) {
+                                subscriber.onError(t);
+                            }
                             return;
                         }
-
-                        subscriber.onCompleted();
+                        if (!subscriber.isUnsubscribed()) {
+                            subscriber.onCompleted();
+                        }
                     }
 
                     @Override
