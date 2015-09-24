@@ -5,6 +5,7 @@
     <style name="Theme.Light.Inverse.Amber" parent="Base.Theme.Light.Inverse.Amber" />
     <style name="Theme.Light.Inverse.Green" parent="Base.Theme.Light.Inverse.Green" />
     <style name="Theme.Light.Inverse.LightBlue" parent="Base.Theme.Light.Inverse.LightBlue" />
+    <style name="Theme.Light.Inverse.Purple" parent="Base.Theme.Light.Inverse.Purple" />
 
     <style name="Theme.Dark" parent="Base.Theme.Dark" />
     <style name="Theme.Dark.NightMode" parent="Base.Theme.Dark.NightMode" />
@@ -80,6 +81,12 @@
     <style name="Base.Theme.Light.Inverse.LightBlue">
         <item name="colorPrimary">@color/light_blue_500</item>
         <item name="colorPrimaryDark">@color/light_blue_700</item>
+        <item name="colorAccent">@color/pink_A200</item>
+    </style>
+
+    <style name="Base.Theme.Light.Inverse.Purple">
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryDark">@color/purple_700</item>
         <item name="colorAccent">@color/pink_A200</item>
     </style>
 

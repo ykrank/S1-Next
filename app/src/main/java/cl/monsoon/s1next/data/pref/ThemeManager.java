@@ -165,6 +165,7 @@ public final class ThemeManager {
         LIGHT_THEME_INVERSE_AMBER(R.style.Theme_Light_Inverse_Amber),
         LIGHT_THEME_INVERSE_GREEN(R.style.Theme_Light_Inverse_Green),
         LIGHT_THEME_INVERSE_LIGHT_BLUE(R.style.Theme_Light_Inverse_LightBlue),
+        LIGHT_THEME_INVERSE_PURPLE(R.style.Theme_Light_Inverse_Purple),
         DARK_THEME(R.style.Theme_Dark),
         DARK_THEME_NIGHT_MODE(R.style.Theme_Dark_NightMode),
         DARK_THEME_NIGHT_MODE_AMOLED(R.style.Theme_Dark_NightMode_Amoled);

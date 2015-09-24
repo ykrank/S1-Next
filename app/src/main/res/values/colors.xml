@@ -18,6 +18,9 @@
     <color name="light_blue_600">#ff039be5</color>
     <color name="light_blue_700">#ff0288d1</color>
 
+    <color name="purple_500">#9c27b0</color>
+    <color name="purple_700">#7b1fa2</color>
+
     <color name="dark_cyan">#ff5a8e89</color>
     <color name="teal_200_70p">#b380cbc4</color>
     <color name="white_69p">#b1ffffff</color>
