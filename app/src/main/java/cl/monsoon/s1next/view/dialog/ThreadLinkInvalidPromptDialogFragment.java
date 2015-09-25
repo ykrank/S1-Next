@@ -23,17 +23,14 @@ public final class ThreadLinkInvalidPromptDialogFragment extends DialogFragment 
 
     private static final String ARG_MESSAGE = "message";
 
-    public static ThreadLinkInvalidPromptDialogFragment newInstance(CharSequence text) {
+    public static ThreadLinkInvalidPromptDialogFragment newInstance(Context context,
+                                                                    @StringRes int textResId) {
         ThreadLinkInvalidPromptDialogFragment fragment = new ThreadLinkInvalidPromptDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putCharSequence(ARG_MESSAGE, text);
+        bundle.putCharSequence(ARG_MESSAGE, context.getText(textResId));
         fragment.setArguments(bundle);
 
         return fragment;
-    }
-
-    public static ThreadLinkInvalidPromptDialogFragment newInstance(Context context, @StringRes int textResId) {
-        return newInstance(context.getText(textResId));
     }
 
     @NonNull

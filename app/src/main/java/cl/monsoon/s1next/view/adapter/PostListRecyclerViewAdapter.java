@@ -7,7 +7,7 @@ import com.google.common.base.Preconditions;
 import cl.monsoon.s1next.data.api.model.Post;
 import cl.monsoon.s1next.view.adapter.delegate.PostAdapterDelegate;
 import cl.monsoon.s1next.view.adapter.delegate.PostFooterProgressAdapterDelegate;
-import cl.monsoon.s1next.view.adapter.item.PostFooterProgressItem;
+import cl.monsoon.s1next.view.adapter.item.FooterProgressItem;
 
 /**
  * This {@link android.support.v7.widget.RecyclerView.Adapter}
@@ -42,13 +42,13 @@ public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter<P
     public void showFooterProgress() {
         int position = getItemCount() - 1;
         Preconditions.checkState(getItem(position) != null);
-        addItem(new PostFooterProgressItem());
+        addItem(new FooterProgressItem());
         notifyItemInserted(position + 1);
     }
 
     public void hideFooterProgress() {
         int position = getItemCount() - 1;
-        Preconditions.checkState(getItem(position) instanceof PostFooterProgressItem);
+        Preconditions.checkState(getItem(position) instanceof FooterProgressItem);
         removeItem(position);
         notifyItemRemoved(position);
     }

@@ -30,8 +30,6 @@
 
     <dimen name="subtitle_margin_top">4dp</dimen>
 
-    <dimen name="thread_vertical_divider_start_bound">72dp</dimen>
-
     <!--Before L, CardView adds padding to its content and draws shadows to that area.
     This padding amount is equal to maxCardElevation + (1 - cos45) * cornerRadius on the
     sides and maxCardElevation * 1.5 + (1 - cos45) * cornerRadius on top and bottom.-->

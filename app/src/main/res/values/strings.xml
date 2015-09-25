@@ -65,8 +65,7 @@
 
     <!-- thread -->
 
-    <!-- Because thread's title usually is chinese, so these strings are Chinese for all locales. -->
-    <string name="thread_replies" translatable="false">"%1$d 回复"</string>
+    <!-- Because thread titles are usually Chinese, so this string is Chinese for all locales. -->
     <string name="thread_permission_hint" translatable="false">阅读权限</string>
 
     <!-- post -->
@@ -88,7 +87,7 @@
 
     <!-- reply -->
 
-    <!-- Because thread's title usually is chinese, so this string is Chinese for all locales. -->
+    <!-- Because thread titles are usually Chinese, so this string is Chinese for all locales. -->
     <string name="reply_activity_title_prefix" translatable="false">"回复主题 - "</string>
     <string name="reply_activity_quote_title_prefix" translatable="false">"引用#%1$s - "</string>
     <string name="prompt_reply">Write something…</string>

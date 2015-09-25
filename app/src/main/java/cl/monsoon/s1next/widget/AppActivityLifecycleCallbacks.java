@@ -12,7 +12,7 @@ public final class AppActivityLifecycleCallbacks implements Application.Activity
      */
     private int mVisibleCount;
 
-    private WifiBroadcastReceiver mWifiBroadcastReceiver;
+    private final WifiBroadcastReceiver mWifiBroadcastReceiver;
     private int mNeedMonitorWifiActivityCount;
 
     public AppActivityLifecycleCallbacks(Context context) {

@@ -12,7 +12,7 @@ import com.hannesdorfmann.adapterdelegates.AbsAdapterDelegate;
 import java.util.List;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.view.adapter.item.PostFooterProgressItem;
+import cl.monsoon.s1next.view.adapter.item.FooterProgressItem;
 
 public final class PostFooterProgressAdapterDelegate extends AbsAdapterDelegate<List<Object>> {
 
@@ -26,14 +26,14 @@ public final class PostFooterProgressAdapterDelegate extends AbsAdapterDelegate<
 
     @Override
     public boolean isForViewType(@NonNull List<Object> objects, int i) {
-        return objects.get(i) instanceof PostFooterProgressItem;
+        return objects.get(i) instanceof FooterProgressItem;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup) {
-        return new FooterProgressViewHolder(mLayoutInflater.inflate(
-                R.layout.item_post_footer_progress, viewGroup, false));
+        return new FooterProgressViewHolder(mLayoutInflater.inflate(R.layout.item_footer_progress,
+                viewGroup, false));
     }
 
     @Override
