@@ -76,7 +76,7 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
             mList.add(new ProgressItem());
         } else {
             // we do not need to clear list if we have already changed
-            // data set or we have not ProgressItem to clear
+            // data set or we have no ProgressItem to been cleared
             if (mList.size() == 1 && mList.get(0) instanceof ProgressItem) {
                 mList.clear();
             }
