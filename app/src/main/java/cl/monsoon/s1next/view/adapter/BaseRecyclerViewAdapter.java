@@ -75,13 +75,15 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
             Preconditions.checkState(mList.size() == 0);
             mList.add(new ProgressItem());
         } else {
+            // we do not need to clear list if we have already changed
+            // data set or we have not ProgressItem to clear
             if (mList.size() == 1 && mList.get(0) instanceof ProgressItem) {
                 mList.clear();
             }
         }
     }
 
-    public final void setDataSet(List<T> list) {
+    public final void setDataSet(List<?> list) {
         //noinspection unchecked
         mList = (List<Object>) list;
     }

@@ -13,7 +13,7 @@ public final class RecyclerViewBindingAdapter {
     public static void setHasProgress(RecyclerView recyclerView, Boolean oldIsLoadingFirstTime, Boolean newIsLoadingFirstTime) {
         if (newIsLoadingFirstTime != oldIsLoadingFirstTime) {
             RecyclerView.Adapter adapter = recyclerView.getAdapter();
-            if (adapter != null && adapter instanceof BaseRecyclerViewAdapter) {
+            if (adapter != null) {
                 BaseRecyclerViewAdapter baseRecyclerViewAdapter = (BaseRecyclerViewAdapter) adapter;
                 baseRecyclerViewAdapter.setHasProgress(newIsLoadingFirstTime);
                 baseRecyclerViewAdapter.notifyDataSetChanged();
