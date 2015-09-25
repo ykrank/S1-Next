@@ -144,9 +144,10 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
 
             if (pullUpToRefresh) {
                 final int oldItemCount = mRecyclerAdapter.getItemCount();
-                // notify data set change if someone deleted their posts
-                if (mRecyclerAdapter.getItemId(oldItemCount - 1)
+                // oldItemCount = 0 when configuration changes
+                if (oldItemCount != 0 && mRecyclerAdapter.getItemId(oldItemCount - 1)
                         != Long.parseLong(postList.get(postList.size() - 1).getId())) {
+                    // notify data set change if someone deleted their posts
                     mRecyclerAdapter.setDataSet(postList);
                     mRecyclerAdapter.notifyDataSetChanged();
                 } else {

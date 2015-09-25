@@ -19,11 +19,11 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
 
     private static final int VIEW_TYPE_PROGRESS = 0;
 
-    private final List<Object> mItems;
+    private List<Object> mList;
     private final AdapterDelegatesManager<List<Object>> mAdapterDelegatesManager;
 
     BaseRecyclerViewAdapter(Activity activity) {
-        mItems = new ArrayList<>();
+        mList = new ArrayList<>();
         mAdapterDelegatesManager = new AdapterDelegatesManager<>();
         mAdapterDelegatesManager.addDelegate(new ProgressAdapterDelegate(activity,
                 VIEW_TYPE_PROGRESS));
@@ -32,7 +32,7 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
     @Override
     @CallSuper
     public int getItemViewType(int position) {
-        return mAdapterDelegatesManager.getItemViewType(mItems, position);
+        return mAdapterDelegatesManager.getItemViewType(mList, position);
     }
 
     @Override
@@ -44,19 +44,19 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
     @Override
     @CallSuper
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        mAdapterDelegatesManager.onBindViewHolder(mItems, position, holder);
+        mAdapterDelegatesManager.onBindViewHolder(mList, position, holder);
     }
 
     @Override
     @CallSuper
     public int getItemCount() {
-        return mItems.size();
+        return mList.size();
     }
 
     @Override
     @CallSuper
     public long getItemId(int position) {
-        Preconditions.checkArgument(mAdapterDelegatesManager.getItemViewType(mItems, position)
+        Preconditions.checkArgument(mAdapterDelegatesManager.getItemViewType(mList, position)
                 == VIEW_TYPE_PROGRESS);
         return Integer.MIN_VALUE;
     }
@@ -67,34 +67,34 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
     }
 
     final int getItemViewTypeFromDelegatesManager(int position) {
-        return mAdapterDelegatesManager.getItemViewType(mItems, position);
+        return mAdapterDelegatesManager.getItemViewType(mList, position);
     }
 
     public final void setHasProgress(boolean hasProgress) {
         if (hasProgress) {
-            Preconditions.checkState(mItems.size() == 0);
-            mItems.add(new ProgressItem());
+            Preconditions.checkState(mList.size() == 0);
+            mList.add(new ProgressItem());
         } else {
-            if (mItems.size() == 1 && mItems.get(0) instanceof ProgressItem) {
-                mItems.clear();
+            if (mList.size() == 1 && mList.get(0) instanceof ProgressItem) {
+                mList.clear();
             }
         }
     }
 
     public final void setDataSet(List<T> list) {
-        mItems.clear();
-        mItems.addAll(list);
+        //noinspection unchecked
+        mList = (List<Object>) list;
     }
 
     final Object getItem(int position) {
-        return mItems.get(position);
+        return mList.get(position);
     }
 
     final Object addItem(Object object) {
-        return mItems.add(object);
+        return mList.add(object);
     }
 
     final Object removeItem(int position) {
-        return mItems.remove(position);
+        return mList.remove(position);
     }
 }
