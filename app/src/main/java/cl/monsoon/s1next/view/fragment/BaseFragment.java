@@ -19,8 +19,6 @@ import android.view.ViewGroup;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.trello.rxlifecycle.FragmentEvent;
-import com.trello.rxlifecycle.components.support.RxFragment;
 
 import java.lang.ref.WeakReference;
 
@@ -31,12 +29,14 @@ import cl.monsoon.s1next.data.api.UserValidator;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.databinding.FragmentBaseBinding;
 import cl.monsoon.s1next.util.ErrorUtil;
+import cl.monsoon.s1next.util.RxJavaUtil;
 import cl.monsoon.s1next.view.fragment.headless.DataRetainedFragment;
 import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import cl.monsoon.s1next.view.internal.LoadingViewModelBindingDelegate;
 import cl.monsoon.s1next.view.internal.LoadingViewModelBindingDelegateBaseImpl;
 import cl.monsoon.s1next.viewmodel.LoadingViewModel;
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -48,7 +48,7 @@ import rx.android.schedulers.AndroidSchedulers;
  *
  * @param <D> The data we want to load.
  */
-public abstract class BaseFragment<D> extends RxFragment {
+public abstract class BaseFragment<D> extends Fragment {
 
     /**
      * The serialization (saved instance state) Bundle key representing
@@ -66,6 +66,7 @@ public abstract class BaseFragment<D> extends RxFragment {
      */
     private DataRetainedFragment<D> mDataRetainedFragment;
 
+    private Subscription mSubscription;
     private UserValidator mUserValidator;
 
     private WeakReference<Snackbar> mRetrySnackbar;
@@ -135,12 +136,18 @@ public abstract class BaseFragment<D> extends RxFragment {
                 }
             }
         }
-        mDataRetainedFragment.stale = true;
 
         mLoadingViewModelBindingDelegate.setLoadingViewModel(mLoadingViewModel);
         if (isLoading()) {
             load();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        RxJavaUtil.unsubscribeIfNotNull(mSubscription);
     }
 
     @Override
@@ -242,8 +249,7 @@ public abstract class BaseFragment<D> extends RxFragment {
      */
     private void load() {
         dismissRetrySnackBar();
-        getSourceObservable().compose(bindUntilEvent(FragmentEvent.DESTROY))
-                .observeOn(AndroidSchedulers.mainThread())
+        mSubscription = getSourceObservable().observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(mUserValidator::validateIntercept)
                 .finallyDo(this::finallyDo)
                 .subscribe(this::onNext, this::onError);
@@ -309,6 +315,7 @@ public abstract class BaseFragment<D> extends RxFragment {
     @CallSuper
     void finallyDo() {
         mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FINISH);
+        mDataRetainedFragment.stale = true;
     }
 
     private void showRetrySnackBar(CharSequence text) {

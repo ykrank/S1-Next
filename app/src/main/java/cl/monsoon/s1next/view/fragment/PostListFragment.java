@@ -27,6 +27,7 @@ import cl.monsoon.s1next.data.event.QuoteEvent;
 import cl.monsoon.s1next.util.ClipboardUtil;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.MathUtil;
+import cl.monsoon.s1next.util.RxJavaUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.view.activity.ReplyActivity;
 import cl.monsoon.s1next.view.dialog.LoginPromptDialogFragment;
@@ -34,6 +35,7 @@ import cl.monsoon.s1next.view.dialog.ThreadAttachmentDialogFragment;
 import cl.monsoon.s1next.view.dialog.ThreadFavouritesAddDialogFragment;
 import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import cl.monsoon.s1next.widget.EventBus;
+import rx.Subscription;
 
 
 /**
@@ -66,6 +68,8 @@ public final class PostListFragment extends BaseViewPagerFragment
 
     private Posts.ThreadAttachment mThreadAttachment;
     private MenuItem mMenuThreadAttachment;
+
+    private Subscription mSubscription;
 
     public static PostListFragment newInstance(Thread thread, boolean shouldGoToLastPage) {
         PostListFragment fragment = new PostListFragment();
@@ -126,12 +130,19 @@ public final class PostListFragment extends BaseViewPagerFragment
     public void onResume() {
         super.onResume();
 
-        mEventBus.get().compose(bindToLifecycle()).subscribe(o -> {
+        mSubscription = mEventBus.get().subscribe(o -> {
             if (o instanceof QuoteEvent) {
                 QuoteEvent quoteEvent = (QuoteEvent) o;
                 startReplyActivity(quoteEvent.getQuotePostId(), quoteEvent.getQuotePostCount());
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        RxJavaUtil.unsubscribeIfNotNull(mSubscription);
     }
 
     @Override

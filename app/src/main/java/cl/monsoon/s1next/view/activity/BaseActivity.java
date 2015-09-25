@@ -11,6 +11,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +19,6 @@ import android.view.ViewGroup;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import javax.inject.Inject;
 
@@ -29,19 +29,21 @@ import cl.monsoon.s1next.data.event.FontSizeChangeEvent;
 import cl.monsoon.s1next.data.event.ThemeChangeEvent;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
+import cl.monsoon.s1next.util.RxJavaUtil;
 import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegateImpl;
 import cl.monsoon.s1next.view.internal.DrawerLayoutDelegate;
 import cl.monsoon.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import cl.monsoon.s1next.view.internal.ToolbarDelegate;
 import cl.monsoon.s1next.widget.EventBus;
+import rx.Subscription;
 
 /**
  * A base Activity which includes the Toolbar
  * and navigation drawer amongst others.
  * Also changes theme depends on settings.
  */
-public abstract class BaseActivity extends RxAppCompatActivity
+public abstract class BaseActivity extends AppCompatActivity
         implements CoordinatorLayoutAnchorDelegate {
 
     private static final int REQUEST_CODE_MESSAGE_IF_SUCCESS = 0;
@@ -66,6 +68,8 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     private CoordinatorLayoutAnchorDelegate mCoordinatorLayoutAnchorDelegate;
 
+    private Subscription mSubscription;
+
     static void startActivityForResultMessage(Activity activity, Intent intent) {
         activity.startActivityForResult(intent, REQUEST_CODE_MESSAGE_IF_SUCCESS);
     }
@@ -87,7 +91,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
         super.onCreate(savedInstanceState);
 
-        mEventBus.get().compose(bindToLifecycle()).subscribe(o -> {
+        mSubscription = mEventBus.get().subscribe(o -> {
             // recreate this Activity when theme or font size changes
             if (o instanceof ThemeChangeEvent || o instanceof FontSizeChangeEvent) {
                 getWindow().setWindowAnimations(R.style.Animation_Recreate);
@@ -118,6 +122,13 @@ public abstract class BaseActivity extends RxAppCompatActivity
         super.onPostCreate(savedInstanceState);
 
         setupDrawer();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        RxJavaUtil.unsubscribeIfNotNull(mSubscription);
     }
 
     @Override

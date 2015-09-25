@@ -9,9 +9,6 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 
-import com.trello.rxlifecycle.FragmentEvent;
-import com.trello.rxlifecycle.components.support.RxDialogFragment;
-
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.api.S1Service;
@@ -19,9 +16,11 @@ import cl.monsoon.s1next.data.api.UserValidator;
 import cl.monsoon.s1next.data.api.model.Account;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
 import cl.monsoon.s1next.util.ErrorUtil;
+import cl.monsoon.s1next.util.RxJavaUtil;
 import cl.monsoon.s1next.view.fragment.BaseFragment;
 import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 
@@ -34,13 +33,15 @@ import rx.functions.Func1;
  *
  * @param <D> The data we want to request.
  */
-abstract class ProgressDialogFragment<D> extends RxDialogFragment {
+abstract class ProgressDialogFragment<D> extends DialogFragment {
 
     S1Service mS1Service;
 
     UserValidator mUserValidator;
 
     private User mUser;
+
+    private Subscription mSubscription;
 
     @Override
     @CallSuper
@@ -78,12 +79,18 @@ abstract class ProgressDialogFragment<D> extends RxDialogFragment {
         super.onDestroyView();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        RxJavaUtil.unsubscribeIfNotNull(mSubscription);
+    }
+
     /**
      * @see BaseFragment#load()
      */
     private void request() {
-        getSourceObservable().compose(bindUntilEvent(FragmentEvent.DESTROY))
-                .observeOn(AndroidSchedulers.mainThread())
+        mSubscription = getSourceObservable().observeOn(AndroidSchedulers.mainThread())
                 .finallyDo(this::finallyDo)
                 .subscribe(this::onNext, this::onError);
     }
