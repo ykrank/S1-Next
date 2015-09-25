@@ -83,8 +83,8 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public final void setDataSet(List<?> list) {
-        //noinspection unchecked
         mList = (List<Object>) list;
     }
 
