@@ -1,6 +1,5 @@
 package cl.monsoon.s1next.view.fragment;
 
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
@@ -15,12 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.databinding.FragmentViewPagerBinding;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.view.dialog.PageTurningDialogFragment;
 import cl.monsoon.s1next.view.internal.PagerCallback;
-import cl.monsoon.s1next.viewmodel.ViewPagerViewModel;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 
 /**
@@ -35,17 +32,14 @@ abstract class BaseViewPagerFragment extends Fragment
      */
     private static final String STATE_TOTAL_PAGES = "total_pages";
 
-    private FragmentViewPagerBinding mFragmentViewPagerBinding;
     private ViewPager mViewPager;
+    private int mTotalPages;
 
     private MenuItem mMenuPageTurning;
 
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mFragmentViewPagerBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_view_pager,
-                container, false);
-        mViewPager = mFragmentViewPagerBinding.viewPager;
-        return mFragmentViewPagerBinding.getRoot();
+        return inflater.inflate(R.layout.fragment_view_pager, container, false);
     }
 
     @Override
@@ -53,14 +47,13 @@ abstract class BaseViewPagerFragment extends Fragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ViewPagerViewModel viewModel = new ViewPagerViewModel();
         if (savedInstanceState != null) {
-            viewModel.totalPages.set(savedInstanceState.getInt(STATE_TOTAL_PAGES));
+            mTotalPages = savedInstanceState.getInt(STATE_TOTAL_PAGES);
         } else {
-            viewModel.totalPages.set(1);
+            mTotalPages = 1;
         }
-        mFragmentViewPagerBinding.setViewPagerViewModel(viewModel);
 
+        mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
         // don't use getChildFragmentManager()
         // because we can't retain Fragments (DataRetainedFragment)
         // that are nested in other fragments
@@ -89,7 +82,7 @@ abstract class BaseViewPagerFragment extends Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_page_turning:
-                new PageTurningDialogFragment(getTotalPages(), getCurrentPage()).show(
+                new PageTurningDialogFragment(mTotalPages, getCurrentPage()).show(
                         getChildFragmentManager(), PageTurningDialogFragment.TAG);
 
                 return true;
@@ -103,26 +96,27 @@ abstract class BaseViewPagerFragment extends Fragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt(STATE_TOTAL_PAGES, getTotalPages());
-    }
-
-    ViewPager getViewPager() {
-        return mViewPager;
+        outState.putInt(STATE_TOTAL_PAGES, mTotalPages);
     }
 
     abstract BaseFragmentStatePagerAdapter getPagerAdapter(FragmentManager fragmentManager);
 
-    int getTotalPages() {
-        return mFragmentViewPagerBinding.getViewPagerViewModel().totalPages.get();
+    public final int getTotalPages() {
+        return mTotalPages;
     }
 
     public final void setTotalPages(int totalPages) {
-        mFragmentViewPagerBinding.getViewPagerViewModel().totalPages.set(totalPages);
+        this.mTotalPages = totalPages;
+        mViewPager.getAdapter().notifyDataSetChanged();
         preparePageTurningMenu();
     }
 
     final int getCurrentPage() {
         return mViewPager.getCurrentItem();
+    }
+
+    final void setCurrentPage(int currentPage) {
+        mViewPager.setCurrentItem(currentPage);
     }
 
     @Override
@@ -139,7 +133,7 @@ abstract class BaseViewPagerFragment extends Fragment
             return;
         }
 
-        if (getTotalPages() == 1) {
+        if (mTotalPages == 1) {
             mMenuPageTurning.setEnabled(false);
         } else {
             mMenuPageTurning.setEnabled(true);
@@ -177,7 +171,7 @@ abstract class BaseViewPagerFragment extends Fragment
 
         @Override
         public final int getCount() {
-            return getTotalPages();
+            return mTotalPages;
         }
 
         @Override

@@ -113,12 +113,12 @@ public final class PostListFragment extends BaseViewPagerFragment
             // we do not know the total page if we open this thread by URL
             // so we set the jump page to total page
             setTotalPages(jumpPage);
-            getViewPager().setCurrentItem(jumpPage - 1);
+            setCurrentPage(jumpPage - 1);
         } else {
             // +1 for original post
             setTotalPageByPosts(thread.getReplies() + 1);
             if (bundle.getBoolean(ARG_SHOULD_GO_TO_LAST_PAGE, false)) {
-                getViewPager().setCurrentItem(getTotalPages() - 1);
+                setCurrentPage(getTotalPages() - 1);
             }
         }
 
@@ -213,11 +213,6 @@ public final class PostListFragment extends BaseViewPagerFragment
     @Override
     CharSequence getTitleWithoutPosition() {
         return mThreadTitle;
-    }
-
-    @Override
-    public int getTotalPages() {
-        return super.getTotalPages();
     }
 
     @Override
