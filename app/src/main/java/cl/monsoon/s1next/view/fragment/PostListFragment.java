@@ -151,7 +151,9 @@ public final class PostListFragment extends BaseViewPagerFragment
         inflater.inflate(R.menu.fragment_post, menu);
 
         mMenuThreadAttachment = menu.findItem(R.id.menu_thread_attachment);
-        mMenuThreadAttachment.setVisible(false);
+        if (mThreadAttachment == null) {
+            mMenuThreadAttachment.setVisible(false);
+        }
     }
 
     @Override
