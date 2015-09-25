@@ -139,8 +139,8 @@ public final class PostListFragment extends BaseViewPagerFragment
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onPause() {
+        super.onPause();
 
         RxJavaUtil.unsubscribeIfNotNull(mSubscription);
     }
