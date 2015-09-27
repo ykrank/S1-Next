@@ -4,24 +4,15 @@ import android.os.Bundle;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.squareup.okhttp.Call;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
-import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.api.model.ThreadLink;
 import cl.monsoon.s1next.util.ErrorUtil;
 import cl.monsoon.s1next.view.activity.PostListActivity;
 import rx.Observable;
-import rx.Subscriber;
-import rx.subscriptions.Subscriptions;
 
 /**
  * A {@link ProgressDialogFragment} parses quote post page for thread.
@@ -54,50 +45,11 @@ public final class QuotePostPageParserDialogFragment extends ProgressDialogFragm
 
     @Override
     protected Observable<String> getSourceObservable() {
-        return Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
-                ThreadLink threadLink = getArguments().getParcelable(ARG_THREAD_LINK);
-                // get the redirect URL for quote post link.
-                Request request = new Request.Builder()
-                        .url(Api.getQuotePostRedirectUrl(threadLink))
-                        .build();
-
-                // forked from https://github.com/square/retrofit/blob/9cd5dfa0e0c66704ab035835259fde2721511237/retrofit-adapters/rxjava/src/main/java/retrofit/ObservableCallAdapterFactory.java#L88
-                Call call = App.getAppComponent(getContext()).getOkHttpClient().newCall(request);
-                // attempt to cancel the call if it is still in-flight on unsubscription.
-                subscriber.add(Subscriptions.create(call::cancel));
-
-                call.enqueue(new Callback() {
-
-                    @Override
-                    public void onResponse(Response response) throws IOException {
-                        if (subscriber.isUnsubscribed()) {
-                            return;
-                        }
-                        try {
-                            subscriber.onNext(response.request().urlString());
-                        } catch (Throwable t) {
-                            //noinspection ConstantConditions
-                            if (!subscriber.isUnsubscribed()) {
-                                subscriber.onError(t);
-                            }
-                            return;
-                        }
-                        if (!subscriber.isUnsubscribed()) {
-                            subscriber.onCompleted();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Request request, IOException e) {
-                        if (!subscriber.isUnsubscribed()) {
-                            subscriber.onError(e);
-                        }
-                    }
-                });
-            }
-        });
+        ThreadLink threadLink = Preconditions.checkNotNull(getArguments().getParcelable(
+                ARG_THREAD_LINK));
+        return mS1Service.getQuotePostResponseBody(threadLink.getThreadId(),
+                threadLink.getQuotePostId().get()).map(voidResponse ->
+                voidResponse.raw().request().urlString());
     }
 
     @Override

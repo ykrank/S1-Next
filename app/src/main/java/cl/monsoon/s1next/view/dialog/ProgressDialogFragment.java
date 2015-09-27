@@ -23,6 +23,7 @@ import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * A dialog shows {@link ProgressDialog}.
@@ -90,7 +91,8 @@ abstract class ProgressDialogFragment<D> extends DialogFragment {
      * @see BaseFragment#load()
      */
     private void request() {
-        mSubscription = getSourceObservable().observeOn(AndroidSchedulers.mainThread())
+        mSubscription = getSourceObservable().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .finallyDo(this::finallyDo)
                 .subscribe(this::onNext, this::onError);
     }

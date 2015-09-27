@@ -5,6 +5,7 @@ import cl.monsoon.s1next.data.api.model.wrapper.ForumGroupsWrapper;
 import cl.monsoon.s1next.data.api.model.wrapper.PostsWrapper;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
 import cl.monsoon.s1next.data.api.model.wrapper.ThreadsWrapper;
+import retrofit.Response;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
@@ -25,6 +26,9 @@ public interface S1Service {
 
     @GET(Api.URL_POST_LIST)
     Observable<PostsWrapper> getPostsWrapper(@Query("tid") String threadId, @Query("page") int page);
+
+    @GET(Api.URL_QUOTE_POST_REDIRECT)
+    Observable<Response<Void>> getQuotePostResponseBody(@Query("ptid") String threadId, @Query("pid") String quotePostId);
 
     @FormUrlEncoded
     @POST(Api.URL_LOGIN)

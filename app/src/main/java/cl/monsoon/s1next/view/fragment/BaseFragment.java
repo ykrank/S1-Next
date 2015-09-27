@@ -38,6 +38,7 @@ import cl.monsoon.s1next.viewmodel.LoadingViewModel;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * A base Fragment includes {@link SwipeRefreshLayout} to refresh when loading data.
@@ -249,7 +250,8 @@ public abstract class BaseFragment<D> extends Fragment {
      */
     private void load() {
         dismissRetrySnackBar();
-        mSubscription = getSourceObservable().observeOn(AndroidSchedulers.mainThread())
+        mSubscription = getSourceObservable().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(mUserValidator::validateIntercept)
                 .finallyDo(this::finallyDo)
                 .subscribe(this::onNext, this::onError);

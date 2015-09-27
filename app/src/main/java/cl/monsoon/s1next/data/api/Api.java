@@ -22,7 +22,7 @@ public final class Api {
     static final String URL_THREAD_LIST = "index.php?module=forumdisplay&tpp=" + THREADS_PER_PAGE;
     static final String URL_POST_LIST = "index.php?module=viewthread&ppp=" + POSTS_PER_PAGE;
 
-    private static final String URL_QUOTE_POST_REDIRECT = prepend("forum.php?mod=redirect&goto=findpost");
+    static final String URL_QUOTE_POST_REDIRECT = "/2b/forum.php?mod=redirect&goto=findpost";
 
     static final String URL_LOGIN = "index.php?module=login&loginsubmit=yes&loginfield=username&cookietime=2592000";
     /**
@@ -59,13 +59,6 @@ public final class Api {
 
     private static String prepend(String suffix) {
         return BASE_URL + suffix;
-    }
-
-    public static String getQuotePostRedirectUrl(ThreadLink threadLink) {
-        return Uri.parse(URL_QUOTE_POST_REDIRECT).buildUpon()
-                .appendQueryParameter("ptid", threadLink.getThreadId())
-                .appendQueryParameter("pid", threadLink.getQuotePostId().get())
-                .toString();
     }
 
     public static String getAvatarSmallUrl(String userId) {
