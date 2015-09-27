@@ -1,5 +1,10 @@
 package cl.monsoon.s1next.widget;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.Browser;
 import android.support.annotation.NonNull;
 import android.text.Layout;
 import android.text.Selection;
@@ -7,8 +12,12 @@ import android.text.Spannable;
 import android.text.method.ArrowKeyMovementMethod;
 import android.text.method.MovementMethod;
 import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.TextView;
+
+import cl.monsoon.s1next.util.IntentUtil;
 
 /**
  * A movement method that provides selection and clicking on links,
@@ -51,7 +60,23 @@ public final class CustomMovementMethod extends ArrowKeyMovementMethod {
 
             if (link.length != 0) {
                 if (action == MotionEvent.ACTION_UP) {
-                    link[0].onClick(widget);
+                    ClickableSpan clickableSpan = link[0];
+                    if (clickableSpan instanceof URLSpan) {
+                        // support Custom Tabs for URLSpan
+                        // see URLSpan#onClick(View)
+                        Uri uri = Uri.parse(((URLSpan) clickableSpan).getURL());
+                        Context context = widget.getContext();
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
+                        IntentUtil.putCustomTabsExtra(intent);
+                        try {
+                            context.startActivity(intent);
+                        } catch (ActivityNotFoundException e) {
+                            Log.w("URLSpan", "Actvity was not found for intent, " + intent.toString());
+                        }
+                    } else {
+                        clickableSpan.onClick(widget);
+                    }
                 } else {
                     Selection.setSelection(buffer, buffer.getSpanStart(link[0]),
                             buffer.getSpanEnd(link[0]));

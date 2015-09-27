@@ -93,7 +93,7 @@ public final class IntentUtil {
         }
     }
 
-    private static void putCustomTabsExtra(Intent intent) {
+    public static void putCustomTabsExtra(Intent intent) {
         // enable Custom Tabs if supported
         Bundle bundle = new Bundle();
         BundleCompat.putBinder(bundle, EXTRA_CUSTOM_TABS_SESSION, null);
