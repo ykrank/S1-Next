@@ -160,8 +160,8 @@ public final class ReplyFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onPause() {
+        super.onPause();
 
         RxJavaUtil.unsubscribeIfNotNull(mSubscription);
     }
