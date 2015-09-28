@@ -68,7 +68,7 @@ public final class ThreadListActivity extends BaseActivity
             mMenuSubForums.setVisible(false);
         }
 
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -79,9 +79,9 @@ public final class ThreadListActivity extends BaseActivity
                 mListPopupWindow.show();
 
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

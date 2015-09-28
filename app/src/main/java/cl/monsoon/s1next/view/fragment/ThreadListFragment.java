@@ -68,9 +68,9 @@ public final class ThreadListFragment extends BaseViewPagerFragment
                         Api.getThreadListUrlForBrowser(mForumId, getCurrentPage())));
 
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

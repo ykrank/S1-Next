@@ -69,9 +69,9 @@ public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
                 IntentUtil.startViewIntentExcludeOurApp(getContext(), Uri.parse(Api.BASE_URL));
 
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

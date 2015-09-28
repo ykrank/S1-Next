@@ -79,9 +79,9 @@ public final class LoginFragment extends Fragment {
                         Api.URL_BROWSER_REGISTER));
 
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void prepareLogin() {

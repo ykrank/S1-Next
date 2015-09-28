@@ -172,9 +172,9 @@ public abstract class BaseFragment<D> extends Fragment {
                 startSwipeRefresh();
 
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

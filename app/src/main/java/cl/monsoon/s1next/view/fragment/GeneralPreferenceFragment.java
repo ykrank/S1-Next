@@ -82,9 +82,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
 
                 return true;
             default:
-                // fall through
+                return false;
         }
-
-        return false;
     }
 }

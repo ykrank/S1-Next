@@ -150,9 +150,9 @@ public abstract class BaseActivity extends AppCompatActivity
                 finish();
 
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

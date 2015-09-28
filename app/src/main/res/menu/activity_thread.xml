@@ -7,5 +7,5 @@
         android:id="@+id/menu_sub_forums"
         android:orderInCategory="0"
         android:title="@string/menu_sub_forums"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>

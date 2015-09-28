@@ -200,9 +200,9 @@ public final class ReplyFragment extends Fragment {
                         ReplyRequestDialogFragment.TAG);
 
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

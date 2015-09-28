@@ -82,8 +82,8 @@ public final class PostListActivity extends BaseActivity
 
                     return true;
                 }
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }

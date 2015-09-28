@@ -47,9 +47,9 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
                         Api.getFavouritesListUrlForBrowser(getCurrentPage() + 1)));
 
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

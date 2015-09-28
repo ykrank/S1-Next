@@ -80,9 +80,9 @@ public final class ReplyActivity extends BaseActivity {
                 }
 
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     /**

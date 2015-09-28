@@ -124,9 +124,9 @@ public final class HelpFragment extends Fragment {
                         VersionInfoDialogFragment.TAG);
 
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

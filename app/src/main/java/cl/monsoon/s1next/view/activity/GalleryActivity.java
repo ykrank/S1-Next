@@ -97,7 +97,7 @@ public final class GalleryActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_gallery, menu);
 
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -125,9 +125,9 @@ public final class GalleryActivity extends AppCompatActivity
                 IntentUtil.startViewIntentExcludeOurApp(this, Uri.parse(mImageUrl));
 
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

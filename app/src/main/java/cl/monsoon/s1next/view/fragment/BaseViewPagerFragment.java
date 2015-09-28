@@ -86,9 +86,9 @@ abstract class BaseViewPagerFragment extends Fragment
                         getChildFragmentManager(), PageTurningDialogFragment.TAG);
 
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

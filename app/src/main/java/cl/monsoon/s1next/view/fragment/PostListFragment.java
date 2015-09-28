@@ -201,9 +201,9 @@ public final class PostListFragment extends BaseViewPagerFragment
                         Api.getPostListUrlForBrowser(mThreadId, getCurrentPage())));
 
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
