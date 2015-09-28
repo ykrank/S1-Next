@@ -1,5 +1,6 @@
 package cl.monsoon.s1next.widget;
 
+import android.content.res.Resources;
 import android.os.Looper;
 import android.util.LruCache;
 
@@ -26,6 +27,7 @@ import java.security.NoSuchAlgorithmException;
 
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.BuildConfig;
+import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 
@@ -51,6 +53,7 @@ import static java.net.HttpURLConnection.HTTP_REQ_TOO_LONG;
  */
 final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 
+    private final Resources mResources;
     private final DownloadPreferencesManager mDownloadPreferencesManager;
 
     private final OkHttpClient mOkHttpClient;
@@ -64,6 +67,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
         this.mOkHttpClient = okHttpClient;
         this.mGlideUrl = glideUrl;
 
+        mResources = App.get().getResources();
         mDownloadPreferencesManager = App.getAppComponent(App.get()).getDownloadPreferencesManager();
     }
 
@@ -75,7 +79,8 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
             key = new OriginalKey(url,
                     mDownloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature());
             if (AvatarUrlsCache.has(key)) {
-                throw new IOException("Already have cached this avatar (" + url + ").");
+                // already have cached this avatar url
+                return mResources.openRawResource(+R.drawable.ic_avatar_placeholder);
             }
         }
 
@@ -91,6 +96,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
             // if (this this a avatar URL) && (this URL is cacheable)
             if (key != null && isCacheable(response)) {
                 AvatarUrlsCache.put(key);
+                return mResources.openRawResource(+R.drawable.ic_avatar_placeholder);
             }
 
             throw new IOException("Response (status code " + response.code() + ") is unsuccessful.");
