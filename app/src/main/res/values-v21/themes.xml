@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Gallery" parent="Base.Theme.Gallery">
+    <style name="Theme.Gallery" parent="Base.Theme.Gallery.V21" />
+
+    <style name="Base.Theme.Gallery.V21" parent="Base.Theme.Gallery">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
     </style>

@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Translucent.Light" parent="Base.Theme.Translucent.Light">
+    <style name="Theme.Translucent.Light" parent="Base.Theme.Translucent.Light.V19" />
+
+    <style name="Theme.Translucent.Dark" parent="Base.Theme.Translucent.Dark.V19" />
+
+    <style name="Base.Theme.Translucent.Light.V19" parent="Base.Theme.Translucent.Light">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="Theme.Translucent.Dark" parent="Base.Theme.Translucent.Dark">
+    <style name="Base.Theme.Translucent.Dark.V19" parent="Base.Theme.Translucent.Dark">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
