@@ -28,6 +28,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/navigation_view_header"
-        app:menu="@menu/drawer" />
+        app:itemBackground="@drawable/selector_empty"
+        app:menu="@menu/drawer"
+        app:theme="?attr/navigationViewTheme" />
 
 </android.support.v4.widget.DrawerLayout>

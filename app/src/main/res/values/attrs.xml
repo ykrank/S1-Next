@@ -5,6 +5,7 @@
     <attr name="backgroundContainerColor" format="color|reference" />
 
     <attr name="toolbarTheme" format="reference" />
+    <attr name="navigationViewTheme" format="reference" />
     <attr name="cardViewStyle" format="reference" />
 
     <attr name="drawerTextColor" format="color" />
