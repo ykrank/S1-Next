@@ -226,7 +226,9 @@ public final class PostListFragment extends BaseViewPagerFragment
 
     @Override
     public void setThreadTitle(CharSequence title) {
-        mThreadTitle = title.toString();
+        Thread thread = Preconditions.checkNotNull(getArguments().getParcelable(ARG_THREAD));
+        thread.setTitle(title.toString());
+        mThreadTitle = thread.getTitle();
         setTitleWithPosition(getCurrentPage());
     }
 
