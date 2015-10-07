@@ -1,13 +1,16 @@
 package cl.monsoon.s1next.view.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.data.User;
@@ -17,6 +20,7 @@ import cl.monsoon.s1next.data.api.model.Account;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
 import cl.monsoon.s1next.util.ErrorUtil;
 import cl.monsoon.s1next.util.RxJavaUtil;
+import cl.monsoon.s1next.view.activity.BaseActivity;
 import cl.monsoon.s1next.view.fragment.BaseFragment;
 import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import rx.Observable;
@@ -139,7 +143,7 @@ abstract class ProgressDialogFragment<D> extends DialogFragment {
      * @see BaseFragment#onError(Throwable)
      */
     void onError(Throwable throwable) {
-        showShortText(ErrorUtil.parse(throwable));
+        showShortText(getString(ErrorUtil.parse(throwable)));
     }
 
     /**
@@ -157,8 +161,28 @@ abstract class ProgressDialogFragment<D> extends DialogFragment {
         ((CoordinatorLayoutAnchorDelegate) getActivity()).showShortText(text);
     }
 
-    private void showShortText(@StringRes int textResId) {
-        showShortText(getString(textResId));
+    /**
+     * If current {@link android.app.Activity} is visible, sets result message to {@link Activity}
+     * in order to show a short {@link Snackbar} for message during {@link #onActivityResult(int, int, Intent)},
+     * otherwise show a short {@link android.widget.Toast}.
+     *
+     * @param text The text to show.
+     * @see BaseActivity#onActivityResult(int, int, Intent)
+     */
+    final void showShortTextAndFinishCurrentActivity(CharSequence text) {
+        Activity activity = getActivity();
+        App app = (App) activity.getApplicationContext();
+        // Because Activity#onActivityResult(int, int, Intent) is always invoked when current app
+        // is running in the foreground (so we are unable to set result message to Activity to
+        // let BaseActivity to show a Toast if our app is running in the background).
+        // So we need to handle it by ourselves.
+        if (app.isAppVisible()) {
+            BaseActivity.setResultMessage(activity, text);
+        } else {
+            Toast.makeText(app, text, Toast.LENGTH_SHORT).show();
+        }
+
+        activity.finish();
     }
 
     protected abstract CharSequence getProgressMessage();

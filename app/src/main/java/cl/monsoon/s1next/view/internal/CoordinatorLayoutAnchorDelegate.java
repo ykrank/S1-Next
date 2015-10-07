@@ -34,6 +34,13 @@ public interface CoordinatorLayoutAnchorDelegate {
     void showShortSnackbar(@StringRes int resId);
 
     /**
+     * Show a short {@link Snackbar}.
+     *
+     * @param text text The text to show.
+     */
+    void showShortSnackbar(CharSequence text);
+
+    /**
      * Show a {@link Snackbar} if current {@link android.app.Activity} is visible.
      *
      * @param text            The text to show.

@@ -52,11 +52,9 @@ public final class LoginDialogFragment extends ProgressDialogFragment<ResultWrap
     @Override
     protected void onNext(ResultWrapper data) {
         Result result = data.getResult();
-        Activity activity = getActivity();
         if (result.getStatus().equals(STATUS_AUTH_SUCCESS)
                 || result.getStatus().equals(STATUS_AUTH_SUCCESS_ALREADY)) {
-            BaseActivity.setResultMessage(activity, result.getMessage());
-            activity.finish();
+            showShortTextAndFinishCurrentActivity(result.getMessage());
         } else {
             showShortText(result.getMessage());
         }

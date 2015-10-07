@@ -70,10 +70,22 @@ public abstract class BaseActivity extends AppCompatActivity
 
     private Subscription mSubscription;
 
+    /**
+     * @see #setResultMessage(Activity, CharSequence)
+     * @see #onActivityResult(int, int, Intent)
+     */
     static void startActivityForResultMessage(Activity activity, Intent intent) {
         activity.startActivityForResult(intent, REQUEST_CODE_MESSAGE_IF_SUCCESS);
     }
 
+    /**
+     * Sets result message to {@link Activity} in order to show a short {@link Snackbar}
+     * for this message during {@link #onActivityResult(int, int, Intent)}.
+     *
+     * @param message The message to show.
+     * @see #startActivityForResultMessage(Activity, Intent)
+     * @see #onActivityResult(int, int, Intent)
+     */
     public static void setResultMessage(Activity activity, CharSequence message) {
         Intent intent = new Intent();
         intent.putExtra(EXTRA_MESSAGE, message);
@@ -165,11 +177,18 @@ public abstract class BaseActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * @see #startActivityForResultMessage(Activity, Intent)
+     * @see #setResultMessage(Activity, CharSequence)
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_MESSAGE_IF_SUCCESS) {
             if (resultCode == Activity.RESULT_OK) {
-                showShortText(data.getStringExtra(EXTRA_MESSAGE));
+                // We can't use #showShortText(String) because #onActivityResult(int, int, Intent)
+                // is always invoked when current app is running in the foreground (so we are
+                // unable to show a Toast if our app is running in the background).
+                showShortSnackbar(data.getStringExtra(EXTRA_MESSAGE));
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -233,6 +252,11 @@ public abstract class BaseActivity extends AppCompatActivity
     @Override
     public final void showShortSnackbar(@StringRes int resId) {
         mCoordinatorLayoutAnchorDelegate.showShortSnackbar(resId);
+    }
+
+    @Override
+    public void showShortSnackbar(CharSequence text) {
+        mCoordinatorLayoutAnchorDelegate.showShortSnackbar(text);
     }
 
     @Override

@@ -66,10 +66,8 @@ public final class ReplyRequestDialogFragment extends ProgressDialogFragment<Res
     @Override
     protected void onNext(ResultWrapper data) {
         Result result = data.getResult();
-        Activity activity = getActivity();
         if (result.getStatus().equals(STATUS_REPLY_SUCCESS)) {
-            BaseActivity.setResultMessage(activity, result.getMessage());
-            activity.finish();
+            showShortTextAndFinishCurrentActivity(result.getMessage());
         } else {
             showShortText(result.getMessage());
         }
