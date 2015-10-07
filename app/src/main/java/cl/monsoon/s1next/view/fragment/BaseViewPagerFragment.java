@@ -47,10 +47,10 @@ abstract class BaseViewPagerFragment extends Fragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (savedInstanceState != null) {
-            mTotalPages = savedInstanceState.getInt(STATE_TOTAL_PAGES);
-        } else {
+        if (savedInstanceState == null) {
             mTotalPages = 1;
+        } else {
+            mTotalPages = savedInstanceState.getInt(STATE_TOTAL_PAGES);
         }
 
         mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
