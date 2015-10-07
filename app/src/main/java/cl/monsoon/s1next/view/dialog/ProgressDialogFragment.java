@@ -139,7 +139,7 @@ abstract class ProgressDialogFragment<D> extends DialogFragment {
      * @see BaseFragment#onError(Throwable)
      */
     void onError(Throwable throwable) {
-        showLongText(ErrorUtil.parse(throwable));
+        showShortText(ErrorUtil.parse(throwable));
     }
 
     /**
@@ -151,14 +151,14 @@ abstract class ProgressDialogFragment<D> extends DialogFragment {
     }
 
     /**
-     * @see cl.monsoon.s1next.view.activity.BaseActivity#showLongText(CharSequence)
+     * @see cl.monsoon.s1next.view.activity.BaseActivity#showShortText(CharSequence)
      */
-    final void showLongText(CharSequence text) {
-        ((CoordinatorLayoutAnchorDelegate) getActivity()).showLongText(text);
+    final void showShortText(CharSequence text) {
+        ((CoordinatorLayoutAnchorDelegate) getActivity()).showShortText(text);
     }
 
-    private void showLongText(@StringRes int textResId) {
-        showLongText(getString(textResId));
+    private void showShortText(@StringRes int textResId) {
+        showShortText(getString(textResId));
     }
 
     protected abstract CharSequence getProgressMessage();

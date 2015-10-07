@@ -19,12 +19,19 @@ public interface CoordinatorLayoutAnchorDelegate {
     void setupFloatingActionButton(@DrawableRes int resId, View.OnClickListener onClickListener);
 
     /**
-     * Show a long {@link Snackbar} if current {@link android.app.Activity} is visible,
-     * otherwise show a long {@link android.widget.Toast}.
+     * Show a short {@link Snackbar} if current {@link android.app.Activity} is visible,
+     * otherwise show a short {@link android.widget.Toast}.
      *
      * @param text The text to show.
      */
-    void showLongText(CharSequence text);
+    void showShortText(CharSequence text);
+
+    /**
+     * Show a short {@link Snackbar}.
+     *
+     * @param resId The resource id of the string resource to show for {@link Snackbar}.
+     */
+    void showShortSnackbar(@StringRes int resId);
 
     /**
      * Show a {@link Snackbar} if current {@link android.app.Activity} is visible.
@@ -36,11 +43,4 @@ public interface CoordinatorLayoutAnchorDelegate {
      * is visible, otherwise {@code Optional.absent()}.
      */
     Optional<Snackbar> showLongSnackbarIfVisible(CharSequence text, @StringRes int actionResId, View.OnClickListener onClickListener);
-
-    /**
-     * Show a short {@link Snackbar}.
-     *
-     * @param resId The resource id of the string resource to show for {@link Snackbar}.
-     */
-    void showShortSnackbar(@StringRes int resId);
 }

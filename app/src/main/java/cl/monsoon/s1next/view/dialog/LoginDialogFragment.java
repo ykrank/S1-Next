@@ -58,7 +58,7 @@ public final class LoginDialogFragment extends ProgressDialogFragment<ResultWrap
             BaseActivity.setResultMessage(activity, result.getMessage());
             activity.finish();
         } else {
-            showLongText(result.getMessage());
+            showShortText(result.getMessage());
         }
     }
 

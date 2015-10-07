@@ -161,17 +161,17 @@ public final class GalleryActivity extends AppCompatActivity
     }
 
     @Override
-    public void showLongText(CharSequence text) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Optional<Snackbar> showLongSnackbarIfVisible(CharSequence text, @StringRes int actionResId, View.OnClickListener onClickListener) {
+    public void showShortText(CharSequence text) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public void showShortSnackbar(@StringRes int resId) {
         Snackbar.make(findViewById(R.id.coordinator_layout), resId, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public Optional<Snackbar> showLongSnackbarIfVisible(CharSequence text, @StringRes int actionResId, View.OnClickListener onClickListener) {
+        throw new UnsupportedOperationException();
     }
 }

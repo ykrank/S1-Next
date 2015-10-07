@@ -169,7 +169,7 @@ public abstract class BaseActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_MESSAGE_IF_SUCCESS) {
             if (resultCode == Activity.RESULT_OK) {
-                showLongText(data.getStringExtra(EXTRA_MESSAGE));
+                showShortText(data.getStringExtra(EXTRA_MESSAGE));
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -226,18 +226,18 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     @Override
-    public final void showLongText(CharSequence text) {
-        mCoordinatorLayoutAnchorDelegate.showLongText(text);
+    public final void showShortText(CharSequence text) {
+        mCoordinatorLayoutAnchorDelegate.showShortText(text);
+    }
+
+    @Override
+    public final void showShortSnackbar(@StringRes int resId) {
+        mCoordinatorLayoutAnchorDelegate.showShortSnackbar(resId);
     }
 
     @Override
     public final Optional<Snackbar> showLongSnackbarIfVisible(CharSequence text, @StringRes int actionResId, View.OnClickListener onClickListener) {
         return mCoordinatorLayoutAnchorDelegate.showLongSnackbarIfVisible(text, actionResId,
                 onClickListener);
-    }
-
-    @Override
-    public final void showShortSnackbar(@StringRes int resId) {
-        mCoordinatorLayoutAnchorDelegate.showShortSnackbar(resId);
     }
 }

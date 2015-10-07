@@ -48,7 +48,7 @@ public final class ThreadFavouritesAddRequestDialogFragment
                     ThreadFavouritesAddDialogFragment.TAG)).dismissAllowingStateLoss();
         }
 
-        showLongText(result.getMessage());
+        showShortText(result.getMessage());
     }
 
     @Override

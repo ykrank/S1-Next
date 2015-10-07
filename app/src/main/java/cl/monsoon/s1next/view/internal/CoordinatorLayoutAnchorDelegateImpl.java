@@ -37,13 +37,18 @@ public final class CoordinatorLayoutAnchorDelegateImpl implements CoordinatorLay
     }
 
     @Override
-    public void showLongText(CharSequence text) {
+    public void showShortText(CharSequence text) {
         if (mApp.isAppVisible()) {
-            Snackbar.make(mCoordinatorLayout, text, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(mCoordinatorLayout, text, Snackbar.LENGTH_SHORT).show();
         } else {
             Toast.makeText(mCoordinatorLayout.getContext().getApplicationContext(), text,
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void showShortSnackbar(@StringRes int resId) {
+        Snackbar.make(mCoordinatorLayout, resId, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -55,10 +60,5 @@ public final class CoordinatorLayoutAnchorDelegateImpl implements CoordinatorLay
             return Optional.of(snackbar);
         }
         return Optional.absent();
-    }
-
-    @Override
-    public void showShortSnackbar(@StringRes int resId) {
-        Snackbar.make(mCoordinatorLayout, resId, Snackbar.LENGTH_SHORT).show();
     }
 }
