@@ -28,9 +28,6 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
         super.onViewCreated(view, savedInstanceState);
 
         mTitle = getText(R.string.favourites);
-        if (savedInstanceState != null) {
-            setTotalPages(1);
-        }
     }
 
     @Override
