@@ -80,7 +80,8 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
                     mDownloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature());
             if (AvatarUrlsCache.has(key)) {
                 // already have cached this avatar url
-                return mResources.openRawResource(+R.drawable.ic_avatar_placeholder);
+                mInputStream = mResources.openRawResource(+R.drawable.ic_avatar_placeholder);
+                return mInputStream;
             }
         }
 
@@ -96,7 +97,8 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
             // if (this this a avatar URL) && (this URL is cacheable)
             if (key != null && isCacheable(response)) {
                 AvatarUrlsCache.put(key);
-                return mResources.openRawResource(+R.drawable.ic_avatar_placeholder);
+                mInputStream = mResources.openRawResource(+R.drawable.ic_avatar_placeholder);
+                return mInputStream;
             }
 
             throw new IOException("Response (status code " + response.code() + ") is unsuccessful.");
