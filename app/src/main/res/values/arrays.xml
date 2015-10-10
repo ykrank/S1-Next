@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--<string-array name="login_type">-->
-    <!--<item>Username</item>-->
-    <!--<item>UID</item>-->
-    <!--<item>Email</item>-->
-    <!--</string-array>-->
-
     <integer-array name="swipe_refresh_layout_color_scheme">
         <item>@color/swipe_refresh_1</item>
         <item>@color/swipe_refresh_2</item>

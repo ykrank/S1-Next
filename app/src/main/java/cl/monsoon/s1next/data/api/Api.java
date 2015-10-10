@@ -24,7 +24,7 @@ public final class Api {
 
     static final String URL_QUOTE_POST_REDIRECT = "/2b/forum.php?mod=redirect&goto=findpost";
 
-    static final String URL_LOGIN = "index.php?module=login&loginsubmit=yes&loginfield=username&cookietime=2592000";
+    static final String URL_LOGIN = "index.php?module=login&loginsubmit=yes&loginfield=auto&cookietime=2592000";
     /**
      * A URL used to get the correct authenticity token after login.
      * <p>

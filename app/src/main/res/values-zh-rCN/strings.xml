@@ -34,7 +34,7 @@
     <string name="menu_emoticon">表情</string>
     <string name="menu_keyboard">键盘</string>
     <string name="menu_send">发送</string>
-    <string name="prompt_username">用户名</string>
+    <string name="prompt_username">用户名/UID/Email</string>
     <string name="prompt_password">密码</string>
     <string name="error_field_required">此处不能留空</string>
     <string name="dialog_progress_message_login">登录中…</string>

@@ -50,7 +50,7 @@
 
     <!-- login -->
     <string name="activity_label_login" translatable="false">@string/action_login</string>
-    <string name="prompt_username">Username</string>
+    <string name="prompt_username">Username/UID/Email</string>
     <string name="prompt_password">Password</string>
 
     <string name="error_field_required">Can\'t leave this empty.</string>
