@@ -149,8 +149,7 @@ abstract class ProgressDialogFragment<D> extends DialogFragment {
     /**
      * @see BaseFragment#finallyDo()
      */
-    @CallSuper
-    void finallyDo() {
+    private void finallyDo() {
         dismissAllowingStateLoss();
     }
 

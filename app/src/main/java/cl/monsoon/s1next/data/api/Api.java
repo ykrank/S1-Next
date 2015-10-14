@@ -5,7 +5,6 @@ import android.net.Uri;
 import org.apache.commons.lang3.StringUtils;
 
 import cl.monsoon.s1next.data.User;
-import cl.monsoon.s1next.data.api.model.ThreadLink;
 
 public final class Api {
 

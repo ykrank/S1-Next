@@ -92,11 +92,11 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
         return mList.get(position);
     }
 
-    final Object addItem(Object object) {
-        return mList.add(object);
+    final void addItem(Object object) {
+        mList.add(object);
     }
 
-    final Object removeItem(int position) {
-        return mList.remove(position);
+    final void removeItem(int position) {
+        mList.remove(position);
     }
 }

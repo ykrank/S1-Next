@@ -1,12 +1,10 @@
 package cl.monsoon.s1next.view.dialog;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
-import cl.monsoon.s1next.view.activity.BaseActivity;
 import rx.Observable;
 
 /**
