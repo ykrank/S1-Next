@@ -168,8 +168,7 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
         // Starts FavouriteListActivity if user has logged in,
         // otherwise show LoginPromptDialogFragment.
         if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(mFragmentActivity, mUser)) {
-            Intent intent = new Intent(mFragmentActivity, FavouriteListActivity.class);
-            mFragmentActivity.startActivity(intent);
+            FavouriteListActivity.startFavouriteListActivity(mFragmentActivity);
         }
     }
 
