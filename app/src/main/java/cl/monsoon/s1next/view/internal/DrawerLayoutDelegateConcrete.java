@@ -100,19 +100,19 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         Runnable runnable;
         switch (menuItem.getItemId()) {
-            case R.id.home:
+            case R.id.menu_home:
                 runnable = this::onHomeMenuSelected;
 
                 break;
-            case R.id.favourites:
+            case R.id.menu_favourites:
                 runnable = this::onFavouritesMenuSelected;
 
                 break;
-            case R.id.settings:
+            case R.id.menu_settings:
                 runnable = this::onSettingsMenuSelected;
 
                 break;
-            case R.id.help:
+            case R.id.menu_help:
                 runnable = this::onHelpMenuSelected;
 
                 break;
@@ -128,9 +128,9 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
         MenuItem menuItem = null;
         Menu menu = navigationView.getMenu();
         if (mFragmentActivity instanceof ForumActivity) {
-            menuItem = menu.findItem(R.id.home);
+            menuItem = menu.findItem(R.id.menu_home);
         } else if (mFragmentActivity instanceof FavouriteListActivity) {
-            menuItem = menu.findItem(R.id.favourites);
+            menuItem = menu.findItem(R.id.menu_favourites);
         }
         // SettingsActivity and HelpActivity don't have drawer
         // so it's no need to set checked theirs MenuItem
