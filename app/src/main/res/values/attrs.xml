@@ -15,11 +15,6 @@
 
     <attr name="iconClose" format="reference" />
 
-    <attr name="iconMenuHome" format="reference" />
-    <attr name="iconMenuFavourites" format="reference" />
-    <attr name="iconMenuSettings" format="reference" />
-    <attr name="iconMenuHelp" format="reference" />
-
     <attr name="iconMenuPageTurning" format="reference" />
     <attr name="iconMenuPersonAdd" format="reference" />
     <attr name="iconMenuThreadAttachment" format="reference" />

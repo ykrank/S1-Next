@@ -2,24 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cl.monsoon.s1next.view.internal.DrawerLayoutDelegateConcrete">
+    <!-- we do not care about menu icon colors because drawer have already tinted these icons -->
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/home"
-            android:icon="?attr/iconMenuHome"
+            android:icon="@drawable/ic_menu_home_black_24dp"
             android:title="@string/home" />
         <item
             android:id="@+id/favourites"
-            android:icon="?attr/iconMenuFavourites"
+            android:icon="@drawable/ic_menu_grade_black_24dp"
             android:title="@string/favourites" />
     </group>
     <group android:id="@+id/sub_header">
         <item
             android:id="@+id/settings"
-            android:icon="?attr/iconMenuSettings"
+            android:icon="@drawable/ic_menu_settings_black_24dp"
             android:title="@string/settings" />
         <item
             android:id="@+id/help"
-            android:icon="?attr/iconMenuHelp"
+            android:icon="@drawable/ic_menu_help_black_24dp"
             android:title="@string/help" />
     </group>
 </menu>
