@@ -5,7 +5,7 @@
     tools:context="cl.monsoon.s1next.view.fragment.FavouriteListFragment">
     <item
         android:id="@+id/menu_browser"
-        android:orderInCategory="10"
+        android:orderInCategory="21"
         android:title="@string/menu_browser"
         app:showAsAction="never" />
 </menu>

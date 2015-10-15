@@ -6,13 +6,13 @@
     <item
         android:id="@+id/menu_emoticon"
         android:icon="?attr/iconMenuEmoticon"
-        android:orderInCategory="1"
+        android:orderInCategory="21"
         android:title="@string/menu_emoticon"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_send"
         android:icon="?attr/iconMenuSend"
-        android:orderInCategory="2"
+        android:orderInCategory="22"
         android:title="@string/menu_send"
         app:showAsAction="ifRoom" />
 </menu>

@@ -6,27 +6,27 @@
     <item
         android:id="@+id/menu_thread_attachment"
         android:icon="?attr/iconMenuThreadAttachment"
-        android:orderInCategory="2"
+        android:orderInCategory="21"
         android:title="@string/menu_thread_attachment"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_favourites_add"
-        android:orderInCategory="4"
+        android:orderInCategory="22"
         android:title="@string/menu_favourites_add"
         app:showAsAction="never" />
     <item
         android:id="@+id/menu_link"
-        android:orderInCategory="8"
+        android:orderInCategory="23"
         android:title="@string/menu_link"
         app:showAsAction="never" />
     <item
         android:id="@+id/menu_share"
-        android:orderInCategory="9"
+        android:orderInCategory="24"
         android:title="@string/menu_share"
         app:showAsAction="never" />
     <item
         android:id="@+id/menu_browser"
-        android:orderInCategory="10"
+        android:orderInCategory="25"
         android:title="@string/menu_browser"
         app:showAsAction="never" />
 </menu>

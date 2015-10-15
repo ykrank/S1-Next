@@ -5,17 +5,17 @@
     tools:context="cl.monsoon.s1next.view.activity.HelpActivity">
     <item
         android:id="@+id/menu_view_in_google_play_store"
-        android:orderInCategory="1"
+        android:orderInCategory="21"
         android:title="@string/menu_view_in_google_play_store"
         app:showAsAction="never" />
     <item
         android:id="@+id/menu_open_source_licenses"
-        android:orderInCategory="2"
+        android:orderInCategory="22"
         android:title="@string/open_source_licenses"
         app:showAsAction="never" />
     <item
         android:id="@+id/menu_version_info"
-        android:orderInCategory="3"
+        android:orderInCategory="23"
         android:title="@string/menu_version_info"
         app:showAsAction="never" />
 </menu>
