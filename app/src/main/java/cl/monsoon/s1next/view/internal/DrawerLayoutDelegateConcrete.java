@@ -54,8 +54,11 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
     }
 
     private void setupNavDrawerHeader(DrawerLayout drawerLayout, NavigationView navigationView) {
-        NavigationViewHeaderBinding binding = DataBindingUtil.bind(navigationView.findViewById(
-                R.id.drawer_header));
+        // see https://code.google.com/p/android/issues/detail?id=190226
+        NavigationViewHeaderBinding binding = DataBindingUtil.inflate(
+                mFragmentActivity.getLayoutInflater(), R.layout.navigation_view_header,
+                navigationView, false);
+        navigationView.addHeaderView(binding.getRoot());
         binding.setUserViewModel(mUserViewModel);
 
         // let status bar display over drawer if API >= 21

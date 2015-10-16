@@ -28,9 +28,10 @@ public final class IntentUtil {
     private static final String ANDROID_RESOLVER_ACTIVITY = "com.android.internal.app.ResolverActivity";
 
     /**
-     * https://developer.chrome.com/multidevice/android/customtabs
+     * see https://github.com/GoogleChrome/custom-tabs-client/blob/master/customtabs/src/android/support/customtabs/CustomTabsIntent.java
      */
     private static final String EXTRA_CUSTOM_TABS_SESSION = "android.support.customtabs.extra.SESSION";
+    public static final String EXTRA_ENABLE_URLBAR_HIDING = "android.support.customtabs.extra.ENABLE_URLBAR_HIDING";
 
     private IntentUtil() {}
 
@@ -98,6 +99,7 @@ public final class IntentUtil {
         Bundle bundle = new Bundle();
         BundleCompat.putBinder(bundle, EXTRA_CUSTOM_TABS_SESSION, null);
         intent.putExtras(bundle);
+        intent.putExtra(EXTRA_ENABLE_URLBAR_HIDING, true);
     }
 
     private static void putCustomTabsExtra(List<Intent> intentList) {
@@ -106,6 +108,7 @@ public final class IntentUtil {
         BundleCompat.putBinder(bundle, EXTRA_CUSTOM_TABS_SESSION, null);
         for (Intent intent : intentList) {
             intent.putExtras(bundle);
+            intent.putExtra(EXTRA_ENABLE_URLBAR_HIDING, true);
         }
     }
 }
