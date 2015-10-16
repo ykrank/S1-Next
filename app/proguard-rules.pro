@@ -16,6 +16,10 @@
 #   public *;
 #}
 
+# Android Support Library
+# see https://code.google.com/p/android/issues/detail?id=190250
+-keep class android.support.v7.widget.LinearLayoutManager { *; }
+
 # Guava
 # https://github.com/google/guava/wiki/UsingProGuardWithGuava
 -dontwarn sun.misc.Unsafe
