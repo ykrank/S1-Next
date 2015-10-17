@@ -1,8 +1,10 @@
 package cl.monsoon.s1next.view.fragment;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -70,7 +72,16 @@ public abstract class BaseFragment<D> extends Fragment {
     private Subscription mSubscription;
     private UserValidator mUserValidator;
 
+    private CoordinatorLayoutAnchorDelegate mCoordinatorLayoutAnchorDelegate;
+    @Nullable
     private WeakReference<Snackbar> mRetrySnackbar;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        mCoordinatorLayoutAnchorDelegate = (CoordinatorLayoutAnchorDelegate) context;
+    }
 
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -152,6 +163,13 @@ public abstract class BaseFragment<D> extends Fragment {
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+
+        mCoordinatorLayoutAnchorDelegate = null;
+    }
+
+    @Override
     @CallSuper
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.fragment_base, menu);
@@ -191,8 +209,9 @@ public abstract class BaseFragment<D> extends Fragment {
 
         // see http://stackoverflow.com/a/9779971
         if (isVisible() && !isVisibleToUser) {
-            // dismiss retry SnackBar when current Fragment hid
-            dismissRetrySnackBar();
+            // dismiss retry Snackbar when current Fragment hid
+            // because this Snackbar is unrelated to other Fragments
+            dismissRetrySnackbarIfExist();
         }
     }
 
@@ -233,7 +252,7 @@ public abstract class BaseFragment<D> extends Fragment {
      * Disables {@link SwipeRefreshLayout} and start to load new data.
      * <p>
      * Subclass should override this method and add {@link android.widget.ProgressBar}
-     * to {@code getRecyclerView()} in order to let {@link #showRetrySnackBar(CharSequence)}
+     * to {@code getRecyclerView()} in order to let {@link #showRetrySnackbar(CharSequence)}
      * work.
      */
     @CallSuper
@@ -249,7 +268,9 @@ public abstract class BaseFragment<D> extends Fragment {
      * in oder to provider its own data source {@link Observable}.
      */
     private void load() {
-        dismissRetrySnackBar();
+        // dismiss Snackbar in order to let user see the ProgressBar
+        // when we start to load new data
+        mCoordinatorLayoutAnchorDelegate.dismissSnackbarIfExist();
         mSubscription = getSourceObservable().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(mUserValidator::validateIntercept)
@@ -292,7 +313,7 @@ public abstract class BaseFragment<D> extends Fragment {
         if (getUserVisibleHint()) {
             String message = result.getMessage();
             if (!TextUtils.isEmpty(message)) {
-                showRetrySnackBar(message);
+                showRetrySnackbar(message);
             }
         }
     }
@@ -306,7 +327,7 @@ public abstract class BaseFragment<D> extends Fragment {
     @CallSuper
     void onError(Throwable throwable) {
         if (getUserVisibleHint()) {
-            showRetrySnackBar(ErrorUtil.parse(throwable));
+            showRetrySnackbar(ErrorUtil.parse(throwable));
         }
     }
 
@@ -319,27 +340,27 @@ public abstract class BaseFragment<D> extends Fragment {
         mDataRetainedFragment.stale = true;
     }
 
-    private void showRetrySnackBar(CharSequence text) {
-        Optional<Snackbar> snackbar = ((CoordinatorLayoutAnchorDelegate) getActivity())
-                .showLongSnackbarIfVisible(text, R.string.snackbar_action_retry,
-                        isPullUpToRefresh()
-                                ? v -> startPullToRefresh()
-                                : v -> startSwipeRefresh());
+    private void showRetrySnackbar(CharSequence text) {
+        Optional<Snackbar> snackbar = mCoordinatorLayoutAnchorDelegate.showLongSnackbarIfVisible(
+                text, R.string.snackbar_action_retry, isPullUpToRefresh()
+                        ? v -> startPullToRefresh()
+                        : v -> startSwipeRefresh());
         if (snackbar.isPresent()) {
             mRetrySnackbar = new WeakReference<>(snackbar.get());
         }
     }
 
-    private void showRetrySnackBar(@StringRes int textResId) {
-        showRetrySnackBar(getString(textResId));
+    private void showRetrySnackbar(@StringRes int textResId) {
+        showRetrySnackbar(getString(textResId));
     }
 
-    private void dismissRetrySnackBar() {
+    private void dismissRetrySnackbarIfExist() {
         if (mRetrySnackbar != null) {
             Snackbar snackbar = mRetrySnackbar.get();
-            if (snackbar != null && snackbar.isShown()) {
+            if (snackbar != null && snackbar.isShownOrQueued()) {
                 snackbar.dismiss();
             }
+            mRetrySnackbar = null;
         }
     }
 

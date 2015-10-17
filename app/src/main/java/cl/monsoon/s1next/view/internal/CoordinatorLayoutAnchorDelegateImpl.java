@@ -37,23 +37,26 @@ public final class CoordinatorLayoutAnchorDelegateImpl implements CoordinatorLay
     }
 
     @Override
-    public void showShortText(CharSequence text) {
+    public Optional<Snackbar> showShortText(CharSequence text) {
         if (mApp.isAppVisible()) {
-            Snackbar.make(mCoordinatorLayout, text, Snackbar.LENGTH_SHORT).show();
+            return showShortText(text);
         } else {
             Toast.makeText(mCoordinatorLayout.getContext().getApplicationContext(), text,
                     Toast.LENGTH_SHORT).show();
+            return Optional.absent();
         }
     }
 
     @Override
-    public void showShortSnackbar(@StringRes int resId) {
-        Snackbar.make(mCoordinatorLayout, resId, Snackbar.LENGTH_SHORT).show();
+    public Optional<Snackbar> showShortSnackbar(@StringRes int resId) {
+        return showShortSnackbar(mCoordinatorLayout.getResources().getText(resId));
     }
 
     @Override
-    public void showShortSnackbar(CharSequence text) {
-        Snackbar.make(mCoordinatorLayout, text, Snackbar.LENGTH_SHORT).show();
+    public Optional<Snackbar> showShortSnackbar(CharSequence text) {
+        Snackbar snackbar = Snackbar.make(mCoordinatorLayout, text, Snackbar.LENGTH_SHORT);
+        snackbar.show();
+        return Optional.of(snackbar);
     }
 
     @Override
@@ -65,5 +68,10 @@ public final class CoordinatorLayoutAnchorDelegateImpl implements CoordinatorLay
             return Optional.of(snackbar);
         }
         return Optional.absent();
+    }
+
+    @Override
+    public void dismissSnackbarIfExist() {
+        throw new UnsupportedOperationException();
     }
 }

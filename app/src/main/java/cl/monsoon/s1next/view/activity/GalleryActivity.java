@@ -38,8 +38,7 @@ import cl.monsoon.s1next.viewmodel.ImageViewModel;
 /**
  * An Activity shows an ImageView that supports multi-touch.
  */
-public final class GalleryActivity extends AppCompatActivity
-        implements CoordinatorLayoutAnchorDelegate {
+public final class GalleryActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 0;
 
@@ -152,31 +151,7 @@ public final class GalleryActivity extends AppCompatActivity
                 mImageUrl.substring(mImageUrl.lastIndexOf("/") + 1));
         downloadManager.enqueue(request);
 
-        showShortSnackbar(R.string.snackbar_action_downloading);
-    }
-
-    @Override
-    public void setupFloatingActionButton(@DrawableRes int resId, View.OnClickListener onClickListener) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void showShortText(CharSequence text) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void showShortSnackbar(@StringRes int resId) {
-        Snackbar.make(findViewById(R.id.coordinator_layout), resId, Snackbar.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showShortSnackbar(CharSequence text) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Optional<Snackbar> showLongSnackbarIfVisible(CharSequence text, @StringRes int actionResId, View.OnClickListener onClickListener) {
-        throw new UnsupportedOperationException();
+        Snackbar.make(findViewById(R.id.coordinator_layout),
+                R.string.snackbar_action_downloading, Snackbar.LENGTH_SHORT).show();
     }
 }

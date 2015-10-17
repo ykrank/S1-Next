@@ -23,22 +23,26 @@ public interface CoordinatorLayoutAnchorDelegate {
      * otherwise show a short {@link android.widget.Toast}.
      *
      * @param text The text to show.
+     * @return The displayed {@code Optional.of(snackbar)} if we use {@link Snackbar} to
+     * show short text, otherwise the {@code Optional.absent()}.
      */
-    void showShortText(CharSequence text);
+    Optional<Snackbar> showShortText(CharSequence text);
 
     /**
      * Show a short {@link Snackbar}.
      *
      * @param resId The resource id of the string resource to show for {@link Snackbar}.
+     * @return The displayed {@code Optional.of(snackbar)}.
      */
-    void showShortSnackbar(@StringRes int resId);
+    Optional<Snackbar> showShortSnackbar(@StringRes int resId);
 
     /**
      * Show a short {@link Snackbar}.
      *
      * @param text text The text to show.
+     * @return The displayed {@code Optional.of(snackbar)}.
      */
-    void showShortSnackbar(CharSequence text);
+    Optional<Snackbar> showShortSnackbar(CharSequence text);
 
     /**
      * Show a {@link Snackbar} if current {@link android.app.Activity} is visible.
@@ -47,7 +51,12 @@ public interface CoordinatorLayoutAnchorDelegate {
      * @param actionResId     The action string resource to display.
      * @param onClickListener Callback to be invoked when the action is clicked.
      * @return The displayed {@code Optional.of(snackbar)} if current {@link android.app.Activity}
-     * is visible, otherwise {@code Optional.absent()}.
+     * is visible, otherwise the {@code Optional.absent()}.
      */
     Optional<Snackbar> showLongSnackbarIfVisible(CharSequence text, @StringRes int actionResId, View.OnClickListener onClickListener);
+
+    /**
+     * Dismiss the {@link Snackbar} if {@link CoordinatorLayout} has Snackbar.
+     */
+    void dismissSnackbarIfExist();
 }
