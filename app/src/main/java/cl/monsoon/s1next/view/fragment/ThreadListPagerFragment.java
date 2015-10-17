@@ -94,7 +94,9 @@ public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> 
             // update total page
             mPagerCallback.setTotalPageByThreads(threads.getThreadListInfo().getThreads());
 
-            mSubForumsCallback.setupSubForums(threads.getSubForumList());
+            if (!threads.getSubForumList().isEmpty()) {
+                mSubForumsCallback.setupSubForums(threads.getSubForumList());
+            }
         }
     }
 
