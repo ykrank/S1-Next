@@ -27,6 +27,9 @@
         <item name="backgroundColor">@color/cardview_light_background</item>
         <item name="backgroundContainerColor">@color/background_container_light</item>
         <item name="android:colorBackground">?attr/backgroundColor</item>
+        <!-- disable window preview in order to avoid the undelightful color transitions
+        when app starts-->
+        <item name="android:windowDisablePreview">true</item>
         <!-- show contextual action bar -->
         <item name="windowActionModeOverlay">true</item>
 
