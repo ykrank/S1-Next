@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import cl.monsoon.s1next.R;
@@ -42,6 +43,8 @@ public final class ThreadFavouritesAddDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.dialog_button_text_add, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
+        alertDialog.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         alertDialog.setOnShowListener(dialog ->
                 alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v ->
                         ThreadFavouritesAddRequestDialogFragment.newInstance(
