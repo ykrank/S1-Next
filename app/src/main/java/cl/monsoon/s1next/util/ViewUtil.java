@@ -6,10 +6,13 @@ import android.support.annotation.ColorInt;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.lang.reflect.Method;
+
+import cl.monsoon.s1next.R;
 
 public final class ViewUtil {
 
@@ -58,6 +61,24 @@ public final class ViewUtil {
                 Spanned.SPAN_INCLUSIVE_INCLUSIVE);
 
         textView.setText(spannable);
+    }
+
+    /**
+     * Consumes a {@link Runnable} when an IME action in the {@link TextView} is performed.
+     * This method uses {@link TextView#setOnEditorActionListener(TextView.OnEditorActionListener)}
+     * to achieve this function.
+     *
+     * @param textView The view where an IME action is preformed on.
+     * @param runnable The consumer when an IME action is performed.
+     */
+    public static void consumeRunnableWhenImeActionPerformed(TextView textView, Runnable runnable) {
+        textView.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == v.getResources().getInteger(R.integer.ime_action_id) ||
+                    actionId == EditorInfo.IME_ACTION_DONE) {
+                runnable.run();
+            }
+            return false;
+        });
     }
 
     /**

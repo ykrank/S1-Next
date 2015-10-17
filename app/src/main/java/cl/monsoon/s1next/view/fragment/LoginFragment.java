@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -19,6 +18,7 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.databinding.FragmentLoginBinding;
 import cl.monsoon.s1next.util.IntentUtil;
+import cl.monsoon.s1next.util.ViewUtil;
 import cl.monsoon.s1next.view.dialog.LoginDialogFragment;
 
 /**
@@ -46,16 +46,7 @@ public final class LoginFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // called when an ime action is performed
-        mPasswordView.setOnEditorActionListener((textView, i, keyEvent) -> {
-            if (i == getResources().getInteger(R.integer.ime_action_id_login) ||
-                    i == EditorInfo.IME_ACTION_DONE) {
-                prepareLogin();
-                return true;
-            }
-            return false;
-        });
-
+        ViewUtil.consumeRunnableWhenImeActionPerformed(mPasswordView, this::prepareLogin);
         mLoginView.setOnClickListener(v -> prepareLogin());
     }
 

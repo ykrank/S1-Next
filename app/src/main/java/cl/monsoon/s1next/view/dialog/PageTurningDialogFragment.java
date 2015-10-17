@@ -3,6 +3,7 @@ package cl.monsoon.s1next.view.dialog;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -14,6 +15,7 @@ import android.widget.SeekBar;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.databinding.DialogPageTurningBinding;
+import cl.monsoon.s1next.util.ViewUtil;
 import cl.monsoon.s1next.viewmodel.PageTurningViewModel;
 
 /**
@@ -69,7 +71,7 @@ public final class PageTurningDialogFragment extends DialogFragment {
                 seekBarProgress);
         binding.setPageTurningViewModel(mPageTurningViewModel);
 
-        return new AlertDialog.Builder(getContext())
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext())
                 .setTitle(R.string.dialog_title_page_turning)
                 .setView(binding.getRoot())
                 .setPositiveButton(getText(R.string.dialog_button_text_go),
@@ -81,6 +83,9 @@ public final class PageTurningDialogFragment extends DialogFragment {
                         })
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
+        ViewUtil.consumeRunnableWhenImeActionPerformed(binding.value, () ->
+                alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick());
+        return alertDialog;
     }
 
     @Override

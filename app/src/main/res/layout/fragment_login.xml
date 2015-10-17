@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_password"
-            android:imeActionId="@integer/ime_action_id_login"
+            android:imeActionId="@integer/ime_action_id"
             android:imeActionLabel="@string/action_login"
             android:inputType="textPassword"
             android:singleLine="true"

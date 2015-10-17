@@ -2,15 +2,16 @@ package cl.monsoon.s1next.view.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.EditText;
 
 import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.databinding.DialogFavouritesAddBinding;
+import cl.monsoon.s1next.util.ViewUtil;
 
 /**
  * A dialog lets user enter remark if user want to add this thread to his/her favourites.
@@ -34,24 +35,27 @@ public final class ThreadFavouritesAddDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_favourites_add,
-                (ViewGroup) getView(), false);
+        DialogFavouritesAddBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(),
+                R.layout.dialog_favourites_add, null, false);
 
         AlertDialog alertDialog = new AlertDialog.Builder(getContext())
                 .setTitle(R.string.dialog_title_favourites_add)
-                .setView(view)
+                .setView(binding.getRoot())
                 .setPositiveButton(R.string.dialog_button_text_add, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
         alertDialog.getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        alertDialog.setOnShowListener(dialog ->
-                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v ->
-                        ThreadFavouritesAddRequestDialogFragment.newInstance(
-                                getArguments().getString(ARG_THREAD_ID),
-                                ((EditText) view.findViewById(R.id.remark)).getText().toString())
-                                .show(getFragmentManager(),
-                                        ThreadFavouritesAddRequestDialogFragment.TAG)));
+        alertDialog.setOnShowListener(dialog -> {
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v ->
+                    ThreadFavouritesAddRequestDialogFragment.newInstance(
+                            getArguments().getString(ARG_THREAD_ID),
+                            binding.remark.getText().toString())
+                            .show(getFragmentManager(),
+                                    ThreadFavouritesAddRequestDialogFragment.TAG));
+            ViewUtil.consumeRunnableWhenImeActionPerformed(binding.remark, () ->
+                    alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick());
+        });
         return alertDialog;
     }
 }
