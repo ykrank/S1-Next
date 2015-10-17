@@ -38,6 +38,7 @@ public final class ProgressAdapterDelegate extends AbsAdapterDelegate<List<Objec
 
     @Override
     public void onBindViewHolder(@NonNull List<Object> objects, int i, @NonNull RecyclerView.ViewHolder viewHolder) {
+        // match_parent doesn't work for RecyclerView's item
         ProgressViewHolder holder = (ProgressViewHolder) viewHolder;
         holder.progressBar.setVisibility(View.GONE);
         holder.itemView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {

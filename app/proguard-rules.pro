@@ -17,9 +17,11 @@
 #}
 
 # Android Support Library
+# see https://code.google.com/p/android/issues/detail?id=190250
 -keep public class android.support.v7.widget.LinearLayoutManager { *; }
--keep public class android.support.v7.preference.** { public <init>(...); }
--keep public class android.support.v14.preference.** { public <init>(...); }
+# see https://code.google.com/p/android/issues/detail?id=183261
+-keep public class android.support.v7.preference.Preference { public <init>(...); }
+-keep public class * extends android.support.v7.preference.Preference { public <init>(...); }
 
 # Guava
 # https://github.com/google/guava/wiki/UsingProGuardWithGuava
