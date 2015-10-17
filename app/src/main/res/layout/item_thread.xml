@@ -16,16 +16,8 @@
             type="cl.monsoon.s1next.viewmodel.UserViewModel" />
 
         <variable
-            name="downloadPreferencesManager"
-            type="cl.monsoon.s1next.data.pref.DownloadPreferencesManager" />
-
-        <variable
             name="themeManager"
             type="cl.monsoon.s1next.data.pref.ThemeManager" />
-
-        <variable
-            name="drawableRequestBuilder"
-            type="com.bumptech.glide.DrawableRequestBuilder&lt;String>" />
     </data>
 
     <!-- May change this TextView padding or height after because we
@@ -33,55 +25,27 @@
     is not sure (less than 4) and each line are all primary.
     We set top/bottom padding to 14.5dp because `includeFontPadding`
     doesn't remove all extra space. -->
-    <RelativeLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:enabled="@{userViewModel.user.permission >= threadViewModel.thread.permission}"
-        android:padding="14.5dp"
+        android:clickable="true"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
+        android:maxLines="@integer/list_max_line"
+        android:paddingBottom="14.5dp"
+        android:paddingEnd="@dimen/item_padding"
+        android:paddingLeft="@dimen/item_padding"
+        android:paddingRight="@dimen/item_padding"
+        android:paddingStart="@dimen/item_padding"
+        android:paddingTop="14.5dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:onClickListener="@{threadViewModel.goToThisThread()}"
-        app:onLongClickListener="@{threadViewModel.goToThisThreadLastPage()}">
-
-        <cl.monsoon.s1next.widget.BezelImageView
-            android:id="@+id/avatar"
-            android:layout_width="@dimen/avatar_size"
-            android:layout_height="@dimen/avatar_size"
-            android:layout_marginEnd="@dimen/item_padding"
-            android:layout_marginRight="@dimen/item_padding"
-            android:contentDescription="@string/avatar_content_desc"
-            app:authorId="@{threadViewModel.thread.authorId}"
-            app:avatarDrawableRequestBuilder="@{drawableRequestBuilder}"
-            app:downloadPreferencesManager="@{downloadPreferencesManager}"
-            app:maskDrawable="@drawable/rounded_mask" />
-
-        <TextView
-            android:id="@+id/author_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/avatar"
-            android:layout_toRightOf="@id/avatar"
-            android:duplicateParentState="true"
-            android:includeFontPadding="false"
-            android:text="@{threadViewModel.thread.authorName}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/author_name"
-            android:layout_alignStart="@id/author_name"
-            android:layout_below="@id/author_name"
-            android:layout_marginTop="@dimen/subtitle_margin_top"
-            android:duplicateParentState="true"
-            android:ellipsize="end"
-            android:includeFontPadding="false"
-            android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
-            android:maxLines="@integer/list_max_line"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            app:themeManager="@{themeManager}"
-            app:thread="@{threadViewModel.thread}"
-            app:user="@{userViewModel.user}" />
-
-    </RelativeLayout>
+        app:onLongClickListener="@{threadViewModel.goToThisThreadLastPage()}"
+        app:themeManager="@{themeManager}"
+        app:thread="@{threadViewModel.thread}"
+        app:user="@{userViewModel.user}" />
 
 </layout>

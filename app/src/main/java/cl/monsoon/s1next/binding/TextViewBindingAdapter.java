@@ -87,9 +87,13 @@ public final class TextViewBindingAdapter {
                     "[" + textView.getContext().getString(R.string.thread_permission_hint)
                             + thread.getPermission() + "]");
         }
+        // disable TextView if user has no permission to access this thread
+        boolean hasPermission = user.getPermission() >= thread.getPermission();
+        textView.setEnabled(hasPermission);
+
         // add thread's replies count to each thread
         ViewUtil.concatWithTwoSpacesForRtlSupport(textView, String.valueOf(thread.getReplies()),
-                user.getPermission() >= thread.getPermission() ? themeManager.getGentleAccentColor()
+                hasPermission ? themeManager.getGentleAccentColor()
                         : themeManager.getHintOrDisabledGentleAccentColor());
     }
 
