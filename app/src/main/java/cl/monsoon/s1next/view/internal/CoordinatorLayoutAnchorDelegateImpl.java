@@ -39,7 +39,7 @@ public final class CoordinatorLayoutAnchorDelegateImpl implements CoordinatorLay
     @Override
     public Optional<Snackbar> showShortText(CharSequence text) {
         if (mApp.isAppVisible()) {
-            return showShortText(text);
+            return showShortSnackbar(text);
         } else {
             Toast.makeText(mCoordinatorLayout.getContext().getApplicationContext(), text,
                     Toast.LENGTH_SHORT).show();
