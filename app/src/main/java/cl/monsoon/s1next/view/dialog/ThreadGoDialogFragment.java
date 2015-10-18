@@ -20,16 +20,16 @@ import com.google.common.base.Optional;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.ThreadLink;
-import cl.monsoon.s1next.databinding.DialogThreadJumpBinding;
+import cl.monsoon.s1next.databinding.DialogThreadGoBinding;
 import cl.monsoon.s1next.util.ViewUtil;
 import cl.monsoon.s1next.view.activity.PostListActivity;
 
 /**
- * A dialog lets the user enter thread link/ID to jump to that thread.
+ * A dialog lets the user enter thread link/ID to go to that thread.
  */
-public final class ThreadJumpDialogFragment extends DialogFragment {
+public final class ThreadGoDialogFragment extends DialogFragment {
 
-    public static final String TAG = ThreadJumpDialogFragment.class.getName();
+    public static final String TAG = ThreadGoDialogFragment.class.getName();
 
     private Optional<ThreadLink> mThreadLink;
 
@@ -37,13 +37,13 @@ public final class ThreadJumpDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Activity activity = getActivity();
-        DialogThreadJumpBinding binding = DataBindingUtil.inflate(activity.getLayoutInflater(),
-                R.layout.dialog_thread_jump, null, false);
+        DialogThreadGoBinding binding = DataBindingUtil.inflate(activity.getLayoutInflater(),
+                R.layout.dialog_thread_go, null, false);
         TextInputLayout threadLinkOrIdWrapperView = binding.threadLinkOrIdWrapper;
         EditText threadLinkOrIdView = binding.threadLinkOrId;
 
         AlertDialog alertDialog = new AlertDialog.Builder(activity)
-                .setTitle(R.string.menu_jump)
+                .setTitle(R.string.menu_thread_go)
                 .setView(binding.getRoot())
                 .setPositiveButton(R.string.dialog_button_text_go, (dialog, which) ->
                         PostListActivity.startPostListActivity(activity, mThreadLink.get(), false))

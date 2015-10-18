@@ -15,7 +15,7 @@
 
     <attr name="iconClose" format="reference" />
 
-    <attr name="iconMenuPageTurning" format="reference" />
+    <attr name="iconMenuPageJump" format="reference" />
     <attr name="iconMenuPersonAdd" format="reference" />
     <attr name="iconMenuThreadAttachment" format="reference" />
     <attr name="iconMenuEmoticon" format="reference" />

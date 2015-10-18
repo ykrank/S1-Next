@@ -3,13 +3,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="cl.monsoon.s1next.view.dialog.PageTurningDialogFragment">
+    tools:context="cl.monsoon.s1next.view.dialog.PageJumpDialogFragment">
 
     <data>
 
         <variable
-            name="pageTurningViewModel"
-            type="cl.monsoon.s1next.viewmodel.PageTurningViewModel" />
+            name="pageJumpViewModel"
+            type="cl.monsoon.s1next.viewmodel.PageJumpViewModel" />
     </data>
 
     <LinearLayout
@@ -26,9 +26,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:max="@{pageTurningViewModel.seekBarMax}"
-            android:progress="@{pageTurningViewModel.seekBarProgress}"
-            app:onSeekBarChangeListener="@{pageTurningViewModel.onSeekBarChangeListener}" />
+            android:max="@{pageJumpViewModel.seekBarMax}"
+            android:progress="@{pageJumpViewModel.seekBarProgress}"
+            app:onSeekBarChangeListener="@{pageJumpViewModel.onSeekBarChangeListener}" />
 
         <Space
             android:layout_width="@dimen/dialog_divider_padding"
@@ -40,13 +40,13 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:imeActionId="@integer/ime_action_id"
-            android:imeActionLabel="@string/dialog_button_text_go"
+            android:imeActionLabel="@string/dialog_button_text_jump"
             android:inputType="number"
             android:singleLine="true"
-            android:text="@{pageTurningViewModel.seekBarProgressText}"
+            android:text="@{pageJumpViewModel.seekBarProgressText}"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            app:addTextChangedListener="@{pageTurningViewModel.textWatcher}"
-            app:filters="@{pageTurningViewModel.filters}" />
+            app:addTextChangedListener="@{pageJumpViewModel.textWatcher}"
+            app:filters="@{pageJumpViewModel.filters}" />
 
     </LinearLayout>
 

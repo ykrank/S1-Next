@@ -34,7 +34,7 @@ import cl.monsoon.s1next.data.event.ThemeChangeEvent;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.util.RxJavaUtil;
-import cl.monsoon.s1next.view.dialog.ThreadJumpDialogFragment;
+import cl.monsoon.s1next.view.dialog.ThreadGoDialogFragment;
 import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegateImpl;
 import cl.monsoon.s1next.view.internal.DrawerLayoutDelegate;
@@ -152,9 +152,9 @@ public abstract class BaseActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // we show jump menu only if this Activity has drawer
+        // we show thread go menu only if this Activity has drawer
         if (mDrawerLayoutDelegate != null) {
-            getMenuInflater().inflate(R.menu.jump, menu);
+            getMenuInflater().inflate(R.menu.thread_go, menu);
         }
 
         return super.onCreateOptionsMenu(menu);
@@ -179,9 +179,9 @@ public abstract class BaseActivity extends AppCompatActivity
                 finish();
 
                 return true;
-            case R.id.menu_jump:
-                new ThreadJumpDialogFragment().show(getSupportFragmentManager(),
-                        ThreadJumpDialogFragment.TAG);
+            case R.id.menu_thread_go:
+                new ThreadGoDialogFragment().show(getSupportFragmentManager(),
+                        ThreadGoDialogFragment.TAG);
 
                 return true;
             default:

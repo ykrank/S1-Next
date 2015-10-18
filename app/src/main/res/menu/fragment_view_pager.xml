@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cl.monsoon.s1next.view.fragment.BaseViewPagerFragment">
     <item
-        android:id="@+id/menu_page_turning"
-        android:icon="?attr/iconMenuPageTurning"
+        android:id="@+id/menu_page_jump"
+        android:icon="?attr/iconMenuPageJump"
         android:orderInCategory="2"
-        android:title="@string/menu_page_turning"
+        android:title="@string/menu_page_jump"
         app:showAsAction="ifRoom" />
 </menu>

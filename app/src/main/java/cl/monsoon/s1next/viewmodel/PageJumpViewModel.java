@@ -12,12 +12,12 @@ import android.widget.SeekBar;
 import cl.monsoon.s1next.BR;
 import cl.monsoon.s1next.widget.RangeInputFilter;
 
-public final class PageTurningViewModel extends BaseObservable {
+public final class PageJumpViewModel extends BaseObservable {
 
     private final ObservableInt seekBarMax = new ObservableInt();
     private int seekBarProgress;
 
-    public PageTurningViewModel(int seekBarMax, int seekBarProgress) {
+    public PageJumpViewModel(int seekBarMax, int seekBarProgress) {
         this.seekBarMax.set(seekBarMax);
         this.seekBarProgress = seekBarProgress;
     }
@@ -46,7 +46,7 @@ public final class PageTurningViewModel extends BaseObservable {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (progress != PageTurningViewModel.this.seekBarProgress) {
+                if (progress != PageJumpViewModel.this.seekBarProgress) {
                     setSeekBarProgress(progress);
                     notifyPropertyChanged(BR.seekBarProgressText);
                 }
@@ -79,7 +79,7 @@ public final class PageTurningViewModel extends BaseObservable {
                 String value = s.toString();
                 if (!TextUtils.isEmpty(s)) {
                     int progress = Integer.parseInt(value) - 1;
-                    if (progress != PageTurningViewModel.this.seekBarProgress) {
+                    if (progress != PageJumpViewModel.this.seekBarProgress) {
                         setSeekBarProgress(progress);
                         notifyPropertyChanged(BR.seekBarProgress);
                     }

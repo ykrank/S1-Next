@@ -46,7 +46,7 @@
 
         <item name="iconClose">@drawable/ic_close_black_24dp</item>
 
-        <item name="iconMenuPageTurning">@drawable/selector_menu_swap_horiz_black</item>
+        <item name="iconMenuPageJump">@drawable/selector_menu_swap_horiz_black</item>
         <item name="iconMenuPersonAdd">@drawable/ic_menu_person_add_black_24dp</item>
         <item name="iconMenuThreadAttachment">@drawable/ic_menu_attachment_black_24dp</item>
         <item name="iconMenuEmoticon">@drawable/ic_menu_insert_emoticon_black_24dp</item>
@@ -64,7 +64,7 @@
 
         <item name="fabBackgroundTint">?attr/colorPrimary</item>
         <item name="iconClose">@drawable/ic_close_white_24dp</item>
-        <item name="iconMenuPageTurning">@drawable/selector_menu_swap_horiz_white</item>
+        <item name="iconMenuPageJump">@drawable/selector_menu_swap_horiz_white</item>
         <item name="iconMenuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
         <item name="iconMenuThreadAttachment">@drawable/ic_menu_attachment_white_24dp</item>
         <item name="iconMenuEmoticon">@drawable/ic_menu_insert_emoticon_white_24dp</item>
@@ -111,7 +111,7 @@
         <item name="emoticonKeyboardTabLayoutBackground">@color/emoticon_keyboard_tab_layout_background_dark</item>
         <item name="emoticonKeyboardBackground">@color/emoticon_keyboard_background_dark</item>
         <item name="iconClose">@drawable/ic_close_white_24dp</item>
-        <item name="iconMenuPageTurning">@drawable/selector_menu_swap_horiz_white</item>
+        <item name="iconMenuPageJump">@drawable/selector_menu_swap_horiz_white</item>
         <item name="iconMenuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
         <item name="iconMenuThreadAttachment">@drawable/ic_menu_attachment_white_24dp</item>
         <item name="iconMenuEmoticon">@drawable/ic_menu_insert_emoticon_white_24dp</item>

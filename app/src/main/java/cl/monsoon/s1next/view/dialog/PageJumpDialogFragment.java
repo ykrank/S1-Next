@@ -14,20 +14,20 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.databinding.DialogPageTurningBinding;
+import cl.monsoon.s1next.databinding.DialogPageJumpBinding;
 import cl.monsoon.s1next.util.ViewUtil;
-import cl.monsoon.s1next.viewmodel.PageTurningViewModel;
+import cl.monsoon.s1next.viewmodel.PageJumpViewModel;
 
 /**
  * A dialog shows {@link SeekBar} and {@link EditText} to
  * display the page number you want to go to.
  * <p>
- * Host class should implement {@link PageTurningDialogFragment.OnPageTurnedListener}
- * in order to to handle the page turning event.
+ * Host class should implement {@link OnPageJumpedListener}
+ * in order to to handle the page jump event.
  */
-public final class PageTurningDialogFragment extends DialogFragment {
+public final class PageJumpDialogFragment extends DialogFragment {
 
-    public static final String TAG = PageTurningDialogFragment.class.getName();
+    public static final String TAG = PageJumpDialogFragment.class.getName();
 
     private static final String ARG_TOTAL_PAGES = "total_pages";
     private static final String ARG_CURRENT_PAGE = "current_page";
@@ -38,15 +38,15 @@ public final class PageTurningDialogFragment extends DialogFragment {
      */
     private static final String STATE_SEEK_BAR_PROGRESS = "seek_bar_progress";
 
-    private PageTurningViewModel mPageTurningViewModel;
+    private PageJumpViewModel mPageJumpViewModel;
 
-    public PageTurningDialogFragment() {
+    public PageJumpDialogFragment() {
         // Every fragment must have an empty constructor, so it
         // can be instantiated when restoring its activity's state.
     }
 
     @SuppressLint("ValidFragment")
-    public PageTurningDialogFragment(int totalPages, int currentPage) {
+    public PageJumpDialogFragment(int totalPages, int currentPage) {
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_TOTAL_PAGES, totalPages);
         bundle.putInt(ARG_CURRENT_PAGE, currentPage);
@@ -56,8 +56,8 @@ public final class PageTurningDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public final Dialog onCreateDialog(Bundle savedInstanceState) {
-        DialogPageTurningBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(),
-                R.layout.dialog_page_turning, null, false);
+        DialogPageJumpBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(),
+                R.layout.dialog_page_jump, null, false);
 
         int seekBarProgress;
         if (savedInstanceState == null) {
@@ -67,17 +67,17 @@ public final class PageTurningDialogFragment extends DialogFragment {
         }
 
         // SeekBar max is zero-based
-        mPageTurningViewModel = new PageTurningViewModel(getArguments().getInt(ARG_TOTAL_PAGES) - 1,
+        mPageJumpViewModel = new PageJumpViewModel(getArguments().getInt(ARG_TOTAL_PAGES) - 1,
                 seekBarProgress);
-        binding.setPageTurningViewModel(mPageTurningViewModel);
+        binding.setPageJumpViewModel(mPageJumpViewModel);
 
         AlertDialog alertDialog = new AlertDialog.Builder(getContext())
-                .setTitle(R.string.menu_page_turning)
+                .setTitle(R.string.menu_page_jump)
                 .setView(binding.getRoot())
-                .setPositiveButton(R.string.dialog_button_text_go, (dialog, which) -> {
+                .setPositiveButton(R.string.dialog_button_text_jump, (dialog, which) -> {
                     if (!TextUtils.isEmpty(binding.value.getText())) {
-                        ((OnPageTurnedListener) getParentFragment()).onPageTurned(
-                                mPageTurningViewModel.getSeekBarProgress());
+                        ((OnPageJumpedListener) getParentFragment()).onPageJumped(
+                                mPageJumpViewModel.getSeekBarProgress());
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
@@ -92,19 +92,19 @@ public final class PageTurningDialogFragment extends DialogFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt(STATE_SEEK_BAR_PROGRESS, mPageTurningViewModel.getSeekBarProgress());
+        outState.putInt(STATE_SEEK_BAR_PROGRESS, mPageJumpViewModel.getSeekBarProgress());
     }
 
     /**
-     * Callback interface for responding to page turning.
+     * Callback interface for responding to page jump.
      */
-    public interface OnPageTurnedListener {
+    public interface OnPageJumpedListener {
 
         /**
          * This method will be invoked when a page is selected.
          *
          * @param position Position index of the new selected page.
          */
-        void onPageTurned(int position);
+        void onPageJumped(int position);
     }
 }

@@ -57,7 +57,7 @@ public final class ThreadListFragment extends BaseViewPagerFragment
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_thread, menu);
 
-        menu.findItem(R.id.menu_page_turning).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        menu.findItem(R.id.menu_page_jump).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
 
     @Override

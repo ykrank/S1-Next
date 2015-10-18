@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_jump"
+        android:id="@+id/menu_thread_go"
         android:orderInCategory="31"
-        android:title="@string/menu_jump"
+        android:title="@string/menu_thread_go"
         app:showAsAction="never" />
 </menu>

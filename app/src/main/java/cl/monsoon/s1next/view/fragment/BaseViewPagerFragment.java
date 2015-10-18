@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.util.StringUtil;
-import cl.monsoon.s1next.view.dialog.PageTurningDialogFragment;
+import cl.monsoon.s1next.view.dialog.PageJumpDialogFragment;
 import cl.monsoon.s1next.view.internal.PagerCallback;
 import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
 
@@ -24,7 +24,7 @@ import cl.monsoon.s1next.widget.FragmentStatePagerAdapter;
  * A base Fragment wraps {@link ViewPager} and provides related methods.
  */
 abstract class BaseViewPagerFragment extends Fragment
-        implements PageTurningDialogFragment.OnPageTurnedListener, PagerCallback {
+        implements PageJumpDialogFragment.OnPageJumpedListener, PagerCallback {
 
     /**
      * The serialization (saved instance state) Bundle key representing
@@ -35,7 +35,7 @@ abstract class BaseViewPagerFragment extends Fragment
     private ViewPager mViewPager;
     private int mTotalPages;
 
-    private MenuItem mMenuPageTurning;
+    private MenuItem mMenuPageJump;
 
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,17 +73,17 @@ abstract class BaseViewPagerFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.fragment_view_pager, menu);
 
-        mMenuPageTurning = menu.findItem(R.id.menu_page_turning);
-        preparePageTurningMenu();
+        mMenuPageJump = menu.findItem(R.id.menu_page_jump);
+        preparePageJumpMenu();
     }
 
     @Override
     @CallSuper
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_page_turning:
-                new PageTurningDialogFragment(mTotalPages, getCurrentPage()).show(
-                        getChildFragmentManager(), PageTurningDialogFragment.TAG);
+            case R.id.menu_page_jump:
+                new PageJumpDialogFragment(mTotalPages, getCurrentPage()).show(
+                        getChildFragmentManager(), PageJumpDialogFragment.TAG);
 
                 return true;
             default:
@@ -108,7 +108,7 @@ abstract class BaseViewPagerFragment extends Fragment
     public final void setTotalPages(int totalPages) {
         this.mTotalPages = totalPages;
         mViewPager.getAdapter().notifyDataSetChanged();
-        preparePageTurningMenu();
+        preparePageJumpMenu();
     }
 
     final int getCurrentPage() {
@@ -121,22 +121,22 @@ abstract class BaseViewPagerFragment extends Fragment
 
     @Override
     @CallSuper
-    public void onPageTurned(int position) {
+    public void onPageJumped(int position) {
         mViewPager.setCurrentItem(position);
     }
 
     /**
-     * Disables the page turning menu if only has one page.
+     * Disables the page jump menu if only has one page.
      */
-    private void preparePageTurningMenu() {
-        if (mMenuPageTurning == null) {
+    private void preparePageJumpMenu() {
+        if (mMenuPageJump == null) {
             return;
         }
 
         if (mTotalPages == 1) {
-            mMenuPageTurning.setEnabled(false);
+            mMenuPageJump.setEnabled(false);
         } else {
-            mMenuPageTurning.setEnabled(true);
+            mMenuPageJump.setEnabled(true);
         }
     }
 

@@ -12,6 +12,8 @@
     <string name="picture_content_desc">Picture</string>
     <string name="dialog_message_login_prompt">Please sign in first.</string>
     <string name="dialog_button_text_done">Done</string>
+    <string name="dialog_button_text_go">Go</string>
+    <string name="dialog_button_text_jump">Jump</string>
 
     <string name="message_network_error">There was a network error</string>
     <string name="message_server_error">Couldn\'t communicate with the server, please try again later.</string>
@@ -33,28 +35,28 @@
     <string name="help">Help</string>
 
     <!-- menu -->
+    <string name="menu_account_new">Create account</string>
     <string name="menu_refresh">Refresh</string>
-    <string name="menu_link">Link</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_title_share">Share with…</string>
-    <string name="menu_download">Download</string>
+    <string name="menu_page_jump">Jump to page…</string>
     <string name="menu_browser">Open in browser</string>
-    <string name="menu_jump">Jump</string>
-    <string name="menu_account_new">Create an account</string>
-    <string name="menu_thread_attachment">Attachment</string>
-    <string name="menu_page_turning">Page turning</string>
-    <string name="menu_favourites_add">Add to favourites</string>
+    <string name="menu_thread_go">Go to thread…</string>
     <string name="menu_sub_forums" translatable="false">子版块</string>
+    <string name="menu_favourites_add">Add to favourites</string>
+    <string name="menu_link">Link</string>
+    <string name="menu_share">Share…</string>
+    <string name="menu_title_share">Share via…</string>
+    <string name="menu_thread_attachment">Attachment</string>
     <string name="menu_emoticon">Emoticon</string>
     <string name="menu_keyboard">Keyboard</string>
     <string name="menu_send">Send</string>
+    <string name="menu_download">Download</string>
 
     <!-- login -->
     <string name="activity_label_login" translatable="false">@string/action_login</string>
     <string name="prompt_username">Username/UID/Email</string>
     <string name="prompt_password">Password</string>
 
-    <string name="error_field_required">Can\'t leave this empty.</string>
+    <string name="error_field_required">Can\'t leave this empty</string>
 
     <string name="dialog_progress_message_login">Signing in…</string>
 
@@ -70,7 +72,6 @@
     <string name="thread_permission_hint" translatable="false">阅读权限</string>
 
     <!-- post -->
-    <string name="dialog_button_text_go">Go</string>
     <string name="dialog_button_text_add">Add</string>
     <string name="dialog_progress_message_favourites_add">Adding…</string>
     <string name="prompt_remark">Remark</string>
@@ -82,7 +83,7 @@
     <string name="dialog_message_processing">Processing…</string>
     <string name="dialog_message_quote_not_found">This quote could not be found.</string>
     <string name="prompt_thread_link_or_id">Thread link/ID</string>
-    <string name="error_field_invalid_or_unsupported_thread_link_or_id">Invalid or unsupported link/ID format.</string>
+    <string name="error_field_invalid_or_unsupported_thread_link_or_id">Invalid or unsupported link/ID format</string>
 
     <string name="message_thread_link_copy">Thread link copied to clipboard</string>
 
