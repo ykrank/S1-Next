@@ -122,7 +122,7 @@ public final class GlideImageGetter
                     .load(url)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .transform(new TransformationUtil.GlMaxTextureSizeBitmapTransformation(mContext))
-                    .into(new ImageGetterViewTarget(mTextView, urlDrawable));
+                    .into(imageGetterViewTarget);
 
             return urlDrawable;
         } else {
@@ -193,12 +193,18 @@ public final class GlideImageGetter
             mDrawable.setDrawable(resource);
 
             if (resource.isAnimated()) {
-                // set callback to drawable in order to
-                // signal its container to be redrawn
-                // to show the animated GIF
-                mDrawable.setCallback((Drawable.Callback) textView.getTag(R.id.tag_drawable_callback));
-                resource.setLoopCount(GlideDrawable.LOOP_FOREVER);
-                resource.start();
+                Drawable.Callback callback = (Drawable.Callback) textView.getTag(
+                        R.id.tag_drawable_callback);
+                // note: not sure whether callback would be null sometimes
+                // when this Drawable' host view is detached from View
+                if (callback != null) {
+                    // set callback to drawable in order to
+                    // signal its container to be redrawn
+                    // to show the animated GIF
+                    mDrawable.setCallback(callback);
+                    resource.setLoopCount(GlideDrawable.LOOP_FOREVER);
+                    resource.start();
+                }
             } else {
                 textView.setTag(R.id.tag_drawable_callback, null);
             }
