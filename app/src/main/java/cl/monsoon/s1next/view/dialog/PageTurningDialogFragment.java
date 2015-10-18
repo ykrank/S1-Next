@@ -72,15 +72,14 @@ public final class PageTurningDialogFragment extends DialogFragment {
         binding.setPageTurningViewModel(mPageTurningViewModel);
 
         AlertDialog alertDialog = new AlertDialog.Builder(getContext())
-                .setTitle(R.string.dialog_title_page_turning)
+                .setTitle(R.string.menu_page_turning)
                 .setView(binding.getRoot())
-                .setPositiveButton(getText(R.string.dialog_button_text_go),
-                        (dialog, which) -> {
-                            if (!TextUtils.isEmpty(binding.value.getText())) {
-                                ((OnPageTurnedListener) getParentFragment()).onPageTurned(
-                                        mPageTurningViewModel.getSeekBarProgress());
-                            }
-                        })
+                .setPositiveButton(R.string.dialog_button_text_go, (dialog, which) -> {
+                    if (!TextUtils.isEmpty(binding.value.getText())) {
+                        ((OnPageTurnedListener) getParentFragment()).onPageTurned(
+                                mPageTurningViewModel.getSeekBarProgress());
+                    }
+                })
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
         ViewUtil.consumeRunnableWhenImeActionPerformed(binding.value, () ->

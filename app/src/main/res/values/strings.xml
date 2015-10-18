@@ -69,9 +69,7 @@
     <string name="thread_permission_hint" translatable="false">阅读权限</string>
 
     <!-- post -->
-    <string name="dialog_title_page_turning" translatable="false">@string/menu_page_turning</string>
     <string name="dialog_button_text_go">Go</string>
-    <string name="dialog_title_favourites_add" translatable="false">@string/menu_favourites_add</string>
     <string name="dialog_button_text_add">Add</string>
     <string name="dialog_progress_message_favourites_add">Adding…</string>
     <string name="prompt_remark">Remark</string>
@@ -122,7 +120,6 @@
     <string name="pref_signature">Signature</string>
 
     <string name="pref_advanced">Advanced</string>
-    <string name="download_settings" translatable="false">@string/pref_downloads</string>
     <string name="pref_downloads">Downloads</string>
     <string name="pref_downloads_summary">Avatar &amp; Image</string>
     <string name="pref_download_total_cache_size">Total cache size</string>

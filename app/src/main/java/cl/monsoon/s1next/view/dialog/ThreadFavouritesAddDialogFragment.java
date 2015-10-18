@@ -39,20 +39,20 @@ public final class ThreadFavouritesAddDialogFragment extends DialogFragment {
                 R.layout.dialog_favourites_add, null, false);
 
         AlertDialog alertDialog = new AlertDialog.Builder(getContext())
-                .setTitle(R.string.dialog_title_favourites_add)
+                .setTitle(R.string.menu_favourites_add)
                 .setView(binding.getRoot())
                 .setPositiveButton(R.string.dialog_button_text_add, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
         alertDialog.getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        // http://stackoverflow.com/a/7636468
         alertDialog.setOnShowListener(dialog -> {
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v ->
                     ThreadFavouritesAddRequestDialogFragment.newInstance(
                             getArguments().getString(ARG_THREAD_ID),
                             binding.remark.getText().toString())
-                            .show(getFragmentManager(),
-                                    ThreadFavouritesAddRequestDialogFragment.TAG));
+                            .show(getFragmentManager(), ThreadFavouritesAddRequestDialogFragment.TAG));
             ViewUtil.consumeRunnableWhenImeActionPerformed(binding.remark, () ->
                     alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick());
         });

@@ -30,7 +30,7 @@ public final class LoginFragment extends Fragment {
 
     private EditText mUsernameView;
     private EditText mPasswordView;
-    private Button mLoginView;
+    private Button mLoginButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public final class LoginFragment extends Fragment {
                 container, false);
         mUsernameView = binding.username;
         mPasswordView = binding.password;
-        mLoginView = binding.login;
+        mLoginButton = binding.login;
         return binding.getRoot();
     }
 
@@ -47,7 +47,7 @@ public final class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ViewUtil.consumeRunnableWhenImeActionPerformed(mPasswordView, this::prepareLogin);
-        mLoginView.setOnClickListener(v -> prepareLogin());
+        mLoginButton.setOnClickListener(v -> prepareLogin());
     }
 
     @Override
