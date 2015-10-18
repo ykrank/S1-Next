@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class Favourite {
@@ -27,7 +29,8 @@ public final class Favourite {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        // unescape some basic XML entities
+        this.title = StringEscapeUtils.unescapeXml(title);
     }
 
     @Override
