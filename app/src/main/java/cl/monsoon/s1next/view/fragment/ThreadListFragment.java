@@ -65,7 +65,7 @@ public final class ThreadListFragment extends BaseViewPagerFragment
         switch (item.getItemId()) {
             case R.id.menu_browser:
                 IntentUtil.startViewIntentExcludeOurApp(getContext(), Uri.parse(
-                        Api.getThreadListUrlForBrowser(mForumId, getCurrentPage())));
+                        Api.getThreadListUrlForBrowser(mForumId, getCurrentPage() + 1)));
 
                 return true;
             default:
