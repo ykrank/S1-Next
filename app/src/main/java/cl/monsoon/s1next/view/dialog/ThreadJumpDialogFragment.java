@@ -57,6 +57,11 @@ public final class ThreadJumpDialogFragment extends DialogFragment {
             ViewUtil.consumeRunnableWhenImeActionPerformed(binding.threadLinkOrId, () -> {
                 if (positionButton.isEnabled()) {
                     positionButton.performClick();
+                } else {
+                    if (threadLinkOrIdWrapperView.getError() == null) {
+                        threadLinkOrIdWrapperView.setError(getResources().getText(
+                                R.string.error_field_invalid_or_unsupported_thread_link_or_id));
+                    }
                 }
             });
 
