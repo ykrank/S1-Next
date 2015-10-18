@@ -47,9 +47,11 @@ public final class ThreadLink implements Parcelable {
     }
 
     /**
-     * Parses thread link in order to get the meta info for thread.
+     * Parses thread link in order to get the meta info for this thread.
      *
      * @param url The thread link.
+     * @return The {@code Optional.of(threadLink)} if we parse this thread
+     * link/ID successfully, otherwise the {@code Optional.absent()}.
      */
     public static Optional<ThreadLink> parse(String url) {
         // example: http://bbs.saraba1st.com/2b/forum.php?mod=redirect&goto=findpost&pid=27217893&ptid=1074030
@@ -92,6 +94,34 @@ public final class ThreadLink implements Parcelable {
         }
 
         return Optional.absent();
+    }
+
+    /**
+     * Parses thread link/ID in order to get the meta info for this thread.
+     *
+     * @param threadLinkOrId The thread link/ID.
+     * @return The {@code Optional.of(threadLink)} if we parse this thread
+     * link/ID successfully, otherwise the {@code Optional.absent()}.
+     */
+    public static Optional<ThreadLink> parse2(String threadLinkOrId) {
+        // example: 1074030-1
+        Pattern pattern = Pattern.compile("^(\\d+)-(\\d+)$");
+        Matcher matcher = pattern.matcher(threadLinkOrId);
+        if (matcher.find()) {
+            Builder builder = new Builder(matcher.group(1))
+                    .jumpPage(Integer.parseInt(matcher.group(2)));
+
+            return Optional.of(builder.build());
+        }
+
+        // example: 1074030
+        matcher.usePattern(Pattern.compile("^(\\d+)$"));
+        if (matcher.find()) {
+            Builder builder = new Builder(matcher.group(1));
+            return Optional.of(builder.build());
+        }
+
+        return parse(threadLinkOrId);
     }
 
     public Optional<String> getQuotePostId() {

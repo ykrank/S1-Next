@@ -14,6 +14,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import cl.monsoon.s1next.data.event.ThemeChangeEvent;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.util.RxJavaUtil;
+import cl.monsoon.s1next.view.dialog.ThreadJumpDialogFragment;
 import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegateImpl;
 import cl.monsoon.s1next.view.internal.DrawerLayoutDelegate;
@@ -149,6 +151,16 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // we show jump menu only if this Activity has drawer
+        if (mDrawerLayoutDelegate != null) {
+            getMenuInflater().inflate(R.menu.jump, menu);
+        }
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     @CallSuper
     public boolean onOptionsItemSelected(MenuItem item) {
         // Pass the event to ActionBarDrawerToggle, if it returns
@@ -165,6 +177,11 @@ public abstract class BaseActivity extends AppCompatActivity
                 // so we use finish() to close the current Activity.
                 // looks the newest Google Play does the same way
                 finish();
+
+                return true;
+            case R.id.menu_jump:
+                new ThreadJumpDialogFragment().show(getSupportFragmentManager(),
+                        ThreadJumpDialogFragment.TAG);
 
                 return true;
             default:

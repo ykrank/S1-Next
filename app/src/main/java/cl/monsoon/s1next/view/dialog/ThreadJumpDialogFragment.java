@@ -1,0 +1,98 @@
+package cl.monsoon.s1next.view.dialog;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.databinding.DataBindingUtil;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.google.common.base.Optional;
+
+import cl.monsoon.s1next.R;
+import cl.monsoon.s1next.data.api.model.ThreadLink;
+import cl.monsoon.s1next.databinding.DialogThreadJumpBinding;
+import cl.monsoon.s1next.util.ViewUtil;
+import cl.monsoon.s1next.view.activity.PostListActivity;
+
+/**
+ * A dialog lets the user enter thread link/ID to jump to that thread.
+ */
+public final class ThreadJumpDialogFragment extends DialogFragment {
+
+    public static final String TAG = ThreadJumpDialogFragment.class.getName();
+
+    private Optional<ThreadLink> mThreadLink;
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Activity activity = getActivity();
+        DialogThreadJumpBinding binding = DataBindingUtil.inflate(activity.getLayoutInflater(),
+                R.layout.dialog_thread_jump, null, false);
+        TextInputLayout threadLinkOrIdWrapperView = binding.threadLinkOrIdWrapper;
+        EditText threadLinkOrIdView = binding.threadLinkOrId;
+
+        AlertDialog alertDialog = new AlertDialog.Builder(activity)
+                .setTitle(R.string.menu_jump)
+                .setView(binding.getRoot())
+                .setPositiveButton(R.string.dialog_button_text_go, (dialog, which) ->
+                        PostListActivity.startPostListActivity(activity, mThreadLink.get(), false))
+                .setNegativeButton(android.R.string.cancel, null)
+                .create();
+        alertDialog.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        // http://stackoverflow.com/a/7636468
+        alertDialog.setOnShowListener(dialog -> {
+            Button positionButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            ViewUtil.consumeRunnableWhenImeActionPerformed(binding.threadLinkOrId, () -> {
+                if (positionButton.isEnabled()) {
+                    positionButton.performClick();
+                }
+            });
+
+            threadLinkOrIdView.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String threadLinkOrId = s.toString();
+                    if (!TextUtils.isEmpty(threadLinkOrId)) {
+                        mThreadLink = ThreadLink.parse2(threadLinkOrId);
+                        if (mThreadLink.isPresent()) {
+                            threadLinkOrIdWrapperView.setError(null);
+                            positionButton.setEnabled(true);
+                        } else {
+                            if (threadLinkOrIdWrapperView.getError() == null) {
+                                threadLinkOrIdWrapperView.setError(getResources().getText(
+                                        R.string.error_field_invalid_or_unsupported_thread_link_or_id));
+                            }
+                            positionButton.setEnabled(false);
+                        }
+                    }
+                }
+            });
+            // check whether we need to disable position button when this dialog shows
+            if (TextUtils.isEmpty(threadLinkOrIdView.getText())) {
+                positionButton.setEnabled(false);
+            } else {
+                threadLinkOrIdView.setText(threadLinkOrIdView.getText());
+            }
+        });
+        return alertDialog;
+    }
+}

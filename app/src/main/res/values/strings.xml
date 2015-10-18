@@ -39,6 +39,7 @@
     <string name="menu_title_share">Share with…</string>
     <string name="menu_download">Download</string>
     <string name="menu_browser">Open in browser</string>
+    <string name="menu_jump">Jump</string>
     <string name="menu_account_new">Create an account</string>
     <string name="menu_thread_attachment">Attachment</string>
     <string name="menu_page_turning">Page turning</string>
@@ -80,6 +81,8 @@
     <string name="dialog_button_text_use_a_different_app">Use a different app</string>
     <string name="dialog_message_processing">Processing…</string>
     <string name="dialog_message_quote_not_found">This quote could not be found.</string>
+    <string name="prompt_thread_link_or_id">Thread link/ID</string>
+    <string name="error_field_invalid_or_unsupported_thread_link_or_id">Invalid or unsupported link/ID format.</string>
 
     <string name="message_thread_link_copy">Thread link copied to clipboard</string>
 

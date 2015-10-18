@@ -27,6 +27,7 @@
     <string name="menu_title_share">分享到…</string>
     <string name="menu_download">下载</string>
     <string name="menu_browser">从浏览器中打开</string>
+    <string name="menu_jump">跳转</string>
     <string name="menu_account_new">创建帐户</string>
     <string name="menu_thread_attachment">附件</string>
     <string name="menu_page_turning">翻页</string>
@@ -47,6 +48,8 @@
     <string name="dialog_button_text_use_a_different_app">使用其他应用</string>
     <string name="dialog_message_processing">解析中…</string>
     <string name="dialog_message_quote_not_found">找不到该引用。</string>
+    <string name="prompt_thread_link_or_id">帖子链接/ID</string>
+    <string name="error_field_invalid_or_unsupported_thread_link_or_id">无效的、或者是并不支持的帖子链接/ID格式。</string>
     <string name="message_thread_link_copy">帖子的链接已复制到剪切板</string>
     <string name="prompt_reply">写点内容吧…</string>
     <string name="signature">—— 来自 %1$s</string>
