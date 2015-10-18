@@ -13,8 +13,8 @@ android {
         applicationId 'cl.monsoon.s1next'
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 8
-        versionName '0.5.1'
+        versionCode 9
+        versionName '0.5.2'
         generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi', 'xxxhdpi']
     }
     buildTypes {
