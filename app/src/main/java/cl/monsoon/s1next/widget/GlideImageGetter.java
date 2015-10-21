@@ -69,12 +69,11 @@ public final class GlideImageGetter
     @Override
     public Drawable getDrawable(String url) {
         UrlDrawable urlDrawable = new UrlDrawable();
-        ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
-                urlDrawable);
-        mViewTargetSet.add(imageGetterViewTarget);
 
         // url has no domain if it comes from server.
         if (!URLUtil.isNetworkUrl(url)) {
+            ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
+                    urlDrawable);
             // We may have this image in assets if this is emoticon.
             if (url.startsWith(Api.URL_EMOTICON_IMAGE_PREFIX)) {
                 String emoticonFileName = url.substring(Api.URL_EMOTICON_IMAGE_PREFIX.length());
@@ -114,16 +113,20 @@ public final class GlideImageGetter
                         .into(imageGetterViewTarget);
             }
 
+            mViewTargetSet.add(imageGetterViewTarget);
             return urlDrawable;
         }
 
         if (App.getAppComponent(mContext).getDownloadPreferencesManager().isImagesDownload()) {
+            ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
+                    urlDrawable);
             Glide.with(mContext)
                     .load(url)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .transform(new TransformationUtil.GlMaxTextureSizeBitmapTransformation(mContext))
                     .into(imageGetterViewTarget);
 
+            mViewTargetSet.add(imageGetterViewTarget);
             return urlDrawable;
         } else {
             return null;
