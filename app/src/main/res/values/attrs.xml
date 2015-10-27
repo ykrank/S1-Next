@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr name="backgroundColor" format="color|reference" />
-    <attr name="backgroundContainerColor" format="color|reference" />
-
     <attr name="toolbarTheme" format="reference" />
     <attr name="navigationViewTheme" format="reference" />
     <attr name="cardViewStyle" format="reference" />
+    <attr name="cardViewContainerBackground" format="color|reference" />
 
     <attr name="drawerTextColor" format="color" />
     <attr name="fabBackgroundTint" format="color|reference" />

@@ -8,6 +8,6 @@
     android:viewportWidth="24.0"
     tools:ignore="UnusedAttribute,VectorRaster">
     <path
-        android:fillColor="#66000000"
+        android:fillColor="#61000000"
         android:pathData="M2.01,21L23,12 2.01,3 2,10l15,2 -15,2z" />
 </vector>

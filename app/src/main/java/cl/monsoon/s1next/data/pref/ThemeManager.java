@@ -34,7 +34,7 @@ public final class ThemeManager {
      * https://www.google.com/design/spec/style/color.html#color-ui-color-application
      */
     private static final int WHITE_BACKGROUND_SECONDARY_TEXT_ALPHA = (int) (0.54 * 255);
-    private static final int WHITE_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA = (int) (0.26 * 255);
+    private static final int WHITE_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA = (int) (38 * 255);
     private static final int BLACK_BACKGROUND_SECONDARY_TEXT_ALPHA = (int) (0.70 * 255);
     private static final int BLACK_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA = (int) (0.30 * 255);
 

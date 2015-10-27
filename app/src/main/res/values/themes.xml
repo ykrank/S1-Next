@@ -24,25 +24,26 @@
     <style name="Theme.Gallery" parent="Base.Theme.Gallery" />
 
     <style name="Base.Theme.Light" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="backgroundColor">@color/cardview_light_background</item>
-        <item name="backgroundContainerColor">@color/background_container_light</item>
-        <item name="android:colorBackground">?attr/backgroundColor</item>
         <!-- disable window preview in order to avoid the undelightful color transitions
         when app starts-->
         <item name="android:windowDisablePreview">true</item>
         <!-- show contextual action bar -->
         <item name="windowActionModeOverlay">true</item>
 
+        <item name="android:colorBackground">@color/light_background</item>
+        <item name="colorPrimary">@color/light_app_bar</item>
+        <item name="colorPrimaryDark">@color/light_status_bar</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
         <item name="navigationViewTheme">@style/Theme.Light.NavigationView</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="preferenceTheme">@style/Preference.Overlay</item>
         <item name="cardViewStyle">@style/CardView.Light</item>
+        <item name="cardViewContainerBackground">@color/light_card_view_container</item>
 
         <item name="drawerTextColor">?android:attr/textColorPrimaryInverse</item>
         <item name="fabBackgroundTint">?attr/colorAccent</item>
-        <item name="emoticonKeyboardTabLayoutBackground">@color/emoticon_keyboard_tab_layout_background_light</item>
-        <item name="emoticonKeyboardBackground">@color/emoticon_keyboard_background_light</item>
+        <item name="emoticonKeyboardTabLayoutBackground">@color/light_emoticon_keyboard_tab_layout_background</item>
+        <item name="emoticonKeyboardBackground">@color/light_emoticon_keyboard_background</item>
 
         <item name="iconClose">@drawable/ic_close_black_24dp</item>
 
@@ -97,19 +98,22 @@
     </style>
 
     <style name="Base.Theme.Dark" parent="Theme.AppCompat.NoActionBar">
-        <item name="backgroundColor">@color/cardview_dark_background</item>
-        <item name="backgroundContainerColor">@color/background_container_dark</item>
-        <item name="android:colorBackground">?attr/backgroundColor</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="android:colorBackground">@color/dark_background</item>
+        <item name="colorPrimary">@color/dark_app_bar</item>
+        <item name="colorPrimaryDark">@color/dark_status_bar</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="navigationViewTheme">@style/Theme.Dark.NavigationView</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="cardViewStyle">@style/CardView.Dark</item>
+        <!-- Actually the dark CardView background is not same to `android:colorBackground` which
+        is inconsistent with light theme. But it looks much better. May fix this inconsistency later.-->
+        <item name="cardViewContainerBackground">@color/dark_background</item>
         <item name="preferenceTheme">@style/Preference.Overlay</item>
         <item name="drawerTextColor">?android:attr/textColorPrimary</item>
         <item name="fabBackgroundTint">?attr/colorAccent</item>
-        <item name="emoticonKeyboardTabLayoutBackground">@color/emoticon_keyboard_tab_layout_background_dark</item>
-        <item name="emoticonKeyboardBackground">@color/emoticon_keyboard_background_dark</item>
+        <item name="emoticonKeyboardTabLayoutBackground">@color/dark_emoticon_keyboard_tab_layout_background</item>
+        <item name="emoticonKeyboardBackground">@color/dark_emoticon_keyboard_background</item>
         <item name="iconClose">@drawable/ic_close_white_24dp</item>
         <item name="iconMenuPageJump">@drawable/selector_menu_swap_horiz_white</item>
         <item name="iconMenuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
@@ -127,12 +131,12 @@
     </style>
 
     <style name="Base.Theme.Dark.NightMode.Amoled">
-        <item name="backgroundColor">@android:color/black</item>
-        <item name="backgroundContainerColor">@android:color/black</item>
+        <item name="android:colorBackground">@android:color/black</item>
         <item name="colorPrimary">@android:color/black</item>
         <item name="colorPrimaryDark">@android:color/black</item>
         <item name="navigationViewTheme">@style/Theme.Dark.NightMode.Amoled.NavigationView</item>
         <item name="cardViewStyle">@style/CardView.Dark.NightMode.Amoled</item>
+        <item name="cardViewContainerBackground">@android:color/black</item>
     </style>
 
     <style name="Base.Theme.Translucent.Light" parent="Theme.AppCompat.Light.NoActionBar">
