@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="pink_A200">#ffff4081</color>
-    <color name="orange_A200">#ffffab40</color>
-    <color name="light_blue_A200">#ff40c4ff</color>
-    <color name="green_A200">#ff69f0ae</color>
-    <color name="deep_orange_A200">#ffff6e40</color>
+    <color name="pink_A200">#ff4081</color>
+    <color name="orange_A200">#ffab40</color>
+    <color name="light_blue_A200">#40c4ff</color>
+    <color name="green_A200">#69f0ae</color>
+    <color name="deep_orange_A200">#ff6e40</color>
 
-    <color name="amber_500">#ffffc107</color>
-    <color name="amber_700">#ffffa000</color>
+    <color name="amber_500">#ffc107</color>
+    <color name="amber_700">#ffa000</color>
 
-    <color name="green_500">#ff4caf50</color>
-    <color name="green_600">#ff43a047</color>
-    <color name="green_700">#ff388e3c</color>
+    <color name="green_500">#4caf50</color>
+    <color name="green_600">#43a047</color>
+    <color name="green_700">#388e3c</color>
 
-    <color name="light_blue_500">#ff03a9f4</color>
-    <color name="light_blue_600">#ff039be5</color>
-    <color name="light_blue_700">#ff0288d1</color>
+    <color name="light_blue_500">#03a9f4</color>
+    <color name="light_blue_600">#039be5</color>
+    <color name="light_blue_700">#0288d1</color>
 
     <color name="purple_500">#9c27b0</color>
     <color name="purple_700">#7b1fa2</color>
 
-    <color name="dark_cyan">#ff5a8e89</color>
+    <color name="dark_cyan">#5a8e89</color>
     <color name="teal_200_70p">#b380cbc4</color>
     <color name="white_69p">#b1ffffff</color>
 
@@ -45,10 +45,10 @@
     <!--<color name="dark_cards_or_dialog">#424242</color>-->
     <color name="dark_card_view">#202020</color>
 
-    <color name="light_emoticon_keyboard_tab_layout_background">#ffe4e7e9</color>
-    <color name="light_emoticon_keyboard_background">#ffeceff1</color>
-    <color name="dark_emoticon_keyboard_tab_layout_background">#ff21272b</color>
-    <color name="dark_emoticon_keyboard_background">#ff263238</color>
+    <color name="light_emoticon_keyboard_tab_layout_background">#e4e7e9</color>
+    <color name="light_emoticon_keyboard_background">#eceff1</color>
+    <color name="dark_emoticon_keyboard_tab_layout_background">#21272b</color>
+    <color name="dark_emoticon_keyboard_background">#263238</color>
 
     <color name="photo_view_crop_dim_color">#cc000000</color>
 

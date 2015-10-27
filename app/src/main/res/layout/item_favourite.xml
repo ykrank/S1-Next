@@ -14,7 +14,7 @@
     </data>
 
     <!-- May change this TextView padding or height after because we
-    can't find any spec in the Google Material Design whose line count
+    can't find any spec in the material design guidelines whose line count
     is not sure (less than 4) and each line are all primary.
     We set top/bottom padding to 14.5dp because `includeFontPadding`
     doesn't remove all extra space. -->

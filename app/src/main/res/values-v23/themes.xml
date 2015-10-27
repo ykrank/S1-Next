@@ -18,8 +18,8 @@
     <style name="Theme.Dark.NightMode.Amoled" parent="Base.Theme.Dark.NightMode.Amoled.V23" />
 
     <style name="Base.Theme.Light.V23" parent="Base.Theme.Light">
-        <item name="colorPrimaryDark">@color/light_status_bar_v23</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="colorPrimaryDark">@color/light_status_bar_v23</item>
     </style>
 
     <style name="Base.Theme.Light.Inverse.Amber.V23" parent="Base.Theme.Light.Inverse.Amber">
