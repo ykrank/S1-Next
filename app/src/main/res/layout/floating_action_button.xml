@@ -9,6 +9,6 @@
     app:backgroundTint="?attr/fabBackgroundTint"
     app:layout_anchor="@id/coordinator_layout"
     app:layout_anchorGravity="bottom|right|end"
-    app:layout_behavior="cl.monsoon.s1next.widget.ScrollAwareFABBehavior"
+    app:layout_behavior="cl.monsoon.s1next.widget.AppBarLayoutVisibilityAwareFABBehavior"
     app:rippleColor="@color/ripple_material_dark"
     tools:ignore="PrivateResource,RtlCompat" />
