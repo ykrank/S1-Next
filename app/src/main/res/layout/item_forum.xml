@@ -31,7 +31,6 @@
         android:singleLine="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:forum="@{forumViewModel.forum}"
-        app:gentleAccentColor="@{gentleAccentColor}"
-        tools:ignore="NewApi" />
+        app:gentleAccentColor="@{gentleAccentColor}" />
 
 </layout>

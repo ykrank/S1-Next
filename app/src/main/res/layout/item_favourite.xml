@@ -36,7 +36,6 @@
         android:paddingTop="14.5dp"
         android:text="@{favouriteViewModel.favourite.title}"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:onClickListener="@{favouriteViewModel.goToThisFavourite()}"
-        tools:ignore="NewApi" />
+        app:onClickListener="@{favouriteViewModel.goToThisFavourite()}" />
 
 </layout>

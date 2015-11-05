@@ -32,8 +32,7 @@
                 android:paddingRight="@dimen/activity_horizontal_padding"
                 android:paddingStart="@dimen/activity_horizontal_padding"
                 android:paddingTop="@dimen/activity_vertical_padding"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                tools:ignore="NewApi" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
         </ScrollView>
 
