@@ -12,12 +12,10 @@ public final class RecyclerViewBindingAdapter {
     @BindingAdapter("loadingFirstTime")
     public static void setHasProgress(RecyclerView recyclerView, Boolean oldIsLoadingFirstTime, Boolean newIsLoadingFirstTime) {
         if (newIsLoadingFirstTime != oldIsLoadingFirstTime) {
-            RecyclerView.Adapter adapter = recyclerView.getAdapter();
-            if (adapter != null) {
-                BaseRecyclerViewAdapter baseRecyclerViewAdapter = (BaseRecyclerViewAdapter) adapter;
-                baseRecyclerViewAdapter.setHasProgress(newIsLoadingFirstTime);
-                baseRecyclerViewAdapter.notifyDataSetChanged();
-            }
+            BaseRecyclerViewAdapter baseRecyclerViewAdapter = (BaseRecyclerViewAdapter)
+                    recyclerView.getAdapter();
+            baseRecyclerViewAdapter.setHasProgress(newIsLoadingFirstTime);
+            baseRecyclerViewAdapter.notifyDataSetChanged();
         }
     }
 }

@@ -17,6 +17,12 @@ public interface LoadingViewModelBindingDelegate {
 
     SwipeRefreshLayout getSwipeRefreshLayout();
 
+    /**
+     * This {@link RecyclerView} should always set a
+     * {@link cl.monsoon.s1next.view.adapter.BaseRecyclerViewAdapter}
+     * implementation, otherwise we can not use
+     * {@link cl.monsoon.s1next.view.adapter.BaseRecyclerViewAdapter#setHasProgress(boolean)}.
+     */
     RecyclerView getRecyclerView();
 
     void setLoadingViewModel(LoadingViewModel loadingViewModel);
