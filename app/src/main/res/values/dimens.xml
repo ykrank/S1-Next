@@ -20,11 +20,11 @@
     <dimen name="dialog_padding_bottom">16dp</dimen>
     <dimen name="dialog_divider_padding">8dp</dimen>
 
+    <item name="drawer_header_aspect_ratio" type="fraction">178%</item>
     <dimen name="drawer_avatar_margin_top">@dimen/item_padding</dimen>
     <dimen name="drawer_avatar_size">64dp</dimen>
     <dimen name="drawer_avatar_border_width">3dp</dimen>
-    <!-- 16dp (avatar top margin) + 64dp (avatar height) + 48dp (username) + 8dp (username bottom margin)  -->
-    <dimen name="drawer_top_height">136dp</dimen>
+    <dimen name="drawer_subtitle_height">56dp</dimen>
 
     <dimen name="fab_margin">16dp</dimen>
 
