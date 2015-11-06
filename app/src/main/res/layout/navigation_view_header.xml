@@ -17,6 +17,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/drawer_header_background"
             android:contentDescription="@string/drawer_top_background_content_desc"
             android:scaleType="centerCrop"
             app:imageDrawable="@{@drawable/ic_drawer_header_background}"
