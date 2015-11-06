@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'com.android.databinding'
 
 apply plugin: 'com.github.ben-manes.versions'
 
@@ -32,6 +31,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    dataBinding {
+        enabled = true
+    }
     dexOptions {
         preDexLibraries = Boolean.valueOf(System.getProperty('pre-dex-libraries', 'true'))
     }
@@ -54,8 +56,8 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
-    compile 'com.google.dagger:dagger:2.0.1'
-    apt 'com.google.dagger:dagger-compiler:2.0.1'
+    compile 'com.google.dagger:dagger:2.0.2'
+    apt 'com.google.dagger:dagger-compiler:2.0.2'
     // https://github.com/google/dagger/issues/95
     provided 'javax.annotation:jsr250-api:1.0'
 
@@ -73,17 +75,17 @@ dependencies {
 
     compile 'com.google.guava:guava:18.0'
     // https://github.com/google/guava/wiki/UsingProGuardWithGuava
-    provided 'com.google.code.findbugs:jsr305:3.0.0'
+    provided 'com.google.code.findbugs:jsr305:3.0.1'
     compile 'org.apache.commons:commons-lang3:3.4'
 
-    compile 'io.reactivex:rxjava:1.0.14'
+    compile 'io.reactivex:rxjava:1.0.15'
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
     compile 'com.squareup.retrofit:converter-jackson:2.0.0-beta2'
 
     compile 'com.bugsnag:bugsnag-android:3.2.6'
     compile 'com.github.bumptech.glide:glide:3.6.1'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.2'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
 
-    compile 'com.hannesdorfmann:adapterdelegates:1.0.2'
+    compile 'com.hannesdorfmann:adapterdelegates:1.1.0'
 }
