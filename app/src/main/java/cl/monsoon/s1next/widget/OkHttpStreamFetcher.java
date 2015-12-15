@@ -283,6 +283,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
                 String value = lruCache.get(key);
                 if (value == null) {
                     try {
+                        // TODO: https://github.com/bumptech/glide/pull/798 when Glide 4 was released
                         MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
                         key.updateDiskCacheKey(messageDigest);
                         value = Util.sha256BytesToHex(messageDigest.digest());
