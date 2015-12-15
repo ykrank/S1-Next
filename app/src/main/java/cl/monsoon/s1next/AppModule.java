@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -64,6 +65,11 @@ final class AppModule {
         okHttpClient.setWriteTimeout(17, TimeUnit.SECONDS);
         okHttpClient.setReadTimeout(77, TimeUnit.SECONDS);
         okHttpClient.setCookieHandler(cookieManager);
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+            okHttpClient.interceptors().add(httpLoggingInterceptor);
+        }
 
         return okHttpClient;
     }
