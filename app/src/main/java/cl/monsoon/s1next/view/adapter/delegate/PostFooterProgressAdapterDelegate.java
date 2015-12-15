@@ -25,19 +25,19 @@ public final class PostFooterProgressAdapterDelegate extends AbsAdapterDelegate<
     }
 
     @Override
-    public boolean isForViewType(@NonNull List<Object> objects, int i) {
-        return objects.get(i) instanceof FooterProgressItem;
+    public boolean isForViewType(@NonNull List<Object> items, int position) {
+        return items.get(position) instanceof FooterProgressItem;
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {
         return new FooterProgressViewHolder(mLayoutInflater.inflate(R.layout.item_footer_progress,
-                viewGroup, false));
+                parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull List<Object> objects, int i, @NonNull RecyclerView.ViewHolder viewHolder) {}
+    public void onBindViewHolder(@NonNull List<Object> items, int position, @NonNull RecyclerView.ViewHolder holder) {}
 
     private static final class FooterProgressViewHolder extends RecyclerView.ViewHolder {
 

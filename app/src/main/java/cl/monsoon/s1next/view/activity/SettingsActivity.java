@@ -23,7 +23,7 @@ public final class SettingsActivity extends BaseActivity {
 
     public static void startDownloadSettingsActivity(Context context) {
         Intent intent = new Intent(context, SettingsActivity.class);
-        intent.putExtra(SettingsActivity.ARG_SHOW_DOWNLOAD_SETTINGS, true);
+        intent.putExtra(ARG_SHOW_DOWNLOAD_SETTINGS, true);
         context.startActivity(intent);
     }
 

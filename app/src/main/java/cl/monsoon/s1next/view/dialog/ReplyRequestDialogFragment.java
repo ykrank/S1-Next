@@ -1,6 +1,5 @@
 package cl.monsoon.s1next.view.dialog;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -12,7 +11,6 @@ import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.api.model.Quote;
 import cl.monsoon.s1next.data.api.model.Result;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
-import cl.monsoon.s1next.view.activity.BaseActivity;
 import rx.Observable;
 
 /**
@@ -51,11 +49,11 @@ public final class ReplyRequestDialogFragment extends ProgressDialogFragment<Res
         String reply = getArguments().getString(ARG_REPLY);
 
         if (TextUtils.isEmpty(quotePostId)) {
-            return flatMapedWithAuthenticityToken(s -> mS1Service.reply(s, threadId, reply));
+            return flatMappedWithAuthenticityToken(s -> mS1Service.reply(s, threadId, reply));
         } else {
             return mS1Service.getQuoteInfo(threadId, quotePostId).flatMap(s -> {
                 Quote quote = Quote.fromXmlString(s);
-                return flatMapedWithAuthenticityToken(token ->
+                return flatMappedWithAuthenticityToken(token ->
                         mS1Service.replyQuote(token, threadId, reply, quote.getEncodedUserId(),
                                 quote.getQuoteMessage(), StringUtils.abbreviate(reply,
                                         Api.REPLY_NOTIFICATION_MAX_LENGTH)));

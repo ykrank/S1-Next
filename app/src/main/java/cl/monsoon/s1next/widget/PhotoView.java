@@ -191,7 +191,7 @@ public final class PhotoView extends View
     /**
      * Gesture detector that detects pinch gestures
      */
-    private ScaleGestureDetector mScaleGetureDetector;
+    private ScaleGestureDetector scaleGestureDetector;
     /**
      * An external click listener
      */
@@ -306,12 +306,12 @@ public final class PhotoView extends View
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        if (mScaleGetureDetector == null || mGestureDetector == null) {
+        if (scaleGestureDetector == null || mGestureDetector == null) {
             // We're being destroyed; ignore any touch events
             return true;
         }
 
-        mScaleGetureDetector.onTouchEvent(event);
+        scaleGestureDetector.onTouchEvent(event);
         mGestureDetector.onTouchEvent(event);
 
         final int action = event.getAction();
@@ -594,7 +594,7 @@ public final class PhotoView extends View
      */
     public void clear() {
         mGestureDetector = null;
-        mScaleGetureDetector = null;
+        scaleGestureDetector = null;
         mDrawable = null;
         mScaleRunnable.stop();
         mScaleRunnable = null;
@@ -1173,8 +1173,8 @@ public final class PhotoView extends View
         }
 
         mGestureDetector = new GestureDetectorCompat(context, this, null);
-        mScaleGetureDetector = new ScaleGestureDetector(context, this);
-        mQuickScaleEnabled = ScaleGestureDetectorCompat.isQuickScaleEnabled(mScaleGetureDetector);
+        scaleGestureDetector = new ScaleGestureDetector(context, this);
+        mQuickScaleEnabled = ScaleGestureDetectorCompat.isQuickScaleEnabled(scaleGestureDetector);
         mScaleRunnable = new ScaleRunnable(this);
         mTranslateRunnable = new TranslateRunnable(this);
         mSnapRunnable = new SnapRunnable(this);
@@ -1245,8 +1245,8 @@ public final class PhotoView extends View
 
             // Scale
             long now = System.currentTimeMillis();
-            long ellapsed = now - mStartTime;
-            float newScale = (mStartScale + mVelocity * ellapsed);
+            long elapsed = now - mStartTime;
+            float newScale = (mStartScale + mVelocity * elapsed);
             mHeader.scale(newScale, mCenterX, mCenterY);
 
             // Stop when done

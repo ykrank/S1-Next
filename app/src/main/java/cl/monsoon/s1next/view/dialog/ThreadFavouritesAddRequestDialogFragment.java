@@ -34,7 +34,7 @@ public final class ThreadFavouritesAddRequestDialogFragment
 
     @Override
     protected Observable<ResultWrapper> getSourceObservable() {
-        return flatMapedWithAuthenticityToken(s ->
+        return flatMappedWithAuthenticityToken(s ->
                 mS1Service.addThreadFavorite(s, getArguments().getString(ARG_THREAD_ID),
                         getArguments().getString(ARG_REMARK)));
     }

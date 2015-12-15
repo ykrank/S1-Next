@@ -9,10 +9,8 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresPermission;
-import android.support.annotation.StringRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -21,17 +19,13 @@ import android.support.v4.view.WindowInsetsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.common.base.Optional;
 
 import java.lang.reflect.Method;
 
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.databinding.ActivityGalleryBinding;
 import cl.monsoon.s1next.util.IntentUtil;
-import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import cl.monsoon.s1next.view.internal.ToolbarDelegate;
 import cl.monsoon.s1next.viewmodel.ImageViewModel;
 
@@ -48,7 +42,7 @@ public final class GalleryActivity extends AppCompatActivity {
 
     public static void startGalleryActivity(Context context, String imageUrl) {
         Intent intent = new Intent(context, GalleryActivity.class);
-        intent.putExtra(GalleryActivity.ARG_IMAGE_URL, imageUrl);
+        intent.putExtra(ARG_IMAGE_URL, imageUrl);
         context.startActivity(intent);
     }
 

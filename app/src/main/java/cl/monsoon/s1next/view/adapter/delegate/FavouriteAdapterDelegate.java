@@ -27,24 +27,24 @@ public final class FavouriteAdapterDelegate extends AbsAdapterDelegate<List<Obje
     }
 
     @Override
-    public boolean isForViewType(@NonNull List<Object> objectList, int i) {
-        return objectList.get(i) instanceof Favourite;
+    public boolean isForViewType(@NonNull List<Object> items, int position) {
+        return items.get(position) instanceof Favourite;
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {
         ItemFavouriteBinding binding = DataBindingUtil.inflate(mLayoutInflater,
-                R.layout.item_favourite, viewGroup, false);
+                R.layout.item_favourite, parent, false);
         binding.setFavouriteViewModel(new FavouriteViewModel());
 
         return new BindingViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull List<Object> objectList, int i, @NonNull RecyclerView.ViewHolder viewHolder) {
-        ItemFavouriteBinding binding = ((BindingViewHolder) viewHolder).itemFavouriteBinding;
-        binding.getFavouriteViewModel().favourite.set((Favourite) objectList.get(i));
+    public void onBindViewHolder(@NonNull List<Object> items, int position, @NonNull RecyclerView.ViewHolder holder) {
+        ItemFavouriteBinding binding = ((BindingViewHolder) holder).itemFavouriteBinding;
+        binding.getFavouriteViewModel().favourite.set((Favourite) items.get(position));
         binding.executePendingBindings();
     }
 

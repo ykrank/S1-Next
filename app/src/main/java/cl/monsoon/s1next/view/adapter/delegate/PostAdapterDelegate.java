@@ -51,15 +51,15 @@ public final class PostAdapterDelegate extends AbsAdapterDelegate<List<Object>> 
     }
 
     @Override
-    public boolean isForViewType(@NonNull List<Object> objectList, int i) {
-        return objectList.get(i) instanceof Post;
+    public boolean isForViewType(@NonNull List<Object> items, int position) {
+        return items.get(position) instanceof Post;
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {
         ItemPostBinding itemPostBinding = DataBindingUtil.inflate(mLayoutInflater,
-                R.layout.item_post, viewGroup, false);
+                R.layout.item_post, parent, false);
         itemPostBinding.setEventBus(mEventBus);
         itemPostBinding.setDownloadPreferencesManager(mDownloadPreferencesManager);
         itemPostBinding.setDrawableRequestBuilder(mAvatarRequestBuilder);
@@ -69,9 +69,9 @@ public final class PostAdapterDelegate extends AbsAdapterDelegate<List<Object>> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull List<Object> objectList, int i, @NonNull RecyclerView.ViewHolder viewHolder) {
-        ItemPostBinding binding = ((ItemViewBindingHolder) viewHolder).itemPostBinding;
-        binding.getPostViewModel().post.set((Post) objectList.get(i));
+    public void onBindViewHolder(@NonNull List<Object> items, int position, @NonNull RecyclerView.ViewHolder holder) {
+        ItemPostBinding binding = ((ItemViewBindingHolder) holder).itemPostBinding;
+        binding.getPostViewModel().post.set((Post) items.get(position));
         binding.executePendingBindings();
     }
 

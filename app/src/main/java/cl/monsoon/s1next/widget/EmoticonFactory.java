@@ -50,7 +50,7 @@ public final class EmoticonFactory {
                     emoticons = getNqEmoticonList();
                     break;
                 case 5:
-                    emoticons = getNornamlEmoticonList();
+                    emoticons = getNormalEmoticonList();
                     break;
                 case 6:
                     emoticons = getFlashEmoticonList();
@@ -400,7 +400,7 @@ public final class EmoticonFactory {
         return builder.build();
     }
 
-    private List<Emoticon> getNornamlEmoticonList() {
+    private List<Emoticon> getNormalEmoticonList() {
         ImmutableList.Builder<Emoticon> builder = ImmutableList.builder();
         add(builder, "normal/058.gif", "[s:1409]");
         add(builder, "normal/026.gif", "[s:1423]");

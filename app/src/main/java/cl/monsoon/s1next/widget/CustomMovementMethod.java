@@ -72,7 +72,7 @@ public final class CustomMovementMethod extends ArrowKeyMovementMethod {
                         try {
                             context.startActivity(intent);
                         } catch (ActivityNotFoundException e) {
-                            Log.w("URLSpan", "Actvity was not found for intent, " + intent.toString());
+                            Log.w("URLSpan", "Activity was not found for intent, " + intent.toString());
                         }
                     } else {
                         clickableSpan.onClick(widget);

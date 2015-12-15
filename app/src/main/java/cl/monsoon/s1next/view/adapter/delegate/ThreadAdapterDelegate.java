@@ -39,15 +39,15 @@ public final class ThreadAdapterDelegate extends AbsAdapterDelegate<List<Object>
     }
 
     @Override
-    public boolean isForViewType(@NonNull List<Object> objectList, int i) {
-        return objectList.get(i) instanceof Thread;
+    public boolean isForViewType(@NonNull List<Object> items, int position) {
+        return items.get(position) instanceof Thread;
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {
         ItemThreadBinding binding = DataBindingUtil.inflate(mLayoutInflater, R.layout.item_thread,
-                viewGroup, false);
+                parent, false);
         // we do not use view model for ThemeManager
         // because theme changes only when Activity recreated
         binding.setUserViewModel(mUserViewModel);
@@ -58,9 +58,9 @@ public final class ThreadAdapterDelegate extends AbsAdapterDelegate<List<Object>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull List<Object> objectList, int i, @NonNull RecyclerView.ViewHolder viewHolder) {
-        ItemThreadBinding binding = ((BindingViewHolder) viewHolder).itemThreadBinding;
-        binding.getThreadViewModel().thread.set((Thread) objectList.get(i));
+    public void onBindViewHolder(@NonNull List<Object> items, int position, @NonNull RecyclerView.ViewHolder holder) {
+        ItemThreadBinding binding = ((BindingViewHolder) holder).itemThreadBinding;
+        binding.getThreadViewModel().thread.set((Thread) items.get(position));
         binding.executePendingBindings();
     }
 

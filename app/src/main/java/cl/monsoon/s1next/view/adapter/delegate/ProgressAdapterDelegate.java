@@ -25,33 +25,33 @@ public final class ProgressAdapterDelegate extends AbsAdapterDelegate<List<Objec
     }
 
     @Override
-    public boolean isForViewType(@NonNull List<Object> objects, int i) {
-        return objects.get(i) instanceof ProgressItem;
+    public boolean isForViewType(@NonNull List<Object> items, int position) {
+        return items.get(position) instanceof ProgressItem;
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup) {
-        return new ProgressViewHolder(mLayoutInflater.inflate(R.layout.item_progress, viewGroup,
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {
+        return new ProgressViewHolder(mLayoutInflater.inflate(R.layout.item_progress, parent,
                 false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull List<Object> objects, int i, @NonNull RecyclerView.ViewHolder viewHolder) {
+    public void onBindViewHolder(@NonNull List<Object> items, int position, @NonNull RecyclerView.ViewHolder holder) {
         // match_parent doesn't work for RecyclerView's item
-        ProgressViewHolder holder = (ProgressViewHolder) viewHolder;
-        holder.progressBar.setVisibility(View.GONE);
-        holder.itemView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+        ProgressViewHolder progressViewHolder = (ProgressViewHolder) holder;
+        progressViewHolder.progressBar.setVisibility(View.GONE);
+        progressViewHolder.itemView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
 
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom,
                                        int oldLeft, int oldTop, int oldRight, int oldBottom) {
                 v.removeOnLayoutChangeListener(this);
 
-                ViewGroup.LayoutParams layoutParams = viewHolder.itemView.getLayoutParams();
-                View view = (View) viewHolder.itemView.getParent();
+                ViewGroup.LayoutParams layoutParams = progressViewHolder.itemView.getLayoutParams();
+                View view = (View) progressViewHolder.itemView.getParent();
                 layoutParams.height = view.getHeight() - view.getPaddingTop() - view.getPaddingBottom();
-                holder.progressBar.setVisibility(View.VISIBLE);
+                progressViewHolder.progressBar.setVisibility(View.VISIBLE);
             }
         });
     }

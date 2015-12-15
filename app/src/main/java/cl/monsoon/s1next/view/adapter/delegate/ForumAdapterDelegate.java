@@ -31,15 +31,15 @@ public final class ForumAdapterDelegate extends AbsAdapterDelegate<List<Object>>
     }
 
     @Override
-    public boolean isForViewType(@NonNull List<Object> objectList, int i) {
-        return objectList.get(i) instanceof Forum;
+    public boolean isForViewType(@NonNull List<Object> items, int position) {
+        return items.get(position) instanceof Forum;
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {
         ItemForumBinding binding = DataBindingUtil.inflate(mLayoutInflater,
-                R.layout.item_forum, viewGroup, false);
+                R.layout.item_forum, parent, false);
         binding.setGentleAccentColor(mGentleAccentColor);
         binding.setForumViewModel(new ForumViewModel());
 
@@ -47,9 +47,9 @@ public final class ForumAdapterDelegate extends AbsAdapterDelegate<List<Object>>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull List<Object> objectList, int i, @NonNull RecyclerView.ViewHolder viewHolder) {
-        ItemForumBinding binding = ((BindingViewHolder) viewHolder).itemForumBinding;
-        binding.getForumViewModel().forum.set((Forum) objectList.get(i));
+    public void onBindViewHolder(@NonNull List<Object> items, int position, @NonNull RecyclerView.ViewHolder holder) {
+        ItemForumBinding binding = ((BindingViewHolder) holder).itemForumBinding;
+        binding.getForumViewModel().forum.set((Forum) items.get(position));
         binding.executePendingBindings();
     }
 

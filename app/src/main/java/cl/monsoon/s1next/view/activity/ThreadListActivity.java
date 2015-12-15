@@ -39,7 +39,7 @@ public final class ThreadListActivity extends BaseActivity
 
     public static void startThreadListActivity(Context context, Forum forum) {
         Intent intent = new Intent(context, ThreadListActivity.class);
-        intent.putExtra(ThreadListActivity.ARG_FORUM, forum);
+        intent.putExtra(ARG_FORUM, forum);
 
         context.startActivity(intent);
     }
