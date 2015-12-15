@@ -5,9 +5,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.android.tools.build:gradle:2.0.0-alpha3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
+        classpath 'me.tatarka:gradle-retrolambda:3.2.4'
 
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
 
@@ -18,6 +18,8 @@ buildscript {
 
 allprojects {
     repositories {
+        // unable to find jackson-databind:2.7.0-rc2 in JCenter
+        mavenCentral()
         jcenter()
         maven {
             url 'https://oss.sonatype.org/content/repositories/snapshots'

@@ -1,7 +1,6 @@
 package cl.monsoon.s1next.widget;
 
 import android.content.res.Resources;
-import android.os.Looper;
 import android.util.LruCache;
 
 import com.bumptech.glide.Priority;
@@ -127,11 +126,7 @@ final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
     @Override
     public void cancel() {
         if (mCall != null) {
-            if (Looper.myLooper() == Looper.getMainLooper()) {
-                mOkHttpClient.getDispatcher().getExecutorService().execute(mCall::cancel);
-            } else {
-                mCall.cancel();
-            }
+            mCall.cancel();
             mCall = null;
         }
     }

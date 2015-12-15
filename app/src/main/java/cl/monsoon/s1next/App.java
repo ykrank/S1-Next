@@ -1,9 +1,9 @@
 package cl.monsoon.s1next;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.StrictMode;
+import android.support.multidex.MultiDexApplication;
 
 import com.bugsnag.android.Bugsnag;
 import com.squareup.leakcanary.LeakCanary;
@@ -32,7 +32,7 @@ import cl.monsoon.s1next.widget.EventBus;
 import cl.monsoon.s1next.widget.WifiBroadcastReceiver;
 import dagger.Component;
 
-public final class App extends Application {
+public final class App extends MultiDexApplication {
 
     private static App sApp;
 

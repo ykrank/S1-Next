@@ -19,11 +19,15 @@
 # Guava
 # https://github.com/google/guava/wiki/UsingProGuardWithGuava
 -dontwarn sun.misc.Unsafe
--dontwarn com.google.common.collect.MinMaxPriorityQueue
+-dontwarn java.lang.ClassValue
+-dontwarn com.google.j2objc.annotations.Weak
 
 # Jackson databind
 -keep public class cl.monsoon.s1next.data.api.model.** { *; }
 
+-dontwarn java.nio.file.Paths
+-dontwarn java.beans.Transient
+-dontwarn java.beans.ConstructorProperties
 -dontwarn com.fasterxml.jackson.databind.ext.DOMSerializer
 -keepnames class com.fasterxml.jackson.** { *; }
 
@@ -56,6 +60,8 @@
    long consumerIndex;
 }
 -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-   long producerNode;
-   long consumerNode;
+    rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
