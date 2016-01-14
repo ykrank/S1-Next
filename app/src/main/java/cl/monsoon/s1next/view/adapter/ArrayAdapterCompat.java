@@ -23,7 +23,7 @@ public final class ArrayAdapterCompat<T> extends ArrayAdapter<T> implements Them
 
     private final ThemedSpinnerAdapter.Helper mDropDownHelper;
 
-    public ArrayAdapterCompat(Context context,@LayoutRes int resource, List<T> objects) {
+    public ArrayAdapterCompat(Context context, @LayoutRes int resource, List<T> objects) {
         super(context, resource, objects);
         mDropDownResource = resource;
 
