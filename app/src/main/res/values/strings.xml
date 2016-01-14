@@ -5,7 +5,7 @@
     <string name="app_icon_content_desc">App icon</string>
 
     <!-- common -->
-    <string name="intent_title_which_view_application">Open with…</string>
+    <string name="intent_title_which_view_application">Open with</string>
     <string name="message_chooser_no_applications">No apps can perform this action</string>
     <string name="action_login">Sign in</string>
     <string name="avatar_content_desc">Avatar</string>
@@ -37,14 +37,14 @@
     <!-- menu -->
     <string name="menu_account_new">Create account</string>
     <string name="menu_refresh">Refresh</string>
-    <string name="menu_page_jump">Jump to page…</string>
+    <string name="menu_page_jump">Jump to page</string>
     <string name="menu_browser">Open in browser</string>
-    <string name="menu_thread_go">Go to thread…</string>
+    <string name="menu_thread_go">Go to thread</string>
     <string name="menu_sub_forums" translatable="false">子版块</string>
     <string name="menu_favourites_add">Add to favourites</string>
     <string name="menu_link">Link</string>
-    <string name="menu_share">Share…</string>
-    <string name="menu_title_share">Share via…</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_title_share">Share via</string>
     <string name="menu_thread_attachment">Attachment</string>
     <string name="menu_emoticon">Emoticon</string>
     <string name="menu_keyboard">Keyboard</string>

@@ -25,13 +25,13 @@
     <string name="help">帮助</string>
     <string name="menu_account_new">创建帐户</string>
     <string name="menu_refresh">刷新</string>
-    <string name="menu_page_jump">跳至特定页数…</string>
+    <string name="menu_page_jump">跳至特定页数</string>
     <string name="menu_browser">从浏览器中打开</string>
-    <string name="menu_thread_go">前往特定帖子…</string>
+    <string name="menu_thread_go">前往特定帖子</string>
     <string name="menu_favourites_add">加入收藏</string>
     <string name="menu_link">链接</string>
-    <string name="menu_share">分享…</string>
-    <string name="menu_title_share">分享到…</string>
+    <string name="menu_share">分享</string>
+    <string name="menu_title_share">分享到</string>
     <string name="menu_thread_attachment">附件</string>
     <string name="menu_emoticon">表情</string>
     <string name="menu_keyboard">键盘</string>
