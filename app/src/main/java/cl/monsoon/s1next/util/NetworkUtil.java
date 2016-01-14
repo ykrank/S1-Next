@@ -23,7 +23,7 @@ public final class NetworkUtil {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Network[] networks = connectivityManager.getAllNetworks();
             if (networks != null) {
-                for (Network network : connectivityManager.getAllNetworks()) {
+                for (Network network : networks) {
                     NetworkInfo networkInfo = connectivityManager.getNetworkInfo(network);
                     if (networkInfo != null &&
                             networkInfo.getType() == ConnectivityManager.TYPE_WIFI
