@@ -44,7 +44,7 @@ import rx.schedulers.Schedulers;
 
 /**
  * A base Fragment includes {@link SwipeRefreshLayout} to refresh when loading data.
- * Also wraps {@link retrofit.Retrofit} to load data asynchronously.
+ * Also wraps {@link retrofit2.Retrofit} to load data asynchronously.
  * <p>
  * We must call {@link #destroyRetainedFragment()}) if used in {@link android.support.v4.view.ViewPager}
  * otherwise leads memory leak.

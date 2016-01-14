@@ -5,12 +5,12 @@ import cl.monsoon.s1next.data.api.model.wrapper.ForumGroupsWrapper;
 import cl.monsoon.s1next.data.api.model.wrapper.PostsWrapper;
 import cl.monsoon.s1next.data.api.model.wrapper.ResultWrapper;
 import cl.monsoon.s1next.data.api.model.wrapper.ThreadsWrapper;
-import retrofit.Response;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
-import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.Query;
+import retrofit2.Response;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
 import rx.Observable;
 
 public interface S1Service {

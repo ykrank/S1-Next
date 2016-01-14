@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
-
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.concurrent.TimeUnit;
@@ -26,12 +23,15 @@ import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.viewmodel.UserViewModel;
 import cl.monsoon.s1next.widget.EventBus;
 import cl.monsoon.s1next.widget.PersistentHttpCookieStore;
-import cl.monsoon.s1next.widget.ToStringConverterFactory;
 import dagger.Module;
 import dagger.Provides;
-import retrofit.JacksonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
+import okhttp3.OkHttpClient;
+import okhttp3.JavaNetCookieJar;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.JacksonConverterFactory;
+import retrofit2.Retrofit;
+import retrofit2.RxJavaCallAdapterFactory;
+import retrofit2.ScalarsConverterFactory;
 
 /**
  * Provides instances of the objects when we need to inject.
@@ -60,18 +60,18 @@ final class AppModule {
     @Provides
     @Singleton
     OkHttpClient providerOkHttpClient(CookieManager cookieManager) {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(17, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(17, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(77, TimeUnit.SECONDS);
-        okHttpClient.setCookieHandler(cookieManager);
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(17, TimeUnit.SECONDS);
+        builder.writeTimeout(17, TimeUnit.SECONDS);
+        builder.readTimeout(77, TimeUnit.SECONDS);
+        builder.cookieJar(new JavaNetCookieJar(cookieManager));
         if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
-            okHttpClient.interceptors().add(httpLoggingInterceptor);
+            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+            builder.interceptors().add(httpLoggingInterceptor);
         }
 
-        return okHttpClient;
+        return builder.build();
     }
 
     @Provides
@@ -80,7 +80,7 @@ final class AppModule {
         return new Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(Api.BASE_API_URL)
-                .addConverterFactory(new ToStringConverterFactory())
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build()

@@ -49,7 +49,7 @@ public final class QuotePostPageParserDialogFragment extends ProgressDialogFragm
                 ARG_THREAD_LINK));
         return mS1Service.getQuotePostResponseBody(threadLink.getThreadId(),
                 threadLink.getQuotePostId().get()).map(voidResponse ->
-                voidResponse.raw().request().urlString());
+                voidResponse.raw().request().url().toString());
     }
 
     @Override

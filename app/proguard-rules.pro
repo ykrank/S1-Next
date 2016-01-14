@@ -38,6 +38,9 @@
 -dontwarn java.nio.file.OpenOption
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 
+# OkHttp 3
+-dontwarn okhttp3.internal.huc.HttpsURLConnectionImpl
+
 # Glide
 # https://github.com/bumptech/glide#user-content-proguard
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -52,7 +55,7 @@
 
 # Retrofit
 -keepattributes Signature
--dontwarn retrofit.Platform$Java8
+-dontwarn retrofit2.Platform$Java8
 
 # RxJava
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {

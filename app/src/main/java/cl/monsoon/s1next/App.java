@@ -1,13 +1,12 @@
 package cl.monsoon.s1next;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.StrictMode;
-import android.support.multidex.MultiDexApplication;
 
 import com.bugsnag.android.Bugsnag;
 import com.squareup.leakcanary.LeakCanary;
-import com.squareup.okhttp.OkHttpClient;
 
 import javax.inject.Singleton;
 
@@ -31,8 +30,9 @@ import cl.monsoon.s1next.widget.AppActivityLifecycleCallbacks;
 import cl.monsoon.s1next.widget.EventBus;
 import cl.monsoon.s1next.widget.WifiBroadcastReceiver;
 import dagger.Component;
+import okhttp3.OkHttpClient;
 
-public final class App extends MultiDexApplication {
+public final class App extends Application {
 
     private static App sApp;
 
