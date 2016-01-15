@@ -47,7 +47,7 @@ public final class GlideImageGetter
     /**
      * Weak {@link java.util.HashSet}.
      */
-    private final Set<ViewTarget> mViewTargetSet = Collections.newSetFromMap(new WeakHashMap<>());
+    private final Set<ViewTarget<TextView, GlideDrawable>> mViewTargetSet = Collections.newSetFromMap(new WeakHashMap<>());
 
     public GlideImageGetter(Context context, TextView textView) {
         this.mContext = context;
@@ -139,7 +139,7 @@ public final class GlideImageGetter
     @Override
     public void onViewDetachedFromWindow(View v) {
         // cancels any pending images loading
-        for (ViewTarget viewTarget : mViewTargetSet) {
+        for (ViewTarget<TextView, GlideDrawable> viewTarget : mViewTargetSet) {
             Glide.clear(viewTarget);
         }
         mViewTargetSet.clear();

@@ -133,7 +133,7 @@ public abstract class BaseFragment<D> extends Fragment {
             // start to load data because we start this Fragment the first time
             mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FIRST_TIME);
         } else {
-            mDataRetainedFragment = (DataRetainedFragment) fragment;
+            mDataRetainedFragment = (DataRetainedFragment<D>) fragment;
 
             // get data back from retained Fragment when configuration changes
             if (mDataRetainedFragment.data != null) {

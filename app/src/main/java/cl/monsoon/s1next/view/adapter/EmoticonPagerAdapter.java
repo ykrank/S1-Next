@@ -54,8 +54,9 @@ public final class EmoticonPagerAdapter extends PagerAdapter {
         recyclerView.setPadding(0, mEmoticonGridPadding, 0, mEmoticonGridPadding);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mActivity, 1);
         recyclerView.setLayoutManager(gridLayoutManager);
-        RecyclerView.Adapter recyclerAdapter = new EmoticonGridRecyclerAdapter(mActivity,
-                mEmoticonFactory.getEmoticonsByIndex(position));
+        RecyclerView.Adapter<EmoticonGridRecyclerAdapter.BindingViewHolder> recyclerAdapter =
+                new EmoticonGridRecyclerAdapter(mActivity,
+                        mEmoticonFactory.getEmoticonsByIndex(position));
         recyclerView.setAdapter(recyclerAdapter);
 
         // auto fit grid
