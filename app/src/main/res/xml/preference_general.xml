@@ -41,6 +41,12 @@
             android:summary="@string/pref_downloads_summary"
             android:title="@string/pref_downloads" />
 
+        <Preference
+            android:key="pref_key_blacklists"
+            android:persistent="false"
+            android:summary="@string/pref_blacklists_summary"
+            android:title="@string/pref_blacklists" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

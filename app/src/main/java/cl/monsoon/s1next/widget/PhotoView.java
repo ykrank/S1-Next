@@ -257,7 +257,7 @@ public final class PhotoView extends View
      */
     private final RectF mTranslateRect = new RectF();
     /**
-     * Array to store a copy of the matrix values
+     * Array to store a copyFrom of the matrix values
      */
     private final float[] mValues = new float[9];
 
@@ -764,7 +764,7 @@ public final class PhotoView extends View
                 canvas.drawBitmap(videoImage, drawLeft, drawTop, null);
             }
 
-            // Extract the drawable's bounds (in our own copy, to not alter the image)
+            // Extract the drawable's bounds (in our own copyFrom, to not alter the image)
             mTranslateRect.set(mDrawable.getBounds());
             if (mDrawMatrix != null) {
                 mDrawMatrix.mapRect(mTranslateRect);

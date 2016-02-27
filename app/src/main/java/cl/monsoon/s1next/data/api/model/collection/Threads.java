@@ -1,18 +1,26 @@
 package cl.monsoon.s1next.data.api.model.collection;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cl.monsoon.s1next.data.api.model.Account;
 import cl.monsoon.s1next.data.api.model.Forum;
 import cl.monsoon.s1next.data.api.model.Thread;
+import cl.monsoon.s1next.data.db.BlackListDbWrapper;
+import cl.monsoon.s1next.data.db.dbmodel.BlackList;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class Threads extends Account {
+    
+    BlackListDbWrapper blackListWrapper = BlackListDbWrapper.getInstance();
 
     @JsonProperty("forum")
     private Thread.ThreadListInfo threadListInfo;
@@ -34,9 +42,27 @@ public final class Threads extends Account {
     public List<Thread> getThreadList() {
         return threadList;
     }
+    
+    public List<Thread> getFilterThreadList(List<Thread> oThreads) {
+        Preconditions.checkNotNull(blackListWrapper);
+        List<Thread> threads = new ArrayList<>();
+        for (Thread thread:oThreads) {
+            switch (blackListWrapper.getForumFlag(thread.getAuthorid(), thread.getAuthor())){
+                case BlackList.DEL_FORUM:
+                    break;
+                case BlackList.HIDE_FORUM:
+                    thread.setHide(true);
+                    threads.add(thread);
+                    break;
+                default:
+                    threads.add(thread);
+            }
+        }
+        return threads;
+    }
 
     public void setThreadList(List<Thread> threadList) {
-        this.threadList = threadList;
+        this.threadList = getFilterThreadList(threadList);
     }
 
     public List<Forum> getSubForumList() {

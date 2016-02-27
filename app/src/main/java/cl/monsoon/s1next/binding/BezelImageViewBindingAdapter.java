@@ -2,6 +2,8 @@ package cl.monsoon.s1next.binding;
 
 import android.content.Context;
 import android.databinding.BindingAdapter;
+import android.support.v7.widget.PopupMenu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.bumptech.glide.DrawableRequestBuilder;
@@ -12,12 +14,17 @@ import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.api.Api;
+import cl.monsoon.s1next.data.api.model.Post;
+import cl.monsoon.s1next.data.event.BlackListEvent;
+import cl.monsoon.s1next.data.event.QuoteEvent;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.widget.BezelImageView;
+import cl.monsoon.s1next.widget.EventBus;
 
 public final class BezelImageViewBindingAdapter {
 
-    private BezelImageViewBindingAdapter() {}
+    private BezelImageViewBindingAdapter() {
+    }
 
     /**
      * Show default avatar if user hasn't logged in,
@@ -46,24 +53,47 @@ public final class BezelImageViewBindingAdapter {
         }
     }
 
-    @BindingAdapter({"avatarDrawableRequestBuilder", "downloadPreferencesManager", "authorId"})
-    public static void loadAuthorAvatar(BezelImageView bezelImageView,
+    @BindingAdapter({"eventBus", "avatarDrawableRequestBuilder", "downloadPreferencesManager", "post"})
+    public static void loadAuthorAvatar(BezelImageView bezelImageView, EventBus eventBus,
                                         DrawableRequestBuilder<String> avatarDrawableRequestBuilder,
                                         DownloadPreferencesManager downloadPreferencesManager,
-                                        String authorId) {
+                                        Post post) {
         // whether need to download avatars
         // depends on settings and Wi-Fi status
         if (downloadPreferencesManager.isAvatarsDownload()) {
             bezelImageView.setVisibility(View.VISIBLE);
 
             String url = downloadPreferencesManager.isHighResolutionAvatarsDownload()
-                    ? Api.getAvatarMediumUrl(authorId)
-                    : Api.getAvatarSmallUrl(authorId);
+                    ? Api.getAvatarMediumUrl(post.getAuthorId())
+                    : Api.getAvatarSmallUrl(post.getAuthorId());
             // show user's avatar
             avatarDrawableRequestBuilder.signature(
                     downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
                     .load(url)
                     .into(bezelImageView);
+
+            bezelImageView.setOnLongClickListener((View v) -> {
+                PopupMenu popup = new PopupMenu(bezelImageView.getContext(), v);
+                popup.setOnMenuItemClickListener((MenuItem menuitem) -> {
+                    switch (menuitem.getItemId()) {
+                        case R.id.menu_post_blacklist:
+                            if (menuitem.getTitle().equals(bezelImageView.getContext().getString(R.string.menu_blacklist_remove))) {
+                                eventBus.post(new BlackListEvent(post.getAuthorId(), post.getAuthorName(), false));
+                            } else {
+                                eventBus.post(new BlackListEvent(post.getAuthorId(), post.getAuthorName(), true));
+                            }
+                            return true;
+                        default:
+                            return false;
+                    }
+                });
+                popup.inflate(R.menu.post_blacklist);
+                if (post.isHide()) {
+                    popup.getMenu().findItem(R.id.menu_post_blacklist).setTitle(R.string.menu_blacklist_remove);
+                }
+                popup.show();
+                return true;
+            });
         } else {
             bezelImageView.setVisibility(View.GONE);
         }

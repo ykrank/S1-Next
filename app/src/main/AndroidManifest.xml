@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Light"
+        android:theme="@style/AfternoonTea"
         tools:ignore="UnusedAttribute">
 
         <meta-data
@@ -24,7 +24,13 @@
 
         <meta-data
             android:name="com.bugsnag.android.API_KEY"
-            android:value="6e8e30660fec3876e701e69587257f60" />
+            android:value="a800f8b465a24096868397da57cec9bd" />
+
+        <meta-data android:name="AA_DB_NAME" android:value="s1.db" />
+        <meta-data android:name="AA_DB_VERSION" android:value="1" />
+        <meta-data
+            android:name="AA_MODELS"
+            android:value="cl.monsoon.s1next.data.db.dbmodel.BlackList" />
 
         <activity
             android:name=".view.activity.LoginActivity"

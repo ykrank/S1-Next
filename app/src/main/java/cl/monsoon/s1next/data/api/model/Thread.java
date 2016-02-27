@@ -41,6 +41,14 @@ public final class Thread implements Parcelable {
     @JsonProperty("readperm")
     private int permission;
 
+    @JsonProperty("author")
+    private String author;
+
+    @JsonProperty("authorid")
+    private int authorid;
+    
+    private boolean hide = false;
+
     public Thread() {}
 
     private Thread(Parcel source) {
@@ -81,6 +89,30 @@ public final class Thread implements Parcelable {
 
     public void setPermission(int permission) {
         this.permission = permission;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public int getAuthorid() {
+        return authorid;
+    }
+
+    public void setAuthorid(int authorid) {
+        this.authorid = authorid;
+    }
+
+    public boolean isHide() {
+        return hide;
+    }
+
+    public void setHide(boolean hide) {
+        this.hide = hide;
     }
 
     @Override

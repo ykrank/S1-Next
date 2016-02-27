@@ -52,4 +52,7 @@
 
     <color name="photo_view_crop_dim_color">#cc000000</color>
 
+    <color name="saraba_main_bg_color">#f6f7eb</color>
+    <color name="saraba_main_top_color">#cccc99</color>
+    <color name="foreground_material_light">#ad5151</color>
 </resources>

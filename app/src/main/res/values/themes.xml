@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <style name="AfternoonTea" parent="Base.Theme.Light">
+        <item name="colorPrimaryDark">@color/saraba_main_top_color</item>
+        <item name="colorPrimary">@color/saraba_main_top_color</item>
+        <item name="android:colorBackground">@color/saraba_main_bg_color</item>
+        <item name="colorAccent">@color/light_blue_700</item>
+    </style>
+    
     <style name="Theme.Light" parent="Base.Theme.Light" />
 
     <style name="Theme.Light.Inverse.Amber" parent="Base.Theme.Light.Inverse.Amber" />

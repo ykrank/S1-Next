@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.StrictMode;
 
+import com.activeandroid.ActiveAndroid;
 import com.bugsnag.android.Bugsnag;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -13,6 +14,7 @@ import javax.inject.Singleton;
 import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.api.S1Service;
 import cl.monsoon.s1next.data.api.UserValidator;
+import cl.monsoon.s1next.data.api.model.collection.Threads;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
@@ -78,6 +80,8 @@ public final class App extends Application {
         mGeneralPreferencesManager = mAppComponent.getGeneralPreferencesManager();
         // set scaling factor for fonts
         ResourceUtil.setScaledDensity(getResources(), mGeneralPreferencesManager.getFontScale());
+
+        ActiveAndroid.initialize(this);
     }
 
     @Override

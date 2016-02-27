@@ -32,7 +32,7 @@ abstract class BaseViewPagerFragment extends Fragment
      */
     private static final String STATE_TOTAL_PAGES = "total_pages";
 
-    private ViewPager mViewPager;
+    protected ViewPager mViewPager;
     private int mTotalPages;
 
     private MenuItem mMenuPageJump;
@@ -165,8 +165,14 @@ abstract class BaseViewPagerFragment extends Fragment
      */
     abstract class BaseFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
 
+        private Fragment mCurrentFragment;
+
         public BaseFragmentStatePagerAdapter(FragmentManager fm) {
             super(fm);
+        }
+
+        public Fragment getCurrentFragment() {
+            return mCurrentFragment;
         }
 
         @Override
@@ -178,7 +184,10 @@ abstract class BaseViewPagerFragment extends Fragment
         @CallSuper
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
             setTitleWithPosition(position);
-
+            if (mCurrentFragment != object) {
+                mCurrentFragment = ((Fragment) object);
+            }
+            
             super.setPrimaryItem(container, position, object);
         }
 

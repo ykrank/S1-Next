@@ -15,7 +15,7 @@ import cl.monsoon.s1next.view.activity.PostListActivity;
 import rx.Observable;
 
 /**
- * A {@link ProgressDialogFragment} parses quote post page for thread.
+ * A {@link ProgressDialogFragment} parses post post page for thread.
  */
 public final class QuotePostPageParserDialogFragment extends ProgressDialogFragment<String> {
 
@@ -84,7 +84,7 @@ public final class QuotePostPageParserDialogFragment extends ProgressDialogFragm
     }
 
     /**
-     * Parses redirect link in order to get quote post page.
+     * Parses redirect link in order to get post post page.
      *
      * @param url The redirect link.
      */

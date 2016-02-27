@@ -22,6 +22,9 @@
 -dontwarn java.lang.ClassValue
 -dontwarn com.google.j2objc.annotations.Weak
 
+# Dagger
+-dontwarn dagger.**
+
 # Jackson databind
 -keep public class cl.monsoon.s1next.data.api.model.** { *; }
 
@@ -68,3 +71,9 @@
 -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
+
+# ActiveAndroid
+-keep class com.activeandroid.** { *; }
+-keep class com.activeandroid.**.** { *; }
+-keep class * extends com.activeandroid.Model
+-keep class * extends com.activeandroid.serializer.TypeSerializer

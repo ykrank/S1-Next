@@ -24,6 +24,7 @@
 
     <!-- settings -->
     <string-array name="pref_theme_entries">
+        <item>@string/pref_theme_entries_0</item>
         <item>@string/pref_theme_entries_1</item>
         <item>@string/pref_theme_entries_2</item>
         <item>@string/pref_theme_entries_3</item>
@@ -43,6 +44,7 @@
         <item>5</item>
         <item>6</item>
         <item>7</item>
+        <item>8</item>
     </string-array>
 
     <string-array name="pref_font_size_entries">

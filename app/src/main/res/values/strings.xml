@@ -50,6 +50,7 @@
     <string name="menu_keyboard">Keyboard</string>
     <string name="menu_send">Send</string>
     <string name="menu_download">Download</string>
+    <string name="menu_blacklist_add">Add to blacklist</string>
 
     <!-- login -->
     <string name="activity_label_login" translatable="false">@string/action_login</string>
@@ -81,7 +82,7 @@
     <string name="dialog_message_invalid_or_unsupported_link">Invalid or unsupported link.</string>
     <string name="dialog_button_text_use_a_different_app">Use a different app</string>
     <string name="dialog_message_processing">Processing…</string>
-    <string name="dialog_message_quote_not_found">This quote could not be found.</string>
+    <string name="dialog_message_quote_not_found">This post could not be found.</string>
     <string name="prompt_thread_link_or_id">Thread link/ID</string>
     <string name="error_field_invalid_or_unsupported_thread_link_or_id">Invalid or unsupported link/ID format</string>
 
@@ -126,6 +127,8 @@
     <string name="pref_advanced">Advanced</string>
     <string name="pref_downloads">Downloads</string>
     <string name="pref_downloads_summary">Avatar &amp; Image</string>
+    <string name="pref_blacklists">Blacklist</string>
+    <string name="pref_blacklists_summary">Manage</string>
     <string name="pref_download_total_cache_size">Total cache size</string>
     <string name="pref_download_total_cache_size_default_value" translatable="false">1</string>
     <string name="pref_avatar">Avatar</string>
@@ -138,6 +141,7 @@
     <string name="pref_download_images_strategy_default_value" translatable="false">1</string>
 
     <!-- array -->
+    <string name="pref_theme_entries_0">AfternoonTea</string>
     <string name="pref_theme_entries_1">Light</string>
     <string name="pref_theme_entries_2">Amber</string>
     <string name="pref_theme_entries_3">Green</string>
@@ -176,5 +180,17 @@
     <string name="menu_version_info">Version info</string>
     <string name="version">Version %1$s</string>
     <string name="copyright" translatable="false">&#169;2015 floating-cat</string>
+    <string name="user_in_blacklist">In blacklist</string>
+    <string name="blacklist_authorid">Author id</string>
+    <string name="blacklist_author_name">Author name</string>
+    <string name="blacklist_forum_flag">Forum flag</string>
+    <string name="blacklist_post_flag">Post flag</string>
+    <string name="blacklist_add_time">Add time</string>
+    <string name="blacklist_flag_normal">Normal</string>
+    <string name="blacklist_flag_hide">Hide</string>
+    <string name="blacklist_flag_del">Del</string>
+    <string name="menu_blacklist_remove">Remove from blacklist</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_delete">Delete</string>
 
 </resources>

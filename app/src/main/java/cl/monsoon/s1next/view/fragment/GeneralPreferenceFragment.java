@@ -30,6 +30,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
     public static final String PREF_KEY_SIGNATURE = "pref_key_signature";
 
     private static final String PREF_KEY_DOWNLOADS = "pref_key_downloads";
+    private static final String PREF_KEY_BLACKLIST = "pref_key_blacklists";
 
     @Inject
     EventBus mEventBus;
@@ -46,6 +47,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
         App.getAppComponent(getActivity()).inject(this);
 
         findPreference(PREF_KEY_DOWNLOADS).setOnPreferenceClickListener(this);
+        findPreference(PREF_KEY_BLACKLIST).setOnPreferenceClickListener(this);
         findPreference(PREF_KEY_SIGNATURE).setSummary(DeviceUtil.getSignature(getActivity()));
     }
 
@@ -79,7 +81,9 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
         switch (preference.getKey()) {
             case PREF_KEY_DOWNLOADS:
                 SettingsActivity.startDownloadSettingsActivity(preference.getContext());
-
+                return true;
+            case PREF_KEY_BLACKLIST:
+                SettingsActivity.startBlackListSettingsActivity(preference.getContext());
                 return true;
             default:
                 return false;

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,11 +18,14 @@ import java.util.List;
 import cl.monsoon.s1next.data.api.model.Account;
 import cl.monsoon.s1next.data.api.model.Post;
 import cl.monsoon.s1next.data.api.model.Thread;
+import cl.monsoon.s1next.data.db.BlackListDbWrapper;
+import cl.monsoon.s1next.data.db.dbmodel.BlackList;
 import cl.monsoon.s1next.util.StringUtil;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class Posts extends Account {
+    BlackListDbWrapper blackListWrapper = BlackListDbWrapper.getInstance();
 
     @JsonProperty("thread")
     private Thread postListInfo;
@@ -52,8 +56,26 @@ public final class Posts extends Account {
         return postList;
     }
 
+    public List<Post> getFilterPostList(List<Post> oPosts) {
+        Preconditions.checkNotNull(blackListWrapper);
+        List<Post> posts = new ArrayList<>();
+        for (Post post:oPosts) {
+            switch (blackListWrapper.getPostFlag(Integer.valueOf(post.getAuthorId()), post.getAuthorName())){
+                case BlackList.DEL_POST:
+                    break;
+                case BlackList.HIDE_POST:
+                    post.setHide(true);
+                    posts.add(post);
+                    break;
+                default:
+                    posts.add(post);
+            }
+        }
+        return posts;
+    }
+
     public void setPostList(List<Post> postList) {
-        this.postList = postList;
+        this.postList = getFilterPostList(postList);
     }
 
     @Override

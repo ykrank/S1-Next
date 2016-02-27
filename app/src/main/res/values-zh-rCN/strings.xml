@@ -16,6 +16,7 @@
     <string name="drawer_avatar_content_desc">用户头像</string>
     <string name="dialog_message_log_out">退出登录？</string>
     <string name="dialog_button_text_log_out">退出</string>
+    <string name="user_in_blacklist">已被抹布</string>
     <string name="message_network_error">发生了网络错误</string>
     <string name="message_server_error">无法与服务器进行通信，请稍后再试。</string>
     <string name="message_unknown_error">发生了一个未知的错误</string>
@@ -37,6 +38,7 @@
     <string name="menu_keyboard">键盘</string>
     <string name="menu_send">发送</string>
     <string name="menu_download">下载</string>
+    <string name="menu_blacklist_add">塞抹布</string>
     <string name="prompt_username">用户名/UID/Email</string>
     <string name="prompt_password">密码</string>
     <string name="error_field_required">此处不能留空</string>
@@ -65,11 +67,14 @@
     <string name="pref_advanced">高级</string>
     <string name="pref_downloads">下载</string>
     <string name="pref_downloads_summary">头像 &amp; 图片</string>
+    <string name="pref_blacklists">黑名单</string>
+    <string name="pref_blacklists_summary">塞抹布</string>
     <string name="pref_download_total_cache_size">总缓存大小</string>
     <string name="pref_avatar">头像</string>
     <string name="pref_avatar_resolution">清晰度</string>
     <string name="pref_avatar_cache_invalidation_interval">缓存失效间隔</string>
     <string name="pref_image">图片</string>
+    <string name="pref_theme_entries_0">午后红茶</string>
     <string name="pref_theme_entries_1">白色</string>
     <string name="pref_theme_entries_2">琥珀色</string>
     <string name="pref_theme_entries_3">绿色</string>
@@ -100,4 +105,15 @@
     <string name="pref_files">文件</string>
     <string name="menu_version_info">版本信息</string>
     <string name="version">版本 %1$s</string>
+    <string name="blacklist_add_time">添加时间</string>
+    <string name="blacklist_author_name">用户名</string>
+    <string name="blacklist_authorid">用户ID</string>
+    <string name="blacklist_forum_flag">主题</string>
+    <string name="blacklist_post_flag">回复</string>
+    <string name="blacklist_flag_del">刪除</string>
+    <string name="blacklist_flag_hide">隐藏</string>
+    <string name="blacklist_flag_normal">正常</string>
+    <string name="menu_blacklist_remove">取抹布</string>
+    <string name="menu_delete">删除</string>
+    <string name="menu_edit">编辑</string>
 </resources>

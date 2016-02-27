@@ -51,10 +51,11 @@
             android:layout_marginEnd="@dimen/item_padding"
             android:layout_marginRight="@dimen/item_padding"
             android:contentDescription="@string/avatar_content_desc"
+            app:eventBus="@{eventBus}"
             app:avatarDrawableRequestBuilder="@{drawableRequestBuilder}"
             app:downloadPreferencesManager="@{downloadPreferencesManager}"
             app:maskDrawable="@drawable/rounded_mask"
-            app:authorId="@{postViewModel.post.authorId}" />
+            app:post="@{postViewModel.post}" />
 
         <TextView
             android:id="@+id/author_name"
@@ -106,7 +107,8 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textIsSelectable="true"
             app:movementMethod="@{CustomMovementMethod.instance}"
-            app:reply="@{postViewModel.post.reply}" />
+            app:reply="@{postViewModel.post.reply}"
+            app:hide="@{postViewModel.post.hide}"/>
 
     </RelativeLayout>
 

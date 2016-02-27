@@ -46,7 +46,7 @@ public final class Quote {
         if (matcher.find()) {
             quote.encodedUserId = matcher.group(1);
 
-            // example: <input type="hidden" name="noticetrimstr" value="[quote][size=2][url=forum.php?mod=redirect&amp;goto=findpost&amp;pid=1&amp;ptid=1][color=#999999]VVV 发表于 2014-12-13 10:11[/color][/url][/size]
+            // example: <input type="hidden" name="noticetrimstr" value="[post][size=2][url=forum.php?mod=redirect&amp;goto=findpost&amp;pid=1&amp;ptid=1][color=#999999]VVV 发表于 2014-12-13 10:11[/color][/url][/size]
             pattern = Pattern.compile("name=\"noticetrimstr\"\\svalue=\"(.+?)\"\\s/>",
                     Pattern.DOTALL);
             matcher.usePattern(pattern);
@@ -57,7 +57,7 @@ public final class Quote {
         }
 
         Preconditions.checkState(!TextUtils.isEmpty(quote.getEncodedUserId())
-                && !TextUtils.isEmpty(quote.getQuoteMessage()), "Cannot get the quote information.");
+                && !TextUtils.isEmpty(quote.getQuoteMessage()), "Cannot get the post information.");
 
         return quote;
     }

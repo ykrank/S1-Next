@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
+//apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 
 apply plugin: 'com.github.ben-manes.versions'
@@ -14,15 +14,16 @@ android {
         targetSdkVersion 23
         versionCode 9
         versionName '0.5.2'
-        vectorDrawables {
-            generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi', 'xxxhdpi']
-        }
+//        vectorDrawables {
+//            generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi', 'xxxhdpi']
+//        }
     }
     buildTypes {
         debug {
             applicationIdSuffix '.debug'
             versionNameSuffix '-DEBUG'
         }
+
         release {
             minifyEnabled true
             shrinkResources true
@@ -57,9 +58,14 @@ tasks.withType(JavaCompile) {
     options.compilerArgs << '-Xlint:unchecked'
 }
 
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
 dependencies {
     compile 'com.google.dagger:dagger:2.0.2'
-    apt 'com.google.dagger:dagger-compiler:2.0.2'
+    provided 'com.google.dagger:dagger-compiler:2.0.2'
     // https://github.com/google/dagger/issues/95
     provided 'javax.annotation:jsr250-api:1.0'
 
@@ -88,7 +94,9 @@ dependencies {
     compile 'com.bugsnag:bugsnag-android:3.2.7'
     compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.7.0'
-    compile 'com.hannesdorfmann:adapterdelegates:1.1.0'
+    compile 'com.hannesdorfmann:adapterdelegates:1.1.1'
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'io.reactivex:rxandroid:1.1.0'
+
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 }

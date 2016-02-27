@@ -34,12 +34,13 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
     private static final String ARG_PAGE_NUM = "page_num";
 
     /**
-     * Used for quote post redirect.
+     * Used for post post redirect.
      */
     private static final String ARG_QUOTE_POST_ID = "quote_post_id";
 
     private String mThreadId;
     private int mPageNum;
+    private boolean blacklistChanged = false;
 
     private RecyclerView mRecyclerView;
     private PostListRecyclerViewAdapter mRecyclerAdapter;
@@ -118,6 +119,11 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         super.startPullToRefresh();
     }
 
+    void startBlackListRefresh() {
+        blacklistChanged = true;
+        startPullToRefresh();
+    }
+
     @Override
     Observable<PostsWrapper> getSourceObservable() {
         return mS1Service.getPostsWrapper(mThreadId, mPageNum);
@@ -142,7 +148,11 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         } else {
             super.onNext(data);
 
-            if (pullUpToRefresh) {
+            if (blacklistChanged){
+                blacklistChanged = false;
+                mRecyclerAdapter.setDataSet(postList);
+                mRecyclerAdapter.notifyDataSetChanged();
+            }else if (pullUpToRefresh) {
                 final int oldItemCount = mRecyclerAdapter.getItemCount();
                 // oldItemCount = 0 when configuration changes
                 if (oldItemCount != 0 && mRecyclerAdapter.getItemId(oldItemCount - 1)
@@ -166,7 +176,7 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
                 if (!TextUtils.isEmpty(quotePostId)) {
                     for (int i = 0, length = postList.size(); i < length; i++) {
                         if (quotePostId.equals(postList.get(i).getId())) {
-                            // scroll to quote post
+                            // scroll to post post
                             mRecyclerView.scrollToPosition(i);
                             break;
                         }

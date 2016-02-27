@@ -64,6 +64,7 @@ final class AppModule {
         builder.connectTimeout(17, TimeUnit.SECONDS);
         builder.writeTimeout(17, TimeUnit.SECONDS);
         builder.readTimeout(77, TimeUnit.SECONDS);
+        builder.retryOnConnectionFailure(true);
         builder.cookieJar(new JavaNetCookieJar(cookieManager));
         if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();

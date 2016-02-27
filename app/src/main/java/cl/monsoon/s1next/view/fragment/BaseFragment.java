@@ -40,6 +40,8 @@ import cl.monsoon.s1next.viewmodel.LoadingViewModel;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -271,7 +273,9 @@ public abstract class BaseFragment<D> extends Fragment {
         // dismiss Snackbar in order to let user see the ProgressBar
         // when we start to load new data
         mCoordinatorLayoutAnchorDelegate.dismissSnackbarIfExist();
-        mSubscription = getSourceObservable().subscribeOn(Schedulers.io())
+        mSubscription = getSourceObservable()
+//                .map(this::onIoNext)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(mUserValidator::validateIntercept)
                 .finallyDo(this::finallyDo)
@@ -300,6 +304,10 @@ public abstract class BaseFragment<D> extends Fragment {
         mDataRetainedFragment.data = data;
     }
 
+    D onIoNext(D data){
+        return data;
+    }
+    
     /**
      * A helper method consumes {@link Result}.
      * <p>

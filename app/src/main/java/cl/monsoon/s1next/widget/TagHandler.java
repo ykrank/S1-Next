@@ -46,7 +46,7 @@ public final class TagHandler implements Html.TagHandler {
 
             String url = imageSpan.getSource();
             // replace \uFFFC with ImageSpan's source
-            // in order to support url copy when selected
+            // in order to support url copyFrom when selected
             output.replace(end - len, end, url);
 
             // image from server doesn't have domain

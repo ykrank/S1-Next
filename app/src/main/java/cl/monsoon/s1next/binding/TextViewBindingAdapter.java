@@ -1,9 +1,11 @@
 package cl.monsoon.s1next.binding;
 
 import android.databinding.BindingAdapter;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -37,7 +39,8 @@ import cl.monsoon.s1next.widget.TagHandler;
 
 public final class TextViewBindingAdapter {
 
-    private TextViewBindingAdapter() {}
+    private TextViewBindingAdapter() {
+    }
 
     @BindingAdapter("increaseClickingArea")
     public static void increaseClickingArea(TextView textView, float size) {
@@ -87,6 +90,12 @@ public final class TextViewBindingAdapter {
                     "[" + textView.getContext().getString(R.string.thread_permission_hint)
                             + thread.getPermission() + "]");
         }
+        if (thread.isHide()) {
+            // add thread's permission hint
+            ViewUtil.concatWithTwoSpacesForRtlSupport(textView,
+                    "[" + textView.getContext().getString(R.string.user_in_blacklist) + "]");
+            textView.setTextColor(Color.GRAY);
+        }
         // disable TextView if user has no permission to access this thread
         boolean hasPermission = user.getPermission() >= thread.getPermission();
         textView.setEnabled(hasPermission);
@@ -106,7 +115,7 @@ public final class TextViewBindingAdapter {
     @BindingAdapter({"eventBus", "post"})
     public static void setCount(TextView textView, EventBus eventBus, Post post) {
         String text = "#" + post.getCount();
-        // there is no need to quote #1
+        // there is no need to post #1
         if ("1".equals(post.getCount())) {
             textView.setText(text);
         } else {
@@ -122,8 +131,15 @@ public final class TextViewBindingAdapter {
         }
     }
 
-    @BindingAdapter("reply")
-    public static void setReply(TextView textView, @Nullable String reply) {
+    @BindingAdapter({"reply", "hide"})
+    public static void setReply(TextView textView, @Nullable String reply, boolean hide) {
+        if (hide) {
+            textView.setText("");
+            // add thread's permission hint
+            ViewUtil.concatWithTwoSpacesForRtlSupport(textView,
+                    "[" + textView.getContext().getString(R.string.user_in_blacklist) + "]");
+            return;
+        }
         if (TextUtils.isEmpty(reply)) {
             textView.setText(null);
         } else {
@@ -132,4 +148,5 @@ public final class TextViewBindingAdapter {
                     textView), new TagHandler()));
         }
     }
+
 }

@@ -11,7 +11,7 @@ public final class ClipboardUtil {
     /**
      * Copies text.
      *
-     * @param text The actual text we want to copy.
+     * @param text The actual text we want to copyFrom.
      */
     public static void copyText(Context context, CharSequence text) {
         ClipboardManager clipboardManager = (ClipboardManager)

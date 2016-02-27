@@ -28,7 +28,7 @@ public final class ThemeManager {
     /**
      * Default theme in AndroidManifest.xml is light theme.
      */
-    private static final Theme DEFAULT_THEME = Theme.LIGHT_THEME;
+    private static final Theme DEFAULT_THEME = Theme.AFTERNOON_TEA;
 
     /**
      * https://www.google.com/design/spec/style/color.html#color-ui-color-application
@@ -161,6 +161,7 @@ public final class ThemeManager {
     }
 
     public enum Theme {
+        AFTERNOON_TEA(R.style.AfternoonTea),
         LIGHT_THEME(R.style.Theme_Light),
         LIGHT_THEME_INVERSE_AMBER(R.style.Theme_Light_Inverse_Amber),
         LIGHT_THEME_INVERSE_GREEN(R.style.Theme_Light_Inverse_Green),
