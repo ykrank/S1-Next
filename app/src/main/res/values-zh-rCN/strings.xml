@@ -116,4 +116,5 @@
     <string name="menu_blacklist_remove">取抹布</string>
     <string name="menu_delete">删除</string>
     <string name="menu_edit">编辑</string>
+    <string name="blacklist_refresh_warn">黑名单已更新，刷新以更新主题列表</string>
 </resources>

@@ -35,7 +35,8 @@ import dagger.Component;
 import okhttp3.OkHttpClient;
 
 public final class App extends Application {
-
+    public static final String LOG_TAG = "s1Next";
+    
     private static App sApp;
 
     private GeneralPreferencesManager mGeneralPreferencesManager;

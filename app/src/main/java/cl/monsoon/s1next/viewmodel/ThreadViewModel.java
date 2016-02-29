@@ -1,5 +1,6 @@
 package cl.monsoon.s1next.viewmodel;
 
+import android.app.Activity;
 import android.databinding.ObservableField;
 import android.view.View;
 
@@ -23,6 +24,10 @@ public final class ThreadViewModel {
     }
 
     private void goToThisThread(View view, boolean shouldGoToLastPage) {
-        PostListActivity.startPostListActivity(view.getContext(), thread.get(), shouldGoToLastPage);
+        if (view.getContext() instanceof Activity){
+            PostListActivity.startPostListActivityForResult((Activity) view.getContext(), thread.get(), shouldGoToLastPage);
+        }else {
+            PostListActivity.startPostListActivity(view.getContext(), thread.get(), shouldGoToLastPage);
+        }
     }
 }

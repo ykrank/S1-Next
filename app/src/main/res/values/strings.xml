@@ -192,5 +192,6 @@
     <string name="menu_blacklist_remove">Remove from blacklist</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>
+    <string name="blacklist_refresh_warn">Blacklist changed, please refresh</string>
 
 </resources>

@@ -3,6 +3,7 @@ package cl.monsoon.s1next.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.ListPopupWindow;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -36,6 +38,8 @@ public final class ThreadListActivity extends BaseActivity
     private MenuItem mMenuSubForums;
     private ListPopupWindow mListPopupWindow;
     private SubForumArrayAdapter mSubForumArrayAdapter;
+    
+    private boolean refreshBlackList = false;
 
     public static void startThreadListActivity(Context context, Forum forum) {
         Intent intent = new Intent(context, ThreadListActivity.class);
@@ -82,6 +86,31 @@ public final class ThreadListActivity extends BaseActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (refreshBlackList){
+            showShortSnackbar(R.string.blacklist_refresh_warn);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PostListActivity.RESULT_BLACKLIST){
+            if (resultCode == RESULT_OK){
+                refreshBlackList = true;
+            }
+        }else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        refreshBlackList = false;
+        super.onPause();
     }
 
     @Override

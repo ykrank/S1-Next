@@ -21,6 +21,7 @@ import cl.monsoon.s1next.widget.WifiBroadcastReceiver;
  */
 public final class PostListActivity extends BaseActivity
         implements WifiBroadcastReceiver.NeedMonitorWifi {
+    public static final int RESULT_BLACKLIST = 11;
 
     private static final String ARG_THREAD = "thread";
     private static final String ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page";
@@ -34,6 +35,14 @@ public final class PostListActivity extends BaseActivity
         intent.putExtra(ARG_SHOULD_GO_TO_LAST_PAGE, shouldGoToLastPage);
 
         context.startActivity(intent);
+    }
+
+    public static void startPostListActivityForResult(Activity activity, Thread thread, boolean shouldGoToLastPage) {
+        Intent intent = new Intent(activity, PostListActivity.class);
+        intent.putExtra(ARG_THREAD, thread);
+        intent.putExtra(ARG_SHOULD_GO_TO_LAST_PAGE, shouldGoToLastPage);
+
+        activity.startActivityForResult(intent, RESULT_BLACKLIST);
     }
 
     public static void startPostListActivity(Activity activity, ThreadLink threadLink) {

@@ -1,5 +1,6 @@
 package cl.monsoon.s1next.view.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -149,6 +150,7 @@ public final class PostListFragment extends BaseViewPagerFragment
                 }
                 PostListPagerFragment currFragment = (PostListPagerFragment)((BaseFragmentStatePagerAdapter)mViewPager.getAdapter()).getCurrentFragment();
                 currFragment.startBlackListRefresh();
+                getActivity().setResult(Activity.RESULT_OK);
             }
                 
         });
