@@ -25,7 +25,6 @@ import cl.monsoon.s1next.util.StringUtil;
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class Posts extends Account {
-    BlackListDbWrapper blackListWrapper = BlackListDbWrapper.getInstance();
 
     @JsonProperty("thread")
     private Thread postListInfo;
@@ -56,22 +55,38 @@ public final class Posts extends Account {
         return postList;
     }
 
-    public List<Post> getFilterPostList(List<Post> oPosts) {
-        Preconditions.checkNotNull(blackListWrapper);
+    public static List<Post> getFilterPostList(final List<Post> oPosts) {
         List<Post> posts = new ArrayList<>();
         for (Post post:oPosts) {
-            switch (blackListWrapper.getPostFlag(Integer.valueOf(post.getAuthorId()), post.getAuthorName())){
-                case BlackList.DEL_POST:
-                    break;
-                case BlackList.HIDE_POST:
-                    post.setHide(true);
-                    posts.add(post);
-                    break;
-                default:
-                    posts.add(post);
+            Post fPost = getFilterPost(post);
+            if (fPost != null){
+                posts.add(fPost);
             }
         }
         return posts;
+    }
+    
+    public static Post getFilterPost(final Post post){
+        Post nPost = post;
+        BlackListDbWrapper blackListWrapper = BlackListDbWrapper.getInstance();
+        switch (blackListWrapper.getPostFlag(Integer.valueOf(post.getAuthorId()), post.getAuthorName())){
+            case BlackList.DEL_POST:
+                nPost = null;
+                break;
+            case BlackList.HIDE_POST:
+                if (!post.isHide()){
+                    nPost = post.clone();
+                    nPost.setHide(true);
+                }
+                break;
+            default:
+                if (post.isHide()){
+                    nPost = post.clone();
+                    nPost.setHide(false);
+                }
+                break;
+        }
+        return nPost;
     }
 
     public void setPostList(List<Post> postList) {

@@ -3,6 +3,7 @@ package cl.monsoon.s1next.data.api.model;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v4.util.SimpleArrayMap;
+import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,12 +17,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.data.db.BlackListDbWrapper;
 import cl.monsoon.s1next.data.db.dbmodel.BlackList;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Post {
+public final class Post implements Cloneable {
 
     @JsonProperty("pid")
     private String id;
@@ -45,8 +47,9 @@ public final class Post {
     private Map<Integer, Attachment> attachmentMap;
 
     private boolean hide = false;
-    
-    public Post() {}
+
+    public Post() {
+    }
 
     public String getId() {
         return id;
@@ -84,7 +87,7 @@ public final class Post {
 
     public void setReply(String reply) {
         reply = hideBlackListQuote(reply);
-        
+
         // Replaces "imgwidth" with "img width",
         // because some img tags in S1 aren't correct.
         // This may be the best way to deal with it though
@@ -138,12 +141,26 @@ public final class Post {
                 Objects.equal(authorId, post.authorId) &&
                 Objects.equal(reply, post.reply) &&
                 Objects.equal(count, post.count) &&
-                Objects.equal(attachmentMap, post.attachmentMap);
+                Objects.equal(attachmentMap, post.attachmentMap) &&
+                Objects.equal(hide, post.hide);
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(id, authorName, authorId, reply, count, datetime, attachmentMap);
+    }
+
+    @Override
+    public Post clone(){
+        Post o = null;
+        try {
+            o = (Post) super.clone();
+        } catch (CloneNotSupportedException e) {
+            Log.e(App.LOG_TAG, e.getMessage());
+        } catch (ClassCastException e){
+            Log.e(App.LOG_TAG, e.getMessage());
+        }
+        return o;
     }
 
     /**
@@ -176,13 +193,14 @@ public final class Post {
 
     /**
      * 隐藏黑名单用户的引用内容
+     *
      * @param reply
      * @return
      */
-    private String hideBlackListQuote(String reply){
+    private String hideBlackListQuote(String reply) {
         String quoteName = findBlockQuoteName(reply);
-        if (quoteName != null){
-            if (BlackListDbWrapper.getInstance().getPostFlag(-1, quoteName) != BlackList.NORMAL){
+        if (quoteName != null) {
+            if (BlackListDbWrapper.getInstance().getPostFlag(-1, quoteName) != BlackList.NORMAL) {
                 return reply.replaceFirst("</font></a>[\\s\\S]*</blockquote>", "</font></a><br />\r\n[已被抹布]</blockquote>");
             }
         }
@@ -191,10 +209,11 @@ public final class Post {
 
     /**
      * 解析引用对象的用户名
+     *
      * @param reply
      * @return
      */
-    private String findBlockQuoteName(String reply){
+    private String findBlockQuoteName(String reply) {
         String name = null;
         Pattern pattern = Pattern.compile("<blockquote>[\\s\\S]*</blockquote>");
         Matcher matcher = pattern.matcher(reply);
@@ -204,7 +223,7 @@ public final class Post {
             matcher = pattern.matcher(quote);
             if (matcher.find()) {
                 String rawName = matcher.group(0);
-                name = rawName.substring(22, rawName.length()-4);
+                name = rawName.substring(22, rawName.length() - 4);
             }
         }
         return name;

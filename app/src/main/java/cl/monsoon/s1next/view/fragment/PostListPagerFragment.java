@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cl.monsoon.s1next.R;
@@ -202,6 +203,23 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
     void onError(Throwable throwable) {
         if (isPullUpToRefresh()) {
             mRecyclerAdapter.hideFooterProgress();
+        }
+
+        //网络请求失败下依然刷新黑名单
+        if (blacklistChanged){
+            List<Object> dataSet = mRecyclerAdapter.getDataSet();
+            List<Object> newData = new ArrayList<>();
+            for (Object obj:dataSet){
+                if (obj instanceof Post){
+                    obj = Posts.getFilterPost((Post) obj);
+                }
+                if (obj != null){
+                    newData.add(obj);
+                }
+            }
+            blacklistChanged = false;
+            mRecyclerAdapter.setDataSet(newData);
+            mRecyclerAdapter.notifyDataSetChanged();
         }
 
         super.onError(throwable);

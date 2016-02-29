@@ -88,6 +88,10 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
         mList = (List<Object>) list;
     }
 
+    public final List<Object> getDataSet() {
+        return mList;
+    }
+
     final Object getItem(int position) {
         return mList.get(position);
     }

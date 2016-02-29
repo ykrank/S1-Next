@@ -2,6 +2,7 @@ package cl.monsoon.s1next.data.api.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,12 +10,14 @@ import com.google.common.base.Objects;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import cl.monsoon.s1next.App;
+
 /**
  * Ambiguity in naming due to {@link java.lang.Thread}.
  */
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Thread implements Parcelable {
+public final class Thread implements Parcelable, Cloneable {
 
     public static final Parcelable.Creator<Thread> CREATOR = new Parcelable.Creator<Thread>() {
 
@@ -56,6 +59,9 @@ public final class Thread implements Parcelable {
         title = source.readString();
         replies = source.readInt();
         permission = source.readInt();
+        author = source.readString();
+        authorid = source.readInt();
+        hide = source.readByte()!=0;
     }
 
     public String getId() {
@@ -126,6 +132,9 @@ public final class Thread implements Parcelable {
         dest.writeString(title);
         dest.writeInt(replies);
         dest.writeInt(permission);
+        dest.writeString(author);
+        dest.writeInt(authorid);
+        dest.writeByte((byte) (hide ? 1 : 0));
     }
 
     @Override
@@ -136,12 +145,28 @@ public final class Thread implements Parcelable {
         return Objects.equal(replies, thread.replies) &&
                 Objects.equal(permission, thread.permission) &&
                 Objects.equal(id, thread.id) &&
-                Objects.equal(title, thread.title);
+                Objects.equal(title, thread.title) &&
+                Objects.equal(author, thread.author) &&
+                Objects.equal(authorid, thread.authorid) &&
+                Objects.equal(hide, thread.hide);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, title, replies, permission);
+        return Objects.hashCode(id, title, replies, permission, author, authorid, hide);
+    }
+
+    @Override
+    public Thread clone(){
+        Thread o = null;
+        try {
+            o = (Thread) super.clone();
+        } catch (CloneNotSupportedException e) {
+            Log.e(App.LOG_TAG, e.getMessage());
+        } catch (ClassCastException e){
+            Log.e(App.LOG_TAG, e.getMessage());
+        }
+        return o;
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
