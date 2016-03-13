@@ -5,6 +5,8 @@
         <item name="colorPrimary">@color/saraba_main_top_color</item>
         <item name="android:colorBackground">@color/saraba_main_bg_color</item>
         <item name="colorAccent">@color/light_blue_700</item>
+        <item name="actionModeBackground">?attr/colorPrimary</item>
+        <item name="colorControlActivated">?attr/colorAccent</item>
     </style>
     
     <style name="Theme.Light" parent="Base.Theme.Light" />

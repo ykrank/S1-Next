@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.lang.ref.WeakReference;
 
@@ -40,8 +41,6 @@ import cl.monsoon.s1next.viewmodel.LoadingViewModel;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -162,6 +161,9 @@ public abstract class BaseFragment<D> extends Fragment {
         super.onDestroy();
 
         RxJavaUtil.unsubscribeIfNotNull(mSubscription);
+
+        RefWatcher refWatcher = App.get().getRefWatcher();
+        refWatcher.watch(this);
     }
 
     @Override

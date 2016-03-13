@@ -1,5 +1,7 @@
 package cl.monsoon.s1next.data.db.dbmodel;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.IntDef;
 
 import com.activeandroid.Model;
@@ -17,29 +19,51 @@ import cl.monsoon.s1next.R;
  * Created by AdminYkrank on 2016/2/23.
  */
 @Table(name = "BlackList")
-public class BlackList extends Model {
+public class BlackList extends Model implements Parcelable {
     private static final String Format = "yyyy-MM-dd HH:mm";
-    
-    @IntDef({NORMAL, HIDE_POST, DEL_POST})
-    public @interface PostFLag {
+
+    protected BlackList(Parcel in) {
+        authorid = in.readInt();
+        author = in.readString();
+        post = in.readInt();
+        forum = in.readInt();
+        remark = in.readString();
+        timestamp = in.readLong();
+        upload = in.readByte() != 0;
     }
 
+    public static final Creator<BlackList> CREATOR = new Creator<BlackList>() {
+        @Override
+        public BlackList createFromParcel(Parcel in) {
+            return new BlackList(in);
+        }
+
+        @Override
+        public BlackList[] newArray(int size) {
+            return new BlackList[size];
+        }
+    };
+
+    @IntDef({NORMAL, HIDE_POST, DEL_POST})
+    public @interface PostFLag {
+
+    }
     @IntDef({NORMAL, HIDE_FORUM, DEL_FORUM})
     public @interface ForumFLag {
+
     }
-    
     public static final int NORMAL = 0;
+
     public static final int HIDE_POST = 1;
     public static final int DEL_POST = 2;
     public static final int HIDE_FORUM = 3;
     public static final int DEL_FORUM = 4;
-
     /**
      * Id
      */
     @Column(name = "AuthorId")
     public int authorid;
-    
+
     /**
      * 用户名
      */
@@ -90,7 +114,7 @@ public class BlackList extends Model {
         this.timestamp = System.currentTimeMillis();
         this.upload = false;
     }
-    
+
     public void copyFrom(BlackList bList){
         this.authorid = bList.authorid;
         this.author = bList.author;
@@ -100,7 +124,7 @@ public class BlackList extends Model {
         this.timestamp = bList.timestamp;
         this.upload = bList.upload;
     }
-    
+
     public int getPostres(){
         switch (post){
             case HIDE_POST:
@@ -122,9 +146,46 @@ public class BlackList extends Model {
                 return R.string.blacklist_flag_normal;
         }
     }
-    
+
+    public boolean isFourmHide() {
+        return forum == HIDE_FORUM;
+    }
+
+    public boolean isPostHide() {
+        return post == HIDE_POST;
+    }
+
     public String getTime(){
         SimpleDateFormat sdf = new SimpleDateFormat(Format);
         return sdf.format(new Date(timestamp));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(authorid);
+        dest.writeString(author);
+        dest.writeInt(post);
+        dest.writeInt(forum);
+        dest.writeString(remark);
+        dest.writeLong(timestamp);
+        dest.writeByte((byte) (upload ? 1 : 0));
+    }
+
+    @Override
+    public String toString() {
+        return "BlackList{" +
+                "authorid=" + authorid +
+                ", author='" + author + '\'' +
+                ", post=" + post +
+                ", forum=" + forum +
+                ", remark='" + remark + '\'' +
+                ", timestamp=" + timestamp +
+                ", upload=" + upload +
+                '}';
     }
 }

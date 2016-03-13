@@ -193,5 +193,12 @@
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>
     <string name="blacklist_refresh_warn">Blacklist changed, please refresh</string>
+    <string name="menu_add">Add</string>
+    <string name="menu_all">All</string>
+    <string name="menu_clear">Clear</string>
+    <string name="blacklist_hide_forum">Hide forum</string>
+    <string name="blacklist_hide_post">Hide post</string>
+    <string name="prompt_author_id">Author id</string>
+    <string name="prompt_author_name">Author name</string>
 
 </resources>

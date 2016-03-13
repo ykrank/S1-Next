@@ -58,6 +58,7 @@
     <dimen name="dense_text_size_body_1">15sp</dimen>
     <dimen name="dense_text_size_body_2">15sp</dimen>
     <dimen name="dense_text_size_small">15sp</dimen>
+    <dimen name="dialog_switch_padding">8dp</dimen>
 
     <item name="line_spacing_multiplier" format="float" type="dimen">1.2</item>
 

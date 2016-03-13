@@ -90,14 +90,13 @@
             
         </Space>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <ListView
+            android:id="@+id/listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/line"
             android:clipToPadding="false"
             android:paddingBottom="@dimen/list_view_padding"
-            android:paddingTop="@dimen/list_view_padding"
             android:scrollbars="vertical" />
     </RelativeLayout>
 

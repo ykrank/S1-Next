@@ -8,13 +8,13 @@ import android.os.StrictMode;
 import com.activeandroid.ActiveAndroid;
 import com.bugsnag.android.Bugsnag;
 import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import javax.inject.Singleton;
 
 import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.api.S1Service;
 import cl.monsoon.s1next.data.api.UserValidator;
-import cl.monsoon.s1next.data.api.model.collection.Threads;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
@@ -45,8 +45,14 @@ public final class App extends Application {
 
     private AppActivityLifecycleCallbacks mAppActivityLifecycleCallbacks;
 
+    private RefWatcher refWatcher;
+
     public static App get() {
         return sApp;
+    }
+
+    public RefWatcher getRefWatcher() {
+        return refWatcher;
     }
 
     public static AppComponent getAppComponent(Context context) {
@@ -68,7 +74,7 @@ public final class App extends Application {
                     .penaltyLog()
                     .build());
         }
-        LeakCanary.install(this);
+        refWatcher = LeakCanary.install(this);
         Bugsnag.init(this);
 
         sApp = this;

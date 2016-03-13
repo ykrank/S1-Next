@@ -117,4 +117,11 @@
     <string name="menu_delete">删除</string>
     <string name="menu_edit">编辑</string>
     <string name="blacklist_refresh_warn">黑名单已更新，刷新以更新主题列表</string>
+    <string name="menu_add">增加</string>
+    <string name="menu_all">全选</string>
+    <string name="menu_clear">清空选择</string>
+    <string name="blacklist_hide_forum">隐藏主题</string>
+    <string name="blacklist_hide_post">隐藏回复</string>
+    <string name="prompt_author_id">用户ID</string>
+    <string name="prompt_author_name">用户名</string>
 </resources>

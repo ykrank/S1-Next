@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Cache;
 import com.activeandroid.query.Select;
 
@@ -43,7 +44,7 @@ public class BlackListDbWrapper {
         return resultCursor;
     }
 
-    public BlackList fromCursor(Cursor cursor) {
+    public BlackList fromCursor(@NonNull Cursor cursor) {
         BlackList blackList = new BlackList();
         blackList.loadFromCursor(cursor);
         return blackList;
@@ -96,7 +97,6 @@ public class BlackListDbWrapper {
             oBlackList.copyFrom(blackList);
             oBlackList.timestamp = System.currentTimeMillis();
             oBlackList.save();
-            return;
         }
     }
 
@@ -115,7 +115,18 @@ public class BlackListDbWrapper {
                     .executeSingle();
             if (oBlackList != null)
                 oBlackList.delete();
-            return;
+        }
+    }
+
+    public void delBlackLists(List<BlackList> blackLists) {
+        ActiveAndroid.beginTransaction();
+        try {
+            for (BlackList blacklist : blackLists) {
+                blacklist.delete();
+            }
+            ActiveAndroid.setTransactionSuccessful();
+        } finally {
+            ActiveAndroid.endTransaction();
         }
     }
 

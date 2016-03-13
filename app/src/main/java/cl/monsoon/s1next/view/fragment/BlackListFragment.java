@@ -1,24 +1,34 @@
 package cl.monsoon.s1next.view.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.view.ActionMode;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.ListView;
 
+import com.squareup.leakcanary.RefWatcher;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.db.BlackListDbWrapper;
+import cl.monsoon.s1next.data.db.dbmodel.BlackList;
 import cl.monsoon.s1next.databinding.FragmentBlacklistBinding;
-import cl.monsoon.s1next.view.adapter.BlackListCursorRecyclerViewAdapter;
+import cl.monsoon.s1next.view.adapter.BlackListCursorListViewAdapter;
+import cl.monsoon.s1next.view.dialog.BlacklistDialogFragment;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -36,8 +46,8 @@ public final class BlackListFragment extends Fragment {
     private static final String ARG_ROW = "row";
     private static final int LIMIT = 20;
 
-    private RecyclerView mRecyclerView;
-    private BlackListCursorRecyclerViewAdapter mRecyclerAdapter;
+    private ListView mListView;
+    private BlackListCursorListViewAdapter mListViewAdapter;
 
     private Subscription mSubscription;
 
@@ -45,7 +55,7 @@ public final class BlackListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentBlacklistBinding binding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_blacklist, container, false);
-        mRecyclerView = binding.recyclerView;
+        mListView = binding.listview;
         return binding.getRoot();
     }
 
@@ -53,9 +63,10 @@ public final class BlackListFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerAdapter = new BlackListCursorRecyclerViewAdapter(getActivity());
-        mRecyclerView.setAdapter(mRecyclerAdapter);
+        mListViewAdapter = new BlackListCursorListViewAdapter(getActivity());
+        mListView.setAdapter(mListViewAdapter);
+        mListView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
+        mListView.setMultiChoiceModeListener(mActionModeCallback);
     }
 
     @Override
@@ -90,9 +101,9 @@ public final class BlackListFragment extends Fragment {
         mSubscription = getSourceObservable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(cursor ->{
-                    mRecyclerAdapter.changeCursor(cursor);
-                }, throwable -> {
+                .subscribe(
+                        mListViewAdapter::changeCursor
+                        , throwable -> {
                     Log.e("S1next",throwable.getMessage());
                 });
     }
@@ -110,7 +121,7 @@ public final class BlackListFragment extends Fragment {
 
     @Override
     public void onPause() {
-        mRecyclerAdapter.closeCursor();
+        mListViewAdapter.changeCursor(null);
         super.onPause();
     }
 
@@ -120,27 +131,101 @@ public final class BlackListFragment extends Fragment {
         load();
     }
 
-    private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
+    @Override
+    public void onDestroy() {
+        RefWatcher refWatcher = App.get().getRefWatcher();
+        refWatcher.watch(this);
+        super.onDestroy();
+    }
+
+    private AbsListView.MultiChoiceModeListener mActionModeCallback = new AbsListView.MultiChoiceModeListener() {
+
         @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        public void onItemCheckedStateChanged(android.view.ActionMode mode, int position, long id, boolean checked) {
+
+        }
+
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(android.view.ActionMode mode, Menu menu) {
+            // Inflate a menu resource providing context menu items
             MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(R.menu.actionmode_blacklist_edit, menu);
             return true;
         }
 
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
         @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
+        public boolean onPrepareActionMode(android.view.ActionMode mode, Menu menu) {
+            return false; // Return false if nothing is done
         }
 
+        // Called when the user selects a contextual menu item
         @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            return false;
+        public boolean onActionItemClicked(android.view.ActionMode mode, MenuItem item) {
+            SparseBooleanArray checklist = mListView.getCheckedItemPositions();
+            switch (item.getItemId()) {
+                case R.id.menu_add:
+                    BlacklistDialogFragment dialogFragment = BlacklistDialogFragment.newInstance(null);
+                    dialogFragment.setTargetFragment(BlackListFragment.this, BlacklistDialogFragment.DIALOG_REQUEST_CODE);
+                    dialogFragment.show(getFragmentManager(), BlackListFragment.class.getName());
+                    return true;
+                case R.id.menu_edit:
+                    BlackList blackList = null;
+                    for (int i = 0; i < checklist.size(); i++) {
+                        if (checklist.valueAt(i)) {
+                            blackList = mListViewAdapter.getItem(checklist.keyAt(i));
+                            break;
+                        }
+                    }
+                    BlacklistDialogFragment dialogFragment1 = BlacklistDialogFragment.newInstance(blackList);
+                    dialogFragment1.setTargetFragment(BlackListFragment.this, BlacklistDialogFragment.DIALOG_REQUEST_CODE);
+                    dialogFragment1.show(getFragmentManager(), BlackListFragment.class.getName());
+                    return true;
+                case R.id.menu_delete:
+                    List<BlackList> blackLists = new ArrayList<>();
+                    for (int i = 0; i < checklist.size(); i++) {
+                        if (checklist.valueAt(i)) {
+                            blackLists.add(mListViewAdapter.getItem(checklist.keyAt(i)));
+                        }
+                    }
+                    BlackListDbWrapper.getInstance().delBlackLists(blackLists);
+                    load();
+                    return true;
+                case R.id.menu_all:
+                    for (int i = 0; i < mListView.getCount(); i++) {
+                        mListView.setItemChecked(i, true);
+                    }
+                    return true;
+                case R.id.menu_clear:
+                    for (int i = 0; i < mListView.getCount(); i++) {
+                        mListView.setItemChecked(i, false);
+                    }
+                    return true;
+                default:
+                    return false;
+            }
         }
 
+        // Called when the user exits the action mode
         @Override
-        public void onDestroyActionMode(ActionMode mode) {
-
+        public void onDestroyActionMode(android.view.ActionMode mode) {
+            
         }
     };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == BlacklistDialogFragment.DIALOG_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                BlackList blackList = data.getParcelableExtra(BlacklistDialogFragment.BLACKLIST_TAG);
+                if (blackList != null) {
+                    BlackListDbWrapper.getInstance().saveBlackList(blackList);
+                    load();
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

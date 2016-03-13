@@ -4,13 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cl.monsoon.s1next.view.fragment.BaseFragment">
     <item
-        android:id="@+id/menu_edit"
+        android:id="@+id/menu_add"
         android:orderInCategory="1"
+        android:title="@string/menu_add"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_edit"
+        android:orderInCategory="2"
         android:title="@string/menu_edit"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_delete"
-        android:orderInCategory="1"
+        android:orderInCategory="3"
         android:title="@string/menu_delete"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_all"
+        android:orderInCategory="4"
+        android:title="@string/menu_all" />
+    <item
+        android:id="@+id/menu_clear"
+        android:orderInCategory="5"
+        android:title="@string/menu_clear" />
 </menu>
