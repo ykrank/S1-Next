@@ -201,7 +201,7 @@ public final class Post implements Cloneable {
         String quoteName = findBlockQuoteName(reply);
         if (quoteName != null) {
             if (BlackListDbWrapper.getInstance().getPostFlag(-1, quoteName) != BlackList.NORMAL) {
-                return reply.replaceFirst("</font></a>[\\s\\S]*</blockquote>", "</font></a><br />\r\n[已被抹布]</blockquote>");
+                return replaceBlockQuoteContent(reply);
             }
         }
         return reply;
@@ -227,6 +227,29 @@ public final class Post implements Cloneable {
             }
         }
         return name;
+    }
+
+    /**
+     * 替换对已屏蔽对象的引用内容
+     *
+     * @param reply
+     * @return
+     */
+    private String replaceBlockQuoteContent(String reply) {
+        Pattern pattern = Pattern.compile("</font></a>[\\s\\S]*</blockquote>");
+        Matcher matcher = pattern.matcher(reply);
+        if (matcher.find()) {
+            return reply.replaceFirst("</font></a>[\\s\\S]*</blockquote>",
+                    "</font></a><br />\r\n[已被抹布]</blockquote>");
+        } else {
+            pattern = Pattern.compile("</font><br />[\\s\\S]*</blockquote>");
+            matcher = pattern.matcher(reply);
+            if (matcher.find()) {
+                return reply.replaceFirst("</font><br />[\\s\\S]*</blockquote>",
+                        "</font><br />\r\n[已被抹布]</blockquote>");
+            }
+        }
+        return reply;
     }
 
     /**
