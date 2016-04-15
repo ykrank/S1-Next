@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/picture_content_desc"
+            android:transitionName="@string/gallery_transition"
             app:url="@{imageViewModel.url}" />
 
         <android.support.v7.widget.Toolbar

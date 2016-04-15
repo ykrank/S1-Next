@@ -200,5 +200,6 @@
     <string name="blacklist_hide_post">Hide post</string>
     <string name="prompt_author_id">Author id</string>
     <string name="prompt_author_name">Author name</string>
+    <string name="gallery_transition">gallery_transition</string>
 
 </resources>

@@ -15,9 +15,9 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.User;
 import cl.monsoon.s1next.data.api.Api;
 import cl.monsoon.s1next.data.api.model.Post;
-import cl.monsoon.s1next.data.event.BlackListEvent;
-import cl.monsoon.s1next.data.event.QuoteEvent;
+import cl.monsoon.s1next.data.event.BlackListAddEvent;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
+import cl.monsoon.s1next.view.activity.GalleryActivity;
 import cl.monsoon.s1next.widget.BezelImageView;
 import cl.monsoon.s1next.widget.EventBus;
 
@@ -72,15 +72,20 @@ public final class BezelImageViewBindingAdapter {
                     .load(url)
                     .into(bezelImageView);
 
+            //点击显示头像大图
+            bezelImageView.setOnClickListener(v -> {
+                GalleryActivity.startGalleryActivity(v.getContext(), Api.getAvatarBigUrl(post.getAuthorId()));
+            });
+            //长按显示抹布菜单
             bezelImageView.setOnLongClickListener((View v) -> {
                 PopupMenu popup = new PopupMenu(bezelImageView.getContext(), v);
                 popup.setOnMenuItemClickListener((MenuItem menuitem) -> {
                     switch (menuitem.getItemId()) {
                         case R.id.menu_post_blacklist:
                             if (menuitem.getTitle().equals(bezelImageView.getContext().getString(R.string.menu_blacklist_remove))) {
-                                eventBus.post(new BlackListEvent(post.getAuthorId(), post.getAuthorName(), false));
+                                eventBus.post(new BlackListAddEvent(post.getAuthorId(), post.getAuthorName(), false));
                             } else {
-                                eventBus.post(new BlackListEvent(post.getAuthorId(), post.getAuthorName(), true));
+                                eventBus.post(new BlackListAddEvent(post.getAuthorId(), post.getAuthorName(), true));
                             }
                             return true;
                         default:

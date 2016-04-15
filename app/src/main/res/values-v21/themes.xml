@@ -6,6 +6,7 @@
     <style name="Base.Theme.Gallery.V21" parent="Base.Theme.Gallery">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
 </resources>

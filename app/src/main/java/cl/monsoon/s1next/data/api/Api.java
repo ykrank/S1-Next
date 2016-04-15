@@ -45,6 +45,7 @@ public final class Api {
     private static final String URL_USER_AVATAR_PREFIX = prepend("uc_server/data/avatar/");
     private static final String URL_USER_AVATAR_SMALL = URL_USER_AVATAR_PREFIX + "%s_avatar_small.jpg";
     private static final String URL_USER_AVATAR_MEDIUM = URL_USER_AVATAR_PREFIX + "%s_avatar_middle.jpg";
+    private static final String URL_USER_AVATAR_BIG = URL_USER_AVATAR_PREFIX + "%s_avatar_big.jpg";
 
     /**
      * Opens the browser via {@link android.content.Intent}.
@@ -66,6 +67,10 @@ public final class Api {
 
     public static String getAvatarMediumUrl(String userId) {
         return appendAvatarUrlWithUserId(URL_USER_AVATAR_MEDIUM, userId);
+    }
+
+    public static String getAvatarBigUrl(String userId) {
+        return appendAvatarUrlWithUserId(URL_USER_AVATAR_BIG, userId);
     }
 
     /**

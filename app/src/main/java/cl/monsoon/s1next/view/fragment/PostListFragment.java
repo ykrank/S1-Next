@@ -25,7 +25,7 @@ import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.data.api.model.ThreadLink;
 import cl.monsoon.s1next.data.api.model.collection.Posts;
 import cl.monsoon.s1next.data.db.BlackListDbWrapper;
-import cl.monsoon.s1next.data.event.BlackListEvent;
+import cl.monsoon.s1next.data.event.BlackListAddEvent;
 import cl.monsoon.s1next.data.event.QuoteEvent;
 import cl.monsoon.s1next.util.ClipboardUtil;
 import cl.monsoon.s1next.util.IntentUtil;
@@ -139,8 +139,8 @@ public final class PostListFragment extends BaseViewPagerFragment
             if (o instanceof QuoteEvent) {
                 QuoteEvent quoteEvent = (QuoteEvent) o;
                 startReplyActivity(quoteEvent.getQuotePostId(), quoteEvent.getQuotePostCount());
-            }else if (o instanceof BlackListEvent) {
-                BlackListEvent blackListEvent = (BlackListEvent)o;
+            }else if (o instanceof BlackListAddEvent) {
+                BlackListAddEvent blackListEvent = (BlackListAddEvent)o;
                 if (blackListEvent.isAdd()){
                     BlackListDbWrapper.getInstance().saveDefaultBlackList(Integer.valueOf(blackListEvent.getAuthorPostId()),
                             blackListEvent.getAuthorPostName());
