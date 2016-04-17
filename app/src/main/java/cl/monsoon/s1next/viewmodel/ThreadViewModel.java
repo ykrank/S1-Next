@@ -1,6 +1,7 @@
 package cl.monsoon.s1next.viewmodel;
 
 import android.app.Activity;
+import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.view.View;
 
@@ -13,8 +14,10 @@ public final class ThreadViewModel {
 
     public final ObservableField<Thread> thread = new ObservableField<>();
 
-    public Func1<View, Subscription> goToThisThread() {
-        return v -> PostListActivity.clickStartPostListActivity(v, thread.get());
+    public final ObservableField<Func1<View, Subscription>> subscription = new ObservableField<>();
+    
+    public void setSubscription(){
+        subscription.set(v -> PostListActivity.clickStartPostListActivity(v, thread.get()));
     }
 
     public View.OnLongClickListener goToThisThreadLastPage() {

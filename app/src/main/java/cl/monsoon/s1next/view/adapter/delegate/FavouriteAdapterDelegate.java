@@ -45,6 +45,7 @@ public final class FavouriteAdapterDelegate extends AbsAdapterDelegate<List<Obje
     public void onBindViewHolder(@NonNull List<Object> items, int position, @NonNull RecyclerView.ViewHolder holder) {
         ItemFavouriteBinding binding = ((BindingViewHolder) holder).itemFavouriteBinding;
         binding.getFavouriteViewModel().favourite.set((Favourite) items.get(position));
+        binding.getFavouriteViewModel().setSubscription();
         binding.executePendingBindings();
     }
 

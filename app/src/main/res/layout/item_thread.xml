@@ -42,7 +42,7 @@
         android:paddingStart="@dimen/item_padding"
         android:paddingTop="14.5dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:onceClickSubscription="@{threadViewModel.goToThisThread()}"
+        app:onceClickSubscription="@{threadViewModel.subscription}"
         app:onLongClickListener="@{threadViewModel.goToThisThreadLastPage()}"
         app:themeManager="@{themeManager}"
         app:thread="@{threadViewModel.thread}"

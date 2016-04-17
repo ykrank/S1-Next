@@ -14,14 +14,16 @@ public final class FavouriteViewModel {
 
     public final ObservableField<Favourite> favourite = new ObservableField<>();
 
-    public Func1<View, Subscription> goToThisFavourite() {
-        return v -> {
+    public final ObservableField<Func1<View, Subscription>> subscription = new ObservableField<>();
+
+    public void setSubscription(){
+        subscription.set(v -> {
             Thread thread = new Thread();
             Favourite favourite = this.favourite.get();
             thread.setId(favourite.getId());
             thread.setTitle(favourite.getTitle());
-            
+
             return PostListActivity.clickStartPostListActivity(v, thread);
-        };
+        });
     }
 }

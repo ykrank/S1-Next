@@ -61,6 +61,7 @@ public final class ThreadAdapterDelegate extends AbsAdapterDelegate<List<Object>
     public void onBindViewHolder(@NonNull List<Object> items, int position, @NonNull RecyclerView.ViewHolder holder) {
         ItemThreadBinding binding = ((BindingViewHolder) holder).itemThreadBinding;
         binding.getThreadViewModel().thread.set((Thread) items.get(position));
+        binding.getThreadViewModel().setSubscription();
         binding.executePendingBindings();
     }
 

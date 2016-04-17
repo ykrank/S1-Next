@@ -87,6 +87,7 @@ public final class PostListActivity extends BaseActivity
                     .map(vo -> ReadProgressDbWrapper.getInstance().getWithThreadId(thread.getId()))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(progress -> {
+                        Log.d("WTF", thread.getTitle());
                         Context context = view.getContext();
                         Intent intent = new Intent(context, PostListActivity.class);
                         intent.putExtra(ARG_THREAD, thread);
