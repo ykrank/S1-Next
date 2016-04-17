@@ -2,7 +2,7 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.fragment.BlackListFragment">
+    tools:context=".view.fragment.setting.BlackListSettingFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

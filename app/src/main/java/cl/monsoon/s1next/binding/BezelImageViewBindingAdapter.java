@@ -83,9 +83,11 @@ public final class BezelImageViewBindingAdapter {
                     switch (menuitem.getItemId()) {
                         case R.id.menu_post_blacklist:
                             if (menuitem.getTitle().equals(bezelImageView.getContext().getString(R.string.menu_blacklist_remove))) {
-                                eventBus.post(new BlackListAddEvent(post.getAuthorId(), post.getAuthorName(), false));
+                                eventBus.post(new BlackListAddEvent(Integer.valueOf(post.getAuthorId()), 
+                                        post.getAuthorName(), false));
                             } else {
-                                eventBus.post(new BlackListAddEvent(post.getAuthorId(), post.getAuthorName(), true));
+                                eventBus.post(new BlackListAddEvent(Integer.valueOf(post.getAuthorId()),
+                                        post.getAuthorName(), true));
                             }
                             return true;
                         default:

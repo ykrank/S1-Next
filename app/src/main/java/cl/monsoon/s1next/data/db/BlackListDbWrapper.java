@@ -49,73 +49,73 @@ public class BlackListDbWrapper {
         blackList.loadFromCursor(cursor);
         return blackList;
     }
-    
-    public BlackList getBlackList(int id, String name){
+
+    /**
+     * 默认情况下的黑名单查找。如果用户id合法则优先id，否则查找用户name
+     * @param id
+     * @param name
+     * @return
+     */
+    public BlackList getBlackListDefault(int id, String name){
         BlackList oBlackList = null;
         if (id > 0){
-            oBlackList = new Select().from(BlackList.class)
-                    .where("Authorid = ?", id)
-                    .executeSingle();
+            oBlackList = getBlackListWithAuthorId(id);
         }else if (name != null && !TextUtils.isEmpty(name)){
-            oBlackList = new Select().from(BlackList.class)
-                    .where("Author = ?", name)
-                    .executeSingle();
+            oBlackList = getBlackListWithAuthorName(name);
         }
         return oBlackList;
+    }
+
+    /**
+     * 根据用户id查找记录
+     * @param id
+     * @return
+     */
+    public BlackList getBlackListWithAuthorId(int id){
+        return new Select().from(BlackList.class)
+                .where("Authorid = ?", id)
+                .executeSingle();
+    }
+
+    /**
+     * 根据用户名查找记录
+     * @param name
+     * @return
+     */
+    public BlackList getBlackListWithAuthorName(String name){
+        return new Select().from(BlackList.class)
+                .where("Author = ?", name)
+                .executeSingle();
     }
     
     @BlackList.ForumFLag
     public int getForumFlag(int id, String name){
-        BlackList oBlackList = getBlackList(id, name);
+        BlackList oBlackList = getBlackListDefault(id, name);
         if (oBlackList != null) return oBlackList.forum;
         return BlackList.NORMAL;
     }
 
     @BlackList.PostFLag
     public int getPostFlag(int id, String name){
-        BlackList oBlackList = getBlackList(id, name);
+        BlackList oBlackList = getBlackListDefault(id, name);
         if (oBlackList != null) return oBlackList.post;
         return  BlackList.NORMAL;
     }
     
     public void saveBlackList(@NonNull BlackList blackList){
-        if (blackList.authorid > 0){
-            BlackList oBlackList = new Select().from(BlackList.class)
-                    .where("Authorid = ?", blackList.authorid)
-                    .executeSingle();
-            if (oBlackList == null) oBlackList = new BlackList();
+        BlackList oBlackList = getBlackListDefault(blackList.authorid, blackList.author);
+        if (oBlackList == null) {
+            blackList.save();
+        }else{
             oBlackList.copyFrom(blackList);
-            oBlackList.timestamp = System.currentTimeMillis();
-            oBlackList.save();
-            return;
-        }
-        if (blackList.author != null && !TextUtils.isEmpty(blackList.author)){
-            BlackList oBlackList = new Select().from(BlackList.class)
-                    .where("Author = ?", blackList.author)
-                    .executeSingle();
-            if (oBlackList == null) oBlackList = new BlackList();
-            oBlackList.copyFrom(blackList);
-            oBlackList.timestamp = System.currentTimeMillis();
             oBlackList.save();
         }
     }
 
     public void delBlackList(@NonNull BlackList blackList){
-        if (blackList.authorid > 0){
-            BlackList oBlackList = new Select().from(BlackList.class)
-                    .where("Authorid = ?", blackList.authorid)
-                    .executeSingle();
-            if (oBlackList != null) 
-                oBlackList.delete();
-            return;
-        }
-        if (blackList.author != null && !TextUtils.isEmpty(blackList.author)){
-            BlackList oBlackList = new Select().from(BlackList.class)
-                    .where("Author = ?", blackList.author)
-                    .executeSingle();
-            if (oBlackList != null)
-                oBlackList.delete();
-        }
+        BlackList oBlackList = getBlackListDefault(blackList.authorid, blackList.author);
+        if (oBlackList != null)
+            oBlackList.delete();
     }
 
     public void delBlackLists(List<BlackList> blackLists) {

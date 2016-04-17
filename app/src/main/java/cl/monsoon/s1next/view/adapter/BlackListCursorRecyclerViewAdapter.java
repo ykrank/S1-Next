@@ -11,7 +11,6 @@ import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.db.BlackListDbWrapper;
 import cl.monsoon.s1next.databinding.ItemBlacklistBinding;
 import cl.monsoon.s1next.viewmodel.BlackListViewModel;
-import cl.monsoon.s1next.widget.CursorRecyclerViewAdapter;
 
 
 public final class BlackListCursorRecyclerViewAdapter extends CursorRecyclerViewAdapter<BlackListCursorRecyclerViewAdapter.BlackListViewBindingHolder> {

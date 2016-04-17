@@ -29,4 +29,14 @@
         android:orderInCategory="25"
         android:title="@string/menu_browser"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_save_progress"
+        android:orderInCategory="26"
+        android:title="@string/menu_save_progress"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_load_progress"
+        android:orderInCategory="27"
+        android:title="@string/menu_load_progress"
+        app:showAsAction="never" />
 </menu>

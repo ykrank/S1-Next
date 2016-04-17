@@ -5,9 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.view.fragment.BlackListFragment;
-import cl.monsoon.s1next.view.fragment.DownloadPreferenceFragment;
-import cl.monsoon.s1next.view.fragment.GeneralPreferenceFragment;
+import cl.monsoon.s1next.view.fragment.setting.BlackListSettingFragment;
+import cl.monsoon.s1next.view.fragment.setting.DownloadPreferenceFragment;
+import cl.monsoon.s1next.view.fragment.setting.GeneralPreferenceFragment;
+import cl.monsoon.s1next.view.fragment.setting.ReadProgressPreferenceFragment;
 
 /**
  * An Activity includes settings that allow users
@@ -19,6 +20,7 @@ public final class SettingsActivity extends BaseActivity {
     private static final int EXTRA_SHOW_SETTING_DEFAULT = 0;
     private static final int EXTRA_SHOW_SETTING_DOWNLOAD = 1;
     private static final int EXTRA_SHOW_SETTING_BLACKLIST = 2;
+    private static final int EXTRA_SHOW_SETTING_READ_PROGRESS = 3;
 
     public static void startSettingsActivity(Context context) {
         Intent intent = new Intent(context, SettingsActivity.class);
@@ -37,6 +39,12 @@ public final class SettingsActivity extends BaseActivity {
         context.startActivity(intent);
     }
 
+    public static void startReadProgressSettingsActivity(Context context) {
+        Intent intent = new Intent(context, SettingsActivity.class);
+        intent.putExtra(ARG_SHOW_SETTINGS, EXTRA_SHOW_SETTING_READ_PROGRESS);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +60,12 @@ public final class SettingsActivity extends BaseActivity {
                 case EXTRA_SHOW_SETTING_BLACKLIST:
                     setTitle(R.string.pref_blacklists);
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,
-                            new BlackListFragment(), BlackListFragment.TAG).commit();
+                            new BlackListSettingFragment(), BlackListSettingFragment.TAG).commit();
+                    break;
+                case EXTRA_SHOW_SETTING_READ_PROGRESS:
+                    setTitle(R.string.pref_post_read_progress);
+                    getFragmentManager().beginTransaction().replace(R.id.frame_layout,
+                            new ReadProgressPreferenceFragment()).commit();
                     break;
                 default:
                     getFragmentManager().beginTransaction().replace(R.id.frame_layout,

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.view.fragment.GeneralPreferenceFragment;
+import cl.monsoon.s1next.view.fragment.setting.GeneralPreferenceFragment;
 
 /**
  * A helper class for retrieving the general preferences from {@link SharedPreferences}.

@@ -1,4 +1,4 @@
-package cl.monsoon.s1next.view.fragment;
+package cl.monsoon.s1next.view.fragment.setting;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
  * size and avatars/images download strategy.
  */
 public final class DownloadPreferenceFragment extends BasePreferenceFragment {
+    public static final String TAG = DownloadPreferenceFragment.class.getName();
 
     public static final String PREF_KEY_TOTAL_DOWNLOAD_CACHE_SIZE = "pref_key_download_total_cache_size";
     public static final String PREF_KEY_DOWNLOAD_AVATARS_STRATEGY = "pref_key_download_avatars_strategy";

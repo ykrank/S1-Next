@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:persistent="false"
-    tools:context="cl.monsoon.s1next.view.fragment.GeneralPreferenceFragment">
+    tools:context=".view.fragment.setting.GeneralPreferenceFragment">
 
     <PreferenceCategory
         android:persistent="false"
@@ -46,6 +46,12 @@
             android:persistent="false"
             android:summary="@string/pref_blacklists_summary"
             android:title="@string/pref_blacklists" />
+
+        <Preference
+            android:key="pref_key_post_read_progress"
+            android:persistent="false"
+            android:title="@string/pref_post_read_progress"
+            android:summary="@string/pref_post_read_progress_summary" />
 
     </PreferenceCategory>
 

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,11 +27,15 @@ import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.data.api.model.ThreadLink;
 import cl.monsoon.s1next.data.api.model.collection.Posts;
 import cl.monsoon.s1next.data.db.BlackListDbWrapper;
+import cl.monsoon.s1next.data.db.ReadProgressDbWrapper;
+import cl.monsoon.s1next.data.db.dbmodel.ReadProgress;
 import cl.monsoon.s1next.data.event.BlackListAddEvent;
 import cl.monsoon.s1next.data.event.QuoteEvent;
+import cl.monsoon.s1next.data.pref.ReadProgressPreferencesManager;
 import cl.monsoon.s1next.util.ClipboardUtil;
 import cl.monsoon.s1next.util.IntentUtil;
 import cl.monsoon.s1next.util.MathUtil;
+import cl.monsoon.s1next.util.OnceClickUtil;
 import cl.monsoon.s1next.util.RxJavaUtil;
 import cl.monsoon.s1next.util.StringUtil;
 import cl.monsoon.s1next.view.activity.ReplyActivity;
@@ -39,6 +45,9 @@ import cl.monsoon.s1next.view.dialog.ThreadFavouritesAddDialogFragment;
 import cl.monsoon.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import cl.monsoon.s1next.widget.EventBus;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 
 /**
@@ -59,11 +68,16 @@ public final class PostListFragment extends BaseViewPagerFragment
     private static final String ARG_JUMP_PAGE = "jump_page";
     private static final String ARG_QUOTE_POST_ID = "quote_post_id";
 
+    private static final String ARG_READ_PROGRESS = "read_progress";
+
     @Inject
     EventBus mEventBus;
 
     @Inject
     User mUser;
+
+    @Inject
+    ReadProgressPreferencesManager mReadProgressPrefManager;
 
     private String mThreadId;
     @Nullable
@@ -73,6 +87,8 @@ public final class PostListFragment extends BaseViewPagerFragment
     private MenuItem mMenuThreadAttachment;
 
     private Subscription mSubscription;
+    private Subscription mreadProgressSubscription;
+    private ReadProgress readProgress;
 
     public static PostListFragment newInstance(Thread thread, boolean shouldGoToLastPage) {
         PostListFragment fragment = new PostListFragment();
@@ -95,6 +111,16 @@ public final class PostListFragment extends BaseViewPagerFragment
         if (threadLink.getQuotePostId().isPresent()) {
             bundle.putString(ARG_QUOTE_POST_ID, threadLink.getQuotePostId().get());
         }
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
+
+    public static PostListFragment newInstance(Thread thread, ReadProgress progress) {
+        PostListFragment fragment = new PostListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(ARG_THREAD, thread);
+        bundle.putParcelable(ARG_READ_PROGRESS, progress);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -129,6 +155,10 @@ public final class PostListFragment extends BaseViewPagerFragment
 
         ((CoordinatorLayoutAnchorDelegate) getActivity()).setupFloatingActionButton(
                 R.drawable.ic_insert_comment_black_24dp, this);
+
+        if (mReadProgressPrefManager.isLoadAuto()) {
+            loadReadProgress();
+        }
     }
 
     @Override
@@ -139,20 +169,18 @@ public final class PostListFragment extends BaseViewPagerFragment
             if (o instanceof QuoteEvent) {
                 QuoteEvent quoteEvent = (QuoteEvent) o;
                 startReplyActivity(quoteEvent.getQuotePostId(), quoteEvent.getQuotePostCount());
-            }else if (o instanceof BlackListAddEvent) {
-                BlackListAddEvent blackListEvent = (BlackListAddEvent)o;
-                if (blackListEvent.isAdd()){
-                    BlackListDbWrapper.getInstance().saveDefaultBlackList(Integer.valueOf(blackListEvent.getAuthorPostId()),
-                            blackListEvent.getAuthorPostName());
-                }else {
-                    BlackListDbWrapper.getInstance().delDefaultBlackList(Integer.valueOf(blackListEvent.getAuthorPostId()),
-                            blackListEvent.getAuthorPostName());
+            } else if (o instanceof BlackListAddEvent) {
+                BlackListAddEvent blackListEvent = (BlackListAddEvent) o;
+                BlackListDbWrapper dbWrapper = BlackListDbWrapper.getInstance();
+                if (blackListEvent.isAdd()) {
+                    RxJavaUtil.workWithUiThread(() -> dbWrapper.saveDefaultBlackList(blackListEvent.getAuthorPostId(), blackListEvent.getAuthorPostName()),
+                            this::afterBlackListChange);
+                } else {
+                    RxJavaUtil.workWithUiThread(() -> dbWrapper.delDefaultBlackList(blackListEvent.getAuthorPostId(), blackListEvent.getAuthorPostName()),
+                            this::afterBlackListChange);
                 }
-                PostListPagerFragment currFragment = (PostListPagerFragment)((BaseFragmentStatePagerAdapter)mViewPager.getAdapter()).getCurrentFragment();
-                currFragment.startBlackListRefresh();
-                getActivity().setResult(Activity.RESULT_OK);
             }
-                
+
         });
     }
 
@@ -161,6 +189,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         super.onPause();
 
         RxJavaUtil.unsubscribeIfNotNull(mSubscription);
+        RxJavaUtil.unsubscribeIfNotNull(mreadProgressSubscription);
     }
 
     @Override
@@ -171,6 +200,11 @@ public final class PostListFragment extends BaseViewPagerFragment
         mMenuThreadAttachment = menu.findItem(R.id.menu_thread_attachment);
         if (mThreadAttachment == null) {
             mMenuThreadAttachment.setVisible(false);
+        }
+
+        if (mReadProgressPrefManager.isSaveAuto()) {
+            MenuItem saveMenu = menu.findItem(R.id.menu_save_progress);
+            saveMenu.setVisible(false);
         }
     }
 
@@ -219,6 +253,12 @@ public final class PostListFragment extends BaseViewPagerFragment
                         Api.getPostListUrlForBrowser(mThreadId, getCurrentPage() + 1)));
 
                 return true;
+            case R.id.menu_save_progress:
+                getCurPostPageFragment().saveReadProgress();
+                return true;
+            case R.id.menu_load_progress:
+                loadReadProgress();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -266,6 +306,51 @@ public final class PostListFragment extends BaseViewPagerFragment
         startReplyActivity(null, null);
     }
 
+    /**
+     * 获取当前的具体帖子fragment
+     *
+     * @return
+     */
+    PostListPagerFragment getCurPostPageFragment() {
+        return (PostListPagerFragment) ((BaseFragmentStatePagerAdapter) mViewPager.getAdapter()).getCurrentFragment();
+    }
+
+    /**
+     * 读取阅读进度
+     */
+    void loadReadProgress() {
+        ReadProgressDbWrapper dbWrapper = ReadProgressDbWrapper.getInstance();
+        mreadProgressSubscription = RxJavaUtil.workWithUiThread(() -> {
+            readProgress = dbWrapper.getWithThreadId(mThreadId);
+            if (readProgress != null)
+                readProgress.scrollProgress = ReadProgress.BEFORE_SCROLL_PAGE;
+        }, this::afterLoadReadProgress);
+    }
+
+    /**
+     * 读取阅读进度后的操作，主线程
+     */
+    @MainThread
+    private void afterLoadReadProgress() {
+        if (readProgress != null && readProgress.scrollProgress == ReadProgress.BEFORE_SCROLL_PAGE) {
+            readProgress.scrollProgress = ReadProgress.BEFORE_SCROLL_POSITION;
+            //如果当前页便是指定加载页，则直接滑动到指定位置
+            if (mViewPager.getCurrentItem() == readProgress.page - 1) {
+                PostListPagerFragment curFragment = getCurPostPageFragment();
+                if (curFragment != null)
+                    curFragment.smoothScrollToPosition(readProgress.position);
+            } else {
+                setCurrentPage(readProgress.page - 1);
+            }
+        }
+    }
+
+    private void afterBlackListChange() {
+        PostListPagerFragment currFragment = getCurPostPageFragment();
+        currFragment.startBlackListRefresh();
+        getActivity().setResult(Activity.RESULT_OK);
+    }
+
     private void startReplyActivity(@Nullable String quotePostId, @Nullable String quotePostCount) {
         if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(getActivity(), mUser)) {
             return;
@@ -293,6 +378,10 @@ public final class PostListFragment extends BaseViewPagerFragment
                 // clear this arg string because we only need to tell PostListPagerFragment once
                 bundle.putString(ARG_QUOTE_POST_ID, null);
                 return PostListPagerFragment.newInstance(mThreadId, jumpPage, quotePostId);
+            } else if (readProgress != null && readProgress.page == i + 1
+                    && readProgress.scrollProgress == ReadProgress.BEFORE_SCROLL_POSITION) {
+                readProgress.scrollProgress = ReadProgress.FREE;
+                return PostListPagerFragment.newInstance(mThreadId, i + 1, readProgress.position);
             } else {
                 return PostListPagerFragment.newInstance(mThreadId, i + 1);
             }

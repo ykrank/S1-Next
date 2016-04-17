@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import cl.monsoon.s1next.R;
-import cl.monsoon.s1next.view.fragment.DownloadPreferenceFragment;
+import cl.monsoon.s1next.view.fragment.setting.DownloadPreferenceFragment;
 
 /**
  * A helper class retrieving the download preferences from {@link SharedPreferences}.

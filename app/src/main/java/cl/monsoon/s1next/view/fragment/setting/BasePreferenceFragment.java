@@ -1,4 +1,4 @@
-package cl.monsoon.s1next.view.fragment;
+package cl.monsoon.s1next.view.fragment.setting;
 
 import android.content.SharedPreferences;
 import android.support.annotation.CallSuper;

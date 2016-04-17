@@ -5,15 +5,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Browser;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
+import javax.inject.Inject;
+
+import cl.monsoon.s1next.App;
 import cl.monsoon.s1next.R;
 import cl.monsoon.s1next.data.api.model.Thread;
 import cl.monsoon.s1next.data.api.model.ThreadLink;
+import cl.monsoon.s1next.data.db.ReadProgressDbWrapper;
+import cl.monsoon.s1next.data.db.dbmodel.ReadProgress;
+import cl.monsoon.s1next.data.pref.ReadProgressPreferencesManager;
+import cl.monsoon.s1next.util.OnceClickUtil;
+import cl.monsoon.s1next.util.RxJavaUtil;
 import cl.monsoon.s1next.view.fragment.PostListFragment;
 import cl.monsoon.s1next.widget.WifiBroadcastReceiver;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * An Activity which includes {@link android.support.v4.view.ViewPager}
@@ -29,20 +43,19 @@ public final class PostListActivity extends BaseActivity
     private static final String ARG_THREAD_LINK = "thread_link";
     private static final String ARG_COME_FROM_OTHER_APP = "come_from_other_app";
 
+    private static final String ARG_READ_PROGRESS = "read_progress";
+
+    @Inject
+    ReadProgressPreferencesManager mReadProgressPrefManager;
+
     public static void startPostListActivity(Context context, Thread thread, boolean shouldGoToLastPage) {
         Intent intent = new Intent(context, PostListActivity.class);
         intent.putExtra(ARG_THREAD, thread);
         intent.putExtra(ARG_SHOULD_GO_TO_LAST_PAGE, shouldGoToLastPage);
 
-        context.startActivity(intent);
-    }
-
-    public static void startPostListActivityForResult(Activity activity, Thread thread, boolean shouldGoToLastPage) {
-        Intent intent = new Intent(activity, PostListActivity.class);
-        intent.putExtra(ARG_THREAD, thread);
-        intent.putExtra(ARG_SHOULD_GO_TO_LAST_PAGE, shouldGoToLastPage);
-
-        activity.startActivityForResult(intent, RESULT_BLACKLIST);
+        if (context instanceof Activity)
+            ((Activity)context).startActivityForResult(intent, RESULT_BLACKLIST);
+        else context.startActivity(intent);
     }
 
     public static void startPostListActivity(Activity activity, ThreadLink threadLink) {
@@ -59,6 +72,37 @@ public final class PostListActivity extends BaseActivity
         context.startActivity(intent);
     }
 
+    /**
+     * 点击打开有读取进度的帖子
+     *
+     * @param view     点击焦点
+     * @param thread   帖子信息
+     * @return
+     */
+    public static Subscription clickStartPostListActivity(@NonNull View view, @NonNull Thread thread) {
+        ReadProgressPreferencesManager preferencesManager = App.getAppComponent(view.getContext()).getReadProgressPreferencesManager();
+        if (preferencesManager.isLoadAuto()){
+            return OnceClickUtil.onceClickObservable(view, 1000)
+                    .observeOn(Schedulers.io())
+                    .map(vo -> ReadProgressDbWrapper.getInstance().getWithThreadId(thread.getId()))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(progress -> {
+                        Context context = view.getContext();
+                        Intent intent = new Intent(context, PostListActivity.class);
+                        intent.putExtra(ARG_THREAD, thread);
+                        intent.putExtra(ARG_READ_PROGRESS, progress);
+                        if (context instanceof Activity)
+                            ((Activity)context).startActivityForResult(intent, RESULT_BLACKLIST);
+                        else context.startActivity(intent);
+                    });
+        }else{
+            return OnceClickUtil.setOnceClickLister(view, v->{
+                PostListActivity.startPostListActivity(v.getContext(), thread, false);
+            });
+        }
+        
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +114,12 @@ public final class PostListActivity extends BaseActivity
             Fragment fragment;
             Intent intent = getIntent();
             Thread thread = intent.getParcelableExtra(ARG_THREAD);
-            if (thread == null) {
+            ReadProgress progress = intent.getParcelableExtra(ARG_READ_PROGRESS);
+            if (thread == null) {//通过链接打开
                 fragment = PostListFragment.newInstance(intent.getParcelableExtra(ARG_THREAD_LINK));
-            } else {
+            } else if (progress != null){//有进度信息
+                fragment = PostListFragment.newInstance(thread, progress);
+            } else {//没有进度信息
                 fragment = PostListFragment.newInstance(thread, intent.getBooleanExtra(
                         ARG_SHOULD_GO_TO_LAST_PAGE, false));
             }
@@ -99,4 +146,5 @@ public final class PostListActivity extends BaseActivity
                 return super.onOptionsItemSelected(item);
         }
     }
+
 }

@@ -124,4 +124,11 @@
     <string name="blacklist_hide_post">隐藏回复</string>
     <string name="prompt_author_id">用户ID</string>
     <string name="prompt_author_name">用户名</string>
+    <string name="pref_post_read_progress">浏览进度</string>
+    <string name="pref_post_read_progress_summary"><![CDATA[自动保存&读取]]></string>
+    <string name="pref_read_progress_load_auto">自动读取</string>
+    <string name="pref_read_progress_save_auto">自动存储</string>
+    <string name="menu_load_progress">加载上次进度</string>
+    <string name="menu_save_progress">保存阅读进度</string>
+    <string name="save_read_progress_success">阅读进度保存成功</string>
 </resources>

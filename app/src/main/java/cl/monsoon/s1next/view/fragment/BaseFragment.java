@@ -359,6 +359,18 @@ public abstract class BaseFragment<D> extends Fragment {
             mRetrySnackbar = new WeakReference<>(snackbar.get());
         }
     }
+    
+    protected void showShortSnackbar(CharSequence text){
+        mCoordinatorLayoutAnchorDelegate.showShortSnackbar(text);
+    }
+    
+    protected void showShortSnackbar(@StringRes int resId){
+        mCoordinatorLayoutAnchorDelegate.showShortSnackbar(resId);
+    }
+
+    protected void showShortText(@StringRes int resId){
+        mCoordinatorLayoutAnchorDelegate.showShortText(getString(resId));
+    }
 
     private void showRetrySnackbar(@StringRes int textResId) {
         showRetrySnackbar(getString(textResId));

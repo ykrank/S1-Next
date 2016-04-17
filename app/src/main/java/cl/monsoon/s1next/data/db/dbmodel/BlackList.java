@@ -20,8 +20,9 @@ import cl.monsoon.s1next.R;
  */
 @Table(name = "BlackList")
 public class BlackList extends Model implements Parcelable {
-    private static final String Format = "yyyy-MM-dd HH:mm";
+    private static final String TimeFormat = "yyyy-MM-dd HH:mm";
 
+    @SuppressWarnings("WrongConstant")
     protected BlackList(Parcel in) {
         authorid = in.readInt();
         author = in.readString();
@@ -61,25 +62,27 @@ public class BlackList extends Model implements Parcelable {
     /**
      * Id
      */
-    @Column(name = "AuthorId")
+    @Column(name = "AuthorId", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     public int authorid;
 
     /**
      * 用户名
      */
-    @Column(name = "Author")
+    @Column(name = "Author", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     public String author;
 
     /**
      * 回复的屏蔽状态
      */
     @Column(name = "Post")
+    @PostFLag
     public int post = NORMAL;
 
     /**
      * 主题的屏蔽状态
      */
     @Column(name = "Forum")
+    @ForumFLag
     public int forum = NORMAL;
 
     /**
@@ -156,7 +159,7 @@ public class BlackList extends Model implements Parcelable {
     }
 
     public String getTime(){
-        SimpleDateFormat sdf = new SimpleDateFormat(Format);
+        SimpleDateFormat sdf = new SimpleDateFormat(TimeFormat);
         return sdf.format(new Date(timestamp));
     }
 
@@ -184,7 +187,7 @@ public class BlackList extends Model implements Parcelable {
                 ", post=" + post +
                 ", forum=" + forum +
                 ", remark='" + remark + '\'' +
-                ", timestamp=" + timestamp +
+                ", timestamp=" + getTime() +
                 ", upload=" + upload +
                 '}';
     }

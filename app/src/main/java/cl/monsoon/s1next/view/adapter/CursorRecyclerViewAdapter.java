@@ -1,4 +1,4 @@
-package cl.monsoon.s1next.widget;
+package cl.monsoon.s1next.view.adapter;
 
 /*
  * Copyright (C) 2014 skyfish.jy@gmail.com

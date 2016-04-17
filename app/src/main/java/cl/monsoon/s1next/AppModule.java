@@ -19,6 +19,8 @@ import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesRepository;
 import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
 import cl.monsoon.s1next.data.pref.GeneralPreferencesRepository;
+import cl.monsoon.s1next.data.pref.ReadProgressPreferencesManager;
+import cl.monsoon.s1next.data.pref.ReadProgressPreferencesRepository;
 import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.viewmodel.UserViewModel;
 import cl.monsoon.s1next.widget.EventBus;
@@ -152,5 +154,17 @@ final class AppModule {
     @Singleton
     DownloadPreferencesManager provideDownloadPreferencesManager(DownloadPreferencesRepository downloadPreferencesProvider, Wifi wifi) {
         return new DownloadPreferencesManager(downloadPreferencesProvider, wifi);
+    }
+
+    @Provides
+    @Singleton
+    ReadProgressPreferencesRepository provideReadProgressPreferencesProvider(Context context, SharedPreferences sharedPreferences) {
+        return new ReadProgressPreferencesRepository(context, sharedPreferences);
+    }
+
+    @Provides
+    @Singleton
+    ReadProgressPreferencesManager provideReadProgressPreferencesManager(ReadProgressPreferencesRepository readProgressPreferencesRepository){
+        return  new ReadProgressPreferencesManager(readProgressPreferencesRepository);
     }
 }

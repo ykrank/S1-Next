@@ -1,4 +1,4 @@
-package cl.monsoon.s1next.view.fragment;
+package cl.monsoon.s1next.view.fragment.setting;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -40,8 +40,8 @@ import rx.schedulers.Schedulers;
  * to modify download features and behaviors such as cache
  * size and avatars/images download strategy.
  */
-public final class BlackListFragment extends Fragment {
-    public static final String TAG = BlackListFragment.class.getName();
+public final class BlackListSettingFragment extends Fragment {
+    public static final String TAG = BlackListSettingFragment.class.getName();
 
     private static final String ARG_ROW = "row";
     private static final int LIMIT = 20;
@@ -168,8 +168,8 @@ public final class BlackListFragment extends Fragment {
             switch (item.getItemId()) {
                 case R.id.menu_add:
                     BlacklistDialogFragment dialogFragment = BlacklistDialogFragment.newInstance(null);
-                    dialogFragment.setTargetFragment(BlackListFragment.this, BlacklistDialogFragment.DIALOG_REQUEST_CODE);
-                    dialogFragment.show(getFragmentManager(), BlackListFragment.class.getName());
+                    dialogFragment.setTargetFragment(BlackListSettingFragment.this, BlacklistDialogFragment.DIALOG_REQUEST_CODE);
+                    dialogFragment.show(getFragmentManager(), BlackListSettingFragment.class.getName());
                     return true;
                 case R.id.menu_edit:
                     BlackList blackList = null;
@@ -180,8 +180,8 @@ public final class BlackListFragment extends Fragment {
                         }
                     }
                     BlacklistDialogFragment dialogFragment1 = BlacklistDialogFragment.newInstance(blackList);
-                    dialogFragment1.setTargetFragment(BlackListFragment.this, BlacklistDialogFragment.DIALOG_REQUEST_CODE);
-                    dialogFragment1.show(getFragmentManager(), BlackListFragment.class.getName());
+                    dialogFragment1.setTargetFragment(BlackListSettingFragment.this, BlacklistDialogFragment.DIALOG_REQUEST_CODE);
+                    dialogFragment1.show(getFragmentManager(), BlackListSettingFragment.class.getName());
                     return true;
                 case R.id.menu_delete:
                     List<BlackList> blackLists = new ArrayList<>();

@@ -17,6 +17,7 @@ import cl.monsoon.s1next.data.api.S1Service;
 import cl.monsoon.s1next.data.api.UserValidator;
 import cl.monsoon.s1next.data.pref.DownloadPreferencesManager;
 import cl.monsoon.s1next.data.pref.GeneralPreferencesManager;
+import cl.monsoon.s1next.data.pref.ReadProgressPreferencesManager;
 import cl.monsoon.s1next.data.pref.ThemeManager;
 import cl.monsoon.s1next.util.ResourceUtil;
 import cl.monsoon.s1next.view.activity.BaseActivity;
@@ -24,7 +25,8 @@ import cl.monsoon.s1next.view.adapter.delegate.PostAdapterDelegate;
 import cl.monsoon.s1next.view.adapter.delegate.ThreadAdapterDelegate;
 import cl.monsoon.s1next.view.dialog.LogoutDialogFragment;
 import cl.monsoon.s1next.view.dialog.ThemeChangeDialogFragment;
-import cl.monsoon.s1next.view.fragment.GeneralPreferenceFragment;
+import cl.monsoon.s1next.view.fragment.PostListPagerFragment;
+import cl.monsoon.s1next.view.fragment.setting.GeneralPreferenceFragment;
 import cl.monsoon.s1next.view.fragment.PostListFragment;
 import cl.monsoon.s1next.view.fragment.ReplyFragment;
 import cl.monsoon.s1next.viewmodel.UserViewModel;
@@ -128,9 +130,13 @@ public final class App extends Application {
 
         ThemeManager getThemeManager();
 
+        ReadProgressPreferencesManager getReadProgressPreferencesManager();
+
         void inject(BaseActivity activity);
 
         void inject(PostListFragment fragment);
+
+        void inject(PostListPagerFragment fragment);
 
         void inject(ReplyFragment fragment);
 

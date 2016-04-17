@@ -27,10 +27,11 @@
             android:value="a800f8b465a24096868397da57cec9bd" />
 
         <meta-data android:name="AA_DB_NAME" android:value="s1.db" />
-        <meta-data android:name="AA_DB_VERSION" android:value="1" />
+        <meta-data android:name="AA_DB_VERSION" android:value="2" />
         <meta-data
             android:name="AA_MODELS"
-            android:value="cl.monsoon.s1next.data.db.dbmodel.BlackList" />
+            android:value="cl.monsoon.s1next.data.db.dbmodel.BlackList, 
+                cl.monsoon.s1next.data.db.dbmodel.ReadProgress" />
 
         <activity
             android:name=".view.activity.LoginActivity"
