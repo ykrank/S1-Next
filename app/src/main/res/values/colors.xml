@@ -51,6 +51,7 @@
     <color name="dark_emoticon_keyboard_background">#263238</color>
 
     <color name="photo_view_crop_dim_color">#cc000000</color>
+    <color name="photo_view_crop_highlight_color">#fff</color>
 
     <color name="saraba_main_bg_color">#f6f7eb</color>
     <color name="saraba_main_top_color">#cccc99</color>

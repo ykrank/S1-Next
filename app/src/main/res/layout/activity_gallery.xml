@@ -17,6 +17,7 @@
         android:layout_height="match_parent">
 
         <me.ykrank.s1next.widget.PhotoView
+            android:id="@+id/photo_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/picture_content_desc"

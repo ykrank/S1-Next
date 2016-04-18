@@ -33,6 +33,7 @@ import me.ykrank.s1next.databinding.ActivityGalleryBinding;
 import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.view.internal.ToolbarDelegate;
 import me.ykrank.s1next.viewmodel.ImageViewModel;
+import me.ykrank.s1next.widget.PhotoView;
 
 /**
  * An Activity shows an ImageView that supports multi-touch.
@@ -44,6 +45,8 @@ public final class GalleryActivity extends AppCompatActivity {
     private static final String ARG_IMAGE_URL = "image_url";
 
     private String mImageUrl;
+    
+    private PhotoView mPhotoView;
 
     public static void startGalleryActivity(Context context, String imageUrl) {
         Intent intent = new Intent(context, GalleryActivity.class);
@@ -72,6 +75,7 @@ public final class GalleryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityGalleryBinding binding = DataBindingUtil.setContentView(this,
                 R.layout.activity_gallery);
+        mPhotoView = binding.photoView;
 
         ToolbarDelegate toolbarDelegate = new ToolbarDelegate(this, binding.toolbar);
         setTitle(null);
@@ -171,5 +175,15 @@ public final class GalleryActivity extends AppCompatActivity {
 
         Snackbar.make(findViewById(R.id.coordinator_layout),
                 R.string.snackbar_action_downloading, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        // Clean up views and other components
+        if (mPhotoView != null) {
+            mPhotoView.clear();
+            mPhotoView = null;
+        }
+        super.onDestroy();
     }
 }
