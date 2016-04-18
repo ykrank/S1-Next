@@ -26,7 +26,7 @@
 -dontwarn dagger.**
 
 # Jackson databind
--keep public class cl.monsoon.s1next.data.api.model.** { *; }
+-keep public class me.ykrank.s1next.data.api.model.** { *; }
 
 -dontwarn java.nio.file.Paths
 -dontwarn java.beans.Transient
