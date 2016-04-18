@@ -54,7 +54,8 @@
 
         <activity
             android:name=".view.activity.HelpActivity"
-            android:label="@string/help" />
+            android:label="@string/help"
+            android:process="${applicationId}.webView" />
 
         <activity
             android:name=".view.activity.FavouriteListActivity"

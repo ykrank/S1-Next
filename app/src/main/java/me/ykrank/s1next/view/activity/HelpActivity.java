@@ -10,6 +10,7 @@ import me.ykrank.s1next.view.fragment.HelpFragment;
 
 /**
  * An Activity shows a help page.
+ * 为了防止WebView内存泄露,应该在新进程中打开
  */
 public final class HelpActivity extends BaseActivity {
 
@@ -43,5 +44,14 @@ public final class HelpActivity extends BaseActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    /**
+     * 为了防止内存泄露，退出时直接退出进程
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.exit(0);
     }
 }
