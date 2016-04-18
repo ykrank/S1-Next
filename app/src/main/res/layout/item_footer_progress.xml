@@ -5,7 +5,7 @@
     style="?attr/cardViewStyle"
     android:layout_width="match_parent"
     android:layout_height="@dimen/single_line_height_with_avatar"
-    tools:context="cl.monsoon.s1next.view.adapter.delegate.PostFooterProgressAdapterDelegate">
+    tools:context="me.ykrank.s1next.view.adapter.delegate.PostFooterProgressAdapterDelegate">
 
    <include layout="@layout/progress_bar" />
 

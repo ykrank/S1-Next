@@ -5,4 +5,4 @@
     android:id="@+id/view_pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cl.monsoon.s1next.view.fragment.BaseViewPagerFragment" />
+    tools:context="me.ykrank.s1next.view.fragment.BaseViewPagerFragment" />

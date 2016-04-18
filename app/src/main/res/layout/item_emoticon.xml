@@ -3,7 +3,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="cl.monsoon.s1next.view.adapter.EmoticonGridRecyclerAdapter">
+    tools:context="me.ykrank.s1next.view.adapter.EmoticonGridRecyclerAdapter">
 
     <data>
 
@@ -11,11 +11,11 @@
 
         <variable
             name="emoticonViewModel"
-            type="cl.monsoon.s1next.viewmodel.EmoticonViewModel" />
+            type="me.ykrank.s1next.viewmodel.EmoticonViewModel" />
 
         <variable
             name="eventBus"
-            type="cl.monsoon.s1next.widget.EventBus" />
+            type="me.ykrank.s1next.widget.EventBus" />
 
         <variable
             name="drawableRequestBuilder"

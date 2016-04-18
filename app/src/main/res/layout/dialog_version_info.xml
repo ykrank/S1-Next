@@ -2,11 +2,11 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="cl.monsoon.s1next.view.dialog.VersionInfoDialogFragment">
+    tools:context="me.ykrank.s1next.view.dialog.VersionInfoDialogFragment">
 
     <data>
 
-        <import type="cl.monsoon.s1next.BuildConfig" />
+        <import type="me.ykrank.s1next.BuildConfig" />
     </data>
 
     <RelativeLayout

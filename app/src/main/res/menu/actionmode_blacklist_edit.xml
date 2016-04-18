@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="cl.monsoon.s1next.view.fragment.BaseFragment">
+    tools:context="me.ykrank.s1next.view.fragment.BaseFragment">
     <item
         android:id="@+id/menu_add"
         android:orderInCategory="1"
         android:title="@string/menu_add"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_edit"
         android:orderInCategory="2"
         android:title="@string/menu_edit"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_delete"
         android:orderInCategory="3"
         android:title="@string/menu_delete"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_all"
         android:orderInCategory="4"

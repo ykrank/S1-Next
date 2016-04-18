@@ -208,5 +208,6 @@
     <string name="menu_save_progress">Save read progress</string>
     <string name="menu_load_progress">Load last read progress</string>
     <string name="save_read_progress_success">Save read progress success</string>
+    <string name="no_permission">No permission</string>
 
 </resources>

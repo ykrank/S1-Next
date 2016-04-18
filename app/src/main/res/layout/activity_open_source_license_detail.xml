@@ -3,13 +3,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="cl.monsoon.s1next.view.activity.OpenSourceLicenseDetailActivity">
+    tools:context="me.ykrank.s1next.view.activity.OpenSourceLicenseDetailActivity">
 
     <data>
 
         <variable
             name="textAssetViewModel"
-            type="cl.monsoon.s1next.viewmodel.TextAssetViewModel" />
+            type="me.ykrank.s1next.viewmodel.TextAssetViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

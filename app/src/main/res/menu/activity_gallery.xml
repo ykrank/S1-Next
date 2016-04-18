@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="cl.monsoon.s1next.view.activity.GalleryActivity">
+    tools:context="me.ykrank.s1next.view.activity.GalleryActivity">
     <item
         android:id="@+id/menu_download"
         android:orderInCategory="21"

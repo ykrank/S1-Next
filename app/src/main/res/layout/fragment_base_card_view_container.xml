@@ -7,7 +7,7 @@
 
         <variable
             name="loadingViewModel"
-            type="cl.monsoon.s1next.viewmodel.LoadingViewModel" />
+            type="me.ykrank.s1next.viewmodel.LoadingViewModel" />
     </data>
 
     <android.support.v4.widget.SwipeRefreshLayout

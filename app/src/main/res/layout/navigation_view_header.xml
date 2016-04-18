@@ -3,13 +3,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="cl.monsoon.s1next.view.internal.DrawerLayoutDelegateConcrete">
+    tools:context="me.ykrank.s1next.view.internal.DrawerLayoutDelegateConcrete">
 
     <data>
 
         <variable
             name="userViewModel"
-            type="cl.monsoon.s1next.viewmodel.UserViewModel" />
+            type="me.ykrank.s1next.viewmodel.UserViewModel" />
     </data>
 
     <android.support.percent.PercentRelativeLayout
@@ -22,14 +22,18 @@
             android:scaleType="centerCrop"
             app:imageDrawable="@{@drawable/ic_drawer_header_background}"
             app:layout_aspectRatio="@fraction/drawer_header_aspect_ratio"
-            app:layout_widthPercent="100%" />
+            app:layout_widthPercent="100%"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <View
             android:background="@drawable/scrim"
             app:layout_aspectRatio="@fraction/drawer_header_aspect_ratio"
-            app:layout_widthPercent="100%" />
+            app:layout_widthPercent="100%"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-        <cl.monsoon.s1next.widget.BezelImageView
+        <me.ykrank.s1next.widget.BezelImageView
             android:id="@+id/drawer_user_avatar"
             android:layout_width="@dimen/drawer_avatar_size"
             android:layout_height="@dimen/drawer_avatar_size"

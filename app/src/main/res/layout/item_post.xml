@@ -3,25 +3,25 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="cl.monsoon.s1next.view.adapter.delegate.PostAdapterDelegate">
+    tools:context="me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate">
 
     <data>
 
-        <import type="cl.monsoon.s1next.widget.CustomMovementMethod" />
+        <import type="me.ykrank.s1next.widget.CustomMovementMethod" />
 
         <import type="android.text.method.LinkMovementMethod" />
 
         <variable
             name="postViewModel"
-            type="cl.monsoon.s1next.viewmodel.PostViewModel" />
+            type="me.ykrank.s1next.viewmodel.PostViewModel" />
 
         <variable
             name="eventBus"
-            type="cl.monsoon.s1next.widget.EventBus" />
+            type="me.ykrank.s1next.widget.EventBus" />
 
         <variable
             name="downloadPreferencesManager"
-            type="cl.monsoon.s1next.data.pref.DownloadPreferencesManager" />
+            type="me.ykrank.s1next.data.pref.DownloadPreferencesManager" />
 
         <variable
             name="drawableRequestBuilder"
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/item_padding">
 
-        <cl.monsoon.s1next.widget.BezelImageView
+        <me.ykrank.s1next.widget.BezelImageView
             android:id="@+id/avatar"
             android:layout_width="@dimen/avatar_size"
             android:layout_height="@dimen/avatar_size"

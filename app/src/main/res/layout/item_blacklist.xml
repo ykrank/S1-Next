@@ -8,7 +8,7 @@
 
         <variable
             name="blackListViewModel"
-            type="cl.monsoon.s1next.viewmodel.BlackListViewModel" />
+            type="me.ykrank.s1next.viewmodel.BlackListViewModel" />
         
     </data>
 

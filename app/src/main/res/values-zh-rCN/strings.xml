@@ -131,4 +131,5 @@
     <string name="menu_load_progress">加载上次进度</string>
     <string name="menu_save_progress">保存阅读进度</string>
     <string name="save_read_progress_success">阅读进度保存成功</string>
+    <string name="no_permission">没有权限</string>
 </resources>

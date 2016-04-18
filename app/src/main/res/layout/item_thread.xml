@@ -3,21 +3,21 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="cl.monsoon.s1next.view.adapter.delegate.ThreadAdapterDelegate">
+    tools:context="me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate">
 
     <data>
 
         <variable
             name="threadViewModel"
-            type="cl.monsoon.s1next.viewmodel.ThreadViewModel" />
+            type="me.ykrank.s1next.viewmodel.ThreadViewModel" />
 
         <variable
             name="userViewModel"
-            type="cl.monsoon.s1next.viewmodel.UserViewModel" />
+            type="me.ykrank.s1next.viewmodel.UserViewModel" />
 
         <variable
             name="themeManager"
-            type="cl.monsoon.s1next.data.pref.ThemeManager" />
+            type="me.ykrank.s1next.data.pref.ThemeManager" />
     </data>
 
     <!-- May change this TextView padding or height after because we

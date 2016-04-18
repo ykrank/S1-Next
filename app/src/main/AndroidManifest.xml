@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="cl.monsoon.s1next">
+    package="me.ykrank.s1next">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -19,7 +19,7 @@
         tools:ignore="UnusedAttribute">
 
         <meta-data
-            android:name="cl.monsoon.s1next.widget.AppGlideModule"
+            android:name="me.ykrank.s1next.widget.AppGlideModule"
             android:value="GlideModule" />
 
         <meta-data
@@ -30,8 +30,8 @@
         <meta-data android:name="AA_DB_VERSION" android:value="2" />
         <meta-data
             android:name="AA_MODELS"
-            android:value="cl.monsoon.s1next.data.db.dbmodel.BlackList, 
-                cl.monsoon.s1next.data.db.dbmodel.ReadProgress" />
+            android:value="me.ykrank.s1next.data.db.dbmodel.BlackList, 
+                me.ykrank.s1next.data.db.dbmodel.ReadProgress" />
 
         <activity
             android:name=".view.activity.LoginActivity"

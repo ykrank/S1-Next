@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cl.monsoon.s1next.view.adapter.delegate.ProgressAdapterDelegate">
+    tools:context="me.ykrank.s1next.view.adapter.delegate.ProgressAdapterDelegate">
 
     <include layout="@layout/progress_bar" />
 

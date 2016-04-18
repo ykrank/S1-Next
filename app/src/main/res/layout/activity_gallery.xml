@@ -3,20 +3,20 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="cl.monsoon.s1next.view.activity.GalleryActivity">
+    tools:context="me.ykrank.s1next.view.activity.GalleryActivity">
 
     <data>
 
         <variable
             name="imageViewModel"
-            type="cl.monsoon.s1next.viewmodel.ImageViewModel" />
+            type="me.ykrank.s1next.viewmodel.ImageViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <cl.monsoon.s1next.widget.PhotoView
+        <me.ykrank.s1next.widget.PhotoView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/picture_content_desc"

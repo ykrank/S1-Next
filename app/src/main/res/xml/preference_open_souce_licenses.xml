@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:persistent="false"
-    tools:context="cl.monsoon.s1next.view.fragment.OpenSourceLicensesFragment">
+    tools:context="me.ykrank.s1next.view.fragment.OpenSourceLicensesFragment">
 
     <PreferenceCategory
         android:key="pref_key_libraries"
