@@ -99,7 +99,8 @@ public final class OpenSourceLicensesFragment extends PreferenceFragment {
                 {"Retrofit", "RETROFIT"},
                 {"Retrolambda", "APACHE_LICENSE_2.0"},
                 {"RxAndroid", "RX_ANDROID"},
-                {"RxJava", "RX_JAVA"}
+                {"RxJava", "RX_JAVA"},
+                {"ActiveAndroid", "ACTIVE_ANDROID"}
         };
     }
 

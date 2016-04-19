@@ -34,7 +34,7 @@ public final class HelpFragment extends Fragment {
 
     public static final String TAG = HelpFragment.class.getName();
 
-    private static final String HELP_PAGE_URL = "http://monsoon.cl/S1-Next/HELP.html";
+    private static final String HELP_PAGE_URL = "file:///android_asset/help/HELP.html";
 
     /**
      * https://developer.android.com/distribute/tools/promote/linking.html#OpeningDetails

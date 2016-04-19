@@ -16,7 +16,4 @@ public final class WebPageViewModel extends BaseObservable {
         return finishedLoading ? View.VISIBLE : View.INVISIBLE;
     }
 
-    public int getProgressBarVisibility() {
-        return finishedLoading ? View.GONE : View.VISIBLE;
-    }
 }

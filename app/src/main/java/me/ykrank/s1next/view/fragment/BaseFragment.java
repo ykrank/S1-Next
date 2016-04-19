@@ -158,9 +158,12 @@ public abstract class BaseFragment<D> extends Fragment {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+        //remove OnRefreshListener
+        mLoadingViewModelBindingDelegate.getSwipeRefreshLayout().setOnRefreshListener(null);
 
         RxJavaUtil.unsubscribeIfNotNull(mSubscription);
+
+        super.onDestroy();
 
         RefWatcher refWatcher = App.get().getRefWatcher();
         refWatcher.watch(this);

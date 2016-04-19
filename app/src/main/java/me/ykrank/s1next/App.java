@@ -20,6 +20,7 @@ import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
 import me.ykrank.s1next.data.pref.ThemeManager;
+import me.ykrank.s1next.util.ProcessUtil;
 import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.view.activity.BaseActivity;
 import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
@@ -79,6 +80,10 @@ public final class App extends Application {
         refWatcher = LeakCanary.install(this);
         Bugsnag.init(this);
 
+        //如果不是主进程，不做多余的初始化
+        if (!ProcessUtil.isMainProcess(this))
+            return;
+
         sApp = this;
         mAppComponent = DaggerApp_AppComponent.builder()
                 .appModule(new AppModule(this))
@@ -97,6 +102,10 @@ public final class App extends Application {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
+        //如果不是主进程，不做多余的初始化
+        if (!ProcessUtil.isMainProcess(this))
+            return;
+        
         ResourceUtil.setScaledDensity(getResources(), mGeneralPreferencesManager.getFontScale());
     }
 
