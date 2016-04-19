@@ -22,7 +22,8 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/picture_content_desc"
             android:transitionName="@string/gallery_transition"
-            app:url="@{imageViewModel.url}" />
+            app:url="@{imageViewModel.url}"
+            app:thumbUrl="@{imageViewModel.thumbUrl}" />
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"

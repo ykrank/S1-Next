@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.hannesdorfmann.adapterdelegates.AbsAdapterDelegate;
 
@@ -47,6 +48,7 @@ public final class PostAdapterDelegate extends AbsAdapterDelegate<List<Object>> 
                 .from(String.class)
                 .error(R.drawable.ic_avatar_placeholder)
                 .priority(Priority.HIGH)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .transform(new CenterCrop(Glide.get(activity).getBitmapPool()));
     }
 

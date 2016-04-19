@@ -74,7 +74,8 @@ public final class BezelImageViewBindingAdapter {
 
             //点击显示头像大图
             bezelImageView.setOnClickListener(v -> {
-                GalleryActivity.startGalleryActivity(v.getContext(), Api.getAvatarBigUrl(post.getAuthorId()));
+                GalleryActivity.startGalleryActivity(v.getContext(), Api.getAvatarBigUrl(post.getAuthorId())
+                        , url);
             });
             //长按显示抹布菜单
             bezelImageView.setOnLongClickListener((View v) -> {

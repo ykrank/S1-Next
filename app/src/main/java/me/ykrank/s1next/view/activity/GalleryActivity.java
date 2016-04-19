@@ -43,8 +43,10 @@ public final class GalleryActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 0;
 
     private static final String ARG_IMAGE_URL = "image_url";
+    private static final String ARG_IMAGE_THUMB_URL = "image_thumb_url";
 
     private String mImageUrl;
+    private String mImageThumbUrl;
     
     private PhotoView mPhotoView;
 
@@ -54,12 +56,19 @@ public final class GalleryActivity extends AppCompatActivity {
         context.startActivity(intent);
     }
 
+    public static void startGalleryActivity(Context context, String imageUrl, String thumbUrl) {
+        Intent intent = new Intent(context, GalleryActivity.class);
+        intent.putExtra(ARG_IMAGE_URL, imageUrl);
+        intent.putExtra(ARG_IMAGE_THUMB_URL, thumbUrl);
+        context.startActivity(intent);
+    }
+
     public static void startGalleryActivity(Context context, String imageUrl, final View transitionView) {
         Intent intent = new Intent(context, GalleryActivity.class);
         intent.putExtra(ARG_IMAGE_URL, imageUrl);
         if (transitionView != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // create the transition animation - the images in the layouts
-            // of both activities are defined with android:transitionName="robot"
+            // of both activities are defined with android:transitionName="gallery_transition"
             ActivityOptions options = ActivityOptions
                     .makeSceneTransitionAnimation((Activity) context, transitionView,
                             context.getResources().getString(R.string.gallery_transition));
@@ -108,7 +117,8 @@ public final class GalleryActivity extends AppCompatActivity {
         });
 
         mImageUrl = getIntent().getStringExtra(ARG_IMAGE_URL);
-        binding.setImageViewModel(new ImageViewModel(mImageUrl));
+        mImageThumbUrl = getIntent().getStringExtra(ARG_IMAGE_THUMB_URL);
+        binding.setImageViewModel(new ImageViewModel(mImageUrl, mImageThumbUrl));
     }
 
     @Override

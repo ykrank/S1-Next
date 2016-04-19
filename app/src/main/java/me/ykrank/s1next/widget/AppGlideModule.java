@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
+import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.module.GlideModule;
@@ -27,6 +28,9 @@ public final class AppGlideModule implements GlideModule {
                 .getTotalDownloadCacheSize()));
 
         ViewTarget.setTagId(R.id.tag_glide);
+
+        //从默认的RGB_565改为ARGB_8888显示
+        builder.setDecodeFormat(DecodeFormat.PREFER_ARGB_8888);
     }
 
     @Override
