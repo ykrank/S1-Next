@@ -41,7 +41,7 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
 
     private static final String ARG_THREAD_ID = "thread_id";
     private static final String ARG_PAGE_NUM = "page_num";
-    private static final String ARG_POSITION = "position";
+    private static final String ARG_READ_PROGRESS = "read_progress";
 
     /**
      * Used for post post redirect.
@@ -50,13 +50,13 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
 
     @Inject
     ReadProgressPreferencesManager mReadProgressPrefManager;
-    
+
     private String mThreadId;
     private int mPageNum;
     /**
-     * 之前记录的阅读进度，初始化列表时使用一次之后重置为0
+     * 之前记录的阅读进度
      */
-    private int beforePosition;
+    private ReadProgress readProgress;
     private boolean blacklistChanged = false;
 
     private RecyclerView mRecyclerView;
@@ -64,22 +64,22 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
     private LinearLayoutManager mLayoutManager;
 
     private PagerCallback mPagerCallback;
-    
+
     private Subscription saveReadProgressSubscription;
 
     public static PostListPagerFragment newInstance(String threadId, int pageNum) {
-        return newInstance(threadId, pageNum, null, 0);
+        return newInstance(threadId, pageNum, null, null);
     }
 
-    public static PostListPagerFragment newInstance(String threadId, int pageNum, int position) {
-        return newInstance(threadId, pageNum, null, position);
+    public static PostListPagerFragment newInstance(String threadId, int pageNum, ReadProgress progress) {
+        return newInstance(threadId, pageNum, null, progress);
     }
 
     public static PostListPagerFragment newInstance(String threadId, int pageNum, String postId) {
-        return newInstance(threadId, pageNum, postId, 0);
+        return newInstance(threadId, pageNum, postId, null);
     }
 
-    private static PostListPagerFragment newInstance(String threadId, int pageNum, String postId, int position) {
+    private static PostListPagerFragment newInstance(String threadId, int pageNum, String postId, ReadProgress progress) {
         PostListPagerFragment fragment = new PostListPagerFragment();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_THREAD_ID, threadId);
@@ -87,8 +87,7 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
             bundle.putString(ARG_QUOTE_POST_ID, postId);
         }
         bundle.putInt(ARG_PAGE_NUM, pageNum);
-        if (position >0)
-            bundle.putInt(ARG_POSITION, position);
+        bundle.putParcelable(ARG_READ_PROGRESS, progress);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -101,7 +100,7 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
 
         mThreadId = getArguments().getString(ARG_THREAD_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
-        beforePosition = getArguments().getInt(ARG_POSITION);
+        readProgress = getArguments().getParcelable(ARG_READ_PROGRESS);
 
         mRecyclerView = getRecyclerView();
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -167,25 +166,35 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         blacklistChanged = true;
         startPullToRefresh();
     }
-    
-    void smoothScrollToPosition(int position){
+
+    void smoothScrollToPosition(int position) {
         mRecyclerView.smoothScrollToPosition(position);
     }
 
     /**
      * 保存当前阅读进度
      */
-    void saveReadProgress(){
-        saveReadProgressSubscription = RxJavaUtil.workWithUiThread(()->{
+    void saveReadProgress() {
+        saveReadProgressSubscription = RxJavaUtil.workWithUiThread(() -> {
 //            LooperUtil.enforceOnWorkThread();
-            int visiblePosition = mLayoutManager.findFirstVisibleItemPosition();
+            int visiblePosition = findMidItemPosition();
             ReadProgress readProgress = new ReadProgress(mThreadId, mPageNum, visiblePosition);
             ReadProgressDbWrapper dbWrapper = ReadProgressDbWrapper.getInstance();
             dbWrapper.saveReadProgress(readProgress);
-        },()->{
+        }, () -> {
 //            LooperUtil.enforceOnMainThread();
             showShortText(R.string.save_read_progress_success);
         });
+    }
+
+    /**
+     * 现在Item的位置
+     *
+     * @return
+     */
+    private int findMidItemPosition() {
+        return (mLayoutManager.findFirstCompletelyVisibleItemPosition()
+                + mLayoutManager.findLastCompletelyVisibleItemPosition()) / 2;
     }
 
     @Override
@@ -212,11 +221,11 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         } else {
             super.onNext(data);
 
-            if (blacklistChanged){
+            if (blacklistChanged) {
                 blacklistChanged = false;
                 mRecyclerAdapter.setDataSet(postList);
                 mRecyclerAdapter.notifyDataSetChanged();
-            }else if (pullUpToRefresh) {
+            } else if (pullUpToRefresh) {
                 final int oldItemCount = mRecyclerAdapter.getItemCount();
                 // oldItemCount = 0 when configuration changes
                 if (oldItemCount != 0 && mRecyclerAdapter.getItemId(oldItemCount - 1)
@@ -232,12 +241,12 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
                         mRecyclerAdapter.notifyItemRangeInserted(oldItemCount, newItemCount);
                     }
                 }
-            }else if (beforePosition >0){
+            } else if (readProgress != null && readProgress.scrollState == ReadProgress.BEFORE_SCROLL_POSITION) {
                 mRecyclerAdapter.setDataSet(postList);
                 mRecyclerAdapter.notifyDataSetChanged();
-                mRecyclerView.scrollToPosition(beforePosition);
-                beforePosition = 0;
-            }else {
+                mRecyclerView.scrollToPosition(readProgress.position);
+                readProgress.scrollState = ReadProgress.FREE;
+            } else {
                 mRecyclerAdapter.setDataSet(postList);
                 mRecyclerAdapter.notifyDataSetChanged();
 
@@ -274,14 +283,14 @@ public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
         }
 
         //网络请求失败下依然刷新黑名单
-        if (blacklistChanged){
+        if (blacklistChanged) {
             List<Object> dataSet = mRecyclerAdapter.getDataSet();
             List<Object> newData = new ArrayList<>();
-            for (Object obj:dataSet){
-                if (obj instanceof Post){
+            for (Object obj : dataSet) {
+                if (obj instanceof Post) {
                     obj = Posts.getFilterPost((Post) obj);
                 }
-                if (obj != null){
+                if (obj != null) {
                     newData.add(obj);
                 }
             }

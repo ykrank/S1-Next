@@ -279,7 +279,6 @@ public abstract class BaseFragment<D> extends Fragment {
         // when we start to load new data
         mCoordinatorLayoutAnchorDelegate.dismissSnackbarIfExist();
         mSubscription = getSourceObservable()
-//                .map(this::onIoNext)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(mUserValidator::validateIntercept)
@@ -307,10 +306,6 @@ public abstract class BaseFragment<D> extends Fragment {
     @CallSuper
     void onNext(D data) {
         mDataRetainedFragment.data = data;
-    }
-
-    D onIoNext(D data){
-        return data;
     }
     
     /**

@@ -62,7 +62,7 @@ public class ReadProgress extends Model implements Parcelable{
         page = in.readInt();
         position = in.readInt();
         timestamp = in.readLong();
-        scrollProgress = in.readInt();
+        scrollState = in.readInt();
     }
 
     public static final Creator<ReadProgress> CREATOR = new Creator<ReadProgress>() {
@@ -88,18 +88,18 @@ public class ReadProgress extends Model implements Parcelable{
         dest.writeInt(page);
         dest.writeInt(position);
         dest.writeLong(timestamp);
-        dest.writeInt(scrollProgress);
+        dest.writeInt(scrollState);
     }
 
     /**
      * 加载进度
      */
     @IntDef({FREE, BEFORE_SCROLL_PAGE, BEFORE_SCROLL_POSITION})
-    public @interface ScrollProgress {
+    public @interface ScrollState {
     }
-    
-    @ScrollProgress
-    public int scrollProgress;
+
+    @ScrollState
+    public int scrollState;
 
     public ReadProgress(){
         super();
@@ -111,7 +111,7 @@ public class ReadProgress extends Model implements Parcelable{
         this.page = page;
         this.position = position;
         this.timestamp = System.currentTimeMillis();
-        this.scrollProgress = FREE;
+        this.scrollState = FREE;
     }
 
     public String getTime(){

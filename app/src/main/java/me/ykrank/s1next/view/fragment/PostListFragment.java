@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -151,8 +152,12 @@ public final class PostListFragment extends BaseViewPagerFragment
         ((CoordinatorLayoutAnchorDelegate) getActivity()).setupFloatingActionButton(
                 R.drawable.ic_insert_comment_black_24dp, this);
 
-        if (mReadProgressPrefManager.isLoadAuto()) {
-            loadReadProgress();
+        //读取进度
+        readProgress = bundle.getParcelable(ARG_READ_PROGRESS);
+        if (readProgress != null) {
+            readProgress.scrollState = ReadProgress.BEFORE_SCROLL_PAGE;
+            setCurrentPage(readProgress.page - 1);
+            Log.d("WTF", "ReadProgress:" + readProgress.toString());
         }
     }
 
@@ -318,7 +323,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         mreadProgressSubscription = RxJavaUtil.workWithUiThread(() -> {
             readProgress = dbWrapper.getWithThreadId(mThreadId);
             if (readProgress != null)
-                readProgress.scrollProgress = ReadProgress.BEFORE_SCROLL_PAGE;
+                readProgress.scrollState = ReadProgress.BEFORE_SCROLL_PAGE;
         }, this::afterLoadReadProgress);
     }
 
@@ -327,8 +332,8 @@ public final class PostListFragment extends BaseViewPagerFragment
      */
     @MainThread
     private void afterLoadReadProgress() {
-        if (readProgress != null && readProgress.scrollProgress == ReadProgress.BEFORE_SCROLL_PAGE) {
-            readProgress.scrollProgress = ReadProgress.BEFORE_SCROLL_POSITION;
+        if (readProgress != null && readProgress.scrollState == ReadProgress.BEFORE_SCROLL_PAGE) {
+            readProgress.scrollState = ReadProgress.BEFORE_SCROLL_POSITION;
             //如果当前页便是指定加载页，则直接滑动到指定位置
             if (mViewPager.getCurrentItem() == readProgress.page - 1) {
                 PostListPagerFragment curFragment = getCurPostPageFragment();
@@ -374,9 +379,9 @@ public final class PostListFragment extends BaseViewPagerFragment
                 bundle.putString(ARG_QUOTE_POST_ID, null);
                 return PostListPagerFragment.newInstance(mThreadId, jumpPage, quotePostId);
             } else if (readProgress != null && readProgress.page == i + 1
-                    && readProgress.scrollProgress == ReadProgress.BEFORE_SCROLL_POSITION) {
-                readProgress.scrollProgress = ReadProgress.FREE;
-                return PostListPagerFragment.newInstance(mThreadId, i + 1, readProgress.position);
+                    && readProgress.scrollState == ReadProgress.BEFORE_SCROLL_PAGE) {
+                readProgress.scrollState = ReadProgress.BEFORE_SCROLL_POSITION;
+                return PostListPagerFragment.newInstance(mThreadId, i + 1, readProgress);
             } else {
                 return PostListPagerFragment.newInstance(mThreadId, i + 1);
             }

@@ -8,7 +8,6 @@ import android.provider.Browser;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -86,7 +85,6 @@ public final class PostListActivity extends BaseActivity
                     .map(vo -> ReadProgressDbWrapper.getInstance().getWithThreadId(thread.getId()))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(progress -> {
-                        Log.d("WTF", thread.getTitle());
                         Context context = view.getContext();
                         Intent intent = new Intent(context, PostListActivity.class);
                         intent.putExtra(ARG_THREAD, thread);
@@ -94,7 +92,7 @@ public final class PostListActivity extends BaseActivity
                         if (context instanceof Activity)
                             ((Activity)context).startActivityForResult(intent, RESULT_BLACKLIST);
                         else context.startActivity(intent);
-                    });
+                    }, e -> e.printStackTrace());
         }else{
             return OnceClickUtil.setOnceClickLister(view, v->{
                 PostListActivity.startPostListActivity(v.getContext(), thread, false);

@@ -33,7 +33,7 @@ public final class RxJavaUtil {
                 .doOnNext(i -> workAction.call())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(o -> uiAction.call());
+                .subscribe(o -> uiAction.call(), e -> e.printStackTrace());
     }
 
 
