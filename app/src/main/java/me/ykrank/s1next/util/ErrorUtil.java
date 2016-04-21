@@ -1,7 +1,6 @@
 package me.ykrank.s1next.util;
 
 import android.support.annotation.StringRes;
-import android.util.Log;
 
 import java.io.IOException;
 
@@ -19,9 +18,7 @@ public final class ErrorUtil {
         } else if (throwable instanceof HttpException) {
             return R.string.message_server_error;
         } else {
-            if (Log.isLoggable(TAG_LOG, Log.INFO)) {
-                Log.i(TAG_LOG, "Unknown error occurred", throwable);
-            }
+            L.e(TAG_LOG, throwable);
             return R.string.message_unknown_error;
         }
     }

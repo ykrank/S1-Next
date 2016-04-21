@@ -1,9 +1,13 @@
 package me.ykrank.s1next.util;
 
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.AnyRes;
 import android.support.annotation.AttrRes;
+import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
@@ -45,5 +49,18 @@ public final class ResourceUtil {
     public static boolean isRTL(Resources resources) {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
                 && resources.getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+    }
+
+    public static
+    @Nullable
+    String getAppMeta(Context context, String name) {
+        try {
+            ApplicationInfo ai = context.getPackageManager().getApplicationInfo(
+                    context.getPackageName(), PackageManager.GET_META_DATA);
+            return ai.metaData.getString(name);
+        } catch (PackageManager.NameNotFoundException e) {
+            L.e("getAppMeta", e);
+        }
+        return null;
     }
 }

@@ -32,6 +32,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
     private static final String PREF_KEY_DOWNLOADS = "pref_key_downloads";
     private static final String PREF_KEY_BLACKLIST = "pref_key_blacklists";
     private static final String PREF_KEY_READ_PROGRESS = "pref_key_post_read_progress";
+    private static final String PREF_KEY_BACKUP = "pref_key_backup";
 
     @Inject
     EventBus mEventBus;
@@ -50,6 +51,8 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
         findPreference(PREF_KEY_DOWNLOADS).setOnPreferenceClickListener(this);
         findPreference(PREF_KEY_BLACKLIST).setOnPreferenceClickListener(this);
         findPreference(PREF_KEY_READ_PROGRESS).setOnPreferenceClickListener(this);
+        findPreference(PREF_KEY_BACKUP).setOnPreferenceClickListener(this);
+        
         findPreference(PREF_KEY_SIGNATURE).setSummary(DeviceUtil.getSignature(getActivity()));
     }
 
@@ -89,6 +92,9 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
                 return true;
             case PREF_KEY_READ_PROGRESS:
                 SettingsActivity.startReadProgressSettingsActivity(preference.getContext());
+                return true;
+            case PREF_KEY_BACKUP:
+                SettingsActivity.startBackupSettingsActivity(preference.getContext());
                 return true;
             default:
                 return false;

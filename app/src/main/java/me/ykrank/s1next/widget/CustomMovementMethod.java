@@ -13,11 +13,11 @@ import android.text.method.ArrowKeyMovementMethod;
 import android.text.method.MovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
 import me.ykrank.s1next.util.IntentUtil;
+import me.ykrank.s1next.util.L;
 
 /**
  * A movement method that provides selection and clicking on links,
@@ -72,7 +72,7 @@ public final class CustomMovementMethod extends ArrowKeyMovementMethod {
                         try {
                             context.startActivity(intent);
                         } catch (ActivityNotFoundException e) {
-                            Log.w("URLSpan", "Activity was not found for intent, " + intent.toString());
+                            L.e("URLSpan", "Activity was not found for intent, " + intent.toString());
                         }
                     } else {
                         clickableSpan.onClick(widget);

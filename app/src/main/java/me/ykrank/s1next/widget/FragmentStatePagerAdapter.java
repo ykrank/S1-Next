@@ -28,6 +28,8 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import me.ykrank.s1next.util.L;
+
 /**
  * Because we can't retain Fragments that are nested in other fragments.
  * So we adds tag to each Fragments in order to let host Fragment in ViewPager
@@ -199,7 +201,7 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
                         f.setMenuVisibility(false);
                         mFragments.set(index, f);
                     } else {
-                        Log.w(TAG, "Bad fragment at key " + key);
+                        L.w(TAG, "Bad fragment at key " + key);
                     }
                 }
             }

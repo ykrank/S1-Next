@@ -53,6 +53,12 @@
             android:title="@string/pref_post_read_progress"
             android:summary="@string/pref_post_read_progress_summary" />
 
+        <Preference
+            android:key="pref_key_backup"
+            android:persistent="false"
+            android:title="@string/pref_backup"
+            android:summary="@string/pref_backup_summary" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

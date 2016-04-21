@@ -164,7 +164,7 @@ public final class GalleryActivity extends AppCompatActivity {
                 try {
                     downloadImage();
                 } catch (SecurityException e) {
-                    Toast.makeText(GalleryActivity.this, R.string.no_permission, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GalleryActivity.this, R.string.message_permission_denied, Toast.LENGTH_SHORT).show();
                 }
             }
         } else {

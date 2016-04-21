@@ -2,7 +2,6 @@ package me.ykrank.s1next.data.api.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,7 +9,7 @@ import com.google.common.base.Objects;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
-import me.ykrank.s1next.App;
+import me.ykrank.s1next.util.L;
 
 /**
  * Ambiguity in naming due to {@link java.lang.Thread}.
@@ -18,6 +17,7 @@ import me.ykrank.s1next.App;
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class Thread implements Parcelable, Cloneable {
+    private static final String TAG = Thread.class.getSimpleName();
 
     public static final Parcelable.Creator<Thread> CREATOR = new Parcelable.Creator<Thread>() {
 
@@ -162,9 +162,9 @@ public final class Thread implements Parcelable, Cloneable {
         try {
             o = (Thread) super.clone();
         } catch (CloneNotSupportedException e) {
-            Log.e(App.LOG_TAG, e.getMessage());
+            L.e(TAG, e);
         } catch (ClassCastException e){
-            Log.e(App.LOG_TAG, e.getMessage());
+            L.e(TAG, e);
         }
         return o;
     }

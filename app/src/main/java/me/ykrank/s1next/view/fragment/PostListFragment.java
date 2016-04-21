@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,6 +33,7 @@ import me.ykrank.s1next.data.event.QuoteEvent;
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
 import me.ykrank.s1next.util.ClipboardUtil;
 import me.ykrank.s1next.util.IntentUtil;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.util.StringUtil;
@@ -157,7 +157,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         if (readProgress != null) {
             readProgress.scrollState = ReadProgress.BEFORE_SCROLL_PAGE;
             setCurrentPage(readProgress.page - 1);
-            Log.d("WTF", "ReadProgress:" + readProgress.toString());
+            L.d("ReadProgress:" + readProgress.toString());
         }
     }
 

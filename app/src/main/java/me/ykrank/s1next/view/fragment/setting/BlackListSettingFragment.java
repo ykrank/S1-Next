@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,6 +26,7 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.db.BlackListDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.BlackList;
 import me.ykrank.s1next.databinding.FragmentBlacklistBinding;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.adapter.BlackListCursorListViewAdapter;
 import me.ykrank.s1next.view.dialog.BlacklistDialogFragment;
 import rx.Observable;
@@ -104,7 +104,7 @@ public final class BlackListSettingFragment extends Fragment {
                 .subscribe(
                         mListViewAdapter::changeCursor
                         , throwable -> {
-                    Log.e("S1next",throwable.getMessage());
+                            L.e("S1next", throwable);
                 });
     }
 

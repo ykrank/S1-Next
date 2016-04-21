@@ -17,7 +17,6 @@ import android.text.Spanned;
 import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
 import android.text.style.StrikethroughSpan;
-import android.util.Log;
 import android.view.View;
 import android.webkit.URLUtil;
 
@@ -26,6 +25,7 @@ import org.xml.sax.XMLReader;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.GalleryActivity;
 
 /**
@@ -150,7 +150,7 @@ public final class TagHandler implements Html.TagHandler {
             for (int i = 0; i < len; i++)
                 attributes.put(data[i * 5 + 1], data[i * 5 + 4]);
         } catch (Exception e) {
-            Log.d(TAG, "Exception: " + e);
+            L.d(TAG, e);
         }
     }
 
@@ -174,7 +174,7 @@ public final class TagHandler implements Html.TagHandler {
 
         text.removeSpan(obj);
 
-        if (where != len) {
+        if (where != len && obj != null) {
             AcfunHref h = (AcfunHref) obj;
 
             if (h.mHref != null) {
@@ -233,7 +233,7 @@ public final class TagHandler implements Html.TagHandler {
                     throw new ActivityNotFoundException();
                 context.startActivity(intent);
             } catch (ActivityNotFoundException e) {
-                Log.w("AcfunURLSpan", "Acfun Actvity was not found for intent, " + intent.toString());
+                L.e("AcfunURLSpan", "Acfun Actvity was not found for intent, " + intent.toString());
             }
         }
     }

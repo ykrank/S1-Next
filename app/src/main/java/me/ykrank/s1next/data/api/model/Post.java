@@ -3,7 +3,6 @@ package me.ykrank.s1next.data.api.model;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v4.util.SimpleArrayMap;
-import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,13 +16,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.db.BlackListDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.BlackList;
+import me.ykrank.s1next.util.L;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class Post implements Cloneable {
+    private static final String TAG = Post.class.getSimpleName();
 
     @JsonProperty("pid")
     private String id;
@@ -156,9 +156,9 @@ public final class Post implements Cloneable {
         try {
             o = (Post) super.clone();
         } catch (CloneNotSupportedException e) {
-            Log.e(App.LOG_TAG, e.getMessage());
+            L.e(TAG, e);
         } catch (ClassCastException e){
-            Log.e(App.LOG_TAG, e.getMessage());
+            L.e(TAG, e);
         }
         return o;
     }

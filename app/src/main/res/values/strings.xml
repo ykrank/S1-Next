@@ -180,7 +180,10 @@
     <string name="menu_version_info">Version info</string>
     <string name="version">Version %1$s</string>
     <string name="copyright" translatable="false">&#169;2015 floating-cat</string>
+
+    <!-- blacklist -->
     <string name="user_in_blacklist">In blacklist</string>
+
     <string name="blacklist_authorid">Author id</string>
     <string name="blacklist_author_name">Author name</string>
     <string name="blacklist_forum_flag">Forum flag</string>
@@ -189,18 +192,23 @@
     <string name="blacklist_flag_normal">Normal</string>
     <string name="blacklist_flag_hide">Hide</string>
     <string name="blacklist_flag_del">Del</string>
+
     <string name="menu_blacklist_remove">Remove from blacklist</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>
-    <string name="blacklist_refresh_warn">Blacklist changed, please refresh</string>
     <string name="menu_add">Add</string>
     <string name="menu_all">All</string>
     <string name="menu_clear">Clear</string>
+
+    <string name="blacklist_refresh_warn">Blacklist changed, please refresh</string>
     <string name="blacklist_hide_forum">Hide forum</string>
     <string name="blacklist_hide_post">Hide post</string>
     <string name="prompt_author_id">Author id</string>
     <string name="prompt_author_name">Author name</string>
+
     <string name="gallery_transition" translatable="false">gallery_transition</string>
+
+    <!-- read progress -->
     <string name="pref_post_read_progress">Read  progress</string>
     <string name="pref_post_read_progress_summary"><![CDATA[Auto save & load]]></string>
     <string name="pref_read_progress_save_auto">Auto save</string>
@@ -208,6 +216,16 @@
     <string name="menu_save_progress">Save read progress</string>
     <string name="menu_load_progress">Load last read progress</string>
     <string name="save_read_progress_success">Save read progress success</string>
-    <string name="no_permission">No permission</string>
+
+    <!-- backup -->
+    <string name="pref_backup_backup">Backup</string>
+    <string name="pref_backup_restore">Restore</string>
+    <string name="pref_backup">Backup</string>
+    <string name="pref_backup_summary"><![CDATA[Backup & restore]]></string>
+    <string name="message_backup_success">Backup success</string>
+    <string name="message_restore_success">Restore success</string>
+    <string name="message_permission_denied">Permission denied</string>
+    <string name="message_no_setting_data">No setting data</string>
+    <string name="message_io_exception">Io exception</string>
 
 </resources>
