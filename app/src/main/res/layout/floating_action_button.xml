@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--From support design library v.23.2.0,we cannot direct anchor coordinator layout-->
 <android.support.design.widget.FloatingActionButton xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,7 +8,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/fab_margin"
     app:backgroundTint="?attr/fabBackgroundTint"
-    app:layout_anchor="@id/coordinator_layout"
+    app:layout_anchor="@id/frame_layout"
     app:layout_anchorGravity="bottom|right|end"
     app:layout_behavior="me.ykrank.s1next.widget.AppBarLayoutVisibilityAwareFABBehavior"
     app:rippleColor="@color/ripple_material_dark"
