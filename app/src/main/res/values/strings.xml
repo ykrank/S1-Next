@@ -179,7 +179,7 @@
     <string name="pref_files">Files</string>
     <string name="menu_version_info">Version info</string>
     <string name="version">Version %1$s</string>
-    <string name="copyright" translatable="false">&#169;2015 floating-cat</string>
+    <string name="copyright" translatable="false">&#169;2016 ykrank</string>
 
     <!-- blacklist -->
     <string name="user_in_blacklist">In blacklist</string>

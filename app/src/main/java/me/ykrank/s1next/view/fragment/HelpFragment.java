@@ -95,26 +95,26 @@ public final class HelpFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_view_in_google_play_store:
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                String packageName = getContext().getPackageName();
-                intent.setData(Uri.parse(String.format(ANDROID_APP_MARKET_LINK, packageName)));
-                try {
-                    // link our app in Android marketplaces
-                    startActivity(intent);
-                } catch (ActivityNotFoundException exception) {
-                    intent.setData(Uri.parse(String.format(ANDROID_WEB_SITE_MARKET_LINK, packageName)));
-                    try {
-                        // link our app in Google Play website if user hasn't installed any Android marketplaces
-                        startActivity(intent);
-                    } catch (ActivityNotFoundException e) {
-                        // show Snackbar if user hasn't installed any Android marketplaces or browsers
-                        ((CoordinatorLayoutAnchorDelegate) getActivity()).showShortSnackbar(
-                                R.string.message_chooser_no_applications);
-                    }
-                }
-
-                return true;
+//            case R.id.menu_view_in_google_play_store:
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                String packageName = getContext().getPackageName();
+//                intent.setData(Uri.parse(String.format(ANDROID_APP_MARKET_LINK, packageName)));
+//                try {
+//                    // link our app in Android marketplaces
+//                    startActivity(intent);
+//                } catch (ActivityNotFoundException exception) {
+//                    intent.setData(Uri.parse(String.format(ANDROID_WEB_SITE_MARKET_LINK, packageName)));
+//                    try {
+//                        // link our app in Google Play website if user hasn't installed any Android marketplaces
+//                        startActivity(intent);
+//                    } catch (ActivityNotFoundException e) {
+//                        // show Snackbar if user hasn't installed any Android marketplaces or browsers
+//                        ((CoordinatorLayoutAnchorDelegate) getActivity()).showShortSnackbar(
+//                                R.string.message_chooser_no_applications);
+//                    }
+//                }
+//
+//                return true;
             case R.id.menu_open_source_licenses:
                 OpenSourceLicensesActivity.startOpenSourceLicensesActivity(getContext());
 

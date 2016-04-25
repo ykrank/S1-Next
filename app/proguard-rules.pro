@@ -21,6 +21,7 @@
 -dontwarn sun.misc.Unsafe
 -dontwarn java.lang.ClassValue
 -dontwarn com.google.j2objc.annotations.Weak
+-dontwarn android.databinding.tool.util.**
 
 # Dagger
 -dontwarn dagger.**
