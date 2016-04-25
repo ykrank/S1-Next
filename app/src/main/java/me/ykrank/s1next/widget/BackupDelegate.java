@@ -32,7 +32,7 @@ import static me.ykrank.s1next.util.FilePickerUtil.onFilePickResult;
  * Created by AdminYkrank on 2016/4/21.
  * 设置数据库进行备份的代理
  */
-public class BackupAgent {
+public class BackupDelegate {
     private static final String BACKUP_FILE_NAME = "S1Next_v" + BuildConfig.VERSION_CODE + ".bak";
     private static final int BACKUP_FILE_CODE = 11;
     private static final int RESTORE_FILE_CODE = 12;
@@ -51,7 +51,7 @@ public class BackupAgent {
     private AfterBackup afterBackup;
     private AfterRestore afterRestore;
 
-    public BackupAgent(Context context, AfterBackup afterBackup, AfterRestore afterRestore) {
+    public BackupDelegate(Context context, AfterBackup afterBackup, AfterRestore afterRestore) {
         this.mContext = context;
         this.afterBackup = afterBackup;
         this.afterRestore = afterRestore;

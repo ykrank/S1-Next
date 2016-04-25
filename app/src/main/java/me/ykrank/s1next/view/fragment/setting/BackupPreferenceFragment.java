@@ -13,8 +13,8 @@ import com.activeandroid.ActiveAndroid;
 import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.util.LooperUtil;
-import me.ykrank.s1next.widget.BackupAgent;
-import me.ykrank.s1next.widget.BackupAgent.BackupResult;
+import me.ykrank.s1next.widget.BackupDelegate;
+import me.ykrank.s1next.widget.BackupDelegate.BackupResult;
 
 /**
  * An Activity includes download settings that allow users
@@ -30,7 +30,7 @@ public final class BackupPreferenceFragment extends BasePreferenceFragment
     public static final String PREF_KEY_BACKUP_BACKUP = "pref_key_backup_backup";
     public static final String PREF_KEY_BACKUP_RESTORE = "pref_key_backup_restore";
 
-    private BackupAgent backupAgent;
+    private BackupDelegate backupAgent;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
@@ -39,7 +39,7 @@ public final class BackupPreferenceFragment extends BasePreferenceFragment
         findPreference(PREF_KEY_BACKUP_BACKUP).setOnPreferenceClickListener(this);
         findPreference(PREF_KEY_BACKUP_RESTORE).setOnPreferenceClickListener(this);
 
-        backupAgent = new BackupAgent(getActivity(), this::afterBackup, this::afterRestore);
+        backupAgent = new BackupDelegate(getActivity(), this::afterBackup, this::afterRestore);
     }
 
     @Override
@@ -73,16 +73,16 @@ public final class BackupPreferenceFragment extends BasePreferenceFragment
         LooperUtil.enforceOnMainThread();
         @StringRes int message;
         switch (result) {
-            case BackupAgent.SUCCESS:
+            case BackupDelegate.SUCCESS:
                 message = R.string.message_backup_success;
                 break;
-            case BackupAgent.NO_DATA:
+            case BackupDelegate.NO_DATA:
                 message = R.string.message_no_setting_data;
                 break;
-            case BackupAgent.PERMISSION_DENY:
+            case BackupDelegate.PERMISSION_DENY:
                 message = R.string.message_permission_denied;
                 break;
-            case BackupAgent.IO_EXCEPTION:
+            case BackupDelegate.IO_EXCEPTION:
                 message = R.string.message_io_exception;
                 break;
             default:
@@ -99,16 +99,16 @@ public final class BackupPreferenceFragment extends BasePreferenceFragment
 
         @StringRes int message;
         switch (result) {
-            case BackupAgent.SUCCESS:
+            case BackupDelegate.SUCCESS:
                 message = R.string.message_restore_success;
                 break;
-            case BackupAgent.NO_DATA:
+            case BackupDelegate.NO_DATA:
                 message = R.string.message_no_setting_data;
                 break;
-            case BackupAgent.PERMISSION_DENY:
+            case BackupDelegate.PERMISSION_DENY:
                 message = R.string.message_permission_denied;
                 break;
-            case BackupAgent.IO_EXCEPTION:
+            case BackupDelegate.IO_EXCEPTION:
                 message = R.string.message_io_exception;
                 break;
             default:
