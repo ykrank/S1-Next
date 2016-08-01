@@ -1,9 +1,6 @@
 package me.ykrank.s1next.view.fragment;
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,7 +16,6 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.databinding.FragmentHelpBinding;
 import me.ykrank.s1next.view.activity.OpenSourceLicensesActivity;
 import me.ykrank.s1next.view.dialog.VersionInfoDialogFragment;
-import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import me.ykrank.s1next.viewmodel.WebPageViewModel;
 
 /**

@@ -89,6 +89,10 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".view.activity.NewThreadActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".view.activity.GalleryActivity"
             android:theme="@style/Theme.Gallery" />
 

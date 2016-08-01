@@ -1,6 +1,6 @@
 package me.ykrank.s1next.view.adapter;
 
-import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.CallSuper;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -22,10 +22,10 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
     private List<Object> mList;
     private final AdapterDelegatesManager<List<Object>> mAdapterDelegatesManager;
 
-    BaseRecyclerViewAdapter(Activity activity) {
+    BaseRecyclerViewAdapter(Context context) {
         mList = new ArrayList<>();
         mAdapterDelegatesManager = new AdapterDelegatesManager<>();
-        mAdapterDelegatesManager.addDelegate(new ProgressAdapterDelegate(activity,
+        mAdapterDelegatesManager.addDelegate(new ProgressAdapterDelegate(context,
                 VIEW_TYPE_PROGRESS));
     }
 

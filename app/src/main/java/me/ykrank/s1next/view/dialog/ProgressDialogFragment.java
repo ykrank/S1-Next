@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import me.ykrank.s1next.App;
+import me.ykrank.s1next.AppComponent;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
@@ -21,7 +22,7 @@ import me.ykrank.s1next.data.api.model.wrapper.ResultWrapper;
 import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.activity.BaseActivity;
-import me.ykrank.s1next.view.fragment.BaseFragment;
+import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import rx.Observable;
 import rx.Subscription;
@@ -52,7 +53,7 @@ abstract class ProgressDialogFragment<D> extends DialogFragment {
     @CallSuper
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        App.AppComponent appComponent = App.getAppComponent(getContext());
+        AppComponent appComponent = App.getAppComponent(getContext());
         mS1Service = appComponent.getS1Service();
         mUser = appComponent.getUser();
         mUserValidator = appComponent.getUserValidator();
@@ -92,17 +93,17 @@ abstract class ProgressDialogFragment<D> extends DialogFragment {
     }
 
     /**
-     * @see BaseFragment#load()
+     * @see BaseRecyclerViewFragment#load()
      */
     private void request() {
         mSubscription = getSourceObservable().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .finallyDo(this::finallyDo)
+                .doAfterTerminate(this::finallyDo)
                 .subscribe(this::onNext, this::onError);
     }
 
     /**
-     * @see BaseFragment#getSourceObservable()
+     * @see BaseRecyclerViewFragment#getSourceObservable()
      */
     abstract Observable<D> getSourceObservable();
 
@@ -135,19 +136,19 @@ abstract class ProgressDialogFragment<D> extends DialogFragment {
     }
 
     /**
-     * @see BaseFragment#onNext(Object)
+     * @see BaseRecyclerViewFragment#onNext(Object)
      */
     abstract void onNext(D data);
 
     /**
-     * @see BaseFragment#onError(Throwable)
+     * @see BaseRecyclerViewFragment#onError(Throwable)
      */
     void onError(Throwable throwable) {
         showShortText(getString(ErrorUtil.parse(throwable)));
     }
 
     /**
-     * @see BaseFragment#finallyDo()
+     * @see BaseRecyclerViewFragment#finallyDo()
      */
     private void finallyDo() {
         dismissAllowingStateLoss();

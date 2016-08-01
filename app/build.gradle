@@ -1,33 +1,36 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 
 apply plugin: 'com.github.ben-manes.versions'
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def storefile = properties.getProperty('storeFile')
+def storepassword = properties.getProperty('storePassword')
+def keyalias = properties.getProperty('keyAlias')
+def keypassword = properties.getProperty('keyPassword')
+
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    compileSdkVersion 24
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 15
-        targetSdkVersion 23
+        targetSdkVersion 22
         versionCode 10
         versionName '0.5.3'
-//        vectorDrawables {
-//            generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi', 'xxxhdpi']
-//        }
-    }
-    buildTypes {
-        debug {
-            applicationIdSuffix '.debug'
-            versionNameSuffix '-DEBUG'
+        vectorDrawables {
+            generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi', 'xxxhdpi']
         }
-
+    }
+    signingConfigs {
         release {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            storeFile file(storefile)
+            storePassword storepassword
+            keyAlias keyalias
+            keyPassword keypassword
         }
     }
     compileOptions {
@@ -51,6 +54,20 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/NOTICE.txt'
     }
+    buildTypes {
+        debug {
+            multiDexEnabled true
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-DEBUG'
+        }
+
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
 }
 
 tasks.withType(JavaCompile) {
@@ -64,40 +81,42 @@ repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
+//http://stackoverflow.com/questions/28683327/how-to-check-if-gradle-dependency-has-new-version
 dependencies {
-    compile 'com.google.dagger:dagger:2.0.2'
-    provided 'com.google.dagger:dagger-compiler:2.0.2'
+    apt 'com.google.dagger:dagger-compiler:2.5'
+    compile 'com.google.dagger:dagger:2.5'
     // https://github.com/google/dagger/issues/95
     provided 'javax.annotation:jsr250-api:1.0'
 
-    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.1.0'
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'
 
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta1'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta1'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 
-    ext.supportVersion = '23.3.0'
-    compile "com.android.support:design:$supportVersion"
-    compile "com.android.support:cardview-v7:$supportVersion"
-    compile "com.android.support:percent:$supportVersion"
-    compile "com.android.support:preference-v14:$supportVersion"
+    compile "com.android.support:design:$rootProject.supportVersion"
+    compile "com.android.support:cardview-v7:$rootProject.supportVersion"
+    compile "com.android.support:percent:$rootProject.supportVersion"
+    compile "com.android.support:preference-v14:$rootProject.supportVersion"
+    compile 'com.android.support:multidex:1.0.1'
 
     compile 'com.google.guava:guava:19.0'
     // https://github.com/google/guava/wiki/UsingProGuardWithGuava
     provided 'com.google.code.findbugs:jsr305:3.0.1'
     compile 'org.apache.commons:commons-lang3:3.4'
 
-    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.0.1'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.0.1'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta3'
-    compile 'com.squareup.retrofit2:converter-jackson:2.0.0-beta3'
-    compile 'com.squareup.retrofit2:converter-scalars:2.0.0-beta3'
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.3.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'com.squareup.retrofit2:converter-jackson:2.1.0'
+    compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
 
-    compile 'com.bugsnag:bugsnag-android:3.2.7'
-    compile 'com.github.bumptech.glide:glide:3.6.1'
+    compile 'com.bugsnag:bugsnag-android:3.4.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.7.0'
-    compile 'com.hannesdorfmann:adapterdelegates:1.1.1'
-    compile 'io.reactivex:rxjava:1.1.0'
-    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'com.hannesdorfmann:adapterdelegates:1.2.0'
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'io.reactivex:rxandroid:1.2.1'
 
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.nononsenseapps:filepicker:2.5.2'

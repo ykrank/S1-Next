@@ -62,4 +62,24 @@
 
     <item name="line_spacing_multiplier" format="float" type="dimen">1.2</item>
 
+    <dimen name="spinner_padding">4dp</dimen>
+
+    <dimen name="text_size_body_1">@dimen/abc_text_size_body_1_material</dimen>
+    <dimen name="text_size_body_2">@dimen/abc_text_size_body_2_material</dimen>
+    <dimen name="text_size_button">@dimen/abc_text_size_button_material</dimen>
+    <dimen name="text_size_caption">@dimen/abc_text_size_caption_material</dimen>
+    <dimen name="text_size_display_1">@dimen/abc_text_size_display_1_material</dimen>
+    <dimen name="text_size_display_2">@dimen/abc_text_size_display_2_material</dimen>
+    <dimen name="text_size_display_3">@dimen/abc_text_size_display_3_material</dimen>
+    <dimen name="text_size_display_4">@dimen/abc_text_size_display_4_material</dimen>
+    <dimen name="text_size_headline">@dimen/abc_text_size_headline_material</dimen>
+    <dimen name="text_size_large">@dimen/abc_text_size_large_material</dimen>
+    <dimen name="text_size_medium">@dimen/abc_text_size_medium_material</dimen>
+    <dimen name="text_size_menu_header">@dimen/abc_text_size_menu_header_material</dimen>
+    <dimen name="text_size_menu">@dimen/abc_text_size_menu_material</dimen>
+    <dimen name="text_size_small">@dimen/abc_text_size_small_material</dimen>
+    <dimen name="text_size_subhead">@dimen/abc_text_size_subhead_material</dimen>
+    <dimen name="text_size_subtitle">@dimen/abc_text_size_subtitle_material_toolbar</dimen>
+    <dimen name="text_size_title">@dimen/abc_text_size_title_material</dimen>
+    <dimen name="text_size_title_toolbar">@dimen/abc_text_size_title_material_toolbar</dimen>
 </resources>

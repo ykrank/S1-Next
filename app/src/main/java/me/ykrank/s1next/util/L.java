@@ -20,6 +20,10 @@ public class L {
         e(LOG_TAG, msg);
     }
 
+    public static void e(Throwable e) {
+        e(LOG_TAG, e);
+    }
+
     public static void d(String msg, Throwable tr) {
         d(LOG_TAG, msg, tr);
     }

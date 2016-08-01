@@ -24,6 +24,8 @@ public final class Api {
     static final String URL_QUOTE_POST_REDIRECT = "/2b/forum.php?mod=redirect&goto=findpost";
 
     static final String URL_LOGIN = "index.php?module=login&loginsubmit=yes&loginfield=auto&cookietime=2592000";
+
+    static final String URL_PM_LIST = "index.php?module=mypm&filter=privatepm";
     /**
      * A URL used to get the correct authenticity token after login.
      * <p>
@@ -39,6 +41,11 @@ public final class Api {
      * content (with some HTML tags and its origin redirect hyperlink).
      */
     static final String URL_QUOTE_HELPER = BASE_URL + "forum.php?mod=post&action=reply&inajax=yes";
+    static final String URL_NEW_THREAD = "index.php?module=newthread&extra=&topicsubmit=yes";
+    /**
+     * 发布新帖前获取必要前置信息
+     */
+    static final String URL_NEW_THREAD_HELPER = BASE_URL + "forum.php?mod=post&action=newthread";
 
     public static final String URL_EMOTICON_IMAGE_PREFIX = "static/image/smiley/";
 

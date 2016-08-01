@@ -52,4 +52,16 @@ public interface S1Service {
     @POST(Api.URL_REPLY)
     Observable<ResultWrapper> replyQuote(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("message") String reply,
                                          @Field("noticeauthor") String encodedUserId, @Field("noticetrimstr") String quoteMessage, @Field("noticeauthormsg") String replyNotification);
+
+    @GET(Api.URL_PM_LIST)
+    Observable<String> getPmList(@Query("page") int page);
+
+    @GET(Api.URL_NEW_THREAD_HELPER)
+    Observable<String> getNewThreadInfo(@Query("fid") int fid);
+
+    @FormUrlEncoded
+    @POST(Api.URL_NEW_THREAD)
+    Observable<ResultWrapper> newThread(@Query("fid") int fid, @Field("formhash") String authenticityToken, @Field("posttime") long postTime, @Field("typeid") String typeId,
+                                        @Field("subject") String subject, @Field("message") String message, @Field("allownoticeauthor") int allowNoticeAuthor,
+                                        @Field("usesig") int useSign, @Field("save") Integer saveAsDraft);
 }

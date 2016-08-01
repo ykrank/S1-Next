@@ -5,7 +5,7 @@ import android.support.annotation.StringRes;
 import java.io.IOException;
 
 import me.ykrank.s1next.R;
-import retrofit2.HttpException;
+import retrofit2.adapter.rxjava.HttpException;
 
 public final class ErrorUtil {
 

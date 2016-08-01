@@ -37,7 +37,7 @@ import rx.Subscription;
  * <p>
  * Activity or Fragment containing this must implement {@link PagerCallback}.
  */
-public final class PostListPagerFragment extends BaseFragment<PostsWrapper> {
+public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsWrapper> {
 
     private static final String ARG_THREAD_ID = "thread_id";
     private static final String ARG_PAGE_NUM = "page_num";

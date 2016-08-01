@@ -1,6 +1,6 @@
 package me.ykrank.s1next.view.adapter.delegate;
 
-import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,10 +18,10 @@ public final class ProgressAdapterDelegate extends AbsAdapterDelegate<List<Objec
 
     private final LayoutInflater mLayoutInflater;
 
-    public ProgressAdapterDelegate(Activity activity, int viewType) {
+    public ProgressAdapterDelegate(Context context, int viewType) {
         super(viewType);
 
-        mLayoutInflater = activity.getLayoutInflater();
+        mLayoutInflater = LayoutInflater.from(context);
     }
 
     @Override

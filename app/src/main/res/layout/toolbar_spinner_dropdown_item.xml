@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@android:id/text1"
     style="?attr/spinnerDropDownItemStyle"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="?attr/dropdownListPreferredItemHeight"
     android:ellipsize="marquee"
     android:singleLine="true"

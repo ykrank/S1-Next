@@ -21,7 +21,7 @@ import rx.Observable;
  * Activity or Fragment containing this must implement
  * {@link PagerCallback} and {@link SubForumsCallback}.
  */
-public final class ThreadListPagerFragment extends BaseFragment<ThreadsWrapper> {
+public final class ThreadListPagerFragment extends BaseRecyclerViewFragment<ThreadsWrapper> {
 
     private static final String ARG_FORUM_ID = "forum_id";
     private static final String ARG_PAGE_NUM = "page_num";

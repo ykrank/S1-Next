@@ -193,11 +193,12 @@ abstract class BaseViewPagerFragment extends Fragment
 
         @Override
         @CallSuper
+        @SuppressWarnings("unchecked")
         public void destroyItem(ViewGroup container, int position, Object object) {
             if (object instanceof BaseFragment) {
                 // We don't reuse Fragment in ViewPager and its retained Fragment
                 // because it is not cost-effective nowadays.
-                ((BaseFragment) object).destroyRetainedFragment();
+                ((BaseRecyclerViewFragment<Object>) object).destroyRetainedFragment();
             }
 
             super.destroyItem(container, position, object);

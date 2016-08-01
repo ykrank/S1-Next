@@ -18,7 +18,7 @@ import rx.Observable;
  * <p>
  * Activity or Fragment containing this must implement {@link PagerCallback}.
  */
-public final class FavouriteListPagerFragment extends BaseFragment<FavouritesWrapper> {
+public final class FavouriteListPagerFragment extends BaseRecyclerViewFragment<FavouritesWrapper> {
 
     private static final String ARG_PAGE_NUM = "page_num";
 

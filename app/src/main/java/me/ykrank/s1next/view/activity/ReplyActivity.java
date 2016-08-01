@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import org.apache.commons.lang3.StringUtils;
 
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.view.dialog.ReplyDiscardPromptDialogFragment;
+import me.ykrank.s1next.view.dialog.DiscardEditPromptDialogFragment;
 import me.ykrank.s1next.view.fragment.ReplyFragment;
 
 /**
@@ -72,11 +72,11 @@ public final class ReplyActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (mReplyFragment.isReplyEmpty()) {
+                if (mReplyFragment.isContentEmpty()) {
                     finish();
                 } else {
-                    new ReplyDiscardPromptDialogFragment().show(getSupportFragmentManager(),
-                            ReplyDiscardPromptDialogFragment.TAG);
+                    new DiscardEditPromptDialogFragment().show(getSupportFragmentManager(),
+                            DiscardEditPromptDialogFragment.TAG);
                 }
 
                 return true;
@@ -92,11 +92,11 @@ public final class ReplyActivity extends BaseActivity {
     public void onBackPressed() {
         if (mReplyFragment.isEmoticonKeyboardShowing()) {
             mReplyFragment.hideEmoticonKeyboard();
-        } else if (mReplyFragment.isReplyEmpty()) {
+        } else if (mReplyFragment.isContentEmpty()) {
             super.onBackPressed();
         } else {
-            new ReplyDiscardPromptDialogFragment().show(getSupportFragmentManager(),
-                    ReplyDiscardPromptDialogFragment.TAG);
+            new DiscardEditPromptDialogFragment().show(getSupportFragmentManager(),
+                    DiscardEditPromptDialogFragment.TAG);
         }
     }
 }

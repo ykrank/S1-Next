@@ -5,17 +5,17 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0'
-//        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.4'
+        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
         classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
-        
+
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
-    
+
     // Exclude the version that the android plugin depends on.
     configurations.classpath.exclude group: 'com.android.tools.external.lombok'
 }
@@ -28,4 +28,9 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    supportVersion = '24.1.1'
+    buildToolsVersion = '24.0.1'
 }

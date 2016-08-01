@@ -1,5 +1,7 @@
 package me.ykrank.s1next.util;
 
+import java.util.concurrent.TimeUnit;
+
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -76,5 +78,14 @@ public final class RxJavaUtil {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(uiAction::call, error::call);
+    }
+
+    public static <T> Observable.Transformer<T, T> iOTransformer() {
+        return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static <T> Observable.Transformer<T, T> clickThrottleTransformer() {
+        return observable -> observable.throttleFirst(1, TimeUnit.SECONDS);
     }
 }

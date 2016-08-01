@@ -140,4 +140,11 @@
     <string name="message_io_exception">读写错误</string>
     <string name="message_no_setting_data">没有有效的设置数据</string>
     <string name="message_restore_success">还原成功</string>
+    <string name="prompt_title">输入主题</string>
+    <string name="error_no_type_id">请选择主题对应的分类</string>
+    <string name="error_no_title_or_message">抱歉，您尚未输入标题或内容</string>
+    <string name="error_not_init">请等待初始化完成</string>
+    <string name="title_new_thread">发布新帖</string>
+    <string name="dialog_message_new_thread_discard_prompt">要舍弃这条新帖吗？</string>
+    <string name="menu_new_thread">发布新帖</string>
 </resources>

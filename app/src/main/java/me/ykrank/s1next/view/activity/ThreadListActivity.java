@@ -70,6 +70,11 @@ public final class ThreadListActivity extends BaseActivity
             mMenuSubForums.setVisible(false);
         }
 
+        MenuItem newThreadMenu = menu.findItem(R.id.menu_new_thread);
+        if (!mUser.isLogged()) {
+            newThreadMenu.setVisible(false);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -80,6 +85,10 @@ public final class ThreadListActivity extends BaseActivity
                 mListPopupWindow.setAnchorView(getToolbar().get().findViewById(R.id.menu_sub_forums));
                 mListPopupWindow.show();
 
+                return true;
+            case R.id.menu_new_thread:
+                Forum forum = getIntent().getParcelableExtra(ARG_FORUM);
+                NewThreadActivity.startNewThreadActivityForResultMessage(this, Integer.parseInt(forum.getId()));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

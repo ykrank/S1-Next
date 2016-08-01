@@ -94,6 +94,7 @@
     <string name="reply_activity_title_prefix" translatable="false">"回复主题 - "</string>
     <string name="reply_activity_quote_title_prefix" translatable="false">"引用#%1$s - "</string>
     <string name="prompt_reply">Write something…</string>
+    <string name="prompt_title">Write title…</string>
     <string name="signature">— from %1$s</string>
     <string name="dialog_progress_message_reply">Replying…</string>
     <string name="dialog_message_reply_discard_prompt">Do you want to discard this reply?</string>
@@ -227,5 +228,11 @@
     <string name="message_permission_denied">Permission denied</string>
     <string name="message_no_setting_data">No setting data</string>
     <string name="message_io_exception">Io exception</string>
+    <string name="error_no_type_id">Please choose thread type</string>
+    <string name="error_no_title_or_message">No title or message</string>
+    <string name="error_not_init">please wait for init success</string>
+    <string name="title_new_thread">New thread</string>
+    <string name="dialog_message_new_thread_discard_prompt">Do you want to discard this new thread?</string>
+    <string name="menu_new_thread">New thread</string>
 
 </resources>

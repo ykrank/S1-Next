@@ -28,7 +28,7 @@ public final class PhotoViewBindingAdapter {
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .transform(new TransformationUtil.GlMaxTextureSizeBitmapTransformation(
                         photoView.getContext()));
-        if (thumbUrl == null) {
+        if (thumbUrl != null) {
             DrawableRequestBuilder<String> thumbnailRequest = Glide
                     .with(photoView.getContext())
                     .load(thumbUrl)

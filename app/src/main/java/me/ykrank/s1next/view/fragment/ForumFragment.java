@@ -22,7 +22,7 @@ import rx.Observable;
 /**
  * A Fragment represents forum list.
  */
-public final class ForumFragment extends BaseFragment<ForumGroupsWrapper>
+public final class ForumFragment extends BaseRecyclerViewFragment<ForumGroupsWrapper>
         implements ToolbarDropDownInterface.OnItemSelectedListener {
 
     public static final String TAG = ForumFragment.class.getName();

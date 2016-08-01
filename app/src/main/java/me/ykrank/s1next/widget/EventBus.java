@@ -3,14 +3,10 @@ package me.ykrank.s1next.widget;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import me.ykrank.s1next.util.LooperUtil;
-import rx.Observable;
 import rx.subjects.PublishSubject;
-import rx.subjects.Subject;
 
 /**
  * See https://code.google.com/p/guava-libraries/wiki/EventBusExplained
