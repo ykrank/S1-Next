@@ -106,7 +106,7 @@ public final class NewThreadFragment extends BasePostFragment {
 
     @Override
     public boolean isContentEmpty() {
-        return super.isContentEmpty() || titleEditText == null || TextUtils.isEmpty(titleEditText.getText());
+        return super.isContentEmpty() && (titleEditText == null || TextUtils.isEmpty(titleEditText.getText()));
     }
 
     private boolean isTitleValid(String string) {
