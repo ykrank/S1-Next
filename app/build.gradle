@@ -19,8 +19,8 @@ android {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 10
-        versionName '0.5.3'
+        versionCode 11
+        versionName '0.6.0'
         vectorDrawables {
             generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi', 'xxxhdpi']
         }
