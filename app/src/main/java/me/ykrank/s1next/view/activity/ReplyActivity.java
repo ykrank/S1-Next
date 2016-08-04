@@ -75,8 +75,7 @@ public final class ReplyActivity extends BaseActivity {
                 if (mReplyFragment.isContentEmpty()) {
                     finish();
                 } else {
-                    new DiscardEditPromptDialogFragment().show(getSupportFragmentManager(),
-                            DiscardEditPromptDialogFragment.TAG);
+                    discardDialog();
                 }
 
                 return true;
@@ -95,8 +94,12 @@ public final class ReplyActivity extends BaseActivity {
         } else if (mReplyFragment.isContentEmpty()) {
             super.onBackPressed();
         } else {
-            new DiscardEditPromptDialogFragment().show(getSupportFragmentManager(),
-                    DiscardEditPromptDialogFragment.TAG);
+            discardDialog();
         }
+    }
+
+    private void discardDialog() {
+        DiscardEditPromptDialogFragment.newInstance(getString(R.string.dialog_message_new_thread_discard_prompt))
+                .show(getSupportFragmentManager(), DiscardEditPromptDialogFragment.TAG);
     }
 }

@@ -141,7 +141,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
     @Override
     public void onDestroy() {
         if (mReadProgressPrefManager.isSaveAuto())
-            saveReadProgress();
+            saveReadProgressBack(mThreadId, mPageNum, findMidItemPosition());
         RxJavaUtil.unsubscribeIfNotNull(saveReadProgressSubscription);
         super.onDestroy();
     }
@@ -185,6 +185,14 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
 //            LooperUtil.enforceOnMainThread();
             showShortText(R.string.save_read_progress_success);
         });
+    }
+
+    static void saveReadProgressBack(String threadId, int page, int position){
+        new java.lang.Thread(()->{
+            ReadProgress readProgress = new ReadProgress(threadId, page, position);
+            ReadProgressDbWrapper dbWrapper = ReadProgressDbWrapper.getInstance();
+            dbWrapper.saveReadProgress(readProgress);
+        }).start();
     }
 
     /**
