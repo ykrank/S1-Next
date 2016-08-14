@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bugsnag.android.Bugsnag;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +103,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
         mThreadId = getArguments().getString(ARG_THREAD_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
         readProgress = getArguments().getParcelable(ARG_READ_PROGRESS);
+        Bugsnag.leaveBreadcrumb("PostListPagerFragment##ThreadId:"+mThreadId+",PageNum:"+mPageNum);
 
         mRecyclerView = getRecyclerView();
         mLayoutManager = new LinearLayoutManager(getActivity());

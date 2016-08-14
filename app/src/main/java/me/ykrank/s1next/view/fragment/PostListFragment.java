@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.bugsnag.android.Bugsnag;
 import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
@@ -132,6 +133,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         // thread title is null if this thread comes from ThreadLink
         mThreadTitle = thread.getTitle();
         mThreadId = thread.getId();
+        Bugsnag.leaveBreadcrumb("PostListFragment##ThreadTitle:"+mThreadTitle+",ThreadId:"+mThreadId);
 
         if (savedInstanceState == null) {
             final int jumpPage = bundle.getInt(ARG_JUMP_PAGE, 0);

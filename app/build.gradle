@@ -12,7 +12,7 @@ def keyalias = properties.getProperty('keyAlias')
 def keypassword = properties.getProperty('keyPassword')
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 23
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {

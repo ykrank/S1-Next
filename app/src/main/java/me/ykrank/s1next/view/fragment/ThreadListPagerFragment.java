@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.bugsnag.android.Bugsnag;
+
 import java.util.List;
 
 import me.ykrank.s1next.data.api.model.Forum;
@@ -59,6 +61,7 @@ public final class ThreadListPagerFragment extends BaseRecyclerViewFragment<Thre
 
         mForumId = getArguments().getString(ARG_FORUM_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
+        Bugsnag.leaveBreadcrumb("ThreadListPagerFragment##ForumId:"+mForumId+",PageNum:"+mPageNum);
 
         RecyclerView recyclerView = getRecyclerView();
         Activity activity = getActivity();
