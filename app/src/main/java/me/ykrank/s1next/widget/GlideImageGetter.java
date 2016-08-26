@@ -49,7 +49,7 @@ public final class GlideImageGetter
      */
     private final Set<ViewTarget<TextView, GlideDrawable>> mViewTargetSet = Collections.newSetFromMap(new WeakHashMap<>());
 
-    public GlideImageGetter(Context context, TextView textView) {
+    protected GlideImageGetter(Context context, TextView textView) {
         this.mContext = context;
         this.mTextView = textView;
 
@@ -60,6 +60,14 @@ public final class GlideImageGetter
         // add this listener in order to clean any pending images loading
         // and set drawable callback tag to null when detached from window
         mTextView.addOnAttachStateChangeListener(this);
+    }
+
+    public static GlideImageGetter get(TextView textView) {
+        Object object = textView.getTag(R.id.tag_drawable_callback);
+        if (object == null){
+            return new GlideImageGetter(textView.getContext(), textView);
+        }
+        return (GlideImageGetter)object;
     }
 
     /**

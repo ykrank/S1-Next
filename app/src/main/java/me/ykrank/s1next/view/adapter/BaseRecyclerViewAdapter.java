@@ -72,7 +72,7 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
 
     public final void setHasProgress(boolean hasProgress) {
         if (hasProgress) {
-            Preconditions.checkState(mList.size() == 0);
+            mList.clear();
             mList.add(new ProgressItem());
         } else {
             // we do not need to clear list if we have already changed

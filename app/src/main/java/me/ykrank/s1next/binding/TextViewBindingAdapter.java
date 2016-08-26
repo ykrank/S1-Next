@@ -143,8 +143,7 @@ public final class TextViewBindingAdapter {
             textView.setText(null);
         } else {
             // use GlideImageGetter to show images in TextView
-            textView.setText(Html.fromHtml(reply, new GlideImageGetter(textView.getContext(),
-                    textView), new TagHandler()));
+            textView.setText(Html.fromHtml(reply, GlideImageGetter.get(textView), new TagHandler()));
         }
     }
 
