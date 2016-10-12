@@ -21,9 +21,7 @@ android {
         targetSdkVersion 22
         versionCode 13
         versionName '0.6.2'
-        vectorDrawables {
-            generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi', 'xxxhdpi']
-        }
+        vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
         release {
