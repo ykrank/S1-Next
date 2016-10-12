@@ -81,4 +81,22 @@
     <dimen name="text_size_subtitle">@dimen/abc_text_size_subtitle_material_toolbar</dimen>
     <dimen name="text_size_title">@dimen/abc_text_size_title_material</dimen>
     <dimen name="text_size_title_toolbar">@dimen/abc_text_size_title_material_toolbar</dimen>
+
+    <!-- Z-axis elevations -->
+    <dimen name="z_app_bar">4dp</dimen>
+    <dimen name="z_card">2dp</dimen>
+    <dimen name="z_fab">6dp</dimen>
+    <dimen name="touch_raise">6dp</dimen>
+    <dimen name="touched_app_bar">8dp</dimen>
+    <dimen name="z_fab_over_touchable_app_bar">9dp</dimen>
+    <dimen name="z_drawer">16dp</dimen>
+    <dimen name="z_dialog">24dp</dimen>
+
+    <!-- standard metrics -->
+    <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_micro">4dp</dimen>
+    <dimen name="padding_normal">16dp</dimen>
+    <dimen name="spacing_large">32dp</dimen>
+    <dimen name="spacing_xlarge">48dp</dimen>
+    <dimen name="spacing_huge">64dp</dimen>
 </resources>

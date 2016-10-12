@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.activity.SearchActivity">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/scrim"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/scrim" />
+
+        <include layout="@layout/app_bar_search" />
+
+
+        <FrameLayout
+            android:id="@+id/results_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="?android:actionBarSize"
+            android:background="@color/background_dark"
+            app:elevation="@dimen/z_app_bar">
+
+            <ProgressBar
+                android:id="@android:id/empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:indeterminateTint="?android:colorAccent"
+                android:indeterminateTintMode="src_in"
+                android:paddingBottom="@dimen/spacing_huge"
+                android:paddingTop="@dimen/spacing_huge"
+                android:visibility="gone"
+                tools:visibility="gone" />
+
+            <ViewStub
+                android:id="@+id/stub_no_search_results"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout="@layout/no_search_results" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/search_results"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical"
+                android:visibility="gone"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:visibility="visible" />
+
+            <View
+                android:id="@+id/results_scrim"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/scrim"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+        </FrameLayout>
+
+
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

@@ -1,5 +1,6 @@
 package me.ykrank.s1next.view.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.collection.ForumGroups;
 import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper;
 import me.ykrank.s1next.util.IntentUtil;
+import me.ykrank.s1next.view.activity.SearchActivity;
 import me.ykrank.s1next.view.adapter.ForumRecyclerViewAdapter;
 import me.ykrank.s1next.view.internal.ToolbarDropDownInterface;
 import rx.Observable;
@@ -68,6 +70,10 @@ public final class ForumFragment extends BaseRecyclerViewFragment<ForumGroupsWra
             case R.id.menu_browser:
                 IntentUtil.startViewIntentExcludeOurApp(getContext(), Uri.parse(Api.BASE_URL));
 
+                return true;
+            case R.id.app_bar_search:
+                Activity activity = getActivity();
+                SearchActivity.start(activity, activity.findViewById(R.id.app_bar_search));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Search" parent="Theme.Light">
+        <item name="android:windowAnimationStyle">@style/SearchWindowAnimations</item>
+    </style>
+
+    <style name="SearchWindowAnimations">
+        <item name="android:windowEnterAnimation">@null</item>
+        <item name="android:windowExitAnimation">@anim/fade_out_rapidly</item>
+    </style>
+
+    <style name="SearchViewTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorControlActivated">?android:colorAccent</item>
+    </style>
+</resources>

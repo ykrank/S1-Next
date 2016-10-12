@@ -26,8 +26,12 @@
             android:name="com.bugsnag.android.API_KEY"
             android:value="a800f8b465a24096868397da57cec9bd" />
 
-        <meta-data android:name="AA_DB_NAME" android:value="s1.db" />
-        <meta-data android:name="AA_DB_VERSION" android:value="2" />
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="s1.db" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="2" />
         <meta-data
             android:name="AA_MODELS"
             android:value="me.ykrank.s1next.data.db.dbmodel.BlackList, 
@@ -95,6 +99,15 @@
         <activity
             android:name=".view.activity.GalleryActivity"
             android:theme="@style/Theme.Gallery" />
+
+        <activity
+            android:name=".view.activity.SearchActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.Search">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".view.activity.OpenSourceLicensesActivity"
