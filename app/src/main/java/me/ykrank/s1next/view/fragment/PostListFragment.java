@@ -343,6 +343,7 @@ public final class PostListFragment extends BaseViewPagerFragment
                     curFragment.smoothScrollToPosition(readProgress.position);
             } else {
                 setCurrentPage(readProgress.page - 1);
+                //TODO 非相同页面时加载阅读进度，需要滑动到相关页
             }
         }
     }
