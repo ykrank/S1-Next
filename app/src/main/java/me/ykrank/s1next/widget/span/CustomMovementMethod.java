@@ -1,4 +1,4 @@
-package me.ykrank.s1next.widget;
+package me.ykrank.s1next.widget.span;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -38,6 +38,7 @@ public final class CustomMovementMethod extends ArrowKeyMovementMethod {
     public static MovementMethod getInstance() {
         if (sInstance == null) {
             sInstance = new CustomMovementMethod();
+            sInstance.addURLSpanClick(new SarabaSpan());
             sInstance.addURLSpanClick(new BilibiliSpan());
         }
 

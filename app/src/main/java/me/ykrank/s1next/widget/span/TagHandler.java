@@ -1,4 +1,4 @@
-package me.ykrank.s1next.widget;
+package me.ykrank.s1next.widget.span;
 
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
@@ -44,7 +44,7 @@ public final class TagHandler implements Html.TagHandler {
 
     /**
      * Replaces {@link android.view.View.OnClickListener}
-     * with {@link me.ykrank.s1next.widget.TagHandler.ImageClickableSpan}.
+     * with {@link TagHandler.ImageClickableSpan}.
      * <p>
      * See android.text.HtmlToSpannedConverter#startImg(android.text.SpannableStringBuilder, org.xml.sax.Attributes, android.text.Html.ImageGetter)
      */

@@ -264,30 +264,34 @@ public final class Post implements Cloneable {
         Pattern pattern = Pattern.compile("\\[thgame_biliplay.*?\\[/thgame_biliplay\\]");
         Matcher matcher = pattern.matcher(reply);
         while (matcher.find()) {
-            String content = matcher.group(0);
-            //find av number
-            Pattern avPattern = Pattern.compile("\\{,=av}[0-9]+");
-            Matcher avMatcher = avPattern.matcher(content);
-            if (!avMatcher.find()){
-                continue;
-            }
-            int avNum = Integer.valueOf(avMatcher.group().substring(6));
-            //find page
-            int page = 1;
-            Pattern pagePattern = Pattern.compile("\\{,=page}[0-9]+");
-            Matcher pageMatcher = pagePattern.matcher(content);
-            if (pageMatcher.find()){
-                page = Integer.valueOf(pageMatcher.group().substring(8));
-            }
+            try {
+                String content = matcher.group(0);
+                //find av number
+                Pattern avPattern = Pattern.compile("\\{,=av\\}[0-9]+");
+                Matcher avMatcher = avPattern.matcher(content);
+                if (!avMatcher.find()){
+                    continue;
+                }
+                int avNum = Integer.valueOf(avMatcher.group().substring(6));
+                //find page
+                int page = 1;
+                Pattern pagePattern = Pattern.compile("\\{,=page\\}[0-9]+");
+                Matcher pageMatcher = pagePattern.matcher(content);
+                if (pageMatcher.find()){
+                    page = Integer.valueOf(pageMatcher.group().substring(8));
+                }
 
-            //like "<bilibili>http://www.bilibili.com/video/av6706141/index_3.html</bilibili>"
-            StringBuilder builder = new StringBuilder("<bilibili>http://www.bilibili.com/video/av");
-            builder.append(avNum);
-            builder.append("/index_");
-            builder.append(page);
-            builder.append(".html</bilibili>");
+                //like "<bilibili>http://www.bilibili.com/video/av6706141/index_3.html</bilibili>"
+                StringBuilder builder = new StringBuilder("<bilibili>http://www.bilibili.com/video/av");
+                builder.append(avNum);
+                builder.append("/index_");
+                builder.append(page);
+                builder.append(".html</bilibili>");
 
-            reply = reply.replace(content, builder.toString());
+                reply = reply.replace(content, builder.toString());
+            }catch (Exception e){
+                L.e(e);
+            }
         }
         return reply;
     }

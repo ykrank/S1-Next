@@ -1,4 +1,4 @@
-package me.ykrank.s1next.widget;
+package me.ykrank.s1next.widget.span;
 
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
@@ -7,17 +7,16 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v4.util.ArrayMap;
+import android.support.v4.util.Pair;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ClickableSpan;
 import android.view.View;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import me.ykrank.s1next.util.L;
-
-import static me.ykrank.s1next.widget.TagHandler.getLastSpan;
 
 /**
  * <xmp>
@@ -39,29 +38,29 @@ public class BilibiliSpan implements CustomMovementMethod.URLSpanClick {
     /**
      * intent-filter.从官方APP AndroidManifest中提取
      */
-    private static ArrayMap<String, String> HOST_FILTERS = new ArrayMap<>();
+    private static List<Pair<String, String>> HOST_FILTERS = new ArrayList<>();
 
     static {
-        HOST_FILTERS.put("space.bilibili.com", ".*");
-        HOST_FILTERS.put("bilibili.kankanews.com", "/video/av.*");
-        HOST_FILTERS.put("bilibili.tv", "/video/av.*");
-        HOST_FILTERS.put("bilibili.cn", "/video/av.*");
-        HOST_FILTERS.put("bilibili.com", "/video/av.*");
-        HOST_FILTERS.put("www.bilibili.tv", "/video/av.*");
-        HOST_FILTERS.put("www.bilibili.cn", "/video/av.*");
-        HOST_FILTERS.put("www.bilibili.com", "/video/av.*");
-        HOST_FILTERS.put("bilibili.smgbb.cn", "/video/av.*");
-        HOST_FILTERS.put("m.acg.tv", "/video/av.*");
-        HOST_FILTERS.put("www.bilibili.com", "/mobile/video/av.*");
-        HOST_FILTERS.put("live.bilibili.com", "/live/*.html");
-        HOST_FILTERS.put("www.bilibili.com", "/bangumi/i/.*");
-        HOST_FILTERS.put("www.bilibili.com", "/mobile/bangumi/i/.*");
-        HOST_FILTERS.put("bangumi.bilibili.com", "/anime/.*");
-        HOST_FILTERS.put("bangumi.bilibili.com", "/anime/category/.*");
-        HOST_FILTERS.put("bilibili.com", "/sp/.*");
-        HOST_FILTERS.put("www.bilibili.com", "/sp/.*");
-        HOST_FILTERS.put("bilibili.tv", "/sp/.*");
-        HOST_FILTERS.put("www.bilibili.tv", "/sp/.*");
+        HOST_FILTERS.add(new Pair<>("space.bilibili.com", ".*"));
+        HOST_FILTERS.add(new Pair<>("bilibili.kankanews.com", "/video/av.*"));
+        HOST_FILTERS.add(new Pair<>("bilibili.tv", "/video/av.*"));
+        HOST_FILTERS.add(new Pair<>("bilibili.cn", "/video/av.*"));
+        HOST_FILTERS.add(new Pair<>("bilibili.com", "/video/av.*"));
+        HOST_FILTERS.add(new Pair<>("www.bilibili.tv", "/video/av.*"));
+        HOST_FILTERS.add(new Pair<>("www.bilibili.cn", "/video/av.*"));
+        HOST_FILTERS.add(new Pair<>("www.bilibili.com", "/video/av.*"));
+        HOST_FILTERS.add(new Pair<>("bilibili.smgbb.cn", "/video/av.*"));
+        HOST_FILTERS.add(new Pair<>("m.acg.tv", "/video/av.*"));
+        HOST_FILTERS.add(new Pair<>("www.bilibili.com", "/mobile/video/av.*"));
+        HOST_FILTERS.add(new Pair<>("live.bilibili.com", "/live/*.html"));
+        HOST_FILTERS.add(new Pair<>("www.bilibili.com", "/bangumi/i/.*"));
+        HOST_FILTERS.add(new Pair<>("www.bilibili.com", "/mobile/bangumi/i/.*"));
+        HOST_FILTERS.add(new Pair<>("bangumi.bilibili.com", "/anime/.*"));
+        HOST_FILTERS.add(new Pair<>("bangumi.bilibili.com", "/anime/category/.*"));
+        HOST_FILTERS.add(new Pair<>("bilibili.com", "/sp/.*"));
+        HOST_FILTERS.add(new Pair<>("www.bilibili.com", "/sp/.*"));
+        HOST_FILTERS.add(new Pair<>("bilibili.tv", "/sp/.*"));
+        HOST_FILTERS.add(new Pair<>("www.bilibili.tv", "/sp/.*"));
     }
 
     /**
@@ -77,7 +76,7 @@ public class BilibiliSpan implements CustomMovementMethod.URLSpanClick {
      */
     public static void endBilibiliSpan(@NonNull SpannableStringBuilder text) {
         int len = text.length();
-        Object obj = getLastSpan(text, BilibiliHref.class);
+        Object obj = TagHandler.getLastSpan(text, BilibiliHref.class);
         int where = text.getSpanStart(obj);
 
         text.removeSpan(obj);
@@ -99,9 +98,9 @@ public class BilibiliSpan implements CustomMovementMethod.URLSpanClick {
             if (path == null) {
                 path = "/";
             }
-            for (Map.Entry<String, String> filter : HOST_FILTERS.entrySet()) {
-                String host = filter.getKey();
-                String pathPattern = filter.getValue();
+            for (Pair<String, String> filter : HOST_FILTERS) {
+                String host = filter.first;
+                String pathPattern = filter.second;
 
                 if (host.equalsIgnoreCase(uri.getHost())
                         && path.matches(pathPattern)) {
@@ -152,5 +151,10 @@ public class BilibiliSpan implements CustomMovementMethod.URLSpanClick {
         public void onClick(View widget) {
             goBilibili(widget.getContext(), Uri.parse(getURL()));
         }
+    }
+
+    private static class HostFilter{
+        private String host;
+        private String filter;
     }
 }

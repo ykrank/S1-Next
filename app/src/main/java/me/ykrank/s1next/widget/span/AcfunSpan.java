@@ -1,4 +1,4 @@
-package me.ykrank.s1next.widget;
+package me.ykrank.s1next.widget.span;
 
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
@@ -16,8 +16,6 @@ import android.view.View;
 import java.util.HashMap;
 
 import me.ykrank.s1next.util.L;
-
-import static me.ykrank.s1next.widget.TagHandler.getLastSpan;
 
 /**
  * Created by ykrank on 2016/10/16 0016.
@@ -40,7 +38,7 @@ public class AcfunSpan implements CustomMovementMethod.URLSpanClick{
      */
     public static void endAcfun(@NonNull SpannableStringBuilder text) {
         int len = text.length();
-        Object obj = getLastSpan(text, AcfunHref.class);
+        Object obj = TagHandler.getLastSpan(text, AcfunHref.class);
         int where = text.getSpanStart(obj);
 
         text.removeSpan(obj);

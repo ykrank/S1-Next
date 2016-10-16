@@ -33,8 +33,8 @@ import me.ykrank.s1next.data.event.QuoteEvent;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.widget.EventBus;
-import me.ykrank.s1next.widget.GlideImageGetter;
-import me.ykrank.s1next.widget.TagHandler;
+import me.ykrank.s1next.widget.span.GlideImageGetter;
+import me.ykrank.s1next.widget.span.TagHandler;
 
 public final class TextViewBindingAdapter {
 
