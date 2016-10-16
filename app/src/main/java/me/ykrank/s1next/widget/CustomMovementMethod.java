@@ -14,7 +14,11 @@ import android.text.method.MovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.util.L;
@@ -27,9 +31,14 @@ public final class CustomMovementMethod extends ArrowKeyMovementMethod {
 
     private static CustomMovementMethod sInstance;
 
+    private List<URLSpanClick> urlSpanClicks = new ArrayList<>();
+
+    private DefaultURLSpanClick defaultURLSpanClick = new DefaultURLSpanClick();
+
     public static MovementMethod getInstance() {
         if (sInstance == null) {
             sInstance = new CustomMovementMethod();
+            sInstance.addURLSpanClick(new BilibiliSpan());
         }
 
         return sInstance;
@@ -62,18 +71,14 @@ public final class CustomMovementMethod extends ArrowKeyMovementMethod {
                 if (action == MotionEvent.ACTION_UP) {
                     ClickableSpan clickableSpan = link[0];
                     if (clickableSpan instanceof URLSpan) {
-                        // support Custom Tabs for URLSpan
-                        // see URLSpan#onClick(View)
                         Uri uri = Uri.parse(((URLSpan) clickableSpan).getURL());
-                        Context context = widget.getContext();
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
-                        IntentUtil.putCustomTabsExtra(intent);
-                        try {
-                            context.startActivity(intent);
-                        } catch (ActivityNotFoundException e) {
-                            L.e("URLSpan", "Activity was not found for intent, " + intent.toString());
+                        for (URLSpanClick click: urlSpanClicks) {
+                            if (click.isMatch(uri)){
+                                click.onClick(uri, widget);
+                                return true;
+                            }
                         }
+                        defaultURLSpanClick.onClick(uri, widget);
                     } else {
                         clickableSpan.onClick(widget);
                     }
@@ -88,16 +93,53 @@ public final class CustomMovementMethod extends ArrowKeyMovementMethod {
             // invoke ImageClickableSpan's clicking event
             TagHandler.ImageClickableSpan[] imageClickableSpans = buffer.getSpans(off, off,
                     TagHandler.ImageClickableSpan.class);
-            if (imageClickableSpans.length != 0) {
-                if (action == MotionEvent.ACTION_UP) {
+            if (action == MotionEvent.ACTION_UP) {
+                if (imageClickableSpans.length == 1) {
                     imageClickableSpans[0].onClick(widget);
-                }
 
-                return true;
+                    return true;
+                } else if (imageClickableSpans.length > 1) {
+                    throw new IllegalStateException("ImageClickableSpan length > 1; \n" +
+                            "length"+imageClickableSpans.length+",line:"+line+",off:"+off);
+                }
             }
 
         }
 
         return super.onTouchEvent(widget, buffer, event);
+    }
+
+    public void addURLSpanClick(URLSpanClick click){
+        if (!urlSpanClicks.contains(click)) {
+            urlSpanClicks.add(click);
+        }
+    }
+
+    public static class DefaultURLSpanClick implements URLSpanClick{
+
+        @Override
+        public boolean isMatch(Uri uri) {
+            return true;
+        }
+
+        @Override
+        public void onClick(Uri uri, View v) {
+            // support Custom Tabs for URLSpan
+            // see URLSpan#onClick(View)
+            Context context = v.getContext();
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
+            IntentUtil.putCustomTabsExtra(intent);
+            try {
+                context.startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                L.e("URLSpan", "Activity was not found for intent, " + intent.toString());
+            }
+        }
+    }
+
+    public interface URLSpanClick{
+        boolean isMatch(Uri uri);
+        void onClick(Uri uri, View view);
     }
 }

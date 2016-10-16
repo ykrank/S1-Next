@@ -88,6 +88,8 @@ public final class Post implements Cloneable {
     public void setReply(String reply) {
         reply = hideBlackListQuote(reply);
 
+        reply = replaceBilibiliTag(reply);
+
         // Replaces "imgwidth" with "img width",
         // because some img tags in S1 aren't correct.
         // This may be the best way to deal with it though
@@ -151,13 +153,13 @@ public final class Post implements Cloneable {
     }
 
     @Override
-    public Post clone(){
+    public Post clone() {
         Post o = null;
         try {
             o = (Post) super.clone();
         } catch (CloneNotSupportedException e) {
             L.e(TAG, e);
-        } catch (ClassCastException e){
+        } catch (ClassCastException e) {
             L.e(TAG, e);
         }
         return o;
@@ -248,6 +250,44 @@ public final class Post implements Cloneable {
                 return reply.replaceFirst("</font><br />[\\s\\S]*</blockquote>",
                         "</font><br />\r\n[已被抹布]</blockquote>");
             }
+        }
+        return reply;
+    }
+
+    /**
+     * 将B站链接添加自定义Tag
+     * like "<bilibili>http://www.bilibili.com/video/av6706141/index_3.html</bilibili>"
+     * @param reply
+     * @return
+     */
+    private String replaceBilibiliTag(String reply) {
+        Pattern pattern = Pattern.compile("\\[thgame_biliplay.*?\\[/thgame_biliplay\\]");
+        Matcher matcher = pattern.matcher(reply);
+        while (matcher.find()) {
+            String content = matcher.group(0);
+            //find av number
+            Pattern avPattern = Pattern.compile("\\{,=av}[0-9]+");
+            Matcher avMatcher = avPattern.matcher(content);
+            if (!avMatcher.find()){
+                continue;
+            }
+            int avNum = Integer.valueOf(avMatcher.group().substring(6));
+            //find page
+            int page = 1;
+            Pattern pagePattern = Pattern.compile("\\{,=page}[0-9]+");
+            Matcher pageMatcher = pagePattern.matcher(content);
+            if (pageMatcher.find()){
+                page = Integer.valueOf(pageMatcher.group().substring(8));
+            }
+
+            //like "<bilibili>http://www.bilibili.com/video/av6706141/index_3.html</bilibili>"
+            StringBuilder builder = new StringBuilder("<bilibili>http://www.bilibili.com/video/av");
+            builder.append(avNum);
+            builder.append("/index_");
+            builder.append(page);
+            builder.append(".html</bilibili>");
+
+            reply = reply.replace(content, builder.toString());
         }
         return reply;
     }
