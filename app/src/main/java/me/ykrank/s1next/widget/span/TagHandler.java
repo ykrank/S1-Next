@@ -1,20 +1,11 @@
-package me.ykrank.s1next.widget;
+package me.ykrank.s1next.widget.span;
 
-import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.provider.Browser;
-import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
 import android.text.style.StrikethroughSpan;
 import android.view.View;
@@ -45,17 +36,15 @@ public final class TagHandler implements Html.TagHandler {
         } else if ("strike".equalsIgnoreCase(tag)) {
             handleStrike(opening, output);
         } else if ("acfun".equalsIgnoreCase(tag)) {
-            if (opening) {
-                processAttributes(xmlReader);
-                startAcfun((SpannableStringBuilder) output, attributes);
-            } else
-                endAcfun((SpannableStringBuilder) output);
+            handleAcfun(opening, output, xmlReader);
+        } else if ("bilibili".equalsIgnoreCase(tag)) {
+            handleBilibili(opening, output, xmlReader);
         }
     }
 
     /**
      * Replaces {@link android.view.View.OnClickListener}
-     * with {@link me.ykrank.s1next.widget.TagHandler.ImageClickableSpan}.
+     * with {@link TagHandler.ImageClickableSpan}.
      * <p>
      * See android.text.HtmlToSpannedConverter#startImg(android.text.SpannableStringBuilder, org.xml.sax.Attributes, android.text.Html.ImageGetter)
      */
@@ -109,10 +98,25 @@ public final class TagHandler implements Html.TagHandler {
         }
     }
 
+    private void handleAcfun(boolean opening, Editable output, XMLReader xmlReader){
+        if (opening) {
+            processAttributes(xmlReader);
+            AcfunSpan.startAcfun((SpannableStringBuilder) output, attributes);
+        } else
+            AcfunSpan.endAcfun((SpannableStringBuilder) output);
+    }
+
+    private void handleBilibili(boolean opening, Editable output, XMLReader xmlReader){
+        if (opening) {
+            BilibiliSpan.startBilibiliSpan((SpannableStringBuilder) output);
+        } else
+            BilibiliSpan.endBilibiliSpan((SpannableStringBuilder) output);
+    }
+
     /**
      * See android.text.HtmlToSpannedConverter#getLast(android.text.Spanned, java.lang.Class)
      */
-    private static <T> T getLastSpan(Spanned text, Class<T> kind) {
+    public static <T> T getLastSpan(Spanned text, Class<T> kind) {
         T[] spans = text.getSpans(0, text.length(), kind);
 
         if (spans.length == 0) {
@@ -154,36 +158,6 @@ public final class TagHandler implements Html.TagHandler {
         }
     }
 
-    /**
-     * See android.text.HtmlToSpannedConverter#startA(android.text.SpannableStringBuilder, org.xml.sax.Attributes)
-     */
-    private static void startAcfun(SpannableStringBuilder text, HashMap<String, String> attributes) {
-        String href = attributes.get("href");
-
-        int len = text.length();
-        text.setSpan(new AcfunHref(href), len, len, Spannable.SPAN_MARK_MARK);
-    }
-
-    /**
-     * See android.text.HtmlToSpannedConverter#endA(android.text.SpannableStringBuilder)
-     */
-    private static void endAcfun(@NonNull SpannableStringBuilder text) {
-        int len = text.length();
-        Object obj = getLastSpan(text, AcfunHref.class);
-        int where = text.getSpanStart(obj);
-
-        text.removeSpan(obj);
-
-        if (where != len && obj != null) {
-            AcfunHref h = (AcfunHref) obj;
-
-            if (h.mHref != null) {
-                text.setSpan(new AcfunURLSpan(h.mHref), where, len,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-        }
-    }
-
     static final class ImageClickableSpan extends ImageSpan implements View.OnClickListener {
 
         private ImageClickableSpan(Drawable d, String source) {
@@ -197,44 +171,5 @@ public final class TagHandler implements Html.TagHandler {
     }
 
     private static final class Strike {
-    }
-
-    private static class AcfunHref {
-        public String mHref;
-
-        public AcfunHref(String href) {
-            mHref = href;
-        }
-    }
-
-    private static class AcfunURLSpan extends ClickableSpan {
-
-        private final String mURL;
-
-        public AcfunURLSpan(String url) {
-            mURL = url;
-        }
-
-        public String getURL() {
-            return mURL;
-        }
-
-        @Override
-        public void onClick(View widget) {
-            // 对Acfun链接进行独立处理，调用acfun客户端
-            Uri uri = Uri.parse(getURL());
-            Context context = widget.getContext();
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
-            try {
-                PackageManager pm = context.getPackageManager();
-                ComponentName cn = intent.resolveActivity(pm);
-                if (cn == null)
-                    throw new ActivityNotFoundException();
-                context.startActivity(intent);
-            } catch (ActivityNotFoundException e) {
-                L.e("AcfunURLSpan", "Acfun Actvity was not found for intent, " + intent.toString());
-            }
-        }
     }
 }

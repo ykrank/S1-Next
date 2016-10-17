@@ -1,4 +1,4 @@
-package me.ykrank.s1next.widget;
+package me.ykrank.s1next.widget.span;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -26,6 +26,7 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.util.TransformationUtil;
+import me.ykrank.s1next.widget.EmoticonFactory;
 
 /**
  * Implements {@link android.text.Html.ImageGetter}

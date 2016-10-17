@@ -1,4 +1,4 @@
-package me.ykrank.s1next.widget;
+package me.ykrank.s1next.widget.span;
 
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -11,7 +11,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 /**
  * Implements {@link Drawable.Callback} in order to show animated GIFs in the TextView.
  * <p>
- * Used in {@link me.ykrank.s1next.widget.GlideImageGetter}.
+ * Used in {@link GlideImageGetter}.
  */
 final class UrlDrawable extends Drawable implements Drawable.Callback {
 

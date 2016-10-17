@@ -84,6 +84,7 @@
 
                 <data
                     android:host="bbs.saraba1st.com"
+                    android:pathPattern=".*"
                     android:scheme="http" />
             </intent-filter>
         </activity>
