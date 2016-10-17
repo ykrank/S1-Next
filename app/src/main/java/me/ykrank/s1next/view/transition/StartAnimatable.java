@@ -38,7 +38,7 @@ import me.ykrank.s1next.R;
  * A transition which sets a specified {@link Animatable} {@code drawable} on a target
  * {@link ImageView} and {@link Animatable#start() starts} it when the transition begins.
  */
-@RequiresApi(api = Build.VERSION_CODES.KITKAT)
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class StartAnimatable extends Transition {
 
     private final Animatable animatable;
@@ -51,7 +51,6 @@ public class StartAnimatable extends Transition {
         this.animatable = animatable;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public StartAnimatable(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.StartAnimatable);

@@ -1,57 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.design.widget.AppBarLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:theme="?attr/toolbarTheme">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout
-        android:id="@+id/search_toolbar"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?android:actionBarSize"
-        android:outlineProvider="bounds"
-        android:theme="@style/SearchViewTheme"
-        android:transitionGroup="false"
-        app:elevation="@dimen/z_app_bar">
+        android:layout_height="wrap_content"
+        android:theme="?attr/toolbarTheme">
 
-        <View
-            android:id="@+id/search_background"
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/background_dark" />
+            android:layout_height="?attr/actionBarSize"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp">
 
-        <SearchView
-            android:id="@+id/search_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:iconifiedByDefault="false"
-            android:transitionGroup="true"
-            android:searchIcon="@android:color/transparent"
-            android:searchHintIcon="@android:color/transparent"
-            android:queryBackground="@android:color/transparent"
-            android:submitBackground="@android:color/transparent"/>
+            <FrameLayout
+                android:id="@+id/search_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:actionBarSize"
+                android:outlineProvider="bounds"
+                android:transitionGroup="false"
+                app:elevation="@dimen/z_app_bar">
 
-        <!-- wrapping layout needed for the touch ripple -->
-        <FrameLayout
-            android:id="@+id/searchback_container"
-            android:layout_width="96dp"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:paddingLeft="4dp"
-            android:paddingStart="4dp">
 
-            <ImageButton
-                android:id="@+id/searchback"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/ripple_transparent"
-                android:transitionName="@string/transition_search_back"
-                app:srcCompat="@drawable/ic_arrow_back_padded" />
+                <SearchView
+                    android:id="@+id/search_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:iconifiedByDefault="false"
+                    android:queryBackground="@android:color/transparent"
+                    android:searchHintIcon="@android:color/transparent"
+                    android:searchIcon="@android:color/transparent"
+                    android:submitBackground="@android:color/transparent"
+                    android:transitionGroup="true" />
 
-        </FrameLayout>
+                <!-- wrapping layout needed for the touch ripple -->
+                <FrameLayout
+                    android:id="@+id/searchback_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent">
 
-    </FrameLayout>
+                    <ImageButton
+                        android:id="@+id/searchback"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/ripple_transparent"
+                        android:transitionName="@string/transition_search_back"
+                        app:srcCompat="@drawable/ic_arrow_back_padded"/>
 
-</android.support.design.widget.AppBarLayout>
+                </FrameLayout>
+
+            </FrameLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+
+    </android.support.design.widget.AppBarLayout>
+</layout>

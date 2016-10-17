@@ -16,7 +16,8 @@
             android:layout_height="match_parent"
             android:background="@color/scrim" />
 
-        <include layout="@layout/app_bar_search" />
+        <include layout="@layout/app_bar_search"
+            android:id="@+id/app_bar"/>
 
 
         <FrameLayout

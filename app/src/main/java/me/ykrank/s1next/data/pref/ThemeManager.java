@@ -99,6 +99,11 @@ public final class ThemeManager {
         return getTheme().style;
     }
 
+    @StyleRes
+    public int getThemeTranslucentStyle() {
+        return getTheme().translucentStyle;
+    }
+
     public int getThemeIndex() {
         return Theme.VALUES.indexOf(getTheme());
     }
@@ -161,23 +166,27 @@ public final class ThemeManager {
     }
 
     public enum Theme {
-        AFTERNOON_TEA(R.style.AfternoonTea),
-        LIGHT_THEME(R.style.Theme_Light),
-        LIGHT_THEME_INVERSE_AMBER(R.style.Theme_Light_Inverse_Amber),
-        LIGHT_THEME_INVERSE_GREEN(R.style.Theme_Light_Inverse_Green),
-        LIGHT_THEME_INVERSE_LIGHT_BLUE(R.style.Theme_Light_Inverse_LightBlue),
-        LIGHT_THEME_INVERSE_PURPLE(R.style.Theme_Light_Inverse_Purple),
-        DARK_THEME(R.style.Theme_Dark),
-        DARK_THEME_NIGHT_MODE(R.style.Theme_Dark_NightMode),
-        DARK_THEME_NIGHT_MODE_AMOLED(R.style.Theme_Dark_NightMode_Amoled);
+        AFTERNOON_TEA(R.style.Theme_Light_Inverse_AfternoonTea, R.style.Translucent_AfternoonTea),
+        LIGHT_THEME(R.style.Theme_Light, R.style.Translucent_Light),
+        LIGHT_THEME_INVERSE_AMBER(R.style.Theme_Light_Inverse_Amber, R.style.Translucent_Amber),
+        LIGHT_THEME_INVERSE_GREEN(R.style.Theme_Light_Inverse_Green, R.style.Translucent_Green),
+        LIGHT_THEME_INVERSE_LIGHT_BLUE(R.style.Theme_Light_Inverse_LightBlue, R.style.Translucent_LightBlue),
+        LIGHT_THEME_INVERSE_PURPLE(R.style.Theme_Light_Inverse_Purple, R.style.Translucent_Purple),
+        DARK_THEME(R.style.Theme_Dark, R.style.Translucent_Dark),
+        DARK_THEME_NIGHT_MODE(R.style.Theme_Dark_NightMode, R.style.Translucent_Dark_NightMode),
+        DARK_THEME_NIGHT_MODE_AMOLED(R.style.Theme_Dark_NightMode_Amoled, R.style.Translucent_Dark_NightMode_Amoled);
 
         private static final List<Theme> VALUES = Arrays.asList(Theme.values());
 
         @StyleRes
         private final int style;
 
-        Theme(@StyleRes int style) {
+        @StyleRes
+        private final int translucentStyle;
+
+        Theme(@StyleRes int style, @StyleRes int translucentStyle) {
             this.style = style;
+            this.translucentStyle = translucentStyle;
         }
     }
 }

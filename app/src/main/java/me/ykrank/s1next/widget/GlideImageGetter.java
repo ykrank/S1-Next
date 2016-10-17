@@ -76,7 +76,7 @@ public final class GlideImageGetter
      */
     @Override
     public Drawable getDrawable(String url) {
-        UrlDrawable urlDrawable = new UrlDrawable();
+        UrlDrawable urlDrawable = new UrlDrawable(url);
 
         // url has no domain if it comes from server.
         if (!URLUtil.isNetworkUrl(url)) {

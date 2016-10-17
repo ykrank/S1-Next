@@ -2,8 +2,10 @@ package me.ykrank.s1next.widget;
 
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 
+import com.bugsnag.android.Bugsnag;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 
 /**
@@ -14,11 +16,22 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 final class UrlDrawable extends Drawable implements Drawable.Callback {
 
     private GlideDrawable mDrawable;
+    
+    private String url;
+    
+    public UrlDrawable(String url){
+        this.url = url;
+    }
 
     @Override
     public void draw(Canvas canvas) {
         if (mDrawable != null) {
-            mDrawable.draw(canvas);
+            try {
+                mDrawable.draw(canvas);
+            } catch (Exception e){
+                Bugsnag.leaveBreadcrumb("UrlDrawable##url:"+url+",GlideDrawable:"+mDrawable);
+                throw e;
+            }
         }
     }
 
@@ -41,7 +54,7 @@ final class UrlDrawable extends Drawable implements Drawable.Callback {
         if (mDrawable != null) {
             return mDrawable.getOpacity();
         }
-        return 0;
+        return PixelFormat.UNKNOWN;
     }
 
     public void setDrawable(GlideDrawable drawable) {

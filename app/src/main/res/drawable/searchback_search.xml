@@ -20,7 +20,8 @@
     android:width="@dimen/searchback_image_width"
     android:height="@dimen/searchback_image_height"
     android:viewportWidth="@integer/searchback_viewport_width"
-    android:viewportHeight="@integer/searchback_viewport_height">
+    android:viewportHeight="@integer/searchback_viewport_height"
+    android:tint="?attr/actionMenuTextColor">
 
     <path
         android:name="stem"

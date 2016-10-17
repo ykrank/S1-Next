@@ -15,8 +15,8 @@
   limitations under the License.
   -->
 
-<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<transitionSet xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <transition
         class="me.ykrank.s1next.view.transition.CircularReveal"
@@ -40,7 +40,7 @@
         android:duration="160"
         android:interpolator="@anim/fast_out_linear_in">
         <targets>
-            <target android:targetId="@id/search_background" />
+            <target android:targetId="@id/toolbar" />
         </targets>
     </fade>
 
@@ -55,6 +55,10 @@
     <fade
         android:duration="400"
         android:interpolator="@anim/fast_out_slow_in">
+        <targets>
+            <target android:targetId="@android:id/navigationBarBackground"
+                tools:targetApi="lollipop" />
+        </targets>
     </fade>
 
 </transitionSet>

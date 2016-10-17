@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Theme.Light.Inverse.AfternoonTea" parent="Base.Theme.Light.Inverse.AfternoonTea.V23" />
+
+    <style name="Base.Theme.Light.Inverse.AfternoonTea.V23" parent="Base.Theme.Light.Inverse.AfternoonTea">
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+    
     <style name="Theme.Light" parent="Base.Theme.Light.V23" />
 
     <style name="Theme.Light.Inverse.Amber" parent="Base.Theme.Light.Inverse.Amber.V23" />

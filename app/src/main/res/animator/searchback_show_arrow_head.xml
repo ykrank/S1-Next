@@ -17,7 +17,9 @@
 
 <set
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:ordering="together">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:ordering="together"
+    tools:targetApi="lollipop">
 
     <!-- first we need to immediately reset state -->
     <objectAnimator

@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AfternoonTea"
+        android:theme="@style/Theme.Light.Inverse.AfternoonTea"
         tools:ignore="UnusedAttribute">
 
         <meta-data
@@ -103,7 +103,7 @@
         <activity
             android:name=".view.activity.SearchActivity"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.Search">
+            android:theme="@style/Translucent.AfternoonTea">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>

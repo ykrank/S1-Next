@@ -34,7 +34,7 @@
         android:duration="300"
         android:interpolator="@anim/linear_out_slow_in">
         <targets>
-            <target android:targetId="@id/search_background" />
+            <target android:targetId="@id/toolbar" />
         </targets>
     </fade>
 

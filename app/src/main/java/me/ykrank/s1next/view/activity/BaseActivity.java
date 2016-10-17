@@ -107,7 +107,11 @@ public abstract class BaseActivity extends AppCompatActivity
         App.getAppComponent(this).inject(this);
         // change the theme depends on preference
         if (!mThemeManager.isDefaultTheme()) {
-            setTheme(mThemeManager.getThemeStyle());
+            if (isTranslucent()) {
+                setTheme(mThemeManager.getThemeTranslucentStyle());
+            }else {
+                setTheme(mThemeManager.getThemeStyle());
+            }
         }
 
         super.onCreate(savedInstanceState);
@@ -119,6 +123,10 @@ public abstract class BaseActivity extends AppCompatActivity
                 recreate();
             }
         });
+    }
+    
+    public boolean isTranslucent(){
+        return false;
     }
 
     @Override
