@@ -33,6 +33,7 @@ abstract class BaseViewPagerFragment extends Fragment
     private static final String STATE_TOTAL_PAGES = "total_pages";
 
     protected ViewPager mViewPager;
+    private BaseFragmentStatePagerAdapter mAdapter;
     private int mTotalPages;
 
     private MenuItem mMenuPageJump;
@@ -57,7 +58,8 @@ abstract class BaseViewPagerFragment extends Fragment
         // don't use getChildFragmentManager()
         // because we can't retain Fragments (DataRetainedFragment)
         // that are nested in other fragments
-        mViewPager.setAdapter(getPagerAdapter(getFragmentManager()));
+        mAdapter = getPagerAdapter(getFragmentManager());
+        mViewPager.setAdapter(mAdapter);
     }
 
     @Override
@@ -163,15 +165,15 @@ abstract class BaseViewPagerFragment extends Fragment
     /**
      * A base {@link FragmentStatePagerAdapter} wraps some implement.
      */
-    abstract class BaseFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
+    abstract class BaseFragmentStatePagerAdapter<T extends BaseRecyclerViewFragment> extends FragmentStatePagerAdapter<T> {
 
-        private Fragment mCurrentFragment;
+        private T mCurrentFragment;
 
         public BaseFragmentStatePagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
-        public Fragment getCurrentFragment() {
+        public T getCurrentFragment() {
             return mCurrentFragment;
         }
 
@@ -182,26 +184,25 @@ abstract class BaseViewPagerFragment extends Fragment
 
         @Override
         @CallSuper
-        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        public void setPrimaryItem(ViewGroup container, int position, T fragment) {
             setTitleWithPosition(position);
-            if (mCurrentFragment != object) {
-                mCurrentFragment = ((Fragment) object);
+            if (mCurrentFragment != fragment) {
+                mCurrentFragment = fragment;
             }
             
-            super.setPrimaryItem(container, position, object);
+            super.setPrimaryItem(container, position, fragment);
         }
 
         @Override
         @CallSuper
-        @SuppressWarnings("unchecked")
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            if (object instanceof BaseFragment) {
+        public void destroyItem(ViewGroup container, int position, T fragment) {
+            if (fragment != null) {
                 // We don't reuse Fragment in ViewPager and its retained Fragment
                 // because it is not cost-effective nowadays.
-                ((BaseRecyclerViewFragment<Object>) object).destroyRetainedFragment();
+                fragment.destroyRetainedFragment();
             }
 
-            super.destroyItem(container, position, object);
+            super.destroyItem(container, position, fragment);
         }
     }
 }

@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -34,7 +33,6 @@ import me.ykrank.s1next.data.event.QuoteEvent;
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
 import me.ykrank.s1next.util.ClipboardUtil;
 import me.ykrank.s1next.util.IntentUtil;
-import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.util.StringUtil;
@@ -86,6 +84,8 @@ public final class PostListFragment extends BaseViewPagerFragment
     private Subscription mSubscription;
     private Subscription mreadProgressSubscription;
     private ReadProgress readProgress;
+    
+    private PostListPagerAdapter mAdapter;
 
     public static PostListFragment newInstance(Thread thread, boolean shouldGoToLastPage) {
         PostListFragment fragment = new PostListFragment();
@@ -158,8 +158,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         readProgress = bundle.getParcelable(ARG_READ_PROGRESS);
         if (readProgress != null) {
             readProgress.scrollState = ReadProgress.BEFORE_SCROLL_PAGE;
-            setCurrentPage(readProgress.page - 1);
-            L.d("ReadProgress:" + readProgress.toString());
+            setCurrentPage(readProgress.page-1);
         }
     }
 
@@ -268,7 +267,10 @@ public final class PostListFragment extends BaseViewPagerFragment
 
     @Override
     BaseFragmentStatePagerAdapter getPagerAdapter(FragmentManager fragmentManager) {
-        return new PostListPagerAdapter(fragmentManager);
+        if (mAdapter == null){
+            mAdapter = new PostListPagerAdapter(fragmentManager);
+        }
+        return mAdapter;
     }
 
     @Nullable
@@ -311,10 +313,9 @@ public final class PostListFragment extends BaseViewPagerFragment
     /**
      * 获取当前的具体帖子fragment
      *
-     * @return
      */
     PostListPagerFragment getCurPostPageFragment() {
-        return (PostListPagerFragment) ((BaseFragmentStatePagerAdapter) mViewPager.getAdapter()).getCurrentFragment();
+        return mAdapter.getCurrentFragment();
     }
 
     /**
@@ -336,14 +337,11 @@ public final class PostListFragment extends BaseViewPagerFragment
     private void afterLoadReadProgress() {
         if (readProgress != null && readProgress.scrollState == ReadProgress.BEFORE_SCROLL_PAGE) {
             readProgress.scrollState = ReadProgress.BEFORE_SCROLL_POSITION;
-            //如果当前页便是指定加载页，则直接滑动到指定位置
-            if (mViewPager.getCurrentItem() == readProgress.page - 1) {
-                PostListPagerFragment curFragment = getCurPostPageFragment();
-                if (curFragment != null)
-                    curFragment.smoothScrollToPosition(readProgress.position);
-            } else {
-                setCurrentPage(readProgress.page - 1);
-                //TODO 非相同页面时加载阅读进度，需要滑动到相关页
+            if (getCurrentPage() != readProgress.page-1){
+                setCurrentPage(readProgress.page-1);
+                getCurPostPageFragment().setReadProgress(readProgress, false);
+            }else {
+                getCurPostPageFragment().setReadProgress(readProgress, true);
             }
         }
     }
@@ -366,14 +364,14 @@ public final class PostListFragment extends BaseViewPagerFragment
     /**
      * Returns a Fragment corresponding to one of the pages of posts.
      */
-    private class PostListPagerAdapter extends BaseFragmentStatePagerAdapter {
+    private class PostListPagerAdapter extends BaseFragmentStatePagerAdapter<PostListPagerFragment> {
 
         private PostListPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
-        public Fragment getItem(int i) {
+        public PostListPagerFragment getItem(int i) {
             Bundle bundle = getArguments();
             int jumpPage = bundle.getInt(ARG_JUMP_PAGE, -1);
             String quotePostId = bundle.getString(ARG_QUOTE_POST_ID);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Translucent.AfternoonTea" parent="Base.Theme.Light.Inverse.AfternoonTea">
+    <style name="Translucent.AfternoonTea" parent="Base.Theme.Light.AfternoonTea">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>

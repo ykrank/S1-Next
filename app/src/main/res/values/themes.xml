@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Light.Inverse.AfternoonTea" parent="Base.Theme.Light.Inverse.AfternoonTea" />
+    <style name="Theme.Light.Inverse.AfternoonTea" parent="Base.Theme.Light.AfternoonTea" />
     
-    <style name="Base.Theme.Light.Inverse.AfternoonTea">
+    <style name="Base.Theme.Light.AfternoonTea">
         <item name="colorPrimaryDark">@color/saraba_main_top_color</item>
         <item name="colorPrimary">@color/saraba_main_top_color</item>
         <item name="android:colorBackground">@color/saraba_main_bg_color</item>

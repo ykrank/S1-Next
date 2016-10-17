@@ -102,7 +102,9 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
 
         mThreadId = getArguments().getString(ARG_THREAD_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
-        readProgress = getArguments().getParcelable(ARG_READ_PROGRESS);
+        if (readProgress == null){
+            readProgress = getArguments().getParcelable(ARG_READ_PROGRESS);
+        }
         Bugsnag.leaveBreadcrumb("PostListPagerFragment##ThreadId:"+mThreadId+",PageNum:"+mPageNum);
 
         mRecyclerView = getRecyclerView();
@@ -170,8 +172,15 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
         startPullToRefresh();
     }
 
-    void smoothScrollToPosition(int position) {
-        mRecyclerView.smoothScrollToPosition(position);
+    void setReadProgress(ReadProgress readProgress, boolean smooth){
+        this.readProgress = readProgress;
+        if (!isLoading()){
+            if (smooth) {
+                mRecyclerView.smoothScrollToPosition(readProgress.position);
+            }else {
+                mRecyclerView.scrollToPosition(readProgress.position);
+            }
+        }
     }
 
     /**

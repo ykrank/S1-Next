@@ -20,6 +20,7 @@ import me.ykrank.s1next.data.api.model.ThreadLink;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.OnceClickUtil;
 import me.ykrank.s1next.view.fragment.PostListFragment;
 import me.ykrank.s1next.widget.WifiBroadcastReceiver;
@@ -92,7 +93,7 @@ public final class PostListActivity extends BaseActivity
                         if (context instanceof Activity)
                             ((Activity)context).startActivityForResult(intent, RESULT_BLACKLIST);
                         else context.startActivity(intent);
-                    }, e -> e.printStackTrace());
+                    }, L::e);
         }else{
             return OnceClickUtil.setOnceClickLister(view, v->{
                 PostListActivity.startPostListActivity(v.getContext(), thread, false);

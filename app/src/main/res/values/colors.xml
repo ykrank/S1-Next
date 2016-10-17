@@ -58,7 +58,7 @@
     <color name="saraba_main_color_dark">#dede93</color>
     <color name="foreground_material_light">#ad5151</color>
 
-    <color name="scrim">#99323232</color>
+    <color name="scrim">#BB323232</color>
     <color name="background_dark">#ff333333</color>
     <color name="background_super_dark">#ff292929</color>
 

@@ -38,7 +38,7 @@ import me.ykrank.s1next.util.L;
  * Forked from https://github.com/android/platform_frameworks_support/blob/master/v4/java/android/support/v4/app/FragmentStatePagerAdapter.java
  * Change-Id: I9197cb319a2b1bf070ab1fd8a7abbf9ee01de543
  */
-public abstract class FragmentStatePagerAdapter extends PagerAdapter {
+public abstract class FragmentStatePagerAdapter<T extends Fragment> extends PagerAdapter {
 
     private static final String TAG = "FragStatePagerAdapt";
     private static final boolean DEBUG = false;
@@ -47,7 +47,7 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
     private FragmentTransaction mCurTransaction = null;
 
     private final ArrayList<Fragment.SavedState> mSavedState = new ArrayList<>();
-    private final ArrayList<Fragment> mFragments = new ArrayList<>();
+    private final ArrayList<T> mFragments = new ArrayList<>();
     private Fragment mCurrentPrimaryItem = null;
 
     public FragmentStatePagerAdapter(FragmentManager fm) {
@@ -57,20 +57,20 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
     /**
      * Returns the Fragment associated with a specified position.
      */
-    public abstract Fragment getItem(int position);
+    public abstract T getItem(int position);
 
     @Override
     public void startUpdate(ViewGroup container) {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public T instantiateItem(ViewGroup container, int position) {
         // If we already have this item instantiated, there is nothing
         // to do. This can happen when we are restoring the entire pager
         // from its saved state, where the fragment manager has already
         // taken care of restoring the fragments we previously had instantiated.
         if (mFragments.size() > position) {
-            Fragment f = mFragments.get(position);
+            T f = mFragments.get(position);
             if (f != null) {
                 return f;
             }
@@ -80,7 +80,7 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
 
-        Fragment fragment = getItem(position);
+        T fragment = getItem(position);
         if (DEBUG) {
             Log.v(TAG, "Adding item #" + position + ": f=" + fragment);
         }
@@ -105,15 +105,17 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        Fragment fragment = (Fragment) object;
+    public final void destroyItem(ViewGroup container, int position, Object object) {
+        destroyItem(container, position, (T) object);
+    }
 
+    public void destroyItem(ViewGroup container, int position, T fragment) {
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
         if (DEBUG) {
-            Log.v(TAG, "Removing item #" + position + ": f=" + object
-                    + " v=" + ((Fragment) object).getView());
+            Log.v(TAG, "Removing item #" + position + ": f=" + fragment
+                    + " v=" + fragment.getView());
         }
         while (mSavedState.size() <= position) {
             mSavedState.add(null);
@@ -125,8 +127,11 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public void setPrimaryItem(ViewGroup container, int position, Object object) {
-        Fragment fragment = (Fragment) object;
+    public final void setPrimaryItem(ViewGroup container, int position, Object object) {
+        setPrimaryItem(container, position, (T)object);
+    }
+
+    public void setPrimaryItem(ViewGroup container, int position, T fragment) {
         if (fragment != mCurrentPrimaryItem) {
             if (mCurrentPrimaryItem != null) {
                 mCurrentPrimaryItem.setMenuVisibility(false);
@@ -150,8 +155,12 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return ((Fragment) object).getView() == view;
+    public final boolean isViewFromObject(View view, Object object) {
+        return isViewFromObject(view, (T)object);
+    }
+
+    public boolean isViewFromObject(View view, T fragment) {
+        return fragment.getView() == view;
     }
 
     @Override
@@ -199,7 +208,7 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
                             mFragments.add(null);
                         }
                         f.setMenuVisibility(false);
-                        mFragments.set(index, f);
+                        mFragments.set(index, (T) f);
                     } else {
                         L.w(TAG, "Bad fragment at key " + key);
                     }
