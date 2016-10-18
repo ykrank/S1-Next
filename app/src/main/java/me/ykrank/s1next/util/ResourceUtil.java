@@ -3,11 +3,13 @@ package me.ykrank.s1next.util;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.AnyRes;
 import android.support.annotation.AttrRes;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
@@ -62,5 +64,10 @@ public final class ResourceUtil {
             L.e("getAppMeta", e);
         }
         return null;
+    }
+
+    public static ColorStateList getTextColorPrimary(Context mContext){
+        return ContextCompat.getColorStateList(mContext,
+                ResourceUtil.getResourceId(mContext.getTheme(), android.R.attr.textColorPrimary));
     }
 }

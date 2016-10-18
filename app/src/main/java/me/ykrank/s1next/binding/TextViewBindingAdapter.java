@@ -31,12 +31,14 @@ import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.event.QuoteEvent;
 import me.ykrank.s1next.data.pref.ThemeManager;
+import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.span.GlideImageGetter;
 import me.ykrank.s1next.widget.span.TagHandler;
 
 public final class TextViewBindingAdapter {
+    private static int defaultTextColor;
 
     private TextViewBindingAdapter() {
     }
@@ -94,6 +96,8 @@ public final class TextViewBindingAdapter {
             ViewUtil.concatWithTwoSpacesForRtlSupport(textView,
                     "[" + textView.getContext().getString(R.string.user_in_blacklist) + "]");
             textView.setTextColor(Color.GRAY);
+        }else {
+            textView.setTextColor(ResourceUtil.getTextColorPrimary(textView.getContext()));
         }
         // disable TextView if user has no permission to access this thread
         boolean hasPermission = user.getPermission() >= thread.getPermission();
@@ -143,6 +147,7 @@ public final class TextViewBindingAdapter {
             textView.setText(null);
         } else {
             // use GlideImageGetter to show images in TextView
+            //noinspection deprecation
             textView.setText(Html.fromHtml(reply, GlideImageGetter.get(textView), new TagHandler()));
         }
     }
