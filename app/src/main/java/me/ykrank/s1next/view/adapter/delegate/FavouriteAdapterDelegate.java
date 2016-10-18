@@ -1,34 +1,26 @@
 package me.ykrank.s1next.view.adapter.delegate;
 
-import android.app.Activity;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
-import com.hannesdorfmann.adapterdelegates.AbsAdapterDelegate;
-
-import java.util.List;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Favourite;
 import me.ykrank.s1next.databinding.ItemFavouriteBinding;
 import me.ykrank.s1next.viewmodel.FavouriteViewModel;
 
-public final class FavouriteAdapterDelegate extends AbsAdapterDelegate<List<Object>> {
+public final class FavouriteAdapterDelegate extends BaseAdapterDelegate<Favourite, FavouriteAdapterDelegate.BindingViewHolder> {
 
-    private final LayoutInflater mLayoutInflater;
-
-    public FavouriteAdapterDelegate(Activity activity, int viewType) {
-        super(viewType);
-
-        mLayoutInflater = activity.getLayoutInflater();
+    public FavouriteAdapterDelegate(Context context, int viewType) {
+        super(context, viewType);
     }
 
+    @NonNull
     @Override
-    public boolean isForViewType(@NonNull List<Object> items, int position) {
-        return items.get(position) instanceof Favourite;
+    protected Class<Favourite> getTClass() {
+        return Favourite.class;
     }
 
     @NonNull
@@ -42,14 +34,14 @@ public final class FavouriteAdapterDelegate extends AbsAdapterDelegate<List<Obje
     }
 
     @Override
-    public void onBindViewHolder(@NonNull List<Object> items, int position, @NonNull RecyclerView.ViewHolder holder) {
-        ItemFavouriteBinding binding = ((BindingViewHolder) holder).itemFavouriteBinding;
-        binding.getFavouriteViewModel().favourite.set((Favourite) items.get(position));
+    public void onBindViewHolderData(Favourite favourite, int position, @NonNull BindingViewHolder holder) {
+        ItemFavouriteBinding binding = holder.itemFavouriteBinding;
+        binding.getFavouriteViewModel().favourite.set(favourite);
         binding.getFavouriteViewModel().setSubscription();
         binding.executePendingBindings();
     }
 
-    private static final class BindingViewHolder extends RecyclerView.ViewHolder {
+    static final class BindingViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemFavouriteBinding itemFavouriteBinding;
 

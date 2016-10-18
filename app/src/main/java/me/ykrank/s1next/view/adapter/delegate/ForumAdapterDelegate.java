@@ -1,15 +1,10 @@
 package me.ykrank.s1next.view.adapter.delegate;
 
-import android.app.Activity;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
-import com.hannesdorfmann.adapterdelegates.AbsAdapterDelegate;
-
-import java.util.List;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
@@ -17,22 +12,19 @@ import me.ykrank.s1next.data.api.model.Forum;
 import me.ykrank.s1next.databinding.ItemForumBinding;
 import me.ykrank.s1next.viewmodel.ForumViewModel;
 
-public final class ForumAdapterDelegate extends AbsAdapterDelegate<List<Object>> {
-
-    private final LayoutInflater mLayoutInflater;
-
+public final class ForumAdapterDelegate extends BaseAdapterDelegate<Forum, ForumAdapterDelegate.BindingViewHolder> {
     private final int mGentleAccentColor;
 
-    public ForumAdapterDelegate(Activity activity, int viewType) {
-        super(viewType);
+    public ForumAdapterDelegate(Context context, int viewType) {
+        super(context, viewType);
 
-        mLayoutInflater = activity.getLayoutInflater();
-        mGentleAccentColor = App.getAppComponent(activity).getThemeManager().getGentleAccentColor();
+        mGentleAccentColor = App.getAppComponent(context).getThemeManager().getGentleAccentColor();
     }
 
+    @NonNull
     @Override
-    public boolean isForViewType(@NonNull List<Object> items, int position) {
-        return items.get(position) instanceof Forum;
+    protected Class<Forum> getTClass() {
+        return Forum.class;
     }
 
     @NonNull
@@ -47,13 +39,13 @@ public final class ForumAdapterDelegate extends AbsAdapterDelegate<List<Object>>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull List<Object> items, int position, @NonNull RecyclerView.ViewHolder holder) {
-        ItemForumBinding binding = ((BindingViewHolder) holder).itemForumBinding;
-        binding.getForumViewModel().forum.set((Forum) items.get(position));
+    public void onBindViewHolderData(Forum forum, int position, @NonNull BindingViewHolder holder) {
+        ItemForumBinding binding = holder.itemForumBinding;
+        binding.getForumViewModel().forum.set(forum);
         binding.executePendingBindings();
     }
 
-    private static final class BindingViewHolder extends RecyclerView.ViewHolder {
+    static final class BindingViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemForumBinding itemForumBinding;
 

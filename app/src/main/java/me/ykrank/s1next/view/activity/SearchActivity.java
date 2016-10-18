@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.View;
+import android.widget.SearchView;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.databinding.ActivitySearchBinding;
@@ -26,6 +27,8 @@ import me.ykrank.s1next.databinding.ActivitySearchBinding;
 
 public class SearchActivity extends BaseActivity {
     private ActivitySearchBinding binding;
+    
+    private SearchView searchView;
 
     public static void start(Context context){
         context.startActivity(new Intent(context, SearchActivity.class));
@@ -41,6 +44,8 @@ public class SearchActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
+        
+        searchView = binding.appBar.searchView;
         
         binding.appBar.toolbar.setNavigationIcon(null);
         setupWindowAnimations();
@@ -89,5 +94,38 @@ public class SearchActivity extends BaseActivity {
             //noinspection deprecation
             binding.appBar.searchback.setBackgroundDrawable(drawable);
         }
+    }
+
+    private void setupSearchView() {
+//        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//        // hint, inputType & ime options seem to be ignored from XML! Set in code
+//        searchView.setQueryHint(getString(R.string.search_hint));
+//        searchView.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+//        searchView.setImeOptions(searchView.getImeOptions() | EditorInfo.IME_ACTION_SEARCH |
+//                EditorInfo.IME_FLAG_NO_EXTRACT_UI | EditorInfo.IME_FLAG_NO_FULLSCREEN);
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                searchFor(query);
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String query) {
+//                if (TextUtils.isEmpty(query)) {
+//                    clearResults();
+//                }
+//                return true;
+//            }
+//        });
+//        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus && confirmSaveContainer.getVisibility() == View.VISIBLE) {
+//                    hideSaveConfimation();
+//                }
+//            }
+//        });
     }
 }

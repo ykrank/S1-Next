@@ -1,15 +1,10 @@
 package me.ykrank.s1next.view.adapter.delegate;
 
-import android.app.Activity;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
-import com.hannesdorfmann.adapterdelegates.AbsAdapterDelegate;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -21,7 +16,7 @@ import me.ykrank.s1next.databinding.ItemThreadBinding;
 import me.ykrank.s1next.viewmodel.ThreadViewModel;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 
-public final class ThreadAdapterDelegate extends AbsAdapterDelegate<List<Object>> {
+public final class ThreadAdapterDelegate extends BaseAdapterDelegate<Thread, ThreadAdapterDelegate.BindingViewHolder> {
 
     @Inject
     UserViewModel mUserViewModel;
@@ -29,18 +24,16 @@ public final class ThreadAdapterDelegate extends AbsAdapterDelegate<List<Object>
     @Inject
     ThemeManager mThemeManager;
 
-    private final LayoutInflater mLayoutInflater;
+    public ThreadAdapterDelegate(Context context, int viewType) {
+        super(context, viewType);
 
-    public ThreadAdapterDelegate(Activity activity, int viewType) {
-        super(viewType);
-
-        App.getAppComponent(activity).inject(this);
-        mLayoutInflater = activity.getLayoutInflater();
+        App.getAppComponent(context).inject(this);
     }
 
+    @NonNull
     @Override
-    public boolean isForViewType(@NonNull List<Object> items, int position) {
-        return items.get(position) instanceof Thread;
+    protected Class<Thread> getTClass() {
+        return Thread.class;
     }
 
     @NonNull
@@ -58,14 +51,14 @@ public final class ThreadAdapterDelegate extends AbsAdapterDelegate<List<Object>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull List<Object> items, int position, @NonNull RecyclerView.ViewHolder holder) {
-        ItemThreadBinding binding = ((BindingViewHolder) holder).itemThreadBinding;
-        binding.getThreadViewModel().thread.set((Thread) items.get(position));
+    public void onBindViewHolderData(Thread thread, int position, @NonNull BindingViewHolder holder) {
+        ItemThreadBinding binding = holder.itemThreadBinding;
+        binding.getThreadViewModel().thread.set(thread);
         binding.getThreadViewModel().setSubscription();
         binding.executePendingBindings();
     }
 
-    private static final class BindingViewHolder extends RecyclerView.ViewHolder {
+    static final class BindingViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemThreadBinding itemThreadBinding;
 

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.DrawableRequestBuilder;
@@ -12,9 +11,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.hannesdorfmann.adapterdelegates.AbsAdapterDelegate;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -26,7 +22,7 @@ import me.ykrank.s1next.databinding.ItemPostBinding;
 import me.ykrank.s1next.viewmodel.PostViewModel;
 import me.ykrank.s1next.widget.EventBus;
 
-public final class PostAdapterDelegate extends AbsAdapterDelegate<List<Object>> {
+public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAdapterDelegate.ItemViewBindingHolder> {
 
     @Inject
     EventBus mEventBus;
@@ -34,15 +30,12 @@ public final class PostAdapterDelegate extends AbsAdapterDelegate<List<Object>> 
     @Inject
     DownloadPreferencesManager mDownloadPreferencesManager;
 
-    private final LayoutInflater mLayoutInflater;
-
     private final DrawableRequestBuilder<String> mAvatarRequestBuilder;
 
     public PostAdapterDelegate(Activity activity, int viewType) {
-        super(viewType);
+        super(activity, viewType);
 
         App.getAppComponent(activity).inject(this);
-        mLayoutInflater = activity.getLayoutInflater();
         // loading avatars is prior to images in replies
         mAvatarRequestBuilder = Glide.with(activity)
                 .from(String.class)
@@ -52,9 +45,10 @@ public final class PostAdapterDelegate extends AbsAdapterDelegate<List<Object>> 
                 .transform(new CenterCrop(Glide.get(activity).getBitmapPool()));
     }
 
+    @NonNull
     @Override
-    public boolean isForViewType(@NonNull List<Object> items, int position) {
-        return items.get(position) instanceof Post;
+    protected Class<Post> getTClass() {
+        return Post.class;
     }
 
     @NonNull
@@ -71,13 +65,13 @@ public final class PostAdapterDelegate extends AbsAdapterDelegate<List<Object>> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull List<Object> items, int position, @NonNull RecyclerView.ViewHolder holder) {
-        ItemPostBinding binding = ((ItemViewBindingHolder) holder).itemPostBinding;
-        binding.getPostViewModel().post.set((Post) items.get(position));
+    public void onBindViewHolderData(Post post, int position, @NonNull ItemViewBindingHolder holder) {
+        ItemPostBinding binding = holder.itemPostBinding;
+        binding.getPostViewModel().post.set(post);
         binding.executePendingBindings();
     }
 
-    private static final class ItemViewBindingHolder extends RecyclerView.ViewHolder {
+    static final class ItemViewBindingHolder extends RecyclerView.ViewHolder {
 
         private final ItemPostBinding itemPostBinding;
 
