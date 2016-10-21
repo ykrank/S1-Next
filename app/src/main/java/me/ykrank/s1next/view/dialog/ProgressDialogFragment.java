@@ -9,15 +9,14 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
-import android.text.TextUtils;
 import android.widget.Toast;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.AppComponent;
 import me.ykrank.s1next.data.User;
+import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
-import me.ykrank.s1next.data.api.model.Account;
 import me.ykrank.s1next.data.api.model.wrapper.ResultWrapper;
 import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
@@ -108,31 +107,10 @@ abstract class ProgressDialogFragment<D> extends DialogFragment {
     abstract Observable<D> getSourceObservable();
 
     /**
-     * A helpers method provides authenticity token.
-     *
-     * @param func A function that, when applied to the authenticity token, returns an
-     *             Observable. And the {@link Observable} is what we want to return
-     *             if we get authenticity token successful.
-     * @return Returns {@link S1Service#refreshAuthenticityToken()}'s result if we
-     * failed to get authenticity token, otherwise returns {@code func.call(authenticityToken)}.
+     * @see ApiFlatTransformer#flatMappedWithAuthenticityToken(S1Service, UserValidator, User, Func1) 
      */
     final Observable<ResultWrapper> flatMappedWithAuthenticityToken(Func1<String, Observable<ResultWrapper>> func) {
-        String authenticityToken = mUser.getAuthenticityToken();
-        if (TextUtils.isEmpty(authenticityToken)) {
-            return mS1Service.refreshAuthenticityToken().flatMap(resultWrapper -> {
-                Account account = resultWrapper.getAccount();
-                // return the ResultWrapper if we cannot get the authenticity token
-                // (if account has expired or network error)
-                if (TextUtils.isEmpty(account.getAuthenticityToken())) {
-                    return Observable.just(resultWrapper);
-                } else {
-                    mUserValidator.validate(account);
-                    return func.call(account.getAuthenticityToken());
-                }
-            });
-        } else {
-            return func.call(authenticityToken);
-        }
+        return ApiFlatTransformer.flatMappedWithAuthenticityToken(mS1Service, mUserValidator, mUser, func);
     }
 
     /**

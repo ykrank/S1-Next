@@ -67,4 +67,14 @@ public class Account {
     public int hashCode() {
         return Objects.hashCode(uid, username, authenticityToken, permission);
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "uid='" + uid + '\'' +
+                ", username='" + username + '\'' +
+                ", authenticityToken='" + authenticityToken + '\'' +
+                ", permission=" + permission +
+                '}';
+    }
 }

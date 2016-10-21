@@ -5,7 +5,7 @@ import android.app.Activity;
 import me.ykrank.s1next.data.api.model.Forum;
 import me.ykrank.s1next.view.adapter.delegate.ForumAdapterDelegate;
 
-public final class ForumRecyclerViewAdapter extends BaseRecyclerViewAdapter<Forum> {
+public final class ForumRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
     private static final int VIEW_TYPE_FORUM = 1;
 

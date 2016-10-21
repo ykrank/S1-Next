@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="me.ykrank.s1next.view.adapter.delegate.SearchAdapterDelegate">
+
+    <data>
+
+        <variable
+            name="model"
+            type="me.ykrank.s1next.viewmodel.SearchViewModel" />
+    </data>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/single_line_height"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:paddingEnd="@dimen/item_padding"
+        android:paddingLeft="@dimen/item_padding"
+        android:paddingRight="@dimen/item_padding"
+        android:paddingStart="@dimen/item_padding"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:forum="@{model.search}" />
+
+</layout>

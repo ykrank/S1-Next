@@ -32,9 +32,9 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.event.EmoticonClickEvent;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.databinding.FragmentPostBinding;
+import me.ykrank.s1next.util.ImeUtils;
 import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
-import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.view.adapter.EmoticonPagerAdapter;
 import me.ykrank.s1next.widget.EventBus;
 import rx.Subscription;
@@ -202,7 +202,7 @@ public abstract class BasePostFragment extends BaseFragment {
         mIsEmoticonKeyboardShowing = true;
 
         // hide keyboard
-        ViewUtil.setShowSoftInputOnFocus(mReplyView, false);
+        ImeUtils.setShowSoftInputOnFocus(mReplyView, false);
         InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(mReplyView.getWindowToken(), 0);
@@ -238,7 +238,7 @@ public abstract class BasePostFragment extends BaseFragment {
                     public void onAnimationEnd(View view) {
                         mEmoticonKeyboard.setVisibility(View.GONE);
 
-                        ViewUtil.setShowSoftInputOnFocus(mReplyView, true);
+                        ImeUtils.setShowSoftInputOnFocus(mReplyView, true);
                         getActivity().getWindow().setSoftInputMode(
                                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 

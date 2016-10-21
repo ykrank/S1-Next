@@ -47,6 +47,8 @@ public final class Api {
      */
     static final String URL_NEW_THREAD_HELPER = BASE_URL + "forum.php?mod=post&action=newthread";
 
+    static final String URL_SEARCH_FORUM = BASE_URL + "search.php?mod=forum";
+
     public static final String URL_EMOTICON_IMAGE_PREFIX = "static/image/smiley/";
 
     private static final String URL_USER_AVATAR_PREFIX = prepend("uc_server/data/avatar/");

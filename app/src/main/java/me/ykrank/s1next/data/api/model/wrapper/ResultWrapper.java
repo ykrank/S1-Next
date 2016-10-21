@@ -46,4 +46,12 @@ public final class ResultWrapper {
     public int hashCode() {
         return Objects.hashCode(result, account);
     }
+
+    @Override
+    public String toString() {
+        return "ResultWrapper{" +
+                "result=" + result +
+                ", account=" + account +
+                '}';
+    }
 }

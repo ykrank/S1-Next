@@ -14,7 +14,7 @@ import me.ykrank.s1next.view.adapter.item.FooterProgressItem;
  * has another item type {@link #TYPE_POST_FOOTER_PROGRESS}
  * in order to implement pull up to refresh.
  */
-public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Post> {
+public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
     private static final int VIEW_TYPE_POST = 1;
     private static final int TYPE_POST_FOOTER_PROGRESS = 2;

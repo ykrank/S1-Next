@@ -236,5 +236,6 @@
     <string name="dialog_message_new_thread_discard_prompt">Do you want to discard this new thread?</string>
     <string name="menu_new_thread">New thread</string>
     <string name="transition_search_back" translatable="false">transition_search_back</string>
+    <string name="search_hint">Enter search content</string>
 
 </resources>

@@ -148,4 +148,5 @@
     <string name="dialog_message_new_thread_discard_prompt">要舍弃这条新帖吗？</string>
     <string name="menu_new_thread">发布新帖</string>
     <string name="menu_search">搜索</string>
+    <string name="search_hint">请输入搜索内容</string>
 </resources>

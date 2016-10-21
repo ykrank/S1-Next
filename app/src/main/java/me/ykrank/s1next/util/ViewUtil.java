@@ -81,29 +81,4 @@ public final class ViewUtil {
         });
     }
 
-    /**
-     * Backports {@link TextView#setShowSoftInputOnFocus} to API 20 and below.
-     *
-     * @see TextView#setShowSoftInputOnFocus(boolean)
-     */
-    public static void setShowSoftInputOnFocus(EditText editText, Boolean show) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            editText.setShowSoftInputOnFocus(show);
-        } else {
-            try {
-                Method method;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    method = TextView.class.getMethod("setShowSoftInputOnFocus", boolean.class);
-                } else {
-                    method = TextView.class.getMethod("setSoftInputShownOnFocus", boolean.class);
-                }
-                method.setAccessible(true);
-                method.invoke(editText, show);
-            } catch (Exception e) {
-                // multi-catch with those reflection exceptions requires API level 19
-                // so we use Exception instead of multi-catch
-                throw new RuntimeException("Failed to invoke TextView#setShowSoftInputOnFocus(boolean).", e);
-            }
-        }
-    }
 }

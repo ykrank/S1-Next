@@ -15,7 +15,7 @@ import java.util.List;
 import me.ykrank.s1next.view.adapter.delegate.ProgressAdapterDelegate;
 import me.ykrank.s1next.view.adapter.item.ProgressItem;
 
-public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
+public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter {
 
     private static final int VIEW_TYPE_PROGRESS = 0;
 
@@ -81,6 +81,10 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
                 mList.clear();
             }
         }
+    }
+    
+    public final void addDataSet(List<?> list) {
+        mList.addAll(list);
     }
 
     @SuppressWarnings("unchecked")

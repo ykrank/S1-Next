@@ -25,11 +25,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="?android:actionBarSize"
-            android:background="@color/background_dark"
+            android:background="?android:attr/colorBackground"
             app:elevation="@dimen/z_app_bar">
 
             <ProgressBar
-                android:id="@android:id/empty"
+                android:id="@+id/progress_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
@@ -38,7 +38,7 @@
                 android:paddingBottom="@dimen/spacing_huge"
                 android:paddingTop="@dimen/spacing_huge"
                 android:visibility="gone"
-                tools:visibility="gone" />
+                tools:visibility="visible" />
 
             <ViewStub
                 android:id="@+id/stub_no_search_results"

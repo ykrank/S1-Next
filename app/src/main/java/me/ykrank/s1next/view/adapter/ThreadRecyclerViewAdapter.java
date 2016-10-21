@@ -5,7 +5,7 @@ import android.app.Activity;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate;
 
-public final class ThreadRecyclerViewAdapter extends BaseRecyclerViewAdapter<Thread> {
+public final class ThreadRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
     private static final int VIEW_TYPE_THREAD = 1;
 

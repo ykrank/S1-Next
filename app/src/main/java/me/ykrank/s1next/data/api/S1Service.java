@@ -64,4 +64,8 @@ public interface S1Service {
     Observable<ResultWrapper> newThread(@Query("fid") int fid, @Field("formhash") String authenticityToken, @Field("posttime") long postTime, @Field("typeid") String typeId,
                                         @Field("subject") String subject, @Field("message") String message, @Field("allownoticeauthor") int allowNoticeAuthor,
                                         @Field("usesig") int useSign, @Field("save") Integer saveAsDraft);
+
+    @FormUrlEncoded
+    @POST(Api.URL_SEARCH_FORUM)
+    Observable<String> searchForum(@Field("formhash") String authenticityToken, @Field("searchsubmit") String searchSubmit, @Field("srchtxt") String text);
 }

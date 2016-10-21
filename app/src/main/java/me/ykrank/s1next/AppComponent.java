@@ -11,6 +11,7 @@ import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.view.activity.BaseActivity;
+import me.ykrank.s1next.view.activity.SearchActivity;
 import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
@@ -77,4 +78,6 @@ public interface AppComponent {
     void inject(PostAdapterDelegate delegate);
 
     void inject(WifiBroadcastReceiver wifiBroadcastReceiver);
+    
+    void inject(SearchActivity activity);
 }

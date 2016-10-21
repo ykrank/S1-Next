@@ -45,4 +45,12 @@ public final class Result {
     public int hashCode() {
         return Objects.hashCode(status, message);
     }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "status='" + status + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }
