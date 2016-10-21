@@ -7,4 +7,5 @@
     <!-- http://stackoverflow.com/a/23740834 -->
     <integer name="ime_action_id">77</integer>
 
+    <integer name="rapid_animation">120</integer>
 </resources>

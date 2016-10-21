@@ -2,11 +2,14 @@ package me.ykrank.s1next.view.activity;
 
 import android.app.Activity;
 import android.app.SearchManager;
+import android.app.SharedElementCallback;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
@@ -16,16 +19,23 @@ import android.support.annotation.RequiresApi;
 import android.support.annotation.TransitionRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.StyleSpan;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.transition.TransitionManager;
+import android.transition.TransitionSet;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -43,7 +53,9 @@ import me.ykrank.s1next.databinding.ActivitySearchBinding;
 import me.ykrank.s1next.util.ImeUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
+import me.ykrank.s1next.util.TransitionUtils;
 import me.ykrank.s1next.view.adapter.SearchRecyclerViewAdapter;
+import me.ykrank.s1next.view.transition.CircularReveal;
 
 /**
  * Created by ykrank on 2016/9/28 0028.
@@ -58,22 +70,24 @@ public class SearchActivity extends BaseActivity {
     User mUser;
     @Inject
     S1Service s1Service;
-    
+
     private ActivitySearchBinding binding;
-    
+
     private SearchView searchView;
     private RecyclerView recyclerView;
+    private TextView noResults;
+    private ImageButton searchBack;
 
     private SparseArray<Transition> transitions = new SparseArray<>();
-    
+
     private SearchWrapper searchWrapper;
     private SearchRecyclerViewAdapter adapter;
 
-    public static void start(Context context){
+    public static void start(Context context) {
         context.startActivity(new Intent(context, SearchActivity.class));
     }
 
-    public static void start(Activity activity, @NonNull View searchIconView){
+    public static void start(Activity activity, @NonNull View searchIconView) {
         Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, searchIconView,
                 activity.getString(R.string.transition_search_back)).toBundle();
         ActivityCompat.startActivity(activity, new Intent(activity, SearchActivity.class), options);
@@ -84,14 +98,26 @@ public class SearchActivity extends BaseActivity {
         App.getAppComponent(this).inject(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
-        
+
         searchView = binding.appBar.searchView;
         recyclerView = binding.searchResults;
-        
+        searchBack = binding.appBar.searchback;
+
         binding.appBar.toolbar.setNavigationIcon(null);
         setupWindowAnimations();
+        setupTransitions();
         compatBackIcon();
-        
+
+        adapter = new SearchRecyclerViewAdapter(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+        searchBack.setOnClickListener(v -> dismiss());
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
         setupSearchView();
     }
 
@@ -120,8 +146,47 @@ public class SearchActivity extends BaseActivity {
             getWindow().setSharedElementReturnTransition(returnShareTransition);
         }
     }
-    
-    private void compatBackIcon(){
+
+    private void setupTransitions() {
+        // grab the position that the search icon transitions in *from*
+        // & use it to configure the return transition
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setEnterSharedElementCallback(new SharedElementCallback() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void onSharedElementStart(
+                        List<String> sharedElementNames,
+                        List<View> sharedElements,
+                        List<View> sharedElementSnapshots) {
+                    if (sharedElements != null && !sharedElements.isEmpty()) {
+                        View searchIcon = sharedElements.get(0);
+                        if (searchIcon.getId() != R.id.searchback) return;
+                        int centerX = (searchIcon.getLeft() + searchIcon.getRight()) / 2;
+                        CircularReveal hideResults = (CircularReveal) TransitionUtils.findTransition(
+                                (TransitionSet) getWindow().getReturnTransition(),
+                                CircularReveal.class, R.id.results_container);
+                        if (hideResults != null) {
+                            hideResults.setCenter(new Point(centerX, 0));
+                        }
+                    }
+                }
+            });
+            // focus the search view once the transition finishes
+            getWindow().getEnterTransition().addListener(
+                    new TransitionUtils.TransitionListenerAdapter() {
+                        @Override
+                        public void onTransitionEnd(Transition transition) {
+                            searchView.requestFocus();
+                            ImeUtils.showIme(searchView);
+                        }
+                    });
+        } else {
+            searchView.requestFocus();
+            ImeUtils.showIme(searchView);
+        }
+    }
+
+    private void compatBackIcon() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             StateListDrawable drawable = new StateListDrawable();
 
@@ -148,7 +213,7 @@ public class SearchActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             searchView.setImeOptions(searchView.getImeOptions() | EditorInfo.IME_ACTION_SEARCH |
                     EditorInfo.IME_FLAG_NO_EXTRACT_UI | EditorInfo.IME_FLAG_NO_FULLSCREEN);
-        }else {
+        } else {
             searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH |
                     EditorInfo.IME_FLAG_NO_EXTRACT_UI | EditorInfo.IME_FLAG_NO_FULLSCREEN);
         }
@@ -173,14 +238,11 @@ public class SearchActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             TransitionManager.beginDelayedTransition(binding.coordinatorLayout, getTransition(R.transition.auto));
         }
-//        adapter.clear();
-//        dataManager.clear();
-//        results.setVisibility(View.GONE);
-//        progress.setVisibility(View.GONE);
-//        fab.setVisibility(View.GONE);
-//        confirmSaveContainer.setVisibility(View.GONE);
-//        resultsScrim.setVisibility(View.GONE);
-//        setNoResultsVisibility(View.GONE);
+        adapter.clear();
+        recyclerView.setVisibility(View.GONE);
+        binding.progressBar.setVisibility(View.GONE);
+        binding.resultsScrim.setVisibility(View.GONE);
+        setNoResultsVisibility(View.GONE);
     }
 
     private void setResults(List<Search> data) {
@@ -194,6 +256,7 @@ public class SearchActivity extends BaseActivity {
                 recyclerView.setVisibility(View.VISIBLE);
             }
             adapter.setDataSet(data);
+            adapter.notifyDataSetChanged();
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 TransitionManager.beginDelayedTransition(
@@ -201,6 +264,31 @@ public class SearchActivity extends BaseActivity {
             }
             binding.progressBar.setVisibility(View.GONE);
             setNoResultsVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setNoResultsVisibility(int visibility) {
+        if (visibility == View.VISIBLE) {
+            if (noResults == null) {
+
+                noResults = (TextView) binding.stubNoSearchResults.getViewStub().inflate();
+                noResults.setOnClickListener(v -> {
+                    searchView.setQuery("", false);
+                    searchView.requestFocus();
+                    ImeUtils.showIme(searchView);
+                });
+            }
+            String message = String.format(
+                    getString(R.string.no_search_results), searchView.getQuery().toString());
+            SpannableStringBuilder ssb = new SpannableStringBuilder(message);
+            ssb.setSpan(new StyleSpan(Typeface.ITALIC),
+                    message.indexOf('“') + 1,
+                    message.length() - 1,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            noResults.setText(ssb);
+        }
+        if (noResults != null) {
+            noResults.setVisibility(visibility);
         }
     }
 
@@ -213,11 +301,12 @@ public class SearchActivity extends BaseActivity {
 
         s1Service.searchForum(mUser.getAuthenticityToken(), "yes", query)
                 .compose(ApiFlatTransformer.AuthenticityTokenTransformer(mS1Service, mUserValidator))
+                .map(source -> {
+                    searchWrapper = SearchWrapper.fromSource(source);
+                    return searchWrapper;
+                })
                 .compose(RxJavaUtil.iOTransformer())
-                .subscribe(t->{
-                    searchWrapper = SearchWrapper.fromSource(t);
-                    setResults(searchWrapper.getSearches());
-                }, L::e);
+                .subscribe(wrapper -> setResults(wrapper.getSearches()), L::e);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -228,5 +317,15 @@ public class SearchActivity extends BaseActivity {
             transitions.put(transitionId, transition);
         }
         return transition;
+    }
+
+    private void dismiss() {
+        // clear the background else the touch ripple moves with the translation which looks bad
+        searchBack.setBackgroundDrawable(null);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            finishAfterTransition();
+        }else {
+            finish();
+        }
     }
 }

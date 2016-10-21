@@ -64,7 +64,7 @@
             android:layout_toEndOf="@id/avatar"
             android:layout_toRightOf="@id/avatar"
             android:includeFontPadding="false"
-            android:singleLine="true"
+            android:lines="1"
             android:text="@{postViewModel.post.authorName}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textIsSelectable="true" />
@@ -77,7 +77,7 @@
             android:layout_below="@id/author_name"
             android:layout_marginTop="@dimen/subtitle_margin_top"
             android:includeFontPadding="false"
-            android:singleLine="true"
+            android:lines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:relativeDateTime="@{postViewModel.post.datetime}" />
 

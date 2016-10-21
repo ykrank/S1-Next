@@ -111,6 +111,7 @@ public class BilibiliSpan implements CustomMovementMethod.URLSpanClick {
         return false;
     }
 
+    @Override
     public void onClick(Uri uri, View view) {
         goBilibili(view.getContext(), uri);
     }

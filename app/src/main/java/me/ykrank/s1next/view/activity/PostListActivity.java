@@ -58,9 +58,10 @@ public final class PostListActivity extends BaseActivity
     }
 
     public static void startPostListActivity(Activity activity, ThreadLink threadLink) {
-        startPostListActivity(activity, threadLink, !activity.getPackageName().equals(
-                // see android.text.style.URLSpan#onClick(View)
-                activity.getIntent().getStringExtra(Browser.EXTRA_APPLICATION_ID)));
+        // see android.text.style.URLSpan#onClick(View)
+        String appId = activity.getIntent().getStringExtra(Browser.EXTRA_APPLICATION_ID);
+
+        startPostListActivity(activity, threadLink, appId!=null && !activity.getPackageName().equals(appId));
     }
 
     public static void startPostListActivity(Context context, ThreadLink threadLink, boolean comeFromOtherApp) {

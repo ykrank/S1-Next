@@ -107,4 +107,8 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter {
     final void removeItem(int position) {
         mList.remove(position);
     }
+
+    public final void clear() {
+        mList.clear();
+    }
 }

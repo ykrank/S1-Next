@@ -57,12 +57,13 @@ public class SarabaSpan implements CustomMovementMethod.URLSpanClick {
         return false;
     }
 
+    @Override
     public void onClick(Uri uri, View view) {
         goSaraba(view.getContext(), uri);
     }
 
     // 对Saraba链接进行独立处理，调用Saraba客户端
-    private static void goSaraba(Context context, Uri uri) {
+    protected static void goSaraba(Context context, Uri uri) {
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         intent.setClass(context, PostListGatewayActivity.class);
         try {

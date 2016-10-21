@@ -237,5 +237,6 @@
     <string name="menu_new_thread">New thread</string>
     <string name="transition_search_back" translatable="false">transition_search_back</string>
     <string name="search_hint">Enter search content</string>
+    <string name="no_search_results">No results for\\n“%1$s”</string>
 
 </resources>

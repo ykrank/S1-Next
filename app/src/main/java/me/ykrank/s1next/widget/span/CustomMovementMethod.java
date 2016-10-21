@@ -27,13 +27,21 @@ import me.ykrank.s1next.util.L;
  * A movement method that provides selection and clicking on links,
  * also invokes {@link TagHandler.ImageClickableSpan}'s clicking event.
  */
-public final class CustomMovementMethod extends ArrowKeyMovementMethod {
+public class CustomMovementMethod extends ArrowKeyMovementMethod {
 
     private static CustomMovementMethod sInstance;
 
     private List<URLSpanClick> urlSpanClicks = new ArrayList<>();
 
-    private DefaultURLSpanClick defaultURLSpanClick = new DefaultURLSpanClick();
+    private URLSpanClick defaultURLSpanClick;
+
+    protected CustomMovementMethod(){
+        this(new DefaultURLSpanClick());
+    }
+
+    protected CustomMovementMethod(@NonNull URLSpanClick defaultURLSpanClick){
+        this.defaultURLSpanClick = defaultURLSpanClick;
+    }
 
     public static MovementMethod getInstance() {
         if (sInstance == null) {

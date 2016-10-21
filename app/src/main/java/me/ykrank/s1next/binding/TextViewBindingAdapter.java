@@ -152,4 +152,15 @@ public final class TextViewBindingAdapter {
         }
     }
 
+    @BindingAdapter({"search"})
+    public static void setSearch(TextView textView, @Nullable String search) {
+        if (TextUtils.isEmpty(search)) {
+            textView.setText(null);
+        } else {
+            // use GlideImageGetter to show images in TextView
+            //noinspection deprecation
+            textView.setText(Html.fromHtml(search, GlideImageGetter.get(textView), new TagHandler()));
+        }
+    }
+
 }

@@ -5,7 +5,7 @@ import android.app.Activity;
 import me.ykrank.s1next.data.api.model.Favourite;
 import me.ykrank.s1next.view.adapter.delegate.FavouriteAdapterDelegate;
 
-public final class FavouriteRecyclerViewAdapter extends BaseRecyclerViewAdapter<Favourite> {
+public final class FavouriteRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
     private static final int VIEW_TYPE_FAVOURITE = 1;
 
