@@ -100,7 +100,7 @@ dependencies {
     compile 'com.google.guava:guava:19.0'
     // https://github.com/google/guava/wiki/UsingProGuardWithGuava
     provided 'com.google.code.findbugs:jsr305:3.0.1'
-    compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'org.apache.commons:commons-lang3:3.5'
 
     compile 'com.squareup.okhttp3:okhttp-urlconnection:3.4.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
