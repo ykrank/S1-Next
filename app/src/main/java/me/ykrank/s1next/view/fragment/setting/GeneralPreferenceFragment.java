@@ -3,6 +3,7 @@ package me.ykrank.s1next.view.fragment.setting;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
+import android.text.Html;
 
 import javax.inject.Inject;
 
@@ -53,7 +54,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
         findPreference(PREF_KEY_READ_PROGRESS).setOnPreferenceClickListener(this);
         findPreference(PREF_KEY_BACKUP).setOnPreferenceClickListener(this);
         
-        findPreference(PREF_KEY_SIGNATURE).setSummary(DeviceUtil.getSignature(getActivity()));
+        findPreference(PREF_KEY_SIGNATURE).setSummary(Html.fromHtml(DeviceUtil.getSignature(getActivity())));
     }
 
     @Override

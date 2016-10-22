@@ -9,4 +9,11 @@
         <item name="android:windowContentTransitions">true</item>
     </style>
 
+    <style name="Base.Theme.Light" parent="Origin.Theme.Light" >
+        <item name="android:navigationBarColor">?android:attr/colorPrimaryDark</item>
+    </style>
+
+    <style name="Base.Theme.Dark" parent="Origin.Theme.Dark" >
+        <item name="android:navigationBarColor">?android:attr/colorPrimaryDark</item>
+    </style>
 </resources>

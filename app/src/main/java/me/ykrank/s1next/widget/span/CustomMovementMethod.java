@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.provider.Browser;
 import android.support.annotation.NonNull;
 import android.text.Layout;
-import android.text.Selection;
 import android.text.Spannable;
 import android.text.method.ArrowKeyMovementMethod;
 import android.text.method.MovementMethod;
@@ -92,8 +91,7 @@ public class CustomMovementMethod extends ArrowKeyMovementMethod {
                         clickableSpan.onClick(widget);
                     }
                 } else {
-                    Selection.setSelection(buffer, buffer.getSpanStart(link[0]),
-                            buffer.getSpanEnd(link[0]));
+                    return super.onTouchEvent(widget, buffer, event);
                 }
 
                 return true;
