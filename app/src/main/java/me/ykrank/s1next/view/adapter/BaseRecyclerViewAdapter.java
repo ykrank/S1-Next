@@ -2,6 +2,7 @@ package me.ykrank.s1next.view.adapter;
 
 import android.content.Context;
 import android.support.annotation.CallSuper;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
@@ -12,6 +13,7 @@ import com.hannesdorfmann.adapterdelegates.AdapterDelegatesManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.ykrank.s1next.util.Objects;
 import me.ykrank.s1next.view.adapter.delegate.ProgressAdapterDelegate;
 import me.ykrank.s1next.view.adapter.item.ProgressItem;
 
@@ -19,11 +21,10 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter {
 
     private static final int VIEW_TYPE_PROGRESS = 0;
 
-    private List<Object> mList;
+    private List<Object> mList = new ArrayList<>();
     private final AdapterDelegatesManager<List<Object>> mAdapterDelegatesManager;
 
     BaseRecyclerViewAdapter(Context context) {
-        mList = new ArrayList<>();
         mAdapterDelegatesManager = new AdapterDelegatesManager<>();
         mAdapterDelegatesManager.addDelegate(new ProgressAdapterDelegate(context,
                 VIEW_TYPE_PROGRESS));
@@ -82,6 +83,22 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter {
             }
         }
     }
+
+    /**
+     * diff new dataSet with old, and dispatch update
+     * @see DiffUtil
+     * @param newData new data set
+     * @param detectMoves DiffUtil.calculateDiff
+     */
+    public final void refreshDataSet(List<?> newData, boolean detectMoves){
+        if (mList == newData){
+            throw new IllegalArgumentException("must set new data set");
+        }
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
+                new BaseDiffCallback(mList, newData), detectMoves);
+        setDataSet(newData);
+        diffResult.dispatchUpdatesTo(this);
+    }
     
     public final void addDataSet(List<?> list) {
         mList.addAll(list);
@@ -108,7 +125,32 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter {
         mList.remove(position);
     }
 
-    public final void clear() {
-        mList.clear();
+    private static class BaseDiffCallback extends DiffUtil.Callback {
+        private List<?> oldData, newData;
+
+        BaseDiffCallback(List<?> oldData, List<?> newData) {
+            this.oldData = oldData;
+            this.newData = newData;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return oldData.size();
+        }
+
+        @Override
+        public int getNewListSize() {
+            return newData.size();
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            return Objects.equals(oldData.get(oldItemPosition), newData.get(newItemPosition));
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            return Objects.hashEquals(oldData.get(oldItemPosition), newData.get(newItemPosition));
+        }
     }
 }

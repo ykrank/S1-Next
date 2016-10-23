@@ -241,35 +241,15 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
         } else {
             super.onNext(data);
 
+            mRecyclerAdapter.refreshDataSet(postList, true);
             if (blacklistChanged) {
                 blacklistChanged = false;
-                mRecyclerAdapter.setDataSet(postList);
-                mRecyclerAdapter.notifyDataSetChanged();
             } else if (pullUpToRefresh) {
-                final int oldItemCount = mRecyclerAdapter.getItemCount();
-                // oldItemCount = 0 when configuration changes
-                if (oldItemCount != 0 && mRecyclerAdapter.getItemId(oldItemCount - 1)
-                        != Long.parseLong(postList.get(postList.size() - 1).getId())) {
-                    // notify data set change if someone deleted their posts
-                    mRecyclerAdapter.setDataSet(postList);
-                    mRecyclerAdapter.notifyDataSetChanged();
-                } else {
-                    mRecyclerAdapter.setDataSet(postList);
 
-                    int newItemCount = mRecyclerAdapter.getItemCount() - oldItemCount;
-                    if (newItemCount > 0) {
-                        mRecyclerAdapter.notifyItemRangeInserted(oldItemCount, newItemCount);
-                    }
-                }
             } else if (readProgress != null && readProgress.scrollState == ReadProgress.BEFORE_SCROLL_POSITION) {
-                mRecyclerAdapter.setDataSet(postList);
-                mRecyclerAdapter.notifyDataSetChanged();
                 mRecyclerView.scrollToPosition(readProgress.position);
                 readProgress.scrollState = ReadProgress.FREE;
             } else {
-                mRecyclerAdapter.setDataSet(postList);
-                mRecyclerAdapter.notifyDataSetChanged();
-
                 String quotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
                 if (!TextUtils.isEmpty(quotePostId)) {
                     for (int i = 0, length = postList.size(); i < length; i++) {
@@ -315,8 +295,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
                 }
             }
             blacklistChanged = false;
-            mRecyclerAdapter.setDataSet(newData);
-            mRecyclerAdapter.notifyDataSetChanged();
+            mRecyclerAdapter.refreshDataSet(newData, false);
         }
 
         super.onError(throwable);

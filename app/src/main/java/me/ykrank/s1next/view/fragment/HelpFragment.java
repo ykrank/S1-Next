@@ -13,7 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.databinding.FragmentHelpBinding;
+import me.ykrank.s1next.databinding.FragmentWebviewBinding;
 import me.ykrank.s1next.view.activity.OpenSourceLicensesActivity;
 import me.ykrank.s1next.view.dialog.VersionInfoDialogFragment;
 import me.ykrank.s1next.viewmodel.WebPageViewModel;
@@ -38,12 +38,16 @@ public final class HelpFragment extends Fragment {
     private static final String ANDROID_APP_MARKET_LINK = "market://details?id=%s";
     private static final String ANDROID_WEB_SITE_MARKET_LINK = "http://play.google.com/store/apps/details?id=%s";
 
-    private FragmentHelpBinding mFragmentHelpBinding;
+    private FragmentWebviewBinding mFragmentHelpBinding;
     private WebView mWebView;
+
+    public static HelpFragment getInstance(){
+        return new HelpFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mFragmentHelpBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_help, container,
+        mFragmentHelpBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_webview, container,
                 false);
         mWebView = mFragmentHelpBinding.webView;
         return mFragmentHelpBinding.getRoot();

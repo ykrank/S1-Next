@@ -21,6 +21,7 @@ import me.ykrank.s1next.view.fragment.NewThreadFragment;
 import me.ykrank.s1next.view.fragment.PostListFragment;
 import me.ykrank.s1next.view.fragment.PostListPagerFragment;
 import me.ykrank.s1next.view.fragment.ReplyFragment;
+import me.ykrank.s1next.view.fragment.WebLoginFragment;
 import me.ykrank.s1next.view.fragment.setting.GeneralPreferenceFragment;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EventBus;
@@ -80,4 +81,6 @@ public interface AppComponent {
     void inject(WifiBroadcastReceiver wifiBroadcastReceiver);
     
     void inject(SearchActivity activity);
+
+    void inject(WebLoginFragment fragment);
 }

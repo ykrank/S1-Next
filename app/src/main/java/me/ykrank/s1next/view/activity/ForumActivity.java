@@ -1,8 +1,9 @@
 package me.ykrank.s1next.view.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.databinding.ToolbarSpinnerBinding;
+import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment;
 import me.ykrank.s1next.view.fragment.ForumFragment;
 import me.ykrank.s1next.view.internal.ToolbarDropDownInterface;
 import me.ykrank.s1next.viewmodel.DropDownItemListViewModel;
@@ -38,13 +40,18 @@ public final class ForumActivity extends BaseActivity
 
     private ToolbarDropDownInterface.OnItemSelectedListener onItemSelectedListener;
 
+    private BaseRecyclerViewFragment fragment;
+
+    public static void start(Context context){
+        context.startActivity(new Intent(context, ForumActivity.class));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_base);
 
-        Fragment fragment;
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null) {
             fragment = new ForumFragment();
@@ -52,10 +59,20 @@ public final class ForumActivity extends BaseActivity
                     .commit();
         } else {
             mSelectedPosition = savedInstanceState.getInt(STATE_SPINNER_SELECTED_POSITION);
-            fragment = fragmentManager.findFragmentByTag(ForumFragment.TAG);
+            fragment = (BaseRecyclerViewFragment) fragmentManager.findFragmentByTag(ForumFragment.TAG);
         }
 
         onItemSelectedListener = (ToolbarDropDownInterface.OnItemSelectedListener) fragment;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (fragment == null){
+            fragment = (BaseRecyclerViewFragment) getSupportFragmentManager()
+                    .findFragmentByTag(ForumFragment.TAG);
+        }
+        fragment.startSwipeRefresh();
     }
 
     @Override

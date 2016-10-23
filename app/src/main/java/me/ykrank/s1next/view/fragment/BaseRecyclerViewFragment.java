@@ -32,8 +32,6 @@ import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateBaseImpl;
 import me.ykrank.s1next.viewmodel.LoadingViewModel;
 import rx.Observable;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * A base Fragment includes {@link SwipeRefreshLayout} to refresh when loading data.
@@ -207,7 +205,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     /**
      * Show refresh progress and start to load new data.
      */
-    private void startSwipeRefresh() {
+    public void startSwipeRefresh() {
         mLoadingViewModel.setLoading(LoadingViewModel.LOADING_SWIPE_REFRESH);
         load();
     }
@@ -236,10 +234,9 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
         // when we start to load new data
         mCoordinatorLayoutAnchorDelegate.dismissSnackbarIfExist();
         mSubscription = getSourceObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxJavaUtil.iOTransformer())
                 .doOnNext(mUserValidator::validateIntercept)
-                .finallyDo(this::finallyDo)
+                .doAfterTerminate(this::finallyDo)
                 .subscribe(this::onNext, this::onError);
     }
 

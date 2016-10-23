@@ -33,7 +33,7 @@ public final class HelpActivity extends AppCompatActivity {
         setupToolbar();
 
         if (savedInstanceState == null) {
-            mHelpFragment = new HelpFragment();
+            mHelpFragment = HelpFragment.getInstance();
             getSupportFragmentManager().beginTransaction().add(R.id.frame_layout, mHelpFragment,
                     HelpFragment.TAG).commit();
         } else {

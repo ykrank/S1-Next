@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
+import me.ykrank.s1next.util.WebViewUtils;
 
 /**
  * A dialog shows logout prompt.
@@ -61,6 +62,7 @@ public final class LogoutDialogFragment extends DialogFragment {
      */
     private void logout() {
         mCookieManager.getCookieStore().removeAll();
+        WebViewUtils.clearCookies(App.get());
         mUser.setLogged(false);
     }
 }

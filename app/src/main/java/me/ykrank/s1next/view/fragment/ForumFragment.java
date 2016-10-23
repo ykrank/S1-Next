@@ -101,12 +101,11 @@ public final class ForumFragment extends BaseRecyclerViewFragment<ForumGroupsWra
     @Override
     public void onToolbarDropDownItemSelected(int position) {
         if (position == 0) {
-            mRecyclerAdapter.setDataSet(mForumGroups.getForumList());
+            mRecyclerAdapter.refreshDataSet(mForumGroups.getForumList(), true);
         } else {
             // the first position is "全部"
             // so position - 1 to correspond its group
-            mRecyclerAdapter.setDataSet(mForumGroups.getForumGroupList().get(position - 1));
+            mRecyclerAdapter.refreshDataSet(mForumGroups.getForumGroupList().get(position - 1), true);
         }
-        mRecyclerAdapter.notifyDataSetChanged();
     }
 }

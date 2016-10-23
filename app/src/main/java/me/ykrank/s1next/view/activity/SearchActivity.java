@@ -238,7 +238,6 @@ public class SearchActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             TransitionManager.beginDelayedTransition(binding.coordinatorLayout, getTransition(R.transition.auto));
         }
-        adapter.clear();
         recyclerView.setVisibility(View.GONE);
         binding.progressBar.setVisibility(View.GONE);
         binding.resultsScrim.setVisibility(View.GONE);
@@ -255,8 +254,7 @@ public class SearchActivity extends BaseActivity {
                 binding.progressBar.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
             }
-            adapter.setDataSet(data);
-            adapter.notifyDataSetChanged();
+            adapter.refreshDataSet(data, true);
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 TransitionManager.beginDelayedTransition(
