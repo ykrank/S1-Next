@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:gravity="center_horizontal"
         android:paddingBottom="@dimen/activity_vertical_padding"
         android:paddingEnd="@dimen/activity_horizontal_padding"
         android:paddingLeft="@dimen/activity_horizontal_padding"
@@ -21,7 +22,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/prompt_username"
             android:inputType="text"
-            android:singleLine="true"
+            android:lines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
         <EditText
@@ -32,7 +33,7 @@
             android:imeActionId="@integer/ime_action_id"
             android:imeActionLabel="@string/action_login"
             android:inputType="textPassword"
-            android:singleLine="true"
+            android:lines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
         <Button
@@ -42,6 +43,13 @@
             android:text="@string/action_login"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
+        <TextView
+            android:id="@+id/tv_login_in_web"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/subtitle_margin_top"
+            android:text="@string/login_in_web"
+            android:textColor="?attr/colorAccent"/>
     </LinearLayout>
 
 </layout>

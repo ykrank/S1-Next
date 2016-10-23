@@ -150,4 +150,6 @@
     <string name="menu_search">搜索</string>
     <string name="search_hint">请输入搜索内容</string>
     <string name="no_search_results">没有找到结果：\\n“%1$s”</string>
+    <string name="login_in_web">网页登录</string>
+    <string name="login_success">登录成功</string>
 </resources>

@@ -1,5 +1,6 @@
 package me.ykrank.s1next.view.fragment;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,18 +29,32 @@ public final class LoginFragment extends Fragment {
 
     public static final String TAG = LoginFragment.class.getName();
 
+    private LoginFragmentCallback callback;
+
     private EditText mUsernameView;
     private EditText mPasswordView;
     private Button mLoginButton;
+    private FragmentLoginBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentLoginBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login,
                 container, false);
+        this.binding = binding;
         mUsernameView = binding.username;
         mPasswordView = binding.password;
         mLoginButton = binding.login;
         return binding.getRoot();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof LoginFragmentCallback){
+            callback = (LoginFragmentCallback) context;
+        } else {
+            throw new IllegalStateException("LoginFragment attached context should implement LoginFragmentCallback");
+        }
     }
 
     @Override
@@ -48,6 +63,7 @@ public final class LoginFragment extends Fragment {
 
         ViewUtil.consumeRunnableWhenImeActionPerformed(mPasswordView, this::prepareLogin);
         mLoginButton.setOnClickListener(v -> prepareLogin());
+        binding.tvLoginInWeb.setOnClickListener(v -> callback.loginInWeb());
     }
 
     @Override
@@ -109,5 +125,9 @@ public final class LoginFragment extends Fragment {
             LoginDialogFragment.newInstance(username, password).show(getFragmentManager(),
                     LoginDialogFragment.TAG);
         }
+    }
+
+    public interface LoginFragmentCallback{
+        void loginInWeb();
     }
 }

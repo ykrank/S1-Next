@@ -15,12 +15,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <WebView
             android:id="@+id/webView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="@{webPageViewModel.webViewVisibility}" />
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_x="172dp"
+            android:layout_y="1dp" />
     </FrameLayout>
 
 </layout>

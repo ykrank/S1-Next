@@ -238,5 +238,7 @@
     <string name="transition_search_back" translatable="false">transition_search_back</string>
     <string name="search_hint">Enter search content</string>
     <string name="no_search_results">No results for\\n“%1$s”</string>
+    <string name="login_in_web">Login in web</string>
+    <string name="login_success">Login success</string>
 
 </resources>
