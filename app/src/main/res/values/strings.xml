@@ -97,6 +97,7 @@
     <string name="prompt_reply">Write something…</string>
     <string name="prompt_title">Write title…</string>
     <string name="signature">— from %1$s of &lt;a href=\"https://github.com/ykrank/S1-Next/releases\">S1Next-鹅版&lt;/a></string>
+    <string name="signature_in_reply">— from %1$s of [url=https://github.com/ykrank/S1-Next/releases]S1Next-鹅版[/url]</string>
     <string name="dialog_progress_message_reply">Replying…</string>
     <string name="dialog_message_reply_discard_prompt">Do you want to discard this reply?</string>
     <string name="dialog_message_text_discard">Discard</string>

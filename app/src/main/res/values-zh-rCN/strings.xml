@@ -55,7 +55,8 @@
     <string name="error_field_invalid_or_unsupported_thread_link_or_id">无效的、或者是并不支持的帖子链接/ID格式</string>
     <string name="message_thread_link_copy">帖子的链接已复制到剪切板</string>
     <string name="prompt_reply">写点内容吧…</string>
-    <string name="signature">—— 来自 %1$s上的&lt;a href=\"https://github.com/ykrank/S1-Next/releases\">S1Next-鹅版&lt;/a></string>
+    <string name="signature">—— 来自 %1$s上的 &lt;a href=\"https://github.com/ykrank/S1-Next/releases\">S1Next-鹅版&lt;/a></string>
+    <string name="signature_in_reply">—— 来自 %1$s上的 [url=https://github.com/ykrank/S1-Next/releases]S1Next-鹅版[/url]</string>
     <string name="dialog_progress_message_reply">回复中…</string>
     <string name="dialog_message_reply_discard_prompt">要舍弃这条回复吗？</string>
     <string name="dialog_message_text_discard">舍弃</string>

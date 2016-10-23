@@ -42,7 +42,7 @@ public final class ReplyFragment extends BasePostFragment {
     protected boolean OnMenuSendClick() {
         StringBuilder stringBuilder = new StringBuilder(mReplyView.getText());
         if (mGeneralPreferencesManager.isSignatureEnabled()) {
-            stringBuilder.append("\n\n").append(DeviceUtil.getSignature(getContext()));
+            stringBuilder.append("\n\n").append(DeviceUtil.getPostSignature(getContext()));
         }
 
         ReplyRequestDialogFragment.newInstance(mThreadId, mQuotePostId,

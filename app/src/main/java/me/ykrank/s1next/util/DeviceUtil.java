@@ -12,10 +12,17 @@ public final class DeviceUtil {
     private DeviceUtil() {}
 
     /**
-     * Gets the string signature which is used for reply (append this to last line of the reply).
+     * Gets the string signature which is used for reply (show in setting).
      */
     public static String getSignature(Context context) {
         return context.getString(R.string.signature, getDeviceNameWithVersion());
+    }
+
+    /**
+     * Gets the string signature which is used for reply (append this to last line of the reply).
+     */
+    public static String getPostSignature(Context context) {
+        return context.getString(R.string.signature_in_reply, getDeviceNameWithVersion());
     }
 
     /**

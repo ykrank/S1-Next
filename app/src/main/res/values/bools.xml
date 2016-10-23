@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <bool name="pref_signature_default_value">false</bool>
+    <bool name="pref_signature_default_value">true</bool>
     <bool name="pref_read_progress_save_auto_default_value">false</bool>
     <bool name="pref_read_progress_load_auto_default_value">false</bool>
     
