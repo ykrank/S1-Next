@@ -16,13 +16,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import me.ykrank.s1next.data.SameItem;
 import me.ykrank.s1next.data.db.BlackListDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.BlackList;
 import me.ykrank.s1next.util.L;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Post implements Cloneable {
+public final class Post implements Cloneable, SameItem {
     private static final String TAG = Post.class.getSimpleName();
 
     @JsonProperty("pid")
@@ -163,6 +164,16 @@ public final class Post implements Cloneable {
             L.e(TAG, e);
         }
         return o;
+    }
+
+    @Override
+    public boolean isSameItem(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equal(id, post.id) &&
+                Objects.equal(authorName, post.authorName) &&
+                Objects.equal(authorId, post.authorId);
     }
 
     /**

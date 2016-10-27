@@ -13,6 +13,7 @@ import com.hannesdorfmann.adapterdelegates.AdapterDelegatesManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.ykrank.s1next.data.SameItem;
 import me.ykrank.s1next.util.Objects;
 import me.ykrank.s1next.view.adapter.delegate.ProgressAdapterDelegate;
 import me.ykrank.s1next.view.adapter.item.ProgressItem;
@@ -145,12 +146,17 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter {
 
         @Override
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            return Objects.equals(oldData.get(oldItemPosition), newData.get(newItemPosition));
+            Object oldD = oldData.get(oldItemPosition);
+            Object newD = newData.get(newItemPosition);
+            if (oldD instanceof SameItem){
+                return ((SameItem) oldD).isSameItem(newD);
+            }
+            return Objects.equals(oldD, newD);
         }
 
         @Override
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            return Objects.hashEquals(oldData.get(oldItemPosition), newData.get(newItemPosition));
+            return Objects.equals(oldData.get(oldItemPosition), newData.get(newItemPosition));
         }
     }
 }

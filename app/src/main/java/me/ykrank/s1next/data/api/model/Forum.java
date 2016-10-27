@@ -9,9 +9,11 @@ import com.google.common.base.Objects;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import me.ykrank.s1next.data.SameItem;
+
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Forum implements Parcelable {
+public final class Forum implements Parcelable, SameItem {
 
     public static final Parcelable.Creator<Forum> CREATOR = new Parcelable.Creator<Forum>() {
 
@@ -107,5 +109,14 @@ public final class Forum implements Parcelable {
         dest.writeString(name);
         dest.writeInt(threads);
         dest.writeInt(todayPosts);
+    }
+
+    @Override
+    public boolean isSameItem(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Forum forum = (Forum) o;
+        return Objects.equal(id, forum.id) &&
+                Objects.equal(name, forum.name);
     }
 }

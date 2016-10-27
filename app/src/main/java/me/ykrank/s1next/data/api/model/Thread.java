@@ -9,6 +9,7 @@ import com.google.common.base.Objects;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import me.ykrank.s1next.data.SameItem;
 import me.ykrank.s1next.util.L;
 
 /**
@@ -16,7 +17,7 @@ import me.ykrank.s1next.util.L;
  */
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Thread implements Parcelable, Cloneable {
+public final class Thread implements Parcelable, Cloneable, SameItem {
     private static final String TAG = Thread.class.getSimpleName();
 
     public static final Parcelable.Creator<Thread> CREATOR = new Parcelable.Creator<Thread>() {
@@ -167,6 +168,17 @@ public final class Thread implements Parcelable, Cloneable {
             L.e(TAG, e);
         }
         return o;
+    }
+
+    @Override
+    public boolean isSameItem(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Thread thread = (Thread) o;
+        return Objects.equal(id, thread.id) &&
+                Objects.equal(title, thread.title) &&
+                Objects.equal(author, thread.author) &&
+                Objects.equal(authorid, thread.authorid);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
