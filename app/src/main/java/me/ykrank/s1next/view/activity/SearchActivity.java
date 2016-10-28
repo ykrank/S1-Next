@@ -16,7 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.annotation.TransitionRes;
+import android.support.transition.TransitionManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,9 +28,7 @@ import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.transition.TransitionManager;
 import android.transition.TransitionSet;
-import android.util.SparseArray;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageButton;
@@ -56,6 +54,7 @@ import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.util.TransitionUtils;
 import me.ykrank.s1next.view.adapter.SearchRecyclerViewAdapter;
 import me.ykrank.s1next.view.transition.CircularReveal;
+import me.ykrank.s1next.view.transition.TransitionCompatCreator;
 
 /**
  * Created by ykrank on 2016/9/28 0028.
@@ -78,10 +77,10 @@ public class SearchActivity extends BaseActivity {
     private TextView noResults;
     private ImageButton searchBack;
 
-    private SparseArray<Transition> transitions = new SparseArray<>();
-
     private SearchWrapper searchWrapper;
     private SearchRecyclerViewAdapter adapter;
+
+    private android.support.transition.Transition autoTransitionCompat;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, SearchActivity.class));
@@ -235,9 +234,8 @@ public class SearchActivity extends BaseActivity {
     }
 
     private void clearResults() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            TransitionManager.beginDelayedTransition(binding.coordinatorLayout, getTransition(R.transition.auto));
-        }
+        TransitionManager.beginDelayedTransition(binding.coordinatorLayout, getAutoTransition());
+
         recyclerView.setVisibility(View.GONE);
         binding.progressBar.setVisibility(View.GONE);
         binding.resultsScrim.setVisibility(View.GONE);
@@ -247,19 +245,15 @@ public class SearchActivity extends BaseActivity {
     private void setResults(List<Search> data) {
         if (data != null && data.size() > 0) {
             if (recyclerView.getVisibility() != View.VISIBLE) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    TransitionManager.beginDelayedTransition(binding.resultsContainer,
-                            getTransition(R.transition.auto));
-                }
+                TransitionManager.beginDelayedTransition(binding.resultsContainer,
+                        getAutoTransition());
                 binding.progressBar.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
             }
             adapter.refreshDataSet(data, true);
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                TransitionManager.beginDelayedTransition(
-                        binding.resultsContainer, getTransition(R.transition.auto));
-            }
+            TransitionManager.beginDelayedTransition(
+                    binding.resultsContainer, getAutoTransition());
             binding.progressBar.setVisibility(View.GONE);
             setNoResultsVisibility(View.VISIBLE);
         }
@@ -307,14 +301,11 @@ public class SearchActivity extends BaseActivity {
                 .subscribe(wrapper -> setResults(wrapper.getSearches()), L::e);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private Transition getTransition(@TransitionRes int transitionId) {
-        Transition transition = transitions.get(transitionId);
-        if (transition == null) {
-            transition = TransitionInflater.from(this).inflateTransition(transitionId);
-            transitions.put(transitionId, transition);
+    private android.support.transition.Transition getAutoTransition() {
+        if (autoTransitionCompat == null) {
+            autoTransitionCompat = TransitionCompatCreator.getAutoTransition();
         }
-        return transition;
+        return autoTransitionCompat;
     }
 
     private void dismiss() {
@@ -322,7 +313,7 @@ public class SearchActivity extends BaseActivity {
         searchBack.setBackgroundDrawable(null);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             finishAfterTransition();
-        }else {
+        } else {
             finish();
         }
     }
