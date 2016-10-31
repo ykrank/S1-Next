@@ -1,10 +1,13 @@
 package me.ykrank.s1next.view.activity;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -42,8 +45,21 @@ public final class ForumActivity extends BaseActivity
 
     private BaseRecyclerViewFragment fragment;
 
-    public static void start(Context context){
-        context.startActivity(new Intent(context, ForumActivity.class));
+    public static void start(Activity activity){
+        Intent intent = new Intent(activity, ForumActivity.class);
+        // if this activity is not part of this app's task
+        if (NavUtils.shouldUpRecreateTask(activity, intent)) {
+            // finish all our Activities in that app
+            ActivityCompat.finishAffinity(activity);
+            // create a new task when navigating up with
+            // a synthesized back stack
+            TaskStackBuilder.create(activity)
+                    .addNextIntentWithParentStack(intent)
+                    .startActivities();
+        } else {
+            // back to ForumActivity (main Activity)
+            NavUtils.navigateUpTo(activity, intent);
+        }
     }
 
     @Override
@@ -68,6 +84,7 @@ public final class ForumActivity extends BaseActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        setIntent(intent);
         if (fragment == null){
             fragment = (BaseRecyclerViewFragment) getSupportFragmentManager()
                     .findFragmentByTag(ForumFragment.TAG);

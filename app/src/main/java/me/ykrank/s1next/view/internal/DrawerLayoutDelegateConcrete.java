@@ -1,14 +1,10 @@
 package me.ykrank.s1next.view.internal;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -136,20 +132,7 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
             return;
         }
 
-        Intent intent = new Intent(mFragmentActivity, ForumActivity.class);
-        // if this activity is not part of this app's task
-        if (NavUtils.shouldUpRecreateTask(mFragmentActivity, intent)) {
-            // finish all our Activities in that app
-            ActivityCompat.finishAffinity(mFragmentActivity);
-            // create a new task when navigating up with
-            // a synthesized back stack
-            TaskStackBuilder.create(mFragmentActivity)
-                    .addNextIntentWithParentStack(intent)
-                    .startActivities();
-        } else {
-            // back to ForumActivity (main Activity)
-            NavUtils.navigateUpTo(mFragmentActivity, intent);
-        }
+        ForumActivity.start(mFragmentActivity);
     }
 
     private void onFavouritesMenuSelected() {

@@ -86,12 +86,13 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter {
     }
 
     /**
-     * diff new dataSet with old, and dispatch update
+     * diff new dataSet with old, and dispatch update.\n
+     * must another object with old.
      * @see DiffUtil
      * @param newData new data set
-     * @param detectMoves DiffUtil.calculateDiff
+     * @param detectMoves {@link DiffUtil#calculateDiff}
      */
-    public final void refreshDataSet(List<?> newData, boolean detectMoves){
+    public final void diffNewDataSet(List<?> newData, boolean detectMoves){
         if (mList == newData){
             throw new IllegalArgumentException("must set new data set");
         }
@@ -99,6 +100,19 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter {
                 new BaseDiffCallback(mList, newData), detectMoves);
         setDataSet(newData);
         diffResult.dispatchUpdatesTo(this);
+    }
+
+    /**
+     * refresh new dataSet.if same object, just notifyDataSetChanged, else {@link #diffNewDataSet}
+     * @param newData new data set
+     * @param detectMoves {@link #diffNewDataSet}
+     */
+    public final void refreshDataSet(List<?> newData, boolean detectMoves){
+        if (mList != newData){
+            diffNewDataSet(newData, detectMoves);
+        } else {
+            notifyDataSetChanged();
+        }
     }
     
     public final void addDataSet(List<?> list) {

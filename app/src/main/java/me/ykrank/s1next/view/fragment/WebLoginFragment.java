@@ -141,7 +141,7 @@ public final class WebLoginFragment extends BaseFragment {
                     cookieManger.getCookieStore().removeAll();
                     cookieManger.put(uri, cookieMap);
                     //Login success
-                    ForumActivity.start(getContext());
+                    ForumActivity.start(getActivity());
                 }
             } catch (Exception e){
                 L.e(e);

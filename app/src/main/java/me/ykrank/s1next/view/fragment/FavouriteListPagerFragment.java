@@ -77,7 +77,7 @@ public final class FavouriteListPagerFragment extends BaseRecyclerViewFragment<F
         } else {
             super.onNext(data);
 
-            mRecyclerAdapter.refreshDataSet(favourites.getFavouriteList(), true);
+            mRecyclerAdapter.diffNewDataSet(favourites.getFavouriteList(), true);
 
             // update total page
             mPagerCallback.setTotalPages(MathUtil.divide(favourites.getTotal(),

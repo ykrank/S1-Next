@@ -91,7 +91,7 @@ public final class ThreadListPagerFragment extends BaseRecyclerViewFragment<Thre
         } else {
             super.onNext(data);
 
-            mRecyclerAdapter.refreshDataSet(threads.getThreadList(), true);
+            mRecyclerAdapter.diffNewDataSet(threads.getThreadList(), true);
 
             // update total page
             mPagerCallback.setTotalPageByThreads(threads.getThreadListInfo().getThreads());

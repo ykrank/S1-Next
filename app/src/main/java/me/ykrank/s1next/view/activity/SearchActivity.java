@@ -250,7 +250,7 @@ public class SearchActivity extends BaseActivity {
                 binding.progressBar.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
             }
-            adapter.refreshDataSet(data, true);
+            adapter.diffNewDataSet(data, true);
         } else {
             TransitionManager.beginDelayedTransition(
                     binding.resultsContainer, getAutoTransition());

@@ -241,7 +241,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
         } else {
             super.onNext(data);
 
-            mRecyclerAdapter.refreshDataSet(postList, true);
+            mRecyclerAdapter.diffNewDataSet(postList, true);
             if (blacklistChanged) {
                 blacklistChanged = false;
             } else if (pullUpToRefresh) {
@@ -295,7 +295,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
                 }
             }
             blacklistChanged = false;
-            mRecyclerAdapter.refreshDataSet(newData, false);
+            mRecyclerAdapter.diffNewDataSet(newData, false);
         }
 
         super.onError(throwable);

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.provider.Browser;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.TaskStackBuilder;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -133,13 +132,7 @@ public final class PostListActivity extends BaseActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 if (getIntent().getBooleanExtra(ARG_COME_FROM_OTHER_APP, false)) {
-                    // this activity is not part of this app's task
-                    // so create a new task when navigating up
-                    TaskStackBuilder.create(this)
-                            .addNextIntentWithParentStack(new Intent(this, ForumActivity.class))
-                            .startActivities();
-                    finish();
-
+                    ForumActivity.start(this);
                     return true;
                 }
             default:
