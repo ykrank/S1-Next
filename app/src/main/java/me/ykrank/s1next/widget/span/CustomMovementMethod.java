@@ -16,6 +16,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bugsnag.android.Bugsnag;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,11 +36,11 @@ public class CustomMovementMethod extends ArrowKeyMovementMethod {
 
     private URLSpanClick defaultURLSpanClick;
 
-    protected CustomMovementMethod(){
+    protected CustomMovementMethod() {
         this(new DefaultURLSpanClick());
     }
 
-    protected CustomMovementMethod(@NonNull URLSpanClick defaultURLSpanClick){
+    protected CustomMovementMethod(@NonNull URLSpanClick defaultURLSpanClick) {
         this.defaultURLSpanClick = defaultURLSpanClick;
     }
 
@@ -80,8 +82,8 @@ public class CustomMovementMethod extends ArrowKeyMovementMethod {
                     ClickableSpan clickableSpan = link[0];
                     if (clickableSpan instanceof URLSpan) {
                         Uri uri = Uri.parse(((URLSpan) clickableSpan).getURL());
-                        for (URLSpanClick click: urlSpanClicks) {
-                            if (click.isMatch(uri)){
+                        for (URLSpanClick click : urlSpanClicks) {
+                            if (click.isMatch(uri)) {
                                 click.onClick(uri, widget);
                                 return true;
                             }
@@ -98,17 +100,16 @@ public class CustomMovementMethod extends ArrowKeyMovementMethod {
             }
 
             // invoke ImageClickableSpan's clicking event
-            TagHandler.ImageClickableSpan[] imageClickableSpans = buffer.getSpans(off, off,
+            //if use getSpans(off, off , sometime click mid in two span will cause error
+            TagHandler.ImageClickableSpan[] imageClickableSpans = buffer.getSpans(off, off + 1,
                     TagHandler.ImageClickableSpan.class);
             if (action == MotionEvent.ACTION_UP) {
-                if (imageClickableSpans.length == 1) {
-                    imageClickableSpans[0].onClick(widget);
-
-                    return true;
-                } else if (imageClickableSpans.length > 1) {
-                    throw new IllegalStateException("ImageClickableSpan length > 1; \n" +
-                            "length"+imageClickableSpans.length+",line:"+line+",off:"+off);
+                if (imageClickableSpans.length > 1) {
+                    Bugsnag.notify(new IllegalStateException("ImageClickableSpan length > 1; \n" +
+                            "length" + imageClickableSpans.length + ",line:" + line + ",off:" + off));
                 }
+                imageClickableSpans[0].onClick(widget);
+                return true;
             }
 
         }
@@ -116,13 +117,13 @@ public class CustomMovementMethod extends ArrowKeyMovementMethod {
         return super.onTouchEvent(widget, buffer, event);
     }
 
-    public void addURLSpanClick(URLSpanClick click){
+    public void addURLSpanClick(URLSpanClick click) {
         if (!urlSpanClicks.contains(click)) {
             urlSpanClicks.add(click);
         }
     }
 
-    public static class DefaultURLSpanClick implements URLSpanClick{
+    public static class DefaultURLSpanClick implements URLSpanClick {
 
         @Override
         public boolean isMatch(Uri uri) {
@@ -145,8 +146,9 @@ public class CustomMovementMethod extends ArrowKeyMovementMethod {
         }
     }
 
-    public interface URLSpanClick{
+    public interface URLSpanClick {
         boolean isMatch(Uri uri);
+
         void onClick(Uri uri, View view);
     }
 }

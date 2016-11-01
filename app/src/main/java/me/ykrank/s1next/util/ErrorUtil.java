@@ -2,8 +2,11 @@ package me.ykrank.s1next.util;
 
 import android.support.annotation.StringRes;
 
+import com.bugsnag.android.Bugsnag;
+
 import java.io.IOException;
 
+import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.R;
 import retrofit2.adapter.rxjava.HttpException;
 
@@ -20,6 +23,14 @@ public final class ErrorUtil {
         } else {
             L.e(TAG_LOG, throwable);
             return R.string.message_unknown_error;
+        }
+    }
+
+    public static void throwNewError(RuntimeException throwable) {
+        if (BuildConfig.DEBUG) {
+            throw throwable;
+        } else {
+            Bugsnag.notify(throwable);
         }
     }
 }

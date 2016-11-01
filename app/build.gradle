@@ -1,8 +1,13 @@
+plugins {
+    id "com.bugsnag.android.gradle" version "2.3.2"
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 
 apply plugin: 'com.github.ben-manes.versions'
+
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
@@ -54,6 +59,7 @@ android {
     }
     buildTypes {
         debug {
+            ext.enableBugsnag = false
             multiDexEnabled true
             applicationIdSuffix '.debug'
             versionNameSuffix '-DEBUG'
@@ -77,6 +83,11 @@ repositories {
     mavenCentral()
     jcenter()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+bugsnag {
+    autoUpload false
+    autoProguardConfig false
 }
 
 //http://stackoverflow.com/questions/28683327/how-to-check-if-gradle-dependency-has-new-version

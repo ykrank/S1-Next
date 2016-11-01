@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.ykrank.s1next.data.SameItem;
+import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.util.Objects;
 import me.ykrank.s1next.view.adapter.delegate.ProgressAdapterDelegate;
 import me.ykrank.s1next.view.adapter.item.ProgressItem;
@@ -94,7 +95,8 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter {
      */
     public final void diffNewDataSet(List<?> newData, boolean detectMoves){
         if (mList == newData){
-            throw new IllegalArgumentException("must set new data set");
+            refreshDataSet(newData, detectMoves);
+            ErrorUtil.throwNewError(new IllegalArgumentException("must set new data set"));
         }
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
                 new BaseDiffCallback(mList, newData), detectMoves);
