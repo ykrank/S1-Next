@@ -272,7 +272,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
      * @param result The data's result we get.
      */
     final void consumeResult(Result result) {
-        if (getUserVisibleHint()) {
+        if (isAdded() && getUserVisibleHint()) {
             String message = result.getMessage();
             if (!TextUtils.isEmpty(message)) {
                 showRetrySnackbar(message);
@@ -288,7 +288,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
      */
     @CallSuper
     void onError(Throwable throwable) {
-        if (getUserVisibleHint()) {
+        if (isAdded() && getUserVisibleHint()) {
             showRetrySnackbar(ErrorUtil.parse(throwable));
         }
     }

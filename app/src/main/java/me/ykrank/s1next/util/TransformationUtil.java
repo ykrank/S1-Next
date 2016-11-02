@@ -81,7 +81,7 @@ public final class TransformationUtil {
 
         @Override
         public String getId() {
-            return SizeMultiplierBitmapTransformation.class.getName();
+            return "TransformationUtil.SizeMultiplierBitmapTransformation";
         }
     }
 
@@ -111,7 +111,7 @@ public final class TransformationUtil {
 
         @Override
         public String getId() {
-            return GlMaxTextureSizeBitmapTransformation.class.getName();
+            return "TransformationUtil.GlMaxTextureSizeBitmapTransformation";
         }
 
         /**

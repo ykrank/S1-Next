@@ -25,12 +25,13 @@ final class UrlDrawable extends Drawable implements Drawable.Callback {
 
     @Override
     public void draw(Canvas canvas) {
+        //// FIXME: sometimes, there cause error "Canvas: trying to use a recycled bitmap"
         if (mDrawable != null) {
             try {
                 mDrawable.draw(canvas);
             } catch (Exception e){
                 Bugsnag.leaveBreadcrumb("UrlDrawable##url:"+url+",GlideDrawable:"+mDrawable);
-                throw e;
+                Bugsnag.notify(e);
             }
         }
     }

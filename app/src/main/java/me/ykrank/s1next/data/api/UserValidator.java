@@ -2,6 +2,8 @@ package me.ykrank.s1next.data.api;
 
 import android.text.TextUtils;
 
+import com.bugsnag.android.Bugsnag;
+
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Account;
 import me.ykrank.s1next.data.api.model.wrapper.FavouritesWrapper;
@@ -72,5 +74,9 @@ public final class UserValidator {
         }
         mUser.setPermission(account.getPermission());
         mUser.setAuthenticityToken(account.getAuthenticityToken());
+        
+        if (mUser.isLogged()){
+            Bugsnag.setUser(mUser.getUid(), null, mUser.getName());
+        }
     }
 }
