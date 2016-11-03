@@ -88,7 +88,7 @@
         <item name="navigationViewTheme">@style/Theme.Light.NavigationView</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="preferenceTheme">@style/Preference.Overlay</item>
-        <item name="cardViewStyle">@style/CardView.Light</item>
+        <item name="cardViewStyle">@style/CustomCardView.Light</item>
         <item name="cardViewContainerBackground">@color/light_card_view_container</item>
 
         <item name="drawerTextColor">?android:attr/textColorPrimaryInverse</item>
@@ -122,7 +122,7 @@
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="navigationViewTheme">@style/Theme.Dark.NavigationView</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="cardViewStyle">@style/CardView.Dark</item>
+        <item name="cardViewStyle">@style/CustomCardView.Dark</item>
         <!-- Actually the dark CardView background is not same to `android:colorBackground` which
         is inconsistent with light theme. But it looks much better. May fix this inconsistency later.-->
         <item name="cardViewContainerBackground">@color/dark_background</item>

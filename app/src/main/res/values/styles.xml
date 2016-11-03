@@ -3,19 +3,23 @@
 
     <style name="Preference.Overlay" parent="PreferenceThemeOverlay.v14" />
 
-    <style name="CardView.Light.AfternoonTea">
+    <style name="CustomCardView" parent="CardView">
+        <item name="cardCornerRadius">0dp</item>
+    </style>
+
+    <style name="CardView.Light.AfternoonTea" parent="CustomCardView">
         <item name="cardBackgroundColor">@color/saraba_main_bg_color</item>
     </style>
 
-    <style name="CardView.Light">
+    <style name="CustomCardView.Light">
         <item name="cardBackgroundColor">@color/light_background</item>
     </style>
 
-    <style name="CardView.Dark">
+    <style name="CustomCardView.Dark">
         <item name="cardBackgroundColor">@color/dark_card_view</item>
     </style>
 
-    <style name="CardView.Dark.NightMode.Amoled" parent="CardView">
+    <style name="CardView.Dark.NightMode.Amoled" parent="CustomCardView">
         <item name="cardBackgroundColor">@android:color/black</item>
     </style>
 
