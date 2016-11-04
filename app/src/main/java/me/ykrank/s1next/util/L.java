@@ -16,6 +16,10 @@ public class L {
         d(LOG_TAG, msg);
     }
 
+    public static void i(String msg) {
+        i(LOG_TAG, msg);
+    }
+
     public static void e(String msg) {
         e(LOG_TAG, msg);
     }
@@ -39,6 +43,12 @@ public class L {
     public static void d(String tag, String msg) {
         if (BuildConfig.DEBUG) {
             Log.d(tag, msg);
+        }
+    }
+
+    public static void i(String tag, String msg) {
+        if (BuildConfig.DEBUG) {
+            Log.i(tag, msg);
         }
     }
 

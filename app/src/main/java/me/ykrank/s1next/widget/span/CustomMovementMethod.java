@@ -104,12 +104,14 @@ public class CustomMovementMethod extends ArrowKeyMovementMethod {
             TagHandler.ImageClickableSpan[] imageClickableSpans = buffer.getSpans(off, off + 1,
                     TagHandler.ImageClickableSpan.class);
             if (action == MotionEvent.ACTION_UP) {
-                if (imageClickableSpans.length > 1) {
-                    Bugsnag.notify(new IllegalStateException("ImageClickableSpan length > 1; \n" +
-                            "length" + imageClickableSpans.length + ",line:" + line + ",off:" + off));
+                if (imageClickableSpans.length > 0) {
+                    if (imageClickableSpans.length > 1) {
+                        Bugsnag.notify(new IllegalStateException("ImageClickableSpan length > 1; \n" +
+                                "length" + imageClickableSpans.length + ",line:" + line + ",off:" + off));
+                    }
+                    imageClickableSpans[0].onClick(widget);
+                    return true;
                 }
-                imageClickableSpans[0].onClick(widget);
-                return true;
             }
 
         }

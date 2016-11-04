@@ -37,7 +37,8 @@ public final class IntentUtil {
     private static final String EXTRA_CUSTOM_TABS_SESSION = "android.support.customtabs.extra.SESSION";
     public static final String EXTRA_ENABLE_URLBAR_HIDING = "android.support.customtabs.extra.ENABLE_URLBAR_HIDING";
 
-    private IntentUtil() {}
+    private IntentUtil() {
+    }
 
     /**
      * Opens a uri in Android's web browser or other app which can handle this Intent.
@@ -56,8 +57,8 @@ public final class IntentUtil {
             ActivityInfo activityInfo = defaultResolveInfo.activityInfo;
             String packageName = activityInfo.applicationInfo.packageName;
             // if this is not the default resolver Activity or our app
-            if (!activityInfo.name.equals(ANDROID_RESOLVER_ACTIVITY) 
-                    &&!activityInfo.name.equals(ANDROID_RESOLVER_ACTIVITY_HUAWEI) 
+            if (!activityInfo.name.equals(ANDROID_RESOLVER_ACTIVITY)
+                    && !activityInfo.name.equals(ANDROID_RESOLVER_ACTIVITY_HUAWEI)
                     && !packageName.equals(ourAppPackageName)) {
                 intent.setClassName(packageName, activityInfo.name);
                 putCustomTabsExtra(intent);
