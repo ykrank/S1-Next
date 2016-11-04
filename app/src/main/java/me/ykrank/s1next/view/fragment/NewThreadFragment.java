@@ -67,7 +67,7 @@ public final class NewThreadFragment extends BasePostFragment {
         super.onActivityCreated(savedInstanceState);
         mForumId = getArguments().getInt(ARG_FORUM_ID);
 
-        App.getAppComponent(getContext()).inject(this);
+        App.getPrefComponent(getContext()).inject(this);
         init();
     }
 

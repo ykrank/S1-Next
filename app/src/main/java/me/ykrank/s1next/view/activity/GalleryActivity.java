@@ -82,8 +82,7 @@ public final class GalleryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityGalleryBinding binding = DataBindingUtil.setContentView(this,
-                R.layout.activity_gallery);
+        ActivityGalleryBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_gallery);
         mPhotoView = binding.photoView;
 
         ToolbarDelegate toolbarDelegate = new ToolbarDelegate(this, binding.toolbar);

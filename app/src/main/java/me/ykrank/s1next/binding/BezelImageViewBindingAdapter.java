@@ -33,7 +33,7 @@ public final class BezelImageViewBindingAdapter {
     @BindingAdapter("user")
     public static void loadUserAvatar(BezelImageView bezelImageView, User user) {
         Context context = bezelImageView.getContext();
-        DownloadPreferencesManager downloadPreferencesManager = App.getAppComponent(context)
+        DownloadPreferencesManager downloadPreferencesManager = App.getPrefComponent(context)
                 .getDownloadPreferencesManager();
         if (user.isLogged()) {
             // setup user's avatar

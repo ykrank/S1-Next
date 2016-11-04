@@ -1,8 +1,6 @@
 package me.ykrank.s1next;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -17,13 +15,6 @@ import me.ykrank.s1next.data.Wifi;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
-import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
-import me.ykrank.s1next.data.pref.DownloadPreferencesRepository;
-import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
-import me.ykrank.s1next.data.pref.GeneralPreferencesRepository;
-import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
-import me.ykrank.s1next.data.pref.ReadProgressPreferencesRepository;
-import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.PersistentHttpCookieStore;
@@ -39,7 +30,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  * Provides instances of the objects when we need to inject.
  */
 @Module
-final class AppModule {
+public final class AppModule {
 
     private final App mApp;
 
@@ -119,52 +110,5 @@ final class AppModule {
     Wifi providerWifi() {
         return new Wifi();
     }
-
-    @Provides
-    @Singleton
-    SharedPreferences provideSharedPreferences(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context);
-    }
-
-    @Provides
-    @Singleton
-    GeneralPreferencesRepository provideGeneralPreferencesProvider(Context context, SharedPreferences sharedPreferences) {
-        return new GeneralPreferencesRepository(context, sharedPreferences);
-    }
-
-    @Provides
-    @Singleton
-    GeneralPreferencesManager provideGeneralPreferencesManager(GeneralPreferencesRepository generalPreferencesProvider) {
-        return new GeneralPreferencesManager(generalPreferencesProvider);
-    }
-
-    @Provides
-    @Singleton
-    ThemeManager provideThemeManager(Context context, GeneralPreferencesRepository generalPreferencesProvider) {
-        return new ThemeManager(context, generalPreferencesProvider);
-    }
-
-    @Provides
-    @Singleton
-    DownloadPreferencesRepository provideDownloadPreferencesProvider(Context context, SharedPreferences sharedPreferences) {
-        return new DownloadPreferencesRepository(context, sharedPreferences);
-    }
-
-    @Provides
-    @Singleton
-    DownloadPreferencesManager provideDownloadPreferencesManager(DownloadPreferencesRepository downloadPreferencesProvider, Wifi wifi) {
-        return new DownloadPreferencesManager(downloadPreferencesProvider, wifi);
-    }
-
-    @Provides
-    @Singleton
-    ReadProgressPreferencesRepository provideReadProgressPreferencesProvider(Context context, SharedPreferences sharedPreferences) {
-        return new ReadProgressPreferencesRepository(context, sharedPreferences);
-    }
-
-    @Provides
-    @Singleton
-    ReadProgressPreferencesManager provideReadProgressPreferencesManager(ReadProgressPreferencesRepository readProgressPreferencesRepository){
-        return  new ReadProgressPreferencesManager(readProgressPreferencesRepository);
-    }
+    
 }

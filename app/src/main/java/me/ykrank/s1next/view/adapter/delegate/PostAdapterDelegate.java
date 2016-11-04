@@ -35,7 +35,7 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
     public PostAdapterDelegate(Activity activity, int viewType) {
         super(activity, viewType);
 
-        App.getAppComponent(activity).inject(this);
+        App.getPrefComponent(activity).inject(this);
         // loading avatars is prior to images in replies
         mAvatarRequestBuilder = Glide.with(activity)
                 .from(String.class)

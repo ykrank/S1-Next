@@ -27,7 +27,7 @@ public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
 
         mLayoutInflater = activity.getLayoutInflater();
         this.mResource = resource;
-        mGentleAccentColor = App.getAppComponent(activity).getThemeManager().getGentleAccentColor();
+        mGentleAccentColor = App.getPrefComponent(activity).getThemeManager().getGentleAccentColor();
     }
 
     @Override

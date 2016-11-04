@@ -18,7 +18,7 @@ public final class ForumAdapterDelegate extends BaseAdapterDelegate<Forum, Forum
     public ForumAdapterDelegate(Context context, int viewType) {
         super(context, viewType);
 
-        mGentleAccentColor = App.getAppComponent(context).getThemeManager().getGentleAccentColor();
+        mGentleAccentColor = App.getPrefComponent(context).getThemeManager().getGentleAccentColor();
     }
 
     @NonNull

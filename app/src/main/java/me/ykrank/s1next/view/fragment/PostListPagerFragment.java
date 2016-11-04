@@ -15,8 +15,6 @@ import com.bugsnag.android.Bugsnag;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Post;
@@ -25,8 +23,9 @@ import me.ykrank.s1next.data.api.model.collection.Posts;
 import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
-import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
 import me.ykrank.s1next.databinding.FragmentBaseCardViewContainerBinding;
+import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.LooperUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.PostListRecyclerViewAdapter;
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegate;
@@ -49,9 +48,6 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
      * Used for post post redirect.
      */
     private static final String ARG_QUOTE_POST_ID = "quote_post_id";
-
-    @Inject
-    ReadProgressPreferencesManager mReadProgressPrefManager;
 
     private String mThreadId;
     private int mPageNum;
@@ -145,8 +141,6 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
 
     @Override
     public void onDestroy() {
-        if (mReadProgressPrefManager.isSaveAuto())
-            saveReadProgressBack(mThreadId, mPageNum, findMidItemPosition());
         RxJavaUtil.unsubscribeIfNotNull(saveReadProgressSubscription);
         super.onDestroy();
     }
@@ -188,23 +182,30 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
      */
     void saveReadProgress() {
         saveReadProgressSubscription = RxJavaUtil.workWithUiThread(() -> {
-//            LooperUtil.enforceOnWorkThread();
-            int visiblePosition = findMidItemPosition();
-            ReadProgress readProgress = new ReadProgress(mThreadId, mPageNum, visiblePosition);
+            LooperUtil.enforceOnWorkThread();
             ReadProgressDbWrapper dbWrapper = ReadProgressDbWrapper.getInstance();
-            dbWrapper.saveReadProgress(readProgress);
+            dbWrapper.saveReadProgress(getCurReadProgress());
         }, () -> {
-//            LooperUtil.enforceOnMainThread();
+            LooperUtil.enforceOnMainThread();
             showShortText(R.string.save_read_progress_success);
         });
     }
+    
+    ReadProgress getCurReadProgress(){
+        return new ReadProgress(mThreadId, mPageNum, findMidItemPosition());
+    }
 
-    static void saveReadProgressBack(String threadId, int page, int position){
+    static void saveReadProgressBack(ReadProgress readProgress){
         new java.lang.Thread(()->{
-            ReadProgress readProgress = new ReadProgress(threadId, page, position);
             ReadProgressDbWrapper dbWrapper = ReadProgressDbWrapper.getInstance();
             dbWrapper.saveReadProgress(readProgress);
         }).start();
+    }
+    
+    static boolean saveLastProgress(ReadProgress readProgress){
+        L.i("saveLastProgress");
+        
+        return true;
     }
 
     /**

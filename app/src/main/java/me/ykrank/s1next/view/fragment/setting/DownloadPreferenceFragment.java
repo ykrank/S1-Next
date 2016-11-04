@@ -3,6 +3,8 @@ package me.ykrank.s1next.view.fragment.setting;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import javax.inject.Inject;
+
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
@@ -21,13 +23,13 @@ public final class DownloadPreferenceFragment extends BasePreferenceFragment {
     public static final String PREF_KEY_AVATAR_CACHE_INVALIDATION_INTERVAL = "pref_key_avatar_cache_invalidation_interval";
     public static final String PREF_KEY_DOWNLOAD_IMAGES_STRATEGY = "pref_key_download_images_strategy";
 
-    private DownloadPreferencesManager mDownloadPreferencesManager;
+    @Inject
+    DownloadPreferencesManager mDownloadPreferencesManager;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
+        App.getPrefComponent(getActivity()).inject(this);
         addPreferencesFromResource(R.xml.preference_download);
-        mDownloadPreferencesManager = App.getAppComponent(getActivity())
-                .getDownloadPreferencesManager();
     }
 
     @Override

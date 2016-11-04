@@ -1,16 +1,12 @@
 package me.ykrank.s1next.util;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.TextView;
-
-import java.lang.reflect.Method;
 
 import me.ykrank.s1next.R;
 

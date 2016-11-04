@@ -79,7 +79,7 @@ public final class PostListActivity extends BaseActivity
      * @return
      */
     public static Subscription clickStartPostListActivity(@NonNull View view, @NonNull Thread thread) {
-        ReadProgressPreferencesManager preferencesManager = App.getAppComponent(view.getContext()).getReadProgressPreferencesManager();
+        ReadProgressPreferencesManager preferencesManager = App.getPrefComponent(view.getContext()).getReadProgressPreferencesManager();
         if (preferencesManager.isLoadAuto()){
             return OnceClickUtil.onceClickObservable(view, 1000)
                     .observeOn(Schedulers.io())

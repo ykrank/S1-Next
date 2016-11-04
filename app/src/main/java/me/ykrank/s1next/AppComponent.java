@@ -1,31 +1,19 @@
 package me.ykrank.s1next;
 
+import android.content.Context;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
 import me.ykrank.s1next.data.User;
+import me.ykrank.s1next.data.Wifi;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
-import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
-import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
-import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
-import me.ykrank.s1next.data.pref.ThemeManager;
-import me.ykrank.s1next.view.activity.BaseActivity;
-import me.ykrank.s1next.view.activity.SearchActivity;
-import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
-import me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
-import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment;
-import me.ykrank.s1next.view.fragment.BasePostFragment;
-import me.ykrank.s1next.view.fragment.NewThreadFragment;
-import me.ykrank.s1next.view.fragment.PostListFragment;
 import me.ykrank.s1next.view.fragment.PostListPagerFragment;
-import me.ykrank.s1next.view.fragment.ReplyFragment;
 import me.ykrank.s1next.view.fragment.WebLoginFragment;
-import me.ykrank.s1next.view.fragment.setting.GeneralPreferenceFragment;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EventBus;
-import me.ykrank.s1next.widget.WifiBroadcastReceiver;
 import okhttp3.OkHttpClient;
 
 /**
@@ -35,6 +23,8 @@ import okhttp3.OkHttpClient;
 @Singleton
 @Component(modules = AppModule.class)
 public interface AppComponent {
+
+    Context getContext();
 
     OkHttpClient getOkHttpClient();
 
@@ -48,39 +38,11 @@ public interface AppComponent {
 
     UserViewModel getUserViewModel();
 
-    GeneralPreferencesManager getGeneralPreferencesManager();
-
-    DownloadPreferencesManager getDownloadPreferencesManager();
-
-    ThemeManager getThemeManager();
-
-    ReadProgressPreferencesManager getReadProgressPreferencesManager();
-
-    void inject(BaseActivity activity);
-
-    void inject(PostListFragment fragment);
+    Wifi getWifi();
 
     void inject(PostListPagerFragment fragment);
 
-    void inject(ReplyFragment fragment);
-
-    void inject(BasePostFragment fragment);
-
-    void inject(NewThreadFragment fragment);
-
-    void inject(GeneralPreferenceFragment fragment);
-
     void inject(LogoutDialogFragment fragment);
-
-    void inject(ThemeChangeDialogFragment fragment);
-
-    void inject(ThreadAdapterDelegate delegate);
-
-    void inject(PostAdapterDelegate delegate);
-
-    void inject(WifiBroadcastReceiver wifiBroadcastReceiver);
     
-    void inject(SearchActivity activity);
-
     void inject(WebLoginFragment fragment);
 }

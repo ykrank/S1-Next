@@ -104,7 +104,7 @@ public abstract class BaseActivity extends AppCompatActivity
     @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-        App.getAppComponent(this).inject(this);
+        App.getPrefComponent(this).inject(this);
         // change the theme depends on preference
         if (!mThemeManager.isDefaultTheme()) {
             if (isTranslucent()) {

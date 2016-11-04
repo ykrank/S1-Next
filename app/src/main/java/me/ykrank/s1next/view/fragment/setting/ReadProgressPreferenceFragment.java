@@ -23,7 +23,7 @@ public final class ReadProgressPreferenceFragment extends BasePreferenceFragment
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
         addPreferencesFromResource(R.xml.preference_read_progress);
-        mReadProgressPreferencesManager = App.getAppComponent(getActivity())
+        mReadProgressPreferencesManager = App.getPrefComponent(getActivity())
                 .getReadProgressPreferencesManager();
     }
 

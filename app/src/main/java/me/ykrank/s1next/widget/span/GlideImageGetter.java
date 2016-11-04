@@ -126,7 +126,7 @@ public final class GlideImageGetter
             return urlDrawable;
         }
 
-        if (App.getAppComponent(mContext).getDownloadPreferencesManager().isImagesDownload()) {
+        if (App.getPrefComponent(mContext).getDownloadPreferencesManager().isImagesDownload()) {
             ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
                     urlDrawable);
             Glide.with(mContext)

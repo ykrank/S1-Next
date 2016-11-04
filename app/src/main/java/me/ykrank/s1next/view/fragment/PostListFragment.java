@@ -16,6 +16,8 @@ import android.view.View;
 import com.bugsnag.android.Bugsnag;
 import com.google.common.base.Preconditions;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
@@ -33,6 +35,7 @@ import me.ykrank.s1next.data.event.QuoteEvent;
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
 import me.ykrank.s1next.util.ClipboardUtil;
 import me.ykrank.s1next.util.IntentUtil;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.util.StringUtil;
@@ -42,6 +45,7 @@ import me.ykrank.s1next.view.dialog.ThreadAttachmentDialogFragment;
 import me.ykrank.s1next.view.dialog.ThreadFavouritesAddDialogFragment;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import me.ykrank.s1next.widget.EventBus;
+import rx.Single;
 import rx.Subscription;
 
 
@@ -82,8 +86,10 @@ public final class PostListFragment extends BaseViewPagerFragment
     private MenuItem mMenuThreadAttachment;
 
     private Subscription mSubscription;
-    private Subscription mreadProgressSubscription;
+    private Subscription mReadProgressSubscription;
     private ReadProgress readProgress;
+    
+    private Subscription mLastReadSubscription;
     
     private PostListPagerAdapter mAdapter;
 
@@ -126,7 +132,7 @@ public final class PostListFragment extends BaseViewPagerFragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        App.getAppComponent(getContext()).inject(this);
+        App.getPrefComponent(getContext()).inject(this);
 
         Bundle bundle = getArguments();
         Thread thread = Preconditions.checkNotNull(bundle.getParcelable(ARG_THREAD));
@@ -187,10 +193,27 @@ public final class PostListFragment extends BaseViewPagerFragment
 
     @Override
     public void onPause() {
+        //save last read progress
+        mLastReadSubscription = Single.just(getCurPostPageFragment().getCurReadProgress())
+                .delay(5, TimeUnit.SECONDS)
+                .map(PostListPagerFragment::saveLastProgress)
+                .doOnError(L::e)
+                .subscribe();
         super.onPause();
 
         RxJavaUtil.unsubscribeIfNotNull(mSubscription);
-        RxJavaUtil.unsubscribeIfNotNull(mreadProgressSubscription);
+        RxJavaUtil.unsubscribeIfNotNull(mReadProgressSubscription);
+    }
+
+    @Override
+    public void onDestroy() {
+        RxJavaUtil.unsubscribeIfNotNull(mLastReadSubscription);
+        
+        //Auto save read progress
+        if (mReadProgressPrefManager.isSaveAuto()){
+            PostListPagerFragment.saveReadProgressBack(getCurPostPageFragment().getCurReadProgress());
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -323,7 +346,7 @@ public final class PostListFragment extends BaseViewPagerFragment
      */
     void loadReadProgress() {
         ReadProgressDbWrapper dbWrapper = ReadProgressDbWrapper.getInstance();
-        mreadProgressSubscription = RxJavaUtil.workWithUiThread(() -> {
+        mReadProgressSubscription = RxJavaUtil.workWithUiThread(() -> {
             readProgress = dbWrapper.getWithThreadId(mThreadId);
             if (readProgress != null)
                 readProgress.scrollState = ReadProgress.BEFORE_SCROLL_PAGE;

@@ -10,7 +10,10 @@ import com.bugsnag.android.Bugsnag;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
+import me.ykrank.s1next.data.pref.DaggerPrefComponent;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
+import me.ykrank.s1next.data.pref.PrefComponent;
+import me.ykrank.s1next.data.pref.PrefModule;
 import me.ykrank.s1next.util.ProcessUtil;
 import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.widget.AppActivityLifecycleCallbacks;
@@ -23,6 +26,8 @@ public final class App extends MultiDexApplication {
     private GeneralPreferencesManager mGeneralPreferencesManager;
 
     private AppComponent mAppComponent;
+    
+    private PrefComponent mPrefComponent;
 
     private AppActivityLifecycleCallbacks mAppActivityLifecycleCallbacks;
 
@@ -38,6 +43,10 @@ public final class App extends MultiDexApplication {
 
     public static AppComponent getAppComponent(Context context) {
         return ((App) context.getApplicationContext()).mAppComponent;
+    }
+
+    public static PrefComponent getPrefComponent(Context context) {
+        return ((App) context.getApplicationContext()).mPrefComponent;
     }
 
     @Override
@@ -66,10 +75,14 @@ public final class App extends MultiDexApplication {
         mAppComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .build();
+        mPrefComponent = DaggerPrefComponent.builder()
+                .appComponent(mAppComponent)
+                .prefModule(new PrefModule())
+                .build();
         mAppActivityLifecycleCallbacks = new AppActivityLifecycleCallbacks(this);
         registerActivityLifecycleCallbacks(mAppActivityLifecycleCallbacks);
 
-        mGeneralPreferencesManager = mAppComponent.getGeneralPreferencesManager();
+        mGeneralPreferencesManager = mPrefComponent.getGeneralPreferencesManager();
         // set scaling factor for fonts
         ResourceUtil.setScaledDensity(getResources(), mGeneralPreferencesManager.getFontScale());
 

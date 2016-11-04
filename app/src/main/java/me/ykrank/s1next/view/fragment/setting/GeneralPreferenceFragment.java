@@ -47,7 +47,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
         addPreferencesFromResource(R.xml.preference_general);
-        App.getAppComponent(getActivity()).inject(this);
+        App.getPrefComponent(getActivity()).inject(this);
 
         findPreference(PREF_KEY_DOWNLOADS).setOnPreferenceClickListener(this);
         findPreference(PREF_KEY_BLACKLIST).setOnPreferenceClickListener(this);
