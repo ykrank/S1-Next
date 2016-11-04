@@ -142,7 +142,16 @@ public final class PostListFragment extends BaseViewPagerFragment
         Bugsnag.leaveBreadcrumb("PostListFragment##ThreadTitle:"+mThreadTitle+",ThreadId:"+mThreadId);
 
         if (savedInstanceState == null) {
-            final int jumpPage = bundle.getInt(ARG_JUMP_PAGE, 0);
+            final int jumpPage;
+            //读取进度
+            readProgress = bundle.getParcelable(ARG_READ_PROGRESS);
+            if (readProgress != null) {
+                readProgress.scrollState = ReadProgress.BEFORE_SCROLL_PAGE;
+                jumpPage = readProgress.page;
+            } else {
+                jumpPage = bundle.getInt(ARG_JUMP_PAGE, 0);
+            }
+            
             if (jumpPage != 0) {
                 // we do not know the total page if we open this thread by URL
                 // so we set the jump page to total page
@@ -159,13 +168,6 @@ public final class PostListFragment extends BaseViewPagerFragment
 
         ((CoordinatorLayoutAnchorDelegate) getActivity()).setupFloatingActionButton(
                 R.drawable.ic_insert_comment_black_24dp, this);
-
-        //读取进度
-        readProgress = bundle.getParcelable(ARG_READ_PROGRESS);
-        if (readProgress != null) {
-            readProgress.scrollState = ReadProgress.BEFORE_SCROLL_PAGE;
-            setCurrentPage(readProgress.page-1);
-        }
     }
 
     @Override
@@ -196,9 +198,9 @@ public final class PostListFragment extends BaseViewPagerFragment
         //save last read progress
         mLastReadSubscription = Single.just(getCurPostPageFragment().getCurReadProgress())
                 .delay(5, TimeUnit.SECONDS)
-                .map(PostListPagerFragment::saveLastProgress)
+                .map(mReadProgressPrefManager::saveLastReadProgress)
                 .doOnError(L::e)
-                .subscribe();
+                .subscribe(b->L.i("Save last read progress:"+b));
         super.onPause();
 
         RxJavaUtil.unsubscribeIfNotNull(mSubscription);

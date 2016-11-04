@@ -71,6 +71,16 @@ public final class PostListActivity extends BaseActivity
         context.startActivity(intent);
     }
 
+    public static void startPostListActivity(Context context, ReadProgress readProgress) {
+        Intent intent = new Intent(context, PostListActivity.class);
+        Thread thread = new Thread();
+        thread.setId(readProgress.threadId);
+        intent.putExtra(ARG_THREAD, thread);
+        intent.putExtra(ARG_READ_PROGRESS, readProgress);
+
+        context.startActivity(intent);
+    }
+
     /**
      * 点击打开有读取进度的帖子
      *
@@ -99,7 +109,6 @@ public final class PostListActivity extends BaseActivity
                 PostListActivity.startPostListActivity(v.getContext(), thread, false);
             });
         }
-        
     }
 
     @Override

@@ -3,6 +3,7 @@ package me.ykrank.s1next.data.pref;
 import dagger.Component;
 import me.ykrank.s1next.AppComponent;
 import me.ykrank.s1next.view.activity.BaseActivity;
+import me.ykrank.s1next.view.activity.ForumActivity;
 import me.ykrank.s1next.view.activity.PostListGatewayActivity;
 import me.ykrank.s1next.view.activity.SearchActivity;
 import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
@@ -34,6 +35,8 @@ public interface PrefComponent{
     void inject(BasePostFragment fragment);
 
     void inject(BaseActivity activity);
+    
+    void inject(ForumActivity activity);
 
     void inject(PostAdapterDelegate delegate);
     

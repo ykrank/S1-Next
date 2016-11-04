@@ -15,7 +15,6 @@ import com.bugsnag.android.Bugsnag;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
@@ -24,7 +23,6 @@ import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
 import me.ykrank.s1next.databinding.FragmentBaseCardViewContainerBinding;
-import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.LooperUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.PostListRecyclerViewAdapter;
@@ -94,7 +92,6 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        App.getAppComponent(getContext()).inject(this);
 
         mThreadId = getArguments().getString(ARG_THREAD_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
@@ -200,12 +197,6 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
             ReadProgressDbWrapper dbWrapper = ReadProgressDbWrapper.getInstance();
             dbWrapper.saveReadProgress(readProgress);
         }).start();
-    }
-    
-    static boolean saveLastProgress(ReadProgress readProgress){
-        L.i("saveLastProgress");
-        
-        return true;
     }
 
     /**

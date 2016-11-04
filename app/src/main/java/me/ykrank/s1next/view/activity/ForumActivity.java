@@ -13,7 +13,12 @@ import android.widget.AdapterView;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
+import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
 import me.ykrank.s1next.databinding.ToolbarSpinnerBinding;
 import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment;
 import me.ykrank.s1next.view.fragment.ForumFragment;
@@ -33,6 +38,9 @@ public final class ForumActivity extends BaseActivity
      * the position of the selected spinner item.
      */
     private static final String STATE_SPINNER_SELECTED_POSITION = "spinner_selected_position";
+
+    @Inject
+    ReadProgressPreferencesManager mReadProgressPrefManager;
 
     private ToolbarSpinnerBinding mToolbarSpinnerBinding;
 
@@ -65,7 +73,9 @@ public final class ForumActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        App.getPrefComponent(this).inject(this);
+        restoreFromInterrupt();
+        
         setContentView(R.layout.activity_base);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -128,5 +138,13 @@ public final class ForumActivity extends BaseActivity
         viewModel.setSelectedItemPosition(mSelectedPosition);
         viewModel.dropDownItemList.clear();
         viewModel.dropDownItemList.addAll(dropDownItemList);
+    }
+
+    private void restoreFromInterrupt(){
+        ReadProgress lastReadProgress = mReadProgressPrefManager.getLastReadProgress();
+        if (lastReadProgress != null){
+            PostListActivity.startPostListActivity(this, lastReadProgress);
+            mReadProgressPrefManager.saveLastReadProgress(null);
+        }
     }
 }

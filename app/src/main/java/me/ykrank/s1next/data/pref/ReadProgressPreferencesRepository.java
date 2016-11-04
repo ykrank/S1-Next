@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -40,12 +41,23 @@ public final class ReadProgressPreferencesRepository extends BasePreferencesRepo
     
     @Nullable
     public ReadProgress getLastReadProgress(){
-        String lastStr = mSharedPreferences.getString(PREF_KEY_LAST_READ_PROGRESS, null);
         try {
+            String lastStr = mSharedPreferences.getString(PREF_KEY_LAST_READ_PROGRESS, null);
             return objectMapper.readValue(lastStr, ReadProgress.class);
         } catch (IOException e) {
             L.e(e);
             return null;
+        }
+    }
+    
+    public boolean saveLastReadProgress(ReadProgress readProgress){
+        try {
+            String lastStr = objectMapper.writeValueAsString(readProgress);
+            mSharedPreferences.edit().putString(PREF_KEY_LAST_READ_PROGRESS, lastStr).apply();
+            return true;
+        } catch (JsonProcessingException e) {
+            L.e(e);
+            return false;
         }
     }
 }
