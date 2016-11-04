@@ -147,10 +147,6 @@ public final class GlideImageGetter
 
     @Override
     public void onViewDetachedFromWindow(View v) {
-        // cancels any pending images loading
-        for (ViewTarget<TextView, GlideDrawable> viewTarget : mViewTargetSet) {
-            Glide.clear(viewTarget);
-        }
         mViewTargetSet.clear();
         v.removeOnAttachStateChangeListener(this);
 
