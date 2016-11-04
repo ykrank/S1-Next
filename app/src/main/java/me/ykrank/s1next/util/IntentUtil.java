@@ -26,6 +26,10 @@ public final class IntentUtil {
      * https://github.com/android/platform_frameworks_base/blob/master/core/java/com/android/internal/app/ResolverActivity.java
      */
     private static final String ANDROID_RESOLVER_ACTIVITY = "com.android.internal.app.ResolverActivity";
+    /**
+     * HuaWei emui change this class
+     */
+    private static final String ANDROID_RESOLVER_ACTIVITY_HUAWEI = "com.huawei.android.internal.app.HwResolverActivity";
 
     /**
      * see https://github.com/GoogleChrome/custom-tabs-client/blob/master/customtabs/src/android/support/customtabs/CustomTabsIntent.java
@@ -52,7 +56,8 @@ public final class IntentUtil {
             ActivityInfo activityInfo = defaultResolveInfo.activityInfo;
             String packageName = activityInfo.applicationInfo.packageName;
             // if this is not the default resolver Activity or our app
-            if (!activityInfo.name.equals(ANDROID_RESOLVER_ACTIVITY)
+            if (!activityInfo.name.equals(ANDROID_RESOLVER_ACTIVITY) 
+                    &&!activityInfo.name.equals(ANDROID_RESOLVER_ACTIVITY_HUAWEI) 
                     && !packageName.equals(ourAppPackageName)) {
                 intent.setClassName(packageName, activityInfo.name);
                 putCustomTabsExtra(intent);
