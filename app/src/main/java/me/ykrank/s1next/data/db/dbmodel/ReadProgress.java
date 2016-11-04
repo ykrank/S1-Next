@@ -7,6 +7,8 @@ import android.support.annotation.IntDef;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,6 +17,8 @@ import java.util.Locale;
 /**
  * Created by AdminYkrank on 2016/4/16.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
 @Table(name = "ReadProgress")
 public class ReadProgress extends Model implements Parcelable{
     private static final String TimeFormat = "yyyy-MM-dd HH:mm";

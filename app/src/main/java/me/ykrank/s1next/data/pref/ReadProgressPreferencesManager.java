@@ -74,6 +74,8 @@ public final class ReadProgressPreferencesManager {
     }
 
     public boolean saveLastReadProgress(ReadProgress readProgress){
-        return mReadProgressPreferencesRepository.saveLastReadProgress(readProgress);
+        boolean bool = mReadProgressPreferencesRepository.saveLastReadProgress(readProgress);
+        invalidateLastReadProgress();
+        return bool;
     }
 }

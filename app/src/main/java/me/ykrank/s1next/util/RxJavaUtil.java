@@ -3,6 +3,7 @@ package me.ykrank.s1next.util;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.Single;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
@@ -81,6 +82,11 @@ public final class RxJavaUtil {
     }
 
     public static <T> Observable.Transformer<T, T> iOTransformer() {
+        return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static <T> Single.Transformer<T, T> iOSingleTransformer() {
         return observable -> observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

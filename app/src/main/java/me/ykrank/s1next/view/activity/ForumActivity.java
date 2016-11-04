@@ -17,13 +17,15 @@ import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
 import me.ykrank.s1next.databinding.ToolbarSpinnerBinding;
+import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment;
 import me.ykrank.s1next.view.fragment.ForumFragment;
 import me.ykrank.s1next.view.internal.ToolbarDropDownInterface;
 import me.ykrank.s1next.viewmodel.DropDownItemListViewModel;
+import rx.Single;
 
 /**
  * An Activity shows the forum groups.
@@ -74,12 +76,13 @@ public final class ForumActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.getPrefComponent(this).inject(this);
-        restoreFromInterrupt();
         
         setContentView(R.layout.activity_base);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null) {
+            restoreFromInterrupt();
+
             fragment = new ForumFragment();
             fragmentManager.beginTransaction().add(R.id.frame_layout, fragment, ForumFragment.TAG)
                     .commit();
@@ -141,10 +144,14 @@ public final class ForumActivity extends BaseActivity
     }
 
     private void restoreFromInterrupt(){
-        ReadProgress lastReadProgress = mReadProgressPrefManager.getLastReadProgress();
-        if (lastReadProgress != null){
-            PostListActivity.startPostListActivity(this, lastReadProgress);
-            mReadProgressPrefManager.saveLastReadProgress(null);
-        }
+        Single.just(0)
+                .map(i->mReadProgressPrefManager.getLastReadProgress())
+                .compose(RxJavaUtil.iOSingleTransformer())
+                .doAfterTerminate(()->mReadProgressPrefManager.saveLastReadProgress(null))
+                .subscribe(readProgress -> {
+                    if (readProgress != null){
+                        PostListActivity.startPostListActivity(ForumActivity.this, readProgress);
+                    }
+                }, L::e);
     }
 }

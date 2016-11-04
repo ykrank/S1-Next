@@ -210,6 +210,7 @@ public final class PostListFragment extends BaseViewPagerFragment
     @Override
     public void onDestroy() {
         RxJavaUtil.unsubscribeIfNotNull(mLastReadSubscription);
+        mReadProgressPrefManager.saveLastReadProgress(null);
         
         //Auto save read progress
         if (mReadProgressPrefManager.isSaveAuto()){
