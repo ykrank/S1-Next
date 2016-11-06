@@ -59,7 +59,7 @@ android {
     }
     buildTypes {
         debug {
-            ext.enableBugsnag = false
+//            ext.enableBugsnag = false
             multiDexEnabled true
             applicationIdSuffix '.debug'
             versionNameSuffix '-DEBUG'

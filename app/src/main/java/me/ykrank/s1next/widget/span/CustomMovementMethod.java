@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.provider.Browser;
 import android.support.annotation.NonNull;
 import android.text.Layout;
+import android.text.Selection;
 import android.text.Spannable;
 import android.text.method.ArrowKeyMovementMethod;
 import android.text.method.MovementMethod;
@@ -93,27 +94,41 @@ public class CustomMovementMethod extends ArrowKeyMovementMethod {
                         clickableSpan.onClick(widget);
                     }
                 } else {
-                    return super.onTouchEvent(widget, buffer, event);
+                    //http://stackoverflow.com/questions/15836306/can-a-textview-be-selectable-and-contain-links
+                    //error: Error when selecting text from Textview (java.lang.IndexOutOfBoundsException: setSpan (-1 ... -1) starts before 0)
+                    Selection.setSelection(buffer,
+                            buffer.getSpanStart(link[0]),
+                            buffer.getSpanEnd(link[0]));
                 }
 
                 return true;
             }
 
             // invoke ImageClickableSpan's clicking event
-            //if use getSpans(off, off , sometime click mid in two span will cause error
-            TagHandler.ImageClickableSpan[] imageClickableSpans = buffer.getSpans(off, off + 1,
+            TagHandler.ImageClickableSpan[] imageClickableSpans = buffer.getSpans(off, off,
                     TagHandler.ImageClickableSpan.class);
-            if (action == MotionEvent.ACTION_UP) {
-                if (imageClickableSpans.length > 0) {
+            if (imageClickableSpans.length != 0) {
+                if (action == MotionEvent.ACTION_UP) {
                     if (imageClickableSpans.length > 1) {
-                        Bugsnag.notify(new IllegalStateException("ImageClickableSpan length > 1; \n" +
-                                "length" + imageClickableSpans.length + ",line:" + line + ",off:" + off));
+                        //if use getSpans(off, off , sometime click mid in two span will cause error
+                        TagHandler.ImageClickableSpan[] spans = buffer.getSpans(off, off+1,
+                                TagHandler.ImageClickableSpan.class);
+                        if (spans.length == 1){
+                            spans[0].onClick(widget);
+                            return true;
+                        }
+                        Bugsnag.notify(new IllegalStateException("ImageClickableSpan length warn; \n" +
+                                "length" + imageClickableSpans.length + ",line:" + line + ",off:" + off
+                                + ",newLength:" + spans.length));
                     }
                     imageClickableSpans[0].onClick(widget);
                     return true;
+                } else {
+                    Selection.setSelection(buffer,
+                            buffer.getSpanStart(imageClickableSpans[0]),
+                            buffer.getSpanEnd(imageClickableSpans[0]));
                 }
             }
-
         }
 
         return super.onTouchEvent(widget, buffer, event);
@@ -149,6 +164,9 @@ public class CustomMovementMethod extends ArrowKeyMovementMethod {
     }
 
     public interface URLSpanClick {
+        /**
+         * whether uri use this click listener
+         */
         boolean isMatch(Uri uri);
 
         void onClick(Uri uri, View view);

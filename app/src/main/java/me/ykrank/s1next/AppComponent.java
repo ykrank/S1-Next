@@ -10,7 +10,6 @@ import me.ykrank.s1next.data.Wifi;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
-import me.ykrank.s1next.view.fragment.PostListPagerFragment;
 import me.ykrank.s1next.view.fragment.WebLoginFragment;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EventBus;
@@ -39,8 +38,6 @@ public interface AppComponent {
     UserViewModel getUserViewModel();
 
     Wifi getWifi();
-
-    void inject(PostListPagerFragment fragment);
 
     void inject(LogoutDialogFragment fragment);
     

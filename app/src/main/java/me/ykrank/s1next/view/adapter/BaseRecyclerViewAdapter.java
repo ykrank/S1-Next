@@ -64,6 +64,11 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter {
         return Integer.MIN_VALUE;
     }
 
+    @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+    }
+
     final void addAdapterDelegate(AdapterDelegate<List<Object>> adapterDelegate) {
         Preconditions.checkArgument(adapterDelegate.getItemViewType() != VIEW_TYPE_PROGRESS);
         mAdapterDelegatesManager.addDelegate(adapterDelegate);
