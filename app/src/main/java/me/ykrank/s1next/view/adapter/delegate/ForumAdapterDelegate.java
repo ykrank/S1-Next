@@ -15,8 +15,8 @@ import me.ykrank.s1next.viewmodel.ForumViewModel;
 public final class ForumAdapterDelegate extends BaseAdapterDelegate<Forum, ForumAdapterDelegate.BindingViewHolder> {
     private final int mGentleAccentColor;
 
-    public ForumAdapterDelegate(Context context, int viewType) {
-        super(context, viewType);
+    public ForumAdapterDelegate(Context context) {
+        super(context);
 
         mGentleAccentColor = App.getPrefComponent(context).getThemeManager().getGentleAccentColor();
     }

@@ -12,8 +12,8 @@ import me.ykrank.s1next.view.adapter.item.FooterProgressItem;
 public final class PostFooterProgressAdapterDelegate extends BaseAdapterDelegate<FooterProgressItem,
         PostFooterProgressAdapterDelegate.FooterProgressViewHolder> {
 
-    public PostFooterProgressAdapterDelegate(Context context, int viewType) {
-        super(context, viewType);
+    public PostFooterProgressAdapterDelegate(Context context) {
+        super(context);
     }
 
     @NonNull

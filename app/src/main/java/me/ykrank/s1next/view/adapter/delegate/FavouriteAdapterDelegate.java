@@ -13,8 +13,8 @@ import me.ykrank.s1next.viewmodel.FavouriteViewModel;
 
 public final class FavouriteAdapterDelegate extends BaseAdapterDelegate<Favourite, FavouriteAdapterDelegate.BindingViewHolder> {
 
-    public FavouriteAdapterDelegate(Context context, int viewType) {
-        super(context, viewType);
+    public FavouriteAdapterDelegate(Context context) {
+        super(context);
     }
 
     @NonNull

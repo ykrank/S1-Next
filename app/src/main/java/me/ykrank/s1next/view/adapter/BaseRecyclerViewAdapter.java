@@ -1,14 +1,11 @@
 package me.ykrank.s1next.view.adapter;
 
 import android.content.Context;
-import android.support.annotation.CallSuper;
 import android.support.v7.util.DiffUtil;
-import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
 
 import com.google.common.base.Preconditions;
-import com.hannesdorfmann.adapterdelegates.AdapterDelegate;
-import com.hannesdorfmann.adapterdelegates.AdapterDelegatesManager;
+import com.hannesdorfmann.adapterdelegates3.AdapterDelegate;
+import com.hannesdorfmann.adapterdelegates3.ListDelegationAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,74 +16,29 @@ import me.ykrank.s1next.util.Objects;
 import me.ykrank.s1next.view.adapter.delegate.ProgressAdapterDelegate;
 import me.ykrank.s1next.view.adapter.item.ProgressItem;
 
-public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter {
+public abstract class BaseRecyclerViewAdapter extends ListDelegationAdapter<List<Object>> {
 
     private static final int VIEW_TYPE_PROGRESS = 0;
 
-    private List<Object> mList = new ArrayList<>();
-    private final AdapterDelegatesManager<List<Object>> mAdapterDelegatesManager;
-
     BaseRecyclerViewAdapter(Context context) {
-        mAdapterDelegatesManager = new AdapterDelegatesManager<>();
-        mAdapterDelegatesManager.addDelegate(new ProgressAdapterDelegate(context,
-                VIEW_TYPE_PROGRESS));
-    }
-
-    @Override
-    @CallSuper
-    public int getItemViewType(int position) {
-        return mAdapterDelegatesManager.getItemViewType(mList, position);
-    }
-
-    @Override
-    @CallSuper
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return mAdapterDelegatesManager.onCreateViewHolder(parent, viewType);
-    }
-
-    @Override
-    @CallSuper
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        mAdapterDelegatesManager.onBindViewHolder(mList, position, holder);
-    }
-
-    @Override
-    @CallSuper
-    public int getItemCount() {
-        return mList.size();
-    }
-
-    @Override
-    @CallSuper
-    public long getItemId(int position) {
-        Preconditions.checkArgument(mAdapterDelegatesManager.getItemViewType(mList, position)
-                == VIEW_TYPE_PROGRESS);
-        return Integer.MIN_VALUE;
-    }
-
-    @Override
-    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
+        setItems(new ArrayList<>());
+        delegatesManager.addDelegate(VIEW_TYPE_PROGRESS, new ProgressAdapterDelegate(context));
     }
 
     final void addAdapterDelegate(AdapterDelegate<List<Object>> adapterDelegate) {
-        Preconditions.checkArgument(adapterDelegate.getItemViewType() != VIEW_TYPE_PROGRESS);
-        mAdapterDelegatesManager.addDelegate(adapterDelegate);
-    }
-
-    final int getItemViewTypeFromDelegatesManager(int position) {
-        return mAdapterDelegatesManager.getItemViewType(mList, position);
+        Preconditions.checkArgument(delegatesManager.getViewType(adapterDelegate) != VIEW_TYPE_PROGRESS);
+        delegatesManager.addDelegate(adapterDelegate);
     }
 
     public final void setHasProgress(boolean hasProgress) {
         if (hasProgress) {
-            mList.clear();
-            mList.add(new ProgressItem());
+            items.clear();
+            items.add(new ProgressItem());
         } else {
             // we do not need to clear list if we have already changed
             // data set or we have no ProgressItem to been cleared
-            if (mList.size() == 1 && mList.get(0) instanceof ProgressItem) {
-                mList.clear();
+            if (items.size() == 1 && items.get(0) instanceof ProgressItem) {
+                items.clear();
             }
         }
     }
@@ -99,13 +51,13 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter {
      * @param detectMoves {@link DiffUtil#calculateDiff}
      */
     public final void diffNewDataSet(List<?> newData, boolean detectMoves){
-        if (mList == newData){
+        if (items == newData){
             refreshDataSet(newData, detectMoves);
             ErrorUtil.throwNewError(new IllegalArgumentException("must set new data set"));
         }
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
-                new BaseDiffCallback(mList, newData), detectMoves);
-        setDataSet(newData);
+                new BaseDiffCallback(items, newData), detectMoves);
+        items = (List<Object>) newData;
         diffResult.dispatchUpdatesTo(this);
     }
 
@@ -115,36 +67,32 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter {
      * @param detectMoves {@link #diffNewDataSet}
      */
     public final void refreshDataSet(List<?> newData, boolean detectMoves){
-        if (mList != newData){
+        if (items != newData){
             diffNewDataSet(newData, detectMoves);
         } else {
             notifyDataSetChanged();
         }
     }
     
-    public final void addDataSet(List<?> list) {
-        mList.addAll(list);
-    }
-
-    @SuppressWarnings("unchecked")
-    public final void setDataSet(List<?> list) {
-        mList = (List<Object>) list;
-    }
-
     public final List<Object> getDataSet() {
-        return mList;
+        return getItems();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     final Object getItem(int position) {
-        return mList.get(position);
+        return items.get(position);
     }
 
     final void addItem(Object object) {
-        mList.add(object);
+        items.add(object);
     }
 
     final void removeItem(int position) {
-        mList.remove(position);
+        items.remove(position);
     }
 
     private static class BaseDiffCallback extends DiffUtil.Callback {

@@ -32,8 +32,8 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
 
     private final DrawableRequestBuilder<String> mAvatarRequestBuilder;
 
-    public PostAdapterDelegate(Activity activity, int viewType) {
-        super(activity, viewType);
+    public PostAdapterDelegate(Activity activity) {
+        super(activity);
 
         App.getPrefComponent(activity).inject(this);
         // loading avatars is prior to images in replies
@@ -60,6 +60,7 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
         itemPostBinding.setDownloadPreferencesManager(mDownloadPreferencesManager);
         itemPostBinding.setDrawableRequestBuilder(mAvatarRequestBuilder);
         itemPostBinding.setPostViewModel(new PostViewModel());
+        itemPostBinding.setSelectable(true);
 
         return new ItemViewBindingHolder(itemPostBinding);
     }
@@ -69,6 +70,20 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
         ItemPostBinding binding = holder.itemPostBinding;
         binding.getPostViewModel().post.set(post);
         binding.executePendingBindings();
+    }
+
+    // Bug workaround for losing text selection ability, see:
+    // https://code.google.com/p/android/issues/detail?id=208169
+    @Override
+    protected void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        ItemPostBinding binding = ((ItemViewBindingHolder)holder).itemPostBinding;
+        binding.authorName.setEnabled(false);
+        binding.tvFloor.setEnabled(false);
+        binding.tvReply.setEnabled(false);
+        binding.authorName.setEnabled(true);
+        binding.tvFloor.setEnabled(true);
+        binding.tvReply.setEnabled(true);
     }
 
     static final class ItemViewBindingHolder extends RecyclerView.ViewHolder {

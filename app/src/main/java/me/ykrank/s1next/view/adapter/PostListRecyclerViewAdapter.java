@@ -4,39 +4,24 @@ import android.app.Activity;
 
 import com.google.common.base.Preconditions;
 
-import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PostFooterProgressAdapterDelegate;
 import me.ykrank.s1next.view.adapter.item.FooterProgressItem;
 
 /**
  * This {@link android.support.v7.widget.RecyclerView.Adapter}
- * has another item type {@link #TYPE_POST_FOOTER_PROGRESS}
+ * has another item type {@link PostFooterProgressAdapterDelegate}
  * in order to implement pull up to refresh.
  */
 public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
-    private static final int VIEW_TYPE_POST = 1;
-    private static final int TYPE_POST_FOOTER_PROGRESS = 2;
-
     public PostListRecyclerViewAdapter(Activity activity) {
         super(activity);
 
-        addAdapterDelegate(new PostAdapterDelegate(activity, VIEW_TYPE_POST));
-        addAdapterDelegate(new PostFooterProgressAdapterDelegate(activity, TYPE_POST_FOOTER_PROGRESS));
+        addAdapterDelegate(new PostAdapterDelegate(activity));
+        addAdapterDelegate(new PostFooterProgressAdapterDelegate(activity));
 
         setHasStableIds(true);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        if (getItemViewTypeFromDelegatesManager(position) == VIEW_TYPE_POST) {
-            return Long.parseLong(((Post) getItem(position)).getId());
-        } else if (getItemViewTypeFromDelegatesManager(position) == TYPE_POST_FOOTER_PROGRESS) {
-            return Integer.MIN_VALUE + 1;
-        } else {
-            return super.getItemId(position);
-        }
     }
 
     public void showFooterProgress() {

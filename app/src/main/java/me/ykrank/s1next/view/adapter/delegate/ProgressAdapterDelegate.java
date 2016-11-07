@@ -12,8 +12,8 @@ import me.ykrank.s1next.view.adapter.item.ProgressItem;
 
 public final class ProgressAdapterDelegate extends BaseAdapterDelegate<ProgressItem, ProgressAdapterDelegate.ProgressViewHolder> {
 
-    public ProgressAdapterDelegate(Context context, int viewType) {
-        super(context, viewType);
+    public ProgressAdapterDelegate(Context context) {
+        super(context);
     }
 
     @NonNull

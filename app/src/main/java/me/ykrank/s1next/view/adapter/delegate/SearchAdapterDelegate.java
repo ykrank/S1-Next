@@ -13,8 +13,8 @@ import me.ykrank.s1next.viewmodel.SearchViewModel;
 
 public final class SearchAdapterDelegate extends BaseAdapterDelegate<Search, SearchAdapterDelegate.BindingViewHolder> {
 
-    public SearchAdapterDelegate(Context context, int viewType) {
-        super(context, viewType);
+    public SearchAdapterDelegate(Context context) {
+        super(context);
     }
 
     @NonNull

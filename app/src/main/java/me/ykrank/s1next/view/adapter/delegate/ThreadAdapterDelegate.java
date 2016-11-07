@@ -24,8 +24,8 @@ public final class ThreadAdapterDelegate extends BaseAdapterDelegate<Thread, Thr
     @Inject
     ThemeManager mThemeManager;
 
-    public ThreadAdapterDelegate(Context context, int viewType) {
-        super(context, viewType);
+    public ThreadAdapterDelegate(Context context) {
+        super(context);
 
         App.getPrefComponent(context).inject(this);
     }
