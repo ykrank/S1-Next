@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.ykrank.s1next.view.fragment.FavouriteListFragment">
+
+    <item
+        android:id="@+id/menu_favourites_remove"
+        android:orderInCategory="20"
+        android:title="@string/menu_favourites_remove"
+        app:showAsAction="never" />
+    
     <item
         android:id="@+id/menu_browser"
         android:orderInCategory="21"

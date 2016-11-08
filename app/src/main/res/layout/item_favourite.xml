@@ -8,6 +8,10 @@
     <data>
 
         <variable
+            name="eventBus"
+            type="me.ykrank.s1next.widget.EventBus" />
+
+        <variable
             name="favouriteViewModel"
             type="me.ykrank.s1next.viewmodel.FavouriteViewModel" />
 
@@ -36,6 +40,7 @@
         android:paddingTop="14.5dp"
         android:text="@{favouriteViewModel.favourite.title}"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:onceClickSubscription="@{favouriteViewModel.subscription}" />
+        app:onceClickSubscription="@{favouriteViewModel.subscription}"
+        app:onLongClickListener="@{favouriteViewModel.removeFromFavourites(eventBus)}"/>
 
 </layout>

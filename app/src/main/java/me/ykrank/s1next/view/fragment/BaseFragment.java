@@ -90,6 +90,10 @@ public abstract class BaseFragment extends Fragment {
         mCoordinatorLayoutAnchorDelegate.showShortText(getString(resId));
     }
 
+    protected void showLongSnackbar(@StringRes int resId){
+        mCoordinatorLayoutAnchorDelegate.showLongSnackbar(resId);
+    }
+
     protected void dismissRetrySnackbarIfExist() {
         if (mRetrySnackbar != null) {
             Snackbar snackbar = mRetrySnackbar.get();

@@ -45,6 +45,14 @@ public interface CoordinatorLayoutAnchorDelegate {
     Optional<Snackbar> showShortSnackbar(CharSequence text);
 
     /**
+     * Show a long {@link Snackbar}.
+     *
+     * @param resId The resource id of the string resource to show for {@link Snackbar}.
+     * @return The displayed {@code Optional.of(snackbar)}.
+     */
+    Optional<Snackbar> showLongSnackbar(@StringRes int resId);
+    
+    /**
      * Show a {@link Snackbar} if current {@link android.app.Activity} is visible.
      *
      * @param text            The text to show.

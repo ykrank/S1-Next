@@ -153,4 +153,7 @@
     <string name="no_search_results">没有找到结果：\\n“%1$s”</string>
     <string name="login_in_web">网页登录</string>
     <string name="login_success">登录成功</string>
+    <string name="menu_favourites_remove">移除收藏</string>
+    <string name="how_to_remove_favourites">长按列表，将对应收藏移除</string>
+    <string name="message_api_error">服务器异常</string>
 </resources>

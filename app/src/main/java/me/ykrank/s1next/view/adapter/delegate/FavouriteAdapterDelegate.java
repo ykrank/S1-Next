@@ -6,15 +6,23 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import javax.inject.Inject;
+
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Favourite;
 import me.ykrank.s1next.databinding.ItemFavouriteBinding;
 import me.ykrank.s1next.viewmodel.FavouriteViewModel;
+import me.ykrank.s1next.widget.EventBus;
 
 public final class FavouriteAdapterDelegate extends BaseAdapterDelegate<Favourite, FavouriteAdapterDelegate.BindingViewHolder> {
 
+    @Inject
+    EventBus mEventBus;
+
     public FavouriteAdapterDelegate(Context context) {
         super(context);
+        App.getAppComponent(context).inject(this);
     }
 
     @NonNull
@@ -29,7 +37,7 @@ public final class FavouriteAdapterDelegate extends BaseAdapterDelegate<Favourit
         ItemFavouriteBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_favourite, parent, false);
         binding.setFavouriteViewModel(new FavouriteViewModel());
-
+        binding.setEventBus(mEventBus);
         return new BindingViewHolder(binding);
     }
 

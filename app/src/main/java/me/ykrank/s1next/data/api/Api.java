@@ -35,6 +35,7 @@ public final class Api {
      */
     static final String URL_AUTHENTICITY_TOKEN_HELPER = "index.php?module=toplist";
     static final String URL_THREAD_FAVOURITES_ADD = "index.php?module=favthread&favoritesubmit=yes";
+    static final String URL_THREAD_FAVOURITES_REMOVE = "index.php?module=favthread&deletesubmit=true&op=delete";
     static final String URL_REPLY = "index.php?module=sendreply&replysubmit=yes";
     /**
      * A URL to get the quoted user identification and processed quoted

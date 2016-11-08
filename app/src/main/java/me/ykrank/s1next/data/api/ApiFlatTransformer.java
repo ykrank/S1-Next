@@ -26,9 +26,9 @@ public class ApiFlatTransformer {
      * @return Returns {@link S1Service#refreshAuthenticityToken()}'s result if we
      * failed to get authenticity token, otherwise returns {@code func.call(authenticityToken)}.
      */
-    public static Observable<ResultWrapper> flatMappedWithAuthenticityToken(
+    public static <T> Observable<T> flatMappedWithAuthenticityToken(
             S1Service mS1Service, UserValidator mUserValidator, User mUser,
-            Func1<String, Observable<ResultWrapper>> func) {
+            Func1<String, Observable<T>> func) {
         String authenticityToken = mUser.getAuthenticityToken();
         if (TextUtils.isEmpty(authenticityToken)) {
             return mS1Service.refreshAuthenticityToken().flatMap(resultWrapper -> {
@@ -36,7 +36,8 @@ public class ApiFlatTransformer {
                 // return the ResultWrapper if we cannot get the authenticity token
                 // (if account has expired or network error)
                 if (TextUtils.isEmpty(account.getAuthenticityToken())) {
-                    return Observable.just(resultWrapper);
+                    return Observable.error(new ApiException.AuthenticityTokenException("获取登录信息错误",
+                            new ApiException("ResultWrapper:"+resultWrapper)));
                 } else {
                     mUserValidator.validate(account);
                     return func.call(account.getAuthenticityToken());
@@ -51,35 +52,6 @@ public class ApiFlatTransformer {
         AppComponent component = App.getAppComponent(App.get());
         return flatMappedWithAuthenticityToken(component.getS1Service(), component.getUserValidator(),
                 component.getUser(), func);
-    }
-
-    /**
-     * A Transformer to get valid authenticity token.
-     *
-     * @param mS1Service     Retrofit2 client
-     * @param mUserValidator UserValidator
-     * @return
-     */
-    public static Observable.Transformer<String, String> AuthenticityTokenTransformer(S1Service mS1Service, UserValidator mUserValidator) {
-        return old ->
-                old.flatMap(authenticityToken -> {
-                    if (TextUtils.isEmpty(authenticityToken)) {
-                        return mS1Service.refreshAuthenticityToken().flatMap(resultWrapper -> {
-                            Account account = resultWrapper.getAccount();
-                            // return error if we cannot get the authenticity token
-                            // (if account has expired or network error)
-                            if (TextUtils.isEmpty(account.getAuthenticityToken())) {
-                                return Observable.error(new ApiException.AuthenticityTokenException("获取登录信息错误",
-                                        new ApiException("ResultWrapper:"+resultWrapper)));
-                            } else {
-                                mUserValidator.validate(account);
-                                return createData(account.getAuthenticityToken());
-                            }
-                        });
-                    } else {
-                        return createData(authenticityToken);
-                    }
-                });
     }
 
     private static <T> Observable<T> createData(T t) {

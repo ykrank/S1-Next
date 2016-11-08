@@ -3,7 +3,6 @@ package me.ykrank.s1next.view.fragment;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -14,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.util.StringUtil;
 import me.ykrank.s1next.view.dialog.PageJumpDialogFragment;
@@ -23,7 +23,7 @@ import me.ykrank.s1next.widget.FragmentStatePagerAdapter;
 /**
  * A base Fragment wraps {@link ViewPager} and provides related methods.
  */
-abstract class BaseViewPagerFragment extends Fragment
+abstract class BaseViewPagerFragment extends BaseFragment
         implements PageJumpDialogFragment.OnPageJumpedListener, PagerCallback {
 
     /**
@@ -33,7 +33,7 @@ abstract class BaseViewPagerFragment extends Fragment
     private static final String STATE_TOTAL_PAGES = "total_pages";
 
     protected ViewPager mViewPager;
-    private BaseFragmentStatePagerAdapter mAdapter;
+    protected BaseFragmentStatePagerAdapter mAdapter;
     private int mTotalPages;
 
     private MenuItem mMenuPageJump;
@@ -55,11 +55,7 @@ abstract class BaseViewPagerFragment extends Fragment
         }
 
         mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
-        // don't use getChildFragmentManager()
-        // because we can't retain Fragments (DataRetainedFragment)
-        // that are nested in other fragments
-        mAdapter = getPagerAdapter(getFragmentManager());
-        mViewPager.setAdapter(mAdapter);
+        loadViewPager();
     }
 
     @Override
@@ -93,6 +89,10 @@ abstract class BaseViewPagerFragment extends Fragment
         }
     }
 
+    void onError(Throwable throwable) {
+        showShortSnackbar(ErrorUtil.parse(throwable));
+    }
+
     @Override
     @CallSuper
     public void onSaveInstanceState(Bundle outState) {
@@ -119,6 +119,15 @@ abstract class BaseViewPagerFragment extends Fragment
 
     final void setCurrentPage(int currentPage) {
         mViewPager.setCurrentItem(currentPage);
+    }
+    
+    final void loadViewPager(){
+        // don't use getChildFragmentManager()
+        // because we can't retain Fragments (DataRetainedFragment)
+        // that are nested in other fragments
+        mAdapter = getPagerAdapter(getFragmentManager());
+        mViewPager.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

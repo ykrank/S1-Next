@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_post_blacklist"
+        android:id="@+id/menu_popup_blacklist"
         android:orderInCategory="31"
         android:title="@string/menu_blacklist_add"
         app:showAsAction="always" />

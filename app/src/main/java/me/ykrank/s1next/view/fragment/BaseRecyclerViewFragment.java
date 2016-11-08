@@ -35,12 +35,12 @@ import rx.Subscription;
 
 /**
  * A base Fragment includes {@link SwipeRefreshLayout} to refresh when loading data.
- * Also wraps {@link retrofit2.Retrofit} to load data asynchronously.
+ * Also wraps {@link retrofit2.Retrofit} to loadViewPager data asynchronously.
  * <p>
  * We must call {@link #destroyRetainedFragment()}) if used in {@link android.support.v4.view.ViewPager}
  * otherwise leads memory leak.
  *
- * @param <D> The data we want to load.
+ * @param <D> The data we want to loadViewPager.
  */
 public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
 
@@ -109,7 +109,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
             fragmentManager.beginTransaction().add(mDataRetainedFragment, dataRetainedFragmentTag)
                     .commitAllowingStateLoss();
 
-            // start to load data because we start this Fragment the first time
+            // start to loadViewPager data because we start this Fragment the first time
             mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FIRST_TIME);
         } else {
             mDataRetainedFragment = (DataRetainedFragment<D>) fragment;
@@ -121,8 +121,8 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
                 mLoadingViewModel.setLoading(loading);
             } else {
                 if (!mDataRetainedFragment.stale) {
-                    // start to load data because the retained Fragment was killed by system
-                    // and we have no data to load
+                    // start to loadViewPager data because the retained Fragment was killed by system
+                    // and we have no data to loadViewPager
                     mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FIRST_TIME);
                 }
             }
@@ -203,7 +203,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     }
 
     /**
-     * Show refresh progress and start to load new data.
+     * Show refresh progress and start to loadViewPager new data.
      */
     public void startSwipeRefresh() {
         mLoadingViewModel.setLoading(LoadingViewModel.LOADING_SWIPE_REFRESH);
@@ -211,7 +211,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     }
 
     /**
-     * Disables {@link SwipeRefreshLayout} and start to load new data.
+     * Disables {@link SwipeRefreshLayout} and start to loadViewPager new data.
      * <p>
      * Subclass should override this method and add {@link android.widget.ProgressBar}
      * to {@code getRecyclerView()} in order to let {@link #showRetrySnackbar(CharSequence)}
@@ -224,14 +224,14 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     }
 
     /**
-     * Starts to load new data.
+     * Starts to loadViewPager new data.
      * <p>
      * Subclass should implement {@link #getSourceObservable()}
      * in oder to provider its own data source {@link Observable}.
      */
     private void load() {
         // dismiss Snackbar in order to let user see the ProgressBar
-        // when we start to load new data
+        // when we start to loadViewPager new data
         mCoordinatorLayoutAnchorDelegate.dismissSnackbarIfExist();
         mSubscription = getSourceObservable()
                 .compose(RxJavaUtil.iOTransformer())

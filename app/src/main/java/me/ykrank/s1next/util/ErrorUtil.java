@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.api.ApiException;
 import retrofit2.adapter.rxjava.HttpException;
 
 public final class ErrorUtil {
@@ -16,7 +17,9 @@ public final class ErrorUtil {
 
     @StringRes
     public static int parse(Throwable throwable) {
-        if (throwable instanceof IOException) {
+        if (throwable instanceof ApiException) {
+            return R.string.message_api_error;
+        } else if (throwable instanceof IOException) {
             return R.string.message_network_error;
         } else if (throwable instanceof HttpException) {
             return R.string.message_server_error;

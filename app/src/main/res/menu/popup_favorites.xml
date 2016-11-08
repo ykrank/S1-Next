@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_popup_remove_favourite"
+        android:orderInCategory="31"
+        android:title="@string/menu_favourites_remove"
+        app:showAsAction="always" />
+</menu>

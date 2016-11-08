@@ -7,10 +7,11 @@
         android:id="@+id/menu_sub_forums"
         android:orderInCategory="11"
         android:title="@string/menu_sub_forums"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_new_thread"
+        android:icon="@drawable/ic_create_content_24dp"
         android:orderInCategory="21"
         android:title="@string/menu_new_thread"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 </menu>

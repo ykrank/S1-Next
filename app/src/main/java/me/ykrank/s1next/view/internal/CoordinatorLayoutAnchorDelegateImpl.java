@@ -60,6 +60,13 @@ public final class CoordinatorLayoutAnchorDelegateImpl implements CoordinatorLay
     }
 
     @Override
+    public Optional<Snackbar> showLongSnackbar(@StringRes int resId){
+        Snackbar snackbar = Snackbar.make(mCoordinatorLayout, resId, Snackbar.LENGTH_LONG);
+        snackbar.show();
+        return Optional.of(snackbar);
+    }
+
+    @Override
     public Optional<Snackbar> showLongSnackbarIfVisible(CharSequence text, @StringRes int actionResId, View.OnClickListener onClickListener) {
         if (mApp.isAppVisible()) {
             Snackbar snackbar = Snackbar.make(mCoordinatorLayout, text, Snackbar.LENGTH_LONG);

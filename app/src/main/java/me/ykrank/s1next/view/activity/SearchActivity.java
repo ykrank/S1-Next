@@ -55,14 +55,13 @@ import me.ykrank.s1next.util.TransitionUtils;
 import me.ykrank.s1next.view.adapter.SearchRecyclerViewAdapter;
 import me.ykrank.s1next.view.transition.CircularReveal;
 import me.ykrank.s1next.view.transition.TransitionCompatCreator;
+import rx.Subscription;
 
 /**
  * Created by ykrank on 2016/9/28 0028.
  */
 
 public class SearchActivity extends BaseActivity {
-    @Inject
-    S1Service mS1Service;
     @Inject
     UserValidator mUserValidator;
     @Inject
@@ -77,10 +76,11 @@ public class SearchActivity extends BaseActivity {
     private TextView noResults;
     private ImageButton searchBack;
 
-    private SearchWrapper searchWrapper;
     private SearchRecyclerViewAdapter adapter;
 
     private android.support.transition.Transition autoTransitionCompat;
+
+    private Subscription mSubscription;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, SearchActivity.class));
@@ -127,6 +127,7 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        RxJavaUtil.unsubscribeIfNotNull(mSubscription);
         super.onDestroy();
     }
 
@@ -291,12 +292,9 @@ public class SearchActivity extends BaseActivity {
         searchView.clearFocus();
 //        dataManager.searchFor(query);
 
-        s1Service.searchForum(mUser.getAuthenticityToken(), "yes", query)
-                .compose(ApiFlatTransformer.AuthenticityTokenTransformer(mS1Service, mUserValidator))
-                .map(source -> {
-                    searchWrapper = SearchWrapper.fromSource(source);
-                    return searchWrapper;
-                })
+        mSubscription = ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser, 
+                token->s1Service.searchForum(token, "yes", query))
+                .map(SearchWrapper::fromSource)
                 .compose(RxJavaUtil.iOTransformer())
                 .subscribe(wrapper -> setResults(wrapper.getSearches()), L::e);
     }

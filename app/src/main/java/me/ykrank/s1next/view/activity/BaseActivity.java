@@ -287,8 +287,13 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     @Override
-    public Optional<Snackbar> showShortSnackbar(CharSequence text) {
+    public final Optional<Snackbar> showShortSnackbar(CharSequence text) {
         return saveSnackbarWeakReference(mCoordinatorLayoutAnchorDelegate.showShortSnackbar(text));
+    }
+
+    @Override
+    public final Optional<Snackbar> showLongSnackbar(@StringRes int resId){
+        return saveSnackbarWeakReference(mCoordinatorLayoutAnchorDelegate.showLongSnackbar(resId));
     }
 
     @Override

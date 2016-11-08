@@ -82,7 +82,7 @@ public final class BezelImageViewBindingAdapter {
                 PopupMenu popup = new PopupMenu(bezelImageView.getContext(), v);
                 popup.setOnMenuItemClickListener((MenuItem menuitem) -> {
                     switch (menuitem.getItemId()) {
-                        case R.id.menu_post_blacklist:
+                        case R.id.menu_popup_blacklist:
                             if (menuitem.getTitle().equals(bezelImageView.getContext().getString(R.string.menu_blacklist_remove))) {
                                 eventBus.post(new BlackListAddEvent(Integer.valueOf(post.getAuthorId()), 
                                         post.getAuthorName(), false));
@@ -95,9 +95,9 @@ public final class BezelImageViewBindingAdapter {
                             return false;
                     }
                 });
-                popup.inflate(R.menu.post_blacklist);
+                popup.inflate(R.menu.popup_blacklist);
                 if (post.isHide()) {
-                    popup.getMenu().findItem(R.id.menu_post_blacklist).setTitle(R.string.menu_blacklist_remove);
+                    popup.getMenu().findItem(R.id.menu_popup_blacklist).setTitle(R.string.menu_blacklist_remove);
                 }
                 popup.show();
                 return true;

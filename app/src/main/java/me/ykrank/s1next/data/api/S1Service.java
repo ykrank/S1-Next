@@ -42,6 +42,10 @@ public interface S1Service {
     Observable<ResultWrapper> addThreadFavorite(@Field("formhash") String authenticityToken, @Field("id") String threadId, @Field("description") String remark);
 
     @FormUrlEncoded
+    @POST(Api.URL_THREAD_FAVOURITES_REMOVE)
+    Observable<ResultWrapper> removeThreadFavorite(@Field("formhash") String authenticityToken, @Field("favid") String favId);
+
+    @FormUrlEncoded
     @POST(Api.URL_REPLY)
     Observable<ResultWrapper> reply(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("message") String reply);
 

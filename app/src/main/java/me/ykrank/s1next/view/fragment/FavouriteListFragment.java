@@ -9,9 +9,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import javax.inject.Inject;
+
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.Api;
+import me.ykrank.s1next.data.api.ApiFlatTransformer;
+import me.ykrank.s1next.data.api.S1Service;
+import me.ykrank.s1next.data.api.UserValidator;
+import me.ykrank.s1next.data.event.FavoriteRemoveEvent;
 import me.ykrank.s1next.util.IntentUtil;
+import me.ykrank.s1next.util.RxJavaUtil;
+import me.ykrank.s1next.widget.EventBus;
+import rx.Subscription;
 
 /**
  * A Fragment includes {@link android.support.v4.view.ViewPager}
@@ -21,13 +32,45 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
 
     public static final String TAG = FavouriteListFragment.class.getName();
 
+    @Inject
+    EventBus mEventBus;
+    @Inject
+    UserValidator mUserValidator;
+    @Inject
+    User mUser;
+    @Inject
+    S1Service s1Service;
+    
     private CharSequence mTitle;
+
+    private Subscription mEventBusSubscription, mApiSubscription;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        App.getAppComponent(getContext()).inject(this);
         super.onViewCreated(view, savedInstanceState);
 
         mTitle = getText(R.string.favourites);
+
+        mEventBusSubscription = mEventBus.get().subscribe(o -> {
+            // reload when favorite remove
+            if (o instanceof FavoriteRemoveEvent) {
+                mApiSubscription = ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
+                        token->s1Service.removeThreadFavorite(token, ((FavoriteRemoveEvent)o).favId))
+                        .compose(RxJavaUtil.iOTransformer())
+                        .subscribe(wrapper -> {
+                            showShortSnackbar(wrapper.getResult().getMessage());
+                            loadViewPager();
+                        }, this::onError);
+            }
+        });
+    }
+
+    @Override
+    public void onDestroyView() {
+        RxJavaUtil.unsubscribeIfNotNull(mApiSubscription);
+        RxJavaUtil.unsubscribeIfNotNull(mEventBusSubscription);
+        super.onDestroyView();
     }
 
     @Override
@@ -43,6 +86,9 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
                 IntentUtil.startViewIntentExcludeOurApp(getContext(), Uri.parse(
                         Api.getFavouritesListUrlForBrowser(getCurrentPage() + 1)));
 
+                return true;
+            case R.id.menu_favourites_remove:
+                showLongSnackbar(R.string.how_to_remove_favourites);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
