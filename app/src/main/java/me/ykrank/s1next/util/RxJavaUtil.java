@@ -49,7 +49,7 @@ public final class RxJavaUtil {
                 .doOnNext(i -> workAction.call())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(o -> uiAction.call(), error::call);
+                .subscribe(o -> uiAction.call(), error);
     }
 
     /**
@@ -78,7 +78,7 @@ public final class RxJavaUtil {
                 .map(n -> workAction.call())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(uiAction::call, error::call);
+                .subscribe(uiAction, error);
     }
 
     public static <T> Observable.Transformer<T, T> iOTransformer() {

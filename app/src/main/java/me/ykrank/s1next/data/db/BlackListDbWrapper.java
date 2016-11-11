@@ -136,6 +136,7 @@ public class BlackListDbWrapper {
         blackList.author = author;
         blackList.post = BlackList.HIDE_POST;
         blackList.forum = BlackList.HIDE_FORUM;
+        blackList.timestamp = System.currentTimeMillis();
         saveBlackList(blackList);
     }
 

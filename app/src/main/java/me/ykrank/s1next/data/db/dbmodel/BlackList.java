@@ -10,6 +10,7 @@ import com.activeandroid.annotation.Table;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import me.ykrank.s1next.R;
 
@@ -104,11 +105,10 @@ public class BlackList extends Model implements Parcelable {
     public boolean upload;
 
     public BlackList() {
-        super();
+        this.timestamp = System.currentTimeMillis();
     }
 
     public BlackList(int authorid, String name, @PostFLag int post, @ForumFLag int forum) {
-        super();
         this.authorid = authorid;
         this.author = name;
         this.post = post;
@@ -159,7 +159,7 @@ public class BlackList extends Model implements Parcelable {
     }
 
     public String getTime(){
-        SimpleDateFormat sdf = new SimpleDateFormat(TimeFormat);
+        SimpleDateFormat sdf = new SimpleDateFormat(TimeFormat, Locale.getDefault());
         return sdf.format(new Date(timestamp));
     }
 
