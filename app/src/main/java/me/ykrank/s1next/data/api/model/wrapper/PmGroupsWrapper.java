@@ -3,21 +3,21 @@ package me.ykrank.s1next.data.api.model.wrapper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import me.ykrank.s1next.data.api.model.collection.Pms;
+import me.ykrank.s1next.data.api.model.collection.PmGroups;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class PmWrapper {
+public final class PmGroupsWrapper {
 
     @JsonProperty("Variables")
-    private Pms pms;
+    private PmGroups pmGroups;
 
-    public Pms getPms() {
-        return pms;
+    public PmGroups getPmGroups() {
+        return pmGroups;
     }
 
-    public void setPms(Pms pms) {
-        this.pms = pms;
+    public void setPmGroups(PmGroups pmGroups) {
+        this.pmGroups = pmGroups;
     }
 
     @Override
@@ -25,14 +25,14 @@ public final class PmWrapper {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PmWrapper pmWrapper = (PmWrapper) o;
+        PmGroupsWrapper pmGroupsWrapper = (PmGroupsWrapper) o;
 
-        return pms != null ? pms.equals(pmWrapper.pms) : pmWrapper.pms == null;
+        return pmGroups != null ? pmGroups.equals(pmGroupsWrapper.pmGroups) : pmGroupsWrapper.pmGroups == null;
 
     }
 
     @Override
     public int hashCode() {
-        return pms != null ? pms.hashCode() : 0;
+        return pmGroups != null ? pmGroups.hashCode() : 0;
     }
 }

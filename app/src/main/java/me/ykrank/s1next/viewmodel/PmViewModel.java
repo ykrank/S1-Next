@@ -12,6 +12,6 @@ public final class PmViewModel {
     public final ObservableField<Pm> pm = new ObservableField<>();
 
     public final View.OnClickListener clickListener = v -> {
-        Toast.makeText(v.getContext(), pm.get().getPlId(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(v.getContext(), pm.get().getPmId(), Toast.LENGTH_SHORT).show();
     };
 }

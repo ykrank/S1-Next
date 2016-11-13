@@ -28,7 +28,7 @@ import java.io.InputStreamReader;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Forum;
-import me.ykrank.s1next.data.api.model.Pm;
+import me.ykrank.s1next.data.api.model.PmGroup;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.event.QuoteEvent;
@@ -167,12 +167,12 @@ public final class TextViewBindingAdapter {
 
     @SuppressWarnings("deprecation")
     @BindingAdapter({"pmAuthorNameDesc", "user"})
-    public static void setPmAuthorNameDesc(TextView textView, Pm pm, User user) {
+    public static void setPmAuthorNameDesc(TextView textView, PmGroup pmGroup, User user) {
         Context context = textView.getContext();
-        if (TextUtils.equals(pm.getLastAuthorid(), user.getUid())) {
-            textView.setText(Html.fromHtml(context.getString(R.string.pm_desc_to_other, pm.getToUsername())));
+        if (TextUtils.equals(pmGroup.getLastAuthorid(), user.getUid())) {
+            textView.setText(Html.fromHtml(context.getString(R.string.pm_desc_to_other, pmGroup.getToUsername())));
         } else {
-            textView.setText(Html.fromHtml(context.getString(R.string.pm_desc_to_me, pm.getToUsername())));
+            textView.setText(Html.fromHtml(context.getString(R.string.pm_desc_to_me, pmGroup.getToUsername())));
         }
     }
 }

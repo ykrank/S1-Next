@@ -9,10 +9,11 @@ import com.google.common.base.Objects;
 import java.util.List;
 
 import me.ykrank.s1next.data.api.model.Account;
-import me.ykrank.s1next.data.api.model.Pm;
+import me.ykrank.s1next.data.api.model.PmGroup;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Pms extends Account {
+public final class PmGroups extends Account {
+
     @JsonProperty("perpage")
     private int pmPerPage;
 
@@ -24,7 +25,7 @@ public final class Pms extends Account {
 
     @Nullable
     @JsonProperty("list")
-    private List<Pm> pmList;
+    private List<PmGroup> pmGroupList;
 
     public int getPmPerPage() {
         return pmPerPage;
@@ -32,14 +33,6 @@ public final class Pms extends Account {
 
     public void setPmPerPage(int pmPerPage) {
         this.pmPerPage = pmPerPage;
-    }
-
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
     }
 
     public int getTotal() {
@@ -51,12 +44,20 @@ public final class Pms extends Account {
     }
 
     @Nullable
-    public List<Pm> getPmList() {
-        return pmList;
+    public List<PmGroup> getPmGroupList() {
+        return pmGroupList;
     }
 
-    public void setPmList(@Nullable List<Pm> pmList) {
-        this.pmList = pmList;
+    public void setPmGroupList(@Nullable List<PmGroup> pmGroupList) {
+        this.pmGroupList = pmGroupList;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
     }
 
     @Override
@@ -64,15 +65,15 @@ public final class Pms extends Account {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        Pms pms = (Pms) o;
-        return pmPerPage == pms.pmPerPage &&
-                page == pms.page &&
-                total == pms.total &&
-                Objects.equal(pmList, pms.pmList);
+        PmGroups pmGroups = (PmGroups) o;
+        return pmPerPage == pmGroups.pmPerPage &&
+                page == pmGroups.page &&
+                total == pmGroups.total &&
+                Objects.equal(pmGroupList, pmGroups.pmGroupList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(super.hashCode(), pmPerPage, page, total, pmList);
+        return Objects.hashCode(super.hashCode(), pmPerPage, page, total, pmGroupList);
     }
 }

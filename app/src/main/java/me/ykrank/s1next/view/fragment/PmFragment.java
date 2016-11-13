@@ -5,14 +5,20 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import me.ykrank.s1next.App;
+import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Pm;
 import me.ykrank.s1next.data.api.model.collection.Pms;
-import me.ykrank.s1next.data.api.model.wrapper.PmWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.view.adapter.PmRecyclerViewAdapter;
@@ -22,13 +28,26 @@ import rx.Observable;
  * Created by ykrank on 2016/11/12 0012.
  */
 
-public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmWrapper>{
+public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper>{
 
     public static final String TAG = PmFragment.class.getName();
+    private static final String ARG_TO_UID = "to_uid";
+    private static final String ARG_TO_USERNAME = "to_user_name";
+
     private PmRecyclerViewAdapter mRecyclerAdapter;
 
-    public static PmFragment newInstance() {
+    @Inject
+    User user;
+
+    private String toUid;
+    private String toUsername;
+
+    public static PmFragment newInstance(String toUid, String toUsername) {
         PmFragment fragment = new PmFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(ARG_TO_UID, toUid);
+        bundle.putString(ARG_TO_USERNAME, toUsername);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -40,6 +59,14 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmWrapper>
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        App.getAppComponent(getContext()).inject(this);
+
+        toUid = getArguments().getString(ARG_TO_UID);
+        toUsername = getArguments().getString(ARG_TO_USERNAME);
+        if (TextUtils.isEmpty(toUid)){
+            showShortSnackbar(R.string.message_api_error);
+            return;
+        }
 
         RecyclerView recyclerView = getRecyclerView();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -48,12 +75,13 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmWrapper>
     }
 
     @Override
-    Observable<PmWrapper> getSourceObservable(int pageNum) {
-        return mS1Service.getPmList(pageNum);
+    Observable<PmsWrapper> getSourceObservable(int pageNum) {
+        return mS1Service.getPmList(toUid, pageNum)
+                .map(pmsWrapper -> pmsWrapper.setMsgToUsername(user, toUsername));
     }
 
     @Override
-    void onNext(PmWrapper data) {
+    void onNext(PmsWrapper data) {
         super.onNext(data);
         Pms pms = data.getPms();
         if (pms.getPmList() != null) {
@@ -64,15 +92,15 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmWrapper>
     }
 
     @Override
-    PmWrapper appendNewData(@Nullable PmWrapper oldData, @NonNull PmWrapper newData) {
+    PmsWrapper appendNewData(@Nullable PmsWrapper oldData, @NonNull PmsWrapper newData) {
         if (oldData != null) {
-            List<Pm> oldPms = oldData.getPms().getPmList();
-            List<Pm> newPms = newData.getPms().getPmList();
-            if (newPms == null) {
-                newPms = new ArrayList<>();
+            List<Pm> oldPmGroups = oldData.getPms().getPmList();
+            List<Pm> newPmGroups = newData.getPms().getPmList();
+            if (newPmGroups == null) {
+                newPmGroups = new ArrayList<>();
             }
-            if (oldPms != null) {
-                newPms.addAll(0, oldPms);
+            if (oldPmGroups != null) {
+                newPmGroups.addAll(0, oldPmGroups);
             }
         }
         return newData;

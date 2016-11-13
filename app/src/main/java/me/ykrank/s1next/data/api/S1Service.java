@@ -2,7 +2,8 @@ package me.ykrank.s1next.data.api;
 
 import me.ykrank.s1next.data.api.model.wrapper.FavouritesWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.PmWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.PmGroupsWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.ResultWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper;
@@ -59,10 +60,10 @@ public interface S1Service {
                                          @Field("noticeauthor") String encodedUserId, @Field("noticetrimstr") String quoteMessage, @Field("noticeauthormsg") String replyNotification);
 
     @GET(Api.URL_PM_LIST)
-    Observable<PmWrapper> getPmList(@Query("page") int page);
+    Observable<PmGroupsWrapper> getPmGroups(@Query("page") int page);
 
     @GET(Api.URL_PM_VIEW_LIST)
-    Observable<String> getPmViewList(@Query("touid") int toUid, @Query("page") int page);
+    Observable<PmsWrapper> getPmList(@Query("touid") String toUid, @Query("page") int page);
 
     @GET(Api.URL_NEW_THREAD_HELPER)
     Observable<String> getNewThreadInfo(@Query("fid") int fid);

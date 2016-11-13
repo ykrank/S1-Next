@@ -10,9 +10,10 @@ import me.ykrank.s1next.data.Wifi;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.view.adapter.delegate.FavouriteAdapterDelegate;
-import me.ykrank.s1next.view.adapter.delegate.PmAdapterDelegate;
+import me.ykrank.s1next.view.adapter.delegate.PmGroupsAdapterDelegate;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
 import me.ykrank.s1next.view.fragment.FavouriteListFragment;
+import me.ykrank.s1next.view.fragment.PmFragment;
 import me.ykrank.s1next.view.fragment.WebLoginFragment;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EventBus;
@@ -50,5 +51,7 @@ public interface AppComponent {
 
     void inject(FavouriteAdapterDelegate favouriteAdapterDelegate);
 
-    void inject(PmAdapterDelegate pmAdapterDelegate);
+    void inject(PmGroupsAdapterDelegate pmGroupsAdapterDelegate);
+
+    void inject(PmFragment pmFragment);
 }

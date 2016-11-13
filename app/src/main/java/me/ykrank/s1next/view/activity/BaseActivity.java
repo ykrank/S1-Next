@@ -155,9 +155,8 @@ public abstract class BaseActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-
         RxJavaUtil.unsubscribeIfNotNull(mSubscription);
+        super.onDestroy();
     }
 
     @Override
