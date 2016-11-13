@@ -3,6 +3,7 @@ package me.ykrank.s1next.view.fragment;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,12 +20,12 @@ import android.view.ViewGroup;
 import com.google.common.base.Preconditions;
 
 import me.ykrank.s1next.App;
-import me.ykrank.s1next.AppComponent;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.model.Result;
 import me.ykrank.s1next.databinding.FragmentBaseBinding;
 import me.ykrank.s1next.util.ErrorUtil;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.fragment.headless.DataRetainedFragment;
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegate;
@@ -74,8 +75,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     @CallSuper
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        AppComponent appComponent = App.getAppComponent(getContext());
-        mS1Service = appComponent.getS1Service();
+        mS1Service = App.getAppComponent(getContext()).getS1Service();
 
         mLoadingViewModelBindingDelegate.getSwipeRefreshLayout().setOnRefreshListener(
                 this::startSwipeRefresh);
@@ -195,6 +195,10 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
         return mLoadingViewModel.getLoading() != LoadingViewModel.LOADING_FINISH;
     }
 
+    final void setLoading(@LoadingViewModel.LoadingDef int loading){
+        mLoadingViewModel.setLoading(loading);
+    }
+
     /**
      * Whether we are pulling up to refresh.
      */
@@ -262,6 +266,11 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
         mDataRetainedFragment.data = data;
     }
 
+    @Nullable
+    D getData(){
+        return mDataRetainedFragment.data;
+    }
+
     /**
      * A helper method consumes {@link Result}.
      * <p>
@@ -288,6 +297,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
      */
     @CallSuper
     void onError(Throwable throwable) {
+        L.e(throwable);
         if (isAdded() && getUserVisibleHint()) {
             showRetrySnackbar(ErrorUtil.parse(throwable));
         }
@@ -297,7 +307,8 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
      * Called if it will not make further calls to {@link #onNext(Object)}
      * or {@link #onError(Throwable)} occurred during data loading.
      */
-    private void finallyDo() {
+    @CallSuper
+    void finallyDo() {
         mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FINISH);
         mDataRetainedFragment.stale = true;
     }

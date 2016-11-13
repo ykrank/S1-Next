@@ -1,5 +1,6 @@
 package me.ykrank.s1next.binding;
 
+import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -27,6 +28,7 @@ import java.io.InputStreamReader;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Forum;
+import me.ykrank.s1next.data.api.model.Pm;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.event.QuoteEvent;
@@ -163,4 +165,14 @@ public final class TextViewBindingAdapter {
         }
     }
 
+    @SuppressWarnings("deprecation")
+    @BindingAdapter({"pmAuthorNameDesc", "user"})
+    public static void setPmAuthorNameDesc(TextView textView, Pm pm, User user) {
+        Context context = textView.getContext();
+        if (TextUtils.equals(pm.getLastAuthorid(), user.getUid())) {
+            textView.setText(Html.fromHtml(context.getString(R.string.pm_desc_to_other, pm.getToUsername())));
+        } else {
+            textView.setText(Html.fromHtml(context.getString(R.string.pm_desc_to_me, pm.getToUsername())));
+        }
+    }
 }

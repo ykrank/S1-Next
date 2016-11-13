@@ -102,6 +102,10 @@
             android:theme="@style/Theme.Gallery" />
 
         <activity
+            android:name=".view.activity.PmActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".view.activity.SearchActivity"
             android:launchMode="singleTop"
             android:theme="@style/Translucent.AfternoonTea">

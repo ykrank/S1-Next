@@ -14,6 +14,7 @@ import me.ykrank.s1next.data.SameItem;
 import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.util.Objects;
 import me.ykrank.s1next.view.adapter.delegate.ProgressAdapterDelegate;
+import me.ykrank.s1next.view.adapter.item.FooterProgressItem;
 import me.ykrank.s1next.view.adapter.item.ProgressItem;
 
 public abstract class BaseRecyclerViewAdapter extends ListDelegationAdapter<List<Object>> {
@@ -41,6 +42,20 @@ public abstract class BaseRecyclerViewAdapter extends ListDelegationAdapter<List
                 items.clear();
             }
         }
+    }
+
+    public final void showFooterProgress() {
+        int position = getItemCount() - 1;
+        Preconditions.checkState(getItem(position) != null);
+        addItem(new FooterProgressItem());
+        notifyItemInserted(position + 1);
+    }
+
+    public final void hideFooterProgress() {
+        int position = getItemCount() - 1;
+        Preconditions.checkState(getItem(position) instanceof FooterProgressItem);
+        removeItem(position);
+        notifyItemRemoved(position);
     }
 
     /**
@@ -83,15 +98,15 @@ public abstract class BaseRecyclerViewAdapter extends ListDelegationAdapter<List
         return position;
     }
 
-    final Object getItem(int position) {
+    public final Object getItem(int position) {
         return items.get(position);
     }
 
-    final void addItem(Object object) {
+    public final void addItem(Object object) {
         items.add(object);
     }
 
-    final void removeItem(int position) {
+    public final void removeItem(int position) {
         items.remove(position);
     }
 

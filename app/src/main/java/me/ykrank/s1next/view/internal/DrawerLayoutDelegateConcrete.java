@@ -19,6 +19,7 @@ import me.ykrank.s1next.view.activity.FavouriteListActivity;
 import me.ykrank.s1next.view.activity.ForumActivity;
 import me.ykrank.s1next.view.activity.HelpActivity;
 import me.ykrank.s1next.view.activity.LoginActivity;
+import me.ykrank.s1next.view.activity.PmActivity;
 import me.ykrank.s1next.view.activity.SettingsActivity;
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
@@ -96,6 +97,10 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
                 runnable = this::onFavouritesMenuSelected;
 
                 break;
+            case R.id.menu_whisper:
+                runnable = this::onWhispersMenuSelected;
+
+                break;
             case R.id.menu_settings:
                 runnable = this::onSettingsMenuSelected;
 
@@ -119,6 +124,8 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
             menuItem = menu.findItem(R.id.menu_home);
         } else if (mFragmentActivity instanceof FavouriteListActivity) {
             menuItem = menu.findItem(R.id.menu_favourites);
+        } else if (mFragmentActivity instanceof PmActivity) {
+            menuItem = menu.findItem(R.id.menu_whisper);
         }
         // SettingsActivity and HelpActivity don't have drawer
         // so it's no need to set checked theirs MenuItem
@@ -144,6 +151,18 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
         // otherwise show LoginPromptDialogFragment.
         if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(mFragmentActivity, mUser)) {
             FavouriteListActivity.startFavouriteListActivity(mFragmentActivity);
+        }
+    }
+
+    private void onWhispersMenuSelected() {
+        if (mFragmentActivity instanceof PmActivity) {
+            return;
+        }
+
+        // Starts PmActivity if user has logged in,
+        // otherwise show LoginPromptDialogFragment.
+        if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(mFragmentActivity, mUser)) {
+            PmActivity.startPmActivity(mFragmentActivity);
         }
     }
 

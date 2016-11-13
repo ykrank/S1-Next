@@ -14,6 +14,7 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.Api;
+import me.ykrank.s1next.data.api.model.Pm;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.event.BlackListAddEvent;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
@@ -84,7 +85,7 @@ public final class BezelImageViewBindingAdapter {
                     switch (menuitem.getItemId()) {
                         case R.id.menu_popup_blacklist:
                             if (menuitem.getTitle().equals(bezelImageView.getContext().getString(R.string.menu_blacklist_remove))) {
-                                eventBus.post(new BlackListAddEvent(Integer.valueOf(post.getAuthorId()), 
+                                eventBus.post(new BlackListAddEvent(Integer.valueOf(post.getAuthorId()),
                                         post.getAuthorName(), false));
                             } else {
                                 eventBus.post(new BlackListAddEvent(Integer.valueOf(post.getAuthorId()),
@@ -105,5 +106,19 @@ public final class BezelImageViewBindingAdapter {
         } else {
             bezelImageView.setVisibility(View.GONE);
         }
+    }
+
+    @BindingAdapter("pm")
+    public static void loadPmAvatar(BezelImageView bezelImageView, Pm pm) {
+        Context context = bezelImageView.getContext();
+        DownloadPreferencesManager downloadPreferencesManager = App.getPrefComponent(context)
+                .getDownloadPreferencesManager();
+        Glide.with(context)
+                .load(Api.getAvatarMediumUrl(pm.getToUid()))
+                .error(R.drawable.ic_drawer_avatar_placeholder)
+                .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
+                .transform(new CenterCrop(Glide.get(context).getBitmapPool()))
+                .into(bezelImageView);
+
     }
 }

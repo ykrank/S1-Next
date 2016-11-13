@@ -156,4 +156,7 @@
     <string name="menu_favourites_remove">移除收藏</string>
     <string name="how_to_remove_favourites">长按列表，将对应收藏移除</string>
     <string name="message_api_error">服务器异常</string>
+    <string name="pm_desc_to_me"><![CDATA[<b>%s</b> 对 <b>我</b> 说 ：]]></string>
+    <string name="pm_desc_to_other"><![CDATA[<b>我</b> 对 <b>%s</b> 说 ：]]></string>
+    <string name="whispers">私信</string>
 </resources>

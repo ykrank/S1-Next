@@ -244,5 +244,8 @@
     <string name="menu_favourites_remove">Remove from favourites</string>
     <string name="how_to_remove_favourites">Long press item to remove from favourites</string>
     <string name="message_api_error">Website something abnormal</string>
+    <string name="pm_desc_to_other"><![CDATA[<b>I</b> <i>said to</i> <b>%s</b> :]]></string>
+    <string name="pm_desc_to_me"><![CDATA[<b>%s</b> <i>said to</i> <b>Me</b> :]]></string>
+    <string name="whispers">Whispers</string>
 
 </resources>

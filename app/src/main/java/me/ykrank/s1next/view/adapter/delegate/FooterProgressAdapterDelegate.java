@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.view.adapter.item.FooterProgressItem;
 
-public final class PostFooterProgressAdapterDelegate extends BaseAdapterDelegate<FooterProgressItem,
-        PostFooterProgressAdapterDelegate.FooterProgressViewHolder> {
+public final class FooterProgressAdapterDelegate extends BaseAdapterDelegate<FooterProgressItem,
+        FooterProgressAdapterDelegate.FooterProgressViewHolder> {
 
-    public PostFooterProgressAdapterDelegate(Context context) {
+    public FooterProgressAdapterDelegate(Context context) {
         super(context);
     }
 

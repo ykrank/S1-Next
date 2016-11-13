@@ -12,6 +12,10 @@
             android:id="@+id/menu_favourites"
             android:icon="@drawable/ic_menu_grade_black_24dp"
             android:title="@string/favourites" />
+        <item
+            android:id="@+id/menu_whisper"
+            android:icon="@drawable/ic_chat_black_24dp"
+            android:title="@string/whispers" />
     </group>
     <group android:id="@+id/sub_header">
         <item
