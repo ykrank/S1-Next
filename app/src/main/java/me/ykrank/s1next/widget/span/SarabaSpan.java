@@ -27,7 +27,7 @@ import me.ykrank.s1next.view.activity.PostListGatewayActivity;
  * Created by ykrank on 2016/10/16 0016.
  */
 
-public class SarabaSpan implements CustomMovementMethod.URLSpanClick {
+public class SarabaSpan implements PostMovementMethod.URLSpanClick {
     /**
      * intent-filter.从AndroidManifest中提取
      */

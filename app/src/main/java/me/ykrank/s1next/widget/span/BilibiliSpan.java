@@ -34,7 +34,7 @@ import me.ykrank.s1next.util.L;
  * Created by ykrank on 2016/10/16 0016.
  */
 
-public class BilibiliSpan implements CustomMovementMethod.URLSpanClick {
+public class BilibiliSpan implements PostMovementMethod.URLSpanClick {
     /**
      * intent-filter.从官方APP AndroidManifest中提取
      */

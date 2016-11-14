@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 
+import org.apache.commons.lang3.RandomUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,7 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
     public static final String TAG = PmFragment.class.getName();
     private static final String ARG_TO_UID = "to_uid";
     private static final String ARG_TO_USERNAME = "to_user_name";
+    private static final String ARG_DATA_ID = "data_id";
 
     private PmRecyclerViewAdapter mRecyclerAdapter;
 
@@ -41,6 +44,8 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
 
     private String toUid;
     private String toUsername;
+    
+    private String dataId;
 
     public static PmFragment newInstance(String toUid, String toUsername) {
         PmFragment fragment = new PmFragment();
@@ -52,8 +57,14 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
     }
 
     @Override
-    BaseRecyclerViewAdapter getRecyclerViewAdapter() {
-        return mRecyclerAdapter;
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState == null){
+            //Random to force valid retained data
+            dataId = String.valueOf(RandomUtils.nextLong());
+        } else {
+            dataId = savedInstanceState.getString(ARG_DATA_ID);
+        }
     }
 
     @Override
@@ -75,6 +86,17 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(ARG_DATA_ID, dataId);
+    }
+
+    @Override
+    BaseRecyclerViewAdapter getRecyclerViewAdapter() {
+        return mRecyclerAdapter;
+    }
+
+    @Override
     Observable<PmsWrapper> getSourceObservable(int pageNum) {
         return mS1Service.getPmList(toUid, pageNum)
                 .map(pmsWrapper -> pmsWrapper.setMsgToUsername(user, toUsername));
@@ -87,7 +109,12 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
         if (pms.getPmList() != null) {
             mRecyclerAdapter.diffNewDataSet(pms.getPmList(), false);
             // update total page
-            setTotalPages(MathUtil.divide(pms.getTotal(), pms.getPmPerPage()));
+            int totalPage = MathUtil.divide(pms.getTotal(), pms.getPmPerPage());
+            setTotalPages(totalPage);
+            //if this is first page and total page > 1, then load more
+            if (getPageNum() == 1 && totalPage > 1){
+                startPullUpLoadMore();
+            }
         }
     }
 
@@ -104,5 +131,10 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
             }
         }
         return newData;
+    }
+
+    @Override
+    public String getDataId() {
+        return dataId;
     }
 }

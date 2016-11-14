@@ -4,17 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-
-import java.util.concurrent.TimeUnit;
+import android.support.v4.app.FragmentTransaction;
+import android.view.MenuItem;
 
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.api.model.PmGroup;
 import me.ykrank.s1next.data.event.PmGroupClickEvent;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.fragment.PmFragment;
 import me.ykrank.s1next.view.fragment.PmGroupsFragment;
 import rx.Subscription;
-
-import static android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN;
 
 
 public class PmActivity extends BaseActivity {
@@ -31,7 +30,7 @@ public class PmActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
+        setContentView(R.layout.activity_base_without_drawer_and_scrolling_effect);
 
         if (savedInstanceState == null) {
             fragment = PmGroupsFragment.newInstance();
@@ -41,19 +40,29 @@ public class PmActivity extends BaseActivity {
         }
 
         mSubscription = mEventBus.get()
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     if (o instanceof PmGroupClickEvent) {
-                        //Fixme subscribe twice
                         PmGroupClickEvent event = (PmGroupClickEvent) o;
-                        fragment = PmFragment.newInstance(event.getToUid(), event.getToUsername());
+                        PmGroup pmGroup = event.getPmGroup();
+                        fragment = PmFragment.newInstance(pmGroup.getToUid(), pmGroup.getToUsername());
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.frame_layout, fragment, PmFragment.TAG)
-                                .setTransition(TRANSIT_FRAGMENT_OPEN)
+                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                 .addToBackStack(null)
                                 .commit();
                     }
                 });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

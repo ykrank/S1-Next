@@ -21,6 +21,10 @@ public class DataRetainedFragment<D> extends Fragment {
      * for the first time or killed by system, otherwise true.
      */
     public boolean stale;
+    /**
+     * id to judge whether data is valid
+     */
+    public String id;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

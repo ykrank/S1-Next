@@ -91,6 +91,15 @@ public abstract class BasePostFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            mIsEmoticonKeyboardShowing = savedInstanceState.getBoolean(
+                    STATE_IS_EMOTICON_KEYBOARD_SHOWING);
+        }
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         App.getPrefComponent(getContext()).inject(this);
@@ -117,8 +126,6 @@ public abstract class BasePostFragment extends BaseFragment {
         setupEmoticonKeyboard();
 
         if (savedInstanceState != null) {
-            mIsEmoticonKeyboardShowing = savedInstanceState.getBoolean(
-                    STATE_IS_EMOTICON_KEYBOARD_SHOWING);
             if (mIsEmoticonKeyboardShowing) {
                 showEmoticonKeyboard();
             }

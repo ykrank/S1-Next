@@ -3,6 +3,7 @@ package me.ykrank.s1next.view.fragment;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,7 @@ import me.ykrank.s1next.data.api.model.Result;
 import me.ykrank.s1next.databinding.FragmentBaseBinding;
 import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.Objects;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.fragment.headless.DataRetainedFragment;
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegate;
@@ -63,6 +65,16 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
 
     private Subscription mSubscription;
 
+    @CallSuper
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            mLoadingViewModel = new LoadingViewModel();
+        } else {
+            mLoadingViewModel = savedInstanceState.getParcelable(STATE_LOADING_VIEW_MODEL);
+        }
+    }
 
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -90,12 +102,6 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
         // influence the set of actions in the Toolbar.
         setHasOptionsMenu(true);
 
-        if (savedInstanceState == null) {
-            mLoadingViewModel = new LoadingViewModel();
-        } else {
-            mLoadingViewModel = savedInstanceState.getParcelable(STATE_LOADING_VIEW_MODEL);
-        }
-
         // because we can't retain Fragments that are nested in other Fragments
         // so we need to confirm this Fragment has unique tag in order to compose
         // a new unique tag for its retained Fragment.
@@ -116,9 +122,14 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
 
             // get data back from retained Fragment when configuration changes
             if (mDataRetainedFragment.data != null) {
-                int loading = mLoadingViewModel.getLoading();
-                onNext(mDataRetainedFragment.data);
-                mLoadingViewModel.setLoading(loading);
+                if (Objects.equals(getDataId(), mDataRetainedFragment.id)) {
+                    int loading = mLoadingViewModel.getLoading();
+                    onNext(mDataRetainedFragment.data);
+                    mLoadingViewModel.setLoading(loading);
+                } else {
+                    //data id changed, so it's invalid
+                    mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FIRST_TIME);
+                }
             } else {
                 if (!mDataRetainedFragment.stale) {
                     // start to loadViewPager data because the retained Fragment was killed by system
@@ -134,10 +145,20 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
         }
     }
 
+    /**
+     * the id of DataRetainedFragment's data
+     * @return id
+     */
+    public String getDataId(){
+        return null;
+    }
+
     @Override
     public void onDestroy() {
         //remove OnRefreshListener
-        mLoadingViewModelBindingDelegate.getSwipeRefreshLayout().setOnRefreshListener(null);
+        if (mLoadingViewModelBindingDelegate != null) {
+            mLoadingViewModelBindingDelegate.getSwipeRefreshLayout().setOnRefreshListener(null);
+        }
         RxJavaUtil.unsubscribeIfNotNull(mSubscription);
 
         super.onDestroy();
@@ -266,9 +287,9 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
         mDataRetainedFragment.data = data;
     }
 
-    @Nullable
-    D getData(){
-        return mDataRetainedFragment.data;
+    @NonNull
+    DataRetainedFragment<D> getRetainedFragment(){
+        return mDataRetainedFragment;
     }
 
     /**
@@ -311,6 +332,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     void finallyDo() {
         mLoadingViewModel.setLoading(LoadingViewModel.LOADING_FINISH);
         mDataRetainedFragment.stale = true;
+        mDataRetainedFragment.id = getDataId();
     }
 
     public void showRetrySnackbar(CharSequence text) {

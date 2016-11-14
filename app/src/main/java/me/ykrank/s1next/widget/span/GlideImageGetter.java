@@ -9,6 +9,7 @@ import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.TextView;
 
+import com.bugsnag.android.Bugsnag;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -99,6 +100,8 @@ public final class GlideImageGetter
                              */
                             @Override
                             public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                Bugsnag.leaveBreadcrumb("Exception in emoticon uri:"+model);
+                                Bugsnag.notify(e);
                                 // append domain to this url
                                 Glide.with(mContext)
                                         .load(Api.BASE_URL + url)

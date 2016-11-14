@@ -44,15 +44,19 @@ abstract class BaseViewPagerFragment extends BaseFragment
     }
 
     @Override
-    @CallSuper
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
             mTotalPages = 1;
         } else {
             mTotalPages = savedInstanceState.getInt(STATE_TOTAL_PAGES);
         }
+    }
+
+    @Override
+    @CallSuper
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
         loadViewPager();

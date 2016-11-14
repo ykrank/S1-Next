@@ -1,6 +1,7 @@
 package me.ykrank.s1next.view.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -18,20 +19,27 @@ import rx.Subscription;
 
 public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerViewFragment<D>{
 
+    /**
+     * The serialization (saved instance state) Bundle key representing
+     * current page num.
+     */
+    private static final String STATE_PAGE_NUM = "page_num";
+
     private int mPageNum = 1;
     private int mPageCount;
     private Subscription loadMoreSubscription;
 
     private int footerProgressPosition = -1;
 
-    void setTotalPages(int pageCount){
-        this.mPageCount = pageCount;
-    }
-
-    abstract BaseRecyclerViewAdapter getRecyclerViewAdapter();
-
-    public int getPageNum() {
-        return mPageNum;
+    @CallSuper
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            mPageNum = 1;
+        } else {
+            mPageNum = savedInstanceState.getInt(STATE_PAGE_NUM);
+        }
     }
 
     @Override
@@ -77,7 +85,7 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
         // when we start to loadViewPager new data
         mCoordinatorLayoutAnchorDelegate.dismissSnackbarIfExist();
         loadMoreSubscription = getSourceObservable(mPageNum)
-                .map(d -> appendNewData(getData(), d))
+                .map(d -> appendNewData(getRetainedFragment().data, d))
                 .compose(RxJavaUtil.iOTransformer())
                 .doOnNext(mUserValidator::validateIntercept)
                 .doAfterTerminate(this::finallyDo)
@@ -102,6 +110,24 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
         super.onError(throwable);
     }
 
+    @Override
+    @CallSuper
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(STATE_PAGE_NUM, mPageNum);
+    }
+
+    void setTotalPages(int pageCount){
+        this.mPageCount = pageCount;
+    }
+
+    abstract BaseRecyclerViewAdapter getRecyclerViewAdapter();
+
+    public int getPageNum() {
+        return mPageNum;
+    }
+
     /**
      * append new load data to old data
      * @param oldData data show in recycleView
@@ -123,6 +149,7 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
 
     @Override
     final Observable<D> getSourceObservable() {
+        mPageNum = 1;
         return getSourceObservable(1);
     }
 }

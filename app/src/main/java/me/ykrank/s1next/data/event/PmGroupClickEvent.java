@@ -1,20 +1,16 @@
 package me.ykrank.s1next.data.event;
 
+import me.ykrank.s1next.data.api.model.PmGroup;
+
 public final class PmGroupClickEvent {
 
-    private final String toUid;
-    private final String toUsername;
+    private final PmGroup pmGroup;
 
-    public PmGroupClickEvent(String toUid, String toUsername) {
-        this.toUid = toUid;
-        this.toUsername = toUsername;
+    public PmGroupClickEvent(PmGroup pmGroup) {
+        this.pmGroup = pmGroup;
     }
 
-    public String getToUid() {
-        return toUid;
-    }
-
-    public String getToUsername() {
-        return toUsername;
+    public PmGroup getPmGroup() {
+        return pmGroup;
     }
 }

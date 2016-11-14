@@ -7,7 +7,7 @@
 
     <data>
 
-        <import type="me.ykrank.s1next.widget.span.CustomMovementMethod" />
+        <import type="me.ykrank.s1next.widget.span.PostMovementMethod" />
 
         <import type="android.text.method.LinkMovementMethod" />
 
@@ -112,7 +112,7 @@
             android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textIsSelectable="@{selectable}"
-            app:movementMethod="@{CustomMovementMethod.instance}"
+            app:movementMethod="@{PostMovementMethod.instance}"
             app:reply="@{postViewModel.post.reply}"
             app:hide="@{postViewModel.post.hide}"/>
 

@@ -108,14 +108,15 @@ dependencies {
     compile "com.android.support:preference-v14:$rootProject.supportVersion"
     compile "com.android.support:transition:$rootProject.supportVersion"
     compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta3'
 
-    compile 'com.google.guava:guava:19.0'
+    compile 'com.google.guava:guava:20.0'
     // https://github.com/google/guava/wiki/UsingProGuardWithGuava
     provided 'com.google.code.findbugs:jsr305:3.0.1'
     compile 'org.apache.commons:commons-lang3:3.5'
 
-    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.4.1'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.4.2'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.2'
     compile 'com.squareup.retrofit2:retrofit:2.1.1-SNAPSHOT'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.1-SNAPSHOT'
     compile 'com.squareup.retrofit2:converter-jackson:2.1.1-SNAPSHOT'
@@ -125,11 +126,11 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.4'
     compile 'com.hannesdorfmann:adapterdelegates3:3.0.1-SNAPSHOT'
-    compile 'io.reactivex:rxjava:1.2.1'
+    compile 'io.reactivex:rxjava:1.2.2'
     compile 'io.reactivex:rxandroid:1.2.1'
 
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.nononsenseapps:filepicker:2.5.2'
 
-    compile 'org.jsoup:jsoup:1.9.2'
+    compile 'org.jsoup:jsoup:1.10.1'
 }

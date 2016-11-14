@@ -21,7 +21,7 @@ import me.ykrank.s1next.util.L;
  * Created by ykrank on 2016/10/16 0016.
  */
 
-public class AcfunSpan implements CustomMovementMethod.URLSpanClick{
+public class AcfunSpan implements PostMovementMethod.URLSpanClick{
 
     /**
      * See android.text.HtmlToSpannedConverter#startA(android.text.SpannableStringBuilder, org.xml.sax.Attributes)

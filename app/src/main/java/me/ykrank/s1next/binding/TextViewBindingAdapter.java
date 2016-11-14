@@ -165,6 +165,17 @@ public final class TextViewBindingAdapter {
         }
     }
 
+    @BindingAdapter({"pmMessage"})
+    public static void setPm(TextView textView, @Nullable String pmMessage) {
+        if (TextUtils.isEmpty(pmMessage)) {
+            textView.setText(null);
+        } else {
+            // use GlideImageGetter to show images in TextView
+            //noinspection deprecation
+            textView.setText(Html.fromHtml(pmMessage, GlideImageGetter.get(textView), new TagHandler()));
+        }
+    }
+
     @SuppressWarnings("deprecation")
     @BindingAdapter({"pmAuthorNameDesc", "user"})
     public static void setPmAuthorNameDesc(TextView textView, PmGroup pmGroup, User user) {

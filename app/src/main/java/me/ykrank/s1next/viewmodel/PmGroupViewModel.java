@@ -13,7 +13,6 @@ public final class PmGroupViewModel {
     public final ObservableField<PmGroup> pmGroup = new ObservableField<>();
 
     public View.OnClickListener clickGroup(EventBus eventBus){
-        PmGroup pmG = pmGroup.get();
-        return v -> eventBus.post(new PmGroupClickEvent(pmG.getToUid(), pmG.getToUsername()));
+        return v -> eventBus.post(new PmGroupClickEvent(pmGroup.get()));
     }
 }

@@ -10,7 +10,7 @@ import me.ykrank.s1next.data.api.Api;
  * A movement method that provides selection and clicking on links,
  * also invokes {@link TagHandler.ImageClickableSpan}'s clicking event.
  */
-public final class SearchMovementMethod extends CustomMovementMethod {
+public final class SearchMovementMethod extends PostMovementMethod {
     private static SearchMovementMethod sInstance;
 
     protected SearchMovementMethod(){
