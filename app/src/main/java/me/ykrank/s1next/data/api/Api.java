@@ -25,8 +25,10 @@ public final class Api {
 
     static final String URL_LOGIN = "index.php?module=login&loginsubmit=yes&loginfield=auto&cookietime=2592000";
 
+    //PM
     static final String URL_PM_LIST = "index.php?module=mypm&filter=privatepm";
     static final String URL_PM_VIEW_LIST = "index.php?module=mypm&subop=view";
+    static final String URL_PM_POST = "index.php?module=sendpm&pmsubmit=true";
     /**
      * A URL used to get the correct authenticity token after login.
      * <p>

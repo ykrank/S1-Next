@@ -65,6 +65,10 @@ public interface S1Service {
     @GET(Api.URL_PM_VIEW_LIST)
     Observable<PmsWrapper> getPmList(@Query("touid") String toUid, @Query("page") int page);
 
+    @FormUrlEncoded
+    @POST(Api.URL_PM_POST)
+    Observable<ResultWrapper> postPm(@Field("formhash") String authenticityToken, @Field("touid") String toUid, @Field("message") String msg);
+
     @GET(Api.URL_NEW_THREAD_HELPER)
     Observable<String> getNewThreadInfo(@Query("fid") int fid);
 

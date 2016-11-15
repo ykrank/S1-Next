@@ -17,7 +17,6 @@ import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
-import me.ykrank.s1next.data.api.model.wrapper.ResultWrapper;
 import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.activity.BaseActivity;
@@ -109,7 +108,7 @@ abstract class ProgressDialogFragment<D> extends DialogFragment {
     /**
      * @see ApiFlatTransformer#flatMappedWithAuthenticityToken(S1Service, UserValidator, User, Func1) 
      */
-    final Observable<ResultWrapper> flatMappedWithAuthenticityToken(Func1<String, Observable<ResultWrapper>> func) {
+    final Observable<D> flatMappedWithAuthenticityToken(Func1<String, Observable<D>> func) {
         return ApiFlatTransformer.flatMappedWithAuthenticityToken(mS1Service, mUserValidator, mUser, func);
     }
 

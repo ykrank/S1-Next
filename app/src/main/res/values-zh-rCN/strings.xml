@@ -159,4 +159,5 @@
     <string name="pm_desc_to_me"><![CDATA[<b>%s</b> 对 <b>我</b> 说 ：]]></string>
     <string name="pm_desc_to_other"><![CDATA[<b>我</b> 对 <b>%s</b> 说 ：]]></string>
     <string name="whispers">私信</string>
+    <string name="title_new_pm">新私信</string>
 </resources>

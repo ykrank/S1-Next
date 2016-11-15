@@ -22,7 +22,6 @@ public abstract class BaseAdapterDelegate<T, VH extends RecyclerView.ViewHolder>
     protected abstract Class<T> getTClass();
 
     @Override
-    @CallSuper
     public boolean isForViewType(@NonNull List<Object> items, int position) {
         return getTClass().isInstance(items.get(position));
     }

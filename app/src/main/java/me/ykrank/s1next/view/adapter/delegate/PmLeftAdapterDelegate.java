@@ -4,17 +4,28 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Pm;
-import me.ykrank.s1next.databinding.ItemPmBinding;
+import me.ykrank.s1next.databinding.ItemPmLeftBinding;
 import me.ykrank.s1next.viewmodel.PmViewModel;
 
-public final class PmAdapterDelegate extends BaseAdapterDelegate<Pm, PmAdapterDelegate.BindingViewHolder> {
+public final class PmLeftAdapterDelegate extends BaseAdapterDelegate<Pm, PmLeftAdapterDelegate.BindingViewHolder> {
 
-    public PmAdapterDelegate(Context context) {
+    @Inject
+    User user;
+
+    public PmLeftAdapterDelegate(Context context) {
         super(context);
+        App.getAppComponent(context).inject(this);
     }
 
     @NonNull
@@ -23,18 +34,27 @@ public final class PmAdapterDelegate extends BaseAdapterDelegate<Pm, PmAdapterDe
         return Pm.class;
     }
 
+    @Override
+    public boolean isForViewType(@NonNull List<Object> items, int position) {
+        Object item = items.get(position);
+        if (item instanceof Pm) {
+            return !TextUtils.equals(((Pm) item).getAuthorId(), user.getUid());
+        }
+        return false;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {
-        ItemPmBinding binding = DataBindingUtil.inflate(mLayoutInflater,
-                R.layout.item_pm, parent, false);
+        ItemPmLeftBinding binding = DataBindingUtil.inflate(mLayoutInflater,
+                R.layout.item_pm_left, parent, false);
         binding.setPmViewModel(new PmViewModel());
         return new BindingViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolderData(Pm pm, int position, @NonNull BindingViewHolder holder) {
-        ItemPmBinding binding = holder.binding;
+        ItemPmLeftBinding binding = holder.binding;
         binding.getPmViewModel().pm.set(pm);
         binding.executePendingBindings();
     }
@@ -46,18 +66,16 @@ public final class PmAdapterDelegate extends BaseAdapterDelegate<Pm, PmAdapterDe
     @Override
     protected void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
-        ItemPmBinding binding = ((BindingViewHolder)holder).binding;
-        binding.authorName.setEnabled(false);
-        binding.authorName.setEnabled(true);
+        ItemPmLeftBinding binding = ((BindingViewHolder) holder).binding;
         binding.tvMessage.setEnabled(false);
         binding.tvMessage.setEnabled(true);
     }
 
     static final class BindingViewHolder extends RecyclerView.ViewHolder {
 
-        private final ItemPmBinding binding;
+        private final ItemPmLeftBinding binding;
 
-        public BindingViewHolder(ItemPmBinding binding) {
+        public BindingViewHolder(ItemPmLeftBinding binding) {
             super(binding.getRoot());
 
             this.binding = binding;

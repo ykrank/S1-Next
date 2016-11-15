@@ -26,6 +26,7 @@ import java.util.WeakHashMap;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.TransformationUtil;
 import me.ykrank.s1next.widget.EmoticonFactory;
 
@@ -66,10 +67,10 @@ public final class GlideImageGetter
 
     public static GlideImageGetter get(TextView textView) {
         Object object = textView.getTag(R.id.tag_drawable_callback);
-        if (object == null){
+        if (object == null) {
             return new GlideImageGetter(textView.getContext(), textView);
         }
-        return (GlideImageGetter)object;
+        return (GlideImageGetter) object;
     }
 
     /**
@@ -80,51 +81,58 @@ public final class GlideImageGetter
     public Drawable getDrawable(String url) {
         UrlDrawable urlDrawable = new UrlDrawable(url);
 
+        String emoticonName = null;
+        boolean isEmoticon = false;
         // url has no domain if it comes from server.
         if (!URLUtil.isNetworkUrl(url)) {
-            ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
-                    urlDrawable);
             // We may have this image in assets if this is emoticon.
             if (url.startsWith(Api.URL_EMOTICON_IMAGE_PREFIX)) {
-                String emoticonFileName = url.substring(Api.URL_EMOTICON_IMAGE_PREFIX.length());
-                TransformationUtil.SizeMultiplierBitmapTransformation sizeMultiplierBitmapTransformation =
-                        new TransformationUtil.SizeMultiplierBitmapTransformation(mContext,
-                                mContext.getResources().getDisplayMetrics().density);
-                Glide.with(mContext)
-                        .load(Uri.parse(EmoticonFactory.ASSET_PATH_EMOTICON + emoticonFileName))
-                        .transform(sizeMultiplierBitmapTransformation)
-                        .listener(new RequestListener<Uri, GlideDrawable>() {
-
-                            /**
-                             * Occurs If we don't have this image (maybe a new emoticon) in assets.
-                             */
-                            @Override
-                            public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                Bugsnag.leaveBreadcrumb("Exception in emoticon uri:"+model);
-                                Bugsnag.notify(e);
-                                // append domain to this url
-                                Glide.with(mContext)
-                                        .load(Api.BASE_URL + url)
-                                        .transform(sizeMultiplierBitmapTransformation)
-                                        .into(imageGetterViewTarget);
-
-                                return true;
-                            }
-
-                            @Override
-                            public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                return false;
-                            }
-                        })
-                        .into(imageGetterViewTarget);
+                isEmoticon = true;
+                emoticonName = url.substring(Api.URL_EMOTICON_IMAGE_PREFIX.length());
             } else {
-                Glide.with(mContext)
-                        .load(Api.BASE_URL + url)
-                        .transform(new TransformationUtil.GlMaxTextureSizeBitmapTransformation(
-                                mContext))
-                        .into(imageGetterViewTarget);
+                isEmoticon = false;
+                url = Api.BASE_URL + url;
             }
+        } else if (url.startsWith(Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX)) {
+            isEmoticon = true;
+            emoticonName = url.substring((Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX).length());
+        }
+        if (isEmoticon) {
+            ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
+                    urlDrawable);
+            TransformationUtil.SizeMultiplierBitmapTransformation sizeMultiplierBitmapTransformation =
+                    new TransformationUtil.SizeMultiplierBitmapTransformation(mContext,
+                            mContext.getResources().getDisplayMetrics().density);
+            String finalUrl = url;
+            Glide.with(mContext)
+                    .load(Uri.parse(EmoticonFactory.ASSET_PATH_EMOTICON + emoticonName))
+                    .transform(sizeMultiplierBitmapTransformation)
+                    .listener(new RequestListener<Uri, GlideDrawable>() {
 
+                        /**
+                         * Occurs If we don't have this image (maybe a new emoticon) in assets.
+                         */
+                        @Override
+                        public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            L.e("model:" + model.toString());
+                            L.e(e);
+                            Bugsnag.leaveBreadcrumb("Exception in emoticon uri:" + model);
+                            Bugsnag.notify(e);
+                            // append domain to this url
+                            Glide.with(mContext)
+                                    .load(Api.BASE_URL + finalUrl)
+                                    .transform(sizeMultiplierBitmapTransformation)
+                                    .into(imageGetterViewTarget);
+
+                            return true;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            return false;
+                        }
+                    })
+                    .into(imageGetterViewTarget);
             mViewTargetSet.add(imageGetterViewTarget);
             return urlDrawable;
         }
@@ -146,7 +154,8 @@ public final class GlideImageGetter
     }
 
     @Override
-    public void onViewAttachedToWindow(View v) {}
+    public void onViewAttachedToWindow(View v) {
+    }
 
     @Override
     public void onViewDetachedFromWindow(View v) {
@@ -166,10 +175,12 @@ public final class GlideImageGetter
     }
 
     @Override
-    public void scheduleDrawable(Drawable who, Runnable what, long when) {}
+    public void scheduleDrawable(Drawable who, Runnable what, long when) {
+    }
 
     @Override
-    public void unscheduleDrawable(Drawable who, Runnable what) {}
+    public void unscheduleDrawable(Drawable who, Runnable what) {
+    }
 
     private static final class ImageGetterViewTarget extends ViewTarget<TextView, GlideDrawable> {
 

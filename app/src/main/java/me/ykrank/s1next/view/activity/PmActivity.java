@@ -1,10 +1,10 @@
 package me.ykrank.s1next.view.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
 import me.ykrank.s1next.R;
@@ -45,11 +45,7 @@ public class PmActivity extends BaseActivity {
                         PmGroupClickEvent event = (PmGroupClickEvent) o;
                         PmGroup pmGroup = event.getPmGroup();
                         fragment = PmFragment.newInstance(pmGroup.getToUid(), pmGroup.getToUsername());
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.frame_layout, fragment, PmFragment.TAG)
-                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                .addToBackStack(null)
-                                .commit();
+                        replaceFragmentWithBackStack(fragment, PmFragment.TAG);
                     }
                 });
     }
@@ -69,5 +65,18 @@ public class PmActivity extends BaseActivity {
     protected void onDestroy() {
         RxJavaUtil.unsubscribeIfNotNull(mSubscription);
         super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_MESSAGE_IF_SUCCESS) {
+            if (resultCode == Activity.RESULT_OK) {
+                PmFragment pmFragment = (PmFragment) getSupportFragmentManager().findFragmentByTag(PmFragment.TAG);
+                if (pmFragment != null) {
+                    pmFragment.startSwipeRefresh();
+                }
+            }
+        }
     }
 }

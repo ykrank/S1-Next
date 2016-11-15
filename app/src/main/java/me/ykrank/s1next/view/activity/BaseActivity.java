@@ -11,6 +11,8 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
@@ -52,7 +54,7 @@ import rx.Subscription;
 public abstract class BaseActivity extends AppCompatActivity
         implements CoordinatorLayoutAnchorDelegate {
 
-    private static final int REQUEST_CODE_MESSAGE_IF_SUCCESS = 0;
+    protected static final int REQUEST_CODE_MESSAGE_IF_SUCCESS = 0;
     private static final String EXTRA_MESSAGE = "message";
 
     @Inject
@@ -316,5 +318,13 @@ public abstract class BaseActivity extends AppCompatActivity
             mSnackbar = new WeakReference<>(snackbar.get());
         }
         return snackbar;
+    }
+
+    public void replaceFragmentWithBackStack(Fragment fragment, String tag) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_layout, fragment, tag)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .addToBackStack(null)
+                .commit();
     }
 }

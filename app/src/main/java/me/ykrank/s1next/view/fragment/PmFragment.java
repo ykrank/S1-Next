@@ -6,6 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import org.apache.commons.lang3.RandomUtils;
@@ -22,6 +25,7 @@ import me.ykrank.s1next.data.api.model.Pm;
 import me.ykrank.s1next.data.api.model.collection.Pms;
 import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper;
 import me.ykrank.s1next.util.MathUtil;
+import me.ykrank.s1next.view.activity.NewPmActivity;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.view.adapter.PmRecyclerViewAdapter;
 import rx.Observable;
@@ -30,7 +34,7 @@ import rx.Observable;
  * Created by ykrank on 2016/11/12 0012.
  */
 
-public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper>{
+public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper> {
 
     public static final String TAG = PmFragment.class.getName();
     private static final String ARG_TO_UID = "to_uid";
@@ -44,7 +48,9 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
 
     private String toUid;
     private String toUsername;
-    
+
+    private String pmId;
+
     private String dataId;
 
     public static PmFragment newInstance(String toUid, String toUsername) {
@@ -59,7 +65,7 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
             //Random to force valid retained data
             dataId = String.valueOf(RandomUtils.nextLong());
         } else {
@@ -74,7 +80,7 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
 
         toUid = getArguments().getString(ARG_TO_UID);
         toUsername = getArguments().getString(ARG_TO_USERNAME);
-        if (TextUtils.isEmpty(toUid)){
+        if (TextUtils.isEmpty(toUid)) {
             showShortSnackbar(R.string.message_api_error);
             return;
         }
@@ -89,6 +95,22 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(ARG_DATA_ID, dataId);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_pm, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_new_pm:
+                NewPmActivity.startNewPmActivityForResultMessage(getActivity(), toUid);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -112,7 +134,7 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
             int totalPage = MathUtil.divide(pms.getTotal(), pms.getPmPerPage());
             setTotalPages(totalPage);
             //if this is first page and total page > 1, then load more
-            if (getPageNum() == 1 && totalPage > 1){
+            if (getPageNum() == 1 && totalPage > 1) {
                 startPullUpLoadMore();
             }
         }

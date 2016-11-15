@@ -66,6 +66,9 @@
         <item name="iconMenuEmoticon">@drawable/ic_menu_insert_emoticon_black_24dp</item>
         <item name="iconMenuKeyboard">@drawable/ic_menu_keyboard_black_24dp</item>
         <item name="iconMenuSend">@drawable/selector_menu_send_black</item>
+
+        <item name="chatFromBackground">@drawable/chat_from_bg</item>
+        <item name="chatToBackground">@drawable/chat_to_bg</item>
     </style>
 
     <style name="Base.Theme.Light.Inverse">
@@ -136,6 +139,9 @@
         <item name="iconMenuEmoticon">@drawable/ic_menu_insert_emoticon_white_24dp</item>
         <item name="iconMenuKeyboard">@drawable/ic_menu_keyboard_white_24dp</item>
         <item name="iconMenuSend">@drawable/selector_menu_send_white</item>
+
+        <item name="chatFromBackground">@drawable/chat_from_bg_night</item>
+        <item name="chatToBackground">@drawable/chat_to_bg_night</item>
     </style>
 
     <style name="Base.Theme.Dark.NightMode">

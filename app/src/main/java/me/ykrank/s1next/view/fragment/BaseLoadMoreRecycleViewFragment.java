@@ -65,7 +65,7 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
         super.onDestroy();
     }
 
-    protected void startPullUpLoadMore(){
+    public void startPullUpLoadMore() {
         footerProgressPosition = getRecyclerViewAdapter().getItemCount();
         getRecyclerViewAdapter().showFooterProgress();
         setLoading(LoadingViewModel.LOADING_PULL_UP_TO_REFRESH);

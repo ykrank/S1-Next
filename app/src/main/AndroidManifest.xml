@@ -95,6 +95,7 @@
 
         <activity
             android:name=".view.activity.NewThreadActivity"
+            android:label="@string/title_new_thread"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
@@ -104,6 +105,11 @@
         <activity
             android:name=".view.activity.PmActivity"
             android:label="@string/whispers"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".view.activity.NewPmActivity"
+            android:label="@string/title_new_pm"
             android:windowSoftInputMode="adjustResize" />
 
         <activity

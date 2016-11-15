@@ -11,6 +11,8 @@ import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.view.adapter.delegate.FavouriteAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmGroupsAdapterDelegate;
+import me.ykrank.s1next.view.adapter.delegate.PmLeftAdapterDelegate;
+import me.ykrank.s1next.view.adapter.delegate.PmRightAdapterDelegate;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
 import me.ykrank.s1next.view.fragment.FavouriteListFragment;
 import me.ykrank.s1next.view.fragment.PmFragment;
@@ -54,4 +56,8 @@ public interface AppComponent {
     void inject(PmGroupsAdapterDelegate pmGroupsAdapterDelegate);
 
     void inject(PmFragment pmFragment);
+
+    void inject(PmLeftAdapterDelegate pmLeftAdapterDelegate);
+
+    void inject(PmRightAdapterDelegate pmRightAdapterDelegate);
 }
