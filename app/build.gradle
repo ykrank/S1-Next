@@ -24,8 +24,8 @@ android {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 14
-        versionName '0.6.3'
+        versionCode 15
+        versionName '0.7.0'
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
