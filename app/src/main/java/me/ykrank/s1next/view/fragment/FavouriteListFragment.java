@@ -56,7 +56,7 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
             // reload when favorite remove
             if (o instanceof FavoriteRemoveEvent) {
                 mApiSubscription = ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
-                        token->s1Service.removeThreadFavorite(token, ((FavoriteRemoveEvent)o).favId))
+                        token->s1Service.removeThreadFavorite(token, ((FavoriteRemoveEvent)o).getFavId()))
                         .compose(RxJavaUtil.iOTransformer())
                         .subscribe(wrapper -> {
                             showShortSnackbar(wrapper.getResult().getMessage());

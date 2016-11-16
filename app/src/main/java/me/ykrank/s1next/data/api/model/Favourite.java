@@ -13,6 +13,9 @@ public final class Favourite {
     @JsonProperty("id")
     private String id;
 
+    @JsonProperty("favid")
+    private String favId;
+
     @JsonProperty("title")
     private String title;
 
@@ -33,17 +36,26 @@ public final class Favourite {
         this.title = StringEscapeUtils.unescapeXml(title);
     }
 
+    public String getFavId() {
+        return favId;
+    }
+
+    public void setFavId(String favId) {
+        this.favId = favId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Favourite favourite = (Favourite) o;
         return Objects.equal(id, favourite.id) &&
+                Objects.equal(favId, favourite.favId)&&
                 Objects.equal(title, favourite.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, title);
+        return Objects.hashCode(id, favId, title);
     }
 }

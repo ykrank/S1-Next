@@ -38,7 +38,7 @@ public final class FavouriteViewModel {
             popup.setOnMenuItemClickListener((MenuItem menuitem) -> {
                 switch (menuitem.getItemId()) {
                     case R.id.menu_popup_remove_favourite:
-                        eventBus.post(new FavoriteRemoveEvent());
+                        eventBus.post(new FavoriteRemoveEvent(favourite.get().getFavId()));
                         return true;
                     default:
                         return false;
