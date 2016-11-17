@@ -39,8 +39,11 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
     @JsonProperty("subject")
     private String title;
 
+    /**
+     * perhaps '-'
+     */
     @JsonProperty("replies")
-    private int replies;
+    private String replies;
 
     @JsonProperty("readperm")
     private int permission;
@@ -58,7 +61,7 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
     private Thread(Parcel source) {
         id = source.readString();
         title = source.readString();
-        replies = source.readInt();
+        replies = source.readString();
         permission = source.readInt();
         author = source.readString();
         authorid = source.readInt();
@@ -82,11 +85,11 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         this.title = StringEscapeUtils.unescapeXml(title);
     }
 
-    public int getReplies() {
+    public String getReplies() {
         return replies;
     }
 
-    public void setReplies(int replies) {
+    public void setReplies(String replies) {
         this.replies = replies;
     }
 
@@ -131,7 +134,7 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(title);
-        dest.writeInt(replies);
+        dest.writeString(replies);
         dest.writeInt(permission);
         dest.writeString(author);
         dest.writeInt(authorid);
@@ -179,6 +182,14 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
                 Objects.equal(title, thread.title) &&
                 Objects.equal(author, thread.author) &&
                 Objects.equal(authorid, thread.authorid);
+    }
+
+    public int getReliesCount() {
+        try {
+            return Integer.parseInt(getReplies());
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

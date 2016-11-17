@@ -2,6 +2,8 @@ package me.ykrank.s1next.util;
 
 import android.util.Log;
 
+import com.bugsnag.android.Bugsnag;
+
 import me.ykrank.s1next.BuildConfig;
 
 import static me.ykrank.s1next.App.LOG_TAG;
@@ -79,6 +81,9 @@ public class L {
 
 
     public static void e(String tag, String msg, Throwable tr) {
+        if (BuildConfig.DEBUG) {
+            Bugsnag.notify(tr);
+        }
         if (Log.isLoggable(tag, Log.ERROR)) {
             Log.e(tag, msg, tr);
         }

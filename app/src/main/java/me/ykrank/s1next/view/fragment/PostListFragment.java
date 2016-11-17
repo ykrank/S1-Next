@@ -159,7 +159,7 @@ public final class PostListFragment extends BaseViewPagerFragment
                 setCurrentPage(jumpPage - 1);
             } else {
                 // +1 for original post
-                setTotalPageByPosts(thread.getReplies() + 1);
+                setTotalPageByPosts(thread.getReliesCount() + 1);
                 if (bundle.getBoolean(ARG_SHOULD_GO_TO_LAST_PAGE, false)) {
                     setCurrentPage(getTotalPages() - 1);
                 }

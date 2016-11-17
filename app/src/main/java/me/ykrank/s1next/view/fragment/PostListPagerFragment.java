@@ -226,6 +226,10 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
         }
 
         Posts posts = data.getPosts();
+        if (posts == null) {
+            consumeResult(data.getResult());
+            return;
+        }
         List<Post> postList = posts.getPostList();
         // if user has logged out, has no permission to access this thread or this thread is invalid
         if (postList.isEmpty()) {
@@ -261,7 +265,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
             if (TextUtils.isEmpty(getActivity().getTitle())) {
                 mPagerCallback.setThreadTitle(postListInfo.getTitle());
             }
-            mPagerCallback.setTotalPageByPosts(postListInfo.getReplies() + 1);
+            mPagerCallback.setTotalPageByPosts(postListInfo.getReliesCount() + 1);
             if (posts.getThreadAttachment() != null) {
                 mPagerCallback.setupThreadAttachment(posts.getThreadAttachment());
             }
