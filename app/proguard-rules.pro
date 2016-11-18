@@ -24,8 +24,7 @@
 # Guava
 # https://github.com/google/guava/wiki/UsingProGuardWithGuava
 -dontwarn sun.misc.Unsafe
--dontwarn java.lang.ClassValue
--dontwarn com.google.j2objc.annotations.Weak
+-dontwarn com.google.common.collect.MinMaxPriorityQueue
 -dontwarn android.databinding.tool.util.**
 
 # Dagger
