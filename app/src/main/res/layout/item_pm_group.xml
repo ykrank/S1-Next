@@ -56,7 +56,6 @@
                 android:includeFontPadding="false"
                 android:lines="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textIsSelectable="true"
                 app:pmAuthorNameDesc="@{pmGroupViewModel.pmGroup}"
                 app:user="@{user}"/>
 
@@ -81,7 +80,6 @@
                 android:includeFontPadding="false"
                 android:maxLines="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textIsSelectable="true"
                 app:text="@{pmGroupViewModel.pmGroup.pmNum}" />
 
             <TextView
@@ -91,7 +89,6 @@
                 android:layout_marginTop="@dimen/single_line_height_with_avatar"
                 android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textIsSelectable="true"
                 app:text="@{pmGroupViewModel.pmGroup.lastSummary}"/>
 
         </RelativeLayout>

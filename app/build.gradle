@@ -108,7 +108,10 @@ dependencies {
     compile "com.android.support:transition:$rootProject.supportVersion"
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
-    
+
+    compile 'com.google.guava:guava:20.0'
+    // https://github.com/google/guava/wiki/UsingProGuardWithGuava
+    provided 'com.google.code.findbugs:jsr305:3.0.1'
     compile 'org.apache.commons:commons-lang3:3.5'
 
     compile 'com.squareup.okhttp3:okhttp-urlconnection:3.4.2'

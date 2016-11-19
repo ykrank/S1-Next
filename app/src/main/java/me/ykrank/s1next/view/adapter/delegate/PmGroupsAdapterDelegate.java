@@ -53,20 +53,6 @@ public final class PmGroupsAdapterDelegate extends BaseAdapterDelegate<PmGroup, 
         binding.executePendingBindings();
     }
 
-    /**
-     * make textview selectable
-     * @param holder
-     */
-    @Override
-    protected void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
-        ItemPmGroupBinding binding = ((BindingViewHolder)holder).binding;
-        binding.authorName.setEnabled(false);
-        binding.authorName.setEnabled(true);
-        binding.tvSummary.setEnabled(false);
-        binding.tvSummary.setEnabled(true);
-    }
-
     static final class BindingViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemPmGroupBinding binding;
