@@ -143,12 +143,12 @@ public abstract class BasePostFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        mSubscription = mEventBus.get().subscribe(o -> {
-            if (o instanceof EmoticonClickEvent) {
-                mReplyView.getText().replace(mReplyView.getSelectionStart(),
-                        mReplyView.getSelectionEnd(), ((EmoticonClickEvent) o).getEmoticonEntity());
-            }
-        });
+        mSubscription = mEventBus.get()
+                .ofType(EmoticonClickEvent.class)
+                .subscribe(event -> {
+                    mReplyView.getText().replace(mReplyView.getSelectionStart(),
+                            mReplyView.getSelectionEnd(), event.getEmoticonEntity());
+                });
     }
 
     @Override

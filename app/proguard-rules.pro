@@ -26,6 +26,8 @@
 -dontwarn sun.misc.Unsafe
 -dontwarn com.google.common.collect.MinMaxPriorityQueue
 -dontwarn android.databinding.tool.util.**
+-dontwarn com.google.j2objc.annotations.**
+-dontwarn java.lang.ClassValue
 
 # Dagger
 -dontwarn dagger.**

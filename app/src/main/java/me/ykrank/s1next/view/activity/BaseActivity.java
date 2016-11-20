@@ -111,23 +111,22 @@ public abstract class BaseActivity extends AppCompatActivity
         if (!mThemeManager.isDefaultTheme()) {
             if (isTranslucent()) {
                 setTheme(mThemeManager.getThemeTranslucentStyle());
-            }else {
+            } else {
                 setTheme(mThemeManager.getThemeStyle());
             }
         }
 
         super.onCreate(savedInstanceState);
 
-        mSubscription = mEventBus.get().subscribe(o -> {
-            // recreate this Activity when theme or font size changes
-            if (o instanceof ThemeChangeEvent || o instanceof FontSizeChangeEvent) {
-                getWindow().setWindowAnimations(R.style.Animation_Recreate);
-                recreate();
-            }
-        });
+        mSubscription = mEventBus.get()
+                .filter(o -> (o instanceof ThemeChangeEvent || o instanceof FontSizeChangeEvent))
+                .subscribe(o -> {
+                    getWindow().setWindowAnimations(R.style.Animation_Recreate);
+                    recreate();
+                });
     }
-    
-    public boolean isTranslucent(){
+
+    public boolean isTranslucent() {
         return false;
     }
 
@@ -293,7 +292,7 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     @Override
-    public final Optional<Snackbar> showLongSnackbar(@StringRes int resId){
+    public final Optional<Snackbar> showLongSnackbar(@StringRes int resId) {
         return saveSnackbarWeakReference(mCoordinatorLayoutAnchorDelegate.showLongSnackbar(resId));
     }
 

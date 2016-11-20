@@ -85,12 +85,13 @@ public final class PostListFragment extends BaseViewPagerFragment
     private Posts.ThreadAttachment mThreadAttachment;
     private MenuItem mMenuThreadAttachment;
 
-    private Subscription mSubscription;
+    private Subscription quoteSubscription;
+    private Subscription blackListAddSubscription;
     private Subscription mReadProgressSubscription;
     private ReadProgress readProgress;
-    
+
     private Subscription mLastReadSubscription;
-    
+
     private PostListPagerAdapter mAdapter;
 
     public static PostListFragment newInstance(Thread thread, boolean shouldGoToLastPage) {
@@ -139,7 +140,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         // thread title is null if this thread comes from ThreadLink
         mThreadTitle = thread.getTitle();
         mThreadId = thread.getId();
-        Bugsnag.leaveBreadcrumb("PostListFragment##ThreadTitle:"+mThreadTitle+",ThreadId:"+mThreadId);
+        Bugsnag.leaveBreadcrumb("PostListFragment##ThreadTitle:" + mThreadTitle + ",ThreadId:" + mThreadId);
 
         if (savedInstanceState == null) {
             final int jumpPage;
@@ -151,7 +152,7 @@ public final class PostListFragment extends BaseViewPagerFragment
             } else {
                 jumpPage = bundle.getInt(ARG_JUMP_PAGE, 0);
             }
-            
+
             if (jumpPage != 0) {
                 // we do not know the total page if we open this thread by URL
                 // so we set the jump page to total page
@@ -174,23 +175,23 @@ public final class PostListFragment extends BaseViewPagerFragment
     public void onResume() {
         super.onResume();
 
-        mSubscription = mEventBus.get().subscribe(o -> {
-            if (o instanceof QuoteEvent) {
-                QuoteEvent quoteEvent = (QuoteEvent) o;
-                startReplyActivity(quoteEvent.getQuotePostId(), quoteEvent.getQuotePostCount());
-            } else if (o instanceof BlackListAddEvent) {
-                BlackListAddEvent blackListEvent = (BlackListAddEvent) o;
-                BlackListDbWrapper dbWrapper = BlackListDbWrapper.getInstance();
-                if (blackListEvent.isAdd()) {
-                    RxJavaUtil.workWithUiThread(() -> dbWrapper.saveDefaultBlackList(blackListEvent.getAuthorPostId(), blackListEvent.getAuthorPostName()),
-                            this::afterBlackListChange);
-                } else {
-                    RxJavaUtil.workWithUiThread(() -> dbWrapper.delDefaultBlackList(blackListEvent.getAuthorPostId(), blackListEvent.getAuthorPostName()),
-                            this::afterBlackListChange);
-                }
-            }
-
-        });
+        quoteSubscription = mEventBus.get()
+                .ofType(QuoteEvent.class)
+                .subscribe(quoteEvent ->
+                        startReplyActivity(quoteEvent.getQuotePostId(), quoteEvent.getQuotePostCount())
+                );
+        blackListAddSubscription = mEventBus.get()
+                .ofType(BlackListAddEvent.class)
+                .subscribe(blackListEvent -> {
+                    BlackListDbWrapper dbWrapper = BlackListDbWrapper.getInstance();
+                    if (blackListEvent.isAdd()) {
+                        RxJavaUtil.workWithUiThread(() -> dbWrapper.saveDefaultBlackList(blackListEvent.getAuthorPostId(), blackListEvent.getAuthorPostName()),
+                                this::afterBlackListChange);
+                    } else {
+                        RxJavaUtil.workWithUiThread(() -> dbWrapper.delDefaultBlackList(blackListEvent.getAuthorPostId(), blackListEvent.getAuthorPostName()),
+                                this::afterBlackListChange);
+                    }
+                });
     }
 
     @Override
@@ -200,10 +201,11 @@ public final class PostListFragment extends BaseViewPagerFragment
                 .delay(5, TimeUnit.SECONDS)
                 .map(mReadProgressPrefManager::saveLastReadProgress)
                 .doOnError(L::e)
-                .subscribe(b->L.i("Save last read progress:"+b));
+                .subscribe(b -> L.i("Save last read progress:" + b));
         super.onPause();
 
-        RxJavaUtil.unsubscribeIfNotNull(mSubscription);
+        RxJavaUtil.unsubscribeIfNotNull(quoteSubscription);
+        RxJavaUtil.unsubscribeIfNotNull(blackListAddSubscription);
         RxJavaUtil.unsubscribeIfNotNull(mReadProgressSubscription);
     }
 
@@ -211,9 +213,9 @@ public final class PostListFragment extends BaseViewPagerFragment
     public void onDestroy() {
         RxJavaUtil.unsubscribeIfNotNull(mLastReadSubscription);
         mReadProgressPrefManager.saveLastReadProgress(null);
-        
+
         //Auto save read progress
-        if (mReadProgressPrefManager.isSaveAuto()){
+        if (mReadProgressPrefManager.isSaveAuto()) {
             PostListPagerFragment.saveReadProgressBack(getCurPostPageFragment().getCurReadProgress());
         }
         super.onDestroy();
@@ -293,7 +295,7 @@ public final class PostListFragment extends BaseViewPagerFragment
 
     @Override
     BaseFragmentStatePagerAdapter getPagerAdapter(FragmentManager fragmentManager) {
-        if (mAdapter == null){
+        if (mAdapter == null) {
             mAdapter = new PostListPagerAdapter(fragmentManager);
         }
         return mAdapter;
@@ -338,7 +340,6 @@ public final class PostListFragment extends BaseViewPagerFragment
 
     /**
      * 获取当前的具体帖子fragment
-     *
      */
     PostListPagerFragment getCurPostPageFragment() {
         return mAdapter.getCurrentFragment();
@@ -363,10 +364,10 @@ public final class PostListFragment extends BaseViewPagerFragment
     private void afterLoadReadProgress() {
         if (readProgress != null && readProgress.scrollState == ReadProgress.BEFORE_SCROLL_PAGE) {
             readProgress.scrollState = ReadProgress.BEFORE_SCROLL_POSITION;
-            if (getCurrentPage() != readProgress.page-1){
-                setCurrentPage(readProgress.page-1);
+            if (getCurrentPage() != readProgress.page - 1) {
+                setCurrentPage(readProgress.page - 1);
                 getCurPostPageFragment().setReadProgress(readProgress, false);
-            }else {
+            } else {
                 getCurPostPageFragment().setReadProgress(readProgress, true);
             }
         }

@@ -40,7 +40,7 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
     User mUser;
     @Inject
     S1Service s1Service;
-    
+
     private CharSequence mTitle;
 
     private Subscription mEventBusSubscription, mApiSubscription;
@@ -52,18 +52,18 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
 
         mTitle = getText(R.string.favourites);
 
-        mEventBusSubscription = mEventBus.get().subscribe(o -> {
-            // reload when favorite remove
-            if (o instanceof FavoriteRemoveEvent) {
-                mApiSubscription = ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
-                        token->s1Service.removeThreadFavorite(token, ((FavoriteRemoveEvent)o).getFavId()))
-                        .compose(RxJavaUtil.iOTransformer())
-                        .subscribe(wrapper -> {
-                            showShortSnackbar(wrapper.getResult().getMessage());
-                            loadViewPager();
-                        }, this::onError);
-            }
-        });
+        mEventBusSubscription = mEventBus.get()
+                .ofType(FavoriteRemoveEvent.class)
+                .subscribe(event -> {
+                    // reload when favorite remove
+                    mApiSubscription = ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
+                            token -> s1Service.removeThreadFavorite(token, event.getFavId()))
+                            .compose(RxJavaUtil.iOTransformer())
+                            .subscribe(wrapper -> {
+                                showShortSnackbar(wrapper.getResult().getMessage());
+                                loadViewPager();
+                            }, this::onError);
+                });
     }
 
     @Override

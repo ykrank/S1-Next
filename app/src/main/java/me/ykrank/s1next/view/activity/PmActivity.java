@@ -40,13 +40,11 @@ public class PmActivity extends BaseActivity {
         }
 
         mSubscription = mEventBus.get()
-                .subscribe(o -> {
-                    if (o instanceof PmGroupClickEvent) {
-                        PmGroupClickEvent event = (PmGroupClickEvent) o;
-                        PmGroup pmGroup = event.getPmGroup();
-                        fragment = PmFragment.newInstance(pmGroup.getToUid(), pmGroup.getToUsername());
-                        replaceFragmentWithBackStack(fragment, PmFragment.TAG);
-                    }
+                .ofType(PmGroupClickEvent.class)
+                .subscribe(event -> {
+                    PmGroup pmGroup = event.getPmGroup();
+                    fragment = PmFragment.newInstance(pmGroup.getToUid(), pmGroup.getToUsername());
+                    replaceFragmentWithBackStack(fragment, PmFragment.TAG);
                 });
     }
 
