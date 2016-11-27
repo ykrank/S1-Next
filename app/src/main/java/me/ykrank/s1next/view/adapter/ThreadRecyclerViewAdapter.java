@@ -10,8 +10,6 @@ public final class ThreadRecyclerViewAdapter extends BaseRecyclerViewAdapter {
         super(activity);
 
         addAdapterDelegate(new ThreadAdapterDelegate(activity));
-
-        setHasStableIds(true);
     }
     
 }

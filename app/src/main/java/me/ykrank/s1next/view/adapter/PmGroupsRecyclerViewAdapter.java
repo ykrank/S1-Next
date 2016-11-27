@@ -12,7 +12,5 @@ public final class PmGroupsRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
         addAdapterDelegate(new PmGroupsAdapterDelegate(activity));
         addAdapterDelegate(new FooterProgressAdapterDelegate(activity));
-
-        setHasStableIds(true);
     }
 }

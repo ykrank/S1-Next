@@ -22,6 +22,7 @@ public abstract class BaseRecyclerViewAdapter extends ListDelegationAdapter<List
     private static final int VIEW_TYPE_PROGRESS = 0;
 
     BaseRecyclerViewAdapter(Context context) {
+        setHasStableIds(false);
         setItems(new ArrayList<>());
         delegatesManager.addDelegate(VIEW_TYPE_PROGRESS, new ProgressAdapterDelegate(context));
     }
@@ -91,11 +92,6 @@ public abstract class BaseRecyclerViewAdapter extends ListDelegationAdapter<List
     
     public final List<Object> getDataSet() {
         return getItems();
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
     }
 
     public final Object getItem(int position) {

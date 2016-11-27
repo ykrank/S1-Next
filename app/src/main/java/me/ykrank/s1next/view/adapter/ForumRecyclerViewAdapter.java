@@ -10,7 +10,5 @@ public final class ForumRecyclerViewAdapter extends BaseRecyclerViewAdapter {
         super(activity);
 
         addAdapterDelegate(new ForumAdapterDelegate(activity));
-
-        setHasStableIds(true);
     }
 }

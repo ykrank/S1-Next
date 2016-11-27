@@ -10,7 +10,5 @@ public final class FavouriteRecyclerViewAdapter extends BaseRecyclerViewAdapter 
         super(activity);
 
         addAdapterDelegate(new FavouriteAdapterDelegate(activity));
-
-        setHasStableIds(true);
     }
 }

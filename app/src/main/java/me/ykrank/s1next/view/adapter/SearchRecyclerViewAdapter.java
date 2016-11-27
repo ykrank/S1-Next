@@ -10,7 +10,5 @@ public final class SearchRecyclerViewAdapter extends BaseRecyclerViewAdapter {
         super(activity);
 
         addAdapterDelegate(new SearchAdapterDelegate(activity));
-
-        setHasStableIds(true);
     }
 }

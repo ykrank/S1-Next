@@ -14,7 +14,5 @@ public final class PmRecyclerViewAdapter extends BaseRecyclerViewAdapter {
         addAdapterDelegate(new PmLeftAdapterDelegate(activity));
         addAdapterDelegate(new PmRightAdapterDelegate(activity));
         addAdapterDelegate(new FooterProgressAdapterDelegate(activity));
-
-        setHasStableIds(true);
     }
 }

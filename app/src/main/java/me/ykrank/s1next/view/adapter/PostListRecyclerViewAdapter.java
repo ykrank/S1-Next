@@ -17,7 +17,5 @@ public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
         addAdapterDelegate(new PostAdapterDelegate(activity));
         addAdapterDelegate(new FooterProgressAdapterDelegate(activity));
-
-        setHasStableIds(true);
     }
 }
