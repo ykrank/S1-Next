@@ -96,6 +96,7 @@ public class SearchActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         App.getPrefComponent(this).inject(this);
         super.onCreate(savedInstanceState);
+        L.leaveMsg("SearchActivity");
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
 
         searchView = binding.appBar.searchView;

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.fragment.setting.BackupPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.BlackListSettingFragment;
 import me.ykrank.s1next.view.fragment.setting.DownloadPreferenceFragment;
@@ -56,6 +57,7 @@ public final class SettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        L.leaveMsg("SettingsActivity##extra"+getIntent().getIntExtra(ARG_SHOW_SETTINGS, EXTRA_SHOW_SETTING_DEFAULT));
         setContentView(R.layout.activity_base_without_drawer_and_scrolling_effect);
 
         if (savedInstanceState == null) {

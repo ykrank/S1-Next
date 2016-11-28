@@ -8,6 +8,7 @@ import android.view.View;
 
 import me.ykrank.s1next.data.api.model.collection.Favourites;
 import me.ykrank.s1next.data.api.model.wrapper.FavouritesWrapper;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.FavouriteRecyclerViewAdapter;
 import me.ykrank.s1next.view.internal.PagerCallback;
@@ -50,6 +51,7 @@ public final class FavouriteListPagerFragment extends BaseRecyclerViewFragment<F
         super.onViewCreated(view, savedInstanceState);
 
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
+        L.leaveMsg("FavouriteListPagerFragment##mPageNum"+mPageNum);
 
         RecyclerView recyclerView = getRecyclerView();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

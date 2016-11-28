@@ -42,7 +42,7 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
                 .error(R.drawable.ic_avatar_placeholder)
                 .priority(Priority.HIGH)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .transform(new CenterCrop(Glide.get(activity).getBitmapPool()));
+                .transform(new CenterCrop(activity));
     }
 
     @NonNull

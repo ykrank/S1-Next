@@ -66,6 +66,7 @@ public final class NewThreadFragment extends BasePostFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mForumId = getArguments().getInt(ARG_FORUM_ID);
+        L.leaveMsg("NewThreadFragment##mForumId:"+mForumId);
 
         App.getPrefComponent(getContext()).inject(this);
         init();

@@ -19,7 +19,7 @@
         tools:ignore="UnusedAttribute">
 
         <meta-data
-            android:name="me.ykrank.s1next.widget.AppGlideModule"
+            android:name="me.ykrank.s1next.widget.glide.AppGlideModule"
             android:value="GlideModule" />
 
         <meta-data

@@ -3,6 +3,7 @@ package me.ykrank.s1next.util;
 import android.util.Log;
 
 import com.bugsnag.android.Bugsnag;
+import com.bugsnag.android.Severity;
 
 import me.ykrank.s1next.BuildConfig;
 
@@ -82,10 +83,27 @@ public class L {
 
     public static void e(String tag, String msg, Throwable tr) {
         if (BuildConfig.DEBUG) {
-            Bugsnag.notify(tr);
+            Bugsnag.notify(tr, Severity.INFO);
         }
         if (Log.isLoggable(tag, Log.ERROR)) {
             Log.e(tag, msg, tr);
         }
+    }
+    
+    public static void report(Throwable tr){
+        Bugsnag.notify(tr, Severity.WARNING);
+    }
+
+    public static void report(Throwable tr, Severity severity){
+        Bugsnag.notify(tr, severity);
+    }
+
+    public static void leaveMsg(String msg){
+        Bugsnag.leaveBreadcrumb(msg);
+    }
+
+    public static void report(String msg, Throwable tr){
+        leaveMsg(msg);
+        report(tr);
     }
 }

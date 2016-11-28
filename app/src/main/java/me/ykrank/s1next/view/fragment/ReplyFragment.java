@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import me.ykrank.s1next.util.DeviceUtil;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.dialog.ReplyRequestDialogFragment;
 
 /**
@@ -36,6 +37,7 @@ public final class ReplyFragment extends BasePostFragment {
         super.onViewCreated(view, savedInstanceState);
         mThreadId = getArguments().getString(ARG_THREAD_ID);
         mQuotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
+        L.leaveMsg("ReplyFragment##mThreadId:"+mThreadId+",mQuotePostId"+mQuotePostId);
     }
 
     @Override

@@ -20,6 +20,7 @@ import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.data.event.FavoriteRemoveEvent;
 import me.ykrank.s1next.util.IntentUtil;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.widget.EventBus;
 import rx.Subscription;
@@ -49,6 +50,7 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         App.getAppComponent(getContext()).inject(this);
         super.onViewCreated(view, savedInstanceState);
+        L.leaveMsg("FavouriteListFragment");
 
         mTitle = getText(R.string.favourites);
 

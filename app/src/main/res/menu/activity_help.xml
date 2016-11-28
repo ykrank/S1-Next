@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.ykrank.s1next.view.activity.HelpActivity">
-<!--    <item
+    <item
         android:id="@+id/menu_view_in_google_play_store"
         android:orderInCategory="21"
         android:title="@string/menu_view_in_google_play_store"
-        app:showAsAction="never" />-->
+        app:showAsAction="never" />
     <item
         android:id="@+id/menu_open_source_licenses"
         android:orderInCategory="22"

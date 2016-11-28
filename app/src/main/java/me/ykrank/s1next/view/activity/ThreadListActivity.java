@@ -15,6 +15,7 @@ import java.util.List;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Forum;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.adapter.SubForumArrayAdapter;
 import me.ykrank.s1next.view.fragment.ThreadListFragment;
 import me.ykrank.s1next.view.fragment.ThreadListPagerFragment;
@@ -40,6 +41,7 @@ public final class ThreadListActivity extends BaseActivity
     private boolean refreshBlackList = false;
 
     public static void startThreadListActivity(Context context, Forum forum) {
+        L.leaveMsg("ThreadListActivity##forum"+forum);
         Intent intent = new Intent(context, ThreadListActivity.class);
         intent.putExtra(ARG_FORUM, forum);
 

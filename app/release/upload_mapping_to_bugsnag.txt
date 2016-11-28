@@ -1,1 +1,1 @@
-curl https://upload.bugsnag.com/ -F proguard=@/cygdrive/d/projects/S1-Next/app/release/v0.6.3/mapping.txt -F apiKey=a800f8b465a24096868397da57cec9bd -F versionCode=14 -F appId=me.ykrank.s1next -F versionName=0.6.3
+curl https://upload.bugsnag.com/ -F proguard=@/cygdrive/d/projects/S1-Next/app/release/v0.7.0/mapping.txt -F apiKey=a800f8b465a24096868397da57cec9bd -F versionCode=15 -F appId=me.ykrank.s1next -F versionName=0.7.0

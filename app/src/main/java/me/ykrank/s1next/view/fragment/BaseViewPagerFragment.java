@@ -186,6 +186,7 @@ abstract class BaseViewPagerFragment extends BaseFragment
             super(fm);
         }
 
+        @Nullable
         public T getCurrentFragment() {
             return mCurrentFragment;
         }

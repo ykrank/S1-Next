@@ -13,6 +13,7 @@ import java.util.List;
 import me.ykrank.s1next.data.api.model.PmGroup;
 import me.ykrank.s1next.data.api.model.collection.PmGroups;
 import me.ykrank.s1next.data.api.model.wrapper.PmGroupsWrapper;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.view.adapter.PmGroupsRecyclerViewAdapter;
@@ -37,6 +38,7 @@ public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<PmGr
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        L.leaveMsg("PmGroupsFragment");
 
         RecyclerView recyclerView = getRecyclerView();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

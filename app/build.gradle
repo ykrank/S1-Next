@@ -21,7 +21,7 @@ android {
     defaultConfig {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 24
         versionCode 15
         versionName '0.7.0'
         vectorDrawables.useSupportLibrary = true
@@ -57,10 +57,19 @@ android {
     }
     buildTypes {
         debug {
-//            ext.enableBugsnag = false
             multiDexEnabled true
             applicationIdSuffix '.debug'
             versionNameSuffix '-DEBUG'
+        }
+        
+        alpha {
+            debuggable true
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            applicationIdSuffix '.alpha'
+            versionNameSuffix '-alpha'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         release {
@@ -113,6 +122,7 @@ dependencies {
     // do not update
     compile 'com.google.guava:guava:19.0'
     provided 'com.google.code.findbugs:jsr305:3.0.1'
+    provided 'com.google.j2objc:j2objc-annotations:1.1'
     compile 'org.apache.commons:commons-lang3:3.5'
 
     compile 'com.squareup.okhttp3:okhttp-urlconnection:3.4.2'

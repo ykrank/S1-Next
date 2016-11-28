@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.EditText;
 
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.dialog.PmRequestDialogFragment;
 import me.ykrank.s1next.view.dialog.ReplyRequestDialogFragment;
 
@@ -32,6 +33,7 @@ public final class NewPmFragment extends BasePostFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mToUid = getArguments().getString(ARG_TO_UID);
+        L.leaveMsg("NewPmFragment##mToUid"+mToUid);
     }
 
     @Override
