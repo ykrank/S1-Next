@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.bugsnag.android.Bugsnag;
 import com.google.common.base.Preconditions;
 
 import java.util.concurrent.TimeUnit;
@@ -146,7 +145,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         // thread title is null if this thread comes from ThreadLink
         mThreadTitle = thread.getTitle();
         mThreadId = thread.getId();
-        Bugsnag.leaveBreadcrumb("PostListFragment##ThreadTitle:" + mThreadTitle + ",ThreadId:" + mThreadId);
+        L.leaveMsg("PostListFragment##ThreadTitle:" + mThreadTitle + ",ThreadId:" + mThreadId);
 
         if (savedInstanceState == null) {
             final int jumpPage;
@@ -203,11 +202,14 @@ public final class PostListFragment extends BaseViewPagerFragment
     @Override
     public void onPause() {
         //save last read progress
-        mLastReadSubscription = Single.just(getCurPostPageFragment().getCurReadProgress())
-                .delay(5, TimeUnit.SECONDS)
-                .map(mReadProgressPrefManager::saveLastReadProgress)
-                .doOnError(L::e)
-                .subscribe(b -> L.i("Save last read progress:" + b));
+        final PostListPagerFragment fragment =getCurPostPageFragment();
+        if (fragment != null) {
+            mLastReadSubscription = Single.just(fragment.getCurReadProgress())
+                    .delay(5, TimeUnit.SECONDS)
+                    .map(mReadProgressPrefManager::saveLastReadProgress)
+                    .doOnError(L::e)
+                    .subscribe(b -> L.i("Save last read progress:" + b));
+        }
         super.onPause();
 
         RxJavaUtil.unsubscribeIfNotNull(quoteSubscription);
@@ -222,7 +224,9 @@ public final class PostListFragment extends BaseViewPagerFragment
 
         //Auto save read progress
         if (mReadProgressPrefManager.isSaveAuto()) {
-            PostListPagerFragment.saveReadProgressBack(getCurPostPageFragment().getCurReadProgress());
+            if (getCurPostPageFragment() != null) {
+                PostListPagerFragment.saveReadProgressBack(getCurPostPageFragment().getCurReadProgress());
+            }
         }
         super.onDestroy();
     }
@@ -296,7 +300,9 @@ public final class PostListFragment extends BaseViewPagerFragment
 
                 return true;
             case R.id.menu_save_progress:
-                getCurPostPageFragment().saveReadProgress();
+                if (getCurPostPageFragment() != null) {
+                    getCurPostPageFragment().saveReadProgress();
+                }
                 return true;
             case R.id.menu_load_progress:
                 loadReadProgress();
@@ -364,6 +370,7 @@ public final class PostListFragment extends BaseViewPagerFragment
     /**
      * 获取当前的具体帖子fragment
      */
+    @Nullable
     PostListPagerFragment getCurPostPageFragment() {
         return mAdapter.getCurrentFragment();
     }
@@ -387,18 +394,23 @@ public final class PostListFragment extends BaseViewPagerFragment
     private void afterLoadReadProgress() {
         if (readProgress != null && readProgress.scrollState == ReadProgress.BEFORE_SCROLL_PAGE) {
             readProgress.scrollState = ReadProgress.BEFORE_SCROLL_POSITION;
-            if (getCurrentPage() != readProgress.page - 1) {
-                setCurrentPage(readProgress.page - 1);
-                getCurPostPageFragment().setReadProgress(readProgress, false);
-            } else {
-                getCurPostPageFragment().setReadProgress(readProgress, true);
+            PostListPagerFragment fragment = getCurPostPageFragment();
+            if (fragment != null) {
+                if (getCurrentPage() != readProgress.page - 1) {
+                    setCurrentPage(readProgress.page - 1);
+                    getCurPostPageFragment().setReadProgress(readProgress, false);
+                } else {
+                    getCurPostPageFragment().setReadProgress(readProgress, true);
+                }
             }
         }
     }
 
     private void afterBlackListChange() {
         PostListPagerFragment currFragment = getCurPostPageFragment();
-        currFragment.startBlackListRefresh();
+        if (currFragment != null) {
+            currFragment.startBlackListRefresh();
+        }
         getActivity().setResult(Activity.RESULT_OK);
     }
 

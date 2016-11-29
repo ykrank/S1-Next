@@ -10,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bugsnag.android.Bugsnag;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +21,7 @@ import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
 import me.ykrank.s1next.databinding.FragmentBaseCardViewContainerBinding;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.LooperUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.PostListRecyclerViewAdapter;
@@ -95,10 +94,10 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
 
         mThreadId = getArguments().getString(ARG_THREAD_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
-        if (readProgress == null){
+        if (readProgress == null) {
             readProgress = getArguments().getParcelable(ARG_READ_PROGRESS);
         }
-        Bugsnag.leaveBreadcrumb("PostListPagerFragment##ThreadId:"+mThreadId+",PageNum:"+mPageNum);
+        L.leaveMsg("PostListPagerFragment##ThreadId:" + mThreadId + ",PageNum:" + mPageNum);
 
         mRecyclerView = getRecyclerView();
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -163,12 +162,12 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
         startPullToRefresh();
     }
 
-    void setReadProgress(ReadProgress readProgress, boolean smooth){
+    void setReadProgress(ReadProgress readProgress, boolean smooth) {
         this.readProgress = readProgress;
-        if (!isLoading()){
+        if (!isLoading()) {
             if (smooth) {
                 mRecyclerView.smoothScrollToPosition(readProgress.position);
-            }else {
+            } else {
                 mRecyclerView.scrollToPosition(readProgress.position);
             }
         }
@@ -187,13 +186,13 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
             showShortText(R.string.save_read_progress_success);
         });
     }
-    
-    ReadProgress getCurReadProgress(){
+
+    ReadProgress getCurReadProgress() {
         return new ReadProgress(mThreadId, mPageNum, findMidItemPosition());
     }
 
-    static void saveReadProgressBack(ReadProgress readProgress){
-        new java.lang.Thread(()->{
+    static void saveReadProgressBack(ReadProgress readProgress) {
+        new java.lang.Thread(() -> {
             ReadProgressDbWrapper dbWrapper = ReadProgressDbWrapper.getInstance();
             dbWrapper.saveReadProgress(readProgress);
         }).start();
@@ -223,22 +222,22 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
     @Override
     void onNext(PostsWrapper data) {
         boolean pullUpToRefresh = isPullUpToRefresh();
-        if (pullUpToRefresh) {
-            // mRecyclerAdapter.getItemCount() = 0
-            // when configuration changes (like orientation changes)
-            if (mRecyclerAdapter.getItemCount() != 0) {
-                mRecyclerAdapter.hideFooterProgress();
-            }
-        }
+        List<Post> postList = null;
 
         Posts posts = data.getPosts();
-        if (posts == null) {
-            consumeResult(data.getResult());
-            return;
+        if (posts != null) {
+            postList = posts.getPostList();
         }
-        List<Post> postList = posts.getPostList();
+
         // if user has logged out, has no permission to access this thread or this thread is invalid
-        if (postList.isEmpty()) {
+        if (postList == null || postList.isEmpty()){
+            if (pullUpToRefresh) {
+                // mRecyclerAdapter.getItemCount() = 0
+                // when configuration changes (like orientation changes)
+                if (mRecyclerAdapter.getItemCount() != 0) {
+                    mRecyclerAdapter.hideFooterProgress();
+                }
+            }
             consumeResult(data.getResult());
         } else {
             super.onNext(data);
@@ -280,10 +279,6 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
 
     @Override
     void onError(Throwable throwable) {
-        if (isPullUpToRefresh()) {
-            mRecyclerAdapter.hideFooterProgress();
-        }
-
         //网络请求失败下依然刷新黑名单
         if (blacklistChanged) {
             List<Object> dataSet = mRecyclerAdapter.getDataSet();
@@ -291,13 +286,15 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
             for (Object obj : dataSet) {
                 if (obj instanceof Post) {
                     obj = Posts.getFilterPost((Post) obj);
-                }
-                if (obj != null) {
-                    newData.add(obj);
+                    if (obj != null) {
+                        newData.add(obj);
+                    }
                 }
             }
             blacklistChanged = false;
             mRecyclerAdapter.diffNewDataSet(newData, false);
+        } else if (isPullUpToRefresh()) {
+            mRecyclerAdapter.hideFooterProgress();
         }
 
         super.onError(throwable);

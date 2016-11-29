@@ -36,11 +36,13 @@ public abstract class BaseRecyclerViewAdapter extends ListDelegationAdapter<List
         if (hasProgress) {
             items.clear();
             items.add(new ProgressItem());
+            notifyDataSetChanged();
         } else {
             // we do not need to clear list if we have already changed
             // data set or we have no ProgressItem to been cleared
             if (items.size() == 1 && items.get(0) instanceof ProgressItem) {
                 items.clear();
+                notifyDataSetChanged();
             }
         }
     }
@@ -128,7 +130,7 @@ public abstract class BaseRecyclerViewAdapter extends ListDelegationAdapter<List
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
             Object oldD = oldData.get(oldItemPosition);
             Object newD = newData.get(newItemPosition);
-            if (oldD instanceof SameItem){
+            if (oldD != null && oldD instanceof SameItem){
                 return ((SameItem) oldD).isSameItem(newD);
             }
             return Objects.equals(oldD, newD);

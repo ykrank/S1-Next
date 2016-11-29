@@ -15,8 +15,8 @@ import me.ykrank.s1next.view.fragment.PostListFragment;
 import me.ykrank.s1next.view.fragment.ReplyFragment;
 import me.ykrank.s1next.view.fragment.setting.DownloadPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.GeneralPreferenceFragment;
-import me.ykrank.s1next.widget.OkHttpStreamFetcher;
 import me.ykrank.s1next.widget.WifiBroadcastReceiver;
+import me.ykrank.s1next.widget.glide.OkHttpStreamFetcher;
 
 /**
  * Created by ykrank on 2016/11/4.

@@ -31,8 +31,7 @@ public final class PhotoViewBindingAdapter {
         if (thumbUrl != null) {
             DrawableRequestBuilder<String> thumbnailRequest = Glide
                     .with(photoView.getContext())
-                    .load(thumbUrl)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE);
+                    .load(thumbUrl);
             builder = builder.thumbnail(thumbnailRequest);
         } else {
             builder = builder.placeholder(android.R.color.white)

@@ -70,6 +70,7 @@ public final class WebLoginFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        L.leaveMsg(WebLoginFragment.class.getName());
 
         WebPageViewModel viewModel = new WebPageViewModel();
         mFragmentHelpBinding.setWebPageViewModel(viewModel);

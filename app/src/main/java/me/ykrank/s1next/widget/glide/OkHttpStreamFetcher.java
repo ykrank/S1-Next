@@ -1,4 +1,4 @@
-package me.ykrank.s1next.widget;
+package me.ykrank.s1next.widget.glide;
 
 import android.content.res.Resources;
 import android.util.LruCache;
@@ -192,7 +192,7 @@ public final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
      * just throw an exception to tell Glide to use the error
      * placeholder for this image.
      *
-     * @see me.ykrank.s1next.widget.OkHttpStreamFetcher#loadData(com.bumptech.glide.Priority)
+     * @see OkHttpStreamFetcher#loadData(com.bumptech.glide.Priority)
      */
     private enum AvatarUrlsCache {
         INSTANCE;
@@ -282,20 +282,23 @@ public final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
             private final LruCache<Key, String> lruCache = new LruCache<>(AVATAR_URL_KEYS_MEMORY_CACHE_MAX_NUMBER);
 
             public String getKey(Key key) {
-                String value = lruCache.get(key);
-                if (value == null) {
+                String safeKey;
+                synchronized (lruCache) {
+                    safeKey = lruCache.get(key);
+                }
+                if (safeKey == null) {
                     try {
-                        // TODO: https://github.com/bumptech/glide/pull/798 when Glide 4 was released
                         MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
                         key.updateDiskCacheKey(messageDigest);
-                        value = Util.sha256BytesToHex(messageDigest.digest());
-                        lruCache.put(key, value);
+                        safeKey = Util.sha256BytesToHex(messageDigest.digest());
                     } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-                        throw new RuntimeException(e);
+                        e.printStackTrace();
+                    }
+                    synchronized (lruCache) {
+                        lruCache.put(key, safeKey);
                     }
                 }
-
-                return value;
+                return safeKey;
             }
         }
     }

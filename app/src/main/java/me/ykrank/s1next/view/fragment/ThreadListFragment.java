@@ -9,13 +9,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.bugsnag.android.Bugsnag;
 import com.google.common.base.Preconditions;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.Forum;
 import me.ykrank.s1next.util.IntentUtil;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 
 /**
@@ -48,7 +48,7 @@ public final class ThreadListFragment extends BaseViewPagerFragment
         Forum forum = Preconditions.checkNotNull(getArguments().getParcelable(ARG_FORUM));
         mForumName = forum.getName();
         mForumId = forum.getId();
-        Bugsnag.leaveBreadcrumb("ThreadListFragment##ForumName:"+mForumName+",ForumId:"+mForumId);
+        L.leaveMsg("ThreadListFragment##ForumName:" + mForumName + ",ForumId:" + mForumId);
 
         if (savedInstanceState == null) {
             setTotalPageByThreads(forum.getThreads());

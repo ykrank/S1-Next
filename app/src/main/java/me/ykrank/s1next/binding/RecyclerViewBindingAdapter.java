@@ -16,7 +16,6 @@ public final class RecyclerViewBindingAdapter {
             if (adapter instanceof BaseRecyclerViewAdapter){
                 BaseRecyclerViewAdapter baseRecyclerViewAdapter = (BaseRecyclerViewAdapter)adapter;
                 baseRecyclerViewAdapter.setHasProgress(newIsLoadingFirstTime);
-                baseRecyclerViewAdapter.notifyDataSetChanged();
             }
         }
     }

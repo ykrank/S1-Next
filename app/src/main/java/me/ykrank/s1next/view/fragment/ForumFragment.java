@@ -16,6 +16,7 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.collection.ForumGroups;
 import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper;
 import me.ykrank.s1next.util.IntentUtil;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.SearchActivity;
 import me.ykrank.s1next.view.adapter.ForumRecyclerViewAdapter;
 import me.ykrank.s1next.view.internal.ToolbarDropDownInterface;
@@ -37,6 +38,7 @@ public final class ForumFragment extends BaseRecyclerViewFragment<ForumGroupsWra
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        L.leaveMsg("ForumFragment");
 
         RecyclerView recyclerView = getRecyclerView();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

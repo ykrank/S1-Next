@@ -119,4 +119,14 @@ public final class Forum implements Parcelable, SameItem {
         return Objects.equal(id, forum.id) &&
                 Objects.equal(name, forum.name);
     }
+
+    @Override
+    public String toString() {
+        return "Forum{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", threads=" + threads +
+                ", todayPosts=" + todayPosts +
+                '}';
+    }
 }

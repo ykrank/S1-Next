@@ -19,6 +19,7 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.databinding.FragmentLoginBinding;
 import me.ykrank.s1next.util.IntentUtil;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.view.dialog.LoginDialogFragment;
 
@@ -60,6 +61,7 @@ public final class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        L.leaveMsg("LoginFragment");
 
         ViewUtil.consumeRunnableWhenImeActionPerformed(mPasswordView, this::prepareLogin);
         mLoginButton.setOnClickListener(v -> prepareLogin());

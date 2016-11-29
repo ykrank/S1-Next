@@ -21,9 +21,9 @@ android {
     defaultConfig {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 14
-        targetSdkVersion 22
-        versionCode 15
-        versionName '0.7.0'
+        targetSdkVersion 24
+        versionCode 16
+        versionName '0.7.1'
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
@@ -57,10 +57,19 @@ android {
     }
     buildTypes {
         debug {
-//            ext.enableBugsnag = false
             multiDexEnabled true
             applicationIdSuffix '.debug'
             versionNameSuffix '-DEBUG'
+        }
+        
+        alpha {
+            debuggable true
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            applicationIdSuffix '.alpha'
+            versionNameSuffix '-alpha'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         release {
@@ -100,6 +109,7 @@ dependencies {
 //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     debugCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    alphaCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 
     compile "com.android.support:design:$rootProject.supportVersion"
     compile "com.android.support:cardview-v7:$rootProject.supportVersion"
@@ -113,6 +123,7 @@ dependencies {
     // do not update
     compile 'com.google.guava:guava:19.0'
     provided 'com.google.code.findbugs:jsr305:3.0.1'
+    provided 'com.google.j2objc:j2objc-annotations:1.1'
     compile 'org.apache.commons:commons-lang3:3.5'
 
     compile 'com.squareup.okhttp3:okhttp-urlconnection:3.4.2'

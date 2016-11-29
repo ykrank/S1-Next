@@ -1,10 +1,7 @@
 package me.ykrank.s1next.binding;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.databinding.BindingAdapter;
-import android.os.Build;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +17,7 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.event.BlackListAddEvent;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
+import me.ykrank.s1next.util.ActivityUtils;
 import me.ykrank.s1next.view.activity.GalleryActivity;
 import me.ykrank.s1next.widget.BezelImageView;
 import me.ykrank.s1next.widget.EventBus;
@@ -36,12 +34,12 @@ public final class BezelImageViewBindingAdapter {
     @BindingAdapter("user")
     public static void loadUserAvatar(BezelImageView bezelImageView, User user) {
         Context context = bezelImageView.getContext();
-        if (context instanceof Activity) {
-            //in device from 4.2 to 4.3, destroyed activity will cause glide error
-            if (isActivityDestroyedForGlide((Activity) context)) {
-                return;
-            }
+
+        //in device before 4.4, destroyed activity will cause glide error
+        if (ActivityUtils.isActivityDestroyedForGlide(context)) {
+            return;
         }
+        
         DownloadPreferencesManager downloadPreferencesManager = App.getPrefComponent(context)
                 .getDownloadPreferencesManager();
         if (user.isLogged()) {
@@ -60,15 +58,6 @@ public final class BezelImageViewBindingAdapter {
                     .transform(new CenterCrop(Glide.get(context).getBitmapPool()))
                     .into(bezelImageView);
         }
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private static boolean isActivityDestroyedForGlide(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && activity.isDestroyed()) {
-            //start a load for a destroyed activity
-            return true;
-        }
-        return false;
     }
 
     @BindingAdapter({"eventBus", "avatarDrawableRequestBuilder", "downloadPreferencesManager", "post"})

@@ -24,6 +24,7 @@ import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Pm;
 import me.ykrank.s1next.data.api.model.collection.Pms;
 import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.activity.NewPmActivity;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
@@ -80,6 +81,7 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
 
         toUid = getArguments().getString(ARG_TO_UID);
         toUsername = getArguments().getString(ARG_TO_USERNAME);
+        L.leaveMsg("PmFragment##toUid:"+toUid+",toUsername"+toUsername);
         if (TextUtils.isEmpty(toUid)) {
             showShortSnackbar(R.string.message_api_error);
             return;
