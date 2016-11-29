@@ -18,6 +18,7 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
+import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.databinding.ItemPostBinding;
 import me.ykrank.s1next.viewmodel.PostViewModel;
 import me.ykrank.s1next.widget.EventBus;
@@ -26,6 +27,9 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
 
     @Inject
     EventBus mEventBus;
+
+    @Inject
+    GeneralPreferencesManager mGeneralPreferencesManager;
 
     @Inject
     DownloadPreferencesManager mDownloadPreferencesManager;
@@ -60,7 +64,6 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
         itemPostBinding.setDownloadPreferencesManager(mDownloadPreferencesManager);
         itemPostBinding.setDrawableRequestBuilder(mAvatarRequestBuilder);
         itemPostBinding.setPostViewModel(new PostViewModel());
-        itemPostBinding.setSelectable(true);
 
         return new ItemViewBindingHolder(itemPostBinding);
     }
@@ -70,6 +73,7 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
         ItemPostBinding binding = holder.itemPostBinding;
         binding.getPostViewModel().post.set(post);
         binding.executePendingBindings();
+        binding.setSelectable(mGeneralPreferencesManager.isPostSelectable());
     }
 
     // Bug workaround for losing text selection ability, see:
@@ -77,13 +81,15 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
     @Override
     protected void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
-        ItemPostBinding binding = ((ItemViewBindingHolder)holder).itemPostBinding;
-        binding.authorName.setEnabled(false);
-        binding.tvFloor.setEnabled(false);
-        binding.tvReply.setEnabled(false);
-        binding.authorName.setEnabled(true);
-        binding.tvFloor.setEnabled(true);
-        binding.tvReply.setEnabled(true);
+        if (mGeneralPreferencesManager.isPostSelectable()) {
+            ItemPostBinding binding = ((ItemViewBindingHolder) holder).itemPostBinding;
+            binding.authorName.setEnabled(false);
+            binding.tvFloor.setEnabled(false);
+            binding.tvReply.setEnabled(false);
+            binding.authorName.setEnabled(true);
+            binding.tvFloor.setEnabled(true);
+            binding.tvReply.setEnabled(true);
+        }
     }
 
     static final class ItemViewBindingHolder extends RecyclerView.ViewHolder {

@@ -32,6 +32,7 @@ import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
 import me.ykrank.s1next.data.event.BlackListAddEvent;
 import me.ykrank.s1next.data.event.QuoteEvent;
+import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
 import me.ykrank.s1next.util.ClipboardUtil;
 import me.ykrank.s1next.util.IntentUtil;
@@ -41,6 +42,7 @@ import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.util.StringUtil;
 import me.ykrank.s1next.view.activity.ReplyActivity;
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment;
+import me.ykrank.s1next.view.dialog.PostSelectableChangeDialogFragment;
 import me.ykrank.s1next.view.dialog.ThreadAttachmentDialogFragment;
 import me.ykrank.s1next.view.dialog.ThreadFavouritesAddDialogFragment;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
@@ -55,6 +57,7 @@ import rx.Subscription;
  */
 public final class PostListFragment extends BaseViewPagerFragment
         implements PostListPagerFragment.PagerCallback, View.OnClickListener {
+    public static final String PREF_KEY_POST_SELECTABLE = "pref_key_post_selectable";
 
     public static final String TAG = PostListFragment.class.getName();
 
@@ -74,6 +77,9 @@ public final class PostListFragment extends BaseViewPagerFragment
 
     @Inject
     User mUser;
+
+    @Inject
+    GeneralPreferencesManager mGeneralPreferencesManager;
 
     @Inject
     ReadProgressPreferencesManager mReadProgressPrefManager;
@@ -238,6 +244,13 @@ public final class PostListFragment extends BaseViewPagerFragment
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem mMenuPostSelectable = menu.findItem(R.id.menu_post_selectable);
+        mMenuPostSelectable.setChecked(mGeneralPreferencesManager.isPostSelectable());
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_thread_attachment:
@@ -287,6 +300,16 @@ public final class PostListFragment extends BaseViewPagerFragment
                 return true;
             case R.id.menu_load_progress:
                 loadReadProgress();
+                return true;
+            case R.id.menu_post_selectable:
+                PostSelectableChangeDialogFragment.newInstance(!item.isChecked())
+                        .setPositiveListener((dialog, which) -> {
+                            //reload all data
+                            item.setChecked(!item.isChecked());
+                            mGeneralPreferencesManager.invalidatePostSelectable(item.isChecked());
+                            loadViewPager();
+                        })
+                        .show(getFragmentManager(), null);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

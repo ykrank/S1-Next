@@ -21,9 +21,17 @@ public final class GeneralPreferencesManager {
             return mGeneralPreferencesProvider.isSignatureEnabled();
         }
     };
+    private final Supplier<Boolean> mPostSelectableSupplier = new Supplier<Boolean>() {
+
+        @Override
+        public Boolean get() {
+            return mGeneralPreferencesProvider.isPostSelectable();
+        }
+    };
 
     private volatile Supplier<Float> mFontScaleMemorized = Suppliers.memoize(mFontScaleSupplier);
     private volatile Supplier<Boolean> mSignatureEnabledMemorized = Suppliers.memoize(mSignatureEnabledSupplier);
+    private volatile Supplier<Boolean> mPostSelectableMemorized = Suppliers.memoize(mPostSelectableSupplier);
 
     public GeneralPreferencesManager(GeneralPreferencesRepository generalPreferencesProvider) {
         this.mGeneralPreferencesProvider = generalPreferencesProvider;
@@ -49,5 +57,17 @@ public final class GeneralPreferencesManager {
 
     public boolean isSignatureEnabled() {
         return mSignatureEnabledMemorized.get();
+    }
+
+    /**
+     * Used for invalidating the post selectable preference if settings change.
+     */
+    public void invalidatePostSelectable(boolean selectable) {
+        mGeneralPreferencesProvider.setPostSelectable(selectable);
+        mPostSelectableMemorized = Suppliers.memoize(mPostSelectableSupplier);
+    }
+
+    public boolean isPostSelectable() {
+        return mPostSelectableMemorized.get();
     }
 }

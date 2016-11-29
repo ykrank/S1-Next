@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.view.fragment.PostListFragment;
 import me.ykrank.s1next.view.fragment.setting.GeneralPreferenceFragment;
 
 /**
@@ -37,5 +38,15 @@ public final class GeneralPreferencesRepository extends BasePreferencesRepositor
     public boolean isSignatureEnabled() {
         return mSharedPreferences.getBoolean(GeneralPreferenceFragment.PREF_KEY_SIGNATURE,
                 mContext.getResources().getBoolean(R.bool.pref_signature_default_value));
+    }
+
+    public boolean isPostSelectable() {
+        return mSharedPreferences.getBoolean(PostListFragment.PREF_KEY_POST_SELECTABLE,
+                mContext.getResources().getBoolean(R.bool.pref_post_selectable_default_value));
+    }
+
+    public void setPostSelectable(boolean selectable) {
+        mSharedPreferences.edit().putBoolean(PostListFragment.PREF_KEY_POST_SELECTABLE, selectable)
+                .apply();
     }
 }

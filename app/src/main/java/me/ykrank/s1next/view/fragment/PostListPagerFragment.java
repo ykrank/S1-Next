@@ -209,6 +209,12 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
                 + mLayoutManager.findLastCompletelyVisibleItemPosition()) / 2;
     }
 
+    void notifyDataSetChanged() {
+        if (mRecyclerAdapter != null) {
+            getRecyclerView().setAdapter(mRecyclerAdapter);
+        }
+    }
+
     @Override
     Observable<PostsWrapper> getSourceObservable() {
         return mS1Service.getPostsWrapper(mThreadId, mPageNum);

@@ -248,5 +248,9 @@
     <string name="pm_desc_to_me"><![CDATA[<b>%s</b> <i>said to</i> <b>Me</b> :]]></string>
     <string name="whispers">Whispers</string>
     <string name="title_new_pm">New pm</string>
+    <string name="menu_post_selectable">Post Selectable</string>
+    <string name="dialog_message_post_selectable_warn">If post text selectable, post text will auto scroll to top after switch pages (for copy text)</string>
+    <string name="dialog_message_post_unselectable_warn">If post text unselectable, post text will not auto scroll to top  after switch pages (recommend for reading)</string>
+    <string name="dialog_message_text_switch">Switch</string>
 
 </resources>

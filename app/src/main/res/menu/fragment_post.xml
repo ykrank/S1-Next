@@ -39,4 +39,11 @@
         android:orderInCategory="27"
         android:title="@string/menu_load_progress"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_post_selectable"
+        android:orderInCategory="28"
+        android:title="@string/menu_post_selectable"
+        android:checkable="true"
+        android:checked="@bool/pref_post_selectable_default_value"
+        app:showAsAction="never" />
 </menu>

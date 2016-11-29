@@ -160,4 +160,8 @@
     <string name="pm_desc_to_other"><![CDATA[<b>我</b> 对 <b>%s</b> 说 ：]]></string>
     <string name="whispers">私信</string>
     <string name="title_new_pm">新私信</string>
+    <string name="menu_post_selectable">帖子可复制</string>
+    <string name="dialog_message_post_selectable_warn">如果帖子文本可选，则切换页面时帖子文本将自动滚动到顶部（用来复制文本）</string>
+    <string name="dialog_message_post_unselectable_warn">如果帖子文本不可选，则帖子在切换页面时将不再自动滚动到顶部（阅读时推荐）</string>
+    <string name="dialog_message_text_switch">切换</string>
 </resources>
