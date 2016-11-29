@@ -63,11 +63,9 @@ android {
         }
         
         alpha {
-            debuggable true
             signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
-            applicationIdSuffix '.alpha'
             versionNameSuffix '-alpha'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
