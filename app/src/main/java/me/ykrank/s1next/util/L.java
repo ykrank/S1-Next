@@ -14,6 +14,10 @@ import static me.ykrank.s1next.App.LOG_TAG;
  * 对Log的包装
  */
 public class L {
+    
+    public static boolean showLog(){
+        return BuildConfig.DEBUG;
+    }
 
     public static void d(String msg) {
         d(LOG_TAG, msg);
@@ -44,45 +48,45 @@ public class L {
     }
 
     public static void d(String tag, String msg) {
-        if (BuildConfig.DEBUG) {
+        if (showLog()) {
             Log.d(tag, msg);
         }
     }
 
     public static void i(String tag, String msg) {
-        if (BuildConfig.DEBUG) {
+        if (showLog()) {
             Log.i(tag, msg);
         }
     }
 
     public static void w(String tag, String msg) {
-        if (BuildConfig.DEBUG) {
+        if (showLog()) {
             Log.w(tag, msg);
         }
     }
 
     public static void e(String tag, String msg) {
-        if (BuildConfig.DEBUG) {
+        if (showLog()) {
             Log.e(tag, msg);
         }
     }
 
     public static void d(String tag, String msg, Throwable tr) {
-        if (BuildConfig.DEBUG) {
+        if (showLog()) {
             Log.d(tag, msg, tr);
         }
     }
 
 
     public static void i(String tag, String msg, Throwable tr) {
-        if (BuildConfig.DEBUG) {
+        if (showLog()) {
             Log.i(tag, msg, tr);
         }
     }
 
 
     public static void e(String tag, String msg, Throwable tr) {
-        if (BuildConfig.DEBUG) {
+        if (showLog()) {
             Bugsnag.notify(tr, Severity.INFO);
         }
         if (Log.isLoggable(tag, Log.ERROR)) {
