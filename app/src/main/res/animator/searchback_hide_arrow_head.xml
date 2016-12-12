@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2015 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,10 +14,11 @@
   limitations under the License.
   -->
 
-<objectAnimator
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:duration="@integer/searchback_show_hide_arrow_head_duration"
-    android:interpolator="@anim/fast_out_slow_in"
+    android:interpolator="@android:interpolator/fast_out_slow_in"
     android:propertyName="trimPathEnd"
     android:valueFrom="@fraction/searchback_arrow_head_back_trim_end"
-    android:valueTo="@fraction/searchback_arrow_head_search_trim_end" />
+    android:valueTo="@fraction/searchback_arrow_head_search_trim_end"
+    tools:targetApi="lollipop" />

@@ -21,7 +21,7 @@ android {
     defaultConfig {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 14
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 17
         versionName '0.7.1'
         vectorDrawables.useSupportLibrary = true
@@ -97,8 +97,8 @@ bugsnag {
 
 //http://stackoverflow.com/questions/28683327/how-to-check-if-gradle-dependency-has-new-version
 dependencies {
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.7'
-    compile 'com.google.dagger:dagger:2.7'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.8'
+    compile 'com.google.dagger:dagger:2.8'
     // https://github.com/google/dagger/issues/95
     provided 'javax.annotation:jsr250-api:1.0'
 
@@ -119,13 +119,14 @@ dependencies {
 
     // https://github.com/google/guava/wiki/UsingProGuardWithGuava
     // do not update
+    //noinspection NewerVersionAvailable
     compile 'com.google.guava:guava:19.0'
     provided 'com.google.code.findbugs:jsr305:3.0.1'
     provided 'com.google.j2objc:j2objc-annotations:1.1'
     compile 'org.apache.commons:commons-lang3:3.5'
 
-    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.4.2'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.4.2'
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.5.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.1-SNAPSHOT'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.1-SNAPSHOT'
     compile 'com.squareup.retrofit2:converter-jackson:2.1.1-SNAPSHOT'
@@ -133,9 +134,9 @@ dependencies {
 
     compile 'com.bugsnag:bugsnag-android:3.7.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.4'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
     compile 'com.hannesdorfmann:adapterdelegates3:3.0.1-SNAPSHOT'
-    compile 'io.reactivex:rxjava:1.2.2'
+    compile 'io.reactivex:rxjava:1.2.3'
     compile 'io.reactivex:rxandroid:1.2.1'
 
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'

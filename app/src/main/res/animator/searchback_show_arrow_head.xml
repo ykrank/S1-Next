@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2015 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,18 +14,17 @@
   limitations under the License.
   -->
 
-<set
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<set xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:ordering="together"
     tools:targetApi="lollipop">
 
     <!-- first we need to immediately reset state -->
     <objectAnimator
-        android:duration="0"
         android:propertyName="trimPathEnd"
+        android:duration="0"
         android:valueFrom="@fraction/searchback_arrow_head_search_trim_end"
-        android:valueTo="@fraction/searchback_arrow_head_search_trim_end"/>
+        android:valueTo="@fraction/searchback_arrow_head_search_trim_end" />
 
     <!-- then run the animation after a delay -->
     <objectAnimator
@@ -36,13 +34,5 @@
         android:startOffset="@integer/searchback_show_arrow_head_delay"
         android:duration="@integer/searchback_show_hide_arrow_head_duration"
         android:interpolator="@android:interpolator/fast_out_slow_in" />
-
-    <objectAnimator
-        android:propertyName="translateX"
-        android:valueFrom="100"
-        android:valueTo="20"
-        android:startOffset="@integer/searchback_show_arrow_head_delay"
-        android:duration="@integer/searchback_show_hide_arrow_head_duration"
-        android:interpolator="@android:interpolator/fast_out_slow_in"/>
 
 </set>

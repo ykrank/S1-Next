@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2015 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +14,10 @@
   limitations under the License.
   -->
 
-<set
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:ordering="together">
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:ordering="together"
+    tools:targetApi="lollipop">
 
     <objectAnimator
         android:propertyName="trimPathStart"

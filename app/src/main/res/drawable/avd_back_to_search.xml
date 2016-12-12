@@ -22,6 +22,10 @@
     tools:targetApi="lollipop">
 
     <target
+        android:name="arrow_head"
+        android:animation="@animator/searchback_hide_arrow_head_move" />
+
+    <target
         android:name="arrow_head_top"
         android:animation="@animator/searchback_hide_arrow_head" />
 

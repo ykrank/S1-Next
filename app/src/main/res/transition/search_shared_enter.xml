@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2016 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,14 +14,17 @@
   limitations under the License.
   -->
 
+
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:duration="650"
-    android:transitionOrdering="together">
+    android:transitionOrdering="together"
+    tools:targetApi="lollipop">
 
     <targets>
         <target android:targetId="@id/searchback" />
     </targets>
-    <changeBounds android:interpolator="@anim/fast_out_slow_in" />
+    <changeBounds android:interpolator="@android:interpolator/fast_out_slow_in" />
     <transition
         class="me.ykrank.s1next.view.transition.StartAnimatable"
         android:src="@drawable/avd_search_to_back" />

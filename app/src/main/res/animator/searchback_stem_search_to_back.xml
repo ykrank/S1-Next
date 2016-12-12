@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2015 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,22 +14,25 @@
   limitations under the License.
   -->
 
-<set
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:ordering="together">
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:ordering="together"
+    tools:targetApi="lollipop">
 
     <objectAnimator
-        android:propertyName="trimPathStart"
-        android:valueFrom="@fraction/searchback_stem_search_trim_start"
-        android:valueTo="@fraction/searchback_stem_back_trim_start"
         android:duration="@integer/searchback_stem_trim_longer_duration"
-        android:interpolator="@anim/fast_out_slow_in" />
+        android:interpolator="@android:interpolator/fast_out_slow_in"
+        android:propertyName="trimPathStart"
+        android:startOffset="110"
+        android:valueFrom="@fraction/searchback_stem_search_trim_start"
+        android:valueTo="@fraction/searchback_stem_back_trim_start" />
 
     <objectAnimator
-        android:propertyName="trimPathEnd"
-        android:valueFrom="@fraction/searchback_stem_search_trim_end"
-        android:valueTo="@fraction/searchback_stem_back_trim_end"
         android:duration="@integer/searchback_stem_trim_shorter_duration"
-        android:interpolator="@anim/fast_out_slow_in" />
+        android:interpolator="@android:interpolator/fast_out_slow_in"
+        android:propertyName="trimPathEnd"
+        android:startOffset="50"
+        android:valueFrom="@fraction/searchback_stem_search_trim_end"
+        android:valueTo="@fraction/searchback_stem_back_trim_end" />
 
 </set>
