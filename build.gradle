@@ -31,6 +31,6 @@ task clean(type: Delete) {
 }
 
 ext {
-    supportVersion = '25.0.1'
-    buildToolsVersion = '25.0.1'
+    supportVersion = '25.1.0'
+    buildToolsVersion = '25.0.2'
 }
