@@ -23,7 +23,6 @@ import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.BuildConfig;
-import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import okhttp3.Call;
@@ -81,8 +80,7 @@ public final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
                     mDownloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature());
             if (AvatarUrlsCache.has(key)) {
                 // already have cached this avatar url
-                mInputStream = mResources.openRawResource(+R.drawable.ic_avatar_placeholder);
-                return mInputStream;
+                return null;
             }
         }
 
@@ -98,11 +96,15 @@ public final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
             // if (this this a avatar URL) && (this URL is cacheable)
             if (key != null && isCacheable(response)) {
                 AvatarUrlsCache.put(key);
-                mInputStream = mResources.openRawResource(+R.drawable.ic_avatar_placeholder);
-                return mInputStream;
+                return null;
             }
 
             throw new IOException("Response (status code " + response.code() + ") is unsuccessful.");
+        } else {
+            // if (this this a avatar URL) && (this URL is cacheable)
+            if (key != null && AvatarUrlsCache.has(key)) {
+                AvatarUrlsCache.remove(key);
+            }
         }
 
         long contentLength = mResponseBody.contentLength();
@@ -266,6 +268,22 @@ public final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
                     } else {
                         editor.abort();
                     }
+                }
+            } catch (IOException ignore) {
+
+            }
+        }
+
+        private static void remove(Key key) {
+            String encodedKey = INSTANCE.keyGenerator.getKey(key);
+            if (encodedKey == null) {
+                return;
+            }
+
+            INSTANCE.lruCache.remove(encodedKey);
+            try {
+                synchronized (DISK_CACHE_LOCK) {
+                    INSTANCE.diskLruCache.remove(encodedKey);
                 }
             } catch (IOException ignore) {
 

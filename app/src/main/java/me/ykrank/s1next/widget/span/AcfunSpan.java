@@ -1,10 +1,7 @@
 package me.ykrank.s1next.widget.span;
 
-import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.Browser;
 import android.support.annotation.NonNull;
@@ -69,13 +66,9 @@ public class AcfunSpan implements PostMovementMethod.URLSpanClick{
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
         try {
-            PackageManager pm = context.getPackageManager();
-            ComponentName cn = intent.resolveActivity(pm);
-            if (cn == null)
-                throw new ActivityNotFoundException();
             context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            L.e("AcfunURLSpan", "Acfun Actvity was not found for intent, " + intent.toString());
+        } catch (Throwable e) {
+            L.report("AcfunURLSpan, Acfun Actvity was not found for intent, " + intent.toString(), e);
         }
     }
 

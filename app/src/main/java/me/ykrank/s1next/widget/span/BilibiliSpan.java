@@ -1,9 +1,8 @@
 package me.ykrank.s1next.widget.span;
 
-import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -122,12 +121,14 @@ public class BilibiliSpan implements PostMovementMethod.URLSpanClick {
         intent.setClassName("tv.danmaku.bili", "tv.danmaku.bili.ui.IntentHandlerActivity");
         try {
             PackageManager pm = context.getPackageManager();
-            ComponentName cn = intent.resolveActivity(pm);
-            if (cn == null)
-                throw new ActivityNotFoundException();
-            context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            L.e("BilibiliURLSpan", "Bilibili Actvity was not found for intent, " + intent.toString());
+            ActivityInfo ai = intent.resolveActivityInfo(pm, PackageManager.MATCH_DEFAULT_ONLY);
+            if (ai == null) {
+                context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            } else {
+                context.startActivity(intent);
+            }
+        } catch (Throwable e) {
+            L.report("BilibiliURLSpan startActivity error for intent, " + intent.toString(), e);
             context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
         }
     }
@@ -154,7 +155,7 @@ public class BilibiliSpan implements PostMovementMethod.URLSpanClick {
         }
     }
 
-    private static class HostFilter{
+    private static class HostFilter {
         private String host;
         private String filter;
     }

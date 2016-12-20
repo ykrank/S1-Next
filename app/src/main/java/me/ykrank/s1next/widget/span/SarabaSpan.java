@@ -1,9 +1,8 @@
 package me.ykrank.s1next.widget.span;
 
-import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.util.Pair;
@@ -68,12 +67,14 @@ public class SarabaSpan implements PostMovementMethod.URLSpanClick {
         intent.setClass(context, PostListGatewayActivity.class);
         try {
             PackageManager pm = context.getPackageManager();
-            ComponentName cn = intent.resolveActivity(pm);
-            if (cn == null)
-                throw new ActivityNotFoundException();
-            context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            L.e("SarabaURLSpan", "Saraba Actvity was not found for intent, " + intent.toString());
+            ActivityInfo ai = intent.resolveActivityInfo(pm, PackageManager.MATCH_DEFAULT_ONLY);
+            if (ai == null) {
+                context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            } else {
+                context.startActivity(intent);
+            }
+        } catch (Throwable e) {
+            L.report("SarabaURLSpan startActivity error for intent, " + intent.toString(), e);
             context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
         }
     }
