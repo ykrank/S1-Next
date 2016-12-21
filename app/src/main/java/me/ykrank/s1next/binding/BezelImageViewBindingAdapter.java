@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
 import me.ykrank.s1next.App;
@@ -21,6 +22,8 @@ import me.ykrank.s1next.util.ActivityUtils;
 import me.ykrank.s1next.view.activity.GalleryActivity;
 import me.ykrank.s1next.widget.BezelImageView;
 import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
+import me.ykrank.s1next.widget.glide.OriginalKey;
 
 public final class BezelImageViewBindingAdapter {
 
@@ -77,12 +80,16 @@ public final class BezelImageViewBindingAdapter {
             avatarDrawableRequestBuilder.signature(
                     downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
                     .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(bezelImageView);
 
             //点击显示头像大图
+            //同时刷新错误头像的列表
             bezelImageView.setOnClickListener(v -> {
-                GalleryActivity.startGalleryActivity(v.getContext(), Api.getAvatarBigUrl(post.getAuthorId())
-                        , url);
+                String bigAvatarUrl = Api.getAvatarBigUrl(post.getAuthorId());
+                AvatarUrlsCache.remove(OriginalKey.obtainAvatarKey(downloadPreferencesManager, url));
+                AvatarUrlsCache.remove(OriginalKey.obtainAvatarKey(downloadPreferencesManager, bigAvatarUrl));
+                GalleryActivity.startGalleryActivity(v.getContext(), bigAvatarUrl);
             });
             //长按显示抹布菜单
             bezelImageView.setOnLongClickListener((View v) -> {
@@ -124,6 +131,7 @@ public final class BezelImageViewBindingAdapter {
                 .error(R.drawable.ic_drawer_avatar_placeholder)
                 .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
                 .transform(new CenterCrop(Glide.get(context).getBitmapPool()))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(bezelImageView);
 
     }

@@ -1,6 +1,7 @@
 package me.ykrank.s1next.binding;
 
 import android.databinding.BindingAdapter;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 
 import com.bumptech.glide.DrawableRequestBuilder;
@@ -27,15 +28,17 @@ public final class PhotoViewBindingAdapter {
                 .load(url)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .transform(new TransformationUtil.GlMaxTextureSizeBitmapTransformation(
-                        photoView.getContext()));
+                        photoView.getContext()))
+                .placeholder(android.R.color.white)
+                .error(R.drawable.ic_avatar_placeholder);
         if (thumbUrl != null) {
             DrawableRequestBuilder<String> thumbnailRequest = Glide
                     .with(photoView.getContext())
-                    .load(thumbUrl);
-            builder = builder.thumbnail(thumbnailRequest);
-        } else {
-            builder = builder.placeholder(android.R.color.white)
+                    .load(thumbUrl)
+                    .placeholder(android.R.color.white)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .error(R.drawable.ic_avatar_placeholder);
+            builder = builder.thumbnail(thumbnailRequest);
         }
 
         builder.into(new SimpleTarget<GlideDrawable>() {
@@ -47,6 +50,16 @@ public final class PhotoViewBindingAdapter {
                 if (resource.isAnimated()) {
                     resource.setLoopCount(GlideDrawable.LOOP_FOREVER);
                     resource.start();
+                }
+            }
+
+            @Override
+            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                // if has thumbUrl, then only show thumb
+                if (thumbUrl != null) {
+                    loadImage(photoView, thumbUrl, null);
+                } else {
+                    photoView.bindDrawable(errorDrawable);
                 }
             }
         });
