@@ -33,7 +33,7 @@ public final class PostSelectableChangeDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         boolean prependSelectable = getArguments().getBoolean(ARG_SELECTABLE);
-        String msg = null;
+        String msg;
         if (prependSelectable) {
             msg = getString(R.string.dialog_message_post_selectable_warn);
         } else {

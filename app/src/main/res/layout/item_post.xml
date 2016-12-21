@@ -26,10 +26,6 @@
         <variable
             name="drawableRequestBuilder"
             type="com.bumptech.glide.DrawableRequestBuilder&lt;String>" />
-        
-        <variable
-            name="selectable"
-            type="boolean"/>
     </data>
 
     <android.support.v7.widget.CardView
@@ -70,8 +66,7 @@
             android:includeFontPadding="false"
             android:lines="1"
             android:text="@{postViewModel.post.authorName}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textIsSelectable="@{selectable}" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -96,10 +91,8 @@
             android:includeFontPadding="false"
             android:maxLines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textIsSelectable="@{selectable}"
             app:eventBus="@{eventBus}"
             app:increaseClickingArea="@{@dimen/minimum_touch_target_size}"
-            app:movementMethod="@{LinkMovementMethod.instance}"
             app:post="@{postViewModel.post}" />
 
         <!-- layout_marginTop = 72dp (two line height with avatar) - 16dp (RelativeLayout's top padding) -->
@@ -111,8 +104,6 @@
             android:layout_marginTop="@dimen/single_line_height_with_avatar"
             android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textIsSelectable="@{selectable}"
-            app:movementMethod="@{PostMovementMethod.instance}"
             app:reply="@{postViewModel.post.reply}"
             app:hide="@{postViewModel.post.hide}"/>
 

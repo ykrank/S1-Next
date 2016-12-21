@@ -16,6 +16,7 @@ import me.ykrank.s1next.view.adapter.delegate.PmRightAdapterDelegate;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
 import me.ykrank.s1next.view.fragment.FavouriteListFragment;
 import me.ykrank.s1next.view.fragment.PmFragment;
+import me.ykrank.s1next.view.fragment.PostListPagerFragment;
 import me.ykrank.s1next.view.fragment.WebLoginFragment;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EventBus;
@@ -60,4 +61,6 @@ public interface AppComponent {
     void inject(PmLeftAdapterDelegate pmLeftAdapterDelegate);
 
     void inject(PmRightAdapterDelegate pmRightAdapterDelegate);
+
+    void inject(PostListPagerFragment postListPagerFragment);
 }

@@ -30,6 +30,7 @@ import me.ykrank.s1next.data.db.BlackListDbWrapper;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
 import me.ykrank.s1next.data.event.BlackListAddEvent;
+import me.ykrank.s1next.data.event.PostSelectableChangeEvent;
 import me.ykrank.s1next.data.event.QuoteEvent;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
@@ -308,12 +309,13 @@ public final class PostListFragment extends BaseViewPagerFragment
                 loadReadProgress();
                 return true;
             case R.id.menu_post_selectable:
+                //Switch text selectable
                 PostSelectableChangeDialogFragment.newInstance(!item.isChecked())
                         .setPositiveListener((dialog, which) -> {
                             //reload all data
                             item.setChecked(!item.isChecked());
                             mGeneralPreferencesManager.invalidatePostSelectable(item.isChecked());
-                            loadViewPager();
+                            mEventBus.post(new PostSelectableChangeEvent());
                         })
                         .show(getFragmentManager(), null);
                 return true;

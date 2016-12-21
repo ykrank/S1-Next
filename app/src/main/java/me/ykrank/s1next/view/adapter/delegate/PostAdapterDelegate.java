@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.LinkMovementMethod;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.DrawableRequestBuilder;
@@ -22,6 +23,7 @@ import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.databinding.ItemPostBinding;
 import me.ykrank.s1next.viewmodel.PostViewModel;
 import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.span.PostMovementMethod;
 
 public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAdapterDelegate.ItemViewBindingHolder> {
 
@@ -58,14 +60,21 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {
-        ItemPostBinding itemPostBinding = DataBindingUtil.inflate(mLayoutInflater,
+        ItemPostBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_post, parent, false);
-        itemPostBinding.setEventBus(mEventBus);
-        itemPostBinding.setDownloadPreferencesManager(mDownloadPreferencesManager);
-        itemPostBinding.setDrawableRequestBuilder(mAvatarRequestBuilder);
-        itemPostBinding.setPostViewModel(new PostViewModel());
+        binding.setEventBus(mEventBus);
+        binding.setDownloadPreferencesManager(mDownloadPreferencesManager);
+        binding.setDrawableRequestBuilder(mAvatarRequestBuilder);
+        binding.setPostViewModel(new PostViewModel());
 
-        return new ItemViewBindingHolder(itemPostBinding);
+        //If setTextIsSelectable, then should reset movement
+        boolean selectable = mGeneralPreferencesManager.isPostSelectable();
+        binding.tvFloor.setTextIsSelectable(selectable);
+        binding.tvReply.setTextIsSelectable(selectable);
+        binding.tvFloor.setMovementMethod(LinkMovementMethod.getInstance());
+        binding.tvReply.setMovementMethod(PostMovementMethod.getInstance());
+
+        return new ItemViewBindingHolder(binding);
     }
 
     @Override
@@ -73,7 +82,14 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
         ItemPostBinding binding = holder.itemPostBinding;
         binding.getPostViewModel().post.set(post);
         binding.executePendingBindings();
-        binding.setSelectable(mGeneralPreferencesManager.isPostSelectable());
+
+        boolean selectable = mGeneralPreferencesManager.isPostSelectable();
+        if (selectable != binding.tvReply.isTextSelectable()) {
+            binding.tvFloor.setTextIsSelectable(selectable);
+            binding.tvReply.setTextIsSelectable(selectable);
+            binding.tvFloor.setMovementMethod(LinkMovementMethod.getInstance());
+            binding.tvReply.setMovementMethod(PostMovementMethod.getInstance());
+        }
     }
 
     // Bug workaround for losing text selection ability, see:

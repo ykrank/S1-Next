@@ -13,6 +13,9 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
@@ -20,6 +23,7 @@ import me.ykrank.s1next.data.api.model.collection.Posts;
 import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
+import me.ykrank.s1next.data.event.PostSelectableChangeEvent;
 import me.ykrank.s1next.databinding.FragmentBaseCardViewContainerBinding;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.LooperUtil;
@@ -27,6 +31,7 @@ import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.PostListRecyclerViewAdapter;
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegate;
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateBaseCardViewContainerImpl;
+import me.ykrank.s1next.widget.EventBus;
 import rx.Observable;
 import rx.Subscription;
 
@@ -46,6 +51,9 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
      */
     private static final String ARG_QUOTE_POST_ID = "quote_post_id";
 
+    @Inject
+    EventBus mEventBus;
+
     private String mThreadId;
     private int mPageNum;
     /**
@@ -61,6 +69,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
     private PagerCallback mPagerCallback;
 
     private Subscription saveReadProgressSubscription;
+    private Subscription changeSeletableSubscription;
 
     public static PostListPagerFragment newInstance(String threadId, int pageNum) {
         return newInstance(threadId, pageNum, null, null);
@@ -90,6 +99,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        App.getAppComponent(getContext()).inject(this);
         super.onViewCreated(view, savedInstanceState);
 
         mThreadId = getArguments().getString(ARG_THREAD_ID);
@@ -119,6 +129,12 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
                 }
             }
         });
+
+        changeSeletableSubscription = mEventBus.get()
+                .ofType(PostSelectableChangeEvent.class)
+                .subscribe(event -> {
+                    mRecyclerAdapter.notifyDataSetChanged();
+                }, super::onError);
     }
 
     @Override
@@ -133,6 +149,12 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
         super.onDetach();
 
         mPagerCallback = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        RxJavaUtil.unsubscribeIfNotNull(changeSeletableSubscription);
+        super.onDestroyView();
     }
 
     @Override

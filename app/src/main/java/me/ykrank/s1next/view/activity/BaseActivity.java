@@ -78,7 +78,7 @@ public abstract class BaseActivity extends AppCompatActivity
     @Nullable
     private WeakReference<Snackbar> mSnackbar;
 
-    private Subscription mSubscription;
+    private Subscription mRecreateSubscription;
 
     /**
      * @see #setResultMessage(Activity, CharSequence)
@@ -118,7 +118,7 @@ public abstract class BaseActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
 
-        mSubscription = mEventBus.get()
+        mRecreateSubscription = mEventBus.get()
                 .filter(o -> (o instanceof ThemeChangeEvent || o instanceof FontSizeChangeEvent))
                 .subscribe(o -> {
                     getWindow().setWindowAnimations(R.style.Animation_Recreate);
@@ -156,7 +156,7 @@ public abstract class BaseActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        RxJavaUtil.unsubscribeIfNotNull(mSubscription);
+        RxJavaUtil.unsubscribeIfNotNull(mRecreateSubscription);
         if (mDrawerLayoutDelegate != null) {
             mDrawerLayoutDelegate.onDestroy();
             mDrawerLayoutDelegate = null;
