@@ -98,7 +98,7 @@ public final class TextViewBindingAdapter {
             ViewUtil.concatWithTwoSpacesForRtlSupport(textView,
                     "[" + textView.getContext().getString(R.string.user_in_blacklist) + "]");
             textView.setTextColor(Color.GRAY);
-        }else {
+        } else {
             textView.setTextColor(ResourceUtil.getTextColorPrimary(textView.getContext()));
         }
         // disable TextView if user has no permission to access this thread
@@ -136,21 +136,27 @@ public final class TextViewBindingAdapter {
         }
     }
 
-    @BindingAdapter({"reply", "hide"})
-    public static void setReply(TextView textView, @Nullable String reply, boolean hide) {
-        if (hide) {
-            textView.setText("");
-            // add thread's permission hint
-            ViewUtil.concatWithTwoSpacesForRtlSupport(textView,
-                    "[" + textView.getContext().getString(R.string.user_in_blacklist) + "]");
+    @BindingAdapter({"reply"})
+    public static void setReply(TextView textView, Post post) {
+        if (post == null) {
             return;
         }
-        if (TextUtils.isEmpty(reply)) {
+        if (post.isHide()) {
+            textView.setText("");
+            String text = "[" + textView.getContext().getString(R.string.user_in_blacklist) + "]";
+            if (!TextUtils.isEmpty(post.getRemark())) {
+                text += "-[" + post.getRemark() + "]";
+            }
+            // add reply's blacklist hint
+            ViewUtil.concatWithTwoSpacesForRtlSupport(textView, text);
+            return;
+        }
+        if (TextUtils.isEmpty(post.getReply())) {
             textView.setText(null);
         } else {
             // use GlideImageGetter to show images in TextView
             //noinspection deprecation
-            textView.setText(Html.fromHtml(reply, GlideImageGetter.get(textView), new TagHandler()));
+            textView.setText(Html.fromHtml(post.getReply(), GlideImageGetter.get(textView), new TagHandler()));
         }
     }
 

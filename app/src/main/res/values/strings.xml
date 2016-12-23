@@ -252,5 +252,7 @@
     <string name="dialog_message_post_selectable_warn">If post text selectable, post text will auto scroll to top after switch pages (for copy text)</string>
     <string name="dialog_message_post_unselectable_warn">If post text unselectable, post text will not auto scroll to top  after switch pages (recommend for reading)</string>
     <string name="dialog_message_text_switch">Switch</string>
+    <string name="dialog_button_text_confirm">Confirm</string>
+    <string name="prompt_blacklist_remark">Blacklist remark</string>
 
 </resources>

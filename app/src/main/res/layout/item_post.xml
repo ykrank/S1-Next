@@ -7,10 +7,6 @@
 
     <data>
 
-        <import type="me.ykrank.s1next.widget.span.PostMovementMethod" />
-
-        <import type="android.text.method.LinkMovementMethod" />
-
         <variable
             name="postViewModel"
             type="me.ykrank.s1next.viewmodel.PostViewModel" />
@@ -104,8 +100,7 @@
             android:layout_marginTop="@dimen/single_line_height_with_avatar"
             android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            app:reply="@{postViewModel.post.reply}"
-            app:hide="@{postViewModel.post.hide}"/>
+            app:reply="@{postViewModel.post}" />
 
     </RelativeLayout>
 

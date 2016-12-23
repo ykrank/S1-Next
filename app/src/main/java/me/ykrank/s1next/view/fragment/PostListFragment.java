@@ -191,7 +191,9 @@ public final class PostListFragment extends BaseViewPagerFragment
                 .subscribe(blackListEvent -> {
                     BlackListDbWrapper dbWrapper = BlackListDbWrapper.getInstance();
                     if (blackListEvent.isAdd()) {
-                        RxJavaUtil.workWithUiThread(() -> dbWrapper.saveDefaultBlackList(blackListEvent.getAuthorPostId(), blackListEvent.getAuthorPostName()),
+                        RxJavaUtil.workWithUiThread(() -> dbWrapper.saveDefaultBlackList(
+                                blackListEvent.getAuthorPostId(), blackListEvent.getAuthorPostName(),
+                                blackListEvent.getRemark()),
                                 this::afterBlackListChange);
                     } else {
                         RxJavaUtil.workWithUiThread(() -> dbWrapper.delDefaultBlackList(blackListEvent.getAuthorPostId(), blackListEvent.getAuthorPostName()),

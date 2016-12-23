@@ -2,6 +2,7 @@ package me.ykrank.s1next.data.api.model.collection;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -54,42 +55,48 @@ public final class Posts extends Account {
         return postList;
     }
 
-    public static List<Post> getFilterPostList(final List<Post> oPosts) {
+    /**
+     * @see #filterPost(Post)
+     */
+    public static List<Post> filterPostList(final List<Post> oPosts) {
         List<Post> posts = new ArrayList<>();
-        for (Post post:oPosts) {
-            Post fPost = getFilterPost(post);
-            if (fPost != null){
+        for (Post post : oPosts) {
+            Post fPost = filterPost(post);
+            if (fPost != null) {
                 posts.add(fPost);
             }
         }
         return posts;
     }
-    
-    public static Post getFilterPost(final Post post){
+
+    /**
+     * 对数据源进行处理，标记黑名单用户<br>
+     * 如果修改了过滤状态，则会返回不同的对象
+     */
+    @Nullable
+    public static Post filterPost(final Post post) {
         Post nPost = post;
         BlackListDbWrapper blackListWrapper = BlackListDbWrapper.getInstance();
-        switch (blackListWrapper.getPostFlag(Integer.valueOf(post.getAuthorId()), post.getAuthorName())){
-            case BlackList.DEL_POST:
-                nPost = null;
-                break;
-            case BlackList.HIDE_POST:
-                if (!post.isHide()){
-                    nPost = post.clone();
-                    nPost.setHide(true);
-                }
-                break;
-            default:
-                if (post.isHide()){
-                    nPost = post.clone();
-                    nPost.setHide(false);
-                }
-                break;
+        BlackList blackList = blackListWrapper.getBlackListDefault(Integer.valueOf(post.getAuthorId()), post.getAuthorName());
+        if (blackList == null || blackList.post == BlackList.NORMAL) {
+            if (post.isHide()) {
+                nPost = post.clone();
+                nPost.setHide(false);
+            }
+        } else if (blackList.post == BlackList.DEL_POST) {
+            nPost = null;
+        } else if (blackList.post == BlackList.HIDE_POST) {
+            if (!post.isHide()) {
+                nPost = post.clone();
+                nPost.setHide(true);
+            }
+            nPost.setRemark(blackList.remark);
         }
         return nPost;
     }
 
     public void setPostList(List<Post> postList) {
-        this.postList = getFilterPostList(postList);
+        this.postList = filterPostList(postList);
     }
 
     @Override

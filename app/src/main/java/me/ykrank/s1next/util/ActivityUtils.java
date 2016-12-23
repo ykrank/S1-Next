@@ -2,6 +2,7 @@ package me.ykrank.s1next.util;
 
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Build;
@@ -33,5 +34,24 @@ public final class ActivityUtils {
             }
         }
         return false;
+    }
+
+    /**
+     * get base context (FragmentActivity, Activity, ApplicationContext) ContextWrapper <br>
+     * fork from {@link com.bumptech.glide.manager.RequestManagerRetriever#get(Context)}
+     */
+    public static Context getBaseContext(Context context) {
+        if (context == null) {
+            throw new IllegalArgumentException("You cannot start a load on a null Context");
+        } else if (LooperUtil.isOnMainThread() && !(context instanceof Application)) {
+            if (context instanceof FragmentActivity) {
+                return context;
+            } else if (context instanceof Activity) {
+                return context;
+            } else if (context instanceof ContextWrapper) {
+                return getBaseContext(((ContextWrapper) context).getBaseContext());
+            }
+        }
+        return context.getApplicationContext();
     }
 }

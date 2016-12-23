@@ -164,4 +164,6 @@
     <string name="dialog_message_post_selectable_warn">如果帖子文本可选，则切换页面时帖子文本将自动滚动到顶部（用来复制文本）</string>
     <string name="dialog_message_post_unselectable_warn">如果帖子文本不可选，则帖子在切换页面时将不再自动滚动到顶部（阅读时推荐）</string>
     <string name="dialog_message_text_switch">切换</string>
+    <string name="dialog_button_text_confirm">确定</string>
+    <string name="prompt_blacklist_remark">抹布备注</string>
 </resources>

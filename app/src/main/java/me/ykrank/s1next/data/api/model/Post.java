@@ -47,7 +47,11 @@ public final class Post implements Cloneable, SameItem {
     @JsonProperty("attachments")
     private Map<Integer, Attachment> attachmentMap;
 
+    @JsonIgnore
     private boolean hide = false;
+
+    @JsonIgnore
+    private String remark;
 
     public Post() {
     }
@@ -132,6 +136,13 @@ public final class Post implements Cloneable, SameItem {
         this.hide = hide;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -145,12 +156,13 @@ public final class Post implements Cloneable, SameItem {
                 Objects.equal(reply, post.reply) &&
                 Objects.equal(count, post.count) &&
                 Objects.equal(attachmentMap, post.attachmentMap) &&
-                Objects.equal(hide, post.hide);
+                Objects.equal(hide, post.hide) &&
+                Objects.equal(remark, post.remark);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, authorName, authorId, reply, count, datetime, attachmentMap);
+        return Objects.hashCode(id, authorName, authorId, reply, count, datetime, attachmentMap, hide, remark);
     }
 
     @Override
@@ -213,8 +225,9 @@ public final class Post implements Cloneable, SameItem {
     private String hideBlackListQuote(String reply) {
         String quoteName = findBlockQuoteName(reply);
         if (quoteName != null) {
-            if (BlackListDbWrapper.getInstance().getPostFlag(-1, quoteName) != BlackList.NORMAL) {
-                return replaceBlockQuoteContent(reply);
+            BlackList blackList = BlackListDbWrapper.getInstance().getBlackListDefault(-1, quoteName);
+            if (blackList != null && blackList.post != BlackList.NORMAL) {
+                return replaceBlockQuoteContent(reply, blackList.remark);
             }
         }
         return reply;
@@ -246,20 +259,22 @@ public final class Post implements Cloneable, SameItem {
      * 替换对已屏蔽对象的引用内容
      *
      * @param reply
+     * @param remark
      * @return
      */
-    private String replaceBlockQuoteContent(String reply) {
+    private String replaceBlockQuoteContent(String reply, String remark) {
         Pattern pattern = Pattern.compile("</font></a>[\\s\\S]*</blockquote>");
         Matcher matcher = pattern.matcher(reply);
+        String reText;
         if (matcher.find()) {
-            return reply.replaceFirst("</font></a>[\\s\\S]*</blockquote>",
-                    "</font></a><br />\r\n[已被抹布]</blockquote>");
+            reText = "</font></a><br />\r\n[已被抹布]</blockquote>";
+            return reply.replaceFirst("</font></a>[\\s\\S]*</blockquote>", reText);
         } else {
             pattern = Pattern.compile("</font><br />[\\s\\S]*</blockquote>");
             matcher = pattern.matcher(reply);
             if (matcher.find()) {
-                return reply.replaceFirst("</font><br />[\\s\\S]*</blockquote>",
-                        "</font><br />\r\n[已被抹布]</blockquote>");
+                reText = "</font><br />\r\n[已被抹布]</blockquote>";
+                return reply.replaceFirst("</font><br />[\\s\\S]*</blockquote>", reText);
             }
         }
         return reply;
@@ -268,6 +283,7 @@ public final class Post implements Cloneable, SameItem {
     /**
      * 将B站链接添加自定义Tag
      * like "<bilibili>http://www.bilibili.com/video/av6706141/index_3.html</bilibili>"
+     *
      * @param reply
      * @return
      */
@@ -280,7 +296,7 @@ public final class Post implements Cloneable, SameItem {
                 //find av number
                 Pattern avPattern = Pattern.compile("\\{,=av\\}[0-9]+");
                 Matcher avMatcher = avPattern.matcher(content);
-                if (!avMatcher.find()){
+                if (!avMatcher.find()) {
                     continue;
                 }
                 int avNum = Integer.valueOf(avMatcher.group().substring(6));
@@ -288,7 +304,7 @@ public final class Post implements Cloneable, SameItem {
                 int page = 1;
                 Pattern pagePattern = Pattern.compile("\\{,=page\\}[0-9]+");
                 Matcher pageMatcher = pagePattern.matcher(content);
-                if (pageMatcher.find()){
+                if (pageMatcher.find()) {
                     page = Integer.valueOf(pageMatcher.group().substring(8));
                 }
 
@@ -300,7 +316,7 @@ public final class Post implements Cloneable, SameItem {
                 builder.append(".html</bilibili>");
 
                 reply = reply.replace(content, builder.toString());
-            }catch (Exception e){
+            } catch (Exception e) {
                 L.e(e);
             }
         }

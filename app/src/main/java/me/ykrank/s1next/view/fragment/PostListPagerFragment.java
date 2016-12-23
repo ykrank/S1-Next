@@ -307,7 +307,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
             List<Object> newData = new ArrayList<>();
             for (Object obj : dataSet) {
                 if (obj instanceof Post) {
-                    obj = Posts.getFilterPost((Post) obj);
+                    obj = Posts.filterPost((Post) obj);
                     if (obj != null) {
                         newData.add(obj);
                     }

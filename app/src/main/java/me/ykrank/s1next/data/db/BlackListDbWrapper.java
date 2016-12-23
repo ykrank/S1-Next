@@ -130,10 +130,11 @@ public class BlackListDbWrapper {
         }
     }
 
-    public void saveDefaultBlackList(int authorid, String author){
+    public void saveDefaultBlackList(int authorid, String author, String remark) {
         BlackList blackList = new BlackList();
         blackList.authorid = authorid;
         blackList.author = author;
+        blackList.remark = remark;
         blackList.post = BlackList.HIDE_POST;
         blackList.forum = BlackList.HIDE_FORUM;
         blackList.timestamp = System.currentTimeMillis();

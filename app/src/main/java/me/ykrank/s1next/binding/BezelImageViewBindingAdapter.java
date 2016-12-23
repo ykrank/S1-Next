@@ -2,6 +2,7 @@ package me.ykrank.s1next.binding;
 
 import android.content.Context;
 import android.databinding.BindingAdapter;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +20,9 @@ import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.event.BlackListAddEvent;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.util.ActivityUtils;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.GalleryActivity;
+import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment;
 import me.ykrank.s1next.widget.BezelImageView;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
@@ -42,7 +45,7 @@ public final class BezelImageViewBindingAdapter {
         if (ActivityUtils.isActivityDestroyedForGlide(context)) {
             return;
         }
-        
+
         DownloadPreferencesManager downloadPreferencesManager = App.getPrefComponent(context)
                 .getDownloadPreferencesManager();
         if (user.isLogged()) {
@@ -99,10 +102,16 @@ public final class BezelImageViewBindingAdapter {
                         case R.id.menu_popup_blacklist:
                             if (menuitem.getTitle().equals(bezelImageView.getContext().getString(R.string.menu_blacklist_remove))) {
                                 eventBus.post(new BlackListAddEvent(Integer.valueOf(post.getAuthorId()),
-                                        post.getAuthorName(), false));
+                                        post.getAuthorName(), null, false));
                             } else {
-                                eventBus.post(new BlackListAddEvent(Integer.valueOf(post.getAuthorId()),
-                                        post.getAuthorName(), true));
+                                Context context = ActivityUtils.getBaseContext(v.getContext());
+                                if (context instanceof FragmentActivity) {
+                                    BlackListRemarkDialogFragment.newInstance(Integer.valueOf(post.getAuthorId()),
+                                            post.getAuthorName()).show(((FragmentActivity) context).getSupportFragmentManager(),
+                                            BlackListRemarkDialogFragment.TAG);
+                                } else {
+                                    L.report(new IllegalStateException("抹布时头像Context不为FragmentActivity" + context));
+                                }
                             }
                             return true;
                         default:
