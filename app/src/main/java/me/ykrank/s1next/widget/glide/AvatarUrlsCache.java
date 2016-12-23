@@ -101,10 +101,15 @@ public enum AvatarUrlsCache {
         try {
             synchronized (DISK_CACHE_LOCK) {
                 DiskLruCache.Editor editor = INSTANCE.diskLruCache.edit(encodedKey);
-                if (editor.getFile(0).createNewFile()) {
-                    editor.commit();
-                } else {
-                    editor.abort();
+                // Editor will be null if there are two concurrent puts. In the worst case we will just silently fail.
+                if (editor != null) {
+                    try {
+                        if (editor.getFile(0).createNewFile()) {
+                            editor.commit();
+                        }
+                    } finally {
+                        editor.abortUnlessCommitted();
+                    }
                 }
             }
         } catch (IOException ignore) {

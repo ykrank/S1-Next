@@ -7,12 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
-import android.view.MenuItem;
 
 import org.apache.commons.lang3.StringUtils;
 
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.view.dialog.DiscardEditPromptDialogFragment;
 import me.ykrank.s1next.view.fragment.ReplyFragment;
 
 /**
@@ -48,7 +46,9 @@ public final class ReplyActivity extends BaseActivity {
         setupNavCrossIcon();
 
         Intent intent = getIntent();
+        String threadId = intent.getStringExtra(ARG_THREAD_ID);
         String quotePostId = intent.getStringExtra(ARG_QUOTE_POST_ID);
+
         String titlePrefix = TextUtils.isEmpty(quotePostId)
                 ? getString(R.string.reply_activity_title_prefix)
                 : getString(R.string.reply_activity_quote_title_prefix,
@@ -59,28 +59,12 @@ public final class ReplyActivity extends BaseActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(ReplyFragment.TAG);
         if (fragment == null) {
-            mReplyFragment = ReplyFragment.newInstance(intent.getStringExtra(ARG_THREAD_ID),
+            mReplyFragment = ReplyFragment.newInstance(threadId,
                     quotePostId);
             fragmentManager.beginTransaction().add(R.id.frame_layout, mReplyFragment,
                     ReplyFragment.TAG).commit();
         } else {
             mReplyFragment = (ReplyFragment) fragment;
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (mReplyFragment.isContentEmpty()) {
-                    finish();
-                } else {
-                    discardDialog();
-                }
-
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -91,15 +75,8 @@ public final class ReplyActivity extends BaseActivity {
     public void onBackPressed() {
         if (mReplyFragment.isEmoticonKeyboardShowing()) {
             mReplyFragment.hideEmoticonKeyboard();
-        } else if (mReplyFragment.isContentEmpty()) {
-            super.onBackPressed();
         } else {
-            discardDialog();
+            super.onBackPressed();
         }
-    }
-
-    private void discardDialog() {
-        DiscardEditPromptDialogFragment.newInstance(getString(R.string.dialog_message_new_thread_discard_prompt))
-                .show(getSupportFragmentManager(), DiscardEditPromptDialogFragment.TAG);
     }
 }

@@ -18,6 +18,9 @@ public final class NewPmFragment extends BasePostFragment {
 
     private static final String ARG_TO_UID = "arg_to_uid";
 
+    private static final String CACHE_KEY_PREFIX = "NewPm_%s";
+    private String cacheKey;
+
     private String mToUid;
 
     public static NewPmFragment newInstance(@NonNull String toUid) {
@@ -33,6 +36,7 @@ public final class NewPmFragment extends BasePostFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mToUid = getArguments().getString(ARG_TO_UID);
+        cacheKey = String.format(CACHE_KEY_PREFIX, mToUid);
         L.leaveMsg("NewPmFragment##mToUid"+mToUid);
     }
 
@@ -42,5 +46,10 @@ public final class NewPmFragment extends BasePostFragment {
                 ReplyRequestDialogFragment.TAG);
 
         return true;
+    }
+
+    @Override
+    public String getCacheKey() {
+        return cacheKey;
     }
 }

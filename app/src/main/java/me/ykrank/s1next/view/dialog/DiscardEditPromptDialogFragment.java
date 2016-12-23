@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.widget.EditorDiskCache;
 
 /**
  * A dialog shows prompt if user's reply is not empty and want
@@ -16,11 +17,22 @@ public final class DiscardEditPromptDialogFragment extends DialogFragment {
 
     public static final String TAG = DiscardEditPromptDialogFragment.class.getName();
 
+    private static final String ARG_KEY = "key";
+    private static final String ARG_CONTENT = "content";
     private static final String ARG_MESSAGE = "message";
 
-    public static DiscardEditPromptDialogFragment newInstance(String msg) {
+    /**
+     * show dialog when discard edit
+     *
+     * @param key     unique key to identify cache edit content
+     * @param content edit content
+     * @param msg     message show in dialog
+     */
+    public static DiscardEditPromptDialogFragment newInstance(String key, String content, String msg) {
         DiscardEditPromptDialogFragment fragment = new DiscardEditPromptDialogFragment();
         Bundle bundle = new Bundle();
+        bundle.putString(ARG_KEY, key);
+        bundle.putString(ARG_CONTENT, content);
         bundle.putString(ARG_MESSAGE, msg);
         fragment.setArguments(bundle);
         return fragment;
@@ -31,11 +43,16 @@ public final class DiscardEditPromptDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String msg = getArguments().getString(ARG_MESSAGE);
         if (msg == null) msg = getString(R.string.dialog_message_reply_discard_prompt);
+        final String key = getArguments().getString(ARG_KEY);
+        final String content = getArguments().getString(ARG_CONTENT);
 
         return new AlertDialog.Builder(getContext())
                 .setMessage(msg)
-                .setPositiveButton(R.string.dialog_message_text_discard, (dialog, which) ->
-                        getActivity().finish())
+                .setPositiveButton(R.string.dialog_message_text_discard, (dialog, which) -> {
+                            new Thread(() -> EditorDiskCache.put(key, content)).start();
+                            getActivity().finish();
+                        }
+                )
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
     }

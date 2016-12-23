@@ -2,6 +2,8 @@ package me.ykrank.s1next;
 
 import android.content.Context;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -45,6 +47,8 @@ public interface AppComponent {
     UserViewModel getUserViewModel();
 
     Wifi getWifi();
+
+    ObjectMapper getJsonMapper();
 
     void inject(LogoutDialogFragment fragment);
     

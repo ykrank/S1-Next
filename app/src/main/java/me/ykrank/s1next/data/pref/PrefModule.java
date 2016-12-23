@@ -63,10 +63,4 @@ public class PrefModule {
     ReadProgressPreferencesManager provideReadProgressPreferencesManager(ReadProgressPreferencesRepository readProgressPreferencesRepository){
         return  new ReadProgressPreferencesManager(readProgressPreferencesRepository);
     }
-
-    @Provides
-    @PrefScope
-    ObjectMapper provideJsonObjectMapper(){
-        return new ObjectMapper();
-    }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.UiThread;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
@@ -33,10 +34,13 @@ import me.ykrank.s1next.data.event.EmoticonClickEvent;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.databinding.FragmentPostBinding;
 import me.ykrank.s1next.util.ImeUtils;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.EmoticonPagerAdapter;
+import me.ykrank.s1next.widget.EditorDiskCache;
 import me.ykrank.s1next.widget.EventBus;
+import rx.Single;
 import rx.Subscription;
 
 /**
@@ -73,7 +77,8 @@ public abstract class BasePostFragment extends BaseFragment {
     @Nullable
     protected MenuItem mMenuSend;
 
-    private Subscription mSubscription;
+    private Subscription mEmotionClickSubscription;
+    private Subscription mCacheSubscription;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -143,19 +148,38 @@ public abstract class BasePostFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        mSubscription = mEventBus.get()
+        mEmotionClickSubscription = mEventBus.get()
                 .ofType(EmoticonClickEvent.class)
                 .subscribe(event -> {
                     mReplyView.getText().replace(mReplyView.getSelectionStart(),
                             mReplyView.getSelectionEnd(), event.getEmoticonEntity());
                 });
+
+        RxJavaUtil.unsubscribeIfNotNull(mCacheSubscription);
+        mCacheSubscription = null;
+        if (TextUtils.isEmpty(mReplyView.getText())) {
+            mCacheSubscription = resumeFromCache(Single.just(getCacheKey())
+                    .map(EditorDiskCache::get));
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-
-        RxJavaUtil.unsubscribeIfNotNull(mSubscription);
+        RxJavaUtil.unsubscribeIfNotNull(mEmotionClickSubscription);
+        RxJavaUtil.unsubscribeIfNotNull(mCacheSubscription);
+        mCacheSubscription = null;
+        if (!isContentEmpty()) {
+            final String cacheString = buildCacheString();
+            final String key = getCacheKey();
+            mCacheSubscription = Single.just(cacheString)
+                    .map(s -> {
+                        EditorDiskCache.put(key, s);
+                        return s;
+                    })
+                    .compose(RxJavaUtil.iOSingleTransformer())
+                    .subscribe(L::i, L::e);
+        }
     }
 
     @Override
@@ -189,6 +213,23 @@ public abstract class BasePostFragment extends BaseFragment {
     }
 
     protected abstract boolean OnMenuSendClick();
+
+    public abstract String getCacheKey();
+
+    /**
+     * construct string should cached from view
+     */
+    @CallSuper
+    @Nullable
+    public String buildCacheString() {
+        return getContent();
+    }
+
+    @UiThread
+    public Subscription resumeFromCache(Single<String> cache) {
+        return cache.compose(RxJavaUtil.iOSingleTransformer())
+                .subscribe(mReplyView::setText, L::e);
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -287,6 +328,14 @@ public abstract class BasePostFragment extends BaseFragment {
     @CallSuper
     public boolean isContentEmpty() {
         return mReplyView == null || TextUtils.isEmpty(mReplyView.getText());
+    }
+
+    @Nullable
+    public String getContent() {
+        if (mReplyView != null) {
+            return mReplyView.getText().toString();
+        }
+        return null;
     }
 
     private class EmoticonKeyboardAnimator implements ViewPropertyAnimatorListener {

@@ -68,7 +68,7 @@ public final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
         Key key = null;
         String url = mGlideUrl.toStringUrl();
         if (Api.isAvatarUrl(url)) {
-            key = OriginalKey.obtainAvatarKey(mDownloadPreferencesManager, url);
+            key = OriginalKey.Builder.getInstance().obtainAvatarKey(mDownloadPreferencesManager, url);
             if (AvatarUrlsCache.has(key)) {
                 // already have cached this not success avatar url
                 return null;

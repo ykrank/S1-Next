@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -24,6 +28,8 @@ import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.ThreadTypeSpinnerAdapter;
 import me.ykrank.s1next.view.dialog.NewThreadRequestDialogFragment;
 import me.ykrank.s1next.view.dialog.ReplyRequestDialogFragment;
+import me.ykrank.s1next.view.internal.NewThreadCacheModel;
+import rx.Single;
 import rx.Subscription;
 
 /**
@@ -35,15 +41,23 @@ public final class NewThreadFragment extends BasePostFragment {
 
     private static final String ARG_FORUM_ID = "forum_id";
 
+    private static final String CACHE_KEY_PREFIX = "NewThread_%s";
+
+    private String cacheKey;
+
     private int mForumId;
 
     @Inject
     S1Service mS1Service;
+    @Inject
+    ObjectMapper objectMapper;
 
     private Subscription mSubscription;
 
     private EditText titleEditText;
     private Spinner typeSpinner;
+
+    private NewThreadCacheModel cacheModel;
 
     public static NewThreadFragment newInstance(int forumId) {
         NewThreadFragment fragment = new NewThreadFragment();
@@ -66,7 +80,8 @@ public final class NewThreadFragment extends BasePostFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mForumId = getArguments().getInt(ARG_FORUM_ID);
-        L.leaveMsg("NewThreadFragment##mForumId:"+mForumId);
+        cacheKey = String.format(CACHE_KEY_PREFIX, mForumId);
+        L.leaveMsg("NewThreadFragment##mForumId:" + mForumId);
 
         App.getPrefComponent(getContext()).inject(this);
         init();
@@ -106,8 +121,46 @@ public final class NewThreadFragment extends BasePostFragment {
     }
 
     @Override
+    public String getCacheKey() {
+        return cacheKey;
+    }
+
+    @Override
     public boolean isContentEmpty() {
         return super.isContentEmpty() && (titleEditText == null || TextUtils.isEmpty(titleEditText.getText()));
+    }
+
+    @Nullable
+    @Override
+    public String buildCacheString() {
+        NewThreadCacheModel model = new NewThreadCacheModel();
+        model.setSelectPosition(typeSpinner.getSelectedItemPosition());
+        model.setTitle(titleEditText.getText().toString());
+        model.setMessage(mReplyView.getText().toString());
+        try {
+            return objectMapper.writeValueAsString(model);
+        } catch (JsonProcessingException e) {
+            L.e(e);
+        }
+        return super.buildCacheString();
+    }
+
+    @Override
+    public Subscription resumeFromCache(Single<String> cache) {
+        return cache.map(s -> {
+            try {
+                return objectMapper.readValue(s, NewThreadCacheModel.class);
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
+        }).compose(RxJavaUtil.iOSingleTransformer())
+                .subscribe(model -> {
+                    if (model != null) {
+                        cacheModel = model;
+                        titleEditText.setText(model.getTitle());
+                        mReplyView.setText(model.getMessage());
+                    }
+                }, L::e);
     }
 
     private boolean isTitleValid(String string) {
@@ -140,6 +193,9 @@ public final class NewThreadFragment extends BasePostFragment {
     private void setSpinner(List<ThreadType> types) {
         ThreadTypeSpinnerAdapter spinnerAdapter = new ThreadTypeSpinnerAdapter(getContext(), types);
         typeSpinner.setAdapter(spinnerAdapter);
+        if (types.size() > cacheModel.getSelectPosition()) {
+            typeSpinner.setSelection(cacheModel.getSelectPosition());
+        }
     }
 
 }

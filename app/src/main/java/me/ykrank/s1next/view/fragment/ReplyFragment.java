@@ -19,6 +19,9 @@ public final class ReplyFragment extends BasePostFragment {
     private static final String ARG_THREAD_ID = "thread_id";
     private static final String ARG_QUOTE_POST_ID = "quote_post_id";
 
+    private static final String CACHE_KEY_PREFIX = "NewReply_%s_%s";
+    private String cacheKey;
+
     private String mThreadId;
     private String mQuotePostId;
 
@@ -37,6 +40,7 @@ public final class ReplyFragment extends BasePostFragment {
         super.onViewCreated(view, savedInstanceState);
         mThreadId = getArguments().getString(ARG_THREAD_ID);
         mQuotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
+        cacheKey = String.format(CACHE_KEY_PREFIX, mThreadId, mQuotePostId);
         L.leaveMsg("ReplyFragment##mThreadId:"+mThreadId+",mQuotePostId"+mQuotePostId);
     }
 
@@ -52,5 +56,10 @@ public final class ReplyFragment extends BasePostFragment {
                 ReplyRequestDialogFragment.TAG);
 
         return true;
+    }
+
+    @Override
+    public String getCacheKey() {
+        return cacheKey;
     }
 }

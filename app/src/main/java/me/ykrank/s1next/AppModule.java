@@ -2,6 +2,8 @@ package me.ykrank.s1next;
 
 import android.content.Context;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.concurrent.TimeUnit;
@@ -110,5 +112,10 @@ public final class AppModule {
     Wifi providerWifi() {
         return new Wifi();
     }
-    
+
+    @Provides
+    @Singleton
+    ObjectMapper provideJsonObjectMapper() {
+        return new ObjectMapper();
+    }
 }

@@ -87,8 +87,8 @@ public final class BezelImageViewBindingAdapter {
             //同时刷新错误头像的列表
             bezelImageView.setOnClickListener(v -> {
                 String bigAvatarUrl = Api.getAvatarBigUrl(post.getAuthorId());
-                AvatarUrlsCache.remove(OriginalKey.obtainAvatarKey(downloadPreferencesManager, url));
-                AvatarUrlsCache.remove(OriginalKey.obtainAvatarKey(downloadPreferencesManager, bigAvatarUrl));
+                AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(downloadPreferencesManager, url));
+                AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(downloadPreferencesManager, bigAvatarUrl));
                 GalleryActivity.startGalleryActivity(v.getContext(), bigAvatarUrl);
             });
             //长按显示抹布菜单

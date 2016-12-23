@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.MenuItem;
 
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.view.dialog.DiscardEditPromptDialogFragment;
 import me.ykrank.s1next.view.fragment.NewPmFragment;
 
 /**
@@ -36,31 +34,16 @@ public final class NewPmActivity extends BaseActivity {
         setupNavCrossIcon();
 
         Intent intent = getIntent();
+        String uid = intent.getStringExtra(ARG_TO_UID);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(NewPmFragment.TAG);
         if (fragment == null) {
-            newPmFragment = NewPmFragment.newInstance(intent.getStringExtra(ARG_TO_UID));
+            newPmFragment = NewPmFragment.newInstance(uid);
             fragmentManager.beginTransaction().add(R.id.frame_layout, newPmFragment,
                     NewPmFragment.TAG).commit();
         } else {
             newPmFragment = (NewPmFragment) fragment;
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (newPmFragment.isContentEmpty()) {
-                    finish();
-                } else {
-                    discardDialog();
-                }
-
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -71,15 +54,8 @@ public final class NewPmActivity extends BaseActivity {
     public void onBackPressed() {
         if (newPmFragment.isEmoticonKeyboardShowing()) {
             newPmFragment.hideEmoticonKeyboard();
-        } else if (newPmFragment.isContentEmpty()) {
-            super.onBackPressed();
         } else {
-            discardDialog();
+            super.onBackPressed();
         }
-    }
-
-    private void discardDialog() {
-        DiscardEditPromptDialogFragment.newInstance(getString(R.string.dialog_message_new_thread_discard_prompt))
-                .show(getSupportFragmentManager(), DiscardEditPromptDialogFragment.TAG);
     }
 }
