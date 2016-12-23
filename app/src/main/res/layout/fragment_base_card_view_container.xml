@@ -25,7 +25,6 @@
             android:clipToPadding="false"
             android:paddingBottom="@dimen/recycler_view_vertical_padding_for_card_view"
             android:paddingTop="@dimen/recycler_view_vertical_padding_for_card_view"
-            android:background="?attr/cardViewContainerBackground"
             android:scrollbars="vertical"
             app:loadingFirstTime="@{loadingViewModel.loadingFirstTime}" />
 
