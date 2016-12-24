@@ -90,7 +90,7 @@ public final class App extends MultiDexApplication {
 
         mGeneralPreferencesManager = mPrefComponent.getGeneralPreferencesManager();
         // set scaling factor for fonts
-        ResourceUtil.setScaledDensity(getResources(), mGeneralPreferencesManager.getFontScale());
+        ResourceUtil.setScaledDensity(this, mGeneralPreferencesManager.getFontScale());
 
         ActiveAndroid.initialize(this);
     }
@@ -102,8 +102,8 @@ public final class App extends MultiDexApplication {
         //如果不是主进程，不做多余的初始化
         if (!ProcessUtil.isMainProcess(this))
             return;
-        
-        ResourceUtil.setScaledDensity(getResources(), mGeneralPreferencesManager.getFontScale());
+
+        ResourceUtil.setScaledDensity(this, mGeneralPreferencesManager.getFontScale());
     }
 
     public boolean isAppVisible() {

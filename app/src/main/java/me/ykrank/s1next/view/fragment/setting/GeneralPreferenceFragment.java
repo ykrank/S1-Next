@@ -68,7 +68,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
             case PREF_KEY_FONT_SIZE:
                 mGeneralPreferencesManager.invalidateFontScale();
                 // change scaling factor for fonts
-                ResourceUtil.setScaledDensity(getResources(),
+                ResourceUtil.setScaledDensity(getActivity(),
                         mGeneralPreferencesManager.getFontScale());
                 mEventBus.post(new FontSizeChangeEvent());
 

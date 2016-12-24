@@ -4,19 +4,22 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.AnyRes;
 import android.support.annotation.AttrRes;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.VectorEnabledTintResources;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 
 public final class ResourceUtil {
 
-    private ResourceUtil() {}
+    private ResourceUtil() {
+    }
 
     /**
      * Retrieves the resource id in the Theme.
@@ -32,17 +35,27 @@ public final class ResourceUtil {
         return typedValue.resourceId;
     }
 
+
     /**
      * Sets the scaling factor for fonts displayed on the display.
      *
      * @param scale the scaling factor.
      */
-    public static void setScaledDensity(Resources resources, float scale) {
+    public static void setScaledDensity(Context context, float scale) {
+        Resources resources = context.getApplicationContext().getResources();
         DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        Configuration config = resources.getConfiguration();
+
         // https://android.googlesource.com/platform/packages/apps/Settings/+/master/src/com/android/settings/Display.java#99
-        displayMetrics.scaledDensity = displayMetrics.density
-                * resources.getConfiguration().fontScale
-                * scale;
+        displayMetrics.scaledDensity = config.fontScale * displayMetrics.density * scale;
+
+        //if use vector drawable, and SDK <= 20, use this to compat
+        if (VectorEnabledTintResources.shouldBeUsed()) {
+            Resources sysResources = Resources.getSystem();
+            config.fontScale = sysResources.getConfiguration().fontScale * scale;
+            //noinspection deprecation
+            resources.updateConfiguration(config, displayMetrics);
+        }
     }
 
     /**
@@ -66,7 +79,7 @@ public final class ResourceUtil {
         return null;
     }
 
-    public static ColorStateList getTextColorPrimary(Context mContext){
+    public static ColorStateList getTextColorPrimary(Context mContext) {
         return ContextCompat.getColorStateList(mContext,
                 ResourceUtil.getResourceId(mContext.getTheme(), android.R.attr.textColorPrimary));
     }
