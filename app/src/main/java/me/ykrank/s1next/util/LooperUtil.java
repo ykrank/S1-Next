@@ -6,7 +6,8 @@ import com.google.common.base.Preconditions;
 
 public final class LooperUtil {
 
-    private LooperUtil() {}
+    private LooperUtil() {
+    }
 
     /**
      * Enforces the method caller on main thread.

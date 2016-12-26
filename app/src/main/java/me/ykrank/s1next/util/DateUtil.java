@@ -7,7 +7,8 @@ import java.util.Locale;
 
 public final class DateUtil {
 
-    private DateUtil() {}
+    private DateUtil() {
+    }
 
     /**
      * Used to construct {@link com.bumptech.glide.signature.StringSignature}s
@@ -38,13 +39,6 @@ public final class DateUtil {
         return getSimpleDateFormatInstance().format(calendar.getTime());
     }
 
-    private static final class SimpleDateFormatHolder {
-
-        private static final String TEMPLATE = "yyyy-MM-dd";
-
-        private static final SimpleDateFormat INSTANCE = new SimpleDateFormat(TEMPLATE, Locale.getDefault());
-    }
-
     /**
      * Initialization on Demand Holder.
      * <p>
@@ -52,5 +46,12 @@ public final class DateUtil {
      */
     private static synchronized SimpleDateFormat getSimpleDateFormatInstance() {
         return SimpleDateFormatHolder.INSTANCE;
+    }
+
+    private static final class SimpleDateFormatHolder {
+
+        private static final String TEMPLATE = "yyyy-MM-dd";
+
+        private static final SimpleDateFormat INSTANCE = new SimpleDateFormat(TEMPLATE, Locale.getDefault());
     }
 }

@@ -41,12 +41,9 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
     private static final String ARG_TO_UID = "to_uid";
     private static final String ARG_TO_USERNAME = "to_user_name";
     private static final String ARG_DATA_ID = "data_id";
-
-    private PmRecyclerViewAdapter mRecyclerAdapter;
-
     @Inject
     User user;
-
+    private PmRecyclerViewAdapter mRecyclerAdapter;
     private String toUid;
     private String toUsername;
 
@@ -81,7 +78,7 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
 
         toUid = getArguments().getString(ARG_TO_UID);
         toUsername = getArguments().getString(ARG_TO_USERNAME);
-        L.leaveMsg("PmFragment##toUid:"+toUid+",toUsername"+toUsername);
+        L.leaveMsg("PmFragment##toUid:" + toUid + ",toUsername" + toUsername);
         if (TextUtils.isEmpty(toUid)) {
             showShortSnackbar(R.string.message_api_error);
             return;

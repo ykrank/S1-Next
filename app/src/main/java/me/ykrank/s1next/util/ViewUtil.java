@@ -12,7 +12,8 @@ import me.ykrank.s1next.R;
 
 public final class ViewUtil {
 
-    private ViewUtil() {}
+    private ViewUtil() {
+    }
 
     /**
      * Concatenates with the specified text (two spaces and appendix) to the TextView

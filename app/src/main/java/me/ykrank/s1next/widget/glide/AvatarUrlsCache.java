@@ -14,6 +14,7 @@ import java.security.NoSuchAlgorithmException;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.BuildConfig;
+import me.ykrank.s1next.util.L;
 
 /**
  * We would get 404 status code if user hasn't set up their
@@ -87,6 +88,7 @@ public enum AvatarUrlsCache {
                 return INSTANCE.diskLruCache.get(encodedKey) != null;
             }
         } catch (IOException ignore) {
+            L.e(ignore);
             return false;
         }
     }

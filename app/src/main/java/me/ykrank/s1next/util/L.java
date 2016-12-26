@@ -14,8 +14,8 @@ import static me.ykrank.s1next.App.LOG_TAG;
  * 对Log的包装
  */
 public class L {
-    
-    public static boolean showLog(){
+
+    public static boolean showLog() {
         return BuildConfig.DEBUG;
     }
 
@@ -93,20 +93,20 @@ public class L {
             Log.e(tag, msg, tr);
         }
     }
-    
-    public static void report(Throwable tr){
+
+    public static void report(Throwable tr) {
         Bugsnag.notify(tr, Severity.WARNING);
     }
 
-    public static void report(Throwable tr, Severity severity){
+    public static void report(Throwable tr, Severity severity) {
         Bugsnag.notify(tr, severity);
     }
 
-    public static void leaveMsg(String msg){
+    public static void leaveMsg(String msg) {
         Bugsnag.leaveBreadcrumb(msg);
     }
 
-    public static void report(String msg, Throwable tr){
+    public static void report(String msg, Throwable tr) {
         leaveMsg(msg);
         report(tr);
     }

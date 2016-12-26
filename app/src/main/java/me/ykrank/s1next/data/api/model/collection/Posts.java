@@ -35,26 +35,6 @@ public final class Posts extends Account {
     @JsonProperty("postlist")
     private List<Post> postList;
 
-    public Thread getPostListInfo() {
-        return postListInfo;
-    }
-
-    public void setPostListInfo(Thread postListInfo) {
-        this.postListInfo = postListInfo;
-    }
-
-    public ThreadAttachment getThreadAttachment() {
-        return threadAttachment;
-    }
-
-    public void setThreadAttachment(ThreadAttachment threadAttachment) {
-        this.threadAttachment = threadAttachment;
-    }
-
-    public List<Post> getPostList() {
-        return postList;
-    }
-
     /**
      * @see #filterPost(Post)
      */
@@ -93,6 +73,26 @@ public final class Posts extends Account {
             nPost.setRemark(blackList.remark);
         }
         return nPost;
+    }
+
+    public Thread getPostListInfo() {
+        return postListInfo;
+    }
+
+    public void setPostListInfo(Thread postListInfo) {
+        this.postListInfo = postListInfo;
+    }
+
+    public ThreadAttachment getThreadAttachment() {
+        return threadAttachment;
+    }
+
+    public void setThreadAttachment(ThreadAttachment threadAttachment) {
+        this.threadAttachment = threadAttachment;
+    }
+
+    public List<Post> getPostList() {
+        return postList;
     }
 
     public void setPostList(List<Post> postList) {

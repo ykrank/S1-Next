@@ -23,9 +23,9 @@ import me.ykrank.s1next.widget.glide.OkHttpStreamFetcher;
  */
 @PrefScope
 @Component(dependencies = AppComponent.class, modules = PrefModule.class)
-public interface PrefComponent{
+public interface PrefComponent {
     ThemeManager getThemeManager();
-    
+
     GeneralPreferencesManager getGeneralPreferencesManager();
 
     DownloadPreferencesManager getDownloadPreferencesManager();
@@ -35,17 +35,17 @@ public interface PrefComponent{
     void inject(BasePostFragment fragment);
 
     void inject(BaseActivity activity);
-    
+
     void inject(ForumActivity activity);
 
     void inject(PostAdapterDelegate delegate);
-    
+
     void inject(DownloadPreferenceFragment fragment);
-    
+
     void inject(OkHttpStreamFetcher fetcher);
-    
+
     void inject(WifiBroadcastReceiver receiver);
-    
+
     void inject(PostListGatewayActivity activity);
 
     void inject(ThreadAdapterDelegate delegate);

@@ -18,8 +18,6 @@ import me.ykrank.s1next.util.L;
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class Thread implements Parcelable, Cloneable, SameItem {
-    private static final String TAG = Thread.class.getSimpleName();
-
     public static final Parcelable.Creator<Thread> CREATOR = new Parcelable.Creator<Thread>() {
 
         @Override
@@ -32,7 +30,7 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
             return new Thread[i];
         }
     };
-
+    private static final String TAG = Thread.class.getSimpleName();
     @JsonProperty("tid")
     private String id;
 
@@ -53,10 +51,11 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
 
     @JsonProperty("authorid")
     private int authorid;
-    
+
     private boolean hide = false;
 
-    public Thread() {}
+    public Thread() {
+    }
 
     private Thread(Parcel source) {
         id = source.readString();
@@ -65,7 +64,7 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         permission = source.readInt();
         author = source.readString();
         authorid = source.readInt();
-        hide = source.readByte()!=0;
+        hide = source.readByte() != 0;
     }
 
     public String getId() {
@@ -161,13 +160,13 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
     }
 
     @Override
-    public Thread clone(){
+    public Thread clone() {
         Thread o = null;
         try {
             o = (Thread) super.clone();
         } catch (CloneNotSupportedException e) {
             L.e(TAG, e);
-        } catch (ClassCastException e){
+        } catch (ClassCastException e) {
             L.e(TAG, e);
         }
         return o;

@@ -107,7 +107,7 @@ public abstract class DrawerLayoutDelegate {
 
         setupNavDrawerItem(mDrawerLayout, mNavigationView);
     }
-    
+
     @CallSuper
     public void onDestroy() {
         mDrawerLayout.removeDrawerListener(mDrawerToggle);

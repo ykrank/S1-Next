@@ -36,6 +36,24 @@ public class SarabaSpan implements PostMovementMethod.URLSpanClick {
         HOST_FILTERS.add(new Pair<>("bbs.saraba1st.com", ".*"));
     }
 
+    // 对Saraba链接进行独立处理，调用Saraba客户端
+    protected static void goSaraba(Context context, Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.setClass(context, PostListGatewayActivity.class);
+        try {
+            PackageManager pm = context.getPackageManager();
+            ActivityInfo ai = intent.resolveActivityInfo(pm, PackageManager.MATCH_DEFAULT_ONLY);
+            if (ai == null) {
+                context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            } else {
+                context.startActivity(intent);
+            }
+        } catch (Throwable e) {
+            L.report("SarabaURLSpan startActivity error for intent, " + intent.toString(), e);
+            context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+        }
+    }
+
     @Override
     public boolean isMatch(Uri uri) {
         if ("http".equalsIgnoreCase(uri.getScheme())) {
@@ -59,23 +77,5 @@ public class SarabaSpan implements PostMovementMethod.URLSpanClick {
     @Override
     public void onClick(Uri uri, View view) {
         goSaraba(view.getContext(), uri);
-    }
-
-    // 对Saraba链接进行独立处理，调用Saraba客户端
-    protected static void goSaraba(Context context, Uri uri) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        intent.setClass(context, PostListGatewayActivity.class);
-        try {
-            PackageManager pm = context.getPackageManager();
-            ActivityInfo ai = intent.resolveActivityInfo(pm, PackageManager.MATCH_DEFAULT_ONLY);
-            if (ai == null) {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
-            } else {
-                context.startActivity(intent);
-            }
-        } catch (Throwable e) {
-            L.report("SarabaURLSpan startActivity error for intent, " + intent.toString(), e);
-            context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
-        }
     }
 }

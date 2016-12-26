@@ -106,7 +106,7 @@ abstract class ProgressDialogFragment<D> extends DialogFragment {
     abstract Observable<D> getSourceObservable();
 
     /**
-     * @see ApiFlatTransformer#flatMappedWithAuthenticityToken(S1Service, UserValidator, User, Func1) 
+     * @see ApiFlatTransformer#flatMappedWithAuthenticityToken(S1Service, UserValidator, User, Func1)
      */
     final Observable<D> flatMappedWithAuthenticityToken(Func1<String, Observable<D>> func) {
         return ApiFlatTransformer.flatMappedWithAuthenticityToken(mS1Service, mUserValidator, mUser, func);

@@ -31,7 +31,8 @@ import java.lang.reflect.Method;
  */
 public class ImeUtils {
 
-    private ImeUtils() { }
+    private ImeUtils() {
+    }
 
     public static void showIme(@NonNull View view) {
         InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService

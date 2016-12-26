@@ -17,7 +17,7 @@ import rx.Subscription;
  * Created by ykrank on 2016/11/12 0012.
  */
 
-public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerViewFragment<D>{
+public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerViewFragment<D> {
 
     /**
      * The serialization (saved instance state) Bundle key representing
@@ -98,7 +98,7 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
     private void onLoadMoreNext(D data) {
         onNext(data);
         //remove footer progress
-        if (footerProgressPosition >= 0){
+        if (footerProgressPosition >= 0) {
             getRecyclerViewAdapter().removeItem(footerProgressPosition);
             getRecyclerViewAdapter().notifyItemRemoved(footerProgressPosition);
         }
@@ -118,7 +118,7 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
         outState.putInt(STATE_PAGE_NUM, mPageNum);
     }
 
-    void setTotalPages(int pageCount){
+    void setTotalPages(int pageCount) {
         this.mPageCount = pageCount;
     }
 
@@ -130,6 +130,7 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
 
     /**
      * append new load data to old data
+     *
      * @param oldData data show in recycleView
      * @param newData new load data
      * @return compound data

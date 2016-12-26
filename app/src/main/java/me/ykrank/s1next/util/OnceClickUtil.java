@@ -44,11 +44,12 @@ public class OnceClickUtil {
 
     /**
      * 有抖动的点击事件订阅
+     *
      * @param view
      * @param millDuration
      * @return
      */
-    public static Observable<Void> onceClickObservable(final View view, final int millDuration){
+    public static Observable<Void> onceClickObservable(final View view, final int millDuration) {
         return Observable.create(new ViewClickOnSubscribe(view))
                 .throttleFirst(millDuration, TimeUnit.MILLISECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread());

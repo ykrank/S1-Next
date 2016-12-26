@@ -18,10 +18,9 @@ import java.util.List;
  */
 public final class ArrayAdapterCompat<T> extends ArrayAdapter<T> implements ThemedSpinnerAdapter {
 
+    private final ThemedSpinnerAdapter.Helper mDropDownHelper;
     @LayoutRes
     private int mDropDownResource;
-
-    private final ThemedSpinnerAdapter.Helper mDropDownHelper;
 
     public ArrayAdapterCompat(Context context, @LayoutRes int resource, List<T> objects) {
         super(context, resource, objects);
@@ -57,13 +56,13 @@ public final class ArrayAdapterCompat<T> extends ArrayAdapter<T> implements Them
     }
 
     @Override
-    public void setDropDownViewTheme(Resources.Theme theme) {
-        mDropDownHelper.setDropDownViewTheme(theme);
-    }
-
-    @Override
     @Nullable
     public Resources.Theme getDropDownViewTheme() {
         return mDropDownHelper.getDropDownViewTheme();
+    }
+
+    @Override
+    public void setDropDownViewTheme(Resources.Theme theme) {
+        mDropDownHelper.setDropDownViewTheme(theme);
     }
 }

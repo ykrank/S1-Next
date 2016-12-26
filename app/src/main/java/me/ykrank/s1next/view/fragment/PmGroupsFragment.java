@@ -20,7 +20,7 @@ import me.ykrank.s1next.view.adapter.PmGroupsRecyclerViewAdapter;
 import rx.Observable;
 
 
-public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<PmGroupsWrapper>{
+public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<PmGroupsWrapper> {
 
     public static final String TAG = PmGroupsFragment.class.getName();
     private PmGroupsRecyclerViewAdapter mRecyclerAdapter;

@@ -15,7 +15,7 @@ import me.ykrank.s1next.data.Wifi;
  */
 @Module
 public class PrefModule {
-    
+
     @Provides
     @PrefScope
     SharedPreferences provideSharedPreferences(Context context) {
@@ -60,7 +60,7 @@ public class PrefModule {
 
     @Provides
     @PrefScope
-    ReadProgressPreferencesManager provideReadProgressPreferencesManager(ReadProgressPreferencesRepository readProgressPreferencesRepository){
-        return  new ReadProgressPreferencesManager(readProgressPreferencesRepository);
+    ReadProgressPreferencesManager provideReadProgressPreferencesManager(ReadProgressPreferencesRepository readProgressPreferencesRepository) {
+        return new ReadProgressPreferencesManager(readProgressPreferencesRepository);
     }
 }

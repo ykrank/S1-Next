@@ -51,7 +51,7 @@ public interface CoordinatorLayoutAnchorDelegate {
      * @return The displayed {@code Optional.of(snackbar)}.
      */
     Optional<Snackbar> showLongSnackbar(@StringRes int resId);
-    
+
     /**
      * Show a {@link Snackbar} if current {@link android.app.Activity} is visible.
      *

@@ -19,6 +19,7 @@ import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 
 public final class IntentUtil {
 
+    public static final String EXTRA_ENABLE_URLBAR_HIDING = "android.support.customtabs.extra.ENABLE_URLBAR_HIDING";
     /**
      * This activity is displayed when the system attempts to start an Intent for
      * which there is more than one matching activity.
@@ -30,12 +31,10 @@ public final class IntentUtil {
      * HuaWei emui change this class
      */
     private static final String ANDROID_RESOLVER_ACTIVITY_HUAWEI = "com.huawei.android.internal.app.HwResolverActivity";
-
     /**
      * see https://github.com/GoogleChrome/custom-tabs-client/blob/master/customtabs/src/android/support/customtabs/CustomTabsIntent.java
      */
     private static final String EXTRA_CUSTOM_TABS_SESSION = "android.support.customtabs.extra.SESSION";
-    public static final String EXTRA_ENABLE_URLBAR_HIDING = "android.support.customtabs.extra.ENABLE_URLBAR_HIDING";
 
     private IntentUtil() {
     }

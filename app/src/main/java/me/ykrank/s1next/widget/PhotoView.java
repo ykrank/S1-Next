@@ -45,10 +45,10 @@ import me.ykrank.s1next.R;
  * Layout for the photo list view header.
  * <p>
  * Forked from https://android.googlesource.com/platform/frameworks/opt/photoviewer/+/master/src/com/android/ex/photo/views/PhotoView.java
- * blob: dfe180a2444f1ee35e9a70203f0b01ae5d8cef49 
+ * blob: dfe180a2444f1ee35e9a70203f0b01ae5d8cef49
  */
 public class PhotoView extends View implements OnGestureListener,
-        OnDoubleTapListener, ScaleGestureDetector.OnScaleGestureListener{
+        OnDoubleTapListener, ScaleGestureDetector.OnScaleGestureListener {
     public static final int TRANSLATE_NONE = 0;
     public static final int TRANSLATE_X_ONLY = 1;
     public static final int TRANSLATE_Y_ONLY = 2;
@@ -1096,6 +1096,10 @@ public class PhotoView extends View implements OnGestureListener,
         mRotateRunnable = new RotateRunnable(this);
     }
 
+    public void setMaxInitialScale(float f) {
+        mMaxInitialScaleFactor = f;
+    }
+
     /**
      * Runnable that animates an image scale operation.
      */
@@ -1408,9 +1412,5 @@ public class PhotoView extends View implements OnGestureListener,
             }
             mHeader.post(this);
         }
-    }
-
-    public void setMaxInitialScale(float f) {
-        mMaxInitialScaleFactor = f;
     }
 }

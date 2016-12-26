@@ -18,7 +18,7 @@ import me.ykrank.s1next.util.L;
  * Created by ykrank on 2016/10/16 0016.
  */
 
-public class AcfunSpan implements PostMovementMethod.URLSpanClick{
+public class AcfunSpan implements PostMovementMethod.URLSpanClick {
 
     /**
      * See android.text.HtmlToSpannedConverter#startA(android.text.SpannableStringBuilder, org.xml.sax.Attributes)
@@ -50,6 +50,18 @@ public class AcfunSpan implements PostMovementMethod.URLSpanClick{
         }
     }
 
+    // 对Acfun链接进行独立处理，调用acfun客户端
+    //TODO 目前Acfun客户端似乎不支持直接intent-filter调用
+    private static void goAcfun(Context context, Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
+        try {
+            context.startActivity(intent);
+        } catch (Throwable e) {
+            L.report("AcfunURLSpan, Acfun Actvity was not found for intent, " + intent.toString(), e);
+        }
+    }
+
     @Override
     public boolean isMatch(Uri uri) {
         return false;
@@ -58,18 +70,6 @@ public class AcfunSpan implements PostMovementMethod.URLSpanClick{
     @Override
     public void onClick(Uri uri, View view) {
         goAcfun(view.getContext(), uri);
-    }
-
-    // 对Acfun链接进行独立处理，调用acfun客户端
-    //TODO 目前Acfun客户端似乎不支持直接intent-filter调用
-    private static void goAcfun(Context context, Uri uri){
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
-        try {
-            context.startActivity(intent);
-        } catch (Throwable e) {
-            L.report("AcfunURLSpan, Acfun Actvity was not found for intent, " + intent.toString(), e);
-        }
     }
 
     private static class AcfunHref {

@@ -31,14 +31,14 @@ public final class PageJumpViewModel extends BaseObservable {
         return seekBarProgress;
     }
 
+    private void setSeekBarProgress(int seekBarProgress) {
+        this.seekBarProgress = seekBarProgress;
+    }
+
     @Bindable
     public CharSequence getSeekBarProgressText() {
         // current page is zero-based
         return String.valueOf(seekBarProgress + 1);
-    }
-
-    private void setSeekBarProgress(int seekBarProgress) {
-        this.seekBarProgress = seekBarProgress;
     }
 
     public SeekBar.OnSeekBarChangeListener getOnSeekBarChangeListener() {
@@ -53,10 +53,12 @@ public final class PageJumpViewModel extends BaseObservable {
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         };
     }
 
@@ -69,10 +71,12 @@ public final class PageJumpViewModel extends BaseObservable {
         return new TextWatcher() {
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {

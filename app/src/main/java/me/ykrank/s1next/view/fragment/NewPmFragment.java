@@ -37,7 +37,7 @@ public final class NewPmFragment extends BasePostFragment {
         super.onViewCreated(view, savedInstanceState);
         mToUid = getArguments().getString(ARG_TO_UID);
         cacheKey = String.format(CACHE_KEY_PREFIX, mToUid);
-        L.leaveMsg("NewPmFragment##mToUid"+mToUid);
+        L.leaveMsg("NewPmFragment##mToUid" + mToUid);
     }
 
     @Override

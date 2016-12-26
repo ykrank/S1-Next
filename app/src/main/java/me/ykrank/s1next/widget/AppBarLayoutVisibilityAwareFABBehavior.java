@@ -16,7 +16,8 @@ import java.util.List;
  */
 public final class AppBarLayoutVisibilityAwareFABBehavior extends FloatingActionButton.Behavior {
 
-    public AppBarLayoutVisibilityAwareFABBehavior(Context context, AttributeSet attrs) {}
+    public AppBarLayoutVisibilityAwareFABBehavior(Context context, AttributeSet attrs) {
+    }
 
     @Override
     public boolean layoutDependsOn(CoordinatorLayout parent, FloatingActionButton child, View dependency) {
@@ -42,7 +43,7 @@ public final class AppBarLayoutVisibilityAwareFABBehavior extends FloatingAction
     }
 
     /**
-     * @see android.support.design.widget.FloatingActionButton.Behavior#getFabTranslationYForSnackbar(CoordinatorLayout, FloatingActionButton)
+     * See android.support.design.widget.FloatingActionButton.Behavior#getFabTranslationYForSnackbar(CoordinatorLayout, FloatingActionButton)
      */
     private float getFabTranslationYForSnackbar(CoordinatorLayout parent, FloatingActionButton fab) {
         float minOffset = 0;

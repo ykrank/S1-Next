@@ -24,14 +24,7 @@ public final class Quote {
      */
     private String quoteMessage;
 
-    private Quote() {}
-
-    public String getEncodedUserId() {
-        return encodedUserId;
-    }
-
-    public String getQuoteMessage() {
-        return quoteMessage;
+    private Quote() {
     }
 
     /**
@@ -60,6 +53,14 @@ public final class Quote {
                 && !TextUtils.isEmpty(quote.getQuoteMessage()), "Cannot get the post information.");
 
         return quote;
+    }
+
+    public String getEncodedUserId() {
+        return encodedUserId;
+    }
+
+    public String getQuoteMessage() {
+        return quoteMessage;
     }
 
     @Override

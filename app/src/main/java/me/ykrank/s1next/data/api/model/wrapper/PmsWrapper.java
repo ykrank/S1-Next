@@ -41,17 +41,18 @@ public class PmsWrapper {
 
     /**
      * 完善每条私信的收信人学校
-     * @param me 自己
+     *
+     * @param me         自己
      * @param toUsername 对方用户名
      */
-    public PmsWrapper setMsgToUsername(User me, String toUsername){
+    public PmsWrapper setMsgToUsername(User me, String toUsername) {
         LooperUtil.enforceOnWorkThread();
-        List<Pm> pmList= getPms().getPmList();
-        if (pmList == null || pmList.isEmpty()){
+        List<Pm> pmList = getPms().getPmList();
+        if (pmList == null || pmList.isEmpty()) {
             return this;
         }
-        for (Pm pm: pmList) {
-            if (TextUtils.equals(pm.getMsgToId(), me.getUid())){
+        for (Pm pm : pmList) {
+            if (TextUtils.equals(pm.getMsgToId(), me.getUid())) {
                 pm.setMsgTo(me.getName());
             } else {
                 pm.setMsgTo(toUsername);

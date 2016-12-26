@@ -46,7 +46,7 @@ public final class HelpFragment extends Fragment {
     private FragmentWebviewBinding mFragmentHelpBinding;
     private WebView mWebView;
 
-    public static HelpFragment getInstance(){
+    public static HelpFragment getInstance() {
         return new HelpFragment();
     }
 

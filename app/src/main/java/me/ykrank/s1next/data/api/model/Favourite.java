@@ -50,7 +50,7 @@ public final class Favourite {
         if (o == null || getClass() != o.getClass()) return false;
         Favourite favourite = (Favourite) o;
         return Objects.equal(id, favourite.id) &&
-                Objects.equal(favId, favourite.favId)&&
+                Objects.equal(favId, favourite.favId) &&
                 Objects.equal(title, favourite.title);
     }
 

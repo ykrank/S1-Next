@@ -29,6 +29,19 @@ public final class TagHandler implements Html.TagHandler {
 
     private final HashMap<String, String> attributes = new HashMap<>(8);
 
+    /**
+     * See android.text.HtmlToSpannedConverter#getLast(android.text.Spanned, java.lang.Class)
+     */
+    public static <T> T getLastSpan(Spanned text, Class<T> kind) {
+        T[] spans = text.getSpans(0, text.length(), kind);
+
+        if (spans.length == 0) {
+            return null;
+        } else {
+            return spans[spans.length - 1];
+        }
+    }
+
     @Override
     public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
         if ("img".equalsIgnoreCase(tag)) {
@@ -76,7 +89,7 @@ public final class TagHandler implements Html.TagHandler {
     }
 
     /**
-     * Adds {@link StrikethroughSpan} to {@literal <strike>} tag.
+     * compat {@link StrikethroughSpan} to {@literal <strike>} tag.
      * <p>
      * See android.text.HtmlToSpannedConverter#handleStartTag(java.lang.String, org.xml.sax.Attributes)
      * See android.text.HtmlToSpannedConverter#handleEndTag(java.lang.String)
@@ -98,7 +111,7 @@ public final class TagHandler implements Html.TagHandler {
         }
     }
 
-    private void handleAcfun(boolean opening, Editable output, XMLReader xmlReader){
+    private void handleAcfun(boolean opening, Editable output, XMLReader xmlReader) {
         if (opening) {
             processAttributes(xmlReader);
             AcfunSpan.startAcfun((SpannableStringBuilder) output, attributes);
@@ -106,24 +119,11 @@ public final class TagHandler implements Html.TagHandler {
             AcfunSpan.endAcfun((SpannableStringBuilder) output);
     }
 
-    private void handleBilibili(boolean opening, Editable output, XMLReader xmlReader){
+    private void handleBilibili(boolean opening, Editable output, XMLReader xmlReader) {
         if (opening) {
             BilibiliSpan.startBilibiliSpan((SpannableStringBuilder) output);
         } else
             BilibiliSpan.endBilibiliSpan((SpannableStringBuilder) output);
-    }
-
-    /**
-     * See android.text.HtmlToSpannedConverter#getLast(android.text.Spanned, java.lang.Class)
-     */
-    public static <T> T getLastSpan(Spanned text, Class<T> kind) {
-        T[] spans = text.getSpans(0, text.length(), kind);
-
-        if (spans.length == 0) {
-            return null;
-        } else {
-            return spans[spans.length - 1];
-        }
     }
 
     /**

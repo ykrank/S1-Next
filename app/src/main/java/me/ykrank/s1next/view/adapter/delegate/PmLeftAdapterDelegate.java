@@ -61,6 +61,7 @@ public final class PmLeftAdapterDelegate extends BaseAdapterDelegate<Pm, PmLeftA
 
     /**
      * make textview selectable
+     *
      * @param holder
      */
     @Override

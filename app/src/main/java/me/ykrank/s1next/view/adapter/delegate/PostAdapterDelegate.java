@@ -27,16 +27,13 @@ import me.ykrank.s1next.widget.span.PostMovementMethod;
 
 public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAdapterDelegate.ItemViewBindingHolder> {
 
+    private final DrawableRequestBuilder<String> mAvatarRequestBuilder;
     @Inject
     EventBus mEventBus;
-
     @Inject
     GeneralPreferencesManager mGeneralPreferencesManager;
-
     @Inject
     DownloadPreferencesManager mDownloadPreferencesManager;
-
-    private final DrawableRequestBuilder<String> mAvatarRequestBuilder;
 
     public PostAdapterDelegate(Activity activity) {
         super(activity);
@@ -47,8 +44,15 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
                 .from(String.class)
                 .error(R.drawable.ic_avatar_placeholder)
                 .priority(Priority.HIGH)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .transform(new CenterCrop(activity));
+    }
+
+    private static void setTextSelectable(ItemPostBinding binding, boolean selectable) {
+        binding.tvFloor.setTextIsSelectable(selectable);
+        binding.tvReply.setTextIsSelectable(selectable);
+        binding.tvFloor.setMovementMethod(LinkMovementMethod.getInstance());
+        binding.tvReply.setMovementMethod(PostMovementMethod.getInstance());
     }
 
     @NonNull
@@ -69,10 +73,7 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
 
         //If setTextIsSelectable, then should reset movement
         boolean selectable = mGeneralPreferencesManager.isPostSelectable();
-        binding.tvFloor.setTextIsSelectable(selectable);
-        binding.tvReply.setTextIsSelectable(selectable);
-        binding.tvFloor.setMovementMethod(LinkMovementMethod.getInstance());
-        binding.tvReply.setMovementMethod(PostMovementMethod.getInstance());
+        setTextSelectable(binding, selectable);
 
         return new ItemViewBindingHolder(binding);
     }
@@ -80,16 +81,14 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
     @Override
     public void onBindViewHolderData(Post post, int position, @NonNull ItemViewBindingHolder holder) {
         ItemPostBinding binding = holder.itemPostBinding;
-        binding.getPostViewModel().post.set(post);
-        binding.executePendingBindings();
 
         boolean selectable = mGeneralPreferencesManager.isPostSelectable();
         if (selectable != binding.tvReply.isTextSelectable()) {
-            binding.tvFloor.setTextIsSelectable(selectable);
-            binding.tvReply.setTextIsSelectable(selectable);
-            binding.tvFloor.setMovementMethod(LinkMovementMethod.getInstance());
-            binding.tvReply.setMovementMethod(PostMovementMethod.getInstance());
+            setTextSelectable(binding, selectable);
         }
+
+        binding.getPostViewModel().post.set(post);
+        binding.executePendingBindings();
     }
 
     // Bug workaround for losing text selection ability, see:

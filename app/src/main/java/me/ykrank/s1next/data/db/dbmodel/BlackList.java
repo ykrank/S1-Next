@@ -21,19 +21,6 @@ import me.ykrank.s1next.R;
  */
 @Table(name = "BlackList")
 public class BlackList extends Model implements Parcelable {
-    private static final String TimeFormat = "yyyy-MM-dd HH:mm";
-
-    @SuppressWarnings("WrongConstant")
-    protected BlackList(Parcel in) {
-        authorid = in.readInt();
-        author = in.readString();
-        post = in.readInt();
-        forum = in.readInt();
-        remark = in.readString();
-        timestamp = in.readLong();
-        upload = in.readByte() != 0;
-    }
-
     public static final Creator<BlackList> CREATOR = new Creator<BlackList>() {
         @Override
         public BlackList createFromParcel(Parcel in) {
@@ -45,64 +32,60 @@ public class BlackList extends Model implements Parcelable {
             return new BlackList[size];
         }
     };
-
-    @IntDef({NORMAL, HIDE_POST, DEL_POST})
-    public @interface PostFLag {
-
-    }
-    @IntDef({NORMAL, HIDE_FORUM, DEL_FORUM})
-    public @interface ForumFLag {
-
-    }
     public static final int NORMAL = 0;
-
     public static final int HIDE_POST = 1;
     public static final int DEL_POST = 2;
     public static final int HIDE_FORUM = 3;
     public static final int DEL_FORUM = 4;
+    private static final String TimeFormat = "yyyy-MM-dd HH:mm";
     /**
      * Id
      */
     @Column(name = "AuthorId", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     public int authorid;
-
     /**
      * 用户名
      */
     @Column(name = "Author", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     public String author;
-
     /**
      * 回复的屏蔽状态
      */
     @Column(name = "Post")
     @PostFLag
     public int post = NORMAL;
-
     /**
      * 主题的屏蔽状态
      */
     @Column(name = "Forum")
     @ForumFLag
     public int forum = NORMAL;
-
     /**
      * 屏蔽时的备注
      */
     @Column(name = "Remark")
     public String remark;
-
     /**
      * 屏蔽时的时间
      */
     @Column(name = "Timestamp")
     public long timestamp;
-
     /**
      * 是否已同步
      */
     @Column(name = "Upload")
     public boolean upload;
+
+    @SuppressWarnings("WrongConstant")
+    protected BlackList(Parcel in) {
+        authorid = in.readInt();
+        author = in.readString();
+        post = in.readInt();
+        forum = in.readInt();
+        remark = in.readString();
+        timestamp = in.readLong();
+        upload = in.readByte() != 0;
+    }
 
     public BlackList() {
         this.timestamp = System.currentTimeMillis();
@@ -118,7 +101,7 @@ public class BlackList extends Model implements Parcelable {
         this.upload = false;
     }
 
-    public void copyFrom(BlackList bList){
+    public void copyFrom(BlackList bList) {
         this.authorid = bList.authorid;
         this.author = bList.author;
         this.post = bList.post;
@@ -128,8 +111,8 @@ public class BlackList extends Model implements Parcelable {
         this.upload = bList.upload;
     }
 
-    public int getPostres(){
-        switch (post){
+    public int getPostres() {
+        switch (post) {
             case HIDE_POST:
                 return R.string.blacklist_flag_hide;
             case DEL_POST:
@@ -139,8 +122,8 @@ public class BlackList extends Model implements Parcelable {
         }
     }
 
-    public int getForumres(){
-        switch (forum){
+    public int getForumres() {
+        switch (forum) {
             case HIDE_FORUM:
                 return R.string.blacklist_flag_hide;
             case DEL_FORUM:
@@ -158,7 +141,7 @@ public class BlackList extends Model implements Parcelable {
         return post == HIDE_POST;
     }
 
-    public String getTime(){
+    public String getTime() {
         SimpleDateFormat sdf = new SimpleDateFormat(TimeFormat, Locale.getDefault());
         return sdf.format(new Date(timestamp));
     }
@@ -190,5 +173,15 @@ public class BlackList extends Model implements Parcelable {
                 ", timestamp=" + getTime() +
                 ", upload=" + upload +
                 '}';
+    }
+
+    @IntDef({NORMAL, HIDE_POST, DEL_POST})
+    public @interface PostFLag {
+
+    }
+
+    @IntDef({NORMAL, HIDE_FORUM, DEL_FORUM})
+    public @interface ForumFLag {
+
     }
 }

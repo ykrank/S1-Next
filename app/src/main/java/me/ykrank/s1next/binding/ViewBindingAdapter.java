@@ -10,10 +10,11 @@ import rx.functions.Func1;
  * Created by AdminYkrank on 2016/4/17.
  */
 public final class ViewBindingAdapter {
-    private ViewBindingAdapter(){}
+    private ViewBindingAdapter() {
+    }
 
     @BindingAdapter("onceClickSubscription")
-    public static void setOnceClickListener(View view, Func1<View, Subscription> onceClickSubscription){
+    public static void setOnceClickListener(View view, Func1<View, Subscription> onceClickSubscription) {
         onceClickSubscription.call(view);
     }
 }

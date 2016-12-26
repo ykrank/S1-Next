@@ -5,7 +5,8 @@ import java.math.RoundingMode;
 
 public final class MathUtil {
 
-    private MathUtil() {}
+    private MathUtil() {
+    }
 
     /**
      * Returns a new {@code BigDecimal} whose value is {@code divident / divisor}

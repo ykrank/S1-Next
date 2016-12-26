@@ -40,13 +40,15 @@ import me.ykrank.s1next.util.AnimUtils;
  * {@link #centerOn(View) specifying} another view to center on; otherwise the target {@code view}'s
  * pivot point will be used.
  */
-@RequiresApi(api = Build.VERSION_CODES.KITKAT)
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class CircularReveal extends Visibility {
 
     private Point center;
     private float startRadius;
     private float endRadius;
-    private @IdRes int centerOnId = View.NO_ID;
+    private
+    @IdRes
+    int centerOnId = View.NO_ID;
     private View centerOn;
 
     public CircularReveal() {

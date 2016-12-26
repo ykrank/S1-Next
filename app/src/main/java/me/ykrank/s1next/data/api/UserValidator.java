@@ -80,8 +80,8 @@ public final class UserValidator {
         }
         mUser.setPermission(account.getPermission());
         mUser.setAuthenticityToken(account.getAuthenticityToken());
-        
-        if (mUser.isLogged()){
+
+        if (mUser.isLogged()) {
             Bugsnag.setUser(mUser.getUid(), null, mUser.getName());
         }
     }

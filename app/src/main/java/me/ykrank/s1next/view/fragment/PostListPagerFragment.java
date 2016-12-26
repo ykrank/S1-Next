@@ -97,6 +97,13 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
         return fragment;
     }
 
+    static void saveReadProgressBack(ReadProgress readProgress) {
+        new java.lang.Thread(() -> {
+            ReadProgressDbWrapper dbWrapper = ReadProgressDbWrapper.getInstance();
+            dbWrapper.saveReadProgress(readProgress);
+        }).start();
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         App.getAppComponent(getContext()).inject(this);
@@ -213,13 +220,6 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
         return new ReadProgress(mThreadId, mPageNum, findMidItemPosition());
     }
 
-    static void saveReadProgressBack(ReadProgress readProgress) {
-        new java.lang.Thread(() -> {
-            ReadProgressDbWrapper dbWrapper = ReadProgressDbWrapper.getInstance();
-            dbWrapper.saveReadProgress(readProgress);
-        }).start();
-    }
-
     /**
      * 现在Item的位置
      *
@@ -252,7 +252,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
         }
 
         // if user has logged out, has no permission to access this thread or this thread is invalid
-        if (postList == null || postList.isEmpty()){
+        if (postList == null || postList.isEmpty()) {
             if (pullUpToRefresh) {
                 // mRecyclerAdapter.getItemCount() = 0
                 // when configuration changes (like orientation changes)

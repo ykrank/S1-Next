@@ -34,19 +34,10 @@ public final class LoadingViewModel extends BaseObservable implements Parcelable
     public static final int LOADING_SWIPE_REFRESH = 2;
 
     public static final int LOADING_PULL_UP_TO_REFRESH = 3;
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({
-            LOADING_FINISH,
-            LOADING_FIRST_TIME,
-            LOADING_SWIPE_REFRESH,
-            LOADING_PULL_UP_TO_REFRESH
-    })
-    public  @interface LoadingDef {}
-
     private int loading;
 
-    public LoadingViewModel() {}
+    public LoadingViewModel() {
+    }
 
     private LoadingViewModel(Parcel source) {
         loading = source.readInt();
@@ -82,5 +73,15 @@ public final class LoadingViewModel extends BaseObservable implements Parcelable
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(loading);
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({
+            LOADING_FINISH,
+            LOADING_FIRST_TIME,
+            LOADING_SWIPE_REFRESH,
+            LOADING_PULL_UP_TO_REFRESH
+    })
+    public @interface LoadingDef {
     }
 }

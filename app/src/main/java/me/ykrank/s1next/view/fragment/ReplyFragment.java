@@ -41,7 +41,7 @@ public final class ReplyFragment extends BasePostFragment {
         mThreadId = getArguments().getString(ARG_THREAD_ID);
         mQuotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
         cacheKey = String.format(CACHE_KEY_PREFIX, mThreadId, mQuotePostId);
-        L.leaveMsg("ReplyFragment##mThreadId:"+mThreadId+",mQuotePostId"+mQuotePostId);
+        L.leaveMsg("ReplyFragment##mThreadId:" + mThreadId + ",mQuotePostId" + mQuotePostId);
     }
 
     @Override

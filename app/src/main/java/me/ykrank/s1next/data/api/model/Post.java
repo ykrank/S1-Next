@@ -25,35 +25,91 @@ import me.ykrank.s1next.util.L;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class Post implements Cloneable, SameItem {
     private static final String TAG = Post.class.getSimpleName();
+    private static final SimpleArrayMap<String, String> COLOR_NAME_MAP;
+
+    static {
+        COLOR_NAME_MAP = new SimpleArrayMap<>();
+
+        COLOR_NAME_MAP.put("sienna", "#A0522D");
+        COLOR_NAME_MAP.put("darkolivegreen", "#556B2F");
+        COLOR_NAME_MAP.put("darkgreen", "#006400");
+        COLOR_NAME_MAP.put("darkslateblue", "#483D8B");
+        COLOR_NAME_MAP.put("indigo", "#4B0082");
+        COLOR_NAME_MAP.put("darkslategray", "#2F4F4F");
+        COLOR_NAME_MAP.put("darkred", "#8B0000");
+        COLOR_NAME_MAP.put("darkorange", "#FF8C00");
+        COLOR_NAME_MAP.put("slategray", "#708090");
+        COLOR_NAME_MAP.put("dimgray", "#696969");
+        COLOR_NAME_MAP.put("sandybrown", "#F4A460");
+        COLOR_NAME_MAP.put("yellowgreen", "#9ACD32");
+        COLOR_NAME_MAP.put("seagreen", "#2E8B57");
+        COLOR_NAME_MAP.put("mediumturquoise", "#48D1CC");
+        COLOR_NAME_MAP.put("royalblue", "#4169E1");
+        COLOR_NAME_MAP.put("orange", "#FFA500");
+        COLOR_NAME_MAP.put("deepskyblue", "#00BFFF");
+        COLOR_NAME_MAP.put("darkorchid", "#9932CC");
+        COLOR_NAME_MAP.put("pink", "#FFC0CB");
+        COLOR_NAME_MAP.put("wheat", "#F5DEB3");
+        COLOR_NAME_MAP.put("lemonchiffon", "#FFFACD");
+        COLOR_NAME_MAP.put("palegreen", "#98FB98");
+        COLOR_NAME_MAP.put("paleturquoise", "#AFEEEE");
+        COLOR_NAME_MAP.put("lightblue", "#ADD8E6");
+
+        // https://code.google.com/p/android/issues/detail?id=75953
+        COLOR_NAME_MAP.put("white", "#FFFFFF");
+    }
 
     @JsonProperty("pid")
     private String id;
-
     @JsonProperty("author")
     private String authorName;
-
     @JsonProperty("authorid")
     private String authorId;
-
     @JsonProperty("message")
     private String reply;
-
     @JsonProperty("number")
     private String count;
-
     @JsonProperty("dbdateline")
     private long datetime;
-
     @JsonProperty("attachments")
     private Map<Integer, Attachment> attachmentMap;
-
+    /**
+     * is in blacklist
+     */
     @JsonIgnore
     private boolean hide = false;
-
     @JsonIgnore
     private String remark;
 
     public Post() {
+    }
+
+    /**
+     * {@link Color} doesn't support all HTML color names.
+     * So {@link android.text.Html#fromHtml(String)} won't
+     * map some color names for replies in S1.
+     * We need to map these color names to their hex value.
+     */
+    private static String mapColors(String reply) {
+        // example: color="sienna"
+        // matcher.group(0): color="sienna"
+        // matcher.group(1): sienna
+        Matcher matcher = Pattern.compile("color=\"([a-zA-Z]+)\"").matcher(reply);
+
+        StringBuffer stringBuffer = new StringBuffer();
+        String color;
+        while (matcher.find()) {
+            // get color hex value for its color name
+            color = COLOR_NAME_MAP.get(matcher.group(1).toLowerCase(Locale.US));
+            if (color == null) {
+                continue;
+            }
+            // append part of the string and its color hex value
+            matcher.appendReplacement(stringBuffer, "color=\"" + color + "\"");
+        }
+        matcher.appendTail(stringBuffer);
+
+        return stringBuffer.toString();
     }
 
     public String getId() {
@@ -189,34 +245,6 @@ public final class Post implements Cloneable, SameItem {
     }
 
     /**
-     * {@link Color} doesn't support all HTML color names.
-     * So {@link android.text.Html#fromHtml(String)} won't
-     * map some color names for replies in S1.
-     * We need to map these color names to their hex value.
-     */
-    private static String mapColors(String reply) {
-        // example: color="sienna"
-        // matcher.group(0): color="sienna"
-        // matcher.group(1): sienna
-        Matcher matcher = Pattern.compile("color=\"([a-zA-Z]+)\"").matcher(reply);
-
-        StringBuffer stringBuffer = new StringBuffer();
-        String color;
-        while (matcher.find()) {
-            // get color hex value for its color name
-            color = COLOR_NAME_MAP.get(matcher.group(1).toLowerCase(Locale.US));
-            if (color == null) {
-                continue;
-            }
-            // append part of the string and its color hex value
-            matcher.appendReplacement(stringBuffer, "color=\"" + color + "\"");
-        }
-        matcher.appendTail(stringBuffer);
-
-        return stringBuffer.toString();
-    }
-
-    /**
      * 隐藏黑名单用户的引用内容
      *
      * @param reply
@@ -347,40 +375,6 @@ public final class Post implements Cloneable, SameItem {
                 reply = reply + imgTag;
             }
         }
-    }
-
-    private static final SimpleArrayMap<String, String> COLOR_NAME_MAP;
-
-    static {
-        COLOR_NAME_MAP = new SimpleArrayMap<>();
-
-        COLOR_NAME_MAP.put("sienna", "#A0522D");
-        COLOR_NAME_MAP.put("darkolivegreen", "#556B2F");
-        COLOR_NAME_MAP.put("darkgreen", "#006400");
-        COLOR_NAME_MAP.put("darkslateblue", "#483D8B");
-        COLOR_NAME_MAP.put("indigo", "#4B0082");
-        COLOR_NAME_MAP.put("darkslategray", "#2F4F4F");
-        COLOR_NAME_MAP.put("darkred", "#8B0000");
-        COLOR_NAME_MAP.put("darkorange", "#FF8C00");
-        COLOR_NAME_MAP.put("slategray", "#708090");
-        COLOR_NAME_MAP.put("dimgray", "#696969");
-        COLOR_NAME_MAP.put("sandybrown", "#F4A460");
-        COLOR_NAME_MAP.put("yellowgreen", "#9ACD32");
-        COLOR_NAME_MAP.put("seagreen", "#2E8B57");
-        COLOR_NAME_MAP.put("mediumturquoise", "#48D1CC");
-        COLOR_NAME_MAP.put("royalblue", "#4169E1");
-        COLOR_NAME_MAP.put("orange", "#FFA500");
-        COLOR_NAME_MAP.put("deepskyblue", "#00BFFF");
-        COLOR_NAME_MAP.put("darkorchid", "#9932CC");
-        COLOR_NAME_MAP.put("pink", "#FFC0CB");
-        COLOR_NAME_MAP.put("wheat", "#F5DEB3");
-        COLOR_NAME_MAP.put("lemonchiffon", "#FFFACD");
-        COLOR_NAME_MAP.put("palegreen", "#98FB98");
-        COLOR_NAME_MAP.put("paleturquoise", "#AFEEEE");
-        COLOR_NAME_MAP.put("lightblue", "#ADD8E6");
-
-        // https://code.google.com/p/android/issues/detail?id=75953
-        COLOR_NAME_MAP.put("white", "#FFFFFF");
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

@@ -17,10 +17,10 @@ import me.ykrank.s1next.util.L;
 final class UrlDrawable extends Drawable implements Drawable.Callback {
 
     private GlideDrawable mDrawable;
-    
+
     private String url;
-    
-    public UrlDrawable(String url){
+
+    public UrlDrawable(String url) {
         this.url = url;
     }
 
@@ -29,8 +29,8 @@ final class UrlDrawable extends Drawable implements Drawable.Callback {
         if (mDrawable != null) {
             try {
                 mDrawable.draw(canvas);
-            } catch (Exception e){
-                L.report("UrlDrawable##url:"+url+",GlideDrawable:"+mDrawable, e);
+            } catch (Exception e) {
+                L.report("UrlDrawable##url:" + url + ",GlideDrawable:" + mDrawable, e);
             }
         }
     }

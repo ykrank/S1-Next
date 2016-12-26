@@ -12,7 +12,7 @@ public final class PmGroupViewModel {
 
     public final ObservableField<PmGroup> pmGroup = new ObservableField<>();
 
-    public View.OnClickListener clickGroup(EventBus eventBus){
+    public View.OnClickListener clickGroup(EventBus eventBus) {
         return v -> eventBus.post(new PmGroupClickEvent(pmGroup.get()));
     }
 }

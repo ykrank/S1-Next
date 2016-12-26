@@ -55,7 +55,7 @@ public final class ForumActivity extends BaseActivity
 
     private BaseRecyclerViewFragment fragment;
 
-    public static void start(Activity activity){
+    public static void start(Activity activity) {
         Intent intent = new Intent(activity, ForumActivity.class);
         // if this activity is not part of this app's task
         if (NavUtils.shouldUpRecreateTask(activity, intent)) {
@@ -76,7 +76,7 @@ public final class ForumActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.getPrefComponent(this).inject(this);
-        
+
         setContentView(R.layout.activity_base);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -98,7 +98,7 @@ public final class ForumActivity extends BaseActivity
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        if (fragment == null){
+        if (fragment == null) {
             fragment = (BaseRecyclerViewFragment) getSupportFragmentManager()
                     .findFragmentByTag(ForumFragment.TAG);
         }
@@ -119,7 +119,8 @@ public final class ForumActivity extends BaseActivity
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {}
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
 
     @Override
     public void setupToolbarDropDown(List<? extends CharSequence> dropDownItemList) {
@@ -143,13 +144,13 @@ public final class ForumActivity extends BaseActivity
         viewModel.dropDownItemList.addAll(dropDownItemList);
     }
 
-    private void restoreFromInterrupt(){
+    private void restoreFromInterrupt() {
         Single.just(0)
-                .map(i->mReadProgressPrefManager.getLastReadProgress())
+                .map(i -> mReadProgressPrefManager.getLastReadProgress())
                 .compose(RxJavaUtil.iOSingleTransformer())
-                .doAfterTerminate(()->mReadProgressPrefManager.saveLastReadProgress(null))
+                .doAfterTerminate(() -> mReadProgressPrefManager.saveLastReadProgress(null))
                 .subscribe(readProgress -> {
-                    if (readProgress != null){
+                    if (readProgress != null) {
                         PostListActivity.startPostListActivity(ForumActivity.this, readProgress);
                     }
                 }, L::e);

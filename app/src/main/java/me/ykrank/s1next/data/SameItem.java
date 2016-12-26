@@ -8,6 +8,7 @@ public interface SameItem {
 
     /**
      * whether two object of this is same item, use in recycleView to show animate
+     *
      * @return same or not
      */
     boolean isSameItem(Object o);

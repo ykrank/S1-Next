@@ -45,12 +45,10 @@ import static java.net.HttpURLConnection.HTTP_REQ_TOO_LONG;
 public final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 
     private final Resources mResources;
-    @Inject
-    DownloadPreferencesManager mDownloadPreferencesManager;
-
     private final OkHttpClient mOkHttpClient;
     private final GlideUrl mGlideUrl;
-
+    @Inject
+    DownloadPreferencesManager mDownloadPreferencesManager;
     private volatile Call mCall;
     private ResponseBody mResponseBody;
     private InputStream mInputStream;
@@ -61,6 +59,48 @@ public final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 
         mResources = App.get().getResources();
         App.getPrefComponent(App.get()).inject(this);
+    }
+
+    /**
+     * Forked form {@link okhttp3.internal.cache.CacheStrategy#isCacheable(Response, Request)}.
+     */
+    private static boolean isCacheable(Response response) {
+        // Always go to network for uncacheable response codes (RFC 7231 section 6.1),
+        // This implementation doesn't support caching partial content.
+        switch (response.code()) {
+            case HTTP_OK:
+            case HTTP_NOT_AUTHORITATIVE:
+            case HTTP_NO_CONTENT:
+            case HTTP_MULT_CHOICE:
+            case HTTP_MOVED_PERM:
+            case HTTP_NOT_FOUND:
+            case HTTP_BAD_METHOD:
+            case HTTP_GONE:
+            case HTTP_REQ_TOO_LONG:
+            case HTTP_NOT_IMPLEMENTED:
+            case StatusLine.HTTP_PERM_REDIRECT:
+                // These codes can be cached unless headers forbid it.
+                break;
+
+            case HTTP_MOVED_TEMP:
+            case StatusLine.HTTP_TEMP_REDIRECT:
+                // These codes can only be cached with the right response headers.
+                // http://tools.ietf.org/html/rfc7234#section-3
+                // s-maxage is not checked because OkHttp is a private cache that should ignore s-maxage.
+                if (response.header("Expires") != null
+                        || response.cacheControl().maxAgeSeconds() != -1
+                        || response.cacheControl().isPublic()
+                        || response.cacheControl().isPrivate()) {
+                    break;
+                }
+                // Fall-through.
+
+            default:
+                // All other codes cannot be cached.
+                return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -125,48 +165,6 @@ public final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
             mCall.cancel();
             mCall = null;
         }
-    }
-
-    /**
-     * Forked form {@link okhttp3.internal.cache.CacheStrategy#isCacheable(Response, Request)}.
-     */
-    private static boolean isCacheable(Response response) {
-        // Always go to network for uncacheable response codes (RFC 7231 section 6.1),
-        // This implementation doesn't support caching partial content.
-        switch (response.code()) {
-            case HTTP_OK:
-            case HTTP_NOT_AUTHORITATIVE:
-            case HTTP_NO_CONTENT:
-            case HTTP_MULT_CHOICE:
-            case HTTP_MOVED_PERM:
-            case HTTP_NOT_FOUND:
-            case HTTP_BAD_METHOD:
-            case HTTP_GONE:
-            case HTTP_REQ_TOO_LONG:
-            case HTTP_NOT_IMPLEMENTED:
-            case StatusLine.HTTP_PERM_REDIRECT:
-                // These codes can be cached unless headers forbid it.
-                break;
-
-            case HTTP_MOVED_TEMP:
-            case StatusLine.HTTP_TEMP_REDIRECT:
-                // These codes can only be cached with the right response headers.
-                // http://tools.ietf.org/html/rfc7234#section-3
-                // s-maxage is not checked because OkHttp is a private cache that should ignore s-maxage.
-                if (response.header("Expires") != null
-                        || response.cacheControl().maxAgeSeconds() != -1
-                        || response.cacheControl().isPublic()
-                        || response.cacheControl().isPrivate()) {
-                    break;
-                }
-                // Fall-through.
-
-            default:
-                // All other codes cannot be cached.
-                return false;
-        }
-
-        return true;
     }
 
 }

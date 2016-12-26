@@ -15,16 +15,17 @@ public final class Api {
     public static final int POSTS_PER_PAGE = 30;
 
     public static final int REPLY_NOTIFICATION_MAX_LENGTH = 100;
-
+    public static final String URL_EMOTICON_IMAGE_PREFIX = "static/image/smiley/";
+    /**
+     * Opens the browser via {@link android.content.Intent}.
+     */
+    public static final String URL_BROWSER_REGISTER = prepend("member.php?mod=register");
     static final String URL_FORUM = "index.php?module=forumindex";
     static final String URL_FAVOURITES = "index.php?module=myfavthread";
     static final String URL_THREAD_LIST = "index.php?module=forumdisplay&tpp=" + THREADS_PER_PAGE;
     static final String URL_POST_LIST = "index.php?module=viewthread&ppp=" + POSTS_PER_PAGE;
-
     static final String URL_QUOTE_POST_REDIRECT = "/2b/forum.php?mod=redirect&goto=findpost";
-
     static final String URL_LOGIN = "index.php?module=login&loginsubmit=yes&loginfield=auto&cookietime=2592000";
-
     //PM
     static final String URL_PM_LIST = "index.php?module=mypm&filter=privatepm";
     static final String URL_PM_VIEW_LIST = "index.php?module=mypm&subop=view";
@@ -50,25 +51,17 @@ public final class Api {
      * 发布新帖前获取必要前置信息
      */
     static final String URL_NEW_THREAD_HELPER = BASE_URL + "forum.php?mod=post&action=newthread";
-
     static final String URL_SEARCH_FORUM = BASE_URL + "search.php?mod=forum";
-
-    public static final String URL_EMOTICON_IMAGE_PREFIX = "static/image/smiley/";
-
     private static final String URL_USER_AVATAR_PREFIX = prepend("uc_server/data/avatar/");
     private static final String URL_USER_AVATAR_SMALL = URL_USER_AVATAR_PREFIX + "%s_avatar_small.jpg";
     private static final String URL_USER_AVATAR_MEDIUM = URL_USER_AVATAR_PREFIX + "%s_avatar_middle.jpg";
     private static final String URL_USER_AVATAR_BIG = URL_USER_AVATAR_PREFIX + "%s_avatar_big.jpg";
-
-    /**
-     * Opens the browser via {@link android.content.Intent}.
-     */
-    public static final String URL_BROWSER_REGISTER = prepend("member.php?mod=register");
     private static final String URL_BROWSER_FAVOURITES = prepend("home.php?mod=space&do=favorite");
     private static final String URL_BROWSER_THREAD_LIST = prepend("forum-%s-%d.html");
     private static final String URL_BROWSER_POST_LIST = prepend("thread-%s-%d-1.html");
 
-    private Api() {}
+    private Api() {
+    }
 
     private static String prepend(String suffix) {
         return BASE_URL + suffix;

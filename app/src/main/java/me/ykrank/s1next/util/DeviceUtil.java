@@ -9,7 +9,8 @@ import me.ykrank.s1next.R;
 
 public final class DeviceUtil {
 
-    private DeviceUtil() {}
+    private DeviceUtil() {
+    }
 
     /**
      * Gets the string signature which is used for reply (show in setting).

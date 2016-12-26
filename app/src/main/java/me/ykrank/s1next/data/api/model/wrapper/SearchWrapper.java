@@ -28,8 +28,8 @@ public class SearchWrapper {
     private String href = "";
     @NonNull
     private List<Search> searches = new ArrayList<>();
-    
-    public static SearchWrapper fromSource(String source){
+
+    public static SearchWrapper fromSource(String source) {
         SearchWrapper wrapper = new SearchWrapper();
         try {
             Document document = Jsoup.parse(source);
@@ -51,14 +51,14 @@ public class SearchWrapper {
             List<Search> searches = new ArrayList<>();
             elements = document.select("li.pbw");
             ListIterator<Element> iterator = elements.listIterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 Element resultEle = iterator.next();
                 Search search = new Search();
                 search.setContent(resultEle.html());
                 searches.add(search);
             }
             wrapper.setSearches(searches);
-            
+
             //page
             elements = document.select("div.pg");
             if (elements.isEmpty()) {
@@ -69,23 +69,23 @@ public class SearchWrapper {
             elements = element.getElementsByTag("strong");
             int page = Integer.parseInt(elements.get(0).text().trim());
             wrapper.setPage(page);
-            
+
             //maxpage
             elements = element.select("span[title]");
             String maxPageStr = elements.get(0).text();
             int maxPage = Integer.parseInt(maxPageStr.substring(2, maxPageStr.length() - 2).trim());
             wrapper.setMaxPage(maxPage);
-            
+
             //href
             elements = element.getElementsByTag("a");
             String href = elements.get(0).attr("href").replaceFirst("page=\\d+", "page=");
             wrapper.setHref(href);
-        } catch (Exception e){
-          L.e(e);
+        } catch (Exception e) {
+            L.e(e);
         }
         return wrapper;
     }
-    
+
 
     public int getCount() {
         return count;

@@ -5,7 +5,7 @@ import android.app.Activity;
 import me.ykrank.s1next.view.adapter.delegate.FavouriteAdapterDelegate;
 
 public final class FavouriteRecyclerViewAdapter extends BaseRecyclerViewAdapter {
-    
+
     public FavouriteRecyclerViewAdapter(Activity activity) {
         super(activity);
 

@@ -124,8 +124,8 @@ abstract class BaseViewPagerFragment extends BaseFragment
     final void setCurrentPage(int currentPage) {
         mViewPager.setCurrentItem(currentPage);
     }
-    
-    final void loadViewPager(){
+
+    final void loadViewPager() {
         // don't use getChildFragmentManager()
         // because we can't retain Fragments (DataRetainedFragment)
         // that are nested in other fragments
@@ -203,7 +203,7 @@ abstract class BaseViewPagerFragment extends BaseFragment
             if (mCurrentFragment != fragment) {
                 mCurrentFragment = fragment;
             }
-            
+
             super.setPrimaryItem(container, position, fragment);
         }
 

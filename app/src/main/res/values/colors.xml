@@ -1,31 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <color name="pink_A200">#ff4081</color>
-    <color name="orange_A200">#ffab40</color>
-    <color name="light_blue_A200">#40c4ff</color>
-    <color name="green_A200">#69f0ae</color>
-    <color name="deep_orange_A200">#ff6e40</color>
-
-    <color name="amber_500">#ffc107</color>
-    <color name="amber_700">#ffa000</color>
-
-    <color name="green_500">#4caf50</color>
-    <color name="green_600">#43a047</color>
-    <color name="green_700">#388e3c</color>
-
-    <color name="light_blue_500">#03a9f4</color>
-    <color name="light_blue_600">#039be5</color>
-    <color name="light_blue_700">#0288d1</color>
-
-    <color name="purple_500">#9c27b0</color>
-    <color name="purple_700">#7b1fa2</color>
-
     <color name="dark_cyan">#5a8e89</color>
     <color name="teal_200_70p">#b380cbc4</color>
     <color name="white_69p">#b1ffffff</color>
-
-    <color name="black_30p">#4d000000</color>
 
     <color name="swipe_refresh_1">@color/pink_A200</color>
     <color name="swipe_refresh_2">@color/orange_A200</color>

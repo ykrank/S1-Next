@@ -5,7 +5,8 @@ import android.view.ViewTreeObserver;
 
 public final class ViewTreeObserverUtil {
 
-    public ViewTreeObserverUtil() {}
+    public ViewTreeObserverUtil() {
+    }
 
     @SuppressWarnings("deprecation")
     public static void removeOnGlobalLayoutListener(ViewTreeObserver viewTreeObserver,

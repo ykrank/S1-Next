@@ -13,7 +13,8 @@ import me.ykrank.s1next.data.pref.ThemeManager;
 
 final class LollipopUtil {
 
-    private LollipopUtil() {}
+    private LollipopUtil() {
+    }
 
     /**
      * Changes app title color to white in recent apps.

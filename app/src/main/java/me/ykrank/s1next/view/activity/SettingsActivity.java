@@ -57,11 +57,11 @@ public final class SettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        L.leaveMsg("SettingsActivity##extra"+getIntent().getIntExtra(ARG_SHOW_SETTINGS, EXTRA_SHOW_SETTING_DEFAULT));
+        L.leaveMsg("SettingsActivity##extra" + getIntent().getIntExtra(ARG_SHOW_SETTINGS, EXTRA_SHOW_SETTING_DEFAULT));
         setContentView(R.layout.activity_base_without_drawer_and_scrolling_effect);
 
         if (savedInstanceState == null) {
-            switch (getIntent().getIntExtra(ARG_SHOW_SETTINGS, EXTRA_SHOW_SETTING_DEFAULT)){
+            switch (getIntent().getIntExtra(ARG_SHOW_SETTINGS, EXTRA_SHOW_SETTING_DEFAULT)) {
                 case EXTRA_SHOW_SETTING_DOWNLOAD:
                     setTitle(R.string.pref_downloads);
                     getFragmentManager().beginTransaction().replace(R.id.frame_layout,

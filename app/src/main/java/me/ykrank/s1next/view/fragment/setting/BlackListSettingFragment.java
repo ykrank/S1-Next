@@ -50,94 +50,6 @@ public final class BlackListSettingFragment extends Fragment {
     private BlackListCursorListViewAdapter mListViewAdapter;
 
     private Subscription mSubscription;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentBlacklistBinding binding = DataBindingUtil.inflate(inflater,
-                R.layout.fragment_blacklist, container, false);
-        mListView = binding.listview;
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        mListViewAdapter = new BlackListCursorListViewAdapter(getActivity());
-        mListView.setAdapter(mListViewAdapter);
-        mListView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
-        mListView.setMultiChoiceModeListener(mActionModeCallback);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.fragment_blacklist, menu);
-        menu.findItem(R.id.menu_refresh).setEnabled(true);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_refresh:
-                load();
-
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    /**
-     * Starts to load new data.
-     */
-    private void load() {
-        mSubscription = getSourceObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        mListViewAdapter::changeCursor
-                        , throwable -> {
-                            L.e("S1next", throwable);
-                });
-    }
-
-    Observable<Cursor> getSourceObservable() {
-        return Observable.create(new Observable.OnSubscribe<Cursor>() {
-            @Override
-            public void call(Subscriber<? super Cursor> subscriber) {
-                Cursor cursor = BlackListDbWrapper.getInstance().getBlackListCursor();
-                subscriber.onNext(cursor);
-                subscriber.onCompleted();
-            }
-        });
-    }
-
-    @Override
-    public void onPause() {
-        mListViewAdapter.changeCursor(null);
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        load();
-    }
-
-    @Override
-    public void onDestroy() {
-        RefWatcher refWatcher = App.get().getRefWatcher();
-        refWatcher.watch(this);
-        super.onDestroy();
-    }
-
     private AbsListView.MultiChoiceModeListener mActionModeCallback = new AbsListView.MultiChoiceModeListener() {
 
         @Override
@@ -211,9 +123,96 @@ public final class BlackListSettingFragment extends Fragment {
         // Called when the user exits the action mode
         @Override
         public void onDestroyActionMode(android.view.ActionMode mode) {
-            
+
         }
     };
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        FragmentBlacklistBinding binding = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_blacklist, container, false);
+        mListView = binding.listview;
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mListViewAdapter = new BlackListCursorListViewAdapter(getActivity());
+        mListView.setAdapter(mListViewAdapter);
+        mListView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
+        mListView.setMultiChoiceModeListener(mActionModeCallback);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.fragment_blacklist, menu);
+        menu.findItem(R.id.menu_refresh).setEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_refresh:
+                load();
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /**
+     * Starts to load new data.
+     */
+    private void load() {
+        mSubscription = getSourceObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        mListViewAdapter::changeCursor
+                        , throwable -> {
+                            L.e("S1next", throwable);
+                        });
+    }
+
+    Observable<Cursor> getSourceObservable() {
+        return Observable.create(new Observable.OnSubscribe<Cursor>() {
+            @Override
+            public void call(Subscriber<? super Cursor> subscriber) {
+                Cursor cursor = BlackListDbWrapper.getInstance().getBlackListCursor();
+                subscriber.onNext(cursor);
+                subscriber.onCompleted();
+            }
+        });
+    }
+
+    @Override
+    public void onPause() {
+        mListViewAdapter.changeCursor(null);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        load();
+    }
+
+    @Override
+    public void onDestroy() {
+        RefWatcher refWatcher = App.get().getRefWatcher();
+        refWatcher.watch(this);
+        super.onDestroy();
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

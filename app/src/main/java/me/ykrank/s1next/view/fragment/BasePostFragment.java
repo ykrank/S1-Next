@@ -52,31 +52,25 @@ public abstract class BasePostFragment extends BaseFragment {
      * keyboard is showing when configuration changes.
      */
     private static final String STATE_IS_EMOTICON_KEYBOARD_SHOWING = "is_emoticon_keyboard_showing";
-
-    @Inject
-    EventBus mEventBus;
-
-    @Inject
-    GeneralPreferencesManager mGeneralPreferencesManager;
-
+    private final Interpolator mInterpolator = new FastOutSlowInInterpolator();
     protected FragmentPostBinding mFragmentPostBinding;
     protected EditText mReplyView;
-
-    private boolean mIsEmoticonKeyboardShowing;
     /**
      * {@code mMenuEmoticon} is null before {@link #onCreateOptionsMenu(Menu, MenuInflater)}.
      */
     @Nullable
     protected MenuItem mMenuEmoticon;
     protected View mEmoticonKeyboard;
-    private final Interpolator mInterpolator = new FastOutSlowInInterpolator();
-
     /**
      * {@code mMenuSend} is null when configuration changes.
      */
     @Nullable
     protected MenuItem mMenuSend;
-
+    @Inject
+    EventBus mEventBus;
+    @Inject
+    GeneralPreferencesManager mGeneralPreferencesManager;
+    private boolean mIsEmoticonKeyboardShowing;
     private Subscription mEmotionClickSubscription;
     private Subscription mCacheSubscription;
 

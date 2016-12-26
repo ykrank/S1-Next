@@ -205,7 +205,7 @@ public final class PostListFragment extends BaseViewPagerFragment
     @Override
     public void onPause() {
         //save last read progress
-        final PostListPagerFragment fragment =getCurPostPageFragment();
+        final PostListPagerFragment fragment = getCurPostPageFragment();
         if (fragment != null) {
             mLastReadSubscription = Single.just(fragment.getCurReadProgress())
                     .delay(5, TimeUnit.SECONDS)

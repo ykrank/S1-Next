@@ -64,12 +64,13 @@ public abstract class BaseRecyclerViewAdapter extends ListDelegationAdapter<List
     /**
      * diff new dataSet with old, and dispatch update.\n
      * must another object with old.
-     * @see DiffUtil
-     * @param newData new data set
+     *
+     * @param newData     new data set
      * @param detectMoves {@link DiffUtil#calculateDiff}
+     * @see DiffUtil
      */
-    public final void diffNewDataSet(List<?> newData, boolean detectMoves){
-        if (items == newData){
+    public final void diffNewDataSet(List<?> newData, boolean detectMoves) {
+        if (items == newData) {
             refreshDataSet(newData, detectMoves);
             ErrorUtil.throwNewError(new IllegalArgumentException("must set new data set"));
         }
@@ -81,17 +82,18 @@ public abstract class BaseRecyclerViewAdapter extends ListDelegationAdapter<List
 
     /**
      * refresh new dataSet.if same object, just notifyDataSetChanged, else {@link #diffNewDataSet}
-     * @param newData new data set
+     *
+     * @param newData     new data set
      * @param detectMoves {@link #diffNewDataSet}
      */
-    public final void refreshDataSet(List<?> newData, boolean detectMoves){
-        if (items != newData){
+    public final void refreshDataSet(List<?> newData, boolean detectMoves) {
+        if (items != newData) {
             diffNewDataSet(newData, detectMoves);
         } else {
             notifyDataSetChanged();
         }
     }
-    
+
     public final List<Object> getDataSet() {
         return getItems();
     }
@@ -130,7 +132,7 @@ public abstract class BaseRecyclerViewAdapter extends ListDelegationAdapter<List
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
             Object oldD = oldData.get(oldItemPosition);
             Object newD = newData.get(newItemPosition);
-            if (oldD != null && oldD instanceof SameItem){
+            if (oldD != null && oldD instanceof SameItem) {
                 return ((SameItem) oldD).isSameItem(newD);
             }
             return Objects.equals(oldD, newD);

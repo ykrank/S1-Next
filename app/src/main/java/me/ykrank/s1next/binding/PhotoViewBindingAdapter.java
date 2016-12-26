@@ -17,7 +17,8 @@ import me.ykrank.s1next.widget.PhotoView;
 
 public final class PhotoViewBindingAdapter {
 
-    private PhotoViewBindingAdapter() {}
+    private PhotoViewBindingAdapter() {
+    }
 
     @BindingAdapter({"url", "thumbUrl"})
     public static void loadImage(PhotoView photoView, String url, @Nullable String thumbUrl) {

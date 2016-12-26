@@ -8,7 +8,8 @@ import android.os.Build;
 
 public final class NetworkUtil {
 
-    private NetworkUtil() {}
+    private NetworkUtil() {
+    }
 
     /**
      * Checks whether the Wi-Fi network connectivity exists and whether it is possible to

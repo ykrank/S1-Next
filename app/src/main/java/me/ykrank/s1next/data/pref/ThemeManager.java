@@ -37,19 +37,11 @@ public final class ThemeManager {
     private static final int WHITE_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA = (int) (0.38 * 255);
     private static final int BLACK_BACKGROUND_SECONDARY_TEXT_ALPHA = (int) (0.70 * 255);
     private static final int BLACK_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA = (int) (0.30 * 255);
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({
-            WHITE_BACKGROUND_SECONDARY_TEXT_ALPHA,
-            WHITE_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA,
-            BLACK_BACKGROUND_SECONDARY_TEXT_ALPHA,
-            BLACK_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA
-    })
-    private @interface BackgroundAlphaDef {}
-
     private final Context mContext;
     private final GeneralPreferencesRepository mGeneralPreferencesProvider;
 
+    @ColorInt
+    private volatile int mColorAccent;
     /**
      * Lazy Initialization.
      */
@@ -64,10 +56,7 @@ public final class ThemeManager {
             return theme;
         }
     };
-
     private volatile Supplier<Theme> mThemeMemorized = Suppliers.memoize(mThemeSupplier);
-    @ColorInt
-    private volatile int mColorAccent;
 
     public ThemeManager(Context context, GeneralPreferencesRepository generalPreferencesProvider) {
         this.mContext = context;
@@ -188,5 +177,15 @@ public final class ThemeManager {
             this.style = style;
             this.translucentStyle = translucentStyle;
         }
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({
+            WHITE_BACKGROUND_SECONDARY_TEXT_ALPHA,
+            WHITE_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA,
+            BLACK_BACKGROUND_SECONDARY_TEXT_ALPHA,
+            BLACK_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA
+    })
+    private @interface BackgroundAlphaDef {
     }
 }

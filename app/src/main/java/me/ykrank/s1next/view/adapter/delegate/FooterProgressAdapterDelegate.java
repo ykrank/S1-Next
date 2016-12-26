@@ -28,7 +28,7 @@ public final class FooterProgressAdapterDelegate extends BaseAdapterDelegate<Foo
         return new FooterProgressViewHolder(mLayoutInflater.inflate(R.layout.item_footer_progress,
                 parent, false));
     }
-    
+
     @Override
     public void onBindViewHolderData(FooterProgressItem footerProgressItem, int position, @NonNull FooterProgressViewHolder holder) {
 

@@ -42,16 +42,12 @@ public final class NewThreadFragment extends BasePostFragment {
     private static final String ARG_FORUM_ID = "forum_id";
 
     private static final String CACHE_KEY_PREFIX = "NewThread_%s";
-
-    private String cacheKey;
-
-    private int mForumId;
-
     @Inject
     S1Service mS1Service;
     @Inject
     ObjectMapper objectMapper;
-
+    private String cacheKey;
+    private int mForumId;
     private Subscription mSubscription;
 
     private EditText titleEditText;

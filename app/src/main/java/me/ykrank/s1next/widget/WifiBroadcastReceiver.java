@@ -21,14 +21,11 @@ import me.ykrank.s1next.util.NetworkUtil;
  */
 public final class WifiBroadcastReceiver {
 
+    private final Context mContext;
     @Inject
     Wifi mWifi;
-
     @Inject
     DownloadPreferencesManager mDownloadPreferencesManager;
-
-    private final Context mContext;
-
     private BroadcastReceiver mBroadcastReceiver;
 
     public WifiBroadcastReceiver(Context context) {
@@ -66,5 +63,6 @@ public final class WifiBroadcastReceiver {
      * implements this interface would be registered to monitor
      * wifi status (if needed) automatically.
      */
-    public interface NeedMonitorWifi {}
+    public interface NeedMonitorWifi {
+    }
 }

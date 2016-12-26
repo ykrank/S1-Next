@@ -26,6 +26,39 @@ public final class Threads extends Account {
     @JsonProperty("sublist")
     private List<Forum> subForumList;
 
+    public static List<Thread> getFilterThreadList(final List<Thread> oThreads) {
+        List<Thread> threads = new ArrayList<>();
+        for (Thread thread : oThreads) {
+            Thread fThread = getFilterThread(thread);
+            if (fThread != null) {
+                threads.add(fThread);
+            }
+        }
+        return threads;
+    }
+
+    public static Thread getFilterThread(final Thread oThread) {
+        Thread nThread = oThread;
+        BlackListDbWrapper blackListWrapper = BlackListDbWrapper.getInstance();
+        switch (blackListWrapper.getForumFlag(oThread.getAuthorid(), oThread.getAuthor())) {
+            case BlackList.DEL_FORUM:
+                nThread = null;
+                break;
+            case BlackList.HIDE_FORUM:
+                if (!oThread.isHide()) {
+                    nThread = oThread.clone();
+                    nThread.setHide(true);
+                }
+                break;
+            default:
+                if (oThread.isHide()) {
+                    nThread = oThread.clone();
+                    nThread.setHide(false);
+                }
+        }
+        return nThread;
+    }
+
     public Thread.ThreadListInfo getThreadListInfo() {
         return threadListInfo;
     }
@@ -36,39 +69,6 @@ public final class Threads extends Account {
 
     public List<Thread> getThreadList() {
         return threadList;
-    }
-    
-    public static List<Thread> getFilterThreadList(final List<Thread> oThreads) {
-        List<Thread> threads = new ArrayList<>();
-        for (Thread thread:oThreads) {
-            Thread fThread = getFilterThread(thread);
-            if (fThread != null){
-                threads.add(fThread);
-            }
-        }
-        return threads;
-    }
-
-    public static Thread getFilterThread(final Thread oThread) {
-        Thread nThread = oThread;
-        BlackListDbWrapper blackListWrapper = BlackListDbWrapper.getInstance();
-        switch (blackListWrapper.getForumFlag(oThread.getAuthorid(), oThread.getAuthor())){
-            case BlackList.DEL_FORUM:
-                nThread = null;
-                break;
-            case BlackList.HIDE_FORUM:
-                if (!oThread.isHide()){
-                    nThread = oThread.clone();
-                    nThread.setHide(true);
-                }
-                break;
-            default:
-                if (oThread.isHide()){
-                    nThread = oThread.clone();
-                    nThread.setHide(false);
-                }
-        }
-        return nThread;
     }
 
     public void setThreadList(List<Thread> threadList) {

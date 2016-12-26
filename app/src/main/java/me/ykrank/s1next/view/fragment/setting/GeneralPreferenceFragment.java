@@ -53,7 +53,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
         findPreference(PREF_KEY_BLACKLIST).setOnPreferenceClickListener(this);
         findPreference(PREF_KEY_READ_PROGRESS).setOnPreferenceClickListener(this);
         findPreference(PREF_KEY_BACKUP).setOnPreferenceClickListener(this);
-        
+
         findPreference(PREF_KEY_SIGNATURE).setSummary(Html.fromHtml(DeviceUtil.getSignature(getActivity())));
     }
 

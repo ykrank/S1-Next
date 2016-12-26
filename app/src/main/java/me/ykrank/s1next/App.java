@@ -20,13 +20,13 @@ import me.ykrank.s1next.widget.AppActivityLifecycleCallbacks;
 
 public final class App extends MultiDexApplication {
     public static final String LOG_TAG = "s1Next";
-    
+
     private static App sApp;
 
     private GeneralPreferencesManager mGeneralPreferencesManager;
 
     private AppComponent mAppComponent;
-    
+
     private PrefComponent mPrefComponent;
 
     private AppActivityLifecycleCallbacks mAppActivityLifecycleCallbacks;
@@ -37,16 +37,16 @@ public final class App extends MultiDexApplication {
         return sApp;
     }
 
-    public RefWatcher getRefWatcher() {
-        return refWatcher;
-    }
-
     public static AppComponent getAppComponent(Context context) {
         return ((App) context.getApplicationContext()).mAppComponent;
     }
 
     public static PrefComponent getPrefComponent(Context context) {
         return ((App) context.getApplicationContext()).mPrefComponent;
+    }
+
+    public RefWatcher getRefWatcher() {
+        return refWatcher;
     }
 
     @Override

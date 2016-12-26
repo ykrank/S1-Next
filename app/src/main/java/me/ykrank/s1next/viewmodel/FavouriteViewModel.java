@@ -21,7 +21,7 @@ public final class FavouriteViewModel {
 
     public final ObservableField<Func1<View, Subscription>> subscription = new ObservableField<>();
 
-    public void setSubscription(){
+    public void setSubscription() {
         subscription.set(v -> {
             Thread thread = new Thread();
             Favourite favourite = this.favourite.get();

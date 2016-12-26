@@ -20,9 +20,9 @@ public class SarabaInsideThreadSpan extends SarabaSpan {
 
     @Override
     public boolean isMatch(Uri uri) {
-        if (uri.getScheme() == null && uri.getHost()==null) {
+        if (uri.getScheme() == null && uri.getHost() == null) {
             Optional<ThreadLink> threadLink = ThreadLink.parse(uri.toString());
-            if (threadLink.isPresent()){
+            if (threadLink.isPresent()) {
                 return true;
             }
         }
@@ -32,6 +32,6 @@ public class SarabaInsideThreadSpan extends SarabaSpan {
     @Override
     public void onClick(Uri uri, View view) {
         String path = uri.toString();
-        goSaraba(view.getContext(), Uri.parse(Api.BASE_URL+path));
+        goSaraba(view.getContext(), Uri.parse(Api.BASE_URL + path));
     }
 }

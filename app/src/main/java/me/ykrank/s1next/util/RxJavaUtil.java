@@ -29,7 +29,7 @@ public final class RxJavaUtil {
      * 快速发送工作线程和UI回调
      *
      * @param workAction 工作线程
-     * @param uiAction 主线程
+     * @param uiAction   主线程
      * @return 订单
      */
     public static Subscription workWithUiThread(Action0 workAction, Action0 uiAction) {

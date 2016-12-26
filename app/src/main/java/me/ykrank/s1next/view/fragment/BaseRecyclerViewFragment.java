@@ -147,9 +147,10 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
 
     /**
      * the id of DataRetainedFragment's data
+     *
      * @return id
      */
-    public String getDataId(){
+    public String getDataId() {
         return null;
     }
 
@@ -216,7 +217,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
         return mLoadingViewModel.getLoading() != LoadingViewModel.LOADING_FINISH;
     }
 
-    final void setLoading(@LoadingViewModel.LoadingDef int loading){
+    final void setLoading(@LoadingViewModel.LoadingDef int loading) {
         mLoadingViewModel.setLoading(loading);
     }
 
@@ -288,7 +289,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     }
 
     @NonNull
-    DataRetainedFragment<D> getRetainedFragment(){
+    DataRetainedFragment<D> getRetainedFragment() {
         return mDataRetainedFragment;
     }
 

@@ -13,7 +13,7 @@ import me.ykrank.s1next.data.api.Api;
 public final class SearchMovementMethod extends PostMovementMethod {
     private static SearchMovementMethod sInstance;
 
-    protected SearchMovementMethod(){
+    protected SearchMovementMethod() {
         super(new DefaultSearchURLSpanClick());
     }
 
@@ -28,12 +28,12 @@ public final class SearchMovementMethod extends PostMovementMethod {
         return sInstance;
     }
 
-    public static class DefaultSearchURLSpanClick extends DefaultURLSpanClick{
+    public static class DefaultSearchURLSpanClick extends DefaultURLSpanClick {
 
         @Override
         public void onClick(Uri uri, View v) {
-            if(uri.getScheme() == null){
-                uri = Uri.parse(Api.BASE_URL+uri.toString());
+            if (uri.getScheme() == null) {
+                uri = Uri.parse(Api.BASE_URL + uri.toString());
             }
             super.onClick(uri, v);
         }

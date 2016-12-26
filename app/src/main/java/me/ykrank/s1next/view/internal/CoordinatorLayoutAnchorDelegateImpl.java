@@ -60,7 +60,7 @@ public final class CoordinatorLayoutAnchorDelegateImpl implements CoordinatorLay
     }
 
     @Override
-    public Optional<Snackbar> showLongSnackbar(@StringRes int resId){
+    public Optional<Snackbar> showLongSnackbar(@StringRes int resId) {
         Snackbar snackbar = Snackbar.make(mCoordinatorLayout, resId, Snackbar.LENGTH_LONG);
         snackbar.show();
         return Optional.of(snackbar);

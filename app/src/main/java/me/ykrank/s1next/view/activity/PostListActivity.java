@@ -52,7 +52,7 @@ public final class PostListActivity extends BaseActivity
         intent.putExtra(ARG_SHOULD_GO_TO_LAST_PAGE, shouldGoToLastPage);
 
         if (context instanceof Activity)
-            ((Activity)context).startActivityForResult(intent, RESULT_BLACKLIST);
+            ((Activity) context).startActivityForResult(intent, RESULT_BLACKLIST);
         else context.startActivity(intent);
     }
 
@@ -60,7 +60,7 @@ public final class PostListActivity extends BaseActivity
         // see android.text.style.URLSpan#onClick(View)
         String appId = activity.getIntent().getStringExtra(Browser.EXTRA_APPLICATION_ID);
 
-        startPostListActivity(activity, threadLink, appId!=null && !activity.getPackageName().equals(appId));
+        startPostListActivity(activity, threadLink, appId != null && !activity.getPackageName().equals(appId));
     }
 
     public static void startPostListActivity(Context context, ThreadLink threadLink, boolean comeFromOtherApp) {
@@ -84,13 +84,13 @@ public final class PostListActivity extends BaseActivity
     /**
      * 点击打开有读取进度的帖子
      *
-     * @param view     点击焦点
-     * @param thread   帖子信息
+     * @param view   点击焦点
+     * @param thread 帖子信息
      * @return
      */
     public static Subscription clickStartPostListActivity(@NonNull View view, @NonNull Thread thread) {
         ReadProgressPreferencesManager preferencesManager = App.getPrefComponent(view.getContext()).getReadProgressPreferencesManager();
-        if (preferencesManager.isLoadAuto()){
+        if (preferencesManager.isLoadAuto()) {
             return OnceClickUtil.onceClickObservable(view, 1000)
                     .observeOn(Schedulers.io())
                     .map(vo -> ReadProgressDbWrapper.getInstance().getWithThreadId(thread.getId()))
@@ -100,12 +100,14 @@ public final class PostListActivity extends BaseActivity
                         Intent intent = new Intent(context, PostListActivity.class);
                         intent.putExtra(ARG_THREAD, thread);
                         intent.putExtra(ARG_READ_PROGRESS, progress);
-                        if (context instanceof Activity)
-                            ((Activity)context).startActivityForResult(intent, RESULT_BLACKLIST);
-                        else context.startActivity(intent);
+                        if (context instanceof Activity) {
+                            ((Activity) context).startActivityForResult(intent, RESULT_BLACKLIST);
+                        } else {
+                            context.startActivity(intent);
+                        }
                     }, L::e);
-        }else{
-            return OnceClickUtil.setOnceClickLister(view, v->{
+        } else {
+            return OnceClickUtil.setOnceClickLister(view, v -> {
                 PostListActivity.startPostListActivity(v.getContext(), thread, false);
             });
         }
@@ -125,7 +127,7 @@ public final class PostListActivity extends BaseActivity
             ReadProgress progress = intent.getParcelableExtra(ARG_READ_PROGRESS);
             if (thread == null) {//通过链接打开
                 fragment = PostListFragment.newInstance(intent.getParcelableExtra(ARG_THREAD_LINK));
-            } else if (progress != null){//有进度信息
+            } else if (progress != null) {//有进度信息
                 fragment = PostListFragment.newInstance(thread, progress);
             } else {//没有进度信息
                 fragment = PostListFragment.newInstance(thread, intent.getBooleanExtra(

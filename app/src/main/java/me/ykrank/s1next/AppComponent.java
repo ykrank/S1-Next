@@ -52,7 +52,7 @@ public interface AppComponent {
     ObjectMapper getJsonMapper();
 
     void inject(LogoutDialogFragment fragment);
-    
+
     void inject(WebLoginFragment fragment);
 
     void inject(FavouriteListFragment favouriteListFragment);

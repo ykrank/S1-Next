@@ -48,32 +48,32 @@ public final class ReadProgressPreferencesManager {
         this.mReadProgressPreferencesRepository = readProgressPreferencesRepository;
     }
 
-    public void invalidateSaveAuto(){
+    public void invalidateSaveAuto() {
         mSaveAutoMemorized = Suppliers.memoize(mSaveAutoSupplier);
     }
-    
-    public boolean isSaveAuto(){
-        return  mSaveAutoMemorized.get();
+
+    public boolean isSaveAuto() {
+        return mSaveAutoMemorized.get();
     }
 
-    public void invalidateLoadAuto(){
+    public void invalidateLoadAuto() {
         mLoadAutoMemorized = Suppliers.memoize(mLoadAutoSupplier);
     }
-    
-    public boolean isLoadAuto(){
-        return  mLoadAutoMemorized.get();
+
+    public boolean isLoadAuto() {
+        return mLoadAutoMemorized.get();
     }
 
     @Nullable
-    public ReadProgress getLastReadProgress(){
+    public ReadProgress getLastReadProgress() {
         return mLastReadProgressMemorized.get();
     }
 
-    public void invalidateLastReadProgress(){
+    public void invalidateLastReadProgress() {
         mLastReadProgressMemorized = Suppliers.memoize(mLastReadProgressSupplier);
     }
 
-    public boolean saveLastReadProgress(ReadProgress readProgress){
+    public boolean saveLastReadProgress(ReadProgress readProgress) {
         boolean bool = mReadProgressPreferencesRepository.saveLastReadProgress(readProgress);
         invalidateLastReadProgress();
         return bool;

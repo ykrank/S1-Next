@@ -37,7 +37,7 @@ public class ApiFlatTransformer {
                 // (if account has expired or network error)
                 if (TextUtils.isEmpty(account.getAuthenticityToken())) {
                     return Observable.error(new ApiException.AuthenticityTokenException("获取登录信息错误",
-                            new ApiException("ResultWrapper:"+resultWrapper)));
+                            new ApiException("ResultWrapper:" + resultWrapper)));
                 } else {
                     mUserValidator.validate(account);
                     return func.call(account.getAuthenticityToken());

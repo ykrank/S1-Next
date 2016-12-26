@@ -15,7 +15,8 @@ import me.ykrank.s1next.view.adapter.ArrayAdapterCompat;
 
 public final class SpinnerBindingAdapter {
 
-    private SpinnerBindingAdapter() {}
+    private SpinnerBindingAdapter() {
+    }
 
     @BindingAdapter({"dropDownItemList", "selectedItemPosition"})
     public static void setForumGroupNameList(Spinner spinner, List<CharSequence> dropDownItemList, int selectedItemPosition) {

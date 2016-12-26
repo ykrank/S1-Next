@@ -40,7 +40,8 @@ public final class Forum implements Parcelable, SameItem {
     @JsonProperty("todayposts")
     private int todayPosts;
 
-    public Forum() {}
+    public Forum() {
+    }
 
     private Forum(Parcel source) {
         id = source.readString();

@@ -6,7 +6,8 @@ import android.content.Context;
 
 public final class ClipboardUtil {
 
-    private ClipboardUtil() {}
+    private ClipboardUtil() {
+    }
 
     /**
      * Copies text.

@@ -18,22 +18,23 @@ import me.ykrank.s1next.data.db.dbmodel.BlackList;
  */
 public class BlackListDbWrapper {
     private static BlackListDbWrapper blackListWrapper;
-    
-    private BlackListDbWrapper(){}
-    
-    public static BlackListDbWrapper getInstance(){
-        if (blackListWrapper == null) blackListWrapper = new BlackListDbWrapper();
-        return  blackListWrapper;
+
+    private BlackListDbWrapper() {
     }
-    
-    public List<BlackList> getAllBlackList(int limit, int offset){
+
+    public static BlackListDbWrapper getInstance() {
+        if (blackListWrapper == null) blackListWrapper = new BlackListDbWrapper();
+        return blackListWrapper;
+    }
+
+    public List<BlackList> getAllBlackList(int limit, int offset) {
         return new Select().from(BlackList.class)
                 .limit(limit)
                 .offset(offset)
                 .execute();
     }
 
-    public Cursor getBlackListCursor(){
+    public Cursor getBlackListCursor() {
         String tableName = Cache.getTableInfo(BlackList.class).getTableName();
         // Query all items without any conditions
         String resultRecords = new Select(tableName + ".*, " + tableName + ".Id as _id")
@@ -52,15 +53,16 @@ public class BlackListDbWrapper {
 
     /**
      * 默认情况下的黑名单查找。如果用户id合法则优先id，否则查找用户name
+     *
      * @param id
      * @param name
      * @return
      */
-    public BlackList getBlackListDefault(int id, String name){
+    public BlackList getBlackListDefault(int id, String name) {
         BlackList oBlackList = null;
-        if (id > 0){
+        if (id > 0) {
             oBlackList = getBlackListWithAuthorId(id);
-        }else if (name != null && !TextUtils.isEmpty(name)){
+        } else if (name != null && !TextUtils.isEmpty(name)) {
             oBlackList = getBlackListWithAuthorName(name);
         }
         return oBlackList;
@@ -68,10 +70,11 @@ public class BlackListDbWrapper {
 
     /**
      * 根据用户id查找记录
+     *
      * @param id
      * @return
      */
-    public BlackList getBlackListWithAuthorId(int id){
+    public BlackList getBlackListWithAuthorId(int id) {
         return new Select().from(BlackList.class)
                 .where("Authorid = ?", id)
                 .executeSingle();
@@ -79,40 +82,41 @@ public class BlackListDbWrapper {
 
     /**
      * 根据用户名查找记录
+     *
      * @param name
      * @return
      */
-    public BlackList getBlackListWithAuthorName(String name){
+    public BlackList getBlackListWithAuthorName(String name) {
         return new Select().from(BlackList.class)
                 .where("Author = ?", name)
                 .executeSingle();
     }
-    
+
     @BlackList.ForumFLag
-    public int getForumFlag(int id, String name){
+    public int getForumFlag(int id, String name) {
         BlackList oBlackList = getBlackListDefault(id, name);
         if (oBlackList != null) return oBlackList.forum;
         return BlackList.NORMAL;
     }
 
     @BlackList.PostFLag
-    public int getPostFlag(int id, String name){
+    public int getPostFlag(int id, String name) {
         BlackList oBlackList = getBlackListDefault(id, name);
         if (oBlackList != null) return oBlackList.post;
-        return  BlackList.NORMAL;
+        return BlackList.NORMAL;
     }
-    
-    public void saveBlackList(@NonNull BlackList blackList){
+
+    public void saveBlackList(@NonNull BlackList blackList) {
         BlackList oBlackList = getBlackListDefault(blackList.authorid, blackList.author);
         if (oBlackList == null) {
             blackList.save();
-        }else{
+        } else {
             oBlackList.copyFrom(blackList);
             oBlackList.save();
         }
     }
 
-    public void delBlackList(@NonNull BlackList blackList){
+    public void delBlackList(@NonNull BlackList blackList) {
         BlackList oBlackList = getBlackListDefault(blackList.authorid, blackList.author);
         if (oBlackList != null)
             oBlackList.delete();
@@ -141,7 +145,7 @@ public class BlackListDbWrapper {
         saveBlackList(blackList);
     }
 
-    public void delDefaultBlackList(int authorid, String author){
+    public void delDefaultBlackList(int authorid, String author) {
         BlackList blackList = new BlackList();
         blackList.authorid = authorid;
         blackList.author = author;

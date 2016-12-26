@@ -51,7 +51,7 @@ public final class FavouriteListPagerFragment extends BaseRecyclerViewFragment<F
         super.onViewCreated(view, savedInstanceState);
 
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
-        L.leaveMsg("FavouriteListPagerFragment##mPageNum"+mPageNum);
+        L.leaveMsg("FavouriteListPagerFragment##mPageNum" + mPageNum);
 
         RecyclerView recyclerView = getRecyclerView();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

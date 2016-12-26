@@ -47,7 +47,7 @@ public final class GalleryActivity extends AppCompatActivity {
 
     private String mImageUrl;
     private String mImageThumbUrl;
-    
+
     private PhotoView mPhotoView;
 
     public static void startGalleryActivity(Context context, String imageUrl) {

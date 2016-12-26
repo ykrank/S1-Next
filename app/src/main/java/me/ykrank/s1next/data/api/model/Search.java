@@ -5,7 +5,7 @@ package me.ykrank.s1next.data.api.model;
  */
 
 public class Search {
-    
+
     private String content;
 
 

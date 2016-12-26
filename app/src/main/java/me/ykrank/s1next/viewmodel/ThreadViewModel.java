@@ -13,8 +13,8 @@ public final class ThreadViewModel {
     public final ObservableField<Thread> thread = new ObservableField<>();
 
     public final ObservableField<Func1<View, Subscription>> subscription = new ObservableField<>();
-    
-    public void setSubscription(){
+
+    public void setSubscription() {
         subscription.set(v -> PostListActivity.clickStartPostListActivity(v, thread.get()));
     }
 
@@ -24,5 +24,5 @@ public final class ThreadViewModel {
             return true;
         };
     }
-    
+
 }

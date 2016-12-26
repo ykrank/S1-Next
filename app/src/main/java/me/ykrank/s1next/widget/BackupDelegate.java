@@ -33,24 +33,17 @@ import static me.ykrank.s1next.util.FilePickerUtil.onFilePickResult;
  * 设置数据库进行备份的代理
  */
 public class BackupDelegate {
-    private static final String BACKUP_FILE_NAME = "S1Next_v" + BuildConfig.VERSION_CODE + ".bak";
-    private static final int BACKUP_FILE_CODE = 11;
-    private static final int RESTORE_FILE_CODE = 12;
-
     public static final int SUCCESS = 0;
     public static final int NO_DATA = 1;
     public static final int PERMISSION_DENY = 2;
     public static final int IO_EXCEPTION = 3;
     public static final int UNKNOWN_EXCEPTION = 99;
-
-    @IntDef({SUCCESS, NO_DATA, PERMISSION_DENY, IO_EXCEPTION, UNKNOWN_EXCEPTION})
-    public @interface BackupResult {
-    }
-
+    private static final String BACKUP_FILE_NAME = "S1Next_v" + BuildConfig.VERSION_CODE + ".bak";
+    private static final int BACKUP_FILE_CODE = 11;
+    private static final int RESTORE_FILE_CODE = 12;
     private Context mContext;
     private AfterBackup afterBackup;
     private AfterRestore afterRestore;
-
     public BackupDelegate(Context context, AfterBackup afterBackup, AfterRestore afterRestore) {
         this.mContext = context;
         this.afterBackup = afterBackup;
@@ -163,6 +156,10 @@ public class BackupDelegate {
                 L.e("ActiveAndroid dispose error:" + e.getMessage());
             }
         }
+    }
+
+    @IntDef({SUCCESS, NO_DATA, PERMISSION_DENY, IO_EXCEPTION, UNKNOWN_EXCEPTION})
+    public @interface BackupResult {
     }
 
     public interface AfterBackup extends Action1<Integer> {

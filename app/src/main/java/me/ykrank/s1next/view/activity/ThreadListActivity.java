@@ -37,11 +37,11 @@ public final class ThreadListActivity extends BaseActivity
     private MenuItem mMenuSubForums;
     private ListPopupWindow mListPopupWindow;
     private SubForumArrayAdapter mSubForumArrayAdapter;
-    
+
     private boolean refreshBlackList = false;
 
     public static void startThreadListActivity(Context context, Forum forum) {
-        L.leaveMsg("ThreadListActivity##forum"+forum);
+        L.leaveMsg("ThreadListActivity##forum" + forum);
         Intent intent = new Intent(context, ThreadListActivity.class);
         intent.putExtra(ARG_FORUM, forum);
 
@@ -100,18 +100,19 @@ public final class ThreadListActivity extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (refreshBlackList){
+        if (refreshBlackList) {
             showShortSnackbar(R.string.blacklist_refresh_warn);
+            refreshBlackList = false;
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PostListActivity.RESULT_BLACKLIST){
-            if (resultCode == RESULT_OK){
+        if (requestCode == PostListActivity.RESULT_BLACKLIST) {
+            if (resultCode == RESULT_OK) {
                 refreshBlackList = true;
             }
-        }else{
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }

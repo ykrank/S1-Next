@@ -51,7 +51,7 @@ public final class LoginFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof LoginFragmentCallback){
+        if (context instanceof LoginFragmentCallback) {
             callback = (LoginFragmentCallback) context;
         } else {
             throw new IllegalStateException("LoginFragment attached context should implement LoginFragmentCallback");
@@ -129,7 +129,7 @@ public final class LoginFragment extends Fragment {
         }
     }
 
-    public interface LoginFragmentCallback{
+    public interface LoginFragmentCallback {
         void loginInWeb();
     }
 }

@@ -111,9 +111,9 @@ public class PostMovementMethod extends ArrowKeyMovementMethod {
                 if (action == MotionEvent.ACTION_UP) {
                     if (imageClickableSpans.length > 1) {
                         //if use getSpans(off, off , sometime click mid in two span will cause error
-                        TagHandler.ImageClickableSpan[] spans = buffer.getSpans(off, off+1,
+                        TagHandler.ImageClickableSpan[] spans = buffer.getSpans(off, off + 1,
                                 TagHandler.ImageClickableSpan.class);
-                        if (spans.length == 1){
+                        if (spans.length == 1) {
                             spans[0].onClick(widget);
                             return true;
                         }
@@ -140,6 +140,15 @@ public class PostMovementMethod extends ArrowKeyMovementMethod {
         }
     }
 
+    public interface URLSpanClick {
+        /**
+         * whether uri use this click listener
+         */
+        boolean isMatch(Uri uri);
+
+        void onClick(Uri uri, View view);
+    }
+
     public static class DefaultURLSpanClick implements URLSpanClick {
 
         @Override
@@ -161,14 +170,5 @@ public class PostMovementMethod extends ArrowKeyMovementMethod {
                 L.e("URLSpan", "Activity was not found for intent, " + intent.toString());
             }
         }
-    }
-
-    public interface URLSpanClick {
-        /**
-         * whether uri use this click listener
-         */
-        boolean isMatch(Uri uri);
-
-        void onClick(Uri uri, View view);
     }
 }

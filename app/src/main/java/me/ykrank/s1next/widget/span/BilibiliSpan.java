@@ -90,6 +90,24 @@ public class BilibiliSpan implements PostMovementMethod.URLSpanClick {
         }
     }
 
+    // 对Bilibili链接进行独立处理，调用Bilibili客户端
+    private static void goBilibili(Context context, Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.setClassName("tv.danmaku.bili", "tv.danmaku.bili.ui.IntentHandlerActivity");
+        try {
+            PackageManager pm = context.getPackageManager();
+            ActivityInfo ai = intent.resolveActivityInfo(pm, PackageManager.MATCH_DEFAULT_ONLY);
+            if (ai == null) {
+                context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            } else {
+                context.startActivity(intent);
+            }
+        } catch (Throwable e) {
+            L.report("BilibiliURLSpan startActivity error for intent, " + intent.toString(), e);
+            context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+        }
+    }
+
     @Override
     public boolean isMatch(Uri uri) {
         if ("http".equalsIgnoreCase(uri.getScheme())) {
@@ -113,24 +131,6 @@ public class BilibiliSpan implements PostMovementMethod.URLSpanClick {
     @Override
     public void onClick(Uri uri, View view) {
         goBilibili(view.getContext(), uri);
-    }
-
-    // 对Bilibili链接进行独立处理，调用Bilibili客户端
-    private static void goBilibili(Context context, Uri uri) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        intent.setClassName("tv.danmaku.bili", "tv.danmaku.bili.ui.IntentHandlerActivity");
-        try {
-            PackageManager pm = context.getPackageManager();
-            ActivityInfo ai = intent.resolveActivityInfo(pm, PackageManager.MATCH_DEFAULT_ONLY);
-            if (ai == null) {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
-            } else {
-                context.startActivity(intent);
-            }
-        } catch (Throwable e) {
-            L.report("BilibiliURLSpan startActivity error for intent, " + intent.toString(), e);
-            context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
-        }
     }
 
     private static class BilibiliHref {

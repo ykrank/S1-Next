@@ -97,9 +97,9 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
             old.close();
         }
     }
-    
-    public void closeCursor(){
-        if (mCursor != null){
+
+    public void closeCursor() {
+        if (mCursor != null) {
             mCursor.close();
         }
     }

@@ -34,12 +34,13 @@ import java.util.ArrayList;
  */
 public class AnimUtils {
 
-    private AnimUtils() { }
-
     private static Interpolator fastOutSlowIn;
     private static Interpolator fastOutLinearIn;
     private static Interpolator linearOutSlowIn;
     private static Interpolator linear;
+
+    private AnimUtils() {
+    }
 
     public static Interpolator getFastOutSlowInInterpolator(Context context) {
         if (fastOutSlowIn == null) {

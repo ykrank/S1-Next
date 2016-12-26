@@ -52,7 +52,7 @@ public final class WebLoginFragment extends BaseFragment {
     private WebView mWebView;
     private ProgressBar mProgressBar;
 
-    public static WebLoginFragment getInstance(){
+    public static WebLoginFragment getInstance() {
         return new WebLoginFragment();
     }
 
@@ -112,7 +112,7 @@ public final class WebLoginFragment extends BaseFragment {
         return mWebView;
     }
 
-    private void initWebViewSetting(){
+    private void initWebViewSetting() {
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);//不使用缓存，只从网络获取数据.
@@ -121,12 +121,12 @@ public final class WebLoginFragment extends BaseFragment {
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
     }
 
-    private boolean isLogged(String cookieStr){
+    private boolean isLogged(String cookieStr) {
         Pattern pattern = Pattern.compile("(;|^)s1uid=\\d+;");
-        return cookieStr!=null && pattern.matcher(cookieStr.replace(" ", "")).find();
+        return cookieStr != null && pattern.matcher(cookieStr.replace(" ", "")).find();
     }
 
-    class CookieWebViewClient extends WebViewClient{
+    class CookieWebViewClient extends WebViewClient {
         @Override
         public void onPageFinished(WebView view, String url) {
             try {
@@ -144,14 +144,14 @@ public final class WebLoginFragment extends BaseFragment {
                     //Login success
                     ForumActivity.start(getActivity());
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 L.e(e);
             }
             super.onPageFinished(view, url);
         }
     }
 
-    class ProgressWebChromeClient extends WebChromeClient{
+    class ProgressWebChromeClient extends WebChromeClient {
 
         @Override
         public void onProgressChanged(WebView view, int newProgress) {

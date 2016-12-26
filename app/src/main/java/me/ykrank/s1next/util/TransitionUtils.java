@@ -39,10 +39,13 @@ import java.util.List;
  */
 public class TransitionUtils {
 
-    private TransitionUtils() { }
+    private TransitionUtils() {
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public static @Nullable Transition findTransition(
+    public static
+    @Nullable
+    Transition findTransition(
             @NonNull TransitionSet set, @NonNull Class<? extends Transition> clazz) {
         for (int i = 0; i < set.getTransitionCount(); i++) {
             Transition transition = set.getTransitionAt(i);
@@ -58,7 +61,9 @@ public class TransitionUtils {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public static @Nullable Transition findTransition(
+    public static
+    @Nullable
+    Transition findTransition(
             @NonNull TransitionSet set,
             @NonNull Class<? extends Transition> clazz,
             @IdRes int targetId) {
@@ -112,9 +117,9 @@ public class TransitionUtils {
      * Create the transition participants required during a activity transition while
      * avoiding glitches with the system UI.
      *
-     * @param activity The activity used as start for the transition.
+     * @param activity         The activity used as start for the transition.
      * @param includeStatusBar If false, the status bar will not be added as the transition
-     *        participant.
+     *                         participant.
      * @return All transition participants.
      */
     public static Pair<View, String>[] createSafeTransitionParticipants(@NonNull Activity activity,
@@ -150,14 +155,24 @@ public class TransitionUtils {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static class TransitionListenerAdapter implements Transition.TransitionListener {
 
-        @Override public void onTransitionStart(Transition transition) { }
+        @Override
+        public void onTransitionStart(Transition transition) {
+        }
 
-        @Override public void onTransitionEnd(Transition transition) { }
+        @Override
+        public void onTransitionEnd(Transition transition) {
+        }
 
-        @Override public void onTransitionCancel(Transition transition) { }
+        @Override
+        public void onTransitionCancel(Transition transition) {
+        }
 
-        @Override public void onTransitionPause(Transition transition) { }
+        @Override
+        public void onTransitionPause(Transition transition) {
+        }
 
-        @Override public void onTransitionResume(Transition transition) { }
+        @Override
+        public void onTransitionResume(Transition transition) {
+        }
     }
 }

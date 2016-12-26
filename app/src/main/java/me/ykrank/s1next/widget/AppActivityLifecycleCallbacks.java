@@ -7,12 +7,11 @@ import android.os.Bundle;
 
 public final class AppActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {
 
+    private final WifiBroadcastReceiver mWifiBroadcastReceiver;
     /**
      * Forked from http://stackoverflow.com/a/13809991
      */
     private int mVisibleCount;
-
-    private final WifiBroadcastReceiver mWifiBroadcastReceiver;
     private int mNeedMonitorWifiActivityCount;
 
     public AppActivityLifecycleCallbacks(Context context) {
@@ -20,7 +19,8 @@ public final class AppActivityLifecycleCallbacks implements Application.Activity
     }
 
     @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
+    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+    }
 
     @Override
     public void onActivityStarted(Activity activity) {
@@ -53,10 +53,12 @@ public final class AppActivityLifecycleCallbacks implements Application.Activity
     }
 
     @Override
-    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
+    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+    }
 
     @Override
-    public void onActivityDestroyed(Activity activity) {}
+    public void onActivityDestroyed(Activity activity) {
+    }
 
     public boolean isAppVisible() {
         return mVisibleCount > 0;

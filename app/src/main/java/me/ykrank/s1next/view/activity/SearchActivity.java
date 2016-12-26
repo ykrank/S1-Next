@@ -293,8 +293,8 @@ public class SearchActivity extends BaseActivity {
         searchView.clearFocus();
 //        dataManager.searchFor(query);
 
-        mSubscription = ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser, 
-                token->s1Service.searchForum(token, "yes", query))
+        mSubscription = ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
+                token -> s1Service.searchForum(token, "yes", query))
                 .map(SearchWrapper::fromSource)
                 .compose(RxJavaUtil.iOTransformer())
                 .subscribe(wrapper -> setResults(wrapper.getSearches()), L::e);

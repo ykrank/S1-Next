@@ -44,10 +44,9 @@ public abstract class FragmentStatePagerAdapter<T extends Fragment> extends Page
     private static final boolean DEBUG = false;
 
     private final FragmentManager mFragmentManager;
-    private FragmentTransaction mCurTransaction = null;
-
     private final ArrayList<Fragment.SavedState> mSavedState = new ArrayList<>();
     private final ArrayList<T> mFragments = new ArrayList<>();
+    private FragmentTransaction mCurTransaction = null;
     private Fragment mCurrentPrimaryItem = null;
 
     public FragmentStatePagerAdapter(FragmentManager fm) {
@@ -128,7 +127,7 @@ public abstract class FragmentStatePagerAdapter<T extends Fragment> extends Page
 
     @Override
     public final void setPrimaryItem(ViewGroup container, int position, Object object) {
-        setPrimaryItem(container, position, (T)object);
+        setPrimaryItem(container, position, (T) object);
     }
 
     public void setPrimaryItem(ViewGroup container, int position, T fragment) {
@@ -156,7 +155,7 @@ public abstract class FragmentStatePagerAdapter<T extends Fragment> extends Page
 
     @Override
     public final boolean isViewFromObject(View view, Object object) {
-        return isViewFromObject(view, (T)object);
+        return isViewFromObject(view, (T) object);
     }
 
     public boolean isViewFromObject(View view, T fragment) {

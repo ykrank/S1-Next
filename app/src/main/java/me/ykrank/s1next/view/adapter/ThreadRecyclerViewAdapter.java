@@ -11,5 +11,5 @@ public final class ThreadRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
         addAdapterDelegate(new ThreadAdapterDelegate(activity));
     }
-    
+
 }
