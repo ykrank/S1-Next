@@ -8,7 +8,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -17,6 +16,8 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.databinding.DialogPageJumpBinding;
 import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.viewmodel.PageJumpViewModel;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 
 /**
  * A dialog shows {@link SeekBar} and {@link EditText} to
@@ -25,7 +26,7 @@ import me.ykrank.s1next.viewmodel.PageJumpViewModel;
  * Host class should implement {@link OnPageJumpedListener}
  * in order to to handle the page jump event.
  */
-public final class PageJumpDialogFragment extends DialogFragment {
+public final class PageJumpDialogFragment extends BaseDialogFragment {
 
     public static final String TAG = PageJumpDialogFragment.class.getName();
 
@@ -93,6 +94,18 @@ public final class PageJumpDialogFragment extends DialogFragment {
         super.onSaveInstanceState(outState);
 
         outState.putInt(STATE_SEEK_BAR_PROGRESS, mPageJumpViewModel.getSeekBarProgress());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("弹窗-帖子页数跳转-" + TAG));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new PageEndEvent("弹窗-帖子页数跳转-" + TAG));
+        super.onPause();
     }
 
     /**

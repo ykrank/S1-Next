@@ -4,16 +4,17 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.collection.Posts;
 import me.ykrank.s1next.view.adapter.ThreadAttachmentInfoListArrayAdapter;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 
 /**
  * A dialog shows attachment.
  */
-public final class ThreadAttachmentDialogFragment extends DialogFragment {
+public final class ThreadAttachmentDialogFragment extends BaseDialogFragment {
 
     public static final String TAG = ThreadAttachmentDialogFragment.class.getName();
 
@@ -40,5 +41,17 @@ public final class ThreadAttachmentDialogFragment extends DialogFragment {
                         ARG_THREAD_ATTACHMENT_INFO_LIST)), null)
                 .setPositiveButton(R.string.dialog_button_text_done, null)
                 .create();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("弹窗-附件-" + TAG));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new PageEndEvent("弹窗-附件-" + TAG));
+        super.onPause();
     }
 }

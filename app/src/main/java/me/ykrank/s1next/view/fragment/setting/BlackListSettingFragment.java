@@ -29,6 +29,9 @@ import me.ykrank.s1next.databinding.FragmentBlacklistBinding;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.adapter.BlackListCursorListViewAdapter;
 import me.ykrank.s1next.view.dialog.BlacklistDialogFragment;
+import me.ykrank.s1next.widget.track.DataTrackAgent;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -48,6 +51,7 @@ public final class BlackListSettingFragment extends Fragment {
 
     private ListView mListView;
     private BlackListCursorListViewAdapter mListViewAdapter;
+    private DataTrackAgent trackAgent;
 
     private Subscription mSubscription;
     private AbsListView.MultiChoiceModeListener mActionModeCallback = new AbsListView.MultiChoiceModeListener() {
@@ -198,12 +202,14 @@ public final class BlackListSettingFragment extends Fragment {
     @Override
     public void onPause() {
         mListViewAdapter.changeCursor(null);
+        trackAgent.post(new PageEndEvent("设置-黑名单-" + TAG));
         super.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        trackAgent.post(new PageStartEvent("设置-黑名单-" + TAG));
         load();
     }
 

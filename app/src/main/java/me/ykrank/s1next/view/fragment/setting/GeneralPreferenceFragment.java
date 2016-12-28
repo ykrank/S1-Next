@@ -17,6 +17,7 @@ import me.ykrank.s1next.util.DeviceUtil;
 import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.view.activity.SettingsActivity;
 import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.track.event.ThemeChangeTrackEvent;
 
 /**
  * An Activity includes general settings that allow users
@@ -61,6 +62,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
             case PREF_KEY_THEME:
+                trackAgent.post(new ThemeChangeTrackEvent(false));
                 mThemeManager.invalidateTheme();
                 mEventBus.post(new ThemeChangeEvent());
 

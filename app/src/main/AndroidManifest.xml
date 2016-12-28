@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- see https://code.google.com/p/android/issues/detail?id=170734 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -18,14 +21,25 @@
         android:theme="@style/Theme.Light.Inverse.AfternoonTea"
         tools:ignore="UnusedAttribute">
 
+        <!-- Glide -->
         <meta-data
             android:name="me.ykrank.s1next.widget.glide.AppGlideModule"
             android:value="GlideModule" />
 
+        <!-- Bugsnag -->
         <meta-data
             android:name="com.bugsnag.android.API_KEY"
             android:value="a800f8b465a24096868397da57cec9bd" />
 
+        <!-- TalkingData-->
+        <meta-data
+            android:name="TD_APP_ID"
+            android:value="94B8FFC6A2CF49D6B1CBE8378B0B99C9" />
+        <meta-data
+            android:name="TD_CHANNEL_ID"
+            android:value="play.google.com" />
+        
+        <!-- ActiveAndroid -->
         <meta-data
             android:name="AA_DB_NAME"
             android:value="s1.db" />

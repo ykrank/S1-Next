@@ -37,7 +37,7 @@ import rx.schedulers.Schedulers;
  *
  * @param <D> The data we want to request.
  */
-abstract class ProgressDialogFragment<D> extends DialogFragment {
+abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
 
     S1Service mS1Service;
 

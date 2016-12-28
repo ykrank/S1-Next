@@ -55,6 +55,10 @@ import me.ykrank.s1next.util.TransitionUtils;
 import me.ykrank.s1next.view.adapter.SearchRecyclerViewAdapter;
 import me.ykrank.s1next.view.transition.CircularReveal;
 import me.ykrank.s1next.view.transition.TransitionCompatCreator;
+import me.ykrank.s1next.widget.track.DataTrackAgent;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
+import me.ykrank.s1next.widget.track.event.SearchTrackEvent;
 import rx.Subscription;
 
 /**
@@ -62,12 +66,16 @@ import rx.Subscription;
  */
 
 public class SearchActivity extends BaseActivity {
+    public static final String TAG = BaseActivity.class.getName();
+
     @Inject
     UserValidator mUserValidator;
     @Inject
     User mUser;
     @Inject
     S1Service s1Service;
+    @Inject
+    DataTrackAgent trackAgent;
 
     private ActivitySearchBinding binding;
 
@@ -130,6 +138,18 @@ public class SearchActivity extends BaseActivity {
     protected void onDestroy() {
         RxJavaUtil.unsubscribeIfNotNull(mSubscription);
         super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("搜索-" + TAG));
+    }
+
+    @Override
+    protected void onPause() {
+        trackAgent.post(new PageEndEvent("搜索-" + TAG));
+        super.onPause();
     }
 
     private void setupWindowAnimations() {
@@ -287,6 +307,8 @@ public class SearchActivity extends BaseActivity {
     }
 
     private void searchFor(String query) {
+        trackAgent.post(new SearchTrackEvent(query));
+
         clearResults();
         binding.progressBar.setVisibility(View.VISIBLE);
         ImeUtils.hideIme(searchView);

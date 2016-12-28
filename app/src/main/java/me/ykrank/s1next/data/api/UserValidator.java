@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.bugsnag.android.Bugsnag;
 
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Account;
 import me.ykrank.s1next.data.api.model.wrapper.FavouritesWrapper;
@@ -83,6 +84,7 @@ public final class UserValidator {
 
         if (mUser.isLogged()) {
             Bugsnag.setUser(mUser.getUid(), null, mUser.getName());
+            App.get().getTrackAgent().setUser(mUser);
         }
     }
 }

@@ -8,16 +8,17 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.support.v4.app.DialogFragment;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.util.IntentUtil;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 
 /**
  * A dialog shows error prompt if the thread link is invalid.
  * Clicks the negative button can let user open this thread link in browser.
  */
-public final class ThreadLinkInvalidPromptDialogFragment extends DialogFragment {
+public final class ThreadLinkInvalidPromptDialogFragment extends BaseDialogFragment {
 
     public static final String TAG = ThreadLinkInvalidPromptDialogFragment.class.getName();
 
@@ -53,5 +54,17 @@ public final class ThreadLinkInvalidPromptDialogFragment extends DialogFragment 
         if (getActivity() != null) {
             getActivity().finish();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("弹窗-链接解析出错提醒-" + TAG));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new PageEndEvent("弹窗-链接解析出错提醒-" + TAG));
+        super.onPause();
     }
 }

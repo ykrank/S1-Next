@@ -27,6 +27,7 @@ import me.ykrank.s1next.widget.BezelImageView;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
 import me.ykrank.s1next.widget.glide.OriginalKey;
+import me.ykrank.s1next.widget.track.event.BlackListTrackEvent;
 
 public final class BezelImageViewBindingAdapter {
 
@@ -102,6 +103,7 @@ public final class BezelImageViewBindingAdapter {
                     switch (menuitem.getItemId()) {
                         case R.id.menu_popup_blacklist:
                             if (menuitem.getTitle().equals(bezelImageView.getContext().getString(R.string.menu_blacklist_remove))) {
+                                App.get().getTrackAgent().post(new BlackListTrackEvent(false, post.getAuthorId(), post.getAuthorName()));
                                 eventBus.post(new BlackListAddEvent(Integer.valueOf(post.getAuthorId()),
                                         post.getAuthorName(), null, false));
                             } else {

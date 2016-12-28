@@ -20,6 +20,7 @@ import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.PersistentHttpCookieStore;
+import me.ykrank.s1next.widget.track.DataTrackAgent;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -117,5 +118,11 @@ public final class AppModule {
     @Singleton
     ObjectMapper provideJsonObjectMapper() {
         return new ObjectMapper();
+    }
+
+    @Provides
+    @Singleton
+    DataTrackAgent provideDataTrackAgent() {
+        return new DataTrackAgent();
     }
 }

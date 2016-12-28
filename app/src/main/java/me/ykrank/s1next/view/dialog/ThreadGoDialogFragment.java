@@ -8,7 +8,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -23,11 +22,13 @@ import me.ykrank.s1next.data.api.model.ThreadLink;
 import me.ykrank.s1next.databinding.DialogThreadGoBinding;
 import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.view.activity.PostListActivity;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 
 /**
  * A dialog lets the user enter thread link/ID to go to that thread.
  */
-public final class ThreadGoDialogFragment extends DialogFragment {
+public final class ThreadGoDialogFragment extends BaseDialogFragment {
 
     public static final String TAG = ThreadGoDialogFragment.class.getName();
 
@@ -101,5 +102,17 @@ public final class ThreadGoDialogFragment extends DialogFragment {
             }
         });
         return alertDialog;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("弹窗-前往特定帖子-" + TAG));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new PageEndEvent("弹窗-前往特定帖子-" + TAG));
+        super.onPause();
     }
 }

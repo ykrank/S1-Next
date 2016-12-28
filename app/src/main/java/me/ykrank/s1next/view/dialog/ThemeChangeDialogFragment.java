@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 
 import javax.inject.Inject;
@@ -14,11 +13,13 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.event.ThemeChangeEvent;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 
 /**
  * A dialog which used to change theme.
  */
-public final class ThemeChangeDialogFragment extends DialogFragment {
+public final class ThemeChangeDialogFragment extends BaseDialogFragment {
 
     private static final String TAG = ThemeChangeDialogFragment.class.getName();
 
@@ -50,5 +51,17 @@ public final class ThemeChangeDialogFragment extends DialogFragment {
                     dismiss();
                 })
                 .create();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("弹窗-修改主题-" + TAG));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new PageEndEvent("弹窗-修改主题-" + TAG));
+        super.onPause();
     }
 }

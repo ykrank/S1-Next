@@ -4,17 +4,18 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.view.activity.LoginActivity;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 
 /**
  * A dialog shows login prompt.
  */
-public final class LoginPromptDialogFragment extends DialogFragment {
+public final class LoginPromptDialogFragment extends BaseDialogFragment {
 
     private static final String TAG = LoginPromptDialogFragment.class.getName();
 
@@ -43,5 +44,17 @@ public final class LoginPromptDialogFragment extends DialogFragment {
                         LoginActivity.startLoginActivityForResultMessage(getActivity()))
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("弹窗-登录提醒-" + TAG));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new PageEndEvent("弹窗-登录提醒-" + TAG));
+        super.onPause();
     }
 }

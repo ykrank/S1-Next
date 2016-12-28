@@ -29,6 +29,8 @@ import me.ykrank.s1next.view.adapter.ThreadTypeSpinnerAdapter;
 import me.ykrank.s1next.view.dialog.NewThreadRequestDialogFragment;
 import me.ykrank.s1next.view.dialog.ReplyRequestDialogFragment;
 import me.ykrank.s1next.view.internal.NewThreadCacheModel;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 import rx.Single;
 import rx.Subscription;
 
@@ -87,6 +89,18 @@ public final class NewThreadFragment extends BasePostFragment {
     public void onDestroy() {
         RxJavaUtil.unsubscribeIfNotNull(mSubscription);
         super.onDestroy();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("新帖-" + TAG));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new PageEndEvent("新帖-" + TAG));
+        super.onPause();
     }
 
     @Override

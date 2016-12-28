@@ -25,6 +25,8 @@ import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
 import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment;
 import me.ykrank.s1next.viewmodel.UserViewModel;
+import me.ykrank.s1next.widget.track.DataTrackAgent;
+import me.ykrank.s1next.widget.track.event.ThemeChangeTrackEvent;
 
 /**
  * Implements the concrete UI logic for {@link DrawerLayoutDelegate}.
@@ -34,9 +36,11 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
 
     private final User mUser;
     private final UserViewModel mUserViewModel;
+    private DataTrackAgent trackAgent;
 
     public DrawerLayoutDelegateConcrete(FragmentActivity activity, DrawerLayout drawerLayout, NavigationView navigationView) {
         super(activity, drawerLayout, navigationView);
+        trackAgent = App.getAppComponent(activity).getDataTrackAgent();
         mUserViewModel = App.getAppComponent(activity).getUserViewModel();
         mUser = mUserViewModel.getUser();
     }
@@ -81,8 +85,10 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
             }
         });
 
-        binding.drawerUserAvatar.setOnClickListener(v ->
-                ThemeChangeDialogFragment.showThemeChangeDialog(mFragmentActivity));
+        binding.drawerUserAvatar.setOnClickListener(v -> {
+            ThemeChangeDialogFragment.showThemeChangeDialog(mFragmentActivity);
+            trackAgent.post(new ThemeChangeTrackEvent(true));
+        });
     }
 
     @Override

@@ -20,6 +20,8 @@ import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.SearchActivity;
 import me.ykrank.s1next.view.adapter.ForumRecyclerViewAdapter;
 import me.ykrank.s1next.view.internal.ToolbarDropDownInterface;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 import rx.Observable;
 
 /**
@@ -80,6 +82,18 @@ public final class ForumFragment extends BaseRecyclerViewFragment<ForumGroupsWra
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("主版块列表-" + TAG));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new PageEndEvent("主版块列表-" + TAG));
+        super.onPause();
     }
 
     @Override

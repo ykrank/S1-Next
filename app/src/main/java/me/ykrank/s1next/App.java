@@ -17,6 +17,7 @@ import me.ykrank.s1next.data.pref.PrefModule;
 import me.ykrank.s1next.util.ProcessUtil;
 import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.widget.AppActivityLifecycleCallbacks;
+import me.ykrank.s1next.widget.track.DataTrackAgent;
 
 public final class App extends MultiDexApplication {
     public static final String LOG_TAG = "s1Next";
@@ -33,6 +34,8 @@ public final class App extends MultiDexApplication {
 
     private RefWatcher refWatcher;
 
+    private DataTrackAgent trackAgent;
+
     public static App get() {
         return sApp;
     }
@@ -47,6 +50,10 @@ public final class App extends MultiDexApplication {
 
     public RefWatcher getRefWatcher() {
         return refWatcher;
+    }
+
+    public DataTrackAgent getTrackAgent() {
+        return trackAgent;
     }
 
     @Override
@@ -93,6 +100,9 @@ public final class App extends MultiDexApplication {
         ResourceUtil.setScaledDensity(this, mGeneralPreferencesManager.getFontScale());
 
         ActiveAndroid.initialize(this);
+
+        trackAgent = mAppComponent.getDataTrackAgent();
+        trackAgent.init();
     }
 
     @Override

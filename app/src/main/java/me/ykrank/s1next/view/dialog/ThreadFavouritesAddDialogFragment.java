@@ -6,18 +6,19 @@ import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.view.WindowManager;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.databinding.DialogFavouritesAddBinding;
 import me.ykrank.s1next.util.ViewUtil;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 
 /**
  * A dialog lets user enter remark if user want to add this thread to his/her favourites.
  * Clicks the positive button can let user add this thread to his/her favourites.
  */
-public final class ThreadFavouritesAddDialogFragment extends DialogFragment {
+public final class ThreadFavouritesAddDialogFragment extends BaseDialogFragment {
 
     public static final String TAG = ThreadFavouritesAddDialogFragment.class.getName();
 
@@ -57,5 +58,17 @@ public final class ThreadFavouritesAddDialogFragment extends DialogFragment {
                     alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick());
         });
         return alertDialog;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("弹窗-添加收藏-" + TAG));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new PageEndEvent("弹窗-添加收藏-" + TAG));
+        super.onPause();
     }
 }

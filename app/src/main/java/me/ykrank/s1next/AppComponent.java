@@ -23,6 +23,7 @@ import me.ykrank.s1next.view.fragment.PostListPagerFragment;
 import me.ykrank.s1next.view.fragment.WebLoginFragment;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.track.DataTrackAgent;
 import okhttp3.OkHttpClient;
 
 /**
@@ -50,6 +51,8 @@ public interface AppComponent {
     Wifi getWifi();
 
     ObjectMapper getJsonMapper();
+
+    DataTrackAgent getDataTrackAgent();
 
     void inject(LogoutDialogFragment fragment);
 

@@ -8,11 +8,14 @@ import android.os.Bundle;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.databinding.ActivityOpenSourceLicenseDetailBinding;
 import me.ykrank.s1next.viewmodel.TextAssetViewModel;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 
 /**
  * An Activity shows the open source license for corresponding library or file.
  */
 public final class OpenSourceLicenseDetailActivity extends BaseActivity {
+    public static final String TAG = OpenSourceLicenseDetailActivity.class.getName();
 
     private static final String EXTRA_LIBRARY_OR_FILE_NAME = "library_or_file_name";
     private static final String EXTRA_LICENSE_FILE_PATH = "license_file_path";
@@ -36,5 +39,17 @@ public final class OpenSourceLicenseDetailActivity extends BaseActivity {
 
         binding.setTextAssetViewModel(new TextAssetViewModel(intent.getStringExtra(
                 EXTRA_LICENSE_FILE_PATH)));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("开源证书详情-" + TAG));
+    }
+
+    @Override
+    protected void onPause() {
+        trackAgent.post(new PageEndEvent("开源证书详情-" + TAG));
+        super.onPause();
     }
 }

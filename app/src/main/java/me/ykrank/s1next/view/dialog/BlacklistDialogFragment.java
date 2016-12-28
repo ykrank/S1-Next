@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.WindowManager;
 
@@ -15,11 +14,13 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.db.dbmodel.BlackList;
 import me.ykrank.s1next.databinding.DialogBlacklistBinding;
 import me.ykrank.s1next.viewmodel.BlackListViewModel;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 
 /**
  * A dialog lets the user enter thread link/ID to go to that thread.
  */
-public final class BlacklistDialogFragment extends DialogFragment {
+public final class BlacklistDialogFragment extends BaseDialogFragment {
     public static final int DIALOG_REQUEST_CODE = 11;
 
     public static final String BLACKLIST_TAG = "blacklist";
@@ -72,5 +73,17 @@ public final class BlacklistDialogFragment extends DialogFragment {
         alertDialog.getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return alertDialog;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("弹窗-黑名单-" + TAG));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new PageEndEvent("弹窗-黑名单-" + TAG));
+        super.onPause();
     }
 }

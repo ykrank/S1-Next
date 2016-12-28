@@ -19,10 +19,12 @@ import me.ykrank.s1next.AppComponent;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
+import me.ykrank.s1next.widget.track.DataTrackAgent;
 
 public abstract class BaseFragment extends Fragment {
 
     protected UserValidator mUserValidator;
+    protected DataTrackAgent trackAgent;
 
     protected CoordinatorLayoutAnchorDelegate mCoordinatorLayoutAnchorDelegate;
     @Nullable
@@ -41,6 +43,7 @@ public abstract class BaseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         AppComponent appComponent = App.getAppComponent(getContext());
         mUserValidator = appComponent.getUserValidator();
+        trackAgent = appComponent.getDataTrackAgent();
     }
 
     @Override

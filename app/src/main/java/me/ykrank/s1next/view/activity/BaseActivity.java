@@ -43,6 +43,7 @@ import me.ykrank.s1next.view.internal.DrawerLayoutDelegate;
 import me.ykrank.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import me.ykrank.s1next.view.internal.ToolbarDelegate;
 import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.track.DataTrackAgent;
 import rx.Subscription;
 
 /**
@@ -67,6 +68,9 @@ public abstract class BaseActivity extends OriginActivity
 
     @Inject
     ThemeManager mThemeManager;
+
+    @Inject
+    DataTrackAgent trackAgent;
 
     private ToolbarDelegate mToolbarDelegate;
 

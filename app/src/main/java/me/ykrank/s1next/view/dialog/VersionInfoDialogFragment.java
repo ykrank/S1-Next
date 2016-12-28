@@ -5,15 +5,16 @@ import android.app.Dialog;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.databinding.DialogVersionInfoBinding;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 
 /**
  * A dialog shows version info.
  */
-public final class VersionInfoDialogFragment extends DialogFragment {
+public final class VersionInfoDialogFragment extends BaseDialogFragment {
 
     public static final String TAG = VersionInfoDialogFragment.class.getName();
 
@@ -26,5 +27,17 @@ public final class VersionInfoDialogFragment extends DialogFragment {
         return new AlertDialog.Builder(getContext())
                 .setView(binding.getRoot())
                 .create();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("弹窗-版本信息-" + TAG));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new PageEndEvent("弹窗-版本信息-" + TAG));
+        super.onPause();
     }
 }

@@ -17,6 +17,8 @@ import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.view.adapter.PmGroupsRecyclerViewAdapter;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 import rx.Observable;
 
 
@@ -44,6 +46,18 @@ public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<PmGr
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerAdapter = new PmGroupsRecyclerViewAdapter(getActivity());
         recyclerView.setAdapter(mRecyclerAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("私信列表-" + TAG));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new PageEndEvent("私信列表-" + TAG));
+        super.onPause();
     }
 
     @Override

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Result;
 import me.ykrank.s1next.data.api.model.wrapper.ResultWrapper;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 import rx.Observable;
 
 /**
@@ -52,5 +54,17 @@ public final class PmRequestDialogFragment extends ProgressDialogFragment<Result
         } else {
             showShortText(result.getMessage());
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("弹窗-私信进度条-" + TAG));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new PageEndEvent("弹窗-私信进度条-" + TAG));
+        super.onPause();
     }
 }

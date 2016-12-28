@@ -27,17 +27,23 @@ import android.widget.Toast;
 
 import java.lang.reflect.Method;
 
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.databinding.ActivityGalleryBinding;
 import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.view.internal.ToolbarDelegate;
 import me.ykrank.s1next.viewmodel.ImageViewModel;
 import me.ykrank.s1next.widget.PhotoView;
+import me.ykrank.s1next.widget.track.DataTrackAgent;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
+import me.ykrank.s1next.widget.track.event.ViewImageTrackEvent;
 
 /**
  * An Activity shows an ImageView that supports multi-touch.
  */
 public final class GalleryActivity extends OriginActivity {
+    public static final String TAG = GalleryActivity.class.getName();
 
     private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 0;
 
@@ -48,6 +54,8 @@ public final class GalleryActivity extends OriginActivity {
     private String mImageThumbUrl;
 
     private PhotoView mPhotoView;
+
+    private DataTrackAgent trackAgent;
 
     public static void startGalleryActivity(Context context, String imageUrl) {
         Intent intent = new Intent(context, GalleryActivity.class);
@@ -80,6 +88,7 @@ public final class GalleryActivity extends OriginActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        trackAgent = App.get().getTrackAgent();
         super.onCreate(savedInstanceState);
         ActivityGalleryBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_gallery);
         mPhotoView = binding.photoView;
@@ -116,6 +125,7 @@ public final class GalleryActivity extends OriginActivity {
 
         mImageUrl = getIntent().getStringExtra(ARG_IMAGE_URL);
         mImageThumbUrl = getIntent().getStringExtra(ARG_IMAGE_THUMB_URL);
+        trackAgent.post(new ViewImageTrackEvent(mImageUrl));
         binding.setImageViewModel(new ImageViewModel(mImageUrl, mImageThumbUrl));
     }
 
@@ -193,5 +203,17 @@ public final class GalleryActivity extends OriginActivity {
             mPhotoView = null;
         }
         super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("图片浏览-" + TAG));
+    }
+
+    @Override
+    protected void onPause() {
+        trackAgent.post(new PageEndEvent("图片浏览-" + TAG));
+        super.onPause();
     }
 }

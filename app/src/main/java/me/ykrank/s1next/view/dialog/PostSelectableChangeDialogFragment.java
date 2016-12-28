@@ -5,15 +5,16 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 
 /**
  * A dialog shows prompt if user's reply is not empty and want
  * to finish current Activity.
  */
-public final class PostSelectableChangeDialogFragment extends DialogFragment {
+public final class PostSelectableChangeDialogFragment extends BaseDialogFragment {
 
     public static final String TAG = PostSelectableChangeDialogFragment.class.getName();
 
@@ -45,6 +46,18 @@ public final class PostSelectableChangeDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.dialog_message_text_switch, positiveListener)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("弹窗-帖子文本改变可选性的提醒-" + TAG));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new PageEndEvent("弹窗-帖子文本改变可选性的提醒-" + TAG));
+        super.onPause();
     }
 
     public PostSelectableChangeDialogFragment setPositiveListener(DialogInterface.OnClickListener onClickListener) {

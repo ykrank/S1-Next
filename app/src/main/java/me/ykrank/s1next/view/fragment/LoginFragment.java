@@ -4,7 +4,6 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,11 +21,13 @@ import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.view.dialog.LoginDialogFragment;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 
 /**
  * A Fragment offers login via username and password.
  */
-public final class LoginFragment extends Fragment {
+public final class LoginFragment extends BaseFragment {
 
     public static final String TAG = LoginFragment.class.getName();
 
@@ -56,6 +57,12 @@ public final class LoginFragment extends Fragment {
         } else {
             throw new IllegalStateException("LoginFragment attached context should implement LoginFragmentCallback");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        callback = null;
+        super.onDetach();
     }
 
     @Override
@@ -91,6 +98,18 @@ public final class LoginFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("登录-" + TAG));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new PageEndEvent("登录-" + TAG));
+        super.onPause();
     }
 
     private void prepareLogin() {

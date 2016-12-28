@@ -97,6 +97,8 @@ bugsnag {
 
 //http://stackoverflow.com/questions/28683327/how-to-check-if-gradle-dependency-has-new-version
 dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    
     annotationProcessor 'com.google.dagger:dagger-compiler:2.8'
     compile 'com.google.dagger:dagger:2.8'
     // https://github.com/google/dagger/issues/95
@@ -136,7 +138,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
     compile 'com.hannesdorfmann:adapterdelegates3:3.0.1-SNAPSHOT'
-    compile 'io.reactivex:rxjava:1.2.3'
+    compile 'io.reactivex:rxjava:1.2.4'
     compile 'io.reactivex:rxandroid:1.2.1'
 
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'

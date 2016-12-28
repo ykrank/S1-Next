@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 
 import java.net.CookieManager;
@@ -15,12 +14,14 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.util.WebViewUtils;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 
 /**
  * A dialog shows logout prompt.
  * Logs out if user clicks the logout button.
  */
-public final class LogoutDialogFragment extends DialogFragment {
+public final class LogoutDialogFragment extends BaseDialogFragment {
 
     private static final String TAG = LogoutDialogFragment.class.getName();
 
@@ -55,6 +56,18 @@ public final class LogoutDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.dialog_button_text_log_out, (dialog, which) -> logout())
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("弹窗-登录退出提醒-" + TAG));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new PageEndEvent("弹窗-登录退出提醒-" + TAG));
+        super.onPause();
     }
 
     /**

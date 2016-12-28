@@ -4,16 +4,17 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.widget.EditorDiskCache;
+import me.ykrank.s1next.widget.track.event.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.PageStartEvent;
 
 /**
  * A dialog shows prompt if user's reply is not empty and want
  * to finish current Activity.
  */
-public final class DiscardEditPromptDialogFragment extends DialogFragment {
+public final class DiscardEditPromptDialogFragment extends BaseDialogFragment {
 
     public static final String TAG = DiscardEditPromptDialogFragment.class.getName();
 
@@ -55,5 +56,17 @@ public final class DiscardEditPromptDialogFragment extends DialogFragment {
                 )
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent("弹窗-忽略编辑-" + TAG));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new PageEndEvent("弹窗-忽略编辑-" + TAG));
+        super.onPause();
     }
 }
