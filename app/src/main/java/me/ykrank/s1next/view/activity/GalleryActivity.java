@@ -19,7 +19,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +37,7 @@ import me.ykrank.s1next.widget.PhotoView;
 /**
  * An Activity shows an ImageView that supports multi-touch.
  */
-public final class GalleryActivity extends AppCompatActivity {
+public final class GalleryActivity extends OriginActivity {
 
     private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 0;
 

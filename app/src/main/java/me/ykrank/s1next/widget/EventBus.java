@@ -27,8 +27,13 @@ public final class EventBus {
     public void post(@NonNull Object tag, @NonNull Object o) {
         LooperUtil.enforceOnMainThread();
         PublishSubject<Object> eventBus = subjectMapper.get(tag);
-        if (eventBus != null)
-            eventBus.onNext(o);
+        if (eventBus != null) {
+            try {
+                eventBus.onNext(o);
+            } catch (Exception e) {
+                eventBus.onError(e);
+            }
+        }
     }
 
     @MainThread

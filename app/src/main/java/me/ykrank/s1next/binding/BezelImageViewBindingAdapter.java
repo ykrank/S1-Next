@@ -49,6 +49,7 @@ public final class BezelImageViewBindingAdapter {
         DownloadPreferencesManager downloadPreferencesManager = App.getPrefComponent(context)
                 .getDownloadPreferencesManager();
         if (user.isLogged()) {
+            AvatarUrlsCache.clearUserAvatarCache(user.getUid());
             // setup user's avatar
             Glide.with(context)
                     .load(Api.getAvatarMediumUrl(user.getUid()))

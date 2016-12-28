@@ -3,7 +3,6 @@ package me.ykrank.s1next.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.webkit.WebView;
@@ -16,7 +15,7 @@ import me.ykrank.s1next.view.internal.ToolbarDelegate;
  * An Activity shows a help page.
  * 为了防止WebView内存泄露,应该在新进程中打开
  */
-public final class HelpActivity extends AppCompatActivity {
+public final class HelpActivity extends OriginActivity {
     private ToolbarDelegate mToolbarDelegate;
 
     private HelpFragment mHelpFragment;

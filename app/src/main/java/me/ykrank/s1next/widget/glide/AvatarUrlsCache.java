@@ -14,6 +14,8 @@ import java.security.NoSuchAlgorithmException;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.BuildConfig;
+import me.ykrank.s1next.data.api.Api;
+import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.util.L;
 
 /**
@@ -133,6 +135,15 @@ public enum AvatarUrlsCache {
         } catch (IOException ignore) {
 
         }
+    }
+
+    public static void clearUserAvatarCache(String uid) {
+        //clear avatar img error cache
+        String url = Api.getAvatarMediumUrl(uid);
+        DownloadPreferencesManager manager = App.getPrefComponent(App.get())
+                .getDownloadPreferencesManager();
+        Key key = OriginalKey.Builder.getInstance().obtainAvatarKey(manager, url);
+        AvatarUrlsCache.remove(key);
     }
 
     /**

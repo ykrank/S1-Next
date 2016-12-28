@@ -14,7 +14,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -51,7 +50,7 @@ import rx.Subscription;
  * and navigation drawer amongst others.
  * Also changes theme depends on settings.
  */
-public abstract class BaseActivity extends AppCompatActivity
+public abstract class BaseActivity extends OriginActivity
         implements CoordinatorLayoutAnchorDelegate {
 
     protected static final int REQUEST_CODE_MESSAGE_IF_SUCCESS = 0;
@@ -79,6 +78,7 @@ public abstract class BaseActivity extends AppCompatActivity
     private WeakReference<Snackbar> mSnackbar;
 
     private Subscription mRecreateSubscription;
+
 
     /**
      * @see #setResultMessage(Activity, CharSequence)
