@@ -99,6 +99,9 @@ public final class BackupPreferenceFragment extends BasePreferenceFragment
             case BackupDelegate.IO_EXCEPTION:
                 message = R.string.message_io_exception;
                 break;
+            case BackupDelegate.CANCELED:
+                message = R.string.message_operation_canceled;
+                break;
             default:
                 message = R.string.message_unknown_error;
         }
@@ -124,6 +127,9 @@ public final class BackupPreferenceFragment extends BasePreferenceFragment
                 break;
             case BackupDelegate.IO_EXCEPTION:
                 message = R.string.message_io_exception;
+                break;
+            case BackupDelegate.CANCELED:
+                message = R.string.message_operation_canceled;
                 break;
             default:
                 message = R.string.message_unknown_error;

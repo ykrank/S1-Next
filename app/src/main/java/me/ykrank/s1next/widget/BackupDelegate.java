@@ -37,6 +37,7 @@ public class BackupDelegate {
     public static final int NO_DATA = 1;
     public static final int PERMISSION_DENY = 2;
     public static final int IO_EXCEPTION = 3;
+    public static final int CANCELED = 4;
     public static final int UNKNOWN_EXCEPTION = 99;
     private static final String BACKUP_FILE_NAME = "S1Next_v" + BuildConfig.VERSION_CODE + ".bak";
     private static final int BACKUP_FILE_CODE = 11;
@@ -44,6 +45,7 @@ public class BackupDelegate {
     private Context mContext;
     private AfterBackup afterBackup;
     private AfterRestore afterRestore;
+
     public BackupDelegate(Context context, AfterBackup afterBackup, AfterRestore afterRestore) {
         this.mContext = context;
         this.afterBackup = afterBackup;
@@ -70,6 +72,11 @@ public class BackupDelegate {
                 }
 
                 @Override
+                public void cancel() {
+                    afterBackup.call(CANCELED);
+                }
+
+                @Override
                 public void error(Throwable e) {
                     L.e("BackupSetting:", e);
                 }
@@ -80,6 +87,11 @@ public class BackupDelegate {
                 @Override
                 public void success(@NonNull Uri uri) {
                     RxJavaUtil.workWithUiResult(() -> doRestore(uri), afterRestore, this::error);
+                }
+
+                @Override
+                public void cancel() {
+                    afterRestore.call(CANCELED);
                 }
 
                 @Override
@@ -158,7 +170,7 @@ public class BackupDelegate {
         }
     }
 
-    @IntDef({SUCCESS, NO_DATA, PERMISSION_DENY, IO_EXCEPTION, UNKNOWN_EXCEPTION})
+    @IntDef({SUCCESS, CANCELED, NO_DATA, PERMISSION_DENY, IO_EXCEPTION, UNKNOWN_EXCEPTION})
     public @interface BackupResult {
     }
 

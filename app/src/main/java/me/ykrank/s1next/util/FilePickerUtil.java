@@ -76,11 +76,15 @@ public class FilePickerUtil {
                 e.printStackTrace();
                 callback.error(e);
             }
+        } else {
+            callback.cancel();
         }
     }
 
     public interface OnFilePickCallback {
         void success(@NonNull Uri uri);
+
+        void cancel();
 
         void error(Throwable e);
     }
