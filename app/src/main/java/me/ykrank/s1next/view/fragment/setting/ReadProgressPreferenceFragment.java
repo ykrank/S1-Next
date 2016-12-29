@@ -6,8 +6,8 @@ import android.os.Bundle;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
-import me.ykrank.s1next.widget.track.event.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
+import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * An Activity includes download settings that allow users
@@ -46,12 +46,12 @@ public final class ReadProgressPreferenceFragment extends BasePreferenceFragment
     @Override
     public void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent("设置-浏览进度条-" + TAG));
+        trackAgent.post(new PageStartEvent(getActivity(), "设置-浏览进度"));
     }
 
     @Override
     public void onPause() {
-        trackAgent.post(new PageEndEvent("设置-浏览进度条-" + TAG));
+        trackAgent.post(new PageEndEvent(getActivity(), "设置-浏览进度"));
         super.onPause();
     }
 }

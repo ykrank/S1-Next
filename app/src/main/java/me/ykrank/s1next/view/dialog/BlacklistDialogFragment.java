@@ -14,8 +14,8 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.db.dbmodel.BlackList;
 import me.ykrank.s1next.databinding.DialogBlacklistBinding;
 import me.ykrank.s1next.viewmodel.BlackListViewModel;
-import me.ykrank.s1next.widget.track.event.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
+import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A dialog lets the user enter thread link/ID to go to that thread.
@@ -78,12 +78,12 @@ public final class BlacklistDialogFragment extends BaseDialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent("弹窗-黑名单-" + TAG));
+        trackAgent.post(new PageStartEvent(getContext(), "弹窗-黑名单"));
     }
 
     @Override
     public void onPause() {
-        trackAgent.post(new PageEndEvent("弹窗-黑名单-" + TAG));
+        trackAgent.post(new PageEndEvent(getContext(), "弹窗-黑名单"));
         super.onPause();
     }
 }

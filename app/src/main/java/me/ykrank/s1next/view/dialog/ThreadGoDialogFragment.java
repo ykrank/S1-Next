@@ -22,8 +22,8 @@ import me.ykrank.s1next.data.api.model.ThreadLink;
 import me.ykrank.s1next.databinding.DialogThreadGoBinding;
 import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.view.activity.PostListActivity;
-import me.ykrank.s1next.widget.track.event.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
+import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A dialog lets the user enter thread link/ID to go to that thread.
@@ -107,12 +107,12 @@ public final class ThreadGoDialogFragment extends BaseDialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent("弹窗-前往特定帖子-" + TAG));
+        trackAgent.post(new PageStartEvent(getContext(), "弹窗-前往特定帖子-"));
     }
 
     @Override
     public void onPause() {
-        trackAgent.post(new PageEndEvent("弹窗-前往特定帖子-" + TAG));
+        trackAgent.post(new PageEndEvent(getContext(), "弹窗-前往特定帖子-"));
         super.onPause();
     }
 }

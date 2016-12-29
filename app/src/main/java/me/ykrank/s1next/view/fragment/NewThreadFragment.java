@@ -29,8 +29,8 @@ import me.ykrank.s1next.view.adapter.ThreadTypeSpinnerAdapter;
 import me.ykrank.s1next.view.dialog.NewThreadRequestDialogFragment;
 import me.ykrank.s1next.view.dialog.ReplyRequestDialogFragment;
 import me.ykrank.s1next.view.internal.NewThreadCacheModel;
-import me.ykrank.s1next.widget.track.event.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
+import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 import rx.Single;
 import rx.Subscription;
 
@@ -94,12 +94,12 @@ public final class NewThreadFragment extends BasePostFragment {
     @Override
     public void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent("新帖-" + TAG));
+        trackAgent.post(new PageStartEvent(getContext(), "新帖-NewThreadFragment"));
     }
 
     @Override
     public void onPause() {
-        trackAgent.post(new PageEndEvent("新帖-" + TAG));
+        trackAgent.post(new PageEndEvent(getContext(), "新帖-NewThreadFragment"));
         super.onPause();
     }
 
@@ -159,6 +159,9 @@ public final class NewThreadFragment extends BasePostFragment {
     public Subscription resumeFromCache(Single<String> cache) {
         return cache.map(s -> {
             try {
+                if (TextUtils.isEmpty(s)){
+                    return null;
+                }
                 return objectMapper.readValue(s, NewThreadCacheModel.class);
             } catch (IOException e) {
                 throw new IllegalStateException(e);
@@ -203,7 +206,7 @@ public final class NewThreadFragment extends BasePostFragment {
     private void setSpinner(List<ThreadType> types) {
         ThreadTypeSpinnerAdapter spinnerAdapter = new ThreadTypeSpinnerAdapter(getContext(), types);
         typeSpinner.setAdapter(spinnerAdapter);
-        if (types.size() > cacheModel.getSelectPosition()) {
+        if (cacheModel != null && types.size() > cacheModel.getSelectPosition()) {
             typeSpinner.setSelection(cacheModel.getSelectPosition());
         }
     }

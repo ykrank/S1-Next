@@ -9,9 +9,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.widget.track.event.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
 import me.ykrank.s1next.widget.track.event.TrackEvent;
+import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 import me.ykrank.s1next.widget.track.talkingdata.TalkingDataAgent;
 import me.ykrank.s1next.widget.track.trackhandler.DefaultTrackHandler;
 import me.ykrank.s1next.widget.track.trackhandler.PageEndTrackHandler;
@@ -31,21 +31,23 @@ public class DataTrackAgent {
     private ConcurrentHashMap<Class, TrackHandler> handlerMapper = new ConcurrentHashMap<>();
     private TrackHandler<TrackEvent> defaultHandler;
     private User mUser;
+    private TrackAgent agent;
 
     public void init() {
+        agent = new TalkingDataAgent();
         mThread.start();
         looper = mThread.getLooper();
 
-        TalkingDataAgent.init();
-        setDefaultHandler(new DefaultTrackHandler());
-        regHandler(PageStartEvent.class, new PageStartTrackHandler());
-        regHandler(PageEndEvent.class, new PageEndTrackHandler());
+        agent.init();
+        setDefaultHandler(new DefaultTrackHandler(agent));
+        regHandler(PageStartEvent.class, new PageStartTrackHandler(agent));
+        regHandler(PageEndEvent.class, new PageEndTrackHandler(agent));
     }
 
     public void setUser(User user) {
-        if (mUser == null) {
+        if ((mUser == null && user != null) || (mUser != null && user == null)) {
             mUser = user;
-            TalkingDataAgent.setUser(user);
+            agent.setUser(user);
         }
     }
 

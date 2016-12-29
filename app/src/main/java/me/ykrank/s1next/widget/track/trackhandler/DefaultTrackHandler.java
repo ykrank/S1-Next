@@ -1,8 +1,9 @@
 package me.ykrank.s1next.widget.track.trackhandler;
 
-import com.tendcloud.tenddata.TCAgent;
+import android.support.annotation.NonNull;
 
 import me.ykrank.s1next.App;
+import me.ykrank.s1next.widget.track.TrackAgent;
 import me.ykrank.s1next.widget.track.event.TrackEvent;
 
 /**
@@ -10,6 +11,10 @@ import me.ykrank.s1next.widget.track.event.TrackEvent;
  */
 
 public class DefaultTrackHandler extends TrackHandlerImp<TrackEvent> {
+
+    public DefaultTrackHandler(@NonNull TrackAgent agent) {
+        super(agent);
+    }
 
     @Override
     public boolean trackEvent(TrackEvent event) {
@@ -27,7 +32,7 @@ public class DefaultTrackHandler extends TrackHandlerImp<TrackEvent> {
             if (label == null) {
                 label = "";
             }
-            TCAgent.onEvent(App.get(), name, label, event.getData());
+            agent.onEvent(App.get(), name, label, event.getData());
             return true;
         }
         return false;

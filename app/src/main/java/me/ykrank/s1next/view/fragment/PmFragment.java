@@ -29,8 +29,8 @@ import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.activity.NewPmActivity;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.view.adapter.PmRecyclerViewAdapter;
-import me.ykrank.s1next.widget.track.event.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
+import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 import rx.Observable;
 
 /**
@@ -117,12 +117,12 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
     @Override
     public void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent("私信详情-" + TAG));
+        trackAgent.post(new PageStartEvent(getContext(), "私信详情-PmFragment"));
     }
 
     @Override
     public void onPause() {
-        trackAgent.post(new PageEndEvent("私信详情-" + TAG));
+        trackAgent.post(new PageEndEvent(getContext(), "私信详情-PmFragment"));
         super.onPause();
     }
 

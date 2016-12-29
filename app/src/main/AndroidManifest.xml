@@ -4,9 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- only get mac to verify user -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- only need IMEI to verify user -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- see https://code.google.com/p/android/issues/detail?id=170734 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -31,14 +32,14 @@
             android:name="com.bugsnag.android.API_KEY"
             android:value="a800f8b465a24096868397da57cec9bd" />
 
-        <!-- TalkingData-->
+        <!-- Umeng-->
         <meta-data
-            android:name="TD_APP_ID"
-            android:value="94B8FFC6A2CF49D6B1CBE8378B0B99C9" />
+            android:name="UMENG_APPKEY"
+            android:value="5864cf908630f5410b000b38" />
         <meta-data
-            android:name="TD_CHANNEL_ID"
+            android:name="UMENG_CHANNEL"
             android:value="play.google.com" />
-        
+
         <!-- ActiveAndroid -->
         <meta-data
             android:name="AA_DB_NAME"

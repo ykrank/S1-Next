@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.widget.track.event.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
+import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A dialog shows prompt if user's reply is not empty and want
@@ -51,12 +51,12 @@ public final class PostSelectableChangeDialogFragment extends BaseDialogFragment
     @Override
     public void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent("弹窗-帖子文本改变可选性的提醒-" + TAG));
+        trackAgent.post(new PageStartEvent(getContext(), "弹窗-帖子文本改变可选性的提醒"));
     }
 
     @Override
     public void onPause() {
-        trackAgent.post(new PageEndEvent("弹窗-帖子文本改变可选性的提醒-" + TAG));
+        trackAgent.post(new PageEndEvent(getContext(), "弹窗-帖子文本改变可选性的提醒"));
         super.onPause();
     }
 

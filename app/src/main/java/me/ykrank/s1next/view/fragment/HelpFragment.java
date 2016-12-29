@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.databinding.FragmentWebviewBinding;
 import me.ykrank.s1next.util.L;
@@ -23,9 +22,6 @@ import me.ykrank.s1next.view.activity.OpenSourceLicensesActivity;
 import me.ykrank.s1next.view.dialog.VersionInfoDialogFragment;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import me.ykrank.s1next.viewmodel.WebPageViewModel;
-import me.ykrank.s1next.widget.track.DataTrackAgent;
-import me.ykrank.s1next.widget.track.event.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
 
 /**
  * A Fragment represents a help page.
@@ -44,7 +40,6 @@ public final class HelpFragment extends Fragment {
      */
     private static final String ANDROID_APP_MARKET_LINK = "market://details?id=%s";
     private static final String ANDROID_WEB_SITE_MARKET_LINK = "http://play.google.com/store/apps/details?id=%s";
-    private DataTrackAgent trackAgent;
     private FragmentWebviewBinding mFragmentHelpBinding;
     private WebView mWebView;
 
@@ -62,7 +57,6 @@ public final class HelpFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        trackAgent = App.get().getTrackAgent();
         super.onViewCreated(view, savedInstanceState);
         L.leaveMsg("HelpFragment");
 
@@ -143,18 +137,6 @@ public final class HelpFragment extends Fragment {
         super.onSaveInstanceState(outState);
 
         mWebView.saveState(outState);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent("帮助-" + TAG));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent("帮助-" + TAG));
-        super.onPause();
     }
 
     public WebView getWebView() {
