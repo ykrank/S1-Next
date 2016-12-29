@@ -56,9 +56,9 @@ import me.ykrank.s1next.view.adapter.SearchRecyclerViewAdapter;
 import me.ykrank.s1next.view.transition.CircularReveal;
 import me.ykrank.s1next.view.transition.TransitionCompatCreator;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
-import me.ykrank.s1next.widget.track.event.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
 import me.ykrank.s1next.widget.track.event.SearchTrackEvent;
+import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 import rx.Subscription;
 
 /**
@@ -143,12 +143,12 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent("搜索-" + TAG));
+        trackAgent.post(new PageStartEvent(this, "搜索-SearchActivity"));
     }
 
     @Override
     protected void onPause() {
-        trackAgent.post(new PageEndEvent("搜索-" + TAG));
+        trackAgent.post(new PageEndEvent(this, "搜索-SearchActivity"));
         super.onPause();
     }
 

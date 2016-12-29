@@ -1,8 +1,11 @@
 package me.ykrank.s1next.widget.track.trackhandler;
 
 import android.os.Looper;
+import android.support.annotation.NonNull;
+import android.support.annotation.WorkerThread;
 
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.widget.track.TrackAgent;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -11,6 +14,11 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 
 public abstract class TrackHandlerImp<T> implements TrackHandler<T> {
+    protected TrackAgent agent;
+
+    TrackHandlerImp(@NonNull TrackAgent agent) {
+        this.agent = agent;
+    }
 
     @Override
     public final void track(Looper looper, T event) {
@@ -26,5 +34,6 @@ public abstract class TrackHandlerImp<T> implements TrackHandler<T> {
      * @param event Event
      * @return does action success
      */
+    @WorkerThread
     public abstract boolean trackEvent(T event);
 }

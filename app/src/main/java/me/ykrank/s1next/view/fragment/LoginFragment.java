@@ -21,8 +21,8 @@ import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.view.dialog.LoginDialogFragment;
-import me.ykrank.s1next.widget.track.event.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
+import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A Fragment offers login via username and password.
@@ -103,12 +103,12 @@ public final class LoginFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent("登录-" + TAG));
+        trackAgent.post(new PageStartEvent(getContext(), "登录-LoginFragment"));
     }
 
     @Override
     public void onPause() {
-        trackAgent.post(new PageEndEvent("登录-" + TAG));
+        trackAgent.post(new PageEndEvent(getContext(), "登录-LoginFragment"));
         super.onPause();
     }
 

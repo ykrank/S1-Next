@@ -47,9 +47,9 @@ import me.ykrank.s1next.view.dialog.ThreadAttachmentDialogFragment;
 import me.ykrank.s1next.view.dialog.ThreadFavouritesAddDialogFragment;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import me.ykrank.s1next.widget.EventBus;
-import me.ykrank.s1next.widget.track.event.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
 import me.ykrank.s1next.widget.track.event.ViewThreadTrackEvent;
+import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 import rx.Single;
 import rx.Subscription;
 
@@ -184,7 +184,7 @@ public final class PostListFragment extends BaseViewPagerFragment
     @Override
     public void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent("帖子详情列表-" + TAG));
+        trackAgent.post(new PageStartEvent(getContext(), "帖子详情列表-PostListFragment"));
 
         quoteSubscription = mEventBus.get()
                 .ofType(QuoteEvent.class)
@@ -218,7 +218,7 @@ public final class PostListFragment extends BaseViewPagerFragment
                     .doOnError(L::e)
                     .subscribe(b -> L.i("Save last read progress:" + b));
         }
-        trackAgent.post(new PageEndEvent("帖子详情列表-" + TAG));
+        trackAgent.post(new PageEndEvent(getContext(), "帖子详情列表-PostListFragment"));
         super.onPause();
 
         RxJavaUtil.unsubscribeIfNotNull(quoteSubscription);

@@ -13,8 +13,8 @@ import me.ykrank.s1next.data.api.model.Quote;
 import me.ykrank.s1next.data.api.model.Result;
 import me.ykrank.s1next.data.api.model.wrapper.ResultWrapper;
 import me.ykrank.s1next.widget.track.event.NewReplyTrackEvent;
-import me.ykrank.s1next.widget.track.event.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
+import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 import rx.Observable;
 
 /**
@@ -80,12 +80,12 @@ public final class ReplyRequestDialogFragment extends ProgressDialogFragment<Res
     @Override
     public void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent("弹窗-回复进度条-" + TAG));
+        trackAgent.post(new PageStartEvent(getContext(), "弹窗-回复进度条-"));
     }
 
     @Override
     public void onPause() {
-        trackAgent.post(new PageEndEvent("弹窗-回复进度条-" + TAG));
+        trackAgent.post(new PageEndEvent(getContext(), "弹窗-回复进度条-"));
         super.onPause();
     }
 }

@@ -1,19 +1,23 @@
 package me.ykrank.s1next.widget.track.trackhandler;
 
-import com.tendcloud.tenddata.TCAgent;
+import android.support.annotation.NonNull;
 
-import me.ykrank.s1next.App;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
+import me.ykrank.s1next.widget.track.TrackAgent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * Created by ykrank on 2016/12/28.
  */
 
-public class PageStartTrackHandler extends TrackHandlerImp<PageStartEvent> {
+public class PageStartTrackHandler extends ContextTrackHandlerImp<PageStartEvent> {
+
+    public PageStartTrackHandler(@NonNull TrackAgent agent) {
+        super(agent);
+    }
 
     @Override
     public boolean trackEvent(PageStartEvent event) {
-        TCAgent.onPageStart(App.get(), event.getPageName());
+        agent.onPageStart(event.getContext(), event.getPageName());
         return true;
     }
 }

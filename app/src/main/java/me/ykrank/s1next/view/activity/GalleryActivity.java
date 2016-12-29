@@ -35,9 +35,9 @@ import me.ykrank.s1next.view.internal.ToolbarDelegate;
 import me.ykrank.s1next.viewmodel.ImageViewModel;
 import me.ykrank.s1next.widget.PhotoView;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
-import me.ykrank.s1next.widget.track.event.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
 import me.ykrank.s1next.widget.track.event.ViewImageTrackEvent;
+import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * An Activity shows an ImageView that supports multi-touch.
@@ -208,12 +208,12 @@ public final class GalleryActivity extends OriginActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent("图片浏览-" + TAG));
+        trackAgent.post(new PageStartEvent(this, "图片浏览-GalleryActivity"));
     }
 
     @Override
     protected void onPause() {
-        trackAgent.post(new PageEndEvent("图片浏览-" + TAG));
+        trackAgent.post(new PageEndEvent(this, "图片浏览-GalleryActivity"));
         super.onPause();
     }
 }

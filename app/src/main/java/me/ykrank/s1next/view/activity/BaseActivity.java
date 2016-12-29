@@ -44,6 +44,8 @@ import me.ykrank.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import me.ykrank.s1next.view.internal.ToolbarDelegate;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
+import me.ykrank.s1next.widget.track.event.page.ActivityEndEvent;
+import me.ykrank.s1next.widget.track.event.page.ActivityStartEvent;
 import rx.Subscription;
 
 /**
@@ -156,6 +158,18 @@ public abstract class BaseActivity extends OriginActivity
         super.onPostCreate(savedInstanceState);
 
         setupDrawer();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        trackAgent.post(new ActivityStartEvent(this));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        trackAgent.post(new ActivityEndEvent(this));
     }
 
     @Override

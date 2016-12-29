@@ -7,9 +7,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.view.fragment.HelpFragment;
 import me.ykrank.s1next.view.internal.ToolbarDelegate;
+import me.ykrank.s1next.widget.track.event.ViewHelpTrackEvent;
 
 /**
  * An Activity shows a help page.
@@ -21,6 +23,7 @@ public final class HelpActivity extends OriginActivity {
     private HelpFragment mHelpFragment;
 
     public static void startHelpActivity(Context context) {
+        App.get().getTrackAgent().post(new ViewHelpTrackEvent());
         Intent intent = new Intent(context, HelpActivity.class);
         context.startActivity(intent);
     }

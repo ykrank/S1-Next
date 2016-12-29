@@ -84,7 +84,7 @@ public final class UserValidator {
 
         if (mUser.isLogged()) {
             Bugsnag.setUser(mUser.getUid(), null, mUser.getName());
-            App.get().getTrackAgent().setUser(mUser);
         }
+        App.get().getTrackAgent().setUser(mUser);
     }
 }

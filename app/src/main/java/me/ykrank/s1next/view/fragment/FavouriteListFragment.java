@@ -23,8 +23,8 @@ import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.widget.EventBus;
-import me.ykrank.s1next.widget.track.event.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
+import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 import rx.Subscription;
 
 /**
@@ -102,12 +102,12 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
     @Override
     public void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent("收藏列表-" + TAG));
+        trackAgent.post(new PageStartEvent(getContext(), "收藏列表-FavouriteListFragment"));
     }
 
     @Override
     public void onPause() {
-        trackAgent.post(new PageEndEvent("收藏列表-" + TAG));
+        trackAgent.post(new PageEndEvent(getContext(), "收藏列表-FavouriteListFragment"));
         super.onPause();
     }
 

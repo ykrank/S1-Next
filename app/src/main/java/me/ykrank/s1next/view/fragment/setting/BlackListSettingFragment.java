@@ -30,8 +30,8 @@ import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.adapter.BlackListCursorListViewAdapter;
 import me.ykrank.s1next.view.dialog.BlacklistDialogFragment;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
-import me.ykrank.s1next.widget.track.event.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
+import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -202,14 +202,14 @@ public final class BlackListSettingFragment extends Fragment {
     @Override
     public void onPause() {
         mListViewAdapter.changeCursor(null);
-        trackAgent.post(new PageEndEvent("设置-黑名单-" + TAG));
+        trackAgent.post(new PageEndEvent(getContext(), "设置-黑名单"));
         super.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent("设置-黑名单-" + TAG));
+        trackAgent.post(new PageStartEvent(getContext(), "设置-黑名单"));
         load();
     }
 

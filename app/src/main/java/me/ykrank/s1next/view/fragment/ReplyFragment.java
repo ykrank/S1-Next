@@ -8,8 +8,8 @@ import android.widget.EditText;
 import me.ykrank.s1next.util.DeviceUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.dialog.ReplyRequestDialogFragment;
-import me.ykrank.s1next.widget.track.event.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
+import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A Fragment shows {@link EditText} to let the user enter reply.
@@ -49,12 +49,12 @@ public final class ReplyFragment extends BasePostFragment {
     @Override
     public void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent("新回复-" + TAG));
+        trackAgent.post(new PageStartEvent(getContext(), "新回复-ReplyFragment"));
     }
 
     @Override
     public void onPause() {
-        trackAgent.post(new PageEndEvent("新回复-" + TAG));
+        trackAgent.post(new PageEndEvent(getContext(), "新回复-ReplyFragment"));
         super.onPause();
     }
 

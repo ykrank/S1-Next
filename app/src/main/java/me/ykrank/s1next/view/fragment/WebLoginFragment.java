@@ -29,8 +29,8 @@ import me.ykrank.s1next.databinding.FragmentWebviewBinding;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.ForumActivity;
 import me.ykrank.s1next.viewmodel.WebPageViewModel;
-import me.ykrank.s1next.widget.track.event.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.PageStartEvent;
+import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A Fragment to login in WebView.
@@ -113,12 +113,12 @@ public final class WebLoginFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent("网页登录-" + TAG));
+        trackAgent.post(new PageStartEvent(getContext(), "网页登录-WebLoginFragment"));
     }
 
     @Override
     public void onPause() {
-        trackAgent.post(new PageEndEvent("网页登录-" + TAG));
+        trackAgent.post(new PageEndEvent(getContext(), "网页登录-WebLoginFragment"));
         super.onPause();
     }
 
