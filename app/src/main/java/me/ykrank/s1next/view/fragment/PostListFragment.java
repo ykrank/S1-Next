@@ -49,6 +49,7 @@ import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.track.event.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.PageStartEvent;
+import me.ykrank.s1next.widget.track.event.ViewThreadTrackEvent;
 import rx.Single;
 import rx.Subscription;
 
@@ -148,6 +149,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         // thread title is null if this thread comes from ThreadLink
         mThreadTitle = thread.getTitle();
         mThreadId = thread.getId();
+        trackAgent.post(new ViewThreadTrackEvent(mThreadTitle, mThreadId));
         L.leaveMsg("PostListFragment##ThreadTitle:" + mThreadTitle + ",ThreadId:" + mThreadId);
 
         if (savedInstanceState == null) {

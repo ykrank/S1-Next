@@ -9,8 +9,13 @@ import java.util.Map;
 
 public class ViewImageTrackEvent extends TrackEvent {
 
-    public ViewImageTrackEvent(String url) {
+    public ViewImageTrackEvent(String url, boolean fromAvatar) {
         setGroup("图片浏览");
+        if (fromAvatar) {
+            setName("头像");
+        } else {
+            setName("帖子中图片");
+        }
         Map<String, String> data = new HashMap<>();
         data.put("url", url);
         setData(data);

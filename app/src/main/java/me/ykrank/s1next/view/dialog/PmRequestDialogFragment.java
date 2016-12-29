@@ -2,9 +2,11 @@ package me.ykrank.s1next.view.dialog;
 
 import android.os.Bundle;
 
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Result;
 import me.ykrank.s1next.data.api.model.wrapper.ResultWrapper;
+import me.ykrank.s1next.widget.track.event.NewPmTrackEvent;
 import me.ykrank.s1next.widget.track.event.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.PageStartEvent;
 import rx.Observable;
@@ -22,6 +24,8 @@ public final class PmRequestDialogFragment extends ProgressDialogFragment<Result
     private static final String STATUS_PM_SUCCESS = "do_success";
 
     public static PmRequestDialogFragment newInstance(String toUid, String msg) {
+        App.get().getTrackAgent().post(new NewPmTrackEvent());
+        
         PmRequestDialogFragment fragment = new PmRequestDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_TO_UID, toUid);

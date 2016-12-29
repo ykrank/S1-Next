@@ -13,6 +13,7 @@ import android.widget.SpinnerAdapter;
 
 import java.util.List;
 
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Forum;
 import me.ykrank.s1next.util.L;
@@ -20,6 +21,7 @@ import me.ykrank.s1next.view.adapter.SubForumArrayAdapter;
 import me.ykrank.s1next.view.fragment.ThreadListFragment;
 import me.ykrank.s1next.view.fragment.ThreadListPagerFragment;
 import me.ykrank.s1next.widget.WifiBroadcastReceiver;
+import me.ykrank.s1next.widget.track.event.ViewForumTrackEvent;
 
 /**
  * An Activity shows the thread lists.
@@ -41,6 +43,7 @@ public final class ThreadListActivity extends BaseActivity
     private boolean refreshBlackList = false;
 
     public static void startThreadListActivity(Context context, Forum forum) {
+        App.get().getTrackAgent().post(new ViewForumTrackEvent(forum.getId(), forum.getName()));
         L.leaveMsg("ThreadListActivity##forum" + forum);
         Intent intent = new Intent(context, ThreadListActivity.class);
         intent.putExtra(ARG_FORUM, forum);

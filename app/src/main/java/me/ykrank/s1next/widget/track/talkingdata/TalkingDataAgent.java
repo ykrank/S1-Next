@@ -26,6 +26,6 @@ public class TalkingDataAgent {
     public static void setUser(User user) {
         TCAgent.setGlobalKV("UserName", user.getName());
         TCAgent.setGlobalKV("Uid", user.getUid());
-        TCAgent.setGlobalKV("Permission", user.getPermission());
+        TCAgent.setGlobalKV("Permission", String.valueOf(user.getPermission()));
     }
 }

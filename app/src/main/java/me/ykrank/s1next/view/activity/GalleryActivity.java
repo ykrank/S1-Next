@@ -125,7 +125,7 @@ public final class GalleryActivity extends OriginActivity {
 
         mImageUrl = getIntent().getStringExtra(ARG_IMAGE_URL);
         mImageThumbUrl = getIntent().getStringExtra(ARG_IMAGE_THUMB_URL);
-        trackAgent.post(new ViewImageTrackEvent(mImageUrl));
+        trackAgent.post(new ViewImageTrackEvent(mImageUrl, mImageThumbUrl != null));
         binding.setImageViewModel(new ImageViewModel(mImageUrl, mImageThumbUrl));
     }
 
