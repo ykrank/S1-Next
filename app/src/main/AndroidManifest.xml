@@ -32,12 +32,12 @@
             android:name="com.bugsnag.android.API_KEY"
             android:value="a800f8b465a24096868397da57cec9bd" />
 
-        <!-- Umeng-->
+        <!-- TalkingData-->
         <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="5864cf908630f5410b000b38" />
+            android:name="TD_APP_ID"
+            android:value="94B8FFC6A2CF49D6B1CBE8378B0B99C9" />
         <meta-data
-            android:name="UMENG_CHANNEL"
+            android:name="TD_CHANNEL_ID"
             android:value="play.google.com" />
 
         <!-- ActiveAndroid -->

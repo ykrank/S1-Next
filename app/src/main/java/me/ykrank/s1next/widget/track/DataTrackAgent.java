@@ -10,9 +10,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.widget.track.event.TrackEvent;
+import me.ykrank.s1next.widget.track.event.page.ActivityEndEvent;
+import me.ykrank.s1next.widget.track.event.page.ActivityStartEvent;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 import me.ykrank.s1next.widget.track.talkingdata.TalkingDataAgent;
+import me.ykrank.s1next.widget.track.trackhandler.ActivityEndTrackHandler;
+import me.ykrank.s1next.widget.track.trackhandler.ActivityStartTrackHandler;
 import me.ykrank.s1next.widget.track.trackhandler.DefaultTrackHandler;
 import me.ykrank.s1next.widget.track.trackhandler.PageEndTrackHandler;
 import me.ykrank.s1next.widget.track.trackhandler.PageStartTrackHandler;
@@ -42,6 +46,8 @@ public class DataTrackAgent {
         setDefaultHandler(new DefaultTrackHandler(agent));
         regHandler(PageStartEvent.class, new PageStartTrackHandler(agent));
         regHandler(PageEndEvent.class, new PageEndTrackHandler(agent));
+        regHandler(ActivityStartEvent.class, new ActivityStartTrackHandler(agent));
+        regHandler(ActivityEndEvent.class, new ActivityEndTrackHandler(agent));
     }
 
     public void setUser(User user) {

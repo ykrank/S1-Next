@@ -141,6 +141,7 @@ public final class BlackListSettingFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        trackAgent = App.get().getTrackAgent();
         super.onViewCreated(view, savedInstanceState);
 
         mListViewAdapter = new BlackListCursorListViewAdapter(getActivity());

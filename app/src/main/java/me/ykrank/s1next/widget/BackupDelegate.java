@@ -66,7 +66,7 @@ public class BackupDelegate {
             onFilePickResult(resultCode, data, new FilePickerUtil.OnFilePickCallback() {
                 @Override
                 public void success(@NonNull Uri uri) {
-                    RxJavaUtil.workWithUiResult(() -> doBackup(uri), afterBackup::call, this::error);
+                    RxJavaUtil.workWithUiResult(() -> doBackup(uri), afterBackup, this::error);
                 }
 
                 @Override
@@ -79,7 +79,7 @@ public class BackupDelegate {
             onFilePickResult(resultCode, data, new FilePickerUtil.OnFilePickCallback() {
                 @Override
                 public void success(@NonNull Uri uri) {
-                    RxJavaUtil.workWithUiResult(() -> doRestore(uri), afterRestore::call, this::error);
+                    RxJavaUtil.workWithUiResult(() -> doRestore(uri), afterRestore, this::error);
                 }
 
                 @Override
