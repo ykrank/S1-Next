@@ -22,6 +22,7 @@ public class TalkingDataAgent implements TrackAgent {
 
     public void init() {
         TCAgent.LOG_ON = BuildConfig.DEBUG;
+        TCAgent.setPushDisabled();
         TCAgent.init(App.get());
         TCAgent.setReportUncaughtExceptions(false);
     }
