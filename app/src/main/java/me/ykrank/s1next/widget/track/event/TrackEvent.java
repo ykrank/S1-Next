@@ -3,6 +3,7 @@ package me.ykrank.s1next.widget.track.event;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -50,6 +51,13 @@ public class TrackEvent {
     @Nullable
     public Map<String, String> getData() {
         return data;
+    }
+
+    public void addData(String key, String value) {
+        if (data == null) {
+            data = new HashMap<>();
+        }
+        data.put(key, value);
     }
 
     public void setData(@Nullable Map<String, String> data) {

@@ -9,7 +9,8 @@ import android.support.annotation.Nullable;
 public class NewReplyTrackEvent extends TrackEvent {
 
     public NewReplyTrackEvent(String threadId, @Nullable String quotePostId) {
-        setGroup(threadId);
-        setName(quotePostId);
+        setGroup("新回复");
+        addData("ThreadId", threadId);
+        addData("QuotePostId", quotePostId);
     }
 }

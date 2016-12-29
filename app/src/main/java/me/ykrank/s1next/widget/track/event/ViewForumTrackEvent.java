@@ -7,7 +7,8 @@ package me.ykrank.s1next.widget.track.event;
 public class ViewForumTrackEvent extends TrackEvent {
 
     public ViewForumTrackEvent(String id, String name) {
-        setGroup(name);
-        setName(id);
+        setGroup("浏览版块");
+        addData("id", id);
+        addData("name", name);
     }
 }

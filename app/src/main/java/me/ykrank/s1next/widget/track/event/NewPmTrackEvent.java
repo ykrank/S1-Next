@@ -7,6 +7,6 @@ package me.ykrank.s1next.widget.track.event;
 public class NewPmTrackEvent extends TrackEvent {
 
     public NewPmTrackEvent() {
-
+        setGroup("新私信");
     }
 }

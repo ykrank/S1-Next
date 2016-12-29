@@ -5,4 +5,8 @@ package me.ykrank.s1next.widget.track.event;
  */
 
 public class ViewHelpTrackEvent extends TrackEvent {
+
+    public ViewHelpTrackEvent() {
+        setGroup("帮助页");
+    }
 }

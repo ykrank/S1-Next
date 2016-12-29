@@ -7,6 +7,7 @@ package me.ykrank.s1next.widget.track.event;
 public class AddFavoriteTrackEvent extends TrackEvent {
 
     public AddFavoriteTrackEvent(String threadId) {
-        setGroup(threadId);
+        setGroup("添加收藏");
+        addData("ThreadId", threadId);
     }
 }

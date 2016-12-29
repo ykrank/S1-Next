@@ -7,7 +7,8 @@ package me.ykrank.s1next.widget.track.event;
 public class ViewThreadTrackEvent extends TrackEvent {
 
     public ViewThreadTrackEvent(String title, String threadId) {
-        setGroup(title);
-        setName(threadId);
+        setGroup("浏览帖子");
+        addData("title", title);
+        addData("ThreadId", threadId);
     }
 }
