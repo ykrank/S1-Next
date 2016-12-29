@@ -159,6 +159,9 @@ public final class NewThreadFragment extends BasePostFragment {
     public Subscription resumeFromCache(Single<String> cache) {
         return cache.map(s -> {
             try {
+                if (TextUtils.isEmpty(s)){
+                    return null;
+                }
                 return objectMapper.readValue(s, NewThreadCacheModel.class);
             } catch (IOException e) {
                 throw new IllegalStateException(e);
@@ -203,7 +206,7 @@ public final class NewThreadFragment extends BasePostFragment {
     private void setSpinner(List<ThreadType> types) {
         ThreadTypeSpinnerAdapter spinnerAdapter = new ThreadTypeSpinnerAdapter(getContext(), types);
         typeSpinner.setAdapter(spinnerAdapter);
-        if (types.size() > cacheModel.getSelectPosition()) {
+        if (cacheModel != null && types.size() > cacheModel.getSelectPosition()) {
             typeSpinner.setSelection(cacheModel.getSelectPosition());
         }
     }
