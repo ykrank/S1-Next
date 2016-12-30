@@ -10,7 +10,7 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ClickableSpan;
 import android.view.View;
 
-import java.util.HashMap;
+import org.xml.sax.Attributes;
 
 import me.ykrank.s1next.util.L;
 
@@ -23,8 +23,8 @@ public class AcfunSpan implements PostMovementMethod.URLSpanClick {
     /**
      * See android.text.HtmlToSpannedConverter#startA(android.text.SpannableStringBuilder, org.xml.sax.Attributes)
      */
-    public static void startAcfun(SpannableStringBuilder text, HashMap<String, String> attributes) {
-        String href = attributes.get("href");
+    public static void startAcfun(SpannableStringBuilder text, Attributes attributes) {
+        String href = attributes.getValue("href");
 
         int len = text.length();
         text.setSpan(new AcfunHref(href), len, len, Spannable.SPAN_MARK_MARK);

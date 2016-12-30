@@ -37,6 +37,7 @@ import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.span.GlideImageGetter;
+import me.ykrank.s1next.widget.span.HtmlCompat;
 import me.ykrank.s1next.widget.span.TagHandler;
 
 public final class TextViewBindingAdapter {
@@ -156,7 +157,9 @@ public final class TextViewBindingAdapter {
         } else {
             // use GlideImageGetter to show images in TextView
             //noinspection deprecation
-            textView.setText(Html.fromHtml(post.getReply(), GlideImageGetter.get(textView), new TagHandler()));
+            textView.setText(HtmlCompat.fromHtml(post.getReply(),
+                    HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST | HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM,
+                    GlideImageGetter.get(textView), new TagHandler()));
         }
     }
 
