@@ -3,7 +3,6 @@ package me.ykrank.s1next.widget.track;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import java.util.Map;
 
@@ -16,7 +15,7 @@ import me.ykrank.s1next.data.User;
 public interface TrackAgent {
     void init();
 
-    void setUser(@Nullable User user);
+    void setUser(@NonNull User user);
 
     void onResume(@NonNull Activity activity);
 
