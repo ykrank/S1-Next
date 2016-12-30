@@ -253,6 +253,7 @@ public final class Post implements Cloneable, SameItem {
     private String hideBlackListQuote(String reply) {
         String quoteName = findBlockQuoteName(reply);
         if (quoteName != null) {
+            reply = replaceQuoteBr(reply);
             BlackList blackList = BlackListDbWrapper.getInstance().getBlackListDefault(-1, quoteName);
             if (blackList != null && blackList.post != BlackList.NORMAL) {
                 return replaceBlockQuoteContent(reply, blackList.remark);
@@ -281,6 +282,16 @@ public final class Post implements Cloneable, SameItem {
             }
         }
         return name;
+    }
+
+    /**
+     * 替换引用时多余的&lt;br/&gt;标记
+     *
+     * @param reply
+     * @return
+     */
+    private String replaceQuoteBr(String reply) {
+        return reply.replace("</blockquote></div><br />", "</blockquote></div>");
     }
 
     /**
