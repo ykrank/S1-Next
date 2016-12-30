@@ -24,6 +24,7 @@
     </data>
 
     <ImageView
+        android:id="@+id/image"
         style="?attr/android:borderlessButtonStyle"
         android:layout_width="@dimen/minimum_touch_target_size"
         android:layout_height="@dimen/minimum_touch_target_size"
