@@ -4,6 +4,7 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -44,8 +45,8 @@ public class DataTrackAgent {
         regHandler(PageEndEvent.class, new PageEndTrackHandler(agent));
     }
 
-    public void setUser(User user) {
-        if ((mUser == null && user != null) || (mUser != null && user == null)) {
+    public void setUser(@NonNull User user) {
+        if (mUser == null || !TextUtils.equals(mUser.getUid(), user.getUid())) {
             mUser = user;
             agent.setUser(user);
         }

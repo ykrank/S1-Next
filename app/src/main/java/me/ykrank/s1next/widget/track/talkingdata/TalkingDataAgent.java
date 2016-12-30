@@ -26,7 +26,7 @@ public class TalkingDataAgent implements TrackAgent {
         TCAgent.setReportUncaughtExceptions(false);
     }
 
-    public void setUser(User user) {
+    public void setUser(@NonNull User user) {
         TCAgent.setGlobalKV("UserName", user.getName());
         TCAgent.setGlobalKV("Uid", user.getUid());
         TCAgent.setGlobalKV("Permission", String.valueOf(user.getPermission()));
