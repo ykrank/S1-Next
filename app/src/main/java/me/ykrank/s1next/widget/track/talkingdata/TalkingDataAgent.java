@@ -9,7 +9,6 @@ import com.tendcloud.tenddata.TCAgent;
 import java.util.Map;
 
 import me.ykrank.s1next.App;
-import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.widget.track.TrackAgent;
 
@@ -21,7 +20,7 @@ import me.ykrank.s1next.widget.track.TrackAgent;
 public class TalkingDataAgent implements TrackAgent {
 
     public void init() {
-        TCAgent.LOG_ON = BuildConfig.DEBUG;
+        TCAgent.LOG_ON = false;
         TCAgent.setPushDisabled();
         TCAgent.init(App.get());
         TCAgent.setReportUncaughtExceptions(false);
