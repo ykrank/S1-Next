@@ -5,6 +5,7 @@ import android.os.Build;
 
 import org.apache.commons.lang3.StringUtils;
 
+import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.R;
 
 public final class DeviceUtil {
@@ -16,14 +17,14 @@ public final class DeviceUtil {
      * Gets the string signature which is used for reply (show in setting).
      */
     public static String getSignature(Context context) {
-        return context.getString(R.string.signature, getDeviceNameWithVersion());
+        return context.getString(R.string.signature, getDeviceNameWithVersion(), BuildConfig.VERSION_NAME);
     }
 
     /**
      * Gets the string signature which is used for reply (append this to last line of the reply).
      */
     public static String getPostSignature(Context context) {
-        return context.getString(R.string.signature_in_reply, getDeviceNameWithVersion());
+        return context.getString(R.string.signature_in_reply, getDeviceNameWithVersion(), BuildConfig.VERSION_NAME);
     }
 
     /**
