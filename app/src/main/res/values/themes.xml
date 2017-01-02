@@ -10,6 +10,7 @@
         <item name="colorAccent">@color/light_blue_700</item>
         <item name="actionModeBackground">?attr/colorPrimary</item>
         <item name="colorControlActivated">?attr/colorAccent</item>
+        <item name="cardViewStyle">@style/CardView.Light.AfternoonTea</item>
     </style>
     
     <style name="Theme.Light" parent="Base.Theme.Light" />

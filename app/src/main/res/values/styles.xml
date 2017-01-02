@@ -3,6 +3,10 @@
 
     <style name="Preference.Overlay" parent="PreferenceThemeOverlay.v14" />
 
+    <style name="CardView.Light.AfternoonTea">
+        <item name="cardBackgroundColor">@color/saraba_main_bg_color</item>
+    </style>
+
     <style name="CardView.Light">
         <item name="cardBackgroundColor">@color/light_background</item>
     </style>
