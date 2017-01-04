@@ -4,12 +4,11 @@ import android.net.Uri;
 
 import org.apache.commons.lang3.StringUtils;
 
-import me.ykrank.s1next.data.User;
-
 public final class Api {
 
     public static final String BASE_URL = "http://bbs.saraba1st.com/2b/";
     public static final String BASE_API_URL = "http://bbs.saraba1st.com/2b/api/mobile/";
+    static final String BASE_API_PREFIX = "index.php?module=";
 
     public static final int THREADS_PER_PAGE = 50;
     public static final int POSTS_PER_PAGE = 30;
@@ -20,33 +19,14 @@ public final class Api {
      * Opens the browser via {@link android.content.Intent}.
      */
     public static final String URL_BROWSER_REGISTER = prepend("member.php?mod=register");
-    static final String URL_FORUM = "index.php?module=forumindex";
-    static final String URL_FAVOURITES = "index.php?module=myfavthread";
-    static final String URL_THREAD_LIST = "index.php?module=forumdisplay&tpp=" + THREADS_PER_PAGE;
-    static final String URL_POST_LIST = "index.php?module=viewthread&ppp=" + POSTS_PER_PAGE;
-    static final String URL_QUOTE_POST_REDIRECT = "/2b/forum.php?mod=redirect&goto=findpost";
-    static final String URL_LOGIN = "index.php?module=login&loginsubmit=yes&loginfield=auto&cookietime=2592000";
-    //PM
-    static final String URL_PM_LIST = "index.php?module=mypm&filter=privatepm";
-    static final String URL_PM_VIEW_LIST = "index.php?module=mypm&subop=view";
-    static final String URL_PM_POST = "index.php?module=sendpm&pmsubmit=true";
-    /**
-     * A URL used to get the correct authenticity token after login.
-     * <p>
-     * The {@link User#authenticityToken}
-     * is not fresh if we have only logged in and haven't browsed
-     * any new contents (which means requesting HTTP GET successfully).
-     */
-    static final String URL_AUTHENTICITY_TOKEN_HELPER = "index.php?module=toplist";
-    static final String URL_THREAD_FAVOURITES_ADD = "index.php?module=favthread&favoritesubmit=yes";
-    static final String URL_THREAD_FAVOURITES_REMOVE = "index.php?module=favthread&deletesubmit=true&op=delete";
-    static final String URL_REPLY = "index.php?module=sendreply&replysubmit=yes";
+
+    static final String URL_QUOTE_POST_REDIRECT = BASE_URL + "forum.php?mod=redirect&goto=findpost";
+
     /**
      * A URL to get the quoted user identification and processed quoted
      * content (with some HTML tags and its origin redirect hyperlink).
      */
     static final String URL_QUOTE_HELPER = BASE_URL + "forum.php?mod=post&action=reply&inajax=yes";
-    static final String URL_NEW_THREAD = "index.php?module=newthread&extra=&topicsubmit=yes";
     /**
      * 发布新帖前获取必要前置信息
      */
