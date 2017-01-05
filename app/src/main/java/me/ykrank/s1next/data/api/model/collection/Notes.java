@@ -1,9 +1,12 @@
 package me.ykrank.s1next.data.api.model.collection;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import me.ykrank.s1next.data.api.model.Account;
@@ -22,8 +25,14 @@ public class Notes extends Account {
     private int page;
     @JsonProperty("perpage")
     private int perPage;
-    @JsonProperty("list")
-    private Map<Integer, Note> datas;
+    @JsonIgnore
+    private List<Note> noteList;
+
+    public Notes(@JsonProperty("list") Map<Integer, Note> list) {
+        List<Note> noteList = new ArrayList<>();
+        noteList.addAll(list.values());
+        this.noteList = noteList;
+    }
 
     public int getCount() {
         return count;
@@ -57,12 +66,12 @@ public class Notes extends Account {
         this.perPage = perPage;
     }
 
-    public Map<Integer, Note> getDatas() {
-        return datas;
+    public List<Note> getNoteList() {
+        return noteList;
     }
 
-    public void setDatas(Map<Integer, Note> datas) {
-        this.datas = datas;
+    public void setNoteList(List<Note> noteList) {
+        this.noteList = noteList;
     }
 
     @Override
@@ -75,11 +84,11 @@ public class Notes extends Account {
                 groupId == notes.groupId &&
                 page == notes.page &&
                 perPage == notes.perPage &&
-                Objects.equal(datas, notes.datas);
+                Objects.equal(noteList, notes.noteList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(super.hashCode(), count, groupId, page, perPage, datas);
+        return Objects.hashCode(super.hashCode(), count, groupId, page, perPage, noteList);
     }
 }

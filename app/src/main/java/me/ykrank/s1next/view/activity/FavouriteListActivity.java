@@ -22,6 +22,7 @@ public final class FavouriteListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
+        disableDrawerIndicator();
 
         if (savedInstanceState == null) {
             Fragment fragment = new FavouriteListFragment();

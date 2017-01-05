@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.google.common.base.Objects;
 
 import java.util.regex.Matcher;
@@ -23,34 +24,28 @@ public class Note implements Parcelable, SameItem {
     private String author;
     @JsonProperty("authorid")
     private String authorId;
-    @JsonProperty("dataline")
+    @JsonProperty("dateline")
     private long dateline;
     @JsonProperty("id")
     private String id;
-    @JsonProperty("new")
+    @JsonIgnore
     private boolean isNew;
     @JsonIgnore
     private String note;
+    //eg forum.php?mod=redirect&goto=findpost&ptid=1220112&pid=1
     @JsonIgnore
-    private String pid;
-    @JsonIgnore
-    private String ptid;
+    private String url;
     @JsonIgnore
     private String content;
 
     @JsonCreator
     public Note(@JsonProperty("note") String note) {
         this.note = note;
-        //eg <a href="home.php?mod=space&uid=1">someone</a> 回复了您的帖子 <a href="forum.php?mod=redirect&goto=findpost&ptid=1220112&pid=34692327" target="_blank">【Android】 s1Next-鹅版-v0.7.2（群522433035）</a> &nbsp; <a href="forum.php?mod=redirect&goto=findpost&pid=34692327&ptid=1220112" target="_blank" class="lit">查看</a>
-        Pattern pattern = Pattern.compile("(?<=pid=)\\d+");
+        //eg <a href="home.php?mod=space&uid=1">someone</a> 回复了您的帖子 <a href="forum.php?mod=redirect&goto=findpost&ptid=1220112&pid=1" target="_blank">【Android】 s1Next-鹅版-v0.7.2（群522433035）</a> &nbsp; <a href="forum.php?mod=redirect&goto=findpost&pid=34692327&ptid=1220112" target="_blank" class="lit">查看</a>
+        Pattern pattern = Pattern.compile("<a href=\"(forum\\.php\\?mod=redirect&goto=findpost.+?)\"");
         Matcher matcher = pattern.matcher(note);
         if (matcher.find()) {
-            pid = matcher.group(0);
-        }
-        pattern = Pattern.compile("(?<=ptid=)\\d+");
-        matcher = pattern.matcher(note);
-        if (matcher.find()) {
-            ptid = matcher.group(0);
+            url = matcher.group(1);
         }
         pattern = Pattern.compile("target=\"_blank\">(.+)</a> &nbsp;");
         matcher = pattern.matcher(note);
@@ -66,8 +61,7 @@ public class Note implements Parcelable, SameItem {
         id = in.readString();
         isNew = in.readByte() != 0;
         note = in.readString();
-        pid = in.readString();
-        ptid = in.readString();
+        url = in.readString();
         content = in.readString();
     }
 
@@ -123,6 +117,7 @@ public class Note implements Parcelable, SameItem {
         isNew = aNew;
     }
 
+    @JsonSetter("new")
     public void setNew(int aNew) {
         isNew = aNew > 0;
     }
@@ -135,20 +130,12 @@ public class Note implements Parcelable, SameItem {
         this.note = note;
     }
 
-    public String getPid() {
-        return pid;
+    public String getUrl() {
+        return url;
     }
 
-    public void setPid(String pid) {
-        this.pid = pid;
-    }
-
-    public String getPtid() {
-        return ptid;
-    }
-
-    public void setPtid(String ptid) {
-        this.ptid = ptid;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getContent() {
@@ -172,8 +159,7 @@ public class Note implements Parcelable, SameItem {
         dest.writeString(id);
         dest.writeByte((byte) (isNew ? 1 : 0));
         dest.writeString(note);
-        dest.writeString(pid);
-        dest.writeString(ptid);
+        dest.writeString(url);
         dest.writeString(content);
     }
 
@@ -188,14 +174,13 @@ public class Note implements Parcelable, SameItem {
                 Objects.equal(authorId, note1.authorId) &&
                 Objects.equal(id, note1.id) &&
                 Objects.equal(note, note1.note) &&
-                Objects.equal(pid, note1.pid) &&
-                Objects.equal(ptid, note1.ptid) &&
+                Objects.equal(url, note1.url) &&
                 Objects.equal(content, note1.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(author, authorId, dateline, id, isNew, note, pid, ptid, content);
+        return Objects.hashCode(author, authorId, dateline, id, isNew, note, url, content);
     }
 
     @Override

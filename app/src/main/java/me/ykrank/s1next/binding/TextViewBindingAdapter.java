@@ -3,6 +3,7 @@ package me.ykrank.s1next.binding;
 import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -63,6 +64,13 @@ public final class TextViewBindingAdapter {
             // use TouchDelegate to increase count's clicking area
             parent.setTouchDelegate(new TouchDelegate(rect, textView));
         });
+    }
+
+    @BindingAdapter("underlineText")
+    public static void setUnderlineText(TextView textView, String text) {
+        textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        textView.getPaint().setAntiAlias(true);
+        textView.setText(text);
     }
 
     @BindingAdapter("textPath")

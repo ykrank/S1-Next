@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.ykrank.s1next.view.adapter.delegate.FavouriteAdapterDelegate">
 
     <data>
@@ -26,8 +26,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/item_padding"
-            android:onClick="@{model.clickNote()}">
+            android:padding="@dimen/item_padding">
 
             <me.ykrank.s1next.widget.BezelImageView
                 android:id="@+id/avatar"
@@ -47,22 +46,22 @@
                 android:layout_toRightOf="@id/avatar"
                 android:includeFontPadding="false"
                 android:lines="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:text="@{model.data.author}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 tools:text="someone" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/author_name"
-                android:layout_toEndOf="@id/author_name"
                 android:layout_alignBaseline="@id/author_name"
-                android:includeFontPadding="false"
-                android:maxLines="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:layout_marginLeft="@dimen/spacing_normal"
                 android:layout_marginStart="@dimen/spacing_normal"
-                android:text="@string/replied" />
+                android:layout_toEndOf="@id/author_name"
+                android:layout_toRightOf="@id/author_name"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:text="@string/replied"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
             <TextView
                 android:id="@+id/tv_name"
@@ -83,8 +82,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/single_line_height_with_avatar"
                 android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
+                android:onClick="@{model.clickNote()}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:text="@{model.data.content}" />
+                app:underlineText="@{model.data.content}"
+                tools:text="ABCDEFGHIJKLMN" />
 
         </RelativeLayout>
 

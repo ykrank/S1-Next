@@ -7,13 +7,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import me.ykrank.s1next.data.api.model.Note;
 import me.ykrank.s1next.data.api.model.collection.Notes;
 import me.ykrank.s1next.data.api.model.wrapper.NotesWrapper;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.view.adapter.NoteRecyclerViewAdapter;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
@@ -64,13 +65,13 @@ public class NoteFragment extends BaseLoadMoreRecycleViewFragment<NotesWrapper> 
     @Override
     NotesWrapper appendNewData(@Nullable NotesWrapper oldData, @NonNull NotesWrapper newData) {
         if (oldData != null) {
-            Map<Integer, Note> oldNotes = oldData.getNotes().getDatas();
-            Map<Integer, Note> newNotes = newData.getNotes().getDatas();
+            List<Note> oldNotes = oldData.getNotes().getNoteList();
+            List<Note> newNotes = newData.getNotes().getNoteList();
             if (newNotes == null) {
-                newNotes = new HashMap<>();
+                newNotes = new ArrayList<>();
             }
             if (oldNotes != null) {
-                newNotes.putAll(oldNotes);
+                newNotes.addAll(0, oldNotes);
             }
         }
         return newData;
@@ -85,10 +86,10 @@ public class NoteFragment extends BaseLoadMoreRecycleViewFragment<NotesWrapper> 
     void onNext(NotesWrapper data) {
         super.onNext(data);
         Notes notes = data.getNotes();
-        if (notes != null && notes.getDatas() != null) {
-//            mRecyclerAdapter.diffNewDataSet(notes.getDatas().values(), false);
-            // update total page
-//            setTotalPages(MathUtil.divide(pmGroups.getTotal(), pmGroups.getPmPerPage()));
+        if (notes != null && notes.getNoteList() != null) {
+            mRecyclerAdapter.diffNewDataSet(notes.getNoteList(), false);
+            //update total page
+            setTotalPages(MathUtil.divide(notes.getCount(), notes.getPerPage()));
         }
     }
 }
