@@ -255,5 +255,8 @@
     <string name="dialog_button_text_confirm">Confirm</string>
     <string name="prompt_blacklist_remark">Blacklist remark</string>
     <string name="message_operation_canceled">Operation canceled</string>
+    <string name="replied">replied</string>
+    <string name="title_note">Notes</string>
+    <string name="notes">Notes</string>
 
 </resources>

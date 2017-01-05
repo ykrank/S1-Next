@@ -19,6 +19,7 @@ import me.ykrank.s1next.view.activity.FavouriteListActivity;
 import me.ykrank.s1next.view.activity.ForumActivity;
 import me.ykrank.s1next.view.activity.HelpActivity;
 import me.ykrank.s1next.view.activity.LoginActivity;
+import me.ykrank.s1next.view.activity.NoteActivity;
 import me.ykrank.s1next.view.activity.PmActivity;
 import me.ykrank.s1next.view.activity.SettingsActivity;
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment;
@@ -97,23 +98,21 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
         switch (menuItem.getItemId()) {
             case R.id.menu_home:
                 runnable = this::onHomeMenuSelected;
-
                 break;
             case R.id.menu_favourites:
                 runnable = this::onFavouritesMenuSelected;
-
                 break;
             case R.id.menu_whisper:
                 runnable = this::onWhispersMenuSelected;
-
+                break;
+            case R.id.menu_note:
+                runnable = this::onNoteMenuSelected;
                 break;
             case R.id.menu_settings:
                 runnable = this::onSettingsMenuSelected;
-
                 break;
             case R.id.menu_help:
                 runnable = this::onHelpMenuSelected;
-
                 break;
             default:
                 throw new IllegalStateException("Unknown menu item ID: " + menuItem.getItemId() + ".");
@@ -132,6 +131,8 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
             menuItem = menu.findItem(R.id.menu_favourites);
         } else if (mFragmentActivity instanceof PmActivity) {
             menuItem = menu.findItem(R.id.menu_whisper);
+        } else if (mFragmentActivity instanceof NoteActivity) {
+            menuItem = menu.findItem(R.id.menu_note);
         }
         // SettingsActivity and HelpActivity don't have drawer
         // so it's no need to set checked theirs MenuItem
@@ -178,5 +179,9 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
 
     private void onHelpMenuSelected() {
         HelpActivity.startHelpActivity(mFragmentActivity);
+    }
+
+    private void onNoteMenuSelected() {
+        NoteActivity.start(mFragmentActivity);
     }
 }

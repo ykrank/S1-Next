@@ -137,6 +137,11 @@
         </activity>
 
         <activity
+            android:name=".view.activity.NoteActivity"
+            android:label="@string/title_note"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".view.activity.OpenSourceLicensesActivity"
             android:label="@string/open_source_licenses" />
 

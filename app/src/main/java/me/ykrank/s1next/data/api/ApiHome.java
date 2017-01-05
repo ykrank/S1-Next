@@ -19,5 +19,5 @@ public class ApiHome {
     static final String URL_THREAD_FAVOURITES_REMOVE = Api.BASE_API_PREFIX + "favthread&deletesubmit=true&op=delete";
 
     //Notes
-    static final String url_my_note_list = Api.BASE_API_PREFIX + "mynotelist&version=3";
+    static final String URL_MY_NOTE_LIST = Api.BASE_API_PREFIX + "mynotelist&view=mypost&type=post&version=3";
 }

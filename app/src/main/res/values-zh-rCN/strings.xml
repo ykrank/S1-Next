@@ -167,4 +167,7 @@
     <string name="dialog_button_text_confirm">确定</string>
     <string name="prompt_blacklist_remark">抹布备注</string>
     <string name="message_operation_canceled">操作被取消</string>
+    <string name="replied">回复了</string>
+    <string name="title_note">提醒</string>
+    <string name="notes">提醒</string>
 </resources>
