@@ -23,7 +23,7 @@ public class NoteActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base_without_drawer_and_scrolling_effect);
+        setContentView(R.layout.activity_base_without_drawer);
 
         if (savedInstanceState == null) {
             fragment = NoteFragment.newInstance();

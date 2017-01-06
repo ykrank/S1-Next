@@ -94,7 +94,7 @@ public final class BezelImageViewBindingAdapter {
                 String bigAvatarUrl = Api.getAvatarBigUrl(post.getAuthorId());
                 AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(downloadPreferencesManager, url));
                 AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(downloadPreferencesManager, bigAvatarUrl));
-                GalleryActivity.startGalleryActivity(v.getContext(), bigAvatarUrl, url);
+                GalleryActivity.startGalleryActivity(v.getContext(), bigAvatarUrl);
             });
             //长按显示抹布菜单
             bezelImageView.setOnLongClickListener((View v) -> {

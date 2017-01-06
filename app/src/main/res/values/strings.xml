@@ -258,5 +258,6 @@
     <string name="replied">replied</string>
     <string name="title_note">Notes</string>
     <string name="notes">Notes</string>
+    <string name="menu_random_image">Random image</string>
 
 </resources>

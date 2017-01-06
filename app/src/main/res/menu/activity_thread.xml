@@ -14,4 +14,10 @@
         android:orderInCategory="21"
         android:title="@string/menu_new_thread"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_random_image"
+        android:orderInCategory="25"
+        android:title="@string/menu_random_image"
+        android:visible="false"
+        app:showAsAction="never" />
 </menu>

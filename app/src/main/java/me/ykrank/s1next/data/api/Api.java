@@ -8,6 +8,7 @@ public final class Api {
 
     public static final String BASE_URL = "http://bbs.saraba1st.com/2b/";
     public static final String BASE_API_URL = "http://bbs.saraba1st.com/2b/api/mobile/";
+    static final String RANDOM_IMAGE_URL = "http://ac.stage3rd.com/S1_ACG_randpic.asp";
     static final String BASE_API_PREFIX = "index.php?module=";
 
     public static final int THREADS_PER_PAGE = 50;
@@ -91,5 +92,9 @@ public final class Api {
 
     public static String getPostListUrlForBrowser(String threadId, int pageNum) {
         return String.format(URL_BROWSER_POST_LIST, threadId, pageNum);
+    }
+
+    public static String randomImage() {
+        return RANDOM_IMAGE_URL + "?" + System.currentTimeMillis();
     }
 }

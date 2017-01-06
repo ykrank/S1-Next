@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.ListPopupWindow;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.Forum;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.adapter.SubForumArrayAdapter;
@@ -40,6 +42,7 @@ public final class ThreadListActivity extends BaseActivity
     private ListPopupWindow mListPopupWindow;
     private SubForumArrayAdapter mSubForumArrayAdapter;
 
+    private Forum forum;
     private boolean refreshBlackList = false;
 
     public static void startThreadListActivity(Context context, Forum forum) {
@@ -58,9 +61,10 @@ public final class ThreadListActivity extends BaseActivity
 
         disableDrawerIndicator();
 
+        forum = getIntent().getParcelableExtra(ARG_FORUM);
+
         if (savedInstanceState == null) {
-            Fragment fragment = ThreadListFragment.newInstance(getIntent().getParcelableExtra(
-                    ARG_FORUM));
+            Fragment fragment = ThreadListFragment.newInstance(forum);
             getSupportFragmentManager().beginTransaction().add(R.id.frame_layout, fragment,
                     ThreadListFragment.TAG).commit();
         }
@@ -80,6 +84,11 @@ public final class ThreadListActivity extends BaseActivity
             newThreadMenu.setVisible(false);
         }
 
+        MenuItem randomImageMenu = menu.findItem(R.id.menu_random_image);
+        if (TextUtils.equals(forum.getId(), "6")) {
+            randomImageMenu.setVisible(true);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -92,8 +101,10 @@ public final class ThreadListActivity extends BaseActivity
 
                 return true;
             case R.id.menu_new_thread:
-                Forum forum = getIntent().getParcelableExtra(ARG_FORUM);
                 NewThreadActivity.startNewThreadActivityForResultMessage(this, Integer.parseInt(forum.getId()));
+                return true;
+            case R.id.menu_random_image:
+                GalleryActivity.startGalleryActivity(this, Api.randomImage());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
