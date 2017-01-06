@@ -38,11 +38,11 @@ public final class PhotoViewBindingAdapter {
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-//                        if (thumbUrl != null) {
-//                            loadImage(photoView, thumbUrl, null);
-//                        } else {
-                        target.onLoadFailed(e, ContextCompat.getDrawable(context, R.mipmap.error_symbol));
-//                        }
+                        if (thumbUrl != null) {
+                            loadImage(photoView, thumbUrl, null);
+                        } else {
+                            target.onLoadFailed(e, ContextCompat.getDrawable(context, R.mipmap.error_symbol));
+                        }
                         return true;
                     }
 
@@ -52,14 +52,15 @@ public final class PhotoViewBindingAdapter {
                     }
                 });
 
-        DrawableTypeRequest<Integer> loadingRequest = Glide.with(context).load(R.drawable.loading);
         if (!TextUtils.isEmpty(thumbUrl)) {
             DrawableRequestBuilder<String> thumbnailRequest = Glide
                     .with(context)
                     .load(thumbUrl)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE);
-            builder = builder.thumbnail(thumbnailRequest);
+            builder = builder.thumbnail(thumbnailRequest)
+                    .placeholder(R.drawable.loading);
         } else {
+            DrawableTypeRequest<Integer> loadingRequest = Glide.with(context).load(R.drawable.loading);
             builder = builder.thumbnail(loadingRequest);
         }
 
