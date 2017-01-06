@@ -23,6 +23,8 @@
     <attr name="chatFromBackground" format="color|reference" />
     <attr name="chatToBackground" format="color|reference" />
 
+    <attr name="divisionBackground" format="color|reference" />
+
     <declare-styleable name="BezelImageView">
         <attr name="maskDrawable" format="reference" />
         <attr name="borderDrawable" format="reference" />

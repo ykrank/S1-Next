@@ -10,6 +10,7 @@
 
     <dimen name="single_line_height">48dp</dimen>
     <dimen name="avatar_size">40dp</dimen>
+    <dimen name="avatar_size_home">96dp</dimen>
     <dimen name="single_line_height_with_avatar">56dp</dimen>
     <dimen name="two_line_height">72dp</dimen>
 
@@ -95,7 +96,7 @@
     <!-- standard metrics -->
     <dimen name="spacing_normal">8dp</dimen>
     <dimen name="spacing_micro">4dp</dimen>
-    <dimen name="padding_normal">16dp</dimen>
+    <dimen name="spacing_big">16dp</dimen>
     <dimen name="spacing_large">32dp</dimen>
     <dimen name="spacing_xlarge">48dp</dimen>
     <dimen name="spacing_huge">64dp</dimen>
