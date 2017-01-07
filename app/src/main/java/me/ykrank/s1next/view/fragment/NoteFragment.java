@@ -12,7 +12,7 @@ import java.util.List;
 
 import me.ykrank.s1next.data.api.model.Note;
 import me.ykrank.s1next.data.api.model.collection.Notes;
-import me.ykrank.s1next.data.api.model.wrapper.NotesWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.BaseWrapper;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
@@ -25,7 +25,7 @@ import rx.Observable;
  * Created by ykrank on 2017/1/5.
  */
 
-public class NoteFragment extends BaseLoadMoreRecycleViewFragment<NotesWrapper> {
+public class NoteFragment extends BaseLoadMoreRecycleViewFragment<BaseWrapper<Notes>> {
     public static final String TAG = NoteFragment.class.getName();
     private NoteRecyclerViewAdapter mRecyclerAdapter;
 
@@ -63,10 +63,10 @@ public class NoteFragment extends BaseLoadMoreRecycleViewFragment<NotesWrapper> 
     }
 
     @Override
-    NotesWrapper appendNewData(@Nullable NotesWrapper oldData, @NonNull NotesWrapper newData) {
+    BaseWrapper<Notes> appendNewData(@Nullable BaseWrapper<Notes> oldData, @NonNull BaseWrapper<Notes> newData) {
         if (oldData != null) {
-            List<Note> oldNotes = oldData.getNotes().getNoteList();
-            List<Note> newNotes = newData.getNotes().getNoteList();
+            List<Note> oldNotes = oldData.getData().getNoteList();
+            List<Note> newNotes = newData.getData().getNoteList();
             if (newNotes == null) {
                 newNotes = new ArrayList<>();
             }
@@ -78,14 +78,14 @@ public class NoteFragment extends BaseLoadMoreRecycleViewFragment<NotesWrapper> 
     }
 
     @Override
-    Observable<NotesWrapper> getSourceObservable(int pageNum) {
+    Observable<BaseWrapper<Notes>> getSourceObservable(int pageNum) {
         return mS1Service.getMyNotes(pageNum);
     }
 
     @Override
-    void onNext(NotesWrapper data) {
+    void onNext(BaseWrapper<Notes> data) {
         super.onNext(data);
-        Notes notes = data.getNotes();
+        Notes notes = data.getData();
         if (notes != null && notes.getNoteList() != null) {
             mRecyclerAdapter.diffNewDataSet(notes.getNoteList(), false);
             //update total page

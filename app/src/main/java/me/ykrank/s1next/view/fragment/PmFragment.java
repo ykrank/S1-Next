@@ -140,7 +140,7 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
     @Override
     void onNext(PmsWrapper data) {
         super.onNext(data);
-        Pms pms = data.getPms();
+        Pms pms = data.getData();
         if (pms.getPmList() != null) {
             mRecyclerAdapter.diffNewDataSet(pms.getPmList(), false);
             // update total page
@@ -156,8 +156,8 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
     @Override
     PmsWrapper appendNewData(@Nullable PmsWrapper oldData, @NonNull PmsWrapper newData) {
         if (oldData != null) {
-            List<Pm> oldPmGroups = oldData.getPms().getPmList();
-            List<Pm> newPmGroups = newData.getPms().getPmList();
+            List<Pm> oldPmGroups = oldData.getData().getPmList();
+            List<Pm> newPmGroups = newData.getData().getPmList();
             if (newPmGroups == null) {
                 newPmGroups = new ArrayList<>();
             }

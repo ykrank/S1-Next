@@ -12,7 +12,7 @@ import java.util.List;
 
 import me.ykrank.s1next.data.api.model.PmGroup;
 import me.ykrank.s1next.data.api.model.collection.PmGroups;
-import me.ykrank.s1next.data.api.model.wrapper.PmGroupsWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.BaseWrapper;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
@@ -22,7 +22,7 @@ import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 import rx.Observable;
 
 
-public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<PmGroupsWrapper> {
+public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<BaseWrapper<PmGroups>> {
 
     public static final String TAG = PmGroupsFragment.class.getName();
     private PmGroupsRecyclerViewAdapter mRecyclerAdapter;
@@ -61,14 +61,14 @@ public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<PmGr
     }
 
     @Override
-    Observable<PmGroupsWrapper> getSourceObservable(int pageNum) {
+    Observable<BaseWrapper<PmGroups>> getSourceObservable(int pageNum) {
         return mS1Service.getPmGroups(pageNum);
     }
 
     @Override
-    void onNext(PmGroupsWrapper data) {
+    void onNext(BaseWrapper<PmGroups> data) {
         super.onNext(data);
-        PmGroups pmGroups = data.getPmGroups();
+        PmGroups pmGroups = data.getData();
         if (pmGroups.getPmGroupList() != null) {
             mRecyclerAdapter.diffNewDataSet(pmGroups.getPmGroupList(), false);
             // update total page
@@ -77,10 +77,10 @@ public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<PmGr
     }
 
     @Override
-    PmGroupsWrapper appendNewData(@Nullable PmGroupsWrapper oldData, @NonNull PmGroupsWrapper newData) {
+    BaseWrapper<PmGroups> appendNewData(@Nullable BaseWrapper<PmGroups> oldData, @NonNull BaseWrapper<PmGroups> newData) {
         if (oldData != null) {
-            List<PmGroup> oldPmGroups = oldData.getPmGroups().getPmGroupList();
-            List<PmGroup> newPmGroups = newData.getPmGroups().getPmGroupList();
+            List<PmGroup> oldPmGroups = oldData.getData().getPmGroupList();
+            List<PmGroup> newPmGroups = newData.getData().getPmGroupList();
             if (newPmGroups == null) {
                 newPmGroups = new ArrayList<>();
             }

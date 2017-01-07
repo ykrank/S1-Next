@@ -2,37 +2,35 @@ package me.ykrank.s1next.data.api.model.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Objects;
 
-import me.ykrank.s1next.data.api.model.collection.PmGroups;
+import me.ykrank.s1next.data.api.model.Account;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class PmGroupsWrapper {
+public class BaseWrapper<T extends Account> {
 
     @JsonProperty("Variables")
-    private PmGroups pmGroups;
+    private T data;
 
-    public PmGroups getPmGroups() {
-        return pmGroups;
+    public T getData() {
+        return data;
     }
 
-    public void setPmGroups(PmGroups pmGroups) {
-        this.pmGroups = pmGroups;
+    public void setData(T data) {
+        this.data = data;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        PmGroupsWrapper pmGroupsWrapper = (PmGroupsWrapper) o;
-
-        return pmGroups != null ? pmGroups.equals(pmGroupsWrapper.pmGroups) : pmGroupsWrapper.pmGroups == null;
-
+        BaseWrapper<?> that = (BaseWrapper<?>) o;
+        return Objects.equal(data, that.data);
     }
 
     @Override
     public int hashCode() {
-        return pmGroups != null ? pmGroups.hashCode() : 0;
+        return Objects.hashCode(data);
     }
 }

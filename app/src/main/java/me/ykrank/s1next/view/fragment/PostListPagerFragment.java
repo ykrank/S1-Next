@@ -20,7 +20,7 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.api.model.collection.Posts;
-import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
 import me.ykrank.s1next.data.event.PostSelectableChangeEvent;
@@ -40,7 +40,7 @@ import rx.Subscription;
  * <p>
  * Activity or Fragment containing this must implement {@link PagerCallback}.
  */
-public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsWrapper> {
+public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseResultWrapper<Posts>> {
 
     private static final String ARG_THREAD_ID = "thread_id";
     private static final String ARG_PAGE_NUM = "page_num";
@@ -237,16 +237,16 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
     }
 
     @Override
-    Observable<PostsWrapper> getSourceObservable() {
+    Observable<BaseResultWrapper<Posts>> getSourceObservable() {
         return mS1Service.getPostsWrapper(mThreadId, mPageNum);
     }
 
     @Override
-    void onNext(PostsWrapper data) {
+    void onNext(BaseResultWrapper<Posts> data) {
         boolean pullUpToRefresh = isPullUpToRefresh();
         List<Post> postList = null;
 
-        Posts posts = data.getPosts();
+        Posts posts = data.getData();
         if (posts != null) {
             postList = posts.getPostList();
         }

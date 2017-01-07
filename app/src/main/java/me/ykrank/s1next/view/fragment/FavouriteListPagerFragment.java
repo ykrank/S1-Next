@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import me.ykrank.s1next.data.api.model.collection.Favourites;
-import me.ykrank.s1next.data.api.model.wrapper.FavouritesWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.FavouriteRecyclerViewAdapter;
@@ -19,7 +19,7 @@ import rx.Observable;
  * <p>
  * Activity or Fragment containing this must implement {@link PagerCallback}.
  */
-public final class FavouriteListPagerFragment extends BaseRecyclerViewFragment<FavouritesWrapper> {
+public final class FavouriteListPagerFragment extends BaseRecyclerViewFragment<BaseResultWrapper<Favourites>> {
 
     private static final String ARG_PAGE_NUM = "page_num";
 
@@ -67,13 +67,13 @@ public final class FavouriteListPagerFragment extends BaseRecyclerViewFragment<F
     }
 
     @Override
-    Observable<FavouritesWrapper> getSourceObservable() {
+    Observable<BaseResultWrapper<Favourites>> getSourceObservable() {
         return mS1Service.getFavouritesWrapper(mPageNum);
     }
 
     @Override
-    void onNext(FavouritesWrapper data) {
-        Favourites favourites = data.getFavourites();
+    void onNext(BaseResultWrapper<Favourites> data) {
+        Favourites favourites = data.getData();
         if (favourites.getFavouriteList() == null) {
             consumeResult(data.getResult());
         } else {

@@ -1,13 +1,16 @@
 package me.ykrank.s1next.data.api;
 
-import me.ykrank.s1next.data.api.model.wrapper.FavouritesWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.NotesWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.PmGroupsWrapper;
+import me.ykrank.s1next.data.api.model.Profile;
+import me.ykrank.s1next.data.api.model.collection.Favourites;
+import me.ykrank.s1next.data.api.model.collection.ForumGroups;
+import me.ykrank.s1next.data.api.model.collection.Notes;
+import me.ykrank.s1next.data.api.model.collection.PmGroups;
+import me.ykrank.s1next.data.api.model.collection.Posts;
+import me.ykrank.s1next.data.api.model.collection.Threads;
+import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.BaseWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.ResultWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper;
 import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -19,16 +22,16 @@ import rx.Observable;
 public interface S1Service {
 
     @GET(ApiForum.URL_FORUM)
-    Observable<ForumGroupsWrapper> getForumGroupsWrapper();
+    Observable<BaseWrapper<ForumGroups>> getForumGroupsWrapper();
 
     @GET(ApiHome.URL_FAVOURITES)
-    Observable<FavouritesWrapper> getFavouritesWrapper(@Query("page") int page);
+    Observable<BaseResultWrapper<Favourites>> getFavouritesWrapper(@Query("page") int page);
 
     @GET(ApiForum.URL_THREAD_LIST)
-    Observable<ThreadsWrapper> getThreadsWrapper(@Query("fid") String forumId, @Query("page") int page);
+    Observable<BaseResultWrapper<Threads>> getThreadsWrapper(@Query("fid") String forumId, @Query("page") int page);
 
     @GET(ApiForum.URL_POST_LIST)
-    Observable<PostsWrapper> getPostsWrapper(@Query("tid") String threadId, @Query("page") int page);
+    Observable<BaseResultWrapper<Posts>> getPostsWrapper(@Query("tid") String threadId, @Query("page") int page);
 
     @GET(Api.URL_QUOTE_POST_REDIRECT)
     Observable<Response<Void>> getQuotePostResponseBody(@Query("ptid") String threadId, @Query("pid") String quotePostId);
@@ -66,7 +69,7 @@ public interface S1Service {
 
     //<editor-fold desc="PM">
     @GET(ApiHome.URL_PM_LIST)
-    Observable<PmGroupsWrapper> getPmGroups(@Query("page") int page);
+    Observable<BaseWrapper<PmGroups>> getPmGroups(@Query("page") int page);
 
     @GET(ApiHome.URL_PM_VIEW_LIST)
     Observable<PmsWrapper> getPmList(@Query("touid") String toUid, @Query("page") int page);
@@ -92,5 +95,8 @@ public interface S1Service {
     Observable<String> searchForum(@Field("formhash") String authenticityToken, @Field("searchsubmit") String searchSubmit, @Field("srchtxt") String text);
 
     @GET(ApiHome.URL_MY_NOTE_LIST)
-    Observable<NotesWrapper> getMyNotes(@Query("page") int page);
+    Observable<BaseWrapper<Notes>> getMyNotes(@Query("page") int page);
+
+    @GET(ApiHome.URL_PROFILE)
+    Observable<BaseWrapper<Profile>> getProfile(@Query("uid") String uid);
 }

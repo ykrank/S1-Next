@@ -7,13 +7,8 @@ import com.bugsnag.android.Bugsnag;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Account;
-import me.ykrank.s1next.data.api.model.wrapper.FavouritesWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.PmGroupsWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.ResultWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.BaseWrapper;
 
 public final class UserValidator {
 
@@ -35,20 +30,10 @@ public final class UserValidator {
      */
     public <D> D validateIntercept(D d) {
         Account account = null;
-        if (d instanceof FavouritesWrapper) {
-            account = ((FavouritesWrapper) d).getFavourites();
-        } else if (d instanceof ForumGroupsWrapper) {
-            account = ((ForumGroupsWrapper) d).getForumGroups();
-        } else if (d instanceof PmGroupsWrapper) {
-            account = ((PmGroupsWrapper) d).getPmGroups();
-        } else if (d instanceof PmsWrapper) {
-            account = ((PmsWrapper) d).getPms();
-        } else if (d instanceof PostsWrapper) {
-            account = ((PostsWrapper) d).getPosts();
-        } else if (d instanceof ThreadsWrapper) {
-            account = ((ThreadsWrapper) d).getThreads();
-        } else if (d instanceof ResultWrapper) {
-            account = ((ResultWrapper) d).getAccount();
+        if (d instanceof BaseWrapper) {
+            account = ((BaseWrapper) d).getData();
+        } else if (d instanceof BaseResultWrapper) {
+            account = ((BaseResultWrapper) d).getData();
         }
 
         if (account != null) {

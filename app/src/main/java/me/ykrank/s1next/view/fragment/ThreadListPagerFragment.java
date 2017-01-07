@@ -11,7 +11,7 @@ import java.util.List;
 
 import me.ykrank.s1next.data.api.model.Forum;
 import me.ykrank.s1next.data.api.model.collection.Threads;
-import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.adapter.ThreadRecyclerViewAdapter;
 import rx.Observable;
@@ -22,7 +22,7 @@ import rx.Observable;
  * Activity or Fragment containing this must implement
  * {@link PagerCallback} and {@link SubForumsCallback}.
  */
-public final class ThreadListPagerFragment extends BaseRecyclerViewFragment<ThreadsWrapper> {
+public final class ThreadListPagerFragment extends BaseRecyclerViewFragment<BaseResultWrapper<Threads>> {
 
     private static final String ARG_FORUM_ID = "forum_id";
     private static final String ARG_PAGE_NUM = "page_num";
@@ -78,13 +78,13 @@ public final class ThreadListPagerFragment extends BaseRecyclerViewFragment<Thre
     }
 
     @Override
-    Observable<ThreadsWrapper> getSourceObservable() {
+    Observable<BaseResultWrapper<Threads>> getSourceObservable() {
         return mS1Service.getThreadsWrapper(mForumId, mPageNum);
     }
 
     @Override
-    void onNext(ThreadsWrapper data) {
-        Threads threads = data.getThreads();
+    void onNext(BaseResultWrapper<Threads> data) {
+        Threads threads = data.getData();
         if (threads.getThreadList().isEmpty()) {
             consumeResult(data.getResult());
         } else {

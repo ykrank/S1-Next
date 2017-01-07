@@ -14,7 +14,7 @@ import android.view.View;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.collection.ForumGroups;
-import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.BaseWrapper;
 import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.SearchActivity;
@@ -27,7 +27,7 @@ import rx.Observable;
 /**
  * A Fragment represents forum list.
  */
-public final class ForumFragment extends BaseRecyclerViewFragment<ForumGroupsWrapper>
+public final class ForumFragment extends BaseRecyclerViewFragment<BaseWrapper<ForumGroups>>
         implements ToolbarDropDownInterface.OnItemSelectedListener {
 
     public static final String TAG = ForumFragment.class.getName();
@@ -97,15 +97,15 @@ public final class ForumFragment extends BaseRecyclerViewFragment<ForumGroupsWra
     }
 
     @Override
-    Observable<ForumGroupsWrapper> getSourceObservable() {
+    Observable<BaseWrapper<ForumGroups>> getSourceObservable() {
         return mS1Service.getForumGroupsWrapper();
     }
 
     @Override
-    void onNext(ForumGroupsWrapper data) {
+    void onNext(BaseWrapper<ForumGroups> data) {
         super.onNext(data);
 
-        mForumGroups = data.getForumGroups();
+        mForumGroups = data.getData();
         // host activity would call #onToolbarDropDownItemSelected(int) after
         mToolbarCallback.setupToolbarDropDown(mForumGroups.getForumGroupNameList());
     }

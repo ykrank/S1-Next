@@ -32,7 +32,7 @@ public class ApiFlatTransformer {
         String authenticityToken = mUser.getAuthenticityToken();
         if (TextUtils.isEmpty(authenticityToken)) {
             return mS1Service.refreshAuthenticityToken().flatMap(resultWrapper -> {
-                Account account = resultWrapper.getAccount();
+                Account account = resultWrapper.getData();
                 // return the ResultWrapper if we cannot get the authenticity token
                 // (if account has expired or network error)
                 if (TextUtils.isEmpty(account.getAuthenticityToken())) {
