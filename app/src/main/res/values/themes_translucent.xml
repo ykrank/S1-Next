@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Translucent.AfternoonTea" parent="Base.Translucent.AfternoonTea" />
+
+    <style name="Translucent.Light" parent="Base.Translucent.Light" />
+
+    <style name="Translucent.Amber" parent="Base.Translucent.Amber" />
+
+    <style name="Translucent.Green" parent="Base.Translucent.Green" />
+
+    <style name="Translucent.LightBlue" parent="Base.Translucent.LightBlue" />
+
+    <style name="Translucent.Purple" parent="Base.Translucent.Purple" />
+
+    <style name="Translucent.Dark" parent="Base.Translucent.Dark" />
+
+    <style name="Translucent.Dark.NightMode" parent="Base.Translucent.Dark.NightMode" />
+
+    <style name="Translucent.Dark.NightMode.Amoled" parent="Base.Translucent.Dark.NightMode.Amoled" />
+
+    <style name="Theme.Translucent.Light" parent="Base.Theme.Translucent.Light" />
+
+    <style name="Theme.Translucent.Dark" parent="Base.Theme.Translucent.Dark" />
+
+    <style name="Theme.Gallery" parent="Base.Theme.Gallery" />
+
+    <style name="Base.Translucent.AfternoonTea" parent="Base.Theme.Light.AfternoonTea">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/SearchWindowAnimations</item>
+    </style>
+
+    <style name="Base.Translucent.Light" parent="Theme.Light">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/SearchWindowAnimations</item>
+    </style>
+
+    <style name="Base.Translucent.Amber" parent="Base.Theme.Light.Inverse.Amber">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/SearchWindowAnimations</item>
+    </style>
+
+    <style name="Base.Translucent.Green" parent="Base.Theme.Light.Inverse.Green">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/SearchWindowAnimations</item>
+    </style>
+
+    <style name="Base.Translucent.LightBlue" parent="Base.Theme.Light.Inverse.LightBlue">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/SearchWindowAnimations</item>
+    </style>
+
+    <style name="Base.Translucent.Purple" parent="Base.Theme.Light.Inverse.Purple">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/SearchWindowAnimations</item>
+    </style>
+
+    <style name="Base.Translucent.Dark" parent="Theme.Dark">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/SearchWindowAnimations</item>
+    </style>
+
+    <style name="Base.Translucent.Dark.NightMode" parent="Theme.Dark.NightMode">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/SearchWindowAnimations</item>
+    </style>
+
+    <style name="Base.Translucent.Dark.NightMode.Amoled" parent="Theme.Dark.NightMode.Amoled">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/SearchWindowAnimations</item>
+    </style>
+
+    <style name="Base.Theme.Translucent.Light" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- from Theme.Translucent -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+
+    <style name="Base.Theme.Translucent.Dark" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+
+    <style name="Base.Theme.Gallery" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="iconClose">@drawable/ic_close_white_24dp</item>
+    </style>
+</resources>

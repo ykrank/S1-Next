@@ -129,8 +129,7 @@
 
         <activity
             android:name=".view.activity.SearchActivity"
-            android:launchMode="singleTop"
-            android:theme="@style/Translucent.AfternoonTea">
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -139,7 +138,13 @@
         <activity
             android:name=".view.activity.NoteActivity"
             android:label="@string/title_note"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".view.activity.UserHomeActivity"
+            android:label="@string/title_user_home"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/Translucent.AfternoonTea" />
 
         <activity
             android:name=".view.activity.OpenSourceLicensesActivity"

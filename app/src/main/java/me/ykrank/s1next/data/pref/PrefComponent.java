@@ -6,6 +6,7 @@ import me.ykrank.s1next.view.activity.BaseActivity;
 import me.ykrank.s1next.view.activity.ForumActivity;
 import me.ykrank.s1next.view.activity.PostListGatewayActivity;
 import me.ykrank.s1next.view.activity.SearchActivity;
+import me.ykrank.s1next.view.activity.UserHomeActivity;
 import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate;
 import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment;
@@ -61,4 +62,6 @@ public interface PrefComponent {
     void inject(ReplyFragment fragment);
 
     void inject(NewThreadFragment fragment);
+
+    void inject(UserHomeActivity userHomeActivity);
 }

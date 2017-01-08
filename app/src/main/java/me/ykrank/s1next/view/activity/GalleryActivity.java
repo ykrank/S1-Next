@@ -14,23 +14,18 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresPermission;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.WindowInsetsCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
-
-import java.lang.reflect.Method;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.databinding.ActivityGalleryBinding;
 import me.ykrank.s1next.util.IntentUtil;
+import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.view.internal.ToolbarDelegate;
 import me.ykrank.s1next.viewmodel.ImageViewModel;
 import me.ykrank.s1next.widget.PhotoView;
@@ -54,6 +49,7 @@ public final class GalleryActivity extends OriginActivity {
     private String mImageThumbUrl;
 
     private PhotoView mPhotoView;
+    private ActivityGalleryBinding binding;
 
     private DataTrackAgent trackAgent;
 
@@ -90,38 +86,15 @@ public final class GalleryActivity extends OriginActivity {
     protected void onCreate(Bundle savedInstanceState) {
         trackAgent = App.get().getTrackAgent();
         super.onCreate(savedInstanceState);
-        ActivityGalleryBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_gallery);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_gallery);
         mPhotoView = binding.photoView;
 
         ToolbarDelegate toolbarDelegate = new ToolbarDelegate(this, binding.toolbar);
         setTitle(null);
         toolbarDelegate.setupNavCrossIcon();
 
-        // set Toolbar's top margin because we use `android:windowTranslucentStatus` in this Activity
-        // we only use translucent status if API >= 21
-        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar, (v, insets) -> {
-            ((ViewGroup.MarginLayoutParams) v.getLayoutParams()).topMargin =
-                    insets.getSystemWindowInsetTop();
-
-            // see http://stackoverflow.com/q/31492040
-            try {
-                // see CoordinatorLayout#setWindowInsets(WindowInsetsCompat)
-                // add CoordinatorLayout's default View.OnApplyWindowInsetsListener implementation
-                Method method = CoordinatorLayout.class.getDeclaredMethod("setWindowInsets",
-                        WindowInsetsCompat.class);
-                method.setAccessible(true);
-                // use 0 px top inset because we want to have translucent status bar
-                WindowInsetsCompat insetsWithoutZeroTop = insets.replaceSystemWindowInsets(
-                        insets.getSystemWindowInsetLeft(), 0, insets.getSystemWindowInsetRight(),
-                        insets.getSystemWindowInsetBottom());
-                method.invoke(binding.coordinatorLayout, insetsWithoutZeroTop);
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to invoke CoordinatorLayout#setWindowInsets(" +
-                        "WindowInsetsCompat).", e);
-            }
-
-            return insets.consumeSystemWindowInsets();
-        });
+        ViewUtil.marginTranslucentToolbar(binding.toolbar);
+        //TODO http://stackoverflow.com/questions/31492040/snackbar-and-fitssystemwindow
 
         mImageUrl = getIntent().getStringExtra(ARG_IMAGE_URL);
         mImageThumbUrl = getIntent().getStringExtra(ARG_IMAGE_THUMB_URL);

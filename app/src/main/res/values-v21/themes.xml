@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Gallery" parent="Base.Theme.Gallery.V21" />
-
-    <style name="Base.Theme.Gallery.V21" parent="Base.Theme.Gallery">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:windowContentTransitions">true</item>
-    </style>
-
-    <style name="Base.Theme.Light" parent="Origin.Theme.Light" >
+    <style name="Base.Theme.Light" parent="Origin.Theme.Light">
         <item name="android:navigationBarColor">?android:attr/colorPrimaryDark</item>
     </style>
 
-    <style name="Base.Theme.Dark" parent="Origin.Theme.Dark" >
+    <style name="Base.Theme.Dark" parent="Origin.Theme.Dark">
         <item name="android:navigationBarColor">?android:attr/colorPrimaryDark</item>
     </style>
 </resources>

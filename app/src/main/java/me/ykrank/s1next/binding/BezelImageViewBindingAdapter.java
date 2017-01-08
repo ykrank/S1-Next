@@ -21,12 +21,11 @@ import me.ykrank.s1next.data.event.BlackListAddEvent;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.util.ActivityUtils;
 import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.view.activity.GalleryActivity;
+import me.ykrank.s1next.view.activity.UserHomeActivity;
 import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment;
 import me.ykrank.s1next.widget.BezelImageView;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
-import me.ykrank.s1next.widget.glide.OriginalKey;
 import me.ykrank.s1next.widget.track.event.BlackListTrackEvent;
 
 public final class BezelImageViewBindingAdapter {
@@ -91,10 +90,11 @@ public final class BezelImageViewBindingAdapter {
             //点击显示头像大图
             //同时刷新错误头像的列表
             bezelImageView.setOnClickListener(v -> {
-                String bigAvatarUrl = Api.getAvatarBigUrl(post.getAuthorId());
-                AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(downloadPreferencesManager, url));
-                AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(downloadPreferencesManager, bigAvatarUrl));
-                GalleryActivity.startGalleryActivity(v.getContext(), bigAvatarUrl);
+//                String bigAvatarUrl = Api.getAvatarBigUrl(post.getAuthorId());
+//                AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(downloadPreferencesManager, url));
+//                AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(downloadPreferencesManager, bigAvatarUrl));
+//                GalleryActivity.startGalleryActivity(v.getContext(), bigAvatarUrl);
+                UserHomeActivity.start(v.getContext(), post.getAuthorId());
             });
             //长按显示抹布菜单
             bezelImageView.setOnLongClickListener((View v) -> {

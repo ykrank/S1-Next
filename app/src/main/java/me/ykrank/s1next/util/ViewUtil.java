@@ -2,9 +2,12 @@ package me.ykrank.s1next.util;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.ColorInt;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
@@ -78,4 +81,15 @@ public final class ViewUtil {
         });
     }
 
+    /**
+     * set Toolbar's top margin because we use `android:windowTranslucentStatus` in this Activity
+     * we only use translucent status if API >= 21
+     */
+    public static void marginTranslucentToolbar(Toolbar toolbar) {
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar, (v, insets) -> {
+            ((ViewGroup.MarginLayoutParams) v.getLayoutParams()).topMargin =
+                    insets.getSystemWindowInsetTop();
+            return insets.consumeSystemWindowInsets();
+        });
+    }
 }

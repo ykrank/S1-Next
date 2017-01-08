@@ -130,11 +130,6 @@ public class SearchActivity extends BaseActivity {
     }
 
     @Override
-    public boolean isTranslucent() {
-        return true;
-    }
-
-    @Override
     protected void onDestroy() {
         RxJavaUtil.unsubscribeIfNotNull(mSubscription);
         super.onDestroy();

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Translucent.AfternoonTea" parent="Base.Translucent.AfternoonTea.V19" />
+
+    <style name="Translucent.Light" parent="Base.Translucent.Light.V19" />
+
+    <style name="Translucent.Amber" parent="Base.Translucent.Amber.V19" />
+
+    <style name="Translucent.Green" parent="Base.Translucent.Green.V19" />
+
+    <style name="Translucent.LightBlue" parent="Base.Translucent.LightBlue.V19" />
+
+    <style name="Translucent.Purple" parent="Base.Translucent.Purple.V19" />
+
+    <style name="Translucent.Dark" parent="Base.Translucent.Dark.V19" />
+
+    <style name="Translucent.Dark.NightMode" parent="Base.Translucent.Dark.NightMode.V19" />
+
+    <style name="Translucent.Dark.NightMode.Amoled" parent="Base.Translucent.Dark.NightMode.Amoled.V19" />
+
+    <style name="Theme.Translucent.Light" parent="Base.Theme.Translucent.Light.V19" />
+
+    <style name="Theme.Translucent.Dark" parent="Base.Theme.Translucent.Dark.V19" />
+
+    <style name="Theme.Gallery" parent="Base.Theme.Gallery.V19" />
+
+    <style name="Base.Translucent.AfternoonTea.V19" parent="Base.Translucent.AfternoonTea">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="Base.Translucent.Light.V19" parent="Base.Translucent.Light">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="Base.Translucent.Amber.V19" parent="Base.Translucent.Amber">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="Base.Translucent.Green.V19" parent="Base.Translucent.Green">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="Base.Translucent.LightBlue.V19" parent="Base.Translucent.LightBlue">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="Base.Translucent.Purple.V19" parent="Base.Translucent.Purple">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="Base.Translucent.Dark.V19" parent="Base.Translucent.Dark">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="Base.Translucent.Dark.NightMode.V19" parent="Base.Translucent.Dark.NightMode">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="Base.Translucent.Dark.NightMode.Amoled.V19" parent="Base.Translucent.Dark.NightMode.Amoled">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="Base.Theme.Translucent.Light.V19" parent="Base.Theme.Translucent.Light">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="Base.Theme.Translucent.Dark.V19" parent="Base.Theme.Translucent.Dark">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="Base.Theme.Gallery.V19" parent="Base.Theme.Gallery">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+</resources>

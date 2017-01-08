@@ -171,4 +171,5 @@
     <string name="title_note">提醒</string>
     <string name="notes">提醒</string>
     <string name="menu_random_image">随机图</string>
+    <string name="title_user_home">个人空间</string>
 </resources>

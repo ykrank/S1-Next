@@ -8,4 +8,6 @@
     <integer name="ime_action_id">77</integer>
 
     <integer name="rapid_animation">120</integer>
+
+    <integer name="scrim_animation_duration">300</integer>
 </resources>
