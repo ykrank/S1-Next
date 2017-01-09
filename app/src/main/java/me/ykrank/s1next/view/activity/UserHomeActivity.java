@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.view.View;
 
 import javax.inject.Inject;
 
@@ -11,15 +13,19 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.databinding.ActivityHomeBinding;
+import me.ykrank.s1next.util.AnimUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
-import me.ykrank.s1next.util.ViewUtil;
+import me.ykrank.s1next.widget.AppBarOffsetChangedListener;
 
 /**
  * Created by ykrank on 2017/1/8.
  */
 
 public class UserHomeActivity extends BaseActivity {
+
+    private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.71f;
+    private static final int TITLE_ANIMATIONS_DURATION = 200;
 
     private static final String ARG_UID = "uid";
 
@@ -44,9 +50,23 @@ public class UserHomeActivity extends BaseActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
 
-        ViewUtil.marginTranslucentToolbar(binding.toolbar);
+        binding.appBar.addOnOffsetChangedListener(new AppBarOffsetChangedListener() {
+            @Override
+            public void onStateChanged(AppBarLayout appBarLayout, @Direction int direction, int verticalOffset) {
+                int maxScroll = appBarLayout.getTotalScrollRange();
+                float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
+                if (percentage == PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
+                    if (direction == UP) {
+                        AnimUtils.startAlphaAnimation(binding.toolbarTitle, TITLE_ANIMATIONS_DURATION, View.VISIBLE);
+                    } else {
+                        AnimUtils.startAlphaAnimation(binding.toolbarTitle, TITLE_ANIMATIONS_DURATION, View.INVISIBLE);
+                    }
+                }
+                L.d("direction:" + direction + ", verticalOffset:" + verticalOffset + ", percentage:" + percentage);
+            }
+        });
 
-        init();
+        loadData();
     }
 
     @Override
@@ -54,7 +74,7 @@ public class UserHomeActivity extends BaseActivity {
         return true;
     }
 
-    private void init() {
+    private void loadData() {
         s1Service.getProfile(uid)
                 .compose(RxJavaUtil.iOTransformer())
                 .subscribe(wrapper -> {
