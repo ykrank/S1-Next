@@ -142,7 +142,7 @@
 
         <activity
             android:name=".view.activity.UserHomeActivity"
-            android:label="@string/title_user_home"
+            android:label=""
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/Translucent.AfternoonTea" />
 

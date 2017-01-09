@@ -52,17 +52,18 @@ public class UserHomeActivity extends BaseActivity {
 
         binding.appBar.addOnOffsetChangedListener(new AppBarOffsetChangedListener() {
             @Override
-            public void onStateChanged(AppBarLayout appBarLayout, @Direction int direction, int verticalOffset) {
+            public void onStateChanged(AppBarLayout appBarLayout, int oldVerticalOffset, int verticalOffset) {
                 int maxScroll = appBarLayout.getTotalScrollRange();
+                float oldPercentage = (float) Math.abs(oldVerticalOffset) / (float) maxScroll;
                 float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
-                if (percentage == PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
-                    if (direction == UP) {
-                        AnimUtils.startAlphaAnimation(binding.toolbarTitle, TITLE_ANIMATIONS_DURATION, View.VISIBLE);
-                    } else {
-                        AnimUtils.startAlphaAnimation(binding.toolbarTitle, TITLE_ANIMATIONS_DURATION, View.INVISIBLE);
-                    }
+                if (oldPercentage < PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR && percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
+                    //Move up
+                    AnimUtils.startAlphaAnimation(binding.toolbarTitle, TITLE_ANIMATIONS_DURATION, View.VISIBLE);
+                } else if (oldPercentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR && percentage < PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
+                    //Move down
+                    AnimUtils.startAlphaAnimation(binding.toolbarTitle, TITLE_ANIMATIONS_DURATION, View.INVISIBLE);
                 }
-                L.d("direction:" + direction + ", verticalOffset:" + verticalOffset + ", percentage:" + percentage);
+                L.d("verticalOffset:" + verticalOffset + ", percentage:" + percentage);
             }
         });
 
