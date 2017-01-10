@@ -7,18 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.DrawableRequestBuilder;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-
 import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Post;
-import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.databinding.ItemPostBinding;
 import me.ykrank.s1next.viewmodel.PostViewModel;
@@ -27,25 +20,15 @@ import me.ykrank.s1next.widget.span.PostMovementMethod;
 
 public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAdapterDelegate.ItemViewBindingHolder> {
 
-    private final DrawableRequestBuilder<String> mAvatarRequestBuilder;
     @Inject
     EventBus mEventBus;
     @Inject
     GeneralPreferencesManager mGeneralPreferencesManager;
-    @Inject
-    DownloadPreferencesManager mDownloadPreferencesManager;
 
     public PostAdapterDelegate(Activity activity) {
         super(activity);
 
         App.getPrefComponent(activity).inject(this);
-        // loading avatars is prior to images in replies
-        mAvatarRequestBuilder = Glide.with(activity)
-                .from(String.class)
-                .error(R.drawable.ic_avatar_placeholder)
-                .priority(Priority.HIGH)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .transform(new CenterCrop(activity));
     }
 
     private static void setTextSelectable(ItemPostBinding binding, boolean selectable) {
@@ -67,8 +50,6 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
         ItemPostBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_post, parent, false);
         binding.setEventBus(mEventBus);
-        binding.setDownloadPreferencesManager(mDownloadPreferencesManager);
-        binding.setDrawableRequestBuilder(mAvatarRequestBuilder);
         binding.setPostViewModel(new PostViewModel());
 
         //If setTextIsSelectable, then should reset movement

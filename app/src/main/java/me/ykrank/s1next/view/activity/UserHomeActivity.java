@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.S1Service;
+import me.ykrank.s1next.data.api.model.Profile;
 import me.ykrank.s1next.databinding.ActivityHomeBinding;
 import me.ykrank.s1next.util.AnimUtils;
 import me.ykrank.s1next.util.L;
@@ -25,7 +26,7 @@ import me.ykrank.s1next.widget.AppBarOffsetChangedListener;
 public class UserHomeActivity extends BaseActivity {
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.71f;
-    private static final int TITLE_ANIMATIONS_DURATION = 200;
+    private static final int TITLE_ANIMATIONS_DURATION = 300;
 
     private static final String ARG_UID = "uid";
 
@@ -49,6 +50,10 @@ public class UserHomeActivity extends BaseActivity {
         uid = getIntent().getStringExtra(ARG_UID);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
+        binding.setDownloadPreferencesManager(mDownloadPreferencesManager);
+        Profile profile = new Profile();
+        profile.setUid(uid);
+        binding.setData(profile);
 
         binding.appBar.addOnOffsetChangedListener(new AppBarOffsetChangedListener() {
             @Override
@@ -63,7 +68,6 @@ public class UserHomeActivity extends BaseActivity {
                     //Move down
                     AnimUtils.startAlphaAnimation(binding.toolbarTitle, TITLE_ANIMATIONS_DURATION, View.INVISIBLE);
                 }
-                L.d("verticalOffset:" + verticalOffset + ", percentage:" + percentage);
             }
         });
 

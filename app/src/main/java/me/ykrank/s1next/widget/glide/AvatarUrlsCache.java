@@ -139,11 +139,14 @@ public enum AvatarUrlsCache {
 
     public static void clearUserAvatarCache(String uid) {
         //clear avatar img error cache
-        String url = Api.getAvatarMediumUrl(uid);
+        String smallAvatarUrl = Api.getAvatarSmallUrl(uid);
+        String mediumAvatarUrl = Api.getAvatarMediumUrl(uid);
+        String bigAvatarUrl = Api.getAvatarBigUrl(uid);
         DownloadPreferencesManager manager = App.getPrefComponent(App.get())
                 .getDownloadPreferencesManager();
-        Key key = OriginalKey.Builder.getInstance().obtainAvatarKey(manager, url);
-        AvatarUrlsCache.remove(key);
+        AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(manager, smallAvatarUrl));
+        AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(manager, mediumAvatarUrl));
+        AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(manager, bigAvatarUrl));
     }
 
     /**

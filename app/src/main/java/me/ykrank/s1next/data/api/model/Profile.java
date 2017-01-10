@@ -15,6 +15,10 @@ public final class Profile extends Account {
     private String uid;
     private String groupTitle;
 
+    public Profile() {
+
+    }
+
     @JsonCreator
     public Profile(@JsonProperty("extcredits") JsonNode extCredits, @JsonProperty("space") JsonNode space) {
         this.name = space.get("username").asText();

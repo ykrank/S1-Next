@@ -2,31 +2,28 @@ package me.ykrank.s1next.binding;
 
 import android.content.Context;
 import android.databinding.BindingAdapter;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.PopupMenu;
-import android.view.MenuItem;
-import android.view.View;
+import android.text.TextUtils;
+import android.widget.ImageView;
 
-import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.Api;
-import me.ykrank.s1next.data.api.model.Post;
-import me.ykrank.s1next.data.event.BlackListAddEvent;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.util.ActivityUtils;
 import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.view.activity.UserHomeActivity;
-import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment;
 import me.ykrank.s1next.widget.BezelImageView;
-import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
-import me.ykrank.s1next.widget.track.event.BlackListTrackEvent;
 
 public final class BezelImageViewBindingAdapter {
 
@@ -55,96 +52,89 @@ public final class BezelImageViewBindingAdapter {
                     .load(Api.getAvatarMediumUrl(user.getUid()))
                     .error(R.drawable.ic_drawer_avatar_placeholder)
                     .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
-                    .transform(new CenterCrop(Glide.get(context).getBitmapPool()))
+                    .centerCrop()
                     .into(bezelImageView);
         } else {
             // setup default avatar
             Glide.with(context)
                     .load(R.drawable.ic_drawer_avatar_placeholder)
                     .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
-                    .transform(new CenterCrop(Glide.get(context).getBitmapPool()))
+                    .centerCrop()
                     .into(bezelImageView);
-        }
-    }
-
-    @BindingAdapter({"eventBus", "avatarDrawableRequestBuilder", "downloadPreferencesManager", "post"})
-    public static void loadAuthorAvatar(BezelImageView bezelImageView, EventBus eventBus,
-                                        DrawableRequestBuilder<String> avatarDrawableRequestBuilder,
-                                        DownloadPreferencesManager downloadPreferencesManager,
-                                        Post post) {
-        // whether need to download avatars
-        // depends on settings and Wi-Fi status
-        if (downloadPreferencesManager.isAvatarsDownload()) {
-            bezelImageView.setVisibility(View.VISIBLE);
-
-            String url = downloadPreferencesManager.isHighResolutionAvatarsDownload()
-                    ? Api.getAvatarMediumUrl(post.getAuthorId())
-                    : Api.getAvatarSmallUrl(post.getAuthorId());
-            // show user's avatar
-            avatarDrawableRequestBuilder.signature(
-                    downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
-                    .load(url)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(bezelImageView);
-
-            //点击显示头像大图
-            //同时刷新错误头像的列表
-            bezelImageView.setOnClickListener(v -> {
-//                String bigAvatarUrl = Api.getAvatarBigUrl(post.getAuthorId());
-//                AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(downloadPreferencesManager, url));
-//                AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(downloadPreferencesManager, bigAvatarUrl));
-//                GalleryActivity.startGalleryActivity(v.getContext(), bigAvatarUrl);
-                UserHomeActivity.start(v.getContext(), post.getAuthorId());
-            });
-            //长按显示抹布菜单
-            bezelImageView.setOnLongClickListener((View v) -> {
-                PopupMenu popup = new PopupMenu(bezelImageView.getContext(), v);
-                popup.setOnMenuItemClickListener((MenuItem menuitem) -> {
-                    switch (menuitem.getItemId()) {
-                        case R.id.menu_popup_blacklist:
-                            if (menuitem.getTitle().equals(bezelImageView.getContext().getString(R.string.menu_blacklist_remove))) {
-                                App.get().getTrackAgent().post(new BlackListTrackEvent(false, post.getAuthorId(), post.getAuthorName()));
-                                eventBus.post(new BlackListAddEvent(Integer.valueOf(post.getAuthorId()),
-                                        post.getAuthorName(), null, false));
-                            } else {
-                                Context context = ActivityUtils.getBaseContext(v.getContext());
-                                if (context instanceof FragmentActivity) {
-                                    BlackListRemarkDialogFragment.newInstance(Integer.valueOf(post.getAuthorId()),
-                                            post.getAuthorName()).show(((FragmentActivity) context).getSupportFragmentManager(),
-                                            BlackListRemarkDialogFragment.TAG);
-                                } else {
-                                    L.report(new IllegalStateException("抹布时头像Context不为FragmentActivity" + context));
-                                }
-                            }
-                            return true;
-                        default:
-                            return false;
-                    }
-                });
-                popup.inflate(R.menu.popup_blacklist);
-                if (post.isHide()) {
-                    popup.getMenu().findItem(R.id.menu_popup_blacklist).setTitle(R.string.menu_blacklist_remove);
-                }
-                popup.show();
-                return true;
-            });
-        } else {
-            bezelImageView.setVisibility(View.GONE);
         }
     }
 
     @BindingAdapter("uid")
-    public static void loadPmAvatar(BezelImageView bezelImageView, String uid) {
-        Context context = bezelImageView.getContext();
-        DownloadPreferencesManager downloadPreferencesManager = App.getPrefComponent(context)
+    public static void loadAvatar(BezelImageView bezelImageView, String uid) {
+        DownloadPreferencesManager downloadPreferencesManager = App.getPrefComponent(bezelImageView.getContext())
                 .getDownloadPreferencesManager();
-        Glide.with(context)
-                .load(Api.getAvatarMediumUrl(uid))
-                .error(R.drawable.ic_drawer_avatar_placeholder)
-                .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
-                .transform(new CenterCrop(Glide.get(context).getBitmapPool()))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(bezelImageView);
+        loadAvatar(bezelImageView, downloadPreferencesManager, uid, false);
+    }
 
+    @BindingAdapter({"downloadPreferencesManager", "uid", "big"})
+    public static void loadAvatar(BezelImageView bezelImageView,
+                                  DownloadPreferencesManager downloadPreferencesManager,
+                                  String uid, boolean big) {
+        if (TextUtils.isEmpty(uid)) {
+            loadPlaceHolderAvatar(bezelImageView);
+        } else {
+            AvatarUrlsCache.clearUserAvatarCache(uid);
+            loadRoundAvatar(bezelImageView, downloadPreferencesManager, uid, big);
+        }
+    }
+
+    private static void loadPlaceHolderAvatar(ImageView imageView) {
+        Context context = imageView.getContext();
+        Glide.with(context)
+                .load(R.drawable.ic_drawer_avatar_placeholder)
+                .centerCrop()
+                .into(imageView);
+    }
+
+    private static void loadRoundAvatar(ImageView imageView, DownloadPreferencesManager downloadPreferencesManager, String uid, boolean isBig) {
+        String smallAvatarUrl = Api.getAvatarSmallUrl(uid);
+        String mediumAvatarUrl = Api.getAvatarMediumUrl(uid);
+        List<String> urls = new LinkedList<>();
+        if (isBig) {
+            //Load big avatar, then load medium and small avatar if failed
+            String bigAvatarUrl = Api.getAvatarBigUrl(uid);
+            urls.add(bigAvatarUrl);
+            urls.add(mediumAvatarUrl);
+        } else if (downloadPreferencesManager.isHighResolutionAvatarsDownload()) {
+            //if load high resolution, then load medium avatar a high priority 
+            urls.add(mediumAvatarUrl);
+        }
+        urls.add(smallAvatarUrl);
+        loadRoundAvatar(imageView, downloadPreferencesManager, urls);
+    }
+
+    private static void loadRoundAvatar(ImageView imageView, DownloadPreferencesManager downloadPreferencesManager, List<String> urls) {
+        if (urls == null || urls.isEmpty()) {
+            loadPlaceHolderAvatar(imageView);
+            return;
+        }
+        Context context = imageView.getContext();
+        Glide.with(context)
+                .load(urls.get(0))
+                .placeholder(R.drawable.ic_drawer_avatar_placeholder)
+                .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH)
+                .centerCrop()
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        urls.remove(0);
+                        loadRoundAvatar(imageView, downloadPreferencesManager, urls);
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        L.d("Load avatar:" + model);
+                        return false;
+                    }
+                })
+                .into(imageView);
     }
 }
