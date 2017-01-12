@@ -14,6 +14,12 @@ public final class Profile extends Account {
     private String name;
     private String uid;
     private String groupTitle;
+    private int friends;
+    private int threads;
+    private int replies;
+    private String signHtml;
+    private int onlineHour;
+    private String regDate;
 
     public Profile() {
 
@@ -24,6 +30,13 @@ public final class Profile extends Account {
         this.name = space.get("username").asText();
         this.uid = space.get("uid").asText();
         this.groupTitle = space.get("group").get("grouptitle").asText();
+        this.friends = space.get("friends").asInt();
+        int posts = space.get("posts").asInt();
+        this.threads = space.get("threads").asInt();
+        this.replies = posts - threads;
+        this.signHtml = space.get("sightml").asText();
+        this.onlineHour = space.get("oltime").asInt();
+        this.regDate = space.get("regdate").asText();
     }
 
     public String getName() {
@@ -50,5 +63,53 @@ public final class Profile extends Account {
 
     public void setGroupTitle(String groupTitle) {
         this.groupTitle = groupTitle;
+    }
+
+    public int getFriends() {
+        return friends;
+    }
+
+    public void setFriends(int friends) {
+        this.friends = friends;
+    }
+
+    public int getThreads() {
+        return threads;
+    }
+
+    public void setThreads(int threads) {
+        this.threads = threads;
+    }
+
+    public int getReplies() {
+        return replies;
+    }
+
+    public void setReplies(int replies) {
+        this.replies = replies;
+    }
+
+    public String getSignHtml() {
+        return signHtml;
+    }
+
+    public void setSignHtml(String signHtml) {
+        this.signHtml = signHtml;
+    }
+
+    public int getOnlineHour() {
+        return onlineHour;
+    }
+
+    public void setOnlineHour(int onlineHour) {
+        this.onlineHour = onlineHour;
+    }
+
+    public String getRegDate() {
+        return regDate;
+    }
+
+    public void setRegDate(String regDate) {
+        this.regDate = regDate;
     }
 }

@@ -25,6 +25,8 @@
 
     <attr name="divisionBackground" format="color|reference" />
 
+    <attr name="textShadowColor" format="color" />
+
     <declare-styleable name="BezelImageView">
         <attr name="maskDrawable" format="reference" />
         <attr name="borderDrawable" format="reference" />

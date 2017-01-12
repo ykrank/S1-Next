@@ -17,7 +17,6 @@
 package me.ykrank.s1next.widget.span;
 
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.Html;
@@ -53,6 +52,7 @@ class HtmlTagHandlerCompat implements Html.TagHandler {
 
     private XMLReader mReader;
     private SpannableStringBuilder mSpannableStringBuilder;
+    @Nullable
     private Html.TagHandler mTagHandler;
     private int mFlags;
     private boolean error = false;
@@ -109,7 +109,7 @@ class HtmlTagHandlerCompat implements Html.TagHandler {
         return sTextDecorationPattern;
     }
 
-    public HtmlTagHandlerCompat(@NonNull Html.TagHandler tagHandler, int flags) {
+    public HtmlTagHandlerCompat(@Nullable Html.TagHandler tagHandler, int flags) {
         mTagHandler = tagHandler;
         mFlags = flags;
     }
@@ -129,7 +129,9 @@ class HtmlTagHandlerCompat implements Html.TagHandler {
             }
         }
         if (error) {
-            mTagHandler.handleTag(opening, tag, output, xmlReader);
+            if (mTagHandler != null) {
+                mTagHandler.handleTag(opening, tag, output, xmlReader);
+            }
         } else {
             handleEndTag(tag);
         }

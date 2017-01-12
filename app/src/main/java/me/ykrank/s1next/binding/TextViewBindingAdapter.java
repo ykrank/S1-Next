@@ -160,36 +160,29 @@ public final class TextViewBindingAdapter {
             ViewUtil.concatWithTwoSpacesForRtlSupport(textView, text);
             return;
         }
-        if (TextUtils.isEmpty(post.getReply())) {
+        setHtmlWithImage(textView, post.getReply());
+    }
+
+    @BindingAdapter({"imgHtml"})
+    public static void setHtmlWithImage(TextView textView, @Nullable String html) {
+        if (TextUtils.isEmpty(html)) {
             textView.setText(null);
         } else {
             // use GlideImageGetter to show images in TextView
             //noinspection deprecation
-            textView.setText(HtmlCompat.fromHtml(post.getReply(),
-                    HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST | HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM,
+            textView.setText(HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST | HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM,
                     GlideImageGetter.get(textView), new TagHandler()));
         }
     }
 
-    @BindingAdapter({"search"})
-    public static void setSearch(TextView textView, @Nullable String search) {
-        if (TextUtils.isEmpty(search)) {
+    @BindingAdapter({"html"})
+    public static void setHtml(TextView textView, @Nullable String html) {
+        if (TextUtils.isEmpty(html)) {
             textView.setText(null);
         } else {
             // use GlideImageGetter to show images in TextView
             //noinspection deprecation
-            textView.setText(Html.fromHtml(search, GlideImageGetter.get(textView), new TagHandler()));
-        }
-    }
-
-    @BindingAdapter({"pmMessage"})
-    public static void setPm(TextView textView, @Nullable String pmMessage) {
-        if (TextUtils.isEmpty(pmMessage)) {
-            textView.setText(null);
-        } else {
-            // use GlideImageGetter to show images in TextView
-            //noinspection deprecation
-            textView.setText(Html.fromHtml(pmMessage, GlideImageGetter.get(textView), new TagHandler()));
+            textView.setText(HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST | HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM));
         }
     }
 

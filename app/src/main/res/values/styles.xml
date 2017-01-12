@@ -44,6 +44,13 @@
         <item name="android:textSize">@dimen/dense_text_size_small</item>
     </style>
 
+    <style name="TextAppearance.AppCompat.Shadow" parent="Base.TextAppearance.AppCompat">
+        <item name="android:shadowColor">?attr/textShadowColor</item>
+        <item name="android:shadowDx">1.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">10.0</item>
+    </style>
+
     <style name="Animation.Recreate" parent="android:Animation">
         <item name="android:windowExitAnimation">@anim/activity_exit</item>
     </style>

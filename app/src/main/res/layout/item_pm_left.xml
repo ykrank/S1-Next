@@ -64,7 +64,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_time"
             app:movementMethod="@{PostMovementMethod.instance}"
-            app:pmMessage="@{pmViewModel.pm.message}"
+            app:imgHtml="@{pmViewModel.pm.message}"
             tools:text="content" />
 
     </android.support.constraint.ConstraintLayout>

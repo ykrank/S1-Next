@@ -172,4 +172,11 @@
     <string name="notes">提醒</string>
     <string name="menu_random_image">随机图</string>
     <string name="title_user_home">个人空间</string>
+    <string name="home_label_friends">%1$d\\n好友</string>
+    <string name="home_label_replies">%1$d\\n回帖</string>
+    <string name="home_label_threads">%1$d\\n主题</string>
+    <string name="personal_signature">个人签名</string>
+    <string name="online_time">在线时间</string>
+    <string name="reg_date">注册时间</string>
+    <string name="online_time_content">%1$d 小时</string>
 </resources>

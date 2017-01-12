@@ -34,7 +34,7 @@
             android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textIsSelectable="true"
-            app:search="@{model.search.content}"
+            app:imgHtml="@{model.search.content}"
             app:movementMethod="@{SearchMovementMethod.instance}"
             tools:text="ABC\nkhk"/>
 

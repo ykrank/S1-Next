@@ -89,7 +89,7 @@
 
     <string name="message_thread_link_copy">Thread link copied to clipboard</string>
 
-    <!-- reply -->
+    <!-- replies -->
 
     <!-- Because thread titles are usually Chinese, so this string is Chinese for all locales. -->
     <string name="reply_activity_title_prefix" translatable="false">"回复主题 - "</string>
@@ -99,7 +99,7 @@
     <string name="signature">— from %1$s of &lt;a href=\"https://play.google.com/store/apps/details?id=me.ykrank.s1next\">S1 Next Goose&lt;/a></string>
     <string name="signature_in_reply">— from %1$s of [url=https://play.google.com/store/apps/details?id=me.ykrank.s1next]S1 Next Goose[/url]</string>
     <string name="dialog_progress_message_reply">Replying…</string>
-    <string name="dialog_message_reply_discard_prompt">Do you want to discard this reply?</string>
+    <string name="dialog_message_reply_discard_prompt">Do you want to discard this replies?</string>
     <string name="dialog_message_text_discard">Discard</string>
 
     <!-- emoticon -->
@@ -260,5 +260,12 @@
     <string name="notes">Notes</string>
     <string name="menu_random_image">Random image</string>
     <string name="title_user_home">User Home</string>
+    <string name="home_label_friends">%1$d\\nFriends</string>
+    <string name="home_label_threads">%1$d\\nThreads</string>
+    <string name="home_label_replies">%1$d\\nReplies</string>
+    <string name="personal_signature">Personal signature</string>
+    <string name="online_time">Online time</string>
+    <string name="reg_date">Reg date</string>
+    <string name="online_time_content">%1$d hour</string>
 
 </resources>

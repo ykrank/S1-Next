@@ -2,6 +2,7 @@ package me.ykrank.s1next.widget.span;
 
 import android.graphics.Color;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
 
@@ -100,8 +101,8 @@ public class HtmlCompat {
      * {@linkplain Html#fromHtml(String, int, Html.ImageGetter, Html.TagHandler)}
      */
     @SuppressWarnings("deprecation")
-    public static Spanned fromHtml(String source, int flags, Html.ImageGetter imageGetter,
-                                   Html.TagHandler tagHandler) {
+    public static Spanned fromHtml(String source, int flags, @Nullable Html.ImageGetter imageGetter,
+                                   @Nullable Html.TagHandler tagHandler) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             return Html.fromHtml(source, flags, imageGetter, new HtmlTagHandlerCompat(tagHandler, flags));
         } else {

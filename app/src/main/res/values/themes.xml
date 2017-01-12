@@ -67,6 +67,8 @@
         <item name="chatToBackground">@drawable/chat_to_bg</item>
 
         <item name="divisionBackground">@color/grey_400</item>
+
+        <item name="textShadowColor">@android:color/white</item>
     </style>
 
     <style name="Base.Theme.Light.Inverse">
@@ -143,6 +145,8 @@
         <item name="chatToBackground">@drawable/chat_to_bg_night</item>
 
         <item name="divisionBackground">@color/grey_600</item>
+
+        <item name="textShadowColor">@android:color/black</item>
     </style>
 
     <style name="Base.Theme.Dark.NightMode">
