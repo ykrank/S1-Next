@@ -1,6 +1,7 @@
 package me.ykrank.s1next.data.api;
 
 import android.net.Uri;
+import android.text.TextUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -49,14 +50,23 @@ public final class Api {
     }
 
     public static String getAvatarSmallUrl(String userId) {
+        if (TextUtils.isEmpty(userId)) {
+            return null;
+        }
         return appendAvatarUrlWithUserId(URL_USER_AVATAR_SMALL, userId);
     }
 
     public static String getAvatarMediumUrl(String userId) {
+        if (TextUtils.isEmpty(userId)) {
+            return null;
+        }
         return appendAvatarUrlWithUserId(URL_USER_AVATAR_MEDIUM, userId);
     }
 
     public static String getAvatarBigUrl(String userId) {
+        if (TextUtils.isEmpty(userId)) {
+            return null;
+        }
         return appendAvatarUrlWithUserId(URL_USER_AVATAR_BIG, userId);
     }
 

@@ -36,14 +36,16 @@
                 android:id="@+id/collapsingToolbarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/light_blue_400"
                 android:fitsSystemWindows="true"
+                app:blurUid="@{data.uid}"
                 app:contentScrim="?attr/colorPrimaryDark"
+                app:downloadPreferencesManager="@{downloadPreferencesManager}"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:scrimAnimationDuration="@integer/scrim_animation_duration"
                 app:statusBarScrim="?attr/colorPrimaryDark"
                 app:titleEnabled="false"
-                app:toolbarId="@+id/toolbar">
+                app:toolbarId="@+id/toolbar"
+                tools:background="@color/light_blue_400">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -59,10 +61,10 @@
                         android:layout_marginTop="@dimen/spacing_large"
                         android:contentDescription="@string/avatar_content_desc"
                         android:visibility="@{downloadPreferencesManager.isAvatarsDownload ? View.VISIBLE : View.GONE}"
+                        app:big="@{true}"
                         app:downloadPreferencesManager="@{downloadPreferencesManager}"
                         app:maskDrawable="@drawable/rounded_mask"
                         app:uid="@{data.uid}"
-                        app:big="@{true}"
                         tools:src="@drawable/ic_avatar_placeholder" />
 
                     <RelativeLayout
