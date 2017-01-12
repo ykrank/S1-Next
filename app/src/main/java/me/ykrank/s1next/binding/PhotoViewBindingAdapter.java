@@ -17,7 +17,7 @@ import com.bumptech.glide.request.target.Target;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.util.TransformationUtil;
 import me.ykrank.s1next.widget.PhotoView;
-import me.ykrank.s1next.widget.glide.GlideDrawablePhotoViewTarget;
+import me.ykrank.s1next.widget.glide.viewtarget.GlideDrawablePhotoViewTarget;
 
 public final class PhotoViewBindingAdapter {
 

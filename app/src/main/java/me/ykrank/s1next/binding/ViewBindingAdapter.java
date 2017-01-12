@@ -2,21 +2,23 @@ package me.ykrank.s1next.binding;
 
 import android.content.Context;
 import android.databinding.BindingAdapter;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
-import me.ykrank.s1next.widget.glide.GlideDrawableViewBackgroundTarget;
 import me.ykrank.s1next.widget.glide.transformations.BlurTransformation;
+import me.ykrank.s1next.widget.glide.viewtarget.GlideDrawableViewBackgroundTarget;
+import me.ykrank.s1next.widget.glide.viewtarget.ViewBackgroundTarget;
 import rx.Subscription;
 import rx.functions.Func1;
 
@@ -65,25 +67,35 @@ public final class ViewBindingAdapter {
             return;
         }
         if (!TextUtils.equals(oldBlurUrl, newBlurUrl)) {
+            int radius = 10;
+            if (newManager.isHighResolutionAvatarsDownload()) {
+                radius = 20;
+            }
             Glide.with(context)
                     .load(newBlurUrl)
+                    .asBitmap()
                     .signature(newManager.getAvatarCacheInvalidationIntervalSignature())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .bitmapTransform(new BlurTransformation(context, 15), new CenterCrop(context))
-                    .crossFade()
-                    .listener(new RequestListener<String, GlideDrawable>() {
+                    .transform(new BlurTransformation(context, radius), new CenterCrop(context))
+                    .listener(new RequestListener<String, Bitmap>() {
                         @Override
-                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
                             setBlurBackground(view, oldManager, null, newManager, null);
                             return true;
                         }
 
                         @Override
-                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
                             return false;
                         }
                     })
-                    .into(new GlideDrawableViewBackgroundTarget(view));
+                    .into(new ViewBackgroundTarget<Bitmap>(view) {
+                        @SuppressWarnings("deprecation")
+                        @Override
+                        protected void setResource(Bitmap resource) {
+                            view.setBackgroundDrawable(new BitmapDrawable(resource));
+                        }
+                    });
         }
     }
 }

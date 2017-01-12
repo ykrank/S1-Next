@@ -1,20 +1,19 @@
-package me.ykrank.s1next.widget.glide;
+package me.ykrank.s1next.widget.glide.viewtarget;
 
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SquaringDrawable;
 
-import me.ykrank.s1next.widget.PhotoView;
-
 /**
  * fork from {@linkplain com.bumptech.glide.request.target.GlideDrawableImageViewTarget}
  * <p>
  * A {@link com.bumptech.glide.request.target.Target} that can display an {@link android.graphics.drawable.Drawable} in
- * an {@link me.ykrank.s1next.widget.PhotoView}.
+ * an {@link View}.
  */
-public class GlideDrawablePhotoViewTarget extends PhotoViewTarget<GlideDrawable> {
+public class GlideDrawableViewBackgroundTarget extends ViewBackgroundTarget<GlideDrawable> {
     private static final float SQUARE_RATIO_MARGIN = 0.05f;
     private int maxLoopCount;
     private GlideDrawable resource;
@@ -25,7 +24,7 @@ public class GlideDrawablePhotoViewTarget extends PhotoViewTarget<GlideDrawable>
      *
      * @param view The view to display the drawable in.
      */
-    public GlideDrawablePhotoViewTarget(PhotoView view) {
+    public GlideDrawableViewBackgroundTarget(View view) {
         this(view, GlideDrawable.LOOP_FOREVER);
     }
 
@@ -38,7 +37,7 @@ public class GlideDrawablePhotoViewTarget extends PhotoViewTarget<GlideDrawable>
      *                     indicating how many times they should repeat their animation (if they have one). See
      *                     {@link GlideDrawable#setLoopCount(int)}.
      */
-    public GlideDrawablePhotoViewTarget(PhotoView view, int maxLoopCount) {
+    public GlideDrawableViewBackgroundTarget(View view, int maxLoopCount) {
         super(view);
         this.maxLoopCount = maxLoopCount;
     }
@@ -78,9 +77,10 @@ public class GlideDrawablePhotoViewTarget extends PhotoViewTarget<GlideDrawable>
      *
      * @param resource The {@link android.graphics.drawable.Drawable} to display in the view.
      */
+    @SuppressWarnings("deprecation")
     @Override
     protected void setResource(GlideDrawable resource) {
-        view.bindDrawable(resource);
+        view.setBackgroundDrawable(resource);
     }
 
     @Override
