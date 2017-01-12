@@ -34,8 +34,6 @@ public final class App extends MultiDexApplication {
 
     private RefWatcher refWatcher;
 
-    private DataTrackAgent trackAgent;
-
     public static App get() {
         return sApp;
     }
@@ -53,12 +51,13 @@ public final class App extends MultiDexApplication {
     }
 
     public DataTrackAgent getTrackAgent() {
-        return trackAgent;
+        return mAppComponent.getDataTrackAgent();
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        sApp = this;
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
@@ -80,14 +79,14 @@ public final class App extends MultiDexApplication {
         refWatcher = LeakCanary.install(this);
         Bugsnag.init(this);
 
-        //如果不是主进程，不做多余的初始化
-        if (!ProcessUtil.isMainProcess(this))
-            return;
-
-        sApp = this;
         mAppComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .build();
+        mAppComponent.getDataTrackAgent().init();
+
+        //如果不是主进程，不做多余的初始化
+        if (!ProcessUtil.isMainProcess(this))
+            return;
         mPrefComponent = DaggerPrefComponent.builder()
                 .appComponent(mAppComponent)
                 .prefModule(new PrefModule())
@@ -100,9 +99,6 @@ public final class App extends MultiDexApplication {
         ResourceUtil.setScaledDensity(this, mGeneralPreferencesManager.getFontScale());
 
         ActiveAndroid.initialize(this);
-
-        trackAgent = mAppComponent.getDataTrackAgent();
-        trackAgent.init();
     }
 
     @Override

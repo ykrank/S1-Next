@@ -15,6 +15,7 @@ import me.ykrank.s1next.view.adapter.delegate.FavouriteAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmGroupsAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmLeftAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmRightAdapterDelegate;
+import me.ykrank.s1next.view.dialog.BaseDialogFragment;
 import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
 import me.ykrank.s1next.view.fragment.FavouriteListFragment;
@@ -73,4 +74,6 @@ public interface AppComponent {
     void inject(PostListPagerFragment postListPagerFragment);
 
     void inject(BlackListRemarkDialogFragment blackListRemarkDialogFragment);
+
+    void inject(BaseDialogFragment baseDialogFragment);
 }

@@ -20,6 +20,6 @@ public abstract class BaseDialogFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        trackAgent = App.get().getTrackAgent();
+        App.getAppComponent(getContext()).inject(this);
     }
 }
