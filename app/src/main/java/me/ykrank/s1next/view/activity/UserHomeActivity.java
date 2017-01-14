@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.model.Profile;
 import me.ykrank.s1next.databinding.ActivityHomeBinding;
@@ -29,16 +30,17 @@ public class UserHomeActivity extends BaseActivity {
     private static final int TITLE_ANIMATIONS_DURATION = 300;
 
     private static final String ARG_UID = "uid";
+    private static final String ARG_USERNAME = "username";
 
     @Inject
     S1Service s1Service;
 
     private ActivityHomeBinding binding;
-    private String uid;
 
-    public static void start(Context context, String uid) {
+    public static void start(Context context, String uid, String userName) {
         Intent intent = new Intent(context, UserHomeActivity.class);
         intent.putExtra(ARG_UID, uid);
+        intent.putExtra(ARG_USERNAME, userName);
         context.startActivity(intent);
     }
 
@@ -47,12 +49,14 @@ public class UserHomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         App.getPrefComponent(this).inject(this);
 
-        uid = getIntent().getStringExtra(ARG_UID);
+        String uid = getIntent().getStringExtra(ARG_UID);
+        String name = getIntent().getStringExtra(ARG_USERNAME);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         binding.setDownloadPreferencesManager(mDownloadPreferencesManager);
         Profile profile = new Profile();
-        profile.setUid(uid);
+        profile.setHomeUid(uid);
+        profile.setHomeUsername(name);
         binding.setData(profile);
 
         binding.appBar.addOnOffsetChangedListener(new AppBarOffsetChangedListener() {
@@ -71,6 +75,16 @@ public class UserHomeActivity extends BaseActivity {
             }
         });
 
+        binding.avatar.setOnClickListener(v -> {
+            String bigAvatarUrl = Api.getAvatarBigUrl(uid);
+            GalleryActivity.startGalleryActivity(v.getContext(), bigAvatarUrl);
+        });
+
+        binding.ivNewPm.setOnClickListener(v -> NewPmActivity.startNewPmActivityForResultMessage(this,
+                binding.getData().getHomeUid(), binding.getData().getHomeUsername()));
+
+
+
         loadData();
     }
 
@@ -80,7 +94,7 @@ public class UserHomeActivity extends BaseActivity {
     }
 
     private void loadData() {
-        s1Service.getProfile(uid)
+        s1Service.getProfile(binding.getData().getHomeUid())
                 .compose(RxJavaUtil.iOTransformer())
                 .subscribe(wrapper -> {
                     binding.setData(wrapper.getData());

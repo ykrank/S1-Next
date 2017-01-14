@@ -16,6 +16,7 @@ import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.UserHomeActivity;
 import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment;
 import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
 import me.ykrank.s1next.widget.track.event.BlackListTrackEvent;
 
 public final class PostViewModel {
@@ -23,8 +24,10 @@ public final class PostViewModel {
     public final ObservableField<Post> post = new ObservableField<>();
 
     public void onClick(View v) {
+        //Clear avatar false cache
+        AvatarUrlsCache.clearUserAvatarCache(post.get().getAuthorId());
         //个人主页
-        UserHomeActivity.start(v.getContext(), post.get().getAuthorId());
+        UserHomeActivity.start(v.getContext(), post.get().getAuthorId(), post.get().getAuthorName());
     }
 
     public boolean onLongClick(View v, EventBus eventBus) {

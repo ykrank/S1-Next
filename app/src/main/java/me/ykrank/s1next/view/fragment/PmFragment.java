@@ -85,6 +85,7 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
             showShortSnackbar(R.string.message_api_error);
             return;
         }
+        getActivity().setTitle(toUsername);
 
         RecyclerView recyclerView = getRecyclerView();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -108,7 +109,7 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_new_pm:
-                NewPmActivity.startNewPmActivityForResultMessage(getActivity(), toUid);
+                NewPmActivity.startNewPmActivityForResultMessage(getActivity(), toUid, toUsername);
                 return true;
         }
         return super.onOptionsItemSelected(item);

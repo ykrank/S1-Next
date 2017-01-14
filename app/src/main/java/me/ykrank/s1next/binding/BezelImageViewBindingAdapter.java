@@ -78,7 +78,6 @@ public final class BezelImageViewBindingAdapter {
         if (TextUtils.isEmpty(uid)) {
             loadPlaceHolderAvatar(bezelImageView);
         } else {
-            AvatarUrlsCache.clearUserAvatarCache(uid);
             loadRoundAvatar(bezelImageView, downloadPreferencesManager, uid, big);
         }
     }

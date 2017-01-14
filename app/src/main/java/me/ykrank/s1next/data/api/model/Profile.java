@@ -11,8 +11,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class Profile extends Account {
 
-    private String name;
-    private String uid;
+    private String homeUsername;
+    private String homeUid;
     private String groupTitle;
     private int friends;
     private int threads;
@@ -35,8 +35,8 @@ public final class Profile extends Account {
 
     @JsonCreator
     public Profile(@JsonProperty("extcredits") JsonNode extCredits, @JsonProperty("space") JsonNode space) {
-        this.name = space.get("username").asText();
-        this.uid = space.get("uid").asText();
+        this.homeUsername = space.get("username").asText();
+        this.homeUid = space.get("uid").asText();
         this.groupTitle = space.get("group").get("grouptitle").asText();
         this.friends = space.get("friends").asInt();
         int posts = space.get("posts").asInt();
@@ -55,22 +55,20 @@ public final class Profile extends Account {
         this.shameSense = space.get("extcredits7").asInt();
     }
 
-    public String getName() {
-        return name;
+    public String getHomeUsername() {
+        return homeUsername;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setHomeUsername(String homeUsername) {
+        this.homeUsername = homeUsername;
     }
 
-    @Override
-    public String getUid() {
-        return uid;
+    public String getHomeUid() {
+        return homeUid;
     }
 
-    @Override
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setHomeUid(String homeUid) {
+        this.homeUid = homeUid;
     }
 
     public String getGroupTitle() {
