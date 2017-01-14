@@ -267,5 +267,17 @@
     <string name="online_time">Online time</string>
     <string name="reg_date">Reg date</string>
     <string name="online_time_content">%1$d hour</string>
+    <string name="last_visit_date">Last visit</string>
+    <string name="last_active_date">Last active date</string>
+    <string name="last_post_date">Last post date</string>
+    <string name="user_credits">Credits</string>
+    <string name="user_combat_effectiveness">Combat effectiveness</string>
+    <string name="user_combat_effectiveness_content">%1$d goose</string>
+    <string name="user_gold">Gold</string>
+    <string name="user_gold_content">%1$d G</string>
+    <string name="user_rp">RP</string>
+    <string name="user_rp_content">%1$d RP</string>
+    <string name="user_shame_sense">Sense of shame</string>
+    <string name="user_shame_sense_content">%1$d Jin</string>
 
 </resources>

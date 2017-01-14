@@ -20,6 +20,14 @@ public final class Profile extends Account {
     private String signHtml;
     private int onlineHour;
     private String regDate;
+    private String lastVisitDate;
+    private String lastActiveDate;
+    private String lastPostDate;
+    private int credits;
+    private int combatEffectiveness;
+    private int gold;
+    private int rp;
+    private int shameSense;
 
     public Profile() {
 
@@ -37,6 +45,14 @@ public final class Profile extends Account {
         this.signHtml = space.get("sightml").asText();
         this.onlineHour = space.get("oltime").asInt();
         this.regDate = space.get("regdate").asText();
+        this.lastVisitDate = space.get("lastvisit").asText();
+        this.lastActiveDate = space.get("lastactivity").asText();
+        this.lastPostDate = space.get("lastpost").asText();
+        this.credits = space.get("credits").asInt();
+        this.combatEffectiveness = space.get("extcredits1").asInt();
+        this.gold = space.get("extcredits2").asInt();
+        this.rp = space.get("extcredits4").asInt();
+        this.shameSense = space.get("extcredits7").asInt();
     }
 
     public String getName() {
@@ -111,5 +127,69 @@ public final class Profile extends Account {
 
     public void setRegDate(String regDate) {
         this.regDate = regDate;
+    }
+
+    public String getLastVisitDate() {
+        return lastVisitDate;
+    }
+
+    public void setLastVisitDate(String lastVisitDate) {
+        this.lastVisitDate = lastVisitDate;
+    }
+
+    public String getLastActiveDate() {
+        return lastActiveDate;
+    }
+
+    public void setLastActiveDate(String lastActiveDate) {
+        this.lastActiveDate = lastActiveDate;
+    }
+
+    public String getLastPostDate() {
+        return lastPostDate;
+    }
+
+    public void setLastPostDate(String lastPostDate) {
+        this.lastPostDate = lastPostDate;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
+
+    public void setCredits(int credits) {
+        this.credits = credits;
+    }
+
+    public int getCombatEffectiveness() {
+        return combatEffectiveness;
+    }
+
+    public void setCombatEffectiveness(int combatEffectiveness) {
+        this.combatEffectiveness = combatEffectiveness;
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+
+    public int getRp() {
+        return rp;
+    }
+
+    public void setRp(int rp) {
+        this.rp = rp;
+    }
+
+    public int getShameSense() {
+        return shameSense;
+    }
+
+    public void setShameSense(int shameSense) {
+        this.shameSense = shameSense;
     }
 }

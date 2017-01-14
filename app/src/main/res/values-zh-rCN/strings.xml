@@ -179,4 +179,16 @@
     <string name="online_time">在线时间</string>
     <string name="reg_date">注册时间</string>
     <string name="online_time_content">%1$d 小时</string>
+    <string name="last_visit_date">最后访问</string>
+    <string name="last_active_date">上次活动时间</string>
+    <string name="last_post_date">上次发表时间</string>
+    <string name="user_credits">积分</string>
+    <string name="user_combat_effectiveness">战斗力</string>
+    <string name="user_gold">金币</string>
+    <string name="user_rp">人品</string>
+    <string name="user_shame_sense">节操</string>
+    <string name="user_combat_effectiveness_content">%1$d 鹅</string>
+    <string name="user_gold_content">%1$d G</string>
+    <string name="user_rp_content">%1$d RP</string>
+    <string name="user_shame_sense_content">%1$d 斤</string>
 </resources>

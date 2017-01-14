@@ -30,7 +30,8 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
+            android:fitsSystemWindows="true"
+            tools:visibility="gone">
 
             <android.support.design.widget.CollapsingToolbarLayout
                 android:id="@+id/collapsingToolbarLayout"
@@ -127,8 +128,8 @@
                             android:layout_marginTop="@dimen/spacing_micro"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Shadow"
                             android:text="@{@string/home_label_friends(data.friends)}"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Shadow"
                             tools:text="123\n好友" />
 
                         <View
@@ -145,8 +146,8 @@
                             android:layout_marginTop="@dimen/spacing_micro"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Shadow"
                             android:text="@{@string/home_label_threads(data.threads)}"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Shadow"
                             tools:text="12345\n主题" />
 
                         <View
@@ -163,8 +164,8 @@
                             android:layout_marginTop="@dimen/spacing_micro"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Shadow"
                             android:text="@{@string/home_label_replies(data.replies)}"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Shadow"
                             tools:text="123568\n回帖" />
                     </LinearLayout>
                 </LinearLayout>
@@ -197,7 +198,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_micro"
+                android:layout_marginBottom="@dimen/spacing_normal"
                 android:orientation="vertical">
 
                 <android.support.v7.widget.CardView
@@ -210,7 +211,7 @@
                     android:layout_marginRight="@dimen/card_view_horizontal_margin"
                     android:layout_marginStart="@dimen/card_view_horizontal_margin"
                     android:layout_marginTop="@dimen/card_view_vertical_margin"
-                    tools:visibility="visible">
+                    tools:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -224,8 +225,8 @@
                             android:layout_gravity="center"
                             android:layout_marginBottom="@dimen/spacing_normal"
                             android:layout_marginTop="@dimen/spacing_normal"
-                            android:textSize="@dimen/text_size_subtitle"
-                            android:text="@string/personal_signature" />
+                            android:text="@string/personal_signature"
+                            android:textSize="@dimen/text_size_subtitle" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -254,11 +255,13 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                     android:layout_marginLeft="@dimen/card_view_horizontal_margin"
                     android:layout_marginRight="@dimen/card_view_horizontal_margin"
                     android:layout_marginStart="@dimen/card_view_horizontal_margin"
-                    android:layout_marginTop="@dimen/card_view_vertical_margin">
+                    android:layout_marginTop="@dimen/card_view_vertical_margin"
+                    tools:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_micro"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -272,10 +275,10 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/spacing_micro"
+                                android:text="@string/online_time"
                                 android:textColor="?attr/colorAccent"
                                 android:textSize="@dimen/text_size_caption"
                                 android:typeface="serif"
-                                android:text="@string/online_time"
                                 tools:text="在线时间" />
 
                             <TextView
@@ -302,10 +305,10 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/spacing_micro"
+                                android:text="@string/reg_date"
                                 android:textColor="?attr/colorAccent"
                                 android:textSize="@dimen/text_size_caption"
                                 android:typeface="serif"
-                                android:text="@string/reg_date"
                                 tools:text="注册时间" />
 
                             <TextView
@@ -332,6 +335,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/spacing_micro"
+                                android:text="@string/last_visit_date"
                                 android:textColor="?attr/colorAccent"
                                 android:textSize="@dimen/text_size_caption"
                                 android:typeface="serif"
@@ -340,6 +344,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:text="@{data.lastVisitDate}"
                                 tools:text="2017-1-12 14:11" />
 
                             <View
@@ -360,62 +365,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/spacing_micro"
-                                android:textColor="?attr/colorAccent"
-                                android:textSize="@dimen/text_size_caption"
-                                android:typeface="serif"
-                                tools:text="注册 IP" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                tools:text="7177 小时" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="@dimen/spacing_micro"
-                                android:background="?attr/divisionBackground" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/spacing_big"
-                            android:layout_marginRight="@dimen/spacing_big"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/spacing_micro"
-                                android:textColor="?attr/colorAccent"
-                                android:textSize="@dimen/text_size_caption"
-                                android:typeface="serif"
-                                tools:text="上次访问 IP" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                tools:text="7177 小时" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="@dimen/spacing_micro"
-                                android:background="?attr/divisionBackground" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/spacing_big"
-                            android:layout_marginRight="@dimen/spacing_big"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/spacing_micro"
+                                android:text="@string/last_active_date"
                                 android:textColor="?attr/colorAccent"
                                 android:textSize="@dimen/text_size_caption"
                                 android:typeface="serif"
@@ -424,7 +374,8 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                tools:text="7177 小时" />
+                                android:text="@{data.lastActiveDate}"
+                                tools:text="2017-1-14 19:40" />
 
                             <View
                                 android:layout_width="match_parent"
@@ -436,7 +387,6 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_micro"
                             android:layout_marginLeft="@dimen/spacing_big"
                             android:layout_marginRight="@dimen/spacing_big"
                             android:orientation="vertical">
@@ -445,6 +395,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/spacing_micro"
+                                android:text="@string/last_post_date"
                                 android:textColor="?attr/colorAccent"
                                 android:textSize="@dimen/text_size_caption"
                                 android:typeface="serif"
@@ -453,7 +404,9 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:text="@{data.lastPostDate}"
                                 tools:text="7177 小时" />
+
                         </LinearLayout>
 
                     </LinearLayout>
@@ -486,6 +439,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/spacing_micro"
+                                android:text="@string/user_credits"
                                 android:textColor="?attr/colorAccent"
                                 android:textSize="@dimen/text_size_caption"
                                 android:typeface="serif"
@@ -494,6 +448,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:text="@{String.valueOf(data.credits)}"
                                 tools:text="99999" />
 
                             <View
@@ -514,6 +469,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/spacing_micro"
+                                android:text="@string/user_combat_effectiveness"
                                 android:textColor="?attr/colorAccent"
                                 android:textSize="@dimen/text_size_caption"
                                 android:typeface="serif"
@@ -522,6 +478,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:text="@{@string/user_combat_effectiveness_content(data.combatEffectiveness)}"
                                 tools:text="9 鹅" />
 
                             <View
@@ -542,6 +499,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/spacing_micro"
+                                android:text="@string/user_gold"
                                 android:textColor="?attr/colorAccent"
                                 android:textSize="@dimen/text_size_caption"
                                 android:typeface="serif"
@@ -550,6 +508,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:text="@{@string/user_gold_content(data.gold)}"
                                 tools:text="5325 G" />
 
                             <View
@@ -570,6 +529,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/spacing_micro"
+                                android:text="@string/user_rp"
                                 android:textColor="?attr/colorAccent"
                                 android:textSize="@dimen/text_size_caption"
                                 android:typeface="serif"
@@ -578,6 +538,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:text="@{@string/user_rp_content(data.rp)}"
                                 tools:text="551 RP" />
 
                             <View
@@ -599,6 +560,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/spacing_micro"
+                                android:text="@string/user_shame_sense"
                                 android:textColor="?attr/colorAccent"
                                 android:textSize="@dimen/text_size_caption"
                                 android:typeface="serif"
@@ -607,6 +569,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:text="@{@string/user_shame_sense_content(data.shameSense)}"
                                 tools:text="0 斤" />
                         </LinearLayout>
 
