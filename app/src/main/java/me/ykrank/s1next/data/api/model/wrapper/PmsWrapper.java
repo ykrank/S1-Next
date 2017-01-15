@@ -15,7 +15,7 @@ import me.ykrank.s1next.util.LooperUtil;
 public class PmsWrapper extends BaseWrapper<Pms> {
 
     /**
-     * 完善每条私信的收信人学校
+     * 完善每条私信的收信人
      *
      * @param me         自己
      * @param toUsername 对方用户名
