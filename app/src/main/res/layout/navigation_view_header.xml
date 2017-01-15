@@ -18,20 +18,20 @@
 
         <ImageView
             android:id="@+id/drawer_header_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/drawer_top_background_content_desc"
             android:scaleType="centerCrop"
             app:imageDrawable="@{@drawable/ic_drawer_header_background}"
             app:layout_aspectRatio="@fraction/drawer_header_aspect_ratio"
-            app:layout_widthPercent="100%"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            app:layout_widthPercent="100%" />
 
         <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@drawable/scrim"
             app:layout_aspectRatio="@fraction/drawer_header_aspect_ratio"
-            app:layout_widthPercent="100%"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            app:layout_widthPercent="100%" />
 
         <me.ykrank.s1next.widget.BezelImageView
             android:id="@+id/drawer_user_avatar"
@@ -46,21 +46,23 @@
             app:user="@{userViewModel.user}" />
 
         <TextView
+            android:id="@+id/drawer_user_name"
             android:layout_width="match_parent"
             android:layout_height="@dimen/drawer_subtitle_height"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/list_view_padding"
             android:ellipsize="end"
             android:gravity="center_vertical"
+            android:lines="1"
             android:paddingBottom="@dimen/list_view_padding"
             android:paddingLeft="@dimen/item_padding"
             android:paddingRight="@dimen/item_padding"
             android:paddingStart="@dimen/item_padding"
             android:paddingTop="@dimen/list_view_padding"
-            android:lines="1"
             android:text="@{userViewModel.user.logged ? userViewModel.user.name : @string/action_login}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="?attr/drawerTextColor" />
+            android:textColor="?attr/drawerTextColor"
+            app:increaseClickingArea="@{@dimen/minimum_touch_target_size}" />
 
     </android.support.percent.PercentRelativeLayout>
 

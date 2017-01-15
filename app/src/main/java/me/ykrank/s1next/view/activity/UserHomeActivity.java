@@ -1,10 +1,15 @@
 package me.ykrank.s1next.view.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.transition.Slide;
 import android.view.View;
 
 import javax.inject.Inject;
@@ -15,6 +20,7 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.model.Profile;
 import me.ykrank.s1next.databinding.ActivityHomeBinding;
+import me.ykrank.s1next.util.ActivityUtils;
 import me.ykrank.s1next.util.AnimUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
@@ -44,9 +50,29 @@ public class UserHomeActivity extends BaseActivity {
         context.startActivity(intent);
     }
 
+    public static void start(Context context, String uid, String userName, View avatarView) {
+        Context baseContext = ActivityUtils.getBaseContext(context);
+        if (!(baseContext instanceof Activity)) {
+            L.leaveMsg("uid:" + uid);
+            L.leaveMsg("userName:" + userName);
+            L.report(new IllegalStateException("UserHomeActivity start error: context not instance of activity"));
+            return;
+        }
+        Activity activity = (Activity) baseContext;
+        Intent intent = new Intent(activity, UserHomeActivity.class);
+        intent.putExtra(ARG_UID, uid);
+        intent.putExtra(ARG_USERNAME, userName);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                activity, avatarView, activity.getString(R.string.transition_avatar));
+        ActivityCompat.startActivity(activity, intent, options.toBundle());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setEnterTransition(new Slide());
+        }
         App.getPrefComponent(this).inject(this);
 
         String uid = getIntent().getStringExtra(ARG_UID);
@@ -82,8 +108,6 @@ public class UserHomeActivity extends BaseActivity {
 
         binding.ivNewPm.setOnClickListener(v -> NewPmActivity.startNewPmActivityForResultMessage(this,
                 binding.getData().getHomeUid(), binding.getData().getHomeUsername()));
-
-
 
         loadData();
     }

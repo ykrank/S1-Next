@@ -67,6 +67,7 @@
                         app:downloadPreferencesManager="@{downloadPreferencesManager}"
                         app:maskDrawable="@drawable/rounded_mask"
                         app:uid="@{data.homeUid}"
+                        android:transitionName="@string/transition_avatar"
                         tools:src="@drawable/ic_avatar_placeholder" />
 
                     <RelativeLayout

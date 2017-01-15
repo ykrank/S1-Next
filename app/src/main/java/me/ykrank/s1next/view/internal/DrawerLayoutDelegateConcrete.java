@@ -22,6 +22,7 @@ import me.ykrank.s1next.view.activity.LoginActivity;
 import me.ykrank.s1next.view.activity.NoteActivity;
 import me.ykrank.s1next.view.activity.PmActivity;
 import me.ykrank.s1next.view.activity.SettingsActivity;
+import me.ykrank.s1next.view.activity.UserHomeActivity;
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
 import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment;
@@ -78,17 +79,26 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
             });
         }
 
-        // Starts LoginActivity if user hasn't logged in,
-        // otherwise show LogoutDialogFragment.
+
         binding.drawerHeaderBackground.setOnClickListener(v -> {
-            if (!LogoutDialogFragment.showLogoutDialogIfNeeded(mFragmentActivity, mUser)) {
-                closeDrawer(() -> LoginActivity.startLoginActivityForResultMessage(mFragmentActivity));
-            }
+            ThemeChangeDialogFragment.showThemeChangeDialog(mFragmentActivity);
+            trackAgent.post(new ThemeChangeTrackEvent(true));
         });
 
         binding.drawerUserAvatar.setOnClickListener(v -> {
-            ThemeChangeDialogFragment.showThemeChangeDialog(mFragmentActivity);
-            trackAgent.post(new ThemeChangeTrackEvent(true));
+            if (mUser.isLogged()) {
+                UserHomeActivity.start(v.getContext(), mUser.getUid(), mUser.getName());
+            } else {
+                binding.drawerUserName.performClick();
+            }
+        });
+
+        // Starts LoginActivity if user hasn't logged in,
+        // otherwise show LogoutDialogFragment.
+        binding.drawerUserName.setOnClickListener(v -> {
+            if (!LogoutDialogFragment.showLogoutDialogIfNeeded(mFragmentActivity, mUser)) {
+                closeDrawer(() -> LoginActivity.startLoginActivityForResultMessage(mFragmentActivity));
+            }
         });
     }
 
