@@ -25,7 +25,7 @@
             android:ellipsize="marquee"
             android:gravity="center"
             android:singleLine="true"
-            android:text="@{String.valueOf(blackListViewModel.blacklist.authorid)}"
+            android:text="@{String.valueOf(blackListViewModel.blacklist.authorId)}"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
         <TextView

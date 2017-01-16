@@ -107,7 +107,7 @@ public class BlackListDbWrapper {
     }
 
     public void saveBlackList(@NonNull BlackList blackList) {
-        BlackList oBlackList = getBlackListDefault(blackList.authorid, blackList.author);
+        BlackList oBlackList = getBlackListDefault(blackList.getAuthorId(), blackList.getAuthor());
         if (oBlackList == null) {
             blackList.save();
         } else {
@@ -117,7 +117,7 @@ public class BlackListDbWrapper {
     }
 
     public void delBlackList(@NonNull BlackList blackList) {
-        BlackList oBlackList = getBlackListDefault(blackList.authorid, blackList.author);
+        BlackList oBlackList = getBlackListDefault(blackList.getAuthorId(), blackList.getAuthor());
         if (oBlackList != null)
             oBlackList.delete();
     }
@@ -136,7 +136,7 @@ public class BlackListDbWrapper {
 
     public void saveDefaultBlackList(int authorid, String author, String remark) {
         BlackList blackList = new BlackList();
-        blackList.authorid = authorid;
+        blackList.authorId = authorid;
         blackList.author = author;
         blackList.remark = remark;
         blackList.post = BlackList.HIDE_POST;
@@ -147,7 +147,7 @@ public class BlackListDbWrapper {
 
     public void delDefaultBlackList(int authorid, String author) {
         BlackList blackList = new BlackList();
-        blackList.authorid = authorid;
+        blackList.authorId = authorid;
         blackList.author = author;
         delBlackList(blackList);
     }

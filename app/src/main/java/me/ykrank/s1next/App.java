@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.os.StrictMode;
 import android.support.multidex.MultiDexApplication;
 
-import com.activeandroid.ActiveAndroid;
 import com.bugsnag.android.Bugsnag;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -97,8 +96,6 @@ public final class App extends MultiDexApplication {
         mGeneralPreferencesManager = mPrefComponent.getGeneralPreferencesManager();
         // set scaling factor for fonts
         ResourceUtil.setScaledDensity(this, mGeneralPreferencesManager.getFontScale());
-
-        ActiveAndroid.initialize(this);
     }
 
     @Override

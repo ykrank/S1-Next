@@ -4,11 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Index;
+import org.greenrobot.greendao.annotation.Property;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,8 +22,8 @@ import java.util.Locale;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
-@Table(name = "ReadProgress")
-public class ReadProgress extends Model implements Parcelable {
+@Entity(nameInDb = "ReadProgress")
+public class ReadProgress implements Parcelable {
     /**
      * 加载进度处于空闲状态
      */
@@ -45,28 +48,31 @@ public class ReadProgress extends Model implements Parcelable {
         }
     };
     private static final String TimeFormat = "yyyy-MM-dd HH:mm";
+    @Id(autoincrement = true)
+    private Long id;
     /**
      * 帖子ID
      */
-    @Column(name = "ThreadId", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
-    public String threadId;
+    @Property(nameInDb = "ThreadId")
+    @Index(unique = true)
+    private String threadId;
     /**
      * 页数
      */
-    @Column(name = "Page")
-    public int page;
+    @Property(nameInDb = "Page")
+    private int page;
     /**
      * 位置
      */
-    @Column(name = "Position")
-    public int position;
+    @Property(nameInDb = "Position")
+    private int position;
     /**
      * 更新时间
      */
-    @Column(name = "Timestamp")
-    public long timestamp;
+    @Property(nameInDb = "Timestamp")
+    private long timestamp;
     @ScrollState
-    public int scrollState;
+    private int scrollState;
 
     @SuppressWarnings("WrongConstant")
     protected ReadProgress(Parcel in) {
@@ -90,6 +96,17 @@ public class ReadProgress extends Model implements Parcelable {
         this.scrollState = FREE;
     }
 
+    @Generated(hash = 459708891)
+    public ReadProgress(Long id, String threadId, int page, int position, long timestamp,
+                        int scrollState) {
+        this.id = id;
+        this.threadId = threadId;
+        this.page = page;
+        this.position = position;
+        this.timestamp = timestamp;
+        this.scrollState = scrollState;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -104,9 +121,61 @@ public class ReadProgress extends Model implements Parcelable {
         dest.writeInt(scrollState);
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getTime() {
         SimpleDateFormat sdf = new SimpleDateFormat(TimeFormat, Locale.getDefault());
         return sdf.format(new Date(timestamp));
+    }
+
+    public static String getTimeFormat() {
+        return TimeFormat;
+    }
+
+    public String getThreadId() {
+        return threadId;
+    }
+
+    public void setThreadId(String threadId) {
+        this.threadId = threadId;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public int getScrollState() {
+        return scrollState;
+    }
+
+    public void setScrollState(int scrollState) {
+        this.scrollState = scrollState;
     }
 
     public void copyFrom(ReadProgress oReadProgress) {

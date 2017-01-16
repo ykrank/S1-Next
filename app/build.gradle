@@ -5,6 +5,7 @@ plugins {
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'org.greenrobot.greendao'
 
 
 Properties properties = new Properties()
@@ -95,6 +96,10 @@ bugsnag {
     autoProguardConfig false
 }
 
+greendao {
+    schemaVersion 3
+}
+
 //http://stackoverflow.com/questions/28683327/how-to-check-if-gradle-dependency-has-new-version
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -141,7 +146,7 @@ dependencies {
     compile 'io.reactivex:rxjava:1.2.4'
     compile 'io.reactivex:rxandroid:1.2.1'
 
-    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    compile 'org.greenrobot:greendao:3.2.0'
     compile 'com.nononsenseapps:filepicker:2.5.2'
 
     compile 'org.jsoup:jsoup:1.10.1'

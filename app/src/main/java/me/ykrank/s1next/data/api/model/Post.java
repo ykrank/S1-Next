@@ -63,7 +63,7 @@ public final class Post implements Cloneable, SameItem {
     private String id;
     @JsonProperty("author")
     private String authorName;
-    @JsonProperty("authorid")
+    @JsonProperty("authorId")
     private String authorId;
     @JsonProperty("message")
     private String reply;

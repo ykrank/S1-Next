@@ -49,7 +49,7 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
     @JsonProperty("author")
     private String author;
 
-    @JsonProperty("authorid")
+    @JsonProperty("authorId")
     private int authorid;
 
     private boolean hide = false;

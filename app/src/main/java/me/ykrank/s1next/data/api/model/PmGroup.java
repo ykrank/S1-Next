@@ -14,7 +14,7 @@ public final class PmGroup implements Cloneable, SameItem {
     /**
      * who create this pm list
      */
-    @JsonProperty("authorid")
+    @JsonProperty("authorId")
     private String authorId;
     /**
      * pm list id
