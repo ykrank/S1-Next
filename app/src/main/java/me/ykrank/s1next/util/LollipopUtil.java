@@ -27,10 +27,10 @@ final class LollipopUtil {
         int colorId;
         ThemeManager.Theme currentTheme = App.getPrefComponent(activity).getThemeManager().getTheme();
         // We can't find any similar color to change app title to
-        // white for ThemeManager.Theme.LIGHT_THEME_INVERSE_AMBER.
-        if (currentTheme == ThemeManager.Theme.LIGHT_THEME_INVERSE_GREEN) {
+        // white for ThemeManager.Theme.LIGHT_THEME_AMBER.
+        if (currentTheme == ThemeManager.Theme.LIGHT_THEME_GREEN) {
             colorId = R.color.green_600;
-        } else if (currentTheme == ThemeManager.Theme.LIGHT_THEME_INVERSE_LIGHT_BLUE) {
+        } else if (currentTheme == ThemeManager.Theme.LIGHT_THEME_LIGHT_BLUE) {
             colorId = R.color.light_blue_600;
         } else {
             return;

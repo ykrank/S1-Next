@@ -1,59 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Light.Inverse.AfternoonTea" parent="Base.Theme.Light.AfternoonTea.V23" />
-
-    <style name="Base.Theme.Light.AfternoonTea.V23" parent="Base.Theme.Light.AfternoonTea">
-        <item name="android:windowLightStatusBar">false</item>
-    </style>
-    
-    <style name="Theme.Light" parent="Base.Theme.Light.V23" />
-
-    <style name="Theme.Light.Inverse.Amber" parent="Base.Theme.Light.Inverse.Amber.V23" />
-
-    <style name="Theme.Light.Inverse.Green" parent="Base.Theme.Light.Inverse.Green.V23" />
-
-    <style name="Theme.Light.Inverse.LightBlue" parent="Base.Theme.Light.Inverse.LightBlue.V23" />
-
-    <style name="Theme.Light.Inverse.Purple" parent="Base.Theme.Light.Inverse.Purple.V23" />
-
-    <style name="Theme.Dark" parent="Base.Theme.Dark.V23" />
-
-    <style name="Theme.Dark.NightMode" parent="Base.Theme.Dark.NightMode.V23" />
-
-    <style name="Theme.Dark.NightMode.Amoled" parent="Base.Theme.Dark.NightMode.Amoled.V23" />
-
-    <style name="Base.Theme.Light.V23" parent="Base.Theme.Light">
+    <style name="Theme.Light" parent="Base.Theme.Light">
         <item name="android:windowLightStatusBar">true</item>
         <item name="colorPrimaryDark">@color/light_status_bar_v23</item>
-    </style>
-
-    <style name="Base.Theme.Light.Inverse.Amber.V23" parent="Base.Theme.Light.Inverse.Amber">
-        <item name="android:windowLightStatusBar">false</item>
-    </style>
-
-    <style name="Base.Theme.Light.Inverse.Green.V23" parent="Base.Theme.Light.Inverse.Green">
-        <item name="android:windowLightStatusBar">false</item>
-    </style>
-
-    <style name="Base.Theme.Light.Inverse.LightBlue.V23" parent="Base.Theme.Light.Inverse.LightBlue">
-        <item name="android:windowLightStatusBar">false</item>
-    </style>
-
-    <style name="Base.Theme.Light.Inverse.Purple.V23" parent="Base.Theme.Light.Inverse.Purple">
-        <item name="android:windowLightStatusBar">false</item>
-    </style>
-
-    <style name="Base.Theme.Dark.V23" parent="Base.Theme.Dark">
-        <item name="android:windowLightStatusBar">false</item>
-    </style>
-
-    <style name="Base.Theme.Dark.NightMode.V23" parent="Base.Theme.Dark.NightMode">
-        <item name="android:windowLightStatusBar">false</item>
-    </style>
-
-    <style name="Base.Theme.Dark.NightMode.Amoled.V23" parent="Base.Theme.Dark.NightMode.Amoled">
-        <item name="android:windowLightStatusBar">false</item>
     </style>
 
 </resources>

@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Base.Theme.Light" parent="Origin.Theme.Light">
+    <style name="Base.Theme.Light" parent="Origin.Theme.Light.V21" />
+
+    <style name="Base.Theme.Dark" parent="Origin.Theme.Dark.V21" />
+
+    <style name="Origin.Theme.Light.V21" parent="Origin.Theme.Light">
         <item name="android:navigationBarColor">?android:attr/colorPrimaryDark</item>
     </style>
 
-    <style name="Base.Theme.Dark" parent="Origin.Theme.Dark">
+    <style name="Origin.Theme.Dark.V21" parent="Origin.Theme.Dark">
         <item name="android:navigationBarColor">?android:attr/colorPrimaryDark</item>
     </style>
 </resources>

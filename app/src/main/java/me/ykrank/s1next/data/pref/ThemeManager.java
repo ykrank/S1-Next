@@ -155,15 +155,15 @@ public final class ThemeManager {
     }
 
     public enum Theme {
-        AFTERNOON_TEA(R.style.Theme_Light_Inverse_AfternoonTea, R.style.Translucent_AfternoonTea),
-        LIGHT_THEME(R.style.Theme_Light, R.style.Translucent_Light),
-        LIGHT_THEME_INVERSE_AMBER(R.style.Theme_Light_Inverse_Amber, R.style.Translucent_Amber),
-        LIGHT_THEME_INVERSE_GREEN(R.style.Theme_Light_Inverse_Green, R.style.Translucent_Green),
-        LIGHT_THEME_INVERSE_LIGHT_BLUE(R.style.Theme_Light_Inverse_LightBlue, R.style.Translucent_LightBlue),
-        LIGHT_THEME_INVERSE_PURPLE(R.style.Theme_Light_Inverse_Purple, R.style.Translucent_Purple),
-        DARK_THEME(R.style.Theme_Dark, R.style.Translucent_Dark),
-        DARK_THEME_NIGHT_MODE(R.style.Theme_Dark_NightMode, R.style.Translucent_Dark_NightMode),
-        DARK_THEME_NIGHT_MODE_AMOLED(R.style.Theme_Dark_NightMode_Amoled, R.style.Translucent_Dark_NightMode_Amoled);
+        AFTERNOON_TEA(R.style.Theme_Light_AfternoonTea, R.style.Theme_Translucent_AfternoonTea),
+        LIGHT_THEME(R.style.Theme_Light, R.style.Theme_Translucent_Light),
+        LIGHT_THEME_AMBER(R.style.Theme_Light_Amber, R.style.Theme_Translucent_Amber),
+        LIGHT_THEME_GREEN(R.style.Theme_Light_Green, R.style.Theme_Translucent_Green),
+        LIGHT_THEME_LIGHT_BLUE(R.style.Theme_Light_LightBlue, R.style.Theme_Translucent_LightBlue),
+        LIGHT_THEME_PURPLE(R.style.Theme_Light_Purple, R.style.Theme_Translucent_Purple),
+        DARK_THEME(R.style.Theme_Dark, R.style.Theme_Translucent_Dark),
+        DARK_THEME_NIGHT_MODE(R.style.Theme_Dark_NightMode, R.style.Theme_Translucent_Dark_NightMode),
+        DARK_THEME_NIGHT_MODE_AMOLED(R.style.Theme_Dark_NightMode_Amoled, R.style.Theme_Translucent_Dark_NightMode_Amoled);
 
         private static final List<Theme> VALUES = Arrays.asList(Theme.values());
 
