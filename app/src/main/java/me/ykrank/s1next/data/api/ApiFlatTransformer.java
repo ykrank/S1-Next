@@ -6,7 +6,7 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.AppComponent;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Account;
-import me.ykrank.s1next.data.api.model.wrapper.ResultWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
@@ -33,11 +33,11 @@ public class ApiFlatTransformer {
         if (TextUtils.isEmpty(authenticityToken)) {
             return mS1Service.refreshAuthenticityToken().flatMap(resultWrapper -> {
                 Account account = resultWrapper.getData();
-                // return the ResultWrapper if we cannot get the authenticity token
+                // return the AccountResultWrapper if we cannot get the authenticity token
                 // (if account has expired or network error)
                 if (TextUtils.isEmpty(account.getAuthenticityToken())) {
                     return Observable.error(new ApiException.AuthenticityTokenException("获取登录信息错误",
-                            new ApiException("ResultWrapper:" + resultWrapper)));
+                            new ApiException("AccountResultWrapper:" + resultWrapper)));
                 } else {
                     mUserValidator.validate(account);
                     return func.call(account.getAuthenticityToken());
@@ -48,7 +48,7 @@ public class ApiFlatTransformer {
         }
     }
 
-    public static Observable<ResultWrapper> flatMappedWithAuthenticityToken(Func1<String, Observable<ResultWrapper>> func) {
+    public static Observable<AccountResultWrapper> flatMappedWithAuthenticityToken(Func1<String, Observable<AccountResultWrapper>> func) {
         AppComponent component = App.getAppComponent(App.get());
         return flatMappedWithAuthenticityToken(component.getS1Service(), component.getUserValidator(),
                 component.getUser(), func);

@@ -25,6 +25,9 @@ import me.ykrank.s1next.util.AnimUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.widget.AppBarOffsetChangedListener;
+import me.ykrank.s1next.widget.track.event.ViewHomeTrackEvent;
+import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
+import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * Created by ykrank on 2017/1/8.
@@ -77,6 +80,8 @@ public class UserHomeActivity extends BaseActivity {
 
         String uid = getIntent().getStringExtra(ARG_UID);
         String name = getIntent().getStringExtra(ARG_USERNAME);
+        trackAgent.post(new ViewHomeTrackEvent(uid, name));
+        L.leaveMsg("UserHomeActivity##uid:" + uid + ",name:" + name);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         binding.setDownloadPreferencesManager(mDownloadPreferencesManager);
@@ -109,7 +114,21 @@ public class UserHomeActivity extends BaseActivity {
         binding.ivNewPm.setOnClickListener(v -> NewPmActivity.startNewPmActivityForResultMessage(this,
                 binding.getData().getHomeUid(), binding.getData().getHomeUsername()));
 
+        binding.tvFriends.setOnClickListener(v -> FriendListActivity.start(this, uid));
+        
         loadData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        trackAgent.post(new PageStartEvent(this, "个人中心-UserHomeActivity"));
+    }
+
+    @Override
+    protected void onPause() {
+        trackAgent.post(new PageEndEvent(this, "个人中心-UserHomeActivity"));
+        super.onPause();
     }
 
     @Override

@@ -14,7 +14,6 @@ import android.widget.SpinnerAdapter;
 
 import java.util.List;
 
-import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.Forum;
@@ -46,8 +45,6 @@ public final class ThreadListActivity extends BaseActivity
     private boolean refreshBlackList = false;
 
     public static void startThreadListActivity(Context context, Forum forum) {
-        App.get().getTrackAgent().post(new ViewForumTrackEvent(forum.getId(), forum.getName()));
-        L.leaveMsg("ThreadListActivity##forum" + forum);
         Intent intent = new Intent(context, ThreadListActivity.class);
         intent.putExtra(ARG_FORUM, forum);
 
@@ -62,6 +59,8 @@ public final class ThreadListActivity extends BaseActivity
         disableDrawerIndicator();
 
         forum = getIntent().getParcelableExtra(ARG_FORUM);
+        trackAgent.post(new ViewForumTrackEvent(forum.getId(), forum.getName()));
+        L.leaveMsg("ThreadListActivity##forum" + forum);
 
         if (savedInstanceState == null) {
             Fragment fragment = ThreadListFragment.newInstance(forum);

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Result;
-import me.ykrank.s1next.data.api.model.wrapper.ResultWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
 import me.ykrank.s1next.widget.track.event.NewPmTrackEvent;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
@@ -14,7 +14,7 @@ import rx.Observable;
 /**
  * A dialog requests to post pm.
  */
-public final class PmRequestDialogFragment extends ProgressDialogFragment<ResultWrapper> {
+public final class PmRequestDialogFragment extends ProgressDialogFragment<AccountResultWrapper> {
 
     public static final String TAG = PmRequestDialogFragment.class.getName();
 
@@ -41,7 +41,7 @@ public final class PmRequestDialogFragment extends ProgressDialogFragment<Result
     }
 
     @Override
-    protected Observable<ResultWrapper> getSourceObservable() {
+    protected Observable<AccountResultWrapper> getSourceObservable() {
         String toUid = getArguments().getString(ARG_TO_UID);
         String msg = getArguments().getString(ARG_MESSAGE);
 
@@ -51,7 +51,7 @@ public final class PmRequestDialogFragment extends ProgressDialogFragment<Result
     }
 
     @Override
-    protected void onNext(ResultWrapper data) {
+    protected void onNext(AccountResultWrapper data) {
         Result result = data.getResult();
         if (result.getStatus().equals(STATUS_PM_SUCCESS)) {
             showShortTextAndFinishCurrentActivity(result.getMessage());

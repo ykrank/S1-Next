@@ -48,7 +48,7 @@
         <item name="android:shadowColor">?attr/textShadowColor</item>
         <item name="android:shadowDx">1.0</item>
         <item name="android:shadowDy">1.0</item>
-        <item name="android:shadowRadius">10.0</item>
+        <item name="android:shadowRadius">2.0</item>
     </style>
 
     <style name="Animation.Recreate" parent="android:Animation">

@@ -3,14 +3,15 @@ package me.ykrank.s1next.data.api;
 import me.ykrank.s1next.data.api.model.Profile;
 import me.ykrank.s1next.data.api.model.collection.Favourites;
 import me.ykrank.s1next.data.api.model.collection.ForumGroups;
+import me.ykrank.s1next.data.api.model.collection.Friends;
 import me.ykrank.s1next.data.api.model.collection.Notes;
 import me.ykrank.s1next.data.api.model.collection.PmGroups;
 import me.ykrank.s1next.data.api.model.collection.Posts;
 import me.ykrank.s1next.data.api.model.collection.Threads;
+import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.BaseWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.ResultWrapper;
 import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -38,33 +39,33 @@ public interface S1Service {
 
     @FormUrlEncoded
     @POST(ApiMember.URL_LOGIN)
-    Observable<ResultWrapper> login(@Field("username") String username, @Field("password") String password);
+    Observable<AccountResultWrapper> login(@Field("username") String username, @Field("password") String password);
 
     @GET(ApiForum.URL_AUTHENTICITY_TOKEN_HELPER)
-    Observable<ResultWrapper> refreshAuthenticityToken();
+    Observable<AccountResultWrapper> refreshAuthenticityToken();
 
     //region Favourites
     @FormUrlEncoded
     @POST(ApiHome.URL_THREAD_FAVOURITES_ADD)
-    Observable<ResultWrapper> addThreadFavorite(@Field("formhash") String authenticityToken, @Field("id") String threadId, @Field("description") String remark);
+    Observable<AccountResultWrapper> addThreadFavorite(@Field("formhash") String authenticityToken, @Field("id") String threadId, @Field("description") String remark);
 
     @FormUrlEncoded
     @POST(ApiHome.URL_THREAD_FAVOURITES_REMOVE)
-    Observable<ResultWrapper> removeThreadFavorite(@Field("formhash") String authenticityToken, @Field("favid") String favId);
+    Observable<AccountResultWrapper> removeThreadFavorite(@Field("formhash") String authenticityToken, @Field("favid") String favId);
     //endregion
 
     //region Reply
     @FormUrlEncoded
     @POST(ApiForum.URL_REPLY)
-    Observable<ResultWrapper> reply(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("message") String reply);
+    Observable<AccountResultWrapper> reply(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("message") String reply);
 
     @GET(Api.URL_QUOTE_HELPER)
     Observable<String> getQuoteInfo(@Query("tid") String threadId, @Query("repquote") String quotePostId);
 
     @FormUrlEncoded
     @POST(ApiForum.URL_REPLY)
-    Observable<ResultWrapper> replyQuote(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("message") String reply,
-                                         @Field("noticeauthor") String encodedUserId, @Field("noticetrimstr") String quoteMessage, @Field("noticeauthormsg") String replyNotification);
+    Observable<AccountResultWrapper> replyQuote(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("message") String reply,
+                                                @Field("noticeauthor") String encodedUserId, @Field("noticetrimstr") String quoteMessage, @Field("noticeauthormsg") String replyNotification);
     //endregion
 
     //<editor-fold desc="PM">
@@ -76,7 +77,7 @@ public interface S1Service {
 
     @FormUrlEncoded
     @POST(ApiHome.URL_PM_POST)
-    Observable<ResultWrapper> postPm(@Field("formhash") String authenticityToken, @Field("touid") String toUid, @Field("message") String msg);
+    Observable<AccountResultWrapper> postPm(@Field("formhash") String authenticityToken, @Field("touid") String toUid, @Field("message") String msg);
     //</editor-fold>
 
     //region New thread
@@ -85,9 +86,9 @@ public interface S1Service {
 
     @FormUrlEncoded
     @POST(ApiForum.URL_NEW_THREAD)
-    Observable<ResultWrapper> newThread(@Query("fid") int fid, @Field("formhash") String authenticityToken, @Field("posttime") long postTime, @Field("typeid") String typeId,
-                                        @Field("subject") String subject, @Field("message") String message, @Field("allownoticeauthor") int allowNoticeAuthor,
-                                        @Field("usesig") int useSign, @Field("save") Integer saveAsDraft);
+    Observable<AccountResultWrapper> newThread(@Query("fid") int fid, @Field("formhash") String authenticityToken, @Field("posttime") long postTime, @Field("typeid") String typeId,
+                                               @Field("subject") String subject, @Field("message") String message, @Field("allownoticeauthor") int allowNoticeAuthor,
+                                               @Field("usesig") int useSign, @Field("save") Integer saveAsDraft);
     //endregion
 
     @FormUrlEncoded
@@ -99,4 +100,7 @@ public interface S1Service {
 
     @GET(ApiHome.URL_PROFILE)
     Observable<BaseWrapper<Profile>> getProfile(@Query("uid") String uid);
+
+    @GET(ApiHome.URL_FRIENDS)
+    Observable<BaseWrapper<Friends>> getFriends(@Query("uid") String uid);
 }

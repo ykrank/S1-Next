@@ -23,4 +23,7 @@ public class ApiHome {
 
     //Profile
     static final String URL_PROFILE = Api.BASE_API_PREFIX + "profile";
+
+    //Friends
+    static final String URL_FRIENDS = Api.BASE_API_PREFIX + "friend";
 }

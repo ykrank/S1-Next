@@ -11,7 +11,7 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.Quote;
 import me.ykrank.s1next.data.api.model.Result;
-import me.ykrank.s1next.data.api.model.wrapper.ResultWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
 import me.ykrank.s1next.widget.track.event.NewReplyTrackEvent;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
@@ -20,7 +20,7 @@ import rx.Observable;
 /**
  * A dialog requests to reply to post.
  */
-public final class ReplyRequestDialogFragment extends ProgressDialogFragment<ResultWrapper> {
+public final class ReplyRequestDialogFragment extends ProgressDialogFragment<AccountResultWrapper> {
 
     public static final String TAG = ReplyRequestDialogFragment.class.getName();
 
@@ -49,7 +49,7 @@ public final class ReplyRequestDialogFragment extends ProgressDialogFragment<Res
     }
 
     @Override
-    protected Observable<ResultWrapper> getSourceObservable() {
+    protected Observable<AccountResultWrapper> getSourceObservable() {
         String threadId = getArguments().getString(ARG_THREAD_ID);
         String quotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
         String reply = getArguments().getString(ARG_REPLY);
@@ -68,7 +68,7 @@ public final class ReplyRequestDialogFragment extends ProgressDialogFragment<Res
     }
 
     @Override
-    protected void onNext(ResultWrapper data) {
+    protected void onNext(AccountResultWrapper data) {
         Result result = data.getResult();
         if (result.getStatus().equals(STATUS_REPLY_SUCCESS)) {
             showShortTextAndFinishCurrentActivity(result.getMessage());

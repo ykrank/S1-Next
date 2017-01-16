@@ -5,7 +5,7 @@ import android.os.Bundle;
 import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Result;
-import me.ykrank.s1next.data.api.model.wrapper.ResultWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 import rx.Observable;
@@ -13,7 +13,7 @@ import rx.Observable;
 /**
  * A dialog requests to reply to post.
  */
-public final class NewThreadRequestDialogFragment extends ProgressDialogFragment<ResultWrapper> {
+public final class NewThreadRequestDialogFragment extends ProgressDialogFragment<AccountResultWrapper> {
 
     public static final String TAG = NewThreadRequestDialogFragment.class.getName();
 
@@ -42,7 +42,7 @@ public final class NewThreadRequestDialogFragment extends ProgressDialogFragment
     }
 
     @Override
-    protected Observable<ResultWrapper> getSourceObservable() {
+    protected Observable<AccountResultWrapper> getSourceObservable() {
         Bundle bundle = getArguments();
         int forumId = bundle.getInt(ARG_FORUM_ID);
         String title = bundle.getString(ARG_TITLE);
@@ -55,7 +55,7 @@ public final class NewThreadRequestDialogFragment extends ProgressDialogFragment
     }
 
     @Override
-    protected void onNext(ResultWrapper data) {
+    protected void onNext(AccountResultWrapper data) {
         Result result = data.getResult();
         if (result.getStatus().equals(STATUS_NEW_THREAD_SUCCESS)) {
             showShortTextAndFinishCurrentActivity(result.getMessage());
