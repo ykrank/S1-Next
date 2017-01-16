@@ -192,6 +192,14 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
     }
 
     private void onNoteMenuSelected() {
-        NoteActivity.start(mFragmentActivity);
+        if (mFragmentActivity instanceof NoteActivity) {
+            return;
+        }
+
+        // Starts NoteActivity if user has logged in,
+        // otherwise show LoginPromptDialogFragment.
+        if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(mFragmentActivity, mUser)) {
+            NoteActivity.start(mFragmentActivity);
+        }
     }
 }

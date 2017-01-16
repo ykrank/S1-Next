@@ -5,6 +5,7 @@ import android.databinding.BindingAdapter;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
+import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -104,16 +105,16 @@ public final class BezelImageViewBindingAdapter {
             urls.add(mediumAvatarUrl);
         }
         urls.add(smallAvatarUrl);
-        loadRoundAvatar(imageView, downloadPreferencesManager, urls);
+        loadRoundAvatar(imageView, downloadPreferencesManager, urls, isBig);
     }
 
-    private static void loadRoundAvatar(ImageView imageView, DownloadPreferencesManager downloadPreferencesManager, List<String> urls) {
+    private static void loadRoundAvatar(ImageView imageView, DownloadPreferencesManager downloadPreferencesManager, List<String> urls, boolean fade) {
         if (urls == null || urls.isEmpty()) {
             loadPlaceHolderAvatar(imageView);
             return;
         }
         Context context = imageView.getContext();
-        Glide.with(context)
+        DrawableRequestBuilder<String> listener = Glide.with(context)
                 .load(urls.get(0))
                 .placeholder(R.drawable.ic_drawer_avatar_placeholder)
                 .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
@@ -124,7 +125,7 @@ public final class BezelImageViewBindingAdapter {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                         urls.remove(0);
-                        loadRoundAvatar(imageView, downloadPreferencesManager, urls);
+                        loadRoundAvatar(imageView, downloadPreferencesManager, urls, fade);
                         return true;
                     }
 
@@ -133,7 +134,10 @@ public final class BezelImageViewBindingAdapter {
                         L.d("Load avatar:" + model);
                         return false;
                     }
-                })
-                .into(imageView);
+                });
+        if (fade) {
+            listener = listener.crossFade();
+        }
+        listener.into(imageView);
     }
 }
