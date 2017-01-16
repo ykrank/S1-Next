@@ -19,8 +19,6 @@ import me.ykrank.s1next.data.Wifi;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
-import me.ykrank.s1next.data.db.dbmodel.DaoMaster;
-import me.ykrank.s1next.data.db.dbmodel.DaoSession;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.AppDaoOpenHelper;
 import me.ykrank.s1next.widget.EventBus;
@@ -141,11 +139,5 @@ public final class AppModule {
     @Singleton
     Database provideAppDaoDatabase(AppDaoOpenHelper helper) {
         return helper.getWritableDb();
-    }
-
-    @Provides
-    @Singleton
-    DaoSession provideAppDaoSession(Database database) {
-        return new DaoMaster(database).newSession();
     }
 }
