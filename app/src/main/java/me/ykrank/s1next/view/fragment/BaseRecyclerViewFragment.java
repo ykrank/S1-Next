@@ -87,7 +87,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     @CallSuper
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mS1Service = App.getAppComponent(getContext()).getS1Service();
+        mS1Service = App.getAppComponent().getS1Service();
 
         mLoadingViewModelBindingDelegate.getSwipeRefreshLayout().setOnRefreshListener(
                 this::startSwipeRefresh);

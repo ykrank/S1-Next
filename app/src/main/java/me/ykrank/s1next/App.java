@@ -1,11 +1,9 @@
 package me.ykrank.s1next;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.os.StrictMode;
 import android.support.multidex.MultiDexApplication;
 
-import com.activeandroid.ActiveAndroid;
 import com.bugsnag.android.Bugsnag;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -38,12 +36,12 @@ public final class App extends MultiDexApplication {
         return sApp;
     }
 
-    public static AppComponent getAppComponent(Context context) {
-        return ((App) context.getApplicationContext()).mAppComponent;
+    public static AppComponent getAppComponent() {
+        return sApp.mAppComponent;
     }
 
-    public static PrefComponent getPrefComponent(Context context) {
-        return ((App) context.getApplicationContext()).mPrefComponent;
+    public static PrefComponent getPrefComponent() {
+        return sApp.mPrefComponent;
     }
 
     public RefWatcher getRefWatcher() {
@@ -97,8 +95,6 @@ public final class App extends MultiDexApplication {
         mGeneralPreferencesManager = mPrefComponent.getGeneralPreferencesManager();
         // set scaling factor for fonts
         ResourceUtil.setScaledDensity(this, mGeneralPreferencesManager.getFontScale());
-
-        ActiveAndroid.initialize(this);
     }
 
     @Override

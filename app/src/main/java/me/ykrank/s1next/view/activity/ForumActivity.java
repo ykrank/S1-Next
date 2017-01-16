@@ -75,7 +75,7 @@ public final class ForumActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        App.getPrefComponent(this).inject(this);
+        App.getPrefComponent().inject(this);
 
         setContentView(R.layout.activity_base);
 

@@ -47,7 +47,7 @@ public final class BlackListRemarkDialogFragment extends BaseDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        App.getAppComponent(App.get()).inject(this);
+        App.getAppComponent().inject(this);
 
         Activity activity = getActivity();
         DialogBlacklistRemarkBinding binding = DataBindingUtil.inflate(activity.getLayoutInflater(),

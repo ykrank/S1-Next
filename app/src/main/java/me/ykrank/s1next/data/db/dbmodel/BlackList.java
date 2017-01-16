@@ -3,10 +3,13 @@ package me.ykrank.s1next.data.db.dbmodel;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
+import android.support.annotation.StringRes;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Index;
+import org.greenrobot.greendao.annotation.Property;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,8 +22,8 @@ import me.ykrank.s1next.R;
  * 使用了ActiveAndroid
  * Created by AdminYkrank on 2016/2/23.
  */
-@Table(name = "BlackList")
-public class BlackList extends Model implements Parcelable {
+@Entity(nameInDb = "BlackList")
+public class BlackList implements Parcelable {
     public static final Creator<BlackList> CREATOR = new Creator<BlackList>() {
         @Override
         public BlackList createFromParcel(Parcel in) {
@@ -38,47 +41,53 @@ public class BlackList extends Model implements Parcelable {
     public static final int HIDE_FORUM = 3;
     public static final int DEL_FORUM = 4;
     private static final String TimeFormat = "yyyy-MM-dd HH:mm";
+
+    @Id(autoincrement = true)
+    private Long id;
+
     /**
      * Id
      */
-    @Column(name = "AuthorId", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
-    public int authorid;
+    @Property(nameInDb = "AuthorId")
+    @Index(unique = true)
+    private int authorId;
     /**
      * 用户名
      */
-    @Column(name = "Author", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
-    public String author;
+    @Property(nameInDb = "Author")
+    @Index(unique = true)
+    private String author;
     /**
      * 回复的屏蔽状态
      */
-    @Column(name = "Post")
+    @Property(nameInDb = "Post")
     @PostFLag
-    public int post = NORMAL;
+    private int post = NORMAL;
     /**
      * 主题的屏蔽状态
      */
-    @Column(name = "Forum")
+    @Property(nameInDb = "Forum")
     @ForumFLag
-    public int forum = NORMAL;
+    private int forum = NORMAL;
     /**
      * 屏蔽时的备注
      */
-    @Column(name = "Remark")
-    public String remark;
+    @Property(nameInDb = "Remark")
+    private String remark;
     /**
      * 屏蔽时的时间
      */
-    @Column(name = "Timestamp")
-    public long timestamp;
+    @Property(nameInDb = "Timestamp")
+    private long timestamp;
     /**
      * 是否已同步
      */
-    @Column(name = "Upload")
-    public boolean upload;
+    @Property(nameInDb = "Upload")
+    private boolean upload;
 
     @SuppressWarnings("WrongConstant")
     protected BlackList(Parcel in) {
-        authorid = in.readInt();
+        authorId = in.readInt();
         author = in.readString();
         post = in.readInt();
         forum = in.readInt();
@@ -91,8 +100,8 @@ public class BlackList extends Model implements Parcelable {
         this.timestamp = System.currentTimeMillis();
     }
 
-    public BlackList(int authorid, String name, @PostFLag int post, @ForumFLag int forum) {
-        this.authorid = authorid;
+    public BlackList(int authorId, String name, @PostFLag int post, @ForumFLag int forum) {
+        this.authorId = authorId;
         this.author = name;
         this.post = post;
         this.forum = forum;
@@ -101,8 +110,21 @@ public class BlackList extends Model implements Parcelable {
         this.upload = false;
     }
 
+    @Generated(hash = 536415208)
+    public BlackList(Long id, int authorId, String author, int post, int forum, String remark,
+                     long timestamp, boolean upload) {
+        this.id = id;
+        this.authorId = authorId;
+        this.author = author;
+        this.post = post;
+        this.forum = forum;
+        this.remark = remark;
+        this.timestamp = timestamp;
+        this.upload = upload;
+    }
+
     public void copyFrom(BlackList bList) {
-        this.authorid = bList.authorid;
+        this.authorId = bList.authorId;
         this.author = bList.author;
         this.post = bList.post;
         this.forum = bList.forum;
@@ -111,7 +133,78 @@ public class BlackList extends Model implements Parcelable {
         this.upload = bList.upload;
     }
 
-    public int getPostres() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public static String getTimeFormat() {
+        return TimeFormat;
+    }
+
+    public int getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    @PostFLag
+    public int getPost() {
+        return post;
+    }
+
+    public void setPost(@PostFLag int post) {
+        this.post = post;
+    }
+
+    @ForumFLag
+    public int getForum() {
+        return forum;
+    }
+
+    public void setForum(@ForumFLag int forum) {
+        this.forum = forum;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public boolean isUpload() {
+        return upload;
+    }
+
+    public void setUpload(boolean upload) {
+        this.upload = upload;
+    }
+
+    @StringRes
+    public int getPostRes() {
         switch (post) {
             case HIDE_POST:
                 return R.string.blacklist_flag_hide;
@@ -122,7 +215,8 @@ public class BlackList extends Model implements Parcelable {
         }
     }
 
-    public int getForumres() {
+    @StringRes
+    public int getForumRes() {
         switch (forum) {
             case HIDE_FORUM:
                 return R.string.blacklist_flag_hide;
@@ -133,7 +227,7 @@ public class BlackList extends Model implements Parcelable {
         }
     }
 
-    public boolean isFourmHide() {
+    public boolean isForumHide() {
         return forum == HIDE_FORUM;
     }
 
@@ -153,7 +247,7 @@ public class BlackList extends Model implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(authorid);
+        dest.writeInt(authorId);
         dest.writeString(author);
         dest.writeInt(post);
         dest.writeInt(forum);
@@ -165,7 +259,7 @@ public class BlackList extends Model implements Parcelable {
     @Override
     public String toString() {
         return "BlackList{" +
-                "authorid=" + authorid +
+                "authorId=" + authorId +
                 ", author='" + author + '\'' +
                 ", post=" + post +
                 ", forum=" + forum +
@@ -173,6 +267,10 @@ public class BlackList extends Model implements Parcelable {
                 ", timestamp=" + getTime() +
                 ", upload=" + upload +
                 '}';
+    }
+
+    public boolean getUpload() {
+        return this.upload;
     }
 
     @IntDef({NORMAL, HIDE_POST, DEL_POST})

@@ -31,6 +31,7 @@ import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.PostListRecyclerViewAdapter;
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegate;
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateBaseCardViewContainerImpl;
+import me.ykrank.s1next.view.internal.PagerScrollState;
 import me.ykrank.s1next.widget.EventBus;
 import rx.Observable;
 import rx.Subscription;
@@ -45,6 +46,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
     private static final String ARG_THREAD_ID = "thread_id";
     private static final String ARG_PAGE_NUM = "page_num";
     private static final String ARG_READ_PROGRESS = "read_progress";
+    private static final String ARG_PAGER_SCROLL_STATE = "pager_scroll_state";
 
     /**
      * Used for post post redirect.
@@ -60,6 +62,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
      * 之前记录的阅读进度
      */
     private ReadProgress readProgress;
+    private PagerScrollState scrollState;
     private boolean blacklistChanged = false;
 
     private RecyclerView mRecyclerView;
@@ -72,18 +75,18 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
     private Subscription changeSeletableSubscription;
 
     public static PostListPagerFragment newInstance(String threadId, int pageNum) {
-        return newInstance(threadId, pageNum, null, null);
+        return newInstance(threadId, pageNum, null, null, null);
     }
 
-    public static PostListPagerFragment newInstance(String threadId, int pageNum, ReadProgress progress) {
-        return newInstance(threadId, pageNum, null, progress);
+    public static PostListPagerFragment newInstance(String threadId, int pageNum, ReadProgress progress, PagerScrollState scrollState) {
+        return newInstance(threadId, pageNum, null, progress, scrollState);
     }
 
     public static PostListPagerFragment newInstance(String threadId, int pageNum, String postId) {
-        return newInstance(threadId, pageNum, postId, null);
+        return newInstance(threadId, pageNum, postId, null, null);
     }
 
-    private static PostListPagerFragment newInstance(String threadId, int pageNum, String postId, ReadProgress progress) {
+    private static PostListPagerFragment newInstance(String threadId, int pageNum, String postId, ReadProgress progress, PagerScrollState scrollState) {
         PostListPagerFragment fragment = new PostListPagerFragment();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_THREAD_ID, threadId);
@@ -92,6 +95,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
         }
         bundle.putInt(ARG_PAGE_NUM, pageNum);
         bundle.putParcelable(ARG_READ_PROGRESS, progress);
+        bundle.putParcelable(ARG_PAGER_SCROLL_STATE, scrollState);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -106,13 +110,14 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        App.getAppComponent(getContext()).inject(this);
+        App.getAppComponent().inject(this);
         super.onViewCreated(view, savedInstanceState);
 
         mThreadId = getArguments().getString(ARG_THREAD_ID);
         mPageNum = getArguments().getInt(ARG_PAGE_NUM);
         if (readProgress == null) {
             readProgress = getArguments().getParcelable(ARG_READ_PROGRESS);
+            scrollState = getArguments().getParcelable(ARG_PAGER_SCROLL_STATE);
         }
         L.leaveMsg("PostListPagerFragment##ThreadId:" + mThreadId + ",PageNum:" + mPageNum);
 
@@ -195,9 +200,9 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
         this.readProgress = readProgress;
         if (!isLoading()) {
             if (smooth) {
-                mRecyclerView.smoothScrollToPosition(readProgress.position);
+                mRecyclerView.smoothScrollToPosition(readProgress.getPosition());
             } else {
-                mRecyclerView.scrollToPosition(readProgress.position);
+                mRecyclerView.scrollToPosition(readProgress.getPosition());
             }
         }
     }
@@ -269,9 +274,9 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
                 blacklistChanged = false;
             } else if (pullUpToRefresh) {
 
-            } else if (readProgress != null && readProgress.scrollState == ReadProgress.BEFORE_SCROLL_POSITION) {
-                mRecyclerView.scrollToPosition(readProgress.position);
-                readProgress.scrollState = ReadProgress.FREE;
+            } else if (readProgress != null && scrollState.getState() == PagerScrollState.BEFORE_SCROLL_POSITION) {
+                mRecyclerView.scrollToPosition(readProgress.getPosition());
+                scrollState.setState(PagerScrollState.FREE);
             } else {
                 String quotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
                 if (!TextUtils.isEmpty(quotePostId)) {

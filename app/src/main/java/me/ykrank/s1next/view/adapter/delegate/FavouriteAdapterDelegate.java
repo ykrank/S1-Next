@@ -22,7 +22,7 @@ public final class FavouriteAdapterDelegate extends BaseAdapterDelegate<Favourit
 
     public FavouriteAdapterDelegate(Context context) {
         super(context);
-        App.getAppComponent(context).inject(this);
+        App.getAppComponent().inject(this);
     }
 
     @NonNull

@@ -51,7 +51,7 @@ abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
     @CallSuper
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AppComponent appComponent = App.getAppComponent(getContext());
+        AppComponent appComponent = App.getAppComponent();
         mS1Service = appComponent.getS1Service();
         mUser = appComponent.getUser();
         mUserValidator = appComponent.getUserValidator();

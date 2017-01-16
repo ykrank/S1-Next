@@ -27,7 +27,7 @@ public final class ThreadAdapterDelegate extends BaseAdapterDelegate<Thread, Thr
     public ThreadAdapterDelegate(Context context) {
         super(context);
 
-        App.getPrefComponent(context).inject(this);
+        App.getPrefComponent().inject(this);
     }
 
     @NonNull

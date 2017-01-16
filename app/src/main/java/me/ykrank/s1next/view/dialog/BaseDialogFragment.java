@@ -20,6 +20,6 @@ public abstract class BaseDialogFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        App.getAppComponent(getContext()).inject(this);
+        App.getAppComponent().inject(this);
     }
 }

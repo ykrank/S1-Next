@@ -40,18 +40,6 @@
             android:name="TD_CHANNEL_ID"
             android:value="play.google.com" />
 
-        <!-- ActiveAndroid -->
-        <meta-data
-            android:name="AA_DB_NAME"
-            android:value="s1.db" />
-        <meta-data
-            android:name="AA_DB_VERSION"
-            android:value="2" />
-        <meta-data
-            android:name="AA_MODELS"
-            android:value="me.ykrank.s1next.data.db.dbmodel.BlackList, 
-                me.ykrank.s1next.data.db.dbmodel.ReadProgress" />
-
         <activity
             android:name=".view.activity.LoginActivity"
             android:label="@string/activity_label_login"

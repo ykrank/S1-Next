@@ -58,7 +58,7 @@ public final class OkHttpStreamFetcher implements DataFetcher<InputStream> {
         this.mGlideUrl = glideUrl;
 
         mResources = App.get().getResources();
-        App.getPrefComponent(App.get()).inject(this);
+        App.getPrefComponent().inject(this);
     }
 
     /**

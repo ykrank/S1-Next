@@ -33,7 +33,7 @@ public final class EmoticonGridRecyclerAdapter
         mLayoutInflater = activity.getLayoutInflater();
         this.mEmoticons = emoticons;
         mEmoticonRequestBuilder = Glide.with(activity).from(Uri.class);
-        mEventBus = App.getAppComponent(activity).getEventBus();
+        mEventBus = App.getAppComponent().getEventBus();
 
         setHasStableIds(true);
     }

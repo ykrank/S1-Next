@@ -142,7 +142,7 @@ public enum AvatarUrlsCache {
         String smallAvatarUrl = Api.getAvatarSmallUrl(uid);
         String mediumAvatarUrl = Api.getAvatarMediumUrl(uid);
         String bigAvatarUrl = Api.getAvatarBigUrl(uid);
-        DownloadPreferencesManager manager = App.getPrefComponent(App.get())
+        DownloadPreferencesManager manager = App.getPrefComponent()
                 .getDownloadPreferencesManager();
         AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(manager, smallAvatarUrl));
         AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(manager, mediumAvatarUrl));

@@ -17,7 +17,9 @@ import me.ykrank.s1next.data.Wifi;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
+import me.ykrank.s1next.data.db.AppDaoSessionManager;
 import me.ykrank.s1next.viewmodel.UserViewModel;
+import me.ykrank.s1next.widget.AppDaoOpenHelper;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.PersistentHttpCookieStore;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
@@ -124,5 +126,17 @@ public final class AppModule {
     @Singleton
     DataTrackAgent provideDataTrackAgent() {
         return new DataTrackAgent();
+    }
+
+    @Provides
+    @Singleton
+    AppDaoOpenHelper provideAppDaoOpenHelper(Context context) {
+        return new AppDaoOpenHelper(context, BuildConfig.DB_NAME);
+    }
+
+    @Provides
+    @Singleton
+    AppDaoSessionManager provideAppDaoSessionManager(AppDaoOpenHelper helper) {
+        return new AppDaoSessionManager(helper);
     }
 }

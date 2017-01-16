@@ -2,13 +2,15 @@ package me.ykrank.s1next.data.db.dbmodel;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.IntDef;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Index;
+import org.greenrobot.greendao.annotation.Property;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,20 +21,8 @@ import java.util.Locale;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
-@Table(name = "ReadProgress")
-public class ReadProgress extends Model implements Parcelable {
-    /**
-     * 加载进度处于空闲状态
-     */
-    public static final int FREE = 0;
-    /**
-     * 加载进度处于滑动到指定页之前
-     */
-    public static final int BEFORE_SCROLL_PAGE = 1;
-    /**
-     * 加载进度处于滑动到指定位置之前
-     */
-    public static final int BEFORE_SCROLL_POSITION = 2;
+@Entity(nameInDb = "ReadProgress")
+public class ReadProgress implements Parcelable {
     public static final Creator<ReadProgress> CREATOR = new Creator<ReadProgress>() {
         @Override
         public ReadProgress createFromParcel(Parcel in) {
@@ -45,28 +35,29 @@ public class ReadProgress extends Model implements Parcelable {
         }
     };
     private static final String TimeFormat = "yyyy-MM-dd HH:mm";
+    @Id(autoincrement = true)
+    private Long id;
     /**
      * 帖子ID
      */
-    @Column(name = "ThreadId", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
-    public String threadId;
+    @Property(nameInDb = "ThreadId")
+    @Index(unique = true)
+    private String threadId;
     /**
      * 页数
      */
-    @Column(name = "Page")
-    public int page;
+    @Property(nameInDb = "Page")
+    private int page;
     /**
      * 位置
      */
-    @Column(name = "Position")
-    public int position;
+    @Property(nameInDb = "Position")
+    private int position;
     /**
      * 更新时间
      */
-    @Column(name = "Timestamp")
-    public long timestamp;
-    @ScrollState
-    public int scrollState;
+    @Property(nameInDb = "Timestamp")
+    private long timestamp;
 
     @SuppressWarnings("WrongConstant")
     protected ReadProgress(Parcel in) {
@@ -74,7 +65,6 @@ public class ReadProgress extends Model implements Parcelable {
         page = in.readInt();
         position = in.readInt();
         timestamp = in.readLong();
-        scrollState = in.readInt();
     }
 
     public ReadProgress() {
@@ -87,7 +77,15 @@ public class ReadProgress extends Model implements Parcelable {
         this.page = page;
         this.position = position;
         this.timestamp = System.currentTimeMillis();
-        this.scrollState = FREE;
+    }
+
+    @Generated(hash = 1629999723)
+    public ReadProgress(Long id, String threadId, int page, int position, long timestamp) {
+        this.id = id;
+        this.threadId = threadId;
+        this.page = page;
+        this.position = position;
+        this.timestamp = timestamp;
     }
 
     @Override
@@ -101,12 +99,55 @@ public class ReadProgress extends Model implements Parcelable {
         dest.writeInt(page);
         dest.writeInt(position);
         dest.writeLong(timestamp);
-        dest.writeInt(scrollState);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTime() {
         SimpleDateFormat sdf = new SimpleDateFormat(TimeFormat, Locale.getDefault());
         return sdf.format(new Date(timestamp));
+    }
+
+    public static String getTimeFormat() {
+        return TimeFormat;
+    }
+
+    public String getThreadId() {
+        return threadId;
+    }
+
+    public void setThreadId(String threadId) {
+        this.threadId = threadId;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public void copyFrom(ReadProgress oReadProgress) {
@@ -126,10 +167,5 @@ public class ReadProgress extends Model implements Parcelable {
                 '}';
     }
 
-    /**
-     * 加载进度
-     */
-    @IntDef({FREE, BEFORE_SCROLL_PAGE, BEFORE_SCROLL_POSITION})
-    public @interface ScrollState {
-    }
+    
 }

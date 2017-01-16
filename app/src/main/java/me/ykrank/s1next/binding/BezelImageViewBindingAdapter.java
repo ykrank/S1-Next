@@ -44,7 +44,7 @@ public final class BezelImageViewBindingAdapter {
             return;
         }
 
-        DownloadPreferencesManager downloadPreferencesManager = App.getPrefComponent(context)
+        DownloadPreferencesManager downloadPreferencesManager = App.getPrefComponent()
                 .getDownloadPreferencesManager();
         if (user.isLogged()) {
             AvatarUrlsCache.clearUserAvatarCache(user.getUid());
@@ -67,7 +67,7 @@ public final class BezelImageViewBindingAdapter {
 
     @BindingAdapter("uid")
     public static void loadAvatar(BezelImageView bezelImageView, String uid) {
-        DownloadPreferencesManager downloadPreferencesManager = App.getPrefComponent(bezelImageView.getContext())
+        DownloadPreferencesManager downloadPreferencesManager = App.getPrefComponent()
                 .getDownloadPreferencesManager();
         loadAvatar(bezelImageView, downloadPreferencesManager, uid, false);
     }

@@ -33,7 +33,6 @@ import me.ykrank.s1next.widget.track.DataTrackAgent;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -190,14 +189,7 @@ public final class BlackListSettingFragment extends Fragment {
     }
 
     Observable<Cursor> getSourceObservable() {
-        return Observable.create(new Observable.OnSubscribe<Cursor>() {
-            @Override
-            public void call(Subscriber<? super Cursor> subscriber) {
-                Cursor cursor = BlackListDbWrapper.getInstance().getBlackListCursor();
-                subscriber.onNext(cursor);
-                subscriber.onCompleted();
-            }
-        });
+        return BlackListDbWrapper.getInstance().getBlackListCursor();
     }
 
     @Override

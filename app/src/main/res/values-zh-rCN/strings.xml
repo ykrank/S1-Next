@@ -192,4 +192,5 @@
     <string name="user_rp_content">%1$d RP</string>
     <string name="user_shame_sense_content">%1$d 斤</string>
     <string name="title_friends">好友列表</string>
+    <string name="database_update_error">数据库升级异常</string>
 </resources>

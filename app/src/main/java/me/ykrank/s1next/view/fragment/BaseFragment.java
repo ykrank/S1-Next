@@ -41,7 +41,7 @@ public abstract class BaseFragment extends Fragment {
     @CallSuper
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        AppComponent appComponent = App.getAppComponent(getContext());
+        AppComponent appComponent = App.getAppComponent();
         mUserValidator = appComponent.getUserValidator();
         trackAgent = appComponent.getDataTrackAgent();
     }

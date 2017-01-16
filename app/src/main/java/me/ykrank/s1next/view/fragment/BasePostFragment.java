@@ -101,7 +101,7 @@ public abstract class BasePostFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        App.getPrefComponent(getContext()).inject(this);
+        App.getPrefComponent().inject(this);
 
         mReplyView.addTextChangedListener(new TextWatcher() {
 

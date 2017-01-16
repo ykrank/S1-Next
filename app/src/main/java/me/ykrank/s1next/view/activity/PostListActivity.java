@@ -74,7 +74,7 @@ public final class PostListActivity extends BaseActivity
     public static void startPostListActivity(Context context, ReadProgress readProgress) {
         Intent intent = new Intent(context, PostListActivity.class);
         Thread thread = new Thread();
-        thread.setId(readProgress.threadId);
+        thread.setId(readProgress.getThreadId());
         intent.putExtra(ARG_THREAD, thread);
         intent.putExtra(ARG_READ_PROGRESS, readProgress);
 
@@ -89,7 +89,7 @@ public final class PostListActivity extends BaseActivity
      * @return
      */
     public static Subscription clickStartPostListActivity(@NonNull View view, @NonNull Thread thread) {
-        ReadProgressPreferencesManager preferencesManager = App.getPrefComponent(view.getContext()).getReadProgressPreferencesManager();
+        ReadProgressPreferencesManager preferencesManager = App.getPrefComponent().getReadProgressPreferencesManager();
         if (preferencesManager.isLoadAuto()) {
             return OnceClickUtil.onceClickObservable(view, 1000)
                     .observeOn(Schedulers.io())

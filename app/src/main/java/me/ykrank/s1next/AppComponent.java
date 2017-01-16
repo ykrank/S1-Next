@@ -11,6 +11,9 @@ import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.Wifi;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
+import me.ykrank.s1next.data.db.AppDaoSessionManager;
+import me.ykrank.s1next.data.db.BlackListDbWrapper;
+import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.view.adapter.delegate.FavouriteAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmGroupsAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmLeftAdapterDelegate;
@@ -22,6 +25,7 @@ import me.ykrank.s1next.view.fragment.FavouriteListFragment;
 import me.ykrank.s1next.view.fragment.PmFragment;
 import me.ykrank.s1next.view.fragment.PostListPagerFragment;
 import me.ykrank.s1next.view.fragment.WebLoginFragment;
+import me.ykrank.s1next.view.fragment.setting.BackupPreferenceFragment;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
@@ -55,6 +59,8 @@ public interface AppComponent {
 
     DataTrackAgent getDataTrackAgent();
 
+    AppDaoSessionManager getAppDaoSessionManager();
+
     void inject(LogoutDialogFragment fragment);
 
     void inject(WebLoginFragment fragment);
@@ -76,4 +82,10 @@ public interface AppComponent {
     void inject(BlackListRemarkDialogFragment blackListRemarkDialogFragment);
 
     void inject(BaseDialogFragment baseDialogFragment);
+
+    void inject(BlackListDbWrapper blackListDbWrapper);
+
+    void inject(ReadProgressDbWrapper readProgressDbWrapper);
+
+    void inject(BackupPreferenceFragment backupPreferenceFragment);
 }
