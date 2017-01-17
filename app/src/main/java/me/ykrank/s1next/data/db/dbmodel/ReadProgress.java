@@ -170,6 +170,7 @@ public class ReadProgress implements Parcelable {
         this.timestamp = timestamp;
     }
 
+    @ScrollState
     public int getScrollState() {
         return scrollState;
     }

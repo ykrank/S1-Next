@@ -76,7 +76,7 @@ public class UserHomeActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setEnterTransition(new Slide());
         }
-        App.getPrefComponent(this).inject(this);
+        App.getPrefComponent().inject(this);
 
         String uid = getIntent().getStringExtra(ARG_UID);
         String name = getIntent().getStringExtra(ARG_USERNAME);

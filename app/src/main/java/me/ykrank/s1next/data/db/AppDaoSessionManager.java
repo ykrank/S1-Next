@@ -3,8 +3,6 @@ package me.ykrank.s1next.data.db;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 
-import org.greenrobot.greendao.database.Database;
-
 import me.ykrank.s1next.data.db.dbmodel.DaoMaster;
 import me.ykrank.s1next.data.db.dbmodel.DaoSession;
 
@@ -13,29 +11,38 @@ import me.ykrank.s1next.data.db.dbmodel.DaoSession;
  */
 
 public final class AppDaoSessionManager {
-    private Database database;
+    private DaoMaster.OpenHelper daoHelper;
     private final Supplier<DaoSession> mDaoSessionSupplier = new Supplier<DaoSession>() {
 
         @Override
         public DaoSession get() {
-            return new DaoMaster(database).newSession();
+            return new DaoMaster(daoHelper.getWritableDb()).newSession();
         }
     };
 
     private volatile Supplier<DaoSession> mDaoSessionMemorized = Suppliers.memoize(mDaoSessionSupplier);
 
-    public AppDaoSessionManager(Database database) {
-        this.database = database;
+    public AppDaoSessionManager(DaoMaster.OpenHelper daoHelper) {
+        this.daoHelper = daoHelper;
     }
 
     /**
-     * Used for re get daoSession if database change.
+     * Used for re invalidate daoSession if database change.
      */
-    public void reGetDaoSession() {
+    public void invalidateDaoSession() {
         mDaoSessionMemorized = Suppliers.memoize(mDaoSessionSupplier);
     }
 
-    public float getFontScale() {
-        return mFontScaleMemorized.get();
+    public DaoSession getDaoSession() {
+        return mDaoSessionMemorized.get();
+    }
+
+    /**
+     * close db, then call {@link #getDaoSession()} will throw null exception.
+     * you should call {@link #invalidateDaoSession()} before use db
+     */
+    public void closeDb() {
+        daoHelper.close();
+        mDaoSessionMemorized = null;
     }
 }

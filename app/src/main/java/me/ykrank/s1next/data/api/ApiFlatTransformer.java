@@ -49,7 +49,7 @@ public class ApiFlatTransformer {
     }
 
     public static Observable<AccountResultWrapper> flatMappedWithAuthenticityToken(Func1<String, Observable<AccountResultWrapper>> func) {
-        AppComponent component = App.getAppComponent(App.get());
+        AppComponent component = App.getAppComponent();
         return flatMappedWithAuthenticityToken(component.getS1Service(), component.getUserValidator(),
                 component.getUser(), func);
     }

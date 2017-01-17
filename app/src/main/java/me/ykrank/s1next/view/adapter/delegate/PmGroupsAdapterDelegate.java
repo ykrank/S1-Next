@@ -26,7 +26,7 @@ public final class PmGroupsAdapterDelegate extends BaseAdapterDelegate<PmGroup, 
 
     public PmGroupsAdapterDelegate(Context context) {
         super(context);
-        App.getAppComponent(context).inject(this);
+        App.getAppComponent().inject(this);
     }
 
     @NonNull

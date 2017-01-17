@@ -25,7 +25,7 @@ public final class PmRightAdapterDelegate extends BaseAdapterDelegate<Pm, PmRigh
 
     public PmRightAdapterDelegate(Context context) {
         super(context);
-        App.getAppComponent(context).inject(this);
+        App.getAppComponent().inject(this);
     }
 
     @NonNull

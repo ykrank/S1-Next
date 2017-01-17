@@ -102,7 +102,7 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        App.getPrefComponent(this).inject(this);
+        App.getPrefComponent().inject(this);
         super.onCreate(savedInstanceState);
         L.leaveMsg("SearchActivity");
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);

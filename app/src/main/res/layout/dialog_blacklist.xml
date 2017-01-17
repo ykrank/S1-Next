@@ -74,7 +74,7 @@
                 android:padding="@dimen/dialog_switch_padding"
                 android:text="@string/blacklist_hide_forum"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                app:checked="@{blackListViewModel.blacklist.isFourmHide()}" />
+                app:checked="@{blackListViewModel.blacklist.isForumHide()}" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_post"

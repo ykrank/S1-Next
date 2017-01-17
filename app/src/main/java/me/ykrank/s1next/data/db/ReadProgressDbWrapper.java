@@ -2,45 +2,56 @@ package me.ykrank.s1next.data.db;
 
 import android.support.annotation.NonNull;
 
-import com.activeandroid.query.Select;
+import javax.inject.Inject;
 
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
+import me.ykrank.s1next.data.db.dbmodel.ReadProgressDao;
+
+import static me.ykrank.s1next.data.db.dbmodel.ReadProgressDao.Properties;
 
 /**
  * 对黑名单数据库的操作包装
  * Created by AdminYkrank on 2016/2/23.
  */
 public class ReadProgressDbWrapper {
-    private static ReadProgressDbWrapper dbWrapper;
+    private static ReadProgressDbWrapper dbWrapper = new ReadProgressDbWrapper();
+
+    @Inject
+    AppDaoSessionManager appDaoSessionManager;
 
     private ReadProgressDbWrapper() {
+        App.getAppComponent().inject(this);
     }
 
     public static ReadProgressDbWrapper getInstance() {
-        if (dbWrapper == null) dbWrapper = new ReadProgressDbWrapper();
         return dbWrapper;
     }
 
-    public ReadProgress getWithThreadId(String threadId) {
-        return new Select().from(ReadProgress.class)
-                .where("ThreadId = ?", threadId)
-                .executeSingle();
+    private ReadProgressDao getReadProgressDao() {
+        return appDaoSessionManager.getDaoSession().getReadProgressDao();
     }
 
-    public Long saveReadProgress(@NonNull ReadProgress readProgress) {
-        ReadProgress oReadProgress = getWithThreadId(readProgress.threadId);
+    public ReadProgress getWithThreadId(String threadId) {
+        return getReadProgressDao().queryBuilder()
+                .where(Properties.ThreadId.eq(threadId))
+                .unique();
+    }
+
+    public void saveReadProgress(@NonNull ReadProgress readProgress) {
+        ReadProgress oReadProgress = getWithThreadId(readProgress.getThreadId());
         if (oReadProgress == null) {
-            return readProgress.save();
+            getReadProgressDao().save(readProgress);
         } else {
             oReadProgress.copyFrom(readProgress);
-            return oReadProgress.save();
+            getReadProgressDao().save(oReadProgress);
         }
     }
 
     public void delReadProgress(String threadId) {
         ReadProgress oReadProgress = getWithThreadId(threadId);
         if (oReadProgress != null) {
-            oReadProgress.delete();
+            getReadProgressDao().delete(oReadProgress);
         }
     }
 

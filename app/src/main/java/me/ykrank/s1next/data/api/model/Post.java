@@ -255,8 +255,8 @@ public final class Post implements Cloneable, SameItem {
         if (quoteName != null) {
             reply = replaceQuoteBr(reply);
             BlackList blackList = BlackListDbWrapper.getInstance().getBlackListDefault(-1, quoteName);
-            if (blackList != null && blackList.post != BlackList.NORMAL) {
-                return replaceBlockQuoteContent(reply, blackList.remark);
+            if (blackList != null && blackList.getPost() != BlackList.NORMAL) {
+                return replaceBlockQuoteContent(reply, blackList.getRemark());
             }
         }
         return reply;

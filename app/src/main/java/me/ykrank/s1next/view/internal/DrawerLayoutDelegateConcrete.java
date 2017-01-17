@@ -42,8 +42,8 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
 
     public DrawerLayoutDelegateConcrete(FragmentActivity activity, DrawerLayout drawerLayout, NavigationView navigationView) {
         super(activity, drawerLayout, navigationView);
-        trackAgent = App.getAppComponent(activity).getDataTrackAgent();
-        mUserViewModel = App.getAppComponent(activity).getUserViewModel();
+        trackAgent = App.getAppComponent().getDataTrackAgent();
+        mUserViewModel = App.getAppComponent().getUserViewModel();
         mUser = mUserViewModel.getUser();
     }
 

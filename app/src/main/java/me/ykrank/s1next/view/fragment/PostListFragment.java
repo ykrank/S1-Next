@@ -142,7 +142,7 @@ public final class PostListFragment extends BaseViewPagerFragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        App.getPrefComponent(getContext()).inject(this);
+        App.getPrefComponent().inject(this);
 
         Bundle bundle = getArguments();
         Thread thread = Preconditions.checkNotNull(bundle.getParcelable(ARG_THREAD));
@@ -157,8 +157,8 @@ public final class PostListFragment extends BaseViewPagerFragment
             //读取进度
             readProgress = bundle.getParcelable(ARG_READ_PROGRESS);
             if (readProgress != null) {
-                readProgress.scrollState = ReadProgress.BEFORE_SCROLL_PAGE;
-                jumpPage = readProgress.page;
+                readProgress.setScrollState(ReadProgress.BEFORE_SCROLL_PAGE);
+                jumpPage = readProgress.getPage();
             } else {
                 jumpPage = bundle.getInt(ARG_JUMP_PAGE, 0);
             }
@@ -393,7 +393,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         mReadProgressSubscription = RxJavaUtil.workWithUiThread(() -> {
             readProgress = dbWrapper.getWithThreadId(mThreadId);
             if (readProgress != null)
-                readProgress.scrollState = ReadProgress.BEFORE_SCROLL_PAGE;
+                readProgress.setScrollState(ReadProgress.BEFORE_SCROLL_PAGE);
         }, this::afterLoadReadProgress);
     }
 
@@ -402,12 +402,12 @@ public final class PostListFragment extends BaseViewPagerFragment
      */
     @MainThread
     private void afterLoadReadProgress() {
-        if (readProgress != null && readProgress.scrollState == ReadProgress.BEFORE_SCROLL_PAGE) {
-            readProgress.scrollState = ReadProgress.BEFORE_SCROLL_POSITION;
+        if (readProgress != null && readProgress.getScrollState() == ReadProgress.BEFORE_SCROLL_PAGE) {
+            readProgress.setScrollState(ReadProgress.BEFORE_SCROLL_POSITION);
             PostListPagerFragment fragment = getCurPostPageFragment();
             if (fragment != null) {
-                if (getCurrentPage() != readProgress.page - 1) {
-                    setCurrentPage(readProgress.page - 1);
+                if (getCurrentPage() != readProgress.getPage() - 1) {
+                    setCurrentPage(readProgress.getPage() - 1);
                     getCurPostPageFragment().setReadProgress(readProgress, false);
                 } else {
                     getCurPostPageFragment().setReadProgress(readProgress, true);
@@ -451,9 +451,9 @@ public final class PostListFragment extends BaseViewPagerFragment
                 // clear this arg string because we only need to tell PostListPagerFragment once
                 bundle.putString(ARG_QUOTE_POST_ID, null);
                 return PostListPagerFragment.newInstance(mThreadId, jumpPage, quotePostId);
-            } else if (readProgress != null && readProgress.page == i + 1
-                    && readProgress.scrollState == ReadProgress.BEFORE_SCROLL_PAGE) {
-                readProgress.scrollState = ReadProgress.BEFORE_SCROLL_POSITION;
+            } else if (readProgress != null && readProgress.getPage() == i + 1
+                    && readProgress.getScrollState() == ReadProgress.BEFORE_SCROLL_PAGE) {
+                readProgress.setScrollState(ReadProgress.BEFORE_SCROLL_POSITION);
                 return PostListPagerFragment.newInstance(mThreadId, i + 1, readProgress);
             } else {
                 return PostListPagerFragment.newInstance(mThreadId, i + 1);

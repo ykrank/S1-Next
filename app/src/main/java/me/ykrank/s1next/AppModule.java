@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.greenrobot.greendao.database.Database;
-
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +17,7 @@ import me.ykrank.s1next.data.Wifi;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
+import me.ykrank.s1next.data.db.AppDaoSessionManager;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.AppDaoOpenHelper;
 import me.ykrank.s1next.widget.EventBus;
@@ -132,12 +131,12 @@ public final class AppModule {
     @Provides
     @Singleton
     AppDaoOpenHelper provideAppDaoOpenHelper(Context context) {
-        return new AppDaoOpenHelper(context, "s1.db");
+        return new AppDaoOpenHelper(context, BuildConfig.DB_NAME);
     }
 
     @Provides
     @Singleton
-    Database provideAppDaoDatabase(AppDaoOpenHelper helper) {
-        return helper.getWritableDb();
+    AppDaoSessionManager provideAppDaoSessionManager(AppDaoOpenHelper helper) {
+        return new AppDaoSessionManager(helper);
     }
 }

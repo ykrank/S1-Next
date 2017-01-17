@@ -161,19 +161,21 @@ public class BlackList implements Parcelable {
         this.author = author;
     }
 
+    @PostFLag
     public int getPost() {
         return post;
     }
 
-    public void setPost(int post) {
+    public void setPost(@PostFLag int post) {
         this.post = post;
     }
 
+    @ForumFLag
     public int getForum() {
         return forum;
     }
 
-    public void setForum(int forum) {
+    public void setForum(@ForumFLag int forum) {
         this.forum = forum;
     }
 

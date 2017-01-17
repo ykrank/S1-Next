@@ -76,7 +76,7 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        App.getAppComponent(getContext()).inject(this);
+        App.getAppComponent().inject(this);
 
         toUid = getArguments().getString(ARG_TO_UID);
         toUsername = getArguments().getString(ARG_TO_USERNAME);

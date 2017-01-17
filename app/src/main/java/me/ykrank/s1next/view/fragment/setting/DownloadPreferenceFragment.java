@@ -30,7 +30,7 @@ public final class DownloadPreferenceFragment extends BasePreferenceFragment {
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
-        App.getPrefComponent(getActivity()).inject(this);
+        App.getPrefComponent().inject(this);
         addPreferencesFromResource(R.xml.preference_download);
     }
 

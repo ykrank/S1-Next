@@ -7,10 +7,7 @@ import android.net.Uri;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
-import android.text.TextUtils;
 
-import com.activeandroid.ActiveAndroid;
-import com.activeandroid.Configuration;
 import com.google.common.io.Files;
 
 import java.io.File;
@@ -20,8 +17,8 @@ import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.util.FilePickerUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.LooperUtil;
-import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
+import me.ykrank.s1next.util.SQLiteUtil;
 import rx.functions.Action1;
 
 import static me.ykrank.s1next.util.FilePickerUtil.dirPickIntent;
@@ -114,14 +111,11 @@ public class BackupDelegate {
             File destDir = new File(dirPath);
             if (destDir.isDirectory()) {
                 if (!dirPath.endsWith("/")) dirPath += "/";
-                String dbPath = ResourceUtil.getAppMeta(mContext, "AA_DB_NAME");
-                if (!TextUtils.isEmpty(dbPath)) {
-                    File dbFile = mContext.getDatabasePath(dbPath);
+                File dbFile = mContext.getDatabasePath(BuildConfig.DB_NAME);
                     File destFile = new File(dirPath + BACKUP_FILE_NAME);
                     if (!destFile.exists()) destFile.createNewFile();
                     Files.copy(dbFile, destFile);
                     return SUCCESS;
-                } else return NO_DATA;
             } else return IO_EXCEPTION;
         } catch (IOException e) {
             L.e("BackupError:", e);
@@ -142,12 +136,8 @@ public class BackupDelegate {
             String filePath = file.getPath();
             File srcFile = new File(filePath);
             if (srcFile.isFile()) {
-                Configuration dbConfiguration = new Configuration.Builder(mContext)
-                        .setDatabaseName(filePath).create();
-                ActiveAndroid.initialize(dbConfiguration);
-                String dbPath = ResourceUtil.getAppMeta(mContext, "AA_DB_NAME");
-                if (!TextUtils.isEmpty(dbPath)) {
-                    File dbFile = mContext.getDatabasePath(dbPath);
+                if (SQLiteUtil.isValidSQLite(filePath)) {
+                    File dbFile = mContext.getDatabasePath(BuildConfig.DB_NAME);
                     Files.copy(srcFile, dbFile);
                     return SUCCESS;
                 }
@@ -161,12 +151,6 @@ public class BackupDelegate {
         } catch (Exception e) {
             L.e("RestoreError:", e);
             return UNKNOWN_EXCEPTION;
-        } finally {
-            try {
-                ActiveAndroid.dispose();
-            } catch (Exception e) {
-                L.e("ActiveAndroid dispose error:" + e.getMessage());
-            }
         }
     }
 

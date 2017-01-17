@@ -1,6 +1,5 @@
 package me.ykrank.s1next;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.os.StrictMode;
 import android.support.multidex.MultiDexApplication;
@@ -37,12 +36,12 @@ public final class App extends MultiDexApplication {
         return sApp;
     }
 
-    public static AppComponent getAppComponent(Context context) {
-        return ((App) context.getApplicationContext()).mAppComponent;
+    public static AppComponent getAppComponent() {
+        return sApp.mAppComponent;
     }
 
-    public static PrefComponent getPrefComponent(Context context) {
-        return ((App) context.getApplicationContext()).mPrefComponent;
+    public static PrefComponent getPrefComponent() {
+        return sApp.mPrefComponent;
     }
 
     public RefWatcher getRefWatcher() {

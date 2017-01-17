@@ -50,7 +50,7 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        App.getAppComponent(getContext()).inject(this);
+        App.getAppComponent().inject(this);
         super.onViewCreated(view, savedInstanceState);
         L.leaveMsg("FavouriteListFragment");
 

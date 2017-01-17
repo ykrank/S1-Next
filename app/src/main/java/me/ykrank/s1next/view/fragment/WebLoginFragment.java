@@ -60,7 +60,7 @@ public final class WebLoginFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        App.getAppComponent(getContext()).inject(this);
+        App.getAppComponent().inject(this);
         mFragmentHelpBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_webview, container,
                 false);
         mWebView = mFragmentHelpBinding.webView;

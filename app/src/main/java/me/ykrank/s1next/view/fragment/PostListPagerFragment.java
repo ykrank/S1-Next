@@ -106,7 +106,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        App.getAppComponent(getContext()).inject(this);
+        App.getAppComponent().inject(this);
         super.onViewCreated(view, savedInstanceState);
 
         mThreadId = getArguments().getString(ARG_THREAD_ID);
@@ -195,9 +195,9 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
         this.readProgress = readProgress;
         if (!isLoading()) {
             if (smooth) {
-                mRecyclerView.smoothScrollToPosition(readProgress.position);
+                mRecyclerView.smoothScrollToPosition(readProgress.getPosition());
             } else {
-                mRecyclerView.scrollToPosition(readProgress.position);
+                mRecyclerView.scrollToPosition(readProgress.getPosition());
             }
         }
     }
@@ -269,9 +269,9 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
                 blacklistChanged = false;
             } else if (pullUpToRefresh) {
 
-            } else if (readProgress != null && readProgress.scrollState == ReadProgress.BEFORE_SCROLL_POSITION) {
-                mRecyclerView.scrollToPosition(readProgress.position);
-                readProgress.scrollState = ReadProgress.FREE;
+            } else if (readProgress != null && readProgress.getScrollState() == ReadProgress.BEFORE_SCROLL_POSITION) {
+                mRecyclerView.scrollToPosition(readProgress.getPosition());
+                readProgress.setScrollState(ReadProgress.FREE);
             } else {
                 String quotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
                 if (!TextUtils.isEmpty(quotePostId)) {

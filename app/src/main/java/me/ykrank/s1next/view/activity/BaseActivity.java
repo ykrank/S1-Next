@@ -112,7 +112,7 @@ public abstract class BaseActivity extends OriginActivity
     @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-        App.getPrefComponent(this).inject(this);
+        App.getPrefComponent().inject(this);
         // change the theme depends on preference
         if (!mThemeManager.isDefaultTheme()) {
             if (isTranslucent()) {

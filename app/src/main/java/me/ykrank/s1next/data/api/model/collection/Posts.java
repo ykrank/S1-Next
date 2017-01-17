@@ -58,19 +58,19 @@ public final class Posts extends Account {
         Post nPost = post;
         BlackListDbWrapper blackListWrapper = BlackListDbWrapper.getInstance();
         BlackList blackList = blackListWrapper.getBlackListDefault(Integer.valueOf(post.getAuthorId()), post.getAuthorName());
-        if (blackList == null || blackList.post == BlackList.NORMAL) {
+        if (blackList == null || blackList.getPost() == BlackList.NORMAL) {
             if (post.isHide()) {
                 nPost = post.clone();
                 nPost.setHide(false);
             }
-        } else if (blackList.post == BlackList.DEL_POST) {
+        } else if (blackList.getPost() == BlackList.DEL_POST) {
             nPost = null;
-        } else if (blackList.post == BlackList.HIDE_POST) {
+        } else if (blackList.getPost() == BlackList.HIDE_POST) {
             if (!post.isHide()) {
                 nPost = post.clone();
                 nPost.setHide(true);
             }
-            nPost.setRemark(blackList.remark);
+            nPost.setRemark(blackList.getRemark());
         }
         return nPost;
     }

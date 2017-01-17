@@ -25,7 +25,7 @@ public final class PmLeftAdapterDelegate extends BaseAdapterDelegate<Pm, PmLeftA
 
     public PmLeftAdapterDelegate(Context context) {
         super(context);
-        App.getAppComponent(context).inject(this);
+        App.getAppComponent().inject(this);
     }
 
     @NonNull
