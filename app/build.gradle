@@ -79,7 +79,7 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField "String", "DB_NAME", "s1.db"
+        it.buildConfigField "String", "DB_NAME", '"s1.db"'
     }
 
 }

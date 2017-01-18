@@ -11,7 +11,6 @@ import javax.inject.Inject;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.db.dbmodel.BlackList;
 import me.ykrank.s1next.data.db.dbmodel.BlackListDao;
-import me.ykrank.s1next.util.LooperUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import rx.Observable;
 
@@ -48,12 +47,8 @@ public class BlackListDbWrapper {
 
     public Observable<Cursor> getBlackListCursor() {
         return Observable.just(getBlackListDao().queryBuilder())
-                .compose(RxJavaUtil.iOTransformer())
-                .map(builder -> {
-                    // TODO: 2017/1/17  remove this
-                    LooperUtil.enforceOnMainThread();
-                    return builder.buildCursor().query();
-                });
+                .map(builder -> builder.buildCursor().query())
+                .compose(RxJavaUtil.iOTransformer());
     }
 
     public BlackList fromCursor(@NonNull Cursor cursor) {

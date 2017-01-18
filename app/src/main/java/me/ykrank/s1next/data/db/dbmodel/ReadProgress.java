@@ -2,7 +2,6 @@ package me.ykrank.s1next.data.db.dbmodel;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.IntDef;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -24,18 +23,6 @@ import java.util.Locale;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
 @Entity(nameInDb = "ReadProgress")
 public class ReadProgress implements Parcelable {
-    /**
-     * 加载进度处于空闲状态
-     */
-    public static final int FREE = 0;
-    /**
-     * 加载进度处于滑动到指定页之前
-     */
-    public static final int BEFORE_SCROLL_PAGE = 1;
-    /**
-     * 加载进度处于滑动到指定位置之前
-     */
-    public static final int BEFORE_SCROLL_POSITION = 2;
     public static final Creator<ReadProgress> CREATOR = new Creator<ReadProgress>() {
         @Override
         public ReadProgress createFromParcel(Parcel in) {
@@ -71,8 +58,6 @@ public class ReadProgress implements Parcelable {
      */
     @Property(nameInDb = "Timestamp")
     private long timestamp;
-    @ScrollState
-    private int scrollState;
 
     @SuppressWarnings("WrongConstant")
     protected ReadProgress(Parcel in) {
@@ -80,7 +65,6 @@ public class ReadProgress implements Parcelable {
         page = in.readInt();
         position = in.readInt();
         timestamp = in.readLong();
-        scrollState = in.readInt();
     }
 
     public ReadProgress() {
@@ -93,18 +77,15 @@ public class ReadProgress implements Parcelable {
         this.page = page;
         this.position = position;
         this.timestamp = System.currentTimeMillis();
-        this.scrollState = FREE;
     }
 
-    @Generated(hash = 459708891)
-    public ReadProgress(Long id, String threadId, int page, int position, long timestamp,
-                        int scrollState) {
+    @Generated(hash = 1629999723)
+    public ReadProgress(Long id, String threadId, int page, int position, long timestamp) {
         this.id = id;
         this.threadId = threadId;
         this.page = page;
         this.position = position;
         this.timestamp = timestamp;
-        this.scrollState = scrollState;
     }
 
     @Override
@@ -118,7 +99,6 @@ public class ReadProgress implements Parcelable {
         dest.writeInt(page);
         dest.writeInt(position);
         dest.writeLong(timestamp);
-        dest.writeInt(scrollState);
     }
 
     public Long getId() {
@@ -170,15 +150,6 @@ public class ReadProgress implements Parcelable {
         this.timestamp = timestamp;
     }
 
-    @ScrollState
-    public int getScrollState() {
-        return scrollState;
-    }
-
-    public void setScrollState(int scrollState) {
-        this.scrollState = scrollState;
-    }
-
     public void copyFrom(ReadProgress oReadProgress) {
         this.threadId = oReadProgress.threadId;
         this.page = oReadProgress.page;
@@ -196,10 +167,5 @@ public class ReadProgress implements Parcelable {
                 '}';
     }
 
-    /**
-     * 加载进度
-     */
-    @IntDef({FREE, BEFORE_SCROLL_PAGE, BEFORE_SCROLL_POSITION})
-    public @interface ScrollState {
-    }
+    
 }
