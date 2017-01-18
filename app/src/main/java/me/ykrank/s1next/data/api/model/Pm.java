@@ -15,7 +15,7 @@ public class Pm implements Cloneable, SameItem {
     private String pmId;
     @JsonProperty("pmtype")
     private String pmType;
-    @JsonProperty("authorId")
+    @JsonProperty("authorid")
     private String authorId;
     private String author;
     private String subject;

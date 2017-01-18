@@ -22,7 +22,7 @@ import me.ykrank.s1next.data.SameItem;
 public class Note implements Parcelable, SameItem {
     @JsonProperty("author")
     private String author;
-    @JsonProperty("authorId")
+    @JsonProperty("authorid")
     private String authorId;
     @JsonProperty("dateline")
     private long dateline;
