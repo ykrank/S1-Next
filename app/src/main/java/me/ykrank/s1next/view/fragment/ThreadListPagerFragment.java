@@ -9,12 +9,12 @@ import android.view.View;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import me.ykrank.s1next.data.api.model.Forum;
 import me.ykrank.s1next.data.api.model.collection.Threads;
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.adapter.ThreadRecyclerViewAdapter;
-import rx.Observable;
 
 /**
  * A Fragment representing one of the pages of threads.

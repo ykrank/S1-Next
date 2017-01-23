@@ -11,6 +11,7 @@ import android.view.View;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
@@ -25,7 +26,6 @@ import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
-import rx.Subscription;
 
 /**
  * A Fragment includes {@link android.support.v4.view.ViewPager}
@@ -46,7 +46,7 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
 
     private CharSequence mTitle;
 
-    private Subscription mEventBusSubscription, mApiSubscription;
+    private Disposable mEventBusDisposable, mApiDisposable;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -56,11 +56,11 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
 
         mTitle = getText(R.string.favourites);
 
-        mEventBusSubscription = mEventBus.get()
+        mEventBusDisposable = mEventBus.get()
                 .ofType(FavoriteRemoveEvent.class)
                 .subscribe(event -> {
                     // reload when favorite remove
-                    mApiSubscription = ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
+                    mApiDisposable = ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
                             token -> s1Service.removeThreadFavorite(token, event.getFavId()))
                             .compose(RxJavaUtil.iOTransformer())
                             .subscribe(wrapper -> {
@@ -72,8 +72,8 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
 
     @Override
     public void onDestroyView() {
-        RxJavaUtil.unsubscribeIfNotNull(mApiSubscription);
-        RxJavaUtil.unsubscribeIfNotNull(mEventBusSubscription);
+        RxJavaUtil.disposeIfNotNull(mApiDisposable);
+        RxJavaUtil.disposeIfNotNull(mEventBusDisposable);
         super.onDestroyView();
     }
 

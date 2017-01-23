@@ -9,7 +9,7 @@ import java.io.IOException;
 import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.ApiException;
-import retrofit2.adapter.rxjava.HttpException;
+import retrofit2.adapter.rxjava2.HttpException;
 
 public final class ErrorUtil {
 

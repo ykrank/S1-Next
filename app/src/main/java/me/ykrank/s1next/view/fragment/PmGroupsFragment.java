@@ -10,6 +10,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
 import me.ykrank.s1next.data.api.model.PmGroup;
 import me.ykrank.s1next.data.api.model.collection.PmGroups;
 import me.ykrank.s1next.data.api.model.wrapper.BaseWrapper;
@@ -19,7 +20,6 @@ import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.view.adapter.PmGroupsRecyclerViewAdapter;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
-import rx.Observable;
 
 
 public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<BaseWrapper<PmGroups>> {

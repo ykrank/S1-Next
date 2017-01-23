@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import io.reactivex.subjects.PublishSubject;
 import me.ykrank.s1next.util.LooperUtil;
-import rx.subjects.PublishSubject;
 
 /**
  * See https://code.google.com/p/guava-libraries/wiki/EventBusExplained

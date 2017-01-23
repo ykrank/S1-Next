@@ -27,7 +27,7 @@ import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
@@ -81,7 +81,7 @@ public final class AppModule {
                 .baseUrl(Api.BASE_API_URL)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
                 .create(S1Service.class);
     }

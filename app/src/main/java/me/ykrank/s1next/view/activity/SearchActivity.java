@@ -39,6 +39,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
@@ -59,7 +60,6 @@ import me.ykrank.s1next.widget.track.DataTrackAgent;
 import me.ykrank.s1next.widget.track.event.SearchTrackEvent;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
-import rx.Subscription;
 
 /**
  * Created by ykrank on 2016/9/28 0028.
@@ -88,7 +88,7 @@ public class SearchActivity extends BaseActivity {
 
     private android.support.transition.Transition autoTransitionCompat;
 
-    private Subscription mSubscription;
+    private Disposable mDisposable;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, SearchActivity.class));
@@ -131,7 +131,7 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        RxJavaUtil.unsubscribeIfNotNull(mSubscription);
+        RxJavaUtil.disposeIfNotNull(mDisposable);
         super.onDestroy();
     }
 
@@ -310,7 +310,7 @@ public class SearchActivity extends BaseActivity {
         searchView.clearFocus();
 //        dataManager.searchFor(query);
 
-        mSubscription = ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
+        mDisposable = ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
                 token -> s1Service.searchForum(token, "yes", query))
                 .map(SearchWrapper::fromSource)
                 .compose(RxJavaUtil.iOTransformer())

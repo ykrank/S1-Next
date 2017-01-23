@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import io.reactivex.Observable;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.collection.ForumGroups;
@@ -22,7 +23,6 @@ import me.ykrank.s1next.view.adapter.ForumRecyclerViewAdapter;
 import me.ykrank.s1next.view.internal.ToolbarDropDownInterface;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
-import rx.Observable;
 
 /**
  * A Fragment represents forum list.

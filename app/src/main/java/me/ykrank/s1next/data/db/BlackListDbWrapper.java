@@ -8,11 +8,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.db.dbmodel.BlackList;
 import me.ykrank.s1next.data.db.dbmodel.BlackListDao;
 import me.ykrank.s1next.util.RxJavaUtil;
-import rx.Observable;
 
 import static me.ykrank.s1next.data.db.dbmodel.BlackListDao.Properties;
 

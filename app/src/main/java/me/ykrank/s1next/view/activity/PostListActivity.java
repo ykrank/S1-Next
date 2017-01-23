@@ -12,6 +12,9 @@ import android.view.View;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Thread;
@@ -23,9 +26,6 @@ import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.OnceClickUtil;
 import me.ykrank.s1next.view.fragment.PostListFragment;
 import me.ykrank.s1next.widget.WifiBroadcastReceiver;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * An Activity which includes {@link android.support.v4.view.ViewPager}
@@ -88,7 +88,7 @@ public final class PostListActivity extends BaseActivity
      * @param thread 帖子信息
      * @return
      */
-    public static Subscription clickStartPostListActivity(@NonNull View view, @NonNull Thread thread) {
+    public static Disposable clickStartPostListActivity(@NonNull View view, @NonNull Thread thread) {
         ReadProgressPreferencesManager preferencesManager = App.getPrefComponent().getReadProgressPreferencesManager();
         if (preferencesManager.isLoadAuto()) {
             return OnceClickUtil.onceClickObservable(view, 1000)

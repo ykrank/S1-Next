@@ -5,24 +5,24 @@ import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
 
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Favourite;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.event.FavoriteRemoveEvent;
 import me.ykrank.s1next.view.activity.PostListActivity;
 import me.ykrank.s1next.widget.EventBus;
-import rx.Subscription;
-import rx.functions.Func1;
 
 
 public final class FavouriteViewModel {
 
     public final ObservableField<Favourite> favourite = new ObservableField<>();
 
-    public final ObservableField<Func1<View, Subscription>> subscription = new ObservableField<>();
+    public final ObservableField<Function<View, Disposable>> disposable = new ObservableField<>();
 
-    public void setSubscription() {
-        subscription.set(v -> {
+    public void setDisposable() {
+        disposable.set(v -> {
             Thread thread = new Thread();
             Favourite favourite = this.favourite.get();
             thread.setId(favourite.getId());

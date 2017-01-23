@@ -6,13 +6,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import io.reactivex.Observable;
 import me.ykrank.s1next.data.api.model.collection.Favourites;
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.FavouriteRecyclerViewAdapter;
 import me.ykrank.s1next.view.internal.PagerCallback;
-import rx.Observable;
 
 /**
  * A Fragment representing one of the pages of favourites.

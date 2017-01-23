@@ -1,27 +1,30 @@
 package me.ykrank.s1next.util;
 
+import com.google.common.base.Supplier;
+
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.Single;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.functions.Func0;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.SingleTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public final class RxJavaUtil {
+    public static final Object NULL = "";
 
     private RxJavaUtil() {
     }
 
     /**
-     * @see Subscription#unsubscribe()
+     * @see Disposable#dispose()
      */
-    public static void unsubscribeIfNotNull(Subscription subscription) {
-        if (subscription != null) {
-            subscription.unsubscribe();
+    public static void disposeIfNotNull(Disposable disposable) {
+        if (disposable != null) {
+            disposable.dispose();
         }
     }
 
@@ -32,7 +35,7 @@ public final class RxJavaUtil {
      * @param uiAction   主线程
      * @return 订单
      */
-    public static Subscription workWithUiThread(Action0 workAction, Action0 uiAction) {
+    public static Disposable workWithUiThread(Action workAction, Action uiAction) {
         return workWithUiThread(workAction, uiAction, Throwable::printStackTrace);
     }
 
@@ -44,12 +47,12 @@ public final class RxJavaUtil {
      * @param error      错误回调
      * @return 订单
      */
-    public static Subscription workWithUiThread(Action0 workAction, Action0 uiAction, Action1<Throwable> error) {
-        return Observable.just(null)
-                .doOnNext(i -> workAction.call())
+    public static Disposable workWithUiThread(Action workAction, Action uiAction, Consumer<Throwable> error) {
+        return Observable.just(NULL)
+                .doOnNext(i -> workAction.run())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(o -> uiAction.call(), error);
+                .subscribe(o -> uiAction.run(), error);
     }
 
     /**
@@ -60,7 +63,7 @@ public final class RxJavaUtil {
      * @param <R>        返回值的类型
      * @return 订单
      */
-    public static <R> Subscription workWithUiResult(Func0<R> workAction, Action1<R> uiAction) {
+    public static <R> Disposable workWithUiResult(Supplier<R> workAction, Consumer<R> uiAction) {
         return workWithUiResult(workAction, uiAction, Throwable::printStackTrace);
     }
 
@@ -73,25 +76,25 @@ public final class RxJavaUtil {
      * @param <R>        返回值的类型
      * @return 订单
      */
-    public static <R> Subscription workWithUiResult(Func0<R> workAction, Action1<R> uiAction, Action1<Throwable> error) {
-        return Observable.just(null)
-                .map(n -> workAction.call())
+    public static <R> Disposable workWithUiResult(Supplier<R> workAction, Consumer<R> uiAction, Consumer<Throwable> error) {
+        return Observable.just(NULL)
+                .map(n -> workAction.get())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(uiAction, error);
     }
 
-    public static <T> Observable.Transformer<T, T> iOTransformer() {
+    public static <T> ObservableTransformer<T, T> iOTransformer() {
         return observable -> observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public static <T> Single.Transformer<T, T> iOSingleTransformer() {
+    public static <T> SingleTransformer<T, T> iOSingleTransformer() {
         return observable -> observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public static <T> Observable.Transformer<T, T> clickThrottleTransformer() {
+    public static <T> ObservableTransformer<T, T> clickThrottleTransformer() {
         return observable -> observable.throttleFirst(1, TimeUnit.SECONDS);
     }
 }

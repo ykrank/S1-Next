@@ -18,6 +18,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.S1Service;
@@ -31,8 +33,6 @@ import me.ykrank.s1next.view.dialog.ReplyRequestDialogFragment;
 import me.ykrank.s1next.view.internal.NewThreadCacheModel;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
-import rx.Single;
-import rx.Subscription;
 
 /**
  * A Fragment shows {@link EditText} to let the user enter reply.
@@ -50,7 +50,7 @@ public final class NewThreadFragment extends BasePostFragment {
     ObjectMapper objectMapper;
     private String cacheKey;
     private int mForumId;
-    private Subscription mSubscription;
+    private Disposable mDisposable;
 
     private EditText titleEditText;
     private Spinner typeSpinner;
@@ -87,7 +87,7 @@ public final class NewThreadFragment extends BasePostFragment {
 
     @Override
     public void onDestroy() {
-        RxJavaUtil.unsubscribeIfNotNull(mSubscription);
+        RxJavaUtil.disposeIfNotNull(mDisposable);
         super.onDestroy();
     }
 
@@ -156,7 +156,7 @@ public final class NewThreadFragment extends BasePostFragment {
     }
 
     @Override
-    public Subscription resumeFromCache(Single<String> cache) {
+    public Disposable resumeFromCache(Single<String> cache) {
         return cache.map(s -> {
             try {
                 if (TextUtils.isEmpty(s)){
@@ -188,7 +188,7 @@ public final class NewThreadFragment extends BasePostFragment {
     }
 
     private void init() {
-        mSubscription = mS1Service.getNewThreadInfo(mForumId)
+        mDisposable = mS1Service.getNewThreadInfo(mForumId)
                 .map(ThreadType::fromXmlString)
                 .compose(RxJavaUtil.iOTransformer())
                 .subscribe(types -> {
