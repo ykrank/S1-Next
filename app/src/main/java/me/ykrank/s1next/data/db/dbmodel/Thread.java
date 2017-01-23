@@ -3,6 +3,8 @@ package me.ykrank.s1next.data.db.dbmodel;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.common.base.Objects;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
@@ -115,5 +117,27 @@ public class Thread implements Parcelable {
         dest.writeString(threadId);
         dest.writeLong(lastCountWhenView);
         dest.writeLong(timestamp);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Thread thread = (Thread) o;
+        return lastCountWhenView == thread.lastCountWhenView &&
+                timestamp == thread.timestamp &&
+                Objects.equal(id, thread.id) &&
+                Objects.equal(threadId, thread.threadId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, threadId, lastCountWhenView, timestamp);
+    }
+
+    public void copyFrom(Thread oThread) {
+        this.threadId = oThread.threadId;
+        this.lastCountWhenView = oThread.lastCountWhenView;
+        this.timestamp = oThread.timestamp;
     }
 }
