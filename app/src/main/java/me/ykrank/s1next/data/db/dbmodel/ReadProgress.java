@@ -61,6 +61,7 @@ public class ReadProgress implements Parcelable {
 
     @SuppressWarnings("WrongConstant")
     protected ReadProgress(Parcel in) {
+        id = in.readLong();
         threadId = in.readString();
         page = in.readInt();
         position = in.readInt();
@@ -68,7 +69,7 @@ public class ReadProgress implements Parcelable {
     }
 
     public ReadProgress() {
-        super();
+        this.timestamp = System.currentTimeMillis();
     }
 
     public ReadProgress(String threadId, int page, int position) {
@@ -95,6 +96,7 @@ public class ReadProgress implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
         dest.writeString(threadId);
         dest.writeInt(page);
         dest.writeInt(position);
@@ -167,5 +169,5 @@ public class ReadProgress implements Parcelable {
                 '}';
     }
 
-    
+
 }

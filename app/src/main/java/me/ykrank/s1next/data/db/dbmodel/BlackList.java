@@ -87,6 +87,7 @@ public class BlackList implements Parcelable {
 
     @SuppressWarnings("WrongConstant")
     protected BlackList(Parcel in) {
+        id = in.readLong();
         authorId = in.readInt();
         author = in.readString();
         post = in.readInt();
@@ -247,6 +248,7 @@ public class BlackList implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
         dest.writeInt(authorId);
         dest.writeString(author);
         dest.writeInt(post);
