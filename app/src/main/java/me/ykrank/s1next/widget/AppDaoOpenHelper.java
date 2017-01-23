@@ -43,7 +43,6 @@ public class AppDaoOpenHelper extends DaoMaster.OpenHelper {
     private void update2to3(Database db, int oldVersion, int newVersion) {
         db.beginTransaction();
         try {
-            // TODO: 2017/1/18  数据库更新
             String tempDbBlackList = DB_BLACKLIST + "_temp";
             String tempDbReadProgress = DB_READ_PROGRESS + "_temp";
             // rename the old table
@@ -61,7 +60,7 @@ public class AppDaoOpenHelper extends DaoMaster.OpenHelper {
             db.execSQL("DROP TABLE " + tempDbReadProgress + ";");
             db.setTransactionSuccessful();
         } catch (Throwable e) {
-            L.e(e);
+            L.report(e);
             Toast.makeText(App.get(), R.string.database_update_error, Toast.LENGTH_LONG).show();
         } finally {
             db.endTransaction();
