@@ -14,6 +14,7 @@ import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.data.db.AppDaoSessionManager;
 import me.ykrank.s1next.data.db.BlackListDbWrapper;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
+import me.ykrank.s1next.data.db.ThreadDbWrapper;
 import me.ykrank.s1next.view.adapter.delegate.FavouriteAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmGroupsAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmLeftAdapterDelegate;
@@ -88,4 +89,6 @@ public interface AppComponent {
     void inject(ReadProgressDbWrapper readProgressDbWrapper);
 
     void inject(BackupPreferenceFragment backupPreferenceFragment);
+
+    void inject(ThreadDbWrapper threadDbWrapper);
 }
