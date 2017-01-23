@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
@@ -31,7 +32,6 @@ import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.view.adapter.PmRecyclerViewAdapter;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
-import rx.Observable;
 
 /**
  * Created by ykrank on 2016/11/12 0012.

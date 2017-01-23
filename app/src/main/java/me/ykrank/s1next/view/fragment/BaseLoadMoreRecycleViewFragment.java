@@ -8,11 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import me.ykrank.s1next.data.api.ApiFlatTransformer;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.viewmodel.LoadingViewModel;
-import rx.Observable;
-import rx.Subscription;
 
 /**
  * Created by ykrank on 2016/11/12 0012.
@@ -28,7 +28,7 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
 
     private int mPageNum = 1;
     private int mPageCount;
-    private Subscription loadMoreSubscription;
+    private Disposable loadMoreDisposable;
 
     private int footerProgressPosition = -1;
 
@@ -62,7 +62,7 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
 
     @Override
     public void onDestroy() {
-        RxJavaUtil.unsubscribeIfNotNull(loadMoreSubscription);
+        RxJavaUtil.disposeIfNotNull(loadMoreDisposable);
         super.onDestroy();
     }
 
@@ -85,7 +85,7 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
         // dismiss Snackbar in order to let user see the ProgressBar
         // when we start to loadViewPager new data
         mCoordinatorLayoutAnchorDelegate.dismissSnackbarIfExist();
-        loadMoreSubscription = getSourceObservable(mPageNum)
+        loadMoreDisposable = getSourceObservable(mPageNum)
                 .map(d -> appendNewData(getRetainedFragment().data, d))
                 .compose(ApiFlatTransformer.apiErrorTransformer())
                 .compose(RxJavaUtil.iOTransformer())

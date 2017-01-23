@@ -7,18 +7,18 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
+import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.PmGroup;
 import me.ykrank.s1next.data.event.PmGroupClickEvent;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.fragment.PmFragment;
 import me.ykrank.s1next.view.fragment.PmGroupsFragment;
-import rx.Subscription;
 
 
 public class PmActivity extends BaseActivity {
 
-    private Subscription mSubscription;
+    private Disposable mDisposable;
 
     private Fragment fragment;
 
@@ -39,7 +39,7 @@ public class PmActivity extends BaseActivity {
                     .commit();
         }
 
-        mSubscription = mEventBus.get()
+        mDisposable = mEventBus.get()
                 .ofType(PmGroupClickEvent.class)
                 .subscribe(event -> {
                     PmGroup pmGroup = event.getPmGroup();
@@ -61,7 +61,7 @@ public class PmActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        RxJavaUtil.unsubscribeIfNotNull(mSubscription);
+        RxJavaUtil.disposeIfNotNull(mDisposable);
         super.onDestroy();
     }
 

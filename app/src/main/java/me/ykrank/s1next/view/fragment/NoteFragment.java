@@ -10,6 +10,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
 import me.ykrank.s1next.data.api.model.Note;
 import me.ykrank.s1next.data.api.model.collection.Notes;
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
@@ -19,7 +20,6 @@ import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.view.adapter.NoteRecyclerViewAdapter;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
-import rx.Observable;
 
 /**
  * Created by ykrank on 2017/1/5.

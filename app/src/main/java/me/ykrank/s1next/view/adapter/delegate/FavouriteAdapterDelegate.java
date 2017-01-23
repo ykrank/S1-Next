@@ -45,7 +45,7 @@ public final class FavouriteAdapterDelegate extends BaseAdapterDelegate<Favourit
     public void onBindViewHolderData(Favourite favourite, int position, @NonNull BindingViewHolder holder) {
         ItemFavouriteBinding binding = holder.itemFavouriteBinding;
         binding.getFavouriteViewModel().favourite.set(favourite);
-        binding.getFavouriteViewModel().setSubscription();
+        binding.getFavouriteViewModel().setDisposable();
         binding.executePendingBindings();
     }
 

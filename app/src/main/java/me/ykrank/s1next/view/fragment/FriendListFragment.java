@@ -6,11 +6,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import io.reactivex.Observable;
 import me.ykrank.s1next.data.api.model.collection.Friends;
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.adapter.FriendRecyclerViewAdapter;
-import rx.Observable;
 
 /**
  * Created by ykrank on 2017/1/16.

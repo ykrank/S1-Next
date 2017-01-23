@@ -13,14 +13,15 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.widget.glide.transformations.BlurTransformation;
 import me.ykrank.s1next.widget.glide.viewtarget.GlideDrawableViewBackgroundTarget;
 import me.ykrank.s1next.widget.glide.viewtarget.ViewBackgroundTarget;
-import rx.Subscription;
-import rx.functions.Func1;
 
 /**
  * Created by AdminYkrank on 2016/4/17.
@@ -30,8 +31,12 @@ public final class ViewBindingAdapter {
     }
 
     @BindingAdapter("onceClickSubscription")
-    public static void setOnceClickListener(View view, Func1<View, Subscription> onceClickSubscription) {
-        onceClickSubscription.call(view);
+    public static void setOnceClickListener(View view, Function<View, Disposable> onceClickSubscription) {
+        try {
+            onceClickSubscription.apply(view);
+        } catch (Exception e) {
+            L.report(e);
+        }
     }
 
     @BindingAdapter({"downloadPreferencesManager", "blurUid"})

@@ -1,5 +1,6 @@
 package me.ykrank.s1next.data.api;
 
+import io.reactivex.Observable;
 import me.ykrank.s1next.data.api.model.Profile;
 import me.ykrank.s1next.data.api.model.collection.Favourites;
 import me.ykrank.s1next.data.api.model.collection.ForumGroups;
@@ -18,7 +19,6 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-import rx.Observable;
 
 public interface S1Service {
 

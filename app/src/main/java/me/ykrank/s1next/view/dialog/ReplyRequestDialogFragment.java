@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
+import io.reactivex.Observable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
@@ -15,7 +16,6 @@ import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
 import me.ykrank.s1next.widget.track.event.NewReplyTrackEvent;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
-import rx.Observable;
 
 /**
  * A dialog requests to reply to post.

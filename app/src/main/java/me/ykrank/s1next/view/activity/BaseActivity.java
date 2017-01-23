@@ -28,6 +28,7 @@ import java.lang.ref.WeakReference;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
@@ -46,7 +47,6 @@ import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import me.ykrank.s1next.widget.track.event.page.ActivityEndEvent;
 import me.ykrank.s1next.widget.track.event.page.ActivityStartEvent;
-import rx.Subscription;
 
 /**
  * A base Activity which includes the Toolbar
@@ -83,7 +83,7 @@ public abstract class BaseActivity extends OriginActivity
     @Nullable
     private WeakReference<Snackbar> mSnackbar;
 
-    private Subscription mRecreateSubscription;
+    private Disposable mRecreateDisposable;
 
 
     /**
@@ -124,7 +124,7 @@ public abstract class BaseActivity extends OriginActivity
 
         super.onCreate(savedInstanceState);
 
-        mRecreateSubscription = mEventBus.get()
+        mRecreateDisposable = mEventBus.get()
                 .filter(o -> (o instanceof ThemeChangeEvent || o instanceof FontSizeChangeEvent))
                 .subscribe(o -> {
                     getWindow().setWindowAnimations(R.style.Animation_Recreate);
@@ -174,7 +174,7 @@ public abstract class BaseActivity extends OriginActivity
 
     @Override
     protected void onDestroy() {
-        RxJavaUtil.unsubscribeIfNotNull(mRecreateSubscription);
+        RxJavaUtil.disposeIfNotNull(mRecreateDisposable);
         if (mDrawerLayoutDelegate != null) {
             mDrawerLayoutDelegate.onDestroy();
             mDrawerLayoutDelegate = null;

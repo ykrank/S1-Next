@@ -2,15 +2,15 @@ package me.ykrank.s1next.data.api;
 
 import android.text.TextUtils;
 
+import io.reactivex.Observable;
+import io.reactivex.functions.Function;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.AppComponent;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Account;
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.data.api.model.wrapper.OriginWrapper;
-import rx.Observable;
-import rx.Subscriber;
-import rx.functions.Func1;
 
 /**
  * Created by ykrank on 2016/10/18.
@@ -45,7 +45,7 @@ public class ApiFlatTransformer {
      */
     public static <T> Observable<T> flatMappedWithAuthenticityToken(
             S1Service mS1Service, UserValidator mUserValidator, User mUser,
-            Func1<String, Observable<T>> func) {
+            Function<String, Observable<T>> func) {
         String authenticityToken = mUser.getAuthenticityToken();
         if (TextUtils.isEmpty(authenticityToken)) {
             return mS1Service.refreshAuthenticityToken().flatMap(resultWrapper -> {
@@ -57,31 +57,22 @@ public class ApiFlatTransformer {
                             new ApiException("AccountResultWrapper:" + resultWrapper)));
                 } else {
                     mUserValidator.validate(account);
-                    return func.call(account.getAuthenticityToken());
+                    return func.apply(account.getAuthenticityToken());
                 }
             });
         } else {
-            return func.call(authenticityToken);
+            try {
+                return func.apply(authenticityToken);
+            } catch (Exception e) {
+                L.report(e);
+                return Observable.error(e);
+            }
         }
     }
 
-    public static Observable<AccountResultWrapper> flatMappedWithAuthenticityToken(Func1<String, Observable<AccountResultWrapper>> func) {
+    public static Observable<AccountResultWrapper> flatMappedWithAuthenticityToken(Function<String, Observable<AccountResultWrapper>> func) {
         AppComponent component = App.getAppComponent();
         return flatMappedWithAuthenticityToken(component.getS1Service(), component.getUserValidator(),
                 component.getUser(), func);
-    }
-
-    private static <T> Observable<T> createData(T t) {
-        return Observable.create(new Observable.OnSubscribe<T>() {
-            @Override
-            public void call(Subscriber<? super T> subscriber) {
-                try {
-                    subscriber.onNext(t);
-                    subscriber.onCompleted();
-                } catch (Exception e) {
-                    subscriber.onError(e);
-                }
-            }
-        });
     }
 }

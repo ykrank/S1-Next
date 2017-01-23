@@ -28,6 +28,8 @@ import android.widget.EditText;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.event.EmoticonClickEvent;
@@ -40,8 +42,6 @@ import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.EmoticonPagerAdapter;
 import me.ykrank.s1next.widget.EditorDiskCache;
 import me.ykrank.s1next.widget.EventBus;
-import rx.Single;
-import rx.Subscription;
 
 /**
  * Created by ykrank on 2016/7/31 0031.
@@ -71,8 +71,8 @@ public abstract class BasePostFragment extends BaseFragment {
     @Inject
     GeneralPreferencesManager mGeneralPreferencesManager;
     private boolean mIsEmoticonKeyboardShowing;
-    private Subscription mEmotionClickSubscription;
-    private Subscription mCacheSubscription;
+    private Disposable mEmotionClickDisposable;
+    private Disposable mCacheDisposable;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -142,17 +142,17 @@ public abstract class BasePostFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        mEmotionClickSubscription = mEventBus.get()
+        mEmotionClickDisposable = mEventBus.get()
                 .ofType(EmoticonClickEvent.class)
                 .subscribe(event -> {
                     mReplyView.getText().replace(mReplyView.getSelectionStart(),
                             mReplyView.getSelectionEnd(), event.getEmoticonEntity());
                 });
 
-        RxJavaUtil.unsubscribeIfNotNull(mCacheSubscription);
-        mCacheSubscription = null;
+        RxJavaUtil.disposeIfNotNull(mCacheDisposable);
+        mCacheDisposable = null;
         if (TextUtils.isEmpty(mReplyView.getText())) {
-            mCacheSubscription = resumeFromCache(Single.just(getCacheKey())
+            mCacheDisposable = resumeFromCache(Single.just(getCacheKey())
                     .map(EditorDiskCache::get));
         }
     }
@@ -160,13 +160,13 @@ public abstract class BasePostFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        RxJavaUtil.unsubscribeIfNotNull(mEmotionClickSubscription);
-        RxJavaUtil.unsubscribeIfNotNull(mCacheSubscription);
-        mCacheSubscription = null;
+        RxJavaUtil.disposeIfNotNull(mEmotionClickDisposable);
+        RxJavaUtil.disposeIfNotNull(mCacheDisposable);
+        mCacheDisposable = null;
         if (!isContentEmpty()) {
             final String cacheString = buildCacheString();
             final String key = getCacheKey();
-            mCacheSubscription = Single.just(cacheString)
+            mCacheDisposable = Single.just(cacheString)
                     .map(s -> {
                         EditorDiskCache.put(key, s);
                         return s;
@@ -220,7 +220,7 @@ public abstract class BasePostFragment extends BaseFragment {
     }
 
     @UiThread
-    public Subscription resumeFromCache(Single<String> cache) {
+    public Disposable resumeFromCache(Single<String> cache) {
         return cache.compose(RxJavaUtil.iOSingleTransformer())
                 .subscribe(mReplyView::setText, L::e);
     }

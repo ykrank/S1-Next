@@ -8,13 +8,13 @@ import com.google.common.base.Preconditions;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.reactivex.Observable;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.ThreadLink;
 import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.view.activity.PostListActivity;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
-import rx.Observable;
 
 /**
  * A {@link ProgressDialogFragment} parses post post page for thread.

@@ -2,13 +2,13 @@ package me.ykrank.s1next.view.dialog;
 
 import android.os.Bundle;
 
+import io.reactivex.Observable;
 import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Result;
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
-import rx.Observable;
 
 /**
  * A dialog requests to reply to post.

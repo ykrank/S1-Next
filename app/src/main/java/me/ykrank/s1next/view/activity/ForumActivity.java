@@ -15,6 +15,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
@@ -25,7 +26,6 @@ import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment;
 import me.ykrank.s1next.view.fragment.ForumFragment;
 import me.ykrank.s1next.view.internal.ToolbarDropDownInterface;
 import me.ykrank.s1next.viewmodel.DropDownItemListViewModel;
-import rx.Single;
 
 /**
  * An Activity shows the forum groups.
@@ -148,7 +148,7 @@ public final class ForumActivity extends BaseActivity
         Single.just(0)
                 .map(i -> mReadProgressPrefManager.getLastReadProgress())
                 .compose(RxJavaUtil.iOSingleTransformer())
-                .doAfterTerminate(() -> mReadProgressPrefManager.saveLastReadProgress(null))
+                .doFinally(() -> mReadProgressPrefManager.saveLastReadProgress(null))
                 .subscribe(readProgress -> {
                     if (readProgress != null) {
                         PostListActivity.startPostListActivity(ForumActivity.this, readProgress);

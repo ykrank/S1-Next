@@ -4,10 +4,10 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.widget.track.TrackAgent;
-import rx.Single;
-import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by ykrank on 2016/12/27.

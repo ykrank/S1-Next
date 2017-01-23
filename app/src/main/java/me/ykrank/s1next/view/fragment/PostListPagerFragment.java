@@ -15,6 +15,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Post;
@@ -33,8 +35,6 @@ import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegate;
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateBaseCardViewContainerImpl;
 import me.ykrank.s1next.view.internal.PagerScrollState;
 import me.ykrank.s1next.widget.EventBus;
-import rx.Observable;
-import rx.Subscription;
 
 /**
  * A Fragment representing one of the pages of posts.
@@ -71,8 +71,8 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
 
     private PagerCallback mPagerCallback;
 
-    private Subscription saveReadProgressSubscription;
-    private Subscription changeSeletableSubscription;
+    private Disposable saveReadProgressDisposable;
+    private Disposable changeSeletableDisposable;
 
     public static PostListPagerFragment newInstance(String threadId, int pageNum) {
         return newInstance(threadId, pageNum, null, null, null);
@@ -142,7 +142,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
             }
         });
 
-        changeSeletableSubscription = mEventBus.get()
+        changeSeletableDisposable = mEventBus.get()
                 .ofType(PostSelectableChangeEvent.class)
                 .subscribe(event -> {
                     mRecyclerAdapter.notifyDataSetChanged();
@@ -165,13 +165,13 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
 
     @Override
     public void onDestroyView() {
-        RxJavaUtil.unsubscribeIfNotNull(changeSeletableSubscription);
+        RxJavaUtil.disposeIfNotNull(changeSeletableDisposable);
         super.onDestroyView();
     }
 
     @Override
     public void onDestroy() {
-        RxJavaUtil.unsubscribeIfNotNull(saveReadProgressSubscription);
+        RxJavaUtil.disposeIfNotNull(saveReadProgressDisposable);
         super.onDestroy();
     }
 
@@ -211,7 +211,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
      * 保存当前阅读进度
      */
     void saveReadProgress() {
-        saveReadProgressSubscription = RxJavaUtil.workWithUiThread(() -> {
+        saveReadProgressDisposable = RxJavaUtil.workWithUiThread(() -> {
             LooperUtil.enforceOnWorkThread();
             ReadProgressDbWrapper dbWrapper = ReadProgressDbWrapper.getInstance();
             dbWrapper.saveReadProgress(getCurReadProgress());

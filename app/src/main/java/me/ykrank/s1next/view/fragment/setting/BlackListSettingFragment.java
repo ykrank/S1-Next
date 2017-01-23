@@ -21,6 +21,10 @@ import com.squareup.leakcanary.RefWatcher;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.db.BlackListDbWrapper;
@@ -32,10 +36,6 @@ import me.ykrank.s1next.view.dialog.BlacklistDialogFragment;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * An Activity includes download settings that allow users
@@ -52,7 +52,7 @@ public final class BlackListSettingFragment extends Fragment {
     private BlackListCursorListViewAdapter mListViewAdapter;
     private DataTrackAgent trackAgent;
 
-    private Subscription mSubscription;
+    private Disposable mDisposable;
     private AbsListView.MultiChoiceModeListener mActionModeCallback = new AbsListView.MultiChoiceModeListener() {
 
         @Override
@@ -178,7 +178,7 @@ public final class BlackListSettingFragment extends Fragment {
      * Starts to load new data.
      */
     private void load() {
-        mSubscription = getSourceObservable()
+        mDisposable = getSourceObservable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

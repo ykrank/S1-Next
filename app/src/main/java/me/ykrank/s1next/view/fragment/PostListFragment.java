@@ -19,6 +19,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
@@ -51,8 +53,6 @@ import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.track.event.ViewThreadTrackEvent;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
-import rx.Single;
-import rx.Subscription;
 
 
 /**
@@ -95,13 +95,13 @@ public final class PostListFragment extends BaseViewPagerFragment
     private Posts.ThreadAttachment mThreadAttachment;
     private MenuItem mMenuThreadAttachment;
 
-    private Subscription quoteSubscription;
-    private Subscription blackListAddSubscription;
-    private Subscription mReadProgressSubscription;
+    private Disposable quoteDisposable;
+    private Disposable blackListAddDisposable;
+    private Disposable mReadProgressDisposable;
     private ReadProgress readProgress;
     private PagerScrollState scrollState = new PagerScrollState();
 
-    private Subscription mLastReadSubscription;
+    private Disposable mLastReadDisposable;
 
     private PostListPagerAdapter mAdapter;
 
@@ -188,12 +188,12 @@ public final class PostListFragment extends BaseViewPagerFragment
         super.onResume();
         trackAgent.post(new PageStartEvent(getContext(), "帖子详情列表-PostListFragment"));
 
-        quoteSubscription = mEventBus.get()
+        quoteDisposable = mEventBus.get()
                 .ofType(QuoteEvent.class)
                 .subscribe(quoteEvent ->
                         startReplyActivity(quoteEvent.getQuotePostId(), quoteEvent.getQuotePostCount())
                 );
-        blackListAddSubscription = mEventBus.get()
+        blackListAddDisposable = mEventBus.get()
                 .ofType(BlackListAddEvent.class)
                 .subscribe(blackListEvent -> {
                     BlackListDbWrapper dbWrapper = BlackListDbWrapper.getInstance();
@@ -214,7 +214,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         //save last read progress
         final PostListPagerFragment fragment = getCurPostPageFragment();
         if (fragment != null) {
-            mLastReadSubscription = Single.just(fragment.getCurReadProgress())
+            mLastReadDisposable = Single.just(fragment.getCurReadProgress())
                     .delay(5, TimeUnit.SECONDS)
                     .map(mReadProgressPrefManager::saveLastReadProgress)
                     .doOnError(L::e)
@@ -223,14 +223,14 @@ public final class PostListFragment extends BaseViewPagerFragment
         trackAgent.post(new PageEndEvent(getContext(), "帖子详情列表-PostListFragment"));
         super.onPause();
 
-        RxJavaUtil.unsubscribeIfNotNull(quoteSubscription);
-        RxJavaUtil.unsubscribeIfNotNull(blackListAddSubscription);
-        RxJavaUtil.unsubscribeIfNotNull(mReadProgressSubscription);
+        RxJavaUtil.disposeIfNotNull(quoteDisposable);
+        RxJavaUtil.disposeIfNotNull(blackListAddDisposable);
+        RxJavaUtil.disposeIfNotNull(mReadProgressDisposable);
     }
 
     @Override
     public void onDestroy() {
-        RxJavaUtil.unsubscribeIfNotNull(mLastReadSubscription);
+        RxJavaUtil.disposeIfNotNull(mLastReadDisposable);
         mReadProgressPrefManager.saveLastReadProgress(null);
 
         //Auto save read progress
@@ -392,7 +392,7 @@ public final class PostListFragment extends BaseViewPagerFragment
      */
     void loadReadProgress() {
         ReadProgressDbWrapper dbWrapper = ReadProgressDbWrapper.getInstance();
-        mReadProgressSubscription = RxJavaUtil.workWithUiThread(() -> {
+        mReadProgressDisposable = RxJavaUtil.workWithUiThread(() -> {
             readProgress = dbWrapper.getWithThreadId(mThreadId);
             if (readProgress != null) {
                 scrollState.setState(PagerScrollState.BEFORE_SCROLL_PAGE);

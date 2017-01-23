@@ -20,6 +20,8 @@ import android.view.ViewGroup;
 
 import com.google.common.base.Preconditions;
 
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.ApiFlatTransformer;
@@ -34,8 +36,6 @@ import me.ykrank.s1next.view.fragment.headless.DataRetainedFragment;
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegate;
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateBaseImpl;
 import me.ykrank.s1next.viewmodel.LoadingViewModel;
-import rx.Observable;
-import rx.Subscription;
 
 /**
  * A base Fragment includes {@link SwipeRefreshLayout} to refresh when loading data.
@@ -64,7 +64,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
      */
     private DataRetainedFragment<D> mDataRetainedFragment;
 
-    private Subscription mSubscription;
+    private Disposable mDisposable;
 
     @CallSuper
     @Override
@@ -161,7 +161,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
         if (mLoadingViewModelBindingDelegate != null) {
             mLoadingViewModelBindingDelegate.getSwipeRefreshLayout().setOnRefreshListener(null);
         }
-        RxJavaUtil.unsubscribeIfNotNull(mSubscription);
+        RxJavaUtil.disposeIfNotNull(mDisposable);
 
         super.onDestroy();
     }
@@ -260,7 +260,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
         // dismiss Snackbar in order to let user see the ProgressBar
         // when we start to loadViewPager new data
         mCoordinatorLayoutAnchorDelegate.dismissSnackbarIfExist();
-        mSubscription = getSourceObservable()
+        mDisposable = getSourceObservable()
                 .compose(ApiFlatTransformer.apiErrorTransformer())
                 .compose(RxJavaUtil.iOTransformer())
                 .doOnNext(mUserValidator::validateIntercept)

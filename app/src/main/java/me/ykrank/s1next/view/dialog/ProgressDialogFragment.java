@@ -11,6 +11,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.widget.Toast;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.AppComponent;
 import me.ykrank.s1next.data.User;
@@ -22,11 +27,6 @@ import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.activity.BaseActivity;
 import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * A dialog shows {@link ProgressDialog}.
@@ -45,7 +45,7 @@ abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
 
     private User mUser;
 
-    private Subscription mSubscription;
+    private Disposable mDisposable;
 
     @Override
     @CallSuper
@@ -87,14 +87,14 @@ abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
     public void onDestroy() {
         super.onDestroy();
 
-        RxJavaUtil.unsubscribeIfNotNull(mSubscription);
+        RxJavaUtil.disposeIfNotNull(mDisposable);
     }
 
     /**
      * @see BaseRecyclerViewFragment#load()
      */
     private void request() {
-        mSubscription = getSourceObservable().subscribeOn(Schedulers.io())
+        mDisposable = getSourceObservable().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate(this::finallyDo)
                 .subscribe(this::onNext, this::onError);
@@ -106,9 +106,9 @@ abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
     abstract Observable<D> getSourceObservable();
 
     /**
-     * @see ApiFlatTransformer#flatMappedWithAuthenticityToken(S1Service, UserValidator, User, Func1)
+     * @see ApiFlatTransformer#flatMappedWithAuthenticityToken(S1Service, UserValidator, User, Function)
      */
-    final Observable<D> flatMappedWithAuthenticityToken(Func1<String, Observable<D>> func) {
+    final Observable<D> flatMappedWithAuthenticityToken(Function<String, Observable<D>> func) {
         return ApiFlatTransformer.flatMappedWithAuthenticityToken(mS1Service, mUserValidator, mUser, func);
     }
 

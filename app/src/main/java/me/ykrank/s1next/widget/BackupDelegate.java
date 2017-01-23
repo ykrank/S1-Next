@@ -13,13 +13,13 @@ import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;
 
+import io.reactivex.functions.Consumer;
 import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.util.FilePickerUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.LooperUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.util.SQLiteUtil;
-import rx.functions.Action1;
 
 import static me.ykrank.s1next.util.FilePickerUtil.dirPickIntent;
 import static me.ykrank.s1next.util.FilePickerUtil.filePickIntent;
@@ -70,7 +70,7 @@ public class BackupDelegate {
 
                 @Override
                 public void cancel() {
-                    afterBackup.call(CANCELED);
+                    afterBackup.accept(CANCELED);
                 }
 
                 @Override
@@ -88,7 +88,7 @@ public class BackupDelegate {
 
                 @Override
                 public void cancel() {
-                    afterRestore.call(CANCELED);
+                    afterRestore.accept(CANCELED);
                 }
 
                 @Override
@@ -112,10 +112,10 @@ public class BackupDelegate {
             if (destDir.isDirectory()) {
                 if (!dirPath.endsWith("/")) dirPath += "/";
                 File dbFile = mContext.getDatabasePath(BuildConfig.DB_NAME);
-                    File destFile = new File(dirPath + BACKUP_FILE_NAME);
-                    if (!destFile.exists()) destFile.createNewFile();
-                    Files.copy(dbFile, destFile);
-                    return SUCCESS;
+                File destFile = new File(dirPath + BACKUP_FILE_NAME);
+                if (!destFile.exists()) destFile.createNewFile();
+                Files.copy(dbFile, destFile);
+                return SUCCESS;
             } else return IO_EXCEPTION;
         } catch (IOException e) {
             L.e("BackupError:", e);
@@ -158,13 +158,13 @@ public class BackupDelegate {
     public @interface BackupResult {
     }
 
-    public interface AfterBackup extends Action1<Integer> {
+    public interface AfterBackup extends Consumer<Integer> {
         @Override
-        void call(@BackupResult Integer integer);
+        void accept(@BackupResult Integer integer);
     }
 
-    public interface AfterRestore extends Action1<Integer> {
+    public interface AfterRestore extends Consumer<Integer> {
         @Override
-        void call(@BackupResult Integer integer);
+        void accept(@BackupResult Integer integer);
     }
 }
