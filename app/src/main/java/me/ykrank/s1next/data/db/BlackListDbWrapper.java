@@ -113,10 +113,10 @@ public class BlackListDbWrapper {
     public void saveBlackList(@NonNull BlackList blackList) {
         BlackList oBlackList = getBlackListDefault(blackList.getAuthorId(), blackList.getAuthor());
         if (oBlackList == null) {
-            getBlackListDao().save(blackList);
+            getBlackListDao().insert(blackList);
         } else {
             oBlackList.copyFrom(blackList);
-            getBlackListDao().save(oBlackList);
+            getBlackListDao().update(oBlackList);
         }
     }
 

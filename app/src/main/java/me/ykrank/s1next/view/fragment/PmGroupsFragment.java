@@ -76,6 +76,7 @@ public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<Base
         }
     }
 
+    @NonNull
     @Override
     BaseWrapper<PmGroups> appendNewData(@Nullable BaseWrapper<PmGroups> oldData, @NonNull BaseWrapper<PmGroups> newData) {
         if (oldData != null) {

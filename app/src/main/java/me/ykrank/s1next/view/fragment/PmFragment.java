@@ -154,6 +154,7 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
         }
     }
 
+    @NonNull
     @Override
     PmsWrapper appendNewData(@Nullable PmsWrapper oldData, @NonNull PmsWrapper newData) {
         if (oldData != null) {

@@ -10,6 +10,8 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.common.base.Optional;
+
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -93,13 +95,13 @@ public final class PostListActivity extends BaseActivity
         if (preferencesManager.isLoadAuto()) {
             return OnceClickUtil.onceClickObservable(view, 1000)
                     .observeOn(Schedulers.io())
-                    .map(vo -> ReadProgressDbWrapper.getInstance().getWithThreadId(thread.getId()))
+                    .map(vo -> Optional.fromNullable(ReadProgressDbWrapper.getInstance().getWithThreadId(thread.getId())))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(progress -> {
                         Context context = view.getContext();
                         Intent intent = new Intent(context, PostListActivity.class);
                         intent.putExtra(ARG_THREAD, thread);
-                        intent.putExtra(ARG_READ_PROGRESS, progress);
+                        intent.putExtra(ARG_READ_PROGRESS, progress.orNull());
                         if (context instanceof Activity) {
                             ((Activity) context).startActivityForResult(intent, RESULT_BLACKLIST);
                         } else {
