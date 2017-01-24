@@ -3,6 +3,7 @@ package me.ykrank.s1next.data.api.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
@@ -52,7 +53,13 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
     @JsonProperty("authorid")
     private int authorid;
 
+    @JsonIgnore
     private boolean hide = false;
+    /**
+     * reply count when last view
+     */
+    @JsonIgnore
+    private int lastReplyCount;
 
     public Thread() {
     }
@@ -65,6 +72,7 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         author = source.readString();
         authorid = source.readInt();
         hide = source.readByte() != 0;
+        lastReplyCount = source.readInt();
     }
 
     public String getId() {
@@ -124,6 +132,14 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         this.hide = hide;
     }
 
+    public int getLastReplyCount() {
+        return lastReplyCount;
+    }
+
+    public void setLastReplyCount(int lastReplyCount) {
+        this.lastReplyCount = lastReplyCount;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -138,6 +154,7 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         dest.writeString(author);
         dest.writeInt(authorid);
         dest.writeByte((byte) (hide ? 1 : 0));
+        dest.writeInt(lastReplyCount);
     }
 
     @Override
@@ -145,18 +162,19 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Thread thread = (Thread) o;
-        return Objects.equal(replies, thread.replies) &&
-                Objects.equal(permission, thread.permission) &&
+        return permission == thread.permission &&
+                authorid == thread.authorid &&
+                lastReplyCount == thread.lastReplyCount &&
+                hide == thread.hide &&
                 Objects.equal(id, thread.id) &&
                 Objects.equal(title, thread.title) &&
-                Objects.equal(author, thread.author) &&
-                Objects.equal(authorid, thread.authorid) &&
-                Objects.equal(hide, thread.hide);
+                Objects.equal(replies, thread.replies) &&
+                Objects.equal(author, thread.author);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, title, replies, permission, author, authorid, hide);
+        return Objects.hashCode(id, title, replies, permission, author, authorid, lastReplyCount, hide);
     }
 
     @Override

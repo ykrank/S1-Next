@@ -76,7 +76,7 @@ public final class PostListActivity extends BaseActivity
     public static void startPostListActivity(Context context, ReadProgress readProgress) {
         Intent intent = new Intent(context, PostListActivity.class);
         Thread thread = new Thread();
-        thread.setId(readProgress.getThreadId());
+        thread.setId(String.valueOf(readProgress.getThreadId()));
         intent.putExtra(ARG_THREAD, thread);
         intent.putExtra(ARG_READ_PROGRESS, readProgress);
 
@@ -95,7 +95,7 @@ public final class PostListActivity extends BaseActivity
         if (preferencesManager.isLoadAuto()) {
             return OnceClickUtil.onceClickObservable(view, 1000)
                     .observeOn(Schedulers.io())
-                    .map(vo -> Optional.fromNullable(ReadProgressDbWrapper.getInstance().getWithThreadId(thread.getId())))
+                    .map(vo -> Optional.fromNullable(ReadProgressDbWrapper.getInstance().getWithThreadId(Integer.valueOf(thread.getId()))))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(progress -> {
                         Context context = view.getContext();

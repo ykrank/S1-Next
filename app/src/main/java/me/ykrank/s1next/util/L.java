@@ -95,11 +95,14 @@ public class L {
     }
 
     public static void report(Throwable tr) {
-        Bugsnag.notify(tr, Severity.WARNING);
+        report(tr, Severity.WARNING);
     }
 
     public static void report(Throwable tr, Severity severity) {
         Bugsnag.notify(tr, severity);
+        if (Log.isLoggable(LOG_TAG, Log.ERROR)) {
+            Log.e(LOG_TAG, "Report error", tr);
+        }
     }
 
     public static void leaveMsg(String msg) {
