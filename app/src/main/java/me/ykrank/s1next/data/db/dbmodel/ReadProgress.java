@@ -2,6 +2,7 @@ package me.ykrank.s1next.data.db.dbmodel;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -36,6 +37,7 @@ public class ReadProgress implements Parcelable {
     };
     private static final String TimeFormat = "yyyy-MM-dd HH:mm";
     @Id(autoincrement = true)
+    @Nullable
     private Long id;
     /**
      * 帖子ID
@@ -61,7 +63,10 @@ public class ReadProgress implements Parcelable {
 
     @SuppressWarnings("WrongConstant")
     protected ReadProgress(Parcel in) {
-        id = in.readLong();
+        boolean hasId = in.readByte() == 1;
+        if (hasId) {
+            id = in.readLong();
+        }
         threadId = in.readString();
         page = in.readInt();
         position = in.readInt();
@@ -96,18 +101,24 @@ public class ReadProgress implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(id);
+        }
         dest.writeString(threadId);
         dest.writeInt(page);
         dest.writeInt(position);
         dest.writeLong(timestamp);
     }
 
+    @Nullable
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(@Nullable Long id) {
         this.id = id;
     }
 
@@ -167,6 +178,10 @@ public class ReadProgress implements Parcelable {
                 ", position=" + position +
                 ", timestamp=" + getTime() +
                 '}';
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
 
