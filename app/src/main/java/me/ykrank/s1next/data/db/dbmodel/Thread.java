@@ -2,6 +2,7 @@ package me.ykrank.s1next.data.db.dbmodel;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.google.common.base.Objects;
 
@@ -18,6 +19,7 @@ import org.greenrobot.greendao.annotation.Property;
 @Entity(nameInDb = "Thread")
 public class Thread implements Parcelable {
     @Id(autoincrement = true)
+    @Nullable
     private Long id;
     /**
      * 帖子ID
@@ -56,7 +58,10 @@ public class Thread implements Parcelable {
     }
 
     protected Thread(Parcel in) {
-        id = in.readLong();
+        boolean hasId = in.readByte() == 1;
+        if (hasId) {
+            id = in.readLong();
+        }
         threadId = in.readString();
         lastCountWhenView = in.readLong();
         timestamp = in.readLong();
@@ -74,11 +79,12 @@ public class Thread implements Parcelable {
         }
     };
 
+    @Nullable
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(@Nullable Long id) {
         this.id = id;
     }
 
@@ -113,7 +119,12 @@ public class Thread implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(id);
+        }
         dest.writeString(threadId);
         dest.writeLong(lastCountWhenView);
         dest.writeLong(timestamp);
@@ -139,5 +150,9 @@ public class Thread implements Parcelable {
         this.threadId = oThread.threadId;
         this.lastCountWhenView = oThread.lastCountWhenView;
         this.timestamp = oThread.timestamp;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

@@ -3,6 +3,7 @@ package me.ykrank.s1next.data.db.dbmodel;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
 import org.greenrobot.greendao.annotation.Entity;
@@ -43,6 +44,7 @@ public class BlackList implements Parcelable {
     private static final String TimeFormat = "yyyy-MM-dd HH:mm";
 
     @Id(autoincrement = true)
+    @Nullable
     private Long id;
 
     /**
@@ -87,7 +89,10 @@ public class BlackList implements Parcelable {
 
     @SuppressWarnings("WrongConstant")
     protected BlackList(Parcel in) {
-        id = in.readLong();
+        boolean hasId = in.readByte() == 1;
+        if (hasId) {
+            id = in.readLong();
+        }
         authorId = in.readInt();
         author = in.readString();
         post = in.readInt();
@@ -134,11 +139,12 @@ public class BlackList implements Parcelable {
         this.upload = bList.upload;
     }
 
+    @Nullable
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(@Nullable Long id) {
         this.id = id;
     }
 
@@ -248,7 +254,12 @@ public class BlackList implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(id);
+        }
         dest.writeInt(authorId);
         dest.writeString(author);
         dest.writeInt(post);
@@ -273,6 +284,10 @@ public class BlackList implements Parcelable {
 
     public boolean getUpload() {
         return this.upload;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     @IntDef({NORMAL, HIDE_POST, DEL_POST})
