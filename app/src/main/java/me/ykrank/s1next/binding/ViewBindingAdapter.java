@@ -19,6 +19,7 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.widget.glide.transformations.BlurTransformation;
 import me.ykrank.s1next.widget.glide.viewtarget.GlideDrawableViewBackgroundTarget;
 import me.ykrank.s1next.widget.glide.viewtarget.ViewBackgroundTarget;
@@ -30,10 +31,21 @@ public final class ViewBindingAdapter {
     private ViewBindingAdapter() {
     }
 
-    @BindingAdapter("onceClickSubscription")
-    public static void setOnceClickListener(View view, Function<View, Disposable> onceClickSubscription) {
+    @BindingAdapter("onceClickDisposable")
+    public static void setOnceClickListener(View view, Function<View, Disposable> onceClickDisposable) {
         try {
-            onceClickSubscription.apply(view);
+            final Disposable disposable = onceClickDisposable.apply(view);
+            view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+                @Override
+                public void onViewAttachedToWindow(View v) {
+
+                }
+
+                @Override
+                public void onViewDetachedFromWindow(View v) {
+                    RxJavaUtil.disposeIfNotNull(disposable);
+                }
+            });
         } catch (Exception e) {
             L.report(e);
         }
