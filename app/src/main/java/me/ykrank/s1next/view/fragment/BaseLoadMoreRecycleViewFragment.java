@@ -137,6 +137,7 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
      * @param newData new load data
      * @return compound data
      */
+    @NonNull
     abstract D appendNewData(@Nullable D oldData, @NonNull D newData);
 
     /**

@@ -62,6 +62,7 @@ public class NoteFragment extends BaseLoadMoreRecycleViewFragment<BaseDataWrappe
         return mRecyclerAdapter;
     }
 
+    @NonNull
     @Override
     BaseDataWrapper<Notes> appendNewData(@Nullable BaseDataWrapper<Notes> oldData, @NonNull BaseDataWrapper<Notes> newData) {
         if (oldData != null) {

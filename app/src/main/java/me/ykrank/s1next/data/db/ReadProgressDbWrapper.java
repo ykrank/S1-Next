@@ -41,10 +41,10 @@ public class ReadProgressDbWrapper {
     public void saveReadProgress(@NonNull ReadProgress readProgress) {
         ReadProgress oReadProgress = getWithThreadId(readProgress.getThreadId());
         if (oReadProgress == null) {
-            getReadProgressDao().save(readProgress);
+            getReadProgressDao().insert(readProgress);
         } else {
             oReadProgress.copyFrom(readProgress);
-            getReadProgressDao().save(oReadProgress);
+            getReadProgressDao().update(oReadProgress);
         }
     }
 

@@ -41,10 +41,10 @@ public class ThreadDbWrapper {
     public void saveThread(@NonNull Thread thread) {
         Thread oThread = getWithThreadId(thread.getThreadId());
         if (oThread == null) {
-            getThreadDao().save(thread);
+            getThreadDao().insert(thread);
         } else {
             oThread.copyFrom(thread);
-            getThreadDao().save(oThread);
+            getThreadDao().update(oThread);
         }
     }
 
