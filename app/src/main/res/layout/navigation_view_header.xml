@@ -47,7 +47,7 @@
 
         <TextView
             android:id="@+id/drawer_user_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/drawer_subtitle_height"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/list_view_padding"
@@ -62,7 +62,7 @@
             android:text="@{userViewModel.user.logged ? userViewModel.user.name : @string/action_login}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="?attr/drawerTextColor"
-            app:increaseClickingArea="@{@dimen/minimum_touch_target_size}" />
+            tools:text="@string/action_login" />
 
     </android.support.percent.PercentRelativeLayout>
 
