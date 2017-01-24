@@ -1,14 +1,15 @@
 package me.ykrank.s1next.data.db;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
-import me.ykrank.s1next.data.db.dbmodel.Thread;
-import me.ykrank.s1next.data.db.dbmodel.ThreadDao;
+import me.ykrank.s1next.data.db.dbmodel.DbThread;
+import me.ykrank.s1next.data.db.dbmodel.DbThreadDao;
 
-import static me.ykrank.s1next.data.db.dbmodel.ReadProgressDao.Properties;
+import static me.ykrank.s1next.data.db.dbmodel.DbThreadDao.Properties;
 
 /**
  * 对帖子数据库的操作包装
@@ -28,30 +29,31 @@ public class ThreadDbWrapper {
         return dbWrapper;
     }
 
-    private ThreadDao getThreadDao() {
-        return appDaoSessionManager.getDaoSession().getThreadDao();
+    private DbThreadDao getThreadDao() {
+        return appDaoSessionManager.getDaoSession().getDbThreadDao();
     }
 
-    public Thread getWithThreadId(String threadId) {
+    @Nullable
+    public DbThread getWithThreadId(int threadId) {
         return getThreadDao().queryBuilder()
                 .where(Properties.ThreadId.eq(threadId))
                 .unique();
     }
 
-    public void saveThread(@NonNull Thread thread) {
-        Thread oThread = getWithThreadId(thread.getThreadId());
-        if (oThread == null) {
-            getThreadDao().insert(thread);
+    public void saveThread(@NonNull DbThread dbThread) {
+        DbThread oDbThread = getWithThreadId(dbThread.getThreadId());
+        if (oDbThread == null) {
+            getThreadDao().insert(dbThread);
         } else {
-            oThread.copyFrom(thread);
-            getThreadDao().update(oThread);
+            oDbThread.copyFrom(dbThread);
+            getThreadDao().update(oDbThread);
         }
     }
 
-    public void delThread(String threadId) {
-        Thread oThread = getWithThreadId(threadId);
-        if (oThread != null) {
-            getThreadDao().delete(oThread);
+    public void delThread(int threadId) {
+        DbThread oDbThread = getWithThreadId(threadId);
+        if (oDbThread != null) {
+            getThreadDao().delete(oDbThread);
         }
     }
 

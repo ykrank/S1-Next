@@ -21,6 +21,8 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
@@ -30,6 +32,8 @@ import me.ykrank.s1next.data.api.model.ThreadLink;
 import me.ykrank.s1next.data.api.model.collection.Posts;
 import me.ykrank.s1next.data.db.BlackListDbWrapper;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
+import me.ykrank.s1next.data.db.ThreadDbWrapper;
+import me.ykrank.s1next.data.db.dbmodel.DbThread;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
 import me.ykrank.s1next.data.event.BlackListAddEvent;
 import me.ykrank.s1next.data.event.PostSelectableChangeEvent;
@@ -39,6 +43,7 @@ import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
 import me.ykrank.s1next.util.ClipboardUtil;
 import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.LooperUtil;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.util.StringUtil;
@@ -101,7 +106,8 @@ public final class PostListFragment extends BaseViewPagerFragment
     private ReadProgress readProgress;
     private PagerScrollState scrollState = new PagerScrollState();
 
-    private Disposable mLastReadDisposable;
+    private Disposable mLastReadDisposable, mLastThreadInfoDisposable;
+    private PublishSubject<Integer> mLastThreadInfoSubject;
 
     private PostListPagerAdapter mAdapter;
 
@@ -184,6 +190,19 @@ public final class PostListFragment extends BaseViewPagerFragment
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mLastThreadInfoSubject = PublishSubject.create();
+        mLastThreadInfoDisposable = mLastThreadInfoSubject.throttleFirst(1, TimeUnit.SECONDS)
+                .observeOn(Schedulers.io())
+                .subscribe(threadCount -> {
+                    LooperUtil.enforceOnWorkThread();
+                    DbThread dbThread = new DbThread(Integer.valueOf(mThreadId), threadCount);
+                    ThreadDbWrapper.getInstance().saveThread(dbThread);
+                }, L::report);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         trackAgent.post(new PageStartEvent(getContext(), "帖子详情列表-PostListFragment"));
@@ -231,6 +250,7 @@ public final class PostListFragment extends BaseViewPagerFragment
     @Override
     public void onDestroy() {
         RxJavaUtil.disposeIfNotNull(mLastReadDisposable);
+        RxJavaUtil.disposeIfNotNull(mLastThreadInfoDisposable);
         mReadProgressPrefManager.saveLastReadProgress(null);
 
         //Auto save read progress
@@ -351,6 +371,12 @@ public final class PostListFragment extends BaseViewPagerFragment
     @Override
     public void setTotalPageByPosts(int threads) {
         setTotalPages(MathUtil.divide(threads, Api.POSTS_PER_PAGE));
+        //save reply count in database
+        try {
+            mLastThreadInfoSubject.onNext(threads - 1);
+        } catch (Exception e) {
+            mLastThreadInfoSubject.onError(e);
+        }
     }
 
     @Override
@@ -393,7 +419,7 @@ public final class PostListFragment extends BaseViewPagerFragment
     void loadReadProgress() {
         ReadProgressDbWrapper dbWrapper = ReadProgressDbWrapper.getInstance();
         mReadProgressDisposable = RxJavaUtil.workWithUiThread(() -> {
-            readProgress = dbWrapper.getWithThreadId(mThreadId);
+            readProgress = dbWrapper.getWithThreadId(Integer.valueOf(mThreadId));
             if (readProgress != null) {
                 scrollState.setState(PagerScrollState.BEFORE_SCROLL_PAGE);
             }

@@ -222,7 +222,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
     }
 
     ReadProgress getCurReadProgress() {
-        return new ReadProgress(mThreadId, mPageNum, findMidItemPosition());
+        return new ReadProgress(Integer.valueOf(mThreadId), mPageNum, findMidItemPosition());
     }
 
     /**
@@ -308,6 +308,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
     void onError(Throwable throwable) {
         //网络请求失败下依然刷新黑名单
         if (blacklistChanged) {
+            // FIXME: 2017/1/25 should not work on ui thread
             List<Object> dataSet = mRecyclerAdapter.getDataSet();
             List<Object> newData = new ArrayList<>();
             for (Object obj : dataSet) {

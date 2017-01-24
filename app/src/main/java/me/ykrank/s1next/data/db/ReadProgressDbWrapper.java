@@ -32,7 +32,7 @@ public class ReadProgressDbWrapper {
         return appDaoSessionManager.getDaoSession().getReadProgressDao();
     }
 
-    public ReadProgress getWithThreadId(String threadId) {
+    public ReadProgress getWithThreadId(int threadId) {
         return getReadProgressDao().queryBuilder()
                 .where(Properties.ThreadId.eq(threadId))
                 .unique();
@@ -48,7 +48,7 @@ public class ReadProgressDbWrapper {
         }
     }
 
-    public void delReadProgress(String threadId) {
+    public void delReadProgress(int threadId) {
         ReadProgress oReadProgress = getWithThreadId(threadId);
         if (oReadProgress != null) {
             getReadProgressDao().delete(oReadProgress);

@@ -44,7 +44,7 @@ public class ReadProgress implements Parcelable {
      */
     @Property(nameInDb = "ThreadId")
     @Index(unique = true)
-    private String threadId;
+    private int threadId;
     /**
      * 页数
      */
@@ -67,7 +67,7 @@ public class ReadProgress implements Parcelable {
         if (hasId) {
             id = in.readLong();
         }
-        threadId = in.readString();
+        threadId = in.readInt();
         page = in.readInt();
         position = in.readInt();
         timestamp = in.readLong();
@@ -77,7 +77,7 @@ public class ReadProgress implements Parcelable {
         this.timestamp = System.currentTimeMillis();
     }
 
-    public ReadProgress(String threadId, int page, int position) {
+    public ReadProgress(int threadId, int page, int position) {
         super();
         this.threadId = threadId;
         this.page = page;
@@ -85,8 +85,8 @@ public class ReadProgress implements Parcelable {
         this.timestamp = System.currentTimeMillis();
     }
 
-    @Generated(hash = 1629999723)
-    public ReadProgress(Long id, String threadId, int page, int position, long timestamp) {
+    @Generated(hash = 1994466630)
+    public ReadProgress(Long id, int threadId, int page, int position, long timestamp) {
         this.id = id;
         this.threadId = threadId;
         this.page = page;
@@ -107,7 +107,7 @@ public class ReadProgress implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeLong(id);
         }
-        dest.writeString(threadId);
+        dest.writeInt(threadId);
         dest.writeInt(page);
         dest.writeInt(position);
         dest.writeLong(timestamp);
@@ -131,11 +131,11 @@ public class ReadProgress implements Parcelable {
         return TimeFormat;
     }
 
-    public String getThreadId() {
+    public int getThreadId() {
         return threadId;
     }
 
-    public void setThreadId(String threadId) {
+    public void setThreadId(int threadId) {
         this.threadId = threadId;
     }
 

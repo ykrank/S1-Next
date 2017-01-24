@@ -50,7 +50,10 @@ public final class Posts extends Account {
     }
 
     /**
-     * 对数据源进行处理，标记黑名单用户<br>
+     * 对数据源进行处理
+     * <ul>
+     * <li>标记黑名单用户</li>
+     * </ul>
      * 如果修改了过滤状态，则会返回不同的对象
      */
     @Nullable

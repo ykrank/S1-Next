@@ -36,7 +36,7 @@ public final class RxJavaUtil {
      * @return 订单
      */
     public static Disposable workWithUiThread(Action workAction, Action uiAction) {
-        return workWithUiThread(workAction, uiAction, Throwable::printStackTrace);
+        return workWithUiThread(workAction, uiAction, L::report);
     }
 
     /**
@@ -64,7 +64,7 @@ public final class RxJavaUtil {
      * @return 订单
      */
     public static <R> Disposable workWithUiResult(Supplier<R> workAction, Consumer<R> uiAction) {
-        return workWithUiResult(workAction, uiAction, Throwable::printStackTrace);
+        return workWithUiResult(workAction, uiAction, L::report);
     }
 
     /**

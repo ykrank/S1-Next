@@ -1,5 +1,7 @@
 package me.ykrank.s1next.data.api.model.collection;
 
+import android.support.annotation.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
@@ -11,7 +13,10 @@ import me.ykrank.s1next.data.api.model.Account;
 import me.ykrank.s1next.data.api.model.Forum;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.db.BlackListDbWrapper;
+import me.ykrank.s1next.data.db.ThreadDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.BlackList;
+import me.ykrank.s1next.data.db.dbmodel.DbThread;
+import me.ykrank.s1next.util.LooperUtil;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -26,6 +31,9 @@ public final class Threads extends Account {
     @JsonProperty("sublist")
     private List<Forum> subForumList;
 
+    /**
+     * @see #getFilterThread(Thread)
+     */
     public static List<Thread> getFilterThreadList(final List<Thread> oThreads) {
         List<Thread> threads = new ArrayList<>();
         for (Thread thread : oThreads) {
@@ -37,7 +45,16 @@ public final class Threads extends Account {
         return threads;
     }
 
+    /**
+     * 对数据源进行处理
+     * <ul>
+     * <li>获取上次访问时回复数</li>
+     * </ul>
+     * 如果修改了过滤状态，则会返回不同的对象
+     */
+    @Nullable
     public static Thread getFilterThread(final Thread oThread) {
+        LooperUtil.enforceOnWorkThread();
         Thread nThread = oThread;
         BlackListDbWrapper blackListWrapper = BlackListDbWrapper.getInstance();
         switch (blackListWrapper.getForumFlag(oThread.getAuthorid(), oThread.getAuthor())) {
@@ -50,11 +67,18 @@ public final class Threads extends Account {
                     nThread.setHide(true);
                 }
                 break;
+            case BlackList.NORMAL:
             default:
                 if (oThread.isHide()) {
                     nThread = oThread.clone();
                     nThread.setHide(false);
                 }
+        }
+        if (nThread != null) {
+            DbThread dbThread = ThreadDbWrapper.getInstance().getWithThreadId(Integer.valueOf(nThread.getId()));
+            if (dbThread != null) {
+                nThread.setLastReplyCount(dbThread.getLastCountWhenView());
+            }
         }
         return nThread;
     }

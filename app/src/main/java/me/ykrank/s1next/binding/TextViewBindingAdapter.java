@@ -115,7 +115,12 @@ public final class TextViewBindingAdapter {
         textView.setEnabled(hasPermission);
 
         // add thread's replies count to each thread
-        ViewUtil.concatWithTwoSpacesForRtlSupport(textView, thread.getReplies(),
+        String repliesStr = thread.getReplies();
+        if (thread.getReliesCount() > 0 && thread.getLastReplyCount() > 0) {
+            int addReplies = thread.getReliesCount() - thread.getLastReplyCount();
+            repliesStr += " (+" + addReplies + ")";
+        }
+        ViewUtil.concatWithTwoSpacesForRtlSupport(textView, repliesStr,
                 hasPermission ? themeManager.getGentleAccentColor()
                         : themeManager.getHintOrDisabledGentleAccentColor());
     }
