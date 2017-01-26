@@ -96,8 +96,9 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
     private PagerCallback mPagerCallback;
 
     private Disposable saveReadProgressDisposable;
+    private Disposable changeSelectableDisposable;
     private Disposable blackListDisposable;
-    private Disposable changeSeletableDisposable;
+    private Disposable refreshAfterBlacklistChangeDisposable;
     private Disposable changeQuickSidebarEnableDisposable;
 
     public static PostListPagerFragment newInstance(String threadId, int pageNum) {
@@ -170,7 +171,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
 
         quickSideBarView.setOnQuickSideBarTouchListener(this);
 
-        changeSeletableDisposable = mEventBus.get()
+        changeSelectableDisposable = mEventBus.get()
                 .ofType(PostSelectableChangeEvent.class)
                 .subscribe(event -> {
                     mRecyclerAdapter.notifyDataSetChanged();
@@ -199,13 +200,14 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
 
     @Override
     public void onDestroyView() {
-        RxJavaUtil.disposeIfNotNull(changeSeletableDisposable);
+        RxJavaUtil.disposeIfNotNull(changeSelectableDisposable);
         RxJavaUtil.disposeIfNotNull(changeQuickSidebarEnableDisposable);
         super.onDestroyView();
     }
 
     @Override
     public void onDestroy() {
+        RxJavaUtil.disposeIfNotNull(refreshAfterBlacklistChangeDisposable);
         RxJavaUtil.disposeIfNotNull(saveReadProgressDisposable);
         super.onDestroy();
     }
@@ -372,30 +374,32 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
     void onError(Throwable throwable) {
         //网络请求失败下依然刷新黑名单
         if (blacklistChanged) {
-            RxJavaUtil.disposeIfNotNull(blackListDisposable);
-            blackListDisposable = Single.just(mRecyclerAdapter.getDataSet())
-                    .map(dataSet -> {
-                        List<Object> newData = new ArrayList<>();
-                        for (Object obj : dataSet) {
-                            if (obj instanceof Post) {
-                                obj = Posts.filterPost((Post) obj);
-                                if (obj != null) {
-                                    newData.add(obj);
-                                }
-                            }
-                        }
-                        return newData;
-                    })
+            blacklistChanged = false;
+            RxJavaUtil.disposeIfNotNull(refreshAfterBlacklistChangeDisposable);
+            List<Object> dataSet = mRecyclerAdapter.getDataSet();
+            refreshAfterBlacklistChangeDisposable = Single.just(dataSet)
+                    .map(PostListPagerFragment::filterPostAfterBlacklistChanged)
                     .compose(RxJavaUtil.iOSingleTransformer())
-                    .subscribe(newData -> {
-                        blacklistChanged = false;
-                        mRecyclerAdapter.diffNewDataSet(newData, false);
-                    }, L::report);
+                    .subscribe(newData -> mRecyclerAdapter.diffNewDataSet(newData, false), L::report);
         } else if (isPullUpToRefresh()) {
             mRecyclerAdapter.hideFooterProgress();
         }
 
         super.onError(throwable);
+    }
+
+    private static List<Object> filterPostAfterBlacklistChanged(List<Object> dataSet) {
+        LooperUtil.enforceOnWorkThread();
+        List<Object> newData = new ArrayList<>();
+        for (Object obj : dataSet) {
+            if (obj instanceof Post) {
+                obj = Posts.filterPost((Post) obj);
+                if (obj != null) {
+                    newData.add(obj);
+                }
+            }
+        }
+        return newData;
     }
 
     boolean invalidateQuickSidebarVisible() {
