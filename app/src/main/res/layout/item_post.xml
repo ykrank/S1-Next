@@ -16,6 +16,7 @@
         style="?attr/cardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="0dp"
         android:layout_marginBottom="@dimen/card_view_vertical_margin"
         android:layout_marginTop="@dimen/card_view_vertical_margin"
         app:cardCornerRadius="0dp">
