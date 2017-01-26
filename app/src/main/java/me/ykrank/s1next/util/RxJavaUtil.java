@@ -121,8 +121,7 @@ public final class RxJavaUtil {
      * @return 订单
      */
     public static <R> Disposable workWithUiResult(Supplier<R> workAction, Consumer<R> uiAction, Consumer<Throwable> error) {
-        return Observable.just(NULL)
-                .map(n -> workAction.get())
+        return Single.just(workAction.get())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(uiAction, error);
