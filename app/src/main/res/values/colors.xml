@@ -32,6 +32,7 @@
 
     <color name="saraba_main_bg_color">#f6f7eb</color>
     <color name="saraba_main_top_color">#cccc99</color>
+    <color name="saraba_main_top_color_dark">#999972</color>
     <color name="saraba_main_color_dark">#dede93</color>
     <color name="foreground_material_light">#ad5151</color>
 
