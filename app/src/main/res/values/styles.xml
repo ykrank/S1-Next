@@ -4,7 +4,7 @@
     <style name="Preference.Overlay" parent="PreferenceThemeOverlay.v14" />
 
     <style name="CustomCardView" parent="CardView">
-        <item name="cardCornerRadius">0dp</item>
+        
     </style>
 
     <style name="CardView.Light.AfternoonTea" parent="CustomCardView">
