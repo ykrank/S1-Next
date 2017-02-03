@@ -7,8 +7,8 @@ import com.bugsnag.android.Bugsnag;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Account;
+import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.BaseWrapper;
 
 public final class UserValidator {
 
@@ -30,8 +30,8 @@ public final class UserValidator {
      */
     public <D> D validateIntercept(D d) {
         Account account = null;
-        if (d instanceof BaseWrapper) {
-            account = ((BaseWrapper) d).getData();
+        if (d instanceof BaseDataWrapper) {
+            account = ((BaseDataWrapper) d).getData();
         } else if (d instanceof BaseResultWrapper) {
             account = ((BaseResultWrapper) d).getData();
         }

@@ -86,6 +86,7 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
         mCoordinatorLayoutAnchorDelegate.dismissSnackbarIfExist();
         loadMoreDisposable = getSourceObservable(mPageNum)
                 .map(d -> appendNewData(getRetainedFragment().data, d))
+                .compose(ApiFlatTransformer.apiErrorTransformer())
                 .compose(RxJavaUtil.iOTransformer())
                 .doOnNext(mUserValidator::validateIntercept)
                 .doAfterTerminate(this::finallyDo)

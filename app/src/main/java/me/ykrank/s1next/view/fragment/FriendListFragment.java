@@ -8,7 +8,7 @@ import android.view.View;
 
 import io.reactivex.Observable;
 import me.ykrank.s1next.data.api.model.collection.Friends;
-import me.ykrank.s1next.data.api.model.wrapper.BaseWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.adapter.FriendRecyclerViewAdapter;
 
@@ -16,7 +16,7 @@ import me.ykrank.s1next.view.adapter.FriendRecyclerViewAdapter;
  * Created by ykrank on 2017/1/16.
  */
 
-public class FriendListFragment extends BaseRecyclerViewFragment<BaseWrapper<Friends>> {
+public class FriendListFragment extends BaseRecyclerViewFragment<BaseDataWrapper<Friends>> {
     public static final String TAG = FriendListFragment.class.getName();
     private static final String ARG_UID = "uid";
 
@@ -45,12 +45,12 @@ public class FriendListFragment extends BaseRecyclerViewFragment<BaseWrapper<Fri
     }
 
     @Override
-    Observable<BaseWrapper<Friends>> getSourceObservable() {
+    Observable<BaseDataWrapper<Friends>> getSourceObservable() {
         return mS1Service.getFriends(uid);
     }
 
     @Override
-    void onNext(BaseWrapper<Friends> data) {
+    void onNext(BaseDataWrapper<Friends> data) {
         Friends friends = data.getData();
         if (friends.getFriendList() == null || friends.getFriendList().isEmpty()) {
             //No data

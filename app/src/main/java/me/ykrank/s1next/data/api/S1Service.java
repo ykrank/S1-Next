@@ -10,8 +10,8 @@ import me.ykrank.s1next.data.api.model.collection.PmGroups;
 import me.ykrank.s1next.data.api.model.collection.Posts;
 import me.ykrank.s1next.data.api.model.collection.Threads;
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.BaseWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper;
 import retrofit2.Response;
 import retrofit2.http.Field;
@@ -23,7 +23,7 @@ import retrofit2.http.Query;
 public interface S1Service {
 
     @GET(ApiForum.URL_FORUM)
-    Observable<BaseWrapper<ForumGroups>> getForumGroupsWrapper();
+    Observable<BaseDataWrapper<ForumGroups>> getForumGroupsWrapper();
 
     @GET(ApiHome.URL_FAVOURITES)
     Observable<BaseResultWrapper<Favourites>> getFavouritesWrapper(@Query("page") int page);
@@ -70,7 +70,7 @@ public interface S1Service {
 
     //<editor-fold desc="PM">
     @GET(ApiHome.URL_PM_LIST)
-    Observable<BaseWrapper<PmGroups>> getPmGroups(@Query("page") int page);
+    Observable<BaseDataWrapper<PmGroups>> getPmGroups(@Query("page") int page);
 
     @GET(ApiHome.URL_PM_VIEW_LIST)
     Observable<PmsWrapper> getPmList(@Query("touid") String toUid, @Query("page") int page);
@@ -96,11 +96,11 @@ public interface S1Service {
     Observable<String> searchForum(@Field("formhash") String authenticityToken, @Field("searchsubmit") String searchSubmit, @Field("srchtxt") String text);
 
     @GET(ApiHome.URL_MY_NOTE_LIST)
-    Observable<BaseWrapper<Notes>> getMyNotes(@Query("page") int page);
+    Observable<BaseDataWrapper<Notes>> getMyNotes(@Query("page") int page);
 
     @GET(ApiHome.URL_PROFILE)
-    Observable<BaseWrapper<Profile>> getProfile(@Query("uid") String uid);
+    Observable<BaseDataWrapper<Profile>> getProfile(@Query("uid") String uid);
 
     @GET(ApiHome.URL_FRIENDS)
-    Observable<BaseWrapper<Friends>> getFriends(@Query("uid") String uid);
+    Observable<BaseDataWrapper<Friends>> getFriends(@Query("uid") String uid);
 }

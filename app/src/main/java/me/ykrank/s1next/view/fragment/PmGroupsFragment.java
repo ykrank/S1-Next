@@ -13,7 +13,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import me.ykrank.s1next.data.api.model.PmGroup;
 import me.ykrank.s1next.data.api.model.collection.PmGroups;
-import me.ykrank.s1next.data.api.model.wrapper.BaseWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
@@ -22,7 +22,7 @@ import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 
-public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<BaseWrapper<PmGroups>> {
+public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<BaseDataWrapper<PmGroups>> {
 
     public static final String TAG = PmGroupsFragment.class.getName();
     private PmGroupsRecyclerViewAdapter mRecyclerAdapter;
@@ -61,12 +61,12 @@ public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<Base
     }
 
     @Override
-    Observable<BaseWrapper<PmGroups>> getSourceObservable(int pageNum) {
+    Observable<BaseDataWrapper<PmGroups>> getSourceObservable(int pageNum) {
         return mS1Service.getPmGroups(pageNum);
     }
 
     @Override
-    void onNext(BaseWrapper<PmGroups> data) {
+    void onNext(BaseDataWrapper<PmGroups> data) {
         super.onNext(data);
         PmGroups pmGroups = data.getData();
         if (pmGroups.getPmGroupList() != null) {
@@ -78,7 +78,7 @@ public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<Base
 
     @NonNull
     @Override
-    BaseWrapper<PmGroups> appendNewData(@Nullable BaseWrapper<PmGroups> oldData, @NonNull BaseWrapper<PmGroups> newData) {
+    BaseDataWrapper<PmGroups> appendNewData(@Nullable BaseDataWrapper<PmGroups> oldData, @NonNull BaseDataWrapper<PmGroups> newData) {
         if (oldData != null) {
             List<PmGroup> oldPmGroups = oldData.getData().getPmGroupList();
             List<PmGroup> newPmGroups = newData.getData().getPmGroupList();

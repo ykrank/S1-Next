@@ -24,6 +24,7 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.model.Result;
 import me.ykrank.s1next.databinding.FragmentBaseBinding;
@@ -260,6 +261,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
         // when we start to loadViewPager new data
         mCoordinatorLayoutAnchorDelegate.dismissSnackbarIfExist();
         mDisposable = getSourceObservable()
+                .compose(ApiFlatTransformer.apiErrorTransformer())
                 .compose(RxJavaUtil.iOTransformer())
                 .doOnNext(mUserValidator::validateIntercept)
                 .doAfterTerminate(this::finallyDo)
@@ -321,7 +323,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     void onError(Throwable throwable) {
         L.e(throwable);
         if (isAdded() && getUserVisibleHint()) {
-            showRetrySnackbar(ErrorUtil.parse(throwable));
+            showRetrySnackbar(ErrorUtil.parse(getContext(), throwable));
         }
     }
 

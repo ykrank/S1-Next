@@ -13,7 +13,7 @@ import me.ykrank.s1next.data.api.model.collection.Pms;
 import me.ykrank.s1next.util.LooperUtil;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PmsWrapper extends BaseWrapper<Pms> {
+public class PmsWrapper extends BaseDataWrapper<Pms> {
 
     /**
      * 完善每条私信的收信人

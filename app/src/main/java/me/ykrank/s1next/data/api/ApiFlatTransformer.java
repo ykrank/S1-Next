@@ -18,6 +18,22 @@ import me.ykrank.s1next.util.L;
 public class ApiFlatTransformer {
 
     /**
+     * A rxjava transformer to judge whether server throw error
+     */
+    public static <T> Observable.Transformer<T, T> apiErrorTransformer() {
+        return observable -> observable.flatMap(wrapper -> {
+            if (wrapper instanceof OriginWrapper) {
+                String error = ((OriginWrapper) wrapper).getError();
+                //api error
+                if (!TextUtils.isEmpty(error)) {
+                    return Observable.error(new ApiException.ApiServerException(error));
+                }
+            }
+            return createData(wrapper);
+        });
+    }
+
+    /**
      * A helpers method provides authenticity token.
      *
      * @param func A function that, when applied to the authenticity token, returns an
@@ -57,5 +73,18 @@ public class ApiFlatTransformer {
         AppComponent component = App.getAppComponent();
         return flatMappedWithAuthenticityToken(component.getS1Service(), component.getUserValidator(),
                 component.getUser(), func);
+    }
+    private static <T> Observable<T> createData(T t) {
+        return Observable.create(new Observable.OnSubscribe<T>() {
+            @Override
+            public void call(Subscriber<? super T> subscriber) {
+                try {
+                    subscriber.onNext(t);
+                    subscriber.onCompleted();
+                } catch (Exception e) {
+                    subscriber.onError(e);
+                }
+            }
+        });
     }
 }
