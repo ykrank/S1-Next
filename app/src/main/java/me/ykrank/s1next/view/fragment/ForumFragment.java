@@ -14,7 +14,7 @@ import android.view.View;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.collection.ForumGroups;
-import me.ykrank.s1next.data.api.model.wrapper.BaseWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
 import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.SearchActivity;
@@ -27,7 +27,7 @@ import rx.Observable;
 /**
  * A Fragment represents forum list.
  */
-public final class ForumFragment extends BaseRecyclerViewFragment<BaseWrapper<ForumGroups>>
+public final class ForumFragment extends BaseRecyclerViewFragment<BaseDataWrapper<ForumGroups>>
         implements ToolbarDropDownInterface.OnItemSelectedListener {
 
     public static final String TAG = ForumFragment.class.getName();
@@ -97,12 +97,12 @@ public final class ForumFragment extends BaseRecyclerViewFragment<BaseWrapper<Fo
     }
 
     @Override
-    Observable<BaseWrapper<ForumGroups>> getSourceObservable() {
+    Observable<BaseDataWrapper<ForumGroups>> getSourceObservable() {
         return mS1Service.getForumGroupsWrapper();
     }
 
     @Override
-    void onNext(BaseWrapper<ForumGroups> data) {
+    void onNext(BaseDataWrapper<ForumGroups> data) {
         super.onNext(data);
 
         mForumGroups = data.getData();

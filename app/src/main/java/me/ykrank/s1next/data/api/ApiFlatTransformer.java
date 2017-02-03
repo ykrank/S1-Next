@@ -7,6 +7,7 @@ import me.ykrank.s1next.AppComponent;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Account;
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.OriginWrapper;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
@@ -16,6 +17,22 @@ import rx.functions.Func1;
  */
 
 public class ApiFlatTransformer {
+
+    /**
+     * A rxjava transformer to judge whether server throw error
+     */
+    public static <T> Observable.Transformer<T, T> apiErrorTransformer() {
+        return observable -> observable.flatMap(wrapper -> {
+            if (wrapper instanceof OriginWrapper) {
+                String error = ((OriginWrapper) wrapper).getError();
+                //api error
+                if (!TextUtils.isEmpty(error)) {
+                    return Observable.error(new ApiException.ApiServerException(error));
+                }
+            }
+            return createData(wrapper);
+        });
+    }
 
     /**
      * A helpers method provides authenticity token.

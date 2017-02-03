@@ -94,7 +94,7 @@ abstract class BaseViewPagerFragment extends BaseFragment
     }
 
     void onError(Throwable throwable) {
-        showShortSnackbar(ErrorUtil.parse(throwable));
+        showShortSnackbar(ErrorUtil.parse(getContext(), throwable));
     }
 
     @Override

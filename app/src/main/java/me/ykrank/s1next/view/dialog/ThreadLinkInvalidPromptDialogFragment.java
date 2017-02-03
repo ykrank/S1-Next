@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.util.IntentUtil;
@@ -25,10 +24,10 @@ public final class ThreadLinkInvalidPromptDialogFragment extends BaseDialogFragm
     private static final String ARG_MESSAGE = "message";
 
     public static ThreadLinkInvalidPromptDialogFragment newInstance(Context context,
-                                                                    @StringRes int textResId) {
+                                                                    String text) {
         ThreadLinkInvalidPromptDialogFragment fragment = new ThreadLinkInvalidPromptDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putCharSequence(ARG_MESSAGE, context.getText(textResId));
+        bundle.putCharSequence(ARG_MESSAGE, text);
         fragment.setArguments(bundle);
 
         return fragment;

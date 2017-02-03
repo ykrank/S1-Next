@@ -1,6 +1,7 @@
 package me.ykrank.s1next.util;
 
-import android.support.annotation.StringRes;
+import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.bugsnag.android.Severity;
 
@@ -15,17 +16,16 @@ public final class ErrorUtil {
 
     private static final String TAG_LOG = ErrorUtil.class.getSimpleName();
 
-    @StringRes
-    public static int parse(Throwable throwable) {
+    public static String parse(@NonNull Context context, Throwable throwable) {
         if (throwable instanceof ApiException) {
-            return R.string.message_api_error;
+            return throwable.getLocalizedMessage();
         } else if (throwable instanceof IOException) {
-            return R.string.message_network_error;
+            return context.getString(R.string.message_network_error);
         } else if (throwable instanceof HttpException) {
-            return R.string.message_server_error;
+            return context.getString(R.string.message_server_error);
         } else {
             L.e(TAG_LOG, throwable);
-            return R.string.message_unknown_error;
+            return context.getString(R.string.message_unknown_error);
         }
     }
 
