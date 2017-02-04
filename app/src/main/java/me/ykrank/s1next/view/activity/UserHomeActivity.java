@@ -114,7 +114,9 @@ public class UserHomeActivity extends BaseActivity {
         binding.ivNewPm.setOnClickListener(v -> NewPmActivity.startNewPmActivityForResultMessage(this,
                 binding.getData().getHomeUid(), binding.getData().getHomeUsername()));
 
-        binding.tvFriends.setOnClickListener(v -> FriendListActivity.start(this, uid));
+        binding.tvFriends.setOnClickListener(v -> FriendListActivity.start(this, uid, name));
+
+        binding.tvThreads.setOnClickListener(v -> UserThreadActivity.start(this, uid, name));
         
         loadData();
     }

@@ -135,7 +135,7 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
      *
      * @param oldData data show in recycleView
      * @param newData new load data
-     * @return compound data
+     * @return compound data. not same object of oldData, but could newData
      */
     @NonNull
     abstract D appendNewData(@Nullable D oldData, @NonNull D newData);

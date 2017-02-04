@@ -193,4 +193,8 @@
     <string name="user_shame_sense_content">%1$d 斤</string>
     <string name="title_friends">好友列表</string>
     <string name="database_update_error">数据库升级异常</string>
+    <string name="reply">回复</string>
+    <string name="view">查看</string>
+    <string name="title_user_threads">%1$s的主题</string>
+    <string name="last_replier">最后回复 %1$s</string>
 </resources>
