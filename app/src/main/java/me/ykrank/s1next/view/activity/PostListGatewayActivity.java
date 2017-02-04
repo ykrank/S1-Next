@@ -1,5 +1,7 @@
 package me.ykrank.s1next.view.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -25,6 +27,12 @@ public final class PostListGatewayActivity extends FragmentActivity {
 
     @Inject
     ThemeManager mThemeManager;
+
+    public static void start(Context context, Uri uri) {
+        Intent intent = new Intent(context, PostListGatewayActivity.class);
+        intent.setData(uri);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

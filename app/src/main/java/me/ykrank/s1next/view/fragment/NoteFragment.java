@@ -18,8 +18,6 @@ import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.view.adapter.NoteRecyclerViewAdapter;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * Created by ykrank on 2017/1/5.
@@ -43,18 +41,6 @@ public class NoteFragment extends BaseLoadMoreRecycleViewFragment<BaseDataWrappe
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerAdapter = new NoteRecyclerViewAdapter(getActivity());
         recyclerView.setAdapter(mRecyclerAdapter);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "消息列表-NoteFragment"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getContext(), "消息列表-NoteFragment"));
-        super.onPause();
     }
 
     @Override

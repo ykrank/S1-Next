@@ -285,4 +285,8 @@
     <string name="uid_content" translatable="false">UID: %1$s</string>
     <string name="title_friends">Friends</string>
     <string name="database_update_error">Update database error</string>
+    <string name="view">View</string>
+    <string name="reply">Reply</string>
+    <string name="title_user_threads">%1$s\'s threads</string>
+    <string name="last_replier">Last replier %1$s</string>
 </resources>

@@ -81,7 +81,7 @@ public class SearchWrapper {
             String href = elements.get(0).attr("href").replaceFirst("page=\\d+", "page=");
             wrapper.setHref(href);
         } catch (Exception e) {
-            L.e(e);
+            L.report(e);
         }
         return wrapper;
     }

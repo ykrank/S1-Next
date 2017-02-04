@@ -103,4 +103,10 @@ public interface S1Service {
 
     @GET(ApiHome.URL_FRIENDS)
     Observable<BaseDataWrapper<Friends>> getFriends(@Query("uid") String uid);
+
+    @GET(ApiHome.URL_THREADS)
+    Observable<String> getHomeThreads(@Query("uid") String uid, @Query("page") int page);
+
+    @GET(ApiHome.URL_REPLIES)
+    Observable<String> getHomeReplies(@Query("uid") String uid, @Query("page") int page);
 }

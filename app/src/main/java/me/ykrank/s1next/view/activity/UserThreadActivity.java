@@ -7,22 +7,23 @@ import android.support.v4.app.Fragment;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.view.fragment.FriendListFragment;
-import me.ykrank.s1next.widget.track.event.ViewUserFriendsTrackEvent;
+import me.ykrank.s1next.view.fragment.UserThreadFragment;
+import me.ykrank.s1next.widget.track.event.ViewUserThreadTrackEvent;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
- * Created by ykrank on 2017/1/16.
+ * Created by ykrank on 2017/2/4.
  */
 
-public class FriendListActivity extends BaseActivity {
-
+public class UserThreadActivity extends BaseActivity {
     private static final String ARG_UID = "uid";
     private static final String ARG_USERNAME = "username";
+    
+    private Fragment fragment;
 
     public static void start(Context context, String uid, String userName) {
-        Intent intent = new Intent(context, UserHomeActivity.class);
+        Intent intent = new Intent(context, UserThreadActivity.class);
         intent.putExtra(ARG_UID, uid);
         intent.putExtra(ARG_USERNAME, userName);
         context.startActivity(intent);
@@ -35,25 +36,27 @@ public class FriendListActivity extends BaseActivity {
 
         String uid = getIntent().getStringExtra(ARG_UID);
         String name = getIntent().getStringExtra(ARG_USERNAME);
-        trackAgent.post(new ViewUserFriendsTrackEvent(uid, name));
-        L.leaveMsg("FriendListActivity##uid:" + uid + ",name:" + name);
+        trackAgent.post(new ViewUserThreadTrackEvent(uid, name));
+        L.leaveMsg("UserThreadActivity##uid:" + uid + ",name:" + name);
+        setTitle(getString(R.string.title_user_threads, name));
 
         if (savedInstanceState == null) {
-            Fragment fragment = FriendListFragment.newInstance(uid);
-            getSupportFragmentManager().beginTransaction().add(R.id.frame_layout, fragment,
-                    FriendListFragment.TAG).commit();
+            fragment = UserThreadFragment.newInstance(uid);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.frame_layout, fragment, UserThreadFragment.TAG)
+                    .commit();
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent(this, "好友列表-FriendListActivity"));
+        trackAgent.post(new PageStartEvent(this, "用户发帖列表-UserThreadActivity"));
     }
 
     @Override
     protected void onPause() {
-        trackAgent.post(new PageEndEvent(this, "好友列表-FriendListActivity"));
+        trackAgent.post(new PageEndEvent(this, "用户发帖列表-UserThreadActivity"));
         super.onPause();
     }
 }

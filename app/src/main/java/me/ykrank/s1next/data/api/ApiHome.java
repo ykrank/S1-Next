@@ -26,4 +26,10 @@ public class ApiHome {
 
     //Friends
     static final String URL_FRIENDS = Api.BASE_API_PREFIX + "friend";
+
+    //Threads
+    static final String URL_THREADS = Api.BASE_URL + "home.php?mod=space&do=thread&from=space&type=thread";
+
+    //Replies
+    static final String URL_REPLIES = Api.BASE_URL + "home.php?mod=space&do=thread&from=space&type=reply";
 }

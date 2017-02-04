@@ -29,6 +29,7 @@ import java.io.InputStreamReader;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Forum;
+import me.ykrank.s1next.data.api.model.HomeThread;
 import me.ykrank.s1next.data.api.model.PmGroup;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
@@ -199,6 +200,16 @@ public final class TextViewBindingAdapter {
             textView.setText(Html.fromHtml(context.getString(R.string.pm_desc_to_other, pmGroup.getToUsername())));
         } else {
             textView.setText(Html.fromHtml(context.getString(R.string.pm_desc_to_me, pmGroup.getToUsername())));
+        }
+    }
+
+    @BindingAdapter({"homeThread"})
+    public static void setHomeThread(TextView textView, @Nullable HomeThread thread) {
+        if (thread == null) {
+            textView.setText(null);
+        } else {
+            textView.setText(thread.getTitle());
+            ViewUtil.concatWithTwoSpacesForRtlSupport(textView, thread.getForum(), Color.GRAY);
         }
     }
 }
