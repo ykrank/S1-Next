@@ -3,12 +3,14 @@ package me.ykrank.s1next.data.api;
 import android.text.TextUtils;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.functions.Function;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.AppComponent;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Account;
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.OriginWrapper;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.data.api.model.wrapper.OriginWrapper;
 
@@ -21,7 +23,7 @@ public class ApiFlatTransformer {
     /**
      * A rxjava transformer to judge whether server throw error
      */
-    public static <T> Observable.Transformer<T, T> apiErrorTransformer() {
+    public static <T> ObservableTransformer<T, T> apiErrorTransformer() {
         return observable -> observable.flatMap(wrapper -> {
             if (wrapper instanceof OriginWrapper) {
                 String error = ((OriginWrapper) wrapper).getError();
@@ -74,5 +76,15 @@ public class ApiFlatTransformer {
         AppComponent component = App.getAppComponent();
         return flatMappedWithAuthenticityToken(component.getS1Service(), component.getUserValidator(),
                 component.getUser(), func);
+    }
+    private static <T> Observable<T> createData(T t) {
+        return Observable.create(emitter -> {
+            try {
+                emitter.onNext(t);
+                emitter.onComplete();
+            } catch (Exception e) {
+                emitter.onError(e);
+            }
+        });
     }
 }

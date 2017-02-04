@@ -10,6 +10,7 @@ import android.view.View;
 import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
+import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.viewmodel.LoadingViewModel;
