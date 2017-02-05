@@ -117,6 +117,8 @@ public class UserHomeActivity extends BaseActivity {
         binding.tvFriends.setOnClickListener(v -> FriendListActivity.start(this, uid, name));
 
         binding.tvThreads.setOnClickListener(v -> UserThreadActivity.start(this, uid, name));
+
+        binding.tvReplies.setOnClickListener(v -> UserReplyActivity.start(this, uid, name));
         
         loadData();
     }

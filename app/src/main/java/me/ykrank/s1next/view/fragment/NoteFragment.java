@@ -44,6 +44,11 @@ public class NoteFragment extends BaseLoadMoreRecycleViewFragment<BaseDataWrappe
     }
 
     @Override
+    boolean isCardViewContainer() {
+        return true;
+    }
+
+    @Override
     BaseRecyclerViewAdapter getRecyclerViewAdapter() {
         return mRecyclerAdapter;
     }

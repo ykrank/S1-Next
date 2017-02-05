@@ -28,12 +28,14 @@ import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.model.Result;
 import me.ykrank.s1next.databinding.FragmentBaseBinding;
+import me.ykrank.s1next.databinding.FragmentBaseCardViewContainerBinding;
 import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.Objects;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.fragment.headless.DataRetainedFragment;
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegate;
+import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateBaseCardViewContainerImpl;
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateBaseImpl;
 import me.ykrank.s1next.viewmodel.LoadingViewModel;
 
@@ -206,9 +208,22 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
      */
     LoadingViewModelBindingDelegate getLoadingViewModelBindingDelegateImpl(LayoutInflater inflater,
                                                                            ViewGroup container) {
-        FragmentBaseBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_base,
-                container, false);
-        return new LoadingViewModelBindingDelegateBaseImpl(binding);
+        if (isCardViewContainer()) {
+            FragmentBaseCardViewContainerBinding binding = DataBindingUtil.inflate(inflater,
+                    R.layout.fragment_base_card_view_container, container, false);
+            return new LoadingViewModelBindingDelegateBaseCardViewContainerImpl(binding);
+        } else {
+            FragmentBaseBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_base,
+                    container, false);
+            return new LoadingViewModelBindingDelegateBaseImpl(binding);
+        }
+    }
+
+    /**
+     * whether use ?attr/cardViewContainerBackground to this fragment
+     */
+    boolean isCardViewContainer() {
+        return false;
     }
 
     /**

@@ -7,6 +7,7 @@ import com.google.common.base.Objects;
 import org.jsoup.nodes.Element;
 
 import me.ykrank.s1next.data.SameItem;
+import me.ykrank.s1next.data.api.model.wrapper.HomeReplyWebWrapper;
 import me.ykrank.s1next.util.L;
 
 /**
@@ -14,7 +15,7 @@ import me.ykrank.s1next.util.L;
  * User's thread model
  */
 
-public class HomeThread implements SameItem {
+public class HomeThread implements SameItem, HomeReplyWebWrapper.HomeReplyItem {
     private String title;
     private String forum;
     private String view;

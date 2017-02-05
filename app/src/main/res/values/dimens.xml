@@ -101,4 +101,5 @@
     <dimen name="spacing_xlarge">48dp</dimen>
     <dimen name="spacing_huge">64dp</dimen>
     <dimen name="item_padding_small">8dp</dimen>
+    <dimen name="item_padding_micro">4dp</dimen>
 </resources>

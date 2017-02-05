@@ -61,6 +61,11 @@ public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<Base
     }
 
     @Override
+    boolean isCardViewContainer() {
+        return true;
+    }
+
+    @Override
     Observable<BaseDataWrapper<PmGroups>> getSourceObservable(int pageNum) {
         return mS1Service.getPmGroups(pageNum);
     }
