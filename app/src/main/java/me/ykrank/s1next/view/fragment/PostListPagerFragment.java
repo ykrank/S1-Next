@@ -1,14 +1,11 @@
 package me.ykrank.s1next.view.fragment;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +23,10 @@ import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
 import me.ykrank.s1next.data.event.PostSelectableChangeEvent;
-import me.ykrank.s1next.databinding.FragmentBaseCardViewContainerBinding;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.LooperUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.PostListRecyclerViewAdapter;
-import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegate;
-import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateBaseCardViewContainerImpl;
 import me.ykrank.s1next.view.internal.PagerScrollState;
 import me.ykrank.s1next.widget.EventBus;
 
@@ -176,10 +170,8 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
     }
 
     @Override
-    LoadingViewModelBindingDelegate getLoadingViewModelBindingDelegateImpl(LayoutInflater inflater, ViewGroup container) {
-        FragmentBaseCardViewContainerBinding binding = DataBindingUtil.inflate(inflater,
-                R.layout.fragment_base_card_view_container, container, false);
-        return new LoadingViewModelBindingDelegateBaseCardViewContainerImpl(binding);
+    boolean isCardViewContainer() {
+        return true;
     }
 
     @Override

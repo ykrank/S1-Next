@@ -196,5 +196,6 @@
     <string name="reply">回复</string>
     <string name="view">查看</string>
     <string name="title_user_threads">%1$s的主题</string>
+    <string name="title_user_replies">%1$s的回复</string>
     <string name="last_replier">最后回复 %1$s</string>
 </resources>

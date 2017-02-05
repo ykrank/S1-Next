@@ -11,11 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import me.ykrank.s1next.data.api.model.HomeThread;
-import me.ykrank.s1next.data.api.model.wrapper.HomeThreadWebWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.HomeReplyWebWrapper;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
-import me.ykrank.s1next.view.adapter.HomeThreadRecyclerViewAdapter;
+import me.ykrank.s1next.view.adapter.HomeReplyRecyclerViewAdapter;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
@@ -23,15 +22,15 @@ import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
  * Created by ykrank on 2017/2/4.
  */
 
-public class UserThreadFragment extends BaseLoadMoreRecycleViewFragment<HomeThreadWebWrapper> {
-    public static final String TAG = UserThreadFragment.class.getName();
+public class UserReplyFragment extends BaseLoadMoreRecycleViewFragment<HomeReplyWebWrapper> {
+    public static final String TAG = UserReplyFragment.class.getName();
     private static final String ARG_UID = "uid";
 
     private String uid;
-    private HomeThreadRecyclerViewAdapter mRecyclerAdapter;
+    private HomeReplyRecyclerViewAdapter mRecyclerAdapter;
 
-    public static UserThreadFragment newInstance(String uid) {
-        UserThreadFragment fragment = new UserThreadFragment();
+    public static UserReplyFragment newInstance(String uid) {
+        UserReplyFragment fragment = new UserReplyFragment();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_UID, uid);
         fragment.setArguments(bundle);
@@ -42,23 +41,23 @@ public class UserThreadFragment extends BaseLoadMoreRecycleViewFragment<HomeThre
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         uid = getArguments().getString(ARG_UID);
-        L.leaveMsg("UserThreadFragment");
+        L.leaveMsg("UserReplyFragment");
 
         RecyclerView recyclerView = getRecyclerView();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerAdapter = new HomeThreadRecyclerViewAdapter(getActivity());
+        mRecyclerAdapter = new HomeReplyRecyclerViewAdapter(getActivity());
         recyclerView.setAdapter(mRecyclerAdapter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "个人发帖列表-UserThreadFragment"));
+        trackAgent.post(new PageStartEvent(getContext(), "个人回复列表-UserReplyFragment"));
     }
 
     @Override
     public void onPause() {
-        trackAgent.post(new PageEndEvent(getContext(), "个人发帖列表-UserThreadFragment"));
+        trackAgent.post(new PageEndEvent(getContext(), "个人回复列表-UserReplyFragment"));
         super.onPause();
     }
 
@@ -74,30 +73,30 @@ public class UserThreadFragment extends BaseLoadMoreRecycleViewFragment<HomeThre
 
     @NonNull
     @Override
-    HomeThreadWebWrapper appendNewData(@Nullable HomeThreadWebWrapper oldData, @NonNull HomeThreadWebWrapper newData) {
+    HomeReplyWebWrapper appendNewData(@Nullable HomeReplyWebWrapper oldData, @NonNull HomeReplyWebWrapper newData) {
         if (oldData != null) {
-            List<HomeThread> oldThreads = oldData.getThreads();
-            List<HomeThread> newThreads = newData.getThreads();
-            if (newThreads == null) {
-                newThreads = new ArrayList<>();
+            List<HomeReplyWebWrapper.HomeReplyItem> oldReplyItems = oldData.getReplyItems();
+            List<HomeReplyWebWrapper.HomeReplyItem> newReplyItems = newData.getReplyItems();
+            if (newReplyItems == null) {
+                newReplyItems = new ArrayList<>();
             }
-            if (oldThreads != null) {
-                newThreads.addAll(0, oldThreads);
+            if (oldReplyItems != null) {
+                newReplyItems.addAll(0, oldReplyItems);
             }
         }
         return newData;
     }
 
     @Override
-    Observable<HomeThreadWebWrapper> getSourceObservable(int pageNum) {
-        return mS1Service.getHomeThreads(uid, pageNum)
-                .map(HomeThreadWebWrapper::fromHtml);
+    Observable<HomeReplyWebWrapper> getSourceObservable(int pageNum) {
+        return mS1Service.getHomeReplies(uid, pageNum)
+                .map(HomeReplyWebWrapper::fromHtml);
     }
 
     @Override
-    void onNext(HomeThreadWebWrapper data) {
+    void onNext(HomeReplyWebWrapper data) {
         super.onNext(data);
-        mRecyclerAdapter.diffNewDataSet(data.getThreads(), false);
+        mRecyclerAdapter.diffNewDataSet(data.getReplyItems(), false);
         if (data.isMore()) {
             setTotalPages(getPageNum() + 1);
         } else {

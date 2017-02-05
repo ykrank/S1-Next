@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="me.ykrank.s1next.viewmodel.HomeReplyTitleViewModel" />
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/item_padding_small"
+        android:onClick="@{model.onClick}"
+        android:orientation="vertical"
+        android:padding="@dimen/list_view_padding"
+        android:elevation="@dimen/cardview_default_elevation"
+        android:background="?android:colorBackground">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:homeThread="@{model.thread}"
+            tools:text="ABCDEFGHI [外野]" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{@string/view+" "+model.thread.view}'
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                tools:text="查看 100" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_large"
+                android:layout_marginStart="@dimen/spacing_large"
+                android:text='@{@string/reply+" "+model.thread.reply}'
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                tools:text="回复 100" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{@string/last_replier(model.thread.lastReplier)}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                tools:text="最后回复 ykrank" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_micro"
+                android:layout_marginStart="@dimen/spacing_micro"
+                android:text="@{model.thread.lastReplyDate}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                tools:text="2017-02-03 18:43" />
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

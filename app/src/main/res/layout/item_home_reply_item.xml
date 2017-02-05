@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="me.ykrank.s1next.viewmodel.HomeReplyItemViewModel" />
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{model.onClick}"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/item_padding_small"
+        android:paddingLeft="@dimen/item_padding"
+        android:paddingRight="@dimen/item_padding"
+        android:paddingTop="@dimen/item_padding_small"
+        android:background="?android:colorBackground">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{model.reply.reply}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Shadow"
+            tools:text="ABCDEFGHI" />
+    </LinearLayout>
+</layout>
