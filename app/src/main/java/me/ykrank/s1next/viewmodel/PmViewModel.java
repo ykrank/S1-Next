@@ -12,6 +12,6 @@ public final class PmViewModel {
     public final ObservableField<Pm> pm = new ObservableField<>();
 
     public final void onClick(View v) {
-        UserHomeActivity.start(v.getContext(), pm.get().getAuthorId(), pm.get().getAuthor());
+        UserHomeActivity.start(v.getContext(), pm.get().getAuthorId(), pm.get().getAuthor(), v);
     }
 }
