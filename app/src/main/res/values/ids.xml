@@ -6,4 +6,5 @@
     <item name="tag_drawer_runnable" type="id" />
     <item name="tag_drawable_callback" type="id" />
 
+    <item name="tag_click_disposable" type="id" />
 </resources>
