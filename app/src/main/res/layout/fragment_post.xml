@@ -24,7 +24,7 @@
                 android:gravity="start"
                 android:hint="@string/prompt_reply"
                 android:imeOptions="flagNoFullscreen"
-                android:inputType="textMultiLine"
+                android:inputType="text|textMultiLine"
                 android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
                 android:paddingBottom="@dimen/activity_vertical_padding"
                 android:paddingEnd="@dimen/activity_horizontal_padding"
