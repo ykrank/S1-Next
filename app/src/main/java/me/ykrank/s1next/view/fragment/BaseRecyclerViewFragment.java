@@ -319,11 +319,15 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
      *
      * @param result The data's result we get.
      */
-    final void consumeResult(Result result) {
+    final void consumeResult(@Nullable Result result) {
         if (isAdded() && getUserVisibleHint()) {
-            String message = result.getMessage();
-            if (!TextUtils.isEmpty(message)) {
-                showRetrySnackbar(message);
+            if (result != null) {
+                String message = result.getMessage();
+                if (!TextUtils.isEmpty(message)) {
+                    showRetrySnackbar(message);
+                }
+            } else {
+                showRetrySnackbar(R.string.message_server_error);
             }
         }
     }
