@@ -27,7 +27,7 @@ public final class PostViewModel {
         //Clear avatar false cache
         AvatarUrlsCache.clearUserAvatarCache(post.get().getAuthorId());
         //个人主页
-        UserHomeActivity.start(v.getContext(), post.get().getAuthorId(), post.get().getAuthorName());
+        UserHomeActivity.start(v.getContext(), post.get().getAuthorId(), post.get().getAuthorName(), v);
     }
 
     public boolean onLongClick(View v, EventBus eventBus) {

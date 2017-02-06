@@ -4,12 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.transition.Slide;
+import android.view.MenuItem;
 import android.view.View;
 
 import javax.inject.Inject;
@@ -73,9 +72,6 @@ public class UserHomeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setEnterTransition(new Slide());
-        }
         App.getPrefComponent().inject(this);
 
         String uid = getIntent().getStringExtra(ARG_UID);
@@ -121,6 +117,17 @@ public class UserHomeActivity extends BaseActivity {
         binding.tvReplies.setOnClickListener(v -> UserReplyActivity.start(this, uid, name));
         
         loadData();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

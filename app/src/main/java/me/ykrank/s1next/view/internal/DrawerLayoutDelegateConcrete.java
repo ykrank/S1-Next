@@ -87,7 +87,7 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
 
         binding.drawerUserAvatar.setOnClickListener(v -> {
             if (mUser.isLogged()) {
-                UserHomeActivity.start(v.getContext(), mUser.getUid(), mUser.getName());
+                UserHomeActivity.start(v.getContext(), mUser.getUid(), mUser.getName(), v);
             } else {
                 binding.drawerUserName.performClick();
             }
