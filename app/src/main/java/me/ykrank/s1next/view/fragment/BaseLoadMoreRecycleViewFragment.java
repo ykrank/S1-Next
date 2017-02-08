@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
