@@ -205,6 +205,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     /**
      * Subclass can override this in order to provider different
      * layout for {@link LoadingViewModelBindingDelegate}.
+     * run when {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
      */
     LoadingViewModelBindingDelegate getLoadingViewModelBindingDelegateImpl(LayoutInflater inflater,
                                                                            ViewGroup container) {

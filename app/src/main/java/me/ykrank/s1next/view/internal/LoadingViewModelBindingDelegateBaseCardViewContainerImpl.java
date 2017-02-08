@@ -10,30 +10,30 @@ import me.ykrank.s1next.viewmodel.LoadingViewModel;
 public final class LoadingViewModelBindingDelegateBaseCardViewContainerImpl
         implements LoadingViewModelBindingDelegate {
 
-    private final FragmentBaseCardViewContainerBinding mFragmentBaseCardViewContainerBinding;
+    private final FragmentBaseCardViewContainerBinding binding;
 
     public LoadingViewModelBindingDelegateBaseCardViewContainerImpl(
-            FragmentBaseCardViewContainerBinding fragmentBaseCardViewContainerBinding) {
-        this.mFragmentBaseCardViewContainerBinding = fragmentBaseCardViewContainerBinding;
+            FragmentBaseCardViewContainerBinding binding) {
+        this.binding = binding;
     }
 
     @Override
     public View getRootView() {
-        return mFragmentBaseCardViewContainerBinding.getRoot();
+        return binding.getRoot();
     }
 
     @Override
     public SwipeRefreshLayout getSwipeRefreshLayout() {
-        return mFragmentBaseCardViewContainerBinding.swipeRefreshLayout;
+        return binding.swipeRefreshLayout;
     }
 
     @Override
     public RecyclerView getRecyclerView() {
-        return mFragmentBaseCardViewContainerBinding.recyclerView;
+        return binding.recyclerView;
     }
 
     @Override
     public void setLoadingViewModel(LoadingViewModel loadingViewModel) {
-        mFragmentBaseCardViewContainerBinding.setLoadingViewModel(loadingViewModel);
+        binding.setLoadingViewModel(loadingViewModel);
     }
 }

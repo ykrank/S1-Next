@@ -46,4 +46,11 @@
         android:checkable="true"
         android:checked="@bool/pref_post_selectable_default_value"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_quick_side_bar_enable"
+        android:orderInCategory="28"
+        android:title="@string/menu_quick_side_bar_enable"
+        android:checkable="true"
+        android:checked="@bool/pref_quick_side_bar_enable_default_value"
+        app:showAsAction="never" />
 </menu>

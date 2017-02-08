@@ -102,4 +102,11 @@
     <dimen name="spacing_huge">64dp</dimen>
     <dimen name="item_padding_small">8dp</dimen>
     <dimen name="item_padding_micro">4dp</dimen>
+    <dimen name="zero">0dp</dimen>
+
+    <dimen name="quicksidebar_width">24dp</dimen>
+    <dimen name="quicksidebar_top">-64dp</dimen>
+    <dimen name="quicksidebar_tip_size">72dp</dimen>
+
+
 </resources>

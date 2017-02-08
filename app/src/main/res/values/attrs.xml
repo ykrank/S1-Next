@@ -27,6 +27,8 @@
 
     <attr name="textShadowColor" format="color" />
 
+    <attr name="colorTranslucent" format="color|reference" />
+
     <declare-styleable name="BezelImageView">
         <attr name="maskDrawable" format="reference" />
         <attr name="borderDrawable" format="reference" />

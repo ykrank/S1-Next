@@ -1,13 +1,21 @@
 package me.ykrank.s1next.view.fragment;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.bigkoo.quicksidebar.QuickSideBarView;
+import com.bigkoo.quicksidebar.listener.OnQuickSideBarTouchListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -23,10 +31,15 @@ import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
 import me.ykrank.s1next.data.event.PostSelectableChangeEvent;
+import me.ykrank.s1next.data.event.QuickSidebarEnableChangeEvent;
+import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
+import me.ykrank.s1next.databinding.FragmentBaseWithQuickSideBarBinding;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.LooperUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.PostListRecyclerViewAdapter;
+import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegate;
+import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateQuickSidebarImpl;
 import me.ykrank.s1next.view.internal.PagerScrollState;
 import me.ykrank.s1next.widget.EventBus;
 
@@ -35,7 +48,8 @@ import me.ykrank.s1next.widget.EventBus;
  * <p>
  * Activity or Fragment containing this must implement {@link PagerCallback}.
  */
-public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseResultWrapper<Posts>> {
+public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseResultWrapper<Posts>>
+        implements OnQuickSideBarTouchListener {
 
     private static final String ARG_THREAD_ID = "thread_id";
     private static final String ARG_PAGE_NUM = "page_num";
@@ -50,6 +64,9 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
     @Inject
     EventBus mEventBus;
 
+    @Inject
+    GeneralPreferencesManager mGeneralPreferencesManager;
+
     private String mThreadId;
     private int mPageNum;
     /**
@@ -59,14 +76,19 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
     private PagerScrollState scrollState;
     private boolean blacklistChanged = false;
 
+    private FragmentBaseWithQuickSideBarBinding binding;
     private RecyclerView mRecyclerView;
     private PostListRecyclerViewAdapter mRecyclerAdapter;
     private LinearLayoutManager mLayoutManager;
+    private QuickSideBarView quickSideBarView;
+    private TextView quickSideBarTipsView;
+    private HashMap<String, Integer> letters = new HashMap<>();
 
     private PagerCallback mPagerCallback;
 
     private Disposable saveReadProgressDisposable;
     private Disposable changeSeletableDisposable;
+    private Disposable changeQuickSidebarEnableDisposable;
 
     public static PostListPagerFragment newInstance(String threadId, int pageNum) {
         return newInstance(threadId, pageNum, null, null, null);
@@ -104,7 +126,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        App.getAppComponent().inject(this);
+        App.getPrefComponent().inject(this);
         super.onViewCreated(view, savedInstanceState);
 
         mThreadId = getArguments().getString(ARG_THREAD_ID);
@@ -136,10 +158,18 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
             }
         });
 
+        quickSideBarView.setOnQuickSideBarTouchListener(this);
+
         changeSeletableDisposable = mEventBus.get()
                 .ofType(PostSelectableChangeEvent.class)
                 .subscribe(event -> {
                     mRecyclerAdapter.notifyDataSetChanged();
+                }, super::onError);
+
+        changeQuickSidebarEnableDisposable = mEventBus.get()
+                .ofType(QuickSidebarEnableChangeEvent.class)
+                .subscribe(event -> {
+                    invalidateQuickSidebarVisible();
                 }, super::onError);
     }
 
@@ -160,6 +190,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
     @Override
     public void onDestroyView() {
         RxJavaUtil.disposeIfNotNull(changeSeletableDisposable);
+        RxJavaUtil.disposeIfNotNull(changeQuickSidebarEnableDisposable);
         super.onDestroyView();
     }
 
@@ -170,8 +201,12 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
     }
 
     @Override
-    boolean isCardViewContainer() {
-        return true;
+    LoadingViewModelBindingDelegate getLoadingViewModelBindingDelegateImpl(LayoutInflater inflater, ViewGroup container) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_base_with_quick_side_bar, container, false);
+        binding.setQuickSidebarEnable(false);
+        quickSideBarView = binding.quickSideBarView;
+        quickSideBarTipsView = binding.quickSideBarViewTips;
+        return new LoadingViewModelBindingDelegateQuickSidebarImpl(binding);
     }
 
     @Override
@@ -293,6 +328,8 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
             if (posts.getThreadAttachment() != null) {
                 mPagerCallback.setupThreadAttachment(posts.getThreadAttachment());
             }
+
+            initQuickSidebar(mPageNum, postList.size());
         }
     }
 
@@ -318,6 +355,44 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
         }
 
         super.onError(throwable);
+    }
+
+    boolean invalidateQuickSidebarVisible() {
+        boolean enable = mGeneralPreferencesManager.isQuickSideBarEnable();
+        binding.setQuickSidebarEnable(enable);
+        return enable;
+    }
+
+    private void initQuickSidebar(int page, int postSize) {
+        invalidateQuickSidebarVisible();
+        if (!binding.getQuickSidebarEnable()) {
+            return;
+        }
+        List<String> customLetters = new ArrayList<>();
+        for (int i = 0; i < postSize; i++) {
+            //1-10, then interval 2
+            if (i >= 10 && i % 2 == 0) {
+                continue;
+            }
+            String letter = String.valueOf(i + 1 + 30 * (page - 1));
+            customLetters.add(letter);
+            letters.put(letter, i);
+        }
+        quickSideBarView.setLetters(customLetters);
+    }
+
+    @Override
+    public void onLetterChanged(String letter, int position, float y) {
+        quickSideBarTipsView.setText(letter);
+        //有此key则获取位置并滚动到该位置
+        if (letters.containsKey(letter)) {
+            mLayoutManager.scrollToPositionWithOffset(letters.get(letter), 0);
+        }
+    }
+
+    @Override
+    public void onLetterTouching(boolean touching) {
+        quickSideBarTipsView.setVisibility(touching ? View.VISIBLE : View.INVISIBLE);
     }
 
     public interface PagerCallback {
