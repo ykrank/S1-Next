@@ -28,10 +28,18 @@ public final class GeneralPreferencesManager {
             return mGeneralPreferencesProvider.isPostSelectable();
         }
     };
+    private final Supplier<Boolean> mQuickSideBarEnableSupplier = new Supplier<Boolean>() {
+
+        @Override
+        public Boolean get() {
+            return mGeneralPreferencesProvider.isQuickSideBarEnable();
+        }
+    };
 
     private volatile Supplier<Float> mFontScaleMemorized = Suppliers.memoize(mFontScaleSupplier);
     private volatile Supplier<Boolean> mSignatureEnabledMemorized = Suppliers.memoize(mSignatureEnabledSupplier);
     private volatile Supplier<Boolean> mPostSelectableMemorized = Suppliers.memoize(mPostSelectableSupplier);
+    private volatile Supplier<Boolean> mQuickSideBarEnableMemorized = Suppliers.memoize(mQuickSideBarEnableSupplier);
 
     public GeneralPreferencesManager(GeneralPreferencesRepository generalPreferencesProvider) {
         this.mGeneralPreferencesProvider = generalPreferencesProvider;
@@ -69,5 +77,14 @@ public final class GeneralPreferencesManager {
 
     public boolean isPostSelectable() {
         return mPostSelectableMemorized.get();
+    }
+
+    public void invalidateQuickSideBarEnable(boolean enable) {
+        mGeneralPreferencesProvider.setQuickSideBarEnable(enable);
+        mQuickSideBarEnableMemorized = Suppliers.memoize(mQuickSideBarEnableSupplier);
+    }
+
+    public boolean isQuickSideBarEnable() {
+        return mQuickSideBarEnableMemorized.get();
     }
 }

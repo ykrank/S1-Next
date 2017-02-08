@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="loadingViewModel"
+            type="me.ykrank.s1next.viewmodel.LoadingViewModel" />
+
+        <variable
+            name="quickSidebarEnable"
+            type="Boolean" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:colorSchemeColors="@{@intArray/swipe_refresh_layout_color_scheme}"
+            app:enabled="@{loadingViewModel.swipeRefreshLayoutEnabled}"
+            app:marginEnd="@{quickSidebarEnable?(int)@dimen/spacing_normal:0}"
+            app:refreshing="@{loadingViewModel.swipeRefresh}">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/cardViewContainerBackground"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/recycler_view_vertical_padding_for_card_view"
+                android:paddingTop="@dimen/recycler_view_vertical_padding_for_card_view"
+                android:scrollbars="none"
+                app:loadingFirstTime="@{loadingViewModel.loadingFirstTime}" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <com.bigkoo.quicksidebar.QuickSideBarView
+            android:id="@+id/quickSideBarView"
+            android:layout_width="@dimen/quicksidebar_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:visibility="@{quickSidebarEnable?View.VISIBLE:View.GONE}"
+            app:sidebarTextColor="?android:attr/textColorPrimary"
+            app:sidebarTextColorChoose="?android:attr/textColorPrimary"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/quickSideBarViewTips"
+            android:layout_width="@dimen/quicksidebar_tip_size"
+            android:layout_height="@dimen/quicksidebar_tip_size"
+            android:layout_gravity="center"
+            android:background="?attr/colorTranslucent"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+            android:textColor="?android:attr/textColorSecondaryInverse"
+            android:textStyle="normal|bold"
+            android:visibility="gone"
+            tools:text="30" />
+    </FrameLayout>
+
+</layout>

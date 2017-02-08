@@ -49,4 +49,14 @@ public final class GeneralPreferencesRepository extends BasePreferencesRepositor
         mSharedPreferences.edit().putBoolean(PostListFragment.PREF_KEY_POST_SELECTABLE, selectable)
                 .apply();
     }
+
+    public boolean isQuickSideBarEnable() {
+        return mSharedPreferences.getBoolean(PostListFragment.PREF_KEY_QUICK_SIDE_BAR_ENABLE,
+                mContext.getResources().getBoolean(R.bool.pref_quick_side_bar_enable_default_value));
+    }
+
+    public void setQuickSideBarEnable(boolean enable) {
+        mSharedPreferences.edit().putBoolean(PostListFragment.PREF_KEY_QUICK_SIDE_BAR_ENABLE, enable)
+                .apply();
+    }
 }

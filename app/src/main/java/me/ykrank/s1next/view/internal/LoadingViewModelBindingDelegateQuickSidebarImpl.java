@@ -4,15 +4,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import me.ykrank.s1next.databinding.FragmentBaseBinding;
+import me.ykrank.s1next.databinding.FragmentBaseWithQuickSideBarBinding;
 import me.ykrank.s1next.viewmodel.LoadingViewModel;
 
-public final class LoadingViewModelBindingDelegateBaseImpl
+public final class LoadingViewModelBindingDelegateQuickSidebarImpl
         implements LoadingViewModelBindingDelegate {
 
-    private final FragmentBaseBinding binding;
+    private final FragmentBaseWithQuickSideBarBinding binding;
 
-    public LoadingViewModelBindingDelegateBaseImpl(FragmentBaseBinding binding) {
+    public LoadingViewModelBindingDelegateQuickSidebarImpl(
+            FragmentBaseWithQuickSideBarBinding binding) {
         this.binding = binding;
     }
 

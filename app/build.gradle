@@ -154,4 +154,6 @@ dependencies {
     compile 'com.nononsenseapps:filepicker:2.5.2'
 
     compile 'org.jsoup:jsoup:1.10.1'
+
+    compile 'com.bigkoo:quicksidebar:1.0.3'
 }

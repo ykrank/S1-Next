@@ -4,8 +4,10 @@ import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -28,6 +30,17 @@ import me.ykrank.s1next.widget.glide.viewtarget.ViewBackgroundTarget;
  */
 public final class ViewBindingAdapter {
     private ViewBindingAdapter() {
+    }
+
+    @BindingAdapter("marginEnd")
+    public static void setMarginEnd(View view, float margin) {
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            layoutParams.setMarginEnd((int) margin);
+        } else {
+            layoutParams.rightMargin = (int) margin;
+        }
+        view.setLayoutParams(layoutParams);
     }
 
     @BindingAdapter("onceClickDisposable")
