@@ -12,7 +12,7 @@ import java.util.List;
 
 import me.ykrank.s1next.data.api.model.Note;
 import me.ykrank.s1next.data.api.model.collection.Notes;
-import me.ykrank.s1next.data.api.model.wrapper.BaseWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
@@ -25,7 +25,7 @@ import rx.Observable;
  * Created by ykrank on 2017/1/5.
  */
 
-public class NoteFragment extends BaseLoadMoreRecycleViewFragment<BaseWrapper<Notes>> {
+public class NoteFragment extends BaseLoadMoreRecycleViewFragment<BaseDataWrapper<Notes>> {
     public static final String TAG = NoteFragment.class.getName();
     private NoteRecyclerViewAdapter mRecyclerAdapter;
 
@@ -63,7 +63,7 @@ public class NoteFragment extends BaseLoadMoreRecycleViewFragment<BaseWrapper<No
     }
 
     @Override
-    BaseWrapper<Notes> appendNewData(@Nullable BaseWrapper<Notes> oldData, @NonNull BaseWrapper<Notes> newData) {
+    BaseDataWrapper<Notes> appendNewData(@Nullable BaseDataWrapper<Notes> oldData, @NonNull BaseDataWrapper<Notes> newData) {
         if (oldData != null) {
             List<Note> oldNotes = oldData.getData().getNoteList();
             List<Note> newNotes = newData.getData().getNoteList();
@@ -78,12 +78,12 @@ public class NoteFragment extends BaseLoadMoreRecycleViewFragment<BaseWrapper<No
     }
 
     @Override
-    Observable<BaseWrapper<Notes>> getSourceObservable(int pageNum) {
+    Observable<BaseDataWrapper<Notes>> getSourceObservable(int pageNum) {
         return mS1Service.getMyNotes(pageNum);
     }
 
     @Override
-    void onNext(BaseWrapper<Notes> data) {
+    void onNext(BaseDataWrapper<Notes> data) {
         super.onNext(data);
         Notes notes = data.getData();
         if (notes != null && notes.getNoteList() != null) {

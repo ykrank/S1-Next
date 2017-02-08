@@ -121,7 +121,7 @@ abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
      * @see BaseRecyclerViewFragment#onError(Throwable)
      */
     void onError(Throwable throwable) {
-        showShortText(getString(ErrorUtil.parse(throwable)));
+        showShortText(ErrorUtil.parse(getContext(), throwable));
     }
 
     /**

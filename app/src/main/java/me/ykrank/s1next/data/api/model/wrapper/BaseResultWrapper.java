@@ -9,21 +9,10 @@ import me.ykrank.s1next.data.api.model.Result;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BaseResultWrapper<T extends Account> {
-
-    @JsonProperty("Variables")
-    private T data;
-
+public class BaseResultWrapper<T extends Account> extends OriginWrapper<T> {
+    
     @JsonProperty("Message")
     private Result result;
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
 
     public Result getResult() {
         return result;
@@ -36,22 +25,21 @@ public class BaseResultWrapper<T extends Account> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof BaseResultWrapper)) return false;
+        if (!super.equals(o)) return false;
         BaseResultWrapper<?> that = (BaseResultWrapper<?>) o;
-        return Objects.equal(data, that.data) &&
-                Objects.equal(result, that.result);
+        return Objects.equal(result, that.result);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(data, result);
+        return Objects.hashCode(super.hashCode(), result);
     }
 
     @Override
     public String toString() {
         return "BaseResultWrapper{" +
-                "data=" + data +
-                ", result=" + result +
+                "result=" + result +
                 '}';
     }
 }

@@ -50,7 +50,7 @@ public final class PostListGatewayActivity extends FragmentActivity {
                 }
             } else {
                 ThreadLinkInvalidPromptDialogFragment.newInstance(this,
-                        R.string.dialog_message_invalid_or_unsupported_link).show(
+                        getString(R.string.dialog_message_invalid_or_unsupported_link)).show(
                         getSupportFragmentManager(), ThreadLinkInvalidPromptDialogFragment.TAG);
             }
         }
