@@ -7,9 +7,13 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 
 import me.ykrank.s1next.R;
 
@@ -90,6 +94,42 @@ public final class ViewUtil {
             ((ViewGroup.MarginLayoutParams) v.getLayoutParams()).topMargin =
                     insets.getSystemWindowInsetTop();
             return insets.consumeSystemWindowInsets();
+        });
+    }
+
+    /**
+     * @see Glide#clear(View)
+     */
+    public static void clearGlideTargetWhenDetach(View view) {
+        view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                Glide.clear(view);
+            }
+        });
+    }
+
+    /**
+     * @param view
+     * @param target
+     * @see Glide#clear(Target)
+     */
+    public static void clearGlideTargetWhenDetach(View view, Target target) {
+        view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                Glide.clear(target);
+            }
         });
     }
 }

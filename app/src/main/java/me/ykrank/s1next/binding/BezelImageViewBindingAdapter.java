@@ -23,6 +23,7 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.util.ActivityUtils;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.widget.BezelImageView;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
 
@@ -46,10 +47,11 @@ public final class BezelImageViewBindingAdapter {
 
         DownloadPreferencesManager downloadPreferencesManager = App.getPrefComponent()
                 .getDownloadPreferencesManager();
+        Target<GlideDrawable> target;
         if (user.isLogged()) {
             AvatarUrlsCache.clearUserAvatarCache(user.getUid());
             // setup user's avatar
-            Glide.with(context)
+            target = Glide.with(context)
                     .load(Api.getAvatarMediumUrl(user.getUid()))
                     .error(R.drawable.ic_drawer_avatar_placeholder)
                     .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
@@ -57,12 +59,13 @@ public final class BezelImageViewBindingAdapter {
                     .into(bezelImageView);
         } else {
             // setup default avatar
-            Glide.with(context)
+            target = Glide.with(context)
                     .load(R.drawable.ic_drawer_avatar_placeholder)
                     .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
                     .centerCrop()
                     .into(bezelImageView);
         }
+        ViewUtil.clearGlideTargetWhenDetach(bezelImageView, target);
     }
 
     @BindingAdapter("uid")
