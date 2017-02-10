@@ -21,6 +21,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
@@ -87,6 +88,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
     private PagerCallback mPagerCallback;
 
     private Disposable saveReadProgressDisposable;
+    private Disposable blackListDisposable;
     private Disposable changeSeletableDisposable;
     private Disposable changeQuickSidebarEnableDisposable;
 
@@ -337,19 +339,25 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
     void onError(Throwable throwable) {
         //网络请求失败下依然刷新黑名单
         if (blacklistChanged) {
-            // FIXME: 2017/1/25 should not work on ui thread
-            List<Object> dataSet = mRecyclerAdapter.getDataSet();
-            List<Object> newData = new ArrayList<>();
-            for (Object obj : dataSet) {
-                if (obj instanceof Post) {
-                    obj = Posts.filterPost((Post) obj);
-                    if (obj != null) {
-                        newData.add(obj);
-                    }
-                }
-            }
-            blacklistChanged = false;
-            mRecyclerAdapter.diffNewDataSet(newData, false);
+            RxJavaUtil.disposeIfNotNull(blackListDisposable);
+            blackListDisposable = Single.just(mRecyclerAdapter.getDataSet())
+                    .map(dataSet -> {
+                        List<Object> newData = new ArrayList<>();
+                        for (Object obj : dataSet) {
+                            if (obj instanceof Post) {
+                                obj = Posts.filterPost((Post) obj);
+                                if (obj != null) {
+                                    newData.add(obj);
+                                }
+                            }
+                        }
+                        return newData;
+                    })
+                    .compose(RxJavaUtil.iOSingleTransformer())
+                    .subscribe(newData -> {
+                        blacklistChanged = false;
+                        mRecyclerAdapter.diffNewDataSet(newData, false);
+                    }, L::report);
         } else if (isPullUpToRefresh()) {
             mRecyclerAdapter.hideFooterProgress();
         }

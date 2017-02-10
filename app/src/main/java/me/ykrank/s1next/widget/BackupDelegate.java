@@ -13,7 +13,6 @@ import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;
 
-import io.reactivex.functions.Consumer;
 import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.util.FilePickerUtil;
 import me.ykrank.s1next.util.L;
@@ -65,8 +64,7 @@ public class BackupDelegate {
             onFilePickResult(resultCode, data, new FilePickerUtil.OnFilePickCallback() {
                 @Override
                 public void success(@NonNull Uri uri) {
-                    // FIXME: 2017/1/25 crash after backup or restore
-                    RxJavaUtil.workWithUiResult(() -> doBackup(uri), afterBackup, this::error);
+                    RxJavaUtil.workWithUiResult(() -> doBackup(uri), o -> afterBackup.accept(o), this::error);
                 }
 
                 @Override
@@ -84,7 +82,7 @@ public class BackupDelegate {
             onFilePickResult(resultCode, data, new FilePickerUtil.OnFilePickCallback() {
                 @Override
                 public void success(@NonNull Uri uri) {
-                    RxJavaUtil.workWithUiResult(() -> doRestore(uri), afterRestore, this::error);
+                    RxJavaUtil.workWithUiResult(() -> doRestore(uri), o -> afterRestore.accept(o), this::error);
                 }
 
                 @Override
@@ -159,13 +157,11 @@ public class BackupDelegate {
     public @interface BackupResult {
     }
 
-    public interface AfterBackup extends Consumer<Integer> {
-        @Override
+    public interface AfterBackup {
         void accept(@BackupResult Integer integer);
     }
 
-    public interface AfterRestore extends Consumer<Integer> {
-        @Override
+    public interface AfterRestore {
         void accept(@BackupResult Integer integer);
     }
 }
