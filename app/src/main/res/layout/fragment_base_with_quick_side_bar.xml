@@ -64,7 +64,8 @@
             android:textColor="?android:attr/textColorSecondaryInverse"
             android:textStyle="normal|bold"
             android:visibility="gone"
-            tools:text="30" />
+            tools:visibility="visible"
+            tools:text="3000" />
     </FrameLayout>
 
 </layout>

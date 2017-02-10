@@ -23,7 +23,6 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.util.ActivityUtils;
 import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.widget.BezelImageView;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
 
@@ -65,7 +64,6 @@ public final class BezelImageViewBindingAdapter {
                     .centerCrop()
                     .into(bezelImageView);
         }
-        ViewUtil.clearGlideTargetWhenDetach(bezelImageView, target);
     }
 
     @BindingAdapter("uid")

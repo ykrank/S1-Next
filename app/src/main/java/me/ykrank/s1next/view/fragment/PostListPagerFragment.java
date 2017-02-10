@@ -373,9 +373,6 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
 
     private void initQuickSidebar(int page, int postSize) {
         invalidateQuickSidebarVisible();
-        if (!binding.getQuickSidebarEnable()) {
-            return;
-        }
         List<String> customLetters = new ArrayList<>();
         for (int i = 0; i < postSize; i++) {
             //1-10, then interval 2
@@ -400,7 +397,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
 
     @Override
     public void onLetterTouching(boolean touching) {
-        quickSideBarTipsView.setVisibility(touching ? View.VISIBLE : View.INVISIBLE);
+//        quickSideBarTipsView.setVisibility(touching ? View.VISIBLE : View.INVISIBLE);
     }
 
     public interface PagerCallback {
