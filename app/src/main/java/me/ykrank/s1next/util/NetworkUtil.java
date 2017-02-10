@@ -25,11 +25,15 @@ public final class NetworkUtil {
             Network[] networks = connectivityManager.getAllNetworks();
             if (networks != null) {
                 for (Network network : networks) {
-                    NetworkInfo networkInfo = connectivityManager.getNetworkInfo(network);
-                    if (networkInfo != null &&
-                            networkInfo.getType() == ConnectivityManager.TYPE_WIFI
-                            && networkInfo.isConnected()) {
-                        return true;
+                    try {
+                        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(network);
+                        if (networkInfo != null &&
+                                networkInfo.getType() == ConnectivityManager.TYPE_WIFI
+                                && networkInfo.isConnected()) {
+                            return true;
+                        }
+                    } catch (Exception e) {
+                        L.report(e);
                     }
                 }
             }
