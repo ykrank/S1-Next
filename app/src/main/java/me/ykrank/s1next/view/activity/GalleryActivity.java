@@ -25,6 +25,7 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.databinding.ActivityGalleryBinding;
 import me.ykrank.s1next.util.IntentUtil;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.view.internal.ToolbarDelegate;
 import me.ykrank.s1next.viewmodel.ImageViewModel;
@@ -88,6 +89,10 @@ public final class GalleryActivity extends OriginActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_gallery);
         mPhotoView = binding.photoView;
+        mImageUrl = getIntent().getStringExtra(ARG_IMAGE_URL);
+        mImageThumbUrl = getIntent().getStringExtra(ARG_IMAGE_THUMB_URL);
+
+        L.leaveMsg("GalleryActivity##url:" + mImageUrl + ",thumb:" + mImageThumbUrl);
 
         ToolbarDelegate toolbarDelegate = new ToolbarDelegate(this, binding.toolbar);
         setTitle(null);
@@ -96,8 +101,6 @@ public final class GalleryActivity extends OriginActivity {
         ViewUtil.marginTranslucentToolbar(binding.toolbar);
         //TODO http://stackoverflow.com/questions/31492040/snackbar-and-fitssystemwindow
 
-        mImageUrl = getIntent().getStringExtra(ARG_IMAGE_URL);
-        mImageThumbUrl = getIntent().getStringExtra(ARG_IMAGE_THUMB_URL);
         trackAgent.post(new ViewImageTrackEvent(mImageUrl, mImageThumbUrl != null));
         binding.setImageViewModel(new ImageViewModel(mImageUrl, mImageThumbUrl));
     }

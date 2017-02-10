@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.fragment.ReplyFragment;
 
 /**
@@ -48,6 +49,7 @@ public final class ReplyActivity extends BaseActivity {
         Intent intent = getIntent();
         String threadId = intent.getStringExtra(ARG_THREAD_ID);
         String quotePostId = intent.getStringExtra(ARG_QUOTE_POST_ID);
+        L.leaveMsg("ReplyActivity##threadId:" + threadId + ",quotePostId:" + quotePostId);
 
         String titlePrefix = TextUtils.isEmpty(quotePostId)
                 ? getString(R.string.reply_activity_title_prefix)
