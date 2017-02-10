@@ -285,6 +285,8 @@ public final class PostListFragment extends BaseViewPagerFragment
         super.onPrepareOptionsMenu(menu);
         MenuItem mMenuPostSelectable = menu.findItem(R.id.menu_post_selectable);
         mMenuPostSelectable.setChecked(mGeneralPreferencesManager.isPostSelectable());
+        MenuItem mMenuQuickSideBarEnable = menu.findItem(R.id.menu_quick_side_bar_enable);
+        mMenuQuickSideBarEnable.setChecked(mGeneralPreferencesManager.isQuickSideBarEnable());
     }
 
     @Override
