@@ -87,11 +87,26 @@
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
 
-# ActiveAndroid
--keep class com.activeandroid.** { *; }
--keep class com.activeandroid.**.** { *; }
--keep class * extends com.activeandroid.Model
--keep class * extends com.activeandroid.serializer.TypeSerializer
+# GreenDao
+-keep class me.ykrank.s1next.data.db.dbmodel.**
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+-keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
+    public static java.lang.String TABLENAME;
+}
+# Only required if you use rxjava2
+-dontwarn rx.**
+# Only required if you do not use sqlcipher
+-dontwarn net.sqlcipher.database.**
+-dontwarn org.greenrobot.greendao.database.DatabaseOpenHelper$EncryptedHelper
+
+# Only required if you use AsyncExecutor
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+}
 
 #jsoup
 -keeppackagenames org.jsoup.nodes
