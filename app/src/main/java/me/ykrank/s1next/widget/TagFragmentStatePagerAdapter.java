@@ -16,6 +16,7 @@
 
 package me.ykrank.s1next.widget;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -28,28 +29,28 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import me.ykrank.s1next.util.L;
-
 /**
  * Because we can't retain Fragments that are nested in other fragments.
  * So we adds tag to each Fragments in order to let host Fragment in ViewPager
  * know its target {@link me.ykrank.s1next.view.fragment.headless.DataRetainedFragment}.
  * <p>
- * Forked from https://github.com/android/platform_frameworks_support/blob/master/v4/java/android/support/v4/app/FragmentStatePagerAdapter.java
- * Change-Id: I9197cb319a2b1bf070ab1fd8a7abbf9ee01de543
+ * Forked from {@link android.support.v4.app.FragmentStatePagerAdapter}
+ * Version: 25.1.1
  */
-public abstract class FragmentStatePagerAdapter<T extends Fragment> extends PagerAdapter {
+@SuppressLint({"CommitTransaction", "unchecked"})
+public abstract class TagFragmentStatePagerAdapter<T extends Fragment> extends PagerAdapter {
 
-    private static final String TAG = "FragStatePagerAdapt";
+    private static final String TAG = "TagFragStatePagerAdapt";
     private static final boolean DEBUG = false;
 
     private final FragmentManager mFragmentManager;
-    private final ArrayList<Fragment.SavedState> mSavedState = new ArrayList<>();
-    private final ArrayList<T> mFragments = new ArrayList<>();
     private FragmentTransaction mCurTransaction = null;
+
+    private ArrayList<Fragment.SavedState> mSavedState = new ArrayList<>();
+    private ArrayList<T> mFragments = new ArrayList<>();
     private Fragment mCurrentPrimaryItem = null;
 
-    public FragmentStatePagerAdapter(FragmentManager fm) {
+    public TagFragmentStatePagerAdapter(FragmentManager fm) {
         mFragmentManager = fm;
     }
 
@@ -60,12 +61,16 @@ public abstract class FragmentStatePagerAdapter<T extends Fragment> extends Page
 
     @Override
     public void startUpdate(ViewGroup container) {
+        if (container.getId() == View.NO_ID) {
+            throw new IllegalStateException("ViewPager with adapter " + this
+                    + " requires a view id");
+        }
     }
 
     @Override
     public T instantiateItem(ViewGroup container, int position) {
         // If we already have this item instantiated, there is nothing
-        // to do. This can happen when we are restoring the entire pager
+        // to do.  This can happen when we are restoring the entire pager
         // from its saved state, where the fragment manager has already
         // taken care of restoring the fragments we previously had instantiated.
         if (mFragments.size() > position) {
@@ -80,9 +85,7 @@ public abstract class FragmentStatePagerAdapter<T extends Fragment> extends Page
         }
 
         T fragment = getItem(position);
-        if (DEBUG) {
-            Log.v(TAG, "Adding item #" + position + ": f=" + fragment);
-        }
+        if (DEBUG) Log.v(TAG, "Adding item #" + position + ": f=" + fragment);
         if (mSavedState.size() > position) {
             Fragment.SavedState fss = mSavedState.get(position);
             if (fss != null) {
@@ -95,10 +98,9 @@ public abstract class FragmentStatePagerAdapter<T extends Fragment> extends Page
         fragment.setMenuVisibility(false);
         fragment.setUserVisibleHint(false);
         mFragments.set(position, fragment);
-
         // here we did to add a tag to the Fragment!
         mCurTransaction.add(container.getId(), fragment,
-                "android:FragmentStatePagerAdapter:" + container.getId() + ":" + position);
+                "android:TagFragmentStatePagerAdapter:" + container.getId() + ":" + position);
 
         return fragment;
     }
@@ -112,14 +114,13 @@ public abstract class FragmentStatePagerAdapter<T extends Fragment> extends Page
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
-        if (DEBUG) {
-            Log.v(TAG, "Removing item #" + position + ": f=" + fragment
-                    + " v=" + fragment.getView());
-        }
+        if (DEBUG) Log.v(TAG, "Removing item #" + position + ": f=" + fragment
+                + " v=" + fragment.getView());
         while (mSavedState.size() <= position) {
             mSavedState.add(null);
         }
-        mSavedState.set(position, mFragmentManager.saveFragmentInstanceState(fragment));
+        mSavedState.set(position, fragment.isAdded()
+                ? mFragmentManager.saveFragmentInstanceState(fragment) : null);
         mFragments.set(position, null);
 
         mCurTransaction.remove(fragment);
@@ -147,9 +148,8 @@ public abstract class FragmentStatePagerAdapter<T extends Fragment> extends Page
     @Override
     public void finishUpdate(ViewGroup container) {
         if (mCurTransaction != null) {
-            mCurTransaction.commitAllowingStateLoss();
+            mCurTransaction.commitNowAllowingStateLoss();
             mCurTransaction = null;
-            mFragmentManager.executePendingTransactions();
         }
     }
 
@@ -193,8 +193,8 @@ public abstract class FragmentStatePagerAdapter<T extends Fragment> extends Page
             mSavedState.clear();
             mFragments.clear();
             if (fss != null) {
-                for (Parcelable fs : fss) {
-                    mSavedState.add((Fragment.SavedState) fs);
+                for (int i = 0; i < fss.length; i++) {
+                    mSavedState.add((Fragment.SavedState) fss[i]);
                 }
             }
             Iterable<String> keys = bundle.keySet();
@@ -209,7 +209,7 @@ public abstract class FragmentStatePagerAdapter<T extends Fragment> extends Page
                         f.setMenuVisibility(false);
                         mFragments.set(index, (T) f);
                     } else {
-                        L.w(TAG, "Bad fragment at key " + key);
+                        Log.w(TAG, "Bad fragment at key " + key);
                     }
                 }
             }

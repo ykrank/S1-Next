@@ -111,7 +111,7 @@ public final class OpenSourceLicensesFragment extends PreferenceFragment {
         return new String[][]{
                 {"BezelImageView.java", "BEZEL_IMAGE_VIEW"},
                 {"CookieStoreImpl.java", "COOKIE_STORE_IMPL"},
-                {"FragmentStatePagerAdapter.java", "FRAGMENT_STATE_PAGER_ADAPTER"},
+                {"TagFragmentStatePagerAdapter.java", "FRAGMENT_STATE_PAGER_ADAPTER"},
                 {"PhotoView.java", "PHOTO_VIEW"}
         };
     }

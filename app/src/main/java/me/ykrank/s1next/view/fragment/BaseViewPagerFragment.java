@@ -18,7 +18,7 @@ import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.util.StringUtil;
 import me.ykrank.s1next.view.dialog.PageJumpDialogFragment;
 import me.ykrank.s1next.view.internal.PagerCallback;
-import me.ykrank.s1next.widget.FragmentStatePagerAdapter;
+import me.ykrank.s1next.widget.TagFragmentStatePagerAdapter;
 
 /**
  * A base Fragment wraps {@link ViewPager} and provides related methods.
@@ -176,9 +176,9 @@ abstract class BaseViewPagerFragment extends BaseFragment
     abstract CharSequence getTitleWithoutPosition();
 
     /**
-     * A base {@link FragmentStatePagerAdapter} wraps some implement.
+     * A base {@link TagFragmentStatePagerAdapter} wraps some implement.
      */
-    abstract class BaseFragmentStatePagerAdapter<T extends BaseRecyclerViewFragment> extends FragmentStatePagerAdapter<T> {
+    abstract class BaseFragmentStatePagerAdapter<T extends BaseRecyclerViewFragment> extends TagFragmentStatePagerAdapter<T> {
 
         private T mCurrentFragment;
 
