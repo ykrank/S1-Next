@@ -109,26 +109,8 @@ public final class ViewUtil {
 
             @Override
             public void onViewDetachedFromWindow(View v) {
-                Glide.clear(view);
-            }
-        });
-    }
-
-    /**
-     * @param view
-     * @param target
-     * @see Glide#clear(Target)
-     */
-    public static void clearGlideTargetWhenDetach(View view, Target target) {
-        view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View v) {
-
-            }
-
-            @Override
-            public void onViewDetachedFromWindow(View v) {
-                Glide.clear(target);
+                v.removeOnAttachStateChangeListener(this);
+                Glide.clear(v);
             }
         });
     }

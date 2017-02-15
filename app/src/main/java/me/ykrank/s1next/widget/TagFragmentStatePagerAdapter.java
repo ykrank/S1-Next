@@ -38,6 +38,7 @@ import java.util.ArrayList;
  * Version: 25.1.1
  */
 @SuppressLint({"CommitTransaction", "unchecked"})
+@SuppressWarnings("unchecked")
 public abstract class TagFragmentStatePagerAdapter<T extends Fragment> extends PagerAdapter {
 
     private static final String TAG = "TagFragStatePagerAdapt";
