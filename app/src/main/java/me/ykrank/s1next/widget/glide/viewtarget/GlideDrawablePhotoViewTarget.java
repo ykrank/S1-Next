@@ -4,7 +4,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SquaringDrawable;
 
 import me.ykrank.s1next.widget.PhotoView;
 
@@ -53,20 +52,6 @@ public class GlideDrawablePhotoViewTarget extends PhotoViewTarget<GlideDrawable>
      */
     @Override
     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
-        if (!resource.isAnimated()) {
-            //TODO: Try to generalize this to other sizes/shapes.
-            // This is a dirty hack that tries to make loading square thumbnails and then square full images less costly
-            // by forcing both the smaller thumb and the larger version to have exactly the same intrinsic dimensions.
-            // If a drawable is replaced in an ImageView by another drawable with different intrinsic dimensions,
-            // the ImageView requests a layout. Scrolling rapidly while replacing thumbs with larger images triggers
-            // lots of these calls and causes significant amounts of jank.
-            float viewRatio = view.getWidth() / (float) view.getHeight();
-            float drawableRatio = resource.getIntrinsicWidth() / (float) resource.getIntrinsicHeight();
-            if (Math.abs(viewRatio - 1f) <= SQUARE_RATIO_MARGIN
-                    && Math.abs(drawableRatio - 1f) <= SQUARE_RATIO_MARGIN) {
-                resource = new SquaringDrawable(resource, view.getWidth());
-            }
-        }
         super.onResourceReady(resource, animation);
         this.resource = resource;
         resource.setLoopCount(maxLoopCount);
