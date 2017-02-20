@@ -224,8 +224,6 @@ public final class GlideImageGetter
                     resource.setLoopCount(GlideDrawable.LOOP_FOREVER);
                     resource.start();
                 }
-            } else {
-                textView.setTag(R.id.tag_drawable_callback, null);
             }
 
             // see http://stackoverflow.com/questions/7870312/android-imagegetter-images-overlapping-text#comment-22289166
