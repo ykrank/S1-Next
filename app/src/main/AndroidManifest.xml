@@ -89,6 +89,11 @@
                     android:host="bbs.saraba1st.com"
                     android:pathPattern=".*"
                     android:scheme="http" />
+
+                <data
+                    android:host="bbs.saraba1st.com"
+                    android:pathPattern=".*"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
 
