@@ -5,9 +5,11 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.google.common.base.Objects;
 
 import org.apache.commons.lang3.StringUtils;
@@ -209,10 +211,12 @@ public final class Posts extends Account {
                 value = source.readString();
             }
 
+            @JsonGetter
             public String getLabel() {
                 return label;
             }
 
+            @JsonGetter
             public String getValue() {
                 return value;
             }

@@ -41,7 +41,7 @@ public class HomeReply implements SameItem, HomeReplyWebWrapper.HomeReplyItem {
             //eg thread-1220112-1-1.html
             reply.setUrl(eleReply.attr("href"));
         } catch (Exception e) {
-            L.report(e);
+            L.report(new RuntimeException(element.toString(), e));
         }
         return reply;
     }
