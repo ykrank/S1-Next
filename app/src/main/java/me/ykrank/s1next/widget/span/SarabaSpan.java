@@ -56,7 +56,7 @@ public class SarabaSpan implements PostMovementMethod.URLSpanClick {
 
     @Override
     public boolean isMatch(Uri uri) {
-        if ("http".equalsIgnoreCase(uri.getScheme())) {
+        if ("http".equalsIgnoreCase(uri.getScheme()) || "https".equalsIgnoreCase(uri.getScheme())) {
             String path = uri.getEncodedPath();
             if (path == null) {
                 path = "/";
