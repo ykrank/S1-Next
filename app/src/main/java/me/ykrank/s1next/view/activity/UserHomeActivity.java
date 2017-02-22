@@ -4,12 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.SharedElementCallback;
+import android.transition.Transition;
 import android.view.MenuItem;
 import android.view.View;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -23,7 +28,9 @@ import me.ykrank.s1next.util.ActivityUtils;
 import me.ykrank.s1next.util.AnimUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
+import me.ykrank.s1next.util.TransitionUtils;
 import me.ykrank.s1next.widget.AppBarOffsetChangedListener;
+import me.ykrank.s1next.widget.glide.ImageInfo;
 import me.ykrank.s1next.widget.track.event.ViewHomeTrackEvent;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
@@ -39,11 +46,13 @@ public class UserHomeActivity extends BaseActivity {
 
     private static final String ARG_UID = "uid";
     private static final String ARG_USERNAME = "username";
+    private static final String ARG_IMAGE_INFO = "image_info";
 
     @Inject
     S1Service s1Service;
 
     private ActivityHomeBinding binding;
+    private ImageInfo thumbImageInfo;
 
     public static void start(Context context, String uid, String userName) {
         Intent intent = new Intent(context, UserHomeActivity.class);
@@ -60,10 +69,14 @@ public class UserHomeActivity extends BaseActivity {
             L.report(new IllegalStateException("UserHomeActivity start error: context not instance of activity"));
             return;
         }
+        ImageInfo imageInfo = (ImageInfo) avatarView.getTag(R.id.tag_drawable_info);
         Activity activity = (Activity) baseContext;
         Intent intent = new Intent(activity, UserHomeActivity.class);
         intent.putExtra(ARG_UID, uid);
         intent.putExtra(ARG_USERNAME, userName);
+        if (imageInfo != null) {
+            intent.putExtra(ARG_IMAGE_INFO, imageInfo);
+        }
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 activity, avatarView, activity.getString(R.string.transition_avatar));
         ActivityCompat.startActivity(activity, intent, options.toBundle());
@@ -76,11 +89,15 @@ public class UserHomeActivity extends BaseActivity {
 
         String uid = getIntent().getStringExtra(ARG_UID);
         String name = getIntent().getStringExtra(ARG_USERNAME);
+        thumbImageInfo = getIntent().getParcelableExtra(ARG_IMAGE_INFO);
         trackAgent.post(new ViewHomeTrackEvent(uid, name));
         L.leaveMsg("UserHomeActivity##uid:" + uid + ",name:" + name);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         binding.setDownloadPreferencesManager(mDownloadPreferencesManager);
+        binding.setBig(true);
+        binding.setPreLoad(true);
+        binding.setThumb(thumbImageInfo == null ? null : thumbImageInfo.getUrl());
         Profile profile = new Profile();
         profile.setHomeUid(uid);
         profile.setHomeUsername(name);
@@ -115,7 +132,8 @@ public class UserHomeActivity extends BaseActivity {
         binding.tvThreads.setOnClickListener(v -> UserThreadActivity.start(this, uid, name));
 
         binding.tvReplies.setOnClickListener(v -> UserReplyActivity.start(this, uid, name));
-        
+
+        setupImage();
         loadData();
     }
 
@@ -145,6 +163,29 @@ public class UserHomeActivity extends BaseActivity {
     @Override
     public boolean isTranslucent() {
         return true;
+    }
+
+    private void setupImage() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().getSharedElementEnterTransition().addListener(new TransitionUtils.TransitionListenerAdapter(){
+                @Override
+                public void onTransitionEnd(Transition transition) {
+                    super.onTransitionEnd(transition);
+                    binding.setBig(true);
+                    binding.setPreLoad(false);
+                    binding.setThumb(thumbImageInfo == null ? null : thumbImageInfo.getUrl());
+                }
+            });
+            setEnterSharedElementCallback(new SharedElementCallback() {
+                @Override
+                public void onSharedElementStart(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+                    super.onSharedElementStart(sharedElementNames, sharedElements, sharedElementSnapshots);
+                    binding.setBig(false);
+                    binding.setPreLoad(false);
+                    binding.setThumb(null);
+                }
+            });
+        }
     }
 
     private void loadData() {

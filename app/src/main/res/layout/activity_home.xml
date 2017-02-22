@@ -16,6 +16,18 @@
             type="Boolean" />
 
         <variable
+            name="preLoad"
+            type="Boolean" />
+
+        <variable
+            name="thumb"
+            type="String" />
+
+        <variable
+            name="big"
+            type="Boolean" />
+
+        <variable
             name="downloadPreferencesManager"
             type="me.ykrank.s1next.data.pref.DownloadPreferencesManager" />
     </data>
@@ -63,10 +75,12 @@
                         android:layout_marginTop="@dimen/spacing_xlarge"
                         android:contentDescription="@string/avatar_content_desc"
                         android:visibility="@{downloadPreferencesManager.isAvatarsDownload ? View.VISIBLE : View.GONE}"
-                        app:big="@{true}"
+                        app:big="@{big}"
                         app:downloadPreferencesManager="@{downloadPreferencesManager}"
                         app:maskDrawable="@drawable/rounded_mask"
                         app:uid="@{data.homeUid}"
+                        app:preLoad="@{preLoad}"
+                        app:thumb="@{thumb}"
                         android:transitionName="@string/transition_avatar"
                         tools:src="@drawable/ic_avatar_placeholder" />
 

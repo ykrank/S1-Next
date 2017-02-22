@@ -16,6 +16,7 @@
 
 package me.ykrank.s1next.util;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Build;
 import android.support.annotation.IdRes;
@@ -151,8 +152,8 @@ public class TransitionUtils {
         }
         participants.add(new Pair<>(view, ViewCompat.getTransitionName(view)));
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     public static class TransitionListenerAdapter implements Transition.TransitionListener {
 
         @Override
