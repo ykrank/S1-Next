@@ -18,7 +18,7 @@ import me.ykrank.s1next.widget.AppActivityLifecycleCallbacks;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 
 public final class App extends MultiDexApplication {
-    public static final String LOG_TAG = "s1Next";
+    public static final String LOG_TAG = "S1NextLog";
 
     private static App sApp;
 

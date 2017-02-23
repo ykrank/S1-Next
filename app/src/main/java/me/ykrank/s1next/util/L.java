@@ -7,9 +7,6 @@ import android.util.Log;
 import com.tencent.bugly.crashreport.BuglyLog;
 import com.tencent.bugly.crashreport.CrashReport;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import me.ykrank.s1next.BuildConfig;
 
 import static me.ykrank.s1next.App.LOG_TAG;
@@ -19,22 +16,9 @@ import static me.ykrank.s1next.App.LOG_TAG;
  * 对Log的包装
  */
 public class L {
-    final static FixedFifoList<String> msgList = new FixedFifoList<>(9);
 
     public static void init(@NonNull Context context) {
         CrashReport.setIsDevelopmentDevice(context, BuildConfig.DEBUG);
-        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(context);
-        strategy.setCrashHandleCallback(new CrashReport.CrashHandleCallback() {
-            @Override
-            public Map<String, String> onCrashHandleStart(int crashType, String errorType,
-                                                          String errorMessage, String errorStack) {
-                HashMap<String, String> map = new HashMap<>();
-                for (int i = 0; i < msgList.size(); i++) {
-                    map.put("msg" + i, msgList.get(i));
-                }
-                return map;
-            }
-        });
         CrashReport.initCrashReport(context.getApplicationContext());
     }
 
@@ -129,9 +113,7 @@ public class L {
     }
 
     public static void leaveMsg(String msg) {
-        synchronized (msgList) {
-            msgList.add(msg);
-        }
+        BuglyLog.i("MSG", msg);
     }
 
     public static void report(String msg, Throwable tr) {
