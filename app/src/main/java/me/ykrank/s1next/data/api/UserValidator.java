@@ -2,13 +2,12 @@ package me.ykrank.s1next.data.api;
 
 import android.text.TextUtils;
 
-import com.bugsnag.android.Bugsnag;
-
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Account;
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
+import me.ykrank.s1next.util.L;
 
 public final class UserValidator {
 
@@ -68,7 +67,7 @@ public final class UserValidator {
         mUser.setAuthenticityToken(account.getAuthenticityToken());
 
         if (mUser.isLogged()) {
-            Bugsnag.setUser(mUser.getUid(), null, mUser.getName());
+            L.setUser(mUser.getUid(), mUser.getName());
         }
         App.get().getTrackAgent().setUser(mUser);
     }

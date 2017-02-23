@@ -1,5 +1,7 @@
 package me.ykrank.s1next.util;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.bugsnag.android.Bugsnag;
@@ -14,6 +16,14 @@ import static me.ykrank.s1next.App.LOG_TAG;
  * 对Log的包装
  */
 public class L {
+    
+    public static void init(@NonNull Context context){
+        Bugsnag.init(context);
+    }
+
+    public static void setUser(final String id, final String name) {
+        Bugsnag.setUser(id, null, name);
+    }
 
     public static boolean showLog() {
         return BuildConfig.DEBUG;

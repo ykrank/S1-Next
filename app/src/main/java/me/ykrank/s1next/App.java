@@ -4,7 +4,6 @@ import android.content.res.Configuration;
 import android.os.StrictMode;
 import android.support.multidex.MultiDexApplication;
 
-import com.bugsnag.android.Bugsnag;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -12,6 +11,7 @@ import me.ykrank.s1next.data.pref.DaggerPrefComponent;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.data.pref.PrefComponent;
 import me.ykrank.s1next.data.pref.PrefModule;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.ProcessUtil;
 import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.widget.AppActivityLifecycleCallbacks;
@@ -75,7 +75,7 @@ public final class App extends MultiDexApplication {
                     .build());
         }
         refWatcher = LeakCanary.install(this);
-        Bugsnag.init(this);
+        L.init(this);
 
         mAppComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))

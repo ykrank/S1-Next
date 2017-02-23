@@ -17,8 +17,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bugsnag.android.Bugsnag;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,7 +115,7 @@ public class PostMovementMethod extends ArrowKeyMovementMethod {
                             spans[0].onClick(widget);
                             return true;
                         }
-                        Bugsnag.notify(new IllegalStateException("ImageClickableSpan length warn; \n" +
+                        L.report(new IllegalStateException("ImageClickableSpan length warn; \n" +
                                 "length" + imageClickableSpans.length + ",line:" + line + ",off:" + off
                                 + ",newLength:" + spans.length));
                     }
