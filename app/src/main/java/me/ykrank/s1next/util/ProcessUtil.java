@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
@@ -21,10 +20,8 @@ public class ProcessUtil {
 
     @Nullable
     public static String getProcessName(Context context, int pid) {
-        String processName;
-        try {
-            processName = getProcessNameFast();
-        } catch (Exception e) {
+        String processName = getProcessNameFast();
+        if (processName == null) {
             L.e("could not get processName fast");
             processName = getProcessNameSnow(context, pid);
         }
@@ -57,12 +54,27 @@ public class ProcessUtil {
      * @throws IOException
      */
     @Nullable
-    public static String getProcessNameFast() throws IOException {
-        File file = new File("/proc/" + Process.myPid() + "/cmdline");
-        BufferedReader mReader = new BufferedReader(new FileReader(file));
-        String processName = mReader.readLine().trim();
-        mReader.close();
-        return processName;
+    public static String getProcessNameFast() {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader("/proc/" + Process.myPid() + "/cmdline"));
+            String processName = reader.readLine();
+            if (!TextUtils.isEmpty(processName)) {
+                processName = processName.trim();
+            }
+            return processName;
+        } catch (Throwable throwable) {
+            L.e(throwable);
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        }
+        return null;
     }
 
     /**

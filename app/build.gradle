@@ -143,7 +143,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-jackson:2.1.1-SNAPSHOT'
     compile 'com.squareup.retrofit2:converter-scalars:2.1.1-SNAPSHOT'
 
-    compile 'com.bugsnag:bugsnag-android:3.8.0'
+    compile 'com.tencent.bugly:crashreport:2.4.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
     compile 'com.hannesdorfmann:adapterdelegates3:3.0.2-SNAPSHOT'

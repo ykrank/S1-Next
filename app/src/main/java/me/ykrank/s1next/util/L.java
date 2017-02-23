@@ -4,8 +4,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.bugsnag.android.Bugsnag;
-import com.bugsnag.android.Severity;
+import com.tencent.bugly.crashreport.BuglyLog;
+import com.tencent.bugly.crashreport.CrashReport;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import me.ykrank.s1next.BuildConfig;
 
@@ -16,13 +19,27 @@ import static me.ykrank.s1next.App.LOG_TAG;
  * 对Log的包装
  */
 public class L {
-    
-    public static void init(@NonNull Context context){
-        Bugsnag.init(context);
+    final static FixedFifoList<String> msgList = new FixedFifoList<>(9);
+
+    public static void init(@NonNull Context context) {
+        CrashReport.setIsDevelopmentDevice(context, BuildConfig.DEBUG);
+        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(context);
+        strategy.setCrashHandleCallback(new CrashReport.CrashHandleCallback() {
+            @Override
+            public Map<String, String> onCrashHandleStart(int crashType, String errorType,
+                                                          String errorMessage, String errorStack) {
+                HashMap<String, String> map = new HashMap<>();
+                for (int i = 0; i < msgList.size(); i++) {
+                    map.put("msg" + i, msgList.get(i));
+                }
+                return map;
+            }
+        });
+        CrashReport.initCrashReport(context.getApplicationContext());
     }
 
     public static void setUser(final String id, final String name) {
-        Bugsnag.setUser(id, null, name);
+        CrashReport.setUserId("id:" + id + ",name:" + name);
     }
 
     public static boolean showLog() {
@@ -97,30 +114,32 @@ public class L {
 
     public static void e(String tag, String msg, Throwable tr) {
         if (showLog()) {
-            Bugsnag.notify(tr, Severity.INFO);
+            CrashReport.postCatchedException(tr);
         }
-        if (Log.isLoggable(tag, Log.ERROR)) {
-            Log.e(tag, msg, tr);
-        }
+        BuglyLog.e(tag, msg, tr);
     }
 
     public static void report(Throwable tr) {
-        report(tr, Severity.WARNING);
+        report(tr, Log.WARN);
     }
 
-    public static void report(Throwable tr, Severity severity) {
-        Bugsnag.notify(tr, severity);
-        if (Log.isLoggable(LOG_TAG, Log.ERROR)) {
-            Log.e(LOG_TAG, "Report error", tr);
-        }
+    public static void report(Throwable tr, int severity) {
+        CrashReport.postCatchedException(tr);
+        BuglyLog.e(LOG_TAG, "Report error", tr);
     }
 
     public static void leaveMsg(String msg) {
-        Bugsnag.leaveBreadcrumb(msg);
+        synchronized (msgList) {
+            msgList.add(msg);
+        }
     }
 
     public static void report(String msg, Throwable tr) {
         leaveMsg(msg);
         report(tr);
+    }
+
+    public static void test() {
+        throw new RuntimeException("Just test");
     }
 }

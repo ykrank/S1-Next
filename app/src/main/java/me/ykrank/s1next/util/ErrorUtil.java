@@ -2,8 +2,7 @@ package me.ykrank.s1next.util;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-
-import com.bugsnag.android.Severity;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -33,7 +32,7 @@ public final class ErrorUtil {
         if (BuildConfig.DEBUG) {
             throw throwable;
         } else {
-            L.report(throwable, Severity.WARNING);
+            L.report(throwable, Log.WARN);
         }
     }
 }
