@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
@@ -52,7 +53,7 @@ public class UserHomeActivity extends BaseActivity {
     S1Service s1Service;
 
     private ActivityHomeBinding binding;
-    private ImageInfo thumbImageInfo;
+    private Disposable mDisposable;
 
     public static void start(Context context, String uid, String userName) {
         Intent intent = new Intent(context, UserHomeActivity.class);
@@ -62,6 +63,11 @@ public class UserHomeActivity extends BaseActivity {
     }
 
     public static void start(Context context, String uid, String userName, View avatarView) {
+        //@see http://stackoverflow.com/questions/31381385/nullpointerexception-drawable-setbounds-probably-due-to-fragment-transitions#answer-31383033
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+            start(context, uid, userName);
+            return;
+        }
         Context baseContext = ActivityUtils.getBaseContext(context);
         if (!(baseContext instanceof Activity)) {
             L.leaveMsg("uid:" + uid);
@@ -89,7 +95,7 @@ public class UserHomeActivity extends BaseActivity {
 
         String uid = getIntent().getStringExtra(ARG_UID);
         String name = getIntent().getStringExtra(ARG_USERNAME);
-        thumbImageInfo = getIntent().getParcelableExtra(ARG_IMAGE_INFO);
+        ImageInfo thumbImageInfo = getIntent().getParcelableExtra(ARG_IMAGE_INFO);
         trackAgent.post(new ViewHomeTrackEvent(uid, name));
         L.leaveMsg("UserHomeActivity##uid:" + uid + ",name:" + name);
 
@@ -165,15 +171,20 @@ public class UserHomeActivity extends BaseActivity {
         return true;
     }
 
+    @Override
+    protected void onDestroy() {
+        RxJavaUtil.disposeIfNotNull(mDisposable);
+        super.onDestroy();
+    }
+
     private void setupImage() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             getWindow().getSharedElementEnterTransition().addListener(new TransitionUtils.TransitionListenerAdapter(){
                 @Override
                 public void onTransitionEnd(Transition transition) {
                     super.onTransitionEnd(transition);
                     binding.setBig(true);
                     binding.setPreLoad(false);
-                    binding.setThumb(thumbImageInfo == null ? null : thumbImageInfo.getUrl());
                 }
             });
             setEnterSharedElementCallback(new SharedElementCallback() {
@@ -182,14 +193,14 @@ public class UserHomeActivity extends BaseActivity {
                     super.onSharedElementStart(sharedElementNames, sharedElements, sharedElementSnapshots);
                     binding.setBig(false);
                     binding.setPreLoad(false);
-                    binding.setThumb(null);
                 }
             });
         }
     }
 
     private void loadData() {
-        s1Service.getProfile(binding.getData().getHomeUid())
+        RxJavaUtil.disposeIfNotNull(mDisposable);
+        mDisposable = s1Service.getProfile(binding.getData().getHomeUid())
                 .compose(RxJavaUtil.iOTransformer())
                 .subscribe(wrapper -> {
                     binding.setData(wrapper.getData());
