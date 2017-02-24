@@ -36,6 +36,7 @@ import me.ykrank.s1next.data.event.FontSizeChangeEvent;
 import me.ykrank.s1next.data.event.ThemeChangeEvent;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.data.pref.ThemeManager;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.dialog.ThreadGoDialogFragment;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
@@ -218,6 +219,16 @@ public abstract class BaseActivity extends OriginActivity
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        //sometime java.lang.IllegalStateException·Can not perform this action after onSaveInstanceState
+        try {
+            super.onBackPressed();
+        } catch (Throwable throwable) {
+            L.report(throwable);
         }
     }
 
