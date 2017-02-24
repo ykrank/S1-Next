@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.PmGroup;
 import me.ykrank.s1next.data.api.model.collection.PmGroups;
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
@@ -41,6 +42,7 @@ public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<Base
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         L.leaveMsg("PmGroupsFragment");
+        getActivity().setTitle(R.string.pms);
 
         RecyclerView recyclerView = getRecyclerView();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

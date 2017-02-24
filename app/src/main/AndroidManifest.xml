@@ -117,7 +117,7 @@
 
         <activity
             android:name=".view.activity.PmActivity"
-            android:label="@string/whispers"
+            android:label="@string/pms"
             android:windowSoftInputMode="adjustResize" />
 
         <activity

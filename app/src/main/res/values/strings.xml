@@ -248,7 +248,7 @@
     <string name="message_api_error">Website something abnormal</string>
     <string name="pm_desc_to_other"><![CDATA[<b>I</b> <i>said to</i> <b>%s</b> :]]></string>
     <string name="pm_desc_to_me"><![CDATA[<b>%s</b> <i>said to</i> <b>Me</b> :]]></string>
-    <string name="whispers">Whispers</string>
+    <string name="pms">Whispers</string>
     <string name="title_new_pm">New pm</string>
     <string name="menu_post_selectable">Post Selectable</string>
     <string name="dialog_message_post_selectable_warn">If post text selectable, post text will auto scroll to top after switch pages (for copy text)</string>

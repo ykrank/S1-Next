@@ -15,7 +15,7 @@
         <item
             android:id="@+id/menu_whisper"
             android:icon="@drawable/ic_chat_black_24dp"
-            android:title="@string/whispers" />
+            android:title="@string/pms" />
         <item
             android:id="@+id/menu_note"
             android:icon="@drawable/ic_note_black_24dp"
