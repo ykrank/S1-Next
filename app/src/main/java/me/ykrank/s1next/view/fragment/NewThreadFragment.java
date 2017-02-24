@@ -2,6 +2,7 @@ package me.ykrank.s1next.view.fragment;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -105,16 +106,19 @@ public final class NewThreadFragment extends BasePostFragment {
 
     @Override
     protected boolean OnMenuSendClick() {
-        ThreadType selectType = (ThreadType) typeSpinner.getSelectedItem();
-        if (selectType == null) {
-            showShortSnackbar(R.string.error_not_init);
-            return true;
-        }
-        String typeId = selectType.getTypeId();
-        //未选择类别
-        if (typeId == null || "0".equals(typeId.trim())) {
-            showShortSnackbar(R.string.error_no_type_id);
-            return true;
+        String typeId = null;
+        if (typeSpinner.getVisibility() == View.VISIBLE) {
+            ThreadType selectType = (ThreadType) typeSpinner.getSelectedItem();
+            if (selectType == null) {
+                showShortSnackbar(R.string.error_not_init);
+                return true;
+            }
+            typeId = selectType.getTypeId();
+            //未选择类别
+            if (typeId == null || "0".equals(typeId.trim())) {
+                showShortSnackbar(R.string.error_no_type_id);
+                return true;
+            }
         }
 
         String title = titleEditText.getText().toString();
@@ -192,7 +196,7 @@ public final class NewThreadFragment extends BasePostFragment {
                 .map(ThreadType::fromXmlString)
                 .compose(RxJavaUtil.iOTransformer())
                 .subscribe(types -> {
-                    if (types == null || types.isEmpty()) {
+                    if (types == null) {
                         showRetrySnackbar(getString(R.string.message_network_error), v -> init());
                     } else {
                         setSpinner(types);
@@ -203,7 +207,13 @@ public final class NewThreadFragment extends BasePostFragment {
                 });
     }
 
-    private void setSpinner(List<ThreadType> types) {
+    private void setSpinner(@NonNull List<ThreadType> types) {
+        if (types.isEmpty()) {
+            typeSpinner.setVisibility(View.GONE);
+            return;
+        } else {
+            typeSpinner.setVisibility(View.VISIBLE);
+        }
         ThreadTypeSpinnerAdapter spinnerAdapter = new ThreadTypeSpinnerAdapter(getContext(), types);
         typeSpinner.setAdapter(spinnerAdapter);
         if (cacheModel != null && types.size() > cacheModel.getSelectPosition()) {

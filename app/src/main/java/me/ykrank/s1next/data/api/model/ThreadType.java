@@ -1,6 +1,6 @@
 package me.ykrank.s1next.data.api.model;
 
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +24,17 @@ public final class ThreadType {
 
     /**
      * Extracts {@link Quote} from XML string.
+     * @param xmlString raw html
+     * @return if no type, return empty list. return null if html error.
      */
-    @NonNull
+    @Nullable
     public static List<ThreadType> fromXmlString(String xmlString) {
         LooperUtil.enforceOnWorkThread();
+        //<span>发表帖子</span>
+        if (xmlString == null || !xmlString.contains("<span>发表帖子</span>")) {
+            return null;
+        }
+        
         List<ThreadType> types = new ArrayList<>();
         // example: <select name="typeid" id="typeid" width="80"> <option value="0">选择主题分类</option> </select>
         Pattern pattern = Pattern.compile("<select name=\"typeid\" id=\"typeid\"[\\s\\S]+?</select>");
