@@ -82,9 +82,7 @@ public final class BlackListSettingFragment extends Fragment {
             SparseBooleanArray checklist = mListView.getCheckedItemPositions();
             switch (item.getItemId()) {
                 case R.id.menu_add:
-                    BlacklistDialogFragment dialogFragment = BlacklistDialogFragment.newInstance(null);
-                    dialogFragment.setTargetFragment(BlackListSettingFragment.this, BlacklistDialogFragment.DIALOG_REQUEST_CODE);
-                    dialogFragment.show(getFragmentManager(), BlackListSettingFragment.class.getName());
+                    add();
                     return true;
                 case R.id.menu_edit:
                     BlackList blackList = null;
@@ -165,9 +163,11 @@ public final class BlackListSettingFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_add:
+                add();
+                return true;
             case R.id.menu_refresh:
                 load();
-
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -225,5 +225,11 @@ public final class BlackListSettingFragment extends Fragment {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void add() {
+        BlacklistDialogFragment dialogFragment = BlacklistDialogFragment.newInstance(null);
+        dialogFragment.setTargetFragment(BlackListSettingFragment.this, BlacklistDialogFragment.DIALOG_REQUEST_CODE);
+        dialogFragment.show(getFragmentManager(), BlackListSettingFragment.class.getName());
     }
 }

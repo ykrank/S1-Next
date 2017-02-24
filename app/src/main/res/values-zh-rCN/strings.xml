@@ -199,4 +199,5 @@
     <string name="title_user_replies">%1$s的回复</string>
     <string name="last_replier">最后回复 %1$s</string>
     <string name="menu_quick_side_bar_enable">使用快速导航</string>
+    <string name="menu_blacklist_edit">编辑黑名单</string>
 </resources>

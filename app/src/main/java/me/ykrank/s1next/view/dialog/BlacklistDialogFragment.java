@@ -54,7 +54,7 @@ public final class BlacklistDialogFragment extends BaseDialogFragment {
         binding.setBlackListViewModel(blackListViewModel);
 
         AlertDialog alertDialog = new AlertDialog.Builder(activity)
-                .setTitle(R.string.menu_thread_go)
+                .setTitle(mBlacklist == null ? R.string.menu_blacklist_add : R.string.menu_blacklist_edit)
                 .setView(binding.getRoot())
                 .setPositiveButton(android.R.string.ok, (dialog, which) ->
                 {
