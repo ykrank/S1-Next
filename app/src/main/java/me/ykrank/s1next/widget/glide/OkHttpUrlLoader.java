@@ -7,6 +7,7 @@ import com.bumptech.glide.load.model.GenericLoaderFactory;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
+import com.bumptech.glide.load.model.stream.StreamModelLoader;
 
 import java.io.InputStream;
 
@@ -17,7 +18,7 @@ import okhttp3.OkHttpClient;
  * <p>
  * Forked from https://github.com/bumptech/glide/blob/master/integration/okhttp/src/main/java/com/bumptech/glide/integration/okhttp/OkHttpUrlLoader.java
  */
-final class OkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
+final class OkHttpUrlLoader implements StreamModelLoader<GlideUrl> {
 
     private final OkHttpClient mOkHttpClient;
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.Html;
 import android.view.View;
 import android.webkit.URLUtil;
@@ -28,6 +29,7 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.TransformationUtil;
 import me.ykrank.s1next.widget.EmoticonFactory;
+import me.ykrank.s1next.widget.glide.CacheOnlyStreamLoader;
 
 /**
  * Implements {@link android.text.Html.ImageGetter}
@@ -139,6 +141,8 @@ public final class GlideImageGetter
                     urlDrawable);
             Glide.with(mContext)
                     .load(url)
+                    .placeholder(R.mipmap.unknown_image)
+                    .error(R.mipmap.unknown_image)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .transform(new TransformationUtil.GlMaxTextureSizeBitmapTransformation(mContext))
                     .into(imageGetterViewTarget);
@@ -146,7 +150,19 @@ public final class GlideImageGetter
             mViewTargetSet.add(imageGetterViewTarget);
             return urlDrawable;
         } else {
-            return null;
+            ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
+                    urlDrawable);
+            Glide.with(mContext)
+                    .using(new CacheOnlyStreamLoader())
+                    .load(url)
+                    .placeholder(R.mipmap.unknown_image)
+                    .error(R.mipmap.unknown_image)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .transform(new TransformationUtil.GlMaxTextureSizeBitmapTransformation(mContext))
+                    .into(imageGetterViewTarget);
+
+            mViewTargetSet.add(imageGetterViewTarget);
+            return urlDrawable;
         }
     }
 
@@ -167,16 +183,16 @@ public final class GlideImageGetter
      * redraw the TextView which contains the animated GIFs.
      */
     @Override
-    public void invalidateDrawable(Drawable who) {
+    public void invalidateDrawable(@NonNull Drawable who) {
         mTextView.invalidate();
     }
 
     @Override
-    public void scheduleDrawable(Drawable who, Runnable what, long when) {
+    public void scheduleDrawable(@NonNull Drawable who, @NonNull Runnable what, long when) {
     }
 
     @Override
-    public void unscheduleDrawable(Drawable who, Runnable what) {
+    public void unscheduleDrawable(@NonNull Drawable who, @NonNull Runnable what) {
     }
 
     private static final class ImageGetterViewTarget extends ViewTarget<TextView, GlideDrawable> {
@@ -192,7 +208,41 @@ public final class GlideImageGetter
         }
 
         @Override
+        public void onLoadStarted(Drawable placeholder) {
+            if (placeholder != null) {
+                setDrawable(placeholder);
+            }
+        }
+
+        @Override
         public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+            setDrawable(resource);
+
+            TextView textView = getView();
+            if (resource.isAnimated()) {
+                Drawable.Callback callback = (Drawable.Callback) textView.getTag(
+                        R.id.tag_drawable_callback);
+                // note: not sure whether callback would be null sometimes
+                // when this Drawable' host view is detached from View
+                if (callback != null) {
+                    // set callback to drawable in order to
+                    // signal its container to be redrawn
+                    // to show the animated GIF
+                    mDrawable.setCallback(callback);
+                    resource.setLoopCount(GlideDrawable.LOOP_FOREVER);
+                    resource.start();
+                }
+            }
+        }
+
+        @Override
+        public void onLoadFailed(Exception e, Drawable errorDrawable) {
+            if (errorDrawable != null) {
+                setDrawable(errorDrawable);
+            }
+        }
+
+        private void setDrawable(@NonNull Drawable resource) {
             // resize this drawable's width & height to fit its container
             final int resWidth = resource.getIntrinsicWidth();
             final int resHeight = resource.getIntrinsicHeight();
@@ -210,21 +260,6 @@ public final class GlideImageGetter
             resource.setBounds(rect);
             mDrawable.setBounds(rect);
             mDrawable.setDrawable(resource);
-
-            if (resource.isAnimated()) {
-                Drawable.Callback callback = (Drawable.Callback) textView.getTag(
-                        R.id.tag_drawable_callback);
-                // note: not sure whether callback would be null sometimes
-                // when this Drawable' host view is detached from View
-                if (callback != null) {
-                    // set callback to drawable in order to
-                    // signal its container to be redrawn
-                    // to show the animated GIF
-                    mDrawable.setCallback(callback);
-                    resource.setLoopCount(GlideDrawable.LOOP_FOREVER);
-                    resource.start();
-                }
-            }
 
             // see http://stackoverflow.com/questions/7870312/android-imagegetter-images-overlapping-text#comment-22289166
             textView.setText(textView.getText());

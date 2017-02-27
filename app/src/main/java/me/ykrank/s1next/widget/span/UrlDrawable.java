@@ -5,8 +5,6 @@ import android.graphics.ColorFilter;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-
 import me.ykrank.s1next.util.L;
 
 /**
@@ -16,7 +14,7 @@ import me.ykrank.s1next.util.L;
  */
 final class UrlDrawable extends Drawable implements Drawable.Callback {
 
-    private GlideDrawable mDrawable;
+    private Drawable mDrawable;
 
     private String url;
 
@@ -57,7 +55,7 @@ final class UrlDrawable extends Drawable implements Drawable.Callback {
         return PixelFormat.UNKNOWN;
     }
 
-    public void setDrawable(GlideDrawable drawable) {
+    public void setDrawable(Drawable drawable) {
         if (this.mDrawable != null) {
             this.mDrawable.setCallback(null);
         }
