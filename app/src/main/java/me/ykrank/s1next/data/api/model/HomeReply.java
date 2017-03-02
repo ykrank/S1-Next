@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import com.google.common.base.Objects;
 
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import me.ykrank.s1next.data.SameItem;
 import me.ykrank.s1next.data.api.model.wrapper.HomeReplyWebWrapper;
@@ -24,12 +25,18 @@ public class HomeReply implements SameItem, HomeReplyWebWrapper.HomeReplyItem {
     public static HomeReply fromHtmlElement(Element element) {
         HomeReply reply = null;
         try {
-            if (element.children().size() < 1) {
+            Elements tdReplies = element.children();
+            if (tdReplies.size() < 1) {
+                return null;
+            }
+            Element tdReply = tdReplies.first();
+            Elements elesReply = tdReply.children();
+            if (elesReply.size() < 3) {
                 return null;
             }
             reply = new HomeReply();
             //reply
-            Element eleReply = element.child(0).child(1);
+            Element eleReply = elesReply.get(1);
             reply.setReply(eleReply.text());
             //eg thread-1220112-1-1.html
             reply.setUrl(eleReply.attr("href"));
