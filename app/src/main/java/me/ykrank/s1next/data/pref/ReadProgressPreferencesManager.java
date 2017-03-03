@@ -1,6 +1,8 @@
 package me.ykrank.s1next.data.pref;
 
-import com.android.annotations.Nullable;
+
+import android.support.annotation.Nullable;
+
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 
