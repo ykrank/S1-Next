@@ -32,6 +32,7 @@ import com.bumptech.glide.load.engine.Resource;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapResource;
 
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.widget.glide.transformations.internal.FastBlur;
 import me.ykrank.s1next.widget.glide.transformations.internal.RSBlur;
 
@@ -97,6 +98,7 @@ public class BlurTransformation implements Transformation<Bitmap> {
             try {
                 bitmap = RSBlur.blur(mContext, bitmap, mRadius);
             } catch (RSRuntimeException e) {
+                L.report(e);
                 bitmap = FastBlur.blur(bitmap, mRadius, true);
             }
         } else {

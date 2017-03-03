@@ -78,20 +78,29 @@ public final class BezelImageViewBindingAdapter {
     }
 
     @BindingAdapter("uid")
-    public static void loadAvatar(BezelImageView bezelImageView, String uid) {
+    public static void loadAvatar(BezelImageView bezelImageView, String oldUid, String newUid) {
+        if (TextUtils.equals(oldUid, newUid)) {
+            return;
+        }
         DownloadPreferencesManager downloadPreferencesManager = App.getPrefComponent()
                 .getDownloadPreferencesManager();
-        loadAvatar(bezelImageView, downloadPreferencesManager, uid, false, false, null);
+        loadAvatar(bezelImageView, null, null, false, false, null, downloadPreferencesManager, newUid, false, false, null);
     }
 
     @BindingAdapter({"downloadPreferencesManager", "uid", "big", "preLoad", "thumb"})
     public static void loadAvatar(BezelImageView bezelImageView,
-                                  DownloadPreferencesManager downloadPreferencesManager,
-                                  String uid, boolean big, boolean preLoad, String thumbUrl) {
-        if (TextUtils.isEmpty(uid)) {
+                                  DownloadPreferencesManager oldManager,
+                                  String oldUid, boolean oldBig, boolean oldPreLoad, String oldThumbUrl,
+                                  DownloadPreferencesManager newManager,
+                                  String newUid, boolean newBig, boolean newPreLoad, String newThumbUrl) {
+        if (oldManager == newManager && TextUtils.equals(oldUid, newUid) && oldBig == newBig &&
+                oldPreLoad == newPreLoad && TextUtils.equals(oldThumbUrl, newThumbUrl)) {
+            return;
+        }
+        if (TextUtils.isEmpty(newUid)) {
             loadPlaceHolderAvatar(bezelImageView);
         } else {
-            loadRoundAvatar(bezelImageView, downloadPreferencesManager, uid, big, preLoad, thumbUrl);
+            loadRoundAvatar(bezelImageView, newManager, newUid, newBig, newPreLoad, newThumbUrl);
         }
     }
 
@@ -146,9 +155,12 @@ public final class BezelImageViewBindingAdapter {
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        urls.remove(0);
-                        preloadRoundAvatar(imageView, downloadPreferencesManager, urls);
-                        return true;
+                        if (urls.size() > 0) {
+                            urls.remove(0);
+                            preloadRoundAvatar(imageView, downloadPreferencesManager, urls);
+                            return true;
+                        }
+                        return false;
                     }
 
                     @Override

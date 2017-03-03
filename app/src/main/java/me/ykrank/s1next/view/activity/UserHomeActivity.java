@@ -9,12 +9,9 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.SharedElementCallback;
 import android.transition.Transition;
 import android.view.MenuItem;
 import android.view.View;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -184,14 +181,6 @@ public class UserHomeActivity extends BaseActivity {
                 public void onTransitionEnd(Transition transition) {
                     super.onTransitionEnd(transition);
                     binding.setBig(true);
-                    binding.setPreLoad(false);
-                }
-            });
-            setEnterSharedElementCallback(new SharedElementCallback() {
-                @Override
-                public void onSharedElementStart(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
-                    super.onSharedElementStart(sharedElementNames, sharedElements, sharedElementSnapshots);
-                    binding.setBig(false);
                     binding.setPreLoad(false);
                 }
             });
