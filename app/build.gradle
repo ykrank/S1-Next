@@ -1,7 +1,3 @@
-plugins {
-    id "com.bugsnag.android.gradle" version "2.3.2"
-}
-
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.github.ben-manes.versions'
@@ -23,8 +19,8 @@ android {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 19
-        versionName '1.0.0'
+        versionCode 20
+        versionName '1.1.0'
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
@@ -95,11 +91,6 @@ repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
-bugsnag {
-    autoUpload false
-    autoProguardConfig false
-}
-
 greendao {
     schemaVersion 3
 }
@@ -129,6 +120,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
 
     // https://github.com/google/guava/wiki/UsingProGuardWithGuava
+    // https://github.com/google/guava/issues/2117
     // do not update
     //noinspection NewerVersionAvailable
     compile 'com.google.guava:guava:19.0'
