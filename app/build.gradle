@@ -113,10 +113,10 @@ dependencies {
     // https://github.com/google/dagger/issues/95
     provided 'javax.annotation:jsr250-api:1.0'
 
-    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.5.0'
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.5.1'
 
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-//    debugCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+//    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     alphaCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 
@@ -138,10 +138,10 @@ dependencies {
 
     compile 'com.squareup.okhttp3:okhttp-urlconnection:3.6.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
-    compile 'com.squareup.retrofit2:retrofit:2.1.1-SNAPSHOT'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.1.1-SNAPSHOT'
-    compile 'com.squareup.retrofit2:converter-jackson:2.1.1-SNAPSHOT'
-    compile 'com.squareup.retrofit2:converter-scalars:2.1.1-SNAPSHOT'
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+    compile 'com.squareup.retrofit2:converter-jackson:2.2.0'
+    compile 'com.squareup.retrofit2:converter-scalars:2.2.0'
 
     compile 'com.tencent.bugly:crashreport:2.4.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
