@@ -119,7 +119,11 @@ public final class TextViewBindingAdapter {
         String repliesStr = thread.getReplies();
         if (thread.getReliesCount() > 0 && thread.getLastReplyCount() > 0) {
             int addReplies = thread.getReliesCount() - thread.getLastReplyCount();
-            repliesStr += " (+" + addReplies + ")";
+            if (addReplies >= 0) {
+                repliesStr += " (+" + addReplies + ")";
+            } else {
+                repliesStr += " (" + addReplies + ")";
+            }
         }
         ViewUtil.concatWithTwoSpacesForRtlSupport(textView, repliesStr,
                 hasPermission ? themeManager.getGentleAccentColor()
