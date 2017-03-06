@@ -22,6 +22,7 @@ import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.AppDaoOpenHelper;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.PersistentHttpCookieStore;
+import me.ykrank.s1next.widget.glide.OkHttpNoAvatarInterceptor;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
@@ -64,10 +65,11 @@ public final class AppModule {
         builder.readTimeout(77, TimeUnit.SECONDS);
         builder.retryOnConnectionFailure(true);
         builder.cookieJar(new JavaNetCookieJar(cookieManager));
+        builder.addNetworkInterceptor(new OkHttpNoAvatarInterceptor());
         if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
             httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
-            builder.interceptors().add(httpLoggingInterceptor);
+            builder.addInterceptor(httpLoggingInterceptor);
         }
 
         return builder.build();

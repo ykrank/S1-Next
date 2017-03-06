@@ -82,23 +82,12 @@ public final class GlideImageGetter
     public Drawable getDrawable(String url) {
         UrlDrawable urlDrawable = new UrlDrawable(url);
 
-        String emoticonName = null;
-        boolean isEmoticon = false;
+        String emoticonName = Api.parseEmoticonName(url);
         // url has no domain if it comes from server.
-        if (!URLUtil.isNetworkUrl(url)) {
-            // We may have this image in assets if this is emoticon.
-            if (url.startsWith(Api.URL_EMOTICON_IMAGE_PREFIX)) {
-                isEmoticon = true;
-                emoticonName = url.substring(Api.URL_EMOTICON_IMAGE_PREFIX.length());
-            } else {
-                isEmoticon = false;
-                url = Api.BASE_URL + url;
-            }
-        } else if (url.startsWith(Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX)) {
-            isEmoticon = true;
-            emoticonName = url.substring((Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX).length());
+        if (emoticonName == null && !URLUtil.isNetworkUrl(url)) {
+            url = Api.BASE_URL + url;
         }
-        if (isEmoticon) {
+        if (emoticonName != null) {
             ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
                     urlDrawable);
             TransformationUtil.SizeMultiplierBitmapTransformation sizeMultiplierBitmapTransformation =

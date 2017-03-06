@@ -1,14 +1,16 @@
 package me.ykrank.s1next.data.api;
 
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
-
-import org.apache.commons.lang3.StringUtils;
+import android.webkit.URLUtil;
 
 public final class Api {
 
     public static final String BASE_URL = "http://bbs.saraba1st.com/2b/";
     public static final String BASE_API_URL = "http://bbs.saraba1st.com/2b/api/mobile/";
+    public static final String BASE_STATIC_URL = "http://static.saraba1st.com/";
+    public static final String BASE_APP_URL = "http://app.saraba1st.com/2b/";
     static final String RANDOM_IMAGE_URL = "http://ac.stage3rd.com/S1_ACG_randpic.asp";
     static final String BASE_API_PREFIX = "index.php?module=";
 
@@ -17,6 +19,7 @@ public final class Api {
 
     public static final int REPLY_NOTIFICATION_MAX_LENGTH = 100;
     public static final String URL_EMOTICON_IMAGE_PREFIX = "static/image/smiley/";
+    public static final String URL_EMOTICON_IMAGE_PREFIX_STATIC = "image/smiley/";
     /**
      * Opens the browser via {@link android.content.Intent}.
      */
@@ -34,10 +37,10 @@ public final class Api {
      */
     static final String URL_NEW_THREAD_HELPER = BASE_URL + "forum.php?mod=post&action=newthread";
     static final String URL_SEARCH_FORUM = BASE_URL + "search.php?mod=forum";
-    private static final String URL_USER_AVATAR_PREFIX = prepend("uc_server/data/avatar/");
-    private static final String URL_USER_AVATAR_SMALL = URL_USER_AVATAR_PREFIX + "%s_avatar_small.jpg";
-    private static final String URL_USER_AVATAR_MEDIUM = URL_USER_AVATAR_PREFIX + "%s_avatar_middle.jpg";
-    private static final String URL_USER_AVATAR_BIG = URL_USER_AVATAR_PREFIX + "%s_avatar_big.jpg";
+    private static final String URL_USER_AVATAR_PREFIX = BASE_APP_URL + "uc_server/avatar.php?uid=%s";
+    private static final String URL_USER_AVATAR_SMALL = URL_USER_AVATAR_PREFIX + "&size=small";
+    private static final String URL_USER_AVATAR_MEDIUM = URL_USER_AVATAR_PREFIX + "&size=middle";
+    private static final String URL_USER_AVATAR_BIG = URL_USER_AVATAR_PREFIX + "&size=big";
     private static final String URL_BROWSER_FAVOURITES = prepend("home.php?mod=space&do=favorite");
     private static final String URL_BROWSER_THREAD_LIST = prepend("forum-%s-%d.html");
     private static final String URL_BROWSER_POST_LIST = prepend("thread-%s-%d-1.html");
@@ -53,37 +56,21 @@ public final class Api {
         if (TextUtils.isEmpty(userId)) {
             return null;
         }
-        return appendAvatarUrlWithUserId(URL_USER_AVATAR_SMALL, userId);
+        return String.format(URL_USER_AVATAR_SMALL, userId);
     }
 
     public static String getAvatarMediumUrl(String userId) {
         if (TextUtils.isEmpty(userId)) {
             return null;
         }
-        return appendAvatarUrlWithUserId(URL_USER_AVATAR_MEDIUM, userId);
+        return String.format(URL_USER_AVATAR_MEDIUM, userId);
     }
 
     public static String getAvatarBigUrl(String userId) {
         if (TextUtils.isEmpty(userId)) {
             return null;
         }
-        return appendAvatarUrlWithUserId(URL_USER_AVATAR_BIG, userId);
-    }
-
-    /**
-     * See https://github.com/Discuz-X/DiscuzX/blob/35db41f75b102708033f3bd501eace6dbe11b7e2/uc_server/avatar.php#L47-L56
-     * <p>
-     * Example:
-     * URL: http://bbs.saraba1st.com/2b/uc_server/data/avatar/%s_avatar_middle.jpg
-     * User ID: 123456 -> 000123456 -> 000/12/34/56 -> http://bbs.saraba1st.com/2b/uc_server/data/avatar/000/12/34/56_avatar_middle.jpg
-     */
-    private static String appendAvatarUrlWithUserId(String url, String userId) {
-        String s = StringUtils.leftPad(userId, 9, '0');
-
-        return String.format(url, s.substring(0, 3)
-                + "/" + s.substring(3, 5)
-                + "/" + s.substring(5, 7)
-                + "/" + s.substring(7));
+        return String.format(URL_USER_AVATAR_BIG, userId);
     }
 
     public static boolean isAvatarUrl(String url) {
@@ -106,5 +93,25 @@ public final class Api {
 
     public static String randomImage() {
         return RANDOM_IMAGE_URL + "?" + System.currentTimeMillis();
+    }
+
+    /**
+     * get emoticon from url
+     *
+     * @return emoticon name if exist. null if not
+     */
+    @Nullable
+    public static String parseEmoticonName(String url) {
+        // url has no domain if it comes from BASE_URL server.
+        if (!URLUtil.isNetworkUrl(url)) {
+            if (url.startsWith(Api.URL_EMOTICON_IMAGE_PREFIX)) {
+                return url.substring(Api.URL_EMOTICON_IMAGE_PREFIX.length());
+            }
+        } else if (url.startsWith(Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX)) {
+            return url.substring((Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX).length());
+        } else if (url.startsWith(Api.BASE_STATIC_URL + Api.URL_EMOTICON_IMAGE_PREFIX_STATIC)) {
+            return url.substring((Api.BASE_STATIC_URL + Api.URL_EMOTICON_IMAGE_PREFIX_STATIC).length());
+        }
+        return null;
     }
 }
