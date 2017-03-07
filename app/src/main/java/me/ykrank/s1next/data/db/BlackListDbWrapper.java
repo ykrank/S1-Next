@@ -111,6 +111,9 @@ public class BlackListDbWrapper {
     }
 
     public void saveBlackList(@NonNull BlackList blackList) {
+        if (blackList.getAuthorId() <= 0 && TextUtils.isEmpty(blackList.getAuthor())) {
+            return;
+        }
         BlackList oBlackList = getBlackListDefault(blackList.getAuthorId(), blackList.getAuthor());
         if (oBlackList == null) {
             getBlackListDao().insert(blackList);
