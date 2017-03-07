@@ -12,6 +12,7 @@ import android.webkit.URLUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.XMLReader;
 
+import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.view.activity.GalleryActivity;
 
 /**
@@ -69,8 +70,7 @@ public final class TagHandler implements Html.TagHandler {
             // skip this because we don't want to
             // make this image (emoticon or something
             // others) clickable
-            if (URLUtil.isNetworkUrl(url)) {
-
+            if (URLUtil.isNetworkUrl(url) && !Api.isEmoticonName(url)) {
                 output.removeSpan(imageSpan);
                 // make this ImageSpan clickable
                 output.setSpan(new ImageClickableSpan(imageSpan.getDrawable(), url),

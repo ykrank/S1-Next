@@ -114,4 +114,13 @@ public final class Api {
         }
         return null;
     }
+
+    public static boolean isEmoticonName(String url) {
+        if (URLUtil.isNetworkUrl(url)) {
+            return url.startsWith(Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX) ||
+                    url.startsWith(Api.BASE_STATIC_URL + Api.URL_EMOTICON_IMAGE_PREFIX_STATIC);
+        } else {
+            return url.startsWith(Api.URL_EMOTICON_IMAGE_PREFIX);
+        }
+    }
 }
