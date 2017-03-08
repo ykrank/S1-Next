@@ -3,9 +3,15 @@
 
     <style name="Base.Theme.Light" parent="Origin.Theme.Light.V21" />
 
+    <style name="Base.Theme.Light.Inverse" parent="Origin.Theme.Light.Inverse.V21" />
+
     <style name="Base.Theme.Dark" parent="Origin.Theme.Dark.V21" />
 
     <style name="Origin.Theme.Light.V21" parent="Origin.Theme.Light">
+        <item name="android:navigationBarColor">?android:attr/colorPrimaryDark</item>
+    </style>
+
+    <style name="Origin.Theme.Light.Inverse.V21" parent="Origin.Theme.Light.Inverse">
         <item name="android:navigationBarColor">?android:attr/colorPrimaryDark</item>
     </style>
 

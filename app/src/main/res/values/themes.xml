@@ -19,7 +19,7 @@
 
     <style name="Theme.Dark.NightMode.Amoled" parent="Base.Theme.Dark.NightMode.Amoled" />
 
-    <style name="Base.Theme.Light.AfternoonTea">
+    <style name="Base.Theme.Light.AfternoonTea" parent="Base.Theme.Light">
         <item name="colorPrimaryDark">@color/saraba_main_top_color_dark</item>
         <item name="colorPrimary">@color/saraba_main_top_color</item>
         <item name="android:colorBackground">@color/saraba_main_bg_color</item>
@@ -29,38 +29,38 @@
         <item name="cardViewStyle">@style/CardView.Light.AfternoonTea</item>
     </style>
 
-    <style name="Base.Theme.Light.Amber">
+    <style name="Base.Theme.Light.Amber" parent="Base.Theme.Light.Inverse">
         <item name="colorPrimaryDark">@color/amber_700</item>
         <item name="colorPrimary">@color/amber_500</item>
         <item name="colorAccent">@color/deep_orange_A200</item>
     </style>
 
-    <style name="Base.Theme.Light.Green">
+    <style name="Base.Theme.Light.Green" parent="Base.Theme.Light.Inverse">
         <item name="colorPrimaryDark">@color/green_700</item>
         <item name="colorPrimary">@color/green_500</item>
         <item name="colorAccent">@color/deep_orange_A200</item>
     </style>
 
-    <style name="Base.Theme.Light.LightBlue">
+    <style name="Base.Theme.Light.LightBlue" parent="Base.Theme.Light.Inverse">
         <item name="colorPrimaryDark">@color/light_blue_700</item>
         <item name="colorPrimary">@color/light_blue_500</item>
         <item name="colorAccent">@color/pink_A200</item>
     </style>
 
-    <style name="Base.Theme.Light.Purple">
+    <style name="Base.Theme.Light.Purple" parent="Base.Theme.Light.Inverse">
         <item name="colorPrimaryDark">@color/purple_700</item>
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorAccent">@color/pink_A200</item>
     </style>
 
-    <style name="Base.Theme.Dark.NightMode">
+    <style name="Base.Theme.Dark.NightMode" parent="Base.Theme.Dark">
         <item name="colorAccent">@color/dark_cyan</item>
         <item name="android:textColorPrimary">@color/white_69p</item>
         <item name="android:textColorLink">@color/teal_200_70p</item>
         <item name="navigationViewTheme">@style/Theme.Dark.NightMode.NavigationView</item>
     </style>
 
-    <style name="Base.Theme.Dark.NightMode.Amoled">
+    <style name="Base.Theme.Dark.NightMode.Amoled" parent="Base.Theme.Dark.NightMode">
         <item name="android:colorBackground">@android:color/black</item>
         <item name="colorPrimaryDark">@android:color/black</item>
         <item name="colorPrimary">@android:color/black</item>
@@ -70,6 +70,8 @@
     </style>
 
     <style name="Base.Theme.Light" parent="Origin.Theme.Light" />
+
+    <style name="Base.Theme.Light.Inverse" parent="Origin.Theme.Light.Inverse" />
 
     <style name="Base.Theme.Dark" parent="Origin.Theme.Dark" />
 
@@ -113,6 +115,24 @@
         <item name="textShadowColor">@android:color/white</item>
         <item name="colorTranslucent">@color/black_70p</item>
 
+    </style>
+
+    <style name="Origin.Theme.Light.Inverse">
+        <!-- https://code.google.com/p/android/issues/detail?id=169657 -->
+        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="navigationViewTheme">?attr/theme</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+
+        <item name="fabBackgroundTint">?attr/colorPrimary</item>
+        <item name="iconClose">@drawable/ic_close_white_24dp</item>
+        <item name="iconMenuPageJump">@drawable/selector_menu_swap_horiz_white</item>
+        <item name="iconMenuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
+        <item name="iconMenuThreadAttachment">@drawable/ic_menu_attachment_white_24dp</item>
+        <item name="iconMenuEmoticon">@drawable/ic_menu_insert_emoticon_white_24dp</item>
+        <item name="iconMenuKeyboard">@drawable/ic_menu_keyboard_white_24dp</item>
+        <item name="iconMenuSend">@drawable/selector_menu_send_white</item>
     </style>
 
     <style name="Origin.Theme.Dark" parent="Theme.AppCompat.NoActionBar">

@@ -19,7 +19,7 @@
 
     <style name="Theme.Translucent.Dark.NightMode.Amoled" parent="Base.Theme.Dark.Translucent.NightMode.Amoled" />
 
-    <style name="Base.Theme.Light.Translucent.AfternoonTea">
+    <style name="Base.Theme.Light.Translucent.AfternoonTea" parent="Base.Theme.Light.Translucent">
         <item name="colorPrimaryDark">@color/saraba_main_top_color_dark</item>
         <item name="colorPrimary">@color/saraba_main_top_color</item>
         <item name="android:colorBackground">@color/saraba_main_bg_color</item>
@@ -29,38 +29,38 @@
         <item name="cardViewStyle">@style/CardView.Light.AfternoonTea</item>
     </style>
 
-    <style name="Base.Theme.Light.Translucent.Amber">
+    <style name="Base.Theme.Light.Translucent.Amber" parent="Base.Theme.Light.Inverse.Translucent">
         <item name="colorPrimaryDark">@color/amber_700</item>
         <item name="colorPrimary">@color/amber_500</item>
         <item name="colorAccent">@color/deep_orange_A200</item>
     </style>
 
-    <style name="Base.Theme.Light.Translucent.Green">
+    <style name="Base.Theme.Light.Translucent.Green" parent="Base.Theme.Light.Inverse.Translucent">
         <item name="colorPrimaryDark">@color/green_700</item>
         <item name="colorPrimary">@color/green_500</item>
         <item name="colorAccent">@color/deep_orange_A200</item>
     </style>
 
-    <style name="Base.Theme.Light.Translucent.LightBlue">
+    <style name="Base.Theme.Light.Translucent.LightBlue" parent="Base.Theme.Light.Inverse.Translucent">
         <item name="colorPrimaryDark">@color/light_blue_700</item>
         <item name="colorPrimary">@color/light_blue_500</item>
         <item name="colorAccent">@color/pink_A200</item>
     </style>
 
-    <style name="Base.Theme.Light.Translucent.Purple">
+    <style name="Base.Theme.Light.Translucent.Purple" parent="Base.Theme.Light.Inverse.Translucent">
         <item name="colorPrimaryDark">@color/purple_700</item>
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorAccent">@color/pink_A200</item>
     </style>
 
-    <style name="Base.Theme.Dark.Translucent.NightMode">
+    <style name="Base.Theme.Dark.Translucent.NightMode" parent="Base.Theme.Dark.Translucent">
         <item name="colorAccent">@color/dark_cyan</item>
         <item name="android:textColorPrimary">@color/white_69p</item>
         <item name="android:textColorLink">@color/teal_200_70p</item>
         <item name="navigationViewTheme">@style/Theme.Dark.NightMode.NavigationView</item>
     </style>
 
-    <style name="Base.Theme.Dark.Translucent.NightMode.Amoled">
+    <style name="Base.Theme.Dark.Translucent.NightMode.Amoled" parent="Base.Theme.Dark.Translucent">
         <item name="android:colorBackground">@android:color/black</item>
         <item name="colorPrimaryDark">@android:color/black</item>
         <item name="colorPrimary">@android:color/black</item>
@@ -70,27 +70,32 @@
     </style>
 
     <style name="Base.Theme.Light.Translucent" parent="Origin.Theme.Light.Translucent">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowAnimationStyle">@style/SearchWindowAnimations</item>
+
+    </style>
+
+    <style name="Base.Theme.Light.Inverse.Translucent" parent="Origin.Theme.Light.Inverse.Translucent">
+
     </style>
 
     <style name="Base.Theme.Dark.Translucent" parent="Origin.Theme.Dark.Translucent">
+
+    </style>
+
+    <style name="Origin.Theme.Light.Translucent" parent="Origin.Theme.Light">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@style/SearchWindowAnimations</item>
     </style>
 
-    <style name="Origin.Theme.Light.Translucent" parent="Base.Theme.Light">
+    <style name="Origin.Theme.Light.Inverse.Translucent" parent="Origin.Theme.Light.Inverse">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@style/SearchWindowAnimations</item>
     </style>
 
-    <style name="Origin.Theme.Dark.Translucent" parent="Base.Theme.Dark">
+    <style name="Origin.Theme.Dark.Translucent" parent="Origin.Theme.Dark">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>

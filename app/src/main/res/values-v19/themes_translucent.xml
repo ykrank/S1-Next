@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Base.Theme.Light.Translucent" parent="Origin.Theme.Light.Translucent.V21" />
+    <style name="Base.Theme.Light.Translucent" parent="Origin.Theme.Light.Translucent.V19" />
 
-    <style name="Base.Theme.Dark.Translucent" parent="Origin.Theme.Dark.Translucent.V21" />
+    <style name="Base.Theme.Light.Inverse.Translucent" parent="Origin.Theme.Light.Inverse.Translucent.V19" />
 
-    <style name="Origin.Theme.Light.Translucent.V21" parent="Origin.Theme.Light.Translucent">
+    <style name="Base.Theme.Dark.Translucent" parent="Origin.Theme.Dark.Translucent.V19" />
+
+    <style name="Origin.Theme.Light.Translucent.V19" parent="Origin.Theme.Light.Translucent">
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
-    <style name="Origin.Theme.Dark.Translucent.V21" parent="Origin.Theme.Dark.Translucent">
+    <style name="Origin.Theme.Light.Inverse.Translucent.V19" parent="Origin.Theme.Light.Inverse.Translucent">
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+    <style name="Origin.Theme.Dark.Translucent.V19" parent="Origin.Theme.Dark.Translucent">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <style name="Theme.Gallery" parent="Base.Theme.Gallery.V19" />
