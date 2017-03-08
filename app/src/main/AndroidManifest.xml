@@ -79,7 +79,8 @@
 
         <activity
             android:name=".view.activity.PostListActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/Theme.Translucent.AfternoonTea" />
 
         <activity
             android:name=".view.activity.PostListGatewayActivity"
