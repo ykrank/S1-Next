@@ -19,9 +19,9 @@
         <item name="android:windowContentTransitions">true</item>
     </style>
 
-    <style name="Theme.Gallery" parent="Base.Theme.Gallery.V19" />
+    <style name="Theme.Gallery" parent="Base.Theme.Gallery.V21" />
 
-    <style name="Base.Theme.Gallery.V19" parent="Base.Theme.Gallery.V19">
+    <style name="Base.Theme.Gallery.V21" parent="Base.Theme.Gallery.V19">
         <item name="android:windowContentTransitions">true</item>
     </style>
 </resources>
