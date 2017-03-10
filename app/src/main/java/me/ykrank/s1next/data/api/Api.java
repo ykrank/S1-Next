@@ -7,10 +7,10 @@ import android.webkit.URLUtil;
 
 public final class Api {
 
-    public static final String BASE_URL = "http://bbs.saraba1st.com/2b/";
-    public static final String BASE_API_URL = "http://bbs.saraba1st.com/2b/api/mobile/";
-    public static final String BASE_STATIC_URL = "http://static.saraba1st.com/";
-    public static final String BASE_APP_URL = "http://app.saraba1st.com/2b/";
+    public static final String BASE_URL = "http://119.23.22.79/2b/";
+    public static final String BASE_API_URL = "http://119.23.22.79/2b/api/mobile/";
+    public static final String BASE_STATIC_URL = "http://119.23.22.79/";
+    public static final String BASE_APP_URL = "http://119.23.22.79/2b/";
     static final String RANDOM_IMAGE_URL = "http://ac.stage3rd.com/S1_ACG_randpic.asp";
     static final String BASE_API_PREFIX = "index.php?module=";
 
