@@ -25,11 +25,6 @@
         android:title="@string/menu_share"
         app:showAsAction="never" />
     <item
-        android:id="@+id/menu_browser"
-        android:orderInCategory="25"
-        android:title="@string/menu_browser"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/menu_save_progress"
         android:orderInCategory="26"
         android:title="@string/menu_save_progress"

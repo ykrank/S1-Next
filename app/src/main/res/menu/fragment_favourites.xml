@@ -9,10 +9,4 @@
         android:orderInCategory="20"
         android:title="@string/menu_favourites_remove"
         app:showAsAction="never" />
-    
-    <item
-        android:id="@+id/menu_browser"
-        android:orderInCategory="21"
-        android:title="@string/menu_browser"
-        app:showAsAction="never" />
 </menu>

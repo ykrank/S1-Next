@@ -8,4 +8,6 @@
     <item name="tag_drawable_info" type="id" />
 
     <item name="tag_click_disposable" type="id" />
+
+    <item name="menu_browser" type="id" />
 </resources>

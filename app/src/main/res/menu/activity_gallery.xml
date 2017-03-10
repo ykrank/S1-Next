@@ -8,9 +8,4 @@
         android:orderInCategory="21"
         android:title="@string/menu_download"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/menu_browser"
-        android:orderInCategory="22"
-        android:title="@string/menu_browser"
-        app:showAsAction="never" />
 </menu>
