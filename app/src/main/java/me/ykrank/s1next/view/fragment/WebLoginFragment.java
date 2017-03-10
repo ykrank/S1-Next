@@ -136,7 +136,7 @@ public final class WebLoginFragment extends BaseFragment {
     }
 
     private boolean isLogged(String cookieStr) {
-        Pattern pattern = Pattern.compile("(;|^)s1uid=\\d+;");
+        Pattern pattern = Pattern.compile("\\w+_auth=(\\w|%)+;");
         return cookieStr != null && pattern.matcher(cookieStr.replace(" ", "")).find();
     }
 
