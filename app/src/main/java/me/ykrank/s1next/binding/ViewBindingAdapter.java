@@ -79,7 +79,7 @@ public final class ViewBindingAdapter {
         if (TextUtils.isEmpty(newBlurUrl)) {
             Glide.with(context)
                     .load(R.drawable.ic_avatar_placeholder)
-                    .bitmapTransform(new BlurTransformation(context, 30), new CenterCrop(context))
+                    .bitmapTransform(new BlurTransformation(context, 25), new CenterCrop(context))
                     .crossFade()
                     .into(new GlideDrawableViewBackgroundTarget(view));
             return;
