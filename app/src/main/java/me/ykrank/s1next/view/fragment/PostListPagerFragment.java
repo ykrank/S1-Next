@@ -227,6 +227,10 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
 
     void setReadProgress(ReadProgress readProgress, boolean smooth) {
         this.readProgress = readProgress;
+        if (scrollState == null) {
+            scrollState = new PagerScrollState();
+            scrollState.setState(PagerScrollState.BEFORE_SCROLL_POSITION);
+        }
         if (!isLoading()) {
             if (smooth) {
                 mRecyclerView.smoothScrollToPosition(readProgress.getPosition());
@@ -303,8 +307,9 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
                 blacklistChanged = false;
             } else if (pullUpToRefresh) {
 
-            } else if (readProgress != null && scrollState.getState() == PagerScrollState.BEFORE_SCROLL_POSITION) {
+            } else if (readProgress != null && scrollState != null && scrollState.getState() == PagerScrollState.BEFORE_SCROLL_POSITION) {
                 mRecyclerView.scrollToPosition(readProgress.getPosition());
+                readProgress = null;
                 scrollState.setState(PagerScrollState.FREE);
             } else {
                 String quotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
