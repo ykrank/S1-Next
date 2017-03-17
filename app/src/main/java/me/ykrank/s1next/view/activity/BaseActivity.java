@@ -138,6 +138,15 @@ public abstract class BaseActivity extends OriginActivity
     }
 
     @Override
+    public void setTitle(CharSequence title) {
+        if (mToolbarDelegate != null) {
+            mToolbarDelegate.setTitle(title);
+        } else {
+            super.setTitle(title);
+        }
+    }
+
+    @Override
     @CallSuper
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);

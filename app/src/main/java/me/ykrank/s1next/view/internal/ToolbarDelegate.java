@@ -1,7 +1,9 @@
 package me.ykrank.s1next.view.internal;
 
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.google.common.base.Preconditions;
 
@@ -16,6 +18,8 @@ public final class ToolbarDelegate {
 
     private final AppCompatActivity mAppCompatActivity;
     private final Toolbar mToolbar;
+    @Nullable
+    private TextView titleView;
 
     public ToolbarDelegate(AppCompatActivity appCompatActivity, Toolbar toolbar) {
         this.mAppCompatActivity = appCompatActivity;
@@ -30,6 +34,7 @@ public final class ToolbarDelegate {
      * Also displays home as an "up" affordance in Toolbar.
      */
     private void setUpToolbar() {
+        titleView = (TextView) mToolbar.findViewById(R.id.toolbar_title_auto);
         // designate a Toolbar as the ActionBar
         mAppCompatActivity.setSupportActionBar(mToolbar);
         Preconditions.checkNotNull(mAppCompatActivity.getSupportActionBar())
@@ -46,5 +51,14 @@ public final class ToolbarDelegate {
 
     public Toolbar getToolbar() {
         return mToolbar;
+    }
+
+    public void setTitle(CharSequence title) {
+        if (titleView != null) {
+            mToolbar.setTitle(null);
+            titleView.setText(title);
+        } else {
+            mToolbar.setTitle(title);
+        }
     }
 }
