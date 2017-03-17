@@ -28,7 +28,7 @@
     <color name="searchback_stroke_color">#fff</color>
 
     <!-- circle -->
-    <string name="searchback_path_circle" translatable="false">M25.39,13.39 A 5.5 5.5 0 1 1 17.61 5.61 A 5.5 5.5 0 1 1 25.39 13.39</string>
+    <string name="searchback_path_circle" translatable="false">M25.38,13.38 A 5.5 5.5 0 1 1 17.61 5.61 A 5.5 5.5 0 1 1 25.38 13.38</string>
     <item name="searchback_circle_search_trim_end" type="fraction" format="float">1</item>
     <item name="searchback_circle_back_trim_end" type="fraction" format="float">0</item>
     <integer name="searchback_show_hide_circle_duration">250</integer>
