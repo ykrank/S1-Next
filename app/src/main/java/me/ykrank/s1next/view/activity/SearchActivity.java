@@ -243,15 +243,17 @@ public class SearchActivity extends BaseActivity {
             @Override
             public boolean onQueryTextChange(String query) {
                 if (TextUtils.isEmpty(query)) {
-                    clearResults();
+                    clearResults(true);
                 }
                 return true;
             }
         });
     }
 
-    private void clearResults() {
-        TransitionManager.beginDelayedTransition(binding.coordinatorLayout, getAutoTransition());
+    private void clearResults(boolean transition) {
+        if (transition) {
+            TransitionManager.beginDelayedTransition(binding.coordinatorLayout, getAutoTransition());
+        }
 
         recyclerView.setVisibility(View.GONE);
         binding.progressBar.setVisibility(View.GONE);
@@ -304,7 +306,7 @@ public class SearchActivity extends BaseActivity {
     private void searchFor(String query) {
         trackAgent.post(new SearchTrackEvent(query));
 
-        clearResults();
+        clearResults(false);
         binding.progressBar.setVisibility(View.VISIBLE);
         ImeUtils.hideIme(searchView);
         searchView.clearFocus();
