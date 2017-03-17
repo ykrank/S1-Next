@@ -70,7 +70,7 @@ public final class TagHandler implements Html.TagHandler {
             // skip this because we don't want to
             // make this image (emoticon or something
             // others) clickable
-            if (URLUtil.isNetworkUrl(url) && !Api.isEmoticonName(url)) {
+            if (!Api.isEmoticonName(url)) {
                 output.removeSpan(imageSpan);
                 // make this ImageSpan clickable
                 output.setSpan(new ImageClickableSpan(imageSpan.getDrawable(), url),
@@ -102,7 +102,11 @@ public final class TagHandler implements Html.TagHandler {
 
         @Override
         public void onClick(View v) {
-            GalleryActivity.startGalleryActivity(v.getContext(), getSource());
+            String url = getSource();
+            if (!URLUtil.isNetworkUrl(url)) {
+                url = Api.BASE_URL + url;
+            }
+            GalleryActivity.startGalleryActivity(v.getContext(), url);
         }
     }
 }
