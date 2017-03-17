@@ -22,6 +22,7 @@ import me.ykrank.s1next.view.adapter.SubForumArrayAdapter;
 import me.ykrank.s1next.view.fragment.ThreadListFragment;
 import me.ykrank.s1next.view.fragment.ThreadListPagerFragment;
 import me.ykrank.s1next.widget.WifiBroadcastReceiver;
+import me.ykrank.s1next.widget.track.event.RandomImageTrackEvent;
 import me.ykrank.s1next.widget.track.event.ViewForumTrackEvent;
 
 /**
@@ -103,6 +104,7 @@ public final class ThreadListActivity extends BaseActivity
                 NewThreadActivity.startNewThreadActivityForResultMessage(this, Integer.parseInt(forum.getId()));
                 return true;
             case R.id.menu_random_image:
+                trackAgent.post(new RandomImageTrackEvent());
                 GalleryActivity.startGalleryActivity(this, Api.randomImage());
                 return true;
             default:
