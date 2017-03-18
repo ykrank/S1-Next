@@ -115,6 +115,7 @@
         <item name="textShadowColor">@android:color/white</item>
         <item name="colorTranslucent">@color/black_70p</item>
 
+        <item name="titlePopWindowBackground">@drawable/shape_round_corners_white</item>
     </style>
 
     <style name="Origin.Theme.Light.Inverse">
@@ -168,5 +169,7 @@
 
         <item name="textShadowColor">@android:color/black</item>
         <item name="colorTranslucent">@color/white_70p</item>
+
+        <item name="titlePopWindowBackground">@drawable/shape_round_corners_black</item>
     </style>
 </resources>

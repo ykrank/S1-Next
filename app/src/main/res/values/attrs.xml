@@ -34,4 +34,5 @@
         <attr name="borderDrawable" format="reference" />
     </declare-styleable>
 
+    <attr name="titlePopWindowBackground" format="reference" />
 </resources>

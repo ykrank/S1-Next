@@ -20,7 +20,7 @@
             app:layout_scrollFlags="scroll|enterAlways|snap">
 
             <TextView
-                android:id="@+id/toolbar_title_auto"
+                android:id="@+id/toolbar_title_long"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"

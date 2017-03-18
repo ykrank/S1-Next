@@ -3,11 +3,16 @@ package me.ykrank.s1next.view.internal;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.google.common.base.Preconditions;
 
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.databinding.PopWindowTitleBinding;
 import me.ykrank.s1next.util.ResourceUtil;
 
 /**
@@ -19,7 +24,7 @@ public final class ToolbarDelegate {
     private final AppCompatActivity mAppCompatActivity;
     private final Toolbar mToolbar;
     @Nullable
-    private TextView titleView;
+    private TextView longTitleView;
 
     public ToolbarDelegate(AppCompatActivity appCompatActivity, Toolbar toolbar) {
         this.mAppCompatActivity = appCompatActivity;
@@ -34,11 +39,15 @@ public final class ToolbarDelegate {
      * Also displays home as an "up" affordance in Toolbar.
      */
     private void setUpToolbar() {
-        titleView = (TextView) mToolbar.findViewById(R.id.toolbar_title_auto);
         // designate a Toolbar as the ActionBar
         mAppCompatActivity.setSupportActionBar(mToolbar);
         Preconditions.checkNotNull(mAppCompatActivity.getSupportActionBar())
                 .setDisplayHomeAsUpEnabled(true);
+        //self defined title TextView
+        longTitleView = (TextView) mToolbar.findViewById(R.id.toolbar_title_long);
+        if (longTitleView != null) {
+            longTitleView.setOnLongClickListener(v -> onLongClick(v, longTitleView.getText().toString()));
+        }
     }
 
     /**
@@ -54,11 +63,22 @@ public final class ToolbarDelegate {
     }
 
     public void setTitle(CharSequence title) {
-        if (titleView != null) {
+        if (longTitleView != null) {
             mToolbar.setTitle(null);
-            titleView.setText(title);
+            longTitleView.setText(title);
         } else {
             mToolbar.setTitle(title);
         }
+    }
+
+    private boolean onLongClick(View anchor, String title) {
+        PopWindowTitleBinding binding = PopWindowTitleBinding.inflate(LayoutInflater.from(anchor.getContext()));
+        binding.setTitle(title);
+        final PopupWindow popupWindow = new PopupWindow(binding.getRoot(),
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(false);
+        popupWindow.showAsDropDown(anchor);
+        return true;
     }
 }
