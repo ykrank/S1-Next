@@ -6,27 +6,35 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.transition.Transition;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.common.base.Optional;
+
 import javax.inject.Inject;
 
+import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.model.Profile;
+import me.ykrank.s1next.data.db.BlackListDbWrapper;
+import me.ykrank.s1next.data.event.BlackListAddEvent;
 import me.ykrank.s1next.databinding.ActivityHomeBinding;
 import me.ykrank.s1next.util.ActivityUtils;
 import me.ykrank.s1next.util.AnimUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.util.TransitionUtils;
+import me.ykrank.s1next.view.internal.BlacklistMenuAction;
 import me.ykrank.s1next.widget.AppBarOffsetChangedListener;
 import me.ykrank.s1next.widget.glide.ImageInfo;
 import me.ykrank.s1next.widget.track.event.ViewHomeTrackEvent;
@@ -50,7 +58,10 @@ public class UserHomeActivity extends BaseActivity {
     S1Service s1Service;
 
     private ActivityHomeBinding binding;
-    private Disposable mDisposable;
+    private Disposable mDisposable, blackListAddDisposable;
+    private String uid, name;
+    private boolean isInBlacklist;
+    private MenuItem blacklistMenu;
 
     public static void start(Context context, String uid, String userName) {
         Intent intent = new Intent(context, UserHomeActivity.class);
@@ -90,8 +101,8 @@ public class UserHomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         App.getPrefComponent().inject(this);
 
-        String uid = getIntent().getStringExtra(ARG_UID);
-        String name = getIntent().getStringExtra(ARG_USERNAME);
+        uid = getIntent().getStringExtra(ARG_UID);
+        name = getIntent().getStringExtra(ARG_USERNAME);
         ImageInfo thumbImageInfo = getIntent().getParcelableExtra(ARG_IMAGE_INFO);
         trackAgent.post(new ViewHomeTrackEvent(uid, name));
         L.leaveMsg("UserHomeActivity##uid:" + uid + ",name:" + name);
@@ -141,10 +152,33 @@ public class UserHomeActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_home, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        blacklistMenu = menu.findItem(R.id.menu_blacklist);
+        refreshBlacklistMenu();
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                return true;
+            case R.id.menu_rate:
+                onBackPressed();
+                return true;
+            case R.id.menu_blacklist:
+                if (isInBlacklist) {
+                    BlacklistMenuAction.removeBlacklist(mEventBus, Integer.valueOf(uid), name);
+                } else {
+                    BlacklistMenuAction.addBlacklist(this, Integer.valueOf(uid), name);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -154,12 +188,38 @@ public class UserHomeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        blackListAddDisposable = mEventBus.get()
+                .ofType(BlackListAddEvent.class)
+                .subscribe(blackListEvent -> {
+                    BlackListDbWrapper dbWrapper = BlackListDbWrapper.getInstance();
+                    if (blackListEvent.isAdd()) {
+                        Single.just(true)
+                                .doOnSuccess(b -> dbWrapper.saveDefaultBlackList(
+                                        blackListEvent.getAuthorPostId(), blackListEvent.getAuthorPostName(),
+                                        blackListEvent.getRemark()))
+                                .compose(RxJavaUtil.iOSingleTransformer())
+                                .subscribe(this::afterBlackListChange, L::report);
+                    } else {
+                        Single.just(false)
+                                .doOnSuccess(b -> dbWrapper.delDefaultBlackList(blackListEvent.getAuthorPostId(),
+                                        blackListEvent.getAuthorPostName()))
+                                .compose(RxJavaUtil.iOSingleTransformer())
+                                .subscribe(this::afterBlackListChange, L::report);
+                    }
+                });
+
         trackAgent.post(new PageStartEvent(this, "个人中心-UserHomeActivity"));
+    }
+
+    private void afterBlackListChange(boolean isAdd) {
+        showShortToast(isAdd ? R.string.blacklist_add_success : R.string.blacklist_remove_success);
+        refreshBlacklistMenu();
     }
 
     @Override
     protected void onPause() {
         trackAgent.post(new PageEndEvent(this, "个人中心-UserHomeActivity"));
+        RxJavaUtil.disposeIfNotNull(blackListAddDisposable);
         super.onPause();
     }
 
@@ -176,7 +236,7 @@ public class UserHomeActivity extends BaseActivity {
 
     private void setupImage() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().getSharedElementEnterTransition().addListener(new TransitionUtils.TransitionListenerAdapter(){
+            getWindow().getSharedElementEnterTransition().addListener(new TransitionUtils.TransitionListenerAdapter() {
                 @Override
                 public void onTransitionEnd(Transition transition) {
                     super.onTransitionEnd(transition);
@@ -194,5 +254,24 @@ public class UserHomeActivity extends BaseActivity {
                 .subscribe(wrapper -> {
                     binding.setData(wrapper.getData());
                 }, L::e);
+    }
+
+    @MainThread
+    private void refreshBlacklistMenu() {
+        if (blacklistMenu == null) {
+            return;
+        }
+        BlackListDbWrapper wrapper = BlackListDbWrapper.getInstance();
+        Single.just(Optional.fromNullable(wrapper.getBlackListDefault(Integer.valueOf(uid), name)))
+                .compose(RxJavaUtil.iOSingleTransformer())
+                .subscribe(blackListOptional -> {
+                    if (blackListOptional.isPresent()) {
+                        isInBlacklist = true;
+                        blacklistMenu.setTitle(R.string.menu_blacklist_remove);
+                    } else {
+                        isInBlacklist = false;
+                        blacklistMenu.setTitle(R.string.menu_blacklist_add);
+                    }
+                }, L::report);
     }
 }

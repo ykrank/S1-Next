@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -316,6 +317,14 @@ public abstract class BaseActivity extends OriginActivity
     @Override
     public final void setupFloatingActionButton(@DrawableRes int resId, View.OnClickListener onClickListener) {
         mCoordinatorLayoutAnchorDelegate.setupFloatingActionButton(resId, onClickListener);
+    }
+
+    public final void showShortToast(CharSequence text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    public final void showShortToast(@StringRes int resId) {
+        Toast.makeText(this, resId, Toast.LENGTH_SHORT).show();
     }
 
     @Override

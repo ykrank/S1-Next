@@ -209,6 +209,10 @@
     <string name="prompt_author_id">Author id</string>
     <string name="prompt_author_name">Author name</string>
 
+    <string name="menu_blacklist_edit">Edit blacklist</string>
+    <string name="blacklist_add_success">Blacklist add success</string>
+    <string name="blacklist_remove_success">Blacklist remove success</string>
+
     <string name="gallery_transition" translatable="false">gallery_transition</string>
 
     <!-- read progress -->
@@ -291,5 +295,5 @@
     <string name="title_user_replies">%1$s\'s replies</string>
     <string name="last_replier">Last replier %1$s</string>
     <string name="menu_quick_side_bar_enable">QuickSidebar Enable</string>
-    <string name="menu_blacklist_edit">Edit blacklist</string>
+    <string name="menu_rate">Rate this user</string>
 </resources>

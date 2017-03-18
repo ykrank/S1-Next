@@ -1,6 +1,7 @@
 package me.ykrank.s1next.data.db;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
@@ -32,6 +33,7 @@ public class ReadProgressDbWrapper {
         return appDaoSessionManager.getDaoSession().getReadProgressDao();
     }
 
+    @Nullable
     public ReadProgress getWithThreadId(int threadId) {
         return getReadProgressDao().queryBuilder()
                 .where(Properties.ThreadId.eq(threadId))

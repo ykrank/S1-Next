@@ -2,6 +2,7 @@ package me.ykrank.s1next.data.db;
 
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class BlackListDbWrapper {
         return appDaoSessionManager.getDaoSession().getBlackListDao();
     }
 
+    @NonNull
     public List<BlackList> getAllBlackList(int limit, int offset) {
         return getBlackListDao().queryBuilder()
                 .limit(limit)
@@ -51,6 +53,7 @@ public class BlackListDbWrapper {
                 .compose(RxJavaUtil.iOTransformer());
     }
 
+    @NonNull
     public BlackList fromCursor(@NonNull Cursor cursor) {
         return getBlackListDao().readEntity(cursor, 0);
     }
@@ -62,6 +65,7 @@ public class BlackListDbWrapper {
      * @param name
      * @return
      */
+    @Nullable
     public BlackList getBlackListDefault(int id, String name) {
         BlackList oBlackList = null;
         if (id > 0) {
@@ -78,6 +82,7 @@ public class BlackListDbWrapper {
      * @param id
      * @return
      */
+    @Nullable
     public BlackList getBlackListWithAuthorId(int id) {
         return getBlackListDao().queryBuilder()
                 .where(Properties.AuthorId.eq(id))
@@ -90,6 +95,7 @@ public class BlackListDbWrapper {
      * @param name
      * @return
      */
+    @Nullable
     public BlackList getBlackListWithAuthorName(String name) {
         return getBlackListDao().queryBuilder()
                 .where(Properties.Author.eq(name))

@@ -200,4 +200,7 @@
     <string name="last_replier">最后回复 %1$s</string>
     <string name="menu_quick_side_bar_enable">使用快速导航</string>
     <string name="menu_blacklist_edit">编辑黑名单</string>
+    <string name="menu_rate">评分</string>
+    <string name="blacklist_add_success">塞抹布成功</string>
+    <string name="blacklist_remove_success">取抹布成功</string>
 </resources>
