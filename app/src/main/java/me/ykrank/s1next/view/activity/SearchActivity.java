@@ -19,6 +19,7 @@ import android.support.annotation.RequiresApi;
 import android.support.transition.TransitionManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -216,7 +217,7 @@ public class SearchActivity extends BaseActivity {
             drawable.addState(new int[]{-android.R.attr.state_pressed}, new ColorDrawable(colorPrimary));
 
             //noinspection deprecation
-            binding.appBar.searchback.setBackgroundDrawable(drawable);
+            ViewCompat.setBackground(binding.appBar.searchback, drawable);
         }
     }
 
@@ -328,7 +329,7 @@ public class SearchActivity extends BaseActivity {
 
     private void dismiss() {
         // clear the background else the touch ripple moves with the translation which looks bad
-        searchBack.setBackgroundDrawable(null);
+        ViewCompat.setBackground(searchBack, null);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             finishAfterTransition();
         } else {

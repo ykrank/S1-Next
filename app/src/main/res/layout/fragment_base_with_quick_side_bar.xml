@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             app:colorSchemeColors="@{@intArray/swipe_refresh_layout_color_scheme}"
             app:enabled="@{loadingViewModel.swipeRefreshLayoutEnabled}"
-            app:marginEnd="@{quickSidebarEnable?(int)@dimen/spacing_normal:0}"
+            app:marginEnd="@{safeUnbox(quickSidebarEnable)?(int)@dimen/spacing_normal:0}"
             app:refreshing="@{loadingViewModel.swipeRefresh}">
 
             <android.support.v7.widget.RecyclerView
@@ -48,9 +48,9 @@
             android:layout_width="@dimen/quicksidebar_width"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:visibility="@{quickSidebarEnable?View.VISIBLE:View.GONE}"
             app:sidebarTextColor="?android:attr/textColorPrimary"
             app:sidebarTextColorChoose="?android:attr/textColorPrimary"
+            app:visibility="@{safeUnbox(quickSidebarEnable)?View.VISIBLE:View.GONE}"
             tools:visibility="visible" />
 
         <TextView
@@ -64,8 +64,8 @@
             android:textColor="?android:attr/textColorSecondaryInverse"
             android:textStyle="normal|bold"
             android:visibility="gone"
-            tools:visibility="visible"
-            tools:text="3000" />
+            tools:text="3000"
+            tools:visibility="visible" />
     </FrameLayout>
 
 </layout>

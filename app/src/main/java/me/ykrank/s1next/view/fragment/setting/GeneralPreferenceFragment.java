@@ -3,7 +3,6 @@ package me.ykrank.s1next.view.fragment.setting;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
-import android.text.Html;
 
 import javax.inject.Inject;
 
@@ -17,7 +16,10 @@ import me.ykrank.s1next.util.DeviceUtil;
 import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.view.activity.SettingsActivity;
 import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.span.HtmlCompat;
 import me.ykrank.s1next.widget.track.event.ThemeChangeTrackEvent;
+
+import static me.ykrank.s1next.widget.span.HtmlCompat.FROM_HTML_MODE_LEGACY;
 
 /**
  * An Activity includes general settings that allow users
@@ -55,7 +57,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
         findPreference(PREF_KEY_READ_PROGRESS).setOnPreferenceClickListener(this);
         findPreference(PREF_KEY_BACKUP).setOnPreferenceClickListener(this);
 
-        findPreference(PREF_KEY_SIGNATURE).setSummary(Html.fromHtml(DeviceUtil.getSignature(getActivity())));
+        findPreference(PREF_KEY_SIGNATURE).setSummary(HtmlCompat.fromHtml(DeviceUtil.getSignature(getActivity()), FROM_HTML_MODE_LEGACY));
     }
 
     @Override

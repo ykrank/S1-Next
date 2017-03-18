@@ -75,11 +75,11 @@
                         android:layout_marginTop="@dimen/spacing_xlarge"
                         android:contentDescription="@string/avatar_content_desc"
                         android:visibility="@{downloadPreferencesManager.isAvatarsDownload ? View.VISIBLE : View.GONE}"
-                        app:big="@{big}"
+                        app:big="@{safeUnbox(big)}"
                         app:downloadPreferencesManager="@{downloadPreferencesManager}"
                         app:maskDrawable="@drawable/rounded_mask"
                         app:uid="@{data.homeUid}"
-                        app:preLoad="@{preLoad}"
+                        app:preLoad="@{safeUnbox(preLoad)}"
                         app:thumb="@{thumb}"
                         android:transitionName="@string/transition_avatar"
                         tools:src="@drawable/ic_avatar_placeholder" />

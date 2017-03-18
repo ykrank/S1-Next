@@ -28,9 +28,9 @@
         android:paddingLeft="@dimen/item_padding"
         android:paddingRight="@dimen/item_padding"
         android:paddingStart="@dimen/item_padding"
-        android:singleLine="true"
+        android:maxLines="1"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:forum="@{forumViewModel.forum}"
-        app:gentleAccentColor="@{gentleAccentColor}" />
+        app:gentleAccentColor="@{safeUnbox(gentleAccentColor)}" />
 
 </layout>

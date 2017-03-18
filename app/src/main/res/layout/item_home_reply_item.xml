@@ -13,7 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{model.onClick}"
+        android:onClick="@{model::onClick}"
         android:orientation="vertical"
         android:paddingBottom="@dimen/item_padding_small"
         android:paddingLeft="@dimen/item_padding"

@@ -16,7 +16,6 @@
 
 package me.ykrank.s1next.widget;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -28,11 +27,10 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 import me.ykrank.s1next.R;
 
@@ -43,7 +41,7 @@ import me.ykrank.s1next.R;
  * <p>
  * Forked from https://github.com/google/iosched/blob/0a90bf8e6b90e9226f8c15b34eb7b1e4bf6d632e/android/src/main/java/com/google/samples/apps/iosched/ui/widget/BezelImageView.java
  */
-public final class BezelImageView extends ImageView {
+public final class BezelImageView extends AppCompatImageView {
 
     private Drawable mBorderDrawable;
     private Drawable mMaskDrawable;
@@ -70,13 +68,6 @@ public final class BezelImageView extends ImageView {
         super(context, attrs, defStyleAttr);
 
         init(context, attrs, defStyleAttr, 0);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public BezelImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-
-        init(context, attrs, defStyleAttr, defStyleRes);
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {

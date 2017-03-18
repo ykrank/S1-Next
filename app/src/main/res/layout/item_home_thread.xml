@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/list_view_padding"
-            android:onClick="@{model.onClick}"
+            android:onClick="@{model::onClick}"
             android:orientation="vertical">
 
             <TextView

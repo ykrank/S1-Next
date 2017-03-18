@@ -143,7 +143,9 @@ public class TransitionUtils {
                 && otherParticipants[0] == null)) {
             participants.addAll(Arrays.asList(otherParticipants));
         }
-        return participants.toArray(new Pair[participants.size()]);
+        @SuppressWarnings("unchecked")
+        Pair<View, String>[] result = new Pair[participants.size()];
+        return participants.toArray(result);
     }
 
     private static void addNonNullViewToTransitionParticipants(View view, List<Pair> participants) {

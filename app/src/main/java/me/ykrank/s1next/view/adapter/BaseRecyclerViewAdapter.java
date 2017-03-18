@@ -69,6 +69,7 @@ public abstract class BaseRecyclerViewAdapter extends ListDelegationAdapter<List
      * @param detectMoves {@link DiffUtil#calculateDiff}
      * @see DiffUtil
      */
+    @SuppressWarnings("unchecked")
     public final void diffNewDataSet(List<?> newData, boolean detectMoves) {
         if (items == newData) {
             refreshDataSet(newData, detectMoves);
