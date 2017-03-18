@@ -328,9 +328,8 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
 
             Thread postListInfo = posts.getPostListInfo();
             // we have not title if we open a thread link in our app
-            if (TextUtils.isEmpty(getActivity().getTitle())) {
-                mPagerCallback.setThreadTitle(postListInfo.getTitle());
-            }
+            mPagerCallback.setThreadTitle(postListInfo.getTitle());
+
             mPagerCallback.setTotalPageByPosts(postListInfo.getReliesCount() + 1);
             if (posts.getThreadAttachment() != null) {
                 mPagerCallback.setupThreadAttachment(posts.getThreadAttachment());
