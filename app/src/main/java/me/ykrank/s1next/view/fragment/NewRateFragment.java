@@ -15,6 +15,7 @@ import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.S1Service;
+import me.ykrank.s1next.data.api.model.RatePreInfo;
 import me.ykrank.s1next.databinding.FragmentNewRateBinding;
 import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.util.L;
@@ -96,10 +97,10 @@ public final class NewRateFragment extends BaseFragment {
 
     private void init() {
         mDisposable = mS1Service.getRatePreInfo(threadId, postID, System.currentTimeMillis())
-//                .map(ThreadType::fromXmlString)
+                .map(RatePreInfo::fromHtml)
                 .compose(RxJavaUtil.iOTransformer())
                 .subscribe(types -> {
-                            L.d(types);
+                    L.d(types.toString());
                         }, e -> showRetrySnackbar(ErrorUtil.parse(getContext(), e), v -> init())
                 );
     }
