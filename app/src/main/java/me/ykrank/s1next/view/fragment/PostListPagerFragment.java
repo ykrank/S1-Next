@@ -301,6 +301,10 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
             consumeResult(data.getResult());
         } else {
             super.onNext(data);
+            Thread postListInfo = posts.getPostListInfo();
+            if (postListInfo != null) {
+                mRecyclerAdapter.setThreadInfo(postListInfo);
+            }
 
             mRecyclerAdapter.diffNewDataSet(postList, true);
             if (blacklistChanged) {
@@ -326,7 +330,6 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
                 }
             }
 
-            Thread postListInfo = posts.getPostListInfo();
             // we have not title if we open a thread link in our app
             mPagerCallback.setThreadTitle(postListInfo.getTitle());
 

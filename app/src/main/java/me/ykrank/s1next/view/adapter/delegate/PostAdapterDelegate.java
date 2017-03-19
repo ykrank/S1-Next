@@ -3,6 +3,7 @@ package me.ykrank.s1next.view.adapter.delegate;
 import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import javax.inject.Inject;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Post;
+import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.databinding.ItemPostBinding;
 import me.ykrank.s1next.viewmodel.PostViewModel;
@@ -24,6 +26,9 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
     EventBus mEventBus;
     @Inject
     GeneralPreferencesManager mGeneralPreferencesManager;
+
+    @Nullable
+    private Thread threadInfo;
 
     public PostAdapterDelegate(Activity activity) {
         super(activity);
@@ -49,8 +54,7 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {
         ItemPostBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_post, parent, false);
-        binding.setEventBus(mEventBus);
-        binding.setPostViewModel(new PostViewModel());
+        binding.setPostViewModel(new PostViewModel(mEventBus));
 
         //If setTextIsSelectable, then should reset movement
         boolean selectable = mGeneralPreferencesManager.isPostSelectable();
@@ -68,6 +72,7 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
             setTextSelectable(binding, selectable);
         }
 
+        binding.getPostViewModel().thread.set(threadInfo);
         binding.getPostViewModel().post.set(post);
         binding.executePendingBindings();
     }
@@ -86,6 +91,10 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
             binding.tvFloor.setEnabled(true);
             binding.tvReply.setEnabled(true);
         }
+    }
+
+    public void setThreadInfo(@NonNull Thread threadInfo) {
+        this.threadInfo = threadInfo;
     }
 
     static final class ItemViewBindingHolder extends RecyclerView.ViewHolder {

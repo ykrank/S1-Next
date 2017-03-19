@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name" translatable="false">S1 Next</string>
+    <string name="app_name" translatable="false">S1 Next Goose</string>
     <string name="app_icon_content_desc">App icon</string>
 
     <!-- common -->
@@ -295,5 +295,7 @@
     <string name="title_user_replies">%1$s\'s replies</string>
     <string name="last_replier">Last replier %1$s</string>
     <string name="menu_quick_side_bar_enable">QuickSidebar Enable</string>
-    <string name="menu_rate">Rate this user</string>
+    <string name="rate">Rate</string>
+    <string name="title_new_rate">New rate</string>
+    <string name="invalid_thread_info">Invalid thread info</string>
 </resources>

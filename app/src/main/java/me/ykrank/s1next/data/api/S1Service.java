@@ -68,7 +68,7 @@ public interface S1Service {
                                                 @Field("noticeauthor") String encodedUserId, @Field("noticetrimstr") String quoteMessage, @Field("noticeauthormsg") String replyNotification);
     //endregion
 
-    //<editor-fold desc="PM">
+    //region PM
     @GET(ApiHome.URL_PM_LIST)
     Observable<BaseDataWrapper<PmGroups>> getPmGroups(@Query("page") int page);
 
@@ -78,7 +78,7 @@ public interface S1Service {
     @FormUrlEncoded
     @POST(ApiHome.URL_PM_POST)
     Observable<AccountResultWrapper> postPm(@Field("formhash") String authenticityToken, @Field("touid") String toUid, @Field("message") String msg);
-    //</editor-fold>
+    //endregion
 
     //region New thread
     @GET(Api.URL_NEW_THREAD_HELPER)
@@ -95,6 +95,7 @@ public interface S1Service {
     @POST(Api.URL_SEARCH_FORUM)
     Observable<String> searchForum(@Field("formhash") String authenticityToken, @Field("searchsubmit") String searchSubmit, @Field("srchtxt") String text);
 
+    //region User home
     @GET(ApiHome.URL_MY_NOTE_LIST)
     Observable<BaseDataWrapper<Notes>> getMyNotes(@Query("page") int page);
 
@@ -109,4 +110,8 @@ public interface S1Service {
 
     @GET(ApiHome.URL_REPLIES)
     Observable<String> getHomeReplies(@Query("uid") String uid, @Query("page") int page);
+
+    @GET(ApiHome.URL_RATE_PRE)
+    Observable<String> getRatePreInfo(@Query("tid") String threadId, @Query("pid") String postId, @Query("t") long timestamp);
+    //endregion
 }

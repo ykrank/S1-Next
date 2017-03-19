@@ -1,7 +1,9 @@
 package me.ykrank.s1next.view.adapter;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 
+import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.view.adapter.delegate.FooterProgressAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
 
@@ -11,11 +13,18 @@ import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
  * in order to implement pull up to refresh.
  */
 public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter {
+    @NonNull
+    private PostAdapterDelegate postAdapterDelegate;
 
     public PostListRecyclerViewAdapter(Activity activity) {
         super(activity);
 
-        addAdapterDelegate(new PostAdapterDelegate(activity));
+        postAdapterDelegate = new PostAdapterDelegate(activity);
+        addAdapterDelegate(postAdapterDelegate);
         addAdapterDelegate(new FooterProgressAdapterDelegate(activity));
+    }
+
+    public void setThreadInfo(@NonNull Thread threadInfo) {
+        postAdapterDelegate.setThreadInfo(threadInfo);
     }
 }

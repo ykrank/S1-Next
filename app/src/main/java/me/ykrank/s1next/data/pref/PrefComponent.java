@@ -11,6 +11,7 @@ import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate;
 import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment;
 import me.ykrank.s1next.view.fragment.BasePostFragment;
+import me.ykrank.s1next.view.fragment.NewRateFragment;
 import me.ykrank.s1next.view.fragment.NewThreadFragment;
 import me.ykrank.s1next.view.fragment.PostListFragment;
 import me.ykrank.s1next.view.fragment.PostListPagerFragment;
@@ -67,4 +68,6 @@ public interface PrefComponent {
     void inject(UserHomeActivity userHomeActivity);
 
     void inject(PostListPagerFragment postListPagerFragment);
+
+    void inject(NewRateFragment newRateFragment);
 }
