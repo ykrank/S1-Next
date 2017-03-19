@@ -62,13 +62,18 @@ public final class ToolbarDelegate {
         return mToolbar;
     }
 
-    public void setTitle(CharSequence title) {
+    /**
+     * Set title
+     *
+     * @return whether handle this action
+     */
+    public boolean setTitle(CharSequence title) {
         if (longTitleView != null) {
             mToolbar.setTitle(null);
             longTitleView.setText(title);
-        } else {
-            mToolbar.setTitle(title);
+            return true;
         }
+        return false;
     }
 
     private boolean onLongClick(View anchor, String title) {

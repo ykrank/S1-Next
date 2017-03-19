@@ -170,9 +170,6 @@ public class UserHomeActivity extends BaseActivity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            case R.id.menu_rate:
-                onBackPressed();
-                return true;
             case R.id.menu_blacklist:
                 if (isInBlacklist) {
                     BlacklistMenuAction.removeBlacklist(mEventBus, Integer.valueOf(uid), name);

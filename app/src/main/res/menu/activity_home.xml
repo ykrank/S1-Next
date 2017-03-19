@@ -4,11 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.ykrank.s1next.view.activity.HelpActivity">
     <item
-        android:id="@+id/menu_rate"
-        android:orderInCategory="21"
-        android:title="@string/menu_rate"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/menu_blacklist"
         android:orderInCategory="22"
         android:title="@string/menu_blacklist_add"

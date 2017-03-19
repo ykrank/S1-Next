@@ -26,6 +26,7 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.model.ThreadType;
 import me.ykrank.s1next.databinding.FragmentNewThreadBinding;
+import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.ThreadTypeSpinnerAdapter;
@@ -163,7 +164,7 @@ public final class NewThreadFragment extends BasePostFragment {
     public Disposable resumeFromCache(Single<String> cache) {
         return cache.map(s -> {
             try {
-                if (TextUtils.isEmpty(s)){
+                if (TextUtils.isEmpty(s)) {
                     return null;
                 }
                 return objectMapper.readValue(s, NewThreadCacheModel.class);
@@ -201,10 +202,8 @@ public final class NewThreadFragment extends BasePostFragment {
                     } else {
                         setSpinner(types);
                     }
-                }, e -> {
-                    L.e(e);
-                    showRetrySnackbar(getString(R.string.message_network_error), v -> init());
-                });
+                        }, e -> showRetrySnackbar(ErrorUtil.parse(getContext(), e), v -> init())
+                );
     }
 
     private void setSpinner(@NonNull List<ThreadType> types) {

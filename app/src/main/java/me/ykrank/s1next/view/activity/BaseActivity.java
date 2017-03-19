@@ -140,9 +140,7 @@ public abstract class BaseActivity extends OriginActivity
 
     @Override
     public void setTitle(CharSequence title) {
-        if (mToolbarDelegate != null) {
-            mToolbarDelegate.setTitle(title);
-        } else {
+        if (mToolbarDelegate == null || !mToolbarDelegate.setTitle(title)) {
             super.setTitle(title);
         }
     }

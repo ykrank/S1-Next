@@ -5,22 +5,16 @@ import android.databinding.BindingAdapter;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
-import android.text.style.URLSpan;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,11 +27,9 @@ import me.ykrank.s1next.data.api.model.HomeThread;
 import me.ykrank.s1next.data.api.model.PmGroup;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
-import me.ykrank.s1next.data.event.QuoteEvent;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.util.ViewUtil;
-import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.span.GlideImageGetter;
 import me.ykrank.s1next.widget.span.HtmlCompat;
 import me.ykrank.s1next.widget.span.TagHandler;
@@ -134,25 +126,6 @@ public final class TextViewBindingAdapter {
     public static void setRelativeDateTime(TextView textView, long datetime) {
         textView.setText(DateUtils.getRelativeDateTimeString(textView.getContext(), datetime,
                 DateUtils.MINUTE_IN_MILLIS, DateUtils.DAY_IN_MILLIS, 0));
-    }
-
-    @BindingAdapter({"eventBus", "post"})
-    public static void setCount(TextView textView, EventBus eventBus, Post post) {
-        String text = "#" + post.getCount();
-        // there is no need to post #1
-        if ("1".equals(post.getCount())) {
-            textView.setText(text);
-        } else {
-            Spannable spannable = new SpannableString(text);
-            URLSpan urlSpan = new URLSpan(StringUtils.EMPTY) {
-                @Override
-                public void onClick(@NonNull View widget) {
-                    eventBus.post(new QuoteEvent(post.getId(), post.getCount()));
-                }
-            };
-            spannable.setSpan(urlSpan, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textView.setText(spannable);
-        }
     }
 
     @BindingAdapter({"reply"})
