@@ -29,6 +29,9 @@ public class RatePreInfo {
     private int maxScore;
     private int totalScore;
     private List<String> reasons;
+    private boolean checked;
+    private boolean disabled;
+    private List<String> scoreChoices;
 
     @NonNull
     public static RatePreInfo fromHtml(String html) {
@@ -64,6 +67,16 @@ public class RatePreInfo {
                 reasons.add(element.text());
             }
             info.setReasons(reasons);
+            //checkbox
+            elements = document.select("#sendreasonpm");
+            if (elements.size() != 1) {
+                throw new JsonParseException(null, "#sendreasonpm size is " + elements.size());
+            }
+            Element checkBoxElement = elements.get(0);
+            info.setChecked("checked".equalsIgnoreCase(checkBoxElement.attr("checked")));
+            info.setDisabled("disabled".equalsIgnoreCase(checkBoxElement.attr("disabled")));
+
+            info.setScoreChoices();
         } catch (Exception e) {
             L.report(e);
         }
@@ -142,24 +155,75 @@ public class RatePreInfo {
         this.reasons = reasons;
     }
 
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public List<String> getScoreChoices() {
+        return scoreChoices;
+    }
+
+    public void setScoreChoices() {
+        List<String> list = new ArrayList<>();
+        for (int i = minScore; i <= maxScore; i++) {
+            if (i != 0) {
+                list.add(String.valueOf(i));
+            }
+        }
+        this.scoreChoices = list;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof RatePreInfo)) return false;
         RatePreInfo that = (RatePreInfo) o;
         return minScore == that.minScore &&
                 maxScore == that.maxScore &&
                 totalScore == that.totalScore &&
+                checked == that.checked &&
+                disabled == that.disabled &&
                 Objects.equal(formHash, that.formHash) &&
                 Objects.equal(tid, that.tid) &&
                 Objects.equal(pid, that.pid) &&
                 Objects.equal(refer, that.refer) &&
                 Objects.equal(handleKey, that.handleKey) &&
-                Objects.equal(reasons, that.reasons);
+                Objects.equal(reasons, that.reasons) &&
+                Objects.equal(scoreChoices, that.scoreChoices);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(formHash, tid, pid, refer, handleKey, minScore, maxScore, totalScore, reasons);
+        return Objects.hashCode(formHash, tid, pid, refer, handleKey, minScore, maxScore, totalScore, reasons, checked, disabled, scoreChoices);
+    }
+
+    @Override
+    public String toString() {
+        return "RatePreInfo{" +
+                "formHash='" + formHash + '\'' +
+                ", tid='" + tid + '\'' +
+                ", pid='" + pid + '\'' +
+                ", refer='" + refer + '\'' +
+                ", handleKey='" + handleKey + '\'' +
+                ", minScore=" + minScore +
+                ", maxScore=" + maxScore +
+                ", totalScore=" + totalScore +
+                ", reasons=" + reasons +
+                ", checked=" + checked +
+                ", disabled=" + disabled +
+                ", scoreChoices=" + scoreChoices +
+                '}';
     }
 }

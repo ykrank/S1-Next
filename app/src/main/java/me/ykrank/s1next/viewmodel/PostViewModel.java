@@ -10,7 +10,6 @@ import android.text.SpannableString;
 import android.text.style.URLSpan;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,9 +17,9 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.event.QuoteEvent;
+import me.ykrank.s1next.data.event.RateEvent;
 import me.ykrank.s1next.util.ActivityUtils;
 import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.view.activity.NewRateActivity;
 import me.ykrank.s1next.view.activity.UserHomeActivity;
 import me.ykrank.s1next.view.internal.BlacklistMenuAction;
 import me.ykrank.s1next.widget.EventBus;
@@ -101,10 +100,6 @@ public final class PostViewModel {
     }
 
     public void onRateClick(View v) {
-        if (thread.get() == null) {
-            Toast.makeText(v.getContext(), R.string.invalid_thread_info, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        NewRateActivity.start(v.getContext(), thread.get().getId(), post.get().getId());
+        eventBus.post(new RateEvent(thread.get().getId(), post.get().getId()));
     }
 }

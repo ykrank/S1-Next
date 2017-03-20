@@ -298,4 +298,11 @@
     <string name="rate">Rate</string>
     <string name="title_new_rate">New rate</string>
     <string name="invalid_thread_info">Invalid thread info</string>
+    <string name="score_region">Score region</string>
+    <string name="score_today_left">Today left score</string>
+    <string name="score_reason">Score reason</string>
+    <string name="prompt_reason">Write reason</string>
+    <string name="notice_author">Notice author</string>
+    <string name="score_reason_example">Score reason example</string>
+    <string name="score_region_format" translatable="false">%d ~ %d</string>
 </resources>

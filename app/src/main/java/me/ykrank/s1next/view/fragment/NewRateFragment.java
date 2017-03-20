@@ -2,12 +2,15 @@ package me.ykrank.s1next.view.fragment;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -20,6 +23,8 @@ import me.ykrank.s1next.databinding.FragmentNewRateBinding;
 import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
+import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter;
+import me.ykrank.s1next.viewmodel.NewRateViewModel;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
@@ -52,6 +57,7 @@ public final class NewRateFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_new_rate, container, false);
+        binding.setModel(new NewRateViewModel());
         return binding.getRoot();
     }
 
@@ -99,10 +105,16 @@ public final class NewRateFragment extends BaseFragment {
         mDisposable = mS1Service.getRatePreInfo(threadId, postID, System.currentTimeMillis())
                 .map(RatePreInfo::fromHtml)
                 .compose(RxJavaUtil.iOTransformer())
-                .subscribe(types -> {
-                    L.d(types.toString());
+                .subscribe(info -> {
+                    binding.getModel().info.set(info);
+                    setSpinner(info.getScoreChoices());
+                    L.d(info.toString());
                         }, e -> showRetrySnackbar(ErrorUtil.parse(getContext(), e), v -> init())
                 );
     }
 
+    private void setSpinner(@NonNull List<String> choices) {
+        SimpleSpinnerAdapter<String> spinnerAdapter = new SimpleSpinnerAdapter<>(getContext(), choices, String::valueOf);
+        binding.spinner.setAdapter(spinnerAdapter);
+    }
 }

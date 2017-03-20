@@ -29,7 +29,7 @@ import me.ykrank.s1next.databinding.FragmentNewThreadBinding;
 import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
-import me.ykrank.s1next.view.adapter.ThreadTypeSpinnerAdapter;
+import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter;
 import me.ykrank.s1next.view.dialog.NewThreadRequestDialogFragment;
 import me.ykrank.s1next.view.dialog.ReplyRequestDialogFragment;
 import me.ykrank.s1next.view.internal.NewThreadCacheModel;
@@ -213,7 +213,7 @@ public final class NewThreadFragment extends BasePostFragment {
         } else {
             typeSpinner.setVisibility(View.VISIBLE);
         }
-        ThreadTypeSpinnerAdapter spinnerAdapter = new ThreadTypeSpinnerAdapter(getContext(), types);
+        SimpleSpinnerAdapter<ThreadType> spinnerAdapter = new SimpleSpinnerAdapter<>(getContext(), types, ThreadType::getTypeName);
         typeSpinner.setAdapter(spinnerAdapter);
         if (cacheModel != null && types.size() > cacheModel.getSelectPosition()) {
             typeSpinner.setSelection(cacheModel.getSelectPosition());

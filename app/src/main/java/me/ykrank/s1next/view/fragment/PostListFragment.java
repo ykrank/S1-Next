@@ -39,6 +39,7 @@ import me.ykrank.s1next.data.event.BlackListAddEvent;
 import me.ykrank.s1next.data.event.PostSelectableChangeEvent;
 import me.ykrank.s1next.data.event.QuickSidebarEnableChangeEvent;
 import me.ykrank.s1next.data.event.QuoteEvent;
+import me.ykrank.s1next.data.event.RateEvent;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
 import me.ykrank.s1next.util.ClipboardUtil;
@@ -48,6 +49,7 @@ import me.ykrank.s1next.util.LooperUtil;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.util.StringUtil;
+import me.ykrank.s1next.view.activity.NewRateActivity;
 import me.ykrank.s1next.view.activity.ReplyActivity;
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment;
 import me.ykrank.s1next.view.dialog.PostSelectableChangeDialogFragment;
@@ -102,7 +104,7 @@ public final class PostListFragment extends BaseViewPagerFragment
     private Posts.ThreadAttachment mThreadAttachment;
     private MenuItem mMenuThreadAttachment;
 
-    private Disposable quoteDisposable;
+    private Disposable quoteDisposable, rateDisposable;
     private Disposable blackListAddDisposable;
     private Disposable mReadProgressDisposable;
     private ReadProgress readProgress;
@@ -214,6 +216,11 @@ public final class PostListFragment extends BaseViewPagerFragment
                 .subscribe(quoteEvent ->
                         startReplyActivity(quoteEvent.getQuotePostId(), quoteEvent.getQuotePostCount())
                 );
+        rateDisposable = mEventBus.get()
+                .ofType(RateEvent.class)
+                .subscribe(event ->
+                        startRateActivity(event.getThreadId(), event.getPostId())
+                );
         blackListAddDisposable = mEventBus.get()
                 .ofType(BlackListAddEvent.class)
                 .subscribe(blackListEvent -> {
@@ -245,6 +252,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         super.onPause();
 
         RxJavaUtil.disposeIfNotNull(quoteDisposable);
+        RxJavaUtil.disposeIfNotNull(rateDisposable);
         RxJavaUtil.disposeIfNotNull(blackListAddDisposable);
         RxJavaUtil.disposeIfNotNull(mReadProgressDisposable);
     }
@@ -469,6 +477,14 @@ public final class PostListFragment extends BaseViewPagerFragment
 
         ReplyActivity.startReplyActivityForResultMessage(getActivity(), mThreadId, mThreadTitle,
                 quotePostId, quotePostCount);
+    }
+
+    private void startRateActivity(@Nullable String threadId, @Nullable String postId) {
+        if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(getActivity(), mUser)) {
+            return;
+        }
+
+        NewRateActivity.start(getActivity(), threadId, postId);
     }
 
     /**
