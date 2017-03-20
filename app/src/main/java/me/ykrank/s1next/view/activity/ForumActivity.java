@@ -153,6 +153,6 @@ public final class ForumActivity extends BaseActivity
                     if (readProgress != null) {
                         PostListActivity.startPostListActivity(ForumActivity.this, readProgress);
                     }
-                }, L::e);
+                }, L::report);
     }
 }

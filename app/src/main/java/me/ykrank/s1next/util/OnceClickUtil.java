@@ -36,7 +36,7 @@ public class OnceClickUtil {
                                                 final int millDuration) {
         return new ViewClickObservable(view)
                 .throttleFirst(millDuration, TimeUnit.MILLISECONDS)
-                .subscribe(vo -> clickListener.onClick(view), L::e);
+                .subscribe(vo -> clickListener.onClick(view), L::report);
     }
 
     /**

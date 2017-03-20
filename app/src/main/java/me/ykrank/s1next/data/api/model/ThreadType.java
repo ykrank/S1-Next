@@ -24,6 +24,7 @@ public final class ThreadType {
 
     /**
      * Extracts {@link Quote} from XML string.
+     *
      * @param xmlString raw html
      * @return if no type, return empty list. return null if html error.
      */
@@ -34,24 +35,24 @@ public final class ThreadType {
         if (xmlString == null || !xmlString.contains("<span>发表帖子</span>")) {
             return null;
         }
-        
-        List<ThreadType> types = new ArrayList<>();
-        // example: <select name="typeid" id="typeid" width="80"> <option value="0">选择主题分类</option> </select>
-        Pattern pattern = Pattern.compile("<select name=\"typeid\" id=\"typeid\"[\\s\\S]+?</select>");
-        Matcher matcher = pattern.matcher(xmlString);
 
-        if (matcher.find()) {
-            // example: <option value="290">漫画</option>
-            pattern = Pattern.compile("<option value=\"([0-9]+)\">([^\\x00-\\xff]+)</option>");
-            Matcher matcher2 = pattern.matcher(matcher.group(0));
-            while (matcher2.find()) {
-                try {
+        List<ThreadType> types = new ArrayList<>();
+        try {
+            // example: <select name="typeid" id="typeid" width="80"> <option value="0">选择主题分类</option> </select>
+            Pattern pattern = Pattern.compile("<select name=\"typeid\" id=\"typeid\"[\\s\\S]+?</select>");
+            Matcher matcher = pattern.matcher(xmlString);
+
+            if (matcher.find()) {
+                // example: <option value="290">漫画</option>
+                pattern = Pattern.compile("<option value=\"([0-9]+)\">([^\\x00-\\xff]+)</option>");
+                Matcher matcher2 = pattern.matcher(matcher.group(0));
+                while (matcher2.find()) {
                     ThreadType threadType = new ThreadType(matcher2.group(1), matcher2.group(2));
                     types.add(threadType);
-                } catch (IllegalStateException e) {
-                    L.e(e);
                 }
             }
+        } catch (Exception e) {
+            L.report(e);
         }
 
         return types;

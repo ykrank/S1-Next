@@ -150,7 +150,7 @@ class HtmlTagHandlerCompat implements Html.TagHandler {
                 return (Attributes) atts;
             }
         } catch (Exception e) {
-            L.e(e);
+            L.report(e);
         }
         return null;
     }

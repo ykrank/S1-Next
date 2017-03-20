@@ -159,7 +159,7 @@ public final class WebLoginFragment extends BaseFragment {
                     ForumActivity.start(getActivity());
                 }
             } catch (Exception e) {
-                L.e(e);
+                L.report(e);
             }
             super.onPageFinished(view, url);
         }

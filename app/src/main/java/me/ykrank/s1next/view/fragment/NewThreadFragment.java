@@ -154,7 +154,7 @@ public final class NewThreadFragment extends BasePostFragment {
         try {
             return objectMapper.writeValueAsString(model);
         } catch (JsonProcessingException e) {
-            L.e(e);
+            L.report(e);
         }
         return super.buildCacheString();
     }
@@ -177,7 +177,7 @@ public final class NewThreadFragment extends BasePostFragment {
                         titleEditText.setText(model.getTitle());
                         mReplyView.setText(model.getMessage());
                     }
-                }, L::e);
+                }, L::report);
     }
 
     private boolean isTitleValid(String string) {

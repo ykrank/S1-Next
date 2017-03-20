@@ -27,14 +27,14 @@ public class SQLiteUtil {
             return str.equals("SQLite format 3\u0000");
 
         } catch (Exception e) {
-            L.e(e);
+            L.report(e);
             return false;
         } finally {
             if (fr != null) {
                 try {
                     fr.close();
                 } catch (IOException e) {
-                    L.e(e);
+                    L.report(e);
                 }
             }
         }

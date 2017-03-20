@@ -348,15 +348,12 @@ public final class Post implements Cloneable, SameItem {
                 }
 
                 //like "<bilibili>http://www.bilibili.com/video/av6706141/index_3.html</bilibili>"
-                StringBuilder builder = new StringBuilder("<bilibili>http://www.bilibili.com/video/av");
-                builder.append(avNum);
-                builder.append("/index_");
-                builder.append(page);
-                builder.append(".html</bilibili>");
+                String tagString = String.format(Locale.getDefault(),
+                        "<bilibili>http://www.bilibili.com/video/av%d/index_%d.html</bilibili>", avNum, page);
 
-                reply = reply.replace(content, builder.toString());
+                reply = reply.replace(content, tagString);
             } catch (Exception e) {
-                L.e(e);
+                L.report("replaceBilibiliTag error", e);
             }
         }
         return reply;

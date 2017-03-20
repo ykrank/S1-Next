@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.orhanobut.logger.LogLevel;
+import com.orhanobut.logger.Logger;
 import com.tencent.bugly.crashreport.BuglyLog;
 import com.tencent.bugly.crashreport.CrashReport;
 
@@ -20,6 +22,7 @@ public class L {
     public static void init(@NonNull Context context) {
         CrashReport.setIsDevelopmentDevice(context, BuildConfig.DEBUG);
         CrashReport.initCrashReport(context.getApplicationContext());
+        Logger.init(LOG_TAG).logLevel(showLog() ? LogLevel.FULL : LogLevel.NONE);
     }
 
     public static void setUser(final String id, final String name) {
@@ -31,76 +34,51 @@ public class L {
     }
 
     public static void d(String msg) {
-        d(LOG_TAG, msg);
-    }
-
-    public static void i(String msg) {
-        i(LOG_TAG, msg);
-    }
-
-    public static void e(String msg) {
-        e(LOG_TAG, msg);
-    }
-
-    public static void e(Throwable e) {
-        e(LOG_TAG, e);
-    }
-
-    public static void d(String msg, Throwable tr) {
-        d(LOG_TAG, msg, tr);
-    }
-
-    public static void i(String msg, Throwable tr) {
-        i(LOG_TAG, msg, tr);
-    }
-
-    public static void e(String msg, Throwable tr) {
-        e(LOG_TAG, msg, tr);
+        Logger.d(msg);
     }
 
     public static void d(String tag, String msg) {
-        if (showLog()) {
-            Log.d(tag, msg);
-        }
+        Logger.t(tag).d(msg);
+    }
+
+    public static void i(String msg) {
+        Logger.i(msg);
     }
 
     public static void i(String tag, String msg) {
-        if (showLog()) {
-            Log.i(tag, msg);
-        }
+        Logger.t(tag).i(msg);
+    }
+
+    public static void w(String msg) {
+        Logger.w(msg);
     }
 
     public static void w(String tag, String msg) {
-        if (showLog()) {
-            Log.w(tag, msg);
-        }
+        Logger.t(tag).w(msg);
+    }
+
+    public static void e(String msg) {
+        e(null, msg, null);
+    }
+
+    public static void e(Throwable e) {
+        e(null, null, e);
+    }
+
+    public static void e(String msg, Throwable tr) {
+        e(null, msg, tr);
     }
 
     public static void e(String tag, String msg) {
-        if (showLog()) {
-            Log.e(tag, msg);
-        }
+        e(tag, msg, null);
     }
-
-    public static void d(String tag, String msg, Throwable tr) {
-        if (showLog()) {
-            Log.d(tag, msg, tr);
-        }
-    }
-
-
-    public static void i(String tag, String msg, Throwable tr) {
-        if (showLog()) {
-            Log.i(tag, msg, tr);
-        }
-    }
-
 
     public static void e(String tag, String msg, Throwable tr) {
-        if (showLog()) {
+        Logger.t(tag).e(tr, msg);
+        BuglyLog.e(LOG_TAG + tag, msg, tr);
+        if (showLog() && tr != null) {
             CrashReport.postCatchedException(tr);
         }
-        BuglyLog.e(tag, msg, tr);
     }
 
     public static void report(Throwable tr) {
@@ -112,13 +90,13 @@ public class L {
         BuglyLog.e(LOG_TAG, "Report error", tr);
     }
 
-    public static void leaveMsg(String msg) {
-        BuglyLog.i("MSG", msg);
-    }
-
     public static void report(String msg, Throwable tr) {
         leaveMsg(msg);
         report(tr);
+    }
+
+    public static void leaveMsg(String msg) {
+        BuglyLog.i("MSG", msg);
     }
 
     public static void test() {

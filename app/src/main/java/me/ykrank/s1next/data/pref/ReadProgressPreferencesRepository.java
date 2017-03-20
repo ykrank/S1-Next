@@ -50,7 +50,7 @@ public final class ReadProgressPreferencesRepository extends BasePreferencesRepo
                 return null;
             }
         } catch (IOException e) {
-            L.e(e);
+            L.report(e);
             return null;
         }
     }
@@ -61,7 +61,7 @@ public final class ReadProgressPreferencesRepository extends BasePreferencesRepo
             mSharedPreferences.edit().putString(PREF_KEY_LAST_READ_PROGRESS, lastStr).apply();
             return true;
         } catch (JsonProcessingException e) {
-            L.e(e);
+            L.report(e);
             return false;
         }
     }

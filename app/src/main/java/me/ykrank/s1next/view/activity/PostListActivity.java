@@ -107,7 +107,7 @@ public final class PostListActivity extends BaseActivity
                         } else {
                             context.startActivity(intent);
                         }
-                    }, L::e);
+                    }, L::report);
         } else {
             return OnceClickUtil.setOnceClickLister(view, v -> {
                 PostListActivity.startPostListActivity(v.getContext(), thread, false);

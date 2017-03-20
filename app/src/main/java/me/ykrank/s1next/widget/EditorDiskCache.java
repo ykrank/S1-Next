@@ -117,7 +117,7 @@ public enum EditorDiskCache {
                             try {
                                 writer.close();
                             } catch (IOException e) {
-                                L.e(e);
+                                L.report(e);
                             }
                         }
                     }

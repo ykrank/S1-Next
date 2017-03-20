@@ -238,7 +238,7 @@ public final class PostListFragment extends BaseViewPagerFragment
             mLastReadDisposable = Single.just(fragment.getCurReadProgress())
                     .delay(5, TimeUnit.SECONDS)
                     .map(mReadProgressPrefManager::saveLastReadProgress)
-                    .doOnError(L::e)
+                    .doOnError(L::report)
                     .subscribe(b -> L.i("Save last read progress:" + b));
         }
         trackAgent.post(new PageEndEvent(getContext(), "帖子详情列表-PostListFragment"));

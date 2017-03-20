@@ -90,7 +90,7 @@ public enum AvatarUrlsCache {
                 return INSTANCE.diskLruCache.get(encodedKey) != null;
             }
         } catch (IOException ignore) {
-            L.e(ignore);
+            L.report(ignore);
             return false;
         }
     }

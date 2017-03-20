@@ -172,7 +172,7 @@ public abstract class BasePostFragment extends BaseFragment {
                         return s;
                     })
                     .compose(RxJavaUtil.iOSingleTransformer())
-                    .subscribe(L::i, L::e);
+                    .subscribe(L::i, L::report);
         }
     }
 
@@ -222,7 +222,7 @@ public abstract class BasePostFragment extends BaseFragment {
     @UiThread
     public Disposable resumeFromCache(Single<String> cache) {
         return cache.compose(RxJavaUtil.iOSingleTransformer())
-                .subscribe(mReplyView::setText, L::e);
+                .subscribe(mReplyView::setText, L::report);
     }
 
     @Override
