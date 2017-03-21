@@ -11,9 +11,12 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
 
+import javax.inject.Inject;
+
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
+import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.databinding.NavigationViewHeaderBinding;
 import me.ykrank.s1next.view.activity.FavouriteListActivity;
 import me.ykrank.s1next.view.activity.ForumActivity;
@@ -37,13 +40,16 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private final User mUser;
-    private final UserViewModel mUserViewModel;
-    private DataTrackAgent trackAgent;
+    @Inject
+    UserViewModel mUserViewModel;
+    @Inject
+    DataTrackAgent trackAgent;
+    @Inject
+    ThemeManager mThemeManager;
 
     public DrawerLayoutDelegateConcrete(FragmentActivity activity, DrawerLayout drawerLayout, NavigationView navigationView) {
         super(activity, drawerLayout, navigationView);
-        trackAgent = App.getAppComponent().getDataTrackAgent();
-        mUserViewModel = App.getAppComponent().getUserViewModel();
+        App.getPrefComponent().inject(this);
         mUser = mUserViewModel.getUser();
     }
 
@@ -188,7 +194,7 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
     }
 
     private void onHelpMenuSelected() {
-        HelpActivity.startHelpActivity(mFragmentActivity);
+        HelpActivity.startHelpActivity(mFragmentActivity, mThemeManager.getThemeStyle());
     }
 
     private void onNoteMenuSelected() {

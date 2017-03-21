@@ -3,6 +3,7 @@ package me.ykrank.s1next.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.StyleRes;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.webkit.WebView;
@@ -18,18 +19,24 @@ import me.ykrank.s1next.widget.track.event.ViewHelpTrackEvent;
  * 为了防止WebView内存泄露,应该在新进程中打开
  */
 public final class HelpActivity extends OriginActivity {
+    private static final String ARG_STYLE = "style";
     private ToolbarDelegate mToolbarDelegate;
 
     private HelpFragment mHelpFragment;
 
-    public static void startHelpActivity(Context context) {
+    public static void startHelpActivity(Context context, @StyleRes int styleId) {
         App.get().getTrackAgent().post(new ViewHelpTrackEvent());
         Intent intent = new Intent(context, HelpActivity.class);
+        intent.putExtra(ARG_STYLE, styleId);
         context.startActivity(intent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        int styleId = getIntent().getIntExtra(ARG_STYLE, -1);
+        if (styleId != -1) {
+            setTheme(styleId);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base_without_drawer_and_scrolling_effect);
         setupToolbar();

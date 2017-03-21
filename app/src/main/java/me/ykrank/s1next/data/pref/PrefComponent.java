@@ -18,6 +18,7 @@ import me.ykrank.s1next.view.fragment.PostListPagerFragment;
 import me.ykrank.s1next.view.fragment.ReplyFragment;
 import me.ykrank.s1next.view.fragment.setting.DownloadPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.GeneralPreferenceFragment;
+import me.ykrank.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import me.ykrank.s1next.widget.WifiBroadcastReceiver;
 import me.ykrank.s1next.widget.glide.AppHttpStreamFetcher;
 import me.ykrank.s1next.widget.glide.AvatarStreamFetcher;
@@ -73,4 +74,6 @@ public interface PrefComponent {
     void inject(AppHttpStreamFetcher appStreamLoader);
 
     void inject(AvatarStreamFetcher avatarStreamFetcher);
+
+    void inject(DrawerLayoutDelegateConcrete drawerLayoutDelegateConcrete);
 }
