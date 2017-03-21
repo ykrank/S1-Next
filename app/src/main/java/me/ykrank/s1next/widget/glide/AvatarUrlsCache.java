@@ -35,7 +35,7 @@ import me.ykrank.s1next.util.L;
  * just throw an exception to tell Glide to use the error
  * placeholder for this image.
  *
- * @see OkHttpStreamFetcher#loadData(com.bumptech.glide.Priority)
+ * @see AvatarStreamFetcher#loadData(com.bumptech.glide.Priority)
  */
 public enum AvatarUrlsCache {
     INSTANCE;

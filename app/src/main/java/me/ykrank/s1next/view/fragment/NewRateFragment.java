@@ -90,15 +90,12 @@ public final class NewRateFragment extends BaseFragment {
         super.onPause();
     }
 
-    private boolean isTitleValid(String string) {
-        if (TextUtils.isEmpty(string) || string.trim().length() == 0) {
+    private boolean isScoreValid() {
+        String score = (String) binding.spinner.getSelectedItem();
+        if (TextUtils.isEmpty(score) || "0".equals(score.trim())) {
             return false;
         }
         return true;
-    }
-
-    private boolean isMessageValid(String string) {
-        return isTitleValid(string);
     }
 
     private void init() {

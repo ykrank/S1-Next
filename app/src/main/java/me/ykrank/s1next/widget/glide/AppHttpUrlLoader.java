@@ -2,6 +2,7 @@ package me.ykrank.s1next.widget.glide;
 
 import android.content.Context;
 
+import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
 import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.load.model.GenericLoaderFactory;
 import com.bumptech.glide.load.model.GlideUrl;
@@ -16,23 +17,23 @@ import okhttp3.OkHttpClient;
 /**
  * A simple model loader for fetching media over HTTP/HTTPS using OkHttp.
  * <p>
- * Forked from https://github.com/bumptech/glide/blob/master/integration/okhttp/src/main/java/com/bumptech/glide/integration/okhttp/OkHttpUrlLoader.java
+ * Forked from {@link OkHttpUrlLoader}
  */
-final class OkHttpUrlLoader implements StreamModelLoader<GlideUrl> {
+final class AppHttpUrlLoader implements StreamModelLoader<GlideUrl> {
 
     private final OkHttpClient mOkHttpClient;
 
-    private OkHttpUrlLoader(OkHttpClient okHttpClient) {
+    private AppHttpUrlLoader(OkHttpClient okHttpClient) {
         this.mOkHttpClient = okHttpClient;
     }
 
     @Override
     public DataFetcher<InputStream> getResourceFetcher(GlideUrl model, int width, int height) {
-        return new OkHttpStreamFetcher(mOkHttpClient, model);
+        return new AppHttpStreamFetcher(mOkHttpClient, model);
     }
 
     /**
-     * The default factory for {@link OkHttpUrlLoader}.
+     * The default factory for {@link AppHttpUrlLoader}.
      */
     public static final class Factory implements ModelLoaderFactory<GlideUrl, InputStream> {
 
@@ -47,7 +48,7 @@ final class OkHttpUrlLoader implements StreamModelLoader<GlideUrl> {
 
         @Override
         public ModelLoader<GlideUrl, InputStream> build(Context context, GenericLoaderFactory factories) {
-            return new OkHttpUrlLoader(mOkHttpClient);
+            return new AppHttpUrlLoader(mOkHttpClient);
         }
 
         @Override

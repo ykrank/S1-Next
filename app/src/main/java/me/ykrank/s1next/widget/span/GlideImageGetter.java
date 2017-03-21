@@ -23,13 +23,11 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.TransformationUtil;
 import me.ykrank.s1next.widget.EmoticonFactory;
-import me.ykrank.s1next.widget.glide.CacheOnlyStreamLoader;
 
 /**
  * Implements {@link android.text.Html.ImageGetter}
@@ -125,34 +123,18 @@ public final class GlideImageGetter
             return urlDrawable;
         }
 
-        if (App.getPrefComponent().getDownloadPreferencesManager().isImagesDownload()) {
-            ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
-                    urlDrawable);
-            Glide.with(mContext)
-                    .load(url)
-                    .placeholder(R.mipmap.unknown_image)
-                    .error(R.mipmap.unknown_image)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .transform(new TransformationUtil.GlMaxTextureSizeBitmapTransformation(mContext))
-                    .into(imageGetterViewTarget);
+        ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
+                urlDrawable);
+        Glide.with(mContext)
+                .load(url)
+                .placeholder(R.mipmap.unknown_image)
+                .error(R.mipmap.unknown_image)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .transform(new TransformationUtil.GlMaxTextureSizeBitmapTransformation(mContext))
+                .into(imageGetterViewTarget);
 
-            mViewTargetSet.add(imageGetterViewTarget);
-            return urlDrawable;
-        } else {
-            ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
-                    urlDrawable);
-            Glide.with(mContext)
-                    .using(new CacheOnlyStreamLoader())
-                    .load(url)
-                    .placeholder(R.mipmap.unknown_image)
-                    .error(R.mipmap.unknown_image)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .transform(new TransformationUtil.GlMaxTextureSizeBitmapTransformation(mContext))
-                    .into(imageGetterViewTarget);
-
-            mViewTargetSet.add(imageGetterViewTarget);
-            return urlDrawable;
-        }
+        mViewTargetSet.add(imageGetterViewTarget);
+        return urlDrawable;
     }
 
     @Override

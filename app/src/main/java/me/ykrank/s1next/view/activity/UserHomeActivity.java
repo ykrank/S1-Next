@@ -36,7 +36,7 @@ import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.util.TransitionUtils;
 import me.ykrank.s1next.view.internal.BlacklistMenuAction;
 import me.ykrank.s1next.widget.AppBarOffsetChangedListener;
-import me.ykrank.s1next.widget.glide.ImageInfo;
+import me.ykrank.s1next.widget.glide.model.ImageInfo;
 import me.ykrank.s1next.widget.track.event.ViewHomeTrackEvent;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;

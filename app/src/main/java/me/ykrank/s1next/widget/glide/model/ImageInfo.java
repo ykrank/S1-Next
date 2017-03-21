@@ -1,4 +1,4 @@
-package me.ykrank.s1next.widget.glide;
+package me.ykrank.s1next.widget.glide.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
