@@ -96,13 +96,15 @@
                 android:layout_below="@id/tv_reply"
                 android:layout_marginTop="@dimen/item_padding_small"
                 android:background="@drawable/post_divide_dash_white"
+                android:visibility="invisible"
                 android:layerType="software" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/view_divide"
-                android:gravity="end|center_vertical">
+                android:gravity="end|center_vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -118,8 +120,7 @@
                     android:layout_margin="@dimen/spacing_micro"
                     android:onClick="@{postViewModel::onRateClick}"
                     android:text="@string/rate"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:visibility="gone" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
             </LinearLayout>
         </RelativeLayout>
 
