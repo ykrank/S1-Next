@@ -6,9 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import dagger.Module;
 import dagger.Provides;
@@ -21,6 +25,7 @@ import me.ykrank.s1next.data.db.AppDaoSessionManager;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.AppDaoOpenHelper;
 import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.NullTrustManager;
 import me.ykrank.s1next.widget.PersistentHttpCookieStore;
 import me.ykrank.s1next.widget.glide.OkHttpNoAvatarInterceptor;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
@@ -67,9 +72,20 @@ public final class AppModule {
         builder.cookieJar(new JavaNetCookieJar(cookieManager));
         builder.addNetworkInterceptor(new OkHttpNoAvatarInterceptor());
         if (BuildConfig.DEBUG) {
+            //log
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
             httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
             builder.addInterceptor(httpLoggingInterceptor);
+            //trust https
+            try {
+                X509TrustManager trustManager = new NullTrustManager();
+                SSLContext sslContext = SSLContext.getInstance("TLS");
+                sslContext.init(null, new TrustManager[]{trustManager}, new SecureRandom());
+                builder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+           
         }
 
         return builder.build();
