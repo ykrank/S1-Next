@@ -3,6 +3,7 @@ package me.ykrank.s1next;
 import android.content.res.Configuration;
 import android.os.StrictMode;
 import android.support.multidex.MultiDexApplication;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -93,6 +94,9 @@ public final class App extends MultiDexApplication {
         registerActivityLifecycleCallbacks(mAppActivityLifecycleCallbacks);
 
         mGeneralPreferencesManager = mPrefComponent.getGeneralPreferencesManager();
+
+        //enable vector drawable
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         // set scaling factor for fonts
         ResourceUtil.setScaledDensity(this, mGeneralPreferencesManager.getFontScale());
     }
