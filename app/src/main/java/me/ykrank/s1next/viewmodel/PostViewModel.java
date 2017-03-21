@@ -1,6 +1,7 @@
 package me.ykrank.s1next.viewmodel;
 
 import android.content.Context;
+import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -29,13 +30,20 @@ public final class PostViewModel {
 
     public final ObservableField<Post> post = new ObservableField<>();
     public final ObservableField<Thread> thread = new ObservableField<>();
+    public final ObservableField<CharSequence> floor = new ObservableField<>();
     private final EventBus eventBus;
 
     public PostViewModel(EventBus eventBus) {
         this.eventBus = eventBus;
+        post.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable observable, int i) {
+                floor.set(getPostFloor());
+            }
+        });
     }
 
-    public CharSequence getPostCount() {
+    private CharSequence getPostFloor() {
         Post p = post.get();
         if (p == null) {
             return null;
