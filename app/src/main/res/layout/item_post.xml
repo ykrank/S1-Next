@@ -118,7 +118,8 @@
                     android:layout_margin="@dimen/spacing_micro"
                     android:onClick="@{postViewModel::onRateClick}"
                     android:text="@string/rate"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:visibility="gone" />
             </LinearLayout>
         </RelativeLayout>
 
