@@ -37,10 +37,10 @@ public final class Api {
      */
     static final String URL_NEW_THREAD_HELPER = BASE_URL + "forum.php?mod=post&action=newthread";
     static final String URL_SEARCH_FORUM = BASE_URL + "search.php?mod=forum";
-    private static final String URL_USER_AVATAR_PREFIX = BASE_APP_URL + "uc_server/avatar.php?uid=%s";
-    private static final String URL_USER_AVATAR_SMALL = URL_USER_AVATAR_PREFIX + "&size=small";
-    private static final String URL_USER_AVATAR_MEDIUM = URL_USER_AVATAR_PREFIX + "&size=middle";
-    private static final String URL_USER_AVATAR_BIG = URL_USER_AVATAR_PREFIX + "&size=big";
+    private static final String URL_USER_AVATAR_PREFIX = BASE_APP_URL + "uc_server/avatar.php?uid=";
+    private static final String URL_USER_AVATAR_SMALL = URL_USER_AVATAR_PREFIX + "%s&size=small";
+    private static final String URL_USER_AVATAR_MEDIUM = URL_USER_AVATAR_PREFIX + "%s&size=middle";
+    private static final String URL_USER_AVATAR_BIG = URL_USER_AVATAR_PREFIX + "%s&size=big";
     private static final String URL_BROWSER_FAVOURITES = prepend("home.php?mod=space&do=favorite");
     private static final String URL_BROWSER_THREAD_LIST = prepend("forum-%s-%d.html");
     private static final String URL_BROWSER_POST_LIST = prepend("thread-%s-%d-1.html");

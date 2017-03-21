@@ -2,6 +2,7 @@ package me.ykrank.s1next.widget.glide;
 
 import android.content.Context;
 
+import com.bumptech.glide.integration.okhttp3.OkHttpStreamFetcher;
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
 import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.load.model.GenericLoaderFactory;
@@ -12,6 +13,8 @@ import com.bumptech.glide.load.model.stream.StreamModelLoader;
 
 import java.io.InputStream;
 
+import me.ykrank.s1next.widget.glide.model.AvatarUrl;
+import me.ykrank.s1next.widget.glide.model.ForcePassUrl;
 import okhttp3.OkHttpClient;
 
 /**
@@ -29,6 +32,11 @@ final class AppHttpUrlLoader implements StreamModelLoader<GlideUrl> {
 
     @Override
     public DataFetcher<InputStream> getResourceFetcher(GlideUrl model, int width, int height) {
+        if (model instanceof AvatarUrl) {
+            return new AvatarStreamFetcher(mOkHttpClient, (AvatarUrl) model);
+        } else if (model instanceof ForcePassUrl) {
+            return new OkHttpStreamFetcher(mOkHttpClient, model);
+        }
         return new AppHttpStreamFetcher(mOkHttpClient, model);
     }
 

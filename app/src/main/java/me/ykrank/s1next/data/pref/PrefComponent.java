@@ -4,6 +4,7 @@ import dagger.Component;
 import me.ykrank.s1next.AppComponent;
 import me.ykrank.s1next.view.activity.BaseActivity;
 import me.ykrank.s1next.view.activity.ForumActivity;
+import me.ykrank.s1next.view.activity.GalleryActivity;
 import me.ykrank.s1next.view.activity.PostListGatewayActivity;
 import me.ykrank.s1next.view.activity.SearchActivity;
 import me.ykrank.s1next.view.activity.UserHomeActivity;
@@ -76,4 +77,6 @@ public interface PrefComponent {
     void inject(AvatarStreamFetcher avatarStreamFetcher);
 
     void inject(DrawerLayoutDelegateConcrete drawerLayoutDelegateConcrete);
+
+    void inject(GalleryActivity galleryActivity);
 }

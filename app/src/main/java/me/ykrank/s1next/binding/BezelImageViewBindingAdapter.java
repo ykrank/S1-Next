@@ -142,7 +142,7 @@ public final class BezelImageViewBindingAdapter {
 
     private static void preloadRoundAvatar(ImageView imageView, DownloadPreferencesManager downloadPreferencesManager,
                                            List<String> urls) {
-        if (urls == null || urls.isEmpty()) {
+        if (urls == null || urls.isEmpty() || TextUtils.isEmpty(urls.get(0))) {
             return;
         }
         Context context = imageView.getContext();
@@ -173,7 +173,7 @@ public final class BezelImageViewBindingAdapter {
 
     private static void loadRoundAvatar(ImageView imageView, DownloadPreferencesManager downloadPreferencesManager,
                                         List<String> urls, String thumbUrl, boolean fade) {
-        if (urls == null || urls.isEmpty()) {
+        if (urls == null || urls.isEmpty() || TextUtils.isEmpty(urls.get(0))) {
             loadPlaceHolderAvatar(imageView);
             return;
         }

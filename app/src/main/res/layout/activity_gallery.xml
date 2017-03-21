@@ -10,6 +10,10 @@
         <variable
             name="imageViewModel"
             type="me.ykrank.s1next.viewmodel.ImageViewModel" />
+
+        <variable
+            name="downloadPrefManager"
+            type="me.ykrank.s1next.data.pref.DownloadPreferencesManager" />
     </data>
 
     <FrameLayout
@@ -23,7 +27,8 @@
             android:contentDescription="@string/picture_content_desc"
             android:transitionName="@string/gallery_transition"
             app:url="@{imageViewModel.url}"
-            app:thumbUrl="@{imageViewModel.thumbUrl}" />
+            app:thumbUrl="@{imageViewModel.thumbUrl}"
+            app:manager="@{downloadPrefManager}" />
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"

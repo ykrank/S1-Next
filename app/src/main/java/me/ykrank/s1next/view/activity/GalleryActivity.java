@@ -21,8 +21,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.databinding.ActivityGalleryBinding;
 import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.util.L;
@@ -52,7 +55,10 @@ public final class GalleryActivity extends OriginActivity {
     private PhotoView mPhotoView;
     private ActivityGalleryBinding binding;
 
-    private DataTrackAgent trackAgent;
+    @Inject
+    DataTrackAgent trackAgent;
+    @Inject
+    DownloadPreferencesManager mDownloadPreferencesManager;
 
     public static void startGalleryActivity(Context context, String imageUrl) {
         Intent intent = new Intent(context, GalleryActivity.class);
@@ -85,7 +91,7 @@ public final class GalleryActivity extends OriginActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        trackAgent = App.get().getTrackAgent();
+        App.getPrefComponent().inject(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_gallery);
         mPhotoView = binding.photoView;
@@ -102,6 +108,7 @@ public final class GalleryActivity extends OriginActivity {
         //TODO http://stackoverflow.com/questions/31492040/snackbar-and-fitssystemwindow
 
         trackAgent.post(new ViewImageTrackEvent(mImageUrl, mImageThumbUrl != null));
+        binding.setDownloadPrefManager(mDownloadPreferencesManager);
         binding.setImageViewModel(new ImageViewModel(mImageUrl, mImageThumbUrl));
     }
 

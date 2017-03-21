@@ -14,7 +14,6 @@ import java.io.InputStream;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.widget.glide.model.AvatarUrl;
 
 /**
  * Lazily configures Glide.
@@ -38,9 +37,6 @@ public final class AppGlideModule implements GlideModule {
     public void registerComponents(Context context, Glide glide) {
         // register the OkHttp for Glide
         glide.register(GlideUrl.class, InputStream.class, new AppHttpUrlLoader.Factory(
-                App.getAppComponent().getOkHttpClient()));
-        //register avatar url
-        glide.register(AvatarUrl.class, InputStream.class, new AvatarUrlLoader.Factory(
                 App.getAppComponent().getOkHttpClient()));
     }
 }
