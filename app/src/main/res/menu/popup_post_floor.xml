@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_popup_reply"
+        android:orderInCategory="31"
+        android:title="@string/reply"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_popup_rate"
+        android:orderInCategory="31"
+        android:title="@string/rate"
+        app:showAsAction="ifRoom" />
+</menu>

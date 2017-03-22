@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +21,11 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.model.RatePreInfo;
 import me.ykrank.s1next.databinding.FragmentNewRateBinding;
+import me.ykrank.s1next.databinding.ItemRateReasonBinding;
 import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
+import me.ykrank.s1next.view.adapter.SimpleRecycleViewAdapter;
 import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter;
 import me.ykrank.s1next.viewmodel.NewRateViewModel;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
@@ -44,6 +47,8 @@ public final class NewRateFragment extends BaseFragment {
     private Disposable mDisposable;
 
     private FragmentNewRateBinding binding;
+    private SimpleRecycleViewAdapter reasonAdapter;
+    private SimpleRecycleViewAdapter.BindViewHolderCallback bindViewHolderCallback;
 
     public static NewRateFragment newInstance(String threadId, String postId) {
         NewRateFragment fragment = new NewRateFragment();
@@ -99,19 +104,39 @@ public final class NewRateFragment extends BaseFragment {
     }
 
     private void init() {
+        bindViewHolderCallback = bind -> {
+            ItemRateReasonBinding itemBinding = (ItemRateReasonBinding) bind;
+            itemBinding.getRoot().setOnClickListener(v -> {
+                binding.etReason.setText(itemBinding.getModel());
+            });
+        };
+
+        binding.recycleView.setLayoutManager(new LinearLayoutManager(getContext()));
+        reasonAdapter = new SimpleRecycleViewAdapter(getContext(), R.layout.item_rate_reason, bindViewHolderCallback);
+        binding.recycleView.setAdapter(reasonAdapter);
+        reasonAdapter.setHasProgress(true);
+
         mDisposable = mS1Service.getRatePreInfo(threadId, postID, System.currentTimeMillis())
                 .map(RatePreInfo::fromHtml)
                 .compose(RxJavaUtil.iOTransformer())
                 .subscribe(info -> {
-                    binding.getModel().info.set(info);
-                    setSpinner(info.getScoreChoices());
-                    L.d(info.toString());
-                        }, e -> showRetrySnackbar(ErrorUtil.parse(getContext(), e), v -> init())
+                            binding.getModel().info.set(info);
+                            setSpinner(info.getScoreChoices());
+                            setReasonRecycleView(info.getReasons());
+                            L.d(info.toString());
+                        }, e -> {
+                            reasonAdapter.setHasProgress(false);
+                            showRetrySnackbar(ErrorUtil.parse(getContext(), e), v -> init());
+                        }
                 );
     }
 
     private void setSpinner(@NonNull List<String> choices) {
         SimpleSpinnerAdapter<String> spinnerAdapter = new SimpleSpinnerAdapter<>(getContext(), choices, String::valueOf);
         binding.spinner.setAdapter(spinnerAdapter);
+    }
+
+    private void setReasonRecycleView(@NonNull List<String> reasons) {
+        reasonAdapter.refreshDataSet(reasons, false);
     }
 }

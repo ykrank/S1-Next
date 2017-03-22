@@ -23,11 +23,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/item_padding"
-            android:paddingBottom="@dimen/item_padding_micro"
-            android:paddingLeft="@dimen/item_padding"
-            android:paddingRight="@dimen/item_padding"
-            android:paddingTop="@dimen/item_padding">
+            android:padding="@dimen/item_padding">
 
             <me.ykrank.s1next.widget.BezelImageView
                 android:id="@+id/avatar"

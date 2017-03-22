@@ -77,6 +77,8 @@ public class RatePreInfo {
             info.setDisabled("disabled".equalsIgnoreCase(checkBoxElement.attr("disabled")));
 
             info.setScoreChoices();
+
+            // TODO: 2017/3/22 when html is wrong 
         } catch (Exception e) {
             L.report(e);
         }

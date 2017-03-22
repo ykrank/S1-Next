@@ -57,7 +57,7 @@ public final class PostViewModel {
             URLSpan urlSpan = new URLSpan(StringUtils.EMPTY) {
                 @Override
                 public void onClick(@NonNull View widget) {
-                    eventBus.post(new QuoteEvent(p.getId(), p.getCount()));
+                    showFloorActionMenu(widget);
                 }
             };
             spannable.setSpan(urlSpan, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -101,6 +101,25 @@ public final class PostViewModel {
         }
         popup.show();
         return true;
+    }
+    
+    //click floor textView, show popup menu
+    private void showFloorActionMenu(View v){
+        PopupMenu popup = new PopupMenu(v.getContext(), v);
+        popup.setOnMenuItemClickListener((MenuItem menuitem) -> {
+            switch (menuitem.getItemId()) {
+                case R.id.menu_popup_reply:
+                    onReplyClick(v);
+                    return true;
+                case R.id.menu_popup_rate:
+                    onRateClick(v);
+                    return true;
+                default:
+                    return false;
+            }
+        });
+        popup.inflate(R.menu.popup_post_floor);
+        popup.show();
     }
 
     public void onReplyClick(View v) {
