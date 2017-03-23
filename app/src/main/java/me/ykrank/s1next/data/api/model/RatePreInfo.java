@@ -32,6 +32,7 @@ public class RatePreInfo {
     private boolean checked;
     private boolean disabled;
     private List<String> scoreChoices;
+    private String alertError;
 
     @NonNull
     public static RatePreInfo fromHtml(String html) {
@@ -40,7 +41,14 @@ public class RatePreInfo {
         html = html.replace("<root><![CDATA[", "").replace("]]></root>", "");
         try {
             Document document = Jsoup.parse(html);
-            Elements elements = document.select("#rateform>input");
+            //alert error
+            Elements elements = document.select("div.alert_error");
+            if (!elements.isEmpty()) {
+                info.setAlertError(elements.get(0).text());
+                return info;
+            }
+
+            elements = document.select("#rateform>input");
             if (elements.size() != 5) {
                 throw new JsonParseException(null, "#rateform>input size is " + elements.size());
             }
@@ -77,8 +85,6 @@ public class RatePreInfo {
             info.setDisabled("disabled".equalsIgnoreCase(checkBoxElement.attr("disabled")));
 
             info.setScoreChoices();
-
-            // TODO: 2017/3/22 when html is wrong 
         } catch (Exception e) {
             L.report(e);
         }
@@ -187,6 +193,14 @@ public class RatePreInfo {
         this.scoreChoices = list;
     }
 
+    public String getAlertError() {
+        return alertError;
+    }
+
+    public void setAlertError(String alertError) {
+        this.alertError = alertError;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -203,12 +217,13 @@ public class RatePreInfo {
                 Objects.equal(refer, that.refer) &&
                 Objects.equal(handleKey, that.handleKey) &&
                 Objects.equal(reasons, that.reasons) &&
-                Objects.equal(scoreChoices, that.scoreChoices);
+                Objects.equal(scoreChoices, that.scoreChoices) &&
+                Objects.equal(alertError, that.alertError);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(formHash, tid, pid, refer, handleKey, minScore, maxScore, totalScore, reasons, checked, disabled, scoreChoices);
+        return Objects.hashCode(formHash, tid, pid, refer, handleKey, minScore, maxScore, totalScore, reasons, checked, disabled, scoreChoices, alertError);
     }
 
     @Override
@@ -226,6 +241,7 @@ public class RatePreInfo {
                 ", checked=" + checked +
                 ", disabled=" + disabled +
                 ", scoreChoices=" + scoreChoices +
+                ", alertError='" + alertError + '\'' +
                 '}';
     }
 }

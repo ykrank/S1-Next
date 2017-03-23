@@ -1,6 +1,7 @@
 package me.ykrank.s1next.data.api;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import me.ykrank.s1next.data.api.model.Profile;
 import me.ykrank.s1next.data.api.model.collection.Favourites;
 import me.ykrank.s1next.data.api.model.collection.ForumGroups;
@@ -111,7 +112,12 @@ public interface S1Service {
     @GET(ApiHome.URL_REPLIES)
     Observable<String> getHomeReplies(@Query("uid") String uid, @Query("page") int page);
 
+    //endregion
+
     @GET(ApiHome.URL_RATE_PRE)
     Observable<String> getRatePreInfo(@Query("tid") String threadId, @Query("pid") String postId, @Query("t") long timestamp);
-    //endregion
+
+    @POST(ApiHome.URL_RATE)
+    Single<String> rate(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("pid") String postId
+            , @Field("referer") String refer, @Field("handlekey") String handleKey, @Field("score1") String score, @Field("reason") String reason);
 }

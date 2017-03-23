@@ -211,4 +211,5 @@
     <string name="prompt_reason">输入理由</string>
     <string name="notice_author">通知作者</string>
     <string name="score_reason_example">可选评分理由</string>
+    <string name="invalid_score">无效的评分</string>
 </resources>
