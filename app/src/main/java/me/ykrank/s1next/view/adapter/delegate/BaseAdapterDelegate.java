@@ -12,18 +12,29 @@ import java.util.List;
 
 
 public abstract class BaseAdapterDelegate<T, VH extends RecyclerView.ViewHolder> extends AdapterDelegate<List<Object>> {
+    protected final Class<T> entityClass;
     protected final LayoutInflater mLayoutInflater;
 
     public BaseAdapterDelegate(Context context) {
+        this(context, null);
+    }
+
+    public BaseAdapterDelegate(Context context, Class<T> entityClass) {
         mLayoutInflater = LayoutInflater.from(context);
+        this.entityClass = entityClass;
     }
 
     @NonNull
-    protected abstract Class<T> getTClass();
+    protected Class<T> getTClass() {
+        if (entityClass == null) {
+            throw new RuntimeException("Should pass class from constructor or override getTClass");
+        }
+        return entityClass;
+    }
 
     @Override
     public boolean isForViewType(@NonNull List<Object> items, int position) {
-        return getTClass().isInstance(items.get(position));
+        return getTClass() == items.get(position).getClass();
     }
 
     @Override

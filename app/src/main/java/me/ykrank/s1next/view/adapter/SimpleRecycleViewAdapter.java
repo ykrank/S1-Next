@@ -65,6 +65,7 @@ public class SimpleRecycleViewAdapter extends BaseRecyclerViewAdapter {
             if (bindViewHolderCallback != null){
                 bindViewHolderCallback.onBindViewHolder(binding);
             }
+            binding.executePendingBindings();
         }
     }
     
