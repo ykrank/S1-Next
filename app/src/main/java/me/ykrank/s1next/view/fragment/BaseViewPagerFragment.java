@@ -76,6 +76,11 @@ abstract class BaseViewPagerFragment extends BaseFragment
         inflater.inflate(R.menu.fragment_view_pager, menu);
 
         mMenuPageJump = menu.findItem(R.id.menu_page_jump);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         preparePageJumpMenu();
     }
 
@@ -84,7 +89,11 @@ abstract class BaseViewPagerFragment extends BaseFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_page_jump:
-                new PageJumpDialogFragment(mTotalPages, getCurrentPage()).show(
+                //do not show page jump dialog if total page below 1
+                if (mTotalPages <= 1) {
+                    return true;
+                }
+                PageJumpDialogFragment.newInstance(mTotalPages, getCurrentPage()).show(
                         getChildFragmentManager(), PageJumpDialogFragment.TAG);
 
                 return true;

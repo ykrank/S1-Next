@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
@@ -55,7 +56,7 @@ public final class ForumActivity extends BaseActivity
 
     private BaseRecyclerViewFragment fragment;
 
-    public static void start(Activity activity) {
+    public static void start(@NonNull Activity activity) {
         Intent intent = new Intent(activity, ForumActivity.class);
         // if this activity is not part of this app's task
         if (NavUtils.shouldUpRecreateTask(activity, intent)) {

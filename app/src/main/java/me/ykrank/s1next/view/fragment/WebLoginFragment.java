@@ -1,5 +1,6 @@
 package me.ykrank.s1next.view.fragment;
 
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.databinding.FragmentWebviewBinding;
+import me.ykrank.s1next.util.ActivityUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.ForumActivity;
 import me.ykrank.s1next.viewmodel.WebPageViewModel;
@@ -144,19 +146,26 @@ public final class WebLoginFragment extends BaseFragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             try {
-                //update okHttp cookie with WebView cookie
-                CookieManager manager = CookieManager.getInstance();
-                String cookieStr = manager.getCookie(url);
-                if (isLogged(cookieStr)) {
-                    URI uri = URI.create(url);
-                    Map<String, List<String>> cookieMap = new HashMap<>();
-                    List<String> list = new ArrayList<>();
-                    list.addAll(Arrays.asList(cookieStr.split(";")));
-                    cookieMap.put("Set-Cookie", list);
-                    cookieManger.getCookieStore().removeAll();
-                    cookieManger.put(uri, cookieMap);
-                    //Login success
-                    ForumActivity.start(getActivity());
+                Activity activity = getActivity();
+                if (activity == null) {
+                    L.leaveMsg("Context:" + getContext());
+                    L.leaveMsg("BaseContext:" + ActivityUtils.getBaseContext(getContext()));
+                    L.report(new IllegalStateException("WebLoginFragment getActivity is null"));
+                } else {
+                    //update okHttp cookie with WebView cookie
+                    CookieManager manager = CookieManager.getInstance();
+                    String cookieStr = manager.getCookie(url);
+                    if (isLogged(cookieStr)) {
+                        URI uri = URI.create(url);
+                        Map<String, List<String>> cookieMap = new HashMap<>();
+                        List<String> list = new ArrayList<>();
+                        list.addAll(Arrays.asList(cookieStr.split(";")));
+                        cookieMap.put("Set-Cookie", list);
+                        cookieManger.getCookieStore().removeAll();
+                        cookieManger.put(uri, cookieMap);
+                        //Login success
+                        ForumActivity.start(activity);
+                    }
                 }
             } catch (Exception e) {
                 L.report(e);

@@ -1,6 +1,5 @@
 package me.ykrank.s1next.view.dialog;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -41,17 +40,14 @@ public final class PageJumpDialogFragment extends BaseDialogFragment {
 
     private PageJumpViewModel mPageJumpViewModel;
 
-    public PageJumpDialogFragment() {
-        // Every fragment must have an empty constructor, so it
-        // can be instantiated when restoring its activity's state.
-    }
-
-    @SuppressLint("ValidFragment")
-    public PageJumpDialogFragment(int totalPages, int currentPage) {
+    public static PageJumpDialogFragment newInstance(int totalPages, int currentPage) {
+        PageJumpDialogFragment fragment = new PageJumpDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_TOTAL_PAGES, totalPages);
         bundle.putInt(ARG_CURRENT_PAGE, currentPage);
-        setArguments(bundle);
+        fragment.setArguments(bundle);
+
+        return fragment;
     }
 
     @NonNull
