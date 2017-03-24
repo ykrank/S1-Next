@@ -32,6 +32,10 @@ public final class IntentUtil {
      */
     private static final String ANDROID_RESOLVER_ACTIVITY_HUAWEI = "com.huawei.android.internal.app.HwResolverActivity";
     /**
+     * Lenovo ZUK change this class
+     */
+    private static final String ANDROID_RESOLVER_ACTIVITY_ZUK = "com.zui.resolver.ResolverActivity";
+    /**
      * see https://github.com/GoogleChrome/custom-tabs-client/blob/master/customtabs/src/android/support/customtabs/CustomTabsIntent.java
      */
     private static final String EXTRA_CUSTOM_TABS_SESSION = "android.support.customtabs.extra.SESSION";
@@ -58,6 +62,7 @@ public final class IntentUtil {
             // if this is not the default resolver Activity or our app
             if (!activityInfo.name.equals(ANDROID_RESOLVER_ACTIVITY)
                     && !activityInfo.name.equals(ANDROID_RESOLVER_ACTIVITY_HUAWEI)
+                    && !activityInfo.name.equals(ANDROID_RESOLVER_ACTIVITY_ZUK)
                     && !packageName.equals(ourAppPackageName)) {
                 intent.setClassName(packageName, activityInfo.name);
                 putCustomTabsExtra(intent);
