@@ -31,6 +31,7 @@ import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.SimpleRecycleViewAdapter;
 import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter;
+import me.ykrank.s1next.view.dialog.RateRequestDialogFragment;
 import me.ykrank.s1next.viewmodel.NewRateViewModel;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
@@ -76,6 +77,8 @@ public final class NewRateFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+
         threadId = getArguments().getString(ARG_THREAD_ID);
         postID = getArguments().getString(ARG_POST_ID);
         L.leaveMsg("NewRateFragment##threadId:" + threadId + ",postID:" + postID);
@@ -189,10 +192,7 @@ public final class NewRateFragment extends BaseFragment {
             showShortSnackbar(R.string.invalid_score);
             return;
         }
-        RxJavaUtil.disposeIfNotNull(mDisposable);
-        mDisposable = s1Service.rate(ratePreInfo.getFormHash(), ratePreInfo.getTid(), ratePreInfo.getPid(),
-                ratePreInfo.getRefer(), ratePreInfo.getHandleKey(), getScore(), getReason())
-                .compose(RxJavaUtil.iOSingleTransformer())
-                .subscribe();
+        RateRequestDialogFragment.newInstance(ratePreInfo, getScore(), getReason()).show(getFragmentManager(),
+                RateRequestDialogFragment.TAG);
     }
 }

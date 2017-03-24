@@ -1,5 +1,7 @@
 package me.ykrank.s1next.data.api.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -19,7 +21,7 @@ import me.ykrank.s1next.util.L;
  * Created by ykrank on 2017/3/19.
  */
 
-public class RatePreInfo {
+public class RatePreInfo implements Parcelable {
     private String formHash;
     private String tid;
     private String pid;
@@ -33,6 +35,38 @@ public class RatePreInfo {
     private boolean disabled;
     private List<String> scoreChoices;
     private String alertError;
+
+    public RatePreInfo() {
+
+    }
+
+    protected RatePreInfo(Parcel in) {
+        formHash = in.readString();
+        tid = in.readString();
+        pid = in.readString();
+        refer = in.readString();
+        handleKey = in.readString();
+        minScore = in.readInt();
+        maxScore = in.readInt();
+        totalScore = in.readInt();
+        reasons = in.createStringArrayList();
+        checked = in.readByte() != 0;
+        disabled = in.readByte() != 0;
+        scoreChoices = in.createStringArrayList();
+        alertError = in.readString();
+    }
+
+    public static final Creator<RatePreInfo> CREATOR = new Creator<RatePreInfo>() {
+        @Override
+        public RatePreInfo createFromParcel(Parcel in) {
+            return new RatePreInfo(in);
+        }
+
+        @Override
+        public RatePreInfo[] newArray(int size) {
+            return new RatePreInfo[size];
+        }
+    };
 
     @NonNull
     public static RatePreInfo fromHtml(String html) {
@@ -243,5 +277,27 @@ public class RatePreInfo {
                 ", scoreChoices=" + scoreChoices +
                 ", alertError='" + alertError + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(formHash);
+        dest.writeString(tid);
+        dest.writeString(pid);
+        dest.writeString(refer);
+        dest.writeString(handleKey);
+        dest.writeInt(minScore);
+        dest.writeInt(maxScore);
+        dest.writeInt(totalScore);
+        dest.writeStringList(reasons);
+        dest.writeByte((byte) (checked ? 1 : 0));
+        dest.writeByte((byte) (disabled ? 1 : 0));
+        dest.writeStringList(scoreChoices);
+        dest.writeString(alertError);
     }
 }
