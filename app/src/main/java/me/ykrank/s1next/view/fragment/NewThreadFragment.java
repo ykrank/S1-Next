@@ -25,6 +25,7 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.model.ThreadType;
+import me.ykrank.s1next.data.cache.NewThreadCacheModel;
 import me.ykrank.s1next.databinding.FragmentNewThreadBinding;
 import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.util.L;
@@ -32,7 +33,6 @@ import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter;
 import me.ykrank.s1next.view.dialog.NewThreadRequestDialogFragment;
 import me.ykrank.s1next.view.dialog.ReplyRequestDialogFragment;
-import me.ykrank.s1next.view.internal.NewThreadCacheModel;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 

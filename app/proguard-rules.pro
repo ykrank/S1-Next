@@ -31,9 +31,12 @@
 # Dagger
 -dontwarn dagger.**
 
-# Jackson databind
+# Jackson Model
 -keep public class me.ykrank.s1next.data.api.model.** { *; }
+-keep public class me.ykrank.s1next.data.cache.** { *; }
 -keep public class me.ykrank.s1next.data.db.dbmodel.ReadProgress { *; }
+# GreenDao model
+-keep public class me.ykrank.s1next.data.db.dbmodel.**
 
 -dontwarn java.nio.file.Paths
 -dontwarn java.beans.Transient
@@ -88,7 +91,6 @@
 }
 
 # GreenDao
--keep class me.ykrank.s1next.data.db.dbmodel.**
 -keepattributes *Annotation*
 -keepclassmembers class ** {
     @org.greenrobot.eventbus.Subscribe <methods>;

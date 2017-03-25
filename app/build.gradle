@@ -60,10 +60,10 @@ android {
         }
         
         alpha {
+            versionNameSuffix '-alpha'
             signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
-            versionNameSuffix '-alpha'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
@@ -98,9 +98,9 @@ greendao {
 //http://stackoverflow.com/questions/28683327/how-to-check-if-gradle-dependency-has-new-version
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.9'
-    compile 'com.google.dagger:dagger:2.9'
+
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.10'
+    compile 'com.google.dagger:dagger:2.10'
     // https://github.com/google/dagger/issues/95
     provided 'javax.annotation:jsr250-api:1.0'
 

@@ -378,7 +378,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
      */
     public final void destroyRetainedFragment() {
         if (mDataRetainedFragment != null) {
-            getFragmentManager().beginTransaction().remove(mDataRetainedFragment).commit();
+            getFragmentManager().beginTransaction().remove(mDataRetainedFragment).commitNowAllowingStateLoss();
         }
     }
 }
