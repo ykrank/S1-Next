@@ -49,20 +49,15 @@ public final class PostViewModel {
             return null;
         }
         String text = "#" + p.getCount();
-        // there is no need to post #1
-        if ("1".equals(p.getCount())) {
-            return text;
-        } else {
-            Spannable spannable = new SpannableString(text);
-            URLSpan urlSpan = new URLSpan(StringUtils.EMPTY) {
-                @Override
-                public void onClick(@NonNull View widget) {
-                    showFloorActionMenu(widget);
-                }
-            };
-            spannable.setSpan(urlSpan, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            return spannable;
-        }
+        Spannable spannable = new SpannableString(text);
+        URLSpan urlSpan = new URLSpan(StringUtils.EMPTY) {
+            @Override
+            public void onClick(@NonNull View widget) {
+                showFloorActionMenu(widget);
+            }
+        };
+        spannable.setSpan(urlSpan, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannable;
     }
 
     public void onAvatarClick(View v) {
@@ -102,9 +97,9 @@ public final class PostViewModel {
         popup.show();
         return true;
     }
-    
+
     //click floor textView, show popup menu
-    private void showFloorActionMenu(View v){
+    private void showFloorActionMenu(View v) {
         PopupMenu popup = new PopupMenu(v.getContext(), v);
         popup.setOnMenuItemClickListener((MenuItem menuitem) -> {
             switch (menuitem.getItemId()) {
