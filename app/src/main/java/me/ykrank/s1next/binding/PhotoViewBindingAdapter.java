@@ -17,9 +17,9 @@ import com.bumptech.glide.request.target.Target;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
-import me.ykrank.s1next.util.TransformationUtil;
 import me.ykrank.s1next.widget.PhotoView;
 import me.ykrank.s1next.widget.glide.model.ForcePassUrl;
+import me.ykrank.s1next.widget.glide.transformations.GlMaxTextureSizeBitmapTransformation;
 import me.ykrank.s1next.widget.glide.viewtarget.GlideDrawablePhotoViewTarget;
 
 public final class PhotoViewBindingAdapter {
@@ -39,7 +39,7 @@ public final class PhotoViewBindingAdapter {
         DrawableRequestBuilder<ForcePassUrl> builder = Glide.with(context)
                 .load(new ForcePassUrl(url))
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .transform(new TransformationUtil.GlMaxTextureSizeBitmapTransformation(context))
+                .transform(new GlMaxTextureSizeBitmapTransformation(context))
                 .error(R.mipmap.error_symbol)
                 .fitCenter()
                 .priority(Priority.HIGH)

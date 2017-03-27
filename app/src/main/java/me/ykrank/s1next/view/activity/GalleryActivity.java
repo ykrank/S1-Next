@@ -139,6 +139,9 @@ public final class GalleryActivity extends OriginActivity {
                 downloadImage();
 
                 return true;
+            case R.id.menu_large_image_mode:
+                binding.setLarge(item.isChecked());
+                return true;
             case R.id.menu_browser:
                 IntentUtil.startViewIntentExcludeOurApp(this, Uri.parse(mImageUrl));
 
