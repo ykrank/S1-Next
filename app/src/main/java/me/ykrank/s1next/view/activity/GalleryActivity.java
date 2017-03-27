@@ -140,7 +140,9 @@ public final class GalleryActivity extends OriginActivity {
 
                 return true;
             case R.id.menu_large_image_mode:
-                binding.setLarge(item.isChecked());
+                boolean checked = item.isChecked();
+                item.setChecked(!checked);
+                binding.setLarge(!checked);
                 return true;
             case R.id.menu_browser:
                 IntentUtil.startViewIntentExcludeOurApp(this, Uri.parse(mImageUrl));
