@@ -62,7 +62,6 @@ public final class GlMaxTextureSizeBitmapTransformation extends BitmapTransforma
             } else {
                 glMaxTextureSize = getGl10MaxTextureSize();
             }
-            // FIXME: 2017/3/27 something wrong in huawei emui
             if (glMaxTextureSize <= 0) {
                 glMaxTextureSize = GL_TEXTURE_SIZE_MINIMUM;
             }
