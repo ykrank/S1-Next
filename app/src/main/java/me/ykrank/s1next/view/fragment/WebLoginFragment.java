@@ -1,6 +1,7 @@
 package me.ykrank.s1next.view.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -42,12 +43,6 @@ public final class WebLoginFragment extends BaseFragment {
     public static final String TAG = WebLoginFragment.class.getName();
 
     private static final String LOGIN_PAGE_URL = Api.BASE_URL + "forum-27-1.html";
-
-    /**
-     * https://developer.android.com/distribute/tools/promote/linking.html#OpeningDetails
-     */
-    private static final String ANDROID_APP_MARKET_LINK = "market://details?id=%s";
-    private static final String ANDROID_WEB_SITE_MARKET_LINK = "http://play.google.com/store/apps/details?id=%s";
 
     @Inject
     java.net.CookieManager cookieManger;
@@ -124,6 +119,19 @@ public final class WebLoginFragment extends BaseFragment {
         super.onPause();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mFragmentHelpBinding.layoutRoot.removeAllViews();
+        if (mWebView != null) {
+            mWebView.clearHistory();
+            mWebView.loadUrl("about:blank");
+            mWebView.freeMemory();
+            mWebView.pauseTimers();
+            mWebView = null;
+        }
+    }
+
     public WebView getWebView() {
         return mWebView;
     }
@@ -142,14 +150,17 @@ public final class WebLoginFragment extends BaseFragment {
         return cookieStr != null && pattern.matcher(cookieStr.replace(" ", "")).find();
     }
 
-    class CookieWebViewClient extends WebViewClient {
+    private class CookieWebViewClient extends WebViewClient {
         @Override
         public void onPageFinished(WebView view, String url) {
             try {
                 Activity activity = getActivity();
                 if (activity == null) {
-                    L.leaveMsg("Context:" + getContext());
-                    L.leaveMsg("BaseContext:" + ActivityUtils.getBaseContext(getContext()));
+                    Context context = getContext();
+                    L.leaveMsg("Context:" + context);
+                    if (context != null) {
+                        L.leaveMsg("BaseContext:" + ActivityUtils.getBaseContext(getContext()));
+                    }
                     L.report(new IllegalStateException("WebLoginFragment getActivity is null"));
                 } else {
                     //update okHttp cookie with WebView cookie
@@ -174,7 +185,7 @@ public final class WebLoginFragment extends BaseFragment {
         }
     }
 
-    class ProgressWebChromeClient extends WebChromeClient {
+    private class ProgressWebChromeClient extends WebChromeClient {
 
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
