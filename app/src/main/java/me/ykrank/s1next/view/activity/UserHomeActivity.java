@@ -232,7 +232,7 @@ public class UserHomeActivity extends BaseActivity {
     }
 
     private void setupImage() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().getSharedElementEnterTransition().addListener(new TransitionUtils.TransitionListenerAdapter() {
                 @Override
                 public void onTransitionEnd(Transition transition) {
@@ -241,6 +241,9 @@ public class UserHomeActivity extends BaseActivity {
                     binding.setPreLoad(false);
                 }
             });
+        } else {
+            binding.setBig(true);
+            binding.setPreLoad(false);
         }
     }
 
