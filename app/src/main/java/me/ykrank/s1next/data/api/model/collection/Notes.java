@@ -1,13 +1,10 @@
 package me.ykrank.s1next.data.api.model.collection;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import me.ykrank.s1next.data.api.model.Account;
 import me.ykrank.s1next.data.api.model.Note;
@@ -25,14 +22,8 @@ public class Notes extends Account {
     private int page;
     @JsonProperty("perpage")
     private int perPage;
-    @JsonIgnore
+    @JsonProperty("list")
     private List<Note> noteList;
-
-    public Notes(@JsonProperty("list") Map<Integer, Note> list) {
-        List<Note> noteList = new ArrayList<>();
-        noteList.addAll(list.values());
-        this.noteList = noteList;
-    }
 
     public int getCount() {
         return count;

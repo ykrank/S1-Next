@@ -19,6 +19,7 @@ import dagger.Provides;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.Wifi;
 import me.ykrank.s1next.data.api.Api;
+import me.ykrank.s1next.data.api.ApiVersionInterceptor;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.data.db.AppDaoSessionManager;
@@ -71,6 +72,7 @@ public final class AppModule {
         builder.retryOnConnectionFailure(true);
         builder.cookieJar(new JavaNetCookieJar(cookieManager));
         builder.addNetworkInterceptor(new OkHttpNoAvatarInterceptor());
+        builder.addInterceptor(new ApiVersionInterceptor());
         if (BuildConfig.DEBUG) {
             //log
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
