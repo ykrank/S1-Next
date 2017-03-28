@@ -17,6 +17,8 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import me.ykrank.s1next.util.L;
+
 /**
  * A {@link com.bumptech.glide.load.Transformation} for transforming {@link android.graphics.Bitmap}'s
  * size not to exceed the OpenGl texture size limit.
@@ -111,6 +113,9 @@ public final class GlMaxTextureSizeBitmapTransformation extends BitmapTransforma
                         eglConfigs.length, numEglConfigs, 0)) {
                     return -1;
                 }
+                if (numEglConfigs[0] <= 0) {
+                    return -1;
+                }
                 EGLConfig eglConfig = eglConfigs[0];
 
                 int[] eglContextAttribList = new int[]{
@@ -143,6 +148,9 @@ public final class GlMaxTextureSizeBitmapTransformation extends BitmapTransforma
                 GLES20.glGetIntegerv(GLES20.GL_MAX_TEXTURE_SIZE, maxTextureSize, 0);
 
                 return maxTextureSize[0];
+            } catch (Exception e) {
+                L.report(e);
+                return -1;
             } finally {
                 // tear down
                 if (eglDisplay != null) {
