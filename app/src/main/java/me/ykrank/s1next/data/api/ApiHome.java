@@ -35,4 +35,5 @@ public class ApiHome {
 
     //Rate
     static final String URL_RATE_PRE = Api.BASE_URL + "forum.php?mod=misc&action=rate&infloat=yes&handlekey=rate&inajax=1&ajaxtarget=fwin_content_rate";
+    static final String URL_RATE = Api.BASE_URL + "forum.php?mod=misc&action=rate&ratesubmit=yes&infloat=yes&inajax=1";
 }

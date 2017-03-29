@@ -305,4 +305,7 @@
     <string name="notice_author">Notice author</string>
     <string name="score_reason_example">Score reason example</string>
     <string name="score_region_format" translatable="false">%d ~ %d</string>
+    <string name="invalid_score">Invalid score</string>
+    <string name="rate_success">Rate success</string>
+    <string name="menu_large_image_mode">Large image mode</string>
 </resources>

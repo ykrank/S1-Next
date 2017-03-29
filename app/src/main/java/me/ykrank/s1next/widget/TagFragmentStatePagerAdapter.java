@@ -35,7 +35,7 @@ import java.util.ArrayList;
  * know its target {@link me.ykrank.s1next.view.fragment.headless.DataRetainedFragment}.
  * <p>
  * Forked from {@link android.support.v4.app.FragmentStatePagerAdapter}
- * Version: 25.1.1
+ * Version: 25.3.0
  */
 @SuppressLint({"CommitTransaction", "unchecked"})
 @SuppressWarnings("unchecked")

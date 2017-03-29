@@ -108,10 +108,10 @@ public final class ViewBindingAdapter {
                         }
                     })
                     .into(new ViewBackgroundTarget<Bitmap>(view) {
-                        @SuppressWarnings("deprecation")
+
                         @Override
                         protected void setResource(Bitmap resource) {
-                            view.setBackgroundDrawable(new BitmapDrawable(resource));
+                            setDrawable(new BitmapDrawable(getView().getResources(), resource));
                         }
                     });
         }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="me.ykrank.s1next.view.fragment.PmFragment">
+    <item
+        android:id="@+id/menu_send"
+        android:icon="?attr/iconMenuSend"
+        android:orderInCategory="1"
+        android:title="@string/menu_send"
+        app:showAsAction="always" />
+</menu>

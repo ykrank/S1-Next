@@ -7,6 +7,7 @@ package me.ykrank.s1next.widget.glide.viewtarget;
  */
 
 import android.graphics.drawable.Drawable;
+import android.support.v4.view.ViewCompat;
 import android.view.View;
 
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -20,7 +21,6 @@ import com.bumptech.glide.request.target.ViewTarget;
  *
  * @param <Z> The type of resource that this target will display in the wrapped {@link View}.
  */
-@SuppressWarnings("deprecation")
 public abstract class ViewBackgroundTarget<Z> extends ViewTarget<View, Z> implements GlideAnimation.ViewAdapter {
 
     public ViewBackgroundTarget(View view) {
@@ -42,7 +42,7 @@ public abstract class ViewBackgroundTarget<Z> extends ViewTarget<View, Z> implem
      */
     @Override
     public void setDrawable(Drawable drawable) {
-        view.setBackgroundDrawable(drawable);
+        ViewCompat.setBackground(view, drawable);
     }
 
     /**
@@ -52,7 +52,7 @@ public abstract class ViewBackgroundTarget<Z> extends ViewTarget<View, Z> implem
      */
     @Override
     public void onLoadStarted(Drawable placeholder) {
-        view.setBackgroundDrawable(placeholder);
+        setDrawable(placeholder);
     }
 
     /**
@@ -62,7 +62,7 @@ public abstract class ViewBackgroundTarget<Z> extends ViewTarget<View, Z> implem
      */
     @Override
     public void onLoadFailed(Exception e, Drawable errorDrawable) {
-        view.setBackgroundDrawable(errorDrawable);
+        setDrawable(errorDrawable);
     }
 
     /**
@@ -72,7 +72,7 @@ public abstract class ViewBackgroundTarget<Z> extends ViewTarget<View, Z> implem
      */
     @Override
     public void onLoadCleared(Drawable placeholder) {
-        view.setBackgroundDrawable(placeholder);
+        setDrawable(placeholder);
     }
 
     @Override

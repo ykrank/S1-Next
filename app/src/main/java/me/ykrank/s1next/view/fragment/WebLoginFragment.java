@@ -1,5 +1,7 @@
 package me.ykrank.s1next.view.fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,6 +28,7 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.databinding.FragmentWebviewBinding;
+import me.ykrank.s1next.util.ActivityUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.ForumActivity;
 import me.ykrank.s1next.viewmodel.WebPageViewModel;
@@ -40,12 +43,6 @@ public final class WebLoginFragment extends BaseFragment {
     public static final String TAG = WebLoginFragment.class.getName();
 
     private static final String LOGIN_PAGE_URL = Api.BASE_URL + "forum-27-1.html";
-
-    /**
-     * https://developer.android.com/distribute/tools/promote/linking.html#OpeningDetails
-     */
-    private static final String ANDROID_APP_MARKET_LINK = "market://details?id=%s";
-    private static final String ANDROID_WEB_SITE_MARKET_LINK = "http://play.google.com/store/apps/details?id=%s";
 
     @Inject
     java.net.CookieManager cookieManger;
@@ -122,6 +119,19 @@ public final class WebLoginFragment extends BaseFragment {
         super.onPause();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mFragmentHelpBinding.layoutRoot.removeAllViews();
+        if (mWebView != null) {
+            mWebView.clearHistory();
+            mWebView.loadUrl("about:blank");
+            mWebView.freeMemory();
+            mWebView.pauseTimers();
+            mWebView = null;
+        }
+    }
+
     public WebView getWebView() {
         return mWebView;
     }
@@ -140,23 +150,33 @@ public final class WebLoginFragment extends BaseFragment {
         return cookieStr != null && pattern.matcher(cookieStr.replace(" ", "")).find();
     }
 
-    class CookieWebViewClient extends WebViewClient {
+    private class CookieWebViewClient extends WebViewClient {
         @Override
         public void onPageFinished(WebView view, String url) {
             try {
-                //update okHttp cookie with WebView cookie
-                CookieManager manager = CookieManager.getInstance();
-                String cookieStr = manager.getCookie(url);
-                if (isLogged(cookieStr)) {
-                    URI uri = URI.create(url);
-                    Map<String, List<String>> cookieMap = new HashMap<>();
-                    List<String> list = new ArrayList<>();
-                    list.addAll(Arrays.asList(cookieStr.split(";")));
-                    cookieMap.put("Set-Cookie", list);
-                    cookieManger.getCookieStore().removeAll();
-                    cookieManger.put(uri, cookieMap);
-                    //Login success
-                    ForumActivity.start(getActivity());
+                Activity activity = getActivity();
+                if (activity == null) {
+                    Context context = getContext();
+                    L.leaveMsg("Context:" + context);
+                    if (context != null) {
+                        L.leaveMsg("BaseContext:" + ActivityUtils.getBaseContext(getContext()));
+                    }
+                    L.report(new IllegalStateException("WebLoginFragment getActivity is null"));
+                } else {
+                    //update okHttp cookie with WebView cookie
+                    CookieManager manager = CookieManager.getInstance();
+                    String cookieStr = manager.getCookie(url);
+                    if (isLogged(cookieStr)) {
+                        URI uri = URI.create(url);
+                        Map<String, List<String>> cookieMap = new HashMap<>();
+                        List<String> list = new ArrayList<>();
+                        list.addAll(Arrays.asList(cookieStr.split(";")));
+                        cookieMap.put("Set-Cookie", list);
+                        cookieManger.getCookieStore().removeAll();
+                        cookieManger.put(uri, cookieMap);
+                        //Login success
+                        ForumActivity.start(activity);
+                    }
                 }
             } catch (Exception e) {
                 L.report(e);
@@ -165,7 +185,7 @@ public final class WebLoginFragment extends BaseFragment {
         }
     }
 
-    class ProgressWebChromeClient extends WebChromeClient {
+    private class ProgressWebChromeClient extends WebChromeClient {
 
         @Override
         public void onProgressChanged(WebView view, int newProgress) {

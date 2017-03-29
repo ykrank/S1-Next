@@ -26,8 +26,9 @@ import java.util.WeakHashMap;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.TransformationUtil;
 import me.ykrank.s1next.widget.EmoticonFactory;
+import me.ykrank.s1next.widget.glide.transformations.GlMaxTextureSizeBitmapTransformation;
+import me.ykrank.s1next.widget.glide.transformations.SizeMultiplierBitmapTransformation;
 
 /**
  * Implements {@link android.text.Html.ImageGetter}
@@ -88,8 +89,8 @@ public final class GlideImageGetter
         if (emoticonName != null) {
             ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
                     urlDrawable);
-            TransformationUtil.SizeMultiplierBitmapTransformation sizeMultiplierBitmapTransformation =
-                    new TransformationUtil.SizeMultiplierBitmapTransformation(mContext,
+            SizeMultiplierBitmapTransformation sizeMultiplierBitmapTransformation =
+                    new SizeMultiplierBitmapTransformation(mContext,
                             mContext.getResources().getDisplayMetrics().density);
             String finalUrl = url;
             Glide.with(mContext)
@@ -130,7 +131,7 @@ public final class GlideImageGetter
                 .placeholder(R.mipmap.unknown_image)
                 .error(R.mipmap.unknown_image)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .transform(new TransformationUtil.GlMaxTextureSizeBitmapTransformation(mContext))
+                .transform(new GlMaxTextureSizeBitmapTransformation(mContext))
                 .into(imageGetterViewTarget);
 
         mViewTargetSet.add(imageGetterViewTarget);

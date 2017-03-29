@@ -60,9 +60,10 @@ public final class ThreadListActivity extends BaseActivity
         disableDrawerIndicator();
 
         forum = getIntent().getParcelableExtra(ARG_FORUM);
-        if(forum == null){
-            L.report(new NullPointerException("ThreadListActivity intent forum is null"));
+        if (forum == null) {
+            L.report(new IllegalStateException("ThreadListActivity intent forum is null"));
             finish();
+            return;
         }
         trackAgent.post(new ViewForumTrackEvent(forum.getId(), forum.getName()));
         L.leaveMsg("ThreadListActivity##forum" + forum);

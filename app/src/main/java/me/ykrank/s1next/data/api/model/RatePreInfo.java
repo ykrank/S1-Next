@@ -1,5 +1,7 @@
 package me.ykrank.s1next.data.api.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -19,7 +21,7 @@ import me.ykrank.s1next.util.L;
  * Created by ykrank on 2017/3/19.
  */
 
-public class RatePreInfo {
+public class RatePreInfo implements Parcelable {
     private String formHash;
     private String tid;
     private String pid;
@@ -32,6 +34,39 @@ public class RatePreInfo {
     private boolean checked;
     private boolean disabled;
     private List<String> scoreChoices;
+    private String alertError;
+
+    public RatePreInfo() {
+
+    }
+
+    protected RatePreInfo(Parcel in) {
+        formHash = in.readString();
+        tid = in.readString();
+        pid = in.readString();
+        refer = in.readString();
+        handleKey = in.readString();
+        minScore = in.readInt();
+        maxScore = in.readInt();
+        totalScore = in.readInt();
+        reasons = in.createStringArrayList();
+        checked = in.readByte() != 0;
+        disabled = in.readByte() != 0;
+        scoreChoices = in.createStringArrayList();
+        alertError = in.readString();
+    }
+
+    public static final Creator<RatePreInfo> CREATOR = new Creator<RatePreInfo>() {
+        @Override
+        public RatePreInfo createFromParcel(Parcel in) {
+            return new RatePreInfo(in);
+        }
+
+        @Override
+        public RatePreInfo[] newArray(int size) {
+            return new RatePreInfo[size];
+        }
+    };
 
     @NonNull
     public static RatePreInfo fromHtml(String html) {
@@ -40,7 +75,14 @@ public class RatePreInfo {
         html = html.replace("<root><![CDATA[", "").replace("]]></root>", "");
         try {
             Document document = Jsoup.parse(html);
-            Elements elements = document.select("#rateform>input");
+            //alert error
+            Elements elements = document.select("div.alert_error");
+            if (!elements.isEmpty()) {
+                info.setAlertError(elements.get(0).text());
+                return info;
+            }
+
+            elements = document.select("#rateform>input");
             if (elements.size() != 5) {
                 throw new JsonParseException(null, "#rateform>input size is " + elements.size());
             }
@@ -185,6 +227,14 @@ public class RatePreInfo {
         this.scoreChoices = list;
     }
 
+    public String getAlertError() {
+        return alertError;
+    }
+
+    public void setAlertError(String alertError) {
+        this.alertError = alertError;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -201,12 +251,13 @@ public class RatePreInfo {
                 Objects.equal(refer, that.refer) &&
                 Objects.equal(handleKey, that.handleKey) &&
                 Objects.equal(reasons, that.reasons) &&
-                Objects.equal(scoreChoices, that.scoreChoices);
+                Objects.equal(scoreChoices, that.scoreChoices) &&
+                Objects.equal(alertError, that.alertError);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(formHash, tid, pid, refer, handleKey, minScore, maxScore, totalScore, reasons, checked, disabled, scoreChoices);
+        return Objects.hashCode(formHash, tid, pid, refer, handleKey, minScore, maxScore, totalScore, reasons, checked, disabled, scoreChoices, alertError);
     }
 
     @Override
@@ -224,6 +275,29 @@ public class RatePreInfo {
                 ", checked=" + checked +
                 ", disabled=" + disabled +
                 ", scoreChoices=" + scoreChoices +
+                ", alertError='" + alertError + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(formHash);
+        dest.writeString(tid);
+        dest.writeString(pid);
+        dest.writeString(refer);
+        dest.writeString(handleKey);
+        dest.writeInt(minScore);
+        dest.writeInt(maxScore);
+        dest.writeInt(totalScore);
+        dest.writeStringList(reasons);
+        dest.writeByte((byte) (checked ? 1 : 0));
+        dest.writeByte((byte) (disabled ? 1 : 0));
+        dest.writeStringList(scoreChoices);
+        dest.writeString(alertError);
     }
 }

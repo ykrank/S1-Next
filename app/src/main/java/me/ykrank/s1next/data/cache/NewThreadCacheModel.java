@@ -1,10 +1,16 @@
-package me.ykrank.s1next.view.internal;
+package me.ykrank.s1next.data.cache;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class NewThreadCacheModel {
+    @JsonProperty("selectPosition")
     private int selectPosition;
+    @JsonProperty("title")
     private String title;
+    @JsonProperty("message")
     private String message;
 
     public int getSelectPosition() {

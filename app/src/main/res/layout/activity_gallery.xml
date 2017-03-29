@@ -7,6 +7,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="imageViewModel"
             type="me.ykrank.s1next.viewmodel.ImageViewModel" />
@@ -14,6 +16,10 @@
         <variable
             name="downloadPrefManager"
             type="me.ykrank.s1next.data.pref.DownloadPreferencesManager" />
+
+        <variable
+            name="large"
+            type="Boolean" />
     </data>
 
     <FrameLayout
@@ -26,9 +32,20 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/picture_content_desc"
             android:transitionName="@string/gallery_transition"
-            app:url="@{imageViewModel.url}"
+            android:visibility="@{large?View.GONE:View.VISIBLE}"
+            app:manager="@{downloadPrefManager}"
             app:thumbUrl="@{imageViewModel.thumbUrl}"
-            app:manager="@{downloadPrefManager}" />
+            app:url="@{imageViewModel.url}" />
+
+        <com.shizhefei.view.largeimage.LargeImageView
+            android:id="@+id/largeImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/picture_content_desc"
+            android:visibility="@{large?View.VISIBLE:View.GONE}"
+            app:manager="@{downloadPrefManager}"
+            app:thumbUrl="@{imageViewModel.thumbUrl}"
+            app:url="@{imageViewModel.url}" />
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"

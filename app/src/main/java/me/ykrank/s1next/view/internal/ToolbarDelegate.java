@@ -3,6 +3,7 @@ package me.ykrank.s1next.view.internal;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +69,7 @@ public final class ToolbarDelegate {
      * @return whether handle this action
      */
     public boolean setTitle(CharSequence title) {
-        if (longTitleView != null) {
+        if (longTitleView != null && !TextUtils.equals(longTitleView.getText(), title)) {
             mToolbar.setTitle(null);
             longTitleView.setText(title);
             return true;

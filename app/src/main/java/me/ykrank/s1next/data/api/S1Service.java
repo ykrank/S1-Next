@@ -111,7 +111,13 @@ public interface S1Service {
     @GET(ApiHome.URL_REPLIES)
     Observable<String> getHomeReplies(@Query("uid") String uid, @Query("page") int page);
 
+    //endregion
+
     @GET(ApiHome.URL_RATE_PRE)
     Observable<String> getRatePreInfo(@Query("tid") String threadId, @Query("pid") String postId, @Query("t") long timestamp);
-    //endregion
+
+    @FormUrlEncoded
+    @POST(ApiHome.URL_RATE)
+    Observable<String> rate(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("pid") String postId
+            , @Field("referer") String refer, @Field("handlekey") String handleKey, @Field("score1") String score, @Field("reason") String reason);
 }

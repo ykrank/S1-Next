@@ -5,8 +5,15 @@
     tools:context="me.ykrank.s1next.view.activity.GalleryActivity">
     <item
         android:id="@+id/menu_download"
-        android:orderInCategory="21"
+        android:orderInCategory="20"
         android:title="@string/menu_download"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_large_image_mode"
+        android:checkable="true"
+        android:checked="false"
+        android:orderInCategory="21"
+        android:title="@string/menu_large_image_mode"
         app:showAsAction="never" />
     <item
         android:id="@+id/menu_browser"

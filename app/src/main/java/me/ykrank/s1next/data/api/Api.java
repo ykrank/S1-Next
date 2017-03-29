@@ -10,10 +10,11 @@ public final class Api {
     public static final String BASE_URL = "http://bbs.saraba1st.com/2b/";
     public static final String BASE_API_URL = "http://bbs.saraba1st.com/2b/api/mobile/";
     public static final String BASE_STATIC_URL = "http://static.saraba1st.com/";
-    public static final String BASE_APP_URL = "http://app.saraba1st.com/2b/";
+    public static final String BASE_APP_URL = "http://bbs.saraba1st.com/2b/";
     static final String RANDOM_IMAGE_URL = "http://ac.stage3rd.com/S1_ACG_randpic.asp";
     static final String BASE_API_PREFIX = "index.php?module=";
 
+    public static final String API_VERSION_DEFAULT = "1";
     public static final int THREADS_PER_PAGE = 50;
     public static final int POSTS_PER_PAGE = 30;
 
