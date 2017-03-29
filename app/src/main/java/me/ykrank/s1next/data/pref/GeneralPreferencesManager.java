@@ -35,11 +35,19 @@ public final class GeneralPreferencesManager {
             return mGeneralPreferencesProvider.isQuickSideBarEnable();
         }
     };
+    private final Supplier<String> mBaseUrlSupplier = new Supplier<String>() {
+
+        @Override
+        public String get() {
+            return mGeneralPreferencesProvider.getBaseUrl();
+        }
+    };
 
     private volatile Supplier<Float> mFontScaleMemorized = Suppliers.memoize(mFontScaleSupplier);
     private volatile Supplier<Boolean> mSignatureEnabledMemorized = Suppliers.memoize(mSignatureEnabledSupplier);
     private volatile Supplier<Boolean> mPostSelectableMemorized = Suppliers.memoize(mPostSelectableSupplier);
     private volatile Supplier<Boolean> mQuickSideBarEnableMemorized = Suppliers.memoize(mQuickSideBarEnableSupplier);
+    private volatile Supplier<String> mBaseUrlMemorized = Suppliers.memoize(mBaseUrlSupplier);
 
     public GeneralPreferencesManager(GeneralPreferencesRepository generalPreferencesProvider) {
         this.mGeneralPreferencesProvider = generalPreferencesProvider;
@@ -86,5 +94,14 @@ public final class GeneralPreferencesManager {
 
     public boolean isQuickSideBarEnable() {
         return mQuickSideBarEnableMemorized.get();
+    }
+
+    public void invalidateBaseUrl(String baseUrl) {
+        mGeneralPreferencesProvider.setBaseUrl(baseUrl);
+        mBaseUrlMemorized = Suppliers.memoize(mBaseUrlSupplier);
+    }
+
+    public String getBaseUrl() {
+        return mBaseUrlMemorized.get();
     }
 }

@@ -69,8 +69,6 @@ import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
  */
 public final class PostListFragment extends BaseViewPagerFragment
         implements PostListPagerFragment.PagerCallback, View.OnClickListener {
-    public static final String PREF_KEY_POST_SELECTABLE = "pref_key_post_selectable";
-    public static final String PREF_KEY_QUICK_SIDE_BAR_ENABLE = "pref_key_quick_side_bar_enable";
 
     public static final String TAG = PostListFragment.class.getName();
 

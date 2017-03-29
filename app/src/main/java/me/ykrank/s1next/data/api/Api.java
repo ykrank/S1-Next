@@ -5,12 +5,19 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.webkit.URLUtil;
 
+import java.util.List;
+
+import okhttp3.HttpUrl;
+
 public final class Api {
 
     public static final String BASE_URL = "http://bbs.saraba1st.com/2b/";
     public static final String BASE_API_URL = "http://bbs.saraba1st.com/2b/api/mobile/";
     public static final String BASE_STATIC_URL = "http://static.saraba1st.com/";
-    public static final String BASE_APP_URL = "http://bbs.saraba1st.com/2b/";
+    public static final String[] HOST_LIST = new String[]{
+            "bbs.saraba1st.com", "www.saraba1st.com", "stage1st.com", "www.stage1st.com"
+    };
+    
     static final String RANDOM_IMAGE_URL = "http://ac.stage3rd.com/S1_ACG_randpic.asp";
     static final String BASE_API_PREFIX = "index.php?module=";
 
@@ -38,7 +45,7 @@ public final class Api {
      */
     static final String URL_NEW_THREAD_HELPER = BASE_URL + "forum.php?mod=post&action=newthread";
     static final String URL_SEARCH_FORUM = BASE_URL + "search.php?mod=forum";
-    private static final String URL_USER_AVATAR_PREFIX = BASE_APP_URL + "uc_server/avatar.php?uid=";
+    private static final String URL_USER_AVATAR_PREFIX = BASE_URL + "uc_server/avatar.php?uid=";
     private static final String URL_USER_AVATAR_SMALL = URL_USER_AVATAR_PREFIX + "%s&size=small";
     private static final String URL_USER_AVATAR_MEDIUM = URL_USER_AVATAR_PREFIX + "%s&size=middle";
     private static final String URL_USER_AVATAR_BIG = URL_USER_AVATAR_PREFIX + "%s&size=big";
@@ -122,6 +129,16 @@ public final class Api {
                     url.startsWith(Api.BASE_STATIC_URL + Api.URL_EMOTICON_IMAGE_PREFIX_STATIC);
         } else {
             return url.startsWith(Api.URL_EMOTICON_IMAGE_PREFIX);
+        }
+    }
+
+    public static String parseBaseUrl(HttpUrl httpUrl) {
+        List<String> pathSegments = httpUrl.pathSegments();
+        //if like [host]/2b/
+        if (pathSegments.size() > 0 && "2b".equals(pathSegments.get(0))) {
+            return httpUrl.scheme() + "://" + httpUrl.host() + "/2b/";
+        } else {
+            return httpUrl.scheme() + "://" + httpUrl.host() + "/";
         }
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.pref.PrefKey;
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
@@ -16,9 +17,6 @@ import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
  */
 public final class ReadProgressPreferenceFragment extends BasePreferenceFragment {
     public static final String TAG = ReadProgressPreferenceFragment.class.getName();
-
-    public static final String PREF_KEY_READ_PROGRESS_SAVE_AUTO = "pref_key_read_progress_save_auto";
-    public static final String PREF_KEY_READ_PROGRESS_LOAD_AUTO = "pref_key_read_progress_load_auto";
 
     private ReadProgressPreferencesManager mReadProgressPreferencesManager;
 
@@ -32,10 +30,10 @@ public final class ReadProgressPreferenceFragment extends BasePreferenceFragment
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
-            case PREF_KEY_READ_PROGRESS_SAVE_AUTO:
+            case PrefKey.PREF_KEY_READ_PROGRESS_SAVE_AUTO:
                 mReadProgressPreferencesManager.invalidateSaveAuto();
                 break;
-            case PREF_KEY_READ_PROGRESS_LOAD_AUTO:
+            case PrefKey.PREF_KEY_READ_PROGRESS_LOAD_AUTO:
                 mReadProgressPreferencesManager.invalidateLoadAuto();
                 break;
             default:

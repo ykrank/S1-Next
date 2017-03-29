@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
+import me.ykrank.s1next.data.pref.PrefKey;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
@@ -18,12 +19,6 @@ import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
  */
 public final class DownloadPreferenceFragment extends BasePreferenceFragment {
     public static final String TAG = DownloadPreferenceFragment.class.getName();
-
-    public static final String PREF_KEY_TOTAL_DOWNLOAD_CACHE_SIZE = "pref_key_download_total_cache_size";
-    public static final String PREF_KEY_DOWNLOAD_AVATARS_STRATEGY = "pref_key_download_avatars_strategy";
-    public static final String PREF_KEY_AVATAR_RESOLUTION_STRATEGY = "pref_key_avatar_resolution_strategy";
-    public static final String PREF_KEY_AVATAR_CACHE_INVALIDATION_INTERVAL = "pref_key_avatar_cache_invalidation_interval";
-    public static final String PREF_KEY_DOWNLOAD_IMAGES_STRATEGY = "pref_key_download_images_strategy";
 
     @Inject
     DownloadPreferencesManager mDownloadPreferencesManager;
@@ -37,19 +32,19 @@ public final class DownloadPreferenceFragment extends BasePreferenceFragment {
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
-            case PREF_KEY_DOWNLOAD_AVATARS_STRATEGY:
+            case PrefKey.PREF_KEY_DOWNLOAD_AVATARS_STRATEGY:
                 mDownloadPreferencesManager.invalidateAvatarsDownloadStrategy();
 
                 break;
-            case PREF_KEY_AVATAR_RESOLUTION_STRATEGY:
+            case PrefKey.PREF_KEY_AVATAR_RESOLUTION_STRATEGY:
                 mDownloadPreferencesManager.invalidateAvatarsResolutionStrategy();
 
                 break;
-            case PREF_KEY_AVATAR_CACHE_INVALIDATION_INTERVAL:
+            case PrefKey.PREF_KEY_AVATAR_CACHE_INVALIDATION_INTERVAL:
                 mDownloadPreferencesManager.invalidateAvatarsCacheInvalidationInterval();
 
                 break;
-            case PREF_KEY_DOWNLOAD_IMAGES_STRATEGY:
+            case PrefKey.PREF_KEY_DOWNLOAD_IMAGES_STRATEGY:
                 mDownloadPreferencesManager.invalidateImagesDownloadStrategy();
 
                 break;

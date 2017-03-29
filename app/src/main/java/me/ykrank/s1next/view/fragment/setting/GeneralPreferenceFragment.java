@@ -11,6 +11,7 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.event.FontSizeChangeEvent;
 import me.ykrank.s1next.data.event.ThemeChangeEvent;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
+import me.ykrank.s1next.data.pref.PrefKey;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.util.DeviceUtil;
 import me.ykrank.s1next.util.ResourceUtil;
@@ -29,15 +30,6 @@ import static me.ykrank.s1next.widget.span.HtmlCompat.FROM_HTML_MODE_LEGACY;
 public final class GeneralPreferenceFragment extends BasePreferenceFragment
         implements Preference.OnPreferenceClickListener {
 
-    public static final String PREF_KEY_THEME = "pref_key_theme";
-    public static final String PREF_KEY_FONT_SIZE = "pref_key_font_size_v2";
-    public static final String PREF_KEY_SIGNATURE = "pref_key_signature";
-
-    private static final String PREF_KEY_DOWNLOADS = "pref_key_downloads";
-    private static final String PREF_KEY_BLACKLIST = "pref_key_blacklists";
-    private static final String PREF_KEY_READ_PROGRESS = "pref_key_post_read_progress";
-    private static final String PREF_KEY_BACKUP = "pref_key_backup";
-
     @Inject
     EventBus mEventBus;
 
@@ -52,24 +44,24 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
         addPreferencesFromResource(R.xml.preference_general);
         App.getPrefComponent().inject(this);
 
-        findPreference(PREF_KEY_DOWNLOADS).setOnPreferenceClickListener(this);
-        findPreference(PREF_KEY_BLACKLIST).setOnPreferenceClickListener(this);
-        findPreference(PREF_KEY_READ_PROGRESS).setOnPreferenceClickListener(this);
-        findPreference(PREF_KEY_BACKUP).setOnPreferenceClickListener(this);
+        findPreference(PrefKey.PREF_KEY_DOWNLOADS).setOnPreferenceClickListener(this);
+        findPreference(PrefKey.PREF_KEY_BLACKLIST).setOnPreferenceClickListener(this);
+        findPreference(PrefKey.PREF_KEY_READ_PROGRESS).setOnPreferenceClickListener(this);
+        findPreference(PrefKey.PREF_KEY_BACKUP).setOnPreferenceClickListener(this);
 
-        findPreference(PREF_KEY_SIGNATURE).setSummary(HtmlCompat.fromHtml(DeviceUtil.getSignature(getActivity()), FROM_HTML_MODE_LEGACY));
+        findPreference(PrefKey.PREF_KEY_SIGNATURE).setSummary(HtmlCompat.fromHtml(DeviceUtil.getSignature(getActivity()), FROM_HTML_MODE_LEGACY));
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
-            case PREF_KEY_THEME:
+            case PrefKey.PREF_KEY_THEME:
                 trackAgent.post(new ThemeChangeTrackEvent(false));
                 mThemeManager.invalidateTheme();
                 mEventBus.post(new ThemeChangeEvent());
 
                 break;
-            case PREF_KEY_FONT_SIZE:
+            case PrefKey.PREF_KEY_FONT_SIZE:
                 mGeneralPreferencesManager.invalidateFontScale();
                 // change scaling factor for fonts
                 ResourceUtil.setScaledDensity(getActivity(),
@@ -77,7 +69,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
                 mEventBus.post(new FontSizeChangeEvent());
 
                 break;
-            case PREF_KEY_SIGNATURE:
+            case PrefKey.PREF_KEY_SIGNATURE:
                 mGeneralPreferencesManager.invalidateSignatureEnabled();
 
                 break;
@@ -89,16 +81,16 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
     @Override
     public boolean onPreferenceClick(Preference preference) {
         switch (preference.getKey()) {
-            case PREF_KEY_DOWNLOADS:
+            case PrefKey.PREF_KEY_DOWNLOADS:
                 SettingsActivity.startDownloadSettingsActivity(preference.getContext());
                 return true;
-            case PREF_KEY_BLACKLIST:
+            case PrefKey.PREF_KEY_BLACKLIST:
                 SettingsActivity.startBlackListSettingsActivity(preference.getContext());
                 return true;
-            case PREF_KEY_READ_PROGRESS:
+            case PrefKey.PREF_KEY_READ_PROGRESS:
                 SettingsActivity.startReadProgressSettingsActivity(preference.getContext());
                 return true;
-            case PREF_KEY_BACKUP:
+            case PrefKey.PREF_KEY_BACKUP:
                 SettingsActivity.startBackupSettingsActivity(preference.getContext());
                 return true;
             default:
