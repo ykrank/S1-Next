@@ -1,13 +1,19 @@
 package me.ykrank.s1next.widget.hostcheck;
 
+import android.accounts.NetworkErrorException;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.common.base.Preconditions;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Single;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.RxJavaUtil;
 import okhttp3.HttpUrl;
 
 /**
@@ -19,6 +25,7 @@ public enum HostUrlCheckTask {
 
     private GeneralPreferencesManager prefManager;
     private HttpUrl baseHttpUrl;
+    private List<String> toBeCheckedBaseUrls;
 
     public static void init(GeneralPreferencesManager prefManager) {
         INSTANCE.prefManager = prefManager;
@@ -60,7 +67,32 @@ public enum HostUrlCheckTask {
         prefManager.invalidateBaseUrl(baseHttpUrl.toString());
     }
 
-    private void checkHost() {
+    public List<String> getToBeCheckedBaseUrls() {
+        ArrayList<String> baseUrls = new ArrayList<>();
+        for (String baseUrl : Api.HOST_LIST) {
+            baseUrls.add("http://" + baseUrl + "/");
+            baseUrls.add("https://" + baseUrl + "/");
+            baseUrls.add("http://" + baseUrl + "/2b/");
+            baseUrls.add("https://" + baseUrl + "/2b/");
+        }
+        return baseUrls;
+    }
+
+    public Single<List<HostUrlCheckResult>> forceCheckHost() {
+        HostUrlCheckJobClient jobClient = new HostUrlCheckJobClient();
+        return jobClient.startJob(getToBeCheckedBaseUrls())
+                .compose(RxJavaUtil.newThreadSingleTransformer())
+                .doOnSuccess(results -> {
+                    if (results.size() > 0) {
+                        L.leaveMsg("Host check result" + results.toString());
+                        setBaseHttpUrl(HttpUrl.parse(results.get(0).getBaseUrl()));
+                    } else {
+                        L.report(new NetworkErrorException("Host check result is null"));
+                    }
+                });
+    }
+
+    public void stargCheckHostJobScheduler() {
 
     }
 }

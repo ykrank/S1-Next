@@ -1,10 +1,10 @@
-package me.ykrank.s1next.data.api;
+package me.ykrank.s1next.widget.hostcheck;
 
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.IOException;
 
-import me.ykrank.s1next.widget.hostcheck.HostUrlCheckTask;
+import me.ykrank.s1next.data.api.Api;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;

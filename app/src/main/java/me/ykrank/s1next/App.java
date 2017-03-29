@@ -16,6 +16,7 @@ import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.ProcessUtil;
 import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.widget.AppActivityLifecycleCallbacks;
+import me.ykrank.s1next.widget.hostcheck.HostUrlCheckTask;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 
 public final class App extends MultiDexApplication {
@@ -94,6 +95,7 @@ public final class App extends MultiDexApplication {
         registerActivityLifecycleCallbacks(mAppActivityLifecycleCallbacks);
 
         mGeneralPreferencesManager = mPrefComponent.getGeneralPreferencesManager();
+        HostUrlCheckTask.init(mGeneralPreferencesManager);
 
         //enable vector drawable
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);

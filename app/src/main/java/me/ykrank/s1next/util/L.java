@@ -99,6 +99,10 @@ public class L {
         BuglyLog.i("MSG", msg);
     }
 
+    public static void leaveMsg(Throwable tr) {
+        BuglyLog.e("MSG", "Error", tr);
+    }
+
     public static void test() {
         throw new RuntimeException("Just test");
     }

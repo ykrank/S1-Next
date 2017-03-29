@@ -94,6 +94,16 @@ public final class RxJavaUtil {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public static <T> ObservableTransformer<T, T> newThreadTransformer() {
+        return observable -> observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static <T> SingleTransformer<T, T> newThreadSingleTransformer() {
+        return observable -> observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     public static <T> ObservableTransformer<T, T> clickThrottleTransformer() {
         return observable -> observable.throttleFirst(1, TimeUnit.SECONDS);
     }
