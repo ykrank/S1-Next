@@ -6,12 +6,14 @@ import android.text.TextUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Preconditions;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.util.L;
 import okhttp3.HttpUrl;
@@ -34,8 +36,18 @@ import static me.ykrank.s1next.widget.hostcheck.HostUrlCheckJobClient.ApiCheckSe
 public class HostUrlCheckJobClient {
     private OkHttpClient okHttpClient;
     private ApiCheckService apiCheckService;
+    private final int retry;
 
-    public Single<List<HostUrlCheckResult>> startJob(@NonNull Iterable<String> baseUrls) {
+    public HostUrlCheckJobClient() {
+        this(1);
+    }
+
+    public HostUrlCheckJobClient(int retry) {
+        Preconditions.checkArgument(retry > 0, "retry count should > 0");
+        this.retry = retry;
+    }
+
+    public Single<List<HostUrlCheckResultCount>> startJob(@NonNull Iterable<String> baseUrls) {
         okHttpClient = initOkHttpClient();
         apiCheckService = initApiCheckService();
         return checkBaseUrl(baseUrls);
@@ -73,12 +85,21 @@ public class HostUrlCheckJobClient {
      *
      * @see #getRealBaseUrlAndResult(String)
      */
-    private Single<List<HostUrlCheckResult>> checkBaseUrl(Iterable<String> baseUrls) {
+    private Single<List<HostUrlCheckResultCount>> checkBaseUrl(Iterable<String> baseUrls) {
         return Observable.fromIterable(baseUrls)
-                .map(this::getRealBaseUrlAndResult)
-                .onErrorReturnItem(new HostUrlCheckResult(null, false, 0))
-                .filter(HostUrlCheckResult::isSuccess)
-                .toSortedList((r1, r2) -> r1.getTime() - r2.getTime());
+                .flatMap(url -> Observable.range(0, retry)
+                        .observeOn(Schedulers.io())
+                        .map(i -> getRealBaseUrlAndResult(url))
+                        .doOnError(L::leaveMsg)
+                        .onErrorReturnItem(new HostUrlCheckResult(null, false, 0))
+                        .toList()
+                        .map(HostUrlCheckResultCount::new)
+                        .toObservable()
+                )
+                .doOnError(L::leaveMsg)
+                .onErrorReturnItem(new HostUrlCheckResultCount())
+                .filter(count -> !TextUtils.isEmpty(count.getBaseUrl()) && count.getSuccess() > 0)
+                .toSortedList();
     }
 
     /**

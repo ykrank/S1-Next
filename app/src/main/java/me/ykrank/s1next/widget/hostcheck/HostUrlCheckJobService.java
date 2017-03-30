@@ -41,6 +41,7 @@ public class HostUrlCheckJobService extends JobService {
                     if (results.size() > 0) {
                         L.leaveMsg("Host check result" + results.toString());
                         checkTask.setBaseHttpUrl(HttpUrl.parse(results.get(0).getBaseUrl()));
+                        checkTask.setLastCheckTime(System.currentTimeMillis());
                         jobFinished(params, false);
                     } else {
                         L.report(new NetworkErrorException("Host check result is null"));

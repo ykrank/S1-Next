@@ -57,6 +57,10 @@ public class L {
         Logger.t(tag).w(msg);
     }
 
+    public static void w(Throwable e) {
+        Logger.e(e, null);
+    }
+
     public static void e(String msg) {
         e(null, msg, null);
     }
@@ -96,10 +100,12 @@ public class L {
     }
 
     public static void leaveMsg(String msg) {
+        d(msg);
         BuglyLog.i("MSG", msg);
     }
 
     public static void leaveMsg(Throwable tr) {
+        w(tr);
         BuglyLog.e("MSG", "Error", tr);
     }
 
