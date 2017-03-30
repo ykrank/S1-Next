@@ -31,10 +31,8 @@ public final class ReadProgressPreferenceFragment extends BasePreferenceFragment
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
             case PrefKey.PREF_KEY_READ_PROGRESS_SAVE_AUTO:
-                mReadProgressPreferencesManager.invalidateSaveAuto();
                 break;
             case PrefKey.PREF_KEY_READ_PROGRESS_LOAD_AUTO:
-                mReadProgressPreferencesManager.invalidateLoadAuto();
                 break;
             default:
                 // fall through

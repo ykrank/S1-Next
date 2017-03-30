@@ -70,8 +70,6 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
 
                 break;
             case PrefKey.PREF_KEY_SIGNATURE:
-                mGeneralPreferencesManager.invalidateSignatureEnabled();
-
                 break;
             default:
                 // fall through
