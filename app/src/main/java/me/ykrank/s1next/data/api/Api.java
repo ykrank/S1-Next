@@ -17,6 +17,12 @@ public final class Api {
     public static final String[] HOST_LIST = new String[]{
             "bbs.saraba1st.com", "www.saraba1st.com", "stage1st.com", "www.stage1st.com"
     };
+
+    public static boolean SUPPORT_HTTPS = false;
+    /**
+     * does {@link me.ykrank.s1next.widget.hostcheck.HostUrlCheckTask auto run}
+     */
+    public static final boolean AUTO_CHECK_HOST = false;
     
     static final String RANDOM_IMAGE_URL = "http://ac.stage3rd.com/S1_ACG_randpic.asp";
     static final String BASE_API_PREFIX = "index.php?module=";

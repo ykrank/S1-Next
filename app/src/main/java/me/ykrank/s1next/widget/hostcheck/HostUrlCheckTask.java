@@ -1,6 +1,5 @@
 package me.ykrank.s1next.widget.hostcheck;
 
-import android.accounts.NetworkErrorException;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
@@ -32,7 +31,7 @@ import okhttp3.HttpUrl;
 public enum HostUrlCheckTask {
     INSTANCE;
 
-    public static final int periodic = 600_000;
+    public static final int periodic = 1200_000;
 
     private GeneralPreferencesManager prefManager;
     private HttpUrl baseHttpUrl;
@@ -52,6 +51,10 @@ public enum HostUrlCheckTask {
         }
         Preconditions.checkArgument(url.endsWith("/"));
         INSTANCE.baseHttpUrl = HttpUrl.parse(url);
+    }
+
+    public static boolean isAutoCheck() {
+        return Api.AUTO_CHECK_HOST;
     }
 
     public GeneralPreferencesManager getPrefManager() {
@@ -96,31 +99,46 @@ public enum HostUrlCheckTask {
         ArrayList<String> baseUrls = new ArrayList<>();
         for (String baseUrl : Api.HOST_LIST) {
             baseUrls.add("http://" + baseUrl + "/");
-            baseUrls.add("https://" + baseUrl + "/");
             baseUrls.add("http://" + baseUrl + "/2b/");
-            baseUrls.add("https://" + baseUrl + "/2b/");
+            if (Api.SUPPORT_HTTPS) {
+                baseUrls.add("https://" + baseUrl + "/");
+                baseUrls.add("https://" + baseUrl + "/2b/");
+            }
         }
         return baseUrls;
     }
 
-    public Single<List<HostUrlCheckResultCount>> forceCheckHost() {
+    private HostUrlCheckResultCount chooseBestCheckResult(@NonNull List<HostUrlCheckResultCount> resultCountList) {
+        HostUrlCheckResultCount bestResultCount = null;
+        for (int i = 0; i < resultCountList.size(); i++) {
+            HostUrlCheckResultCount resultCount = resultCountList.get(i);
+            //if not too bad, use old url to reuse image cache
+            if (TextUtils.equals(resultCount.getBaseUrl(), baseHttpUrl.toString())
+                    && resultCount.getAccuracy() > 0.8 && resultCount.getMeanTime() < 3000) {
+                return resultCount;
+            }
+            if (bestResultCount == null || bestResultCount.getWeighted() < resultCount.getWeighted()) {
+                bestResultCount = resultCount;
+            }
+        }
+        return bestResultCount;
+    }
+
+    public Single<HostUrlCheckResultCount> forceCheckHost() {
         HostUrlCheckJobClient jobClient = new HostUrlCheckJobClient();
         return jobClient.startJob(getToBeCheckedBaseUrls())
+                .map(this::chooseBestCheckResult)
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .doOnDispose(() -> delayChecking = false)
                 .doOnEvent((t1, t2) -> delayChecking = false)
-                .doOnSuccess(results -> {
-                    if (results.size() > 0) {
-                        L.leaveMsg("Host check result" + results.toString());
-                        setBaseHttpUrl(HttpUrl.parse(results.get(0).getBaseUrl()));
-                        setLastCheckTime(System.currentTimeMillis());
-                    } else {
-                        L.report(new NetworkErrorException("Host check result is null"));
-                    }
+                .doOnSuccess(result -> {
+                    L.leaveMsg("Host check result" + result.toString());
+                    setBaseHttpUrl(HttpUrl.parse(result.getBaseUrl()));
+                    setLastCheckTime(System.currentTimeMillis());
                 });
     }
 
-    public Single<List<HostUrlCheckResultCount>> forceCheckHost(int delay) {
+    public Single<HostUrlCheckResultCount> forceCheckHost(int delay) {
         delayChecking = true;
         return Single.timer(delay, TimeUnit.MILLISECONDS)
                 .flatMap(l -> forceCheckHost());
@@ -139,21 +157,32 @@ public enum HostUrlCheckTask {
     public void startCheckHostTask(@NonNull Context context) {
         initTime = System.currentTimeMillis();
         lastCheckTime = 0;
+        forceCheckHostSilentDelay();
+
+        if (!isAutoCheck()) {
+            return;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             startCheckHostJobScheduler(context);
         }
-        forceCheckHostSilentDelay();
     }
 
     public void stopCheckHostTask(@NonNull Context context) {
         initTime = 0;
         lastCheckTime = 0;
+
+        if (!isAutoCheck()) {
+            return;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             stopCheckHostJobScheduler(context, hostUrlCheckJobId);
         }
     }
 
     public void inspectCheckHostTask() {
+        if (!isAutoCheck()) {
+            return;
+        }
         if (delayChecking) {
             return;
         }

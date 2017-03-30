@@ -29,6 +29,7 @@ import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.NullTrustManager;
 import me.ykrank.s1next.widget.PersistentHttpCookieStore;
 import me.ykrank.s1next.widget.glide.OkHttpNoAvatarInterceptor;
+import me.ykrank.s1next.widget.hostcheck.MultiHostInterceptor;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
@@ -73,6 +74,7 @@ public final class AppModule {
         builder.cookieJar(new JavaNetCookieJar(cookieManager));
         builder.addNetworkInterceptor(new OkHttpNoAvatarInterceptor());
         builder.addInterceptor(new ApiVersionInterceptor());
+        builder.addInterceptor(new MultiHostInterceptor());
         if (BuildConfig.DEBUG) {
             //log
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
