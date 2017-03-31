@@ -93,7 +93,11 @@ public interface S1Service {
 
     @FormUrlEncoded
     @POST(Api.URL_SEARCH_FORUM)
-    Observable<String> searchForum(@Field("formhash") String authenticityToken, @Field("searchsubmit") String searchSubmit, @Field("srchtxt") String text);
+    Observable<String> searchForum(@Field("formhash") String authenticityToken, @Field("srchtxt") String text);
+
+    @FormUrlEncoded
+    @POST(Api.URL_SEARCH_USER)
+    Observable<String> searchUser(@Field("formhash") String authenticityToken, @Field("srchtxt") String text);
 
     //region User home
     @GET(ApiHome.URL_MY_NOTE_LIST)

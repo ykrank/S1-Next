@@ -50,7 +50,8 @@ public final class Api {
      * 发布新帖前获取必要前置信息
      */
     static final String URL_NEW_THREAD_HELPER = BASE_URL + "forum.php?mod=post&action=newthread";
-    static final String URL_SEARCH_FORUM = BASE_URL + "search.php?mod=forum";
+    static final String URL_SEARCH_FORUM = BASE_URL + "search.php?searchsubmit=yes&mod=forum";
+    static final String URL_SEARCH_USER = BASE_URL + "search.php?searchsubmit=yes&mod=user";
     private static final String URL_USER_AVATAR_PREFIX = BASE_URL + "uc_server/avatar.php?uid=";
     private static final String URL_USER_AVATAR_SMALL = URL_USER_AVATAR_PREFIX + "%s&size=small";
     private static final String URL_USER_AVATAR_MEDIUM = URL_USER_AVATAR_PREFIX + "%s&size=middle";

@@ -47,8 +47,8 @@ import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
-import me.ykrank.s1next.data.api.model.Search;
-import me.ykrank.s1next.data.api.model.wrapper.SearchWrapper;
+import me.ykrank.s1next.data.api.model.ForumSearchResult;
+import me.ykrank.s1next.data.api.model.wrapper.ForumSearchWrapper;
 import me.ykrank.s1next.databinding.ActivitySearchBinding;
 import me.ykrank.s1next.util.ImeUtils;
 import me.ykrank.s1next.util.L;
@@ -262,7 +262,7 @@ public class SearchActivity extends BaseActivity {
         setNoResultsVisibility(View.GONE);
     }
 
-    private void setResults(List<Search> data) {
+    private void setResults(List<ForumSearchResult> data) {
         if (data != null && data.size() > 0) {
             if (recyclerView.getVisibility() != View.VISIBLE) {
                 TransitionManager.beginDelayedTransition(binding.resultsContainer,
@@ -314,10 +314,10 @@ public class SearchActivity extends BaseActivity {
 //        dataManager.searchFor(query);
 
         mDisposable = ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
-                token -> s1Service.searchForum(token, "yes", query))
-                .map(SearchWrapper::fromSource)
+                token -> s1Service.searchForum(token, query))
+                .map(ForumSearchWrapper::fromSource)
                 .compose(RxJavaUtil.iOTransformer())
-                .subscribe(wrapper -> setResults(wrapper.getSearches()), L::e);
+                .subscribe(wrapper -> setResults(wrapper.getForumSearchResults()), L::e);
     }
 
     private android.support.transition.Transition getAutoTransition() {

@@ -155,6 +155,10 @@ public enum HostUrlCheckTask {
     }
 
     public void startCheckHostTask(@NonNull Context context) {
+        if (!isAutoCheck()) {
+            return;
+        }
+
         initTime = System.currentTimeMillis();
         lastCheckTime = 0;
         forceCheckHostSilentDelay();
@@ -168,12 +172,13 @@ public enum HostUrlCheckTask {
     }
 
     public void stopCheckHostTask(@NonNull Context context) {
-        initTime = 0;
-        lastCheckTime = 0;
-
         if (!isAutoCheck()) {
             return;
         }
+
+        initTime = 0;
+        lastCheckTime = 0;
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             stopCheckHostJobScheduler(context, hostUrlCheckJobId);
         }

@@ -7,11 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.data.api.model.Search;
+import me.ykrank.s1next.data.api.model.ForumSearchResult;
 import me.ykrank.s1next.databinding.ItemSearchBinding;
 import me.ykrank.s1next.viewmodel.SearchViewModel;
 
-public final class SearchAdapterDelegate extends BaseAdapterDelegate<Search, SearchAdapterDelegate.BindingViewHolder> {
+public final class SearchAdapterDelegate extends BaseAdapterDelegate<ForumSearchResult, SearchAdapterDelegate.BindingViewHolder> {
 
     public SearchAdapterDelegate(Context context) {
         super(context);
@@ -19,8 +19,8 @@ public final class SearchAdapterDelegate extends BaseAdapterDelegate<Search, Sea
 
     @NonNull
     @Override
-    protected Class<Search> getTClass() {
-        return Search.class;
+    protected Class<ForumSearchResult> getTClass() {
+        return ForumSearchResult.class;
     }
 
     @NonNull
@@ -34,9 +34,9 @@ public final class SearchAdapterDelegate extends BaseAdapterDelegate<Search, Sea
     }
 
     @Override
-    public void onBindViewHolderData(Search search, int position, @NonNull BindingViewHolder holder) {
+    public void onBindViewHolderData(ForumSearchResult forumSearchResult, int position, @NonNull BindingViewHolder holder) {
         ItemSearchBinding binding = holder.binding;
-        binding.getModel().search.set(search);
+        binding.getModel().search.set(forumSearchResult);
         binding.executePendingBindings();
     }
 

@@ -4,7 +4,7 @@ package me.ykrank.s1next.data.api.model;
  * Created by ykrank on 2016/10/18.
  */
 
-public class Search {
+public class ForumSearchResult {
 
     private String content;
 
@@ -22,9 +22,9 @@ public class Search {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Search search = (Search) o;
+        ForumSearchResult forumSearchResult = (ForumSearchResult) o;
 
-        return content.equals(search.content);
+        return content.equals(forumSearchResult.content);
 
     }
 
@@ -35,7 +35,7 @@ public class Search {
 
     @Override
     public String toString() {
-        return "Search{" +
+        return "ForumSearchResult{" +
                 "content='" + content + '\'' +
                 '}';
     }

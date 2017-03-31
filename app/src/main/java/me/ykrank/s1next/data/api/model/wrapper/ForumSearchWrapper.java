@@ -13,24 +13,24 @@ import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import me.ykrank.s1next.data.api.model.Search;
+import me.ykrank.s1next.data.api.model.ForumSearchResult;
 import me.ykrank.s1next.util.L;
 
 /**
  * Created by ykrank on 2016/10/21.
  */
 
-public class SearchWrapper {
+public class ForumSearchWrapper {
     private int count;
     private int page;
     private int maxPage;
     @NonNull
     private String href = "";
     @NonNull
-    private List<Search> searches = new ArrayList<>();
+    private List<ForumSearchResult> forumSearchResults = new ArrayList<>();
 
-    public static SearchWrapper fromSource(String source) {
-        SearchWrapper wrapper = new SearchWrapper();
+    public static ForumSearchWrapper fromSource(String source) {
+        ForumSearchWrapper wrapper = new ForumSearchWrapper();
         try {
             Document document = Jsoup.parse(source);
             //count
@@ -48,16 +48,16 @@ public class SearchWrapper {
             }
 
             //results
-            List<Search> searches = new ArrayList<>();
+            List<ForumSearchResult> forumSearchResults = new ArrayList<>();
             elements = document.select("li.pbw");
             ListIterator<Element> iterator = elements.listIterator();
             while (iterator.hasNext()) {
                 Element resultEle = iterator.next();
-                Search search = new Search();
-                search.setContent(resultEle.html());
-                searches.add(search);
+                ForumSearchResult forumSearchResult = new ForumSearchResult();
+                forumSearchResult.setContent(resultEle.html());
+                forumSearchResults.add(forumSearchResult);
             }
-            wrapper.setSearches(searches);
+            wrapper.setForumSearchResults(forumSearchResults);
 
             //page
             elements = document.select("div.pg");
@@ -104,12 +104,12 @@ public class SearchWrapper {
     }
 
     @NonNull
-    public List<Search> getSearches() {
-        return searches;
+    public List<ForumSearchResult> getForumSearchResults() {
+        return forumSearchResults;
     }
 
-    public void setSearches(@NonNull List<Search> searches) {
-        this.searches = searches;
+    public void setForumSearchResults(@NonNull List<ForumSearchResult> forumSearchResults) {
+        this.forumSearchResults = forumSearchResults;
     }
 
     public int getMaxPage() {
@@ -132,15 +132,15 @@ public class SearchWrapper {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SearchWrapper)) return false;
+        if (!(o instanceof ForumSearchWrapper)) return false;
 
-        SearchWrapper wrapper = (SearchWrapper) o;
+        ForumSearchWrapper wrapper = (ForumSearchWrapper) o;
 
         if (count != wrapper.count) return false;
         if (page != wrapper.page) return false;
         if (maxPage != wrapper.maxPage) return false;
         if (!href.equals(wrapper.href)) return false;
-        return searches.equals(wrapper.searches);
+        return forumSearchResults.equals(wrapper.forumSearchResults);
 
     }
 
@@ -150,7 +150,7 @@ public class SearchWrapper {
         result = 31 * result + page;
         result = 31 * result + maxPage;
         result = 31 * result + href.hashCode();
-        result = 31 * result + searches.hashCode();
+        result = 31 * result + forumSearchResults.hashCode();
         return result;
     }
 }
