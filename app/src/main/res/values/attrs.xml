@@ -35,4 +35,5 @@
     </declare-styleable>
 
     <attr name="titlePopWindowBackground" format="reference" />
+    <attr name="titlePopWindowTextColor" format="reference" />
 </resources>

@@ -116,12 +116,10 @@
         <item name="colorTranslucent">@color/black_70p</item>
 
         <item name="titlePopWindowBackground">@drawable/shape_round_corners_white</item>
+        <item name="titlePopWindowTextColor">@android:color/secondary_text_light</item>
     </style>
 
     <style name="Origin.Theme.Light.Inverse">
-        <!-- https://code.google.com/p/android/issues/detail?id=169657 -->
-        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="navigationViewTheme">?attr/theme</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
@@ -171,5 +169,6 @@
         <item name="colorTranslucent">@color/white_70p</item>
 
         <item name="titlePopWindowBackground">@drawable/shape_round_corners_black</item>
+        <item name="titlePopWindowTextColor">@android:color/secondary_text_dark</item>
     </style>
 </resources>

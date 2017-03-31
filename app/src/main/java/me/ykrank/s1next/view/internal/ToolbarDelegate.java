@@ -69,9 +69,13 @@ public final class ToolbarDelegate {
      * @return whether handle this action
      */
     public boolean setTitle(CharSequence title) {
-        if (longTitleView != null && !TextUtils.equals(longTitleView.getText(), title)) {
-            mToolbar.setTitle(null);
-            longTitleView.setText(title);
+        if (longTitleView != null) {
+            if (!TextUtils.isEmpty(mToolbar.getTitle())) {
+                mToolbar.setTitle(null);
+            }
+            if (!TextUtils.equals(longTitleView.getText(), title)) {
+                longTitleView.setText(title);
+            }
             return true;
         }
         return false;

@@ -22,8 +22,8 @@
             android:layout_marginRight="@dimen/spacing_normal"
             android:layout_marginTop="@dimen/spacing_micro"
             android:text="@{title}"
-            android:textIsSelectable="true"
-            tools:textColor="@android:color/white"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textColor="?attr/titlePopWindowTextColor"
             tools:text="TitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitle" />
     </FrameLayout>
 </layout>
