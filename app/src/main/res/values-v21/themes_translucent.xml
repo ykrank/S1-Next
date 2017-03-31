@@ -23,5 +23,6 @@
 
     <style name="Base.Theme.Gallery.V21" parent="Base.Theme.Gallery.V19">
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowEnterTransition">@android:transition/fade</item>
     </style>
 </resources>
