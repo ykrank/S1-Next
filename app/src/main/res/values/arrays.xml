@@ -121,4 +121,9 @@
         <item>2</item>
     </string-array>
 
+    <string-array name="search_type_entry_values">
+        <item>@string/search_type_entry_forum</item>
+        <item>@string/search_type_entry_user</item>
+    </string-array>
+
 </resources>

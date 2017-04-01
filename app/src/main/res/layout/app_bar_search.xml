@@ -24,17 +24,30 @@
                 android:transitionGroup="false"
                 app:elevation="@dimen/z_app_bar">
 
-
-                <SearchView
-                    android:id="@+id/search_view"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:iconifiedByDefault="false"
-                    android:queryBackground="@android:color/transparent"
-                    android:searchHintIcon="@android:color/transparent"
-                    android:searchIcon="@android:color/transparent"
-                    android:submitBackground="@android:color/transparent"
-                    android:transitionGroup="true" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <SearchView
+                        android:id="@+id/search_view"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:iconifiedByDefault="false"
+                        android:queryBackground="@android:color/transparent"
+                        android:searchHintIcon="@android:color/transparent"
+                        android:searchIcon="@android:color/transparent"
+                        android:submitBackground="@android:color/transparent"
+                        android:transitionGroup="true" />
+
+                    <Spinner
+                        android:id="@+id/spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:entries="@array/search_type_entry_values" />
+                </LinearLayout>
 
                 <!-- wrapping layout needed for the touch ripple -->
                 <FrameLayout
@@ -49,7 +62,7 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/ripple_transparent"
                         android:transitionName="@string/transition_search_back"
-                        app:srcCompat="@drawable/ic_arrow_back_padded"/>
+                        app:srcCompat="@drawable/ic_arrow_back_padded" />
 
                 </FrameLayout>
 
