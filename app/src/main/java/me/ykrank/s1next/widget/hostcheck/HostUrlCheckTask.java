@@ -42,6 +42,7 @@ public enum HostUrlCheckTask {
      */
     private long initTime, lastCheckTime;
     private volatile boolean delayChecking = false;
+    private boolean autoCheck;
 
     public static void init(GeneralPreferencesManager prefManager) {
         INSTANCE.prefManager = prefManager;
@@ -51,10 +52,11 @@ public enum HostUrlCheckTask {
         }
         Preconditions.checkArgument(url.endsWith("/"));
         INSTANCE.baseHttpUrl = HttpUrl.parse(url);
+        INSTANCE.autoCheck = prefManager.isAutoCheckBaseUrl();
     }
 
-    public static boolean isAutoCheck() {
-        return Api.AUTO_CHECK_HOST;
+    public boolean isAutoCheck() {
+        return autoCheck;
     }
 
     public GeneralPreferencesManager getPrefManager() {

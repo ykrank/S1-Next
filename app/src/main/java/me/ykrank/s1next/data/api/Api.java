@@ -22,7 +22,7 @@ public final class Api {
     /**
      * does {@link me.ykrank.s1next.widget.hostcheck.HostUrlCheckTask auto run}
      */
-    public static final boolean AUTO_CHECK_HOST = false;
+    public static final boolean AUTO_CHECK_HOST = true;
     
     static final String RANDOM_IMAGE_URL = "http://ac.stage3rd.com/S1_ACG_randpic.asp";
     static final String BASE_API_PREFIX = "index.php?module=";

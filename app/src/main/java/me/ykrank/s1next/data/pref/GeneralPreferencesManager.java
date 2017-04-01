@@ -65,4 +65,12 @@ public final class GeneralPreferencesManager {
     public String getBaseUrl() {
         return mGeneralPreferencesProvider.getBaseUrl();
     }
+
+    public void invalidateAutoCheckBaseUrl(boolean autoCheck) {
+        mGeneralPreferencesProvider.setAutoCheckBaseUrl(autoCheck);
+    }
+
+    public boolean isAutoCheckBaseUrl() {
+        return mGeneralPreferencesProvider.isAutoCheckBaseUrl();
+    }
 }

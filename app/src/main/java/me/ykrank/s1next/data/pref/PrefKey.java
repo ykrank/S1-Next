@@ -14,6 +14,7 @@ public class PrefKey {
     public static final String PREF_KEY_READ_PROGRESS = "pref_key_post_read_progress";
     public static final String PREF_KEY_BACKUP = "pref_key_backup";
     public static final String PREF_KEY_BASE_URL = "pref_key_base_url";
+    public static final String PREF_KEY_AUTO_CHECK_BASE_URL = "pref_key_auto_check_base_url";
     //PostListFragment
     public static final String PREF_KEY_POST_SELECTABLE = "pref_key_post_selectable";
     public static final String PREF_KEY_QUICK_SIDE_BAR_ENABLE = "pref_key_quick_side_bar_enable";

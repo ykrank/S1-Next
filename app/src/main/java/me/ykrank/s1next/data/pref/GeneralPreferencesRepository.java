@@ -67,4 +67,14 @@ public final class GeneralPreferencesRepository extends BasePreferencesRepositor
         mSharedPreferences.edit().putString(PrefKey.PREF_KEY_BASE_URL, baseUrl)
                 .apply();
     }
+
+    public boolean isAutoCheckBaseUrl() {
+        return mSharedPreferences.getBoolean(PrefKey.PREF_KEY_AUTO_CHECK_BASE_URL,
+                mContext.getResources().getBoolean(R.bool.pref_key_auto_check_base_url_default_value));
+    }
+
+    public void setAutoCheckBaseUrl(boolean autoCheck) {
+        mSharedPreferences.edit().putBoolean(PrefKey.PREF_KEY_AUTO_CHECK_BASE_URL, autoCheck)
+                .apply();
+    }
 }
