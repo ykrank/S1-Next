@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.ForumSearchResult;
 import me.ykrank.s1next.databinding.ItemSearchBinding;
-import me.ykrank.s1next.viewmodel.SearchViewModel;
 
 public final class SearchAdapterDelegate extends BaseAdapterDelegate<ForumSearchResult, SearchAdapterDelegate.BindingViewHolder> {
 
@@ -28,7 +27,6 @@ public final class SearchAdapterDelegate extends BaseAdapterDelegate<ForumSearch
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {
         ItemSearchBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_search, parent, false);
-        binding.setModel(new SearchViewModel());
 
         return new BindingViewHolder(binding);
     }
@@ -36,7 +34,7 @@ public final class SearchAdapterDelegate extends BaseAdapterDelegate<ForumSearch
     @Override
     public void onBindViewHolderData(ForumSearchResult forumSearchResult, int position, @NonNull BindingViewHolder holder) {
         ItemSearchBinding binding = holder.binding;
-        binding.getModel().search.set(forumSearchResult);
+        binding.setModel(forumSearchResult);
         binding.executePendingBindings();
     }
 

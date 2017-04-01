@@ -21,13 +21,13 @@ public abstract class BaseRecyclerViewAdapter extends ListDelegationAdapter<List
 
     private static final int VIEW_TYPE_PROGRESS = 0;
 
-    BaseRecyclerViewAdapter(Context context) {
+    public BaseRecyclerViewAdapter(Context context) {
         setHasStableIds(false);
         setItems(new ArrayList<>());
         delegatesManager.addDelegate(VIEW_TYPE_PROGRESS, new ProgressAdapterDelegate(context));
     }
 
-    final void addAdapterDelegate(AdapterDelegate<List<Object>> adapterDelegate) {
+    final protected void addAdapterDelegate(AdapterDelegate<List<Object>> adapterDelegate) {
         Preconditions.checkArgument(delegatesManager.getViewType(adapterDelegate) != VIEW_TYPE_PROGRESS);
         delegatesManager.addDelegate(adapterDelegate);
     }

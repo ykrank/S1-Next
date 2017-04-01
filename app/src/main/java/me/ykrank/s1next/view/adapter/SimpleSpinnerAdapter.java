@@ -14,8 +14,9 @@ import java.util.List;
 import io.reactivex.functions.Function;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.view.adapter.simple.SimpleViewHolderAdapter;
 
-public class SimpleSpinnerAdapter<T> extends BaseViewHolderAdapter<T, SimpleSpinnerAdapter.SimpleSpinnerViewHolder> {
+public class SimpleSpinnerAdapter<T> extends SimpleViewHolderAdapter<T, SimpleSpinnerAdapter.SimpleSpinnerViewHolder> {
     @NonNull
     private Function<T, String> getName;
 
@@ -46,7 +47,7 @@ public class SimpleSpinnerAdapter<T> extends BaseViewHolderAdapter<T, SimpleSpin
         return Objects.hashCode(getItem(position));
     }
 
-    static class SimpleSpinnerViewHolder extends BaseViewHolderAdapter.BaseViewHolder {
+    static class SimpleSpinnerViewHolder extends SimpleViewHolderAdapter.BaseViewHolder {
         private TextView textView;
 
         SimpleSpinnerViewHolder(View rootView) {

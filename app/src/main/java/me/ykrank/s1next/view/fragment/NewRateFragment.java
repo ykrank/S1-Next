@@ -29,8 +29,9 @@ import me.ykrank.s1next.databinding.ItemRateReasonBinding;
 import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
-import me.ykrank.s1next.view.adapter.SimpleRecycleViewAdapter;
 import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter;
+import me.ykrank.s1next.view.adapter.simple.BindViewHolderCallback;
+import me.ykrank.s1next.view.adapter.simple.SimpleRecycleViewAdapter;
 import me.ykrank.s1next.view.dialog.RateRequestDialogFragment;
 import me.ykrank.s1next.viewmodel.NewRateViewModel;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
@@ -56,7 +57,7 @@ public final class NewRateFragment extends BaseFragment {
 
     private FragmentNewRateBinding binding;
     private SimpleRecycleViewAdapter reasonAdapter;
-    private SimpleRecycleViewAdapter.BindViewHolderCallback bindViewHolderCallback;
+    private BindViewHolderCallback bindViewHolderCallback;
 
     public static NewRateFragment newInstance(String threadId, String postId) {
         NewRateFragment fragment = new NewRateFragment();
