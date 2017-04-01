@@ -15,6 +15,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.transition.TransitionManager;
 import android.support.v4.app.ActivityCompat;
@@ -47,8 +48,9 @@ import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
-import me.ykrank.s1next.data.api.model.ForumSearchResult;
-import me.ykrank.s1next.data.api.model.wrapper.ForumSearchWrapper;
+import me.ykrank.s1next.data.api.model.search.ForumSearchWrapper;
+import me.ykrank.s1next.data.api.model.search.SearchResult;
+import me.ykrank.s1next.data.api.model.search.UserSearchWrapper;
 import me.ykrank.s1next.databinding.ActivitySearchBinding;
 import me.ykrank.s1next.util.ImeUtils;
 import me.ykrank.s1next.util.L;
@@ -259,10 +261,10 @@ public class SearchActivity extends BaseActivity {
         recyclerView.setVisibility(View.GONE);
         binding.progressBar.setVisibility(View.GONE);
         binding.resultsScrim.setVisibility(View.GONE);
-        setNoResultsVisibility(View.GONE);
+        setNoResultsVisibility(View.GONE, null);
     }
 
-    private void setResults(List<ForumSearchResult> data) {
+    private void setResults(List<? extends SearchResult> data, @Nullable String errorMsg) {
         if (data != null && data.size() > 0) {
             if (recyclerView.getVisibility() != View.VISIBLE) {
                 TransitionManager.beginDelayedTransition(binding.resultsContainer,
@@ -275,11 +277,11 @@ public class SearchActivity extends BaseActivity {
             TransitionManager.beginDelayedTransition(
                     binding.resultsContainer, getAutoTransition());
             binding.progressBar.setVisibility(View.GONE);
-            setNoResultsVisibility(View.VISIBLE);
+            setNoResultsVisibility(View.VISIBLE, errorMsg);
         }
     }
 
-    private void setNoResultsVisibility(int visibility) {
+    private void setNoResultsVisibility(int visibility, @Nullable String errorMsg) {
         if (visibility == View.VISIBLE) {
             if (noResults == null) {
 
@@ -290,14 +292,18 @@ public class SearchActivity extends BaseActivity {
                     ImeUtils.showIme(searchView);
                 });
             }
-            String message = String.format(
-                    getString(R.string.no_search_results), searchView.getQuery().toString());
-            SpannableStringBuilder ssb = new SpannableStringBuilder(message);
-            ssb.setSpan(new StyleSpan(Typeface.ITALIC),
-                    message.indexOf('“') + 1,
-                    message.length() - 1,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            noResults.setText(ssb);
+            if (TextUtils.isEmpty(errorMsg)) {
+                String message = String.format(
+                        getString(R.string.no_search_results), searchView.getQuery().toString());
+                SpannableStringBuilder ssb = new SpannableStringBuilder(message);
+                ssb.setSpan(new StyleSpan(Typeface.ITALIC),
+                        message.indexOf('“') + 1,
+                        message.length() - 1,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                noResults.setText(ssb);
+            } else {
+                noResults.setText(errorMsg);
+            }
         }
         if (noResults != null) {
             noResults.setVisibility(visibility);
@@ -313,11 +319,20 @@ public class SearchActivity extends BaseActivity {
         searchView.clearFocus();
 //        dataManager.searchFor(query);
 
-        mDisposable = ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
-                token -> s1Service.searchForum(token, query))
-                .map(ForumSearchWrapper::fromSource)
-                .compose(RxJavaUtil.iOTransformer())
-                .subscribe(wrapper -> setResults(wrapper.getForumSearchResults()), L::e);
+        String selected = (String) binding.appBar.spinner.getSelectedItem();
+        if (TextUtils.equals(getString(R.string.search_type_entry_user), selected)) {
+            mDisposable = ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
+                    token -> s1Service.searchUser(token, query))
+                    .map(UserSearchWrapper::fromSource)
+                    .compose(RxJavaUtil.iOTransformer())
+                    .subscribe(wrapper -> setResults(wrapper.getUserSearchResults(), wrapper.getErrorMsg()), L::e);
+        } else {
+            mDisposable = ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
+                    token -> s1Service.searchForum(token, query))
+                    .map(ForumSearchWrapper::fromSource)
+                    .compose(RxJavaUtil.iOTransformer())
+                    .subscribe(wrapper -> setResults(wrapper.getForumSearchResults(), null), L::e);
+        }
     }
 
     private android.support.transition.Transition getAutoTransition() {

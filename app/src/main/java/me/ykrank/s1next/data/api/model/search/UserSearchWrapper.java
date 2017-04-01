@@ -1,6 +1,7 @@
-package me.ykrank.s1next.data.api.model.wrapper;
+package me.ykrank.s1next.data.api.model.search;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.ykrank.s1next.data.api.model.UserLink;
-import me.ykrank.s1next.data.api.model.UserSearchResult;
 import me.ykrank.s1next.util.L;
 
 /**
@@ -24,12 +24,18 @@ import me.ykrank.s1next.util.L;
 public class UserSearchWrapper {
     @NonNull
     private List<UserSearchResult> userSearchResults = new ArrayList<>();
+    @Nullable
+    private String errorMsg;
 
     public static UserSearchWrapper fromSource(String source) {
         UserSearchWrapper wrapper = new UserSearchWrapper();
         List<UserSearchResult> userSearchResults = new ArrayList<>();
         try {
             Document document = Jsoup.parse(source);
+            Elements errorElements = document.select("div#messagetext");
+            if (errorElements.size() > 0) {
+                wrapper.setErrorMsg(errorElements.text());
+            }
             //count
             Elements elements = document.select("li.bbda.cl");
             for (int i = 0; i < elements.size(); i++) {
@@ -70,23 +76,34 @@ public class UserSearchWrapper {
         this.userSearchResults = userSearchResults;
     }
 
+    @Nullable
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(@Nullable String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof UserSearchWrapper)) return false;
         UserSearchWrapper that = (UserSearchWrapper) o;
-        return Objects.equal(userSearchResults, that.userSearchResults);
+        return Objects.equal(userSearchResults, that.userSearchResults) &&
+                Objects.equal(errorMsg, that.errorMsg);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(userSearchResults);
+        return Objects.hashCode(userSearchResults, errorMsg);
     }
 
     @Override
     public String toString() {
         return "UserSearchWrapper{" +
                 "userSearchResults=" + userSearchResults +
+                ", errorMsg='" + errorMsg + '\'' +
                 '}';
     }
 }

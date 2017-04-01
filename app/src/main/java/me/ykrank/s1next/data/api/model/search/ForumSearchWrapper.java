@@ -1,4 +1,4 @@
-package me.ykrank.s1next.data.api.model.wrapper;
+package me.ykrank.s1next.data.api.model.search;
 
 import android.support.annotation.NonNull;
 
@@ -13,7 +13,6 @@ import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import me.ykrank.s1next.data.api.model.ForumSearchResult;
 import me.ykrank.s1next.util.L;
 
 /**

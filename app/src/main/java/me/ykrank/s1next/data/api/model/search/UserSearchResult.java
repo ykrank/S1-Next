@@ -1,4 +1,4 @@
-package me.ykrank.s1next.data.api.model;
+package me.ykrank.s1next.data.api.model.search;
 
 import com.google.common.base.Objects;
 
@@ -6,7 +6,7 @@ import com.google.common.base.Objects;
  * Created by ykrank on 2017/04/01.
  */
 
-public class UserSearchResult {
+public class UserSearchResult extends SearchResult {
 
     private String uid;
     private String name;

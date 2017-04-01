@@ -65,9 +65,16 @@ public class AvatarStreamFetcher implements DataFetcher<InputStream> {
         Request request = requestBuilder.build();
 
         Response response;
-        call = client.newCall(request);
-        response = call.execute();
-        responseBody = response.body();
+        try {
+            call = client.newCall(request);
+            response = call.execute();
+            responseBody = response.body();
+        } catch (Exception e) {
+            if (avatarKey != null) {
+                AvatarUrlsCache.put(avatarKey);
+            }
+            throw e;
+        }
         if (!response.isSuccessful()) {
             // if (this this a avatar URL) && (this URL is cacheable)
             if (avatarKey != null && CacheStrategy.isCacheable(response, request)) {

@@ -1,10 +1,10 @@
-package me.ykrank.s1next.data.api.model;
+package me.ykrank.s1next.data.api.model.search;
 
 /**
  * Created by ykrank on 2016/10/18.
  */
 
-public class ForumSearchResult {
+public class ForumSearchResult extends SearchResult {
 
     private String content;
 
