@@ -1,10 +1,15 @@
 package me.ykrank.s1next.binding;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.ColorInt;
+import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +35,23 @@ import me.ykrank.s1next.widget.glide.viewtarget.ViewBackgroundTarget;
  */
 public final class ViewBindingAdapter {
     private ViewBindingAdapter() {
+    }
+
+    @BindingAdapter("backTint")
+    public static void setBackgroundTint(View view, ColorStateList colorStateList) {
+        Drawable originalDrawable = view.getBackground();
+        if (originalDrawable == null) {
+            return;
+        }
+        Drawable tintDrawable = DrawableCompat.wrap(originalDrawable).mutate();
+        DrawableCompat.setTintList(tintDrawable, colorStateList);
+        ViewCompat.setBackground(view, tintDrawable);
+    }
+
+    @BindingAdapter("backTintColor")
+    public static void setBackgroundTint(View view, @ColorInt int tintColor) {
+        ColorStateList colorStateList = ColorStateList.valueOf(tintColor);
+        setBackgroundTint(view, colorStateList);
     }
 
     @BindingAdapter("marginEnd")
