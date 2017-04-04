@@ -274,11 +274,10 @@ public final class Post implements Cloneable, SameItem {
         Matcher matcher = pattern.matcher(reply);
         if (matcher.find()) {
             String quote = matcher.group(0);
-            pattern = Pattern.compile("<font color=\"#999999\">.*?发表于");
+            pattern = Pattern.compile("<font color=\"#999999\">(.+?) 发表于");
             matcher = pattern.matcher(quote);
             if (matcher.find()) {
-                String rawName = matcher.group(0);
-                name = rawName.substring(22, rawName.length() - 4);
+                name = matcher.group(1);
             }
         }
         return name;
