@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/spacing_normal"
                     android:layout_marginRight="@dimen/spacing_normal"
-                    android:text="@{String.valueOf(model.info.totalScore)}"
+                    android:text="@{model.info.totalScore}"
                     tools:text="10" />
             </LinearLayout>
         </LinearLayout>

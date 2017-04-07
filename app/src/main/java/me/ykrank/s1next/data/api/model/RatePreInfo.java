@@ -27,9 +27,9 @@ public class RatePreInfo implements Parcelable {
     private String pid;
     private String refer;
     private String handleKey;
-    private int minScore;
-    private int maxScore;
-    private int totalScore;
+    private String minScore;
+    private String maxScore;
+    private String totalScore;
     private List<String> reasons;
     private boolean checked;
     private boolean disabled;
@@ -46,9 +46,9 @@ public class RatePreInfo implements Parcelable {
         pid = in.readString();
         refer = in.readString();
         handleKey = in.readString();
-        minScore = in.readInt();
-        maxScore = in.readInt();
-        totalScore = in.readInt();
+        minScore = in.readString();
+        maxScore = in.readString();
+        totalScore = in.readString();
         reasons = in.createStringArrayList();
         checked = in.readByte() != 0;
         disabled = in.readByte() != 0;
@@ -99,9 +99,9 @@ public class RatePreInfo implements Parcelable {
             Elements scoreElements = elements.get(1).children();
             String minMaxScoreString = scoreElements.get(2).text().trim();
             String[] splitResult = minMaxScoreString.split("~");
-            info.setMinScore(Integer.valueOf(splitResult[0].trim()));
-            info.setMaxScore(Integer.valueOf(splitResult[1].trim()));
-            info.setTotalScore(Integer.valueOf(scoreElements.get(3).text().trim()));
+            info.setMinScore(splitResult[0].trim());
+            info.setMaxScore(splitResult[1].trim());
+            info.setTotalScore(scoreElements.get(3).text().trim());
             //reasons
             List<String> reasons = new ArrayList<>();
             elements = document.select("#reasonselect>li");
@@ -165,27 +165,27 @@ public class RatePreInfo implements Parcelable {
         this.handleKey = handleKey;
     }
 
-    public int getMinScore() {
+    public String getMinScore() {
         return minScore;
     }
 
-    public void setMinScore(int minScore) {
+    public void setMinScore(String minScore) {
         this.minScore = minScore;
     }
 
-    public int getMaxScore() {
+    public String getMaxScore() {
         return maxScore;
     }
 
-    public void setMaxScore(int maxScore) {
+    public void setMaxScore(String maxScore) {
         this.maxScore = maxScore;
     }
 
-    public int getTotalScore() {
+    public String getTotalScore() {
         return totalScore;
     }
 
-    public void setTotalScore(int totalScore) {
+    public void setTotalScore(String totalScore) {
         this.totalScore = totalScore;
     }
 
@@ -219,7 +219,7 @@ public class RatePreInfo implements Parcelable {
 
     public void setScoreChoices() {
         List<String> list = new ArrayList<>();
-        for (int i = minScore; i <= maxScore; i++) {
+        for (int i = Float.valueOf(minScore).intValue(); i <= Float.valueOf(maxScore); i++) {
             if (i != 0) {
                 list.add(String.valueOf(i));
             }
@@ -240,16 +240,16 @@ public class RatePreInfo implements Parcelable {
         if (this == o) return true;
         if (!(o instanceof RatePreInfo)) return false;
         RatePreInfo that = (RatePreInfo) o;
-        return minScore == that.minScore &&
-                maxScore == that.maxScore &&
-                totalScore == that.totalScore &&
-                checked == that.checked &&
+        return checked == that.checked &&
                 disabled == that.disabled &&
                 Objects.equal(formHash, that.formHash) &&
                 Objects.equal(tid, that.tid) &&
                 Objects.equal(pid, that.pid) &&
                 Objects.equal(refer, that.refer) &&
                 Objects.equal(handleKey, that.handleKey) &&
+                Objects.equal(minScore, that.minScore) &&
+                Objects.equal(maxScore, that.maxScore) &&
+                Objects.equal(totalScore, that.totalScore) &&
                 Objects.equal(reasons, that.reasons) &&
                 Objects.equal(scoreChoices, that.scoreChoices) &&
                 Objects.equal(alertError, that.alertError);
@@ -291,9 +291,9 @@ public class RatePreInfo implements Parcelable {
         dest.writeString(pid);
         dest.writeString(refer);
         dest.writeString(handleKey);
-        dest.writeInt(minScore);
-        dest.writeInt(maxScore);
-        dest.writeInt(totalScore);
+        dest.writeString(minScore);
+        dest.writeString(maxScore);
+        dest.writeString(totalScore);
         dest.writeStringList(reasons);
         dest.writeByte((byte) (checked ? 1 : 0));
         dest.writeByte((byte) (disabled ? 1 : 0));
