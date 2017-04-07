@@ -24,8 +24,11 @@ public final class ThreadAdapterDelegate extends BaseAdapterDelegate<Thread, Thr
     @Inject
     ThemeManager mThemeManager;
 
-    public ThreadAdapterDelegate(Context context) {
+    private final String forumId;
+
+    public ThreadAdapterDelegate(Context context, String forumId) {
         super(context);
+        this.forumId = forumId;
 
         App.getPrefComponent().inject(this);
     }
@@ -45,6 +48,7 @@ public final class ThreadAdapterDelegate extends BaseAdapterDelegate<Thread, Thr
         // because theme changes only when Activity recreated
         binding.setUserViewModel(mUserViewModel);
         binding.setThemeManager(mThemeManager);
+        binding.setForumId(forumId);
         binding.setThreadViewModel(new ThreadViewModel());
 
         return new BindingViewHolder(binding);

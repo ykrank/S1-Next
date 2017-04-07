@@ -10,7 +10,7 @@ public class ApiForum {
 
     static final String URL_FORUM = "index.php?module=forumindex";
 
-    static final String URL_THREAD_LIST = "index.php?module=forumdisplay&tpp=" + Api.THREADS_PER_PAGE;
+    static final String URL_THREAD_LIST = "index.php?module=forumdisplay&version=4&tpp=" + Api.THREADS_PER_PAGE;
     static final String URL_POST_LIST = "index.php?module=viewthread&ppp=" + Api.POSTS_PER_PAGE;
 
     /**

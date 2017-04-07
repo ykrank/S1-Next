@@ -1,21 +1,29 @@
 package me.ykrank.s1next.data.api.model.collection;
 
 import android.support.annotation.Nullable;
+import android.support.v4.util.ArrayMap;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Objects;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import me.ykrank.s1next.data.api.model.Account;
 import me.ykrank.s1next.data.api.model.Forum;
 import me.ykrank.s1next.data.api.model.Thread;
+import me.ykrank.s1next.data.api.model.ThreadType;
 import me.ykrank.s1next.data.db.BlackListDbWrapper;
 import me.ykrank.s1next.data.db.ThreadDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.BlackList;
 import me.ykrank.s1next.data.db.dbmodel.DbThread;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.LooperUtil;
 
 @SuppressWarnings("UnusedDeclaration")
@@ -25,11 +33,42 @@ public final class Threads extends Account {
     @JsonProperty("forum")
     private Thread.ThreadListInfo threadListInfo;
 
-    @JsonProperty("forum_threadlist")
+    @JsonIgnore
     private List<Thread> threadList;
 
     @JsonProperty("sublist")
     private List<Forum> subForumList;
+
+    @JsonIgnore
+    private List<ThreadType> threadTypes;
+
+    public Threads() {
+    }
+
+    @JsonCreator
+    public Threads(@JsonProperty("threadtypes") JsonNode typesNode,
+                   @JsonProperty("forum_threadlist") List<Thread> threadList) {
+        List<ThreadType> threadTypes = new ArrayList<>();
+        try {
+            ArrayMap<String, String> typeMap = new ArrayMap<>();
+            Iterator<Map.Entry<String, JsonNode>> fields = typesNode.get("types").fields();
+            while (fields.hasNext()) {
+                Map.Entry<String, JsonNode> entry = fields.next();
+                ThreadType type = new ThreadType(entry.getKey(), entry.getValue().asText());
+                threadTypes.add(type);
+                typeMap.put(type.getTypeId(), type.getTypeName());
+            }
+            if (threadList != null) {
+                for (Thread thread : threadList) {
+                    thread.setTypeName(typeMap.get(thread.getTypeId()));
+                }
+            }
+        } catch (Exception e) {
+            L.report(e);
+        }
+        this.threadTypes = threadTypes;
+        this.threadList = getFilterThreadList(threadList);
+    }
 
     /**
      * @see #getFilterThread(Thread)
@@ -57,7 +96,7 @@ public final class Threads extends Account {
         LooperUtil.enforceOnWorkThread();
         Thread nThread = oThread;
         BlackListDbWrapper blackListWrapper = BlackListDbWrapper.getInstance();
-        switch (blackListWrapper.getForumFlag(oThread.getAuthorid(), oThread.getAuthor())) {
+        switch (blackListWrapper.getForumFlag(oThread.getAuthorId(), oThread.getAuthor())) {
             case BlackList.DEL_FORUM:
                 nThread = null;
                 break;
@@ -107,6 +146,14 @@ public final class Threads extends Account {
         this.subForumList = subForumList;
     }
 
+    public List<ThreadType> getThreadTypes() {
+        return threadTypes;
+    }
+
+    public void setThreadTypes(List<ThreadType> threadTypes) {
+        this.threadTypes = threadTypes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -115,11 +162,12 @@ public final class Threads extends Account {
         Threads threads = (Threads) o;
         return Objects.equal(threadListInfo, threads.threadListInfo) &&
                 Objects.equal(threadList, threads.threadList) &&
-                Objects.equal(subForumList, threads.subForumList);
+                Objects.equal(subForumList, threads.subForumList) &&
+                Objects.equal(threadTypes, threads.threadTypes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(super.hashCode(), threadListInfo, threadList, subForumList);
+        return Objects.hashCode(super.hashCode(), threadListInfo, threadList, subForumList, threadTypes);
     }
 }

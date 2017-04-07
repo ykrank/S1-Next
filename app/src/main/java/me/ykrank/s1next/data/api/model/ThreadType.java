@@ -1,8 +1,10 @@
 package me.ykrank.s1next.data.api.model;
 
+import android.support.annotation.NonNull;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +112,19 @@ public final class ThreadType implements Parcelable {
         int result = typeId != null ? typeId.hashCode() : 0;
         result = 31 * result + (typeName != null ? typeName.hashCode() : 0);
         return result;
+    }
+
+    @Nullable
+    public static String nameOf(@Nullable List<ThreadType> types, @NonNull String typeId) {
+        if (types == null || types.isEmpty()) {
+            return null;
+        }
+        for (ThreadType type : types) {
+            if (TextUtils.equals(type.getTypeId(), typeId)) {
+                return type.getTypeName();
+            }
+        }
+        return null;
     }
 
     @Override

@@ -18,34 +18,45 @@
         <variable
             name="themeManager"
             type="me.ykrank.s1next.data.pref.ThemeManager" />
+
+        <variable
+            name="forumId"
+            type="String" />
     </data>
 
-    <!-- May change this TextView padding or height after because we
-    can't find any spec in the material design guidelines whose line count
-    is not sure (less than 4) and each line are all primary.
-    We set top/bottom padding to 14.5dp because `includeFontPadding`
-    doesn't remove all extra space. -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:includeFontPadding="false"
-        android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
-        android:maxLines="@integer/list_max_line"
-        android:paddingBottom="14.5dp"
-        android:paddingEnd="@dimen/item_padding"
-        android:paddingLeft="@dimen/item_padding"
-        android:paddingRight="@dimen/item_padding"
-        android:paddingStart="@dimen/item_padding"
-        android:paddingTop="14.5dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:onceClickDisposable="@{threadViewModel.subscription}"
-        app:onLongClickListener="@{threadViewModel.goToThisThreadLastPage()}"
-        app:themeManager="@{themeManager}"
-        app:thread="@{threadViewModel.thread}"
-        app:user="@{userViewModel.user}" />
+        android:orientation="vertical">
+        <!-- May change this TextView padding or height after because we
+        can't find any spec in the material design guidelines whose line count
+        is not sure (less than 4) and each line are all primary.
+        We set top/bottom padding to 14.5dp because `includeFontPadding`
+        doesn't remove all extra space. -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
+            android:maxLines="@integer/list_max_line"
+            android:padding="@dimen/item_padding_small"
+            android:paddingBottom="6.5dp"
+            android:paddingTop="6.5dp"
+            android:textAppearance="@style/TextAppearance.ThreadList.Title"
+            app:forumId="@{forumId}"
+            app:onLongClickListener="@{threadViewModel.goToThisThreadLastPage()}"
+            app:onceClickDisposable="@{threadViewModel.subscription}"
+            app:themeManager="@{themeManager}"
+            app:thread="@{threadViewModel.thread}"
+            app:user="@{userViewModel.user}" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/grey_500" />
+    </LinearLayout>
 </layout>

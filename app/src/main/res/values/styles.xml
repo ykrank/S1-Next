@@ -59,4 +59,15 @@
         <item name="android:windowExitAnimation">@anim/activity_exit</item>
     </style>
 
+    <style name="TextAppearance.ThreadList.Title" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textSize">@dimen/text_size_thread_list_title</item>
+    </style>
+
+    <style name="TextAppearance.ThreadList.Title.Hint">
+        <item name="android:textSize">@dimen/text_size_thread_list_title_hint</item>
+    </style>
+
+    <style name="TextAppearance.ThreadList.Title.Colored" parent="TextAppearance.ThreadList.Title.Hint">
+        <item name="android:textColor">?attr/colorAccent</item>
+    </style>
 </resources>

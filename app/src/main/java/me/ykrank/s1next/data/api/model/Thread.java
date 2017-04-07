@@ -19,18 +19,7 @@ import me.ykrank.s1next.util.L;
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class Thread implements Parcelable, Cloneable, SameItem {
-    public static final Parcelable.Creator<Thread> CREATOR = new Parcelable.Creator<Thread>() {
 
-        @Override
-        public Thread createFromParcel(Parcel source) {
-            return new Thread(source);
-        }
-
-        @Override
-        public Thread[] newArray(int i) {
-            return new Thread[i];
-        }
-    };
     private static final String TAG = Thread.class.getSimpleName();
     @JsonProperty("tid")
     private String id;
@@ -50,14 +39,20 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
     @JsonProperty("author")
     private String author;
 
-    @JsonProperty("authorid")
-    private int authorid;
+    @JsonProperty("authorId")
+    private int authorId;
+
+    @JsonProperty("displayorder")
+    private int displayOrder;
+
+    @JsonProperty("typeid")
+    private String typeId;
 
     @JsonProperty("fid")
     private String fid;
 
-    @JsonProperty("typeid")
-    private String typeId;
+    @JsonIgnore
+    private String typeName;
 
     @JsonIgnore
     private boolean hide = false;
@@ -70,6 +65,18 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
     public Thread() {
     }
 
+    protected Thread(Parcel in) {
+        id = in.readString();
+        title = in.readString();
+        replies = in.readString();
+        permission = in.readInt();
+        author = in.readString();
+        authorId = in.readInt();
+        displayOrder = in.readInt();
+        typeId = in.readString();
+        typeName = in.readString();
+        hide = in.readByte() != 0;
+        lastReplyCount = in.readInt();
     private Thread(Parcel source) {
         id = source.readString();
         title = source.readString();
@@ -82,6 +89,18 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         hide = source.readByte() != 0;
         lastReplyCount = source.readInt();
     }
+
+    public static final Creator<Thread> CREATOR = new Creator<Thread>() {
+        @Override
+        public Thread createFromParcel(Parcel in) {
+            return new Thread(in);
+        }
+
+        @Override
+        public Thread[] newArray(int size) {
+            return new Thread[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -124,12 +143,12 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         this.author = author;
     }
 
-    public int getAuthorid() {
-        return authorid;
+    public int getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthorid(int authorid) {
-        this.authorid = authorid;
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
     }
 
     public String getFid() {
@@ -164,9 +183,8 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         this.lastReplyCount = lastReplyCount;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getTypeId() {
+        return typeId;
     }
 
     @Override
@@ -183,18 +201,39 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         dest.writeInt(lastReplyCount);
     }
 
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public int getDisplayOrder() {
+        return displayOrder;
+    }
+
+    public void setDisplayOrder(int displayOrder) {
+        this.displayOrder = displayOrder;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Thread)) return false;
         Thread thread = (Thread) o;
         return permission == thread.permission &&
-                authorid == thread.authorid &&
+                authorId == thread.authorId &&
+                displayOrder == thread.displayOrder &&
+                hide == thread.hide &&
                 hide == thread.hide &&
                 lastReplyCount == thread.lastReplyCount &&
                 Objects.equal(id, thread.id) &&
                 Objects.equal(title, thread.title) &&
                 Objects.equal(replies, thread.replies) &&
+                Objects.equal(author, thread.author) &&
+                Objects.equal(typeId, thread.typeId) &&
+                Objects.equal(typeName, thread.typeName);
                 Objects.equal(author, thread.author) &&
                 Objects.equal(fid, thread.fid) &&
                 Objects.equal(typeId, thread.typeId);
@@ -226,7 +265,7 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         return Objects.equal(id, thread.id) &&
                 Objects.equal(title, thread.title) &&
                 Objects.equal(author, thread.author) &&
-                Objects.equal(authorid, thread.authorid);
+                Objects.equal(authorId, thread.authorId);
     }
 
     public int getReliesCount() {
@@ -235,6 +274,26 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         } catch (NumberFormatException e) {
             return 0;
         }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(title);
+        dest.writeString(replies);
+        dest.writeInt(permission);
+        dest.writeString(author);
+        dest.writeInt(authorId);
+        dest.writeInt(displayOrder);
+        dest.writeString(typeId);
+        dest.writeString(typeName);
+        dest.writeByte((byte) (hide ? 1 : 0));
+        dest.writeInt(lastReplyCount);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

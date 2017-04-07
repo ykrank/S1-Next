@@ -7,8 +7,13 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.text.style.TextAppearanceSpan;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.widget.TextView;
@@ -86,19 +91,23 @@ public final class TextViewBindingAdapter {
         }
     }
 
-    @BindingAdapter({"themeManager", "thread", "user"})
-    public static void setThread(TextView textView, ThemeManager themeManager, Thread thread, User user) {
-        textView.setText(thread.getTitle());
+    @BindingAdapter({"themeManager", "forumId", "thread", "user"})
+    public static void setThread(TextView textView, ThemeManager themeManager, String forumId, Thread thread, User user) {
+        SpannableStringBuilder builder = new SpannableStringBuilder(thread.getTitle());
+        TextAppearanceSpan hintSpan = new TextAppearanceSpan(textView.getContext(), R.style.TextAppearance_ThreadList_Title_Hint);
         if (thread.getPermission() != 0) {
+            Spannable permSpan = new SpannableString(String.format("[%s%s]", textView.getContext().getString(R.string.thread_permission_hint),
+                    thread.getPermission()));
+            permSpan.setSpan(hintSpan, 0, permSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             // add thread's permission hint
-            ViewUtil.concatWithTwoSpacesForRtlSupport(textView,
-                    "[" + textView.getContext().getString(R.string.thread_permission_hint)
-                            + thread.getPermission() + "]");
+            builder.append(permSpan);
         }
+
         if (thread.isHide()) {
-            // add thread's permission hint
-            ViewUtil.concatWithTwoSpacesForRtlSupport(textView,
-                    "[" + textView.getContext().getString(R.string.user_in_blacklist) + "]");
+            Spannable blacklistSpan = new SpannableString(String.format("[%s]", textView.getContext().getString(R.string.user_in_blacklist)));
+            blacklistSpan.setSpan(hintSpan, 0, blacklistSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            // add thread's blacklist hint
+            builder.append(blacklistSpan);
             textView.setTextColor(Color.GRAY);
         } else {
             textView.setTextColor(ResourceUtil.getTextColorPrimary(textView.getContext()));
@@ -106,6 +115,20 @@ public final class TextViewBindingAdapter {
         // disable TextView if user has no permission to access this thread
         boolean hasPermission = user.getPermission() >= thread.getPermission();
         textView.setEnabled(hasPermission);
+
+        //add typename
+        if (!TextUtils.isEmpty(thread.getTypeName())) {
+            Spannable typeSpan = new SpannableString(String.format("[%s] ", thread.getTypeName()));
+            typeSpan.setSpan(hintSpan, 0, typeSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.insert(0, typeSpan);
+        } else if ("0".equals(thread.getTypeId()) && "75".equals(forumId) && thread.getDisplayOrder() == 0) {
+            //add 泥潭
+            Spannable typeSpan = new SpannableString("[泥潭] ");
+            typeSpan.setSpan(hintSpan, 0, typeSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.insert(0, typeSpan);
+        }
+
+        textView.setText(builder);
 
         // add thread's replies count to each thread
         String repliesStr = thread.getReplies();

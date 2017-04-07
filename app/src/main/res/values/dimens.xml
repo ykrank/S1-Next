@@ -108,5 +108,6 @@
     <dimen name="quicksidebar_top">-64dp</dimen>
     <dimen name="quicksidebar_tip_size">72dp</dimen>
 
-
+    <dimen name="text_size_thread_list_title">16sp</dimen>
+    <dimen name="text_size_thread_list_title_hint">14sp</dimen>
 </resources>
