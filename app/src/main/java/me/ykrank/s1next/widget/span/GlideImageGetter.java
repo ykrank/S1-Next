@@ -107,7 +107,7 @@ public final class GlideImageGetter
                             L.report(e);
                             // append domain to this url
                             Glide.with(mContext)
-                                    .load(Api.BASE_URL + finalUrl)
+                                    .load(Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX + finalUrl)
                                     .transform(sizeMultiplierBitmapTransformation)
                                     .into(imageGetterViewTarget);
 
