@@ -24,4 +24,6 @@ public class ApiForum {
     static final String URL_REPLY = "index.php?module=sendreply&replysubmit=yes";
 
     static final String URL_NEW_THREAD = "index.php?module=newthread&extra=&topicsubmit=yes";
+
+    static final String URL_EDIT_POST = Api.BASE_URL + "forum.php?mod=post&action=edit&extra=&editsubmit=yes&inajax=yes";
 }
