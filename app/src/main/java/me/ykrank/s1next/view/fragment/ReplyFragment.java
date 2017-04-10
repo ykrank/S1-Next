@@ -66,7 +66,7 @@ public final class ReplyFragment extends BasePostFragment {
         }
 
         ReplyRequestDialogFragment.newInstance(mThreadId, mQuotePostId,
-                stringBuilder.toString()).show(getFragmentManager(),
+                stringBuilder.toString(), cacheKey).show(getFragmentManager(),
                 ReplyRequestDialogFragment.TAG);
 
         return true;

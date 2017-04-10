@@ -166,13 +166,15 @@ public abstract class BasePostFragment extends BaseFragment {
         if (!isContentEmpty()) {
             final String cacheString = buildCacheString();
             final String key = getCacheKey();
-            mCacheDisposable = Single.just(cacheString)
-                    .map(s -> {
-                        EditorDiskCache.put(key, s);
-                        return s;
-                    })
-                    .compose(RxJavaUtil.iOSingleTransformer())
-                    .subscribe(L::i, L::report);
+            if (!TextUtils.isEmpty(cacheString)) {
+                mCacheDisposable = Single.just(cacheString)
+                        .map(s -> {
+                            EditorDiskCache.put(key, s);
+                            return s;
+                        })
+                        .compose(RxJavaUtil.iOSingleTransformer())
+                        .subscribe(L::i, L::report);
+            }
         }
     }
 
@@ -208,6 +210,9 @@ public abstract class BasePostFragment extends BaseFragment {
 
     protected abstract boolean OnMenuSendClick();
 
+    /**
+     * Key of EditorDiskCache cache
+     */
     public abstract String getCacheKey();
 
     /**

@@ -7,6 +7,7 @@ import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Result;
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
+import me.ykrank.s1next.widget.EditorDiskCache;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
@@ -21,16 +22,21 @@ public final class NewThreadRequestDialogFragment extends ProgressDialogFragment
     private static final String ARG_TYPE_ID = "type_id";
     private static final String ARG_TITLE = "title";
     private static final String ARG_MESSAGE = "message";
+    private static final String ARG_CACHE_KEY = "cache_key";
 
     private static final String STATUS_NEW_THREAD_SUCCESS = "post_newthread_succeed";
 
-    public static NewThreadRequestDialogFragment newInstance(int forumId, String typeId, String title, String message) {
+    private String cacheKey;
+
+    public static NewThreadRequestDialogFragment newInstance(int forumId, String typeId, String title,
+                                                             String message, String cacheKey) {
         NewThreadRequestDialogFragment fragment = new NewThreadRequestDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_FORUM_ID, forumId);
         bundle.putString(ARG_TYPE_ID, typeId);
         bundle.putString(ARG_TITLE, title);
         bundle.putString(ARG_MESSAGE, message);
+        bundle.putString(ARG_CACHE_KEY, cacheKey);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -58,6 +64,7 @@ public final class NewThreadRequestDialogFragment extends ProgressDialogFragment
     protected void onNext(AccountResultWrapper data) {
         Result result = data.getResult();
         if (result.getStatus().equals(STATUS_NEW_THREAD_SUCCESS)) {
+            EditorDiskCache.remove(cacheKey);
             showShortTextAndFinishCurrentActivity(result.getMessage());
         } else {
             showShortText(result.getMessage());

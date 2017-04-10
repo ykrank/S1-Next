@@ -129,7 +129,7 @@ public final class NewThreadFragment extends BasePostFragment {
             return true;
         }
 
-        NewThreadRequestDialogFragment.newInstance(mForumId, typeId, title, message)
+        NewThreadRequestDialogFragment.newInstance(mForumId, typeId, title, message, cacheKey)
                 .show(getFragmentManager(), ReplyRequestDialogFragment.TAG);
 
         return true;

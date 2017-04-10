@@ -56,7 +56,7 @@ public final class NewPmFragment extends BasePostFragment {
 
     @Override
     protected boolean OnMenuSendClick() {
-        PmRequestDialogFragment.newInstance(mToUid, mReplyView.getText().toString()).show(getFragmentManager(),
+        PmRequestDialogFragment.newInstance(mToUid, mReplyView.getText().toString(), cacheKey).show(getFragmentManager(),
                 ReplyRequestDialogFragment.TAG);
 
         return true;

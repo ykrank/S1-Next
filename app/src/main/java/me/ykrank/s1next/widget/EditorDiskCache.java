@@ -31,7 +31,7 @@ import me.ykrank.s1next.util.L;
 public enum EditorDiskCache {
     INSTANCE;
 
-    private static final int MEMORY_CACHE_MAX_NUMBER = 16;
+    private static final int MEMORY_CACHE_MAX_NUMBER = 4;
     private static final String DISK_CACHE_DIRECTORY = "editor_disk_cache";
     private static final long DISK_CACHE_MAX_SIZE = 100 * 1000; // 100KB
 
