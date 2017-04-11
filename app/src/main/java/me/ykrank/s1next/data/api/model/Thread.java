@@ -53,6 +53,12 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
     @JsonProperty("authorid")
     private int authorid;
 
+    @JsonProperty("fid")
+    private String fid;
+
+    @JsonProperty("typeid")
+    private String typeId;
+
     @JsonIgnore
     private boolean hide = false;
     /**
@@ -71,6 +77,8 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         permission = source.readInt();
         author = source.readString();
         authorid = source.readInt();
+        fid = source.readString();
+        typeId = source.readString();
         hide = source.readByte() != 0;
         lastReplyCount = source.readInt();
     }
@@ -124,6 +132,22 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         this.authorid = authorid;
     }
 
+    public String getFid() {
+        return fid;
+    }
+
+    public void setFid(String fid) {
+        this.fid = fid;
+    }
+
+    public String getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
+    }
+
     public boolean isHide() {
         return hide;
     }
@@ -153,6 +177,8 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         dest.writeInt(permission);
         dest.writeString(author);
         dest.writeInt(authorid);
+        dest.writeString(fid);
+        dest.writeString(typeId);
         dest.writeByte((byte) (hide ? 1 : 0));
         dest.writeInt(lastReplyCount);
     }
@@ -160,21 +186,23 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Thread)) return false;
         Thread thread = (Thread) o;
         return permission == thread.permission &&
                 authorid == thread.authorid &&
-                lastReplyCount == thread.lastReplyCount &&
                 hide == thread.hide &&
+                lastReplyCount == thread.lastReplyCount &&
                 Objects.equal(id, thread.id) &&
                 Objects.equal(title, thread.title) &&
                 Objects.equal(replies, thread.replies) &&
-                Objects.equal(author, thread.author);
+                Objects.equal(author, thread.author) &&
+                Objects.equal(fid, thread.fid) &&
+                Objects.equal(typeId, thread.typeId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, title, replies, permission, author, authorid, lastReplyCount, hide);
+        return Objects.hashCode(id, title, replies, permission, author, authorid, fid, typeId, hide, lastReplyCount);
     }
 
     @Override

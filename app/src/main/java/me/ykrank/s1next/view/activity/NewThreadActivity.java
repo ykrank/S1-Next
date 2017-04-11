@@ -10,7 +10,7 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.view.fragment.NewThreadFragment;
 
 /**
- * An Activity which used to send a reply.
+ * An Activity to new a thread.
  */
 public final class NewThreadActivity extends BaseActivity {
 

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.PopupMenu;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.URLSpan;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,8 +16,10 @@ import android.view.View;
 import org.apache.commons.lang3.StringUtils;
 
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
+import me.ykrank.s1next.data.event.EditPostEvent;
 import me.ykrank.s1next.data.event.QuoteEvent;
 import me.ykrank.s1next.data.event.RateEvent;
 import me.ykrank.s1next.util.ActivityUtils;
@@ -32,9 +35,12 @@ public final class PostViewModel {
     public final ObservableField<Thread> thread = new ObservableField<>();
     public final ObservableField<CharSequence> floor = new ObservableField<>();
     private final EventBus eventBus;
+    private final User user;
 
-    public PostViewModel(EventBus eventBus) {
+
+    public PostViewModel(EventBus eventBus, User user) {
         this.eventBus = eventBus;
+        this.user = user;
         post.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable observable, int i) {
@@ -109,11 +115,21 @@ public final class PostViewModel {
                 case R.id.menu_popup_rate:
                     onRateClick(v);
                     return true;
+                case R.id.menu_popup_edit:
+                    onEditClick(v);
+                    return true;
                 default:
                     return false;
             }
         });
         popup.inflate(R.menu.popup_post_floor);
+
+        MenuItem editPostMenuItem = popup.getMenu().findItem(R.id.menu_popup_edit);
+        if (user.isLogged() && TextUtils.equals(user.getUid(), post.get().getAuthorId())) {
+            editPostMenuItem.setVisible(true);
+        } else {
+            editPostMenuItem.setVisible(false);
+        }
         popup.show();
     }
 
@@ -123,5 +139,9 @@ public final class PostViewModel {
 
     public void onRateClick(View v) {
         eventBus.post(new RateEvent(thread.get().getId(), post.get().getId()));
+    }
+
+    public void onEditClick(View v) {
+        eventBus.post(new EditPostEvent(post.get(), thread.get()));
     }
 }

@@ -132,6 +132,11 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".view.activity.EditPostActivity"
+            android:label="@string/title_edit_post"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".view.activity.GalleryActivity"
             android:theme="@style/Theme.Gallery" />
 

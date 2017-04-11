@@ -1,5 +1,7 @@
 package me.ykrank.s1next.data.api.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ import me.ykrank.s1next.util.LooperUtil;
 /**
  * Created by ykrank on 2016/7/31 0031.
  */
-public final class ThreadType {
+public final class ThreadType implements Parcelable {
     private String typeId;
     private String typeName;
 
@@ -21,6 +23,23 @@ public final class ThreadType {
         this.typeId = typeId;
         this.typeName = typeName;
     }
+
+    protected ThreadType(Parcel in) {
+        typeId = in.readString();
+        typeName = in.readString();
+    }
+
+    public static final Creator<ThreadType> CREATOR = new Creator<ThreadType>() {
+        @Override
+        public ThreadType createFromParcel(Parcel in) {
+            return new ThreadType(in);
+        }
+
+        @Override
+        public ThreadType[] newArray(int size) {
+            return new ThreadType[size];
+        }
+    };
 
     /**
      * Extracts {@link Quote} from XML string.
@@ -91,5 +110,16 @@ public final class ThreadType {
         int result = typeId != null ? typeId.hashCode() : 0;
         result = 31 * result + (typeName != null ? typeName.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(typeId);
+        dest.writeString(typeName);
     }
 }

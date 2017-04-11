@@ -37,7 +37,7 @@ import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
- * A Fragment shows {@link EditText} to let the user enter reply.
+ * A Fragment shows {@link EditText} to let the user edit thread.
  */
 public final class NewThreadFragment extends BasePostFragment {
 
@@ -135,6 +135,7 @@ public final class NewThreadFragment extends BasePostFragment {
         return true;
     }
 
+    @Nullable
     @Override
     public String getCacheKey() {
         return cacheKey;

@@ -151,7 +151,7 @@ public abstract class BasePostFragment extends BaseFragment {
 
         RxJavaUtil.disposeIfNotNull(mCacheDisposable);
         mCacheDisposable = null;
-        if (TextUtils.isEmpty(mReplyView.getText())) {
+        if (!TextUtils.isEmpty(getCacheKey()) && TextUtils.isEmpty(mReplyView.getText())) {
             mCacheDisposable = resumeFromCache(Single.just(getCacheKey())
                     .map(EditorDiskCache::get));
         }
@@ -163,7 +163,7 @@ public abstract class BasePostFragment extends BaseFragment {
         RxJavaUtil.disposeIfNotNull(mEmotionClickDisposable);
         RxJavaUtil.disposeIfNotNull(mCacheDisposable);
         mCacheDisposable = null;
-        if (!isContentEmpty()) {
+        if (!TextUtils.isEmpty(getCacheKey()) && !isContentEmpty()) {
             final String cacheString = buildCacheString();
             final String key = getCacheKey();
             if (!TextUtils.isEmpty(cacheString)) {
@@ -211,8 +211,9 @@ public abstract class BasePostFragment extends BaseFragment {
     protected abstract boolean OnMenuSendClick();
 
     /**
-     * Key of EditorDiskCache cache
+     * Key of EditorDiskCache cache. not save/restore if return null
      */
+    @Nullable
     public abstract String getCacheKey();
 
     /**
@@ -225,6 +226,7 @@ public abstract class BasePostFragment extends BaseFragment {
     }
 
     @UiThread
+    @Nullable
     public Disposable resumeFromCache(Single<String> cache) {
         return cache.compose(RxJavaUtil.iOSingleTransformer())
                 .subscribe(mReplyView::setText, L::report);

@@ -12,4 +12,10 @@
         android:orderInCategory="31"
         android:title="@string/rate"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_popup_edit"
+        android:orderInCategory="31"
+        android:title="@string/menu_edit"
+        app:showAsAction="ifRoom" />
 </menu>

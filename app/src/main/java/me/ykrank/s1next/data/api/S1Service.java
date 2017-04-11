@@ -86,15 +86,18 @@ public interface S1Service {
 
     @FormUrlEncoded
     @POST(ApiForum.URL_NEW_THREAD)
-    Observable<AccountResultWrapper> newThread(@Query("fid") int fid, @Field("formhash") String authenticityToken, @Field("posttime") long postTime, @Field("typeid") String typeId,
-                                               @Field("subject") String subject, @Field("message") String message, @Field("allownoticeauthor") int allowNoticeAuthor,
-                                               @Field("usesig") int useSign, @Field("save") Integer saveAsDraft);
+    Observable<AccountResultWrapper> newThread(@Query("fid") int fid, @Field("formhash") String authenticityToken, @Field("posttime") long postTime,
+                                               @Field("typeid") String typeId, @Field("subject") String subject, @Field("message") String message,
+                                               @Field("allownoticeauthor") int allowNoticeAuthor, @Field("usesig") int useSign,
+                                               @Field("save") Integer saveAsDraft);
     //endregion
 
     @FormUrlEncoded
     @POST(ApiForum.URL_EDIT_POST)
-    Observable<String> editPost(@Query("fid") int fid, @Field("formhash") String authenticityToken, @Field("posttime") long postTime, @Field("typeid") String typeId,
-                                @Field("subject") String subject, @Field("message") String message, @Field("allownoticeauthor") int allowNoticeAuthor,
+    Observable<String> editPost(@Field("fid") String fid, @Field("tid") String tid, @Field("pid") String pid,
+                                @Field("formhash") String authenticityToken, @Field("posttime") long postTime,
+                                @Field("typeid") String typeId, @Field("subject") String subject,
+                                @Field("message") String message, @Field("allownoticeauthor") int allowNoticeAuthor,
                                 @Field("usesig") int useSign, @Field("save") Integer saveAsDraft);
 
     @FormUrlEncoded

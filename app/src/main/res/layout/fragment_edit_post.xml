@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="me.ykrank.s1next.view.fragment.EditPostFragment">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="host"
+            type="Boolean" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <Spinner
+            android:id="@+id/spinner"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:visibility="@{host?View.VISIBLE:View.GONE}" />
+
+        <EditText
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            android:gravity="start"
+            android:hint="@string/prompt_title"
+            android:imeOptions="flagNoFullscreen"
+            android:inputType="text"
+            android:visibility="@{host?View.VISIBLE:View.GONE}" />
+
+
+        <include
+            android:id="@+id/layout_post"
+            layout="@layout/fragment_post" />
+    </LinearLayout>
+</layout>

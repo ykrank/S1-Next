@@ -72,6 +72,7 @@ public final class ReplyFragment extends BasePostFragment {
         return true;
     }
 
+    @Nullable
     @Override
     public String getCacheKey() {
         return cacheKey;

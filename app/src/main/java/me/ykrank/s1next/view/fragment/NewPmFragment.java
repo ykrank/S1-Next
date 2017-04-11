@@ -2,6 +2,7 @@ package me.ykrank.s1next.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
 
@@ -62,6 +63,7 @@ public final class NewPmFragment extends BasePostFragment {
         return true;
     }
 
+    @Nullable
     @Override
     public String getCacheKey() {
         return cacheKey;

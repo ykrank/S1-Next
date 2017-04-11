@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
@@ -24,6 +25,8 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
 
     @Inject
     EventBus mEventBus;
+    @Inject
+    User mUser;
     @Inject
     GeneralPreferencesManager mGeneralPreferencesManager;
 
@@ -54,7 +57,7 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {
         ItemPostBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_post, parent, false);
-        binding.setPostViewModel(new PostViewModel(mEventBus));
+        binding.setPostViewModel(new PostViewModel(mEventBus, mUser));
 
         //If setTextIsSelectable, then should reset movement
         boolean selectable = mGeneralPreferencesManager.isPostSelectable();

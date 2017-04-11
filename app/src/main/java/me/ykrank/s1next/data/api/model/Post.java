@@ -1,6 +1,8 @@
 package me.ykrank.s1next.data.api.model;
 
 import android.graphics.Color;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.util.SimpleArrayMap;
 
@@ -23,7 +25,7 @@ import me.ykrank.s1next.util.L;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Post implements Cloneable, SameItem {
+public final class Post implements Parcelable, Cloneable, SameItem {
     private static final String TAG = Post.class.getSimpleName();
     private static final SimpleArrayMap<String, String> COLOR_NAME_MAP;
 
@@ -67,6 +69,8 @@ public final class Post implements Cloneable, SameItem {
     private String authorId;
     @JsonProperty("message")
     private String reply;
+    @JsonIgnore
+    private boolean first;
     @JsonProperty("number")
     private String count;
     @JsonProperty("dbdateline")
@@ -83,6 +87,35 @@ public final class Post implements Cloneable, SameItem {
 
     public Post() {
     }
+
+    @JsonCreator
+    public Post(@JsonProperty("first") String first) {
+        this.first = "1".equals(first);
+    }
+
+    protected Post(Parcel in) {
+        id = in.readString();
+        authorName = in.readString();
+        authorId = in.readString();
+        reply = in.readString();
+        first = in.readByte() != 0;
+        count = in.readString();
+        datetime = in.readLong();
+        hide = in.readByte() != 0;
+        remark = in.readString();
+    }
+
+    public static final Creator<Post> CREATOR = new Creator<Post>() {
+        @Override
+        public Post createFromParcel(Parcel in) {
+            return new Post(in);
+        }
+
+        @Override
+        public Post[] newArray(int size) {
+            return new Post[size];
+        }
+    };
 
     /**
      * {@link Color} doesn't support all HTML color names.
@@ -169,6 +202,14 @@ public final class Post implements Cloneable, SameItem {
         this.count = count;
     }
 
+    public boolean isFirst() {
+        return first;
+    }
+
+    public void setFirst(boolean first) {
+        this.first = first;
+    }
+
     public long getDatetime() {
         return datetime;
     }
@@ -203,22 +244,23 @@ public final class Post implements Cloneable, SameItem {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Post)) return false;
         Post post = (Post) o;
-        return Objects.equal(datetime, post.datetime) &&
+        return first == post.first &&
+                datetime == post.datetime &&
+                hide == post.hide &&
                 Objects.equal(id, post.id) &&
                 Objects.equal(authorName, post.authorName) &&
                 Objects.equal(authorId, post.authorId) &&
                 Objects.equal(reply, post.reply) &&
                 Objects.equal(count, post.count) &&
                 Objects.equal(attachmentMap, post.attachmentMap) &&
-                Objects.equal(hide, post.hide) &&
                 Objects.equal(remark, post.remark);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, authorName, authorId, reply, count, datetime, attachmentMap, hide, remark);
+        return Objects.hashCode(id, authorName, authorId, reply, first, count, datetime, attachmentMap, hide, remark);
     }
 
     @Override
@@ -382,6 +424,24 @@ public final class Post implements Cloneable, SameItem {
                 reply = reply + imgTag;
             }
         }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(authorName);
+        dest.writeString(authorId);
+        dest.writeString(reply);
+        dest.writeByte((byte) (first ? 1 : 0));
+        dest.writeString(count);
+        dest.writeLong(datetime);
+        dest.writeByte((byte) (hide ? 1 : 0));
+        dest.writeString(remark);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

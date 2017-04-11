@@ -27,6 +27,7 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.Api;
+import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.api.model.ThreadLink;
 import me.ykrank.s1next.data.api.model.collection.Posts;
@@ -36,6 +37,7 @@ import me.ykrank.s1next.data.db.ThreadDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.DbThread;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
 import me.ykrank.s1next.data.event.BlackListAddEvent;
+import me.ykrank.s1next.data.event.EditPostEvent;
 import me.ykrank.s1next.data.event.PostSelectableChangeEvent;
 import me.ykrank.s1next.data.event.QuickSidebarEnableChangeEvent;
 import me.ykrank.s1next.data.event.QuoteEvent;
@@ -49,6 +51,7 @@ import me.ykrank.s1next.util.LooperUtil;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.util.StringUtil;
+import me.ykrank.s1next.view.activity.EditPostActivity;
 import me.ykrank.s1next.view.activity.NewRateActivity;
 import me.ykrank.s1next.view.activity.ReplyActivity;
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment;
@@ -102,7 +105,7 @@ public final class PostListFragment extends BaseViewPagerFragment
     private Posts.ThreadAttachment mThreadAttachment;
     private MenuItem mMenuThreadAttachment;
 
-    private Disposable quoteDisposable, rateDisposable;
+    private Disposable quoteDisposable, rateDisposable, editDisposable;
     private Disposable blackListAddDisposable;
     private Disposable mReadProgressDisposable;
     private ReadProgress readProgress;
@@ -219,6 +222,14 @@ public final class PostListFragment extends BaseViewPagerFragment
                 .subscribe(event ->
                         startRateActivity(event.getThreadId(), event.getPostId())
                 );
+        editDisposable = mEventBus.get()
+                .ofType(EditPostEvent.class)
+                .subscribe(event -> {
+                            Thread thread = event.getThread();
+                            Post post = event.getPost();
+                            EditPostActivity.startActivityForResultMessage(getActivity(), thread, post, null);
+                        }
+                );
         blackListAddDisposable = mEventBus.get()
                 .ofType(BlackListAddEvent.class)
                 .subscribe(blackListEvent -> {
@@ -251,6 +262,7 @@ public final class PostListFragment extends BaseViewPagerFragment
 
         RxJavaUtil.disposeIfNotNull(quoteDisposable);
         RxJavaUtil.disposeIfNotNull(rateDisposable);
+        RxJavaUtil.disposeIfNotNull(editDisposable);
         RxJavaUtil.disposeIfNotNull(blackListAddDisposable);
         RxJavaUtil.disposeIfNotNull(mReadProgressDisposable);
     }
