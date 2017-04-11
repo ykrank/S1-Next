@@ -74,20 +74,10 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         authorId = in.readInt();
         displayOrder = in.readInt();
         typeId = in.readString();
+        fid = in.readString();
         typeName = in.readString();
         hide = in.readByte() != 0;
         lastReplyCount = in.readInt();
-    private Thread(Parcel source) {
-        id = source.readString();
-        title = source.readString();
-        replies = source.readString();
-        permission = source.readInt();
-        author = source.readString();
-        authorid = source.readInt();
-        fid = source.readString();
-        typeId = source.readString();
-        hide = source.readByte() != 0;
-        lastReplyCount = source.readInt();
     }
 
     public static final Creator<Thread> CREATOR = new Creator<Thread>() {
@@ -183,24 +173,6 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         this.lastReplyCount = lastReplyCount;
     }
 
-    public String getTypeId() {
-        return typeId;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(title);
-        dest.writeString(replies);
-        dest.writeInt(permission);
-        dest.writeString(author);
-        dest.writeInt(authorid);
-        dest.writeString(fid);
-        dest.writeString(typeId);
-        dest.writeByte((byte) (hide ? 1 : 0));
-        dest.writeInt(lastReplyCount);
-    }
-
     public String getTypeName() {
         return typeName;
     }
@@ -220,12 +192,11 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Thread)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Thread thread = (Thread) o;
         return permission == thread.permission &&
                 authorId == thread.authorId &&
                 displayOrder == thread.displayOrder &&
-                hide == thread.hide &&
                 hide == thread.hide &&
                 lastReplyCount == thread.lastReplyCount &&
                 Objects.equal(id, thread.id) &&
@@ -233,15 +204,13 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
                 Objects.equal(replies, thread.replies) &&
                 Objects.equal(author, thread.author) &&
                 Objects.equal(typeId, thread.typeId) &&
-                Objects.equal(typeName, thread.typeName);
-                Objects.equal(author, thread.author) &&
                 Objects.equal(fid, thread.fid) &&
-                Objects.equal(typeId, thread.typeId);
+                Objects.equal(typeName, thread.typeName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, title, replies, permission, author, authorid, fid, typeId, hide, lastReplyCount);
+        return Objects.hashCode(id, title, replies, permission, author, authorId, displayOrder, typeId, fid, typeName, hide, lastReplyCount);
     }
 
     @Override
@@ -291,10 +260,12 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
         dest.writeInt(authorId);
         dest.writeInt(displayOrder);
         dest.writeString(typeId);
+        dest.writeString(fid);
         dest.writeString(typeName);
         dest.writeByte((byte) (hide ? 1 : 0));
         dest.writeInt(lastReplyCount);
     }
+
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class ThreadListInfo {
