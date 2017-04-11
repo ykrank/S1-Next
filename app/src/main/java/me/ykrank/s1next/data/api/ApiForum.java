@@ -25,5 +25,5 @@ public class ApiForum {
 
     static final String URL_NEW_THREAD = "index.php?module=newthread&extra=&topicsubmit=yes";
 
-    static final String URL_EDIT_POST = Api.BASE_URL + "forum.php?mod=post&action=edit&extra=&editsubmit=yes&inajax=yes&wysiwyg=1&page=1&delete=0";
+    static final String URL_EDIT_POST = Api.BASE_URL + "forum.php?mod=post&action=edit&extra=&editsubmit=yes&inajax=yes&wysiwyg=0&page=1&delete=0";
 }

@@ -227,7 +227,7 @@ public final class PostListFragment extends BaseViewPagerFragment
                 .subscribe(event -> {
                             Thread thread = event.getThread();
                             Post post = event.getPost();
-                            EditPostActivity.startActivityForResultMessage(getActivity(), thread, post, null);
+                    EditPostActivity.startActivityForResultMessage(getActivity(), thread, post);
                         }
                 );
         blackListAddDisposable = mEventBus.get()

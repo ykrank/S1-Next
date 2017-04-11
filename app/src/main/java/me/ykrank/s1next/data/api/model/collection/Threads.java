@@ -40,7 +40,7 @@ public final class Threads extends Account {
     private List<Forum> subForumList;
 
     @JsonIgnore
-    private List<ThreadType> threadTypes;
+    private ArrayList<ThreadType> threadTypes;
 
     public Threads() {
     }
@@ -48,7 +48,7 @@ public final class Threads extends Account {
     @JsonCreator
     public Threads(@JsonProperty("threadtypes") JsonNode typesNode,
                    @JsonProperty("forum_threadlist") List<Thread> threadList) {
-        List<ThreadType> threadTypes = new ArrayList<>();
+        ArrayList<ThreadType> threadTypes = new ArrayList<>();
         try {
             ArrayMap<String, String> typeMap = new ArrayMap<>();
             Iterator<Map.Entry<String, JsonNode>> fields = typesNode.get("types").fields();
@@ -146,11 +146,11 @@ public final class Threads extends Account {
         this.subForumList = subForumList;
     }
 
-    public List<ThreadType> getThreadTypes() {
+    public ArrayList<ThreadType> getThreadTypes() {
         return threadTypes;
     }
 
-    public void setThreadTypes(List<ThreadType> threadTypes) {
+    public void setThreadTypes(ArrayList<ThreadType> threadTypes) {
         this.threadTypes = threadTypes;
     }
 

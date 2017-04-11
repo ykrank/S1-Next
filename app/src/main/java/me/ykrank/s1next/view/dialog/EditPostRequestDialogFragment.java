@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import io.reactivex.Observable;
+import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
@@ -54,8 +55,10 @@ public final class EditPostRequestDialogFragment extends ProgressDialogFragment<
         if (mPost == null || mThread == null) {
             return Observable.error(new NullPointerException());
         }
+
+        Integer saveAsDraft = BuildConfig.DEBUG && mPost.isFirst() ? 1 : null;
         return flatMappedWithAuthenticityToken(token ->
-                mS1Service.editPost(mThread.getFid(), mThread.getId(), mPost.getId(), token, System.currentTimeMillis(), typeId, title, message, 1, 1, 1));
+                mS1Service.editPost(mThread.getFid(), mThread.getId(), mPost.getId(), token, System.currentTimeMillis(), typeId, title, message, 1, 1, saveAsDraft));
     }
 
     @Override

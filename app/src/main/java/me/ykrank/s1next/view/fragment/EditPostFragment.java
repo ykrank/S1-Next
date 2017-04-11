@@ -9,16 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.disposables.Disposable;
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.api.model.ThreadType;
-import me.ykrank.s1next.data.cache.NewThreadCacheModel;
 import me.ykrank.s1next.databinding.FragmentEditPostBinding;
+import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter;
@@ -35,9 +38,9 @@ public final class EditPostFragment extends BasePostFragment {
 
     private static final String ARG_THREAD = "thread";
     private static final String ARG_POST = "post";
-    private static final String ARG_THREAD_TYPES = "thread_types";
 
-    private static final String CACHE_KEY_PREFIX = "EditPost_%s_%s_%s";
+    @Inject
+    S1Service mS1Service;
 
     private Thread mThread;
     private Post mPost;
@@ -47,14 +50,11 @@ public final class EditPostFragment extends BasePostFragment {
 
     private FragmentEditPostBinding binding;
 
-    private NewThreadCacheModel cacheModel;
-
-    public static EditPostFragment newInstance(@NonNull Thread thread, @NonNull Post post, ArrayList<ThreadType> threadTypes) {
+    public static EditPostFragment newInstance(@NonNull Thread thread, @NonNull Post post) {
         EditPostFragment fragment = new EditPostFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(ARG_THREAD, thread);
         bundle.putParcelable(ARG_POST, post);
-        bundle.putParcelableArrayList(ARG_THREAD_TYPES, threadTypes);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -73,21 +73,21 @@ public final class EditPostFragment extends BasePostFragment {
 
         if (isHost) {
             binding.title.setText(mThread.getTitle());
-            ArrayList<ThreadType> threadTypes = getArguments().getParcelableArrayList(ARG_THREAD_TYPES);
-            if (threadTypes != null) {
-                setSpinner(threadTypes);
-                for (int i = 0; i < threadTypes.size(); i++) {
-                    if (TextUtils.equals(threadTypes.get(i).getTypeId(), mThread.getTypeId())) {
-                        binding.spinner.setSelection(i);
-                        break;
-                    }
-                }
-            }
         }
         
         binding.layoutPost.reply.setText(mPost.getReply());
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (isHost) {
+            App.getPrefComponent().inject(this);
+            init();
+        }
     }
 
     @Override
@@ -161,6 +161,20 @@ public final class EditPostFragment extends BasePostFragment {
         return true;
     }
 
+    private void init() {
+        mDisposable = mS1Service.getNewThreadInfo(Integer.valueOf(mThread.getFid()))
+                .map(ThreadType::fromXmlString)
+                .compose(RxJavaUtil.iOTransformer())
+                .subscribe(types -> {
+                            if (types == null) {
+                                showRetrySnackbar(getString(R.string.message_network_error), v -> init());
+                            } else {
+                                setSpinner(types);
+                            }
+                        }, e -> showRetrySnackbar(ErrorUtil.parse(getContext(), e), v -> init())
+                );
+    }
+
     private void setSpinner(@Nullable List<ThreadType> types) {
         if (types == null || types.isEmpty()) {
             binding.spinner.setVisibility(View.GONE);
@@ -170,8 +184,11 @@ public final class EditPostFragment extends BasePostFragment {
         }
         SimpleSpinnerAdapter<ThreadType> spinnerAdapter = new SimpleSpinnerAdapter<>(getContext(), types, ThreadType::getTypeName);
         binding.spinner.setAdapter(spinnerAdapter);
-        if (cacheModel != null && types.size() > cacheModel.getSelectPosition()) {
-            binding.spinner.setSelection(cacheModel.getSelectPosition());
+        for (int i = 0; i < types.size(); i++) {
+            if (TextUtils.equals(types.get(i).getTypeId(), mThread.getTypeId())) {
+                binding.spinner.setSelection(i);
+                break;
+            }
         }
     }
 

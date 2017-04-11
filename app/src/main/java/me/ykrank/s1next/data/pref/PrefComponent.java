@@ -12,6 +12,7 @@ import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate;
 import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment;
 import me.ykrank.s1next.view.fragment.BasePostFragment;
+import me.ykrank.s1next.view.fragment.EditPostFragment;
 import me.ykrank.s1next.view.fragment.NewRateFragment;
 import me.ykrank.s1next.view.fragment.NewThreadFragment;
 import me.ykrank.s1next.view.fragment.PostListFragment;
@@ -79,4 +80,6 @@ public interface PrefComponent {
     void inject(DrawerLayoutDelegateConcrete drawerLayoutDelegateConcrete);
 
     void inject(GalleryActivity galleryActivity);
+
+    void inject(EditPostFragment fragment);
 }
