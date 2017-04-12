@@ -118,7 +118,7 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
             case R.id.menu_favourites:
                 runnable = this::onFavouritesMenuSelected;
                 break;
-            case R.id.menu_whisper:
+            case R.id.menu_pms:
                 runnable = this::onWhispersMenuSelected;
                 break;
             case R.id.menu_note:
@@ -146,7 +146,7 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
         } else if (mFragmentActivity instanceof FavouriteListActivity) {
             menuItem = menu.findItem(R.id.menu_favourites);
         } else if (mFragmentActivity instanceof PmActivity) {
-            menuItem = menu.findItem(R.id.menu_whisper);
+            menuItem = menu.findItem(R.id.menu_pms);
         } else if (mFragmentActivity instanceof NoteActivity) {
             menuItem = menu.findItem(R.id.menu_note);
         }

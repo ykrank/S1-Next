@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +37,7 @@ import me.ykrank.s1next.data.event.FontSizeChangeEvent;
 import me.ykrank.s1next.data.event.ThemeChangeEvent;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.data.pref.ThemeManager;
+import me.ykrank.s1next.databinding.ActionViewNoticeCountBinding;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.dialog.ThreadGoDialogFragment;
@@ -85,6 +87,8 @@ public abstract class BaseActivity extends OriginActivity
     private WeakReference<Snackbar> mSnackbar;
 
     private Disposable mRecreateDisposable;
+
+    private ActionViewNoticeCountBinding pmNoticeBinding, noteNoticeBinding;
 
 
     /**
@@ -290,10 +294,18 @@ public abstract class BaseActivity extends OriginActivity
     private void setupDrawer() {
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawerLayout != null) {
-            mDrawerLayoutDelegate = new DrawerLayoutDelegateConcrete(this, drawerLayout,
-                    (NavigationView) findViewById(R.id.navigation_view));
+            NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+            mDrawerLayoutDelegate = new DrawerLayoutDelegateConcrete(this, drawerLayout, navigationView);
             mDrawerLayoutDelegate.setDrawerIndicatorEnabled(mDrawerIndicatorEnabled);
             mDrawerLayoutDelegate.onPostCreate();
+
+            pmNoticeBinding = ActionViewNoticeCountBinding.inflate(LayoutInflater.from(this));
+            noteNoticeBinding = ActionViewNoticeCountBinding.inflate(LayoutInflater.from(this));
+            navigationView.getMenu().findItem(R.id.menu_pms).setActionView(pmNoticeBinding.getRoot());
+            navigationView.getMenu().findItem(R.id.menu_note).setActionView(noteNoticeBinding.getRoot());
+
+            pmNoticeBinding.setCount("1");
+            noteNoticeBinding.setCount("2");
         }
     }
 

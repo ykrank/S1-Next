@@ -110,4 +110,6 @@
 
     <dimen name="text_size_thread_list_title">16sp</dimen>
     <dimen name="text_size_thread_list_title_hint">14sp</dimen>
+    
+    <dimen name="textview_background_padding">8dp</dimen>
 </resources>

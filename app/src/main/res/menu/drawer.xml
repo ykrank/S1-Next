@@ -13,7 +13,7 @@
             android:icon="@drawable/ic_menu_grade_black_24dp"
             android:title="@string/favourites" />
         <item
-            android:id="@+id/menu_whisper"
+            android:id="@+id/menu_pms"
             android:icon="@drawable/ic_chat_black_24dp"
             android:title="@string/pms" />
         <item
