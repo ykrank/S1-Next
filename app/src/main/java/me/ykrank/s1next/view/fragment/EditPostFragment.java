@@ -18,6 +18,7 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.model.Post;
+import me.ykrank.s1next.data.api.model.PostEditor;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.api.model.ThreadType;
 import me.ykrank.s1next.databinding.FragmentEditPostBinding;
@@ -71,12 +72,6 @@ public final class EditPostFragment extends BasePostFragment {
         binding.setHost(isHost);
         L.leaveMsg(String.format("EditPostFragment##post:%s", mPost));
 
-        if (isHost) {
-            binding.title.setText(mThread.getTitle());
-        }
-        
-        binding.layoutPost.reply.setText(mPost.getReply());
-
         return binding.getRoot();
     }
 
@@ -84,10 +79,8 @@ public final class EditPostFragment extends BasePostFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (isHost) {
-            App.getPrefComponent().inject(this);
-            init();
-        }
+        App.getPrefComponent().inject(this);
+        init();
     }
 
     @Override
@@ -162,17 +155,21 @@ public final class EditPostFragment extends BasePostFragment {
     }
 
     private void init() {
-        mDisposable = mS1Service.getNewThreadInfo(Integer.valueOf(mThread.getFid()))
-                .map(ThreadType::fromXmlString)
+        mDisposable = mS1Service.getEditPostInfo(mThread.getFid(), mThread.getId(), mPost.getId())
+                .map(PostEditor::fromHtml)
                 .compose(RxJavaUtil.iOTransformer())
-                .subscribe(types -> {
-                            if (types == null) {
-                                showRetrySnackbar(getString(R.string.message_network_error), v -> init());
-                            } else {
-                                setSpinner(types);
-                            }
-                        }, e -> showRetrySnackbar(ErrorUtil.parse(getContext(), e), v -> init())
-                );
+                .subscribe(postEditor -> {
+                    if (isHost) {
+                        setSpinner(postEditor.getThreadTypes());
+                        binding.spinner.setSelection(postEditor.getTypeIndex());
+                        binding.title.setText(postEditor.getSubject());
+                    }
+                    binding.layoutPost.reply.setText(postEditor.getMessage());
+                }, e -> {
+                    L.report(e);
+                    showRetrySnackbar(ErrorUtil.parse(getContext(), e), v -> init());
+                });
+
     }
 
     private void setSpinner(@Nullable List<ThreadType> types) {
@@ -184,12 +181,6 @@ public final class EditPostFragment extends BasePostFragment {
         }
         SimpleSpinnerAdapter<ThreadType> spinnerAdapter = new SimpleSpinnerAdapter<>(getContext(), types, ThreadType::getTypeName);
         binding.spinner.setAdapter(spinnerAdapter);
-        for (int i = 0; i < types.size(); i++) {
-            if (TextUtils.equals(types.get(i).getTypeId(), mThread.getTypeId())) {
-                binding.spinner.setSelection(i);
-                break;
-            }
-        }
     }
 
 }

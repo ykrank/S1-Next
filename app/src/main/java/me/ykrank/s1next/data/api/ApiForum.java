@@ -23,7 +23,21 @@ public class ApiForum {
     static final String URL_AUTHENTICITY_TOKEN_HELPER = "index.php?module=toplist";
     static final String URL_REPLY = "index.php?module=sendreply&replysubmit=yes";
 
+    /**
+     * 发布新帖前获取必要前置信息
+     */
+    static final String URL_NEW_THREAD_HELPER = Api.BASE_URL + "forum.php?mod=post&action=newthread";
     static final String URL_NEW_THREAD = "index.php?module=newthread&extra=&topicsubmit=yes";
 
-    static final String URL_EDIT_POST = Api.BASE_URL + "forum.php?mod=post&action=edit&extra=&editsubmit=yes&inajax=yes&wysiwyg=0&page=1&delete=0";
+    static final String URL_EDIT_POST_HELPER = Api.BASE_URL + "forum.php?mod=post&action=edit";
+    static final String URL_EDIT_POST = Api.BASE_URL + "forum.php?mod=post&action=edit&editsubmit=yes&inajax=yes&wysiwyg=1&delete=0";
+    static final String URL_QUOTE_POST_REDIRECT = Api.BASE_URL + "forum.php?mod=redirect&goto=findpost";
+    /**
+     * A URL to get the quoted user identification and processed quoted
+     * content (with some HTML tags and its origin redirect hyperlink).
+     */
+    static final String URL_QUOTE_HELPER = Api.BASE_URL + "forum.php?mod=post&action=reply&inajax=yes";
+
+    static final String URL_SEARCH_FORUM = Api.BASE_URL + "search.php?searchsubmit=yes&mod=forum";
+    static final String URL_SEARCH_USER = Api.BASE_URL + "search.php?searchsubmit=yes&mod=user";
 }

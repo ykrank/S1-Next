@@ -221,7 +221,8 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     }
 
     /**
-     * whether use ?attr/cardViewContainerBackground to this fragment
+     * whether use ?attr/cardViewContainerBackground to this fragment. if override {@link #getLoadingViewModelBindingDelegateImpl(LayoutInflater, ViewGroup)}
+     * perhaps ignore this
      */
     boolean isCardViewContainer() {
         return false;

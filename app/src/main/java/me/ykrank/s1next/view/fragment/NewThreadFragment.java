@@ -198,12 +198,15 @@ public final class NewThreadFragment extends BasePostFragment {
                 .map(ThreadType::fromXmlString)
                 .compose(RxJavaUtil.iOTransformer())
                 .subscribe(types -> {
-                    if (types == null) {
-                        showRetrySnackbar(getString(R.string.message_network_error), v -> init());
-                    } else {
-                        setSpinner(types);
-                    }
-                        }, e -> showRetrySnackbar(ErrorUtil.parse(getContext(), e), v -> init())
+                            if (types == null) {
+                                showRetrySnackbar(getString(R.string.message_network_error), v -> init());
+                            } else {
+                                setSpinner(types);
+                            }
+                        }, e -> {
+                            L.report(e);
+                            showRetrySnackbar(ErrorUtil.parse(getContext(), e), v -> init());
+                        }
                 );
     }
 

@@ -34,7 +34,7 @@ public interface S1Service {
     @GET(ApiForum.URL_POST_LIST)
     Observable<BaseResultWrapper<Posts>> getPostsWrapper(@Query("tid") String threadId, @Query("page") int page);
 
-    @GET(Api.URL_QUOTE_POST_REDIRECT)
+    @GET(ApiForum.URL_QUOTE_POST_REDIRECT)
     Observable<Response<Void>> getQuotePostResponseBody(@Query("ptid") String threadId, @Query("pid") String quotePostId);
 
     @FormUrlEncoded
@@ -59,7 +59,7 @@ public interface S1Service {
     @POST(ApiForum.URL_REPLY)
     Observable<AccountResultWrapper> reply(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("message") String reply);
 
-    @GET(Api.URL_QUOTE_HELPER)
+    @GET(ApiForum.URL_QUOTE_HELPER)
     Observable<String> getQuoteInfo(@Query("tid") String threadId, @Query("repquote") String quotePostId);
 
     @FormUrlEncoded
@@ -81,7 +81,7 @@ public interface S1Service {
     //endregion
 
     //region New thread
-    @GET(Api.URL_NEW_THREAD_HELPER)
+    @GET(ApiForum.URL_NEW_THREAD_HELPER)
     Observable<String> getNewThreadInfo(@Query("fid") int fid);
 
     @FormUrlEncoded
@@ -92,6 +92,9 @@ public interface S1Service {
                                                @Field("save") Integer saveAsDraft);
     //endregion
 
+    @GET(ApiForum.URL_EDIT_POST_HELPER)
+    Observable<String> getEditPostInfo(@Query("fid") String fid, @Query("tid") String tid, @Query("pid") String pid);
+    
     @FormUrlEncoded
     @POST(ApiForum.URL_EDIT_POST)
     Observable<String> editPost(@Field("fid") String fid, @Field("tid") String tid, @Field("pid") String pid,
@@ -101,11 +104,11 @@ public interface S1Service {
                                 @Field("usesig") int useSign, @Field("save") Integer saveAsDraft);
 
     @FormUrlEncoded
-    @POST(Api.URL_SEARCH_FORUM)
+    @POST(ApiForum.URL_SEARCH_FORUM)
     Observable<String> searchForum(@Field("formhash") String authenticityToken, @Field("srchtxt") String text);
 
     @FormUrlEncoded
-    @POST(Api.URL_SEARCH_USER)
+    @POST(ApiForum.URL_SEARCH_USER)
     Observable<String> searchUser(@Field("formhash") String authenticityToken, @Field("srchtxt") String text);
 
     //region User home

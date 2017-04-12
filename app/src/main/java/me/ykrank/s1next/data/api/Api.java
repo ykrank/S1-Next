@@ -39,19 +39,6 @@ public final class Api {
      */
     public static final String URL_BROWSER_REGISTER = prepend("member.php?mod=register");
 
-    static final String URL_QUOTE_POST_REDIRECT = BASE_URL + "forum.php?mod=redirect&goto=findpost";
-
-    /**
-     * A URL to get the quoted user identification and processed quoted
-     * content (with some HTML tags and its origin redirect hyperlink).
-     */
-    static final String URL_QUOTE_HELPER = BASE_URL + "forum.php?mod=post&action=reply&inajax=yes";
-    /**
-     * 发布新帖前获取必要前置信息
-     */
-    static final String URL_NEW_THREAD_HELPER = BASE_URL + "forum.php?mod=post&action=newthread";
-    static final String URL_SEARCH_FORUM = BASE_URL + "search.php?searchsubmit=yes&mod=forum";
-    static final String URL_SEARCH_USER = BASE_URL + "search.php?searchsubmit=yes&mod=user";
     private static final String URL_USER_AVATAR_PREFIX = BASE_URL + "uc_server/avatar.php?uid=";
     private static final String URL_USER_AVATAR_SMALL = URL_USER_AVATAR_PREFIX + "%s&size=small";
     private static final String URL_USER_AVATAR_MEDIUM = URL_USER_AVATAR_PREFIX + "%s&size=middle";
