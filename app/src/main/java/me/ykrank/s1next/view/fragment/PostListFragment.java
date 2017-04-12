@@ -51,6 +51,7 @@ import me.ykrank.s1next.util.LooperUtil;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.util.StringUtil;
+import me.ykrank.s1next.view.activity.BaseActivity;
 import me.ykrank.s1next.view.activity.EditPostActivity;
 import me.ykrank.s1next.view.activity.NewRateActivity;
 import me.ykrank.s1next.view.activity.ReplyActivity;
@@ -85,6 +86,8 @@ public final class PostListFragment extends BaseViewPagerFragment
     private static final String ARG_QUOTE_POST_ID = "quote_post_id";
 
     private static final String ARG_READ_PROGRESS = "read_progress";
+
+    private static final int REQUEST_CODE_EDIT_POST = 6;
 
     @Inject
     EventBus mEventBus;
@@ -227,7 +230,7 @@ public final class PostListFragment extends BaseViewPagerFragment
                 .subscribe(event -> {
                             Thread thread = event.getThread();
                             Post post = event.getPost();
-                    EditPostActivity.startActivityForResultMessage(getActivity(), thread, post);
+                    EditPostActivity.startActivityForResultMessage(this, REQUEST_CODE_EDIT_POST, thread, post);
                         }
                 );
         blackListAddDisposable = mEventBus.get()
@@ -378,6 +381,22 @@ public final class PostListFragment extends BaseViewPagerFragment
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_EDIT_POST) {
+            if (resultCode == Activity.RESULT_OK) {
+                String msg = data.getStringExtra(BaseActivity.EXTRA_MESSAGE);
+                showShortSnackbar(msg);
+                PostListPagerFragment fragment = getCurPostPageFragment();
+                if (fragment != null) {
+                    fragment.startSwipeRefresh();
+                }
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 

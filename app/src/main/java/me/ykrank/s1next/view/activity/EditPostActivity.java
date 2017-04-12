@@ -1,6 +1,5 @@
 package me.ykrank.s1next.view.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,11 +20,11 @@ public final class EditPostActivity extends BaseActivity {
 
     private EditPostFragment mFragment;
 
-    public static void startActivityForResultMessage(Activity activity, Thread thread, Post post) {
-        Intent intent = new Intent(activity, EditPostActivity.class);
+    public static void startActivityForResultMessage(Fragment fragment, int requestCode, Thread thread, Post post) {
+        Intent intent = new Intent(fragment.getContext(), EditPostActivity.class);
         intent.putExtra(ARG_THREAD, thread);
         intent.putExtra(ARG_POST, post);
-        BaseActivity.startActivityForResultMessage(activity, intent);
+        fragment.startActivityForResult(intent, requestCode);
     }
 
     @Override

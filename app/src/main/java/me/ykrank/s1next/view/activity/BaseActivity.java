@@ -60,7 +60,7 @@ public abstract class BaseActivity extends OriginActivity
         implements CoordinatorLayoutAnchorDelegate {
 
     protected static final int REQUEST_CODE_MESSAGE_IF_SUCCESS = 0;
-    private static final String EXTRA_MESSAGE = "message";
+    public static final String EXTRA_MESSAGE = "message";
 
     @Inject
     EventBus mEventBus;

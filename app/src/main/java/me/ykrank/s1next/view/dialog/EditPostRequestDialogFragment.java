@@ -1,13 +1,18 @@
 package me.ykrank.s1next.view.dialog;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import io.reactivex.Observable;
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
+import me.ykrank.s1next.view.activity.BaseActivity;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
@@ -64,7 +69,16 @@ public final class EditPostRequestDialogFragment extends ProgressDialogFragment<
     @Override
     protected void onNext(String data) {
         if (data.contains("succeedhandle_")) {
-            showShortTextAndFinishCurrentActivity(getString(R.string.edit_post_succeed));
+            Activity activity = getActivity();
+            App app = (App) activity.getApplicationContext();
+            if (app.isAppVisible()) {
+                Intent intent = new Intent();
+                intent.putExtra(BaseActivity.EXTRA_MESSAGE, getString(R.string.edit_post_succeed));
+                activity.setResult(Activity.RESULT_OK, intent);
+            } else {
+                Toast.makeText(app, R.string.edit_post_succeed, Toast.LENGTH_SHORT).show();
+            }
+            activity.finish();
         } else {
             showShortText(data);
         }
