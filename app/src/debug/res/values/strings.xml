@@ -2,5 +2,6 @@
 <resources>
 
     <string name="app_name" translatable="false">S1 Next Goose Debug</string>
+    <string name="leak_canary_display_activity_label" translatable="false">S1 Debug Leaks</string>
 
 </resources>
