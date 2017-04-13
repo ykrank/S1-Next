@@ -79,7 +79,7 @@ public class HtmlCompat {
      */
     @Deprecated
     public static Spanned fromHtml(String source) {
-        return fromHtml(source, FROM_HTML_MODE_LEGACY, null, null);
+        return fromHtml(source, FROM_HTML_MODE_COMPACT, null, null);
     }
 
     /**
@@ -94,7 +94,7 @@ public class HtmlCompat {
      */
     @Deprecated
     public static Spanned fromHtml(String source, Html.ImageGetter imageGetter, Html.TagHandler tagHandler) {
-        return fromHtml(source, FROM_HTML_MODE_LEGACY, imageGetter, tagHandler);
+        return fromHtml(source, FROM_HTML_MODE_COMPACT, imageGetter, tagHandler);
     }
 
     /**

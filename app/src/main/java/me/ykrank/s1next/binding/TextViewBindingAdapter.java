@@ -176,8 +176,7 @@ public final class TextViewBindingAdapter {
         } else {
             // use GlideImageGetter to show images in TextView
             //noinspection deprecation
-            textView.setText(HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST | HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM,
-                    GlideImageGetter.get(textView), new TagHandler()));
+            textView.setText(HtmlCompat.fromHtml(html, GlideImageGetter.get(textView), new TagHandler()));
         }
     }
 
@@ -188,7 +187,7 @@ public final class TextViewBindingAdapter {
         } else {
             // use GlideImageGetter to show images in TextView
             //noinspection deprecation
-            textView.setText(HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST | HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM));
+            textView.setText(HtmlCompat.fromHtml(html));
         }
     }
 
