@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.ykrank.s1next.view.adapter.delegate.FavouriteAdapterDelegate">
 
     <data>
+
+        <import type="android.graphics.Color" />
+
+        <import type="android.graphics.PorterDuff.Mode" />
 
         <variable
             name="eventBus"
             type="me.ykrank.s1next.widget.EventBus" />
 
         <variable
-            name="pmGroupViewModel"
+            name="model"
             type="me.ykrank.s1next.viewmodel.PmGroupViewModel" />
 
         <variable
             name="user"
-            type="me.ykrank.s1next.data.User"/>
+            type="me.ykrank.s1next.data.User" />
     </data>
 
     <android.support.v7.widget.CardView
@@ -29,13 +33,15 @@
         android:layout_marginLeft="@dimen/card_view_horizontal_margin"
         android:layout_marginRight="@dimen/card_view_horizontal_margin"
         android:layout_marginStart="@dimen/card_view_horizontal_margin"
-        android:layout_marginTop="@dimen/card_view_vertical_margin">
+        android:layout_marginTop="@dimen/card_view_vertical_margin"
+        app:backTintColor="@{model.pmGroup.isNew?@color/red_A100:Color.TRANSPARENT}"
+        app:tintMode="@{Mode.MULTIPLY}">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/item_padding"
-            android:onClick="@{pmGroupViewModel.clickGroup(eventBus)}">
+            android:onClick="@{model.clickGroup(eventBus)}"
+            android:padding="@dimen/item_padding">
 
             <me.ykrank.s1next.widget.BezelImageView
                 android:id="@+id/avatar"
@@ -45,7 +51,7 @@
                 android:layout_marginRight="@dimen/item_padding"
                 android:contentDescription="@string/avatar_content_desc"
                 app:maskDrawable="@drawable/rounded_mask"
-                app:uid="@{pmGroupViewModel.pmGroup.toUid}"/>
+                app:uid="@{model.pmGroup.toUid}" />
 
             <TextView
                 android:id="@+id/author_name"
@@ -56,8 +62,8 @@
                 android:includeFontPadding="false"
                 android:lines="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                app:pmAuthorNameDesc="@{pmGroupViewModel.pmGroup}"
-                app:user="@{user}"/>
+                app:pmAuthorNameDesc="@{model.pmGroup}"
+                app:user="@{user}" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -69,7 +75,7 @@
                 android:includeFontPadding="false"
                 android:lines="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                app:relativeDateTime="@{pmGroupViewModel.pmGroup.lastDateline*1000}" />
+                app:relativeDateTime="@{model.pmGroup.lastDateline*1000}" />
 
             <TextView
                 android:id="@+id/tv_count"
@@ -80,7 +86,7 @@
                 android:includeFontPadding="false"
                 android:maxLines="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                app:text="@{pmGroupViewModel.pmGroup.pmNum}" />
+                app:text="@{model.pmGroup.pmNum}" />
 
             <TextView
                 android:id="@+id/tv_summary"
@@ -89,7 +95,7 @@
                 android:layout_marginTop="@dimen/single_line_height_with_avatar"
                 android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:text="@{pmGroupViewModel.pmGroup.lastSummary}"/>
+                app:text="@{model.pmGroup.lastSummary}" />
 
         </RelativeLayout>
 

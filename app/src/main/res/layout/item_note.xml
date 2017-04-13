@@ -21,7 +21,9 @@
         android:layout_marginLeft="@dimen/card_view_horizontal_margin"
         android:layout_marginRight="@dimen/card_view_horizontal_margin"
         android:layout_marginStart="@dimen/card_view_horizontal_margin"
-        android:layout_marginTop="@dimen/card_view_vertical_margin">
+        android:layout_marginTop="@dimen/card_view_vertical_margin"
+        app:backTintColor="@{model.data.isNew?@color/red_A100:Color.TRANSPARENT}"
+        app:tintMode="@{Mode.MULTIPLY}">
 
         <RelativeLayout
             android:layout_width="match_parent"

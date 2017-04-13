@@ -1,5 +1,7 @@
 package me.ykrank.s1next.data.api.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
@@ -21,7 +23,7 @@ public final class PmGroup implements Cloneable, SameItem {
      */
     @JsonProperty("plid")
     private String plId;
-    @JsonProperty("isnew")
+    @JsonIgnore
     private boolean isNew;
     @JsonProperty("lastauthorid")
     private String lastAuthorid;
@@ -37,6 +39,14 @@ public final class PmGroup implements Cloneable, SameItem {
     private String toUid;
     @JsonProperty("tousername")
     private String toUsername;
+
+    public PmGroup() {
+    }
+
+    @JsonCreator
+    public PmGroup(@JsonProperty("isnew") String isNew) {
+        this.isNew = "1".equals(isNew);
+    }
 
     public String getAuthorId() {
         return authorId;

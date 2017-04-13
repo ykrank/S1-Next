@@ -5,5 +5,5 @@
         android:width="1px"
         android:color="?attr/colorAccent"
         android:dashGap="2dp"
-        android:dashWidth="4dp" />
+        android:dashWidth="2dp" />
 </shape>

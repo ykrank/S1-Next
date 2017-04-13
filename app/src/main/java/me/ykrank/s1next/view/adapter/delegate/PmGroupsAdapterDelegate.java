@@ -40,7 +40,7 @@ public final class PmGroupsAdapterDelegate extends BaseAdapterDelegate<PmGroup, 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {
         ItemPmGroupBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_pm_group, parent, false);
-        binding.setPmGroupViewModel(new PmGroupViewModel());
+        binding.setModel(new PmGroupViewModel());
         binding.setEventBus(mEventBus);
         binding.setUser(mUser);
         return new BindingViewHolder(binding);
@@ -49,7 +49,7 @@ public final class PmGroupsAdapterDelegate extends BaseAdapterDelegate<PmGroup, 
     @Override
     public void onBindViewHolderData(PmGroup pmGroup, int position, @NonNull BindingViewHolder holder) {
         ItemPmGroupBinding binding = holder.binding;
-        binding.getPmGroupViewModel().pmGroup.set(pmGroup);
+        binding.getModel().pmGroup.set(pmGroup);
         binding.executePendingBindings();
     }
 
