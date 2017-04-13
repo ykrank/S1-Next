@@ -106,15 +106,11 @@
 
     <!-- Do not translate these Terminology. -->
     <string name="emoticon_face" translatable="false">麻将脸</string>
-    <string name="emoticon_dym" translatable="false">大姨妈</string>
-    <string name="emoticon_goose" translatable="false">鹅</string>
-    <string name="emoticon_zdl" translatable="false">战斗力</string>
-    <string name="emoticon_nq" translatable="false">扭曲</string>
-    <string name="emoticon_normal" translatable="false">正常向</string>
-    <string name="emoticon_flash" translatable="false">闪光蛋</string>
-    <string name="emoticon_animal" translatable="false">动物</string>
     <string name="emoticon_carton" translatable="false">动漫</string>
-    <string name="emoticon_bundam" translatable="false">雀高达</string>
+    <string name="emoticon_animal" translatable="false">动物</string>
+    <string name="emoticon_device" translatable="false">硬件</string>
+    <string name="emoticon_goose" translatable="false">鹅</string>
+    <string name="emoticon_bundam" translatable="false">高达</string>
 
     <!-- gallery -->
     <string name="snackbar_action_downloading">Downloading…</string>
