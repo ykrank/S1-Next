@@ -3,9 +3,11 @@ package me.ykrank.s1next.view.internal;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.pref.ThemeManager;
+import me.ykrank.s1next.databinding.ActionViewNoticeCountBinding;
 import me.ykrank.s1next.databinding.NavigationViewHeaderBinding;
 import me.ykrank.s1next.view.activity.FavouriteListActivity;
 import me.ykrank.s1next.view.activity.ForumActivity;
@@ -47,6 +50,8 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
     @Inject
     ThemeManager mThemeManager;
 
+    private ActionViewNoticeCountBinding pmNoticeBinding, noteNoticeBinding;
+
     public DrawerLayoutDelegateConcrete(FragmentActivity activity, DrawerLayout drawerLayout, NavigationView navigationView) {
         super(activity, drawerLayout, navigationView);
         App.getPrefComponent().inject(this);
@@ -56,6 +61,7 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
     @Override
     protected void setupNavDrawerItem(DrawerLayout drawerLayout, NavigationView navigationView) {
         setupNavDrawerHeader(drawerLayout, navigationView);
+        setupNavDrawerNotice(navigationView);
 
         navigationView.setNavigationItemSelectedListener(this);
         setupNavDrawerItemChecked(navigationView);
@@ -108,8 +114,26 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
         });
     }
 
+    private void setupNavDrawerNotice(NavigationView navigationView) {
+        pmNoticeBinding = ActionViewNoticeCountBinding.inflate(LayoutInflater.from(mFragmentActivity));
+        noteNoticeBinding = ActionViewNoticeCountBinding.inflate(LayoutInflater.from(mFragmentActivity));
+        navigationView.getMenu().findItem(R.id.menu_pms).setActionView(pmNoticeBinding.getRoot());
+        navigationView.getMenu().findItem(R.id.menu_note).setActionView(noteNoticeBinding.getRoot());
+    }
+
+    /**
+     * refresh label in navigation menu to show whether new pm or notice
+     *
+     * @param newPm     has new pm
+     * @param newNotice has new notice
+     */
+    public void refreshNoticeMenuItem(boolean newPm, boolean newNotice) {
+        pmNoticeBinding.setMsg(newPm ? "new" : null);
+        noteNoticeBinding.setMsg(newNotice ? "new" : null);
+    }
+
     @Override
-    public boolean onNavigationItemSelected(MenuItem menuItem) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Runnable runnable;
         switch (menuItem.getItemId()) {
             case R.id.menu_home:
@@ -133,7 +157,7 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
             default:
                 throw new IllegalStateException("Unknown menu item ID: " + menuItem.getItemId() + ".");
         }
-        closeDrawer(runnable::run);
+        closeDrawer(runnable);
 
         return false;
     }

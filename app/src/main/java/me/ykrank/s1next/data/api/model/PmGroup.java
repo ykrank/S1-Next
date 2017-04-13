@@ -22,7 +22,7 @@ public final class PmGroup implements Cloneable, SameItem {
     @JsonProperty("plid")
     private String plId;
     @JsonProperty("isnew")
-    private String isNew;
+    private boolean isNew;
     @JsonProperty("lastauthorid")
     private String lastAuthorid;
     @JsonProperty("lastauthor")
@@ -54,11 +54,11 @@ public final class PmGroup implements Cloneable, SameItem {
         this.plId = plId;
     }
 
-    public String getIsNew() {
+    public boolean getIsNew() {
         return isNew;
     }
 
-    public void setIsNew(String isNew) {
+    public void setIsNew(boolean isNew) {
         this.isNew = isNew;
     }
 

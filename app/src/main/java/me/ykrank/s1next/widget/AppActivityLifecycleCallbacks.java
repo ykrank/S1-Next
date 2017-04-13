@@ -11,6 +11,7 @@ public final class AppActivityLifecycleCallbacks implements Application.Activity
 
     private final WifiBroadcastReceiver mWifiBroadcastReceiver;
     private final HostUrlCheckTask hostUrlCheckTask;
+    private final NoticeCheckTask noticeCheckTask;
     /**
      * Forked from http://stackoverflow.com/a/13809991
      */
@@ -21,6 +22,7 @@ public final class AppActivityLifecycleCallbacks implements Application.Activity
     public AppActivityLifecycleCallbacks(Context context) {
         mWifiBroadcastReceiver = new WifiBroadcastReceiver(context);
         hostUrlCheckTask = HostUrlCheckTask.INSTANCE;
+        noticeCheckTask = new NoticeCheckTask();
     }
 
     @Override
@@ -46,6 +48,7 @@ public final class AppActivityLifecycleCallbacks implements Application.Activity
             }
             mNeedMonitorWifiActivityCount++;
         }
+        noticeCheckTask.inspectCheckNoticeTask();
     }
 
     @Override

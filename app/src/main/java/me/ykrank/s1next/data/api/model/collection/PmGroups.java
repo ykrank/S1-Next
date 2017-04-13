@@ -60,6 +60,18 @@ public final class PmGroups extends Account {
         this.page = page;
     }
 
+    public boolean hasNew() {
+        if (pmGroupList != null && !pmGroupList.isEmpty()) {
+            for (PmGroup pmGroup : pmGroupList) {
+                if (pmGroup.getIsNew()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

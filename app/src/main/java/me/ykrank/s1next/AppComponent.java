@@ -28,6 +28,7 @@ import me.ykrank.s1next.view.fragment.WebLoginFragment;
 import me.ykrank.s1next.view.fragment.setting.BackupPreferenceFragment;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.NoticeCheckTask;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import okhttp3.OkHttpClient;
 
@@ -88,4 +89,6 @@ public interface AppComponent {
     void inject(BackupPreferenceFragment backupPreferenceFragment);
 
     void inject(ThreadDbWrapper threadDbWrapper);
+
+    void inject(NoticeCheckTask noticeCheckTask);
 }

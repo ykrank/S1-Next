@@ -15,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,16 +33,15 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.event.FontSizeChangeEvent;
+import me.ykrank.s1next.data.event.NoticeRefreshEvent;
 import me.ykrank.s1next.data.event.ThemeChangeEvent;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.data.pref.ThemeManager;
-import me.ykrank.s1next.databinding.ActionViewNoticeCountBinding;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.dialog.ThreadGoDialogFragment;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegateImpl;
-import me.ykrank.s1next.view.internal.DrawerLayoutDelegate;
 import me.ykrank.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import me.ykrank.s1next.view.internal.ToolbarDelegate;
 import me.ykrank.s1next.widget.EventBus;
@@ -79,17 +77,14 @@ public abstract class BaseActivity extends OriginActivity
 
     private ToolbarDelegate mToolbarDelegate;
 
-    private DrawerLayoutDelegate mDrawerLayoutDelegate;
+    private DrawerLayoutDelegateConcrete mDrawerLayoutDelegate;
     private boolean mDrawerIndicatorEnabled = true;
 
     private CoordinatorLayoutAnchorDelegate mCoordinatorLayoutAnchorDelegate;
     @Nullable
     private WeakReference<Snackbar> mSnackbar;
 
-    private Disposable mRecreateDisposable;
-
-    private ActionViewNoticeCountBinding pmNoticeBinding, noteNoticeBinding;
-
+    private Disposable mRecreateDisposable, mNoticeRefreshDisposable;
 
     /**
      * @see #setResultMessage(Activity, CharSequence)
@@ -134,6 +129,9 @@ public abstract class BaseActivity extends OriginActivity
                     getWindow().setWindowAnimations(R.style.Animation_Recreate);
                     recreate();
                 });
+        mNoticeRefreshDisposable = mEventBus.get()
+                .ofType(NoticeRefreshEvent.class)
+                .subscribe(event -> refreshNoticeMenuItem(event.isNewPm(), event.isNewNotice()));
     }
 
     public boolean isTranslucent() {
@@ -186,6 +184,7 @@ public abstract class BaseActivity extends OriginActivity
     @Override
     protected void onDestroy() {
         RxJavaUtil.disposeIfNotNull(mRecreateDisposable);
+        RxJavaUtil.disposeIfNotNull(mNoticeRefreshDisposable);
         if (mDrawerLayoutDelegate != null) {
             mDrawerLayoutDelegate.onDestroy();
             mDrawerLayoutDelegate = null;
@@ -298,14 +297,15 @@ public abstract class BaseActivity extends OriginActivity
             mDrawerLayoutDelegate = new DrawerLayoutDelegateConcrete(this, drawerLayout, navigationView);
             mDrawerLayoutDelegate.setDrawerIndicatorEnabled(mDrawerIndicatorEnabled);
             mDrawerLayoutDelegate.onPostCreate();
+        }
+    }
 
-            pmNoticeBinding = ActionViewNoticeCountBinding.inflate(LayoutInflater.from(this));
-            noteNoticeBinding = ActionViewNoticeCountBinding.inflate(LayoutInflater.from(this));
-            navigationView.getMenu().findItem(R.id.menu_pms).setActionView(pmNoticeBinding.getRoot());
-            navigationView.getMenu().findItem(R.id.menu_note).setActionView(noteNoticeBinding.getRoot());
-
-            pmNoticeBinding.setCount("1");
-            noteNoticeBinding.setCount("2");
+    /**
+     * @see DrawerLayoutDelegateConcrete#refreshNoticeMenuItem(boolean, boolean)
+     */
+    public final void refreshNoticeMenuItem(boolean newPm, boolean newNotice) {
+        if (mDrawerLayoutDelegate != null) {
+            mDrawerLayoutDelegate.refreshNoticeMenuItem(newPm, newNotice);
         }
     }
 

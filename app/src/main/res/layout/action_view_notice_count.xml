@@ -5,26 +5,31 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
         <variable
-            name="count"
+            name="msg"
             type="String" />
     </data>
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="@{TextUtils.isEmpty(msg)?View.GONE:View.VISIBLE}">
 
         <TextView
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingLeft="@dimen/textview_background_padding"
-            android:paddingRight="@dimen/textview_background_padding"
             android:background="@drawable/shape_round_corners_white"
             android:gravity="center"
+            android:paddingLeft="@dimen/textview_background_padding"
+            android:paddingRight="@dimen/textview_background_padding"
+            android:text="@{msg}"
             app:backTintColor="@{@color/red_500}"
-            android:text="@{count}"
             tools:text="1" />
     </FrameLayout>
 </layout>
