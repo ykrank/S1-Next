@@ -1,13 +1,14 @@
 package me.ykrank.s1next.binding;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
+import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
@@ -37,21 +38,23 @@ public final class ViewBindingAdapter {
     private ViewBindingAdapter() {
     }
 
-    @BindingAdapter("backTint")
-    public static void setBackgroundTint(View view, ColorStateList colorStateList) {
+    @BindingAdapter("backTintColor")
+    public static void setBackgroundTint(View view, @ColorInt int tintColor) {
+        setBackgroundTint(view, tintColor, null);
+    }
+
+    @BindingAdapter({"backTintColor", "tintMode"})
+    public static void setBackgroundTint(View view, @ColorInt int tintColor, @Nullable PorterDuff.Mode tintMode) {
         Drawable originalDrawable = view.getBackground();
         if (originalDrawable == null) {
             return;
         }
-        Drawable tintDrawable = DrawableCompat.wrap(originalDrawable).mutate();
-        DrawableCompat.setTintList(tintDrawable, colorStateList);
+        Drawable tintDrawable = DrawableCompat.wrap(originalDrawable.mutate());
+        if (tintMode != null) {
+            DrawableCompat.setTintMode(tintDrawable, tintMode);
+        }
+        DrawableCompat.setTint(tintDrawable, tintColor);
         ViewCompat.setBackground(view, tintDrawable);
-    }
-
-    @BindingAdapter("backTintColor")
-    public static void setBackgroundTint(View view, @ColorInt int tintColor) {
-        ColorStateList colorStateList = ColorStateList.valueOf(tintColor);
-        setBackgroundTint(view, colorStateList);
     }
 
     @BindingAdapter("marginEnd")
