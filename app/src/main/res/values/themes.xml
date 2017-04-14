@@ -117,6 +117,8 @@
 
         <item name="titlePopWindowBackground">@drawable/shape_round_corners_white</item>
         <item name="titlePopWindowTextColor">@android:color/secondary_text_light</item>
+
+        <item name="divideLineColor">@color/grey_500</item>
     </style>
 
     <style name="Origin.Theme.Light.Inverse">
@@ -170,5 +172,7 @@
 
         <item name="titlePopWindowBackground">@drawable/shape_round_corners_black</item>
         <item name="titlePopWindowTextColor">@android:color/secondary_text_dark</item>
+
+        <item name="divideLineColor">@color/grey_800</item>
     </style>
 </resources>

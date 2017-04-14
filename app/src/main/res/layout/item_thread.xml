@@ -57,8 +57,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@drawable/post_divide_dash_white"
-            android:layerType="software"
-            app:backTintColor="@{@color/grey_500}" />
+            android:background="@drawable/post_divide_dash"
+            android:layerType="software" />
     </LinearLayout>
 </layout>

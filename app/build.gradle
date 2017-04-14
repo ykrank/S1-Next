@@ -61,6 +61,7 @@ android {
         }
 
         alpha {
+            applicationIdSuffix '.alpha'
             versionNameSuffix '-alpha'
             signingConfig signingConfigs.release
             minifyEnabled true
