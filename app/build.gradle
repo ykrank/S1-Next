@@ -83,7 +83,6 @@ android {
         play {
             manifestPlaceholders["APP_CHANNEL"] = "play.google.com"
         }
-        //首发版本
         coolapk {
             manifestPlaceholders["APP_CHANNEL"] = "CoolApk"
         }
