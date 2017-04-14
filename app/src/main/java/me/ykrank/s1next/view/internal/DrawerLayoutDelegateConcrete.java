@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
+import me.ykrank.s1next.data.pref.DataPreferencesManager;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.databinding.ActionViewNoticeCountBinding;
 import me.ykrank.s1next.databinding.NavigationViewHeaderBinding;
@@ -49,6 +50,8 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
     DataTrackAgent trackAgent;
     @Inject
     ThemeManager mThemeManager;
+    @Inject
+    DataPreferencesManager mDataPreferencesManager;
 
     private ActionViewNoticeCountBinding pmNoticeBinding, noteNoticeBinding;
 
@@ -119,17 +122,15 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
         noteNoticeBinding = ActionViewNoticeCountBinding.inflate(LayoutInflater.from(mFragmentActivity));
         navigationView.getMenu().findItem(R.id.menu_pms).setActionView(pmNoticeBinding.getRoot());
         navigationView.getMenu().findItem(R.id.menu_note).setActionView(noteNoticeBinding.getRoot());
+        refreshNoticeMenuItem();
     }
 
     /**
      * refresh label in navigation menu to show whether new pm or notice
-     *
-     * @param newPm     has new pm
-     * @param newNotice has new notice
      */
-    public void refreshNoticeMenuItem(boolean newPm, boolean newNotice) {
-        pmNoticeBinding.setMsg(newPm ? "new" : null);
-        noteNoticeBinding.setMsg(newNotice ? "new" : null);
+    public void refreshNoticeMenuItem() {
+        pmNoticeBinding.setMsg(mDataPreferencesManager.hasNewPm() ? "new" : null);
+        noteNoticeBinding.setMsg(mDataPreferencesManager.hasNewNotice() ? "new" : null);
     }
 
     @Override

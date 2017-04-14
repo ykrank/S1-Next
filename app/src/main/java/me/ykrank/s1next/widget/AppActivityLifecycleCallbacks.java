@@ -19,10 +19,10 @@ public final class AppActivityLifecycleCallbacks implements Application.Activity
     private int mNeedMonitorWifiActivityCount;
     private int mExistCount;
 
-    public AppActivityLifecycleCallbacks(Context context) {
+    public AppActivityLifecycleCallbacks(Context context, NoticeCheckTask noticeCheckTask) {
+        this.noticeCheckTask = noticeCheckTask;
         mWifiBroadcastReceiver = new WifiBroadcastReceiver(context);
         hostUrlCheckTask = HostUrlCheckTask.INSTANCE;
-        noticeCheckTask = new NoticeCheckTask();
     }
 
     @Override

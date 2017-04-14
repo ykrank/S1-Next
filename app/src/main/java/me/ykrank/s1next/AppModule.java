@@ -26,6 +26,7 @@ import me.ykrank.s1next.data.db.AppDaoSessionManager;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.AppDaoOpenHelper;
 import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.NoticeCheckTask;
 import me.ykrank.s1next.widget.NullTrustManager;
 import me.ykrank.s1next.widget.PersistentHttpCookieStore;
 import me.ykrank.s1next.widget.glide.OkHttpNoAvatarInterceptor;
@@ -160,5 +161,11 @@ public final class AppModule {
     @Singleton
     AppDaoSessionManager provideAppDaoSessionManager(AppDaoOpenHelper helper) {
         return new AppDaoSessionManager(helper);
+    }
+
+    @Provides
+    @Singleton
+    NoticeCheckTask provideNoticeCheckTask(EventBus eventBus, S1Service s1Service, User user) {
+        return new NoticeCheckTask(eventBus, s1Service, user);
     }
 }

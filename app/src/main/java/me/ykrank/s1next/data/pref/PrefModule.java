@@ -63,4 +63,16 @@ public class PrefModule {
     ReadProgressPreferencesManager provideReadProgressPreferencesManager(ReadProgressPreferencesRepository readProgressPreferencesRepository) {
         return new ReadProgressPreferencesManager(readProgressPreferencesRepository);
     }
+
+    @Provides
+    @PrefScope
+    DataPreferencesRepository provideDataPreferencesProvider(Context context, SharedPreferences sharedPreferences) {
+        return new DataPreferencesRepository(context, sharedPreferences);
+    }
+
+    @Provides
+    @PrefScope
+    DataPreferencesManager provideDataPreferencesManager(DataPreferencesRepository preferencesRepository) {
+        return new DataPreferencesManager(preferencesRepository);
+    }
 }

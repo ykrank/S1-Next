@@ -39,6 +39,8 @@ public interface PrefComponent {
 
     ReadProgressPreferencesManager getReadProgressPreferencesManager();
 
+    DataPreferencesManager getDataPreferencesManager();
+
     void inject(BasePostFragment fragment);
 
     void inject(BaseActivity activity);

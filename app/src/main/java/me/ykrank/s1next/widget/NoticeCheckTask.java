@@ -2,40 +2,42 @@ package me.ykrank.s1next.widget;
 
 import android.os.SystemClock;
 
-import javax.inject.Inject;
-
-import me.ykrank.s1next.App;
+import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.event.NoticeRefreshEvent;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 
-/**
- * Created by ykrank on 2017/4/13.
- */
-
 public class NoticeCheckTask {
-    public static final int periodic = 300_000;
+    private static final int periodic = 300_000;
 
-    @Inject
-    EventBus mEventBus;
-    @Inject
-    S1Service mS1Service;
+    private final EventBus mEventBus;
+    private final S1Service mS1Service;
+    private final User mUser;
 
     private volatile long lastCheckTime;
     private volatile boolean checking = false;
 
-    public NoticeCheckTask() {
-        App.getAppComponent().inject(this);
+    public NoticeCheckTask(EventBus eventBus, S1Service s1Service, User user) {
+        this.mEventBus = eventBus;
+        this.mS1Service = s1Service;
+        this.mUser = user;
     }
 
     public void inspectCheckNoticeTask() {
-        if (checking) {
+        if (checking || !mUser.isLogged()) {
             return;
         }
         if (lastCheckTime == 0 || SystemClock.elapsedRealtime() - lastCheckTime > periodic) {
             startCheckNotice();
         }
+    }
+
+    public void forceCheckNotice() {
+        if (checking || !mUser.isLogged()) {
+            return;
+        }
+        startCheckNotice();
     }
 
     private void startCheckNotice() {

@@ -91,7 +91,7 @@ public final class App extends MultiDexApplication {
                 .appComponent(mAppComponent)
                 .prefModule(new PrefModule())
                 .build();
-        mAppActivityLifecycleCallbacks = new AppActivityLifecycleCallbacks(this);
+        mAppActivityLifecycleCallbacks = new AppActivityLifecycleCallbacks(this, mAppComponent.getNoticeCheckTask());
         registerActivityLifecycleCallbacks(mAppActivityLifecycleCallbacks);
 
         mGeneralPreferencesManager = mPrefComponent.getGeneralPreferencesManager();

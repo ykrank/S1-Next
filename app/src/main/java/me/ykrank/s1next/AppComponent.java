@@ -24,6 +24,7 @@ import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
 import me.ykrank.s1next.view.fragment.FavouriteListFragment;
 import me.ykrank.s1next.view.fragment.PmFragment;
+import me.ykrank.s1next.view.fragment.PmGroupsFragment;
 import me.ykrank.s1next.view.fragment.WebLoginFragment;
 import me.ykrank.s1next.view.fragment.setting.BackupPreferenceFragment;
 import me.ykrank.s1next.viewmodel.UserViewModel;
@@ -62,6 +63,8 @@ public interface AppComponent {
 
     AppDaoSessionManager getAppDaoSessionManager();
 
+    NoticeCheckTask getNoticeCheckTask();
+
     void inject(LogoutDialogFragment fragment);
 
     void inject(WebLoginFragment fragment);
@@ -91,4 +94,6 @@ public interface AppComponent {
     void inject(ThreadDbWrapper threadDbWrapper);
 
     void inject(NoticeCheckTask noticeCheckTask);
+
+    void inject(PmGroupsFragment pmGroupsFragment);
 }

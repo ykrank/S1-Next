@@ -27,4 +27,7 @@ public class PrefKey {
     //ReadProgressPreferenceFragment
     public static final String PREF_KEY_READ_PROGRESS_SAVE_AUTO = "pref_key_read_progress_save_auto";
     public static final String PREF_KEY_READ_PROGRESS_LOAD_AUTO = "pref_key_read_progress_load_auto";
+    //Data
+    public static final String PREF_KEY_HAS_NEW_PM = "pref_key_has_new_pm";
+    public static final String PREF_KEY_HAS_NEW_NOTICE = "pref_key_has_new_notice";
 }

@@ -35,6 +35,7 @@ import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.event.FontSizeChangeEvent;
 import me.ykrank.s1next.data.event.NoticeRefreshEvent;
 import me.ykrank.s1next.data.event.ThemeChangeEvent;
+import me.ykrank.s1next.data.pref.DataPreferencesManager;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.util.L;
@@ -68,6 +69,9 @@ public abstract class BaseActivity extends OriginActivity
 
     @Inject
     DownloadPreferencesManager mDownloadPreferencesManager;
+
+    @Inject
+    DataPreferencesManager mDataPreferencesManager;
 
     @Inject
     ThemeManager mThemeManager;
@@ -301,11 +305,14 @@ public abstract class BaseActivity extends OriginActivity
     }
 
     /**
-     * @see DrawerLayoutDelegateConcrete#refreshNoticeMenuItem(boolean, boolean)
+     * @see DrawerLayoutDelegateConcrete#refreshNoticeMenuItem()
      */
     public final void refreshNoticeMenuItem(boolean newPm, boolean newNotice) {
+        mDataPreferencesManager.invalidateHasNewPm(newPm);
+        mDataPreferencesManager.invalidateHasNewNotice(newNotice);
+
         if (mDrawerLayoutDelegate != null) {
-            mDrawerLayoutDelegate.refreshNoticeMenuItem(newPm, newNotice);
+            mDrawerLayoutDelegate.refreshNoticeMenuItem();
         }
     }
 
