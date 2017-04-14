@@ -7,6 +7,10 @@
 
     <data>
 
+        <import type="android.graphics.Color" />
+
+        <import type="android.graphics.PorterDuff.Mode" />
+
         <variable
             name="model"
             type="me.ykrank.s1next.viewmodel.NoteViewModel" />
