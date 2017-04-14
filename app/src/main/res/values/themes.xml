@@ -58,6 +58,7 @@
         <item name="android:textColorPrimary">@color/white_69p</item>
         <item name="android:textColorLink">@color/teal_200_70p</item>
         <item name="navigationViewTheme">@style/Theme.Dark.NightMode.NavigationView</item>
+        <item name="divideLineColor">@color/grey_800</item>
     </style>
 
     <style name="Base.Theme.Dark.NightMode.Amoled" parent="Base.Theme.Dark.NightMode">
@@ -173,6 +174,6 @@
         <item name="titlePopWindowBackground">@drawable/shape_round_corners_black</item>
         <item name="titlePopWindowTextColor">@android:color/secondary_text_dark</item>
 
-        <item name="divideLineColor">@color/grey_800</item>
+        <item name="divideLineColor">@color/grey_700</item>
     </style>
 </resources>
