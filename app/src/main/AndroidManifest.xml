@@ -36,9 +36,6 @@
         <meta-data
             android:name="BUGLY_APP_CHANNEL"
             android:value="${APP_CHANNEL}" />
-        <meta-data
-            android:name="BUGLY_APP_VERSION"
-            android:value="${INTERNAL_APP_VERSION}" />
 
         <!-- TalkingData-->
         <meta-data

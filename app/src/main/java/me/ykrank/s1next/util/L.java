@@ -20,8 +20,12 @@ import static me.ykrank.s1next.App.LOG_TAG;
 public class L {
 
     public static void init(@NonNull Context context) {
-        CrashReport.setIsDevelopmentDevice(context, BuildConfig.DEBUG);
-        CrashReport.initCrashReport(context.getApplicationContext());
+        Context appContext = context.getApplicationContext();
+        CrashReport.setIsDevelopmentDevice(appContext, BuildConfig.DEBUG);
+        CrashReport.UserStrategy userStrategy = new CrashReport.UserStrategy(appContext);
+        userStrategy.setAppVersion(BuildConfig.VERSION_NAME + "-" + BuildConfig.VERSION_CODE);
+        CrashReport.initCrashReport(appContext, userStrategy);
+
         Logger.init(LOG_TAG).logLevel(showLog() ? LogLevel.FULL : LogLevel.NONE);
     }
 

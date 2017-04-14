@@ -11,6 +11,7 @@ def storepassword = properties.getProperty('storePassword')
 def keyalias = properties.getProperty('keyAlias')
 def keypassword = properties.getProperty('keyPassword')
 
+
 android {
     compileSdkVersion 25
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -85,10 +86,6 @@ android {
         coolapk {
             manifestPlaceholders["APP_CHANNEL"] = "CoolApk"
         }
-    }
-    productFlavors.each {
-        it.buildConfigField "String", "DB_NAME", '"s1.db"'
-        it.manifestPlaceholders["INTERNAL_APP_VERSION"] = it.versionName + "-" + it.versionCode;
     }
 }
 
