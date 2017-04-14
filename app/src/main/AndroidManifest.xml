@@ -35,7 +35,10 @@
             android:value="eae39d8732" />
         <meta-data
             android:name="BUGLY_APP_CHANNEL"
-            android:value="play.google.com" />
+            android:value="${APP_CHANNEL}" />
+        <meta-data
+            android:name="BUGLY_APP_VERSION"
+            android:value="${INTERNAL_APP_VERSION}" />
 
         <!-- TalkingData-->
         <meta-data
@@ -43,7 +46,7 @@
             android:value="94B8FFC6A2CF49D6B1CBE8378B0B99C9" />
         <meta-data
             android:name="TD_CHANNEL_ID"
-            android:value="play.google.com" />
+            android:value="${APP_CHANNEL}" />
 
         <activity
             android:name=".view.activity.LoginActivity"

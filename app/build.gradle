@@ -19,8 +19,8 @@ android {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 26
-        versionName '1.1.4'
+        versionCode 27
+        versionName '1.1.5'
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
@@ -56,9 +56,9 @@ android {
         debug {
             multiDexEnabled true
             applicationIdSuffix '.debug'
-            versionNameSuffix '-DEBUG'
+            versionNameSuffix '-debug'
         }
-        
+
         alpha {
             versionNameSuffix '-alpha'
             signingConfig signingConfigs.release
@@ -77,7 +77,19 @@ android {
     buildTypes.each {
         it.buildConfigField "String", "DB_NAME", '"s1.db"'
     }
-
+    productFlavors {
+        play {
+            manifestPlaceholders["APP_CHANNEL"] = "play.google.com"
+        }
+        //首发版本
+        coolapk {
+            manifestPlaceholders["APP_CHANNEL"] = "CoolApk"
+        }
+    }
+    productFlavors.each {
+        it.buildConfigField "String", "DB_NAME", '"s1.db"'
+        it.manifestPlaceholders["INTERNAL_APP_VERSION"] = it.versionName + "-" + it.versionCode;
+    }
 }
 
 tasks.withType(JavaCompile) {
@@ -98,6 +110,8 @@ greendao {
 //http://stackoverflow.com/questions/28683327/how-to-check-if-gradle-dependency-has-new-version
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    playCompile fileTree(include: ['*.jar'], dir: 'libs/flavors/play')
+    coolapkCompile fileTree(include: ['*.jar'], dir: 'libs/flavors/coolapk')
 
     annotationProcessor 'com.google.dagger:dagger-compiler:2.10'
     compile 'com.google.dagger:dagger:2.10'
