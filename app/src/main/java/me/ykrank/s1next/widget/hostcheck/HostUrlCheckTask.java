@@ -45,6 +45,10 @@ public enum HostUrlCheckTask {
     private boolean autoCheck;
 
     public static void init(GeneralPreferencesManager prefManager) {
+        // TODO: 2017/4/14  remove this if auto check url enable
+        prefManager.invalidateBaseUrl(null);
+        prefManager.invalidateAutoCheckBaseUrl(false);
+
         INSTANCE.prefManager = prefManager;
         String url = prefManager.getBaseUrl();
         if (TextUtils.isEmpty(url)) {
