@@ -10,20 +10,22 @@ import java.util.List;
 import okhttp3.HttpUrl;
 
 public final class Api {
-
-    public static final String BASE_URL = "http://bbs.saraba1st.com/2b/";
-    public static final String BASE_API_URL = "http://bbs.saraba1st.com/2b/api/mobile/";
+    public static final String BASE_HOST = "bbs.saraba1st.com";
+    public static final String BASE_URL = "http://" + BASE_HOST + "/2b/";
+    public static final String BASE_API_URL = "http://" + BASE_HOST + "/2b/api/mobile/";
     public static final String BASE_STATIC_URL = "http://static.saraba1st.com/";
     public static final String[] HOST_LIST = new String[]{
             "bbs.saraba1st.com", "www.saraba1st.com", "stage1st.com", "www.stage1st.com"
     };
 
     public static boolean SUPPORT_HTTPS = false;
+    public static String FORSE_HOST_IP = "220.196.42.172";
+
     /**
      * does {@link me.ykrank.s1next.widget.hostcheck.HostUrlCheckTask auto run}
      */
     public static final boolean AUTO_CHECK_HOST = true;
-    
+
     static final String RANDOM_IMAGE_URL = "http://ac.stage3rd.com/S1_ACG_randpic.asp";
     static final String BASE_API_PREFIX = "index.php?module=";
 
