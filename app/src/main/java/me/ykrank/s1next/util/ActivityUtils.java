@@ -6,6 +6,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
@@ -40,13 +41,9 @@ public final class ActivityUtils {
      * get base context (FragmentActivity, Activity, ApplicationContext) ContextWrapper <br>
      * fork from {@link com.bumptech.glide.manager.RequestManagerRetriever#get(Context)}
      */
-    public static Context getBaseContext(Context context) {
-        if (context == null) {
-            throw new IllegalArgumentException("You cannot start a load on a null Context");
-        } else if (LooperUtil.isOnMainThread() && !(context instanceof Application)) {
-            if (context instanceof FragmentActivity) {
-                return context;
-            } else if (context instanceof Activity) {
+    public static Context getBaseContext(@NonNull Context context) {
+        if (LooperUtil.isOnMainThread() && !(context instanceof Application)) {
+            if (context instanceof Activity) {
                 return context;
             } else if (context instanceof ContextWrapper) {
                 return getBaseContext(((ContextWrapper) context).getBaseContext());

@@ -41,6 +41,10 @@ public class L {
         Logger.d(msg);
     }
 
+    public static void d(Throwable e) {
+        d(null, e.getMessage());
+    }
+
     public static void d(String tag, String msg) {
         Logger.t(tag).d(msg);
     }

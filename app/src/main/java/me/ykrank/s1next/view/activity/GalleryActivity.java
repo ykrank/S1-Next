@@ -29,6 +29,7 @@ import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.databinding.ActivityGalleryBinding;
 import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.LeaksUtil;
 import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.view.internal.ToolbarDelegate;
 import me.ykrank.s1next.viewmodel.ImageViewModel;
@@ -191,6 +192,7 @@ public final class GalleryActivity extends OriginActivity {
             mPhotoView = null;
         }
         super.onDestroy();
+        LeaksUtil.releaseGestureBoostManagerLeaks(this);
     }
 
     @Override
