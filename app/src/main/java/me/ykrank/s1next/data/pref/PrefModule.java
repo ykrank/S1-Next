@@ -18,24 +18,6 @@ public class PrefModule {
 
     @Provides
     @PrefScope
-    SharedPreferences provideSharedPreferences(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context);
-    }
-
-    @Provides
-    @PrefScope
-    GeneralPreferencesRepository provideGeneralPreferencesProvider(Context context, SharedPreferences sharedPreferences) {
-        return new GeneralPreferencesRepository(context, sharedPreferences);
-    }
-
-    @Provides
-    @PrefScope
-    GeneralPreferencesManager provideGeneralPreferencesManager(GeneralPreferencesRepository generalPreferencesProvider) {
-        return new GeneralPreferencesManager(generalPreferencesProvider);
-    }
-
-    @Provides
-    @PrefScope
     ThemeManager provideThemeManager(Context context, GeneralPreferencesRepository generalPreferencesProvider) {
         return new ThemeManager(context, generalPreferencesProvider);
     }

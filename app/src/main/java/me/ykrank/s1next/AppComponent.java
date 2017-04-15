@@ -15,6 +15,7 @@ import me.ykrank.s1next.data.db.AppDaoSessionManager;
 import me.ykrank.s1next.data.db.BlackListDbWrapper;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.data.db.ThreadDbWrapper;
+import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.view.adapter.delegate.FavouriteAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmGroupsAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmLeftAdapterDelegate;
@@ -29,7 +30,7 @@ import me.ykrank.s1next.view.fragment.WebLoginFragment;
 import me.ykrank.s1next.view.fragment.setting.BackupPreferenceFragment;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EventBus;
-import me.ykrank.s1next.widget.NoticeCheckTask;
+import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import okhttp3.OkHttpClient;
 
@@ -42,6 +43,8 @@ import okhttp3.OkHttpClient;
 public interface AppComponent {
 
     Context getContext();
+
+    GeneralPreferencesManager getGeneralPreferencesManager();
 
     OkHttpClient getOkHttpClient();
 

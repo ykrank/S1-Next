@@ -45,8 +45,7 @@ public final class GeneralPreferencesRepository extends BasePreferencesRepositor
     }
 
     public void setPostSelectable(boolean selectable) {
-        mSharedPreferences.edit().putBoolean(PrefKey.PREF_KEY_POST_SELECTABLE, selectable)
-                .apply();
+        mSharedPreferences.edit().putBoolean(PrefKey.PREF_KEY_POST_SELECTABLE, selectable).apply();
     }
 
     public boolean isQuickSideBarEnable() {
@@ -55,8 +54,7 @@ public final class GeneralPreferencesRepository extends BasePreferencesRepositor
     }
 
     public void setQuickSideBarEnable(boolean enable) {
-        mSharedPreferences.edit().putBoolean(PrefKey.PREF_KEY_QUICK_SIDE_BAR_ENABLE, enable)
-                .apply();
+        mSharedPreferences.edit().putBoolean(PrefKey.PREF_KEY_QUICK_SIDE_BAR_ENABLE, enable).apply();
     }
 
     public String getBaseUrl() {
@@ -64,8 +62,7 @@ public final class GeneralPreferencesRepository extends BasePreferencesRepositor
     }
 
     public void setBaseUrl(String baseUrl) {
-        mSharedPreferences.edit().putString(PrefKey.PREF_KEY_BASE_URL, baseUrl)
-                .apply();
+        mSharedPreferences.edit().putString(PrefKey.PREF_KEY_BASE_URL, baseUrl).apply();
     }
 
     public boolean isAutoCheckBaseUrl() {
@@ -74,7 +71,14 @@ public final class GeneralPreferencesRepository extends BasePreferencesRepositor
     }
 
     public void setAutoCheckBaseUrl(boolean autoCheck) {
-        mSharedPreferences.edit().putBoolean(PrefKey.PREF_KEY_AUTO_CHECK_BASE_URL, autoCheck)
-                .apply();
+        mSharedPreferences.edit().putBoolean(PrefKey.PREF_KEY_AUTO_CHECK_BASE_URL, autoCheck).apply();
+    }
+
+    public String getForceHostIp(){
+        return mSharedPreferences.getString(PrefKey.PREF_KEY_FORCE_HOST_IP, null);
+    }
+
+    public void setForceHostIp(String hostIp) {
+        mSharedPreferences.edit().putString(PrefKey.PREF_KEY_FORCE_HOST_IP, hostIp).apply();
     }
 }

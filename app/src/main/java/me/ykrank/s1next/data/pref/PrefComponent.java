@@ -33,8 +33,6 @@ import me.ykrank.s1next.widget.glide.AvatarStreamFetcher;
 public interface PrefComponent {
     ThemeManager getThemeManager();
 
-    GeneralPreferencesManager getGeneralPreferencesManager();
-
     DownloadPreferencesManager getDownloadPreferencesManager();
 
     ReadProgressPreferencesManager getReadProgressPreferencesManager();

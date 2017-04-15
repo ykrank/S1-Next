@@ -73,4 +73,15 @@ public final class GeneralPreferencesManager {
     public boolean isAutoCheckBaseUrl() {
         return mGeneralPreferencesProvider.isAutoCheckBaseUrl();
     }
+
+    public void invalidateForceHostIp(String hostIp) {
+        mGeneralPreferencesProvider.setForceHostIp(hostIp);
+    }
+
+    /**
+     * Force use this ip, disable if null
+     */
+    public String getForceHostIp() {
+        return mGeneralPreferencesProvider.getForceHostIp();
+    }
 }

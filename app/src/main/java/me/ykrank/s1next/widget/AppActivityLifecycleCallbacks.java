@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import me.ykrank.s1next.widget.hostcheck.HostUrlCheckTask;
+import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask;
 
 public final class AppActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {
 

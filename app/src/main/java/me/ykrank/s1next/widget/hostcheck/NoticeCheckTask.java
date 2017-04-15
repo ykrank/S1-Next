@@ -1,4 +1,4 @@
-package me.ykrank.s1next.widget;
+package me.ykrank.s1next.widget.hostcheck;
 
 import android.os.SystemClock;
 
@@ -7,6 +7,7 @@ import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.event.NoticeRefreshEvent;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
+import me.ykrank.s1next.widget.EventBus;
 
 public class NoticeCheckTask {
     private static final int periodic = 300_000;

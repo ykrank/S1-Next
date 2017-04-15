@@ -2,13 +2,16 @@ package me.ykrank.s1next.util;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 import com.tencent.bugly.crashreport.BuglyLog;
 import com.tencent.bugly.crashreport.CrashReport;
 
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.BuildConfig;
 
 import static me.ykrank.s1next.App.LOG_TAG;
@@ -119,5 +122,13 @@ public class L {
 
     public static void test() {
         throw new RuntimeException("Just test");
+    }
+
+    public static void toast(String msg){
+        Toast.makeText(App.get(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void toast(@StringRes int msg){
+        Toast.makeText(App.get(), msg, Toast.LENGTH_SHORT).show();
     }
 }

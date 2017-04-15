@@ -2,8 +2,10 @@ package me.ykrank.s1next;
 
 import android.content.res.Configuration;
 import android.os.StrictMode;
+import android.support.annotation.StringRes;
 import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
+import android.widget.Toast;
 
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -94,7 +96,7 @@ public final class App extends MultiDexApplication {
         mAppActivityLifecycleCallbacks = new AppActivityLifecycleCallbacks(this, mAppComponent.getNoticeCheckTask());
         registerActivityLifecycleCallbacks(mAppActivityLifecycleCallbacks);
 
-        mGeneralPreferencesManager = mPrefComponent.getGeneralPreferencesManager();
+        mGeneralPreferencesManager = mAppComponent.getGeneralPreferencesManager();
         HostUrlCheckTask.init(mGeneralPreferencesManager);
 
         //enable vector drawable
@@ -117,5 +119,4 @@ public final class App extends MultiDexApplication {
     public boolean isAppVisible() {
         return mAppActivityLifecycleCallbacks.isAppVisible();
     }
-
 }

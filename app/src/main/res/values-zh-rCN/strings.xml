@@ -218,4 +218,5 @@
     <string name="search_type_entry_user">用户</string>
     <string name="edit_post_succeed">编辑帖子成功</string>
     <string name="title_edit_post">编辑帖子</string>
+    <string name="error_host_ip">域名IP格式错误</string>
 </resources>

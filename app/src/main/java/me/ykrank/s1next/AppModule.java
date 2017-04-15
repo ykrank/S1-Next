@@ -1,6 +1,8 @@
 package me.ykrank.s1next;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,11 +25,14 @@ import me.ykrank.s1next.data.api.ApiVersionInterceptor;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.data.db.AppDaoSessionManager;
+import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
+import me.ykrank.s1next.data.pref.GeneralPreferencesRepository;
+import me.ykrank.s1next.data.pref.PrefScope;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.AppDaoOpenHelper;
 import me.ykrank.s1next.widget.EventBus;
-import me.ykrank.s1next.widget.HttpDns;
-import me.ykrank.s1next.widget.NoticeCheckTask;
+import me.ykrank.s1next.widget.hostcheck.HttpDns;
+import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask;
 import me.ykrank.s1next.widget.NullTrustManager;
 import me.ykrank.s1next.widget.PersistentHttpCookieStore;
 import me.ykrank.s1next.widget.glide.OkHttpNoAvatarInterceptor;
@@ -60,6 +65,24 @@ public final class AppModule {
     }
 
     @Provides
+    @PrefScope
+    SharedPreferences provideSharedPreferences(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    @Provides
+    @PrefScope
+    GeneralPreferencesRepository provideGeneralPreferencesProvider(Context context, SharedPreferences sharedPreferences) {
+        return new GeneralPreferencesRepository(context, sharedPreferences);
+    }
+
+    @Provides
+    @PrefScope
+    GeneralPreferencesManager provideGeneralPreferencesManager(GeneralPreferencesRepository generalPreferencesProvider) {
+        return new GeneralPreferencesManager(generalPreferencesProvider);
+    }
+
+    @Provides
     @Singleton
     CookieManager providerCookieManager(Context context) {
         return new CookieManager(new PersistentHttpCookieStore(context), CookiePolicy.ACCEPT_ALL);
@@ -67,9 +90,9 @@ public final class AppModule {
 
     @Provides
     @Singleton
-    OkHttpClient providerOkHttpClient(CookieManager cookieManager) {
+    OkHttpClient providerOkHttpClient(CookieManager cookieManager, GeneralPreferencesManager generalPreferencesManager) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.dns(new HttpDns());
+        builder.dns(new HttpDns(generalPreferencesManager));
         builder.connectTimeout(17, TimeUnit.SECONDS);
         builder.writeTimeout(17, TimeUnit.SECONDS);
         builder.readTimeout(77, TimeUnit.SECONDS);
