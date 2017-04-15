@@ -19,7 +19,7 @@ public final class Api {
     };
 
     public static boolean SUPPORT_HTTPS = false;
-    public static String FORSE_HOST_IP = "220.196.42.172";
+    public static String FORCE_HOST_IP = "220.196.42.172";
 
     /**
      * does {@link me.ykrank.s1next.widget.hostcheck.HostUrlCheckTask auto run}
