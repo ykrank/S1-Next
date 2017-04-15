@@ -121,7 +121,7 @@ public final class TextViewBindingAdapter {
             Spannable typeSpan = new SpannableString(String.format("[%s] ", thread.getTypeName()));
             typeSpan.setSpan(hintSpan, 0, typeSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             builder.insert(0, typeSpan);
-        } else if ("0".equals(thread.getTypeId()) && "75".equals(forumId) && thread.getDisplayOrder() == 0) {
+        } else if (("0".equals(thread.getTypeId()) || "344".equals(thread.getTypeId())) && "75".equals(forumId) && thread.getDisplayOrder() == 0) {
             //add 泥潭
             Spannable typeSpan = new SpannableString("[泥潭] ");
             typeSpan.setSpan(hintSpan, 0, typeSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
