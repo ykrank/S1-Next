@@ -56,9 +56,9 @@ public final class EmoticonGridRecyclerAdapter
     }
 
     @Override
-    public void onViewDetachedFromWindow(BindingViewHolder holder) {
+    public void onViewRecycled(BindingViewHolder holder) {
+        super.onViewRecycled(holder);
         Glide.clear(holder.itemEmoticonBinding.image);
-        super.onViewDetachedFromWindow(holder);
     }
 
     @Override
