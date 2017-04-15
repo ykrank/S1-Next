@@ -28,42 +28,29 @@
             type="String" />
     </data>
 
-    <LinearLayout
+    <!-- May change this TextView padding or height after because we
+    can't find any spec in the material design guidelines whose line count
+    is not sure (less than 4) and each line are all primary.
+    We set top/bottom padding to 14.5dp because `includeFontPadding`
+    doesn't remove all extra space. -->
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <!-- May change this TextView padding or height after because we
-        can't find any spec in the material design guidelines whose line count
-        is not sure (less than 4) and each line are all primary.
-        We set top/bottom padding to 14.5dp because `includeFontPadding`
-        doesn't remove all extra space. -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:includeFontPadding="false"
-            android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
-            android:maxLines="@integer/list_max_line"
-            android:padding="@dimen/item_padding_small"
-            android:paddingBottom="6.5dp"
-            android:paddingTop="6.5dp"
-            android:textAppearance="@style/TextAppearance.ThreadList.Title"
-            app:forumId="@{forumId}"
-            app:onLongClickListener="@{threadViewModel.goToThisThreadLastPage()}"
-            app:onceClickDisposable="@{threadViewModel.subscription}"
-            app:themeManager="@{themeManager}"
-            app:thread="@{threadViewModel.thread}"
-            app:user="@{userViewModel.user}" />
-
-        <!--Could not use attr in drawable before Api 5.0, so use tint color here-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@drawable/post_divide_dash"
-            app:backTintColor="@{ResourceUtil.getAttrColorInt(context, R.attr.divideLineColor)}"
-            android:layerType="software" />
-    </LinearLayout>
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
+        android:maxLines="@integer/list_max_line"
+        android:padding="@dimen/item_padding"
+        android:paddingBottom="14.5dp"
+        android:paddingTop="14.5dp"
+        android:textAppearance="@style/TextAppearance.ThreadList.Title"
+        app:forumId="@{forumId}"
+        app:onLongClickListener="@{threadViewModel.goToThisThreadLastPage()}"
+        app:onceClickDisposable="@{threadViewModel.subscription}"
+        app:themeManager="@{themeManager}"
+        app:thread="@{threadViewModel.thread}"
+        app:user="@{userViewModel.user}" />
 </layout>
