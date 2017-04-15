@@ -36,7 +36,7 @@ public class HomeThreadWebWrapper {
                 }
             }
             //more
-            Elements next = document.select("div.pg>a.nxt[rel=next]");
+            Elements next = document.select("div.pg>a.nxt");
             wrapper.setMore(!next.isEmpty());
         } catch (Exception e) {
             L.report(e);
