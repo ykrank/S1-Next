@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.AnyRes;
 import android.support.annotation.AttrRes;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.VectorEnabledTintResources;
@@ -35,6 +36,11 @@ public final class ResourceUtil {
         return typedValue.resourceId;
     }
 
+    @ColorInt
+    public static int getAttrColorInt(Context context, @AttrRes int resId) {
+        int colorRes = getResourceId(context.getTheme(), resId);
+        return ContextCompat.getColor(context, colorRes);
+    }
 
     /**
      * Sets the scaling factor for fonts displayed on the display.

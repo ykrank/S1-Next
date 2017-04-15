@@ -7,6 +7,10 @@
 
     <data>
 
+        <import type="me.ykrank.s1next.R" />
+
+        <import type="me.ykrank.s1next.util.ResourceUtil" />
+
         <variable
             name="threadViewModel"
             type="me.ykrank.s1next.viewmodel.ThreadViewModel" />
@@ -54,10 +58,12 @@
             app:thread="@{threadViewModel.thread}"
             app:user="@{userViewModel.user}" />
 
+        <!--Could not use attr in drawable before Api 5.0, so use tint color here-->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@drawable/post_divide_dash"
+            app:backTintColor="@{ResourceUtil.getAttrColorInt(context, R.attr.divideLineColor)}"
             android:layerType="software" />
     </LinearLayout>
 </layout>
