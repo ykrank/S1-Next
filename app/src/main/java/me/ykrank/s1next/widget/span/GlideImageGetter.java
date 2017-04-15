@@ -23,12 +23,15 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.widget.EmoticonFactory;
 import me.ykrank.s1next.widget.glide.transformations.GlMaxTextureSizeBitmapTransformation;
 import me.ykrank.s1next.widget.glide.transformations.SizeMultiplierBitmapTransformation;
+import me.ykrank.s1next.widget.track.DataTrackAgent;
+import me.ykrank.s1next.widget.track.event.EmoticonNotFoundTrackEvent;
 
 /**
  * Implements {@link android.text.Html.ImageGetter}
@@ -44,8 +47,8 @@ public final class GlideImageGetter
         implements Html.ImageGetter, View.OnAttachStateChangeListener, Drawable.Callback {
 
     private final Context mContext;
-
     private final TextView mTextView;
+    private final DataTrackAgent trackAgent;
 
     /**
      * Weak {@link java.util.HashSet}.
@@ -55,6 +58,7 @@ public final class GlideImageGetter
     protected GlideImageGetter(Context context, TextView textView) {
         this.mContext = context;
         this.mTextView = textView;
+        this.trackAgent = App.getAppComponent().getDataTrackAgent();
 
         // save Drawable.Callback in TextView
         // and get back when finish fetching image
@@ -104,7 +108,7 @@ public final class GlideImageGetter
                         @Override
                         public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
                             L.leaveMsg("Exception in emoticon uri:" + model);
-                            L.report(e);
+                            trackAgent.post(new EmoticonNotFoundTrackEvent(model.toString()));
                             // append domain to this url
                             Glide.with(mContext)
                                     .load(Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX + finalUrl)
