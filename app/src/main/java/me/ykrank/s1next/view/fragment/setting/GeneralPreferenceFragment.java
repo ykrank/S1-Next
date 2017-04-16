@@ -47,6 +47,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
         findPreference(getString(R.string.pref_key_blacklists)).setOnPreferenceClickListener(this);
         findPreference(getString(R.string.pref_key_post_read_progress)).setOnPreferenceClickListener(this);
         findPreference(getString(R.string.pref_key_backup)).setOnPreferenceClickListener(this);
+        findPreference(getString(R.string.pref_key_network)).setOnPreferenceClickListener(this);
 
         findPreference(getString(R.string.pref_key_signature)).setSummary(HtmlCompat.fromHtml(DeviceUtil.getSignature(getActivity()), FROM_HTML_MODE_LEGACY));
     }
@@ -83,6 +84,9 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
             return true;
         } else if (key.equals(getString(R.string.pref_key_backup))) {
             SettingsActivity.startBackupSettingsActivity(preference.getContext());
+            return true;
+        } else if (key.equals(getString(R.string.pref_key_network))) {
+            SettingsActivity.startNetworkSettingsActivity(preference.getContext());
             return true;
         }
 

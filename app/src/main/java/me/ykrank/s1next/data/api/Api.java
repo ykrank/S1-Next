@@ -19,7 +19,6 @@ public final class Api {
     };
 
     public static boolean SUPPORT_HTTPS = false;
-    public static String FORCE_HOST_IP = "220.196.42.172";
 
     static final String RANDOM_IMAGE_URL = "http://ac.stage3rd.com/S1_ACG_randpic.asp";
     static final String BASE_API_PREFIX = "index.php?module=";

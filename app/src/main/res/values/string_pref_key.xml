@@ -9,6 +9,7 @@
     <string name="pref_key_post_read_progress" translatable="false">pref_key_post_read_progress</string>
     <string name="pref_key_backup" translatable="false">pref_key_backup</string>
     <!-- Network -->
+    <string name="pref_key_network" translatable="false">pref_key_network</string>
     <string name="pref_key_force_base_url_enabled" translatable="false">pref_key_force_base_url_enabled</string>
     <string name="pref_key_force_base_url" translatable="false">pref_key_force_base_url</string>
     <string name="pref_key_auto_check_base_url" translatable="false">pref_key_auto_check_base_url</string>

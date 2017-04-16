@@ -170,4 +170,12 @@
     <string name="edit_post_succeed">编辑帖子成功</string>
     <string name="title_edit_post">编辑帖子</string>
     <string name="error_host_ip">域名IP格式错误</string>
+    <string name="error_force_base_url">错误的基础网址</string>
+    <string name="error_force_host_ip">错误的IP列表</string>
+    <string name="pref_force_base_url">基础网址</string>
+    <string name="pref_force_base_url_enabled">强制替换基础网址</string>
+    <string name="pref_force_host_ip">IP列表</string>
+    <string name="pref_force_host_ip_enabled">强制使用IP列表</string>
+    <string name="pref_network">网络参数</string>
+    <string name="pref_network_summary">专业的技术参数，谨慎修改</string>
 </resources>

@@ -33,6 +33,7 @@ import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.NullTrustManager;
 import me.ykrank.s1next.widget.PersistentHttpCookieStore;
 import me.ykrank.s1next.widget.glide.OkHttpNoAvatarInterceptor;
+import me.ykrank.s1next.widget.hostcheck.BaseHostUrl;
 import me.ykrank.s1next.widget.hostcheck.HttpDns;
 import me.ykrank.s1next.widget.hostcheck.MultiHostInterceptor;
 import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask;
@@ -83,15 +84,27 @@ public final class AppModule {
 
     @Provides
     @Singleton
+    BaseHostUrl provideBaseHostUrl(NetworkPreferencesManager networkPreferencesManager) {
+        return new BaseHostUrl(networkPreferencesManager);
+    }
+
+    @Provides
+    @Singleton
+    HttpDns provideHttpDns(BaseHostUrl baseHostUrl) {
+        return new HttpDns(baseHostUrl);
+    }
+
+    @Provides
+    @Singleton
     CookieManager providerCookieManager(Context context) {
         return new CookieManager(new PersistentHttpCookieStore(context), CookiePolicy.ACCEPT_ALL);
     }
 
     @Provides
     @Singleton
-    OkHttpClient providerOkHttpClient(CookieManager cookieManager, NetworkPreferencesManager networkPreferencesManager) {
+    OkHttpClient providerOkHttpClient(CookieManager cookieManager, BaseHostUrl baseHostUrl) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.dns(new HttpDns(networkPreferencesManager));
+        builder.dns(new HttpDns(baseHostUrl));
         builder.connectTimeout(17, TimeUnit.SECONDS);
         builder.writeTimeout(17, TimeUnit.SECONDS);
         builder.readTimeout(77, TimeUnit.SECONDS);
@@ -99,7 +112,7 @@ public final class AppModule {
         builder.cookieJar(new JavaNetCookieJar(cookieManager));
         builder.addNetworkInterceptor(new OkHttpNoAvatarInterceptor());
         builder.addInterceptor(new ApiVersionInterceptor());
-        builder.addInterceptor(new MultiHostInterceptor());
+        builder.addInterceptor(new MultiHostInterceptor(baseHostUrl));
         if (BuildConfig.DEBUG) {
             //log
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();

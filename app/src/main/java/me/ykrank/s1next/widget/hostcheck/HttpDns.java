@@ -8,45 +8,53 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
 
-import me.ykrank.s1next.R;
-import me.ykrank.s1next.data.api.Api;
-import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
-import me.ykrank.s1next.util.L;
 import okhttp3.Dns;
 
 public class HttpDns implements Dns {
     private static final Dns SYSTEM = Dns.SYSTEM;
 
-    private final NetworkPreferencesManager preferencesManager;
+    private final BaseHostUrl baseHostUrl;
 
     private List<InetAddress> inetAddressList;
     private String forceHostIp;
 
-    public HttpDns(NetworkPreferencesManager preferencesManager) {
-        this.preferencesManager = preferencesManager;
+    public HttpDns(BaseHostUrl baseHostUrl) {
+        this.baseHostUrl = baseHostUrl;
     }
 
     @Override
     public List<InetAddress> lookup(String hostname) throws UnknownHostException {
-        checkInetAddress();
-        if (inetAddressList != null) {
-            if (Api.BASE_HOST.equals(hostname)) {
+        try {
+            checkInetAddress();
+            if (inetAddressList != null && baseHostUrl.getBaseHttpUrl() != null
+                    && TextUtils.equals(baseHostUrl.getBaseHttpUrl().host(), hostname)) {
                 return inetAddressList;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return SYSTEM.lookup(hostname);
     }
 
-    private void checkInetAddress() {
-        try {
-            if (inetAddressList == null || inetAddressList.isEmpty() ||
-                    !TextUtils.equals(forceHostIp, preferencesManager.getForceHostIp())) {
-
-                inetAddressList = Arrays.asList(InetAddress.getAllByName(preferencesManager.getForceHostIp()));
-                forceHostIp = preferencesManager.getForceHostIp();
-            }
-        } catch (UnknownHostException e) {
-            L.toast(R.string.error_host_ip);
+    public void checkInetAddress() throws UnknownHostException {
+        if (!TextUtils.equals(forceHostIp, baseHostUrl.getHostIp())) {
+            inetAddressList = Arrays.asList(InetAddress.getAllByName(baseHostUrl.getHostIp()));
+            forceHostIp = baseHostUrl.getHostIp();
         }
+    }
+
+    /**
+     * Check whether this ip list is valid. ip should like
+     *
+     * @param hostIp ip list, sep by ','
+     * @return valid
+     */
+    public static boolean checkHostIp(String hostIp) {
+        try {
+            return InetAddress.getAllByName(hostIp).length > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

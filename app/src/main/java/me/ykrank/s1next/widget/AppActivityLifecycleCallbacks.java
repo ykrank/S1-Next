@@ -5,13 +5,11 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 
-import me.ykrank.s1next.widget.hostcheck.HostUrlCheckTask;
 import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask;
 
 public final class AppActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {
 
     private final WifiBroadcastReceiver mWifiBroadcastReceiver;
-    private final HostUrlCheckTask hostUrlCheckTask;
     private final NoticeCheckTask noticeCheckTask;
     /**
      * Forked from http://stackoverflow.com/a/13809991
@@ -23,16 +21,10 @@ public final class AppActivityLifecycleCallbacks implements Application.Activity
     public AppActivityLifecycleCallbacks(Context context, NoticeCheckTask noticeCheckTask) {
         this.noticeCheckTask = noticeCheckTask;
         mWifiBroadcastReceiver = new WifiBroadcastReceiver(context);
-        hostUrlCheckTask = HostUrlCheckTask.INSTANCE;
     }
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        if (mExistCount == 0) {
-            hostUrlCheckTask.startCheckHostTask(activity);
-        } else {
-            hostUrlCheckTask.inspectCheckHostTask();
-        }
         mExistCount++;
     }
 
@@ -74,9 +66,6 @@ public final class AppActivityLifecycleCallbacks implements Application.Activity
     @Override
     public void onActivityDestroyed(Activity activity) {
         mExistCount--;
-        if (mExistCount == 0) {
-            hostUrlCheckTask.stopCheckHostTask(activity);
-        }
     }
 
     public boolean isAppVisible() {

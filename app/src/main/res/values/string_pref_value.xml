@@ -81,5 +81,11 @@
     <string name="message_io_exception">Io exception</string>
 
     <!-- network -->
-    <string name="pref_key_force_host_ip_default_value" translatable="false">220.196.42.172</string>
+    <string name="pref_network">Network</string>
+    <string name="pref_network_summary">Professional setting, be careful</string>
+    <string name="pref_force_base_url_enabled">Force use base url</string>
+    <string name="pref_force_base_url">Base url</string>
+    <string name="pref_force_host_ip_enabled">Force use ip</string>
+    <string name="pref_force_host_ip">IP</string>
+    <string name="pref_key_force_host_ip_default_value" translatable="false">220.196.42.172, 220.196.42.170</string>
 </resources>

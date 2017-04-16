@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:persistent="false"
+    tools:context=".view.fragment.setting.NetworkPreferenceFragment">
+
+    <SwitchPreference
+        android:defaultValue="@bool/pref_key_force_base_url_enabled_default_value"
+        android:key="@string/pref_key_force_base_url_enabled"
+        android:title="@string/pref_force_base_url_enabled" />
+
+    <EditTextPreference
+        android:key="@string/pref_key_force_base_url"
+        android:title="@string/pref_force_base_url"
+        app:dependency="@string/pref_key_force_base_url_enabled" />
+
+    <SwitchPreference
+        android:defaultValue="@bool/pref_key_force_host_ip_enabled_default_value"
+        android:key="@string/pref_key_force_host_ip_enabled"
+        android:title="@string/pref_force_host_ip_enabled" />
+
+    <EditTextPreference
+        android:defaultValue="@string/pref_key_force_host_ip_default_value"
+        android:key="@string/pref_key_force_host_ip"
+        android:title="@string/pref_force_host_ip"
+        app:dependency="@string/pref_key_force_host_ip_enabled" />
+</PreferenceScreen>

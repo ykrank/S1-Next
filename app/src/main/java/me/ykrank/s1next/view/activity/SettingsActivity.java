@@ -10,6 +10,7 @@ import me.ykrank.s1next.view.fragment.setting.BackupPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.BlackListSettingFragment;
 import me.ykrank.s1next.view.fragment.setting.DownloadPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.GeneralPreferenceFragment;
+import me.ykrank.s1next.view.fragment.setting.NetworkPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.ReadProgressPreferenceFragment;
 
 /**
@@ -24,6 +25,7 @@ public final class SettingsActivity extends BaseActivity {
     private static final int EXTRA_SHOW_SETTING_BLACKLIST = 2;
     private static final int EXTRA_SHOW_SETTING_READ_PROGRESS = 3;
     private static final int EXTRA_SHOW_SETTING_BACKUP = 4;
+    private static final int EXTRA_SHOW_SETTING_NETWORK = 5;
 
     public static void startSettingsActivity(Context context) {
         Intent intent = new Intent(context, SettingsActivity.class);
@@ -54,6 +56,12 @@ public final class SettingsActivity extends BaseActivity {
         context.startActivity(intent);
     }
 
+    public static void startNetworkSettingsActivity(Context context) {
+        Intent intent = new Intent(context, SettingsActivity.class);
+        intent.putExtra(ARG_SHOW_SETTINGS, EXTRA_SHOW_SETTING_NETWORK);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +89,11 @@ public final class SettingsActivity extends BaseActivity {
                     setTitle(R.string.pref_backup);
                     getFragmentManager().beginTransaction().replace(R.id.frame_layout,
                             new BackupPreferenceFragment()).commit();
+                    break;
+                case EXTRA_SHOW_SETTING_NETWORK:
+                    setTitle(R.string.pref_network);
+                    getFragmentManager().beginTransaction().replace(R.id.frame_layout,
+                            new NetworkPreferenceFragment()).commit();
                     break;
                 default:
                     getFragmentManager().beginTransaction().replace(R.id.frame_layout,

@@ -29,8 +29,11 @@ import me.ykrank.s1next.view.fragment.PmFragment;
 import me.ykrank.s1next.view.fragment.PmGroupsFragment;
 import me.ykrank.s1next.view.fragment.WebLoginFragment;
 import me.ykrank.s1next.view.fragment.setting.BackupPreferenceFragment;
+import me.ykrank.s1next.view.fragment.setting.NetworkPreferenceFragment;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.hostcheck.BaseHostUrl;
+import me.ykrank.s1next.widget.hostcheck.HttpDns;
 import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import okhttp3.OkHttpClient;
@@ -48,6 +51,10 @@ public interface AppComponent {
     SharedPreferences getSharedPreferences();
 
     NetworkPreferencesManager getNetworkPreferencesManager();
+
+    BaseHostUrl getBaseHostUrl();
+
+    HttpDns getHttpDns();
 
     OkHttpClient getOkHttpClient();
 
@@ -102,4 +109,6 @@ public interface AppComponent {
     void inject(NoticeCheckTask noticeCheckTask);
 
     void inject(PmGroupsFragment pmGroupsFragment);
+
+    void inject(NetworkPreferenceFragment networkPreferenceFragment);
 }
