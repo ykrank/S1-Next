@@ -32,7 +32,7 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/picture_content_desc"
             android:transitionName="@string/gallery_transition"
-            android:visibility="@{large?View.GONE:View.VISIBLE}"
+            android:visibility="@{safeUnbox(large)?View.GONE:View.VISIBLE}"
             app:manager="@{downloadPrefManager}"
             app:thumbUrl="@{imageViewModel.thumbUrl}"
             app:url="@{imageViewModel.url}" />
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/picture_content_desc"
-            android:visibility="@{large?View.VISIBLE:View.GONE}"
+            android:visibility="@{safeUnbox(large)?View.VISIBLE:View.GONE}"
             app:manager="@{downloadPrefManager}"
             app:thumbUrl="@{imageViewModel.thumbUrl}"
             app:url="@{imageViewModel.url}" />
