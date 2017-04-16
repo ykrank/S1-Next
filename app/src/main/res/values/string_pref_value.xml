@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- settings -->
+    <string name="pref_general">General</string>
+    <string name="pref_theme">Theme</string>
+    <string name="pref_theme_default_value" translatable="false">0</string>
+    <string name="pref_font_size">Font size</string>
+    <string name="pref_font_size_default_value" translatable="false">1.0</string>
+    <string name="pref_signature">Signature</string>
+
+    <string name="pref_advanced">Advanced</string>
+    <string name="pref_downloads">Downloads</string>
+    <string name="pref_downloads_summary">Avatar &amp; Image</string>
+    <string name="pref_blacklists">Blacklist</string>
+    <string name="pref_blacklists_summary">Manage</string>
+    <string name="pref_download_total_cache_size">Total cache size</string>
+    <string name="pref_download_total_cache_size_default_value" translatable="false">1</string>
+    <string name="pref_avatar">Avatar</string>
+    <string name="pref_download_avatars_strategy_default_value" translatable="false">2</string>
+    <string name="pref_avatar_resolution">Resolution</string>
+    <string name="pref_avatar_resolution_strategy_default_value" translatable="false">1</string>
+    <string name="pref_avatar_cache_invalidation_interval">Cache invalidation interval</string>
+    <string name="pref_avatar_cache_invalidation_interval_default_value" translatable="false">1</string>
+    <string name="pref_image">Image</string>
+    <string name="pref_download_images_strategy_default_value" translatable="false">1</string>
+
+    <!-- array -->
+    <string name="pref_theme_entries_0">AfternoonTea</string>
+    <string name="pref_theme_entries_1">Light</string>
+    <string name="pref_theme_entries_2">Amber</string>
+    <string name="pref_theme_entries_3">Green</string>
+    <string name="pref_theme_entries_4">Light blue</string>
+    <string name="pref_theme_entries_5">Purple</string>
+    <string name="pref_theme_entries_6">Dark</string>
+    <string name="pref_theme_entries_7">Night mode</string>
+    <string name="pref_theme_entries_8">Night mode (AMOLED version)</string>
+
+    <string name="pref_font_size_entries_1">Small</string>
+    <string name="pref_font_size_entries_2">Normal</string>
+    <string name="pref_font_size_entries_3">Large</string>
+    <string name="pref_font_size_entries_4">Huge</string>
+
+    <string name="pref_download_avatars_entries_1">Do not download avatars</string>
+    <string name="pref_download_avatars_entries_2">Download avatars over Wi-Fi only</string>
+    <string name="pref_download_avatars_entries_3">Download avatars at any time</string>
+
+    <string name="pref_avatar_resolution_entries_1">Low resolution (Any time)</string>
+    <string name="pref_avatar_resolution_entries_2">High resolution (Wi-Fi)</string>
+    <string name="pref_avatar_resolution_entries_3">High resolution (Any time)</string>
+
+    <string name="pref_download_cache_invalidation_interval_entries_1">Every day</string>
+    <string name="pref_download_cache_invalidation_interval_entries_2">Every week</string>
+    <string name="pref_download_cache_invalidation_interval_entries_3">Every month</string>
+
+    <string name="pref_download_images_entries_1">Do not download images</string>
+    <string name="pref_download_images_entries_2">Download images over Wi-Fi only</string>
+    <string name="pref_download_images_entries_3">Download images at any time</string>
+
+    <!-- help -->
+    <string name="pref_libraries">Libraries</string>
+    <string name="pref_files">Files</string>
+
+    <!-- read progress -->
+    <string name="pref_post_read_progress">Read  progress</string>
+    <string name="pref_post_read_progress_summary"><![CDATA[Auto save & load]]></string>
+    <string name="pref_read_progress_save_auto">Auto save</string>
+    <string name="pref_read_progress_load_auto">Auto load</string>
+    <string name="menu_save_progress">Save read progress</string>
+    <string name="menu_load_progress">Load last read progress</string>
+    <string name="save_read_progress_success">Save read progress success</string>
+
+    <!-- backup -->
+    <string name="pref_backup_backup">Backup</string>
+    <string name="pref_backup_restore">Restore</string>
+    <string name="pref_backup">Backup</string>
+    <string name="pref_backup_summary"><![CDATA[Backup & restore]]></string>
+    <string name="message_backup_success">Backup success</string>
+    <string name="message_restore_success">Restore success</string>
+    <string name="message_permission_denied">Permission denied</string>
+    <string name="message_no_setting_data">No setting data</string>
+    <string name="message_io_exception">Io exception</string>
+
+    <!-- network -->
+    <string name="pref_key_force_host_ip_default_value" translatable="false">220.196.42.172</string>
+</resources>
