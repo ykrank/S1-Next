@@ -75,11 +75,21 @@ public class HtmlCompat {
                     | FROM_HTML_SEPARATOR_LINE_BREAK_BLOCKQUOTE;
 
     /**
+     * @see #FROM_HTML_MODE_COMPACT except {@link #FROM_HTML_SEPARATOR_LINE_BREAK_BLOCKQUOTE}
+     */
+    public static final int FROM_HTML_MODE_COMPACT_EXCLUDE_BLOCKQUOTE =
+            FROM_HTML_SEPARATOR_LINE_BREAK_PARAGRAPH
+                    | FROM_HTML_SEPARATOR_LINE_BREAK_HEADING
+                    | FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM
+                    | FROM_HTML_SEPARATOR_LINE_BREAK_LIST
+                    | FROM_HTML_SEPARATOR_LINE_BREAK_DIV;
+
+    /**
      * {@linkplain Html#fromHtml(String)}
      */
     @Deprecated
     public static Spanned fromHtml(String source) {
-        return fromHtml(source, FROM_HTML_MODE_COMPACT, null, null);
+        return fromHtml(source, FROM_HTML_MODE_COMPACT_EXCLUDE_BLOCKQUOTE, null, null);
     }
 
     /**
@@ -94,7 +104,7 @@ public class HtmlCompat {
      */
     @Deprecated
     public static Spanned fromHtml(String source, Html.ImageGetter imageGetter, Html.TagHandler tagHandler) {
-        return fromHtml(source, FROM_HTML_MODE_COMPACT, imageGetter, tagHandler);
+        return fromHtml(source, FROM_HTML_MODE_COMPACT_EXCLUDE_BLOCKQUOTE, imageGetter, tagHandler);
     }
 
     /**
