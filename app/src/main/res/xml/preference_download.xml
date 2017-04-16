@@ -8,7 +8,7 @@
         android:defaultValue="@string/pref_download_total_cache_size_default_value"
         android:entries="@array/pref_download_total_cache_size_entries"
         android:entryValues="@array/pref_download_total_cache_size_entry_values"
-        android:key="pref_key_download_total_cache_size"
+        android:key="@string/pref_key_download_total_cache_size"
         android:summary="%s"
         android:title="@string/pref_download_total_cache_size" />
 
@@ -20,7 +20,7 @@
             android:defaultValue="@string/pref_download_avatars_strategy_default_value"
             android:entries="@array/pref_download_avatars_strategy_entries"
             android:entryValues="@array/pref_download_avatars_strategy_entry_values"
-            android:key="pref_key_download_avatars_strategy"
+            android:key="@string/pref_key_download_avatars_strategy"
             android:summary="%s"
             android:title="@string/pref_downloads" />
 
@@ -28,7 +28,7 @@
             android:defaultValue="@string/pref_avatar_resolution_strategy_default_value"
             android:entries="@array/pref_avatar_resolution_strategy_entries"
             android:entryValues="@array/pref_avatar_resolution_strategy_entry_values"
-            android:key="pref_key_avatar_resolution_strategy"
+            android:key="@string/pref_key_avatar_resolution_strategy"
             android:summary="%s"
             android:title="@string/pref_avatar_resolution" />
 
@@ -36,7 +36,7 @@
             android:defaultValue="@string/pref_avatar_cache_invalidation_interval_default_value"
             android:entries="@array/pref_avatar_cache_invalidation_interval_entries"
             android:entryValues="@array/pref_avatar_cache_invalidation_interval_entry_values"
-            android:key="pref_key_avatar_cache_invalidation_interval"
+            android:key="@string/pref_key_avatar_cache_invalidation_interval"
             android:summary="%s"
             android:title="@string/pref_avatar_cache_invalidation_interval" />
 
@@ -50,7 +50,7 @@
             android:defaultValue="@string/pref_download_images_strategy_default_value"
             android:entries="@array/pref_download_images_strategy_entries"
             android:entryValues="@array/pref_download_images_strategy_entry_values"
-            android:key="pref_key_download_images_strategy"
+            android:key="@string/pref_key_download_images_strategy"
             android:summary="%s"
             android:title="@string/pref_downloads" />
 

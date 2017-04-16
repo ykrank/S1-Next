@@ -5,12 +5,12 @@
     tools:context="me.ykrank.s1next.view.fragment.OpenSourceLicensesFragment">
 
     <PreferenceCategory
-        android:key="pref_key_libraries"
+        android:key="@string/pref_key_libraries"
         android:persistent="false"
         android:title="@string/pref_libraries" />
 
     <PreferenceCategory
-        android:key="pref_key_files"
+        android:key="@string/pref_key_files"
         android:persistent="false"
         android:title="@string/pref_files" />
 

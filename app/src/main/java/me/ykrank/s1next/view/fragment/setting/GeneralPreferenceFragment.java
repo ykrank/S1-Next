@@ -11,7 +11,6 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.event.FontSizeChangeEvent;
 import me.ykrank.s1next.data.event.ThemeChangeEvent;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
-import me.ykrank.s1next.data.pref.PrefKey;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.util.DeviceUtil;
 import me.ykrank.s1next.util.ResourceUtil;
@@ -44,55 +43,49 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
         addPreferencesFromResource(R.xml.preference_general);
         App.getPrefComponent().inject(this);
 
-        findPreference(PrefKey.PREF_KEY_DOWNLOADS).setOnPreferenceClickListener(this);
-        findPreference(PrefKey.PREF_KEY_BLACKLIST).setOnPreferenceClickListener(this);
-        findPreference(PrefKey.PREF_KEY_READ_PROGRESS).setOnPreferenceClickListener(this);
-        findPreference(PrefKey.PREF_KEY_BACKUP).setOnPreferenceClickListener(this);
+        findPreference(getString(R.string.pref_key_downloads)).setOnPreferenceClickListener(this);
+        findPreference(getString(R.string.pref_key_blacklists)).setOnPreferenceClickListener(this);
+        findPreference(getString(R.string.pref_key_post_read_progress)).setOnPreferenceClickListener(this);
+        findPreference(getString(R.string.pref_key_backup)).setOnPreferenceClickListener(this);
 
-        findPreference(PrefKey.PREF_KEY_SIGNATURE).setSummary(HtmlCompat.fromHtml(DeviceUtil.getSignature(getActivity()), FROM_HTML_MODE_LEGACY));
+        findPreference(getString(R.string.pref_key_signature)).setSummary(HtmlCompat.fromHtml(DeviceUtil.getSignature(getActivity()), FROM_HTML_MODE_LEGACY));
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        switch (key) {
-            case PrefKey.PREF_KEY_THEME:
-                trackAgent.post(new ThemeChangeTrackEvent(false));
-                mThemeManager.invalidateTheme();
-                mEventBus.post(new ThemeChangeEvent());
-
-                break;
-            case PrefKey.PREF_KEY_FONT_SIZE:
-                mGeneralPreferencesManager.invalidateFontScale();
-                // change scaling factor for fonts
-                ResourceUtil.setScaledDensity(getActivity(),
-                        mGeneralPreferencesManager.getFontScale());
-                mEventBus.post(new FontSizeChangeEvent());
-
-                break;
-            case PrefKey.PREF_KEY_SIGNATURE:
-                break;
-            default:
-                // fall through
+        if (key.equals(getString(R.string.pref_key_theme))) {
+            trackAgent.post(new ThemeChangeTrackEvent(false));
+            mThemeManager.invalidateTheme();
+            mEventBus.post(new ThemeChangeEvent());
+        } else if (key.equals(getString(R.string.pref_key_font_size))) {
+            mGeneralPreferencesManager.invalidateFontScale();
+            // change scaling factor for fonts
+            ResourceUtil.setScaledDensity(getActivity(),
+                    mGeneralPreferencesManager.getFontScale());
+            mEventBus.post(new FontSizeChangeEvent());
         }
     }
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        switch (preference.getKey()) {
-            case PrefKey.PREF_KEY_DOWNLOADS:
-                SettingsActivity.startDownloadSettingsActivity(preference.getContext());
-                return true;
-            case PrefKey.PREF_KEY_BLACKLIST:
-                SettingsActivity.startBlackListSettingsActivity(preference.getContext());
-                return true;
-            case PrefKey.PREF_KEY_READ_PROGRESS:
-                SettingsActivity.startReadProgressSettingsActivity(preference.getContext());
-                return true;
-            case PrefKey.PREF_KEY_BACKUP:
-                SettingsActivity.startBackupSettingsActivity(preference.getContext());
-                return true;
-            default:
-                return false;
+        String key = preference.getKey();
+        if (key == null) {
+            return false;
         }
+        if (key.equals(getString(R.string.pref_key_downloads))) {
+            SettingsActivity.startDownloadSettingsActivity(preference.getContext());
+            return true;
+        } else if (key.equals(getString(R.string.pref_key_blacklists))) {
+            SettingsActivity.startBlackListSettingsActivity(preference.getContext());
+            return true;
+        } else if (key.equals(getString(R.string.pref_key_post_read_progress))) {
+            SettingsActivity.startReadProgressSettingsActivity(preference.getContext());
+            return true;
+        } else if (key.equals(getString(R.string.pref_key_backup))) {
+            SettingsActivity.startBackupSettingsActivity(preference.getContext());
+            return true;
+        }
+
+        return false;
     }
 }

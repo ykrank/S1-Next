@@ -308,8 +308,8 @@ public abstract class BaseActivity extends OriginActivity
      * @see DrawerLayoutDelegateConcrete#refreshNoticeMenuItem()
      */
     public final void refreshNoticeMenuItem(boolean newPm, boolean newNotice) {
-        mDataPreferencesManager.invalidateHasNewPm(newPm);
-        mDataPreferencesManager.invalidateHasNewNotice(newNotice);
+        mDataPreferencesManager.setHasNewPm(newPm);
+        mDataPreferencesManager.setHasNewNotice(newNotice);
 
         if (mDrawerLayoutDelegate != null) {
             mDrawerLayoutDelegate.refreshNoticeMenuItem();

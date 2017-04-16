@@ -234,6 +234,9 @@
     <string name="message_no_setting_data">No setting data</string>
     <string name="message_io_exception">Io exception</string>
 
+    <!-- network -->
+    <string name="pref_key_force_host_ip_default_value">220.196.42.172</string>
+
     <string name="error_no_type_id">Please choose thread type</string>
     <string name="error_no_title_or_message">No title or message</string>
     <string name="error_not_init">please wait for init success</string>

@@ -1,6 +1,7 @@
 package me.ykrank.s1next;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -15,7 +16,7 @@ import me.ykrank.s1next.data.db.AppDaoSessionManager;
 import me.ykrank.s1next.data.db.BlackListDbWrapper;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.data.db.ThreadDbWrapper;
-import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
+import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
 import me.ykrank.s1next.view.adapter.delegate.FavouriteAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmGroupsAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmLeftAdapterDelegate;
@@ -44,7 +45,9 @@ public interface AppComponent {
 
     Context getContext();
 
-    GeneralPreferencesManager getGeneralPreferencesManager();
+    SharedPreferences getSharedPreferences();
+
+    NetworkPreferencesManager getNetworkPreferencesManager();
 
     OkHttpClient getOkHttpClient();
 

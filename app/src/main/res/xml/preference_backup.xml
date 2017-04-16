@@ -5,13 +5,13 @@
     tools:context=".view.fragment.setting.GeneralPreferenceFragment">
 
     <Preference
-        android:key="pref_key_backup_backup"
-        android:title="@string/pref_backup_backup"
-        android:persistent="false" />
+        android:key="@string/pref_key_backup_backup"
+        android:persistent="false"
+        android:title="@string/pref_backup_backup" />
 
     <Preference
-        android:key="pref_key_backup_restore"
-        android:title="@string/pref_backup_restore"
-        android:persistent="false" />
+        android:key="@string/pref_key_backup_restore"
+        android:persistent="false"
+        android:title="@string/pref_backup_restore" />
 
 </PreferenceScreen>

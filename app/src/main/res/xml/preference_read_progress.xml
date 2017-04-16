@@ -6,12 +6,12 @@
 
     <SwitchPreference
         android:defaultValue="@bool/pref_read_progress_save_auto_default_value"
-        android:key="pref_key_read_progress_save_auto"
+        android:key="@string/pref_key_read_progress_save_auto"
         android:title="@string/pref_read_progress_save_auto" />
 
     <SwitchPreference
         android:defaultValue="@bool/pref_read_progress_load_auto_default_value"
-        android:key="pref_key_read_progress_load_auto"
+        android:key="@string/pref_key_read_progress_load_auto"
         android:title="@string/pref_read_progress_load_auto" />
 
 </PreferenceScreen>

@@ -31,9 +31,6 @@ public final class BackupPreferenceFragment extends BasePreferenceFragment
 
     public static final String BACKUP_FILE_NAME = "S1Next_v" + BuildConfig.VERSION_CODE + ".bak";
 
-    public static final String PREF_KEY_BACKUP_BACKUP = "pref_key_backup_backup";
-    public static final String PREF_KEY_BACKUP_RESTORE = "pref_key_backup_restore";
-
     private BackupDelegate backupAgent;
 
     @Inject
@@ -44,25 +41,27 @@ public final class BackupPreferenceFragment extends BasePreferenceFragment
         App.getAppComponent().inject(this);
         addPreferencesFromResource(R.xml.preference_backup);
 
-        findPreference(PREF_KEY_BACKUP_BACKUP).setOnPreferenceClickListener(this);
-        findPreference(PREF_KEY_BACKUP_RESTORE).setOnPreferenceClickListener(this);
+        findPreference(getString(R.string.pref_key_backup_backup)).setOnPreferenceClickListener(this);
+        findPreference(getString(R.string.pref_key_backup_restore)).setOnPreferenceClickListener(this);
 
         backupAgent = new BackupDelegate(getActivity(), this::afterBackup, this::afterRestore);
     }
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        switch (preference.getKey()) {
-            case PREF_KEY_BACKUP_BACKUP:
-                backupAgent.backup(this);
-                return true;
-            case PREF_KEY_BACKUP_RESTORE:
-                appDaoSessionManager.closeDb();
-                backupAgent.restore(this);
-                return true;
-            default:
-                return false;
+        String key = preference.getKey();
+        if (key == null) {
+            return false;
         }
+        if (key.equals(getString(R.string.pref_key_backup_backup))) {
+            backupAgent.backup(this);
+            return true;
+        } else if (key.equals(getString(R.string.pref_key_backup_restore))) {
+            appDaoSessionManager.closeDb();
+            backupAgent.restore(this);
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -25,18 +25,17 @@ import me.ykrank.s1next.data.api.ApiVersionInterceptor;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.data.db.AppDaoSessionManager;
-import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
-import me.ykrank.s1next.data.pref.GeneralPreferencesRepository;
-import me.ykrank.s1next.data.pref.PrefScope;
+import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
+import me.ykrank.s1next.data.pref.NetworkPreferencesRepository;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.AppDaoOpenHelper;
 import me.ykrank.s1next.widget.EventBus;
-import me.ykrank.s1next.widget.hostcheck.HttpDns;
-import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask;
 import me.ykrank.s1next.widget.NullTrustManager;
 import me.ykrank.s1next.widget.PersistentHttpCookieStore;
 import me.ykrank.s1next.widget.glide.OkHttpNoAvatarInterceptor;
+import me.ykrank.s1next.widget.hostcheck.HttpDns;
 import me.ykrank.s1next.widget.hostcheck.MultiHostInterceptor;
+import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
@@ -65,21 +64,21 @@ public final class AppModule {
     }
 
     @Provides
-    @PrefScope
+    @Singleton
     SharedPreferences provideSharedPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     @Provides
-    @PrefScope
-    GeneralPreferencesRepository provideGeneralPreferencesProvider(Context context, SharedPreferences sharedPreferences) {
-        return new GeneralPreferencesRepository(context, sharedPreferences);
+    @Singleton
+    NetworkPreferencesRepository provideNetworkPreferencesRepository(Context context, SharedPreferences sharedPreferences) {
+        return new NetworkPreferencesRepository(context, sharedPreferences);
     }
 
     @Provides
-    @PrefScope
-    GeneralPreferencesManager provideGeneralPreferencesManager(GeneralPreferencesRepository generalPreferencesProvider) {
-        return new GeneralPreferencesManager(generalPreferencesProvider);
+    @Singleton
+    NetworkPreferencesManager provideNetworkPreferencesManager(NetworkPreferencesRepository networkPreferencesRepository) {
+        return new NetworkPreferencesManager(networkPreferencesRepository);
     }
 
     @Provides
@@ -90,9 +89,9 @@ public final class AppModule {
 
     @Provides
     @Singleton
-    OkHttpClient providerOkHttpClient(CookieManager cookieManager, GeneralPreferencesManager generalPreferencesManager) {
+    OkHttpClient providerOkHttpClient(CookieManager cookieManager, NetworkPreferencesManager networkPreferencesManager) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.dns(new HttpDns(generalPreferencesManager));
+        builder.dns(new HttpDns(networkPreferencesManager));
         builder.connectTimeout(17, TimeUnit.SECONDS);
         builder.writeTimeout(17, TimeUnit.SECONDS);
         builder.readTimeout(77, TimeUnit.SECONDS);

@@ -13,9 +13,6 @@ import me.ykrank.s1next.view.activity.OpenSourceLicenseDetailActivity;
 
 public final class OpenSourceLicensesFragment extends PreferenceFragment {
 
-    private static final String PREF_KEY_LIBRARIES = "pref_key_libraries";
-    private static final String PREF_KEY_FILES = "pref_key_files";
-
     private static final String EXTRAS_LIBRARY_OR_FILE_OPEN_SOURCE_LICENSE_FILE_PATH = "libraries_or_files_open_source_license_file_path";
 
     private static final String ASSET_PATH_OPEN_SOURCE_LICENSES_LIBRARY = "text/license/library/";
@@ -44,7 +41,7 @@ public final class OpenSourceLicensesFragment extends PreferenceFragment {
      */
     private void setupLibrariesPreference(PreferenceScreen preferenceScreen) {
         PreferenceCategory preferenceCategory = (PreferenceCategory)
-                preferenceScreen.findPreference(PREF_KEY_LIBRARIES);
+                preferenceScreen.findPreference(getString(R.string.pref_key_libraries));
         Context context = preferenceCategory.getContext();
         for (@Size(2) String[] libraryInfos : getLibrariesInfos()) {
             Preference preference = new Preference(context);
@@ -62,7 +59,7 @@ public final class OpenSourceLicensesFragment extends PreferenceFragment {
      */
     private void setupFilesPreference(PreferenceScreen preferenceScreen) {
         PreferenceCategory preferenceCategory = (PreferenceCategory)
-                preferenceScreen.findPreference(PREF_KEY_FILES);
+                preferenceScreen.findPreference(getString(R.string.pref_key_files));
         Context context = preferenceCategory.getContext();
         for (@Size(2) String[] fileInfos : getFilesInfo()) {
             Preference preference = new Preference(context);

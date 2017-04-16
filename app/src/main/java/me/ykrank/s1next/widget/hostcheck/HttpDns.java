@@ -10,19 +10,19 @@ import java.util.List;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
-import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
+import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
 import me.ykrank.s1next.util.L;
 import okhttp3.Dns;
 
 public class HttpDns implements Dns {
     private static final Dns SYSTEM = Dns.SYSTEM;
 
-    private final GeneralPreferencesManager preferencesManager;
+    private final NetworkPreferencesManager preferencesManager;
 
     private List<InetAddress> inetAddressList;
     private String forceHostIp;
 
-    public HttpDns(GeneralPreferencesManager preferencesManager) {
+    public HttpDns(NetworkPreferencesManager preferencesManager) {
         this.preferencesManager = preferencesManager;
     }
 

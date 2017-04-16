@@ -19,7 +19,6 @@ import me.ykrank.s1next.util.L;
  * A helper class retrieving the download preferences from {@link SharedPreferences}.
  */
 public final class ReadProgressPreferencesRepository extends BasePreferencesRepository {
-    public static final String PREF_KEY_LAST_READ_PROGRESS = "pref_key_last_read_progress";
 
     @NonNull
     private ObjectMapper objectMapper;
@@ -30,19 +29,19 @@ public final class ReadProgressPreferencesRepository extends BasePreferencesRepo
     }
 
     public boolean isSaveAuto() {
-        return mSharedPreferences.getBoolean(PrefKey.PREF_KEY_READ_PROGRESS_SAVE_AUTO,
-                mContext.getResources().getBoolean(R.bool.pref_read_progress_save_auto_default_value));
+        return getPrefBoolean(R.string.pref_key_read_progress_save_auto,
+                R.bool.pref_read_progress_save_auto_default_value);
     }
 
     public boolean isLoadAuto() {
-        return mSharedPreferences.getBoolean(PrefKey.PREF_KEY_READ_PROGRESS_LOAD_AUTO,
-                mContext.getResources().getBoolean(R.bool.pref_read_progress_load_auto_default_value));
+        return getPrefBoolean(R.string.pref_key_read_progress_load_auto,
+                R.bool.pref_read_progress_load_auto_default_value);
     }
 
     @Nullable
     public ReadProgress getLastReadProgress() {
         try {
-            String lastStr = mSharedPreferences.getString(PREF_KEY_LAST_READ_PROGRESS, null);
+            String lastStr = getPrefString(R.string.pref_key_last_read_progress, null);
             if (!TextUtils.isEmpty(lastStr)) {
                 return objectMapper.readValue(lastStr, ReadProgress.class);
             } else {
@@ -57,7 +56,7 @@ public final class ReadProgressPreferencesRepository extends BasePreferencesRepo
     public boolean saveLastReadProgress(ReadProgress readProgress) {
         try {
             String lastStr = objectMapper.writeValueAsString(readProgress);
-            mSharedPreferences.edit().putString(PREF_KEY_LAST_READ_PROGRESS, lastStr).apply();
+            putPrefString(R.string.pref_key_last_read_progress, lastStr);
             return true;
         } catch (JsonProcessingException e) {
             L.report(e);

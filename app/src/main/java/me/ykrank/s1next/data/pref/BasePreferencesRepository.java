@@ -2,6 +2,7 @@ package me.ykrank.s1next.data.pref;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.BoolRes;
 import android.support.annotation.StringRes;
 
 /**
@@ -13,22 +14,31 @@ abstract class BasePreferencesRepository {
     final SharedPreferences mSharedPreferences;
 
     BasePreferencesRepository(Context context, SharedPreferences sharedPreferences) {
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
         this.mSharedPreferences = sharedPreferences;
     }
 
-    /**
-     * Retrieves a String value from the preferences.
-     *
-     * @param key            The name of the preference to retrieve.
-     * @param defStringResId The resource id of the string which returns
-     *                       if this preference does not exist.
-     * @return Returns the preference value if it exists, or defValue. Throws
-     * ClassCastException if there is a preference with this name that is not
-     * a String.
-     * @throws ClassCastException
-     */
-    final String getSharedPreferencesString(String key, @StringRes int defStringResId) {
-        return mSharedPreferences.getString(key, mContext.getString(defStringResId));
+    final String getPrefString(@StringRes int keyResId, @StringRes int defValueResId) {
+        return getPrefString(keyResId, mContext.getString(defValueResId));
+    }
+
+    final String getPrefString(@StringRes int keyResId, String defValue) {
+        return mSharedPreferences.getString(mContext.getString(keyResId), defValue);
+    }
+
+    final boolean getPrefBoolean(@StringRes int keyResId, @BoolRes int defValueResId) {
+        return getPrefBoolean(keyResId, mContext.getResources().getBoolean(defValueResId));
+    }
+
+    final boolean getPrefBoolean(@StringRes int keyResId, boolean defValue) {
+        return mSharedPreferences.getBoolean(mContext.getString(keyResId), defValue);
+    }
+
+    final void putPrefString(@StringRes int keyResId, String defValue) {
+        mSharedPreferences.edit().putString(mContext.getString(keyResId), defValue).apply();
+    }
+
+    final void putPrefBoolean(@StringRes int keyResId, boolean defValue) {
+        mSharedPreferences.edit().putBoolean(mContext.getString(keyResId), defValue).apply();
     }
 }

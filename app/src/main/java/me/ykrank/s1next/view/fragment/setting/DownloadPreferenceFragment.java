@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
-import me.ykrank.s1next.data.pref.PrefKey;
 import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
 import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
@@ -31,25 +30,14 @@ public final class DownloadPreferenceFragment extends BasePreferenceFragment {
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        switch (key) {
-            case PrefKey.PREF_KEY_DOWNLOAD_AVATARS_STRATEGY:
-                mDownloadPreferencesManager.invalidateAvatarsDownloadStrategy();
-
-                break;
-            case PrefKey.PREF_KEY_AVATAR_RESOLUTION_STRATEGY:
-                mDownloadPreferencesManager.invalidateAvatarsResolutionStrategy();
-
-                break;
-            case PrefKey.PREF_KEY_AVATAR_CACHE_INVALIDATION_INTERVAL:
-                mDownloadPreferencesManager.invalidateAvatarsCacheInvalidationInterval();
-
-                break;
-            case PrefKey.PREF_KEY_DOWNLOAD_IMAGES_STRATEGY:
-                mDownloadPreferencesManager.invalidateImagesDownloadStrategy();
-
-                break;
-            default:
-                // fall through
+        if (key.equals(getString(R.string.pref_key_download_avatars_strategy))) {
+            mDownloadPreferencesManager.invalidateAvatarsDownloadStrategy();
+        } else if (key.equals(getString(R.string.pref_key_avatar_resolution_strategy))) {
+            mDownloadPreferencesManager.invalidateAvatarsResolutionStrategy();
+        } else if (key.equals(getString(R.string.pref_key_avatar_cache_invalidation_interval))) {
+            mDownloadPreferencesManager.invalidateAvatarsCacheInvalidationInterval();
+        } else if (key.equals(getString(R.string.pref_key_download_images_strategy))) {
+            mDownloadPreferencesManager.invalidateImagesDownloadStrategy();
         }
     }
 

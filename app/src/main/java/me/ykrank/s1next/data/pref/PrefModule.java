@@ -2,7 +2,6 @@ package me.ykrank.s1next.data.pref;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -15,6 +14,18 @@ import me.ykrank.s1next.data.Wifi;
  */
 @Module
 public class PrefModule {
+
+    @Provides
+    @PrefScope
+    GeneralPreferencesRepository provideGeneralPreferencesProvider(Context context, SharedPreferences sharedPreferences) {
+        return new GeneralPreferencesRepository(context, sharedPreferences);
+    }
+
+    @Provides
+    @PrefScope
+    GeneralPreferencesManager provideGeneralPreferencesManager(GeneralPreferencesRepository generalPreferencesProvider) {
+        return new GeneralPreferencesManager(generalPreferencesProvider);
+    }
 
     @Provides
     @PrefScope

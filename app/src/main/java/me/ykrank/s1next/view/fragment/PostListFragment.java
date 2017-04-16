@@ -369,14 +369,14 @@ public final class PostListFragment extends BaseViewPagerFragment
                         .setPositiveListener((dialog, which) -> {
                             //reload all data
                             item.setChecked(!item.isChecked());
-                            mGeneralPreferencesManager.invalidatePostSelectable(item.isChecked());
+                            mGeneralPreferencesManager.setPostSelectable(item.isChecked());
                             mEventBus.post(new PostSelectableChangeEvent());
                         })
                         .show(getFragmentManager(), null);
                 return true;
             case R.id.menu_quick_side_bar_enable:
                 item.setChecked(!item.isChecked());
-                mGeneralPreferencesManager.invalidateQuickSideBarEnable(item.isChecked());
+                mGeneralPreferencesManager.setQuickSideBarEnable(item.isChecked());
                 mEventBus.post(new QuickSidebarEnableChangeEvent());
                 return true;
             default:

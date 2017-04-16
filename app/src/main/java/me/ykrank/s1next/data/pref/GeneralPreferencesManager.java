@@ -42,7 +42,7 @@ public final class GeneralPreferencesManager {
     /**
      * Used for invalidating the post selectable preference if settings change.
      */
-    public void invalidatePostSelectable(boolean selectable) {
+    public void setPostSelectable(boolean selectable) {
         mGeneralPreferencesProvider.setPostSelectable(selectable);
     }
 
@@ -50,38 +50,11 @@ public final class GeneralPreferencesManager {
         return mGeneralPreferencesProvider.isPostSelectable();
     }
 
-    public void invalidateQuickSideBarEnable(boolean enable) {
+    public void setQuickSideBarEnable(boolean enable) {
         mGeneralPreferencesProvider.setQuickSideBarEnable(enable);
     }
 
     public boolean isQuickSideBarEnable() {
         return mGeneralPreferencesProvider.isQuickSideBarEnable();
-    }
-
-    public void invalidateBaseUrl(String baseUrl) {
-        mGeneralPreferencesProvider.setBaseUrl(baseUrl);
-    }
-
-    public String getBaseUrl() {
-        return mGeneralPreferencesProvider.getBaseUrl();
-    }
-
-    public void invalidateAutoCheckBaseUrl(boolean autoCheck) {
-        mGeneralPreferencesProvider.setAutoCheckBaseUrl(autoCheck);
-    }
-
-    public boolean isAutoCheckBaseUrl() {
-        return mGeneralPreferencesProvider.isAutoCheckBaseUrl();
-    }
-
-    public void invalidateForceHostIp(String hostIp) {
-        mGeneralPreferencesProvider.setForceHostIp(hostIp);
-    }
-
-    /**
-     * Force use this ip, disable if null
-     */
-    public String getForceHostIp() {
-        return mGeneralPreferencesProvider.getForceHostIp();
     }
 }

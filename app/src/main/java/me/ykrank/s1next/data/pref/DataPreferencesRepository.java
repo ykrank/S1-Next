@@ -3,6 +3,8 @@ package me.ykrank.s1next.data.pref;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import me.ykrank.s1next.R;
+
 public class DataPreferencesRepository extends BasePreferencesRepository {
 
     public DataPreferencesRepository(Context context, SharedPreferences sharedPreferences) {
@@ -10,18 +12,18 @@ public class DataPreferencesRepository extends BasePreferencesRepository {
     }
 
     public boolean hasNewPm() {
-        return mSharedPreferences.getBoolean(PrefKey.PREF_KEY_HAS_NEW_PM, false);
+        return getPrefBoolean(R.string.pref_key_has_new_pm, false);
     }
 
     public void setHasNewPm(boolean hasNewPm) {
-        mSharedPreferences.edit().putBoolean(PrefKey.PREF_KEY_HAS_NEW_PM, hasNewPm).apply();
+        putPrefBoolean(R.string.pref_key_has_new_pm, hasNewPm);
     }
 
     public boolean hasNewNotice() {
-        return mSharedPreferences.getBoolean(PrefKey.PREF_KEY_HAS_NEW_NOTICE, false);
+        return getPrefBoolean(R.string.pref_key_has_new_notice, false);
     }
 
     public void setHasNewNotice(boolean hasNewNotice) {
-        mSharedPreferences.edit().putBoolean(PrefKey.PREF_KEY_HAS_NEW_NOTICE, hasNewNotice).apply();
+        putPrefBoolean(R.string.pref_key_has_new_notice, hasNewNotice);
     }
 }

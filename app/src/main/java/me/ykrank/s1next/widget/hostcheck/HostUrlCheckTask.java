@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Single;
 import me.ykrank.s1next.data.api.Api;
-import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
+import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import okhttp3.HttpUrl;
@@ -33,7 +33,7 @@ public enum HostUrlCheckTask {
 
     public static final int periodic = 1200_000;
 
-    private GeneralPreferencesManager prefManager;
+    private NetworkPreferencesManager prefManager;
     private HttpUrl baseHttpUrl;
     private List<String> toBeCheckedBaseUrls;
     private int hostUrlCheckJobId;
@@ -44,9 +44,12 @@ public enum HostUrlCheckTask {
     private volatile boolean delayChecking = false;
     private boolean autoCheck;
 
-    public static void init(GeneralPreferencesManager prefManager) {
+    public static void init(NetworkPreferencesManager prefManager) {
         INSTANCE.prefManager = prefManager;
-        String url = prefManager.getBaseUrl();
+        String url = null;
+        if (prefManager.isForceBaseUrlEnable()) {
+            url = prefManager.getForceBaseUrl();
+        }
         if (TextUtils.isEmpty(url)) {
             url = Api.BASE_URL;
         }
@@ -57,10 +60,6 @@ public enum HostUrlCheckTask {
 
     public boolean isAutoCheck() {
         return autoCheck;
-    }
-
-    public GeneralPreferencesManager getPrefManager() {
-        return prefManager;
     }
 
     public boolean isInit() {
@@ -86,7 +85,7 @@ public enum HostUrlCheckTask {
             L.report(new IllegalStateException("HostUrlCheckTask not init when set base url"));
             return;
         }
-        prefManager.invalidateBaseUrl(baseHttpUrl.toString());
+        prefManager.setForceBaseUrl(baseHttpUrl.toString());
     }
 
     public long getLastCheckTime() {

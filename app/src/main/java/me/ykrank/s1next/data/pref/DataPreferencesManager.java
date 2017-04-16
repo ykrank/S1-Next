@@ -8,7 +8,7 @@ public final class DataPreferencesManager {
         this.mPreferencesProvider = mPreferencesProvider;
     }
 
-    public void invalidateHasNewPm(boolean hasNewPm) {
+    public void setHasNewPm(boolean hasNewPm) {
         mPreferencesProvider.setHasNewPm(hasNewPm);
     }
 
@@ -16,7 +16,7 @@ public final class DataPreferencesManager {
         return mPreferencesProvider.hasNewPm();
     }
 
-    public void invalidateHasNewNotice(boolean hasNewNotice) {
+    public void setHasNewNotice(boolean hasNewNotice) {
         mPreferencesProvider.setHasNewNotice(hasNewNotice);
     }
 

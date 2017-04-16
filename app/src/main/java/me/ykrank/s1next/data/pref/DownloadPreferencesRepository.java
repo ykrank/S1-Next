@@ -15,32 +15,27 @@ public final class DownloadPreferencesRepository extends BasePreferencesReposito
     }
 
     public String getTotalDownloadCacheSizeString() {
-        return getSharedPreferencesString(
-                PrefKey.PREF_KEY_TOTAL_DOWNLOAD_CACHE_SIZE,
+        return getPrefString(R.string.pref_key_download_total_cache_size,
                 R.string.pref_download_total_cache_size_default_value);
     }
 
     public String getAvatarsDownloadStrategyString() {
-        return getSharedPreferencesString(
-                PrefKey.PREF_KEY_DOWNLOAD_AVATARS_STRATEGY,
+        return getPrefString(R.string.pref_key_download_avatars_strategy,
                 R.string.pref_download_avatars_strategy_default_value);
     }
 
     public String getAvatarResolutionStrategyString() {
-        return getSharedPreferencesString(
-                PrefKey.PREF_KEY_AVATAR_RESOLUTION_STRATEGY,
+        return getPrefString(R.string.pref_key_avatar_resolution_strategy,
                 R.string.pref_avatar_resolution_strategy_default_value);
     }
 
     public String getAvatarCacheInvalidationIntervalString() {
-        return getSharedPreferencesString(
-                PrefKey.PREF_KEY_AVATAR_CACHE_INVALIDATION_INTERVAL,
+        return getPrefString(R.string.pref_key_avatar_cache_invalidation_interval,
                 R.string.pref_avatar_cache_invalidation_interval_default_value);
     }
 
     public String getImagesDownloadStrategyString() {
-        return getSharedPreferencesString(
-                PrefKey.PREF_KEY_DOWNLOAD_IMAGES_STRATEGY,
+        return getPrefString(R.string.pref_key_download_images_strategy,
                 R.string.pref_download_images_strategy_default_value);
     }
 }

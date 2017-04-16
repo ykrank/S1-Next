@@ -31,6 +31,9 @@ import me.ykrank.s1next.widget.glide.AvatarStreamFetcher;
 @PrefScope
 @Component(dependencies = AppComponent.class, modules = PrefModule.class)
 public interface PrefComponent {
+
+    GeneralPreferencesManager getGeneralPreferencesManager();
+
     ThemeManager getThemeManager();
 
     DownloadPreferencesManager getDownloadPreferencesManager();
