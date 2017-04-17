@@ -28,12 +28,10 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.databinding.FragmentWebviewBinding;
-import me.ykrank.s1next.util.ActivityUtils;
+import me.ykrank.s1next.util.ContextUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.ForumActivity;
 import me.ykrank.s1next.viewmodel.WebPageViewModel;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A Fragment to login in WebView.
@@ -108,18 +106,6 @@ public final class WebLoginFragment extends BaseFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "网页登录-WebLoginFragment"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getContext(), "网页登录-WebLoginFragment"));
-        super.onPause();
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         mFragmentHelpBinding.layoutRoot.removeAllViews();
@@ -159,7 +145,7 @@ public final class WebLoginFragment extends BaseFragment {
                     Context context = getContext();
                     L.leaveMsg("Context:" + context);
                     if (context != null) {
-                        L.leaveMsg("BaseContext:" + ActivityUtils.getBaseContext(getContext()));
+                        L.leaveMsg("BaseContext:" + ContextUtils.getBaseContext(getContext()));
                     }
                     L.report(new IllegalStateException("WebLoginFragment getActivity is null"));
                 } else {

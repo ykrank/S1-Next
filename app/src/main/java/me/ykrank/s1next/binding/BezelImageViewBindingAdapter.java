@@ -22,7 +22,7 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
-import me.ykrank.s1next.util.ActivityUtils;
+import me.ykrank.s1next.util.ContextUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.widget.BezelImageView;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
@@ -43,7 +43,7 @@ public final class BezelImageViewBindingAdapter {
         Context context = bezelImageView.getContext();
 
         //in device before 4.4, destroyed activity will cause glide error
-        if (ActivityUtils.isActivityDestroyedForGlide(context)) {
+        if (ContextUtils.isActivityDestroyedForGlide(context)) {
             return;
         }
         DownloadPreferencesManager downloadPreferencesManager = App.getPrefComponent()

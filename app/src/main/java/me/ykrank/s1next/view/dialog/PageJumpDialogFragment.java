@@ -15,8 +15,6 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.databinding.DialogPageJumpBinding;
 import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.viewmodel.PageJumpViewModel;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A dialog shows {@link SeekBar} and {@link EditText} to
@@ -90,18 +88,6 @@ public final class PageJumpDialogFragment extends BaseDialogFragment {
         super.onSaveInstanceState(outState);
 
         outState.putInt(STATE_SEEK_BAR_PROGRESS, mPageJumpViewModel.getSeekBarProgress());
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "弹窗-帖子页数跳转"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getContext(), "弹窗-帖子页数跳转"));
-        super.onPause();
     }
 
     /**

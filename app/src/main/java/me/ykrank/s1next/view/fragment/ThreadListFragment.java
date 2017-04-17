@@ -17,8 +17,6 @@ import me.ykrank.s1next.data.api.model.Forum;
 import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A Fragment includes {@link android.support.v4.view.ViewPager}
@@ -55,18 +53,6 @@ public final class ThreadListFragment extends BaseViewPagerFragment
         if (savedInstanceState == null) {
             setTotalPageByThreads(forum.getThreads());
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "帖子列表-ThreadListFragment"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getContext(), "帖子列表-ThreadListFragment"));
-        super.onPause();
     }
 
     @Override

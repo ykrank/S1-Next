@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,16 +32,14 @@ import me.ykrank.s1next.databinding.FragmentBlacklistBinding;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.adapter.BlackListCursorListViewAdapter;
 import me.ykrank.s1next.view.dialog.BlacklistDialogFragment;
-import me.ykrank.s1next.widget.track.DataTrackAgent;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
+import me.ykrank.s1next.view.fragment.BaseFragment;
 
 /**
  * An Activity includes download settings that allow users
  * to modify download features and behaviors such as cache
  * size and avatars/images download strategy.
  */
-public final class BlackListSettingFragment extends Fragment {
+public final class BlackListSettingFragment extends BaseFragment {
     public static final String TAG = BlackListSettingFragment.class.getName();
 
     private static final String ARG_ROW = "row";
@@ -50,7 +47,6 @@ public final class BlackListSettingFragment extends Fragment {
 
     private ListView mListView;
     private BlackListCursorListViewAdapter mListViewAdapter;
-    private DataTrackAgent trackAgent;
 
     private Disposable mDisposable;
     private AbsListView.MultiChoiceModeListener mActionModeCallback = new AbsListView.MultiChoiceModeListener() {
@@ -138,7 +134,6 @@ public final class BlackListSettingFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        trackAgent = App.get().getTrackAgent();
         super.onViewCreated(view, savedInstanceState);
 
         mListViewAdapter = new BlackListCursorListViewAdapter(getActivity());
@@ -195,14 +190,12 @@ public final class BlackListSettingFragment extends Fragment {
     @Override
     public void onPause() {
         mListViewAdapter.changeCursor(null);
-        trackAgent.post(new PageEndEvent(getContext(), "设置-黑名单"));
         super.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "设置-黑名单"));
         load();
     }
 

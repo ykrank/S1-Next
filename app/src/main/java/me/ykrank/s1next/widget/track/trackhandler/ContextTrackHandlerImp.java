@@ -13,7 +13,7 @@ import me.ykrank.s1next.widget.track.TrackAgent;
 public abstract class ContextTrackHandlerImp<T> implements TrackHandler<T> {
     protected TrackAgent agent;
 
-    ContextTrackHandlerImp(@NonNull TrackAgent agent) {
+    protected ContextTrackHandlerImp(@NonNull TrackAgent agent) {
         this.agent = agent;
     }
 

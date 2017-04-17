@@ -8,8 +8,6 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Result;
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
 import me.ykrank.s1next.widget.track.event.AddFavoriteTrackEvent;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A dialog requests to add thread to user's favourites.
@@ -60,17 +58,5 @@ public final class ThreadFavouritesAddRequestDialogFragment
     @Override
     protected CharSequence getProgressMessage() {
         return getText(R.string.dialog_progress_message_favourites_add);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "弹窗-添加收藏进度条-"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getContext(), "弹窗-添加收藏进度条-"));
-        super.onPause();
     }
 }

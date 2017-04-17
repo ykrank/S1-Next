@@ -34,12 +34,12 @@ public class TalkingDataAgent implements TrackAgent {
 
     @Override
     public void onResume(@NonNull Activity activity) {
-        TCAgent.onResume(activity);
+        TCAgent.onPageStart(activity, activity.getLocalClassName());
     }
 
     @Override
     public void onPause(@NonNull Activity activity) {
-        TCAgent.onPause(activity);
+        TCAgent.onPageEnd(activity, activity.getLocalClassName());
     }
 
     @Override

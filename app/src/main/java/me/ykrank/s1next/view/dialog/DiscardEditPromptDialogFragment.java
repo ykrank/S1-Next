@@ -7,8 +7,6 @@ import android.support.annotation.NonNull;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.widget.EditorDiskCache;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A dialog shows prompt if user's reply is not empty and want
@@ -56,17 +54,5 @@ public final class DiscardEditPromptDialogFragment extends BaseDialogFragment {
                 )
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "弹窗-忽略编辑"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getContext(), "弹窗-忽略编辑"));
-        super.onPause();
     }
 }

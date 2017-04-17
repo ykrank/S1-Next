@@ -8,8 +8,6 @@ import javax.inject.Inject;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * An Activity includes download settings that allow users
@@ -39,17 +37,5 @@ public final class DownloadPreferenceFragment extends BasePreferenceFragment {
         } else if (key.equals(getString(R.string.pref_key_download_images_strategy))) {
             mDownloadPreferencesManager.invalidateImagesDownloadStrategy();
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getActivity(), "设置-下载"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getActivity(), "设置-下载"));
-        super.onPause();
     }
 }

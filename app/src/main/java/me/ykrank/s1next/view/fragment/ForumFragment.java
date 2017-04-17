@@ -21,8 +21,6 @@ import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.SearchActivity;
 import me.ykrank.s1next.view.adapter.ForumRecyclerViewAdapter;
 import me.ykrank.s1next.view.internal.ToolbarDropDownInterface;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A Fragment represents forum list.
@@ -82,18 +80,6 @@ public final class ForumFragment extends BaseRecyclerViewFragment<BaseDataWrappe
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "主版块列表-ForumFragment"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getContext(), "主版块列表-ForumFragment"));
-        super.onPause();
     }
 
     @Override

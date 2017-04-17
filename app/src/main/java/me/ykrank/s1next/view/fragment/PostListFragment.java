@@ -63,8 +63,6 @@ import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import me.ykrank.s1next.view.internal.PagerScrollState;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.track.event.ViewThreadTrackEvent;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 
 /**
@@ -213,7 +211,6 @@ public final class PostListFragment extends BaseViewPagerFragment
     @Override
     public void onResume() {
         super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "帖子详情列表-PostListFragment"));
 
         quoteDisposable = mEventBus.get()
                 .ofType(QuoteEvent.class)
@@ -260,7 +257,6 @@ public final class PostListFragment extends BaseViewPagerFragment
                     .doOnError(L::report)
                     .subscribe(b -> L.i("Save last read progress:" + b));
         }
-        trackAgent.post(new PageEndEvent(getContext(), "帖子详情列表-PostListFragment"));
         super.onPause();
 
         RxJavaUtil.disposeIfNotNull(quoteDisposable);

@@ -15,8 +15,6 @@ import me.ykrank.s1next.data.api.model.Result;
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
 import me.ykrank.s1next.widget.EditorDiskCache;
 import me.ykrank.s1next.widget.track.event.NewReplyTrackEvent;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A dialog requests to reply to post.
@@ -83,17 +81,5 @@ public final class ReplyRequestDialogFragment extends ProgressDialogFragment<Acc
         } else {
             showShortText(result.getMessage());
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "弹窗-回复进度条-"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getContext(), "弹窗-回复进度条-"));
-        super.onPause();
     }
 }

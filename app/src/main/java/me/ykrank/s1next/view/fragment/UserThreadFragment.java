@@ -16,8 +16,6 @@ import me.ykrank.s1next.data.api.model.wrapper.HomeThreadWebWrapper;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.view.adapter.HomeThreadRecyclerViewAdapter;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * Created by ykrank on 2017/2/4.
@@ -48,18 +46,6 @@ public class UserThreadFragment extends BaseLoadMoreRecycleViewFragment<HomeThre
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerAdapter = new HomeThreadRecyclerViewAdapter(getActivity());
         recyclerView.setAdapter(mRecyclerAdapter);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "个人发帖列表-UserThreadFragment"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getContext(), "个人发帖列表-UserThreadFragment"));
-        super.onPause();
     }
 
     @Override

@@ -34,8 +34,6 @@ import me.ykrank.s1next.view.adapter.simple.BindViewHolderCallback;
 import me.ykrank.s1next.view.adapter.simple.SimpleRecycleViewAdapter;
 import me.ykrank.s1next.view.dialog.RateRequestDialogFragment;
 import me.ykrank.s1next.viewmodel.NewRateViewModel;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A Fragment shows {@link EditText} to let the user enter reply.
@@ -109,18 +107,6 @@ public final class NewRateFragment extends BaseFragment {
     public void onDestroy() {
         RxJavaUtil.disposeIfNotNull(mDisposable);
         super.onDestroy();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "评分-NewRateFragment"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getContext(), "评分-NewRateFragment"));
-        super.onPause();
     }
 
     private String getScore() {

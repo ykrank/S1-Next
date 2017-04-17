@@ -14,17 +14,22 @@ import com.squareup.leakcanary.RefWatcher;
 
 import java.lang.ref.WeakReference;
 
+import javax.inject.Inject;
+
 import me.ykrank.s1next.App;
-import me.ykrank.s1next.AppComponent;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
+import me.ykrank.s1next.widget.track.event.page.FragmentEndEvent;
+import me.ykrank.s1next.widget.track.event.page.FragmentStartEvent;
 
 public abstract class BaseFragment extends Fragment {
 
-    protected UserValidator mUserValidator;
-    protected DataTrackAgent trackAgent;
+    @Inject
+    UserValidator mUserValidator;
+    @Inject
+    DataTrackAgent trackAgent;
 
     protected CoordinatorLayoutAnchorDelegate mCoordinatorLayoutAnchorDelegate;
     @Nullable
@@ -41,9 +46,7 @@ public abstract class BaseFragment extends Fragment {
     @CallSuper
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        AppComponent appComponent = App.getAppComponent();
-        mUserValidator = appComponent.getUserValidator();
-        trackAgent = appComponent.getDataTrackAgent();
+        App.getAppComponent().inject(this);
     }
 
     @Override
@@ -52,6 +55,18 @@ public abstract class BaseFragment extends Fragment {
 
         RefWatcher refWatcher = App.get().getRefWatcher();
         refWatcher.watch(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new FragmentStartEvent(this));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new FragmentEndEvent(this));
+        super.onPause();
     }
 
     @Override

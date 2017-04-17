@@ -22,15 +22,7 @@ public class PageStartEvent extends TrackEvent {
         return context;
     }
 
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
     public String getPageName() {
         return pageName;
-    }
-
-    public void setPageName(String pageName) {
-        this.pageName = pageName;
     }
 }

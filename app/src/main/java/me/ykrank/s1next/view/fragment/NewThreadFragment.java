@@ -33,8 +33,6 @@ import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter;
 import me.ykrank.s1next.view.dialog.NewThreadRequestDialogFragment;
 import me.ykrank.s1next.view.dialog.ReplyRequestDialogFragment;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A Fragment shows {@link EditText} to let the user edit thread.
@@ -91,18 +89,6 @@ public final class NewThreadFragment extends BasePostFragment {
     public void onDestroy() {
         RxJavaUtil.disposeIfNotNull(mDisposable);
         super.onDestroy();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "新帖-NewThreadFragment"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getContext(), "新帖-NewThreadFragment"));
-        super.onPause();
     }
 
     @Override

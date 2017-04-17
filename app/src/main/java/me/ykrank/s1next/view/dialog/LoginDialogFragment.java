@@ -6,8 +6,6 @@ import io.reactivex.Observable;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Result;
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A {@link ProgressDialogFragment} posts a request to login to server.
@@ -63,17 +61,5 @@ public final class LoginDialogFragment extends ProgressDialogFragment<AccountRes
     @Override
     protected CharSequence getProgressMessage() {
         return getText(R.string.dialog_progress_message_login);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "弹窗-登录进度条"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getContext(), "弹窗-登录进度条"));
-        super.onPause();
     }
 }

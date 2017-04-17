@@ -22,7 +22,7 @@ import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.event.EditPostEvent;
 import me.ykrank.s1next.data.event.QuoteEvent;
 import me.ykrank.s1next.data.event.RateEvent;
-import me.ykrank.s1next.util.ActivityUtils;
+import me.ykrank.s1next.util.ContextUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.UserHomeActivity;
 import me.ykrank.s1next.view.internal.BlacklistMenuAction;
@@ -83,7 +83,7 @@ public final class PostViewModel {
                     if (menuitem.getTitle().equals(v.getContext().getString(R.string.menu_blacklist_remove))) {
                         BlacklistMenuAction.removeBlacklist(eventBus, Integer.valueOf(postData.getAuthorId()), postData.getAuthorName());
                     } else {
-                        Context context = ActivityUtils.getBaseContext(v.getContext());
+                        Context context = ContextUtils.getBaseContext(v.getContext());
                         if (context instanceof FragmentActivity) {
                             BlacklistMenuAction.addBlacklist((FragmentActivity) context,
                                     Integer.valueOf(postData.getAuthorId()), postData.getAuthorName());

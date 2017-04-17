@@ -11,10 +11,9 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
+import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.widget.hostcheck.BaseHostUrl;
 import me.ykrank.s1next.widget.hostcheck.HttpDns;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 public final class NetworkPreferenceFragment extends BasePreferenceFragment {
     public static final String TAG = NetworkPreferenceFragment.class.getName();
@@ -40,20 +39,8 @@ public final class NetworkPreferenceFragment extends BasePreferenceFragment {
             baseHostUrl.refreshBaseHostUrl();
         } else if (key.equals(getString(R.string.pref_key_force_host_ip))) {
             checkForceHostIpSummary();
-            baseHostUrl.refreshBaseHostUrl();
+            baseHostUrl.refreshForceHostIp();
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getActivity(), "设置-浏览进度"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getActivity(), "设置-浏览进度"));
-        super.onPause();
     }
 
     private void checkForceBaseUrlSummary() {
@@ -62,7 +49,7 @@ public final class NetworkPreferenceFragment extends BasePreferenceFragment {
         if (TextUtils.isEmpty(baseUrl)) {
             findPreference(key).setSummary(Api.BASE_URL);
         } else {
-            if (!BaseHostUrl.checkBaseHostUrl(baseUrl)) {
+            if (BaseHostUrl.checkBaseHostUrl(baseUrl) == null) {
                 Toast.makeText(getActivity(), R.string.error_force_base_url, Toast.LENGTH_SHORT).show();
             }
             findPreference(key).setSummary(baseUrl);
@@ -75,9 +62,11 @@ public final class NetworkPreferenceFragment extends BasePreferenceFragment {
         if (TextUtils.isEmpty(hostIp)) {
             findPreference(key).setSummary(getString(R.string.pref_key_force_host_ip_default_value));
         } else {
-            if (!HttpDns.checkHostIp(hostIp)) {
-                Toast.makeText(getActivity(), R.string.error_force_host_ip, Toast.LENGTH_SHORT).show();
-            }
+            RxJavaUtil.workWithUiResult(() -> HttpDns.checkHostIp(hostIp), inetAddresses -> {
+                if (inetAddresses.size() == 0) {
+                    Toast.makeText(getActivity(), getString(R.string.error_force_host_ip, hostIp), Toast.LENGTH_SHORT).show();
+                }
+            });
             findPreference(key).setSummary(hostIp);
         }
     }

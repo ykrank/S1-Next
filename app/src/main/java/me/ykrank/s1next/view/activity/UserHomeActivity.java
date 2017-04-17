@@ -29,8 +29,8 @@ import me.ykrank.s1next.data.api.model.Profile;
 import me.ykrank.s1next.data.db.BlackListDbWrapper;
 import me.ykrank.s1next.data.event.BlackListAddEvent;
 import me.ykrank.s1next.databinding.ActivityHomeBinding;
-import me.ykrank.s1next.util.ActivityUtils;
 import me.ykrank.s1next.util.AnimUtils;
+import me.ykrank.s1next.util.ContextUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.util.TransitionUtils;
@@ -38,8 +38,6 @@ import me.ykrank.s1next.view.internal.BlacklistMenuAction;
 import me.ykrank.s1next.widget.AppBarOffsetChangedListener;
 import me.ykrank.s1next.widget.glide.model.ImageInfo;
 import me.ykrank.s1next.widget.track.event.ViewHomeTrackEvent;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * Created by ykrank on 2017/1/8.
@@ -76,7 +74,7 @@ public class UserHomeActivity extends BaseActivity {
             start(context, uid, userName);
             return;
         }
-        Context baseContext = ActivityUtils.getBaseContext(context);
+        Context baseContext = ContextUtils.getBaseContext(context);
         if (!(baseContext instanceof Activity)) {
             L.leaveMsg("uid:" + uid);
             L.leaveMsg("userName:" + userName);
@@ -204,8 +202,6 @@ public class UserHomeActivity extends BaseActivity {
                                 .subscribe(this::afterBlackListChange, L::report);
                     }
                 });
-
-        trackAgent.post(new PageStartEvent(this, "个人中心-UserHomeActivity"));
     }
 
     private void afterBlackListChange(boolean isAdd) {
@@ -215,7 +211,6 @@ public class UserHomeActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
-        trackAgent.post(new PageEndEvent(this, "个人中心-UserHomeActivity"));
         RxJavaUtil.disposeIfNotNull(blackListAddDisposable);
         super.onPause();
     }

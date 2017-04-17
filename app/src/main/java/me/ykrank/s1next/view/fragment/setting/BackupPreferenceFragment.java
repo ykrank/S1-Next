@@ -17,8 +17,6 @@ import me.ykrank.s1next.data.db.AppDaoSessionManager;
 import me.ykrank.s1next.util.LooperUtil;
 import me.ykrank.s1next.widget.BackupDelegate;
 import me.ykrank.s1next.widget.BackupDelegate.BackupResult;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * An Activity includes download settings that allow users
@@ -73,18 +71,6 @@ public final class BackupPreferenceFragment extends BasePreferenceFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (!backupAgent.onActivityResult(requestCode, resultCode, data))
             super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getActivity(), "设置-备份还原"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getActivity(), "设置-备份还原"));
-        super.onPause();
     }
 
     @MainThread

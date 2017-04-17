@@ -7,6 +7,8 @@ import android.support.v14.preference.PreferenceFragment;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
+import me.ykrank.s1next.widget.track.event.page.LocalFragmentEndEvent;
+import me.ykrank.s1next.widget.track.event.page.LocalFragmentStartEvent;
 
 /**
  * A helper class for registering/unregistering
@@ -37,5 +39,17 @@ abstract class BasePreferenceFragment extends PreferenceFragment
         super.onStop();
 
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackAgent.post(new LocalFragmentStartEvent(this));
+    }
+
+    @Override
+    public void onPause() {
+        trackAgent.post(new LocalFragmentEndEvent(this));
+        super.onPause();
     }
 }

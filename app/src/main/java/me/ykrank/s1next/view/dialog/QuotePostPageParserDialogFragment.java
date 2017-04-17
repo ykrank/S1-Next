@@ -13,8 +13,6 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.ThreadLink;
 import me.ykrank.s1next.util.ErrorUtil;
 import me.ykrank.s1next.view.activity.PostListActivity;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A {@link ProgressDialogFragment} parses post post page for thread.
@@ -98,17 +96,5 @@ public final class QuotePostPageParserDialogFragment extends ProgressDialogFragm
             return Optional.of(Integer.parseInt(matcher.group(1)));
         }
         return Optional.absent();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "弹窗-链接解析进度条-"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getContext(), "弹窗-链接解析进度条-"));
-        super.onPause();
     }
 }

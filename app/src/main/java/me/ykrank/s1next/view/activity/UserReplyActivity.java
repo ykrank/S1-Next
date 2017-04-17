@@ -9,8 +9,6 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.fragment.UserReplyFragment;
 import me.ykrank.s1next.widget.track.event.ViewUserReplyTrackEvent;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * Created by ykrank on 2017/2/4.
@@ -46,17 +44,5 @@ public class UserReplyActivity extends BaseActivity {
                     .add(R.id.frame_layout, fragment, UserReplyFragment.TAG)
                     .commit();
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(this, "用户回复列表-UserReplyActivity"));
-    }
-
-    @Override
-    protected void onPause() {
-        trackAgent.post(new PageEndEvent(this, "用户回复列表-UserReplyActivity"));
-        super.onPause();
     }
 }

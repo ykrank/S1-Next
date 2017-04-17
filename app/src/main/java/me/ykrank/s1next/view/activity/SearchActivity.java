@@ -59,10 +59,7 @@ import me.ykrank.s1next.util.TransitionUtils;
 import me.ykrank.s1next.view.adapter.SearchRecyclerViewAdapter;
 import me.ykrank.s1next.view.transition.CircularReveal;
 import me.ykrank.s1next.view.transition.TransitionCompatCreator;
-import me.ykrank.s1next.widget.track.DataTrackAgent;
 import me.ykrank.s1next.widget.track.event.SearchTrackEvent;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * Created by ykrank on 2016/9/28 0028.
@@ -77,8 +74,6 @@ public class SearchActivity extends BaseActivity {
     User mUser;
     @Inject
     S1Service s1Service;
-    @Inject
-    DataTrackAgent trackAgent;
 
     private ActivitySearchBinding binding;
 
@@ -136,18 +131,6 @@ public class SearchActivity extends BaseActivity {
     protected void onDestroy() {
         RxJavaUtil.disposeIfNotNull(mDisposable);
         super.onDestroy();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(this, "搜索-SearchActivity"));
-    }
-
-    @Override
-    protected void onPause() {
-        trackAgent.post(new PageEndEvent(this, "搜索-SearchActivity"));
-        super.onPause();
     }
 
     private void setupWindowAnimations() {

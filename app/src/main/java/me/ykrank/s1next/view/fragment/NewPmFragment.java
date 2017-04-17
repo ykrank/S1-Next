@@ -9,8 +9,6 @@ import android.widget.EditText;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.dialog.PmRequestDialogFragment;
 import me.ykrank.s1next.view.dialog.ReplyRequestDialogFragment;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A Fragment shows {@link EditText} to let the user pm.
@@ -41,18 +39,6 @@ public final class NewPmFragment extends BasePostFragment {
         mToUid = getArguments().getString(ARG_TO_UID);
         cacheKey = String.format(CACHE_KEY_PREFIX, mToUid);
         L.leaveMsg("NewPmFragment##mToUid" + mToUid);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "新私信-NewPmFragment"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getContext(), "新私信-NewPmFragment"));
-        super.onPause();
     }
 
     @Override

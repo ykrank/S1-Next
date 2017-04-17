@@ -7,8 +7,6 @@ import android.support.v4.app.Fragment;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.view.fragment.NoteFragment;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * Created by ykrank on 2017/1/5.
@@ -33,17 +31,5 @@ public class NoteActivity extends BaseActivity {
                     .add(R.id.frame_layout, fragment, NoteFragment.TAG)
                     .commit();
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(this, "消息列表-NoteActivity"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(this, "消息列表-NoteActivity"));
-        super.onPause();
     }
 }

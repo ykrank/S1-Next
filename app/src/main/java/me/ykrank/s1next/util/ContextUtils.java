@@ -7,10 +7,11 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
-public final class ActivityUtils {
+public final class ContextUtils {
 
     public static boolean isActivityDestroyedForGlide(Context context) {
         if (context instanceof Activity) {
@@ -50,5 +51,39 @@ public final class ActivityUtils {
             }
         }
         return context.getApplicationContext();
+    }
+
+    /**
+     * Returns class name for this fragment with the package prefix removed.
+     * This is the default name used to read and write settings.
+     *
+     * @return The local class name.
+     */
+    public static String getLocalClassName(Fragment fragment) {
+        final String pkg = fragment.getContext().getPackageName();
+        final String cls = fragment.getClass().getName();
+        int packageLen = pkg.length();
+        if (!cls.startsWith(pkg) || cls.length() <= packageLen
+                || cls.charAt(packageLen) != '.') {
+            return cls;
+        }
+        return cls.substring(packageLen + 1);
+    }
+
+    /**
+     * Returns class name for this fragment with the package prefix removed.
+     * This is the default name used to read and write settings.
+     *
+     * @return The local class name.
+     */
+    public static String getLocalClassName(android.app.Fragment fragment) {
+        final String pkg = fragment.getActivity().getPackageName();
+        final String cls = fragment.getClass().getName();
+        int packageLen = pkg.length();
+        if (!cls.startsWith(pkg) || cls.length() <= packageLen
+                || cls.charAt(packageLen) != '.') {
+            return cls;
+        }
+        return cls.substring(packageLen + 1);
     }
 }

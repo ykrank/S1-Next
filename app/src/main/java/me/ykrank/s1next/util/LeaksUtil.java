@@ -35,7 +35,7 @@ public class LeaksUtil {
             Object mFastgrabConfigReader = FieldUtils.readDeclaredStaticField(clazz, "mFastgrabConfigReader", true);
             Field contextField = FieldUtils.getField(clazz, "mContext", true);
             Context mContext = (Context) FieldUtils.readField(contextField, mFastgrabConfigReader, true);
-            if (ActivityUtils.getBaseContext(mContext) == activity) {
+            if (ContextUtils.getBaseContext(mContext) == activity) {
                 FieldUtils.writeField(contextField, mFastgrabConfigReader, null, true);
             }
         } catch (Exception e) {

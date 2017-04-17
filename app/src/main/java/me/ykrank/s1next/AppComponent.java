@@ -24,6 +24,7 @@ import me.ykrank.s1next.view.adapter.delegate.PmRightAdapterDelegate;
 import me.ykrank.s1next.view.dialog.BaseDialogFragment;
 import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
+import me.ykrank.s1next.view.fragment.BaseFragment;
 import me.ykrank.s1next.view.fragment.FavouriteListFragment;
 import me.ykrank.s1next.view.fragment.PmFragment;
 import me.ykrank.s1next.view.fragment.PmGroupsFragment;
@@ -111,4 +112,6 @@ public interface AppComponent {
     void inject(PmGroupsFragment pmGroupsFragment);
 
     void inject(NetworkPreferenceFragment networkPreferenceFragment);
+
+    void inject(BaseFragment baseFragment);
 }

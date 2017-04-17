@@ -9,8 +9,6 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.fragment.FriendListFragment;
 import me.ykrank.s1next.widget.track.event.ViewUserFriendsTrackEvent;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * Created by ykrank on 2017/1/16.
@@ -43,17 +41,5 @@ public class FriendListActivity extends BaseActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.frame_layout, fragment,
                     FriendListFragment.TAG).commit();
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(this, "好友列表-FriendListActivity"));
-    }
-
-    @Override
-    protected void onPause() {
-        trackAgent.post(new PageEndEvent(this, "好友列表-FriendListActivity"));
-        super.onPause();
     }
 }

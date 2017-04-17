@@ -19,8 +19,4 @@ public class ActivityEndEvent extends TrackEvent {
     public Activity getActivity() {
         return activity;
     }
-
-    public void setActivity(Activity activity) {
-        this.activity = activity;
-    }
 }

@@ -6,8 +6,6 @@ import android.os.Bundle;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.view.fragment.OpenSourceLicensesFragment;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * An Activity shows the libraries and files we use in our app.
@@ -29,17 +27,5 @@ public final class OpenSourceLicensesActivity extends BaseActivity {
             getFragmentManager().beginTransaction().add(R.id.frame_layout,
                     new OpenSourceLicensesFragment()).commit();
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(this, "开源证书列表-OpenSourceLicensesActivity"));
-    }
-
-    @Override
-    protected void onPause() {
-        trackAgent.post(new PageEndEvent(this, "开源证书列表-OpenSourceLicensesActivity"));
-        super.onPause();
     }
 }

@@ -10,8 +10,6 @@ import android.support.annotation.NonNull;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.util.IntentUtil;
-import me.ykrank.s1next.widget.track.event.page.PageEndEvent;
-import me.ykrank.s1next.widget.track.event.page.PageStartEvent;
 
 /**
  * A dialog shows error prompt if the thread link is invalid.
@@ -53,17 +51,5 @@ public final class ThreadLinkInvalidPromptDialogFragment extends BaseDialogFragm
         if (getActivity() != null) {
             getActivity().finish();
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        trackAgent.post(new PageStartEvent(getContext(), "弹窗-链接解析出错提醒-"));
-    }
-
-    @Override
-    public void onPause() {
-        trackAgent.post(new PageEndEvent(getContext(), "弹窗-链接解析出错提醒-"));
-        super.onPause();
     }
 }
