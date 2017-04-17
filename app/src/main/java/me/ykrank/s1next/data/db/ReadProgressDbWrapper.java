@@ -3,8 +3,6 @@ package me.ykrank.s1next.data.db;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import javax.inject.Inject;
-
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgressDao;
@@ -16,17 +14,14 @@ import static me.ykrank.s1next.data.db.dbmodel.ReadProgressDao.Properties;
  * Created by AdminYkrank on 2016/2/23.
  */
 public class ReadProgressDbWrapper {
-    private static ReadProgressDbWrapper dbWrapper = new ReadProgressDbWrapper();
+    private final AppDaoSessionManager appDaoSessionManager;
 
-    @Inject
-    AppDaoSessionManager appDaoSessionManager;
-
-    private ReadProgressDbWrapper() {
-        App.getAppComponent().inject(this);
+    ReadProgressDbWrapper(AppDaoSessionManager appDaoSessionManager) {
+        this.appDaoSessionManager = appDaoSessionManager;
     }
 
     public static ReadProgressDbWrapper getInstance() {
-        return dbWrapper;
+        return App.getDbComponent().getReadProgressDbWrapper();
     }
 
     private ReadProgressDao getReadProgressDao() {

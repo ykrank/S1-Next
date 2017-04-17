@@ -13,9 +13,6 @@ import me.ykrank.s1next.data.Wifi;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.data.db.AppDaoSessionManager;
-import me.ykrank.s1next.data.db.BlackListDbWrapper;
-import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
-import me.ykrank.s1next.data.db.ThreadDbWrapper;
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
 import me.ykrank.s1next.view.adapter.delegate.FavouriteAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmGroupsAdapterDelegate;
@@ -99,13 +96,7 @@ public interface AppComponent {
 
     void inject(BaseDialogFragment baseDialogFragment);
 
-    void inject(BlackListDbWrapper blackListDbWrapper);
-
-    void inject(ReadProgressDbWrapper readProgressDbWrapper);
-
     void inject(BackupPreferenceFragment backupPreferenceFragment);
-
-    void inject(ThreadDbWrapper threadDbWrapper);
 
     void inject(NoticeCheckTask noticeCheckTask);
 

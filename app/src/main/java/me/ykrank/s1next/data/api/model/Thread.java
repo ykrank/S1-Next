@@ -2,6 +2,7 @@ package me.ykrank.s1next.data.api.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -11,6 +12,7 @@ import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import me.ykrank.s1next.data.SameItem;
+import me.ykrank.s1next.data.db.dbmodel.History;
 import me.ykrank.s1next.util.L;
 
 /**
@@ -63,6 +65,11 @@ public final class Thread implements Parcelable, Cloneable, SameItem {
     private int lastReplyCount;
 
     public Thread() {
+    }
+
+    public Thread(@NonNull History history) {
+        this.id = String.valueOf(history.getThreadId());
+        this.title = history.getTitle();
     }
 
     protected Thread(Parcel in) {

@@ -6,21 +6,10 @@
     tools:context="me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate">
 
     <data>
+
         <variable
             name="model"
-            type="me.ykrank.s1next.viewmodel.ThreadViewModel" />
-
-        <variable
-            name="userViewModel"
-            type="me.ykrank.s1next.viewmodel.UserViewModel" />
-
-        <variable
-            name="themeManager"
-            type="me.ykrank.s1next.data.pref.ThemeManager" />
-
-        <variable
-            name="forumId"
-            type="String" />
+            type="me.ykrank.s1next.viewmodel.HistoryViewModel" />
     </data>
 
     <!-- May change this TextView padding or height after because we
@@ -42,10 +31,6 @@
         android:paddingBottom="14.5dp"
         android:paddingTop="14.5dp"
         android:textAppearance="@style/TextAppearance.ThreadList.Title"
-        app:forumId="@{forumId}"
-        app:onLongClickListener="@{model.goToThisThreadLastPage()}"
-        android:onClick="@{model.onClick(model.thread)}"
-        app:themeManager="@{themeManager}"
-        app:thread="@{model.thread}"
-        app:user="@{userViewModel.user}" />
+        android:onClick="@{model.onClick(model.history)}"
+        app:history="@{model.history}" />
 </layout>

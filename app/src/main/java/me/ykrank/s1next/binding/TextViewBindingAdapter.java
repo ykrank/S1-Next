@@ -32,6 +32,7 @@ import me.ykrank.s1next.data.api.model.HomeThread;
 import me.ykrank.s1next.data.api.model.PmGroup;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
+import me.ykrank.s1next.data.db.dbmodel.History;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.util.ViewUtil;
@@ -209,6 +210,15 @@ public final class TextViewBindingAdapter {
         } else {
             textView.setText(thread.getTitle());
             ViewUtil.concatWithTwoSpacesForRtlSupport(textView, thread.getForum(), Color.GRAY);
+        }
+    }
+
+    @BindingAdapter({"history"})
+    public static void setHomeThread(TextView textView, @Nullable History history) {
+        if (history == null) {
+            textView.setText(null);
+        } else {
+            textView.setText(history.getTitle());
         }
     }
 }

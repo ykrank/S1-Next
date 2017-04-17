@@ -15,35 +15,23 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-import com.squareup.leakcanary.RefWatcher;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.db.BlackListDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.BlackList;
 import me.ykrank.s1next.databinding.FragmentBlacklistBinding;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.BlackListCursorListViewAdapter;
 import me.ykrank.s1next.view.dialog.BlacklistDialogFragment;
 import me.ykrank.s1next.view.fragment.BaseFragment;
 
-/**
- * An Activity includes download settings that allow users
- * to modify download features and behaviors such as cache
- * size and avatars/images download strategy.
- */
 public final class BlackListSettingFragment extends BaseFragment {
     public static final String TAG = BlackListSettingFragment.class.getName();
-
-    private static final String ARG_ROW = "row";
-    private static final int LIMIT = 20;
 
     private ListView mListView;
     private BlackListCursorListViewAdapter mListViewAdapter;
@@ -174,16 +162,12 @@ public final class BlackListSettingFragment extends BaseFragment {
      */
     private void load() {
         mDisposable = getSourceObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        mListViewAdapter::changeCursor
-                        , throwable -> {
-                            L.e("S1next", throwable);
-                        });
+                .compose(RxJavaUtil.iOSingleTransformer())
+                .subscribe(mListViewAdapter::changeCursor,
+                        throwable -> L.e("S1next", throwable));
     }
 
-    Observable<Cursor> getSourceObservable() {
+    Single<Cursor> getSourceObservable() {
         return BlackListDbWrapper.getInstance().getBlackListCursor();
     }
 
@@ -201,8 +185,7 @@ public final class BlackListSettingFragment extends BaseFragment {
 
     @Override
     public void onDestroy() {
-        RefWatcher refWatcher = App.get().getRefWatcher();
-        refWatcher.watch(this);
+        RxJavaUtil.disposeIfNotNull(mDisposable);
         super.onDestroy();
     }
 

@@ -101,7 +101,7 @@ repositories {
 }
 
 greendao {
-    schemaVersion 3
+    schemaVersion 4
 }
 
 //http://stackoverflow.com/questions/28683327/how-to-check-if-gradle-dependency-has-new-version

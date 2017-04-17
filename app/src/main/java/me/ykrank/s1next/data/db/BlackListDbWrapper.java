@@ -7,13 +7,10 @@ import android.text.TextUtils;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.db.dbmodel.BlackList;
 import me.ykrank.s1next.data.db.dbmodel.BlackListDao;
-import me.ykrank.s1next.util.RxJavaUtil;
 
 import static me.ykrank.s1next.data.db.dbmodel.BlackListDao.Properties;
 
@@ -22,17 +19,14 @@ import static me.ykrank.s1next.data.db.dbmodel.BlackListDao.Properties;
  * Created by AdminYkrank on 2016/2/23.
  */
 public class BlackListDbWrapper {
-    private static BlackListDbWrapper blackListWrapper = new BlackListDbWrapper();
+    private final AppDaoSessionManager appDaoSessionManager;
 
-    @Inject
-    AppDaoSessionManager appDaoSessionManager;
-
-    private BlackListDbWrapper() {
-        App.getAppComponent().inject(this);
+    BlackListDbWrapper(AppDaoSessionManager appDaoSessionManager) {
+        this.appDaoSessionManager = appDaoSessionManager;
     }
 
     public static BlackListDbWrapper getInstance() {
-        return blackListWrapper;
+        return App.getDbComponent().getBlackListDbWrapper();
     }
 
     private BlackListDao getBlackListDao() {
@@ -47,10 +41,9 @@ public class BlackListDbWrapper {
                 .list();
     }
 
-    public Observable<Cursor> getBlackListCursor() {
-        return Observable.just(getBlackListDao().queryBuilder())
-                .map(builder -> builder.buildCursor().query())
-                .compose(RxJavaUtil.iOTransformer());
+    public Single<Cursor> getBlackListCursor() {
+        return Single.just(getBlackListDao().queryBuilder())
+                .map(builder -> builder.buildCursor().query());
     }
 
     @NonNull

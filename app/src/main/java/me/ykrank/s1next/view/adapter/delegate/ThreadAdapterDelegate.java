@@ -49,7 +49,7 @@ public final class ThreadAdapterDelegate extends BaseAdapterDelegate<Thread, Thr
         binding.setUserViewModel(mUserViewModel);
         binding.setThemeManager(mThemeManager);
         binding.setForumId(forumId);
-        binding.setThreadViewModel(new ThreadViewModel());
+        binding.setModel(new ThreadViewModel());
 
         return new BindingViewHolder(binding);
     }
@@ -57,8 +57,7 @@ public final class ThreadAdapterDelegate extends BaseAdapterDelegate<Thread, Thr
     @Override
     public void onBindViewHolderData(Thread thread, int position, @NonNull BindingViewHolder holder) {
         ItemThreadBinding binding = holder.itemThreadBinding;
-        binding.getThreadViewModel().thread.set(thread);
-        binding.getThreadViewModel().setSubscription();
+        binding.getModel().thread.set(thread);
         binding.executePendingBindings();
     }
 

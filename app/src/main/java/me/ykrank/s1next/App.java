@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatDelegate;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
+import me.ykrank.s1next.data.db.DaggerDbComponent;
+import me.ykrank.s1next.data.db.DbComponent;
+import me.ykrank.s1next.data.db.DbModule;
 import me.ykrank.s1next.data.pref.DaggerPrefComponent;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.data.pref.PrefComponent;
@@ -29,6 +32,8 @@ public final class App extends MultiDexApplication {
 
     private PrefComponent mPrefComponent;
 
+    private DbComponent mDbComponent;
+
     private AppActivityLifecycleCallbacks mAppActivityLifecycleCallbacks;
 
     private RefWatcher refWatcher;
@@ -43,6 +48,10 @@ public final class App extends MultiDexApplication {
 
     public static PrefComponent getPrefComponent() {
         return sApp.mPrefComponent;
+    }
+
+    public static DbComponent getDbComponent() {
+        return sApp.mDbComponent;
     }
 
     public RefWatcher getRefWatcher() {
@@ -89,6 +98,10 @@ public final class App extends MultiDexApplication {
         mPrefComponent = DaggerPrefComponent.builder()
                 .appComponent(mAppComponent)
                 .prefModule(new PrefModule())
+                .build();
+        mDbComponent = DaggerDbComponent.builder()
+                .appComponent(mAppComponent)
+                .dbModule(new DbModule())
                 .build();
         mAppActivityLifecycleCallbacks = new AppActivityLifecycleCallbacks(this, mAppComponent.getNoticeCheckTask());
         registerActivityLifecycleCallbacks(mAppActivityLifecycleCallbacks);

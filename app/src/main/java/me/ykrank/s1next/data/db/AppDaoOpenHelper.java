@@ -1,4 +1,4 @@
-package me.ykrank.s1next.widget;
+package me.ykrank.s1next.data.db;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -9,6 +9,7 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.db.dbmodel.BlackListDao;
 import me.ykrank.s1next.data.db.dbmodel.DaoMaster;
+import me.ykrank.s1next.data.db.dbmodel.HistoryDao;
 import me.ykrank.s1next.util.L;
 
 /**
@@ -28,19 +29,27 @@ public class AppDaoOpenHelper extends DaoMaster.OpenHelper {
         super.onUpgrade(db, oldVersion, newVersion);
         L.e("DB upgrade##oldVersion:" + oldVersion + ",newVersion:" + newVersion);
         if (oldVersion == 1){
-            BlackListDao.dropTable(db, true);
-            onCreate(db);
+            update1toNew(db, oldVersion, newVersion);
             return;
         }
         if (oldVersion == 2) {
-            update2to3(db, oldVersion, newVersion);
+            update2toNew(db, oldVersion, newVersion);
+            return;
+        }
+        if (oldVersion == 3) {
+            update3to4(db, oldVersion, newVersion);
         }
     }
 
-    /*
+    private void update1toNew(Database db, int oldVersion, int newVersion) {
+        BlackListDao.dropTable(db, true);
+        onCreate(db);
+    }
+
+    /**
     update from ActiveAndroid to GreenDAO
      */
-    private void update2to3(Database db, int oldVersion, int newVersion) {
+    private void update2toNew(Database db, int oldVersion, int newVersion) {
         db.beginTransaction();
         try {
             String tempDbBlackList = DB_BLACKLIST + "_temp";
@@ -65,5 +74,12 @@ public class AppDaoOpenHelper extends DaoMaster.OpenHelper {
         } finally {
             db.endTransaction();
         }
+    }
+
+    /**
+     * add table {@link me.ykrank.s1next.data.db.dbmodel.History}
+     */
+    private void update3to4(Database db, int oldVersion, int newVersion) {
+        HistoryDao.createTable(db, false);
     }
 }

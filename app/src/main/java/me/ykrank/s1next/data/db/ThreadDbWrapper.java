@@ -3,8 +3,6 @@ package me.ykrank.s1next.data.db;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import javax.inject.Inject;
-
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.db.dbmodel.DbThread;
 import me.ykrank.s1next.data.db.dbmodel.DbThreadDao;
@@ -16,17 +14,14 @@ import static me.ykrank.s1next.data.db.dbmodel.DbThreadDao.Properties;
  * Created by AdminYkrank on 2016/2/23.
  */
 public class ThreadDbWrapper {
-    private static ThreadDbWrapper dbWrapper = new ThreadDbWrapper();
+    private final AppDaoSessionManager appDaoSessionManager;
 
-    @Inject
-    AppDaoSessionManager appDaoSessionManager;
-
-    private ThreadDbWrapper() {
-        App.getAppComponent().inject(this);
+    ThreadDbWrapper(AppDaoSessionManager appDaoSessionManager) {
+        this.appDaoSessionManager = appDaoSessionManager;
     }
 
     public static ThreadDbWrapper getInstance() {
-        return dbWrapper;
+        return App.getDbComponent().getThreadDbWrapper();
     }
 
     private DbThreadDao getThreadDao() {
