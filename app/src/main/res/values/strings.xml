@@ -234,5 +234,5 @@
     <string name="title_edit_post">Edit post</string>
     <string name="error_host_ip">Host ip error</string>
     <string name="error_force_base_url">Error base url</string>
-    <string name="error_force_host_ip">Error host ip list</string>
+    <string name="error_force_host_ip">Error host ip list: %s</string>
 </resources>

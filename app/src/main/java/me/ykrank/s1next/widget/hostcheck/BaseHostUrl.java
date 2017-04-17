@@ -24,6 +24,7 @@ public class BaseHostUrl {
     public BaseHostUrl(NetworkPreferencesManager prefManager) {
         this.prefManager = prefManager;
         refreshBaseHostUrl();
+        refreshForceHostIp();
     }
 
     @Nullable
@@ -45,19 +46,14 @@ public class BaseHostUrl {
      * check whether base url is a well-formed HTTP or HTTPS URL and end with /
      *
      * @param baseUrl url eg:http://bbs.saraba1st.com/2b/
-     * @return valid
+     * @return parsed HttpUrl
      */
-    public static boolean checkBaseHostUrl(String baseUrl) {
-        if (TextUtils.isEmpty(baseUrl)) {
-            return false;
+    @Nullable
+    public static HttpUrl checkBaseHostUrl(@Nullable String baseUrl) {
+        if (!TextUtils.isEmpty(baseUrl) && baseUrl.endsWith("/")) {
+            return HttpUrl.parse(baseUrl);
         }
-        if (!baseUrl.endsWith("/")) {
-            return false;
-        }
-        if (HttpUrl.parse(baseUrl) != null) {
-            return true;
-        }
-        return false;
+        return null;
     }
 
     public void refreshBaseHostUrl() {
@@ -68,14 +64,12 @@ public class BaseHostUrl {
             url = Api.BASE_URL;
         }
 
-        if (!TextUtils.equals(url, baseUrl)) {
-            if (baseUrl == null) {
-                baseHttpUrl = null;
-            } else {
-                baseHttpUrl = HttpUrl.parse(baseUrl);
-            }
+        if (!TextUtils.equals(baseUrl, url)) {
+            baseHttpUrl = checkBaseHostUrl(url);
         }
+    }
 
+    public void refreshForceHostIp() {
         if (prefManager.isForceHostIpEnable()) {
             hostIp = prefManager.getForceHostIp();
         } else {
