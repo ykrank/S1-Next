@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableTransformer;
+import io.reactivex.Single;
 import io.reactivex.SingleTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -26,6 +27,28 @@ public final class RxJavaUtil {
         if (disposable != null) {
             disposable.dispose();
         }
+    }
+
+    /**
+     * push work to RxJava io thread {@link Schedulers#io()}
+     *
+     * @param workAction
+     */
+    public static void workInRxIoThread(Action workAction) {
+        Single.just(NULL)
+                .subscribeOn(Schedulers.io())
+                .subscribe(o -> workAction.run(), L::report);
+    }
+
+    /**
+     * push work to RxJava computation thread {@link Schedulers#computation()}
+     *
+     * @param workAction
+     */
+    public static void workInRxComputationThread(Action workAction) {
+        Single.just(NULL)
+                .subscribeOn(Schedulers.computation())
+                .subscribe(o -> workAction.run(), L::report);
     }
 
     /**

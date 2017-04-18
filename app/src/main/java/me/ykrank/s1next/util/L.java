@@ -24,12 +24,14 @@ public class L {
 
     public static void init(@NonNull Context context) {
         Context appContext = context.getApplicationContext();
-        CrashReport.setIsDevelopmentDevice(appContext, BuildConfig.DEBUG);
-        CrashReport.UserStrategy userStrategy = new CrashReport.UserStrategy(appContext);
-        userStrategy.setAppVersion(BuildConfig.VERSION_NAME + "-" + BuildConfig.VERSION_CODE);
-        CrashReport.initCrashReport(appContext, userStrategy);
-
         Logger.init(LOG_TAG).logLevel(showLog() ? LogLevel.FULL : LogLevel.NONE);
+
+        RxJavaUtil.workInRxIoThread(() -> {
+            CrashReport.UserStrategy userStrategy = new CrashReport.UserStrategy(appContext);
+            userStrategy.setAppVersion(BuildConfig.VERSION_NAME + "-" + BuildConfig.VERSION_CODE);
+            CrashReport.initCrashReport(appContext, userStrategy);
+            CrashReport.setIsDevelopmentDevice(appContext, BuildConfig.DEBUG);
+        });
     }
 
     public static void setUser(final String id, final String name) {
