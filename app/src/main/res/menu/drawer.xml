@@ -20,6 +20,11 @@
             android:id="@+id/menu_note"
             android:icon="@drawable/ic_note_black_24dp"
             android:title="@string/notes" />
+
+        <item
+            android:id="@+id/menu_history"
+            android:icon="@drawable/ic_history_black_24dp"
+            android:title="@string/histories" />
     </group>
     <group android:id="@+id/sub_header">
         <item

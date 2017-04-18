@@ -235,4 +235,6 @@
     <string name="error_host_ip">Host ip error</string>
     <string name="error_force_base_url">Error base url</string>
     <string name="error_force_host_ip">Error host ip list: %s</string>
+    <string name="title_history">History</string>
+    <string name="histories">Histories</string>
 </resources>

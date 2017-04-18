@@ -178,4 +178,6 @@
     <string name="pref_force_host_ip_enabled">强制使用IP列表</string>
     <string name="pref_network">网络参数</string>
     <string name="pref_network_summary">专业的技术参数，谨慎修改</string>
+    <string name="title_history">历史记录</string>
+    <string name="histories">历史记录</string>
 </resources>

@@ -25,6 +25,7 @@ import me.ykrank.s1next.databinding.NavigationViewHeaderBinding;
 import me.ykrank.s1next.view.activity.FavouriteListActivity;
 import me.ykrank.s1next.view.activity.ForumActivity;
 import me.ykrank.s1next.view.activity.HelpActivity;
+import me.ykrank.s1next.view.activity.HistoryActivity;
 import me.ykrank.s1next.view.activity.LoginActivity;
 import me.ykrank.s1next.view.activity.NoteActivity;
 import me.ykrank.s1next.view.activity.PmActivity;
@@ -149,6 +150,9 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
             case R.id.menu_note:
                 runnable = this::onNoteMenuSelected;
                 break;
+            case R.id.menu_history:
+                runnable = this::onHistoryMenuSelected;
+                break;
             case R.id.menu_settings:
                 runnable = this::onSettingsMenuSelected;
                 break;
@@ -232,5 +236,9 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
         if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(mFragmentActivity, mUser)) {
             NoteActivity.start(mFragmentActivity);
         }
+    }
+
+    private void onHistoryMenuSelected() {
+        HistoryActivity.start(mFragmentActivity);
     }
 }

@@ -187,6 +187,11 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
+            android:name=".view.activity.HistoryActivity"
+            android:label="@string/title_history"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
             android:name=".view.activity.OpenSourceLicensesActivity"
             android:label="@string/open_source_licenses" />
 

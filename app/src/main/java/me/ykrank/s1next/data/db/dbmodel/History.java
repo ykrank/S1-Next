@@ -4,6 +4,7 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
+import org.greenrobot.greendao.annotation.Keep;
 import org.greenrobot.greendao.annotation.Property;
 
 /**
@@ -33,6 +34,13 @@ public class History {
         this.threadId = threadId;
         this.title = title;
         this.timestamp = timestamp;
+    }
+
+    @Keep
+    public History(int threadId, String title) {
+        this.threadId = threadId;
+        this.title = title;
+        this.timestamp = System.currentTimeMillis();
     }
 
     @Generated(hash = 869423138)
@@ -69,5 +77,12 @@ public class History {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    @Keep
+    public void copyFrom(History history) {
+        this.threadId = history.getThreadId();
+        this.title = history.getTitle();
+        this.timestamp = history.getTimestamp();
     }
 }

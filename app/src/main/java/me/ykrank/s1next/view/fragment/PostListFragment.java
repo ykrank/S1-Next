@@ -32,9 +32,11 @@ import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.api.model.ThreadLink;
 import me.ykrank.s1next.data.api.model.collection.Posts;
 import me.ykrank.s1next.data.db.BlackListDbWrapper;
+import me.ykrank.s1next.data.db.HistoryDbWrapper;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.data.db.ThreadDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.DbThread;
+import me.ykrank.s1next.data.db.dbmodel.History;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
 import me.ykrank.s1next.data.event.BlackListAddEvent;
 import me.ykrank.s1next.data.event.EditPostEvent;
@@ -99,6 +101,9 @@ public final class PostListFragment extends BaseViewPagerFragment
     @Inject
     ReadProgressPreferencesManager mReadProgressPrefManager;
 
+    @Inject
+    HistoryDbWrapper historyDbWrapper;
+
     private String mThreadId;
     @Nullable
     private String mThreadTitle;
@@ -157,6 +162,7 @@ public final class PostListFragment extends BaseViewPagerFragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         App.getPrefComponent().inject(this);
+        App.getDbComponent().inject(this);
 
         Bundle bundle = getArguments();
         Thread thread = Preconditions.checkNotNull(bundle.getParcelable(ARG_THREAD));
@@ -189,6 +195,7 @@ public final class PostListFragment extends BaseViewPagerFragment
                     setCurrentPage(getTotalPages() - 1);
                 }
             }
+            saveHistory();
         }
 
         ((CoordinatorLayoutAnchorDelegate) getActivity()).setupFloatingActionButton(
@@ -426,6 +433,7 @@ public final class PostListFragment extends BaseViewPagerFragment
         if (TextUtils.isEmpty(mThreadTitle)) {
             mThreadTitle = title.toString();
             setTitleWithPosition(getCurrentPage());
+            saveHistory();
         }
     }
 
@@ -510,6 +518,13 @@ public final class PostListFragment extends BaseViewPagerFragment
         }
 
         NewRateActivity.start(getActivity(), threadId, postId);
+    }
+
+    private void saveHistory() {
+        int threadId = Integer.valueOf(mThreadId);
+        if (threadId > 0 && TextUtils.isEmpty(mThreadTitle)) {
+            historyDbWrapper.addNewHistory(new History(threadId, mThreadTitle));
+        }
     }
 
     /**

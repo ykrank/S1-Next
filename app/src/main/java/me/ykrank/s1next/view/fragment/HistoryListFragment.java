@@ -17,6 +17,9 @@ import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.HistoryCursorRecyclerViewAdapter;
 
+/**
+ * Fragment show post view history list
+ */
 public final class HistoryListFragment extends BaseFragment {
     public static final String TAG = HistoryListFragment.class.getName();
 
@@ -64,7 +67,7 @@ public final class HistoryListFragment extends BaseFragment {
     }
 
     private void load() {
-        historyDbWrapper.getBlackListCursor()
+        historyDbWrapper.getHistoryListCursor()
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .subscribe(mRecyclerAdapter::changeCursor,
                         throwable -> L.e("S1next", throwable));

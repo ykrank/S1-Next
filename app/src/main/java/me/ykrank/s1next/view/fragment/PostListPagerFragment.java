@@ -330,12 +330,14 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
                 }
             }
 
-            // we have not title if we open a thread link in our app
-            mPagerCallback.setThreadTitle(postListInfo.getTitle());
+            if (postListInfo != null) {
+                // we have not title if we open a thread link in our app
+                mPagerCallback.setThreadTitle(postListInfo.getTitle());
 
-            mPagerCallback.setTotalPageByPosts(postListInfo.getReliesCount() + 1);
-            if (posts.getThreadAttachment() != null) {
-                mPagerCallback.setupThreadAttachment(posts.getThreadAttachment());
+                mPagerCallback.setTotalPageByPosts(postListInfo.getReliesCount() + 1);
+                if (posts.getThreadAttachment() != null) {
+                    mPagerCallback.setupThreadAttachment(posts.getThreadAttachment());
+                }
             }
 
             initQuickSidebar(mPageNum, postList.size());

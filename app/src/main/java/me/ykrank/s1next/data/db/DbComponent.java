@@ -1,11 +1,14 @@
 package me.ykrank.s1next.data.db;
 
-import dagger.Component;
-import me.ykrank.s1next.AppComponent;
-import me.ykrank.s1next.view.fragment.HistoryListFragment;
+import javax.inject.Singleton;
 
-@DbScope
-@Component(dependencies = AppComponent.class, modules = DbModule.class)
+import dagger.Component;
+import me.ykrank.s1next.AppModule;
+import me.ykrank.s1next.view.fragment.HistoryListFragment;
+import me.ykrank.s1next.view.fragment.PostListFragment;
+
+@Singleton
+@Component(modules = {AppModule.class, DbModule.class})
 public interface DbComponent {
 
     BlackListDbWrapper getBlackListDbWrapper();
@@ -17,4 +20,6 @@ public interface DbComponent {
     HistoryDbWrapper getHistoryDbWrapper();
 
     void inject(HistoryListFragment historyListFragment);
+
+    void inject(PostListFragment postListFragment);
 }

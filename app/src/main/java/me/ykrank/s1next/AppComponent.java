@@ -13,7 +13,9 @@ import me.ykrank.s1next.data.Wifi;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.data.db.AppDaoSessionManager;
+import me.ykrank.s1next.data.db.DbModule;
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
+import me.ykrank.s1next.data.pref.PrefModule;
 import me.ykrank.s1next.view.adapter.delegate.FavouriteAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmGroupsAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmLeftAdapterDelegate;
@@ -41,7 +43,7 @@ import okhttp3.OkHttpClient;
  * or the dependencies we want to get.
  */
 @Singleton
-@Component(modules = AppModule.class)
+@Component(modules = {AppModule.class, PrefModule.class, DbModule.class})
 public interface AppComponent {
 
     Context getContext();
