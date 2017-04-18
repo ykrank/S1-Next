@@ -36,7 +36,7 @@ public final class FavouriteAdapterDelegate extends BaseAdapterDelegate<Favourit
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {
         ItemFavouriteBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_favourite, parent, false);
-        binding.setFavouriteViewModel(new FavouriteViewModel());
+        binding.setModel(new FavouriteViewModel());
         binding.setEventBus(mEventBus);
         return new BindingViewHolder(binding);
     }
@@ -44,8 +44,7 @@ public final class FavouriteAdapterDelegate extends BaseAdapterDelegate<Favourit
     @Override
     public void onBindViewHolderData(Favourite favourite, int position, @NonNull BindingViewHolder holder) {
         ItemFavouriteBinding binding = holder.itemFavouriteBinding;
-        binding.getFavouriteViewModel().favourite.set(favourite);
-        binding.getFavouriteViewModel().setDisposable();
+        binding.getModel().favourite.set(favourite);
         binding.executePendingBindings();
     }
 

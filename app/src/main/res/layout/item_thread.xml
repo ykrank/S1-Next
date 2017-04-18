@@ -6,6 +6,7 @@
     tools:context="me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate">
 
     <data>
+
         <variable
             name="model"
             type="me.ykrank.s1next.viewmodel.ThreadViewModel" />
@@ -42,9 +43,9 @@
         android:paddingBottom="14.5dp"
         android:paddingTop="14.5dp"
         android:textAppearance="@style/TextAppearance.ThreadList.Title"
+        app:bindEvent="@{model.onBind()}"
         app:forumId="@{forumId}"
         app:onLongClickListener="@{model.goToThisThreadLastPage()}"
-        android:onClick="@{model.onClick(model.thread)}"
         app:themeManager="@{themeManager}"
         app:thread="@{model.thread}"
         app:user="@{userViewModel.user}" />

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Supplier;
 
 import javax.inject.Inject;
 
@@ -84,23 +85,23 @@ public final class PostListActivity extends BaseActivity
     }
 
     /**
-     * 点击打开有读取进度的帖子
+     * 为View绑定“点击打开有读取进度的帖子”的事件
      *
      * @param view   点击焦点
-     * @param thread 帖子信息
+     * @param thread 帖子信息 的 提供者
      * @return
      */
-    public static Disposable clickStartPostListActivity(@NonNull View view, @NonNull Thread thread) {
+    public static Disposable bindClickStartForView(@NonNull View view, @NonNull Supplier<Thread> thread) {
         ReadProgressPreferencesManager preferencesManager = App.getPrefComponent().getReadProgressPreferencesManager();
         if (preferencesManager.isLoadAuto()) {
             return OnceClickUtil.onceClickObservable(view, 1000)
                     .observeOn(Schedulers.io())
-                    .map(vo -> Optional.fromNullable(ReadProgressDbWrapper.getInstance().getWithThreadId(Integer.valueOf(thread.getId()))))
+                    .map(vo -> Optional.fromNullable(ReadProgressDbWrapper.getInstance().getWithThreadId(Integer.valueOf(thread.get().getId()))))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(progress -> {
                         Context context = view.getContext();
                         Intent intent = new Intent(context, PostListActivity.class);
-                        intent.putExtra(ARG_THREAD, thread);
+                        intent.putExtra(ARG_THREAD, thread.get());
                         intent.putExtra(ARG_READ_PROGRESS, progress.orNull());
                         if (context instanceof Activity) {
                             ((Activity) context).startActivityForResult(intent, RESULT_BLACKLIST);
@@ -110,7 +111,7 @@ public final class PostListActivity extends BaseActivity
                     }, L::report);
         } else {
             return OnceClickUtil.setOnceClickLister(view, v -> {
-                PostListActivity.startPostListActivity(v.getContext(), thread, false);
+                PostListActivity.startPostListActivity(v.getContext(), thread.get(), false);
             });
         }
     }

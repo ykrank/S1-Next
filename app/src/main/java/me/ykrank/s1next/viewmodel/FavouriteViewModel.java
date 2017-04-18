@@ -5,8 +5,9 @@ import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
 
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
+import com.google.common.base.Supplier;
+
+import io.reactivex.functions.Consumer;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Favourite;
 import me.ykrank.s1next.data.api.model.Thread;
@@ -19,17 +20,16 @@ public final class FavouriteViewModel {
 
     public final ObservableField<Favourite> favourite = new ObservableField<>();
 
-    public final ObservableField<Function<View, Disposable>> disposable = new ObservableField<>();
+    private final Supplier<Thread> threadSupplier = () -> {
+        Thread thread = new Thread();
+        Favourite favourite = this.favourite.get();
+        thread.setId(favourite.getId());
+        thread.setTitle(favourite.getTitle());
+        return thread;
+    };
 
-    public void setDisposable() {
-        disposable.set(v -> {
-            Thread thread = new Thread();
-            Favourite favourite = this.favourite.get();
-            thread.setId(favourite.getId());
-            thread.setTitle(favourite.getTitle());
-
-            return PostListActivity.clickStartPostListActivity(v, thread);
-        });
+    public Consumer<View> onBind() {
+        return v -> PostListActivity.bindClickStartForView(v, threadSupplier);
     }
 
     public View.OnLongClickListener removeFromFavourites(final EventBus eventBus) {

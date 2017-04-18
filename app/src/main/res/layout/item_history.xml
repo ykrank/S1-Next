@@ -31,6 +31,6 @@
         android:paddingBottom="14.5dp"
         android:paddingTop="14.5dp"
         android:textAppearance="@style/TextAppearance.ThreadList.Title"
-        android:onClick="@{model.onClick(model.history)}"
+        app:bindEvent="@{model.onBind()}"
         app:history="@{model.history}" />
 </layout>

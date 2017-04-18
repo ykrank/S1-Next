@@ -21,8 +21,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
+import io.reactivex.functions.Consumer;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
@@ -68,10 +67,16 @@ public final class ViewBindingAdapter {
         view.setLayoutParams(layoutParams);
     }
 
-    @BindingAdapter("onceClickDisposable")
-    public static void setOnceClickListener(View view, Function<View, Disposable> onceClickDisposable) {
+    /**
+     * action when view init
+     *
+     * @param view       view
+     * @param onViewBind action when view init
+     */
+    @BindingAdapter("bindEvent")
+    public static void setOnViewBind(View view, Consumer<View> onViewBind) {
         try {
-            onceClickDisposable.apply(view);
+            onViewBind.accept(view);
         } catch (Exception e) {
             L.report(e);
         }

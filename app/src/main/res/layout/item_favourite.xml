@@ -12,7 +12,7 @@
             type="me.ykrank.s1next.widget.EventBus" />
 
         <variable
-            name="favouriteViewModel"
+            name="model"
             type="me.ykrank.s1next.viewmodel.FavouriteViewModel" />
 
     </data>
@@ -38,9 +38,9 @@
         android:paddingRight="@dimen/item_padding"
         android:paddingStart="@dimen/item_padding"
         android:paddingTop="14.5dp"
-        android:text="@{favouriteViewModel.favourite.title}"
+        android:text="@{model.favourite.title}"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:onceClickDisposable="@{favouriteViewModel.disposable}"
-        app:onLongClickListener="@{favouriteViewModel.removeFromFavourites(eventBus)}"/>
+        app:bindEvent="@{model.onBind()}"
+        app:onLongClickListener="@{model.removeFromFavourites(eventBus)}" />
 
 </layout>
