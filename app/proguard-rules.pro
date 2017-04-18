@@ -35,15 +35,11 @@
 -dontwarn dagger.**
 
 # Jackson Model
--keep public class me.ykrank.s1next.data.api.model.** {
-    public *; 
-}
--keep public class me.ykrank.s1next.data.cache.** {
-    public *; 
-}
+-keep public class me.ykrank.s1next.data.api.model.** { *; }
+-keep public class me.ykrank.s1next.data.cache.** { *; }
 -keep public class me.ykrank.s1next.data.db.dbmodel.ReadProgress { *; }
 # GreenDao model
-#-keep public class me.ykrank.s1next.data.db.dbmodel.**
+-keep public class me.ykrank.s1next.data.db.dbmodel.**
 
 -dontwarn java.nio.file.Paths
 -dontwarn java.beans.Transient
