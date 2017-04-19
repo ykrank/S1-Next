@@ -522,7 +522,7 @@ public final class PostListFragment extends BaseViewPagerFragment
 
     private void saveHistory() {
         int threadId = Integer.valueOf(mThreadId);
-        if (threadId > 0 && TextUtils.isEmpty(mThreadTitle)) {
+        if (threadId > 0 && !TextUtils.isEmpty(mThreadTitle)) {
             historyDbWrapper.addNewHistory(new History(threadId, mThreadTitle));
         }
     }
