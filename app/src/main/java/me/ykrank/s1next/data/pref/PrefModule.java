@@ -2,8 +2,11 @@ package me.ykrank.s1next.data.pref;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -14,57 +17,80 @@ import me.ykrank.s1next.data.Wifi;
  */
 @Module
 public class PrefModule {
+    private final Context mContext;
 
-    @Provides
-    @PrefScope
-    GeneralPreferencesRepository provideGeneralPreferencesProvider(Context context, SharedPreferences sharedPreferences) {
-        return new GeneralPreferencesRepository(context, sharedPreferences);
+    public PrefModule(Context mContext) {
+        this.mContext = mContext;
     }
 
     @Provides
-    @PrefScope
+    @Singleton
+    SharedPreferences provideSharedPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(mContext);
+    }
+
+    @Provides
+    @Singleton
+    NetworkPreferencesRepository provideNetworkPreferencesRepository(SharedPreferences sharedPreferences) {
+        return new NetworkPreferencesRepository(mContext, sharedPreferences);
+    }
+
+    @Provides
+    @Singleton
+    NetworkPreferencesManager provideNetworkPreferencesManager(NetworkPreferencesRepository networkPreferencesRepository) {
+        return new NetworkPreferencesManager(networkPreferencesRepository);
+    }
+
+    @Provides
+    @Singleton
+    GeneralPreferencesRepository provideGeneralPreferencesProvider(SharedPreferences sharedPreferences) {
+        return new GeneralPreferencesRepository(mContext, sharedPreferences);
+    }
+
+    @Provides
+    @Singleton
     GeneralPreferencesManager provideGeneralPreferencesManager(GeneralPreferencesRepository generalPreferencesProvider) {
         return new GeneralPreferencesManager(generalPreferencesProvider);
     }
 
     @Provides
-    @PrefScope
-    ThemeManager provideThemeManager(Context context, GeneralPreferencesRepository generalPreferencesProvider) {
-        return new ThemeManager(context, generalPreferencesProvider);
+    @Singleton
+    ThemeManager provideThemeManager(GeneralPreferencesRepository generalPreferencesProvider) {
+        return new ThemeManager(mContext, generalPreferencesProvider);
     }
 
     @Provides
-    @PrefScope
-    DownloadPreferencesRepository provideDownloadPreferencesProvider(Context context, SharedPreferences sharedPreferences) {
-        return new DownloadPreferencesRepository(context, sharedPreferences);
+    @Singleton
+    DownloadPreferencesRepository provideDownloadPreferencesProvider(SharedPreferences sharedPreferences) {
+        return new DownloadPreferencesRepository(mContext, sharedPreferences);
     }
 
     @Provides
-    @PrefScope
+    @Singleton
     DownloadPreferencesManager provideDownloadPreferencesManager(DownloadPreferencesRepository downloadPreferencesProvider, Wifi wifi) {
         return new DownloadPreferencesManager(downloadPreferencesProvider, wifi);
     }
 
     @Provides
-    @PrefScope
-    ReadProgressPreferencesRepository provideReadProgressPreferencesProvider(Context context, SharedPreferences sharedPreferences, ObjectMapper objectMapper) {
-        return new ReadProgressPreferencesRepository(context, sharedPreferences, objectMapper);
+    @Singleton
+    ReadProgressPreferencesRepository provideReadProgressPreferencesProvider(SharedPreferences sharedPreferences, ObjectMapper objectMapper) {
+        return new ReadProgressPreferencesRepository(mContext, sharedPreferences, objectMapper);
     }
 
     @Provides
-    @PrefScope
+    @Singleton
     ReadProgressPreferencesManager provideReadProgressPreferencesManager(ReadProgressPreferencesRepository readProgressPreferencesRepository) {
         return new ReadProgressPreferencesManager(readProgressPreferencesRepository);
     }
 
     @Provides
-    @PrefScope
-    DataPreferencesRepository provideDataPreferencesProvider(Context context, SharedPreferences sharedPreferences) {
-        return new DataPreferencesRepository(context, sharedPreferences);
+    @Singleton
+    DataPreferencesRepository provideDataPreferencesProvider(SharedPreferences sharedPreferences) {
+        return new DataPreferencesRepository(mContext, sharedPreferences);
     }
 
     @Provides
-    @PrefScope
+    @Singleton
     DataPreferencesManager provideDataPreferencesManager(DataPreferencesRepository preferencesRepository) {
         return new DataPreferencesManager(preferencesRepository);
     }

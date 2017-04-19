@@ -46,7 +46,7 @@ public final class BezelImageViewBindingAdapter {
         if (ContextUtils.isActivityDestroyedForGlide(context)) {
             return;
         }
-        DownloadPreferencesManager downloadPreferencesManager = App.getPrefComponent()
+        DownloadPreferencesManager downloadPreferencesManager = App.getAppComponent()
                 .getDownloadPreferencesManager();
         if (user.isLogged()) {
             bezelImageView.setTag(R.id.tag_drawable_info, null);
@@ -82,7 +82,7 @@ public final class BezelImageViewBindingAdapter {
         if (TextUtils.equals(oldUid, newUid)) {
             return;
         }
-        DownloadPreferencesManager downloadPreferencesManager = App.getPrefComponent()
+        DownloadPreferencesManager downloadPreferencesManager = App.getAppComponent()
                 .getDownloadPreferencesManager();
         loadAvatar(bezelImageView, null, null, false, false, null, downloadPreferencesManager, newUid, false, false, null);
     }

@@ -97,7 +97,7 @@ public class UserHomeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        App.getPrefComponent().inject(this);
+        App.getAppComponent().inject(this);
 
         uid = getIntent().getStringExtra(ARG_UID);
         name = getIntent().getStringExtra(ARG_USERNAME);

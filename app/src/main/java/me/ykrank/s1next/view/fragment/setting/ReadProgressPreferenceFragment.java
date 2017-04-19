@@ -3,6 +3,8 @@ package me.ykrank.s1next.view.fragment.setting;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import javax.inject.Inject;
+
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
@@ -15,13 +17,13 @@ import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
 public final class ReadProgressPreferenceFragment extends BasePreferenceFragment {
     public static final String TAG = ReadProgressPreferenceFragment.class.getName();
 
-    private ReadProgressPreferencesManager mReadProgressPreferencesManager;
+    @Inject
+    ReadProgressPreferencesManager mReadProgressPreferencesManager;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
+        App.getAppComponent().inject(this);
         addPreferencesFromResource(R.xml.preference_read_progress);
-        mReadProgressPreferencesManager = App.getPrefComponent()
-                .getReadProgressPreferencesManager();
     }
 
     @Override

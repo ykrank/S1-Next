@@ -30,7 +30,7 @@ public final class ThreadAdapterDelegate extends BaseAdapterDelegate<Thread, Thr
         super(context);
         this.forumId = forumId;
 
-        App.getPrefComponent().inject(this);
+        App.getAppComponent().inject(this);
     }
 
     @NonNull

@@ -161,8 +161,8 @@ public final class PostListFragment extends BaseViewPagerFragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        App.getPrefComponent().inject(this);
-        App.getDbComponent().inject(this);
+        App.getAppComponent().inject(this);
+        App.getAppComponent().inject(this);
 
         Bundle bundle = getArguments();
         Thread thread = Preconditions.checkNotNull(bundle.getParcelable(ARG_THREAD));

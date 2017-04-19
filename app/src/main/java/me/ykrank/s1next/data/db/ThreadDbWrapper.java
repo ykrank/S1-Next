@@ -21,7 +21,7 @@ public class ThreadDbWrapper {
     }
 
     public static ThreadDbWrapper getInstance() {
-        return App.getDbComponent().getThreadDbWrapper();
+        return App.getAppComponent().getThreadDbWrapper();
     }
 
     private DbThreadDao getThreadDao() {

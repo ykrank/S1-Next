@@ -35,7 +35,7 @@ public final class ThemeChangeDialogFragment extends BaseDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        App.getPrefComponent().inject(this);
+        App.getAppComponent().inject(this);
         int checkedItem = mThemeManager.getThemeIndex();
         return new AlertDialog.Builder(getContext())
                 .setTitle(R.string.pref_theme)

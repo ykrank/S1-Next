@@ -44,7 +44,7 @@ public final class HistoryListFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        App.getDbComponent().inject(this);
+        App.getAppComponent().inject(this);
         super.onViewCreated(view, savedInstanceState);
         L.leaveMsg("HistoryListFragment");
 

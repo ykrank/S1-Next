@@ -92,7 +92,7 @@ public final class GalleryActivity extends OriginActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        App.getPrefComponent().inject(this);
+        App.getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_gallery);
         mPhotoView = binding.photoView;

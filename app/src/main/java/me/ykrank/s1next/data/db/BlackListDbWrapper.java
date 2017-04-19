@@ -26,7 +26,7 @@ public class BlackListDbWrapper {
     }
 
     public static BlackListDbWrapper getInstance() {
-        return App.getDbComponent().getBlackListDbWrapper();
+        return App.getAppComponent().getBlackListDbWrapper();
     }
 
     private BlackListDao getBlackListDao() {

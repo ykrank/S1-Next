@@ -40,7 +40,7 @@ public class AvatarStreamFetcher implements DataFetcher<InputStream> {
     public AvatarStreamFetcher(Call.Factory client, AvatarUrl url) {
         this.url = url;
         this.client = client;
-        App.getPrefComponent().inject(this);
+        App.getAppComponent().inject(this);
     }
 
     @Override

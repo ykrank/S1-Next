@@ -25,7 +25,7 @@ final class LollipopUtil {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void changeAppTitleColorToWhiteInRecentAppsForInverseTheme(Activity activity) {
         int colorId;
-        ThemeManager.Theme currentTheme = App.getPrefComponent().getThemeManager().getTheme();
+        ThemeManager.Theme currentTheme = App.getAppComponent().getThemeManager().getTheme();
         // We can't find any similar color to change app title to
         // white for ThemeManager.Theme.LIGHT_THEME_AMBER.
         if (currentTheme == ThemeManager.Theme.LIGHT_THEME_GREEN) {

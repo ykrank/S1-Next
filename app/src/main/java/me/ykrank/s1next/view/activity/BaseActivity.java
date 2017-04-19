@@ -115,7 +115,7 @@ public abstract class BaseActivity extends OriginActivity
     @Override
     @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
-        App.getPrefComponent().inject(this);
+        App.getAppComponent().inject(this);
         // change the theme depends on preference
         if (!mThemeManager.isDefaultTheme()) {
             if (isTranslucent()) {

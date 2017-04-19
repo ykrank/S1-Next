@@ -21,7 +21,7 @@ public class ReadProgressDbWrapper {
     }
 
     public static ReadProgressDbWrapper getInstance() {
-        return App.getDbComponent().getReadProgressDbWrapper();
+        return App.getAppComponent().getReadProgressDbWrapper();
     }
 
     private ReadProgressDao getReadProgressDao() {

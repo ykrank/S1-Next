@@ -10,11 +10,16 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.binding.TextViewBindingAdapter;
 import me.ykrank.s1next.data.api.model.Forum;
+import me.ykrank.s1next.data.pref.ThemeManager;
 
 public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
+    @Inject
+    ThemeManager themeManager;
 
     private final LayoutInflater mLayoutInflater;
     @LayoutRes
@@ -24,10 +29,11 @@ public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
 
     public SubForumArrayAdapter(Activity activity, @LayoutRes int resource, List<Forum> objects) {
         super(activity, resource, objects);
+        App.getAppComponent().inject(this);
 
         mLayoutInflater = activity.getLayoutInflater();
         this.mResource = resource;
-        mGentleAccentColor = App.getPrefComponent().getThemeManager().getGentleAccentColor();
+        mGentleAccentColor = themeManager.getGentleAccentColor();
     }
 
     @Override

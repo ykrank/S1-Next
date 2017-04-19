@@ -77,7 +77,7 @@ public final class EditPostFragment extends BasePostFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        App.getPrefComponent().inject(this);
+        App.getAppComponent().inject(this);
         init();
     }
 

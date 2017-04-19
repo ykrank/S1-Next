@@ -6,19 +6,22 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import javax.inject.Inject;
+
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Forum;
+import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.databinding.ItemForumBinding;
 import me.ykrank.s1next.viewmodel.ForumViewModel;
 
 public final class ForumAdapterDelegate extends BaseAdapterDelegate<Forum, ForumAdapterDelegate.BindingViewHolder> {
-    private final int mGentleAccentColor;
+    @Inject
+    ThemeManager themeManager;
 
     public ForumAdapterDelegate(Context context) {
         super(context);
-
-        mGentleAccentColor = App.getPrefComponent().getThemeManager().getGentleAccentColor();
+        App.getAppComponent().inject(this);
     }
 
     @NonNull
@@ -32,7 +35,7 @@ public final class ForumAdapterDelegate extends BaseAdapterDelegate<Forum, Forum
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {
         ItemForumBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_forum, parent, false);
-        binding.setGentleAccentColor(mGentleAccentColor);
+        binding.setGentleAccentColor(themeManager.getGentleAccentColor());
         binding.setForumViewModel(new ForumViewModel());
 
         return new BindingViewHolder(binding);

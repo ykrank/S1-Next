@@ -1,8 +1,6 @@
 package me.ykrank.s1next;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -24,10 +22,7 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.ApiVersionInterceptor;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
-import me.ykrank.s1next.data.db.AppDaoOpenHelper;
-import me.ykrank.s1next.data.db.AppDaoSessionManager;
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
-import me.ykrank.s1next.data.pref.NetworkPreferencesRepository;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.NullTrustManager;
@@ -62,24 +57,6 @@ public final class AppModule {
     @Singleton
     Context provideContext() {
         return mApp;
-    }
-
-    @Provides
-    @Singleton
-    SharedPreferences provideSharedPreferences(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context);
-    }
-
-    @Provides
-    @Singleton
-    NetworkPreferencesRepository provideNetworkPreferencesRepository(Context context, SharedPreferences sharedPreferences) {
-        return new NetworkPreferencesRepository(context, sharedPreferences);
-    }
-
-    @Provides
-    @Singleton
-    NetworkPreferencesManager provideNetworkPreferencesManager(NetworkPreferencesRepository networkPreferencesRepository) {
-        return new NetworkPreferencesManager(networkPreferencesRepository);
     }
 
     @Provides
@@ -148,6 +125,18 @@ public final class AppModule {
 
     @Provides
     @Singleton
+    Wifi providerWifi() {
+        return new Wifi();
+    }
+
+    @Provides
+    @Singleton
+    ObjectMapper provideJsonObjectMapper() {
+        return new ObjectMapper();
+    }
+
+    @Provides
+    @Singleton
     EventBus providerEventBus() {
         return new EventBus();
     }
@@ -172,33 +161,10 @@ public final class AppModule {
 
     @Provides
     @Singleton
-    Wifi providerWifi() {
-        return new Wifi();
-    }
-
-    @Provides
-    @Singleton
-    ObjectMapper provideJsonObjectMapper() {
-        return new ObjectMapper();
-    }
-
-    @Provides
-    @Singleton
     DataTrackAgent provideDataTrackAgent() {
         return new DataTrackAgent();
     }
 
-    @Provides
-    @Singleton
-    AppDaoOpenHelper provideAppDaoOpenHelper(Context context) {
-        return new AppDaoOpenHelper(context, BuildConfig.DB_NAME);
-    }
-
-    @Provides
-    @Singleton
-    AppDaoSessionManager provideAppDaoSessionManager(AppDaoOpenHelper helper) {
-        return new AppDaoSessionManager(helper);
-    }
 
     @Provides
     @Singleton

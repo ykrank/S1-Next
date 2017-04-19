@@ -22,7 +22,7 @@ public class AppHttpStreamFetcher extends OkHttpStreamFetcher {
 
     public AppHttpStreamFetcher(Call.Factory client, GlideUrl url) {
         super(client, url);
-        App.getPrefComponent().inject(this);
+        App.getAppComponent().inject(this);
     }
 
     @Override

@@ -30,7 +30,7 @@ public final class WifiBroadcastReceiver {
 
     public WifiBroadcastReceiver(Context context) {
         this.mContext = context;
-        App.getPrefComponent().inject(this);
+        App.getAppComponent().inject(this);
     }
 
     public void registerIfNeeded() {

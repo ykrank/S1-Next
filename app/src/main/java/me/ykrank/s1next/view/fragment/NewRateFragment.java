@@ -82,7 +82,7 @@ public final class NewRateFragment extends BaseFragment {
         postID = getArguments().getString(ARG_POST_ID);
         L.leaveMsg("NewRateFragment##threadId:" + threadId + ",postID:" + postID);
 
-        App.getPrefComponent().inject(this);
+        App.getAppComponent().inject(this);
         init();
         refreshData();
     }

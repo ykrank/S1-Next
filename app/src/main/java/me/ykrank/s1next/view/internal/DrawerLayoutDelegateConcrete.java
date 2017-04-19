@@ -58,7 +58,7 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
 
     public DrawerLayoutDelegateConcrete(FragmentActivity activity, DrawerLayout drawerLayout, NavigationView navigationView) {
         super(activity, drawerLayout, navigationView);
-        App.getPrefComponent().inject(this);
+        App.getAppComponent().inject(this);
         mUser = mUserViewModel.getUser();
     }
 

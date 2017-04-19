@@ -37,7 +37,7 @@ public final class PostListGatewayActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // default theme for this Activity is light theme
-        App.getPrefComponent().inject(this);
+        App.getAppComponent().inject(this);
         if (mThemeManager.isDarkTheme()) {
             setTheme(ThemeManager.TRANSLUCENT_THEME_DARK);
         }

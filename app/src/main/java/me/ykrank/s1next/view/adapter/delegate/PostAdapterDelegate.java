@@ -36,7 +36,7 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
     public PostAdapterDelegate(Activity activity) {
         super(activity);
 
-        App.getPrefComponent().inject(this);
+        App.getAppComponent().inject(this);
     }
 
     private static void setTextSelectable(ItemPostBinding binding, boolean selectable) {

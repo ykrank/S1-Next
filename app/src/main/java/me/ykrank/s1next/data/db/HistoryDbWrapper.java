@@ -26,7 +26,7 @@ public class HistoryDbWrapper {
     }
 
     public static HistoryDbWrapper getInstance() {
-        return App.getDbComponent().getHistoryDbWrapper();
+        return App.getAppComponent().getHistoryDbWrapper();
     }
 
     private HistoryDao getHistoryDao() {

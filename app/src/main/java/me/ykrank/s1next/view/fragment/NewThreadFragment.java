@@ -81,7 +81,7 @@ public final class NewThreadFragment extends BasePostFragment {
         cacheKey = String.format(CACHE_KEY_PREFIX, mForumId);
         L.leaveMsg("NewThreadFragment##mForumId:" + mForumId);
 
-        App.getPrefComponent().inject(this);
+        App.getAppComponent().inject(this);
         init();
     }
 

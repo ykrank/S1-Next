@@ -128,7 +128,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        App.getPrefComponent().inject(this);
+        App.getAppComponent().inject(this);
         super.onViewCreated(view, savedInstanceState);
 
         mThreadId = getArguments().getString(ARG_THREAD_ID);
