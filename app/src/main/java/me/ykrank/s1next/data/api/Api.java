@@ -12,6 +12,7 @@ import okhttp3.HttpUrl;
 public final class Api {
     public static final String BASE_HOST = "bbs.saraba1st.com";
     public static final String BASE_URL = "http://" + BASE_HOST + "/2b/";
+    public static final String BASE_AVATAR_URL = "http://avatar.saraba1st.com/";
     public static final String BASE_API_URL = "http://" + BASE_HOST + "/2b/api/mobile/";
     public static final String BASE_STATIC_URL = "http://static.saraba1st.com/";
     public static final String[] HOST_LIST = new String[]{
@@ -35,7 +36,7 @@ public final class Api {
      */
     public static final String URL_BROWSER_REGISTER = prepend("member.php?mod=register");
 
-    private static final String URL_USER_AVATAR_PREFIX = BASE_URL + "uc_server/avatar.php?uid=";
+    private static final String URL_USER_AVATAR_PREFIX = BASE_AVATAR_URL + "avatar.php?uid=";
     private static final String URL_USER_AVATAR_SMALL = URL_USER_AVATAR_PREFIX + "%s&size=small";
     private static final String URL_USER_AVATAR_MEDIUM = URL_USER_AVATAR_PREFIX + "%s&size=middle";
     private static final String URL_USER_AVATAR_BIG = URL_USER_AVATAR_PREFIX + "%s&size=big";
