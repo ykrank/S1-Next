@@ -8,6 +8,7 @@ import io.reactivex.Single;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.db.dbmodel.History;
 import me.ykrank.s1next.data.db.dbmodel.HistoryDao;
+import me.ykrank.s1next.data.db.dbmodel.HistoryDao.Properties;
 
 /**
  * 对历史数据库的操作包装
@@ -17,7 +18,7 @@ public class HistoryDbWrapper {
     /**
      * max history count
      */
-    private static final int MAX_SIZE = 50;
+    private static final int MAX_SIZE = 100;
 
     private final AppDaoSessionManager appDaoSessionManager;
 
@@ -37,7 +38,7 @@ public class HistoryDbWrapper {
      * limit {@link #MAX_SIZE} order by timestamp desc
      */
     public Single<Cursor> getHistoryListCursor() {
-        return Single.just(getHistoryDao().queryBuilder().orderDesc(HistoryDao.Properties.Timestamp).limit(MAX_SIZE))
+        return Single.just(getHistoryDao().queryBuilder().orderDesc(Properties.Timestamp).limit(MAX_SIZE))
                 .map(builder -> builder.buildCursor().query());
     }
 
@@ -51,6 +52,9 @@ public class HistoryDbWrapper {
      */
     @Nullable
     public History getLastHistory() {
+        if (getHistoryDao().count() >= MAX_SIZE) {
+            return getHistoryDao().queryBuilder().orderAsc(Properties.Timestamp).limit(1).unique();
+        }
         return null;
     }
 
@@ -61,6 +65,7 @@ public class HistoryDbWrapper {
         History oldHistory = getHistoryDao().queryBuilder().where(HistoryDao.Properties.ThreadId.eq(history.getThreadId())).unique();
         if (oldHistory != null) {
             //have same threadId history
+            history.setId(oldHistory.getId());
             getHistoryDao().update(history);
         } else {
             //the last history
