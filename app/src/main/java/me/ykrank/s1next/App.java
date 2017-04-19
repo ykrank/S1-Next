@@ -72,9 +72,10 @@ public final class App extends MultiDexApplication {
         L.init(this);
 
         mAppComponent = DaggerAppComponent.builder()
+                .buildTypeModule(new BuildTypeModule(this))
                 .appModule(new AppModule(this))
-                .dbModule(new DbModule(this))
-                .prefModule(new PrefModule(this))
+                .dbModule(new DbModule())
+                .prefModule(new PrefModule())
                 .build();
         mAppComponent.getDataTrackAgent().init();
 

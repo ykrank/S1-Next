@@ -2,7 +2,7 @@ package me.ykrank.s1next.data.pref;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import android.support.v7.preference.PreferenceManager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -17,22 +17,17 @@ import me.ykrank.s1next.data.Wifi;
  */
 @Module
 public class PrefModule {
-    private final Context mContext;
 
-    public PrefModule(Context mContext) {
-        this.mContext = mContext;
+    @Provides
+    @Singleton
+    SharedPreferences provideSharedPreferences(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     @Provides
     @Singleton
-    SharedPreferences provideSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(mContext);
-    }
-
-    @Provides
-    @Singleton
-    NetworkPreferencesRepository provideNetworkPreferencesRepository(SharedPreferences sharedPreferences) {
-        return new NetworkPreferencesRepository(mContext, sharedPreferences);
+    NetworkPreferencesRepository provideNetworkPreferencesRepository(Context context, SharedPreferences sharedPreferences) {
+        return new NetworkPreferencesRepository(context, sharedPreferences);
     }
 
     @Provides
@@ -43,8 +38,8 @@ public class PrefModule {
 
     @Provides
     @Singleton
-    GeneralPreferencesRepository provideGeneralPreferencesProvider(SharedPreferences sharedPreferences) {
-        return new GeneralPreferencesRepository(mContext, sharedPreferences);
+    GeneralPreferencesRepository provideGeneralPreferencesProvider(Context context, SharedPreferences sharedPreferences) {
+        return new GeneralPreferencesRepository(context, sharedPreferences);
     }
 
     @Provides
@@ -55,14 +50,14 @@ public class PrefModule {
 
     @Provides
     @Singleton
-    ThemeManager provideThemeManager(GeneralPreferencesRepository generalPreferencesProvider) {
-        return new ThemeManager(mContext, generalPreferencesProvider);
+    ThemeManager provideThemeManager(Context context, GeneralPreferencesRepository generalPreferencesProvider) {
+        return new ThemeManager(context, generalPreferencesProvider);
     }
 
     @Provides
     @Singleton
-    DownloadPreferencesRepository provideDownloadPreferencesProvider(SharedPreferences sharedPreferences) {
-        return new DownloadPreferencesRepository(mContext, sharedPreferences);
+    DownloadPreferencesRepository provideDownloadPreferencesProvider(Context context, SharedPreferences sharedPreferences) {
+        return new DownloadPreferencesRepository(context, sharedPreferences);
     }
 
     @Provides
@@ -73,8 +68,8 @@ public class PrefModule {
 
     @Provides
     @Singleton
-    ReadProgressPreferencesRepository provideReadProgressPreferencesProvider(SharedPreferences sharedPreferences, ObjectMapper objectMapper) {
-        return new ReadProgressPreferencesRepository(mContext, sharedPreferences, objectMapper);
+    ReadProgressPreferencesRepository provideReadProgressPreferencesProvider(Context context, SharedPreferences sharedPreferences, ObjectMapper objectMapper) {
+        return new ReadProgressPreferencesRepository(context, sharedPreferences, objectMapper);
     }
 
     @Provides
@@ -85,8 +80,8 @@ public class PrefModule {
 
     @Provides
     @Singleton
-    DataPreferencesRepository provideDataPreferencesProvider(SharedPreferences sharedPreferences) {
-        return new DataPreferencesRepository(mContext, sharedPreferences);
+    DataPreferencesRepository provideDataPreferencesProvider(Context context, SharedPreferences sharedPreferences) {
+        return new DataPreferencesRepository(context, sharedPreferences);
     }
 
     @Provides

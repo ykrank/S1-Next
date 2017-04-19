@@ -6,13 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.net.CookieManager;
 import java.net.CookiePolicy;
-import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import dagger.Module;
 import dagger.Provides;
@@ -25,7 +21,6 @@ import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EventBus;
-import me.ykrank.s1next.widget.NullTrustManager;
 import me.ykrank.s1next.widget.PersistentHttpCookieStore;
 import me.ykrank.s1next.widget.glide.OkHttpNoAvatarInterceptor;
 import me.ykrank.s1next.widget.hostcheck.BaseHostUrl;
@@ -35,7 +30,6 @@ import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -44,7 +38,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 /**
  * Provides instances of the objects when we need to inject.
  */
-@Module
+@Module(includes = BuildTypeModule.class)
 public final class AppModule {
 
     private final App mApp;
@@ -78,8 +72,7 @@ public final class AppModule {
     }
 
     @Provides
-    @Singleton
-    OkHttpClient providerOkHttpClient(CookieManager cookieManager, BaseHostUrl baseHostUrl) {
+    OkHttpClient.Builder providerOkHttpClientBuilder(CookieManager cookieManager, BaseHostUrl baseHostUrl) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.dns(new HttpDns(baseHostUrl));
         builder.connectTimeout(17, TimeUnit.SECONDS);
@@ -90,24 +83,8 @@ public final class AppModule {
         builder.addNetworkInterceptor(new OkHttpNoAvatarInterceptor());
         builder.addInterceptor(new ApiVersionInterceptor());
         builder.addInterceptor(new MultiHostInterceptor(baseHostUrl));
-        if (BuildConfig.DEBUG) {
-            //log
-            HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
-            builder.addInterceptor(httpLoggingInterceptor);
-            //trust https
-            try {
-                X509TrustManager trustManager = new NullTrustManager();
-                SSLContext sslContext = SSLContext.getInstance("TLS");
-                sslContext.init(null, new TrustManager[]{trustManager}, new SecureRandom());
-                builder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-           
-        }
 
-        return builder.build();
+        return builder;
     }
 
     @Provides

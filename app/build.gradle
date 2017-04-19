@@ -123,6 +123,9 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     alphaCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 
+    debugCompile 'com.facebook.stetho:stetho:1.5.0'
+    debugCompile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+
     compile "com.android.support:design:$rootProject.supportVersion"
     compile "com.android.support:cardview-v7:$rootProject.supportVersion"
     compile "com.android.support:percent:$rootProject.supportVersion"
@@ -141,7 +144,6 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.5'
 
     compile 'com.squareup.okhttp3:okhttp-urlconnection:3.6.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
     compile 'com.squareup.retrofit2:converter-jackson:2.2.0'

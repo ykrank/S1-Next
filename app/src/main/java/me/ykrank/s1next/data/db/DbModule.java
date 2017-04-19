@@ -10,16 +10,11 @@ import me.ykrank.s1next.BuildConfig;
 
 @Module
 public class DbModule {
-    private final Context mContext;
-
-    public DbModule(Context mContext) {
-        this.mContext = mContext;
-    }
 
     @Provides
     @Singleton
-    AppDaoOpenHelper provideAppDaoOpenHelper() {
-        return new AppDaoOpenHelper(mContext, BuildConfig.DB_NAME);
+    AppDaoOpenHelper provideAppDaoOpenHelper(Context context) {
+        return new AppDaoOpenHelper(context, BuildConfig.DB_NAME);
     }
 
     @Provides

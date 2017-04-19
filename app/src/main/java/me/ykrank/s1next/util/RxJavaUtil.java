@@ -37,7 +37,8 @@ public final class RxJavaUtil {
     public static void workInRxIoThread(Action workAction) {
         Single.just(NULL)
                 .subscribeOn(Schedulers.io())
-                .subscribe(o -> workAction.run(), L::report);
+                .subscribe(o -> workAction.run(),
+                        L::report);
     }
 
     /**
