@@ -6,6 +6,7 @@ import android.support.v7.preference.Preference;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.event.FontSizeChangeEvent;
@@ -14,6 +15,7 @@ import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.util.DeviceUtil;
 import me.ykrank.s1next.util.ResourceUtil;
+import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.activity.SettingsActivity;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.span.HtmlCompat;
@@ -49,7 +51,9 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
         findPreference(getString(R.string.pref_key_backup)).setOnPreferenceClickListener(this);
         findPreference(getString(R.string.pref_key_network)).setOnPreferenceClickListener(this);
 
-        findPreference(getString(R.string.pref_key_signature)).setSummary(HtmlCompat.fromHtml(DeviceUtil.getSignature(getActivity()), FROM_HTML_MODE_LEGACY));
+        Single.fromCallable(() -> HtmlCompat.fromHtml(DeviceUtil.getSignature(getActivity()), FROM_HTML_MODE_LEGACY))
+                .compose(RxJavaUtil.computationSingleTransformer())
+                .subscribe(findPreference(getString(R.string.pref_key_signature))::setSummary);
     }
 
     @Override

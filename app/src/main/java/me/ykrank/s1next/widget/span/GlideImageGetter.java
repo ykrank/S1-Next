@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.WorkerThread;
 import android.text.Html;
 import android.view.View;
 import android.webkit.URLUtil;
@@ -27,6 +28,7 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.widget.EmoticonFactory;
 import me.ykrank.s1next.widget.glide.transformations.GlMaxTextureSizeBitmapTransformation;
 import me.ykrank.s1next.widget.glide.transformations.SizeMultiplierBitmapTransformation;
@@ -82,6 +84,7 @@ public final class GlideImageGetter
      * but display emoticons at any time.
      */
     @Override
+    @WorkerThread
     public Drawable getDrawable(String url) {
         UrlDrawable urlDrawable = new UrlDrawable(url);
 
@@ -97,46 +100,50 @@ public final class GlideImageGetter
                     new SizeMultiplierBitmapTransformation(mContext,
                             mContext.getResources().getDisplayMetrics().density);
             String finalUrl = url;
-            Glide.with(mContext)
-                    .load(Uri.parse(EmoticonFactory.ASSET_PATH_EMOTICON + emoticonName))
-                    .transform(sizeMultiplierBitmapTransformation)
-                    .listener(new RequestListener<Uri, GlideDrawable>() {
+            RxJavaUtil.workInMainThread(() -> {
+                Glide.with(mContext)
+                        .load(Uri.parse(EmoticonFactory.ASSET_PATH_EMOTICON + emoticonName))
+                        .transform(sizeMultiplierBitmapTransformation)
+                        .listener(new RequestListener<Uri, GlideDrawable>() {
 
-                        /**
-                         * Occurs If we don't have this image (maybe a new emoticon) in assets.
-                         */
-                        @Override
-                        public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
-                            L.leaveMsg("Exception in emoticon uri:" + model);
-                            trackAgent.post(new EmoticonNotFoundTrackEvent(model.toString()));
-                            // append domain to this url
-                            Glide.with(mContext)
-                                    .load(Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX + finalUrl)
-                                    .transform(sizeMultiplierBitmapTransformation)
-                                    .into(imageGetterViewTarget);
+                            /**
+                             * Occurs If we don't have this image (maybe a new emoticon) in assets.
+                             */
+                            @Override
+                            public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                L.leaveMsg("Exception in emoticon uri:" + model);
+                                trackAgent.post(new EmoticonNotFoundTrackEvent(model.toString()));
+                                // append domain to this url
+                                Glide.with(mContext)
+                                        .load(Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX + finalUrl)
+                                        .transform(sizeMultiplierBitmapTransformation)
+                                        .into(imageGetterViewTarget);
 
-                            return true;
-                        }
+                                return true;
+                            }
 
-                        @Override
-                        public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            return false;
-                        }
-                    })
-                    .into(imageGetterViewTarget);
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                return false;
+                            }
+                        })
+                        .into(imageGetterViewTarget);
+            });
             mViewTargetSet.add(imageGetterViewTarget);
             return urlDrawable;
         }
 
         ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
                 urlDrawable);
-        Glide.with(mContext)
-                .load(url)
-                .placeholder(R.mipmap.unknown_image)
-                .error(R.mipmap.unknown_image)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .transform(new GlMaxTextureSizeBitmapTransformation(mContext))
-                .into(imageGetterViewTarget);
+        RxJavaUtil.workInMainThread(url, s -> {
+            Glide.with(mContext)
+                    .load(s)
+                    .placeholder(R.mipmap.unknown_image)
+                    .error(R.mipmap.unknown_image)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .transform(new GlMaxTextureSizeBitmapTransformation(mContext))
+                    .into(imageGetterViewTarget);
+        });
 
         mViewTargetSet.add(imageGetterViewTarget);
         return urlDrawable;

@@ -30,6 +30,23 @@ public final class RxJavaUtil {
     }
 
     /**
+     * push work to RxJava io thread {@link AndroidSchedulers#mainThread()}
+     */
+    public static void workInMainThread(Action workAction) {
+        workInMainThread(NULL, o -> workAction.run());
+    }
+
+    /**
+     * push work to RxJava io thread {@link AndroidSchedulers#mainThread()}
+     */
+    public static <D> void workInMainThread(D data, Consumer<D> workAction) {
+        Single.just(data)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(workAction,
+                        L::report);
+    }
+
+    /**
      * push work to RxJava io thread {@link Schedulers#io()}
      *
      * @param workAction
@@ -115,6 +132,16 @@ public final class RxJavaUtil {
 
     public static <T> SingleTransformer<T, T> iOSingleTransformer() {
         return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static <T> ObservableTransformer<T, T> computationTransformer() {
+        return observable -> observable.subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static <T> SingleTransformer<T, T> computationSingleTransformer() {
+        return observable -> observable.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 

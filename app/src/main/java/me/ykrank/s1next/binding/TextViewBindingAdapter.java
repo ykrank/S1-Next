@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import io.reactivex.Single;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Forum;
@@ -34,7 +35,9 @@ import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.db.dbmodel.History;
 import me.ykrank.s1next.data.pref.ThemeManager;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.ResourceUtil;
+import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.widget.span.GlideImageGetter;
 import me.ykrank.s1next.widget.span.HtmlCompat;
@@ -177,7 +180,9 @@ public final class TextViewBindingAdapter {
         } else {
             // use GlideImageGetter to show images in TextView
             //noinspection deprecation
-            textView.setText(HtmlCompat.fromHtml(html, GlideImageGetter.get(textView), new TagHandler()));
+            Single.fromCallable(() -> HtmlCompat.fromHtml(html, GlideImageGetter.get(textView), new TagHandler()))
+                    .compose(RxJavaUtil.computationSingleTransformer())
+                    .subscribe(textView::setText, L::report);
         }
     }
 
@@ -186,9 +191,10 @@ public final class TextViewBindingAdapter {
         if (TextUtils.isEmpty(html)) {
             textView.setText(null);
         } else {
-            // use GlideImageGetter to show images in TextView
             //noinspection deprecation
-            textView.setText(HtmlCompat.fromHtml(html));
+            Single.fromCallable(() -> HtmlCompat.fromHtml(html))
+                    .compose(RxJavaUtil.computationSingleTransformer())
+                    .subscribe(textView::setText, L::report);
         }
     }
 

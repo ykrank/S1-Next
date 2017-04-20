@@ -15,6 +15,7 @@ import javax.net.ssl.X509TrustManager;
 
 import dagger.Module;
 import dagger.Provides;
+import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.widget.NullTrustManager;
 import okhttp3.OkHttpClient;
 
@@ -23,16 +24,16 @@ import okhttp3.OkHttpClient;
  */
 @Module
 public final class BuildTypeModule {
-    
-    public BuildTypeModule(Context context){
-        Stetho.initializeWithDefaults(context);
+
+    public BuildTypeModule(Context context) {
+        RxJavaUtil.workInRxIoThread(() -> Stetho.initializeWithDefaults(context));
     }
 
     @Provides
     @Singleton
     OkHttpClient providerOkHttpClient(OkHttpClient.Builder builder) {
         Preconditions.checkState("debug".equals(BuildConfig.BUILD_TYPE));
-        
+
         //log
         builder.addNetworkInterceptor(new StethoInterceptor());
         //trust https
