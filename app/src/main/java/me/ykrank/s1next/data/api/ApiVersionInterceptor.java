@@ -2,6 +2,8 @@ package me.ykrank.s1next.data.api;
 
 import android.text.TextUtils;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.io.IOException;
 
 import okhttp3.HttpUrl;
@@ -15,11 +17,13 @@ import okhttp3.Response;
  */
 
 public class ApiVersionInterceptor implements Interceptor {
+
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         HttpUrl url = request.url();
-        if (TextUtils.isEmpty(url.queryParameter("version"))) {
+
+        if (ArrayUtils.contains(Api.HOST_LIST, url.host()) && TextUtils.isEmpty(url.queryParameter("version"))) {
             url = url.newBuilder().addQueryParameter("version", Api.API_VERSION_DEFAULT).build();
             request = request.newBuilder().url(url).build();
         }
