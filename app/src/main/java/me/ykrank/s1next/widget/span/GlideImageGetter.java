@@ -11,6 +11,7 @@ import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.TextView;
 
+import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -86,7 +87,7 @@ public final class GlideImageGetter
     @Override
     @WorkerThread
     public Drawable getDrawable(String url) {
-        UrlDrawable urlDrawable = new UrlDrawable(url);
+        UrlDrawable urlDrawable = new UrlDrawable(mContext, url);
 
         String emoticonName = Api.parseEmoticonName(url);
         // url has no domain if it comes from server.
@@ -100,50 +101,47 @@ public final class GlideImageGetter
                     new SizeMultiplierBitmapTransformation(mContext,
                             mContext.getResources().getDisplayMetrics().density);
             String finalUrl = url;
-            RxJavaUtil.workInMainThread(() -> {
-                Glide.with(mContext)
-                        .load(Uri.parse(EmoticonFactory.ASSET_PATH_EMOTICON + emoticonName))
-                        .transform(sizeMultiplierBitmapTransformation)
-                        .listener(new RequestListener<Uri, GlideDrawable>() {
 
-                            /**
-                             * Occurs If we don't have this image (maybe a new emoticon) in assets.
-                             */
-                            @Override
-                            public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                L.leaveMsg("Exception in emoticon uri:" + model);
-                                trackAgent.post(new EmoticonNotFoundTrackEvent(model.toString()));
-                                // append domain to this url
-                                Glide.with(mContext)
-                                        .load(Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX + finalUrl)
-                                        .transform(sizeMultiplierBitmapTransformation)
-                                        .into(imageGetterViewTarget);
+            DrawableRequestBuilder<Uri> glideRequestBuilder = Glide.with(mContext)
+                    .load(Uri.parse(EmoticonFactory.ASSET_PATH_EMOTICON + emoticonName))
+                    .transform(sizeMultiplierBitmapTransformation)
+                    .listener(new RequestListener<Uri, GlideDrawable>() {
 
-                                return true;
-                            }
+                        /**
+                         * Occurs If we don't have this image (maybe a new emoticon) in assets.
+                         */
+                        @Override
+                        public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            L.leaveMsg("Exception in emoticon uri:" + model);
+                            trackAgent.post(new EmoticonNotFoundTrackEvent(model.toString()));
+                            // append domain to this url
+                            Glide.with(mContext)
+                                    .load(Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX + finalUrl)
+                                    .transform(sizeMultiplierBitmapTransformation)
+                                    .into(imageGetterViewTarget);
 
-                            @Override
-                            public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                return false;
-                            }
-                        })
-                        .into(imageGetterViewTarget);
-            });
+                            return true;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            return false;
+                        }
+                    });
+            RxJavaUtil.workInMainThread(glideRequestBuilder, builder -> builder.into(imageGetterViewTarget));
+            
             mViewTargetSet.add(imageGetterViewTarget);
             return urlDrawable;
         }
 
         ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
                 urlDrawable);
-        RxJavaUtil.workInMainThread(url, s -> {
-            Glide.with(mContext)
-                    .load(s)
-                    .placeholder(R.mipmap.unknown_image)
-                    .error(R.mipmap.unknown_image)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .transform(new GlMaxTextureSizeBitmapTransformation(mContext))
-                    .into(imageGetterViewTarget);
-        });
+
+        DrawableRequestBuilder<String> glideRequestBuilder = Glide.with(mContext)
+                .load(url)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .transform(new GlMaxTextureSizeBitmapTransformation(mContext));
+        RxJavaUtil.workInMainThread(glideRequestBuilder, builder -> builder.into(imageGetterViewTarget));
 
         mViewTargetSet.add(imageGetterViewTarget);
         return urlDrawable;
@@ -191,13 +189,6 @@ public final class GlideImageGetter
         }
 
         @Override
-        public void onLoadStarted(Drawable placeholder) {
-            if (placeholder != null) {
-                setDrawable(placeholder);
-            }
-        }
-
-        @Override
         public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
             setDrawable(resource);
 
@@ -215,13 +206,6 @@ public final class GlideImageGetter
                     resource.setLoopCount(GlideDrawable.LOOP_FOREVER);
                     resource.start();
                 }
-            }
-        }
-
-        @Override
-        public void onLoadFailed(Exception e, Drawable errorDrawable) {
-            if (errorDrawable != null) {
-                setDrawable(errorDrawable);
             }
         }
 
