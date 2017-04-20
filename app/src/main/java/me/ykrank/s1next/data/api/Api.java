@@ -28,6 +28,12 @@ public final class Api {
     public static final int THREADS_PER_PAGE = 50;
     public static final int POSTS_PER_PAGE = 30;
 
+    /**
+     * emoticon init rect size
+     */
+    public static final int EMOTICON_INIT_WIDTH = 38;
+    public static final int EMOTICON_INIT_HEIGHT = 38;
+
     public static final int REPLY_NOTIFICATION_MAX_LENGTH = 100;
     public static final String URL_EMOTICON_IMAGE_PREFIX = "static/image/smiley/";
     public static final String URL_EMOTICON_IMAGE_PREFIX_STATIC = "image/smiley/";

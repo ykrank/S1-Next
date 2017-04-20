@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.view.View;
 import android.webkit.URLUtil;
@@ -31,6 +32,7 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.widget.EmoticonFactory;
+import me.ykrank.s1next.widget.glide.transformations.FitOutWidthBitmapTransformation;
 import me.ykrank.s1next.widget.glide.transformations.GlMaxTextureSizeBitmapTransformation;
 import me.ykrank.s1next.widget.glide.transformations.SizeMultiplierBitmapTransformation;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
@@ -87,7 +89,7 @@ public final class GlideImageGetter
     @Override
     @WorkerThread
     public Drawable getDrawable(String url) {
-        UrlDrawable urlDrawable = new UrlDrawable(mContext, url);
+        UrlDrawable urlDrawable = new UrlDrawable(url, null);
 
         String emoticonName = Api.parseEmoticonName(url);
         // url has no domain if it comes from server.
@@ -97,9 +99,12 @@ public final class GlideImageGetter
         if (emoticonName != null) {
             ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
                     urlDrawable);
+            float density = mContext.getResources().getDisplayMetrics().density;
+            //init bounds
+            urlDrawable.setBounds(new Rect(0, 0, (int) (Api.EMOTICON_INIT_WIDTH * density), (int) (Api.EMOTICON_INIT_HEIGHT * density)));
+
             SizeMultiplierBitmapTransformation sizeMultiplierBitmapTransformation =
-                    new SizeMultiplierBitmapTransformation(mContext,
-                            mContext.getResources().getDisplayMetrics().density);
+                    new SizeMultiplierBitmapTransformation(mContext, density);
             String finalUrl = url;
 
             DrawableRequestBuilder<Uri> glideRequestBuilder = Glide.with(mContext)
@@ -129,7 +134,7 @@ public final class GlideImageGetter
                         }
                     });
             RxJavaUtil.workInMainThread(glideRequestBuilder, builder -> builder.into(imageGetterViewTarget));
-            
+
             mViewTargetSet.add(imageGetterViewTarget);
             return urlDrawable;
         }
@@ -137,10 +142,14 @@ public final class GlideImageGetter
         ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
                 urlDrawable);
 
+        Drawable unknownDrawable = ContextCompat.getDrawable(mContext, R.mipmap.unknown_image);
+        urlDrawable.setInitDrawable(unknownDrawable);
+        urlDrawable.setBounds(new Rect(0, 0, unknownDrawable.getIntrinsicWidth(), unknownDrawable.getIntrinsicHeight()));
+
         DrawableRequestBuilder<String> glideRequestBuilder = Glide.with(mContext)
                 .load(url)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .transform(new GlMaxTextureSizeBitmapTransformation(mContext));
+                .transform(new GlMaxTextureSizeBitmapTransformation(mContext), new FitOutWidthBitmapTransformation(mContext));
         RxJavaUtil.workInMainThread(glideRequestBuilder, builder -> builder.into(imageGetterViewTarget));
 
         mViewTargetSet.add(imageGetterViewTarget);
@@ -223,13 +232,17 @@ public final class GlideImageGetter
                 height = (int) (resHeight / ((float) resWidth / width));
             }
 
-            Rect rect = new Rect(0, 0, width, height);
-            resource.setBounds(rect);
-            mDrawable.setBounds(rect);
-            mDrawable.setDrawable(resource);
+            Rect initRect = mDrawable.getInitRect();
+            if (width > initRect.width() || height > initRect.height()) {
 
-            // see http://stackoverflow.com/questions/7870312/android-imagegetter-images-overlapping-text#comment-22289166
-            textView.setText(textView.getText());
+                Rect rect = new Rect(0, 0, width, height);
+                resource.setBounds(rect);
+                mDrawable.setBounds(rect);
+                mDrawable.setDrawable(resource);
+
+                // see http://stackoverflow.com/questions/7870312/android-imagegetter-images-overlapping-text#comment-22289166
+                textView.setText(textView.getText());
+            }
         }
 
         /**

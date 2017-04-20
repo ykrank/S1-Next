@@ -1,6 +1,5 @@
 package me.ykrank.s1next.widget.span;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.PixelFormat;
@@ -8,9 +7,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 
-import me.ykrank.s1next.R;
 import me.ykrank.s1next.util.L;
 
 /**
@@ -19,32 +16,42 @@ import me.ykrank.s1next.util.L;
  * Used in {@link GlideImageGetter}.
  */
 final class UrlDrawable extends Drawable implements Drawable.Callback {
-    @NonNull
-    private Drawable unknownDrawable;
+    @Nullable
+    private Drawable initDrawable;
     private Drawable mDrawable;
 
     private String url;
 
-    public UrlDrawable(@NonNull Context context, String url) {
+    public UrlDrawable(String url, @Nullable Drawable initDrawable) {
         this.url = url;
-        initUnknownDrawable(context);
+        setInitDrawable(initDrawable);
     }
-    
-    private void initUnknownDrawable(Context context) {
-        unknownDrawable = ContextCompat.getDrawable(context, R.mipmap.unknown_image);
-        setBounds(new Rect(0, 0, unknownDrawable.getIntrinsicWidth(), unknownDrawable.getIntrinsicHeight()));
+
+    public void setInitDrawable(@Nullable Drawable initDrawable) {
+        this.initDrawable = initDrawable;
+    }
+
+    @NonNull
+    public Rect getInitRect() {
+        if (initDrawable != null) {
+            return initDrawable.getBounds();
+        }
+        return new Rect();
     }
 
     @Override
     public void draw(@NonNull Canvas canvas) {
+        boolean drawn = false;
         if (mDrawable != null) {
             try {
                 mDrawable.draw(canvas);
+                drawn = true;
             } catch (Exception e) {
                 L.report("UrlDrawable##url:" + url + ",GlideDrawable:" + mDrawable, e);
             }
-        } else {
-            unknownDrawable.draw(canvas);
+        }
+        if (!drawn && initDrawable != null) {
+            initDrawable.draw(canvas);
         }
     }
 
