@@ -6,6 +6,8 @@ import android.text.TextUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
@@ -22,6 +24,9 @@ import me.ykrank.s1next.widget.track.event.NewReplyTrackEvent;
 public final class ReplyRequestDialogFragment extends ProgressDialogFragment<AccountResultWrapper> {
 
     public static final String TAG = ReplyRequestDialogFragment.class.getName();
+
+    @Inject
+    EditorDiskCache editorDiskCache;
 
     private static final String ARG_THREAD_ID = "thread_id";
     private static final String ARG_REPLY = "reply";
@@ -45,6 +50,12 @@ public final class ReplyRequestDialogFragment extends ProgressDialogFragment<Acc
         fragment.setArguments(bundle);
 
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        App.getAppComponent().inject(this);
     }
 
     @Override
@@ -76,7 +87,7 @@ public final class ReplyRequestDialogFragment extends ProgressDialogFragment<Acc
     protected void onNext(AccountResultWrapper data) {
         Result result = data.getResult();
         if (result.getStatus().equals(STATUS_REPLY_SUCCESS)) {
-            EditorDiskCache.remove(cacheKey);
+            editorDiskCache.remove(cacheKey);
             showShortTextAndFinishCurrentActivity(result.getMessage());
         } else {
             showShortText(result.getMessage());

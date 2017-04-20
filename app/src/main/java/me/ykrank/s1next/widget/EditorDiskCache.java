@@ -28,9 +28,7 @@ import me.ykrank.s1next.util.L;
  * fork from {@link me.ykrank.s1next.widget.glide.AvatarUrlsCache}
  */
 @WorkerThread
-public enum EditorDiskCache {
-    INSTANCE;
-
+public class EditorDiskCache {
     private static final int MEMORY_CACHE_MAX_NUMBER = 4;
     private static final String DISK_CACHE_DIRECTORY = "editor_disk_cache";
     private static final long DISK_CACHE_MAX_SIZE = 100 * 1000; // 100KB
@@ -44,7 +42,7 @@ public enum EditorDiskCache {
     private final LruCache<String, String> lruCache;
     private final KeyGenerator keyGenerator;
 
-    EditorDiskCache() {
+    public EditorDiskCache() {
         lruCache = new LruCache<>(MEMORY_CACHE_MAX_NUMBER);
 
         File file = new File(App.get().getCacheDir().getPath()
@@ -60,18 +58,18 @@ public enum EditorDiskCache {
     }
 
     @Nullable
-    public static String get(@Nullable String key) {
+    public String get(@Nullable String key) {
         if (TextUtils.isEmpty(key)) {
             return null;
         }
-        String encodedKey = INSTANCE.keyGenerator.getKey(key);
+        String encodedKey = keyGenerator.getKey(key);
 
         String result;
-        result = INSTANCE.lruCache.get(encodedKey);
+        result = lruCache.get(encodedKey);
         if (result == null) {
             try {
                 synchronized (DISK_CACHE_LOCK) {
-                    DiskLruCache.Value value = INSTANCE.diskLruCache.get(encodedKey);
+                    DiskLruCache.Value value = diskLruCache.get(encodedKey);
                     if (value != null) {
                         result = value.getString(0);
                     }
@@ -87,7 +85,7 @@ public enum EditorDiskCache {
     /**
      * if value is empty, then remove cache
      */
-    public static void put(@Nullable String key, @Nullable String value) {
+    public void put(@Nullable String key, @Nullable String value) {
         if (TextUtils.isEmpty(key)) {
             return;
         }
@@ -97,12 +95,12 @@ public enum EditorDiskCache {
             return;
         }
 
-        String encodedKey = INSTANCE.keyGenerator.getKey(key);
+        String encodedKey = keyGenerator.getKey(key);
 
-        INSTANCE.lruCache.put(encodedKey, value);
+        lruCache.put(encodedKey, value);
         try {
             synchronized (DISK_CACHE_LOCK) {
-                DiskLruCache.Editor editor = INSTANCE.diskLruCache.edit(encodedKey);
+                DiskLruCache.Editor editor = diskLruCache.edit(encodedKey);
                 // Editor will be null if there are two concurrent puts. In the worst case we will just silently fail.
                 if (editor != null) {
                     BufferedWriter writer = null;
@@ -128,16 +126,16 @@ public enum EditorDiskCache {
         }
     }
 
-    public static void remove(String key) {
+    public void remove(String key) {
         if (TextUtils.isEmpty(key)) {
             return;
         }
-        String encodedKey = INSTANCE.keyGenerator.getKey(key);
+        String encodedKey = keyGenerator.getKey(key);
 
-        INSTANCE.lruCache.remove(encodedKey);
+        lruCache.remove(encodedKey);
         try {
             synchronized (DISK_CACHE_LOCK) {
-                INSTANCE.diskLruCache.remove(encodedKey);
+                diskLruCache.remove(encodedKey);
             }
         } catch (IOException ignore) {
 

@@ -36,6 +36,10 @@
         <meta-data
             android:name="BUGLY_APP_CHANNEL"
             android:value="${APP_CHANNEL}" />
+        <!-- 配置Bugly调试模式（true或者false）-->
+        <meta-data
+            android:name="BUGLY_ENABLE_DEBUG"
+            android:value="false" />
 
         <!-- TalkingData-->
         <meta-data

@@ -70,6 +70,8 @@ public abstract class BasePostFragment extends BaseFragment {
     EventBus mEventBus;
     @Inject
     GeneralPreferencesManager mGeneralPreferencesManager;
+    @Inject
+    EditorDiskCache editorDiskCache;
     private boolean mIsEmoticonKeyboardShowing;
     private Disposable mEmotionClickDisposable;
     private Disposable mCacheDisposable;
@@ -153,7 +155,7 @@ public abstract class BasePostFragment extends BaseFragment {
         mCacheDisposable = null;
         if (!TextUtils.isEmpty(getCacheKey()) && TextUtils.isEmpty(mReplyView.getText())) {
             mCacheDisposable = resumeFromCache(Single.just(getCacheKey())
-                    .map(EditorDiskCache::get));
+                    .map(editorDiskCache::get));
         }
     }
 
@@ -169,7 +171,7 @@ public abstract class BasePostFragment extends BaseFragment {
             if (!TextUtils.isEmpty(cacheString)) {
                 mCacheDisposable = Single.just(cacheString)
                         .map(s -> {
-                            EditorDiskCache.put(key, s);
+                            editorDiskCache.put(key, s);
                             return s;
                         })
                         .compose(RxJavaUtil.iOSingleTransformer())

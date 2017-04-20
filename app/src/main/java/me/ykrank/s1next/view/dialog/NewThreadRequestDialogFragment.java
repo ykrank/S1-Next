@@ -2,7 +2,10 @@ package me.ykrank.s1next.view.dialog;
 
 import android.os.Bundle;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Result;
@@ -15,6 +18,9 @@ import me.ykrank.s1next.widget.EditorDiskCache;
 public final class NewThreadRequestDialogFragment extends ProgressDialogFragment<AccountResultWrapper> {
 
     public static final String TAG = NewThreadRequestDialogFragment.class.getName();
+
+    @Inject
+    EditorDiskCache editorDiskCache;
 
     private static final String ARG_FORUM_ID = "forum_id";
     private static final String ARG_TYPE_ID = "type_id";
@@ -41,6 +47,12 @@ public final class NewThreadRequestDialogFragment extends ProgressDialogFragment
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        App.getAppComponent().inject(this);
+    }
+
+    @Override
     protected CharSequence getProgressMessage() {
         return getText(R.string.dialog_progress_message_reply);
     }
@@ -62,7 +74,7 @@ public final class NewThreadRequestDialogFragment extends ProgressDialogFragment
     protected void onNext(AccountResultWrapper data) {
         Result result = data.getResult();
         if (result.getStatus().equals(STATUS_NEW_THREAD_SUCCESS)) {
-            EditorDiskCache.remove(cacheKey);
+            editorDiskCache.remove(cacheKey);
             showShortTextAndFinishCurrentActivity(result.getMessage());
         } else {
             showShortText(result.getMessage());

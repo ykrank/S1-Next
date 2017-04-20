@@ -41,7 +41,11 @@ import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate;
 import me.ykrank.s1next.view.dialog.BaseDialogFragment;
 import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment;
+import me.ykrank.s1next.view.dialog.DiscardEditPromptDialogFragment;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
+import me.ykrank.s1next.view.dialog.NewThreadRequestDialogFragment;
+import me.ykrank.s1next.view.dialog.PmRequestDialogFragment;
+import me.ykrank.s1next.view.dialog.ReplyRequestDialogFragment;
 import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment;
 import me.ykrank.s1next.view.fragment.BaseFragment;
 import me.ykrank.s1next.view.fragment.BasePostFragment;
@@ -63,10 +67,12 @@ import me.ykrank.s1next.view.fragment.setting.NetworkPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.ReadProgressPreferenceFragment;
 import me.ykrank.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import me.ykrank.s1next.viewmodel.UserViewModel;
+import me.ykrank.s1next.widget.EditorDiskCache;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.WifiBroadcastReceiver;
 import me.ykrank.s1next.widget.glide.AppHttpStreamFetcher;
 import me.ykrank.s1next.widget.glide.AvatarStreamFetcher;
+import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
 import me.ykrank.s1next.widget.hostcheck.BaseHostUrl;
 import me.ykrank.s1next.widget.hostcheck.HttpDns;
 import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask;
@@ -106,6 +112,10 @@ public interface AppComponent {
     DataTrackAgent getDataTrackAgent();
 
     NoticeCheckTask getNoticeCheckTask();
+
+    EditorDiskCache getEditorDiskCache();
+
+    AvatarUrlsCache getAvatarUrlsCache();
 
     //region SharedPreferences
     SharedPreferences getSharedPreferences();
@@ -216,4 +226,12 @@ public interface AppComponent {
     void inject(ForumAdapterDelegate forumAdapterDelegate);
 
     void inject(ReadProgressPreferenceFragment readProgressPreferenceFragment);
+
+    void inject(DiscardEditPromptDialogFragment discardEditPromptDialogFragment);
+
+    void inject(NewThreadRequestDialogFragment newThreadRequestDialogFragment);
+
+    void inject(PmRequestDialogFragment pmRequestDialogFragment);
+
+    void inject(ReplyRequestDialogFragment replyRequestDialogFragment);
 }

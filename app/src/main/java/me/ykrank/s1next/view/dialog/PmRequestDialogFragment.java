@@ -2,6 +2,8 @@ package me.ykrank.s1next.view.dialog;
 
 import android.os.Bundle;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
@@ -16,6 +18,9 @@ import me.ykrank.s1next.widget.track.event.NewPmTrackEvent;
 public final class PmRequestDialogFragment extends ProgressDialogFragment<AccountResultWrapper> {
 
     public static final String TAG = PmRequestDialogFragment.class.getName();
+
+    @Inject
+    EditorDiskCache editorDiskCache;
 
     private static final String ARG_TO_UID = "arg_to_uid";
     private static final String ARG_MESSAGE = "message";
@@ -39,6 +44,12 @@ public final class PmRequestDialogFragment extends ProgressDialogFragment<Accoun
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        App.getAppComponent().inject(this);
+    }
+
+    @Override
     protected CharSequence getProgressMessage() {
         return getText(R.string.dialog_progress_message_reply);
     }
@@ -57,7 +68,7 @@ public final class PmRequestDialogFragment extends ProgressDialogFragment<Accoun
     protected void onNext(AccountResultWrapper data) {
         Result result = data.getResult();
         if (result.getStatus().equals(STATUS_PM_SUCCESS)) {
-            EditorDiskCache.remove(cacheKey);
+            editorDiskCache.remove(cacheKey);
             showShortTextAndFinishCurrentActivity(result.getMessage());
         } else {
             showShortText(result.getMessage());

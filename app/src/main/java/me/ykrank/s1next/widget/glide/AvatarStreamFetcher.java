@@ -36,6 +36,8 @@ public class AvatarStreamFetcher implements DataFetcher<InputStream> {
 
     @Inject
     DownloadPreferencesManager mDownloadPreferencesManager;
+    @Inject
+    AvatarUrlsCache avatarUrlsCache;
 
     public AvatarStreamFetcher(Call.Factory client, AvatarUrl url) {
         this.url = url;
@@ -51,7 +53,7 @@ public class AvatarStreamFetcher implements DataFetcher<InputStream> {
         String url_string = url.toStringUrl();
         //whether cached error url
         Key avatarKey = OriginalKey.Builder.getInstance().obtainAvatarKey(mDownloadPreferencesManager, url_string);
-        if (AvatarUrlsCache.has(avatarKey)) {
+        if (avatarUrlsCache.has(avatarKey)) {
             // already have cached this not success avatar url
             return null;
         }
@@ -71,22 +73,22 @@ public class AvatarStreamFetcher implements DataFetcher<InputStream> {
             responseBody = response.body();
         } catch (Exception e) {
             if (avatarKey != null) {
-                AvatarUrlsCache.put(avatarKey);
+                avatarUrlsCache.put(avatarKey);
             }
             throw e;
         }
         if (!response.isSuccessful()) {
             // if (this this a avatar URL) && (this URL is cacheable)
             if (avatarKey != null && CacheStrategy.isCacheable(response, request)) {
-                AvatarUrlsCache.put(avatarKey);
+                avatarUrlsCache.put(avatarKey);
                 return null;
             }
             throw new IOException("Request failed with code: " + response.code());
         } else {
             // if download success, and (this this a avatar URL) && (this URL is cacheable)
             // remove from cache list
-            if (avatarKey != null && AvatarUrlsCache.has(avatarKey)) {
-                AvatarUrlsCache.remove(avatarKey);
+            if (avatarKey != null && avatarUrlsCache.has(avatarKey)) {
+                avatarUrlsCache.remove(avatarKey);
             }
         }
 

@@ -30,7 +30,7 @@ public class HttpDns implements Dns {
     public List<InetAddress> lookup(String hostname) throws UnknownHostException {
         try {
             checkInetAddress();
-            if (inetAddressList.size() > 0 && baseHostUrl.getBaseHttpUrl() != null
+            if (inetAddressList != null && inetAddressList.size() > 0 && baseHostUrl.getBaseHttpUrl() != null
                     && TextUtils.equals(baseHostUrl.getBaseHttpUrl().host(), hostname)) {
                 return inetAddressList;
             }

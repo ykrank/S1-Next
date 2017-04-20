@@ -20,8 +20,10 @@ import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
 import me.ykrank.s1next.viewmodel.UserViewModel;
+import me.ykrank.s1next.widget.EditorDiskCache;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.PersistentHttpCookieStore;
+import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
 import me.ykrank.s1next.widget.glide.OkHttpNoAvatarInterceptor;
 import me.ykrank.s1next.widget.hostcheck.BaseHostUrl;
 import me.ykrank.s1next.widget.hostcheck.HttpDns;
@@ -147,5 +149,17 @@ public final class AppModule {
     @Singleton
     NoticeCheckTask provideNoticeCheckTask(EventBus eventBus, S1Service s1Service, User user) {
         return new NoticeCheckTask(eventBus, s1Service, user);
+    }
+
+    @Provides
+    @Singleton
+    EditorDiskCache provideEditorDiskCache() {
+        return new EditorDiskCache();
+    }
+
+    @Provides
+    @Singleton
+    AvatarUrlsCache provideAvatarUrlsCache() {
+        return new AvatarUrlsCache();
     }
 }

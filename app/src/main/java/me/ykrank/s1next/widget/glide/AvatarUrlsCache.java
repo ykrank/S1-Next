@@ -37,9 +37,7 @@ import me.ykrank.s1next.util.L;
  *
  * @see AvatarStreamFetcher#loadData(com.bumptech.glide.Priority)
  */
-public enum AvatarUrlsCache {
-    INSTANCE;
-
+public class AvatarUrlsCache {
     private static final int MEMORY_CACHE_MAX_NUMBER = 1000;
     private static final String DISK_CACHE_DIRECTORY = "avatar_urls_disk_cache";
     private static final long DISK_CACHE_MAX_SIZE = 1000 * 1000; // 1MB
@@ -61,7 +59,7 @@ public enum AvatarUrlsCache {
     private final LruCache<String, Object> lruCache;
     private final KeyGenerator keyGenerator;
 
-    AvatarUrlsCache() {
+    public AvatarUrlsCache() {
         lruCache = new LruCache<>(MEMORY_CACHE_MAX_NUMBER);
 
         File file = new File(App.get().getCacheDir().getPath()
@@ -76,18 +74,18 @@ public enum AvatarUrlsCache {
         keyGenerator = new KeyGenerator();
     }
 
-    public static boolean has(Key key) {
-        String encodedKey = INSTANCE.keyGenerator.getKey(key);
+    public boolean has(Key key) {
+        String encodedKey = keyGenerator.getKey(key);
         if (encodedKey == null) {
             return false;
         }
 
-        if (INSTANCE.lruCache.get(encodedKey) != null) {
+        if (lruCache.get(encodedKey) != null) {
             return true;
         }
         try {
             synchronized (DISK_CACHE_LOCK) {
-                return INSTANCE.diskLruCache.get(encodedKey) != null;
+                return diskLruCache.get(encodedKey) != null;
             }
         } catch (IOException ignore) {
             L.report(ignore);
@@ -95,16 +93,16 @@ public enum AvatarUrlsCache {
         }
     }
 
-    public static void put(Key key) {
-        String encodedKey = INSTANCE.keyGenerator.getKey(key);
+    public void put(Key key) {
+        String encodedKey = keyGenerator.getKey(key);
         if (encodedKey == null) {
             return;
         }
 
-        INSTANCE.lruCache.put(encodedKey, NULL_VALUE);
+        lruCache.put(encodedKey, NULL_VALUE);
         try {
             synchronized (DISK_CACHE_LOCK) {
-                DiskLruCache.Editor editor = INSTANCE.diskLruCache.edit(encodedKey);
+                DiskLruCache.Editor editor = diskLruCache.edit(encodedKey);
                 // Editor will be null if there are two concurrent puts. In the worst case we will just silently fail.
                 if (editor != null) {
                     try {
@@ -121,16 +119,16 @@ public enum AvatarUrlsCache {
         }
     }
 
-    public static void remove(Key key) {
-        String encodedKey = INSTANCE.keyGenerator.getKey(key);
+    public void remove(Key key) {
+        String encodedKey = keyGenerator.getKey(key);
         if (encodedKey == null) {
             return;
         }
 
-        INSTANCE.lruCache.remove(encodedKey);
+        lruCache.remove(encodedKey);
         try {
             synchronized (DISK_CACHE_LOCK) {
-                INSTANCE.diskLruCache.remove(encodedKey);
+                diskLruCache.remove(encodedKey);
             }
         } catch (IOException ignore) {
 
@@ -138,15 +136,17 @@ public enum AvatarUrlsCache {
     }
 
     public static void clearUserAvatarCache(String uid) {
+        AvatarUrlsCache avatarUrlsCache = App.getAppComponent().getAvatarUrlsCache();
+        
         //clear avatar img error cache
         String smallAvatarUrl = Api.getAvatarSmallUrl(uid);
         String mediumAvatarUrl = Api.getAvatarMediumUrl(uid);
         String bigAvatarUrl = Api.getAvatarBigUrl(uid);
         DownloadPreferencesManager manager = App.getAppComponent()
                 .getDownloadPreferencesManager();
-        AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(manager, smallAvatarUrl));
-        AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(manager, mediumAvatarUrl));
-        AvatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(manager, bigAvatarUrl));
+        avatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(manager, smallAvatarUrl));
+        avatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(manager, mediumAvatarUrl));
+        avatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(manager, bigAvatarUrl));
     }
 
     /**

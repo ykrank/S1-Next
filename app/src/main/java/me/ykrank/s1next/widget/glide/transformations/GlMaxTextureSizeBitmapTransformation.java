@@ -33,7 +33,7 @@ public final class GlMaxTextureSizeBitmapTransformation extends BitmapTransforma
     protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
         final int resWidth = toTransform.getWidth();
         final int resHeight = toTransform.getHeight();
-        float maxTextureSize = GlMaxTextureCalculator.INSTANCE.glMaxTextureSize;
+        float maxTextureSize = GlMaxTextureCalculator.getInstance().glMaxTextureSize;
 
         float sizeMultiplier = Math.min(maxTextureSize / resWidth, maxTextureSize / resHeight);
         if (sizeMultiplier < 1) {
@@ -51,12 +51,23 @@ public final class GlMaxTextureSizeBitmapTransformation extends BitmapTransforma
     /**
      * A calculator for getting OpenGL texture size limit.
      */
-    private enum GlMaxTextureCalculator {
-        INSTANCE;
+    private static class GlMaxTextureCalculator {
+        private volatile static GlMaxTextureCalculator instance;
 
         private static final int GL_TEXTURE_SIZE_MINIMUM = 2048;
 
         private int glMaxTextureSize;
+
+        public static GlMaxTextureCalculator getInstance() {
+            if (instance == null) {
+                synchronized (GlMaxTextureCalculator.class) {
+                    if (instance == null) {
+                        instance = new GlMaxTextureCalculator();
+                    }
+                }
+            }
+            return instance;
+        }
 
         GlMaxTextureCalculator() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {

@@ -22,7 +22,7 @@ public class LeaksUtil {
                 FieldUtils.writeField(contextField, sGestureBoostManager, null, true);
             }
         } catch (Exception e) {
-            L.d(e);
+            L.d("releaseGestureBoostManagerLeaks exception");
         }
     }
 
@@ -39,7 +39,7 @@ public class LeaksUtil {
                 FieldUtils.writeField(contextField, mFastgrabConfigReader, null, true);
             }
         } catch (Exception e) {
-            L.d(e);
+            L.d("releaseFastgrabConfigReaderLeaks exception");
         }
     }
 }
