@@ -63,6 +63,7 @@ import me.ykrank.s1next.view.dialog.ThreadAttachmentDialogFragment;
 import me.ykrank.s1next.view.dialog.ThreadFavouritesAddDialogFragment;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import me.ykrank.s1next.view.internal.PagerScrollState;
+import me.ykrank.s1next.view.internal.RequestCode;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.track.event.ViewThreadTrackEvent;
 
@@ -86,8 +87,6 @@ public final class PostListFragment extends BaseViewPagerFragment
     private static final String ARG_QUOTE_POST_ID = "quote_post_id";
 
     private static final String ARG_READ_PROGRESS = "read_progress";
-
-    private static final int REQUEST_CODE_EDIT_POST = 6;
 
     @Inject
     EventBus mEventBus;
@@ -234,7 +233,7 @@ public final class PostListFragment extends BaseViewPagerFragment
                 .subscribe(event -> {
                             Thread thread = event.getThread();
                             Post post = event.getPost();
-                    EditPostActivity.startActivityForResultMessage(this, REQUEST_CODE_EDIT_POST, thread, post);
+                    EditPostActivity.startActivityForResultMessage(this, RequestCode.REQUEST_CODE_EDIT_POST, thread, post);
                         }
                 );
         blackListAddDisposable = mEventBus.get()
@@ -389,7 +388,7 @@ public final class PostListFragment extends BaseViewPagerFragment
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_EDIT_POST) {
+        if (requestCode == RequestCode.REQUEST_CODE_EDIT_POST) {
             if (resultCode == Activity.RESULT_OK) {
                 String msg = data.getStringExtra(BaseActivity.EXTRA_MESSAGE);
                 showShortSnackbar(msg);

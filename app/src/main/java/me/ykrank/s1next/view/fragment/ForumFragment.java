@@ -37,6 +37,8 @@ public final class ForumFragment extends BaseRecyclerViewFragment<ForumGroupsWra
 
     private ToolbarDropDownInterface.Callback mToolbarCallback;
 
+    private boolean inForceRefresh = false;
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -112,5 +114,14 @@ public final class ForumFragment extends BaseRecyclerViewFragment<ForumGroupsWra
             // so position - 1 to correspond its group
             mRecyclerAdapter.refreshDataSet(mForumGroups.getForumGroupList().get(position - 1), true);
         }
+        if (inForceRefresh) {
+            inForceRefresh = false;
+            getRecyclerView().smoothScrollToPosition(0);
+        }
+    }
+
+    public void forceSwipeRefresh() {
+        inForceRefresh = true;
+        startSwipeRefresh();
     }
 }

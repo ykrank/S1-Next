@@ -23,8 +23,8 @@ import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
 import me.ykrank.s1next.databinding.ToolbarSpinnerBinding;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
-import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment;
 import me.ykrank.s1next.view.fragment.ForumFragment;
+import me.ykrank.s1next.view.internal.RequestCode;
 import me.ykrank.s1next.view.internal.ToolbarDropDownInterface;
 import me.ykrank.s1next.viewmodel.DropDownItemListViewModel;
 
@@ -54,7 +54,7 @@ public final class ForumActivity extends BaseActivity
 
     private ToolbarDropDownInterface.OnItemSelectedListener onItemSelectedListener;
 
-    private BaseRecyclerViewFragment fragment;
+    private ForumFragment fragment;
 
     public static void start(@NonNull Activity activity) {
         Intent intent = new Intent(activity, ForumActivity.class);
@@ -89,7 +89,7 @@ public final class ForumActivity extends BaseActivity
                     .commit();
         } else {
             mSelectedPosition = savedInstanceState.getInt(STATE_SPINNER_SELECTED_POSITION);
-            fragment = (BaseRecyclerViewFragment) fragmentManager.findFragmentByTag(ForumFragment.TAG);
+            fragment = (ForumFragment) fragmentManager.findFragmentByTag(ForumFragment.TAG);
         }
 
         onItemSelectedListener = (ToolbarDropDownInterface.OnItemSelectedListener) fragment;
@@ -100,10 +100,24 @@ public final class ForumActivity extends BaseActivity
         super.onNewIntent(intent);
         setIntent(intent);
         if (fragment == null) {
-            fragment = (BaseRecyclerViewFragment) getSupportFragmentManager()
+            fragment = (ForumFragment) getSupportFragmentManager()
                     .findFragmentByTag(ForumFragment.TAG);
         }
         fragment.startSwipeRefresh();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RequestCode.REQUEST_CODE_LOGIN) {
+            if (resultCode == RESULT_OK) {
+                showShortSnackbar(data.getStringExtra(EXTRA_MESSAGE));
+                if (fragment != null) {
+                    fragment.forceSwipeRefresh();
+                }
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

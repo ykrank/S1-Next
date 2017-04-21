@@ -14,6 +14,7 @@ import me.ykrank.s1next.data.event.PmGroupClickEvent;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.fragment.PmFragment;
 import me.ykrank.s1next.view.fragment.PmGroupsFragment;
+import me.ykrank.s1next.view.internal.RequestCode;
 
 
 public class PmActivity extends BaseActivity {
@@ -68,7 +69,7 @@ public class PmActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_MESSAGE_IF_SUCCESS) {
+        if (requestCode == RequestCode.REQUEST_CODE_MESSAGE_IF_SUCCESS) {
             if (resultCode == Activity.RESULT_OK) {
                 PmFragment pmFragment = (PmFragment) getSupportFragmentManager().findFragmentByTag(PmFragment.TAG);
                 if (pmFragment != null) {

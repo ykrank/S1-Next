@@ -44,6 +44,7 @@ import me.ykrank.s1next.view.dialog.ThreadGoDialogFragment;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegateImpl;
 import me.ykrank.s1next.view.internal.DrawerLayoutDelegateConcrete;
+import me.ykrank.s1next.view.internal.RequestCode;
 import me.ykrank.s1next.view.internal.ToolbarDelegate;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
@@ -58,7 +59,6 @@ import me.ykrank.s1next.widget.track.event.page.ActivityStartEvent;
 public abstract class BaseActivity extends OriginActivity
         implements CoordinatorLayoutAnchorDelegate {
 
-    protected static final int REQUEST_CODE_MESSAGE_IF_SUCCESS = 0;
     public static final String EXTRA_MESSAGE = "message";
 
     @Inject
@@ -95,7 +95,7 @@ public abstract class BaseActivity extends OriginActivity
      * @see #onActivityResult(int, int, Intent)
      */
     static void startActivityForResultMessage(Activity activity, Intent intent) {
-        activity.startActivityForResult(intent, REQUEST_CODE_MESSAGE_IF_SUCCESS);
+        activity.startActivityForResult(intent, RequestCode.REQUEST_CODE_MESSAGE_IF_SUCCESS);
     }
 
     /**
@@ -261,7 +261,7 @@ public abstract class BaseActivity extends OriginActivity
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_MESSAGE_IF_SUCCESS) {
+        if (requestCode == RequestCode.REQUEST_CODE_MESSAGE_IF_SUCCESS) {
             if (resultCode == Activity.RESULT_OK) {
                 // We can't use #showShortText(String) because #onActivityResult(int, int, Intent)
                 // is always invoked when current app is running in the foreground (so we are

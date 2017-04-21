@@ -8,12 +8,13 @@ import android.support.v4.app.FragmentTransaction;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.view.fragment.LoginFragment;
 import me.ykrank.s1next.view.fragment.WebLoginFragment;
+import me.ykrank.s1next.view.internal.RequestCode;
 
 public final class LoginActivity extends BaseActivity implements LoginFragment.LoginFragmentCallback {
 
     public static void startLoginActivityForResultMessage(Activity activity) {
         Intent intent = new Intent(activity, LoginActivity.class);
-        BaseActivity.startActivityForResultMessage(activity, intent);
+        activity.startActivityForResult(intent, RequestCode.REQUEST_CODE_LOGIN);
     }
 
     @Override
