@@ -10,9 +10,11 @@ import android.view.View;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.rx_cache2.DynamicKey;
+import io.rx_cache2.EvictDynamicKey;
 import me.ykrank.s1next.data.api.model.Forum;
 import me.ykrank.s1next.data.api.model.collection.Threads;
-import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.adapter.ThreadRecyclerViewAdapter;
 import me.ykrank.s1next.viewmodel.LoadingViewModel;
@@ -23,7 +25,7 @@ import me.ykrank.s1next.viewmodel.LoadingViewModel;
  * Activity or Fragment containing this must implement
  * {@link PagerCallback} and {@link SubForumsCallback}.
  */
-public final class ThreadListPagerFragment extends BaseRecyclerViewFragment<BaseResultWrapper<Threads>> {
+public final class ThreadListPagerFragment extends BaseRecyclerViewFragment<ThreadsWrapper> {
 
     private static final String ARG_FORUM_ID = "forum_id";
     private static final String ARG_PAGE_NUM = "page_num";
@@ -79,12 +81,13 @@ public final class ThreadListPagerFragment extends BaseRecyclerViewFragment<Base
     }
 
     @Override
-    Observable<BaseResultWrapper<Threads>> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
-        return mS1Service.getThreadsWrapper(mForumId, mPageNum);
+    Observable<ThreadsWrapper> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
+        return apiCacheProvider.getThreadsWrapper(mS1Service.getThreadsWrapper(mForumId, mPageNum),
+                new DynamicKey(mUser.getKey()), new EvictDynamicKey(isForceLoading()));
     }
 
     @Override
-    void onNext(BaseResultWrapper<Threads> data) {
+    void onNext(ThreadsWrapper data) {
         Threads threads = data.getData();
         if (threads.getThreadList().isEmpty()) {
             consumeResult(data.getResult());

@@ -27,8 +27,6 @@ import io.rx_cache2.DynamicKeyGroup;
 import io.rx_cache2.EvictDynamicKeyGroup;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.data.User;
-import me.ykrank.s1next.data.api.ApiCacheProvider;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.api.model.collection.Posts;
@@ -70,11 +68,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
     @Inject
     EventBus mEventBus;
     @Inject
-    ApiCacheProvider apiCacheProvider;
-    @Inject
     GeneralPreferencesManager mGeneralPreferencesManager;
-    @Inject
-    User user;
 
     private String mThreadId;
     private int mPageNum;
@@ -284,14 +278,12 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
 
     @Override
     Observable<PostsWrapper> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
-        switch (loading) {
-            case LoadingViewModel.LOADING_PULL_UP_TO_REFRESH:
-            case LoadingViewModel.LOADING_SWIPE_REFRESH:
-                return apiCacheProvider.getPostsWrapperNewer(mS1Service.getPostsWrapper(mThreadId, mPageNum),
-                        new DynamicKeyGroup(mThreadId + mPageNum, user.getUid()), new EvictDynamicKeyGroup(false));
-            default:
-                return apiCacheProvider.getPostsWrapper(mS1Service.getPostsWrapper(mThreadId, mPageNum),
-                        new DynamicKeyGroup(mThreadId + mPageNum, user.getUid()), new EvictDynamicKeyGroup(false));
+        if (isForceLoading()) {
+            return apiCacheProvider.getPostsWrapperNewer(mS1Service.getPostsWrapper(mThreadId, mPageNum),
+                    new DynamicKeyGroup(mThreadId + mPageNum, mUser.getKey()), new EvictDynamicKeyGroup(false));
+        } else {
+            return apiCacheProvider.getPostsWrapper(mS1Service.getPostsWrapper(mThreadId, mPageNum),
+                    new DynamicKeyGroup(mThreadId + mPageNum, mUser.getKey()), new EvictDynamicKeyGroup(false));
         }
     }
 

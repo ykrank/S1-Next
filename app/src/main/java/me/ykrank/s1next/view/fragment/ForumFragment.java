@@ -12,10 +12,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import io.reactivex.Observable;
+import io.rx_cache2.DynamicKey;
+import io.rx_cache2.EvictDynamicKey;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.collection.ForumGroups;
-import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper;
 import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.SearchActivity;
@@ -26,11 +28,10 @@ import me.ykrank.s1next.viewmodel.LoadingViewModel;
 /**
  * A Fragment represents forum list.
  */
-public final class ForumFragment extends BaseRecyclerViewFragment<BaseDataWrapper<ForumGroups>>
+public final class ForumFragment extends BaseRecyclerViewFragment<ForumGroupsWrapper>
         implements ToolbarDropDownInterface.OnItemSelectedListener {
 
     public static final String TAG = ForumFragment.class.getName();
-
     private ForumRecyclerViewAdapter mRecyclerAdapter;
     private ForumGroups mForumGroups;
 
@@ -84,12 +85,13 @@ public final class ForumFragment extends BaseRecyclerViewFragment<BaseDataWrappe
     }
 
     @Override
-    Observable<BaseDataWrapper<ForumGroups>> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
-        return mS1Service.getForumGroupsWrapper();
+    Observable<ForumGroupsWrapper> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
+        return apiCacheProvider.getForumGroupsWrapper(mS1Service.getForumGroupsWrapper(),
+                new DynamicKey(mUser.getKey()), new EvictDynamicKey(isForceLoading()));
     }
 
     @Override
-    void onNext(BaseDataWrapper<ForumGroups> data) {
+    void onNext(ForumGroupsWrapper data) {
         super.onNext(data);
 
         mForumGroups = data.getData();

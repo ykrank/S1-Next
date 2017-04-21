@@ -24,6 +24,7 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.api.ApiCacheProvider;
 import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.model.Result;
@@ -57,6 +58,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     private static final String STATE_LOADING_VIEW_MODEL = "loading_view_model";
 
     S1Service mS1Service;
+    ApiCacheProvider apiCacheProvider;
 
     private LoadingViewModelBindingDelegate mLoadingViewModelBindingDelegate;
     private LoadingViewModel mLoadingViewModel;
@@ -72,6 +74,9 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mS1Service = App.getAppComponent().getS1Service();
+        apiCacheProvider = App.getAppComponent().getApiCacheProvider();
+
         if (savedInstanceState == null) {
             mLoadingViewModel = new LoadingViewModel();
         } else {
@@ -90,7 +95,6 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     @CallSuper
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mS1Service = App.getAppComponent().getS1Service();
 
         mLoadingViewModelBindingDelegate.getSwipeRefreshLayout().setOnRefreshListener(
                 this::startSwipeRefresh);
@@ -232,6 +236,14 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
      */
     final boolean isLoading() {
         return mLoadingViewModel.getLoading() != LoadingViewModel.LOADING_FINISH;
+    }
+
+    /**
+     * Whether we are loading data manual.
+     */
+    final boolean isForceLoading() {
+        return mLoadingViewModel.getLoading() == LoadingViewModel.LOADING_PULL_UP_TO_REFRESH
+                || mLoadingViewModel.getLoading() == LoadingViewModel.LOADING_SWIPE_REFRESH;
     }
 
     final void setLoading(@LoadingViewModel.LoadingDef int loading) {

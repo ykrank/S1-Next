@@ -3,16 +3,16 @@ package me.ykrank.s1next.data.api;
 import io.reactivex.Observable;
 import me.ykrank.s1next.data.api.model.Profile;
 import me.ykrank.s1next.data.api.model.collection.Favourites;
-import me.ykrank.s1next.data.api.model.collection.ForumGroups;
 import me.ykrank.s1next.data.api.model.collection.Friends;
 import me.ykrank.s1next.data.api.model.collection.Notes;
 import me.ykrank.s1next.data.api.model.collection.PmGroups;
-import me.ykrank.s1next.data.api.model.collection.Threads;
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper;
 import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -23,13 +23,13 @@ import retrofit2.http.Query;
 public interface S1Service {
 
     @GET(ApiForum.URL_FORUM)
-    Observable<BaseDataWrapper<ForumGroups>> getForumGroupsWrapper();
+    Observable<ForumGroupsWrapper> getForumGroupsWrapper();
 
     @GET(ApiHome.URL_FAVOURITES)
     Observable<BaseResultWrapper<Favourites>> getFavouritesWrapper(@Query("page") int page);
 
     @GET(ApiForum.URL_THREAD_LIST)
-    Observable<BaseResultWrapper<Threads>> getThreadsWrapper(@Query("fid") String forumId, @Query("page") int page);
+    Observable<ThreadsWrapper> getThreadsWrapper(@Query("fid") String forumId, @Query("page") int page);
 
     @GET(ApiForum.URL_POST_LIST)
     Observable<PostsWrapper> getPostsWrapper(@Query("tid") String threadId, @Query("page") int page);

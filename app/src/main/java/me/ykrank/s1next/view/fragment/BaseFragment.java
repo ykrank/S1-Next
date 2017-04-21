@@ -18,6 +18,7 @@ import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
@@ -30,6 +31,8 @@ public abstract class BaseFragment extends Fragment {
     UserValidator mUserValidator;
     @Inject
     DataTrackAgent trackAgent;
+    @Inject
+    User mUser;
 
     protected CoordinatorLayoutAnchorDelegate mCoordinatorLayoutAnchorDelegate;
     @Nullable

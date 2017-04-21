@@ -1,5 +1,8 @@
 package me.ykrank.s1next.data;
 
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
+
 public class User {
 
     private volatile String uid;
@@ -50,5 +53,13 @@ public class User {
 
     public void setLogged(boolean logged) {
         this.logged = logged;
+    }
+
+    @NonNull
+    public String getKey() {
+        if (!TextUtils.isEmpty(uid)) {
+            return uid;
+        }
+        return "anonymous";
     }
 }
