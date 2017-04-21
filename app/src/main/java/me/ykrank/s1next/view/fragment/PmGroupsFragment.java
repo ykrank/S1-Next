@@ -63,7 +63,7 @@ public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<Base
     }
 
     @Override
-    Observable<BaseDataWrapper<PmGroups>> getSourceObservable(int pageNum) {
+    Observable<BaseDataWrapper<PmGroups>> getPageSourceObservable(int pageNum) {
         return mS1Service.getPmGroups(pageNum);
     }
 

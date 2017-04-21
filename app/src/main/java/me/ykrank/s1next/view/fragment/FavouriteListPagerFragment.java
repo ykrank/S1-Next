@@ -13,6 +13,7 @@ import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.FavouriteRecyclerViewAdapter;
 import me.ykrank.s1next.view.internal.PagerCallback;
+import me.ykrank.s1next.viewmodel.LoadingViewModel;
 
 /**
  * A Fragment representing one of the pages of favourites.
@@ -67,7 +68,7 @@ public final class FavouriteListPagerFragment extends BaseRecyclerViewFragment<B
     }
 
     @Override
-    Observable<BaseResultWrapper<Favourites>> getSourceObservable() {
+    Observable<BaseResultWrapper<Favourites>> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
         return mS1Service.getFavouritesWrapper(mPageNum);
     }
 

@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.Wifi;
+import me.ykrank.s1next.data.api.ApiCacheProvider;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.data.db.AppDaoSessionManager;
@@ -96,6 +97,8 @@ public interface AppComponent {
     OkHttpClient getOkHttpClient();
 
     S1Service getS1Service();
+
+    ApiCacheProvider getApiCacheProvider();
 
     Wifi getWifi();
 

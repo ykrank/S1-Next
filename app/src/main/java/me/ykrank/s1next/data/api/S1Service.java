@@ -7,12 +7,12 @@ import me.ykrank.s1next.data.api.model.collection.ForumGroups;
 import me.ykrank.s1next.data.api.model.collection.Friends;
 import me.ykrank.s1next.data.api.model.collection.Notes;
 import me.ykrank.s1next.data.api.model.collection.PmGroups;
-import me.ykrank.s1next.data.api.model.collection.Posts;
 import me.ykrank.s1next.data.api.model.collection.Threads;
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper;
 import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -32,7 +32,7 @@ public interface S1Service {
     Observable<BaseResultWrapper<Threads>> getThreadsWrapper(@Query("fid") String forumId, @Query("page") int page);
 
     @GET(ApiForum.URL_POST_LIST)
-    Observable<BaseResultWrapper<Posts>> getPostsWrapper(@Query("tid") String threadId, @Query("page") int page);
+    Observable<PostsWrapper> getPostsWrapper(@Query("tid") String threadId, @Query("page") int page);
 
     @GET(ApiForum.URL_QUOTE_POST_REDIRECT)
     Observable<Response<Void>> getQuotePostResponseBody(@Query("ptid") String threadId, @Query("pid") String quotePostId);

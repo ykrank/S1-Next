@@ -75,7 +75,7 @@ public class UserThreadFragment extends BaseLoadMoreRecycleViewFragment<HomeThre
     }
 
     @Override
-    Observable<HomeThreadWebWrapper> getSourceObservable(int pageNum) {
+    Observable<HomeThreadWebWrapper> getPageSourceObservable(int pageNum) {
         return mS1Service.getHomeThreads(uid, pageNum)
                 .map(HomeThreadWebWrapper::fromHtml);
     }

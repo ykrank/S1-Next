@@ -15,6 +15,7 @@ import me.ykrank.s1next.data.api.model.collection.Threads;
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.adapter.ThreadRecyclerViewAdapter;
+import me.ykrank.s1next.viewmodel.LoadingViewModel;
 
 /**
  * A Fragment representing one of the pages of threads.
@@ -78,7 +79,7 @@ public final class ThreadListPagerFragment extends BaseRecyclerViewFragment<Base
     }
 
     @Override
-    Observable<BaseResultWrapper<Threads>> getSourceObservable() {
+    Observable<BaseResultWrapper<Threads>> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
         return mS1Service.getThreadsWrapper(mForumId, mPageNum);
     }
 

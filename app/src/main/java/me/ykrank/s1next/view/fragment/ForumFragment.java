@@ -21,6 +21,7 @@ import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.SearchActivity;
 import me.ykrank.s1next.view.adapter.ForumRecyclerViewAdapter;
 import me.ykrank.s1next.view.internal.ToolbarDropDownInterface;
+import me.ykrank.s1next.viewmodel.LoadingViewModel;
 
 /**
  * A Fragment represents forum list.
@@ -83,7 +84,7 @@ public final class ForumFragment extends BaseRecyclerViewFragment<BaseDataWrappe
     }
 
     @Override
-    Observable<BaseDataWrapper<ForumGroups>> getSourceObservable() {
+    Observable<BaseDataWrapper<ForumGroups>> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
         return mS1Service.getForumGroupsWrapper();
     }
 

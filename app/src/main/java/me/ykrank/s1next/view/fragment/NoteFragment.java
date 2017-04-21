@@ -70,7 +70,7 @@ public class NoteFragment extends BaseLoadMoreRecycleViewFragment<BaseDataWrappe
     }
 
     @Override
-    Observable<BaseDataWrapper<Notes>> getSourceObservable(int pageNum) {
+    Observable<BaseDataWrapper<Notes>> getPageSourceObservable(int pageNum) {
         return mS1Service.getMyNotes(pageNum);
     }
 

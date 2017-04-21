@@ -23,12 +23,16 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
+import io.rx_cache2.DynamicKeyGroup;
+import io.rx_cache2.EvictDynamicKeyGroup;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.User;
+import me.ykrank.s1next.data.api.ApiCacheProvider;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.api.model.collection.Posts;
-import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
 import me.ykrank.s1next.data.event.PostSelectableChangeEvent;
@@ -42,6 +46,7 @@ import me.ykrank.s1next.view.adapter.PostListRecyclerViewAdapter;
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegate;
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateQuickSidebarImpl;
 import me.ykrank.s1next.view.internal.PagerScrollState;
+import me.ykrank.s1next.viewmodel.LoadingViewModel;
 import me.ykrank.s1next.widget.EventBus;
 
 /**
@@ -49,7 +54,7 @@ import me.ykrank.s1next.widget.EventBus;
  * <p>
  * Activity or Fragment containing this must implement {@link PagerCallback}.
  */
-public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseResultWrapper<Posts>>
+public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsWrapper>
         implements OnQuickSideBarTouchListener {
 
     private static final String ARG_THREAD_ID = "thread_id";
@@ -64,9 +69,12 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
 
     @Inject
     EventBus mEventBus;
-
+    @Inject
+    ApiCacheProvider apiCacheProvider;
     @Inject
     GeneralPreferencesManager mGeneralPreferencesManager;
+    @Inject
+    User user;
 
     private String mThreadId;
     private int mPageNum;
@@ -275,12 +283,20 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<BaseRe
     }
 
     @Override
-    Observable<BaseResultWrapper<Posts>> getSourceObservable() {
-        return mS1Service.getPostsWrapper(mThreadId, mPageNum);
+    Observable<PostsWrapper> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
+        switch (loading) {
+            case LoadingViewModel.LOADING_PULL_UP_TO_REFRESH:
+            case LoadingViewModel.LOADING_SWIPE_REFRESH:
+                return apiCacheProvider.getPostsWrapperNewer(mS1Service.getPostsWrapper(mThreadId, mPageNum),
+                        new DynamicKeyGroup(mThreadId + mPageNum, user.getUid()), new EvictDynamicKeyGroup(false));
+            default:
+                return apiCacheProvider.getPostsWrapper(mS1Service.getPostsWrapper(mThreadId, mPageNum),
+                        new DynamicKeyGroup(mThreadId + mPageNum, user.getUid()), new EvictDynamicKeyGroup(false));
+        }
     }
 
     @Override
-    void onNext(BaseResultWrapper<Posts> data) {
+    void onNext(PostsWrapper data) {
         boolean pullUpToRefresh = isPullUpToRefresh();
         List<Post> postList = null;
 

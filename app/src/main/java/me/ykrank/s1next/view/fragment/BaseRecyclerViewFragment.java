@@ -143,9 +143,8 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
         }
 
         mLoadingViewModelBindingDelegate.setLoadingViewModel(mLoadingViewModel);
-        if (isLoading()) {
-            load();
-        }
+
+        load(mLoadingViewModel.getLoading());
     }
 
     /**
@@ -249,9 +248,10 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     /**
      * Show refresh progress and start to loadViewPager new data.
      */
+    @CallSuper
     public void startSwipeRefresh() {
         mLoadingViewModel.setLoading(LoadingViewModel.LOADING_SWIPE_REFRESH);
-        load();
+        load(LoadingViewModel.LOADING_SWIPE_REFRESH);
     }
 
     /**
@@ -264,20 +264,23 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     @CallSuper
     void startPullToRefresh() {
         mLoadingViewModel.setLoading(LoadingViewModel.LOADING_PULL_UP_TO_REFRESH);
-        load();
+        load(LoadingViewModel.LOADING_PULL_UP_TO_REFRESH);
     }
 
     /**
      * Starts to loadViewPager new data.
      * <p>
-     * Subclass should implement {@link #getSourceObservable()}
+     * Subclass should implement {@link #getSourceObservable(int)}
      * in oder to provider its own data source {@link Observable}.
      */
-    private void load() {
+    private void load(@LoadingViewModel.LoadingDef int loading) {
+        if (loading == LoadingViewModel.LOADING_FINISH) {
+            return;
+        }
         // dismiss Snackbar in order to let user see the ProgressBar
         // when we start to loadViewPager new data
         mCoordinatorLayoutAnchorDelegate.dismissSnackbarIfExist();
-        mDisposable = getSourceObservable()
+        mDisposable = getSourceObservable(loading)
                 .compose(ApiFlatTransformer.apiErrorTransformer())
                 .compose(RxJavaUtil.iOTransformer())
                 .doOnNext(mUserValidator::validateIntercept)
@@ -293,14 +296,15 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
      * or database.
      *
      * @return The data source {@link Observable}.
+     * @param loading
      */
-    abstract Observable<D> getSourceObservable();
+    abstract Observable<D> getSourceObservable(@LoadingViewModel.LoadingDef int loading);
 
     /**
-     * Called when a data was emitted from {@link #getSourceObservable()}.
+     * Called when a data was emitted from {@link #getSourceObservable(int)}.
      * <p>
      * Actually this method was only called once during loading (if no error occurs)
-     * because we only emit data once from {@link #getSourceObservable()}.
+     * because we only emit data once from {@link #getSourceObservable(int)}.
      */
     @CallSuper
     void onNext(D data) {
@@ -337,7 +341,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     /**
      * Called when an error occurs during data loading.
      * <p>
-     * This stops the {@link #getSourceObservable()} and it will not make
+     * This stops the {@link #getSourceObservable(int)} and it will not make
      * further calls to {@link #onNext(Object)}.
      */
     @CallSuper

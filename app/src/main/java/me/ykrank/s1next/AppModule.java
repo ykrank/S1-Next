@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.concurrent.TimeUnit;
@@ -12,9 +13,12 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.rx_cache2.internal.RxCache;
+import io.victoralbertos.jolyglot.JacksonSpeaker;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.Wifi;
 import me.ykrank.s1next.data.api.Api;
+import me.ykrank.s1next.data.api.ApiCacheProvider;
 import me.ykrank.s1next.data.api.ApiVersionInterceptor;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
@@ -100,6 +104,20 @@ public final class AppModule {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
                 .create(S1Service.class);
+    }
+
+    @Provides
+    @Singleton
+    ApiCacheProvider providerApiCacheProvider(Context context) {
+        String cachePath = context.getCacheDir().getAbsolutePath() + "/rx_cache";
+        File cacheDir = new File(cachePath);
+        if (!cacheDir.exists()) {
+            cacheDir.mkdirs();
+        }
+        return new RxCache.Builder()
+                .useExpiredDataIfLoaderNotAvailable(true)
+                .persistence(new File(cachePath), new JacksonSpeaker())
+                .using(ApiCacheProvider.class);
     }
 
     @Provides

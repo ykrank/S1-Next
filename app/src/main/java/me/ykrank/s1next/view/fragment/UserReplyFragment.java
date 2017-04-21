@@ -74,7 +74,7 @@ public class UserReplyFragment extends BaseLoadMoreRecycleViewFragment<HomeReply
     }
 
     @Override
-    Observable<HomeReplyWebWrapper> getSourceObservable(int pageNum) {
+    Observable<HomeReplyWebWrapper> getPageSourceObservable(int pageNum) {
         return mS1Service.getHomeReplies(uid, pageNum)
                 .map(HomeReplyWebWrapper::fromHtml);
     }

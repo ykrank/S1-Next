@@ -10,9 +10,6 @@ import android.view.View;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.data.api.ApiFlatTransformer;
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
-import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.viewmodel.LoadingViewModel;
@@ -80,7 +77,7 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
     /**
      * Starts to load more data.
      * <p>
-     * Subclass should implement {@link #getSourceObservable()}
+     * Subclass should implement {@link BaseRecyclerViewFragment#getSourceObservable(int)}
      * in oder to provider its own data source {@link Observable}.
      */
     private void loadMore() {
@@ -88,7 +85,7 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
         // dismiss Snackbar in order to let user see the ProgressBar
         // when we start to loadViewPager new data
         mCoordinatorLayoutAnchorDelegate.dismissSnackbarIfExist();
-        loadMoreDisposable = getSourceObservable(mPageNum)
+        loadMoreDisposable = getPageSourceObservable(mPageNum)
                 .map(d -> appendNewData(getRetainedFragment().data, d))
                 .compose(ApiFlatTransformer.apiErrorTransformer())
                 .compose(RxJavaUtil.iOTransformer())
@@ -152,11 +149,11 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
      *
      * @return The data source {@link Observable}.
      */
-    abstract Observable<D> getSourceObservable(int pageNum);
+    abstract Observable<D> getPageSourceObservable(int pageNum);
 
     @Override
-    final Observable<D> getSourceObservable() {
+    final Observable<D> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
         mPageNum = 1;
-        return getSourceObservable(1);
+        return getPageSourceObservable(1);
     }
 }

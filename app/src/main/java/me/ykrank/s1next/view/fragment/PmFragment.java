@@ -119,7 +119,7 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
     }
 
     @Override
-    Observable<PmsWrapper> getSourceObservable(int pageNum) {
+    Observable<PmsWrapper> getPageSourceObservable(int pageNum) {
         return mS1Service.getPmList(toUid, pageNum)
                 .map(pmsWrapper -> pmsWrapper.setMsgToUsername(user, toUsername));
     }

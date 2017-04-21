@@ -81,6 +81,10 @@
     @retrofit2.http.* <methods>;
 }
 
+#RxCache
+-dontwarn io.rx_cache.internal.**
+-keepclassmembers enum io.rx_cache.Source { *; }
+
 # RxJava
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
    long producerIndex;

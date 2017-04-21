@@ -96,12 +96,6 @@ tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xmaxerrs" << "500"
 }
 
-repositories {
-    mavenCentral()
-    jcenter()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-}
-
 greendao {
     schemaVersion 4
 }
@@ -149,6 +143,8 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
     compile 'com.squareup.retrofit2:converter-jackson:2.2.0'
     compile 'com.squareup.retrofit2:converter-scalars:2.2.0'
+    compile "com.github.VictorAlbertos.RxCache:runtime:1.8.0-2.x"
+    compile 'com.github.VictorAlbertos.Jolyglot:jackson:0.0.3'
 
     compile 'com.tencent.bugly:crashreport:2.5.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
