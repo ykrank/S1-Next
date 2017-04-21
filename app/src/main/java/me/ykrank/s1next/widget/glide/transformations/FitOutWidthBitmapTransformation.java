@@ -24,7 +24,7 @@ public final class FitOutWidthBitmapTransformation extends BitmapTransformation 
         float maxTextureSize = GlMaxTextureCalculator.getInstance().getGlMaxTextureSize();
         float textureSizeMultiplier = Math.min(maxTextureSize / resWidth, maxTextureSize / resHeight);
 
-        float fitOutSizeMultiplier = outWidth / resWidth;
+        float fitOutSizeMultiplier = (float) outWidth / resWidth;
         float sizeMultiplier = Math.min(textureSizeMultiplier, fitOutSizeMultiplier);
 
         if (sizeMultiplier < 1) {

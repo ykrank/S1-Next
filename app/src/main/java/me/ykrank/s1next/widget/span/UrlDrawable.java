@@ -16,16 +16,25 @@ import android.text.style.ImageSpan;
  */
 final class UrlDrawable extends Drawable implements Drawable.Callback {
     @Nullable
-    private Drawable initDrawable;
+    private final Rect initRect;
     private Drawable mDrawable;
     @Nullable
     private ImageSpan imageSpan;
 
     private String url;
 
-    public UrlDrawable(String url, @Nullable Drawable initDrawable) {
+    public UrlDrawable(String url, @Nullable Rect rect) {
+        this.initRect = rect;
         this.url = url;
-        setInitDrawable(initDrawable);
+
+        if (rect != null) {
+            setBounds(rect);
+        }
+    }
+
+    @Nullable
+    public Rect getInitRect() {
+        return initRect;
     }
 
     public String getUrl() {
@@ -41,27 +50,10 @@ final class UrlDrawable extends Drawable implements Drawable.Callback {
         this.imageSpan = imageSpan;
     }
 
-    public void setInitDrawable(@Nullable Drawable initDrawable) {
-        this.initDrawable = initDrawable;
-    }
-
-    @NonNull
-    public Rect getInitRect() {
-        if (initDrawable != null) {
-            return initDrawable.getBounds();
-        }
-        return new Rect();
-    }
-
     @Override
     public void draw(@NonNull Canvas canvas) {
-        boolean drawn = false;
         if (mDrawable != null) {
             mDrawable.draw(canvas);
-            drawn = true;
-        }
-        if (!drawn && initDrawable != null) {
-            initDrawable.draw(canvas);
         }
     }
 

@@ -195,7 +195,7 @@ public final class BezelImageViewBindingAdapter {
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, AvatarUrl model, Target<GlideDrawable> target,
                                                    boolean isFromMemoryCache, boolean isFirstResource) {
-                        L.d("Load avatar:" + model.toStringUrl());
+                        L.l("Load avatar:" + model.toStringUrl());
                         imageView.setTag(R.id.tag_drawable_info, new ImageInfo(model.toStringUrl(), resource.getIntrinsicWidth(), resource.getIntrinsicHeight()));
                         return false;
                     }

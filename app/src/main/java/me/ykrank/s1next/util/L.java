@@ -42,12 +42,18 @@ public class L {
         return BuildConfig.DEBUG;
     }
 
+    public static void l(String msg) {
+        if (BuildConfig.DEBUG) {
+            Log.e("msg", msg);
+        }
+    }
+
     public static void d(String msg) {
         Logger.d(msg);
     }
 
     public static void d(Throwable e) {
-        d(null, e.getMessage());
+        Logger.d(e.getMessage());
     }
 
     public static void d(String tag, String msg) {
@@ -79,7 +85,7 @@ public class L {
     }
 
     public static void e(Throwable e) {
-        e(null, null, e);
+        e(null, "error", e);
     }
 
     public static void e(String msg, Throwable tr) {
@@ -91,8 +97,10 @@ public class L {
     }
 
     public static void e(String tag, String msg, Throwable tr) {
-        Logger.t(tag).e(tr, msg);
         BuglyLog.e(LOG_TAG + tag, msg, tr);
+        if (tr != null) {
+            tr.printStackTrace();
+        }
         if (showLog() && tr != null) {
             CrashReport.postCatchedException(tr);
         }

@@ -63,6 +63,9 @@ public final class GlideImageGetter
      */
     private final Set<ViewTarget<TextView, GlideDrawable>> mViewTargetSet = Collections.newSetFromMap(new WeakHashMap<>());
 
+    private float density;
+    private Rect emoticonInitRect, unknownImageInitRect;
+
     protected GlideImageGetter(Context context, TextView textView) {
         this.mContext = context;
         this.mTextView = textView;
@@ -75,6 +78,8 @@ public final class GlideImageGetter
         // add this listener in order to clean any pending images loading
         // and set drawable callback tag to null when detached from window
         mTextView.addOnAttachStateChangeListener(this);
+
+        initRectHolder();
     }
 
     public static GlideImageGetter get(TextView textView) {
@@ -85,6 +90,15 @@ public final class GlideImageGetter
         return (GlideImageGetter) object;
     }
 
+    private void initRectHolder() {
+        density = mContext.getResources().getDisplayMetrics().density;
+        //init bounds
+        emoticonInitRect = new Rect(0, 0, (int) (Api.EMOTICON_INIT_WIDTH * density), (int) (Api.EMOTICON_INIT_HEIGHT * density));
+
+        Drawable unknownDrawable = ContextCompat.getDrawable(mContext, R.mipmap.unknown_image);
+        unknownImageInitRect = new Rect(0, 0, unknownDrawable.getIntrinsicWidth(), unknownDrawable.getIntrinsicHeight());
+    }
+
     /**
      * We display image depends on settings and Wi-Fi status,
      * but display emoticons at any time.
@@ -92,7 +106,7 @@ public final class GlideImageGetter
     @Override
     @WorkerThread
     public Drawable getDrawable(String url) {
-        UrlDrawable urlDrawable = new UrlDrawable(url, null);
+        UrlDrawable urlDrawable;
 
         String emoticonName = Api.parseEmoticonName(url);
         // url has no domain if it comes from server.
@@ -100,11 +114,9 @@ public final class GlideImageGetter
             url = Api.BASE_URL + url;
         }
         if (emoticonName != null) {
+            urlDrawable = new UrlDrawable(url, emoticonInitRect);
             ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
                     urlDrawable);
-            float density = mContext.getResources().getDisplayMetrics().density;
-            //init bounds
-            urlDrawable.setBounds(new Rect(0, 0, (int) (Api.EMOTICON_INIT_WIDTH * density), (int) (Api.EMOTICON_INIT_HEIGHT * density)));
 
             SizeMultiplierBitmapTransformation sizeMultiplierBitmapTransformation =
                     new SizeMultiplierBitmapTransformation(mContext, density);
@@ -142,15 +154,13 @@ public final class GlideImageGetter
             return urlDrawable;
         }
 
+        urlDrawable = new UrlDrawable(url, unknownImageInitRect);
         ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
                 urlDrawable);
 
-        Drawable unknownDrawable = ContextCompat.getDrawable(mContext, R.mipmap.unknown_image);
-        urlDrawable.setInitDrawable(unknownDrawable);
-        urlDrawable.setBounds(new Rect(0, 0, unknownDrawable.getIntrinsicWidth(), unknownDrawable.getIntrinsicHeight()));
-
         DrawableRequestBuilder<String> glideRequestBuilder = Glide.with(mContext)
                 .load(url)
+                .placeholder(R.mipmap.unknown_image)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .transform(new FitOutWidthBitmapTransformation(mContext));
         RxJavaUtil.workInMainThread(glideRequestBuilder, builder -> builder.into(imageGetterViewTarget));
@@ -201,6 +211,13 @@ public final class GlideImageGetter
         }
 
         @Override
+        public void onLoadStarted(Drawable placeholder) {
+            if (placeholder != null) {
+                setDrawable(placeholder);
+            }
+        }
+
+        @Override
         public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
             setDrawable(resource);
 
@@ -221,7 +238,13 @@ public final class GlideImageGetter
             }
         }
 
+        @Override
+        public void onLoadFailed(Exception e, Drawable errorDrawable) {
+            L.e(e);
+        }
+
         private void setDrawable(@NonNull Drawable resource) {
+            L.l("setDrawable");
             // resize this drawable's width & height to fit its container
             final int resWidth = resource.getIntrinsicWidth();
             final int resHeight = resource.getIntrinsicHeight();
@@ -235,24 +258,23 @@ public final class GlideImageGetter
                 height = (int) (resHeight / ((float) resWidth / width));
             }
 
-            Rect initRect = mDrawable.getInitRect();
-            if (width > initRect.width() || height > initRect.height()) {
-                Rect rect = new Rect(0, 0, width, height);
-                resource.setBounds(rect);
-                mDrawable.setBounds(rect);
-                mDrawable.setDrawable(resource);
+            Rect rect = new Rect(0, 0, width, height);
+            resource.setBounds(rect);
+            mDrawable.setBounds(rect);
+            mDrawable.setDrawable(resource);
 
-                refreshLayout();
-            }
+            refreshLayout();
         }
 
         /**
          * refresh textView layout after drawable invalidate
          */
         private void refreshLayout() {
+            L.l("refreshLayout start");
             ImageSpan imageSpan = mDrawable.getImageSpan();
             if (imageSpan == null) {
                 //onResourceReady run before imageSpan init. do nothing
+                L.l("onResourceReady run before imageSpan init");
                 return;
             }
             CharSequence text = getView().getText();
@@ -262,6 +284,7 @@ public final class GlideImageGetter
                 int end = span.getSpanEnd(imageSpan);
                 if (!isSpanValid(start, end)) {
                     //onResourceReady run before imageSpan add to textView. do nothing
+                    L.l("onResourceReady run before imageSpan add to textView");
                     return;
                 }
                 span.removeSpan(imageSpan);
@@ -272,16 +295,19 @@ public final class GlideImageGetter
                 int end = span.getSpanEnd(imageSpan);
                 if (!isSpanValid(start, end)) {
                     //onResourceReady run before imageSpan add to textView. do nothing
+                    L.d("onResourceReady run before imageSpan add to textView");
                     return;
                 }
                 span.removeSpan(imageSpan);
                 span.setSpan(imageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
+
+            L.l("refreshLayout end");
         }
 
 
         private boolean isSpanValid(int start, int end) {
-            return start > 0 && end > 0;
+            return start >= 0 && end >= 0;
         }
 
         /**
