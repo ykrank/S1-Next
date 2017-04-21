@@ -16,6 +16,8 @@ buildscript {
         // in the individual module build.gradle files
 
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.1'
+        // method runtime
+        classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
     }
 
     // Exclude the version that the android plugin depends on.

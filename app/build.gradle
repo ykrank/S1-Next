@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'org.greenrobot.greendao'
+apply plugin: 'com.jakewharton.hugo'
 
 
 Properties properties = new Properties()
