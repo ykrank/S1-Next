@@ -7,8 +7,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-import me.ykrank.s1next.util.L;
+import android.text.style.ImageSpan;
 
 /**
  * Implements {@link Drawable.Callback} in order to show animated GIFs in the TextView.
@@ -19,12 +18,27 @@ final class UrlDrawable extends Drawable implements Drawable.Callback {
     @Nullable
     private Drawable initDrawable;
     private Drawable mDrawable;
+    @Nullable
+    private ImageSpan imageSpan;
 
     private String url;
 
     public UrlDrawable(String url, @Nullable Drawable initDrawable) {
         this.url = url;
         setInitDrawable(initDrawable);
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    @Nullable
+    public ImageSpan getImageSpan() {
+        return imageSpan;
+    }
+
+    public void setImageSpan(@Nullable ImageSpan imageSpan) {
+        this.imageSpan = imageSpan;
     }
 
     public void setInitDrawable(@Nullable Drawable initDrawable) {
@@ -43,12 +57,8 @@ final class UrlDrawable extends Drawable implements Drawable.Callback {
     public void draw(@NonNull Canvas canvas) {
         boolean drawn = false;
         if (mDrawable != null) {
-            try {
-                mDrawable.draw(canvas);
-                drawn = true;
-            } catch (Exception e) {
-                L.report("UrlDrawable##url:" + url + ",GlideDrawable:" + mDrawable, e);
-            }
+            mDrawable.draw(canvas);
+            drawn = true;
         }
         if (!drawn && initDrawable != null) {
             initDrawable.draw(canvas);

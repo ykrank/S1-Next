@@ -25,7 +25,7 @@ import me.ykrank.s1next.util.L;
 
 /**
  * A movement method that provides selection and clicking on links,
- * also invokes {@link TagHandler.ImageClickableSpan}'s clicking event.
+ * also invokes {@link ImageClickableResizeSpan}'s clicking event.
  */
 public class PostMovementMethod extends ArrowKeyMovementMethod {
 
@@ -102,20 +102,20 @@ public class PostMovementMethod extends ArrowKeyMovementMethod {
                 return true;
             }
 
-            // invoke ImageClickableSpan's clicking event
-            TagHandler.ImageClickableSpan[] imageClickableSpans = buffer.getSpans(off, off,
-                    TagHandler.ImageClickableSpan.class);
+            // invoke ImageClickableResizeSpan's clicking event
+            ImageClickableResizeSpan[] imageClickableSpans = buffer.getSpans(off, off,
+                    ImageClickableResizeSpan.class);
             if (imageClickableSpans.length != 0) {
                 if (action == MotionEvent.ACTION_UP) {
                     if (imageClickableSpans.length > 1) {
                         //if use getSpans(off, off , sometime click mid in two span will cause error
-                        TagHandler.ImageClickableSpan[] spans = buffer.getSpans(off, off + 1,
-                                TagHandler.ImageClickableSpan.class);
+                        ImageClickableResizeSpan[] spans = buffer.getSpans(off, off + 1,
+                                ImageClickableResizeSpan.class);
                         if (spans.length == 1) {
                             spans[0].onClick(widget);
                             return true;
                         }
-                        L.report(new IllegalStateException("ImageClickableSpan length warn; \n" +
+                        L.report(new IllegalStateException("ImageClickableResizeSpan length warn; \n" +
                                 "length" + imageClickableSpans.length + ",line:" + line + ",off:" + off
                                 + ",newLength:" + spans.length));
                     }

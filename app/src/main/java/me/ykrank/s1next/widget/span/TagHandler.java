@@ -1,19 +1,13 @@
 package me.ykrank.s1next.widget.span;
 
-import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
-import android.view.View;
-import android.webkit.URLUtil;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.XMLReader;
-
-import me.ykrank.s1next.data.api.Api;
-import me.ykrank.s1next.view.activity.GalleryActivity;
 
 /**
  * Adds {@link android.view.View.OnClickListener}
@@ -49,7 +43,7 @@ public final class TagHandler implements Html.TagHandler {
 
     /**
      * Replaces {@link android.view.View.OnClickListener}
-     * with {@link TagHandler.ImageClickableSpan}.
+     * with {@link ImageClickableResizeSpan}.
      * <p>
      * See android.text.Html.HtmlToSpannedConverter#startImg(android.text.SpannableStringBuilder, org.xml.sax.Attributes, android.text.Html.ImageGetter)
      */
@@ -66,16 +60,10 @@ public final class TagHandler implements Html.TagHandler {
             // in order to support url copyFrom when selected
             output.replace(end - len, end, url);
 
-            // image from server doesn't have domain
-            // skip this because we don't want to
-            // make this image (emoticon or something
-            // others) clickable
-            if (!Api.isEmoticonName(url)) {
-                output.removeSpan(imageSpan);
-                // make this ImageSpan clickable
-                output.setSpan(new ImageClickableSpan(imageSpan.getDrawable(), url),
-                        end - len, output.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
+            output.removeSpan(imageSpan);
+            // make this ImageSpan clickable
+            output.setSpan(new ImageClickableResizeSpan(imageSpan.getDrawable(), url),
+                    end - len, output.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }
 
@@ -94,19 +82,4 @@ public final class TagHandler implements Html.TagHandler {
             BilibiliSpan.endBilibiliSpan((SpannableStringBuilder) output);
     }
 
-    static final class ImageClickableSpan extends ImageSpan implements View.OnClickListener {
-
-        private ImageClickableSpan(Drawable d, String source) {
-            super(d, source);
-        }
-
-        @Override
-        public void onClick(View v) {
-            String url = getSource();
-            if (!URLUtil.isNetworkUrl(url)) {
-                url = Api.BASE_URL + url;
-            }
-            GalleryActivity.startGalleryActivity(v.getContext(), url);
-        }
-    }
 }

@@ -8,6 +8,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.TextView;
@@ -234,15 +238,51 @@ public final class GlideImageGetter
 
             Rect initRect = mDrawable.getInitRect();
             if (width > initRect.width() || height > initRect.height()) {
-
                 Rect rect = new Rect(0, 0, width, height);
                 resource.setBounds(rect);
                 mDrawable.setBounds(rect);
                 mDrawable.setDrawable(resource);
 
-                // see http://stackoverflow.com/questions/7870312/android-imagegetter-images-overlapping-text#comment-22289166
-                textView.setText(textView.getText());
+                refreshLayout();
             }
+        }
+
+        /**
+         * refresh textView layout after drawable invalidate
+         */
+        private void refreshLayout() {
+            ImageSpan imageSpan = mDrawable.getImageSpan();
+            if (imageSpan == null) {
+                //onResourceReady run before imageSpan init. do nothing
+                return;
+            }
+            CharSequence text = getView().getText();
+            if (text instanceof SpannableString) {
+                SpannableString span = (SpannableString) text;
+                int start = span.getSpanStart(imageSpan);
+                int end = span.getSpanEnd(imageSpan);
+                if (!isSpanValid(start, end)) {
+                    //onResourceReady run before imageSpan add to textView. do nothing
+                    return;
+                }
+                span.removeSpan(imageSpan);
+                span.setSpan(imageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            } else {
+                SpannableStringBuilder span = (SpannableStringBuilder) text;
+                int start = span.getSpanStart(imageSpan);
+                int end = span.getSpanEnd(imageSpan);
+                if (!isSpanValid(start, end)) {
+                    //onResourceReady run before imageSpan add to textView. do nothing
+                    return;
+                }
+                span.removeSpan(imageSpan);
+                span.setSpan(imageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
+
+
+        private boolean isSpanValid(int start, int end) {
+            return start > 0 && end > 0;
         }
 
         /**
