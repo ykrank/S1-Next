@@ -95,6 +95,16 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
+                    android:host="www.saraba1st.com"
+                    android:pathPattern=".*"
+                    android:scheme="http" />
+
+                <data
+                    android:host="www.saraba1st.com"
+                    android:pathPattern=".*"
+                    android:scheme="https" />
+
+                <data
                     android:host="bbs.saraba1st.com"
                     android:pathPattern=".*"
                     android:scheme="http" />
@@ -105,22 +115,32 @@
                     android:scheme="https" />
 
                 <data
-                    android:host="119.23.22.79"
+                    android:host="bbs.stage1.cc"
                     android:pathPattern=".*"
                     android:scheme="http" />
 
                 <data
-                    android:host="119.23.22.79"
+                    android:host="bbs.stage1.cc"
                     android:pathPattern=".*"
                     android:scheme="https" />
 
                 <data
-                    android:host="bbs.stage1.cc"
+                    android:host="stage1st.com"
                     android:pathPattern=".*"
                     android:scheme="http" />
 
                 <data
-                    android:host="bbs.stage1.cc"
+                    android:host="stage1st.com"
+                    android:pathPattern=".*"
+                    android:scheme="https" />
+
+                <data
+                    android:host="www.stage1st.com"
+                    android:pathPattern=".*"
+                    android:scheme="http" />
+
+                <data
+                    android:host="www.stage1st.com"
                     android:pathPattern=".*"
                     android:scheme="https" />
             </intent-filter>
