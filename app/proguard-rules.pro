@@ -84,6 +84,9 @@
 #RxCache
 -dontwarn io.rx_cache.internal.**
 -keepclassmembers enum io.rx_cache.Source { *; }
+-keepclassmembernames class * {
+    @io.rx_cache2.* <methods>;
+}
 
 # RxJava
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
