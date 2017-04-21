@@ -37,7 +37,6 @@ import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.widget.EmoticonFactory;
 import me.ykrank.s1next.widget.glide.transformations.FitOutWidthBitmapTransformation;
-import me.ykrank.s1next.widget.glide.transformations.GlMaxTextureSizeBitmapTransformation;
 import me.ykrank.s1next.widget.glide.transformations.SizeMultiplierBitmapTransformation;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import me.ykrank.s1next.widget.track.event.EmoticonNotFoundTrackEvent;
@@ -153,7 +152,7 @@ public final class GlideImageGetter
         DrawableRequestBuilder<String> glideRequestBuilder = Glide.with(mContext)
                 .load(url)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .transform(new GlMaxTextureSizeBitmapTransformation(mContext), new FitOutWidthBitmapTransformation(mContext));
+                .transform(new FitOutWidthBitmapTransformation(mContext));
         RxJavaUtil.workInMainThread(glideRequestBuilder, builder -> builder.into(imageGetterViewTarget));
 
         mViewTargetSet.add(imageGetterViewTarget);

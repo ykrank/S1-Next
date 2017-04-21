@@ -18,10 +18,20 @@ public final class FitOutWidthBitmapTransformation extends BitmapTransformation 
 
     @Override
     protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
-        if (toTransform.getWidth() > outWidth) {
-            return TransformationUtil.sizeMultiplier(pool, toTransform, (float) outWidth / toTransform.getWidth());
+        final int resWidth = toTransform.getWidth();
+        final int resHeight = toTransform.getHeight();
+
+        float maxTextureSize = GlMaxTextureCalculator.getInstance().getGlMaxTextureSize();
+        float textureSizeMultiplier = Math.min(maxTextureSize / resWidth, maxTextureSize / resHeight);
+
+        float fitOutSizeMultiplier = outWidth / resWidth;
+        float sizeMultiplier = Math.min(textureSizeMultiplier, fitOutSizeMultiplier);
+
+        if (sizeMultiplier < 1) {
+            return TransformationUtil.sizeMultiplier(pool, toTransform, sizeMultiplier);
+        } else {
+            return toTransform;
         }
-        return toTransform;
     }
 
     @Override
