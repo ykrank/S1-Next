@@ -20,6 +20,7 @@ import me.ykrank.s1next.data.api.model.collection.ForumGroups;
 import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper;
 import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.activity.SearchActivity;
 import me.ykrank.s1next.view.adapter.ForumRecyclerViewAdapter;
 import me.ykrank.s1next.view.internal.ToolbarDropDownInterface;
@@ -89,7 +90,8 @@ public final class ForumFragment extends BaseRecyclerViewFragment<ForumGroupsWra
     @Override
     Observable<ForumGroupsWrapper> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
         return apiCacheProvider.getForumGroupsWrapper(mS1Service.getForumGroupsWrapper(),
-                new DynamicKey(mUser.getKey()), new EvictDynamicKey(isForceLoading()));
+                new DynamicKey(mUser.getKey()), new EvictDynamicKey(isForceLoading()))
+                .compose(RxJavaUtil.jsonTransformer(ForumGroupsWrapper.class));
     }
 
     @Override

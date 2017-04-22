@@ -8,9 +8,6 @@ import io.rx_cache2.DynamicKeyGroup;
 import io.rx_cache2.EvictDynamicKey;
 import io.rx_cache2.EvictDynamicKeyGroup;
 import io.rx_cache2.LifeCache;
-import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper;
 
 /**
  * RxCache provide cache for retrofit
@@ -19,15 +16,12 @@ import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper;
 
 public interface ApiCacheProvider {
 
+    @LifeCache(duration = 10, timeUnit = TimeUnit.MINUTES)
+    Observable<String> getForumGroupsWrapper(Observable<String> oWrapper, DynamicKey user, EvictDynamicKey evictDynamicKey);
+
+    @LifeCache(duration = 10, timeUnit = TimeUnit.MINUTES)
+    Observable<String> getThreadsWrapper(Observable<String> oWrapper, DynamicKeyGroup user, EvictDynamicKeyGroup evictDynamicKey);
+
     @LifeCache(duration = 1, timeUnit = TimeUnit.DAYS)
-    Observable<PostsWrapper> getPostsWrapper(Observable<PostsWrapper> oWrapper, DynamicKeyGroup page, EvictDynamicKeyGroup evictDynamicKey);
-
-    @LifeCache(duration = 3, timeUnit = TimeUnit.SECONDS)
-    Observable<PostsWrapper> getPostsWrapperNewer(Observable<PostsWrapper> oWrapper, DynamicKeyGroup page, EvictDynamicKeyGroup evictDynamicKey);
-
-    @LifeCache(duration = 10, timeUnit = TimeUnit.MINUTES)
-    Observable<ForumGroupsWrapper> getForumGroupsWrapper(Observable<ForumGroupsWrapper> oWrapper, DynamicKey user, EvictDynamicKey evictDynamicKey);
-
-    @LifeCache(duration = 10, timeUnit = TimeUnit.MINUTES)
-    Observable<ThreadsWrapper> getThreadsWrapper(Observable<ThreadsWrapper> oWrapper, DynamicKey user, EvictDynamicKey evictDynamicKey);
+    Observable<String> getPostsWrapper(Observable<String> oWrapper, DynamicKeyGroup page, EvictDynamicKeyGroup evictDynamicKey);
 }

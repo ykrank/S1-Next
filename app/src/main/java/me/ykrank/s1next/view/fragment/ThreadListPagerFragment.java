@@ -10,12 +10,13 @@ import android.view.View;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.rx_cache2.DynamicKey;
-import io.rx_cache2.EvictDynamicKey;
+import io.rx_cache2.DynamicKeyGroup;
+import io.rx_cache2.EvictDynamicKeyGroup;
 import me.ykrank.s1next.data.api.model.Forum;
 import me.ykrank.s1next.data.api.model.collection.Threads;
 import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.ThreadRecyclerViewAdapter;
 import me.ykrank.s1next.viewmodel.LoadingViewModel;
 
@@ -83,7 +84,8 @@ public final class ThreadListPagerFragment extends BaseRecyclerViewFragment<Thre
     @Override
     Observable<ThreadsWrapper> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
         return apiCacheProvider.getThreadsWrapper(mS1Service.getThreadsWrapper(mForumId, mPageNum),
-                new DynamicKey(mUser.getKey()), new EvictDynamicKey(isForceLoading()));
+                new DynamicKeyGroup(mForumId + "," + mPageNum, mUser.getKey()), new EvictDynamicKeyGroup(isForceLoading()))
+                .compose(RxJavaUtil.jsonTransformer(ThreadsWrapper.class));
     }
 
     @Override

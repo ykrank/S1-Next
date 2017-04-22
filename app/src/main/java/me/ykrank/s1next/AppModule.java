@@ -27,6 +27,7 @@ import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EditorDiskCache;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.PersistentHttpCookieStore;
+import me.ykrank.s1next.widget.UniDecoderConverterFactory;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
 import me.ykrank.s1next.widget.glide.OkHttpNoAvatarInterceptor;
 import me.ykrank.s1next.widget.hostcheck.BaseHostUrl;
@@ -99,6 +100,7 @@ public final class AppModule {
         return new Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(Api.BASE_API_URL)
+                .addConverterFactory(UniDecoderConverterFactory.create())
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

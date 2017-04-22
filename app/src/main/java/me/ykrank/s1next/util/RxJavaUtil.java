@@ -1,5 +1,7 @@
 package me.ykrank.s1next.util;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.google.common.base.Supplier;
 
 import java.util.concurrent.TimeUnit;
@@ -13,6 +15,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import me.ykrank.s1next.App;
 
 public final class RxJavaUtil {
     public static final Object NULL = "";
@@ -157,5 +160,17 @@ public final class RxJavaUtil {
 
     public static <T> ObservableTransformer<T, T> clickThrottleTransformer() {
         return observable -> observable.throttleFirst(1, TimeUnit.SECONDS);
+    }
+
+    public static <D> ObservableTransformer<String, D> jsonTransformer(Class<D> dClass) {
+        return observable -> observable.map(s -> App.getAppComponent().getJsonMapper().readValue(s, dClass));
+    }
+
+    public static <D> ObservableTransformer<String, D> jsonTransformer(JavaType javaType) {
+        return observable -> observable.map(s -> App.getAppComponent().getJsonMapper().readValue(s, javaType));
+    }
+
+    public static <D> ObservableTransformer<String, D> jsonTransformer(TypeReference<D> typeReference) {
+        return observable -> observable.map(s -> App.getAppComponent().getJsonMapper().readValue(s, typeReference));
     }
 }

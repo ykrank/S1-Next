@@ -278,13 +278,9 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
 
     @Override
     Observable<PostsWrapper> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
-        if (isForceLoading()) {
-            return apiCacheProvider.getPostsWrapperNewer(mS1Service.getPostsWrapper(mThreadId, mPageNum),
-                    new DynamicKeyGroup(mThreadId + mPageNum, mUser.getKey()), new EvictDynamicKeyGroup(false));
-        } else {
-            return apiCacheProvider.getPostsWrapper(mS1Service.getPostsWrapper(mThreadId, mPageNum),
-                    new DynamicKeyGroup(mThreadId + mPageNum, mUser.getKey()), new EvictDynamicKeyGroup(false));
-        }
+        return apiCacheProvider.getPostsWrapper(mS1Service.getPostsWrapper(mThreadId, mPageNum),
+                new DynamicKeyGroup(mThreadId + "," + mPageNum, mUser.getKey()), new EvictDynamicKeyGroup(isForceLoading()))
+                .compose(RxJavaUtil.jsonTransformer(PostsWrapper.class));
     }
 
     @Override

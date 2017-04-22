@@ -36,13 +36,15 @@
 -keep public class me.ykrank.s1next.data.cache.** { *; }
 -keep public class me.ykrank.s1next.data.db.dbmodel.ReadProgress { *; }
 # GreenDao model
--keep public class me.ykrank.s1next.data.db.dbmodel.**
+-keep public class me.ykrank.s1next.data.db.dbmodel.** { *; }
 
--dontwarn java.nio.file.Paths
--dontwarn java.beans.Transient
--dontwarn java.beans.ConstructorProperties
--dontwarn com.fasterxml.jackson.databind.ext.DOMSerializer
+#Jackson
+-dontwarn com.fasterxml.jackson.databind.ext.**
 -keepnames class com.fasterxml.jackson.** { *; }
+-keep class org.codehaus.* { *; }
+-keepclassmembers public final enum org.codehaus.jackson.annotate.JsonAutoDetect$Visibility {
+    public static final org.codehaus.jackson.annotate.JsonAutoDetect$Visibility *;
+}
 
 # Okio
 # https://github.com/square/okio/issues/144
@@ -82,10 +84,13 @@
 }
 
 #RxCache
--dontwarn io.rx_cache.internal.**
--keepclassmembers enum io.rx_cache.Source { *; }
+-dontwarn io.rx_cache2.internal.**
+-keepclassmembers enum io.rx_cache2.Source { *; }
 -keepclassmembernames class * {
     @io.rx_cache2.* <methods>;
+}
+-keep public class io.rx_cache2.internal.Record {
+    *;
 }
 
 # RxJava

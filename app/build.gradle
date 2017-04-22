@@ -47,6 +47,7 @@ android {
         abortOnError = Boolean.valueOf(System.getProperty('abort-on-error', 'true'))
         textReport true
         textOutput 'stdout'
+        disable 'MissingTranslation'
     }
     packagingOptions {
         exclude 'META-INF/LICENSE'
