@@ -6,10 +6,11 @@
     <string name="pref_signature">尾巴</string>
     <string name="pref_advanced">高级</string>
     <string name="pref_downloads">下载</string>
-    <string name="pref_downloads_summary">头像 &amp; 图片</string>
+    <string name="pref_downloads_summary">数据 &amp; 头像 &amp; 图片</string>
     <string name="pref_blacklists">黑名单</string>
     <string name="pref_blacklists_summary">塞抹布</string>
-    <string name="pref_download_total_cache_size">总缓存大小</string>
+    <string name="pref_image_total_cache_size">图片总缓存大小</string>
+    <string name="pref_data_total_cache_size">网络数据总缓存大小</string>
     <string name="pref_avatar">头像</string>
     <string name="pref_avatar_resolution">清晰度</string>
     <string name="pref_avatar_cache_invalidation_interval">缓存失效间隔</string>

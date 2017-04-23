@@ -28,14 +28,10 @@ public final class DownloadPreferenceFragment extends BasePreferenceFragment {
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(getString(R.string.pref_key_download_avatars_strategy))) {
-            mDownloadPreferencesManager.invalidateAvatarsDownloadStrategy();
-        } else if (key.equals(getString(R.string.pref_key_avatar_resolution_strategy))) {
+        if (key.equals(getString(R.string.pref_key_avatar_resolution_strategy))) {
             mDownloadPreferencesManager.invalidateAvatarsResolutionStrategy();
         } else if (key.equals(getString(R.string.pref_key_avatar_cache_invalidation_interval))) {
             mDownloadPreferencesManager.invalidateAvatarsCacheInvalidationInterval();
-        } else if (key.equals(getString(R.string.pref_key_download_images_strategy))) {
-            mDownloadPreferencesManager.invalidateImagesDownloadStrategy();
         }
     }
 }

@@ -1,9 +1,14 @@
 package me.ykrank.s1next.data.pref;
 
+import android.support.annotation.IntDef;
+
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.signature.StringSignature;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import me.ykrank.s1next.data.Wifi;
 import me.ykrank.s1next.util.DateUtil;
@@ -16,17 +21,6 @@ public final class DownloadPreferencesManager {
     private final DownloadPreferencesRepository mDownloadPreferencesProvider;
     private final Wifi mWifi;
 
-    /**
-     * Lazy Initialization.
-     */
-    private final Supplier<DownloadStrategy> mAvatarsDownloadStrategySupplier = new Supplier<DownloadStrategy>() {
-
-        @Override
-        public DownloadStrategy get() {
-            return DownloadStrategy.VALUES[Integer.parseInt(
-                    mDownloadPreferencesProvider.getAvatarsDownloadStrategyString())];
-        }
-    };
     private final Supplier<AvatarResolutionStrategy> mAvatarResolutionStrategySupplier = new Supplier<AvatarResolutionStrategy>() {
 
         @Override
@@ -43,39 +37,28 @@ public final class DownloadPreferencesManager {
                     mDownloadPreferencesProvider.getAvatarCacheInvalidationIntervalString())];
         }
     };
-    private final Supplier<DownloadStrategy> mImagesDownloadStrategySupplier = new Supplier<DownloadStrategy>() {
 
-        @Override
-        public DownloadStrategy get() {
-            return DownloadStrategy.VALUES[Integer.parseInt(
-                    mDownloadPreferencesProvider.getImagesDownloadStrategyString())];
-        }
-    };
-
-    private volatile Supplier<DownloadStrategy> mAvatarsDownloadStrategyMemorized = Suppliers.memoize(mAvatarsDownloadStrategySupplier);
     private volatile Supplier<AvatarResolutionStrategy> mAvatarResolutionStrategyMemorized = Suppliers.memoize(mAvatarResolutionStrategySupplier);
     private volatile Supplier<AvatarCacheInvalidationInterval> mAvatarCacheInvalidationIntervalMemorized = Suppliers.memoize(mAvatarCacheInvalidationIntervalSupplier);
-    private volatile Supplier<DownloadStrategy> mImagesDownloadStrategyMemorized = Suppliers.memoize(mImagesDownloadStrategySupplier);
 
     public DownloadPreferencesManager(DownloadPreferencesRepository downloadPreferencesProvider, Wifi wifi) {
         this.mDownloadPreferencesProvider = downloadPreferencesProvider;
         this.mWifi = wifi;
     }
 
-    public int getTotalDownloadCacheSize() {
-        return TotalDownloadCacheSize.VALUES[Integer.parseInt(
-                mDownloadPreferencesProvider.getTotalDownloadCacheSizeString())].size;
+    public int getTotalImageCacheSize() {
+        return TotalDownloadCacheSize.getByte(Integer.parseInt(
+                mDownloadPreferencesProvider.getTotalImageCacheSizeString()));
     }
 
-    /**
-     * Used for invalidating the avatars' download strategy if settings change.
-     */
-    public void invalidateAvatarsDownloadStrategy() {
-        mAvatarsDownloadStrategyMemorized = Suppliers.memoize(mAvatarsDownloadStrategySupplier);
+    public int getTotalDataCacheSize() {
+        return TotalDownloadCacheSize.getMByte(Integer.parseInt(
+                mDownloadPreferencesProvider.getTotalDataCacheSizeString()));
     }
 
     public boolean isAvatarsDownload() {
-        return mAvatarsDownloadStrategyMemorized.get().isDownload(mWifi.isWifiEnabled());
+        int avatarDownloadStrategy = Integer.parseInt(mDownloadPreferencesProvider.getAvatarsDownloadStrategyString());
+        return DownloadStrategyInternal.isDownload(avatarDownloadStrategy, mWifi.isWifiEnabled());
     }
 
     /**
@@ -104,17 +87,11 @@ public final class DownloadPreferencesManager {
     }
 
     /**
-     * Used for invalidating the images' download strategy if settings change.
-     */
-    public void invalidateImagesDownloadStrategy() {
-        mImagesDownloadStrategyMemorized = Suppliers.memoize(mImagesDownloadStrategySupplier);
-    }
-
-    /**
      * Checks whether we need to download images.
      */
     public boolean isImagesDownload() {
-        return mImagesDownloadStrategyMemorized.get().isDownload(mWifi.isWifiEnabled());
+        int imageDownloadStrategy = Integer.parseInt(mDownloadPreferencesProvider.getImagesDownloadStrategyString());
+        return DownloadStrategyInternal.isDownload(imageDownloadStrategy, mWifi.isWifiEnabled());
     }
 
     /**
@@ -123,31 +100,41 @@ public final class DownloadPreferencesManager {
      * download avatars or images.
      */
     public boolean needMonitorWifi() {
-        return mAvatarsDownloadStrategyMemorized.get() == DownloadStrategy.WIFI
-                || mImagesDownloadStrategyMemorized.get() == DownloadStrategy.WIFI;
+        int avatarDownloadStrategy = Integer.parseInt(mDownloadPreferencesProvider.getAvatarsDownloadStrategyString());
+        int imageDownloadStrategy = Integer.parseInt(mDownloadPreferencesProvider.getImagesDownloadStrategyString());
+        return avatarDownloadStrategy == DownloadStrategyInternal.WIFI
+                || imageDownloadStrategy == DownloadStrategyInternal.WIFI;
     }
 
-    private enum TotalDownloadCacheSize {
-        // 32MB, 64MB, 128MB
-        LOW(32), NORMAL(64), HIGH(128);
+    private static class TotalDownloadCacheSize {
+        private static final int LOW = 32;
+        private static final int NORMAL = 64;
+        private static final int HIGH = 128;
 
-        private static final TotalDownloadCacheSize[] VALUES = TotalDownloadCacheSize.values();
+        private static final int[] SIZE = new int[]{LOW, NORMAL, HIGH};
 
-        private final int size;
+        public static int getByte(int index) {
+            return SIZE[index] * 1000 * 1000;
+        }
 
-        TotalDownloadCacheSize(int size) {
-            this.size = size * 1000 * 1000;
+        public static int getMByte(int index) {
+            return SIZE[index];
         }
     }
 
-    private enum DownloadStrategy {
-        NOT, WIFI, ALWAYS;
+    private static class DownloadStrategyInternal {
+        private static final int NOT = 0;
+        private static final int WIFI = 1;
+        private static final int ALWAYS = 2;
 
-        private static final DownloadStrategy[] VALUES = DownloadStrategy.values();
+        @IntDef({NOT, WIFI, ALWAYS})
+        @Retention(RetentionPolicy.SOURCE)
+        @interface DownloadStrategy {
+        }
 
-        private boolean isDownload(boolean hasWifi) {
-            return equals(WIFI) && hasWifi
-                    || equals(ALWAYS);
+        private static boolean isDownload(int downloadStrategy, boolean hasWifi) {
+            return downloadStrategy == WIFI && hasWifi
+                    || downloadStrategy == ALWAYS;
         }
     }
 

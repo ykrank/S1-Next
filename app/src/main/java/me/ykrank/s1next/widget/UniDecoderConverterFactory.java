@@ -10,7 +10,7 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 
 /**
- * decode like '\u' unicode response string
+ * decode like `\ u` unicode response string
  */
 
 public final class UniDecoderConverterFactory extends Converter.Factory {

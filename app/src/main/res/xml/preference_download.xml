@@ -5,12 +5,20 @@
     tools:context=".view.fragment.setting.DownloadPreferenceFragment">
 
     <ListPreference
-        android:defaultValue="@string/pref_download_total_cache_size_default_value"
-        android:entries="@array/pref_download_total_cache_size_entries"
-        android:entryValues="@array/pref_download_total_cache_size_entry_values"
-        android:key="@string/pref_key_download_total_cache_size"
+        android:defaultValue="@string/pref_image_total_cache_size_default_value"
+        android:entries="@array/pref_image_total_cache_size_entries"
+        android:entryValues="@array/pref_image_total_cache_size_entry_values"
+        android:key="@string/pref_key_image_total_cache_size"
         android:summary="%s"
-        android:title="@string/pref_download_total_cache_size" />
+        android:title="@string/pref_image_total_cache_size" />
+
+    <ListPreference
+        android:defaultValue="@string/pref_data_total_cache_size_default_value"
+        android:entries="@array/pref_data_total_cache_size_entries"
+        android:entryValues="@array/pref_data_total_cache_size_entry_values"
+        android:key="@string/pref_key_data_total_cache_size"
+        android:summary="%s"
+        android:title="@string/pref_data_total_cache_size" />
 
     <PreferenceCategory
         android:persistent="false"

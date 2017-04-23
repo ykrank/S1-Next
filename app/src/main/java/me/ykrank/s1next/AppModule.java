@@ -22,6 +22,7 @@ import me.ykrank.s1next.data.api.ApiCacheProvider;
 import me.ykrank.s1next.data.api.ApiVersionInterceptor;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
+import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EditorDiskCache;
@@ -110,7 +111,7 @@ public final class AppModule {
 
     @Provides
     @Singleton
-    ApiCacheProvider providerApiCacheProvider(Context context) {
+    ApiCacheProvider providerApiCacheProvider(Context context, DownloadPreferencesManager downloadPreferencesManager) {
         String cachePath = context.getCacheDir().getAbsolutePath() + "/rx_cache";
         File cacheDir = new File(cachePath);
         if (!cacheDir.exists()) {
@@ -118,6 +119,7 @@ public final class AppModule {
         }
         return new RxCache.Builder()
                 .useExpiredDataIfLoaderNotAvailable(true)
+                .setMaxMBPersistenceCache(downloadPreferencesManager.getTotalDataCacheSize())
                 .persistence(new File(cachePath), new JacksonSpeaker())
                 .using(ApiCacheProvider.class);
     }

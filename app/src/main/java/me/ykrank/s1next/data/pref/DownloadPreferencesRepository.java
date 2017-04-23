@@ -14,9 +14,14 @@ public final class DownloadPreferencesRepository extends BasePreferencesReposito
         super(context, sharedPreferences);
     }
 
-    public String getTotalDownloadCacheSizeString() {
-        return getPrefString(R.string.pref_key_download_total_cache_size,
-                R.string.pref_download_total_cache_size_default_value);
+    public String getTotalImageCacheSizeString() {
+        return getPrefString(R.string.pref_key_image_total_cache_size,
+                R.string.pref_image_total_cache_size_default_value);
+    }
+
+    public String getTotalDataCacheSizeString() {
+        return getPrefString(R.string.pref_key_data_total_cache_size,
+                R.string.pref_data_total_cache_size_default_value);
     }
 
     public String getAvatarsDownloadStrategyString() {

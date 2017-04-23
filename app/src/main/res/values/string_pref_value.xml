@@ -10,11 +10,13 @@
 
     <string name="pref_advanced">Advanced</string>
     <string name="pref_downloads">Downloads</string>
-    <string name="pref_downloads_summary">Avatar &amp; Image</string>
+    <string name="pref_downloads_summary">Data &amp; Avatar &amp; Image</string>
     <string name="pref_blacklists">Blacklist</string>
     <string name="pref_blacklists_summary">Manage</string>
-    <string name="pref_download_total_cache_size">Total cache size</string>
-    <string name="pref_download_total_cache_size_default_value" translatable="false">1</string>
+    <string name="pref_image_total_cache_size">Total image cache size</string>
+    <string name="pref_image_total_cache_size_default_value" translatable="false">1</string>
+    <string name="pref_data_total_cache_size">Total network data cache size</string>
+    <string name="pref_data_total_cache_size_default_value" translatable="false">1</string>
     <string name="pref_avatar">Avatar</string>
     <string name="pref_download_avatars_strategy_default_value" translatable="false">2</string>
     <string name="pref_avatar_resolution">Resolution</string>

@@ -25,7 +25,7 @@ public final class AppGlideModule implements GlideModule {
         // set max size of the disk cache for images
         builder.setDiskCache(new InternalCacheDiskCacheFactory(
                 context, App.getAppComponent().getDownloadPreferencesManager()
-                .getTotalDownloadCacheSize()));
+                .getTotalImageCacheSize()));
 
         ViewTarget.setTagId(R.id.tag_glide);
 
