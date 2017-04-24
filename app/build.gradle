@@ -19,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId 'me.ykrank.s1next'
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 25
         versionCode 28
         versionName '1.1.5.1'
