@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ykrank on 2017/2/15.
@@ -39,10 +41,21 @@ public final class Vote {
     private boolean visibleVote;
     @JsonProperty("voterscount")
     private int voteCount;
-    
+
     @JsonCreator
-    public Vote(){
-        
+    public Vote(@JsonProperty("allowvote") String allowVote, @JsonProperty("multiple") String multiple,
+                @JsonProperty("visiblepoll") String visiblePoll, @JsonProperty("remaintime") List<Integer> time,
+                @JsonProperty("polloptions") Map<Integer, VoteOption> pollOptions) {
+        this.allow = "1".equals(allowVote);
+        this.multiple = "1".equals(multiple);
+        this.visibleVote = "1".equals(visiblePoll);
+        this.remainTime = new Time(time.get(0), time.get(1), time.get(2), time.get(3));
+
+        List<VoteOption> options = new ArrayList<>();
+        for (int i = 0; i < pollOptions.size(); i++) {
+            options.add(pollOptions.get(i));
+        }
+        this.voteOptions = options;
     }
 
     public boolean isAllow() {
@@ -133,7 +146,7 @@ public final class Vote {
                 '}';
     }
 
-    public static final class Time{
+    public static final class Time {
         private int day;
         private int hour;
         private int minute;
@@ -204,8 +217,8 @@ public final class Vote {
                     '}';
         }
     }
-    
-    public static final class VoteOption{
+
+    public static final class VoteOption {
         @JsonProperty("color")
         private String color;
         @JsonProperty("percent")
