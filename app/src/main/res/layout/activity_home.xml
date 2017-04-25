@@ -254,6 +254,7 @@
                             android:layout_marginBottom="@dimen/spacing_normal"
                             android:layout_marginLeft="@dimen/spacing_big"
                             android:layout_marginRight="@dimen/spacing_big"
+                            android:textIsSelectable="true"
                             app:html="@{data.signHtml}"
                             tools:text="S1Next-Goose-0.7.2
 项目：https://github.com/ykrank/S1-Next
