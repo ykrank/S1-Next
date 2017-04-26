@@ -270,16 +270,11 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
                 + mLayoutManager.findLastCompletelyVisibleItemPosition()) / 2;
     }
 
-    void notifyDataSetChanged() {
-        if (mRecyclerAdapter != null) {
-            getRecyclerView().setAdapter(mRecyclerAdapter);
-        }
-    }
-
     @Override
     Observable<PostsWrapper> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
         return apiCacheProvider.getPostsWrapper(mS1Service.getPostsWrapper(mThreadId, mPageNum),
-                new DynamicKeyGroup(mThreadId + "," + mPageNum, mUser.getKey()), new EvictDynamicKeyGroup(isForceLoading()))
+                new DynamicKeyGroup(mThreadId + "," + mPageNum, mUser.getKey()),
+                new EvictDynamicKeyGroup(isForceLoading() || mPageNum >= mPagerCallback.getTotalPages()))
                 .compose(RxJavaUtil.jsonTransformer(PostsWrapper.class));
     }
 
