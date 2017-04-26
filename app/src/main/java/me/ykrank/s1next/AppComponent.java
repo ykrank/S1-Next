@@ -77,6 +77,7 @@ import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
 import me.ykrank.s1next.widget.hostcheck.BaseHostUrl;
 import me.ykrank.s1next.widget.hostcheck.HttpDns;
 import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask;
+import me.ykrank.s1next.widget.net.Image;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import okhttp3.OkHttpClient;
 
@@ -94,7 +95,8 @@ public interface AppComponent {
 
     HttpDns getHttpDns();
 
-    OkHttpClient getOkHttpClient();
+    @Image
+    OkHttpClient getImageOkHttpClient();
 
     S1Service getS1Service();
 

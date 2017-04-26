@@ -35,6 +35,8 @@ import me.ykrank.s1next.widget.hostcheck.BaseHostUrl;
 import me.ykrank.s1next.widget.hostcheck.HttpDns;
 import me.ykrank.s1next.widget.hostcheck.MultiHostInterceptor;
 import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask;
+import me.ykrank.s1next.widget.net.Data;
+import me.ykrank.s1next.widget.net.Image;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
@@ -79,8 +81,25 @@ public final class AppModule {
         return new CookieManager(new PersistentHttpCookieStore(context), CookiePolicy.ACCEPT_ALL);
     }
 
+    @Data
     @Provides
-    OkHttpClient.Builder providerOkHttpClientBuilder(CookieManager cookieManager, BaseHostUrl baseHostUrl) {
+    OkHttpClient.Builder providerDataOkHttpClientBuilder(CookieManager cookieManager, BaseHostUrl baseHostUrl) {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.dns(new HttpDns(baseHostUrl));
+        builder.connectTimeout(10, TimeUnit.SECONDS);
+        builder.writeTimeout(20, TimeUnit.SECONDS);
+        builder.readTimeout(10, TimeUnit.SECONDS);
+        builder.retryOnConnectionFailure(true);
+        builder.cookieJar(new JavaNetCookieJar(cookieManager));
+        builder.addInterceptor(new ApiVersionInterceptor());
+        builder.addInterceptor(new MultiHostInterceptor(baseHostUrl));
+
+        return builder;
+    }
+
+    @Image
+    @Provides
+    OkHttpClient.Builder providerImageOkHttpClientBuilder(CookieManager cookieManager, BaseHostUrl baseHostUrl) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.dns(new HttpDns(baseHostUrl));
         builder.connectTimeout(17, TimeUnit.SECONDS);
@@ -89,7 +108,6 @@ public final class AppModule {
         builder.retryOnConnectionFailure(true);
         builder.cookieJar(new JavaNetCookieJar(cookieManager));
         builder.addNetworkInterceptor(new OkHttpNoAvatarInterceptor());
-        builder.addInterceptor(new ApiVersionInterceptor());
         builder.addInterceptor(new MultiHostInterceptor(baseHostUrl));
 
         return builder;
@@ -97,7 +115,7 @@ public final class AppModule {
 
     @Provides
     @Singleton
-    S1Service providerRetrofit(OkHttpClient okHttpClient) {
+    S1Service providerRetrofit(@Data OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(Api.BASE_API_URL)

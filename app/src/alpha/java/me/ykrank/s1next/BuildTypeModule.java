@@ -8,6 +8,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import me.ykrank.s1next.widget.net.Data;
+import me.ykrank.s1next.widget.net.Image;
 import okhttp3.OkHttpClient;
 
 /**
@@ -20,9 +22,19 @@ public final class BuildTypeModule {
         
     }
 
+    @Data
     @Provides
     @Singleton
-    OkHttpClient providerOkHttpClient(OkHttpClient.Builder builder) {
+    OkHttpClient providerDataOkHttpClient(@Data OkHttpClient.Builder builder) {
+        Preconditions.checkState("alpha".equals(BuildConfig.BUILD_TYPE));
+
+        return builder.build();
+    }
+
+    @Image
+    @Provides
+    @Singleton
+    OkHttpClient providerImageOkHttpClient(@Image OkHttpClient.Builder builder) {
         Preconditions.checkState("alpha".equals(BuildConfig.BUILD_TYPE));
 
         return builder.build();
