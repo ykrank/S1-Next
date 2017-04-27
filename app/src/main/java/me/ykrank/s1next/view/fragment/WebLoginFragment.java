@@ -24,12 +24,12 @@ import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.databinding.FragmentWebviewBinding;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.WebViewUtils;
 import me.ykrank.s1next.view.activity.ForumActivity;
 import me.ykrank.s1next.viewmodel.WebPageViewModel;
+import me.ykrank.s1next.widget.hostcheck.BaseHostUrl;
 
 /**
  * A Fragment to login in WebView.
@@ -38,10 +38,12 @@ public final class WebLoginFragment extends BaseFragment {
 
     public static final String TAG = WebLoginFragment.class.getName();
 
-    private static final String LOGIN_PAGE_URL = Api.BASE_URL + "forum-27-1.html";
+    private static final String LOGIN_PAGE_URL_SUFFIX = "forum-27-1.html";
 
     @Inject
     java.net.CookieManager cookieManger;
+    @Inject
+    BaseHostUrl baseHostUrl;
 
     private FragmentWebviewBinding mFragmentHelpBinding;
     private WebView mWebView;
@@ -85,15 +87,17 @@ public final class WebLoginFragment extends BaseFragment {
 
         mWebView.setWebChromeClient(new ProgressWebChromeClient(mProgressBar));
 
+        String baseUrl = baseHostUrl.getBaseUrl();
+
         // restore the state of WebView when configuration changes
         // see http://www.devahead.com/blog/2012/01/preserving-the-state-of-an-android-webview-on-screen-orientation-change/
         if (savedInstanceState == null) {
-            mWebView.loadUrl(LOGIN_PAGE_URL);
+            mWebView.loadUrl(baseUrl + LOGIN_PAGE_URL_SUFFIX);
         } else {
             mWebView.restoreState(savedInstanceState);
             // if we haven't finished loading before
             if (mWebView.getUrl() == null) {
-                mWebView.loadUrl(LOGIN_PAGE_URL);
+                mWebView.loadUrl(baseUrl + LOGIN_PAGE_URL_SUFFIX);
             }
         }
     }

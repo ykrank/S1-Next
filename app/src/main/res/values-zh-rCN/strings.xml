@@ -192,4 +192,5 @@
     <string name="clear_image_cache_error">清除图片缓存失败</string>
     <string name="clear_image_cache_success">清除图片缓存成功</string>
     <string name="click_to_cast_dark_magic">点击施放黑魔法</string>
+    <string name="vote_view_all_voter">查看投票参与人</string>
 </resources>

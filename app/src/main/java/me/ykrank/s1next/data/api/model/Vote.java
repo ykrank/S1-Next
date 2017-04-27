@@ -48,8 +48,10 @@ public final class Vote {
                 @JsonProperty("polloptions") Map<Integer, VoteOption> pollOptions) {
         this.allow = "1".equals(allowVote);
         this.multiple = "1".equals(multiple);
-        this.visibleVote = "1".equals(visiblePoll);
-        this.remainTime = new Time(time.get(0), time.get(1), time.get(2), time.get(3));
+        this.visibleVote = "0".equals(visiblePoll);
+        if (time != null && time.size() == 4) {
+            this.remainTime = new Time(time.get(0), time.get(1), time.get(2), time.get(3));
+        }
 
         List<VoteOption> options = new ArrayList<>();
         for (int i = 0; i < pollOptions.size(); i++) {
