@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.util.SimpleArrayMap;
+import android.text.TextUtils;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -179,7 +180,12 @@ public final class Post implements Parcelable, Cloneable, SameItem {
         return reply;
     }
 
-    public void setReply(String reply) {
+    public void setReply(@Nullable String reply) {
+        if (TextUtils.isEmpty(reply)) {
+            this.reply = reply;
+            return;
+        }
+        
         reply = hideBlackListQuote(reply);
 
         reply = replaceBilibiliTag(reply);
