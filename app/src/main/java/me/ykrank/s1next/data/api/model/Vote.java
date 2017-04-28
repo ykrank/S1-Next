@@ -1,14 +1,14 @@
 package me.ykrank.s1next.data.api.model;
 
+import android.util.SparseArray;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by ykrank on 2017/2/15.
@@ -30,12 +30,12 @@ public final class Vote {
      */
     @JsonIgnore
     private boolean multiple;
-    @JsonIgnore
-    private List<VoteOption> voteOptions;
+    @JsonProperty("polloptions")
+    private SparseArray<VoteOption> voteOptions;
     @JsonIgnore
     private Time remainTime;
     /**
-     * 是否公开投票，投票结果可见
+     * 投票结果是否可见
      */
     @JsonIgnore
     private boolean visibleVote;
@@ -44,20 +44,13 @@ public final class Vote {
 
     @JsonCreator
     public Vote(@JsonProperty("allowvote") String allowVote, @JsonProperty("multiple") String multiple,
-                @JsonProperty("visiblepoll") String visiblePoll, @JsonProperty("remaintime") List<Integer> time,
-                @JsonProperty("polloptions") Map<Integer, VoteOption> pollOptions) {
+                @JsonProperty("visiblepoll") String visiblePoll, @JsonProperty("remaintime") List<Integer> time) {
         this.allow = "1".equals(allowVote);
         this.multiple = "1".equals(multiple);
-        this.visibleVote = "0".equals(visiblePoll);
+        this.visibleVote = "1".equals(visiblePoll);
         if (time != null && time.size() == 4) {
             this.remainTime = new Time(time.get(0), time.get(1), time.get(2), time.get(3));
         }
-
-        List<VoteOption> options = new ArrayList<>();
-        for (int i = 0; i < pollOptions.size(); i++) {
-            options.add(pollOptions.get(i));
-        }
-        this.voteOptions = options;
     }
 
     public boolean isAllow() {
@@ -84,11 +77,11 @@ public final class Vote {
         this.multiple = multiple;
     }
 
-    public List<VoteOption> getVoteOptions() {
+    public SparseArray<VoteOption> getVoteOptions() {
         return voteOptions;
     }
 
-    public void setVoteOptions(List<VoteOption> voteOptions) {
+    public void setVoteOptions(SparseArray<VoteOption> voteOptions) {
         this.voteOptions = voteOptions;
     }
 
