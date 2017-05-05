@@ -8,6 +8,7 @@ import io.rx_cache2.DynamicKeyGroup;
 import io.rx_cache2.EvictDynamicKey;
 import io.rx_cache2.EvictDynamicKeyGroup;
 import io.rx_cache2.LifeCache;
+import io.rx_cache2.Reply;
 
 /**
  * RxCache provide cache for retrofit
@@ -23,5 +24,5 @@ public interface ApiCacheProvider {
     Observable<String> getThreadsWrapper(Observable<String> oWrapper, DynamicKeyGroup user, EvictDynamicKeyGroup evictDynamicKey);
 
     @LifeCache(duration = 1, timeUnit = TimeUnit.DAYS)
-    Observable<String> getPostsWrapper(Observable<String> oWrapper, DynamicKeyGroup page, EvictDynamicKeyGroup evictDynamicKey);
+    Observable<Reply<String>> getPostsWrapper(Observable<String> oWrapper, DynamicKeyGroup page, EvictDynamicKeyGroup evictDynamicKey);
 }

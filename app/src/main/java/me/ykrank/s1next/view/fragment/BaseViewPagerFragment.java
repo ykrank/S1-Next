@@ -121,6 +121,9 @@ abstract class BaseViewPagerFragment extends BaseFragment
     }
 
     public final void setTotalPages(int totalPages) {
+        if (totalPages <= mTotalPages) {
+            return;
+        }
         this.mTotalPages = totalPages;
         mViewPager.getAdapter().notifyDataSetChanged();
         preparePageJumpMenu();

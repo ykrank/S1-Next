@@ -25,8 +25,11 @@ import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import io.rx_cache2.DynamicKeyGroup;
 import io.rx_cache2.EvictDynamicKeyGroup;
+import io.rx_cache2.Reply;
+import io.rx_cache2.Source;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.api.model.collection.Posts;
@@ -275,7 +278,16 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
         return apiCacheProvider.getPostsWrapper(mS1Service.getPostsWrapper(mThreadId, mPageNum),
                 new DynamicKeyGroup(mThreadId + "," + mPageNum, mUser.getKey()),
                 new EvictDynamicKeyGroup(isForceLoading() || mPageNum >= mPagerCallback.getTotalPages()))
-                .compose(RxJavaUtil.jsonTransformer(PostsWrapper.class));
+                .flatMap(o -> {
+                    PostsWrapper wrapper = App.getAppComponent().getJsonMapper().readValue(o.getData(), PostsWrapper.class);
+                    if (o.getSource() != Source.CLOUD && wrapper.getData().getPostList().size() < Api.POSTS_PER_PAGE) {
+                        return apiCacheProvider.getPostsWrapper(mS1Service.getPostsWrapper(mThreadId, mPageNum),
+                                new DynamicKeyGroup(mThreadId + "," + mPageNum, mUser.getKey()), new EvictDynamicKeyGroup(true))
+                                .map(Reply::getData)
+                                .compose(RxJavaUtil.jsonTransformer(PostsWrapper.class));
+                    }
+                    return Observable.just(wrapper);
+                });
     }
 
     @Override
