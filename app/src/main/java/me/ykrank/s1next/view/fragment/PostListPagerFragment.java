@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bigkoo.quicksidebar.QuickSideBarView;
 import com.bigkoo.quicksidebar.listener.OnQuickSideBarTouchListener;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,6 +73,8 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
     EventBus mEventBus;
     @Inject
     GeneralPreferencesManager mGeneralPreferencesManager;
+    @Inject
+    ObjectMapper objectMapper;
 
     private String mThreadId;
     private int mPageNum;
@@ -279,7 +282,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
                 new DynamicKeyGroup(mThreadId + "," + mPageNum, mUser.getKey()),
                 new EvictDynamicKeyGroup(isForceLoading() || mPageNum >= mPagerCallback.getTotalPages()))
                 .flatMap(o -> {
-                    PostsWrapper wrapper = App.getAppComponent().getJsonMapper().readValue(o.getData(), PostsWrapper.class);
+                    PostsWrapper wrapper = objectMapper.readValue(o.getData(), PostsWrapper.class);
                     if (o.getSource() != Source.CLOUD && wrapper.getData().getPostList().size() < Api.POSTS_PER_PAGE) {
                         return apiCacheProvider.getPostsWrapper(mS1Service.getPostsWrapper(mThreadId, mPageNum),
                                 new DynamicKeyGroup(mThreadId + "," + mPageNum, mUser.getKey()), new EvictDynamicKeyGroup(true))
