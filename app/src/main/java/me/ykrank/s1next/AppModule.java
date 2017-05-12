@@ -10,6 +10,7 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -23,6 +24,8 @@ import me.ykrank.s1next.data.api.ApiCacheProvider;
 import me.ykrank.s1next.data.api.ApiVersionInterceptor;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
+import me.ykrank.s1next.data.api.app.AppApi;
+import me.ykrank.s1next.data.api.app.AppService;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
 import me.ykrank.s1next.task.AutoSignTask;
@@ -127,6 +130,19 @@ public final class AppModule {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
                 .create(S1Service.class);
+    }
+    
+    @Provides
+    @Singleton
+    AppService providerAppRetrofit(@Data OkHttpClient okHttpClient) {
+        return new Retrofit.Builder()
+                .client(okHttpClient)
+                .baseUrl(AppApi.BASE_URL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(JacksonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
+                .create(AppService.class);
     }
 
     @Provides
