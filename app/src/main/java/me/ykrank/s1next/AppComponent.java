@@ -13,6 +13,7 @@ import me.ykrank.s1next.data.Wifi;
 import me.ykrank.s1next.data.api.ApiCacheProvider;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
+import me.ykrank.s1next.data.api.app.AppService;
 import me.ykrank.s1next.data.db.AppDaoSessionManager;
 import me.ykrank.s1next.data.db.BlackListDbWrapper;
 import me.ykrank.s1next.data.db.DbModule;
@@ -100,6 +101,8 @@ public interface AppComponent {
     OkHttpClient getImageOkHttpClient();
 
     S1Service getS1Service();
+
+    AppService getAppService();
 
     ApiCacheProvider getApiCacheProvider();
 
