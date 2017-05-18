@@ -221,8 +221,10 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
 
     @Override
     void startPullToRefresh() {
-        mRecyclerAdapter.showFooterProgress();
-        super.startPullToRefresh();
+        if (isPullUpToRefreshValid()) {
+            mRecyclerAdapter.showFooterProgress();
+            super.startPullToRefresh();
+        }
     }
 
     /**

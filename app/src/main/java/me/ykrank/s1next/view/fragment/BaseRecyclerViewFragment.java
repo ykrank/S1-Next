@@ -2,6 +2,7 @@ package me.ykrank.s1next.view.fragment;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -56,6 +57,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
      * current loading state.
      */
     private static final String STATE_LOADING_VIEW_MODEL = "loading_view_model";
+    private static final long PULL_REFRESH_COLD_TIME = 2000;
 
     S1Service mS1Service;
     ApiCacheProvider apiCacheProvider;
@@ -69,6 +71,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     private DataRetainedFragment<D> mDataRetainedFragment;
 
     private Disposable mDisposable;
+    private long lastPullRefreshTime;
 
     @CallSuper
     @Override
@@ -258,6 +261,14 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
     }
 
     /**
+     * whether we not pull up refresh too frequently
+     */
+    final boolean isPullUpToRefreshValid() {
+        long lastTime = SystemClock.elapsedRealtime() - lastPullRefreshTime;
+        return lastTime > PULL_REFRESH_COLD_TIME;
+    }
+
+    /**
      * Show refresh progress and start to loadViewPager new data.
      */
     @CallSuper
@@ -275,8 +286,11 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
      */
     @CallSuper
     void startPullToRefresh() {
-        mLoadingViewModel.setLoading(LoadingViewModel.LOADING_PULL_UP_TO_REFRESH);
-        load(LoadingViewModel.LOADING_PULL_UP_TO_REFRESH);
+        if (isPullUpToRefreshValid()) {
+            lastPullRefreshTime = SystemClock.elapsedRealtime();
+            mLoadingViewModel.setLoading(LoadingViewModel.LOADING_PULL_UP_TO_REFRESH);
+            load(LoadingViewModel.LOADING_PULL_UP_TO_REFRESH);
+        }
     }
 
     /**
