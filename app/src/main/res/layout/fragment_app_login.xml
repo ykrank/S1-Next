@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="me.ykrank.s1next.view.fragment.LoginFragment">
+
+    <data>
+
+        <import type="android.view.View" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_padding"
+        android:paddingEnd="@dimen/activity_horizontal_padding"
+        android:paddingLeft="@dimen/activity_horizontal_padding"
+        android:paddingRight="@dimen/activity_horizontal_padding"
+        android:paddingStart="@dimen/activity_horizontal_padding"
+        android:paddingTop="@dimen/activity_vertical_padding">
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_username"
+            android:inputType="text"
+            android:lines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_password"
+            android:imeActionId="@integer/ime_action_id"
+            android:imeActionLabel="@string/action_login"
+            android:inputType="textPassword"
+            android:lines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+        <Spinner
+            android:id="@+id/questionSpinner"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:entries="@array/login_question_entry_values" />
+
+        <EditText
+            android:id="@+id/answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_answer"
+            android:inputType="text"
+            android:lines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:visibility="@{questionSpinner.selectedItemPosition &lt;= 0 ? View.GONE:View.VISIBLE}" />
+
+        <Button
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_login"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+        <TextView
+            android:id="@+id/tv_login_in_web"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/subtitle_margin_top"
+            android:text="@string/login_in_web"
+            android:textColor="?attr/colorAccent" />
+    </LinearLayout>
+
+</layout>

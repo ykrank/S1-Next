@@ -134,4 +134,14 @@
         <item>@string/search_type_entry_user</item>
     </string-array>
 
+    <string-array name="login_question_entry_values">
+        <item>安全提问(未设置请忽略)</item>
+        <item>母亲的名字</item>
+        <item>爷爷的名字</item>
+        <item>父亲出生的城市</item>
+        <item>您其中一位老师的名字</item>
+        <item>您个人计算机的型号</item>
+        <item>您最喜欢的餐馆名称</item>
+        <item>驾驶执照最后四位数字</item>
+    </string-array>
 </resources>

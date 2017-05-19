@@ -180,6 +180,7 @@
     <string name="pref_network_summary">专业的技术参数，谨慎修改</string>
     <string name="title_history">历史记录</string>
     <string name="histories">历史记录</string>
+    <string name="prompt_answer">答案</string>
     <string name="action_check_in">签到</string>
     <string name="already_checked_in">已签到</string>
     <string name="download_unknown_error">下载失败</string>
