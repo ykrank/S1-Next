@@ -39,6 +39,8 @@ import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
  */
 abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
 
+    protected static final String ARG_DIALOG_NOT_CANCELABLE_ON_TOUCH_OUTSIDE = "dialog_not_cancelable_on_touch_outside";
+
     S1Service mS1Service;
 
     UserValidator mUserValidator;
@@ -46,6 +48,8 @@ abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
     private User mUser;
 
     private Disposable mDisposable;
+
+    private boolean dialogNotCancelableOnTouchOutside;
 
     @Override
     @CallSuper
@@ -55,6 +59,10 @@ abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
         mS1Service = appComponent.getS1Service();
         mUser = appComponent.getUser();
         mUserValidator = appComponent.getUserValidator();
+
+        if (getArguments() != null) {
+            dialogNotCancelableOnTouchOutside = getArguments().getBoolean(ARG_DIALOG_NOT_CANCELABLE_ON_TOUCH_OUTSIDE, false);
+        }
 
         // retain this Fragment
         setRetainInstance(true);
@@ -67,6 +75,8 @@ abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
     public final Dialog onCreateDialog(Bundle savedInstanceState) {
         ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage(getProgressMessage());
+        //press back will remove this fragment, so set cancelable no effect
+        progressDialog.setCanceledOnTouchOutside(!dialogNotCancelableOnTouchOutside);
 
         return progressDialog;
     }
@@ -91,7 +101,7 @@ abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
     }
 
     /**
-     * @see BaseRecyclerViewFragment#load()
+     * @see BaseRecyclerViewFragment#load(int)
      */
     private void request() {
         mDisposable = getSourceObservable().subscribeOn(Schedulers.io())
@@ -101,7 +111,7 @@ abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
     }
 
     /**
-     * @see BaseRecyclerViewFragment#getSourceObservable()
+     * @see BaseRecyclerViewFragment#getSourceObservable(int)
      */
     abstract Observable<D> getSourceObservable();
 

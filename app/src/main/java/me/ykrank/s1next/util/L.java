@@ -48,6 +48,12 @@ public class L {
         }
     }
 
+    public static void print(String msg) {
+        if (showLog()) {
+            Log.d(LOG_TAG, msg);
+        }
+    }
+
     public static void d(String msg) {
         Logger.d(msg);
     }
