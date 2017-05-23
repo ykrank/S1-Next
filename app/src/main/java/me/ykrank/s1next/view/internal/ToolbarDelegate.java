@@ -73,7 +73,7 @@ public final class ToolbarDelegate {
             if (!TextUtils.isEmpty(mToolbar.getTitle())) {
                 mToolbar.setTitle(null);
             }
-            if (!TextUtils.equals(longTitleView.getText(), title)) {
+            if (!TextUtils.isEmpty(title) && !TextUtils.equals(longTitleView.getText(), title)) {
                 longTitleView.setText(title);
             }
             return true;

@@ -429,7 +429,7 @@ public final class PostListFragment extends BaseViewPagerFragment
 
     @Override
     public void setThreadTitle(CharSequence title) {
-        if (TextUtils.isEmpty(mThreadTitle)) {
+        if (!TextUtils.isEmpty(title) && !TextUtils.equals(mThreadTitle, title.toString())) {
             mThreadTitle = title.toString();
             setTitleWithPosition(getCurrentPage());
             saveHistory();
