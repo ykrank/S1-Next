@@ -95,6 +95,17 @@ public abstract class BaseRecyclerViewAdapter extends ListDelegationAdapter<List
         }
     }
 
+    /**
+     * swap to new dataSet.only notifyDataSetChanged
+     *
+     * @param newData new data set
+     */
+    @SuppressWarnings("unchecked")
+    public final void swapDataSet(List<?> newData) {
+        items = (List<Object>) newData;
+        notifyDataSetChanged();
+    }
+
     public final List<Object> getDataSet() {
         return getItems();
     }
