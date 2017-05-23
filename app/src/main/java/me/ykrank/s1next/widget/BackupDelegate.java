@@ -3,7 +3,6 @@ package me.ykrank.s1next.widget;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
@@ -63,8 +62,8 @@ public class BackupDelegate {
         if (requestCode == BACKUP_FILE_CODE) {
             onFilePickResult(resultCode, data, new FilePickerUtil.OnFilePickCallback() {
                 @Override
-                public void success(@NonNull Uri uri) {
-                    RxJavaUtil.workWithUiResult(() -> doBackup(uri), o -> afterBackup.accept(o), this::error);
+                public void success(@NonNull File file) {
+                    RxJavaUtil.workWithUiResult(() -> doBackup(file), o -> afterBackup.accept(o), this::error);
                 }
 
                 @Override
@@ -81,8 +80,8 @@ public class BackupDelegate {
         } else if (requestCode == RESTORE_FILE_CODE) {
             onFilePickResult(resultCode, data, new FilePickerUtil.OnFilePickCallback() {
                 @Override
-                public void success(@NonNull Uri uri) {
-                    RxJavaUtil.workWithUiResult(() -> doRestore(uri), o -> afterRestore.accept(o), this::error);
+                public void success(@NonNull File file) {
+                    RxJavaUtil.workWithUiResult(() -> doRestore(file), o -> afterRestore.accept(o), this::error);
                 }
 
                 @Override
@@ -103,22 +102,25 @@ public class BackupDelegate {
 
     @WorkerThread
     @BackupResult
-    private int doBackup(Uri dir) {
+    private int doBackup(File destDir) {
         LooperUtil.enforceOnWorkThread();
         try {
-            String dirPath = dir.getPath();
-            File destDir = new File(dirPath);
+            String dirPath = destDir.getPath();
             if (destDir.isDirectory()) {
-                if (!dirPath.endsWith("/")) dirPath += "/";
+                if (!dirPath.endsWith("/")) {
+                    dirPath += "/";
+                }
                 File dbFile = mContext.getDatabasePath(BuildConfig.DB_NAME);
                 File destFile = new File(dirPath + BACKUP_FILE_NAME);
-                if (!destFile.exists()) destFile.createNewFile();
+                if (!destFile.exists()) {
+                    destFile.createNewFile();
+                }
                 Files.copy(dbFile, destFile);
                 return SUCCESS;
             } else return IO_EXCEPTION;
         } catch (IOException e) {
             L.e("BackupError:", e);
-            if (e.getMessage().contains("Permission denied")) {
+            if (e.getMessage().contains("Permission denied")) { 
                 return PERMISSION_DENY;
             } else return IO_EXCEPTION;
         } catch (Exception e) {
@@ -129,11 +131,10 @@ public class BackupDelegate {
 
     @WorkerThread
     @BackupResult
-    private int doRestore(Uri file) {
+    private int doRestore(File srcFile) {
         LooperUtil.enforceOnWorkThread();
         try {
-            String filePath = file.getPath();
-            File srcFile = new File(filePath);
+            String filePath = srcFile.getPath();
             if (srcFile.isFile()) {
                 if (SQLiteUtil.isValidSQLite(filePath)) {
                     File dbFile = mContext.getDatabasePath(BuildConfig.DB_NAME);

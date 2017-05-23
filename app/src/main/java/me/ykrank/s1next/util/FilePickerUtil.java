@@ -1,17 +1,17 @@
 package me.ykrank.s1next.util;
 
 import android.app.Activity;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 
 import com.nononsenseapps.filepicker.FilePickerActivity;
+import com.nononsenseapps.filepicker.Utils;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.util.List;
 
 /**
  * Created by AdminYkrank on 2016/4/20.
@@ -41,39 +41,15 @@ public class FilePickerUtil {
     public static void onFilePickResult(int resultCode, @NonNull Intent data, OnFilePickCallback callback) {
         if (resultCode == Activity.RESULT_OK) {
             try {
-                if (data.getBooleanExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false)) {
-                    // For JellyBean and above
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        ClipData clip = data.getClipData();
-
-                        if (clip != null) {
-                            for (int i = 0; i < clip.getItemCount(); i++) {
-                                Uri uri = clip.getItemAt(i).getUri();
-                                // Do something with the URI
-                                callback.success(uri);
-                            }
-                        }
-                        // For Ice Cream Sandwich
-                    } else {
-                        ArrayList<String> paths = data.getStringArrayListExtra
-                                (FilePickerActivity.EXTRA_PATHS);
-
-                        if (paths != null) {
-                            for (String path : paths) {
-                                Uri uri = Uri.parse(path);
-                                // Do something with the URI
-                                callback.success(uri);
-                            }
-                        }
-                    }
-
-                } else {
-                    Uri uri = data.getData();
-                    // Do something with the URI
-                    callback.success(uri);
+                // Use the provided utility method to parse the result
+                List<Uri> files = Utils.getSelectedFilesFromResult(data);
+                for (Uri uri : files) {
+                    File file = Utils.getFileForUri(uri);
+                    // Do something with the result...
+                    callback.success(file);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                L.report(e);
                 callback.error(e);
             }
         } else {
@@ -82,7 +58,7 @@ public class FilePickerUtil {
     }
 
     public interface OnFilePickCallback {
-        void success(@NonNull Uri uri);
+        void success(@NonNull File file);
 
         void cancel();
 
