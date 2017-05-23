@@ -57,7 +57,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
      * current loading state.
      */
     private static final String STATE_LOADING_VIEW_MODEL = "loading_view_model";
-    private static final long PULL_REFRESH_COLD_TIME = 2000;
+    private static final long PULL_REFRESH_COLD_TIME = 1000;
 
     S1Service mS1Service;
     ApiCacheProvider apiCacheProvider;
