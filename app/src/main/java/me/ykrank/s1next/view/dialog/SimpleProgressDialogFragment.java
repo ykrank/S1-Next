@@ -59,15 +59,6 @@ public final class SimpleProgressDialogFragment<D> extends ProgressDialogFragmen
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (sourceObservable == null) {
-            L.report(new IllegalStateException("SourceObservable is null when SimpleProgressDialogFragment onResume"));
-            getFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
-        }
-    }
-
-    @Override
     protected Observable<D> getSourceObservable() {
         return sourceObservable;
     }

@@ -23,6 +23,7 @@ import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.util.ErrorUtil;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.activity.BaseActivity;
 import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment;
@@ -104,10 +105,16 @@ abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
      * @see BaseRecyclerViewFragment#load(int)
      */
     private void request() {
-        mDisposable = getSourceObservable().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doAfterTerminate(this::finallyDo)
-                .subscribe(this::onNext, this::onError);
+        Observable<D> sourceObservable = getSourceObservable();
+        if (sourceObservable != null) {
+            mDisposable = getSourceObservable().subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doAfterTerminate(this::finallyDo)
+                    .subscribe(this::onNext, this::onError);
+        } else {
+            L.report(new IllegalStateException("SourceObservable is null when SimpleProgressDialogFragment onResume"));
+            getFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
+        }
     }
 
     /**
