@@ -17,12 +17,12 @@ import io.rx_cache2.Reply;
 
 public interface ApiCacheProvider {
 
-    @LifeCache(duration = 10, timeUnit = TimeUnit.MINUTES)
+    @LifeCache(duration = 1, timeUnit = TimeUnit.MINUTES)
     Observable<String> getForumGroupsWrapper(Observable<String> oWrapper, DynamicKey user, EvictDynamicKey evictDynamicKey);
 
-    @LifeCache(duration = 10, timeUnit = TimeUnit.MINUTES)
+    @LifeCache(duration = 1, timeUnit = TimeUnit.MINUTES)
     Observable<String> getThreadsWrapper(Observable<String> oWrapper, DynamicKeyGroup user, EvictDynamicKeyGroup evictDynamicKey);
 
-    @LifeCache(duration = 1, timeUnit = TimeUnit.DAYS)
+    @LifeCache(duration = 30, timeUnit = TimeUnit.MINUTES)
     Observable<Reply<String>> getPostsWrapper(Observable<String> oWrapper, DynamicKeyGroup page, EvictDynamicKeyGroup evictDynamicKey);
 }
