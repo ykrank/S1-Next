@@ -1,7 +1,6 @@
 package me.ykrank.s1next.view.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,7 +27,6 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.databinding.FragmentWebviewBinding;
-import me.ykrank.s1next.util.ContextUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.ForumActivity;
 import me.ykrank.s1next.viewmodel.WebPageViewModel;
@@ -141,14 +139,7 @@ public final class WebLoginFragment extends BaseFragment {
         public void onPageFinished(WebView view, String url) {
             try {
                 Activity activity = getActivity();
-                if (activity == null) {
-                    Context context = getContext();
-                    L.leaveMsg("Context:" + context);
-                    if (context != null) {
-                        L.leaveMsg("BaseContext:" + ContextUtils.getBaseContext(getContext()));
-                    }
-                    L.report(new IllegalStateException("WebLoginFragment getActivity is null"));
-                } else {
+                if (activity != null) {
                     //update okHttp cookie with WebView cookie
                     CookieManager manager = CookieManager.getInstance();
                     String cookieStr = manager.getCookie(url);
@@ -167,7 +158,6 @@ public final class WebLoginFragment extends BaseFragment {
             } catch (Exception e) {
                 L.report(e);
             }
-            super.onPageFinished(view, url);
         }
     }
 

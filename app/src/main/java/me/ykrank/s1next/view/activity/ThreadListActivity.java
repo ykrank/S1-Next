@@ -90,7 +90,7 @@ public final class ThreadListActivity extends BaseActivity
         }
 
         MenuItem randomImageMenu = menu.findItem(R.id.menu_random_image);
-        if (TextUtils.equals(forum.getId(), "6")) {
+        if (forum != null && TextUtils.equals(forum.getId(), "6")) {
             randomImageMenu.setVisible(true);
         }
 

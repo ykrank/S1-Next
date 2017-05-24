@@ -33,7 +33,7 @@ public final class NetworkUtil {
                             return true;
                         }
                     } catch (Exception e) {
-                        L.report(e);
+                        L.e(e);
                     }
                 }
             }

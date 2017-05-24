@@ -28,12 +28,16 @@ public class ForumSearchWrapper {
     @NonNull
     private List<ForumSearchResult> forumSearchResults = new ArrayList<>();
 
+    @NonNull
     public static ForumSearchWrapper fromSource(String source) {
         ForumSearchWrapper wrapper = new ForumSearchWrapper();
         try {
             Document document = Jsoup.parse(source);
             //count
             Elements elements = document.select("em");
+            if (elements.isEmpty()) {
+                return wrapper;
+            }
             String countString = elements.get(0).text();
             Pattern pattern = Pattern.compile("^找到 “.+” 相关内容 (\\d+) 个$");
             Matcher matcher = pattern.matcher(countString);

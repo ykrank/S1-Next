@@ -242,10 +242,18 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
             scrollState.setState(PagerScrollState.BEFORE_SCROLL_POSITION);
         }
         if (!isLoading()) {
+            int position = readProgress.getPosition();
+            if (position < 0) {
+                position = 0;
+            }
+            int totalItemCount = mRecyclerAdapter.getItemCount();
+            if (totalItemCount <= position) {
+                position = totalItemCount - 1;
+            }
             if (smooth) {
-                mRecyclerView.smoothScrollToPosition(readProgress.getPosition());
+                mRecyclerView.smoothScrollToPosition(position);
             } else {
-                mRecyclerView.scrollToPosition(readProgress.getPosition());
+                mRecyclerView.scrollToPosition(position);
             }
         }
     }

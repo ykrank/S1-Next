@@ -14,7 +14,6 @@ import android.widget.Spinner;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -149,22 +148,12 @@ public final class NewThreadFragment extends BasePostFragment {
 
     @Override
     public Disposable resumeFromCache(Single<String> cache) {
-        return cache.map(s -> {
-            try {
-                if (TextUtils.isEmpty(s)) {
-                    return null;
-                }
-                return objectMapper.readValue(s, NewThreadCacheModel.class);
-            } catch (IOException e) {
-                throw new IllegalStateException(e);
-            }
-        }).compose(RxJavaUtil.iOSingleTransformer())
+        return cache.map(s -> objectMapper.readValue(s, NewThreadCacheModel.class))
+                .compose(RxJavaUtil.iOSingleTransformer())
                 .subscribe(model -> {
-                    if (model != null) {
-                        cacheModel = model;
-                        titleEditText.setText(model.getTitle());
-                        mReplyView.setText(model.getMessage());
-                    }
+                    cacheModel = model;
+                    titleEditText.setText(model.getTitle());
+                    mReplyView.setText(model.getMessage());
                 }, L::report);
     }
 
@@ -184,7 +173,7 @@ public final class NewThreadFragment extends BasePostFragment {
                 .map(ThreadType::fromXmlString)
                 .compose(RxJavaUtil.iOTransformer())
                 .subscribe(types -> {
-                            if (types == null) {
+                    if (types.isEmpty()) {
                                 showRetrySnackbar(getString(R.string.message_network_error), v -> init());
                             } else {
                                 setSpinner(types);

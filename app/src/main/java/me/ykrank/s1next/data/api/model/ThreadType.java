@@ -1,8 +1,8 @@
 package me.ykrank.s1next.data.api.model;
 
-import android.support.annotation.NonNull;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -49,15 +49,15 @@ public final class ThreadType implements Parcelable {
      * @param xmlString raw html
      * @return if no type, return empty list. return null if html error.
      */
-    @Nullable
+    @NonNull
     public static List<ThreadType> fromXmlString(String xmlString) {
         LooperUtil.enforceOnWorkThread();
+        List<ThreadType> types = new ArrayList<>();
+        
         //<span>发表帖子</span>
         if (xmlString == null || !xmlString.contains("<span>发表帖子</span>")) {
-            return null;
+            return types;
         }
-
-        List<ThreadType> types = new ArrayList<>();
         try {
             // example: <select name="typeid" id="typeid" width="80"> <option value="0">选择主题分类</option> </select>
             Pattern pattern = Pattern.compile("<select name=\"typeid\" id=\"typeid\"[\\s\\S]+?</select>");
