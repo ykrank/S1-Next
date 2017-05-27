@@ -42,6 +42,7 @@ import me.ykrank.s1next.view.adapter.delegate.PmLeftAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmRightAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate;
+import me.ykrank.s1next.view.dialog.AppLoginDialogFragment;
 import me.ykrank.s1next.view.dialog.BaseDialogFragment;
 import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment;
 import me.ykrank.s1next.view.dialog.DiscardEditPromptDialogFragment;
@@ -245,4 +246,6 @@ public interface AppComponent {
     void inject(WebViewFragment fragment);
 
     void inject(NoteFragment fragment);
+
+    void inject(AppLoginDialogFragment fragment);
 }

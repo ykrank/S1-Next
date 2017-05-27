@@ -2,30 +2,29 @@ package me.ykrank.s1next.view.dialog;
 
 import android.os.Bundle;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.data.api.model.Result;
-import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
+import me.ykrank.s1next.data.api.app.AppService;
+import me.ykrank.s1next.data.api.app.model.AppDataWrapper;
+import me.ykrank.s1next.data.api.app.model.AppLoginResult;
 
 /**
  * A {@link ProgressDialogFragment} posts a request to login to server.
  */
-public final class AppLoginDialogFragment extends ProgressDialogFragment<AccountResultWrapper> {
+public final class AppLoginDialogFragment extends ProgressDialogFragment<AppDataWrapper<AppLoginResult>> {
 
     public static final String TAG = AppLoginDialogFragment.class.getName();
+
+    @Inject
+    AppService mAppService;
 
     private static final String ARG_USERNAME = "username";
     private static final String ARG_PASSWORD = "password";
     private static final String ARG_QUESTION_ID = "question_id";
     private static final String ARG_ANSWER = "answer";
-
-    /**
-     * For desktop is "login_succeed".
-     * For mobile is "location_login_succeed_mobile".
-     * "login_succeed" when already has logged in.
-     */
-    private static final String STATUS_AUTH_SUCCESS = "location_login_succeed_mobile";
-    private static final String STATUS_AUTH_SUCCESS_ALREADY = "login_succeed";
 
     public static AppLoginDialogFragment newInstance(String username, String password, int questionId, String answer) {
         AppLoginDialogFragment fragment = new AppLoginDialogFragment();
@@ -40,27 +39,30 @@ public final class AppLoginDialogFragment extends ProgressDialogFragment<Account
     }
 
     @Override
-    protected Observable<AccountResultWrapper> getSourceObservable() {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        App.getAppComponent().inject(this);
+    }
+
+    @Override
+    protected Observable<AppDataWrapper<AppLoginResult>> getSourceObservable() {
         String username = getArguments().getString(ARG_USERNAME);
         String password = getArguments().getString(ARG_PASSWORD);
         int questionId = getArguments().getInt(ARG_QUESTION_ID);
         String answer = getArguments().getString(ARG_ANSWER);
-        return mS1Service.login(username, password).map(resultWrapper -> {
-            // the authenticity token is not fresh after login
-            resultWrapper.getData().setAuthenticityToken(null);
-            mUserValidator.validate(resultWrapper.getData());
-            return resultWrapper;
-        });
+        return mAppService.login(username, password, questionId, answer);
     }
 
     @Override
-    protected void onNext(AccountResultWrapper data) {
-        Result result = data.getResult();
-        if (result.getStatus().equals(STATUS_AUTH_SUCCESS)
-                || result.getStatus().equals(STATUS_AUTH_SUCCESS_ALREADY)) {
-            showShortTextAndFinishCurrentActivity(result.getMessage());
+    protected void onNext(AppDataWrapper<AppLoginResult> data) {
+        if (data.isSuccess()) {
+            if (mUserValidator.validateAppLoginInfo(data.getData())) {
+                showShortTextAndFinishCurrentActivity(data.getMessage());
+            } else {
+                showShortText(getString(R.string.app_login_info_error));
+            }
         } else {
-            showShortText(result.getMessage());
+            showShortText(data.getMessage());
         }
     }
 
