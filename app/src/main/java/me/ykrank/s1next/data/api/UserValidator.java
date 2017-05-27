@@ -1,9 +1,11 @@
 package me.ykrank.s1next.data.api;
 
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.User;
+import me.ykrank.s1next.data.api.app.model.AppLoginResult;
 import me.ykrank.s1next.data.api.model.Account;
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
@@ -78,5 +80,22 @@ public final class UserValidator {
             }
         }
         App.get().getTrackAgent().setUser(mUser);
+    }
+
+    /**
+     * Checks current user's app login info and updates {@link User}'s in our app
+     *
+     * @return whether app login info valid
+     */
+    public boolean validateAppLoginInfo(@Nullable AppLoginResult loginResult) {
+        if (loginResult == null) {
+            return false;
+        }
+
+        if (mUser.isLogged() && TextUtils.equals(mUser.getUid(), loginResult.getUid())) {
+            mUser.setAppSecureToken(loginResult.getSecureToken());
+            return true;
+        }
+        return false;
     }
 }
