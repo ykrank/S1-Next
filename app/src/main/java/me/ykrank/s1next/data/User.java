@@ -65,6 +65,10 @@ public class User {
         this.logged = logged;
     }
 
+    public boolean isAppLogged() {
+        return !TextUtils.isEmpty(appSecureToken);
+    }
+
     @NonNull
     public String getKey() {
         if (!TextUtils.isEmpty(uid)) {

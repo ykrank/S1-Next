@@ -28,8 +28,6 @@ public final class AppLoginFragment extends BaseFragment {
 
     public static final String TAG = AppLoginFragment.class.getName();
 
-    private AppLoginFragmentCallback callback;
-
     private EditText mUsernameView;
     private EditText mPasswordView;
     private Button mLoginButton;
@@ -45,29 +43,12 @@ public final class AppLoginFragment extends BaseFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof AppLoginFragmentCallback) {
-            callback = (AppLoginFragmentCallback) context;
-        } else {
-            throw new IllegalStateException("AppLoginFragment attached context should implement AppLoginFragmentCallback");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        callback = null;
-        super.onDetach();
-    }
-
-    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         L.leaveMsg("AppLoginFragment");
 
         ViewUtil.consumeRunnableWhenImeActionPerformed(mPasswordView, this::prepareLogin);
         mLoginButton.setOnClickListener(v -> prepareLogin());
-        binding.tvLoginInWeb.setOnClickListener(v -> callback.loginInWeb());
     }
 
     @Override
@@ -131,9 +112,5 @@ public final class AppLoginFragment extends BaseFragment {
             AppLoginDialogFragment.newInstance(username, password, questionId, answer).show(getFragmentManager(),
                     AppLoginDialogFragment.TAG);
         }
-    }
-
-    public interface AppLoginFragmentCallback {
-        void loginInWeb();
     }
 }

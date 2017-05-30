@@ -66,14 +66,6 @@
             android:layout_height="wrap_content"
             android:text="@string/action_login"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
-
-        <TextView
-            android:id="@+id/tv_login_in_web"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/subtitle_margin_top"
-            android:text="@string/login_in_web"
-            android:textColor="?attr/colorAccent" />
     </LinearLayout>
 
 </layout>

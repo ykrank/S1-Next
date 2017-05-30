@@ -5,4 +5,5 @@ public class AppApi {
 
     static final String URL_USER_INFO = "user";
     static final String URL_SIGN = "user/sign";
+    static final String URL_LOGIN = "user/login";
 }
