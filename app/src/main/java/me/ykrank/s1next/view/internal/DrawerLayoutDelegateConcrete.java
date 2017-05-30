@@ -23,6 +23,7 @@ import me.ykrank.s1next.data.pref.DataPreferencesManager;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.databinding.ActionViewNoticeCountBinding;
 import me.ykrank.s1next.databinding.NavigationViewHeaderBinding;
+
 import me.ykrank.s1next.extension.ContextExtensionKt;
 import me.ykrank.s1next.task.AutoSignTask;
 import me.ykrank.s1next.util.L;

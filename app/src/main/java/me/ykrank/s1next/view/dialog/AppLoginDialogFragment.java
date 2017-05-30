@@ -40,8 +40,8 @@ public final class AppLoginDialogFragment extends ProgressDialogFragment<AppData
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         App.getAppComponent().inject(this);
+        super.onCreate(savedInstanceState);
     }
 
     @Override

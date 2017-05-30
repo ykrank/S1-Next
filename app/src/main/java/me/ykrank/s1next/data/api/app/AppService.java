@@ -15,7 +15,7 @@ public interface AppService {
     Observable<String> getUserInfo(@Query("uid") String uid);
 
     @FormUrlEncoded
-    @POST(AppApi.URL_SIGN)
+    @POST(AppApi.URL_LOGIN)
     Observable<AppDataWrapper<AppLoginResult>> login(@Field("username") String username, @Field("password") String password,
                                                      @Field("questionid") int questionId, @Field("answer") String answer);
 
