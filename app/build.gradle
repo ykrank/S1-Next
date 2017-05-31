@@ -110,12 +110,16 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     playCompile fileTree(include: ['*.jar'], dir: 'libs/flavors/play')
     coolapkCompile fileTree(include: ['*.jar'], dir: 'libs/flavors/coolapk')
+    
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    kapt 'com.android.databinding:compiler:2.3.2'
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     kapt "com.android.databinding:compiler:$databinding_version"
 
     compile 'com.google.dagger:dagger:2.11'
     kapt 'com.google.dagger:dagger-compiler:2.11'
+    kapt 'com.google.dagger:dagger-compiler:2.10'
     // https://github.com/google/dagger/issues/95
 //    provided 'javax.annotation:javax.annotation-api:1.3'
 
