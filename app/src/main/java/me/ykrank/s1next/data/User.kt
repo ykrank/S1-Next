@@ -12,9 +12,14 @@ open class User {
 
     @Volatile var authenticityToken: String? = null
 
+    @Volatile var appSecureToken: String? = null
+
     @Volatile open var isLogged: Boolean = false
 
     @Volatile open var isSigned: Boolean = false
+
+    val isAppLogged: Boolean
+        get() = !TextUtils.isEmpty(appSecureToken)
 
     val key: String
         get() {
