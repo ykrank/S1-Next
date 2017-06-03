@@ -17,8 +17,6 @@ import me.ykrank.s1next.util.L;
  */
 
 public class AppDaoOpenHelper extends DaoMaster.OpenHelper {
-    public static final String DB_BLACKLIST = "BlackList";
-    public static final String DB_READ_PROGRESS = "ReadProgress";
 
     public AppDaoOpenHelper(Context context, String name) {
         super(context, name);
@@ -28,7 +26,7 @@ public class AppDaoOpenHelper extends DaoMaster.OpenHelper {
     public void onUpgrade(Database db, int oldVersion, int newVersion) {
         super.onUpgrade(db, oldVersion, newVersion);
         L.e("DB upgrade##oldVersion:" + oldVersion + ",newVersion:" + newVersion);
-        if (oldVersion == 1){
+        if (oldVersion == 1) {
             update1toNew(db, oldVersion, newVersion);
             return;
         }
@@ -36,33 +34,40 @@ public class AppDaoOpenHelper extends DaoMaster.OpenHelper {
             update2toNew(db, oldVersion, newVersion);
             return;
         }
-        if (oldVersion == 3) {
-            update3to4(db, oldVersion, newVersion);
-        }
+        update3to4(db, oldVersion, newVersion);
+        update4to5(db, oldVersion, newVersion);
     }
 
+    /**
+     * drop old blacklist table, and create all table
+     *
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     private void update1toNew(Database db, int oldVersion, int newVersion) {
         BlackListDao.dropTable(db, true);
         onCreate(db);
     }
 
     /**
-    update from ActiveAndroid to GreenDAO
+     * update from ActiveAndroid to GreenDAO.
+     * create all table, and copy old blacklist data
      */
     private void update2toNew(Database db, int oldVersion, int newVersion) {
         db.beginTransaction();
         try {
-            String tempDbBlackList = DB_BLACKLIST + "_temp";
-            String tempDbReadProgress = DB_READ_PROGRESS + "_temp";
+            String tempDbBlackList = "BlackList_temp";
+            String tempDbReadProgress = "ReadProgress_temp";
             // rename the old table
-            db.execSQL("ALTER TABLE " + DB_BLACKLIST + " RENAME TO " + tempDbBlackList + ";");
-            db.execSQL("ALTER TABLE " + DB_READ_PROGRESS + " RENAME TO " + tempDbReadProgress + ";");
+            db.execSQL("ALTER TABLE BlackList RENAME TO " + tempDbBlackList + ";");
+            db.execSQL("ALTER TABLE ReadProgress RENAME TO " + tempDbReadProgress + ";");
             //create new table
             onCreate(db);
             //copy old data  to new table
-            db.execSQL("INSERT INTO " + DB_BLACKLIST + "(AuthorId,Author,Post,Forum,Remark,Timestamp,Upload) " +
+            db.execSQL("INSERT INTO BlackList(AuthorId,Author,Post,Forum,Remark,Timestamp,Upload) " +
                     "SELECT AuthorId,Author,Post,Forum,Remark,Timestamp,Upload FROM " + tempDbBlackList + ";");
-            db.execSQL("INSERT INTO " + DB_READ_PROGRESS + "(ThreadId,Page,Position,Timestamp) " +
+            db.execSQL("INSERT INTO ReadProgress(ThreadId,Page,Position,Timestamp) " +
                     "SELECT ThreadId,Page,Position,Timestamp FROM " + tempDbReadProgress + ";");
             //drop old table
             db.execSQL("DROP TABLE " + tempDbBlackList + ";");
@@ -80,6 +85,23 @@ public class AppDaoOpenHelper extends DaoMaster.OpenHelper {
      * add table {@link me.ykrank.s1next.data.db.dbmodel.History}
      */
     private void update3to4(Database db, int oldVersion, int newVersion) {
-        HistoryDao.createTable(db, false);
+        if (oldVersion <= 3) {
+            HistoryDao.createTable(db, false);
+        }
+    }
+
+    /**
+     * add {@link me.ykrank.s1next.data.db.dbmodel.ReadProgress#offset} in table {@link me.ykrank.s1next.data.db.dbmodel.ReadProgress}
+     */
+    private void update4to5(Database db, int oldVersion, int newVersion) {
+        if (oldVersion <= 4) {
+            try {
+                // add column `offset`
+                db.execSQL("ALTER TABLE ReadProgress ADD COLUMN `offset` INTEGER default 0;");
+            } catch (Throwable e) {
+                L.report(e);
+                Toast.makeText(App.get(), R.string.database_update_error, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

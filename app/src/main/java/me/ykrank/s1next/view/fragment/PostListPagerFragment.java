@@ -3,7 +3,7 @@ package me.ykrank.s1next.view.fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -50,6 +50,7 @@ import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateQuickSideba
 import me.ykrank.s1next.view.internal.PagerScrollState;
 import me.ykrank.s1next.viewmodel.LoadingViewModel;
 import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.recycleview.StartSnapLinearLayoutManager;
 
 /**
  * A Fragment representing one of the pages of posts.
@@ -88,7 +89,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
     private FragmentBaseWithQuickSideBarBinding binding;
     private RecyclerView mRecyclerView;
     private PostListRecyclerViewAdapter mRecyclerAdapter;
-    private LinearLayoutManager mLayoutManager;
+    private StartSnapLinearLayoutManager mLayoutManager;
     private QuickSideBarView quickSideBarView;
     private TextView quickSideBarTipsView;
     private HashMap<String, Integer> letters = new HashMap<>();
@@ -149,7 +150,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
         L.leaveMsg("PostListPagerFragment##ThreadId:" + mThreadId + ",PageNum:" + mPageNum);
 
         mRecyclerView = getRecyclerView();
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new StartSnapLinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerAdapter = new PostListRecyclerViewAdapter(getActivity());
         mRecyclerView.setAdapter(mRecyclerAdapter);
@@ -237,7 +238,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
         startPullToRefresh();
     }
 
-    void setReadProgress(ReadProgress readProgress, boolean smooth) {
+    void loadReadProgressInRecycleView(ReadProgress readProgress, boolean smooth) {
         this.readProgress = readProgress;
         if (scrollState == null) {
             scrollState = new PagerScrollState();
@@ -245,17 +246,20 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
         }
         if (!isLoading()) {
             int position = readProgress.getPosition();
-            if (position < 0) {
+            int offset = readProgress.getOffset();
+            if (position <= 0) {
+                //if position invalid or first, offset should zero
                 position = 0;
+                offset = 0;
             }
             int totalItemCount = mRecyclerAdapter.getItemCount();
             if (totalItemCount <= position) {
                 position = totalItemCount - 1;
             }
             if (smooth) {
-                mRecyclerView.smoothScrollToPosition(position);
+                mLayoutManager.smoothScrollToPosition(position, offset);
             } else {
-                mRecyclerView.scrollToPosition(position);
+                mLayoutManager.scrollToPositionWithOffset(position, offset);
             }
         }
     }
@@ -275,7 +279,8 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
     }
 
     ReadProgress getCurReadProgress() {
-        return new ReadProgress(Integer.valueOf(mThreadId), mPageNum, findMidItemPosition());
+        Pair<Integer, Integer> itemPosition = findNowItemPosition();
+        return new ReadProgress(Integer.valueOf(mThreadId), mPageNum, itemPosition.first, itemPosition.second);
     }
 
     /**
@@ -283,9 +288,14 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
      *
      * @return
      */
-    private int findMidItemPosition() {
-        return (mLayoutManager.findFirstCompletelyVisibleItemPosition()
-                + mLayoutManager.findLastCompletelyVisibleItemPosition()) / 2;
+    private Pair<Integer, Integer> findNowItemPosition() {
+        int itemPosition = mLayoutManager.findFirstCompletelyVisibleItemPosition();
+        int offset = 0;
+        View view = mLayoutManager.findViewByPosition(itemPosition);
+        if (view != null) {
+            offset = view.getTop();
+        }
+        return new Pair<>(itemPosition, offset);
     }
 
     @Override
@@ -338,7 +348,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
             } else if (pullUpToRefresh) {
 
             } else if (readProgress != null && scrollState != null && scrollState.getState() == PagerScrollState.BEFORE_SCROLL_POSITION) {
-                mRecyclerView.scrollToPosition(readProgress.getPosition());
+                mLayoutManager.scrollToPositionWithOffset(readProgress.getPosition(), readProgress.getOffset());
                 readProgress = null;
                 scrollState.setState(PagerScrollState.FREE);
             } else {

@@ -176,7 +176,7 @@ public final class PostListFragment extends BaseViewPagerFragment
             //读取进度
             readProgress = bundle.getParcelable(ARG_READ_PROGRESS);
             if (readProgress != null) {
-                scrollState.setState(PagerScrollState.BEFORE_SCROLL_PAGE);
+                scrollState.setState(PagerScrollState.BEFORE_SCROLL_POSITION);
                 jumpPage = readProgress.getPage();
             } else {
                 jumpPage = bundle.getInt(ARG_JUMP_PAGE, 0);
@@ -481,15 +481,23 @@ public final class PostListFragment extends BaseViewPagerFragment
     @MainThread
     private void afterLoadReadProgress() {
         if (readProgress != null && scrollState.getState() == PagerScrollState.BEFORE_SCROLL_PAGE) {
-            scrollState.setState(PagerScrollState.BEFORE_SCROLL_POSITION);
-            PostListPagerFragment fragment = getCurPostPageFragment();
+            int targetPosition = readProgress.getPage() - 1;
+            if (targetPosition < 0) {
+                //readProgress page error
+                return;
+            }
+            PostListPagerFragment fragment = mAdapter.getCachedFragment(targetPosition);
             if (fragment != null) {
-                if (getCurrentPage() != readProgress.getPage() - 1) {
+                if (getCurrentPage() != targetPosition) {
+                    fragment.loadReadProgressInRecycleView(readProgress, false);
                     setCurrentPage(readProgress.getPage() - 1);
-                    getCurPostPageFragment().setReadProgress(readProgress, false);
                 } else {
-                    getCurPostPageFragment().setReadProgress(readProgress, true);
+                    fragment.loadReadProgressInRecycleView(readProgress, true);
                 }
+                scrollState.setState(PagerScrollState.FREE);
+            } else {
+                scrollState.setState(PagerScrollState.BEFORE_SCROLL_POSITION);
+                setCurrentPage(readProgress.getPage() - 1);
             }
         }
     }
@@ -545,8 +553,7 @@ public final class PostListFragment extends BaseViewPagerFragment
                 bundle.putString(ARG_QUOTE_POST_ID, null);
                 return PostListPagerFragment.newInstance(mThreadId, jumpPage, quotePostId);
             } else if (readProgress != null && readProgress.getPage() == i + 1
-                    && scrollState.getState() == PagerScrollState.BEFORE_SCROLL_PAGE) {
-                scrollState.setState(PagerScrollState.BEFORE_SCROLL_POSITION);
+                    && scrollState.getState() == PagerScrollState.BEFORE_SCROLL_POSITION) {
                 return PostListPagerFragment.newInstance(mThreadId, i + 1, readProgress, scrollState);
             } else {
                 return PostListPagerFragment.newInstance(mThreadId, i + 1);

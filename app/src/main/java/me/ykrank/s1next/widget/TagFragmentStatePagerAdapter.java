@@ -19,6 +19,7 @@ package me.ykrank.s1next.widget;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -59,6 +60,11 @@ public abstract class TagFragmentStatePagerAdapter<T extends Fragment> extends P
      * Returns the Fragment associated with a specified position.
      */
     public abstract T getItem(int position);
+
+    @Nullable
+    public T getCachedFragment(int position) {
+        return mFragments.size() > position ? mFragments.get(position) : null;
+    }
 
     @Override
     public void startUpdate(ViewGroup container) {

@@ -59,6 +59,7 @@ abstract class BaseViewPagerFragment extends BaseFragment
         super.onViewCreated(view, savedInstanceState);
 
         mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
+        mViewPager.setOffscreenPageLimit(2);
         loadViewPager();
     }
 
