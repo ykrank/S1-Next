@@ -10,6 +10,8 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.app.AppService;
 import me.ykrank.s1next.data.api.app.model.AppDataWrapper;
 import me.ykrank.s1next.data.api.app.model.AppLoginResult;
+import me.ykrank.s1next.data.event.AppLoginEvent;
+import me.ykrank.s1next.widget.EventBus;
 
 /**
  * A {@link ProgressDialogFragment} posts a request to login to server.
@@ -20,6 +22,8 @@ public final class AppLoginDialogFragment extends ProgressDialogFragment<AppData
 
     @Inject
     AppService mAppService;
+    @Inject
+    EventBus eventBus;
 
     private static final String ARG_USERNAME = "username";
     private static final String ARG_PASSWORD = "password";
@@ -57,6 +61,7 @@ public final class AppLoginDialogFragment extends ProgressDialogFragment<AppData
     protected void onNext(AppDataWrapper<AppLoginResult> data) {
         if (data.isSuccess()) {
             if (mUserValidator.validateAppLoginInfo(data.getData())) {
+                eventBus.post(new AppLoginEvent());
                 showShortTextAndFinishCurrentActivity(data.getMessage());
             } else {
                 showShortText(getString(R.string.app_login_info_error));

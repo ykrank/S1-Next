@@ -3,6 +3,8 @@ package me.ykrank.s1next.data.api.app;
 import io.reactivex.Observable;
 import me.ykrank.s1next.data.api.app.model.AppDataWrapper;
 import me.ykrank.s1next.data.api.app.model.AppLoginResult;
+import me.ykrank.s1next.data.api.app.model.AppResult;
+import me.ykrank.s1next.data.api.app.model.AppUserInfo;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -12,7 +14,7 @@ import retrofit2.http.Query;
 public interface AppService {
     
     @GET(AppApi.URL_USER_INFO)
-    Observable<String> getUserInfo(@Query("uid") String uid);
+    Observable<AppDataWrapper<AppUserInfo>> getUserInfo(@Query("uid") String uid);
 
     @FormUrlEncoded
     @POST(AppApi.URL_LOGIN)
@@ -21,5 +23,5 @@ public interface AppService {
 
     @FormUrlEncoded
     @POST(AppApi.URL_SIGN)
-    Observable<String> sign(@Field("uid") String uid, @Field("sid") String security);
+    Observable<AppResult> sign(@Field("uid") String uid, @Field("sid") String security);
 }

@@ -6,11 +6,13 @@ import android.text.TextUtils;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.app.model.AppLoginResult;
+import me.ykrank.s1next.data.api.app.model.AppUserInfo;
 import me.ykrank.s1next.data.api.model.Account;
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
 import me.ykrank.s1next.task.AutoSignTask;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.Objects;
 
 public final class UserValidator {
 
@@ -80,6 +82,22 @@ public final class UserValidator {
             }
         }
         App.get().getTrackAgent().setUser(mUser);
+    }
+
+    /**
+     * validate user app signed info
+     *
+     * @return whether app signed
+     */
+    public boolean validateAppUserInfo(@Nullable AppUserInfo appUserInfo) {
+        if (appUserInfo == null) {
+            return false;
+        }
+        if (!Objects.equals(appUserInfo.isSigned(), mUser.isSigned())) {
+            mUser.setSigned(appUserInfo.isSigned());
+            return true;
+        }
+        return false;
     }
 
     /**

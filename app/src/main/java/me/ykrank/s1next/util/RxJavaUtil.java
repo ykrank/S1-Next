@@ -25,6 +25,10 @@ public final class RxJavaUtil {
     private RxJavaUtil() {
     }
 
+    public static <T> T createNull() {
+        return (T) NULL;
+    }
+
     /**
      * @see Disposable#dispose()
      */

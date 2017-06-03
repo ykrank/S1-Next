@@ -46,4 +46,19 @@ public class ApiException extends Exception {
             super(message, cause);
         }
     }
+
+    public static class AppServerException extends ApiException {
+
+        public AppServerException(String msg) {
+            super(msg);
+        }
+
+        public AppServerException(Throwable cause) {
+            super(cause);
+        }
+
+        public AppServerException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
 }
