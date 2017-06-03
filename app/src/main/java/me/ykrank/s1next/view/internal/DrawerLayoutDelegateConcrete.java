@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -22,6 +23,10 @@ import me.ykrank.s1next.data.pref.DataPreferencesManager;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.databinding.ActionViewNoticeCountBinding;
 import me.ykrank.s1next.databinding.NavigationViewHeaderBinding;
+import me.ykrank.s1next.extension.ContextExtensionKt;
+import me.ykrank.s1next.task.AutoSignTask;
+import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.activity.FavouriteListActivity;
 import me.ykrank.s1next.view.activity.ForumActivity;
 import me.ykrank.s1next.view.activity.HelpActivity;
@@ -53,8 +58,11 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
     ThemeManager mThemeManager;
     @Inject
     DataPreferencesManager mDataPreferencesManager;
+    @Inject
+    AutoSignTask mAutoSignTask;
 
     private ActionViewNoticeCountBinding pmNoticeBinding, noteNoticeBinding;
+    private NavigationViewHeaderBinding binding;
 
     public DrawerLayoutDelegateConcrete(FragmentActivity activity, DrawerLayout drawerLayout, NavigationView navigationView) {
         super(activity, drawerLayout, navigationView);
@@ -72,7 +80,7 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
     }
 
     private void setupNavDrawerHeader(DrawerLayout drawerLayout, NavigationView navigationView) {
-        NavigationViewHeaderBinding binding = DataBindingUtil.bind(navigationView.getHeaderView(0));
+        binding = DataBindingUtil.bind(navigationView.getHeaderView(0));
         binding.setUserViewModel(mUserViewModel);
 
         // let status bar display over drawer if API >= 21
@@ -116,6 +124,16 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
                 closeDrawer(() -> LoginActivity.startLoginActivityForResultMessage(mFragmentActivity));
             }
         });
+
+        binding.drawerAutoSign.setOnClickListener(v -> {
+            if (!mUser.isSigned()) {
+                mAutoSignTask.autoSign().compose(RxJavaUtil.iOTransformer())
+                        .subscribe(d -> {
+                            mUser.setSigned(d.getSigned());
+                            ContextExtensionKt.toast(App.get(), d.getMsg(), Toast.LENGTH_SHORT);
+                        }, L::report);
+            }
+        });
     }
 
     private void setupNavDrawerNotice(NavigationView navigationView) {
@@ -126,9 +144,16 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
         refreshNoticeMenuItem();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding.setUserViewModel(null);
+    }
+
     /**
      * refresh label in navigation menu to show whether new pm or notice
      */
+    @Override
     public void refreshNoticeMenuItem() {
         pmNoticeBinding.setMsg(mDataPreferencesManager.hasNewPm() ? "new" : null);
         noteNoticeBinding.setMsg(mDataPreferencesManager.hasNewNotice() ? "new" : null);

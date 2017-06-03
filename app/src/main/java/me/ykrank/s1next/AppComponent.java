@@ -26,6 +26,7 @@ import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
 import me.ykrank.s1next.data.pref.PrefModule;
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
 import me.ykrank.s1next.data.pref.ThemeManager;
+import me.ykrank.s1next.task.AutoSignTask;
 import me.ykrank.s1next.view.activity.BaseActivity;
 import me.ykrank.s1next.view.activity.ForumActivity;
 import me.ykrank.s1next.view.activity.GalleryActivity;
@@ -121,6 +122,8 @@ public interface AppComponent {
     EditorDiskCache getEditorDiskCache();
 
     AvatarUrlsCache getAvatarUrlsCache();
+
+    AutoSignTask getAutoSignTask();
 
     //region SharedPreferences
     SharedPreferences getSharedPreferences();

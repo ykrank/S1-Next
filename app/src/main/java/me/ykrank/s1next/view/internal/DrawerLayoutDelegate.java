@@ -124,4 +124,6 @@ public abstract class DrawerLayoutDelegate {
     }
 
     protected abstract void setupNavDrawerItem(DrawerLayout drawerLayout, NavigationView navigationView);
+
+    public abstract void refreshNoticeMenuItem();
 }

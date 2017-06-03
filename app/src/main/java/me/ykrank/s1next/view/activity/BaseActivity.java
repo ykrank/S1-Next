@@ -43,6 +43,7 @@ import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.dialog.ThreadGoDialogFragment;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegateImpl;
+import me.ykrank.s1next.view.internal.DrawerLayoutDelegate;
 import me.ykrank.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import me.ykrank.s1next.view.internal.RequestCode;
 import me.ykrank.s1next.view.internal.ToolbarDelegate;
@@ -81,7 +82,7 @@ public abstract class BaseActivity extends OriginActivity
 
     private ToolbarDelegate mToolbarDelegate;
 
-    private DrawerLayoutDelegateConcrete mDrawerLayoutDelegate;
+    private DrawerLayoutDelegate mDrawerLayoutDelegate;
     private boolean mDrawerIndicatorEnabled = true;
 
     private CoordinatorLayoutAnchorDelegate mCoordinatorLayoutAnchorDelegate;

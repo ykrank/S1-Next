@@ -7,6 +7,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="userViewModel"
             type="me.ykrank.s1next.viewmodel.UserViewModel" />
@@ -63,6 +65,27 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="?attr/drawerTextColor"
             tools:text="@string/action_login" />
+
+        <TextView
+            android:id="@+id/drawer_auto_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/drawer_subtitle_height"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/list_view_padding"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:paddingBottom="@dimen/list_view_padding"
+            android:paddingLeft="@dimen/item_padding"
+            android:paddingRight="@dimen/item_padding"
+            android:paddingStart="@dimen/item_padding"
+            android:paddingTop="@dimen/list_view_padding"
+            android:text="@{userViewModel.signed ? @string/already_checked_in:@string/action_check_in}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="?attr/drawerTextColor"
+            android:visibility="@{userViewModel.user.logged ? View.VISIBLE:View.GONE}" />
 
     </android.support.percent.PercentRelativeLayout>
 

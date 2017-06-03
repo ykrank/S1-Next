@@ -7,6 +7,7 @@ import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Account;
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
+import me.ykrank.s1next.task.AutoSignTask;
 import me.ykrank.s1next.util.L;
 
 public final class UserValidator {
@@ -14,9 +15,11 @@ public final class UserValidator {
     private static final String INVALID_UID = "0";
 
     private final User mUser;
+    private final AutoSignTask mAutoSignTask;
 
-    public UserValidator(User user) {
+    public UserValidator(User user, AutoSignTask autoSignTask) {
         this.mUser = user;
+        this.mAutoSignTask = autoSignTask;
     }
 
     /**
@@ -54,6 +57,7 @@ public final class UserValidator {
                 mUser.setUid(null);
                 mUser.setName(null);
                 mUser.setLogged(false);
+                mUser.setSigned(false);
             }
         } else {
             if (!logged) {
@@ -61,6 +65,7 @@ public final class UserValidator {
                 mUser.setUid(uid);
                 mUser.setName(account.getUsername());
                 mUser.setLogged(true);
+                mUser.setSigned(false);
             }
         }
         mUser.setPermission(account.getPermission());
@@ -68,6 +73,9 @@ public final class UserValidator {
 
         if (mUser.isLogged()) {
             L.setUser(mUser.getUid(), mUser.getName());
+            if (mAutoSignTask.getLastCheck() == 0) {
+                mAutoSignTask.silentCheck();
+            }
         }
         App.get().getTrackAgent().setUser(mUser);
     }

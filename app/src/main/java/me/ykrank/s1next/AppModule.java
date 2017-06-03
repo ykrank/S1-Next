@@ -25,6 +25,7 @@ import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
+import me.ykrank.s1next.task.AutoSignTask;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EditorDiskCache;
 import me.ykrank.s1next.widget.EventBus;
@@ -170,8 +171,8 @@ public final class AppModule {
 
     @Provides
     @Singleton
-    UserValidator providerUserValidator(User user) {
-        return new UserValidator(user);
+    UserValidator providerUserValidator(User user, AutoSignTask autoSignTask) {
+        return new UserValidator(user, autoSignTask);
     }
 
     @Provides
@@ -203,5 +204,11 @@ public final class AppModule {
     @Singleton
     AvatarUrlsCache provideAvatarUrlsCache() {
         return new AvatarUrlsCache();
+    }
+
+    @Provides
+    @Singleton
+    AutoSignTask provideAutoSignTask(S1Service s1Service, User user) {
+        return new AutoSignTask(s1Service, user);
     }
 }

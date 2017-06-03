@@ -133,4 +133,7 @@ public interface S1Service {
     @POST(ApiHome.URL_RATE)
     Observable<String> rate(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("pid") String postId
             , @Field("referer") String refer, @Field("handlekey") String handleKey, @Field("score1") String score, @Field("reason") String reason);
+
+    @GET(ApiMember.URL_AUTO_SIGN)
+    Observable<String> autoSign(@Query("formhash") String authenticityToken);
 }
