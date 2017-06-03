@@ -6,8 +6,7 @@ import android.support.annotation.Nullable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgressDao;
-
-import static me.ykrank.s1next.data.db.dbmodel.ReadProgressDao.Properties;
+import me.ykrank.s1next.data.db.dbmodel.ReadProgressDao.Properties;
 
 /**
  * 对黑名单数据库的操作包装

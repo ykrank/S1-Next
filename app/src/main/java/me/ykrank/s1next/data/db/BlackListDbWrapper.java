@@ -11,8 +11,7 @@ import io.reactivex.Single;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.db.dbmodel.BlackList;
 import me.ykrank.s1next.data.db.dbmodel.BlackListDao;
-
-import static me.ykrank.s1next.data.db.dbmodel.BlackListDao.Properties;
+import me.ykrank.s1next.data.db.dbmodel.BlackListDao.Properties;
 
 /**
  * 对黑名单数据库的操作包装

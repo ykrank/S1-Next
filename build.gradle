@@ -1,13 +1,15 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext.databinding_version = '2.3.2'
+    ext.kotlin_version = '1.1.2-3'
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
+        classpath "com.android.tools.build:gradle:$databinding_version"
+//        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'me.tatarka:gradle-retrolambda:3.6.1'
         classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
 
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
@@ -15,9 +17,10 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
 
-        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.1'
-        // method runtime
-        classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
+
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
     }
 
     // Exclude the version that the android plugin depends on.

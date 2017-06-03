@@ -6,8 +6,10 @@ import android.support.annotation.StringRes;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.orhanobut.logger.LogLevel;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
+import com.orhanobut.logger.PrettyFormatStrategy;
 import com.tencent.bugly.crashreport.BuglyLog;
 import com.tencent.bugly.crashreport.CrashReport;
 
@@ -24,7 +26,20 @@ public class L {
 
     public static void init(@NonNull Context context) {
         Context appContext = context.getApplicationContext();
-        Logger.init(LOG_TAG).logLevel(showLog() ? LogLevel.FULL : LogLevel.NONE);
+        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
+                .showThreadInfo(true)  // (Optional) Whether to show thread info or not. Default true
+                .methodCount(0)         // (Optional) How many method line to show. Default 2
+                .methodOffset(7)        // (Optional) Hides internal method calls up to offset. Default 5
+                //.logStrategy(customLog) // (Optional) Changes the log strategy to print out. Default LogCat
+                .tag(LOG_TAG)   // (Optional) Global tag for every log. Default PRETTY_LOGGER
+                .build();
+
+        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
+            @Override
+            public boolean isLoggable(int priority, String tag) {
+                return showLog();
+            }
+        });
 
         RxJavaUtil.workInRxIoThread(() -> {
             CrashReport.UserStrategy userStrategy = new CrashReport.UserStrategy(appContext);
@@ -140,11 +155,11 @@ public class L {
         throw new RuntimeException("Just test");
     }
 
-    public static void toast(String msg){
+    public static void toast(String msg) {
         Toast.makeText(App.get(), msg, Toast.LENGTH_SHORT).show();
     }
 
-    public static void toast(@StringRes int msg){
+    public static void toast(@StringRes int msg) {
         Toast.makeText(App.get(), msg, Toast.LENGTH_SHORT).show();
     }
 }

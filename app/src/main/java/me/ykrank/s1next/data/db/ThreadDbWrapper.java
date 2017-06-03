@@ -6,8 +6,7 @@ import android.support.annotation.Nullable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.db.dbmodel.DbThread;
 import me.ykrank.s1next.data.db.dbmodel.DbThreadDao;
-
-import static me.ykrank.s1next.data.db.dbmodel.DbThreadDao.Properties;
+import me.ykrank.s1next.data.db.dbmodel.DbThreadDao.Properties;
 
 /**
  * 对帖子数据库的操作包装
