@@ -24,11 +24,6 @@
         android:theme="@style/Theme.Light.AfternoonTea"
         tools:ignore="UnusedAttribute">
 
-        <!-- Glide -->
-        <meta-data
-            android:name="me.ykrank.s1next.widget.glide.AppGlideModule"
-            android:value="GlideModule" />
-
         <!-- Bugly -->
         <meta-data
             android:name="BUGLY_APPID"

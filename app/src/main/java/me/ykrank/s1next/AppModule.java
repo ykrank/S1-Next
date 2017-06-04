@@ -171,6 +171,12 @@ public final class AppModule {
 
     @Provides
     @Singleton
+    AutoSignTask provideAutoSignTask(S1Service s1Service, User user) {
+        return new AutoSignTask(s1Service, user);
+    }
+
+    @Provides
+    @Singleton
     UserValidator providerUserValidator(User user, AutoSignTask autoSignTask) {
         return new UserValidator(user, autoSignTask);
     }
@@ -181,12 +187,12 @@ public final class AppModule {
         return new UserViewModel();
     }
 
+
     @Provides
     @Singleton
     DataTrackAgent provideDataTrackAgent() {
         return new DataTrackAgent();
     }
-
 
     @Provides
     @Singleton
@@ -204,11 +210,5 @@ public final class AppModule {
     @Singleton
     AvatarUrlsCache provideAvatarUrlsCache() {
         return new AvatarUrlsCache();
-    }
-
-    @Provides
-    @Singleton
-    AutoSignTask provideAutoSignTask(S1Service s1Service, User user) {
-        return new AutoSignTask(s1Service, user);
     }
 }

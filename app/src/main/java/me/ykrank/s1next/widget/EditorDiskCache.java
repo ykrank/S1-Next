@@ -7,7 +7,7 @@ import android.util.LruCache;
 
 import com.bumptech.glide.disklrucache.DiskLruCache;
 import com.bumptech.glide.load.Key;
-import com.bumptech.glide.signature.StringSignature;
+import com.bumptech.glide.signature.ObjectKey;
 import com.bumptech.glide.util.Util;
 
 import java.io.BufferedWriter;
@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -155,11 +154,11 @@ public class EditorDiskCache {
             }
             if (safeKey == null) {
                 try {
-                    Key key = new StringSignature(value);
+                    Key key = new ObjectKey(value);
                     MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
                     key.updateDiskCacheKey(messageDigest);
                     safeKey = Util.sha256BytesToHex(messageDigest.digest());
-                } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 }
                 synchronized (lruCache) {

@@ -2,13 +2,12 @@ package me.ykrank.s1next.view.adapter;
 
 import android.app.Activity;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 
 import java.util.List;
 
@@ -25,14 +24,14 @@ public final class EmoticonGridRecyclerAdapter
     private final LayoutInflater mLayoutInflater;
 
     private final List<Emoticon> mEmoticons;
-    private final DrawableRequestBuilder<Uri> mEmoticonRequestBuilder;
+    private final RequestManager mEmoticonRequestBuilder;
 
     private final EventBus mEventBus;
 
     public EmoticonGridRecyclerAdapter(Activity activity, List<Emoticon> emoticons) {
         mLayoutInflater = activity.getLayoutInflater();
         this.mEmoticons = emoticons;
-        mEmoticonRequestBuilder = Glide.with(activity).from(Uri.class);
+        mEmoticonRequestBuilder = Glide.with(activity);
         mEventBus = App.getAppComponent().getEventBus();
 
         setHasStableIds(true);
@@ -43,7 +42,7 @@ public final class EmoticonGridRecyclerAdapter
         ItemEmoticonBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_emoticon, parent, false);
         binding.setEventBus(mEventBus);
-        binding.setDrawableRequestBuilder(mEmoticonRequestBuilder);
+        binding.setRequestManager(mEmoticonRequestBuilder);
         binding.setEmoticonViewModel(new EmoticonViewModel());
 
         return new BindingViewHolder(binding);
@@ -58,7 +57,6 @@ public final class EmoticonGridRecyclerAdapter
     @Override
     public void onViewRecycled(BindingViewHolder holder) {
         super.onViewRecycled(holder);
-        Glide.clear(holder.itemEmoticonBinding.image);
     }
 
     @Override

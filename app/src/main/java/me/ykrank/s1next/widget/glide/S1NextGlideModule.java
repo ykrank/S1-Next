@@ -2,12 +2,14 @@ package me.ykrank.s1next.widget.glide;
 
 import android.content.Context;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
+import com.bumptech.glide.Registry;
+import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.module.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.ViewTarget;
 
 import java.io.InputStream;
@@ -18,7 +20,13 @@ import me.ykrank.s1next.R;
 /**
  * Lazily configures Glide.
  */
-public final class AppGlideModule implements GlideModule {
+@GlideModule
+public final class S1NextGlideModule extends AppGlideModule {
+
+    @Override
+    public boolean isManifestParsingEnabled() {
+        return false;
+    }
 
     @Override
     public void applyOptions(Context context, GlideBuilder builder) {
@@ -30,13 +38,12 @@ public final class AppGlideModule implements GlideModule {
         ViewTarget.setTagId(R.id.tag_glide);
 
         //从默认的RGB_565改为ARGB_8888显示
-        builder.setDecodeFormat(DecodeFormat.PREFER_ARGB_8888);
+        builder.setDefaultRequestOptions(new RequestOptions().format(DecodeFormat.PREFER_ARGB_8888));
     }
 
     @Override
-    public void registerComponents(Context context, Glide glide) {
-        // register the OkHttp for Glide
-        glide.register(GlideUrl.class, InputStream.class, new AppHttpUrlLoader.Factory(
+    public void registerComponents(Context context, Registry registry) {
+        registry.replace(GlideUrl.class, InputStream.class, new AppHttpUrlLoader.Factory(
                 App.getAppComponent().getImageOkHttpClient()));
     }
 }

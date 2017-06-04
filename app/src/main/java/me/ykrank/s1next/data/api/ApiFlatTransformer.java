@@ -12,7 +12,6 @@ import me.ykrank.s1next.data.api.model.Account;
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.OriginWrapper;
 import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.data.api.model.wrapper.OriginWrapper;
 
 /**
  * Created by ykrank on 2016/10/18.

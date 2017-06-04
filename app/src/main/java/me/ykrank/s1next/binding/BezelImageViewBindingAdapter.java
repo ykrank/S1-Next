@@ -2,15 +2,20 @@ package me.ykrank.s1next.binding;
 
 import android.content.Context;
 import android.databinding.BindingAdapter;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
-import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
@@ -54,19 +59,20 @@ public final class BezelImageViewBindingAdapter {
             // setup user's avatar
             Glide.with(context)
                     .load(new AvatarUrl(Api.getAvatarMediumUrl(user.getUid())))
-                    .error(R.drawable.ic_drawer_avatar_placeholder)
-                    .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
-                    .centerCrop()
-                    .listener(new RequestListener<AvatarUrl, GlideDrawable>() {
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .error(R.drawable.ic_drawer_avatar_placeholder)
+                            .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
+                    )
+                    .listener(new RequestListener<Drawable>() {
                         @Override
-                        public boolean onException(Exception e, AvatarUrl model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                             return false;
                         }
 
                         @Override
-                        public boolean onResourceReady(GlideDrawable resource, AvatarUrl model, Target<GlideDrawable> target,
-                                                       boolean isFromMemoryCache, boolean isFirstResource) {
-                            bezelImageView.setTag(R.id.tag_drawable_info, new ImageInfo(model.toStringUrl(), resource.getIntrinsicWidth(), resource.getIntrinsicHeight()));
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            bezelImageView.setTag(R.id.tag_drawable_info, new ImageInfo(((AvatarUrl) model).toStringUrl(), resource.getIntrinsicWidth(), resource.getIntrinsicHeight()));
                             return false;
                         }
                     })
@@ -109,7 +115,7 @@ public final class BezelImageViewBindingAdapter {
         Context context = imageView.getContext();
         Glide.with(context)
                 .load(R.drawable.ic_drawer_avatar_placeholder)
-                .centerCrop()
+                .apply(RequestOptions.centerCropTransform())
                 .into(imageView);
     }
 
@@ -146,15 +152,18 @@ public final class BezelImageViewBindingAdapter {
             return;
         }
         Context context = imageView.getContext();
-        DrawableRequestBuilder<AvatarUrl> listener = Glide.with(context)
+        RequestBuilder<Drawable> listener = Glide.with(context)
                 .load(new AvatarUrl(urls.get(0)))
-                .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .centerCrop()
-                .priority(Priority.LOW)
-                .listener(new RequestListener<AvatarUrl, GlideDrawable>() {
+                .apply(new RequestOptions()
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .error(R.drawable.ic_drawer_avatar_placeholder)
+                        .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
+                        .priority(Priority.LOW)
+                )
+                .listener(new RequestListener<Drawable>() {
                     @Override
-                    public boolean onException(Exception e, AvatarUrl model, Target<GlideDrawable> target, boolean isFirstResource) {
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         if (urls.size() > 0) {
                             urls.remove(0);
                             preloadRoundAvatar(imageView, downloadPreferencesManager, urls);
@@ -164,7 +173,7 @@ public final class BezelImageViewBindingAdapter {
                     }
 
                     @Override
-                    public boolean onResourceReady(GlideDrawable resource, AvatarUrl model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                         return false;
                     }
                 });
@@ -178,39 +187,48 @@ public final class BezelImageViewBindingAdapter {
             return;
         }
         Context context = imageView.getContext();
-        DrawableRequestBuilder<AvatarUrl> listener = Glide.with(context)
-                .load(new AvatarUrl(urls.get(0)))
-                .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+        RequestOptions requestOptions = new RequestOptions()
                 .centerCrop()
-                .priority(Priority.HIGH)
-                .listener(new RequestListener<AvatarUrl, GlideDrawable>() {
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
+                .priority(Priority.HIGH);
+
+        RequestBuilder<Drawable> listener = Glide.with(context)
+                .load(new AvatarUrl(urls.get(0)))
+                .apply(new RequestOptions()
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
+                        .priority(Priority.HIGH)
+                )
+                .listener(new RequestListener<Drawable>() {
                     @Override
-                    public boolean onException(Exception e, AvatarUrl model, Target<GlideDrawable> target, boolean isFirstResource) {
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         urls.remove(0);
                         loadRoundAvatar(imageView, downloadPreferencesManager, urls, thumbUrl, fade);
                         return true;
                     }
 
                     @Override
-                    public boolean onResourceReady(GlideDrawable resource, AvatarUrl model, Target<GlideDrawable> target,
-                                                   boolean isFromMemoryCache, boolean isFirstResource) {
-                        L.l("Load avatar:" + model.toStringUrl());
-                        imageView.setTag(R.id.tag_drawable_info, new ImageInfo(model.toStringUrl(), resource.getIntrinsicWidth(), resource.getIntrinsicHeight()));
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        AvatarUrl avatarUrl = (AvatarUrl) model;
+                        L.l("Load avatar:" + avatarUrl.toStringUrl());
+                        imageView.setTag(R.id.tag_drawable_info, new ImageInfo(avatarUrl.toStringUrl(), resource.getIntrinsicWidth(), resource.getIntrinsicHeight()));
                         return false;
                     }
                 });
         if (!TextUtils.isEmpty(thumbUrl)) {
             listener = listener.thumbnail(Glide.with(context)
                     .load(new AvatarUrl(thumbUrl))
-                    .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .centerCrop());
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
+                            .diskCacheStrategy(DiskCacheStrategy.DATA)));
         } else {
-            listener = listener.placeholder(R.drawable.ic_drawer_avatar_placeholder);
+            requestOptions = requestOptions.placeholder(R.drawable.ic_drawer_avatar_placeholder);
         }
         if (fade) {
-            listener = listener.crossFade();
+            listener = listener.transition(DrawableTransitionOptions.withCrossFade(android.R.anim.fade_in, 300));
         }
         listener.into(imageView);
 

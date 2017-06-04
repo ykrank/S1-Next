@@ -2,9 +2,11 @@ package me.ykrank.s1next.widget.span;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
@@ -16,15 +18,17 @@ import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.TextView;
 
-import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.target.ViewTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.util.Collections;
 import java.util.Set;
@@ -36,8 +40,10 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.widget.EmoticonFactory;
-import me.ykrank.s1next.widget.glide.transformations.FitOutWidthBitmapTransformation;
-import me.ykrank.s1next.widget.glide.transformations.SizeMultiplierBitmapTransformation;
+import me.ykrank.s1next.widget.glide.transformations.FitOutWidthDownSampleStrategy;
+import me.ykrank.s1next.widget.glide.transformations.GlMaxTextureSizeDownSampleStrategy;
+import me.ykrank.s1next.widget.glide.transformations.MultiDownSampleStrategy;
+import me.ykrank.s1next.widget.glide.transformations.SizeMultiplierDownSampleStrategy;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import me.ykrank.s1next.widget.track.event.EmoticonNotFoundTrackEvent;
 
@@ -61,7 +67,7 @@ public final class GlideImageGetter
     /**
      * Weak {@link java.util.HashSet}.
      */
-    private final Set<ViewTarget<TextView, GlideDrawable>> mViewTargetSet = Collections.newSetFromMap(new WeakHashMap<>());
+    private final Set<ViewTarget<TextView, Drawable>> mViewTargetSet = Collections.newSetFromMap(new WeakHashMap<>());
 
     private float density;
     private Rect emoticonInitRect, unknownImageInitRect;
@@ -118,33 +124,28 @@ public final class GlideImageGetter
             ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
                     urlDrawable);
 
-            SizeMultiplierBitmapTransformation sizeMultiplierBitmapTransformation =
-                    new SizeMultiplierBitmapTransformation(mContext, density);
+            SizeMultiplierDownSampleStrategy sizeMultiplierDownsampleStrategy = new SizeMultiplierDownSampleStrategy(density);
             String finalUrl = url;
 
-            DrawableRequestBuilder<Uri> glideRequestBuilder = Glide.with(mContext)
+            RequestBuilder<Drawable> glideRequestBuilder = Glide.with(mContext)
                     .load(Uri.parse(EmoticonFactory.ASSET_PATH_EMOTICON + emoticonName))
-                    .transform(sizeMultiplierBitmapTransformation)
-                    .listener(new RequestListener<Uri, GlideDrawable>() {
-
-                        /**
-                         * Occurs If we don't have this image (maybe a new emoticon) in assets.
-                         */
+                    .apply(RequestOptions.downsampleOf(sizeMultiplierDownsampleStrategy))
+                    .listener(new RequestListener<Drawable>() {
                         @Override
-                        public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                             L.leaveMsg("Exception in emoticon uri:" + model);
                             trackAgent.post(new EmoticonNotFoundTrackEvent(model.toString()));
                             // append domain to this url
                             Glide.with(mContext)
                                     .load(Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX + finalUrl)
-                                    .transform(sizeMultiplierBitmapTransformation)
+                                    .apply(RequestOptions.downsampleOf(sizeMultiplierDownsampleStrategy))
                                     .into(imageGetterViewTarget);
 
                             return true;
                         }
 
                         @Override
-                        public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                             return false;
                         }
                     });
@@ -158,11 +159,12 @@ public final class GlideImageGetter
         ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
                 urlDrawable);
 
-        DrawableRequestBuilder<String> glideRequestBuilder = Glide.with(mContext)
+        RequestBuilder<Drawable> glideRequestBuilder = Glide.with(mContext)
                 .load(url)
-                .placeholder(R.mipmap.unknown_image)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .transform(new FitOutWidthBitmapTransformation(mContext));
+                .apply(new RequestOptions()
+                        .placeholder(R.mipmap.unknown_image)
+                        .diskCacheStrategy(DiskCacheStrategy.DATA)
+                        .downsample(new MultiDownSampleStrategy(new GlMaxTextureSizeDownSampleStrategy(), new FitOutWidthDownSampleStrategy())));
         RxJavaUtil.workInMainThread(glideRequestBuilder, builder -> builder.into(imageGetterViewTarget));
 
         mViewTargetSet.add(imageGetterViewTarget);
@@ -198,7 +200,7 @@ public final class GlideImageGetter
     public void unscheduleDrawable(@NonNull Drawable who, @NonNull Runnable what) {
     }
 
-    private static final class ImageGetterViewTarget extends ViewTarget<TextView, GlideDrawable> {
+    private static final class ImageGetterViewTarget extends ViewTarget<TextView, Drawable> {
 
         private final UrlDrawable mDrawable;
 
@@ -218,11 +220,11 @@ public final class GlideImageGetter
         }
 
         @Override
-        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+        public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
             setDrawable(resource);
 
             TextView textView = getView();
-            if (resource.isAnimated()) {
+            if (resource instanceof Animatable) {
                 Drawable.Callback callback = (Drawable.Callback) textView.getTag(
                         R.id.tag_drawable_callback);
                 // note: not sure whether callback would be null sometimes
@@ -232,15 +234,16 @@ public final class GlideImageGetter
                     // signal its container to be redrawn
                     // to show the animated GIF
                     mDrawable.setCallback(callback);
-                    resource.setLoopCount(GlideDrawable.LOOP_FOREVER);
-                    resource.start();
+                    ((Animatable) resource).start();
                 }
             }
         }
 
         @Override
-        public void onLoadFailed(Exception e, Drawable errorDrawable) {
-            L.e(e);
+        public void onLoadFailed(@Nullable Drawable errorDrawable) {
+            if (errorDrawable != null) {
+                setDrawable(errorDrawable);
+            }
         }
 
         private void setDrawable(@NonNull Drawable resource) {
@@ -312,8 +315,6 @@ public final class GlideImageGetter
 
         /**
          * See https://github.com/bumptech/glide/issues/550#issuecomment-123693051
-         *
-         * @see com.bumptech.glide.GenericRequestBuilder#into(com.bumptech.glide.request.target.Target)
          */
         @Override
         public Request getRequest() {

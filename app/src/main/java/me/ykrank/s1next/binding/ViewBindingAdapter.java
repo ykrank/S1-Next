@@ -16,9 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
 import io.reactivex.functions.Consumer;
@@ -27,7 +30,7 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.widget.glide.transformations.BlurTransformation;
-import me.ykrank.s1next.widget.glide.viewtarget.GlideDrawableViewBackgroundTarget;
+import me.ykrank.s1next.widget.glide.viewtarget.DrawableViewBackgroundTarget;
 import me.ykrank.s1next.widget.glide.viewtarget.ViewBackgroundTarget;
 
 /**
@@ -105,13 +108,17 @@ public final class ViewBindingAdapter {
     @BindingAdapter({"downloadPreferencesManager", "blurUrl"})
     public static void setBlurBackground(View view, DownloadPreferencesManager oldManager, String oldBlurUrl,
                                          DownloadPreferencesManager newManager, String newBlurUrl) {
+        // TODO: 2017/6/5 blur size error
         Context context = view.getContext();
         if (TextUtils.isEmpty(newBlurUrl)) {
             Glide.with(context)
                     .load(R.drawable.ic_avatar_placeholder)
-                    .bitmapTransform(new BlurTransformation(context, 25), new CenterCrop(context))
-                    .crossFade()
-                    .into(new GlideDrawableViewBackgroundTarget(view));
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .transform(new BlurTransformation(context, 25))
+                    )
+                    .transition(DrawableTransitionOptions.withCrossFade(android.R.anim.fade_in, 300))
+                    .into(new DrawableViewBackgroundTarget(view));
             return;
         }
         if (!TextUtils.equals(oldBlurUrl, newBlurUrl)) {
@@ -120,20 +127,23 @@ public final class ViewBindingAdapter {
                 radius = 20;
             }
             Glide.with(context)
-                    .load(newBlurUrl)
                     .asBitmap()
-                    .signature(newManager.getAvatarCacheInvalidationIntervalSignature())
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .transform(new BlurTransformation(context, radius), new CenterCrop(context))
-                    .listener(new RequestListener<String, Bitmap>() {
+                    .load(newBlurUrl)
+                    .apply(new RequestOptions()
+                            .signature(newManager.getAvatarCacheInvalidationIntervalSignature())
+                            .diskCacheStrategy(DiskCacheStrategy.DATA)
+                            .centerCrop()
+                            .transform(new BlurTransformation(context, radius))
+                    )
+                    .listener(new RequestListener<Bitmap>() {
                         @Override
-                        public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
                             setBlurBackground(view, oldManager, null, newManager, null);
                             return true;
                         }
 
                         @Override
-                        public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
                             return false;
                         }
                     })

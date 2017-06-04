@@ -26,10 +26,11 @@ public class AppHttpStreamFetcher extends OkHttpStreamFetcher {
     }
 
     @Override
-    public InputStream loadData(Priority priority) throws Exception {
+    public void loadData(Priority priority, DataCallback<? super InputStream> callback) {
         if (!mDownloadPreferencesManager.isImagesDownload()) {
-            return null;
+            callback.onDataReady(null);
+            return;
         }
-        return super.loadData(priority);
+        super.loadData(priority, callback);
     }
 }

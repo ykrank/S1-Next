@@ -3,7 +3,7 @@ package me.ykrank.s1next.data.pref;
 import android.support.annotation.IntDef;
 
 import com.bumptech.glide.load.Key;
-import com.bumptech.glide.signature.StringSignature;
+import com.bumptech.glide.signature.ObjectKey;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -126,7 +126,7 @@ public final class DownloadPreferencesManager {
          * of date that will be mixed in to the cache key.
          */
         private static Key getSignature(int index) {
-            return new StringSignature(index < 0 || index >= VALUES.length ? VALUES[0] : VALUES[index]);
+            return new ObjectKey(index < 0 || index >= VALUES.length ? VALUES[0] : VALUES[index]);
         }
     }
 }

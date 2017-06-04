@@ -2,13 +2,14 @@ package me.ykrank.s1next.widget.glide;
 
 import android.util.LruCache;
 
+import com.bumptech.glide.Priority;
 import com.bumptech.glide.disklrucache.DiskLruCache;
 import com.bumptech.glide.load.Key;
+import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.util.Util;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -35,7 +36,7 @@ import me.ykrank.s1next.util.L;
  * just throw an exception to tell Glide to use the error
  * placeholder for this image.
  *
- * @see AvatarStreamFetcher#loadData(com.bumptech.glide.Priority)
+ * @see AvatarStreamFetcher#loadData(Priority, DataFetcher.DataCallback)
  */
 public class AvatarUrlsCache {
     private static final int MEMORY_CACHE_MAX_NUMBER = 1000;
@@ -144,9 +145,9 @@ public class AvatarUrlsCache {
         String bigAvatarUrl = Api.getAvatarBigUrl(uid);
         DownloadPreferencesManager manager = App.getAppComponent()
                 .getDownloadPreferencesManager();
-        avatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(manager, smallAvatarUrl));
-        avatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(manager, mediumAvatarUrl));
-        avatarUrlsCache.remove(OriginalKey.Builder.getInstance().obtainAvatarKey(manager, bigAvatarUrl));
+        avatarUrlsCache.remove(OriginalKey.obtainAvatarKey(manager, smallAvatarUrl));
+        avatarUrlsCache.remove(OriginalKey.obtainAvatarKey(manager, mediumAvatarUrl));
+        avatarUrlsCache.remove(OriginalKey.obtainAvatarKey(manager, bigAvatarUrl));
     }
 
     /**
@@ -168,7 +169,7 @@ public class AvatarUrlsCache {
                     MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
                     key.updateDiskCacheKey(messageDigest);
                     safeKey = Util.sha256BytesToHex(messageDigest.digest());
-                } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 }
                 synchronized (lruCache) {

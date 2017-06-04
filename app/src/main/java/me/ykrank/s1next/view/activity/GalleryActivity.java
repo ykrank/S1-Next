@@ -21,6 +21,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.github.chrisbanes.photoview.PhotoView;
+
 import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
@@ -33,7 +35,6 @@ import me.ykrank.s1next.util.LeaksUtil;
 import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.view.internal.ToolbarDelegate;
 import me.ykrank.s1next.viewmodel.ImageViewModel;
-import me.ykrank.s1next.widget.PhotoView;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import me.ykrank.s1next.widget.track.event.ViewImageTrackEvent;
 import me.ykrank.s1next.widget.track.event.page.ActivityEndEvent;
@@ -187,10 +188,6 @@ public final class GalleryActivity extends OriginActivity {
     @Override
     protected void onDestroy() {
         // Clean up views and other components
-        if (mPhotoView != null) {
-            mPhotoView.clear();
-            mPhotoView = null;
-        }
         super.onDestroy();
         LeaksUtil.releaseGestureBoostManagerLeaks(this);
     }

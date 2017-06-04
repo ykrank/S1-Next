@@ -6,14 +6,17 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.request.RequestOptions;
 import com.shizhefei.view.largeimage.LargeImageView;
+
+import java.io.File;
 
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.widget.glide.model.ForcePassUrl;
-import me.ykrank.s1next.widget.glide.viewtarget.GlideDrawableLargeImageViewTarget;
+import me.ykrank.s1next.widget.glide.viewtarget.LargeImageViewTarget;
 
 public final class LargeImageViewBindingAdapter {
 
@@ -26,20 +29,21 @@ public final class LargeImageViewBindingAdapter {
             return;
         }
         Context context = largeImageView.getContext();
-        DrawableTypeRequest<ForcePassUrl> builder = Glide.with(context)
-                .load(new ForcePassUrl(url));
+        RequestBuilder<File> builder = Glide.with(context)
+                .download(new ForcePassUrl(url));
         //avatar signature
         if (manager != null && Api.isAvatarUrl(url)) {
-            builder = (DrawableTypeRequest<ForcePassUrl>) builder.signature(manager.getAvatarCacheInvalidationIntervalSignature());
+            builder = builder.apply(new RequestOptions()
+                    .signature(manager.getAvatarCacheInvalidationIntervalSignature()));
         }
 
-        builder.downloadOnly(new GlideDrawableLargeImageViewTarget(largeImageView) {
+        builder.into(new LargeImageViewTarget(largeImageView) {
             @Override
-            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+            public void onLoadFailed(@Nullable Drawable errorDrawable) {
                 if (thumbUrl != null) {
                     loadImage(largeImageView, thumbUrl, null, manager);
                 } else {
-                    super.onLoadFailed(e, errorDrawable);
+                    super.onLoadFailed(errorDrawable);
                 }
             }
         });

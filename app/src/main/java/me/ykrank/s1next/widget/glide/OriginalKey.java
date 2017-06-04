@@ -4,13 +4,12 @@ import android.util.LruCache;
 
 import com.bumptech.glide.load.Key;
 
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 
 /**
- * Forked from {@link com.bumptech.glide.load.engine.OriginalKey}.
+ * A key from string and key
  */
 public final class OriginalKey implements Key {
 
@@ -44,9 +43,13 @@ public final class OriginalKey implements Key {
     }
 
     @Override
-    public void updateDiskCacheKey(MessageDigest messageDigest) throws UnsupportedEncodingException {
-        messageDigest.update(id.getBytes(STRING_CHARSET_NAME));
+    public void updateDiskCacheKey(MessageDigest messageDigest) {
+        messageDigest.update(id.getBytes());
         signature.updateDiskCacheKey(messageDigest);
+    }
+
+    public static OriginalKey obtainAvatarKey(DownloadPreferencesManager manager, String url) {
+        return Builder.instance.obtainAvatarKey(manager, url);
     }
 
     public static class Builder {
@@ -59,14 +62,14 @@ public final class OriginalKey implements Key {
             keyLruCache = new LruCache<>(ORIGIN_KEYS_MEMORY_CACHE_MAX_NUMBER);
         }
 
-        public static Builder getInstance() {
+        static Builder getInstance() {
             return instance;
         }
 
         /**
          * obtain avatar cache key from download preference and url
          */
-        public OriginalKey obtainAvatarKey(DownloadPreferencesManager manager, String url) {
+        OriginalKey obtainAvatarKey(DownloadPreferencesManager manager, String url) {
             OriginalKey safeKey;
             synchronized (keyLruCache) {
                 safeKey = keyLruCache.get(url);
