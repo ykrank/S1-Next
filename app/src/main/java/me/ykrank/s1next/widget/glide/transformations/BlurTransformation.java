@@ -49,6 +49,7 @@ public class BlurTransformation implements Transformation<Bitmap> {
 
     private int mRadius;
     private int mSampling;
+    private int mTargetSize;
 
     public BlurTransformation(Context context) {
         this(context, Glide.get(context).getBitmapPool(), MAX_RADIUS, DEFAULT_DOWN_SAMPLING);
@@ -77,32 +78,52 @@ public class BlurTransformation implements Transformation<Bitmap> {
         mSampling = sampling;
     }
 
+    public int getTargetSize() {
+        return mTargetSize;
+    }
+
+    public void setTargetSize(int targetSize) {
+        this.mTargetSize = targetSize;
+    }
+
     @Override
     public Resource<Bitmap> transform(Context context, Resource<Bitmap> resource, int outWidth, int outHeight) {
         Bitmap source = resource.get();
 
         int width = source.getWidth();
         int height = source.getHeight();
-        int scaledWidth = width / mSampling;
-        int scaledHeight = height / mSampling;
+
+        float sampling = mSampling;
+        int radius = mRadius;
+        if (mTargetSize > 0) {
+            sampling = Math.min((float) width / mTargetSize, (float) height / mTargetSize);
+            if (sampling < 1) {
+                //targetSize bigger than resource width or height, decrease radius, not sampling
+                radius = (int) (mRadius * sampling);
+                sampling = 1;
+            }
+        }
+
+        int scaledWidth = (int) (width / sampling);
+        int scaledHeight = (int) (height / sampling);
 
         Bitmap bitmap = mBitmapPool.get(scaledWidth, scaledHeight, Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(bitmap);
-        canvas.scale(1 / (float) mSampling, 1 / (float) mSampling);
+        canvas.scale(1 / sampling, 1 / sampling);
         Paint paint = new Paint();
         paint.setFlags(Paint.FILTER_BITMAP_FLAG);
         canvas.drawBitmap(source, 0, 0, paint);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             try {
-                bitmap = RSBlur.blur(mContext, bitmap, mRadius);
+                bitmap = RSBlur.blur(mContext, bitmap, radius);
             } catch (RSRuntimeException e) {
                 L.report(e);
-                bitmap = FastBlur.blur(bitmap, mRadius, true);
+                bitmap = FastBlur.blur(bitmap, radius, true);
             }
         } else {
-            bitmap = FastBlur.blur(bitmap, mRadius, true);
+            bitmap = FastBlur.blur(bitmap, radius, true);
         }
 
         return BitmapResource.obtain(bitmap, mBitmapPool);

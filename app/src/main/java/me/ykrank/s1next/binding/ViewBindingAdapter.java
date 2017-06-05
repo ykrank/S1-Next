@@ -108,32 +108,27 @@ public final class ViewBindingAdapter {
     @BindingAdapter({"downloadPreferencesManager", "blurUrl"})
     public static void setBlurBackground(View view, DownloadPreferencesManager oldManager, String oldBlurUrl,
                                          DownloadPreferencesManager newManager, String newBlurUrl) {
-        // TODO: 2017/6/5 blur size error
         Context context = view.getContext();
+        BlurTransformation blurTransformation = new BlurTransformation(context, 20);
+        blurTransformation.setTargetSize(50);
         if (TextUtils.isEmpty(newBlurUrl)) {
             Glide.with(context)
                     .load(R.drawable.ic_avatar_placeholder)
                     .apply(new RequestOptions()
-                            .centerCrop()
-                            .transform(new BlurTransformation(context, 25))
+                            .transform(blurTransformation)
                     )
                     .transition(DrawableTransitionOptions.withCrossFade(android.R.anim.fade_in, 300))
                     .into(new DrawableViewBackgroundTarget(view));
             return;
         }
         if (!TextUtils.equals(oldBlurUrl, newBlurUrl)) {
-            int radius = 10;
-            if (newManager.isHighResolutionAvatarsDownload()) {
-                radius = 20;
-            }
             Glide.with(context)
                     .asBitmap()
                     .load(newBlurUrl)
                     .apply(new RequestOptions()
                             .signature(newManager.getAvatarCacheInvalidationIntervalSignature())
                             .diskCacheStrategy(DiskCacheStrategy.DATA)
-                            .centerCrop()
-                            .transform(new BlurTransformation(context, radius))
+                            .transform(blurTransformation)
                     )
                     .listener(new RequestListener<Bitmap>() {
                         @Override
