@@ -239,4 +239,6 @@
     <string name="histories">Histories</string>
     <string name="action_check_in">Check in</string>
     <string name="already_checked_in">Already checked in</string>
+    <string name="download_unknown_error">Download error</string>
+    <string name="download_success">Download success</string>
 </resources>

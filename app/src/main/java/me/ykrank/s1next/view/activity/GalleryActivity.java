@@ -3,7 +3,6 @@ package me.ykrank.s1next.view.activity;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityOptions;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,34 +10,47 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresPermission;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.github.chrisbanes.photoview.PhotoView;
+
+import java.io.File;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
+import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.databinding.ActivityGalleryBinding;
+import me.ykrank.s1next.util.FileUtil;
 import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.LeaksUtil;
+import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.view.internal.ToolbarDelegate;
 import me.ykrank.s1next.viewmodel.ImageViewModel;
+import me.ykrank.s1next.widget.glide.model.ForcePassUrl;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import me.ykrank.s1next.widget.track.event.ViewImageTrackEvent;
 import me.ykrank.s1next.widget.track.event.page.ActivityEndEvent;
 import me.ykrank.s1next.widget.track.event.page.ActivityStartEvent;
+import okhttp3.HttpUrl;
 
 /**
  * An Activity shows an ImageView that supports multi-touch.
@@ -60,7 +72,7 @@ public final class GalleryActivity extends OriginActivity {
     @Inject
     DataTrackAgent trackAgent;
     @Inject
-    DownloadPreferencesManager mDownloadPreferencesManager;
+    DownloadPreferencesManager mDownloadPrefManager;
 
     public static void startGalleryActivity(Context context, String imageUrl) {
         Intent intent = new Intent(context, GalleryActivity.class);
@@ -110,7 +122,7 @@ public final class GalleryActivity extends OriginActivity {
         //TODO http://stackoverflow.com/questions/31492040/snackbar-and-fitssystemwindow
 
         trackAgent.post(new ViewImageTrackEvent(mImageUrl, mImageThumbUrl != null));
-        binding.setDownloadPrefManager(mDownloadPreferencesManager);
+        binding.setDownloadPrefManager(mDownloadPrefManager);
         binding.setImageViewModel(new ImageViewModel(mImageUrl, mImageThumbUrl));
     }
 
@@ -172,14 +184,47 @@ public final class GalleryActivity extends OriginActivity {
 
     @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private void downloadImage() {
-        DownloadManager downloadManager = (DownloadManager)
-                getSystemService(Context.DOWNLOAD_SERVICE);
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(mImageUrl));
-        request.setNotificationVisibility(
-                DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
-                mImageUrl.substring(mImageUrl.lastIndexOf("/") + 1));
-        downloadManager.enqueue(request);
+        RequestBuilder<File> builder = Glide.with(this)
+                .download(new ForcePassUrl(mImageUrl));
+        //avatar signature
+        if (Api.isAvatarUrl(mImageUrl)) {
+            builder = builder.apply(new RequestOptions()
+                    .signature(mDownloadPrefManager.getAvatarCacheInvalidationIntervalSignature()));
+        }
+        builder.into(new SimpleTarget<File>() {
+            @Override
+            public void onResourceReady(File resource, Transition<? super File> transition) {
+                RxJavaUtil.workWithUiThread(() -> {
+                    String name = null;
+                    File file;
+                    File downloadDir = FileUtil.getDownloadDirectory(GalleryActivity.this);
+                    HttpUrl url = HttpUrl.parse(mImageUrl);
+                    if (url != null) {
+                        List<String> segments = url.encodedPathSegments();
+                        if (segments.size() > 0) {
+                            name = segments.get(segments.size() - 1);
+                        }
+                        //sometime url is php
+                        if (name != null && name.endsWith(".php")) {
+                            name = null;
+                        }
+                    }
+                    if (!TextUtils.isEmpty(name)) {
+                        file = new File(downloadDir, name);
+                    } else {
+                        file = FileUtil.newFileInDirectory(downloadDir, ".jpg");
+                    }
+                    FileUtil.copyFile(resource, file);
+                }, () -> {
+                    Snackbar.make(findViewById(R.id.coordinator_layout),
+                            R.string.download_success, Snackbar.LENGTH_SHORT).show();
+                }, e -> {
+                    L.report(e);
+                    Toast.makeText(GalleryActivity.this, R.string.download_unknown_error, Toast.LENGTH_SHORT).show();
+                });
+            }
+        });
+        // TODO: 2017/6/6 judge file suffix, notify system after download
 
         Snackbar.make(findViewById(R.id.coordinator_layout),
                 R.string.snackbar_action_downloading, Snackbar.LENGTH_SHORT).show();

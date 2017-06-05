@@ -182,4 +182,6 @@
     <string name="histories">历史记录</string>
     <string name="action_check_in">签到</string>
     <string name="already_checked_in">已签到</string>
+    <string name="download_unknown_error">下载失败</string>
+    <string name="download_success">下载成功</string>
 </resources>
