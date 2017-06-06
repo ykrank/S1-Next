@@ -141,3 +141,10 @@
 #Bugly
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
+
+#kotlin
+-dontwarn kotlin.**
+#get rid of null checks at runtime
+-assumenosideeffects class kotlin.jvm.internal.Intrinsics {
+    static void checkParameterIsNotNull(java.lang.Object, java.lang.String);
+}
