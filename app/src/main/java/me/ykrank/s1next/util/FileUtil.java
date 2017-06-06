@@ -5,9 +5,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.ImageHeaderParser;
+import com.bumptech.glide.load.ImageHeaderParserUtils;
+import com.bumptech.glide.load.engine.bitmap_recycle.ArrayPool;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 import me.ykrank.s1next.BuildConfig;
 import okio.BufferedSink;
@@ -98,5 +106,35 @@ public class FileUtil {
 
     public static void notifyImageInMediaStore(@NonNull Context context, @NonNull File file) {
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file.getAbsolutePath())));
+    }
+
+    @NonNull
+    public static ImageHeaderParser.ImageType getImageType(@NonNull Context context, @NonNull File file) throws IOException {
+        List<ImageHeaderParser> parsers = Glide.get(context).getRegistry().getImageHeaderParsers();
+        ArrayPool arrayPool = Glide.get(context).getArrayPool();
+        if (parsers != null && arrayPool != null) {
+            return ImageHeaderParserUtils.getType(parsers, new FileInputStream(file), arrayPool);
+        }
+        return ImageHeaderParser.ImageType.UNKNOWN;
+    }
+
+    @Nullable
+    public static String getImageTypeSuffix(ImageHeaderParser.ImageType imageType) {
+        switch (imageType) {
+            case JPEG:
+                return ".jpg";
+            case GIF:
+                return ".gif";
+            case PNG:
+            case PNG_A:
+                return ".png";
+            case RAW:
+                return ".raw";
+            case WEBP:
+            case WEBP_A:
+                return ".webp";
+            default:
+                return null;
+        }
     }
 }

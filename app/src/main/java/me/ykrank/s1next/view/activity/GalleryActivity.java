@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.load.ImageHeaderParser;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -209,10 +210,20 @@ public final class GalleryActivity extends OriginActivity {
                             name = null;
                         }
                     }
+
+                    ImageHeaderParser.ImageType type = FileUtil.getImageType(GalleryActivity.this, resource);
+                    String imageType = FileUtil.getImageTypeSuffix(type);
+                    if (imageType == null) {
+                        imageType = ".jpg";
+                    }
+
                     if (!TextUtils.isEmpty(name)) {
+                        if (!name.endsWith(imageType)) {
+                            name += imageType;
+                        }
                         file = new File(downloadDir, name);
                     } else {
-                        file = FileUtil.newFileInDirectory(downloadDir, ".jpg");
+                        file = FileUtil.newFileInDirectory(downloadDir, imageType);
                     }
                     FileUtil.copyFile(resource, file);
                     return file;
@@ -226,10 +237,6 @@ public final class GalleryActivity extends OriginActivity {
                 });
             }
         });
-        // TODO: 2017/6/6 judge file suffix, notify system after download
-
-        Snackbar.make(findViewById(R.id.coordinator_layout),
-                R.string.snackbar_action_downloading, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
