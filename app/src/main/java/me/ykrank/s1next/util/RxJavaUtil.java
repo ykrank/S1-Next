@@ -2,7 +2,6 @@ package me.ykrank.s1next.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
-import com.google.common.base.Supplier;
 
 import java.util.concurrent.TimeUnit;
 
@@ -172,5 +171,15 @@ public final class RxJavaUtil {
 
     public static <D> ObservableTransformer<String, D> jsonTransformer(TypeReference<D> typeReference) {
         return observable -> observable.map(s -> App.getAppComponent().getJsonMapper().readValue(s, typeReference));
+    }
+
+    public interface Supplier<T> {
+        /**
+         * Retrieves an instance of the appropriate type. The returned object may or
+         * may not be a new instance, depending on the implementation.
+         *
+         * @return an instance of the appropriate type
+         */
+        T get() throws Exception;
     }
 }

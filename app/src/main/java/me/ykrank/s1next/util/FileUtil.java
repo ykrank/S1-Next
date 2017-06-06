@@ -1,6 +1,8 @@
 package me.ykrank.s1next.util;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 
@@ -92,5 +94,9 @@ public class FileUtil {
                 }
             }
         }
+    }
+
+    public static void notifyImageInMediaStore(@NonNull Context context, @NonNull File file) {
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file.getAbsolutePath())));
     }
 }

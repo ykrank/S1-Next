@@ -194,7 +194,7 @@ public final class GalleryActivity extends OriginActivity {
         builder.into(new SimpleTarget<File>() {
             @Override
             public void onResourceReady(File resource, Transition<? super File> transition) {
-                RxJavaUtil.workWithUiThread(() -> {
+                RxJavaUtil.workWithUiResult(() -> {
                     String name = null;
                     File file;
                     File downloadDir = FileUtil.getDownloadDirectory(GalleryActivity.this);
@@ -215,9 +215,11 @@ public final class GalleryActivity extends OriginActivity {
                         file = FileUtil.newFileInDirectory(downloadDir, ".jpg");
                     }
                     FileUtil.copyFile(resource, file);
-                }, () -> {
+                    return file;
+                }, f -> {
                     Snackbar.make(findViewById(R.id.coordinator_layout),
                             R.string.download_success, Snackbar.LENGTH_SHORT).show();
+                    FileUtil.notifyImageInMediaStore(GalleryActivity.this, f);
                 }, e -> {
                     L.report(e);
                     Toast.makeText(GalleryActivity.this, R.string.download_unknown_error, Toast.LENGTH_SHORT).show();
