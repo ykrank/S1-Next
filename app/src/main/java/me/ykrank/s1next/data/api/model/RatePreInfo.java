@@ -15,6 +15,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.ykrank.s1next.data.api.ApiUtil;
 import me.ykrank.s1next.util.L;
 
 /**
@@ -69,10 +70,10 @@ public class RatePreInfo implements Parcelable {
     };
 
     @NonNull
-    public static RatePreInfo fromHtml(String html) {
+    public static RatePreInfo fromHtml(@NonNull String html) {
         RatePreInfo info = new RatePreInfo();
         //remove html wrap
-        html = html.replace("<root><![CDATA[", "").replace("]]></root>", "");
+        html = ApiUtil.replaceAjaxHeader(html);
         try {
             Document document = Jsoup.parse(html);
             //alert error

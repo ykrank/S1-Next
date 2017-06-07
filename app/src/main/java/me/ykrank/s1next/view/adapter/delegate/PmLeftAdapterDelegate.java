@@ -53,7 +53,7 @@ public final class PmLeftAdapterDelegate extends BaseAdapterDelegate<Pm, PmLeftA
     }
 
     @Override
-    public void onBindViewHolderData(Pm pm, int position, @NonNull BindingViewHolder holder) {
+    public void onBindViewHolderData(Pm pm, int position, @NonNull BindingViewHolder holder, @NonNull List<Object> payloads) {
         ItemPmLeftBinding binding = holder.binding;
         binding.getPmViewModel().pm.set(pm);
         binding.executePendingBindings();

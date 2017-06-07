@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
@@ -42,7 +44,7 @@ public final class ForumAdapterDelegate extends BaseAdapterDelegate<Forum, Forum
     }
 
     @Override
-    public void onBindViewHolderData(Forum forum, int position, @NonNull BindingViewHolder holder) {
+    public void onBindViewHolderData(Forum forum, int position, @NonNull BindingViewHolder holder, @NonNull List<Object> payloads) {
         ItemForumBinding binding = holder.itemForumBinding;
         binding.getForumViewModel().forum.set(forum);
         binding.executePendingBindings();

@@ -170,7 +170,11 @@ public final class TextViewBindingAdapter {
             ViewUtil.concatWithTwoSpacesForRtlSupport(textView, text);
             return;
         }
-        setHtmlWithImage(textView, post.getReply());
+        if (post.isTrade()) {
+            setHtmlWithImage(textView, post.getExtraHtml());
+        } else {
+            setHtmlWithImage(textView, post.getReply());
+        }
     }
 
     @BindingAdapter({"imgHtml"})

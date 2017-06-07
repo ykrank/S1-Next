@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.search.ForumSearchResult;
 import me.ykrank.s1next.databinding.ItemSearchForumBinding;
@@ -33,7 +35,7 @@ public final class SearchForumAdapterDelegate extends BaseAdapterDelegate<ForumS
     }
 
     @Override
-    public void onBindViewHolderData(ForumSearchResult forumSearchResult, int position, @NonNull SimpleRecycleViewHolder<ItemSearchForumBinding> holder) {
+    public void onBindViewHolderData(ForumSearchResult forumSearchResult, int position, @NonNull SimpleRecycleViewHolder<ItemSearchForumBinding> holder, @NonNull List<Object> payloads) {
         ItemSearchForumBinding binding = holder.getBinding();
         binding.setModel(forumSearchResult);
         binding.executePendingBindings();

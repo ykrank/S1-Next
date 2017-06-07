@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import me.ykrank.s1next.data.api.model.HomeThread;
 import me.ykrank.s1next.databinding.ItemHomeReplyTitleBinding;
 import me.ykrank.s1next.viewmodel.HomeReplyTitleViewModel;
@@ -26,7 +28,7 @@ public class HomeReplyTitleAdapterDelegate extends BaseAdapterDelegate<HomeThrea
     }
 
     @Override
-    public void onBindViewHolderData(HomeThread thread, int position, @NonNull BindingViewHolder holder) {
+    public void onBindViewHolderData(HomeThread thread, int position, @NonNull BindingViewHolder holder, @NonNull List<Object> payloads) {
         ItemHomeReplyTitleBinding binding = holder.binding;
         binding.getModel().thread.set(thread);
         binding.executePendingBindings();

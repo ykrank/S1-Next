@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
@@ -55,7 +57,7 @@ public final class ThreadAdapterDelegate extends BaseAdapterDelegate<Thread, Thr
     }
 
     @Override
-    public void onBindViewHolderData(Thread thread, int position, @NonNull BindingViewHolder holder) {
+    public void onBindViewHolderData(Thread thread, int position, @NonNull BindingViewHolder holder, @NonNull List<Object> payloads) {
         ItemThreadBinding binding = holder.itemThreadBinding;
         binding.getModel().thread.set(thread);
         binding.executePendingBindings();

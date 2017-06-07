@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import me.ykrank.s1next.data.api.model.Friend;
 import me.ykrank.s1next.databinding.ItemFriendBinding;
 import me.ykrank.s1next.viewmodel.FriendViewModel;
@@ -26,7 +28,7 @@ public class FriendAdapterDelegate extends BaseAdapterDelegate<Friend, FriendAda
     }
 
     @Override
-    public void onBindViewHolderData(Friend friend, int position, @NonNull BindingViewHolder holder) {
+    public void onBindViewHolderData(Friend friend, int position, @NonNull BindingViewHolder holder, @NonNull List<Object> payloads) {
         ItemFriendBinding binding = holder.binding;
         binding.getData().friend.set(friend);
         binding.executePendingBindings();

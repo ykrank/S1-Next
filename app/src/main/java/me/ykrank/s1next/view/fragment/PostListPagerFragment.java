@@ -31,6 +31,7 @@ import io.rx_cache2.Source;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
+import me.ykrank.s1next.data.api.ApiUtil;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.api.model.collection.Posts;
@@ -312,6 +313,16 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
                                 .compose(RxJavaUtil.jsonTransformer(PostsWrapper.class));
                     }
                     return Observable.just(wrapper);
+                })
+                .map(o -> {
+                    Post post = o.getData().getPostList().get(0);
+                    if (post.isTrade()) {
+                        post.setExtraHtml("");
+                        mS1Service.getTradePostInfo(mThreadId, post.getId() + 1)
+                                .map(ApiUtil::replaceAjaxHeader)
+                                .subscribe(post::setExtraHtml);
+                    }
+                    return o;
                 });
     }
 
@@ -355,7 +366,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
                 String quotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
                 if (!TextUtils.isEmpty(quotePostId)) {
                     for (int i = 0, length = postList.size(); i < length; i++) {
-                        if (quotePostId.equals(postList.get(i).getId())) {
+                        if (Integer.parseInt(quotePostId) == postList.get(i).getId()) {
                             // scroll to post post
                             mRecyclerView.scrollToPosition(i);
                             break;

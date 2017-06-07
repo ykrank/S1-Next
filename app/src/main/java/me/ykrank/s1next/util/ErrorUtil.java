@@ -48,7 +48,7 @@ public final class ErrorUtil {
         return null;
     }
 
-    public static void throwNewError(RuntimeException throwable) {
+    public static void throwNewErrorIfDebug(RuntimeException throwable) {
         if (BuildConfig.DEBUG) {
             throw throwable;
         } else {

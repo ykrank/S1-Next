@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
@@ -67,7 +69,7 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
     }
 
     @Override
-    public void onBindViewHolderData(Post post, int position, @NonNull ItemViewBindingHolder holder) {
+    public void onBindViewHolderData(Post post, int position, @NonNull ItemViewBindingHolder holder, @NonNull List<Object> payloads) {
         ItemPostBinding binding = holder.itemPostBinding;
 
         boolean selectable = mGeneralPreferencesManager.isPostSelectable();

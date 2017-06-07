@@ -12,6 +12,7 @@ public class ApiForum {
 
     static final String URL_THREAD_LIST = "index.php?module=forumdisplay&version=4&tpp=" + Api.THREADS_PER_PAGE;
     static final String URL_POST_LIST = "index.php?module=viewthread&ppp=" + Api.POSTS_PER_PAGE;
+    static final String URL_TRADE_POST_INFO = Api.BASE_URL + "forum.php?mod=viewthread&do=tradeinfo&inajax=1";
 
     /**
      * A URL used to get the correct authenticity token after login.

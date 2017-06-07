@@ -134,11 +134,11 @@ public final class PostViewModel {
     }
 
     public void onReplyClick(View v) {
-        eventBus.post(new QuoteEvent(post.get().getId(), post.get().getCount()));
+        eventBus.post(new QuoteEvent(String.valueOf(post.get().getId()), post.get().getCount()));
     }
 
     public void onRateClick(View v) {
-        eventBus.post(new RateEvent(thread.get().getId(), post.get().getId()));
+        eventBus.post(new RateEvent(thread.get().getId(), String.valueOf(post.get().getId())));
     }
 
     public void onEditClick(View v) {

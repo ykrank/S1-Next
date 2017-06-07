@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
@@ -47,7 +49,7 @@ public final class PmGroupsAdapterDelegate extends BaseAdapterDelegate<PmGroup, 
     }
 
     @Override
-    public void onBindViewHolderData(PmGroup pmGroup, int position, @NonNull BindingViewHolder holder) {
+    public void onBindViewHolderData(PmGroup pmGroup, int position, @NonNull BindingViewHolder holder, @NonNull List<Object> payloads) {
         ItemPmGroupBinding binding = holder.binding;
         binding.getModel().pmGroup.set(pmGroup);
         binding.executePendingBindings();

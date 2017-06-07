@@ -31,6 +31,9 @@ public interface S1Service {
     @GET(ApiForum.URL_POST_LIST)
     Observable<String> getPostsWrapper(@Query("tid") String threadId, @Query("page") int page);
 
+    @GET(ApiForum.URL_TRADE_POST_INFO)
+    Observable<String> getTradePostInfo(@Query("tid") String threadId, @Query("pid") int pid);
+
     @GET(ApiForum.URL_QUOTE_POST_REDIRECT)
     Observable<Response<Void>> getQuotePostResponseBody(@Query("ptid") String threadId, @Query("pid") String quotePostId);
 
@@ -90,11 +93,11 @@ public interface S1Service {
     //endregion
 
     @GET(ApiForum.URL_EDIT_POST_HELPER)
-    Observable<String> getEditPostInfo(@Query("fid") String fid, @Query("tid") String tid, @Query("pid") String pid);
+    Observable<String> getEditPostInfo(@Query("fid") String fid, @Query("tid") String tid, @Query("pid") int pid);
     
     @FormUrlEncoded
     @POST(ApiForum.URL_EDIT_POST)
-    Observable<String> editPost(@Field("fid") String fid, @Field("tid") String tid, @Field("pid") String pid,
+    Observable<String> editPost(@Field("fid") String fid, @Field("tid") String tid, @Field("pid") int pid,
                                 @Field("formhash") String authenticityToken, @Field("posttime") long postTime,
                                 @Field("typeid") String typeId, @Field("subject") String subject,
                                 @Field("message") String message, @Field("allownoticeauthor") int allowNoticeAuthor,

@@ -70,10 +70,10 @@ public abstract class BaseRecyclerViewAdapter extends ListDelegationAdapter<List
      * @see DiffUtil
      */
     @SuppressWarnings("unchecked")
-    public final void diffNewDataSet(List<?> newData, boolean detectMoves) {
+    public void diffNewDataSet(List<?> newData, boolean detectMoves) {
         if (items == newData) {
             refreshDataSet(newData, detectMoves);
-            ErrorUtil.throwNewError(new IllegalArgumentException("must set new data set"));
+            ErrorUtil.throwNewErrorIfDebug(new IllegalArgumentException("must set new data set"));
         }
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
                 new BaseDiffCallback(items, newData), detectMoves);
@@ -122,10 +122,10 @@ public abstract class BaseRecyclerViewAdapter extends ListDelegationAdapter<List
         items.remove(position);
     }
 
-    private static class BaseDiffCallback extends DiffUtil.Callback {
-        private List<?> oldData, newData;
+    public static class BaseDiffCallback extends DiffUtil.Callback {
+        protected List<?> oldData, newData;
 
-        BaseDiffCallback(List<?> oldData, List<?> newData) {
+        public BaseDiffCallback(List<?> oldData, List<?> newData) {
             this.oldData = oldData;
             this.newData = newData;
         }

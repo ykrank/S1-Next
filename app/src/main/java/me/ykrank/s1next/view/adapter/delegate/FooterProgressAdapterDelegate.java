@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.view.adapter.item.FooterProgressItem;
 
@@ -30,7 +32,7 @@ public final class FooterProgressAdapterDelegate extends BaseAdapterDelegate<Foo
     }
 
     @Override
-    public void onBindViewHolderData(FooterProgressItem footerProgressItem, int position, @NonNull FooterProgressViewHolder holder) {
+    public void onBindViewHolderData(FooterProgressItem footerProgressItem, int position, @NonNull FooterProgressViewHolder holder, @NonNull List<Object> payloads) {
 
     }
 

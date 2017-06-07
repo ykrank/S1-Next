@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import me.ykrank.s1next.data.api.model.Account;
 import me.ykrank.s1next.data.api.model.Post;
@@ -32,8 +33,22 @@ public final class Posts extends Account {
     @JsonProperty("threadsortshow")
     private ThreadAttachment threadAttachment;
 
-    @JsonProperty("postlist")
+    @JsonIgnore
     private List<Post> postList;
+
+    public Posts() {
+    }
+
+    @JsonCreator
+    public Posts(@JsonProperty("special_trade") Map<Integer, Object> trade, @JsonProperty("postlist") List<Post> postList) {
+        this.postList = postList;
+        if (trade != null && postList != null && postList.size() > 0) {
+            Post post = postList.get(0);
+            if (trade.containsKey(post.getId() + 1)) {
+                post.setTrade(true);
+            }
+        }
+    }
 
     /**
      * @see #filterPost(Post)

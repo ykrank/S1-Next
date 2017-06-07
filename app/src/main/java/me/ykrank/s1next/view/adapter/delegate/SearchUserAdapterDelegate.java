@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.search.UserSearchResult;
 import me.ykrank.s1next.databinding.ItemSearchUserBinding;
@@ -34,7 +36,7 @@ public final class SearchUserAdapterDelegate extends BaseAdapterDelegate<UserSea
     }
 
     @Override
-    public void onBindViewHolderData(UserSearchResult userSearchResult, int position, @NonNull SimpleRecycleViewHolder<ItemSearchUserBinding> holder) {
+    public void onBindViewHolderData(UserSearchResult userSearchResult, int position, @NonNull SimpleRecycleViewHolder<ItemSearchUserBinding> holder, @NonNull List<Object> payloads) {
         ItemSearchUserBinding binding = holder.getBinding();
         binding.getModel().search.set(userSearchResult);
         binding.executePendingBindings();

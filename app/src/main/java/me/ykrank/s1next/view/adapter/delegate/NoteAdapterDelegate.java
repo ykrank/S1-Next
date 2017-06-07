@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import me.ykrank.s1next.data.api.model.Note;
 import me.ykrank.s1next.databinding.ItemNoteBinding;
 import me.ykrank.s1next.viewmodel.NoteViewModel;
@@ -26,7 +28,7 @@ public class NoteAdapterDelegate extends BaseAdapterDelegate<Note, NoteAdapterDe
     }
 
     @Override
-    public void onBindViewHolderData(Note note, int position, @NonNull BindingViewHolder holder) {
+    public void onBindViewHolderData(Note note, int position, @NonNull BindingViewHolder holder, @NonNull List<Object> payloads) {
         ItemNoteBinding binding = holder.binding;
         binding.getModel().data.set(note);
         binding.executePendingBindings();

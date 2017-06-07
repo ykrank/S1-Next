@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.databinding.ItemProgressBinding;
 import me.ykrank.s1next.view.adapter.item.ProgressItem;
@@ -29,7 +31,7 @@ public final class ProgressAdapterDelegate extends BaseAdapterDelegate<ProgressI
     }
 
     @Override
-    public void onBindViewHolderData(ProgressItem item, int position, @NonNull ProgressViewHolder holder) {
+    public void onBindViewHolderData(ProgressItem item, int position, @NonNull ProgressViewHolder holder, @NonNull List<Object> payloads) {
 
     }
 

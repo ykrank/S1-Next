@@ -63,7 +63,7 @@ public final class Post implements Parcelable, Cloneable, SameItem {
     }
 
     @JsonProperty("pid")
-    private String id;
+    private int id;
     @JsonProperty("author")
     private String authorName;
     @JsonProperty("authorid")
@@ -85,6 +85,10 @@ public final class Post implements Parcelable, Cloneable, SameItem {
     private boolean hide = false;
     @JsonIgnore
     private String remark;
+    @JsonIgnore
+    private boolean trade;
+    @JsonIgnore
+    private String extraHtml;
 
     public Post() {
     }
@@ -95,7 +99,7 @@ public final class Post implements Parcelable, Cloneable, SameItem {
     }
 
     protected Post(Parcel in) {
-        id = in.readString();
+        id = in.readInt();
         authorName = in.readString();
         authorId = in.readString();
         reply = in.readString();
@@ -104,6 +108,8 @@ public final class Post implements Parcelable, Cloneable, SameItem {
         datetime = in.readLong();
         hide = in.readByte() != 0;
         remark = in.readString();
+        trade = in.readByte() != 0;
+        extraHtml = in.readString();
     }
 
     public static final Creator<Post> CREATOR = new Creator<Post>() {
@@ -146,11 +152,11 @@ public final class Post implements Parcelable, Cloneable, SameItem {
         return stringBuffer.toString();
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -247,6 +253,22 @@ public final class Post implements Parcelable, Cloneable, SameItem {
         this.remark = remark;
     }
 
+    public boolean isTrade() {
+        return trade;
+    }
+
+    public void setTrade(boolean trade) {
+        this.trade = trade;
+    }
+
+    public String getExtraHtml() {
+        return extraHtml;
+    }
+
+    public void setExtraHtml(String extraHtml) {
+        this.extraHtml = extraHtml;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -261,12 +283,14 @@ public final class Post implements Parcelable, Cloneable, SameItem {
                 Objects.equal(reply, post.reply) &&
                 Objects.equal(count, post.count) &&
                 Objects.equal(attachmentMap, post.attachmentMap) &&
-                Objects.equal(remark, post.remark);
+                Objects.equal(remark, post.remark) &&
+                Objects.equal(trade, post.trade) &&
+                Objects.equal(extraHtml, post.extraHtml);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, authorName, authorId, reply, first, count, datetime, attachmentMap, hide, remark);
+        return Objects.hashCode(id, authorName, authorId, reply, first, count, datetime, attachmentMap, hide, remark, trade, extraHtml);
     }
 
     @Override
@@ -439,7 +463,7 @@ public final class Post implements Parcelable, Cloneable, SameItem {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
+        dest.writeInt(id);
         dest.writeString(authorName);
         dest.writeString(authorId);
         dest.writeString(reply);
@@ -448,6 +472,8 @@ public final class Post implements Parcelable, Cloneable, SameItem {
         dest.writeLong(datetime);
         dest.writeByte((byte) (hide ? 1 : 0));
         dest.writeString(remark);
+        dest.writeByte((byte) (trade ? 1 : 0));
+        dest.writeString(extraHtml);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

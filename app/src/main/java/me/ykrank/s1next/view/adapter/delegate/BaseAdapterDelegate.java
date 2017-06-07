@@ -27,7 +27,7 @@ public abstract class BaseAdapterDelegate<T, VH extends RecyclerView.ViewHolder>
     @NonNull
     protected Class<T> getTClass() {
         if (entityClass == null) {
-            throw new RuntimeException("Should pass class from constructor or override getTClass");
+            throw new RuntimeException("Should pass class from constructor , or override getTClass or isForViewType");
         }
         return entityClass;
     }
@@ -41,8 +41,8 @@ public abstract class BaseAdapterDelegate<T, VH extends RecyclerView.ViewHolder>
     @CallSuper
     @SuppressWarnings("unchecked")
     protected void onBindViewHolder(@NonNull List<Object> items, int position, @NonNull RecyclerView.ViewHolder holder, @NonNull List<Object> payloads) {
-        onBindViewHolderData((T) items.get(position), position, (VH) holder);
+        onBindViewHolderData((T) items.get(position), position, (VH) holder, payloads);
     }
 
-    public abstract void onBindViewHolderData(T t, int position, @NonNull VH holder);
+    public abstract void onBindViewHolderData(T t, int position, @NonNull VH holder, @NonNull List<Object> payloads);
 }
