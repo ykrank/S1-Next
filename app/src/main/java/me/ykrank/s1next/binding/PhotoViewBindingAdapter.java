@@ -21,7 +21,7 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.widget.glide.model.ForcePassUrl;
-import me.ykrank.s1next.widget.glide.transformations.GlMaxTextureSizeDownSampleStrategy;
+import me.ykrank.s1next.widget.glide.transformations.GlMaxTextureSizeBitmapTransformation;
 
 public final class PhotoViewBindingAdapter {
 
@@ -37,7 +37,7 @@ public final class PhotoViewBindingAdapter {
 
         RequestOptions requestOptions = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
-                .downsample(new GlMaxTextureSizeDownSampleStrategy())
+                .transform(new GlMaxTextureSizeBitmapTransformation())
                 .error(R.mipmap.error_symbol)
                 .fitCenter()
                 .priority(Priority.HIGH);

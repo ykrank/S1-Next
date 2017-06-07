@@ -40,10 +40,8 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.widget.EmoticonFactory;
-import me.ykrank.s1next.widget.glide.transformations.FitOutWidthDownSampleStrategy;
-import me.ykrank.s1next.widget.glide.transformations.GlMaxTextureSizeDownSampleStrategy;
-import me.ykrank.s1next.widget.glide.transformations.MultiDownSampleStrategy;
-import me.ykrank.s1next.widget.glide.transformations.SizeMultiplierDownSampleStrategy;
+import me.ykrank.s1next.widget.glide.transformations.FitOutWidthBitmapTransformation;
+import me.ykrank.s1next.widget.glide.transformations.SizeMultiplierBitmapTransformation;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import me.ykrank.s1next.widget.track.event.EmoticonNotFoundTrackEvent;
 
@@ -124,12 +122,12 @@ public final class GlideImageGetter
             ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(mTextView,
                     urlDrawable);
 
-            SizeMultiplierDownSampleStrategy sizeMultiplierDownsampleStrategy = new SizeMultiplierDownSampleStrategy(density);
+            SizeMultiplierBitmapTransformation transformation = new SizeMultiplierBitmapTransformation(density);
             String finalUrl = url;
 
             RequestBuilder<Drawable> glideRequestBuilder = Glide.with(mContext)
                     .load(Uri.parse(EmoticonFactory.ASSET_PATH_EMOTICON + emoticonName))
-                    .apply(RequestOptions.downsampleOf(sizeMultiplierDownsampleStrategy))
+                    .apply(RequestOptions.bitmapTransform(transformation))
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -138,7 +136,7 @@ public final class GlideImageGetter
                             // append domain to this url
                             Glide.with(mContext)
                                     .load(Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX + finalUrl)
-                                    .apply(RequestOptions.downsampleOf(sizeMultiplierDownsampleStrategy))
+                                    .apply(RequestOptions.bitmapTransform(transformation))
                                     .into(imageGetterViewTarget);
 
                             return true;
@@ -164,7 +162,7 @@ public final class GlideImageGetter
                 .apply(new RequestOptions()
                         .placeholder(R.mipmap.unknown_image)
                         .diskCacheStrategy(DiskCacheStrategy.DATA)
-                        .downsample(new MultiDownSampleStrategy(new GlMaxTextureSizeDownSampleStrategy(), new FitOutWidthDownSampleStrategy())));
+                        .transform(new FitOutWidthBitmapTransformation()));
         RxJavaUtil.workInMainThread(glideRequestBuilder, builder -> builder.into(imageGetterViewTarget));
 
         mViewTargetSet.add(imageGetterViewTarget);
