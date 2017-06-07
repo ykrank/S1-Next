@@ -155,8 +155,8 @@ public final class DrawerLayoutDelegateConcrete extends DrawerLayoutDelegate
      */
     @Override
     public void refreshNoticeMenuItem() {
-        pmNoticeBinding.setMsg(mDataPreferencesManager.hasNewPm() ? "new" : null);
-        noteNoticeBinding.setMsg(mDataPreferencesManager.hasNewNotice() ? "new" : null);
+        pmNoticeBinding.setMsg(mDataPreferencesManager.getHasNewPm() ? "new" : null);
+        noteNoticeBinding.setMsg(mDataPreferencesManager.getHasNewNotice() ? "new" : null);
     }
 
     @Override

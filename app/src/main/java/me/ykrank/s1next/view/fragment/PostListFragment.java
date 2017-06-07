@@ -233,7 +233,7 @@ public final class PostListFragment extends BaseViewPagerFragment
                 .subscribe(event -> {
                             Thread thread = event.getThread();
                             Post post = event.getPost();
-                    EditPostActivity.startActivityForResultMessage(this, RequestCode.REQUEST_CODE_EDIT_POST, thread, post);
+                            EditPostActivity.startActivityForResultMessage(this, RequestCode.REQUEST_CODE_EDIT_POST, thread, post);
                         }
                 );
         blackListAddDisposable = mEventBus.get()
@@ -259,9 +259,11 @@ public final class PostListFragment extends BaseViewPagerFragment
         if (fragment != null) {
             mLastReadDisposable = Single.just(fragment.getCurReadProgress())
                     .delay(5, TimeUnit.SECONDS)
-                    .map(mReadProgressPrefManager::saveLastReadProgress)
                     .doOnError(L::report)
-                    .subscribe(b -> L.i("Save last read progress:" + b));
+                    .subscribe(b -> {
+                        mReadProgressPrefManager.saveLastReadProgress(b);
+                        L.i("Save last read progress:" + b);
+                    });
         }
         super.onPause();
 

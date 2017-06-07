@@ -38,7 +38,7 @@ public final class ThemeManager {
     private static final int BLACK_BACKGROUND_SECONDARY_TEXT_ALPHA = (int) (0.70 * 255);
     private static final int BLACK_BACKGROUND_HINT_OR_DISABLED_TEXT_ALPHA = (int) (0.30 * 255);
     private final Context mContext;
-    private final GeneralPreferencesRepository mGeneralPreferencesProvider;
+    private final GeneralPreferences mGeneralPreferencesProvider;
 
     @ColorInt
     private volatile int mColorAccent;
@@ -49,8 +49,7 @@ public final class ThemeManager {
 
         @Override
         public Theme get() {
-            Theme theme = Theme.VALUES.get(Integer.parseInt(
-                    mGeneralPreferencesProvider.getThemeString()));
+            Theme theme = Theme.VALUES.get(mGeneralPreferencesProvider.getThemeIndex());
             invalidateAccentColor(theme);
 
             return theme;
@@ -58,7 +57,7 @@ public final class ThemeManager {
     };
     private volatile Supplier<Theme> mThemeMemorized = Suppliers.memoize(mThemeSupplier);
 
-    public ThemeManager(Context context, GeneralPreferencesRepository generalPreferencesProvider) {
+    public ThemeManager(Context context, GeneralPreferences generalPreferencesProvider) {
         this.mContext = context;
         this.mGeneralPreferencesProvider = generalPreferencesProvider;
     }
@@ -76,7 +75,7 @@ public final class ThemeManager {
      * @param index The theme index.
      */
     public void applyTheme(int index) {
-        mGeneralPreferencesProvider.applyThemeString(String.valueOf(index));
+        mGeneralPreferencesProvider.setThemeIndex(index);
     }
 
     public Theme getTheme() {

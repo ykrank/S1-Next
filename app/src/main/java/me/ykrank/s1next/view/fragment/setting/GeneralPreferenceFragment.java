@@ -63,7 +63,6 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
             mThemeManager.invalidateTheme();
             mEventBus.post(new ThemeChangeEvent());
         } else if (key.equals(getString(R.string.pref_key_font_size))) {
-            mGeneralPreferencesManager.invalidateFontScale();
             // change scaling factor for fonts
             ResourceUtil.setScaledDensity(getActivity(),
                     mGeneralPreferencesManager.getFontScale());
