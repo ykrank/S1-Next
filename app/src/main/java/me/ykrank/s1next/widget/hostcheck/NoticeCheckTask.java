@@ -47,7 +47,7 @@ public class NoticeCheckTask {
                 .compose(RxJavaUtil.iOTransformer())
                 .doOnTerminate(() -> lastCheckTime = SystemClock.elapsedRealtime())
                 .subscribe(wrapper -> {
-                    mEventBus.post(new NoticeRefreshEvent(wrapper.getData().hasNew(), false));
+                    mEventBus.post(NoticeRefreshEvent.class, new NoticeRefreshEvent(wrapper.getData().hasNew(), null));
                 }, L::e);
     }
 }

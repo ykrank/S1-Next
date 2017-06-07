@@ -1,5 +1,6 @@
 package me.ykrank.s1next.widget;
 
+import android.support.annotation.AnyThread;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 
@@ -20,12 +21,12 @@ public final class EventBus {
 
     @MainThread
     public void post(@NonNull Object o) {
+        LooperUtil.enforceOnMainThread();
         post(DEFAULT_TAG, o);
     }
 
-    @MainThread
+    @AnyThread
     public void post(@NonNull Object tag, @NonNull Object o) {
-        LooperUtil.enforceOnMainThread();
         PublishSubject<Object> eventBus = subjectMapper.get(tag);
         if (eventBus != null) {
             try {
@@ -39,13 +40,13 @@ public final class EventBus {
     @MainThread
     @NonNull
     public PublishSubject<Object> get() {
+        LooperUtil.enforceOnMainThread();
         return get(DEFAULT_TAG);
     }
 
-    @MainThread
+    @AnyThread
     @NonNull
     public PublishSubject<Object> get(@NonNull Object tag) {
-        LooperUtil.enforceOnMainThread();
         PublishSubject<Object> subject = subjectMapper.get(tag);
         if (subject == null) {
             subject = PublishSubject.create();

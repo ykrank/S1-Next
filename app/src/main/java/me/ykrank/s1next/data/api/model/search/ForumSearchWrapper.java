@@ -13,6 +13,7 @@ import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import me.ykrank.s1next.data.api.model.wrapper.HtmlDataWrapper;
 import me.ykrank.s1next.util.L;
 
 /**
@@ -33,6 +34,7 @@ public class ForumSearchWrapper {
         ForumSearchWrapper wrapper = new ForumSearchWrapper();
         try {
             Document document = Jsoup.parse(source);
+            HtmlDataWrapper.Companion.fromHtml(document);
             //count
             Elements elements = document.select("em");
             if (elements.isEmpty()) {

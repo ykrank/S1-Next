@@ -28,6 +28,7 @@ import java.lang.ref.WeakReference;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
@@ -134,8 +135,9 @@ public abstract class BaseActivity extends OriginActivity
                     getWindow().setWindowAnimations(R.style.Animation_Recreate);
                     recreate();
                 });
-        mNoticeRefreshDisposable = mEventBus.get()
+        mNoticeRefreshDisposable = mEventBus.get(NoticeRefreshEvent.class)
                 .ofType(NoticeRefreshEvent.class)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(event -> refreshNoticeMenuItem(event.isNewPm(), event.isNewNotice()));
     }
 
@@ -308,9 +310,13 @@ public abstract class BaseActivity extends OriginActivity
     /**
      * @see DrawerLayoutDelegateConcrete#refreshNoticeMenuItem()
      */
-    public final void refreshNoticeMenuItem(boolean newPm, boolean newNotice) {
-        mDataPreferencesManager.setHasNewPm(newPm);
-        mDataPreferencesManager.setHasNewNotice(newNotice);
+    public final void refreshNoticeMenuItem(Boolean newPm, Boolean newNotice) {
+        if (newPm != null) {
+            mDataPreferencesManager.setHasNewPm(newPm);
+        }
+        if (newNotice != null) {
+            mDataPreferencesManager.setHasNewNotice(newNotice);
+        }
 
         if (mDrawerLayoutDelegate != null) {
             mDrawerLayoutDelegate.refreshNoticeMenuItem();

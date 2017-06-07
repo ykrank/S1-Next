@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.ykrank.s1next.data.api.model.UserLink;
+import me.ykrank.s1next.data.api.model.wrapper.HtmlDataWrapper;
 import me.ykrank.s1next.util.L;
 
 /**
@@ -32,6 +33,7 @@ public class UserSearchWrapper {
         List<UserSearchResult> userSearchResults = new ArrayList<>();
         try {
             Document document = Jsoup.parse(source);
+            HtmlDataWrapper.Companion.fromHtml(document);
             Elements errorElements = document.select("div#messagetext");
             if (errorElements.size() > 0) {
                 wrapper.setErrorMsg(errorElements.text());

@@ -28,6 +28,7 @@ public class HomeThreadWebWrapper {
         List<HomeThread> threads = new ArrayList<>();
         try {
             Document document = Jsoup.parse(html);
+            HtmlDataWrapper.Companion.fromHtml(document);
             Elements elements = document.select("#delform tr");
             for (int i = 1; i < elements.size(); i++) {
                 HomeThread homeThread = HomeThread.fromHtmlElement(elements.get(i));

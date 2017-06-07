@@ -78,7 +78,7 @@ public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<Base
         }
 
         if (getPageNum() == 1) {
-            mEventBus.post(new NoticeRefreshEvent(data.getData().hasNew(), false));
+            mEventBus.post(NoticeRefreshEvent.class, new NoticeRefreshEvent(data.getData().hasNew(), null));
         }
     }
 

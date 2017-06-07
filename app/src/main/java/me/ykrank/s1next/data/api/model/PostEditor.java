@@ -11,6 +11,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.ykrank.s1next.data.api.model.wrapper.HtmlDataWrapper;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.LooperUtil;
 
@@ -35,6 +36,7 @@ public class PostEditor {
         PostEditor editor = new PostEditor();
         try {
             Document document = Jsoup.parse(html);
+            HtmlDataWrapper.Companion.fromHtml(document);
             //thread types
             Elements typeIdElements = document.select("#typeid>option");
             if (typeIdElements.size() > 0) {

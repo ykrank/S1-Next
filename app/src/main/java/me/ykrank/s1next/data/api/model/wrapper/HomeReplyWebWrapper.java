@@ -30,6 +30,7 @@ public class HomeReplyWebWrapper {
         List<HomeReplyItem> replyItems = new ArrayList<>();
         try {
             Document document = Jsoup.parse(html);
+            HtmlDataWrapper.Companion.fromHtml(document);
             Elements elements = document.select("#delform tr");
             for (int i = 1; i < elements.size(); i++) {
                 Element element = elements.get(i);
