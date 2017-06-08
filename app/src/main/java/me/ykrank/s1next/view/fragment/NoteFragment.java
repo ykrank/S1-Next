@@ -10,14 +10,19 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.api.model.Note;
 import me.ykrank.s1next.data.api.model.collection.Notes;
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
+import me.ykrank.s1next.data.event.NoticeRefreshEvent;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.view.adapter.NoteRecyclerViewAdapter;
+import me.ykrank.s1next.widget.EventBus;
 
 /**
  * Created by ykrank on 2017/1/5.
@@ -27,6 +32,9 @@ public class NoteFragment extends BaseLoadMoreRecycleViewFragment<BaseDataWrappe
     public static final String TAG = NoteFragment.class.getName();
     private NoteRecyclerViewAdapter mRecyclerAdapter;
 
+    @Inject
+    EventBus mEventBus;
+
     public static NoteFragment newInstance() {
         NoteFragment fragment = new NoteFragment();
         return fragment;
@@ -34,6 +42,7 @@ public class NoteFragment extends BaseLoadMoreRecycleViewFragment<BaseDataWrappe
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        App.getAppComponent().inject(this);
         super.onViewCreated(view, savedInstanceState);
         L.leaveMsg("NoteFragment");
 
@@ -82,6 +91,10 @@ public class NoteFragment extends BaseLoadMoreRecycleViewFragment<BaseDataWrappe
             mRecyclerAdapter.diffNewDataSet(notes.getNoteList(), false);
             //update total page
             setTotalPages(MathUtil.divide(notes.getCount(), notes.getPerPage()));
+        }
+
+        if (getPageNum() == 1) {
+            mEventBus.post(NoticeRefreshEvent.class, new NoticeRefreshEvent(null, false));
         }
     }
 }

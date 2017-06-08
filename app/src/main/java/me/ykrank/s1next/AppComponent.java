@@ -56,6 +56,7 @@ import me.ykrank.s1next.view.fragment.FavouriteListFragment;
 import me.ykrank.s1next.view.fragment.HistoryListFragment;
 import me.ykrank.s1next.view.fragment.NewRateFragment;
 import me.ykrank.s1next.view.fragment.NewThreadFragment;
+import me.ykrank.s1next.view.fragment.NoteFragment;
 import me.ykrank.s1next.view.fragment.PmFragment;
 import me.ykrank.s1next.view.fragment.PmGroupsFragment;
 import me.ykrank.s1next.view.fragment.PostListFragment;
@@ -245,4 +246,6 @@ public interface AppComponent {
     void inject(ReplyRequestDialogFragment replyRequestDialogFragment);
 
     void inject(WebViewFragment fragment);
+
+    void inject(NoteFragment fragment);
 }
