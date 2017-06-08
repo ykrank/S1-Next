@@ -3,6 +3,7 @@ package me.ykrank.s1next.view.fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -269,17 +270,24 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
      * 保存当前阅读进度
      */
     void saveReadProgress() {
-        saveReadProgressDisposable = RxJavaUtil.workWithUiThread(() -> {
-            LooperUtil.enforceOnWorkThread();
-            ReadProgressDbWrapper dbWrapper = ReadProgressDbWrapper.getInstance();
-            dbWrapper.saveReadProgress(getCurReadProgress());
-        }, () -> {
-            LooperUtil.enforceOnMainThread();
-            showShortText(R.string.save_read_progress_success);
-        });
+        ReadProgress readProgress = getCurReadProgress();
+        if (readProgress != null) {
+            saveReadProgressDisposable = RxJavaUtil.workWithUiThread(() -> {
+                LooperUtil.enforceOnWorkThread();
+                ReadProgressDbWrapper dbWrapper = ReadProgressDbWrapper.getInstance();
+                dbWrapper.saveReadProgress(getCurReadProgress());
+            }, () -> {
+                LooperUtil.enforceOnMainThread();
+                showShortText(R.string.save_read_progress_success);
+            });
+        }
     }
 
+    @Nullable
     ReadProgress getCurReadProgress() {
+        if (isLoading()) {
+            return null;
+        }
         Pair<Integer, Integer> itemPosition = findNowItemPosition();
         return new ReadProgress(Integer.valueOf(mThreadId), mPageNum, itemPosition.first, itemPosition.second);
     }

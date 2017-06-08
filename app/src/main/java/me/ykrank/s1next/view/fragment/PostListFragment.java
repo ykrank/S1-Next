@@ -113,7 +113,7 @@ public final class PostListFragment extends BaseViewPagerFragment
     private Disposable quoteDisposable, rateDisposable, editDisposable;
     private Disposable blackListAddDisposable;
     private Disposable mReadProgressDisposable;
-    private ReadProgress readProgress;
+    private ReadProgress readProgress, tempReadProgress;
     private PagerScrollState scrollState = new PagerScrollState();
 
     private Disposable mLastReadDisposable, mLastThreadInfoDisposable;
@@ -257,13 +257,18 @@ public final class PostListFragment extends BaseViewPagerFragment
         //save last read progress
         final PostListPagerFragment fragment = getCurPostPageFragment();
         if (fragment != null) {
-            mLastReadDisposable = Single.just(fragment.getCurReadProgress())
-                    .delay(5, TimeUnit.SECONDS)
-                    .doOnError(L::report)
-                    .subscribe(b -> {
-                        mReadProgressPrefManager.saveLastReadProgress(b);
-                        L.i("Save last read progress:" + b);
-                    });
+            tempReadProgress = fragment.getCurReadProgress();
+            if (tempReadProgress != null) {
+                mLastReadDisposable = Single.just(tempReadProgress)
+                        .delay(5, TimeUnit.SECONDS)
+                        .doOnError(L::report)
+                        .subscribe(b -> {
+                            mReadProgressPrefManager.saveLastReadProgress(b);
+                            L.i("Save last read progress:" + b);
+                        });
+            }
+        } else {
+            tempReadProgress = null;
         }
         super.onPause();
 
@@ -282,8 +287,8 @@ public final class PostListFragment extends BaseViewPagerFragment
 
         //Auto save read progress
         if (mReadProgressPrefManager.isSaveAuto()) {
-            if (getCurPostPageFragment() != null) {
-                PostListPagerFragment.saveReadProgressBack(getCurPostPageFragment().getCurReadProgress());
+            if (tempReadProgress != null) {
+                PostListPagerFragment.saveReadProgressBack(tempReadProgress);
             }
         }
         super.onDestroy();
