@@ -169,7 +169,7 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
-    compile 'com.tencent.bugly:crashreport:2.6.0'
+    compile 'com.tencent.bugly:crashreport:2.6.5'
     compile 'com.github.chrisbanes:PhotoView:2.0.0'
     compile 'com.shizhefei:LargeImageView:1.0.8'
     compile 'com.hannesdorfmann:adapterdelegates3:3.0.2-SNAPSHOT'
@@ -177,7 +177,7 @@ dependencies {
     compile 'com.nononsenseapps:filepicker:4.1.0'
     compile 'org.jsoup:jsoup:1.10.2'
     compile 'com.bigkoo:quicksidebar:1.0.3'
-    compile 'com.orhanobut:logger:2.1.0'
+    compile 'com.orhanobut:logger:2.1.1'
 }
 repositories {
     mavenCentral()
