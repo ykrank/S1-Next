@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.util.Base64;
 
 import java.net.CookieStore;
@@ -58,10 +59,10 @@ public final class PersistentHttpCookieStore implements CookieStore {
         cookieSP = context.getSharedPreferences(PREFS_COOKIE, Context.MODE_PRIVATE);
 
         // get each cookie's URI string
-        Set<String> cookiesURL = cookieSP.getStringSet(COOKIES_URI, Collections.<String>emptySet());
+        Set<String> cookiesURL = cookieSP.getStringSet(COOKIES_URI, Collections.emptySet());
         for (String uri : cookiesURL) {
             // get corresponding cookies' key of the shared preference
-            Set<String> cookiesName = cookieSP.getStringSet(uri, Collections.<String>emptySet());
+            Set<String> cookiesName = cookieSP.getStringSet(uri, Collections.emptySet());
 
             // get corresponding cookies
             List<HttpCookie> httpCookies = new ArrayList<>();
@@ -95,14 +96,13 @@ public final class PersistentHttpCookieStore implements CookieStore {
         }
         cookies.add(httpCookie);
 
-        String uriString = uri.toString();
+        String uriString = uriString(uri);
         SharedPreferences.Editor editor = cookieSP.edit();
 
         if (isUriNew) {
             // add new cookie's URL string
             // see http://stackoverflow.com/q/14034803
-            Set<String> cookiesURL = new HashSet<>(cookieSP.getStringSet(COOKIES_URI,
-                    Collections.<String>emptySet()));
+            Set<String> cookiesURL = new HashSet<>(cookieSP.getStringSet(COOKIES_URI, Collections.emptySet()));
             cookiesURL.add(uriString);
 
             editor.putStringSet(COOKIES_URI, cookiesURL);
@@ -110,7 +110,7 @@ public final class PersistentHttpCookieStore implements CookieStore {
 
         // add corresponding cookies
         Set<String> cookiesName = new HashSet<>(cookieSP.getStringSet(uriString,
-                Collections.<String>emptySet()));
+                Collections.emptySet()));
         String cookieNameWithUri = uriString + httpCookie.getName();
         cookiesName.add(cookieNameWithUri);
 
@@ -119,7 +119,8 @@ public final class PersistentHttpCookieStore implements CookieStore {
         editor.apply();
     }
 
-    private URI cookiesUri(URI uri) {
+    @Nullable
+    private URI cookiesUri(@Nullable URI uri) {
         if (uri == null) {
             return null;
         }
@@ -129,6 +130,10 @@ public final class PersistentHttpCookieStore implements CookieStore {
         } catch (URISyntaxException e) {
             return uri; // probably a URI with no host
         }
+    }
+
+    private String uriString(@Nullable URI uri) {
+        return uri == null ? "" : uri.toString();
     }
 
     @Override
@@ -206,9 +211,9 @@ public final class PersistentHttpCookieStore implements CookieStore {
         List<HttpCookie> cookies = map.get(uri);
         if (cookies != null) {
             SharedPreferences.Editor editor = cookieSP.edit();
-            String uriString = uri.toString();
+            String uriString = uriString(uri);
             Set<String> cookiesName = new HashSet<>(cookieSP.getStringSet(uriString,
-                    Collections.<String>emptySet()));
+                    Collections.emptySet()));
             String cookieNameWithURI = uriString + httpCookie.getName();
 
             // remove cookie's URI string

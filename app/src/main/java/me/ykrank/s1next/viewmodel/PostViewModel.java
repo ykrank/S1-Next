@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
+import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.event.EditPostEvent;
@@ -25,6 +26,7 @@ import me.ykrank.s1next.data.event.RateEvent;
 import me.ykrank.s1next.util.ContextUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.UserHomeActivity;
+import me.ykrank.s1next.view.activity.WebViewActivity;
 import me.ykrank.s1next.view.internal.BlacklistMenuAction;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
@@ -143,5 +145,10 @@ public final class PostViewModel {
 
     public void onEditClick(View v) {
         eventBus.post(new EditPostEvent(post.get(), thread.get()));
+    }
+
+    public void onExtraHtmlClick(View v) {
+        String url = String.format("%sforum.php?mod=viewthread&do=tradeinfo&tid=%s&pid=%s", Api.BASE_URL, thread.get().getId(), post.get().getId() + 1);
+        WebViewActivity.Companion.start(v.getContext(), url, true);
     }
 }

@@ -216,6 +216,10 @@
 
         <activity android:name=".view.activity.OpenSourceLicenseDetailActivity" />
 
+        <activity
+            android:name=".view.activity.WebViewActivity"
+            android:windowSoftInputMode="adjustPan" />
+
         <!-- FilePicker -->
 
         <provider

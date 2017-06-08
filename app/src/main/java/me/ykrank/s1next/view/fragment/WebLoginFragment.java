@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -81,7 +80,7 @@ public final class WebLoginFragment extends BaseFragment {
             }
         });
 
-        mWebView.setWebChromeClient(new ProgressWebChromeClient());
+        mWebView.setWebChromeClient(new ProgressWebChromeClient(mProgressBar));
 
         // restore the state of WebView when configuration changes
         // see http://www.devahead.com/blog/2012/01/preserving-the-state-of-an-android-webview-on-screen-orientation-change/
@@ -158,22 +157,6 @@ public final class WebLoginFragment extends BaseFragment {
             } catch (Exception e) {
                 L.report(e);
             }
-        }
-    }
-
-    private class ProgressWebChromeClient extends WebChromeClient {
-
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {
-            if (newProgress == 100) {
-                mProgressBar.setVisibility(View.INVISIBLE);
-            } else {
-                if (View.INVISIBLE == mProgressBar.getVisibility()) {
-                    mProgressBar.setVisibility(View.VISIBLE);
-                }
-                mProgressBar.setProgress(newProgress);
-            }
-            super.onProgressChanged(view, newProgress);
         }
     }
 }

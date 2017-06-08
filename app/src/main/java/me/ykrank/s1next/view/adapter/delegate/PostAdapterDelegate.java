@@ -54,6 +54,11 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
         return Post.class;
     }
 
+    @Override
+    public boolean isForViewType(@NonNull List<Object> items, int position) {
+        return super.isForViewType(items, position);
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {

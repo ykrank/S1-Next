@@ -62,6 +62,7 @@ import me.ykrank.s1next.view.fragment.PostListFragment;
 import me.ykrank.s1next.view.fragment.PostListPagerFragment;
 import me.ykrank.s1next.view.fragment.ReplyFragment;
 import me.ykrank.s1next.view.fragment.WebLoginFragment;
+import me.ykrank.s1next.view.fragment.WebViewFragment;
 import me.ykrank.s1next.view.fragment.setting.BackupPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.DownloadPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.GeneralPreferenceFragment;
@@ -242,4 +243,6 @@ public interface AppComponent {
     void inject(PmRequestDialogFragment pmRequestDialogFragment);
 
     void inject(ReplyRequestDialogFragment replyRequestDialogFragment);
+
+    void inject(WebViewFragment fragment);
 }
