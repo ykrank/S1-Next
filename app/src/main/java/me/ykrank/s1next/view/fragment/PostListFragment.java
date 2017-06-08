@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 import java.util.concurrent.TimeUnit;
@@ -139,8 +140,9 @@ public final class PostListFragment extends BaseViewPagerFragment
         Bundle bundle = new Bundle();
         bundle.putParcelable(ARG_THREAD, thread);
         bundle.putInt(ARG_JUMP_PAGE, threadLink.getJumpPage());
-        if (threadLink.getQuotePostId().isPresent()) {
-            bundle.putString(ARG_QUOTE_POST_ID, threadLink.getQuotePostId().get());
+        Optional<String> quotePostId = threadLink.getQuotePostId();
+        if (quotePostId.isPresent()) {
+            bundle.putString(ARG_QUOTE_POST_ID, quotePostId.get());
         }
         fragment.setArguments(bundle);
 

@@ -376,7 +376,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
                     for (int i = 0, length = postList.size(); i < length; i++) {
                         if (Integer.parseInt(quotePostId) == postList.get(i).getId()) {
                             // scroll to post post
-                            mRecyclerView.scrollToPosition(i);
+                            mLayoutManager.scrollToPositionWithOffset(i, 0);
                             break;
                         }
                     }

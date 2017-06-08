@@ -41,7 +41,7 @@ public final class Posts extends Account {
 
     @JsonCreator
     public Posts(@JsonProperty("special_trade") Map<Integer, Object> trade, @JsonProperty("postlist") List<Post> postList) {
-        this.postList = postList;
+        this.postList = filterPostList(postList);
         if (trade != null && postList != null && postList.size() > 0) {
             Post post = postList.get(0);
             if (trade.containsKey(post.getId() + 1)) {
@@ -114,7 +114,7 @@ public final class Posts extends Account {
     }
 
     public void setPostList(List<Post> postList) {
-        this.postList = filterPostList(postList);
+        this.postList = postList;
     }
 
     @Override
