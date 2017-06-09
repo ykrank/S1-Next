@@ -155,7 +155,7 @@ public abstract class BasePostFragment extends BaseFragment {
         mCacheDisposable = null;
         if (!TextUtils.isEmpty(getCacheKey()) && TextUtils.isEmpty(mReplyView.getText())) {
             mCacheDisposable = resumeFromCache(Single.just(getCacheKey())
-                    .map(editorDiskCache::get));
+                    .flatMap(key -> RxJavaUtil.neverNull(editorDiskCache.get(key))));
         }
     }
 

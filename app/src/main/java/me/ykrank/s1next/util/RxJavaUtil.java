@@ -1,5 +1,8 @@
 package me.ykrank.s1next.util;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 
@@ -125,6 +128,30 @@ public final class RxJavaUtil {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(uiAction, error);
+    }
+
+    /**
+     * wrap nullable source in Single flatMap
+     *
+     * @param source
+     * @param <T>
+     * @return
+     */
+    @NonNull
+    public static <T> Single<T> neverNull(@Nullable T source) {
+        return source == null ? Single.never() : Single.just(source);
+    }
+
+    /**
+     * wrap nullable source in Observable flatMap
+     *
+     * @param source
+     * @param <T>
+     * @return
+     */
+    @NonNull
+    public static <T> Observable<T> neverNullObservable(@Nullable T source) {
+        return source == null ? Observable.never() : Observable.just(source);
     }
 
     public static <T> ObservableTransformer<T, T> iOTransformer() {

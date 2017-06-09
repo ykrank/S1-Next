@@ -13,6 +13,7 @@ import android.text.Html;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.view.View;
 import android.webkit.URLUtil;
@@ -109,7 +110,11 @@ public final class GlideImageGetter
      */
     @Override
     @WorkerThread
-    public Drawable getDrawable(String url) {
+    public Drawable getDrawable(@Nullable String url) {
+        if (TextUtils.isEmpty(url)) {
+            return null;
+        }
+        
         UrlDrawable urlDrawable;
 
         String emoticonName = Api.parseEmoticonName(url);

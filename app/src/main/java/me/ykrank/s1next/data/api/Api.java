@@ -106,7 +106,10 @@ public final class Api {
      * @return emoticon name if exist. null if not
      */
     @Nullable
-    public static String parseEmoticonName(String url) {
+    public static String parseEmoticonName(@Nullable String url) {
+        if (TextUtils.isEmpty(url)) {
+            return null;
+        }
         // url has no domain if it comes from BASE_URL server.
         if (!URLUtil.isNetworkUrl(url)) {
             if (url.startsWith(Api.URL_EMOTICON_IMAGE_PREFIX)) {
