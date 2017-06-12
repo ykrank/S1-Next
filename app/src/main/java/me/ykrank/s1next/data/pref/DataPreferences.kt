@@ -8,13 +8,9 @@ import me.ykrank.s1next.R
 class DataPreferencesImpl(context: Context, sharedPreferences: SharedPreferences)
     : BasePreferences(context, sharedPreferences), DataPreferences {
 
-    override var hasNewPm: Boolean
-        get() = getPrefBoolean(R.string.pref_key_has_new_pm, false)
-        set(value) = putPrefBoolean(R.string.pref_key_has_new_pm, value)
+    override var hasNewPm: Boolean by PreferenceDelegates.bool(mContext.getString(R.string.pref_key_has_new_pm), false)
 
-    override var hasNewNotice: Boolean
-        get() = getPrefBoolean(R.string.pref_key_has_new_notice, false)
-        set(value) = putPrefBoolean(R.string.pref_key_has_new_notice, value)
+    override var hasNewNotice: Boolean by PreferenceDelegates.bool(mContext.getString(R.string.pref_key_has_new_notice), false)
 }
 
 interface DataPreferences {

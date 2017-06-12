@@ -10,28 +10,20 @@ import me.ykrank.s1next.R
  */
 class GeneralPreferencesImpl(context: Context, sharedPreferences: SharedPreferences) : BasePreferences(context, sharedPreferences), GeneralPreferences {
 
-    override var themeIndex: Int
-        get() = getPrefString(R.string.pref_key_theme, R.string.pref_theme_default_value).toInt()
-        /**
-         * Commits theme preference change for settings.
-         * @param value The new value for the theme preference.
-         */
-        set(value) = putPrefString(R.string.pref_key_theme, value.toString())
+    override var themeIndex: Int by PreferenceDelegates.int(
+            R.string.pref_key_theme, R.string.pref_theme_default_value)
 
     override val fontScale: Float
         get() = getPrefString(R.string.pref_key_font_size, R.string.pref_font_size_default_value).toFloat()
 
-    override val isSignatureEnabled: Boolean
-        get() = getPrefBoolean(R.string.pref_key_signature, R.bool.pref_signature_default_value)
+    override val isSignatureEnabled: Boolean by PreferenceDelegates.bool(
+            R.string.pref_key_signature, R.bool.pref_signature_default_value)
 
-    override var isPostSelectable: Boolean
-        get() = getPrefBoolean(R.string.pref_key_post_selectable, R.bool.pref_post_selectable_default_value)
-        set(selectable) = putPrefBoolean(R.string.pref_key_post_selectable, selectable)
+    override var isPostSelectable: Boolean by PreferenceDelegates.bool(
+            R.string.pref_key_post_selectable, R.bool.pref_post_selectable_default_value)
 
-    override var isQuickSideBarEnable: Boolean
-        get() = getPrefBoolean(R.string.pref_key_quick_side_bar_enable,
-                R.bool.pref_quick_side_bar_enable_default_value)
-        set(enable) = putPrefBoolean(R.string.pref_key_quick_side_bar_enable, enable)
+    override var isQuickSideBarEnable: Boolean by PreferenceDelegates.bool(
+            R.string.pref_key_quick_side_bar_enable, R.bool.pref_quick_side_bar_enable_default_value)
 }
 
 interface GeneralPreferences {

@@ -19,13 +19,11 @@ class ReadProgressPreferencesImpl(context: Context, sharedPreferences: SharedPre
                                   private val objectMapper: ObjectMapper)
     : BasePreferences(context, sharedPreferences), ReadProgressPreferences {
 
-    override val isSaveAuto: Boolean
-        get() = getPrefBoolean(R.string.pref_key_read_progress_save_auto,
-                R.bool.pref_read_progress_save_auto_default_value)
+    override val isSaveAuto: Boolean by PreferenceDelegates.bool(
+            R.string.pref_key_read_progress_save_auto, R.bool.pref_read_progress_save_auto_default_value)
 
-    override val isLoadAuto: Boolean
-        get() = getPrefBoolean(R.string.pref_key_read_progress_load_auto,
-                R.bool.pref_read_progress_load_auto_default_value)
+    override val isLoadAuto: Boolean by PreferenceDelegates.bool(
+            R.string.pref_key_read_progress_load_auto, R.bool.pref_read_progress_load_auto_default_value)
 
     override var lastReadProgress: ReadProgress? = null
         get() {
