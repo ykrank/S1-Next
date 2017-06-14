@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -121,6 +122,8 @@ public final class GalleryActivity extends OriginActivity {
         trackAgent.post(new ViewImageTrackEvent(mImageUrl, mImageThumbUrl != null));
         binding.setDownloadPrefManager(mDownloadPrefManager);
         binding.setImageViewModel(new ImageViewModel(mImageUrl, mImageThumbUrl));
+
+        mPhotoView.getAttacher().setScaleType(ImageView.ScaleType.CENTER_INSIDE);
     }
 
     @Override
