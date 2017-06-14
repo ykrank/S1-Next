@@ -19,7 +19,7 @@
 
         <variable
             name="large"
-            type="Boolean" />
+            type="boolean" />
     </data>
 
     <FrameLayout
@@ -32,7 +32,7 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/picture_content_desc"
             android:transitionName="@string/gallery_transition"
-            android:visibility="@{safeUnbox(large)?View.GONE:View.VISIBLE}"
+            android:visibility="@{large?View.GONE:View.VISIBLE}"
             app:manager="@{downloadPrefManager}"
             app:thumbUrl="@{imageViewModel.thumbUrl}"
             app:url="@{imageViewModel.url}" />
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/picture_content_desc"
-            android:visibility="@{safeUnbox(large)?View.VISIBLE:View.GONE}"
+            android:visibility="@{large?View.VISIBLE:View.GONE}"
             app:manager="@{downloadPrefManager}"
             app:thumbUrl="@{imageViewModel.thumbUrl}"
             app:url="@{imageViewModel.url}" />
@@ -53,12 +53,6 @@
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-        <android.support.design.widget.CoordinatorLayout
-            android:id="@+id/coordinator_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true" />
 
     </FrameLayout>
 

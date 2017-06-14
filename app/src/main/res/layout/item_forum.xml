@@ -13,7 +13,7 @@
 
         <variable
             name="gentleAccentColor"
-            type="Integer" />
+            type="int" />
     </data>
 
     <TextView
@@ -31,6 +31,6 @@
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:forum="@{forumViewModel.forum}"
-        app:gentleAccentColor="@{safeUnbox(gentleAccentColor)}" />
+        app:gentleAccentColor="@{gentleAccentColor}" />
 
 </layout>

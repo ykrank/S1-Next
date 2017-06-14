@@ -14,7 +14,7 @@
 
         <variable
             name="quickSidebarEnable"
-            type="Boolean" />
+            type="boolean" />
     </data>
 
     <FrameLayout
@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             app:colorSchemeColors="@{@intArray/swipe_refresh_layout_color_scheme}"
             app:enabled="@{loadingViewModel.swipeRefreshLayoutEnabled}"
-            app:marginEnd="@{safeUnbox(quickSidebarEnable)?(int)@dimen/spacing_normal:0}"
+            app:marginEnd="@{quickSidebarEnable?(int)@dimen/spacing_normal:0}"
             app:refreshing="@{loadingViewModel.swipeRefresh}">
 
             <android.support.v7.widget.RecyclerView
@@ -50,7 +50,7 @@
             android:layout_gravity="end"
             app:sidebarTextColor="?android:attr/textColorPrimary"
             app:sidebarTextColorChoose="?android:attr/textColorPrimary"
-            app:visibility="@{safeUnbox(quickSidebarEnable)?View.VISIBLE:View.GONE}"
+            app:visibility="@{quickSidebarEnable?View.VISIBLE:View.GONE}"
             tools:visibility="visible" />
 
         <TextView

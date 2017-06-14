@@ -43,7 +43,6 @@ import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.LeaksUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
-import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.view.internal.ToolbarDelegate;
 import me.ykrank.s1next.viewmodel.ImageViewModel;
 import me.ykrank.s1next.widget.glide.model.ForcePassUrl;
@@ -118,9 +117,6 @@ public final class GalleryActivity extends OriginActivity {
         ToolbarDelegate toolbarDelegate = new ToolbarDelegate(this, binding.toolbar);
         setTitle(null);
         toolbarDelegate.setupNavCrossIcon();
-
-        ViewUtil.marginTranslucentToolbar(binding.toolbar);
-        //TODO http://stackoverflow.com/questions/31492040/snackbar-and-fitssystemwindow
 
         trackAgent.post(new ViewImageTrackEvent(mImageUrl, mImageThumbUrl != null));
         binding.setDownloadPrefManager(mDownloadPrefManager);
@@ -228,8 +224,7 @@ public final class GalleryActivity extends OriginActivity {
                     FileUtil.copyFile(resource, file);
                     return file;
                 }, f -> {
-                    Snackbar.make(findViewById(R.id.coordinator_layout),
-                            R.string.download_success, Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(binding.getRoot(), R.string.download_success, Snackbar.LENGTH_SHORT).show();
                     FileUtil.notifyImageInMediaStore(GalleryActivity.this, f);
                 }, e -> {
                     L.report(e);

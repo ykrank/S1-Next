@@ -10,7 +10,7 @@
 
         <variable
             name="host"
-            type="Boolean" />
+            type="boolean" />
     </data>
 
     <LinearLayout
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:visibility="@{safeUnbox(host)?View.VISIBLE:View.GONE}" />
+            android:visibility="@{host?View.VISIBLE:View.GONE}" />
 
         <EditText
             android:id="@+id/title"
@@ -37,7 +37,7 @@
             android:hint="@string/prompt_title"
             android:imeOptions="flagNoFullscreen"
             android:inputType="text"
-            android:visibility="@{safeUnbox(host)?View.VISIBLE:View.GONE}" />
+            android:visibility="@{host?View.VISIBLE:View.GONE}" />
 
 
         <include

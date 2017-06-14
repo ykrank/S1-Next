@@ -13,11 +13,11 @@
 
         <variable
             name="me"
-            type="Boolean" />
+            type="boolean" />
 
         <variable
             name="preLoad"
-            type="Boolean" />
+            type="boolean" />
 
         <variable
             name="thumb"
@@ -25,7 +25,7 @@
 
         <variable
             name="big"
-            type="Boolean" />
+            type="boolean" />
 
         <variable
             name="downloadPreferencesManager"
@@ -75,11 +75,11 @@
                         android:layout_marginTop="@dimen/spacing_xlarge"
                         android:contentDescription="@string/avatar_content_desc"
                         android:visibility="@{downloadPreferencesManager.isAvatarsDownload ? View.VISIBLE : View.GONE}"
-                        app:big="@{safeUnbox(big)}"
+                        app:big="@{big}"
                         app:downloadPreferencesManager="@{downloadPreferencesManager}"
                         app:maskDrawable="@drawable/rounded_mask"
                         app:uid="@{data.homeUid}"
-                        app:preLoad="@{safeUnbox(preLoad)}"
+                        app:preLoad="@{preLoad}"
                         app:thumb="@{thumb}"
                         android:transitionName="@string/transition_avatar"
                         tools:src="@drawable/ic_avatar_placeholder" />

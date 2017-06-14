@@ -92,7 +92,7 @@ public final class ForumActivity extends BaseActivity
             fragment = (ForumFragment) fragmentManager.findFragmentByTag(ForumFragment.TAG);
         }
 
-        onItemSelectedListener = (ToolbarDropDownInterface.OnItemSelectedListener) fragment;
+        onItemSelectedListener = fragment;
     }
 
     @Override
