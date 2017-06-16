@@ -53,6 +53,8 @@ class GalleryFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         App.getAppComponent().inject(this)
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+
         binding = FragmentGalleryBinding.inflate(inflater, container, false)
         mPhotoView = binding.photoView
         mImageUrl = arguments.getString(ARG_IMAGE_URL)
