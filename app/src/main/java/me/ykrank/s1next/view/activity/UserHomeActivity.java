@@ -133,7 +133,7 @@ public class UserHomeActivity extends BaseActivity {
 
         binding.avatar.setOnClickListener(v -> {
             String bigAvatarUrl = Api.getAvatarBigUrl(uid);
-            GalleryActivity.startGalleryActivity(v.getContext(), bigAvatarUrl);
+            GalleryActivity.Companion.start(v.getContext(), bigAvatarUrl);
         });
 
         binding.ivNewPm.setOnClickListener(v -> NewPmActivity.startNewPmActivityForResultMessage(this,

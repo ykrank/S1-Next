@@ -110,7 +110,7 @@ public final class ThreadListActivity extends BaseActivity
                 return true;
             case R.id.menu_random_image:
                 trackAgent.post(new RandomImageTrackEvent());
-                GalleryActivity.startGalleryActivity(this, Api.randomImage());
+                GalleryActivity.Companion.start(this, Api.randomImage());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

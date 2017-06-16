@@ -5,47 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.ykrank.s1next.view.activity.GalleryActivity">
 
-    <data>
-
-        <import type="android.view.View" />
-
-        <variable
-            name="imageViewModel"
-            type="me.ykrank.s1next.viewmodel.ImageViewModel" />
-
-        <variable
-            name="downloadPrefManager"
-            type="me.ykrank.s1next.data.pref.DownloadPreferencesManager" />
-
-        <variable
-            name="large"
-            type="boolean" />
-    </data>
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.github.chrisbanes.photoview.PhotoView
-            android:id="@+id/photo_view"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/picture_content_desc"
-            android:transitionName="@string/gallery_transition"
-            android:visibility="@{large?View.GONE:View.VISIBLE}"
-            app:manager="@{downloadPrefManager}"
-            app:thumbUrl="@{imageViewModel.thumbUrl}"
-            app:url="@{imageViewModel.url}" />
-
-        <com.shizhefei.view.largeimage.LargeImageView
-            android:id="@+id/largeImageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/picture_content_desc"
-            android:visibility="@{large?View.VISIBLE:View.GONE}"
-            app:manager="@{downloadPrefManager}"
-            app:thumbUrl="@{imageViewModel.thumbUrl}"
-            app:url="@{imageViewModel.url}" />
+            android:layout_height="match_parent" />
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"

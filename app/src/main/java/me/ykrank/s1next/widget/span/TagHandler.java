@@ -9,6 +9,8 @@ import android.text.style.ImageSpan;
 import org.xml.sax.Attributes;
 import org.xml.sax.XMLReader;
 
+import java.util.ArrayList;
+
 /**
  * Adds {@link android.view.View.OnClickListener}
  * to {@link android.text.style.ImageSpan} and
@@ -16,6 +18,8 @@ import org.xml.sax.XMLReader;
  */
 public final class TagHandler implements Html.TagHandler {
     private static final String TAG = TagHandler.class.getCanonicalName();
+
+    private ArrayList<String> images = new ArrayList<>();
 
     /**
      * See android.text.Html.HtmlToSpannedConverter#getLast(android.text.Spanned, java.lang.Class)
@@ -62,7 +66,7 @@ public final class TagHandler implements Html.TagHandler {
 
             output.removeSpan(imageSpan);
             // make this ImageSpan clickable
-            output.setSpan(new ImageClickableResizeSpan(imageSpan.getDrawable(), url),
+            output.setSpan(new ImageClickableResizeSpan(imageSpan.getDrawable(), url, images),
                     end - len, output.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }

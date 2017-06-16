@@ -53,6 +53,7 @@ import me.ykrank.s1next.view.fragment.BaseFragment;
 import me.ykrank.s1next.view.fragment.BasePostFragment;
 import me.ykrank.s1next.view.fragment.EditPostFragment;
 import me.ykrank.s1next.view.fragment.FavouriteListFragment;
+import me.ykrank.s1next.view.fragment.GalleryFragment;
 import me.ykrank.s1next.view.fragment.HistoryListFragment;
 import me.ykrank.s1next.view.fragment.NewRateFragment;
 import me.ykrank.s1next.view.fragment.NewThreadFragment;
@@ -227,7 +228,9 @@ public interface AppComponent {
 
     void inject(DrawerLayoutDelegateConcrete drawerLayoutDelegateConcrete);
 
-    void inject(GalleryActivity galleryActivity);
+    void inject(GalleryActivity activity);
+
+    void inject(GalleryFragment fragment);
 
     void inject(EditPostFragment fragment);
 
