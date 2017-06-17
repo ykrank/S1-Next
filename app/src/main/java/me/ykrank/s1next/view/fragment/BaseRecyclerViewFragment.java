@@ -359,7 +359,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
                     showRetrySnackbar(message);
                 }
             } else {
-                showRetrySnackbar(R.string.message_server_error);
+                showRetrySnackbar(R.string.message_server_connect_error);
             }
         }
     }
@@ -372,9 +372,9 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
      */
     @CallSuper
     void onError(Throwable throwable) {
-        L.e(throwable);
+        L.print(throwable);
         if (isAdded() && getUserVisibleHint()) {
-            showRetrySnackbar(ErrorUtil.parse(getContext(), throwable));
+            showRetrySnackbar(ErrorUtil.INSTANCE.parse(getContext(), throwable));
         }
     }
 

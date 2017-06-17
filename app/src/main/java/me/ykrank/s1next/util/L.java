@@ -69,6 +69,12 @@ public class L {
         }
     }
 
+    public static void print(Throwable e) {
+        if (showLog() && e != null) {
+            e.printStackTrace();
+        }
+    }
+
     public static void d(String msg) {
         Logger.d(msg);
     }

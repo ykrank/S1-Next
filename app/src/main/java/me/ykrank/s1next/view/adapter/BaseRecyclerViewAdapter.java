@@ -73,7 +73,7 @@ public abstract class BaseRecyclerViewAdapter extends ListDelegationAdapter<List
     public void diffNewDataSet(List<?> newData, boolean detectMoves) {
         if (items == newData) {
             refreshDataSet(newData, detectMoves);
-            ErrorUtil.throwNewErrorIfDebug(new IllegalArgumentException("must set new data set"));
+            ErrorUtil.INSTANCE.throwNewErrorIfDebug(new IllegalArgumentException("must set new data set"));
         }
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
                 new BaseDiffCallback(items, newData), detectMoves);

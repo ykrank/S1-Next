@@ -73,7 +73,7 @@ public final class QuotePostPageParserDialogFragment extends ProgressDialogFragm
 
     @Override
     protected void onError(Throwable throwable) {
-        ThreadLinkInvalidPromptDialogFragment.newInstance(getContext(), ErrorUtil.parse(getContext(), throwable))
+        ThreadLinkInvalidPromptDialogFragment.newInstance(getContext(), ErrorUtil.INSTANCE.parse(getContext(), throwable))
                 .show(getFragmentManager(), ThreadLinkInvalidPromptDialogFragment.TAG);
         mShouldFinishActivity = false;
     }

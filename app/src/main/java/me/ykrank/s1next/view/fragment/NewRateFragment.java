@@ -156,7 +156,7 @@ public final class NewRateFragment extends BaseFragment {
                     }
                         }, e -> {
                             reasonAdapter.setHasProgress(false);
-                    showRetrySnackbar(ErrorUtil.parse(getContext(), e), v -> refreshData());
+                    showRetrySnackbar(ErrorUtil.INSTANCE.parse(getContext(), e), v -> refreshData());
                         }
                 );
     }

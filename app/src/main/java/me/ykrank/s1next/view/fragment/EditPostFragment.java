@@ -153,7 +153,7 @@ public final class EditPostFragment extends BasePostFragment {
                     binding.layoutPost.reply.setText(postEditor.getMessage());
                 }, e -> {
                     L.report(e);
-                    showRetrySnackbar(ErrorUtil.parse(getContext(), e), v -> init());
+                    showRetrySnackbar(ErrorUtil.INSTANCE.parse(getContext(), e), v -> init());
                 });
 
     }

@@ -17,8 +17,9 @@
     <string name="dialog_button_text_jump">Jump</string>
 
     <string name="message_network_error">There was a network error</string>
-    <string name="message_server_error">Unable to connect to the server, please try again later.</string>
+    <string name="message_server_connect_error">Unable to connect to the server, please try again later.</string>
     <string name="message_unknown_error">Unknown error occurred</string>
+    <string name="message_server_data_error">Server data parse error</string>
 
     <!-- drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>

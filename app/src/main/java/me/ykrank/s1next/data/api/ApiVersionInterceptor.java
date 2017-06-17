@@ -1,5 +1,6 @@
 package me.ykrank.s1next.data.api;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -19,7 +20,7 @@ import okhttp3.Response;
 public class ApiVersionInterceptor implements Interceptor {
 
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(@NonNull Chain chain) throws IOException {
         Request request = chain.request();
         HttpUrl url = request.url();
 

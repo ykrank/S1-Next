@@ -180,7 +180,7 @@ public final class NewThreadFragment extends BasePostFragment {
                             }
                         }, e -> {
                             L.report(e);
-                            showRetrySnackbar(ErrorUtil.parse(getContext(), e), v -> init());
+                    showRetrySnackbar(ErrorUtil.INSTANCE.parse(getContext(), e), v -> init());
                         }
                 );
     }
