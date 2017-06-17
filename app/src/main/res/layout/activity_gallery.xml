@@ -5,6 +5,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.ykrank.s1next.view.activity.GalleryActivity">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="position"
+            type="int" />
+
+        <variable
+            name="size"
+            type="int" />
+    </data>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -19,7 +32,16 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text='@{String.format("%s/%s", position+1, size)}'
+                android:visibility="@{size > 1 ? View.VISIBLE:View.GONE}"
+                tools:text="1/10" />
+        </android.support.v7.widget.Toolbar>
 
     </FrameLayout>
 

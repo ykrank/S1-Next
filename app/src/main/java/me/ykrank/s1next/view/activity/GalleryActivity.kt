@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.v4.view.ViewPager
 import android.view.MenuItem
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -43,8 +44,16 @@ class GalleryActivity : OriginActivity() {
         title = null
         toolbarDelegate.setupNavCrossIcon()
 
+        binding.size = imageUrls.size
+        binding.position = position
+
         binding.viewPager.adapter = GalleryViewPagerAdapter(supportFragmentManager, imageUrls)
         binding.viewPager.currentItem = position
+        binding.viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageSelected(pos: Int) {
+                binding.position = pos
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
