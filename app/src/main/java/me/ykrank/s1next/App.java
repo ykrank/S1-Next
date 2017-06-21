@@ -12,6 +12,7 @@ import me.ykrank.s1next.data.db.DbModule;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.data.pref.PrefModule;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.LeaksUtil;
 import me.ykrank.s1next.util.ProcessUtil;
 import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.widget.AppActivityLifecycleCallbacks;
@@ -68,7 +69,7 @@ public final class App extends MultiDexApplication {
                     .penaltyLog()
                     .build());
         }
-        refWatcher = LeakCanary.install(this);
+        refWatcher = LeaksUtil.install(this);
         L.init(this);
 
         mAppComponent = DaggerAppComponent.builder()

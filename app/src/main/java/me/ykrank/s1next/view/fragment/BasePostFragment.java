@@ -254,9 +254,7 @@ public abstract class BasePostFragment extends BaseFragment {
 
         // hide keyboard
         ImeUtils.setShowSoftInputOnFocus(mReplyView, false);
-        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(mReplyView.getWindowToken(), 0);
+        ImeUtils.hideIme(mReplyView);
         getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -288,16 +286,13 @@ public abstract class BasePostFragment extends BaseFragment {
                     @Override
                     public void onAnimationEnd(View view) {
                         mEmoticonKeyboard.setVisibility(View.GONE);
-
+                        
                         ImeUtils.setShowSoftInputOnFocus(mReplyView, true);
                         getActivity().getWindow().setSoftInputMode(
                                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
                         if (shouldShowKeyboard) {
-                            InputMethodManager inputMethodManager = (InputMethodManager)
-                                    getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                            inputMethodManager.showSoftInput(mReplyView,
-                                    InputMethodManager.SHOW_IMPLICIT);
+                            ImeUtils.showIme(mReplyView);
                         }
 
                         super.onAnimationEnd(view);

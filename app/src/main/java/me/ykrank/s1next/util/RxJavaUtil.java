@@ -37,15 +37,15 @@ public final class RxJavaUtil {
     /**
      * push work to RxJava io thread {@link AndroidSchedulers#mainThread()}
      */
-    public static void workInMainThread(Action workAction) {
-        workInMainThread(NULL, o -> workAction.run());
+    public static Disposable workInMainThread(Action workAction) {
+        return workInMainThread(NULL, o -> workAction.run());
     }
 
     /**
      * push work to RxJava io thread {@link AndroidSchedulers#mainThread()}
      */
-    public static <D> void workInMainThread(D data, Consumer<D> workAction) {
-        Single.just(data)
+    public static <D> Disposable workInMainThread(D data, Consumer<D> workAction) {
+        return Single.just(data)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(workAction,
                         L::report);
@@ -56,8 +56,8 @@ public final class RxJavaUtil {
      *
      * @param workAction
      */
-    public static void workInRxIoThread(Action workAction) {
-        Single.just(NULL)
+    public static Disposable workInRxIoThread(Action workAction) {
+        return Single.just(NULL)
                 .subscribeOn(Schedulers.io())
                 .subscribe(o -> workAction.run(),
                         L::report);
@@ -68,8 +68,8 @@ public final class RxJavaUtil {
      *
      * @param workAction
      */
-    public static void workInRxComputationThread(Action workAction) {
-        Single.just(NULL)
+    public static Disposable workInRxComputationThread(Action workAction) {
+        return Single.just(NULL)
                 .subscribeOn(Schedulers.computation())
                 .subscribe(o -> workAction.run(), L::report);
     }

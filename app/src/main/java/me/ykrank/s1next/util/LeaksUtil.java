@@ -1,13 +1,29 @@
 package me.ykrank.s1next.util;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
+
+import com.squareup.leakcanary.AndroidExcludedRefs;
+import com.squareup.leakcanary.ExcludedRefs;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
 
 public class LeaksUtil {
+
+    public static RefWatcher install(Application application) {
+        ExcludedRefs excludedRefs = AndroidExcludedRefs.createAppDefaults()
+                //exclude InputMethodManager mLastSrvView
+                .instanceField("android.view.inputmethod.InputMethodManager", "mLastSrvView")
+                .build();
+        return LeakCanary.refWatcher(application)
+                .excludedRefs(excludedRefs)
+                .buildAndInstall();
+    }
 
     /**
      * leaks in huawei emui5.0

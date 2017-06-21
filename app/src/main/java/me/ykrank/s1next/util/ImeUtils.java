@@ -35,17 +35,18 @@ public class ImeUtils {
     }
 
     public static void showIme(@NonNull View view) {
+        showIme(view, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    /**
+     * @see InputMethodManager#showSoftInput(View, int) 
+     * @param view
+     * @param flags
+     */
+    public static void showIme(@NonNull View view, int flags) {
         InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService
                 (Context.INPUT_METHOD_SERVICE);
-        // the public methods don't seem to work for me, so… reflection.
-        try {
-            Method showSoftInputUnchecked = InputMethodManager.class.getMethod(
-                    "showSoftInputUnchecked", int.class, ResultReceiver.class);
-            showSoftInputUnchecked.setAccessible(true);
-            showSoftInputUnchecked.invoke(imm, 0, null);
-        } catch (Exception e) {
-            // ho hum
-        }
+        imm.showSoftInput(view, flags);
     }
 
     public static void hideIme(@NonNull View view) {
@@ -73,9 +74,8 @@ public class ImeUtils {
                 method.setAccessible(true);
                 method.invoke(textView, show);
             } catch (Exception e) {
-                // multi-catch with those reflection exceptions requires API level 19
-                // so we use Exception instead of multi-catch
-                throw new RuntimeException("Failed to invoke TextView#setShowSoftInputOnFocus(boolean).", e);
+                L.leaveMsg("Sdk Version:"+Build.VERSION.SDK_INT);
+                L.report("Failed to invoke TextView#setShowSoftInputOnFocus(boolean).", e);
             }
         }
     }

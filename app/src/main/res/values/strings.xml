@@ -3,7 +3,7 @@
 
     <string name="app_name" translatable="false">S1 Next Goose</string>
     <string name="app_icon_content_desc">App icon</string>
-    <string name="leak_canary_display_activity_label" translatable="false">S1 Leaks</string>
+    <string name="leak_canary_display_activity_label" translatable="false">S1 Next Goose Leaks</string>
 
     <!-- common -->
     <string name="intent_title_which_view_application">Open with</string>
