@@ -16,7 +16,7 @@ public final class TransformationUtil {
     /**
      * Applies a multiplier to the {@code toTransform}'s size.
      * <p>
-     * Forked from {@link com.bumptech.glide.load.resource.bitmap.TransformationUtils#fitCenter(Bitmap, BitmapPool, int, int)}.
+     * Forked from {@link com.bumptech.glide.load.resource.bitmap.TransformationUtils#fitCenter(BitmapPool, Bitmap, int, int)} .
      *
      * @param sizeMultiplier The multiplier to apply to the {@code toTransform}'s dimensions.
      */

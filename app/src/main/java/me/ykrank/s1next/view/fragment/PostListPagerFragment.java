@@ -322,20 +322,22 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
                     }
                     return Observable.just(wrapper);
                 })
-                .map(o -> {
+                .flatMap(o -> {
                     if (o.getData() != null) {
                         List<Post> postList = o.getData().getPostList();
                         if (postList != null && postList.size() > 0) {
                             Post post = postList.get(0);
                             if (post.isTrade()) {
                                 post.setExtraHtml("");
-                                mS1Service.getTradePostInfo(mThreadId, post.getId() + 1)
-                                        .map(ApiUtil::replaceAjaxHeader)
-                                        .subscribe(post::setExtraHtml);
+                                return mS1Service.getTradePostInfo(mThreadId, post.getId() + 1)
+                                        .map(html -> {
+                                            post.setExtraHtml(ApiUtil.replaceAjaxHeader(html));
+                                            return o;
+                                        });
                             }
                         }
                     }
-                    return o;
+                    return Observable.just(o);
                 });
     }
 
