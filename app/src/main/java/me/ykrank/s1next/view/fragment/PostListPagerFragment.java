@@ -100,7 +100,6 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
 
     private Disposable saveReadProgressDisposable;
     private Disposable changeSelectableDisposable;
-    private Disposable blackListDisposable;
     private Disposable refreshAfterBlacklistChangeDisposable;
     private Disposable changeQuickSidebarEnableDisposable;
 

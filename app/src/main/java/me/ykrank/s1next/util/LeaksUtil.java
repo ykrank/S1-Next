@@ -13,16 +13,22 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
 
+import me.ykrank.s1next.BuildConfig;
+
 public class LeaksUtil {
 
     public static RefWatcher install(Application application) {
-        ExcludedRefs excludedRefs = AndroidExcludedRefs.createAppDefaults()
-                //exclude InputMethodManager mLastSrvView
-                .instanceField("android.view.inputmethod.InputMethodManager", "mLastSrvView")
-                .build();
-        return LeakCanary.refWatcher(application)
-                .excludedRefs(excludedRefs)
-                .buildAndInstall();
+        if (BuildConfig.DEBUG) {
+            ExcludedRefs excludedRefs = AndroidExcludedRefs.createAppDefaults()
+                    //exclude InputMethodManager
+                    .clazz("android.view.inputmethod.InputMethodManager")
+                    .build();
+            return LeakCanary.refWatcher(application)
+                    .excludedRefs(excludedRefs)
+                    .buildAndInstall();
+        } else {
+            return LeakCanary.install(application);
+        }
     }
 
     /**

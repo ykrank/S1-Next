@@ -306,6 +306,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
         // dismiss Snackbar in order to let user see the ProgressBar
         // when we start to loadViewPager new data
         mCoordinatorLayoutAnchorDelegate.dismissSnackbarIfExist();
+        RxJavaUtil.disposeIfNotNull(mDisposable);
         mDisposable = getSourceObservable(loading)
                 .compose(ApiFlatTransformer.apiErrorTransformer())
                 .compose(RxJavaUtil.iOTransformer())
