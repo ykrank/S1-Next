@@ -44,6 +44,7 @@
             android:contentDescription="@string/picture_content_desc"
             android:visibility="@{large?View.VISIBLE:View.GONE}"
             app:manager="@{downloadPrefManager}"
+            app:show="@{large}"
             app:thumbUrl="@{imageViewModel.thumbUrl}"
             app:url="@{imageViewModel.url}" />
 

@@ -23,9 +23,9 @@ public final class LargeImageViewBindingAdapter {
     private LargeImageViewBindingAdapter() {
     }
 
-    @BindingAdapter({"url", "thumbUrl", "manager"})
-    public static void loadImage(LargeImageView largeImageView, String url, @Nullable String thumbUrl, DownloadPreferencesManager manager) {
-        if (TextUtils.isEmpty(url)) {
+    @BindingAdapter({"url", "thumbUrl", "manager", "show"})
+    public static void loadImage(LargeImageView largeImageView, String url, @Nullable String thumbUrl, DownloadPreferencesManager manager, boolean show) {
+        if (!show || TextUtils.isEmpty(url)) {
             return;
         }
         Context context = largeImageView.getContext();
@@ -41,7 +41,7 @@ public final class LargeImageViewBindingAdapter {
             @Override
             public void onLoadFailed(@Nullable Drawable errorDrawable) {
                 if (thumbUrl != null) {
-                    loadImage(largeImageView, thumbUrl, null, manager);
+                    loadImage(largeImageView, thumbUrl, null, manager, show);
                 } else {
                     super.onLoadFailed(errorDrawable);
                 }
