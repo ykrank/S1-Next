@@ -186,4 +186,6 @@
     <string name="download_success">下载成功</string>
     <string name="click_to_extra_html">点击查看额外网页</string>
     <string name="message_server_data_error">服务器数据解析错误</string>
+    <string name="clear_image_cache_error">清除图片缓存失败</string>
+    <string name="clear_image_cache_success">清除图片缓存成功</string>
 </resources>

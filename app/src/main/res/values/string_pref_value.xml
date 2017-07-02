@@ -25,6 +25,7 @@
     <string name="pref_avatar_cache_invalidation_interval_default_value" translatable="false">1</string>
     <string name="pref_image">Image</string>
     <string name="pref_download_images_strategy_default_value" translatable="false">1</string>
+    <string name="pref_clear_image_cache">Clear image cache</string>
 
     <!-- array -->
     <string name="pref_theme_entries_0">AfternoonTea</string>

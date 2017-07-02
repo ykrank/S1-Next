@@ -62,6 +62,10 @@
             android:summary="%s"
             android:title="@string/pref_downloads" />
 
+        <Preference
+            android:persistent="false"
+            android:key="@string/pref_key_clear_image_cache"
+            android:title="@string/pref_clear_image_cache" />
     </PreferenceCategory>
 
 </PreferenceScreen>

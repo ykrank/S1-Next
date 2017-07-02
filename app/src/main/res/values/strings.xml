@@ -243,4 +243,6 @@
     <string name="download_unknown_error">Download error</string>
     <string name="download_success">Download success</string>
     <string name="click_to_extra_html">ClickToExtraHtml</string>
+    <string name="clear_image_cache_error">Clear image cache error</string>
+    <string name="clear_image_cache_success">Clear image cache success</string>
 </resources>

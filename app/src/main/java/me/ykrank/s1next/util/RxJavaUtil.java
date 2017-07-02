@@ -93,7 +93,7 @@ public final class RxJavaUtil {
      * @param error      错误回调
      * @return 订单
      */
-    public static Disposable workWithUiThread(Action workAction, Action uiAction, Consumer<Throwable> error) {
+    public static Disposable workWithUiThread(@NonNull Action workAction, @NonNull Action uiAction, Consumer<Throwable> error) {
         return Observable.just(NULL)
                 .doOnNext(i -> workAction.run())
                 .subscribeOn(Schedulers.io())

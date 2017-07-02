@@ -14,7 +14,7 @@ import me.ykrank.s1next.widget.track.event.page.LocalFragmentStartEvent;
  * A helper class for registering/unregistering
  * {@link android.content.SharedPreferences.OnSharedPreferenceChangeListener}.
  */
-abstract class BasePreferenceFragment extends PreferenceFragment
+public abstract class BasePreferenceFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     DataTrackAgent trackAgent;

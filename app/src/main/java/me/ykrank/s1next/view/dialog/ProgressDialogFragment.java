@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.widget.Toast;
@@ -23,7 +24,6 @@ import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.util.ErrorUtil;
-import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.activity.BaseActivity;
 import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment;
@@ -38,7 +38,7 @@ import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
  *
  * @param <D> The data we want to request.
  */
-abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
+public abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
 
     protected static final String ARG_DIALOG_NOT_CANCELABLE_ON_TOUCH_OUTSIDE = "dialog_not_cancelable_on_touch_outside";
 
@@ -111,9 +111,6 @@ abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
                     .observeOn(AndroidSchedulers.mainThread())
                     .doAfterTerminate(this::finallyDo)
                     .subscribe(this::onNext, this::onError);
-        } else {
-            L.report(new IllegalStateException("SourceObservable is null when SimpleProgressDialogFragment onResume"));
-            getFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
         }
     }
 
@@ -144,7 +141,7 @@ abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
     /**
      * @see BaseRecyclerViewFragment#finallyDo()
      */
-    private void finallyDo() {
+    protected void finallyDo() {
         dismissAllowingStateLoss();
     }
 
@@ -179,5 +176,6 @@ abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
         activity.finish();
     }
 
+    @Nullable
     protected abstract CharSequence getProgressMessage();
 }
