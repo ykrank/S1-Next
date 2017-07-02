@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
 import com.bumptech.glide.Glide;
@@ -45,12 +46,15 @@ public final class PhotoViewBindingAdapter {
         RequestBuilder<Drawable> thumbnailRequest;
 
         if (!TextUtils.isEmpty(thumbUrl)) {
+            RequestOptions thumbRequestOptions = new RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.DATA);
+            if (manager != null && Api.isAvatarUrl(thumbUrl)) {
+                thumbRequestOptions = thumbRequestOptions.signature(manager.getAvatarCacheInvalidationIntervalSignature());
+            }
             thumbnailRequest = Glide
                     .with(context)
                     .load(thumbUrl)
-                    .apply(new RequestOptions()
-                            .diskCacheStrategy(DiskCacheStrategy.DATA));
-            requestOptions = requestOptions.placeholder(R.drawable.loading);
+                    .apply(thumbRequestOptions);
         } else {
             thumbnailRequest = Glide.with(context).load(R.drawable.loading);
         }
@@ -67,11 +71,10 @@ public final class PhotoViewBindingAdapter {
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        if (thumbUrl != null) {
-                            loadImage(photoView, thumbUrl, null, manager);
-                            return true;
-                        }
-                        return false;
+                        //stop thumnal animatable like gif
+                        target.onStop();
+                        target.onLoadFailed(ContextCompat.getDrawable(context, R.mipmap.error_symbol));
+                        return true;
                     }
 
                     @Override
