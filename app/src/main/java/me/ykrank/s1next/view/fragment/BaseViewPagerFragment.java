@@ -23,7 +23,7 @@ import me.ykrank.s1next.widget.TagFragmentStatePagerAdapter;
 /**
  * A base Fragment wraps {@link ViewPager} and provides related methods.
  */
-abstract class BaseViewPagerFragment extends BaseFragment
+public abstract class BaseViewPagerFragment extends BaseFragment
         implements PageJumpDialogFragment.OnPageJumpedListener, PagerCallback {
 
     /**

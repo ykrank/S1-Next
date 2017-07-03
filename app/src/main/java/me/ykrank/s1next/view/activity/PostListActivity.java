@@ -129,15 +129,15 @@ public final class PostListActivity extends BaseActivity
             Thread thread = intent.getParcelableExtra(ARG_THREAD);
             ReadProgress progress = intent.getParcelableExtra(ARG_READ_PROGRESS);
             if (thread == null) {//通过链接打开
-                fragment = PostListFragment.newInstance(intent.getParcelableExtra(ARG_THREAD_LINK));
+                fragment = PostListFragment.Companion.newInstance(intent.getParcelableExtra(ARG_THREAD_LINK));
             } else if (progress != null) {//有进度信息
-                fragment = PostListFragment.newInstance(thread, progress);
+                fragment = PostListFragment.Companion.newInstance(thread, progress);
             } else {//没有进度信息
-                fragment = PostListFragment.newInstance(thread, intent.getBooleanExtra(
+                fragment = PostListFragment.Companion.newInstance(thread, intent.getBooleanExtra(
                         ARG_SHOULD_GO_TO_LAST_PAGE, false));
             }
             getSupportFragmentManager().beginTransaction().add(R.id.frame_layout, fragment,
-                    PostListFragment.TAG).commit();
+                    PostListFragment.Companion.getTAG()).commit();
         }
     }
 

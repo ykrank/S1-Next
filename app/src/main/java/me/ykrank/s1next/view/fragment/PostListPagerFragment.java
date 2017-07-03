@@ -190,7 +190,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        mPagerCallback = (PagerCallback) getFragmentManager().findFragmentByTag(PostListFragment.TAG);
+        mPagerCallback = (PagerCallback) getFragmentManager().findFragmentByTag(PostListFragment.Companion.getTAG());
     }
 
     @Override
@@ -249,9 +249,11 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
             int position = readProgress.getPosition();
             int offset = readProgress.getOffset();
             if (position <= 0) {
-                //if position invalid or first, offset should zero
+                //if position invalid or first, offset should below zero
                 position = 0;
-                offset = 0;
+                if (offset > 0) {
+                    offset = 0;
+                }
             }
             int totalItemCount = mRecyclerAdapter.getItemCount();
             if (totalItemCount <= position) {
@@ -274,7 +276,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
             saveReadProgressDisposable = RxJavaUtil.workWithUiThread(() -> {
                 LooperUtil.enforceOnWorkThread();
                 ReadProgressDbWrapper dbWrapper = ReadProgressDbWrapper.getInstance();
-                dbWrapper.saveReadProgress(getCurReadProgress());
+                dbWrapper.saveReadProgress(readProgress);
             }, () -> {
                 LooperUtil.enforceOnMainThread();
                 showShortText(R.string.save_read_progress_success);
@@ -298,6 +300,9 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
      */
     private Pair<Integer, Integer> findNowItemPosition() {
         int itemPosition = mLayoutManager.findFirstCompletelyVisibleItemPosition();
+        if (itemPosition == RecyclerView.NO_POSITION) {
+            itemPosition = mLayoutManager.findFirstVisibleItemPosition();
+        }
         int offset = 0;
         View view = mLayoutManager.findViewByPosition(itemPosition);
         if (view != null) {

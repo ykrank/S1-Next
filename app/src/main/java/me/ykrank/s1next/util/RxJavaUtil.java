@@ -207,6 +207,7 @@ public final class RxJavaUtil {
          *
          * @return an instance of the appropriate type
          */
+        @NonNull
         T get() throws Exception;
     }
 }
