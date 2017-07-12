@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.squareup.leakcanary.AndroidExcludedRefs;
+import com.squareup.leakcanary.DisplayLeakService;
 import com.squareup.leakcanary.ExcludedRefs;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -24,6 +25,7 @@ public class LeaksUtil {
                     .clazz("android.view.inputmethod.InputMethodManager")
                     .build();
             return LeakCanary.refWatcher(application)
+                    .listenerServiceClass(DisplayLeakService.class)
                     .excludedRefs(excludedRefs)
                     .buildAndInstall();
         } else {
