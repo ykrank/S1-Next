@@ -169,6 +169,8 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxjava:2.1.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
+    compile 'com.github.ykrank:androidlifecycle-rxjava:0.1.0-SNAPSHOT'
+
     compile 'com.tencent.bugly:crashreport:2.6.5'
     compile 'com.github.chrisbanes:PhotoView:2.0.0'
     compile 'com.shizhefei:LargeImageView:1.0.8'

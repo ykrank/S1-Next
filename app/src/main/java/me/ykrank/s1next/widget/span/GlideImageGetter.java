@@ -30,16 +30,18 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.github.ykrank.androidlifecycle.rxjava2.AndroidRxDispose;
 
 import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.widget.EmoticonFactory;
 import me.ykrank.s1next.widget.glide.transformations.FitOutWidthBitmapTransformation;
 import me.ykrank.s1next.widget.glide.transformations.SizeMultiplierBitmapTransformation;
@@ -87,7 +89,7 @@ public final class GlideImageGetter
         initRectHolder();
     }
 
-    public static GlideImageGetter get(TextView textView) {
+    public static synchronized GlideImageGetter get(TextView textView) {
         Object object = textView.getTag(R.id.tag_drawable_callback);
         if (object == null) {
             return new GlideImageGetter(textView.getContext(), textView);
@@ -114,7 +116,7 @@ public final class GlideImageGetter
         if (TextUtils.isEmpty(url)) {
             return null;
         }
-        
+
         UrlDrawable urlDrawable;
 
         String emoticonName = Api.parseEmoticonName(url);
@@ -152,7 +154,7 @@ public final class GlideImageGetter
                             return false;
                         }
                     });
-            RxJavaUtil.workInMainThread(glideRequestBuilder, builder -> builder.into(imageGetterViewTarget));
+            startImageGetterViewTarget(glideRequestBuilder, imageGetterViewTarget);
 
             mViewTargetSet.add(imageGetterViewTarget);
             return urlDrawable;
@@ -168,10 +170,18 @@ public final class GlideImageGetter
                         .placeholder(R.mipmap.unknown_image)
                         .diskCacheStrategy(DiskCacheStrategy.DATA)
                         .transform(new FitOutWidthBitmapTransformation()));
-        RxJavaUtil.workInMainThread(glideRequestBuilder, builder -> builder.into(imageGetterViewTarget));
+        startImageGetterViewTarget(glideRequestBuilder, imageGetterViewTarget);
 
         mViewTargetSet.add(imageGetterViewTarget);
         return urlDrawable;
+    }
+
+    private void startImageGetterViewTarget(RequestBuilder<Drawable> glideRequestBuilder,
+                                            ImageGetterViewTarget imageGetterViewTarget) {
+        Single.just(glideRequestBuilder)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .to(AndroidRxDispose.withSingle(mTextView))
+                .subscribe(builder -> builder.into(imageGetterViewTarget), L::report);
     }
 
     @Override
