@@ -12,6 +12,8 @@ import android.support.v4.app.TaskStackBuilder;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.google.common.base.Optional;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -161,12 +163,12 @@ public final class ForumActivity extends BaseActivity
 
     private void restoreFromInterrupt() {
         Single.just(0)
-                .map(i -> mReadProgressPrefManager.getLastReadProgress())
+                .map(i -> Optional.fromNullable(mReadProgressPrefManager.getLastReadProgress()))
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .doFinally(() -> mReadProgressPrefManager.saveLastReadProgress(null))
                 .subscribe(readProgress -> {
-                    if (readProgress != null) {
-                        PostListActivity.startPostListActivity(ForumActivity.this, readProgress);
+                    if (readProgress.isPresent()) {
+                        PostListActivity.startPostListActivity(ForumActivity.this, readProgress.get());
                     }
                 }, L::report);
     }
