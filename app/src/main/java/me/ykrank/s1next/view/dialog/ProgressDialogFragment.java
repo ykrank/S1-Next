@@ -12,9 +12,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.widget.Toast;
 
+import com.github.ykrank.androidautodispose.AndroidRxDispose;
+import com.github.ykrank.androidlifecycle.event.FragmentEvent;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import me.ykrank.s1next.App;
@@ -24,7 +26,6 @@ import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.util.ErrorUtil;
-import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.activity.BaseActivity;
 import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
@@ -47,8 +48,6 @@ public abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
     UserValidator mUserValidator;
 
     private User mUser;
-
-    private Disposable mDisposable;
 
     private boolean dialogNotCancelableOnTouchOutside;
 
@@ -94,22 +93,16 @@ public abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
         super.onDestroyView();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        RxJavaUtil.disposeIfNotNull(mDisposable);
-    }
-
     /**
      * @see BaseRecyclerViewFragment#load(int)
      */
     private void request() {
         Observable<D> sourceObservable = getSourceObservable();
         if (sourceObservable != null) {
-            mDisposable = getSourceObservable().subscribeOn(Schedulers.io())
+            getSourceObservable().subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doAfterTerminate(this::finallyDo)
+                    .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
                     .subscribe(this::onNext, this::onError);
         }
     }

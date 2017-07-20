@@ -42,9 +42,9 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
     }
 
     private static void setTextSelectable(ItemPostBinding binding, boolean selectable) {
-        binding.tvFloor.setTextIsSelectable(selectable);
+        binding.authorName.setTextIsSelectable(selectable);
         binding.tvReply.setTextIsSelectable(selectable);
-        binding.tvFloor.setMovementMethod(LinkMovementMethod.getInstance());
+        binding.authorName.setMovementMethod(LinkMovementMethod.getInstance());
         binding.tvReply.setMovementMethod(PostMovementMethod.getInstance());
     }
 
@@ -95,10 +95,8 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
         if (mGeneralPreferencesManager.isPostSelectable()) {
             ItemPostBinding binding = ((ItemViewBindingHolder) holder).itemPostBinding;
             binding.authorName.setEnabled(false);
-            binding.tvFloor.setEnabled(false);
             binding.tvReply.setEnabled(false);
             binding.authorName.setEnabled(true);
-            binding.tvFloor.setEnabled(true);
             binding.tvReply.setEnabled(true);
         }
     }

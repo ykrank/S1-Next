@@ -30,7 +30,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.github.ykrank.androidlifecycle.rxjava2.AndroidRxDispose;
+import com.github.ykrank.androidautodispose.AndroidRxDispose;
+import com.github.ykrank.androidlifecycle.event.ViewEvent;
 
 import java.util.Collections;
 import java.util.Set;
@@ -180,7 +181,7 @@ public final class GlideImageGetter
                                             ImageGetterViewTarget imageGetterViewTarget) {
         Single.just(glideRequestBuilder)
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .to(AndroidRxDispose.withSingle(mTextView))
+                .to(AndroidRxDispose.withSingle(mTextView, ViewEvent.DESTROY))
                 .subscribe(builder -> builder.into(imageGetterViewTarget), L::report);
     }
 
