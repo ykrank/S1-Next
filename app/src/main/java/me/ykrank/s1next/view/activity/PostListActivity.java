@@ -10,6 +10,8 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.github.ykrank.androidautodispose.AndroidRxDispose;
+import com.github.ykrank.androidlifecycle.event.ViewEvent;
 import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
 
@@ -98,6 +100,7 @@ public final class PostListActivity extends BaseActivity
                     .observeOn(Schedulers.io())
                     .map(vo -> Optional.fromNullable(ReadProgressDbWrapper.getInstance().getWithThreadId(Integer.valueOf(thread.get().getId()))))
                     .observeOn(AndroidSchedulers.mainThread())
+                    .to(AndroidRxDispose.withObservable(view, ViewEvent.DESTROY))
                     .subscribe(progress -> {
                         Context context = view.getContext();
                         Intent intent = new Intent(context, PostListActivity.class);

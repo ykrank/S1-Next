@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.bigkoo.quicksidebar.QuickSideBarView;
 import com.bigkoo.quicksidebar.listener.OnQuickSideBarTouchListener;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.ykrank.androidautodispose.AndroidRxDispose;
+import com.github.ykrank.androidlifecycle.event.FragmentEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -98,10 +100,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
 
     private PagerCallback mPagerCallback;
 
-    private Disposable saveReadProgressDisposable;
-    private Disposable changeSelectableDisposable;
     private Disposable refreshAfterBlacklistChangeDisposable;
-    private Disposable changeQuickSidebarEnableDisposable;
 
     public static PostListPagerFragment newInstance(String threadId, int pageNum) {
         return newInstance(threadId, pageNum, null, null, null);
@@ -173,14 +172,16 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
 
         quickSideBarView.setOnQuickSideBarTouchListener(this);
 
-        changeSelectableDisposable = mEventBus.get()
+        mEventBus.get()
                 .ofType(PostSelectableChangeEvent.class)
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
                 .subscribe(event -> {
                     mRecyclerAdapter.notifyDataSetChanged();
                 }, super::onError);
 
-        changeQuickSidebarEnableDisposable = mEventBus.get()
+        mEventBus.get()
                 .ofType(QuickSidebarEnableChangeEvent.class)
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
                 .subscribe(event -> {
                     invalidateQuickSidebarVisible();
                 }, super::onError);
@@ -201,16 +202,8 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
     }
 
     @Override
-    public void onDestroyView() {
-        RxJavaUtil.disposeIfNotNull(changeSelectableDisposable);
-        RxJavaUtil.disposeIfNotNull(changeQuickSidebarEnableDisposable);
-        super.onDestroyView();
-    }
-
-    @Override
     public void onDestroy() {
         RxJavaUtil.disposeIfNotNull(refreshAfterBlacklistChangeDisposable);
-        RxJavaUtil.disposeIfNotNull(saveReadProgressDisposable);
         super.onDestroy();
     }
 
@@ -273,14 +266,17 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
     void saveReadProgress() {
         ReadProgress readProgress = getCurReadProgress();
         if (readProgress != null) {
-            saveReadProgressDisposable = RxJavaUtil.workWithUiThread(() -> {
+            Single.fromCallable(() -> {
                 LooperUtil.enforceOnWorkThread();
                 ReadProgressDbWrapper dbWrapper = ReadProgressDbWrapper.getInstance();
                 dbWrapper.saveReadProgress(readProgress);
-            }, () -> {
-                LooperUtil.enforceOnMainThread();
-                showShortText(R.string.save_read_progress_success);
-            });
+                return true;
+            }).compose(RxJavaUtil.iOSingleTransformer())
+                    .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
+                    .subscribe(b -> {
+                        LooperUtil.enforceOnMainThread();
+                        showShortText(R.string.save_read_progress_success);
+                    }, L::report);
         }
     }
 

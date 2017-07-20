@@ -14,11 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.github.ykrank.androidautodispose.AndroidRxDispose;
+import com.github.ykrank.androidlifecycle.event.FragmentEvent;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
@@ -51,7 +53,6 @@ public final class NewRateFragment extends BaseFragment {
     User mUser;
     private String threadId, postID;
     private RatePreInfo ratePreInfo;
-    private Disposable mDisposable;
 
     private FragmentNewRateBinding binding;
     private SimpleRecycleViewAdapter reasonAdapter;
@@ -103,12 +104,6 @@ public final class NewRateFragment extends BaseFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onDestroy() {
-        RxJavaUtil.disposeIfNotNull(mDisposable);
-        super.onDestroy();
-    }
-
     private String getScore() {
         return (String) binding.spinner.getSelectedItem();
     }
@@ -141,9 +136,10 @@ public final class NewRateFragment extends BaseFragment {
     private void refreshData() {
         reasonAdapter.setHasProgress(true);
 
-        mDisposable = s1Service.getRatePreInfo(threadId, postID, System.currentTimeMillis())
+        s1Service.getRatePreInfo(threadId, postID, System.currentTimeMillis())
                 .map(RatePreInfo::fromHtml)
                 .compose(RxJavaUtil.iOTransformer())
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
                 .subscribe(info -> {
                     ratePreInfo = info;
                     if (!TextUtils.isEmpty(info.getAlertError())) {

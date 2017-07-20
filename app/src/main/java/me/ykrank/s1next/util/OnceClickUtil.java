@@ -2,6 +2,9 @@ package me.ykrank.s1next.util;
 
 import android.view.View;
 
+import com.github.ykrank.androidautodispose.AndroidRxDispose;
+import com.github.ykrank.androidlifecycle.event.ViewEvent;
+
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -26,7 +29,7 @@ public class OnceClickUtil {
     }
 
     /**
-     * 设置有抖动的点击事件
+     * 设置有抖动的点击事件, 并自动解绑
      *
      * @param view
      * @param millDuration 抖动毫秒
@@ -36,6 +39,7 @@ public class OnceClickUtil {
                                                 final int millDuration) {
         return new ViewClickObservable(view)
                 .throttleFirst(millDuration, TimeUnit.MILLISECONDS)
+                .to(AndroidRxDispose.withObservable(view, ViewEvent.DESTROY))
                 .subscribe(vo -> clickListener.onClick(view), L::report);
     }
 

@@ -13,6 +13,8 @@ import android.widget.Spinner;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.ykrank.androidautodispose.AndroidRxDispose;
+import com.github.ykrank.androidlifecycle.event.FragmentEvent;
 
 import java.util.List;
 
@@ -49,7 +51,6 @@ public final class NewThreadFragment extends BasePostFragment {
     ObjectMapper objectMapper;
     private String cacheKey;
     private int mForumId;
-    private Disposable mDisposable;
 
     private EditText titleEditText;
     private Spinner typeSpinner;
@@ -82,12 +83,6 @@ public final class NewThreadFragment extends BasePostFragment {
 
         App.getAppComponent().inject(this);
         init();
-    }
-
-    @Override
-    public void onDestroy() {
-        RxJavaUtil.disposeIfNotNull(mDisposable);
-        super.onDestroy();
     }
 
     @Override
@@ -169,9 +164,10 @@ public final class NewThreadFragment extends BasePostFragment {
     }
 
     private void init() {
-        mDisposable = mS1Service.getNewThreadInfo(mForumId)
+        mS1Service.getNewThreadInfo(mForumId)
                 .map(ThreadType::fromXmlString)
                 .compose(RxJavaUtil.iOTransformer())
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
                 .subscribe(types -> {
                     if (types.isEmpty()) {
                                 showRetrySnackbar(getString(R.string.message_network_error), v -> init());

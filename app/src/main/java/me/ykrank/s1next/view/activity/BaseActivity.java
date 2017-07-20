@@ -21,6 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.github.ykrank.androidautodispose.AndroidRxDispose;
+import com.github.ykrank.androidlifecycle.event.ActivityEvent;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
@@ -29,7 +31,6 @@ import java.lang.ref.WeakReference;
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
@@ -40,7 +41,6 @@ import me.ykrank.s1next.data.pref.DataPreferencesManager;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.dialog.ThreadGoDialogFragment;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegateImpl;
@@ -90,8 +90,6 @@ public abstract class BaseActivity extends OriginActivity
     @Nullable
     private WeakReference<Snackbar> mSnackbar;
 
-    private Disposable mRecreateDisposable, mNoticeRefreshDisposable;
-
     /**
      * @see #setResultMessage(Activity, CharSequence)
      * @see #onActivityResult(int, int, Intent)
@@ -129,15 +127,17 @@ public abstract class BaseActivity extends OriginActivity
 
         super.onCreate(savedInstanceState);
 
-        mRecreateDisposable = mEventBus.get()
+        mEventBus.get()
                 .filter(o -> (o instanceof ThemeChangeEvent || o instanceof FontSizeChangeEvent))
+                .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
                 .subscribe(o -> {
                     getWindow().setWindowAnimations(R.style.Animation_Recreate);
                     recreate();
                 });
-        mNoticeRefreshDisposable = mEventBus.get(NoticeRefreshEvent.class)
+        mEventBus.get(NoticeRefreshEvent.class)
                 .ofType(NoticeRefreshEvent.class)
                 .observeOn(AndroidSchedulers.mainThread())
+                .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
                 .subscribe(event -> refreshNoticeMenuItem(event.isNewPm(), event.isNewNotice()));
     }
 
@@ -190,8 +190,6 @@ public abstract class BaseActivity extends OriginActivity
 
     @Override
     protected void onDestroy() {
-        RxJavaUtil.disposeIfNotNull(mRecreateDisposable);
-        RxJavaUtil.disposeIfNotNull(mNoticeRefreshDisposable);
         if (mDrawerLayoutDelegate != null) {
             mDrawerLayoutDelegate.onDestroy();
             mDrawerLayoutDelegate = null;

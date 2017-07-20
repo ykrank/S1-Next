@@ -11,9 +11,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import com.github.ykrank.androidautodispose.AndroidRxDispose
+import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.google.common.base.Preconditions
 import io.reactivex.Single
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import me.ykrank.s1next.App
@@ -74,17 +75,10 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     private var mThreadAttachment: Posts.ThreadAttachment? = null
     private var mMenuThreadAttachment: MenuItem? = null
 
-    private var quoteDisposable: Disposable? = null
-    private var rateDisposable: Disposable? = null
-    private var editDisposable: Disposable? = null
-    private var blackListAddDisposable: Disposable? = null
-    private var mReadProgressDisposable: Disposable? = null
     private var readProgress: ReadProgress? = null
     private var tempReadProgress: ReadProgress? = null
     private val scrollState = PagerScrollState()
 
-    private var mLastReadDisposable: Disposable? = null
-    private var mLastThreadInfoDisposable: Disposable? = null
     private lateinit var mLastThreadInfoSubject: PublishSubject<Int>
 
     private val mPostListPagerAdapter: PostListPagerAdapter by lazy { PostListPagerAdapter(fragmentManager) }
@@ -135,8 +129,9 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mLastThreadInfoSubject = PublishSubject.create<Int>()
-        mLastThreadInfoDisposable = mLastThreadInfoSubject.throttleFirst(1, TimeUnit.SECONDS)
+        mLastThreadInfoSubject.throttleFirst(1, TimeUnit.SECONDS)
                 .observeOn(Schedulers.io())
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
                 .subscribe({
                     LooperUtil.enforceOnWorkThread()
                     val dbThread = DbThread(Integer.valueOf(mThreadId), it)
@@ -147,21 +142,25 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     override fun onResume() {
         super.onResume()
 
-        quoteDisposable = mEventBus.get()
+        mEventBus.get()
                 .ofType(QuoteEvent::class.java)
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe { quoteEvent -> startReplyActivity(quoteEvent.quotePostId, quoteEvent.quotePostCount) }
-        rateDisposable = mEventBus.get()
+        mEventBus.get()
                 .ofType(RateEvent::class.java)
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe { event -> startRateActivity(event.threadId, event.postId) }
-        editDisposable = mEventBus.get()
+        mEventBus.get()
                 .ofType(EditPostEvent::class.java)
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe { event ->
                     val thread = event.thread
                     val post = event.post
                     EditPostActivity.startActivityForResultMessage(this, RequestCode.REQUEST_CODE_EDIT_POST, thread, post)
                 }
-        blackListAddDisposable = mEventBus.get()
+        mEventBus.get()
                 .ofType(BlackListAddEvent::class.java)
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe {
                     val dbWrapper = BlackListDbWrapper.getInstance()
                     if (it.isAdd) {
@@ -181,9 +180,10 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         if (fragment != null) {
             tempReadProgress = fragment.curReadProgress
             if (tempReadProgress != null) {
-                mLastReadDisposable = Single.just(tempReadProgress)
+                Single.just(tempReadProgress)
                         .delay(5, TimeUnit.SECONDS)
                         .doOnError(L::report)
+                        .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
                         .subscribe { b ->
                             mReadProgressPrefManager.saveLastReadProgress(b)
                             L.i("Save last read progress:" + b)
@@ -193,17 +193,9 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
             tempReadProgress = null
         }
         super.onPause()
-
-        RxJavaUtil.disposeIfNotNull(quoteDisposable)
-        RxJavaUtil.disposeIfNotNull(rateDisposable)
-        RxJavaUtil.disposeIfNotNull(editDisposable)
-        RxJavaUtil.disposeIfNotNull(blackListAddDisposable)
-        RxJavaUtil.disposeIfNotNull(mReadProgressDisposable)
     }
 
     override fun onDestroy() {
-        RxJavaUtil.disposeIfNotNull(mLastReadDisposable)
-        RxJavaUtil.disposeIfNotNull(mLastThreadInfoDisposable)
         mReadProgressPrefManager.saveLastReadProgress(null)
 
         //Auto save read progress
@@ -383,13 +375,14 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
      * 读取阅读进度
      */
     internal fun loadReadProgress() {
-        mReadProgressDisposable = Single.just(mThreadId)
+        Single.just(mThreadId)
                 .flatMap {
                     val dbWrapper = ReadProgressDbWrapper.getInstance()
                     val progress: ReadProgress? = dbWrapper.getWithThreadId(Integer.valueOf(it))
                     if (progress == null) Single.never<ReadProgress>() else Single.just(progress)
                 }
                 .compose(RxJavaUtil.iOSingleTransformer())
+                .to(AndroidRxDispose.withSingle(this, FragmentEvent.PAUSE))
                 .subscribe({
                     scrollState.state = PagerScrollState.BEFORE_SCROLL_PAGE
                     this.afterLoadReadProgress(it)

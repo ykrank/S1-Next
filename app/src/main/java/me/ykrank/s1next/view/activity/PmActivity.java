@@ -7,19 +7,18 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
-import io.reactivex.disposables.Disposable;
+import com.github.ykrank.androidautodispose.AndroidRxDispose;
+import com.github.ykrank.androidlifecycle.event.ActivityEvent;
+
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.PmGroup;
 import me.ykrank.s1next.data.event.PmGroupClickEvent;
-import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.fragment.PmFragment;
 import me.ykrank.s1next.view.fragment.PmGroupsFragment;
 import me.ykrank.s1next.view.internal.RequestCode;
 
 
 public class PmActivity extends BaseActivity {
-
-    private Disposable mDisposable;
 
     private Fragment fragment;
 
@@ -40,8 +39,9 @@ public class PmActivity extends BaseActivity {
                     .commit();
         }
 
-        mDisposable = mEventBus.get()
+        mEventBus.get()
                 .ofType(PmGroupClickEvent.class)
+                .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
                 .subscribe(event -> {
                     PmGroup pmGroup = event.getPmGroup();
                     fragment = PmFragment.newInstance(pmGroup.getToUid(), pmGroup.getToUsername());
@@ -58,12 +58,6 @@ public class PmActivity extends BaseActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        RxJavaUtil.disposeIfNotNull(mDisposable);
-        super.onDestroy();
     }
 
     @Override

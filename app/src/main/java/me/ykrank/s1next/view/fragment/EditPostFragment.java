@@ -9,11 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.github.ykrank.androidautodispose.AndroidRxDispose;
+import com.github.ykrank.androidlifecycle.event.FragmentEvent;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.S1Service;
@@ -44,8 +46,6 @@ public final class EditPostFragment extends BasePostFragment {
     private Thread mThread;
     private Post mPost;
     private boolean isHost;
-
-    private Disposable mDisposable;
 
     private FragmentEditPostBinding binding;
 
@@ -79,12 +79,6 @@ public final class EditPostFragment extends BasePostFragment {
 
         App.getAppComponent().inject(this);
         init();
-    }
-
-    @Override
-    public void onDestroy() {
-        RxJavaUtil.disposeIfNotNull(mDisposable);
-        super.onDestroy();
     }
 
     @Override
@@ -141,9 +135,10 @@ public final class EditPostFragment extends BasePostFragment {
     }
 
     private void init() {
-        mDisposable = mS1Service.getEditPostInfo(mThread.getFid(), mThread.getId(), mPost.getId())
+        mS1Service.getEditPostInfo(mThread.getFid(), mThread.getId(), mPost.getId())
                 .map(PostEditor::fromHtml)
                 .compose(RxJavaUtil.iOTransformer())
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
                 .subscribe(postEditor -> {
                     if (isHost) {
                         setSpinner(postEditor.getThreadTypes());

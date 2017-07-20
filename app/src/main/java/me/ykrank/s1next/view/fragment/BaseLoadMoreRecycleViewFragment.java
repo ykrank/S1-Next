@@ -7,8 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.github.ykrank.androidautodispose.AndroidRxDispose;
+import com.github.ykrank.androidlifecycle.event.FragmentEvent;
+
 import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
@@ -28,7 +30,6 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
 
     private int mPageNum = 1;
     private int mPageCount;
-    private Disposable loadMoreDisposable;
 
     private int footerProgressPosition = -1;
 
@@ -60,11 +61,6 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
         });
     }
 
-    @Override
-    public void onDestroy() {
-        RxJavaUtil.disposeIfNotNull(loadMoreDisposable);
-        super.onDestroy();
-    }
 
     public void startPullUpLoadMore() {
         footerProgressPosition = getRecyclerViewAdapter().getItemCount();
@@ -85,12 +81,13 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
         // dismiss Snackbar in order to let user see the ProgressBar
         // when we start to loadViewPager new data
         mCoordinatorLayoutAnchorDelegate.dismissSnackbarIfExist();
-        loadMoreDisposable = getPageSourceObservable(mPageNum)
+        getPageSourceObservable(mPageNum)
                 .map(d -> appendNewData(getRetainedFragment().data, d))
                 .compose(ApiFlatTransformer.apiErrorTransformer())
                 .compose(RxJavaUtil.iOTransformer())
                 .doOnNext(mUserValidator::validateIntercept)
                 .doAfterTerminate(this::finallyDo)
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
                 .subscribe(this::onLoadMoreNext, this::onError);
     }
 

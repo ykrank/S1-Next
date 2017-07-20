@@ -1,6 +1,5 @@
 package me.ykrank.s1next.view.fragment;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -23,8 +22,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Interpolator;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
+import com.github.ykrank.androidautodispose.AndroidRxDispose;
+import com.github.ykrank.androidlifecycle.event.FragmentEvent;
 
 import javax.inject.Inject;
 
@@ -73,7 +74,6 @@ public abstract class BasePostFragment extends BaseFragment {
     @Inject
     EditorDiskCache editorDiskCache;
     private boolean mIsEmoticonKeyboardShowing;
-    private Disposable mEmotionClickDisposable;
     private Disposable mCacheDisposable;
 
     @Override
@@ -144,8 +144,9 @@ public abstract class BasePostFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        mEmotionClickDisposable = mEventBus.get()
+        mEventBus.get()
                 .ofType(EmoticonClickEvent.class)
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe(event -> {
                     mReplyView.getText().replace(mReplyView.getSelectionStart(),
                             mReplyView.getSelectionEnd(), event.getEmoticonEntity());
@@ -162,7 +163,6 @@ public abstract class BasePostFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        RxJavaUtil.disposeIfNotNull(mEmotionClickDisposable);
         RxJavaUtil.disposeIfNotNull(mCacheDisposable);
         mCacheDisposable = null;
         if (!TextUtils.isEmpty(getCacheKey()) && !isContentEmpty()) {

@@ -15,11 +15,13 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
+import com.github.ykrank.androidautodispose.AndroidRxDispose;
+import com.github.ykrank.androidlifecycle.event.FragmentEvent;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
-import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.db.BlackListDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.BlackList;
@@ -36,7 +38,6 @@ public final class BlackListSettingFragment extends BaseFragment {
     private ListView mListView;
     private BlackListCursorListViewAdapter mListViewAdapter;
 
-    private Disposable mDisposable;
     private AbsListView.MultiChoiceModeListener mActionModeCallback = new AbsListView.MultiChoiceModeListener() {
 
         @Override
@@ -161,8 +162,9 @@ public final class BlackListSettingFragment extends BaseFragment {
      * Starts to load new data.
      */
     private void load() {
-        mDisposable = getSourceObservable()
+        getSourceObservable()
                 .compose(RxJavaUtil.iOSingleTransformer())
+                .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
                 .subscribe(mListViewAdapter::changeCursor,
                         throwable -> L.e("S1next", throwable));
     }
@@ -181,12 +183,6 @@ public final class BlackListSettingFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         load();
-    }
-
-    @Override
-    public void onDestroy() {
-        RxJavaUtil.disposeIfNotNull(mDisposable);
-        super.onDestroy();
     }
 
     @Override

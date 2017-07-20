@@ -15,12 +15,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.github.ykrank.androidautodispose.AndroidRxDispose;
+import com.github.ykrank.androidlifecycle.event.ActivityEvent;
 import com.google.common.base.Optional;
 
 import javax.inject.Inject;
 
 import io.reactivex.Single;
-import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
@@ -56,7 +57,6 @@ public class UserHomeActivity extends BaseActivity {
     S1Service s1Service;
 
     private ActivityHomeBinding binding;
-    private Disposable mDisposable, blackListAddDisposable;
     private String uid, name;
     private boolean isInBlacklist;
     private MenuItem blacklistMenu;
@@ -183,8 +183,9 @@ public class UserHomeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        blackListAddDisposable = mEventBus.get()
+        mEventBus.get()
                 .ofType(BlackListAddEvent.class)
+                .to(AndroidRxDispose.withObservable(this, ActivityEvent.PAUSE))
                 .subscribe(blackListEvent -> {
                     BlackListDbWrapper dbWrapper = BlackListDbWrapper.getInstance();
                     if (blackListEvent.isAdd()) {
@@ -210,20 +211,8 @@ public class UserHomeActivity extends BaseActivity {
     }
 
     @Override
-    protected void onPause() {
-        RxJavaUtil.disposeIfNotNull(blackListAddDisposable);
-        super.onPause();
-    }
-
-    @Override
     public boolean isTranslucent() {
         return true;
-    }
-
-    @Override
-    protected void onDestroy() {
-        RxJavaUtil.disposeIfNotNull(mDisposable);
-        super.onDestroy();
     }
 
     private void setupImage() {
@@ -243,9 +232,9 @@ public class UserHomeActivity extends BaseActivity {
     }
 
     private void loadData() {
-        RxJavaUtil.disposeIfNotNull(mDisposable);
-        mDisposable = s1Service.getProfile(binding.getData().getHomeUid())
+        s1Service.getProfile(binding.getData().getHomeUid())
                 .compose(RxJavaUtil.iOTransformer())
+                .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
                 .subscribe(wrapper -> {
                     binding.setData(wrapper.getData());
                 }, L::e);
