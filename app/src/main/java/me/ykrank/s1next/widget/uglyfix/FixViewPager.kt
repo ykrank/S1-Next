@@ -19,6 +19,7 @@ class FixViewPager : ViewPager {
         try {
             return super.onInterceptTouchEvent(ev)
         } catch (e: Exception) {
+            e.printStackTrace()
             return false
         }
     }
