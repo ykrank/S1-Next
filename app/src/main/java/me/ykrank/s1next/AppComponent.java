@@ -46,9 +46,6 @@ import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment;
 import me.ykrank.s1next.view.dialog.DiscardEditPromptDialogFragment;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
 import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment;
-import me.ykrank.s1next.view.dialog.requestdialog.NewThreadRequestDialogFragment;
-import me.ykrank.s1next.view.dialog.requestdialog.PmRequestDialogFragment;
-import me.ykrank.s1next.view.dialog.requestdialog.ReplyRequestDialogFragment;
 import me.ykrank.s1next.view.fragment.BaseFragment;
 import me.ykrank.s1next.view.fragment.BasePostFragment;
 import me.ykrank.s1next.view.fragment.EditPostFragment;
@@ -241,12 +238,6 @@ public interface AppComponent {
     void inject(ReadProgressPreferenceFragment readProgressPreferenceFragment);
 
     void inject(DiscardEditPromptDialogFragment discardEditPromptDialogFragment);
-
-    void inject(NewThreadRequestDialogFragment newThreadRequestDialogFragment);
-
-    void inject(PmRequestDialogFragment pmRequestDialogFragment);
-
-    void inject(ReplyRequestDialogFragment replyRequestDialogFragment);
 
     void inject(WebViewFragment fragment);
 

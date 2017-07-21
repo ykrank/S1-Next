@@ -175,7 +175,7 @@ public final class NewRateFragment extends BaseFragment {
             showShortSnackbar(R.string.invalid_score);
             return;
         }
-        RateRequestDialogFragment.newInstance(ratePreInfo, getScore(), getReason()).show(getFragmentManager(),
-                RateRequestDialogFragment.TAG);
+        RateRequestDialogFragment.Companion.newInstance(ratePreInfo, getScore(), getReason()).show(getFragmentManager(),
+                RateRequestDialogFragment.Companion.getTAG());
     }
 }

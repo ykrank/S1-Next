@@ -43,7 +43,7 @@ public final class PmGroupsAdapterDelegate extends BaseAdapterDelegate<PmGroup, 
         ItemPmGroupBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_pm_group, parent, false);
         binding.setModel(new PmGroupViewModel());
-        binding.setEventBus(mRxBus);
+        binding.setRxBus(mRxBus);
         binding.setUser(mUser);
         return new BindingViewHolder(binding);
     }

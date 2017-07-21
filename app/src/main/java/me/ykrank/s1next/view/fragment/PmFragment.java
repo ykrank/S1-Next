@@ -107,7 +107,7 @@ public final class PmFragment extends BaseLoadMoreRecycleViewFragment<PmsWrapper
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_new_pm:
-                NewPmActivity.startNewPmActivityForResultMessage(getActivity(), toUid, toUsername);
+                NewPmActivity.Companion.startNewPmActivityForResultMessage(getActivity(), toUid, toUsername);
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -3,7 +3,6 @@ package me.ykrank.s1next.view.dialog.requestdialog;
 import android.os.Bundle;
 
 import io.reactivex.Observable;
-import me.ykrank.s1next.App;
 import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Result;
@@ -36,12 +35,6 @@ public final class NewThreadRequestDialogFragment extends BaseRequestDialogFragm
         fragment.setArguments(bundle);
 
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        App.getAppComponent().inject(this);
     }
 
     @Override

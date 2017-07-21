@@ -39,7 +39,7 @@ public final class FavouriteAdapterDelegate extends BaseAdapterDelegate<Favourit
         ItemFavouriteBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_favourite, parent, false);
         binding.setModel(new FavouriteViewModel());
-        binding.setEventBus(mRxBus);
+        binding.setRxBus(mRxBus);
         return new BindingViewHolder(binding);
     }
 

@@ -41,7 +41,7 @@ public final class EmoticonGridRecyclerAdapter
     public BindingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ItemEmoticonBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_emoticon, parent, false);
-        binding.setEventBus(mRxBus);
+        binding.setRxBus(mRxBus);
         binding.setRequestManager(mEmoticonRequestBuilder);
         binding.setEmoticonViewModel(new EmoticonViewModel());
 

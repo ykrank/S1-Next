@@ -106,7 +106,7 @@ public final class ThreadListActivity extends BaseActivity
 
                 return true;
             case R.id.menu_new_thread:
-                NewThreadActivity.startNewThreadActivityForResultMessage(this, Integer.parseInt(forum.getId()));
+                NewThreadActivity.Companion.startNewThreadActivityForResultMessage(this, Integer.parseInt(forum.getId()));
                 return true;
             case R.id.menu_random_image:
                 trackAgent.post(new RandomImageTrackEvent());

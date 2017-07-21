@@ -6,8 +6,6 @@ import android.text.TextUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
@@ -15,48 +13,33 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.Quote;
 import me.ykrank.s1next.data.api.model.Result;
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
-import me.ykrank.s1next.view.dialog.ProgressDialogFragment;
-import me.ykrank.s1next.widget.EditorDiskCache;
 import me.ykrank.s1next.widget.track.event.NewReplyTrackEvent;
 
 /**
  * A dialog requests to reply to post.
  */
-public final class ReplyRequestDialogFragment extends ProgressDialogFragment<AccountResultWrapper> {
+public final class ReplyRequestDialogFragment extends BaseRequestDialogFragment<AccountResultWrapper> {
 
     public static final String TAG = ReplyRequestDialogFragment.class.getName();
-
-    @Inject
-    EditorDiskCache editorDiskCache;
 
     private static final String ARG_THREAD_ID = "thread_id";
     private static final String ARG_REPLY = "reply";
     private static final String ARG_QUOTE_POST_ID = "quote_post_id";
-    private static final String ARG_CACHE_KEY = "cache_key";
 
     private static final String STATUS_REPLY_SUCCESS = "post_reply_succeed";
 
-    private String cacheKey;
-
     public static ReplyRequestDialogFragment newInstance(String threadId, @Nullable String quotePostId,
-                                                         String reply, String cacheKey) {
+                                                         String reply) {
         App.get().getTrackAgent().post(new NewReplyTrackEvent(threadId, quotePostId));
-        
+
         ReplyRequestDialogFragment fragment = new ReplyRequestDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_THREAD_ID, threadId);
         bundle.putString(ARG_QUOTE_POST_ID, quotePostId);
         bundle.putString(ARG_REPLY, reply);
-        bundle.putString(ARG_CACHE_KEY, cacheKey);
         fragment.setArguments(bundle);
 
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        App.getAppComponent().inject(this);
     }
 
     @Override
@@ -69,7 +52,6 @@ public final class ReplyRequestDialogFragment extends ProgressDialogFragment<Acc
         String threadId = getArguments().getString(ARG_THREAD_ID);
         String quotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
         String reply = getArguments().getString(ARG_REPLY);
-        cacheKey = getArguments().getString(ARG_CACHE_KEY);
 
         if (TextUtils.isEmpty(quotePostId)) {
             return flatMappedWithAuthenticityToken(s -> mS1Service.reply(s, threadId, reply));
@@ -88,10 +70,9 @@ public final class ReplyRequestDialogFragment extends ProgressDialogFragment<Acc
     protected void onNext(AccountResultWrapper data) {
         Result result = data.getResult();
         if (result.getStatus().equals(STATUS_REPLY_SUCCESS)) {
-            editorDiskCache.remove(cacheKey);
-            showShortTextAndFinishCurrentActivity(result.getMessage());
+            onRequestSuccess(result.getMessage());
         } else {
-            showShortText(result.getMessage());
+            onRequestError(result.getMessage());
         }
     }
 }

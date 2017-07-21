@@ -136,7 +136,7 @@ public class UserHomeActivity extends BaseActivity {
             GalleryActivity.Companion.start(v.getContext(), bigAvatarUrl);
         });
 
-        binding.ivNewPm.setOnClickListener(v -> NewPmActivity.startNewPmActivityForResultMessage(this,
+        binding.ivNewPm.setOnClickListener(v -> NewPmActivity.Companion.startNewPmActivityForResultMessage(this,
                 binding.getData().getHomeUid(), binding.getData().getHomeUsername()));
 
         binding.tvFriends.setOnClickListener(v -> FriendListActivity.start(this, uid, name));

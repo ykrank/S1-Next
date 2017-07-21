@@ -54,7 +54,7 @@ abstract class BasePostFragment : BaseFragment() {
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
     @Inject
     internal lateinit var editorDiskCache: EditorDiskCache
-    private var isEmoticonKeyboardShowing: Boolean = false
+    internal var isEmoticonKeyboardShowing: Boolean = false
     private var mCacheDisposable: Disposable? = null
     private var requestDialogDisposable: Disposable? = null
     /**
