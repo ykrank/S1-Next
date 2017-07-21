@@ -39,11 +39,11 @@ public final class NewRateActivity extends BaseActivity {
         setTitle(R.string.title_new_rate);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentByTag(NewThreadFragment.TAG);
+        Fragment fragment = fragmentManager.findFragmentByTag(NewThreadFragment.Companion.getTAG());
         if (fragment == null) {
             mFragment = NewRateFragment.newInstance(threadId, postID);
             fragmentManager.beginTransaction().add(R.id.frame_layout, mFragment,
-                    NewThreadFragment.TAG).commit();
+                    NewThreadFragment.Companion.getTAG()).commit();
         } else {
             mFragment = (NewRateFragment) fragment;
         }

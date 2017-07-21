@@ -43,9 +43,9 @@ public abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
 
     protected static final String ARG_DIALOG_NOT_CANCELABLE_ON_TOUCH_OUTSIDE = "dialog_not_cancelable_on_touch_outside";
 
-    S1Service mS1Service;
+    protected S1Service mS1Service;
 
-    UserValidator mUserValidator;
+    protected UserValidator mUserValidator;
 
     private User mUser;
 
@@ -110,19 +110,19 @@ public abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
     /**
      * @see BaseRecyclerViewFragment#getSourceObservable(int)
      */
-    abstract Observable<D> getSourceObservable();
+    protected abstract Observable<D> getSourceObservable();
 
     /**
      * @see ApiFlatTransformer#flatMappedWithAuthenticityToken(S1Service, UserValidator, User, Function)
      */
-    final Observable<D> flatMappedWithAuthenticityToken(Function<String, Observable<D>> func) {
+    final protected Observable<D> flatMappedWithAuthenticityToken(Function<String, Observable<D>> func) {
         return ApiFlatTransformer.flatMappedWithAuthenticityToken(mS1Service, mUserValidator, mUser, func);
     }
 
     /**
      * @see BaseRecyclerViewFragment#onNext(Object)
      */
-    abstract void onNext(D data);
+    protected abstract void onNext(D data);
 
     /**
      * @see BaseRecyclerViewFragment#onError(Throwable)
@@ -141,7 +141,7 @@ public abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
     /**
      * @see me.ykrank.s1next.view.activity.BaseActivity#showShortText(CharSequence)
      */
-    final void showShortText(CharSequence text) {
+    final protected void showShortText(CharSequence text) {
         ((CoordinatorLayoutAnchorDelegate) getActivity()).showShortText(text);
     }
 
@@ -153,7 +153,7 @@ public abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
      * @param text The text to show.
      * @see BaseActivity#onActivityResult(int, int, Intent)
      */
-    final void showShortTextAndFinishCurrentActivity(CharSequence text) {
+    final protected void showShortTextAndFinishCurrentActivity(CharSequence text) {
         Activity activity = getActivity();
         App app = (App) activity.getApplicationContext();
         // Because Activity#onActivityResult(int, int, Intent) is always invoked when current app

@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.dialog;
+package me.ykrank.s1next.view.dialog.requestdialog;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +15,7 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.Quote;
 import me.ykrank.s1next.data.api.model.Result;
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
+import me.ykrank.s1next.view.dialog.ProgressDialogFragment;
 import me.ykrank.s1next.widget.EditorDiskCache;
 import me.ykrank.s1next.widget.track.event.NewReplyTrackEvent;
 

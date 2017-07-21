@@ -40,11 +40,11 @@ public final class EditPostActivity extends BaseActivity {
         setTitle(R.string.title_new_thread);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentByTag(EditPostFragment.TAG);
+        Fragment fragment = fragmentManager.findFragmentByTag(EditPostFragment.Companion.getTAG());
         if (fragment == null) {
-            mFragment = EditPostFragment.newInstance(mThread, mPost);
+            mFragment = EditPostFragment.Companion.newInstance(mThread, mPost);
             fragmentManager.beginTransaction().add(R.id.frame_layout, mFragment,
-                    EditPostFragment.TAG).commit();
+                    EditPostFragment.Companion.getTAG()).commit();
         } else {
             mFragment = (EditPostFragment) fragment;
         }

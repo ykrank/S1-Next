@@ -7,7 +7,7 @@ import android.widget.EditText;
 
 import me.ykrank.s1next.util.DeviceUtil;
 import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.view.dialog.ReplyRequestDialogFragment;
+import me.ykrank.s1next.view.dialog.requestdialog.ReplyRequestDialogFragment;
 
 /**
  * A Fragment shows {@link EditText} to let the user enter reply.
@@ -46,8 +46,8 @@ public final class ReplyFragment extends BasePostFragment {
 
     @Override
     protected boolean OnMenuSendClick() {
-        StringBuilder stringBuilder = new StringBuilder(mReplyView.getText());
-        if (mGeneralPreferencesManager.isSignatureEnabled()) {
+        StringBuilder stringBuilder = new StringBuilder(getMReplyView().getText());
+        if (getMGeneralPreferencesManager().isSignatureEnabled()) {
             stringBuilder.append("\n\n").append(DeviceUtil.getPostSignature(getContext()));
         }
 

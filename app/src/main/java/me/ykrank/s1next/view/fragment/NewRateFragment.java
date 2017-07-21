@@ -34,7 +34,7 @@ import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter;
 import me.ykrank.s1next.view.adapter.simple.BindViewHolderCallback;
 import me.ykrank.s1next.view.adapter.simple.SimpleRecycleViewAdapter;
-import me.ykrank.s1next.view.dialog.RateRequestDialogFragment;
+import me.ykrank.s1next.view.dialog.requestdialog.RateRequestDialogFragment;
 import me.ykrank.s1next.viewmodel.NewRateViewModel;
 
 /**

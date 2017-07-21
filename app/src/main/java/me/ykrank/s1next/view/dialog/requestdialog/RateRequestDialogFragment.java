@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.dialog;
+package me.ykrank.s1next.view.dialog.requestdialog;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +8,7 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.RatePreInfo;
 import me.ykrank.s1next.data.api.model.RateResult;
+import me.ykrank.s1next.view.dialog.ProgressDialogFragment;
 import me.ykrank.s1next.widget.track.event.NewRateTrackEvent;
 
 /**

@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.EditText;
 
 import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.view.dialog.PmRequestDialogFragment;
-import me.ykrank.s1next.view.dialog.ReplyRequestDialogFragment;
+import me.ykrank.s1next.view.dialog.requestdialog.PmRequestDialogFragment;
+import me.ykrank.s1next.view.dialog.requestdialog.ReplyRequestDialogFragment;
 
 /**
  * A Fragment shows {@link EditText} to let the user pm.
@@ -43,7 +43,7 @@ public final class NewPmFragment extends BasePostFragment {
 
     @Override
     protected boolean OnMenuSendClick() {
-        PmRequestDialogFragment.newInstance(mToUid, mReplyView.getText().toString(), cacheKey).show(getFragmentManager(),
+        PmRequestDialogFragment.newInstance(mToUid, getMReplyView().getText().toString(), cacheKey).show(getFragmentManager(),
                 ReplyRequestDialogFragment.TAG);
 
         return true;

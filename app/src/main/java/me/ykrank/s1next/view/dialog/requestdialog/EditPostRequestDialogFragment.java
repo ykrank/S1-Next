@@ -1,23 +1,18 @@
-package me.ykrank.s1next.view.dialog;
+package me.ykrank.s1next.view.dialog.requestdialog;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import io.reactivex.Observable;
-import me.ykrank.s1next.App;
 import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
-import me.ykrank.s1next.view.activity.BaseActivity;
 
 /**
  * A dialog requests to reply to post.
  */
-public final class EditPostRequestDialogFragment extends ProgressDialogFragment<String> {
+public final class EditPostRequestDialogFragment extends BaseRequestDialogFragment<String> {
 
     public static final String TAG = EditPostRequestDialogFragment.class.getName();
 
@@ -67,18 +62,9 @@ public final class EditPostRequestDialogFragment extends ProgressDialogFragment<
     @Override
     protected void onNext(String data) {
         if (data.contains("succeedhandle_")) {
-            Activity activity = getActivity();
-            App app = (App) activity.getApplicationContext();
-            if (app.isAppVisible()) {
-                Intent intent = new Intent();
-                intent.putExtra(BaseActivity.EXTRA_MESSAGE, getString(R.string.edit_post_succeed));
-                activity.setResult(Activity.RESULT_OK, intent);
-            } else {
-                Toast.makeText(app, R.string.edit_post_succeed, Toast.LENGTH_SHORT).show();
-            }
-            activity.finish();
+            onRequestSuccess(getString(R.string.edit_post_succeed));
         } else {
-            showShortText(data);
+            onRequestError(data);
         }
     }
 }

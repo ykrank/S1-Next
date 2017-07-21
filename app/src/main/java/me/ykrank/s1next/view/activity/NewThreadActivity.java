@@ -37,11 +37,11 @@ public final class NewThreadActivity extends BaseActivity {
         setTitle(R.string.title_new_thread);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentByTag(NewThreadFragment.TAG);
+        Fragment fragment = fragmentManager.findFragmentByTag(NewThreadFragment.Companion.getTAG());
         if (fragment == null) {
-            mNewThreadFragment = NewThreadFragment.newInstance(forumId);
+            mNewThreadFragment = NewThreadFragment.Companion.newInstance(forumId);
             fragmentManager.beginTransaction().add(R.id.frame_layout, mNewThreadFragment,
-                    NewThreadFragment.TAG).commit();
+                    NewThreadFragment.Companion.getTAG()).commit();
         } else {
             mNewThreadFragment = (NewThreadFragment) fragment;
         }

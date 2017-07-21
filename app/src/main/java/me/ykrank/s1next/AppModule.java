@@ -159,7 +159,7 @@ public final class AppModule {
 
     @Provides
     @Singleton
-    RxBus providerEventBus() {
+    RxBus providerRxBus() {
         return new RxBus();
     }
 
