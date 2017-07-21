@@ -50,8 +50,8 @@ public final class PostListGatewayActivity extends FragmentActivity {
             if (threadLink.isPresent()) {
                 ThreadLink threadLinkInstance = threadLink.get();
                 if (threadLinkInstance.getQuotePostId().isPresent()) {
-                    QuotePostPageParserDialogFragment.newInstance(threadLinkInstance).show(
-                            getSupportFragmentManager(), QuotePostPageParserDialogFragment.TAG);
+                    QuotePostPageParserDialogFragment.Companion.newInstance(threadLinkInstance).show(
+                            getSupportFragmentManager(), QuotePostPageParserDialogFragment.Companion.getTAG());
                 } else {
                     PostListActivity.startPostListActivity(this, threadLinkInstance);
                     finish();
