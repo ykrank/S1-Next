@@ -2,6 +2,7 @@ package me.ykrank.s1next.viewmodel;
 
 import android.databinding.ObservableField;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.view.View;
 
 import me.ykrank.s1next.data.api.model.Note;
@@ -14,7 +15,10 @@ public final class NoteViewModel {
 
     public View.OnClickListener clickNote() {
         return v -> {
-            PostListGatewayActivity.start(v.getContext(), Uri.parse(data.get().getUrl()));
+            String url = data.get().getUrl();
+            if (!TextUtils.isEmpty(url)) {
+                PostListGatewayActivity.start(v.getContext(), Uri.parse(url));
+            }
         };
     }
 }
