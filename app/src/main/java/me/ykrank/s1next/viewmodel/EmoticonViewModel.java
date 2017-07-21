@@ -4,7 +4,7 @@ import android.databinding.ObservableField;
 import android.view.View;
 
 import me.ykrank.s1next.data.api.model.Emoticon;
-import me.ykrank.s1next.data.event.EmoticonClickEvent;
+import me.ykrank.s1next.view.event.EmoticonClickEvent;
 import me.ykrank.s1next.widget.EventBus;
 
 public final class EmoticonViewModel {

@@ -21,10 +21,10 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
-import me.ykrank.s1next.data.event.FavoriteRemoveEvent;
 import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
+import me.ykrank.s1next.view.event.FavoriteRemoveEvent;
 import me.ykrank.s1next.widget.EventBus;
 
 /**

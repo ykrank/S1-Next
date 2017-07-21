@@ -33,7 +33,6 @@ import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.data.event.EmoticonClickEvent;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.databinding.FragmentPostBinding;
 import me.ykrank.s1next.util.ImeUtils;
@@ -41,6 +40,7 @@ import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.EmoticonPagerAdapter;
+import me.ykrank.s1next.view.event.EmoticonClickEvent;
 import me.ykrank.s1next.widget.EditorDiskCache;
 import me.ykrank.s1next.widget.EventBus;
 

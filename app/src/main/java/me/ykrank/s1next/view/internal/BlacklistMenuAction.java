@@ -4,8 +4,8 @@ import android.support.annotation.MainThread;
 import android.support.v4.app.FragmentActivity;
 
 import me.ykrank.s1next.App;
-import me.ykrank.s1next.data.event.BlackListAddEvent;
 import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment;
+import me.ykrank.s1next.view.event.BlackListAddEvent;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.track.event.BlackListTrackEvent;
 

@@ -18,11 +18,11 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.PmGroup;
 import me.ykrank.s1next.data.api.model.collection.PmGroups;
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
-import me.ykrank.s1next.data.event.NoticeRefreshEvent;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.view.adapter.PmGroupsRecyclerViewAdapter;
+import me.ykrank.s1next.view.event.NoticeRefreshEvent;
 import me.ykrank.s1next.widget.EventBus;
 
 

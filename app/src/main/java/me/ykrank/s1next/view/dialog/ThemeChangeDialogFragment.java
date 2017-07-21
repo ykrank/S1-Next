@@ -10,8 +10,8 @@ import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.data.event.ThemeChangeEvent;
 import me.ykrank.s1next.data.pref.ThemeManager;
+import me.ykrank.s1next.view.event.ThemeChangeEvent;
 import me.ykrank.s1next.widget.EventBus;
 
 /**

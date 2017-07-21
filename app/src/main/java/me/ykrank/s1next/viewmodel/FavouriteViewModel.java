@@ -11,8 +11,8 @@ import io.reactivex.functions.Consumer;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Favourite;
 import me.ykrank.s1next.data.api.model.Thread;
-import me.ykrank.s1next.data.event.FavoriteRemoveEvent;
 import me.ykrank.s1next.view.activity.PostListActivity;
+import me.ykrank.s1next.view.event.FavoriteRemoveEvent;
 import me.ykrank.s1next.widget.EventBus;
 
 

@@ -30,7 +30,6 @@ import me.ykrank.s1next.data.db.ThreadDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.DbThread
 import me.ykrank.s1next.data.db.dbmodel.History
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
-import me.ykrank.s1next.data.event.*
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager
 import me.ykrank.s1next.util.*
@@ -42,6 +41,7 @@ import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.dialog.PostSelectableChangeDialogFragment
 import me.ykrank.s1next.view.dialog.ThreadAttachmentDialogFragment
 import me.ykrank.s1next.view.dialog.ThreadFavouritesAddDialogFragment
+import me.ykrank.s1next.view.event.*
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate
 import me.ykrank.s1next.view.internal.PagerScrollState
 import me.ykrank.s1next.view.internal.RequestCode

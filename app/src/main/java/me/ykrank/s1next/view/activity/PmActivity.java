@@ -12,7 +12,7 @@ import com.github.ykrank.androidlifecycle.event.ActivityEvent;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.PmGroup;
-import me.ykrank.s1next.data.event.PmGroupClickEvent;
+import me.ykrank.s1next.view.event.PmGroupClickEvent;
 import me.ykrank.s1next.view.fragment.PmFragment;
 import me.ykrank.s1next.view.fragment.PmGroupsFragment;
 import me.ykrank.s1next.view.internal.RequestCode;

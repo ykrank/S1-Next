@@ -1,4 +1,4 @@
-package me.ykrank.s1next.data.event
+package me.ykrank.s1next.view.event
 
 /**
  * Created by ykrank on 2017/4/13.

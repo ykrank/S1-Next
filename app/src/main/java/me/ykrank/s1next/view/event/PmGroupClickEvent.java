@@ -1,4 +1,4 @@
-package me.ykrank.s1next.data.event;
+package me.ykrank.s1next.view.event;
 
 import me.ykrank.s1next.data.api.model.PmGroup;
 

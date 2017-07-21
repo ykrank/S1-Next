@@ -17,11 +17,11 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.api.model.Note;
 import me.ykrank.s1next.data.api.model.collection.Notes;
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
-import me.ykrank.s1next.data.event.NoticeRefreshEvent;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.view.adapter.NoteRecyclerViewAdapter;
+import me.ykrank.s1next.view.event.NoticeRefreshEvent;
 import me.ykrank.s1next.widget.EventBus;
 
 /**

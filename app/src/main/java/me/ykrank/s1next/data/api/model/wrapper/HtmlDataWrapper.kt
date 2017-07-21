@@ -1,8 +1,8 @@
 package me.ykrank.s1next.data.api.model.wrapper
 
 import me.ykrank.s1next.App
-import me.ykrank.s1next.data.event.NoticeRefreshEvent
 import me.ykrank.s1next.util.L
+import me.ykrank.s1next.view.event.NoticeRefreshEvent
 import org.jsoup.nodes.Document
 import java.util.regex.Pattern
 

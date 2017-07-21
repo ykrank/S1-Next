@@ -13,9 +13,9 @@ import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.data.event.BlackListAddEvent;
 import me.ykrank.s1next.databinding.DialogBlacklistRemarkBinding;
 import me.ykrank.s1next.util.ViewUtil;
+import me.ykrank.s1next.view.event.BlackListAddEvent;
 import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.track.event.BlackListTrackEvent;
 
