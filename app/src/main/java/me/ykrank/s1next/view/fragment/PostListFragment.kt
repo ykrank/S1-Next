@@ -45,7 +45,7 @@ import me.ykrank.s1next.view.event.*
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate
 import me.ykrank.s1next.view.internal.PagerScrollState
 import me.ykrank.s1next.view.internal.RequestCode
-import me.ykrank.s1next.widget.EventBus
+import me.ykrank.s1next.widget.RxBus
 import me.ykrank.s1next.widget.track.event.ViewThreadTrackEvent
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -58,7 +58,7 @@ import javax.inject.Inject
 class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCallback, View.OnClickListener {
 
     @Inject
-    internal lateinit var mEventBus: EventBus
+    internal lateinit var mRxBus: RxBus
 
     @Inject
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
@@ -142,15 +142,15 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     override fun onResume() {
         super.onResume()
 
-        mEventBus.get()
+        mRxBus.get()
                 .ofType(QuoteEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe { quoteEvent -> startReplyActivity(quoteEvent.quotePostId, quoteEvent.quotePostCount) }
-        mEventBus.get()
+        mRxBus.get()
                 .ofType(RateEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe { event -> startRateActivity(event.threadId, event.postId) }
-        mEventBus.get()
+        mRxBus.get()
                 .ofType(EditPostEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe { event ->
@@ -158,7 +158,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                     val post = event.post
                     EditPostActivity.startActivityForResultMessage(this, RequestCode.REQUEST_CODE_EDIT_POST, thread, post)
                 }
-        mEventBus.get()
+        mRxBus.get()
                 .ofType(BlackListAddEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe {
@@ -296,7 +296,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                             //reload all data
                             item.isChecked = !item.isChecked
                             mGeneralPreferencesManager.isPostSelectable = item.isChecked
-                            mEventBus.post(PostSelectableChangeEvent())
+                            mRxBus.post(PostSelectableChangeEvent())
                         }
                         .show(fragmentManager, null)
                 return true
@@ -304,7 +304,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
             R.id.menu_quick_side_bar_enable -> {
                 item.isChecked = !item.isChecked
                 mGeneralPreferencesManager.isQuickSideBarEnable = item.isChecked
-                mEventBus.post(QuickSidebarEnableChangeEvent())
+                mRxBus.post(QuickSidebarEnableChangeEvent())
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

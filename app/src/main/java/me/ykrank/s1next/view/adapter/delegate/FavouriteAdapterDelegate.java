@@ -15,12 +15,12 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Favourite;
 import me.ykrank.s1next.databinding.ItemFavouriteBinding;
 import me.ykrank.s1next.viewmodel.FavouriteViewModel;
-import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.RxBus;
 
 public final class FavouriteAdapterDelegate extends BaseAdapterDelegate<Favourite, FavouriteAdapterDelegate.BindingViewHolder> {
 
     @Inject
-    EventBus mEventBus;
+    RxBus mRxBus;
 
     public FavouriteAdapterDelegate(Context context) {
         super(context);
@@ -39,7 +39,7 @@ public final class FavouriteAdapterDelegate extends BaseAdapterDelegate<Favourit
         ItemFavouriteBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_favourite, parent, false);
         binding.setModel(new FavouriteViewModel());
-        binding.setEventBus(mEventBus);
+        binding.setEventBus(mRxBus);
         return new BindingViewHolder(binding);
     }
 

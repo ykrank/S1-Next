@@ -22,7 +22,7 @@ import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.view.adapter.NoteRecyclerViewAdapter;
 import me.ykrank.s1next.view.event.NoticeRefreshEvent;
-import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.RxBus;
 
 /**
  * Created by ykrank on 2017/1/5.
@@ -33,7 +33,7 @@ public class NoteFragment extends BaseLoadMoreRecycleViewFragment<BaseDataWrappe
     private NoteRecyclerViewAdapter mRecyclerAdapter;
 
     @Inject
-    EventBus mEventBus;
+    RxBus mRxBus;
 
     public static NoteFragment newInstance() {
         NoteFragment fragment = new NoteFragment();
@@ -94,7 +94,7 @@ public class NoteFragment extends BaseLoadMoreRecycleViewFragment<BaseDataWrappe
         }
 
         if (getPageNum() == 1) {
-            mEventBus.post(NoticeRefreshEvent.class, new NoticeRefreshEvent(null, false));
+            mRxBus.post(NoticeRefreshEvent.class, new NoticeRefreshEvent(null, false));
         }
     }
 }

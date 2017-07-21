@@ -12,8 +12,8 @@
         <import type="android.graphics.PorterDuff.Mode" />
 
         <variable
-            name="eventBus"
-            type="me.ykrank.s1next.widget.EventBus" />
+            name="rxBus"
+            type="me.ykrank.s1next.widget.RxBus" />
 
         <variable
             name="model"
@@ -40,7 +40,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{model.clickGroup(eventBus)}"
+            android:onClick="@{model.clickGroup(rxBus)}"
             android:padding="@dimen/item_padding">
 
             <me.ykrank.s1next.widget.BezelImageView

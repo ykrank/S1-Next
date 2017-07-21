@@ -170,7 +170,7 @@ public class UserHomeActivity extends BaseActivity {
                 return true;
             case R.id.menu_blacklist:
                 if (isInBlacklist) {
-                    BlacklistMenuAction.removeBlacklist(mEventBus, Integer.valueOf(uid), name);
+                    BlacklistMenuAction.removeBlacklist(mRxBus, Integer.valueOf(uid), name);
                 } else {
                     BlacklistMenuAction.addBlacklist(this, Integer.valueOf(uid), name);
                 }
@@ -183,7 +183,7 @@ public class UserHomeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mEventBus.get()
+        mRxBus.get()
                 .ofType(BlackListAddEvent.class)
                 .to(AndroidRxDispose.withObservable(this, ActivityEvent.PAUSE))
                 .subscribe(blackListEvent -> {

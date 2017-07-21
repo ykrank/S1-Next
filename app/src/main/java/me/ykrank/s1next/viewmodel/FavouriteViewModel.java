@@ -13,7 +13,7 @@ import me.ykrank.s1next.data.api.model.Favourite;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.view.activity.PostListActivity;
 import me.ykrank.s1next.view.event.FavoriteRemoveEvent;
-import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.RxBus;
 
 
 public final class FavouriteViewModel {
@@ -32,13 +32,13 @@ public final class FavouriteViewModel {
         return v -> PostListActivity.bindClickStartForView(v, threadSupplier);
     }
 
-    public View.OnLongClickListener removeFromFavourites(final EventBus eventBus) {
+    public View.OnLongClickListener removeFromFavourites(final RxBus rxBus) {
         return v -> {
             PopupMenu popup = new PopupMenu(v.getContext(), v);
             popup.setOnMenuItemClickListener((MenuItem menuitem) -> {
                 switch (menuitem.getItemId()) {
                     case R.id.menu_popup_remove_favourite:
-                        eventBus.post(new FavoriteRemoveEvent(favourite.get().getFavId()));
+                        rxBus.post(new FavoriteRemoveEvent(favourite.get().getFavId()));
                         return true;
                     default:
                         return false;

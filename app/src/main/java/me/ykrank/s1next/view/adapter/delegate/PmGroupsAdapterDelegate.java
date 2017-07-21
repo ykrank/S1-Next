@@ -16,12 +16,12 @@ import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.PmGroup;
 import me.ykrank.s1next.databinding.ItemPmGroupBinding;
 import me.ykrank.s1next.viewmodel.PmGroupViewModel;
-import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.RxBus;
 
 public final class PmGroupsAdapterDelegate extends BaseAdapterDelegate<PmGroup, PmGroupsAdapterDelegate.BindingViewHolder> {
 
     @Inject
-    EventBus mEventBus;
+    RxBus mRxBus;
 
     @Inject
     User mUser;
@@ -43,7 +43,7 @@ public final class PmGroupsAdapterDelegate extends BaseAdapterDelegate<PmGroup, 
         ItemPmGroupBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_pm_group, parent, false);
         binding.setModel(new PmGroupViewModel());
-        binding.setEventBus(mEventBus);
+        binding.setEventBus(mRxBus);
         binding.setUser(mUser);
         return new BindingViewHolder(binding);
     }

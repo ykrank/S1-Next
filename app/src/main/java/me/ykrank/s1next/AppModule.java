@@ -28,9 +28,9 @@ import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
 import me.ykrank.s1next.task.AutoSignTask;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EditorDiskCache;
-import me.ykrank.s1next.widget.EventBus;
 import me.ykrank.s1next.widget.PersistentHttpCookieStore;
 import me.ykrank.s1next.widget.RawJsonConverterFactory;
+import me.ykrank.s1next.widget.RxBus;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
 import me.ykrank.s1next.widget.glide.OkHttpNoAvatarInterceptor;
 import me.ykrank.s1next.widget.hostcheck.BaseHostUrl;
@@ -159,8 +159,8 @@ public final class AppModule {
 
     @Provides
     @Singleton
-    EventBus providerEventBus() {
-        return new EventBus();
+    RxBus providerEventBus() {
+        return new RxBus();
     }
 
     @Provides
@@ -196,8 +196,8 @@ public final class AppModule {
 
     @Provides
     @Singleton
-    NoticeCheckTask provideNoticeCheckTask(EventBus eventBus, S1Service s1Service, User user) {
-        return new NoticeCheckTask(eventBus, s1Service, user);
+    NoticeCheckTask provideNoticeCheckTask(RxBus rxBus, S1Service s1Service, User user) {
+        return new NoticeCheckTask(rxBus, s1Service, user);
     }
 
     @Provides

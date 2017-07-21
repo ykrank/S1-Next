@@ -14,7 +14,7 @@ import me.ykrank.s1next.util.LooperUtil;
  * <p>
  * Forked from https://github.com/wangjiegulu/RxAndroidEventsSample/blob/master/sample/src/main/java/com/wangjie/rxandroideventssample/rxbus/RxBus.java
  */
-public final class EventBus {
+public final class RxBus {
     private static final String DEFAULT_TAG = "default_tag";
 
     private ConcurrentHashMap<Object, PublishSubject<Object>> subjectMapper = new ConcurrentHashMap<>();

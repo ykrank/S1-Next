@@ -25,7 +25,7 @@ import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.event.FavoriteRemoveEvent;
-import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.RxBus;
 
 /**
  * A Fragment includes {@link android.support.v4.view.ViewPager}
@@ -36,7 +36,7 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
     public static final String TAG = FavouriteListFragment.class.getName();
 
     @Inject
-    EventBus mEventBus;
+    RxBus mRxBus;
     @Inject
     UserValidator mUserValidator;
     @Inject
@@ -54,7 +54,7 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
 
         mTitle = getText(R.string.favourites);
 
-        mEventBus.get()
+        mRxBus.get()
                 .ofType(FavoriteRemoveEvent.class)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
                 .subscribe(event -> {

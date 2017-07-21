@@ -12,7 +12,7 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.view.event.ThemeChangeEvent;
-import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.RxBus;
 
 /**
  * A dialog which used to change theme.
@@ -22,7 +22,7 @@ public final class ThemeChangeDialogFragment extends BaseDialogFragment {
     private static final String TAG = ThemeChangeDialogFragment.class.getName();
 
     @Inject
-    EventBus mEventBus;
+    RxBus mRxBus;
 
     @Inject
     ThemeManager mThemeManager;
@@ -44,7 +44,7 @@ public final class ThemeChangeDialogFragment extends BaseDialogFragment {
                     if (which != checkedItem) {
                         mThemeManager.applyTheme(which);
                         mThemeManager.setThemeByIndex(which);
-                        mEventBus.post(new ThemeChangeEvent());
+                        mRxBus.post(new ThemeChangeEvent());
                     }
                     dismiss();
                 })

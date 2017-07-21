@@ -8,8 +8,8 @@
     <data>
 
         <variable
-            name="eventBus"
-            type="me.ykrank.s1next.widget.EventBus" />
+            name="rxBus"
+            type="me.ykrank.s1next.widget.RxBus" />
 
         <variable
             name="model"
@@ -41,6 +41,6 @@
         android:text="@{model.favourite.title}"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:bindEvent="@{model.onBind()}"
-        app:onLongClickListener="@{model.removeFromFavourites(eventBus)}" />
+        app:onLongClickListener="@{model.removeFromFavourites(rxBus)}" />
 
 </layout>

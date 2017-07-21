@@ -17,7 +17,7 @@ import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.activity.SettingsActivity;
 import me.ykrank.s1next.view.event.FontSizeChangeEvent;
 import me.ykrank.s1next.view.event.ThemeChangeEvent;
-import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.RxBus;
 import me.ykrank.s1next.widget.span.HtmlCompat;
 import me.ykrank.s1next.widget.track.event.ThemeChangeTrackEvent;
 
@@ -32,7 +32,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
         implements Preference.OnPreferenceClickListener {
 
     @Inject
-    EventBus mEventBus;
+    RxBus mRxBus;
 
     @Inject
     GeneralPreferencesManager mGeneralPreferencesManager;
@@ -61,12 +61,12 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
         if (key.equals(getString(R.string.pref_key_theme))) {
             trackAgent.post(new ThemeChangeTrackEvent(false));
             mThemeManager.invalidateTheme();
-            mEventBus.post(new ThemeChangeEvent());
+            mRxBus.post(new ThemeChangeEvent());
         } else if (key.equals(getString(R.string.pref_key_font_size))) {
             // change scaling factor for fonts
             ResourceUtil.setScaledDensity(getActivity(),
                     mGeneralPreferencesManager.getFontScale());
-            mEventBus.post(new FontSizeChangeEvent());
+            mRxBus.post(new FontSizeChangeEvent());
         }
     }
 

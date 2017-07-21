@@ -42,7 +42,7 @@ import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.EmoticonPagerAdapter;
 import me.ykrank.s1next.view.event.EmoticonClickEvent;
 import me.ykrank.s1next.widget.EditorDiskCache;
-import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.RxBus;
 
 /**
  * Created by ykrank on 2016/7/31 0031.
@@ -68,7 +68,7 @@ public abstract class BasePostFragment extends BaseFragment {
     @Nullable
     protected MenuItem mMenuSend;
     @Inject
-    EventBus mEventBus;
+    RxBus mRxBus;
     @Inject
     GeneralPreferencesManager mGeneralPreferencesManager;
     @Inject
@@ -144,7 +144,7 @@ public abstract class BasePostFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        mEventBus.get()
+        mRxBus.get()
                 .ofType(EmoticonClickEvent.class)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe(event -> {

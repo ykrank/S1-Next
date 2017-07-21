@@ -14,8 +14,8 @@
             type="me.ykrank.s1next.viewmodel.EmoticonViewModel" />
 
         <variable
-            name="eventBus"
-            type="me.ykrank.s1next.widget.EventBus" />
+            name="rxBus"
+            type="me.ykrank.s1next.widget.RxBus" />
 
         <variable
             name="requestManager"
@@ -32,6 +32,6 @@
         android:padding="@dimen/emoticon_padding"
         app:emoticonRequestManager="@{requestManager}"
         app:emoticonImagePath="@{emoticonViewModel.emoticon.imagePath}"
-        app:onClickListener="@{emoticonViewModel.clickEmotion(eventBus)}" />
+        app:onClickListener="@{emoticonViewModel.clickEmotion(rxBus)}" />
 
 </layout>

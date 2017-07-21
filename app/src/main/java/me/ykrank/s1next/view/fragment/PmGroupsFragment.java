@@ -23,7 +23,7 @@ import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter;
 import me.ykrank.s1next.view.adapter.PmGroupsRecyclerViewAdapter;
 import me.ykrank.s1next.view.event.NoticeRefreshEvent;
-import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.RxBus;
 
 
 public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<BaseDataWrapper<PmGroups>> {
@@ -32,7 +32,7 @@ public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<Base
     private PmGroupsRecyclerViewAdapter mRecyclerAdapter;
 
     @Inject
-    EventBus mEventBus;
+    RxBus mRxBus;
 
     public static PmGroupsFragment newInstance() {
         PmGroupsFragment fragment = new PmGroupsFragment();
@@ -78,7 +78,7 @@ public final class PmGroupsFragment extends BaseLoadMoreRecycleViewFragment<Base
         }
 
         if (getPageNum() == 1) {
-            mEventBus.post(NoticeRefreshEvent.class, new NoticeRefreshEvent(data.getData().hasNew(), null));
+            mRxBus.post(NoticeRefreshEvent.class, new NoticeRefreshEvent(data.getData().hasNew(), null));
         }
     }
 

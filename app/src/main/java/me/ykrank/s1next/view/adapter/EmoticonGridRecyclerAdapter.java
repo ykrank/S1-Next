@@ -16,7 +16,7 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Emoticon;
 import me.ykrank.s1next.databinding.ItemEmoticonBinding;
 import me.ykrank.s1next.viewmodel.EmoticonViewModel;
-import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.RxBus;
 
 public final class EmoticonGridRecyclerAdapter
         extends RecyclerView.Adapter<EmoticonGridRecyclerAdapter.BindingViewHolder> {
@@ -26,13 +26,13 @@ public final class EmoticonGridRecyclerAdapter
     private final List<Emoticon> mEmoticons;
     private final RequestManager mEmoticonRequestBuilder;
 
-    private final EventBus mEventBus;
+    private final RxBus mRxBus;
 
     public EmoticonGridRecyclerAdapter(Activity activity, List<Emoticon> emoticons) {
         mLayoutInflater = activity.getLayoutInflater();
         this.mEmoticons = emoticons;
         mEmoticonRequestBuilder = Glide.with(activity);
-        mEventBus = App.getAppComponent().getEventBus();
+        mRxBus = App.getAppComponent().getEventBus();
 
         setHasStableIds(true);
     }
@@ -41,7 +41,7 @@ public final class EmoticonGridRecyclerAdapter
     public BindingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ItemEmoticonBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_emoticon, parent, false);
-        binding.setEventBus(mEventBus);
+        binding.setEventBus(mRxBus);
         binding.setRequestManager(mEmoticonRequestBuilder);
         binding.setEmoticonViewModel(new EmoticonViewModel());
 

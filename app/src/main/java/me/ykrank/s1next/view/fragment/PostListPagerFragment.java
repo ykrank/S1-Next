@@ -53,7 +53,7 @@ import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegate;
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateQuickSidebarImpl;
 import me.ykrank.s1next.view.internal.PagerScrollState;
 import me.ykrank.s1next.viewmodel.LoadingViewModel;
-import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.RxBus;
 import me.ykrank.s1next.widget.recycleview.StartSnapLinearLayoutManager;
 
 /**
@@ -75,7 +75,7 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
     private static final String ARG_QUOTE_POST_ID = "quote_post_id";
 
     @Inject
-    EventBus mEventBus;
+    RxBus mRxBus;
     @Inject
     GeneralPreferencesManager mGeneralPreferencesManager;
     @Inject
@@ -172,14 +172,14 @@ public final class PostListPagerFragment extends BaseRecyclerViewFragment<PostsW
 
         quickSideBarView.setOnQuickSideBarTouchListener(this);
 
-        mEventBus.get()
+        mRxBus.get()
                 .ofType(PostSelectableChangeEvent.class)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
                 .subscribe(event -> {
                     mRecyclerAdapter.notifyDataSetChanged();
                 }, super::onError);
 
-        mEventBus.get()
+        mRxBus.get()
                 .ofType(QuickSidebarEnableChangeEvent.class)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
                 .subscribe(event -> {

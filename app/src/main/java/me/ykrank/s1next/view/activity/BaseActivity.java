@@ -48,7 +48,7 @@ import me.ykrank.s1next.view.internal.DrawerLayoutDelegate;
 import me.ykrank.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import me.ykrank.s1next.view.internal.RequestCode;
 import me.ykrank.s1next.view.internal.ToolbarDelegate;
-import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.RxBus;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import me.ykrank.s1next.widget.track.event.page.ActivityEndEvent;
 import me.ykrank.s1next.widget.track.event.page.ActivityStartEvent;
@@ -64,7 +64,7 @@ public abstract class BaseActivity extends OriginActivity
     public static final String EXTRA_MESSAGE = "message";
 
     @Inject
-    EventBus mEventBus;
+    RxBus mRxBus;
 
     @Inject
     User mUser;
@@ -127,14 +127,14 @@ public abstract class BaseActivity extends OriginActivity
 
         super.onCreate(savedInstanceState);
 
-        mEventBus.get()
+        mRxBus.get()
                 .filter(o -> (o instanceof ThemeChangeEvent || o instanceof FontSizeChangeEvent))
                 .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
                 .subscribe(o -> {
                     getWindow().setWindowAnimations(R.style.Animation_Recreate);
                     recreate();
                 });
-        mEventBus.get(NoticeRefreshEvent.class)
+        mRxBus.get(NoticeRefreshEvent.class)
                 .ofType(NoticeRefreshEvent.class)
                 .observeOn(AndroidSchedulers.mainThread())
                 .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))

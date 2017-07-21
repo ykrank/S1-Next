@@ -28,7 +28,7 @@ import me.ykrank.s1next.view.event.EditPostEvent;
 import me.ykrank.s1next.view.event.QuoteEvent;
 import me.ykrank.s1next.view.event.RateEvent;
 import me.ykrank.s1next.view.internal.BlacklistMenuAction;
-import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.RxBus;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
 
 public final class PostViewModel {
@@ -36,12 +36,12 @@ public final class PostViewModel {
     public final ObservableField<Post> post = new ObservableField<>();
     public final ObservableField<Thread> thread = new ObservableField<>();
     public final ObservableField<CharSequence> floor = new ObservableField<>();
-    private final EventBus eventBus;
+    private final RxBus rxBus;
     private final User user;
 
 
-    public PostViewModel(EventBus eventBus, User user) {
-        this.eventBus = eventBus;
+    public PostViewModel(RxBus rxBus, User user) {
+        this.rxBus = rxBus;
         this.user = user;
         post.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
@@ -83,7 +83,7 @@ public final class PostViewModel {
             switch (menuitem.getItemId()) {
                 case R.id.menu_popup_blacklist:
                     if (menuitem.getTitle().equals(v.getContext().getString(R.string.menu_blacklist_remove))) {
-                        BlacklistMenuAction.removeBlacklist(eventBus, Integer.valueOf(postData.getAuthorId()), postData.getAuthorName());
+                        BlacklistMenuAction.removeBlacklist(rxBus, Integer.valueOf(postData.getAuthorId()), postData.getAuthorName());
                     } else {
                         Context context = ContextUtils.getBaseContext(v.getContext());
                         if (context instanceof FragmentActivity) {
@@ -136,15 +136,15 @@ public final class PostViewModel {
     }
 
     public void onReplyClick(View v) {
-        eventBus.post(new QuoteEvent(String.valueOf(post.get().getId()), post.get().getCount()));
+        rxBus.post(new QuoteEvent(String.valueOf(post.get().getId()), post.get().getCount()));
     }
 
     public void onRateClick(View v) {
-        eventBus.post(new RateEvent(thread.get().getId(), String.valueOf(post.get().getId())));
+        rxBus.post(new RateEvent(thread.get().getId(), String.valueOf(post.get().getId())));
     }
 
     public void onEditClick(View v) {
-        eventBus.post(new EditPostEvent(post.get(), thread.get()));
+        rxBus.post(new EditPostEvent(post.get(), thread.get()));
     }
 
     public void onExtraHtmlClick(View v) {

@@ -73,7 +73,7 @@ import me.ykrank.s1next.view.fragment.setting.ReadProgressPreferenceFragment;
 import me.ykrank.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.EditorDiskCache;
-import me.ykrank.s1next.widget.EventBus;
+import me.ykrank.s1next.widget.RxBus;
 import me.ykrank.s1next.widget.WifiBroadcastReceiver;
 import me.ykrank.s1next.widget.glide.AppHttpStreamFetcher;
 import me.ykrank.s1next.widget.glide.AvatarStreamFetcher;
@@ -110,7 +110,7 @@ public interface AppComponent {
 
     ObjectMapper getJsonMapper();
 
-    EventBus getEventBus();
+    RxBus getEventBus();
 
     User getUser();
 
