@@ -1,8 +1,9 @@
 package me.ykrank.s1next.data
 
 import android.text.TextUtils
+import me.ykrank.s1next.data.pref.AppDataPreferencesManager
 
-open class User {
+open class User(private val appDataPref: AppDataPreferencesManager) {
 
     @Volatile var uid: String? = null
 
@@ -12,7 +13,11 @@ open class User {
 
     @Volatile var authenticityToken: String? = null
 
-    @Volatile var appSecureToken: String? = null
+    var appSecureToken: String?
+        get() = appDataPref.appToken
+        set(value) {
+            appDataPref.appToken = value
+        }
 
     @Volatile open var isLogged: Boolean = false
 

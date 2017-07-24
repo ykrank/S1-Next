@@ -13,5 +13,5 @@ open class AppResult {
     @JsonProperty("message")
     var message: String? = null
     @JsonProperty("success")
-    var isSuccess: Boolean = false
+    var success: Boolean = false
 }

@@ -10,7 +10,6 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -26,6 +25,8 @@ import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.data.api.app.AppApi;
 import me.ykrank.s1next.data.api.app.AppService;
+import me.ykrank.s1next.data.api.app.AppTokenInterceptor;
+import me.ykrank.s1next.data.pref.AppDataPreferencesManager;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
 import me.ykrank.s1next.task.AutoSignTask;
@@ -40,9 +41,11 @@ import me.ykrank.s1next.widget.hostcheck.BaseHostUrl;
 import me.ykrank.s1next.widget.hostcheck.HttpDns;
 import me.ykrank.s1next.widget.hostcheck.MultiHostInterceptor;
 import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask;
+import me.ykrank.s1next.widget.net.AppData;
 import me.ykrank.s1next.widget.net.Data;
 import me.ykrank.s1next.widget.net.Image;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
+import okhttp3.CookieJar;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -86,32 +89,55 @@ public final class AppModule {
         return new CookieManager(new PersistentHttpCookieStore(context), CookiePolicy.ACCEPT_ALL);
     }
 
+    @Provides
+    @Singleton
+    CookieJar providerCookieJar(CookieManager cookieManager) {
+        return new JavaNetCookieJar(cookieManager);
+    }
+
     @Data
     @Provides
-    OkHttpClient.Builder providerDataOkHttpClientBuilder(CookieManager cookieManager, BaseHostUrl baseHostUrl) {
+    @Singleton
+    OkHttpClient.Builder providerDataOkHttpClientBuilder(CookieJar cookieJar, BaseHostUrl baseHostUrl) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.dns(new HttpDns(baseHostUrl));
         builder.connectTimeout(10, TimeUnit.SECONDS);
         builder.writeTimeout(20, TimeUnit.SECONDS);
         builder.readTimeout(10, TimeUnit.SECONDS);
         builder.retryOnConnectionFailure(true);
-        builder.cookieJar(new JavaNetCookieJar(cookieManager));
+        builder.cookieJar(cookieJar);
         builder.addInterceptor(new ApiVersionInterceptor());
         builder.addInterceptor(new MultiHostInterceptor(baseHostUrl));
 
         return builder;
     }
 
+    @AppData
+    @Provides
+    @Singleton
+    OkHttpClient.Builder providerAppDataOkHttpClientBuilder(CookieJar cookieJar, User user) {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(10, TimeUnit.SECONDS);
+        builder.writeTimeout(20, TimeUnit.SECONDS);
+        builder.readTimeout(10, TimeUnit.SECONDS);
+        builder.retryOnConnectionFailure(true);
+        builder.cookieJar(cookieJar);
+        builder.addNetworkInterceptor(new AppTokenInterceptor(user));
+
+        return builder;
+    }
+
     @Image
     @Provides
-    OkHttpClient.Builder providerImageOkHttpClientBuilder(CookieManager cookieManager, BaseHostUrl baseHostUrl) {
+    @Singleton
+    OkHttpClient.Builder providerImageOkHttpClientBuilder(CookieJar cookieJar, BaseHostUrl baseHostUrl) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.dns(new HttpDns(baseHostUrl));
         builder.connectTimeout(17, TimeUnit.SECONDS);
         builder.writeTimeout(17, TimeUnit.SECONDS);
         builder.readTimeout(77, TimeUnit.SECONDS);
         builder.retryOnConnectionFailure(true);
-        builder.cookieJar(new JavaNetCookieJar(cookieManager));
+        builder.cookieJar(cookieJar);
         builder.addNetworkInterceptor(new OkHttpNoAvatarInterceptor());
         builder.addInterceptor(new MultiHostInterceptor(baseHostUrl));
 
@@ -131,10 +157,10 @@ public final class AppModule {
                 .build()
                 .create(S1Service.class);
     }
-    
+
     @Provides
     @Singleton
-    AppService providerAppRetrofit(@Data OkHttpClient okHttpClient) {
+    AppService providerAppRetrofit(@AppData OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(AppApi.BASE_URL)
@@ -199,8 +225,8 @@ public final class AppModule {
 
     @Provides
     @Singleton
-    UserViewModel providerUserViewModel() {
-        return new UserViewModel();
+    UserViewModel providerUserViewModel(AppDataPreferencesManager appDataPreferencesManager) {
+        return new UserViewModel(appDataPreferencesManager);
     }
 
 

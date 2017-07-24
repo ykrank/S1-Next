@@ -86,4 +86,16 @@ class PrefModule {
     internal fun provideDataPreferencesManager(preferencesRepository: DataPreferences): DataPreferencesManager {
         return DataPreferencesManager(preferencesRepository)
     }
+
+    @Provides
+    @Singleton
+    internal fun provideAppDataPreferencesProvider(context: Context, sharedPreferences: SharedPreferences): AppDataPreferences {
+        return AppDataPreferencesImpl(context, sharedPreferences)
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideAppDataPreferencesManager(preferencesRepository: AppDataPreferences): AppDataPreferencesManager {
+        return AppDataPreferencesManager(preferencesRepository)
+    }
 }
