@@ -94,21 +94,23 @@ public abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
     }
 
     /**
-     * @see BaseRecyclerViewFragment#load(int) 
+     * @see BaseRecyclerViewFragment#load(int)
      */
     private void request() {
         Observable<D> sourceObservable = getSourceObservable();
         if (sourceObservable != null) {
-            getSourceObservable().subscribeOn(Schedulers.io())
+            getSourceObservable()
+                    .compose(ApiFlatTransformer.apiErrorTransformer())
+                    .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doAfterTerminate(this::finallyDo)
                     .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
                     .subscribe(this::onNext, this::onError);
-    }
+        }
     }
 
     /**
-     * @see BaseRecyclerViewFragment#getSourceObservable(int) 
+     * @see BaseRecyclerViewFragment#getSourceObservable(int)
      */
     protected abstract Observable<D> getSourceObservable();
 

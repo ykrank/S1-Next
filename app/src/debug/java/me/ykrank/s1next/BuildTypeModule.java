@@ -17,6 +17,7 @@ import dagger.Module;
 import dagger.Provides;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.widget.NullTrustManager;
+import me.ykrank.s1next.widget.net.AppData;
 import me.ykrank.s1next.widget.net.Data;
 import me.ykrank.s1next.widget.net.Image;
 import okhttp3.OkHttpClient;
@@ -55,6 +56,26 @@ public final class BuildTypeModule {
     @Provides
     @Singleton
     OkHttpClient providerImageOkHttpClient(@Image OkHttpClient.Builder builder) {
+        Preconditions.checkState("debug".equals(BuildConfig.BUILD_TYPE));
+
+        //log
+        builder.addNetworkInterceptor(new StethoInterceptor());
+        //trust https
+        try {
+            X509TrustManager trustManager = new NullTrustManager();
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, new TrustManager[]{trustManager}, new SecureRandom());
+            builder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return builder.build();
+    }
+
+    @AppData
+    @Provides
+    @Singleton
+    OkHttpClient providerAppdataOkHttpClient(@AppData OkHttpClient.Builder builder) {
         Preconditions.checkState("debug".equals(BuildConfig.BUILD_TYPE));
 
         //log

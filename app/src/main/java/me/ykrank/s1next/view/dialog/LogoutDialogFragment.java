@@ -62,6 +62,7 @@ public final class LogoutDialogFragment extends BaseDialogFragment {
     private void logout() {
         mCookieManager.getCookieStore().removeAll();
         WebViewUtils.clearWebViewCookies(App.get());
+        mUser.setAppSecureToken(null);
         mUser.setLogged(false);
     }
 }
