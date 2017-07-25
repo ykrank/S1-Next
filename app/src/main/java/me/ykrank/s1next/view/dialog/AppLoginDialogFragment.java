@@ -56,7 +56,7 @@ public final class AppLoginDialogFragment extends ProgressDialogFragment<AppData
     @Override
     protected void onNext(AppDataWrapper<AppLoginResult> data) {
         if (data.getSuccess()) {
-            if (mUserValidator.validateAppLoginInfo(data.getData())) {
+            if (getMUserValidator().validateAppLoginInfo(data.getData())) {
                 showShortTextAndFinishCurrentActivity(data.getMessage());
             } else {
                 showShortText(getString(R.string.app_login_info_error));

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * Created by ykrank on 2017/2/3.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-class AppDataWrapper<T> : AppResult() {
+open class AppDataWrapper<T> : AppResult() {
     @JsonProperty("data")
     var data: T? = null
 }

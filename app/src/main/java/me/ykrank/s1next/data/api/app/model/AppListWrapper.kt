@@ -1,11 +1,11 @@
-package me.ykrank.s1next.data.api.app
+package me.ykrank.s1next.data.api.app.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
  * Created by ykrank on 2017/7/22.
  */
-open class BaseAppListWrapper<D> : BaseAppResultWrapper<BaseAppList<D>>()
+open class AppListWrapper<D> : AppDataWrapper<BaseAppList<D>>()
 
 class BaseAppList<D> {
     var pageNo: Int = 0

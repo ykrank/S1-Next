@@ -28,7 +28,7 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.ApiCacheProvider;
 import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import me.ykrank.s1next.data.api.S1Service;
-import me.ykrank.s1next.data.api.app.BaseAppResultWrapper;
+import me.ykrank.s1next.data.api.app.model.AppResult;
 import me.ykrank.s1next.data.api.model.Result;
 import me.ykrank.s1next.databinding.FragmentBaseBinding;
 import me.ykrank.s1next.databinding.FragmentBaseCardViewContainerBinding;
@@ -366,7 +366,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
         }
     }
 
-    final void consumeAppResult(@Nullable BaseAppResultWrapper result) {
+    final void consumeAppResult(@Nullable AppResult result) {
         if (isAdded() && getUserVisibleHint()) {
             if (result != null) {
                 String message = result.getMessage();

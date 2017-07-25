@@ -24,6 +24,8 @@ abstract class BaseRequestDialogFragment<D> : ProgressDialogFragment<D>() {
     }
 
     protected fun onRequestError(msg: String?) {
-        showShortText(msg)
+        if (msg != null) {
+            showShortText(msg)
+        }
     }
 }

@@ -12,16 +12,20 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface AppService {
-    
-    @GET(AppApi.URL_USER_INFO)
+
+    @GET("user")
     Observable<AppDataWrapper<AppUserInfo>> getUserInfo(@Query("uid") String uid);
 
     @FormUrlEncoded
-    @POST(AppApi.URL_LOGIN)
+    @POST("user/login")
     Observable<AppDataWrapper<AppLoginResult>> login(@Field("username") String username, @Field("password") String password,
                                                      @Field("questionid") int questionId, @Field("answer") String answer);
 
     @FormUrlEncoded
-    @POST(AppApi.URL_SIGN)
+    @POST("user/sign")
     Observable<AppResult> sign(@Field("uid") String uid, @Field("sid") String security);
+
+    @FormUrlEncoded
+    @POST("thread/page")
+    Observable<String> getPostsWrapper(@Field("sid") String security, @Field("tid") String threadId, @Field("pageNo") int page);
 }

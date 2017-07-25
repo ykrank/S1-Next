@@ -28,9 +28,6 @@ public interface S1Service {
     @GET(ApiForum.URL_THREAD_LIST)
     Observable<String> getThreadsWrapper(@Query("fid") String forumId, @Query("page") int page);
 
-    @GET(ApiForum.URL_APP_POST_LIST)
-    Observable<String> getPostsWrapper(@Query("tid") String threadId, @Query("pageNo") int page);
-
     @GET(ApiForum.URL_TRADE_POST_INFO)
     Observable<String> getTradePostInfo(@Query("tid") String threadId, @Query("pid") int pid);
 

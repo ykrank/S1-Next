@@ -24,8 +24,10 @@ import io.rx_cache2.Source
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
+import me.ykrank.s1next.data.api.app.AppApiUtil
 import me.ykrank.s1next.data.api.app.AppPost
 import me.ykrank.s1next.data.api.app.AppPostsWrapper
+import me.ykrank.s1next.data.api.app.AppService
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
@@ -61,6 +63,8 @@ class PostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), OnQui
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
     @Inject
     internal lateinit var objectMapper: ObjectMapper
+    @Inject
+    internal lateinit var appService: AppService
 
     private var mThreadId: String? = null
     private var mPageNum: Int = 0
@@ -244,13 +248,13 @@ class PostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), OnQui
     }
 
     internal override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Observable<AppPostsWrapper> {
-        return apiCacheProvider.getPostsWrapper(mS1Service.getPostsWrapper(mThreadId, mPageNum),
+        return apiCacheProvider.getPostsWrapper(appService.getPostsWrapper(mUser.appSecureToken, mThreadId, mPageNum),
                 DynamicKeyGroup(mThreadId + "," + mPageNum, mUser.key),
                 EvictDynamicKeyGroup(isForceLoading || mPageNum >= mPagerCallback?.getTotalPages() ?: 0))
                 .flatMap<AppPostsWrapper> {
                     val wrapper = objectMapper.readValue(it.data, AppPostsWrapper::class.java)
                     if (it.source != Source.CLOUD && wrapper.data?.list?.size ?: 0 < Api.POSTS_PER_PAGE) {
-                        return@flatMap apiCacheProvider.getPostsWrapper(mS1Service.getPostsWrapper(mThreadId, mPageNum),
+                        return@flatMap apiCacheProvider.getPostsWrapper(appService.getPostsWrapper(mUser.appSecureToken, mThreadId, mPageNum),
                                 DynamicKeyGroup(mThreadId + "," + mPageNum, mUser.key), EvictDynamicKeyGroup(true))
                                 .map<String> { it.data }
                                 .compose(RxJavaUtil.jsonTransformer(AppPostsWrapper::class.java))
@@ -324,6 +328,10 @@ class PostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), OnQui
     }
 
     internal override fun onError(throwable: Throwable) {
+        if (AppApiUtil.appLoginIfNeed(activity, mUser, throwable)) {
+            return
+        }
+
         //网络请求失败下依然刷新黑名单
         if (blacklistChanged) {
             blacklistChanged = false
