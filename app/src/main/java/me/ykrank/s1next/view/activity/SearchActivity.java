@@ -298,14 +298,14 @@ public class SearchActivity extends BaseActivity {
 
         String selected = (String) binding.appBar.spinner.getSelectedItem();
         if (TextUtils.equals(getString(R.string.search_type_entry_user), selected)) {
-            ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
+            ApiFlatTransformer.INSTANCE.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
                     token -> s1Service.searchUser(token, query))
                     .map(UserSearchWrapper::fromSource)
                     .compose(RxJavaUtil.iOTransformer())
                     .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
                     .subscribe(wrapper -> setResults(wrapper.getUserSearchResults(), wrapper.getErrorMsg()), L::e);
         } else {
-            ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
+            ApiFlatTransformer.INSTANCE.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
                     token -> s1Service.searchForum(token, query))
                     .map(ForumSearchWrapper::fromSource)
                     .compose(RxJavaUtil.iOTransformer())

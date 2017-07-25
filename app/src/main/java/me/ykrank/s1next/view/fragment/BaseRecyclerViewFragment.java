@@ -308,7 +308,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
         mCoordinatorLayoutAnchorDelegate.dismissSnackbarIfExist();
         RxJavaUtil.disposeIfNotNull(mDisposable);
         mDisposable = getSourceObservable(loading)
-                .compose(ApiFlatTransformer.apiErrorTransformer())
+                .compose(ApiFlatTransformer.INSTANCE.apiErrorTransformer())
                 .compose(RxJavaUtil.iOTransformer())
                 .doOnNext(mUserValidator::validateIntercept)
                 .doAfterTerminate(this::finallyDo)

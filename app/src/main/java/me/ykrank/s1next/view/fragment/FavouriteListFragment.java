@@ -59,7 +59,7 @@ public final class FavouriteListFragment extends BaseViewPagerFragment {
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
                 .subscribe(event -> {
                     // reload when favorite remove
-                    ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
+                    ApiFlatTransformer.INSTANCE.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
                             token -> s1Service.removeThreadFavorite(token, event.getFavId()))
                             .compose(RxJavaUtil.iOTransformer())
                             .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
