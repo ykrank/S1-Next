@@ -3,7 +3,7 @@ package me.ykrank.s1next.view.adapter;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 
-import me.ykrank.s1next.data.api.model.Thread;
+import me.ykrank.s1next.data.api.app.AppThread;
 import me.ykrank.s1next.view.adapter.delegate.FooterProgressAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
 
@@ -24,7 +24,7 @@ public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter {
         addAdapterDelegate(new FooterProgressAdapterDelegate(activity));
     }
 
-    public void setThreadInfo(@NonNull Thread threadInfo) {
+    public void setThreadInfo(@NonNull AppThread threadInfo) {
         postAdapterDelegate.setThreadInfo(threadInfo);
     }
 }

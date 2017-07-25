@@ -15,15 +15,15 @@ import javax.inject.Inject;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
-import me.ykrank.s1next.data.api.model.Post;
-import me.ykrank.s1next.data.api.model.Thread;
+import me.ykrank.s1next.data.api.app.AppPost;
+import me.ykrank.s1next.data.api.app.AppThread;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.databinding.ItemPostBinding;
 import me.ykrank.s1next.viewmodel.PostViewModel;
 import me.ykrank.s1next.widget.RxBus;
 import me.ykrank.s1next.widget.span.PostMovementMethod;
 
-public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAdapterDelegate.ItemViewBindingHolder> {
+public final class PostAdapterDelegate extends BaseAdapterDelegate<AppPost, PostAdapterDelegate.ItemViewBindingHolder> {
 
     @Inject
     RxBus mRxBus;
@@ -33,7 +33,7 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
     GeneralPreferencesManager mGeneralPreferencesManager;
 
     @Nullable
-    private Thread threadInfo;
+    private AppThread threadInfo;
 
     public PostAdapterDelegate(Activity activity) {
         super(activity);
@@ -53,8 +53,8 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
 
     @NonNull
     @Override
-    protected Class<Post> getTClass() {
-        return Post.class;
+    protected Class<AppPost> getTClass() {
+        return AppPost.class;
     }
 
     @Override
@@ -77,7 +77,7 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
     }
 
     @Override
-    public void onBindViewHolderData(Post post, int position, @NonNull ItemViewBindingHolder holder, @NonNull List<Object> payloads) {
+    public void onBindViewHolderData(AppPost post, int position, @NonNull ItemViewBindingHolder holder, @NonNull List<Object> payloads) {
         ItemPostBinding binding = holder.itemPostBinding;
 
         boolean selectable = mGeneralPreferencesManager.isPostSelectable();
@@ -106,7 +106,7 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
         }
     }
 
-    public void setThreadInfo(@NonNull Thread threadInfo) {
+    public void setThreadInfo(@NonNull AppThread threadInfo) {
         this.threadInfo = threadInfo;
     }
 

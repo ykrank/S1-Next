@@ -54,7 +54,7 @@ public final class ThreadListPagerFragment extends BaseRecyclerViewFragment<Thre
         super.onAttach(context);
 
         mPagerCallback = (PagerCallback) getFragmentManager().findFragmentByTag(
-                ThreadListFragment.TAG);
+                ThreadListFragment.Companion.getTAG());
         mSubForumsCallback = (SubForumsCallback) context;
     }
 

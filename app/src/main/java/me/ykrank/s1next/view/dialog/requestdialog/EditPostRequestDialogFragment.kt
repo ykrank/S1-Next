@@ -5,8 +5,8 @@ import android.os.Bundle
 import io.reactivex.Observable
 import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.api.model.Post
-import me.ykrank.s1next.data.api.model.Thread
+import me.ykrank.s1next.data.api.app.AppPost
+import me.ykrank.s1next.data.api.app.AppThread
 
 /**
  * A dialog requests to reply to post.
@@ -19,19 +19,15 @@ class EditPostRequestDialogFragment : BaseRequestDialogFragment<String>() {
 
     override fun getSourceObservable(): Observable<String> {
         val bundle = arguments
-        val mThread = bundle.getParcelable<Thread>(ARG_THREAD)
-        val mPost = bundle.getParcelable<Post>(ARG_POST)
+        val mThread: AppThread = bundle.getParcelable(ARG_THREAD)
+        val mPost:AppPost = bundle.getParcelable(ARG_POST)
         val title = bundle.getString(ARG_TITLE)
         val typeId = bundle.getString(ARG_TYPE_ID)
         val message = bundle.getString(ARG_MESSAGE)
 
-        if (mPost == null || mThread == null) {
-            return Observable.error<String>(NullPointerException())
-        }
-
-        val saveAsDraft = if (BuildConfig.DEBUG && mPost.isFirst) 1 else null
+        val saveAsDraft = if (BuildConfig.DEBUG && mPost.position == 1) 1 else null
         return flatMappedWithAuthenticityToken { token ->
-            mS1Service.editPost(mThread.fid, mThread.id, mPost.id, token, System.currentTimeMillis(),
+            mS1Service.editPost(mThread.fid, mThread.tid, mPost.pid, token, System.currentTimeMillis(),
                     typeId, title, message, 1, 1, saveAsDraft)
         }
     }
@@ -54,7 +50,7 @@ class EditPostRequestDialogFragment : BaseRequestDialogFragment<String>() {
         private val ARG_TITLE = "title"
         private val ARG_MESSAGE = "message"
 
-        fun newInstance(thread: Thread, post: Post, typeId: String?, title: String,
+        fun newInstance(thread: AppThread, post: AppPost, typeId: String?, title: String,
                         message: String): EditPostRequestDialogFragment {
             val fragment = EditPostRequestDialogFragment()
             val bundle = Bundle()

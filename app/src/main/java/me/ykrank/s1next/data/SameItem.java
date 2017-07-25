@@ -11,5 +11,5 @@ public interface SameItem {
      *
      * @return same or not
      */
-    boolean isSameItem(Object o);
+    boolean isSameItem(Object other);
 }

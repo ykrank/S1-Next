@@ -84,6 +84,11 @@ public final class BezelImageViewBindingAdapter {
     }
 
     @BindingAdapter("uid")
+    public static void loadAvatar(BezelImageView bezelImageView, int oldUid, int newUid) {
+        loadAvatar(bezelImageView, String.valueOf(oldUid), String.valueOf(newUid));
+    }
+
+    @BindingAdapter("uid")
     public static void loadAvatar(BezelImageView bezelImageView, String oldUid, String newUid) {
         if (TextUtils.equals(oldUid, newUid)) {
             return;

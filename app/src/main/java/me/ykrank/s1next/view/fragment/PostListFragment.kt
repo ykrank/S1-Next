@@ -22,7 +22,6 @@ import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.ThreadLink
-import me.ykrank.s1next.data.api.model.collection.Posts
 import me.ykrank.s1next.data.db.BlackListDbWrapper
 import me.ykrank.s1next.data.db.HistoryDbWrapper
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper
@@ -39,7 +38,6 @@ import me.ykrank.s1next.view.activity.NewRateActivity
 import me.ykrank.s1next.view.activity.ReplyActivity
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.dialog.PostSelectableChangeDialogFragment
-import me.ykrank.s1next.view.dialog.ThreadAttachmentDialogFragment
 import me.ykrank.s1next.view.dialog.ThreadFavouritesAddDialogFragment
 import me.ykrank.s1next.view.event.*
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate
@@ -72,9 +70,6 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     private lateinit var mThreadId: String
     private var mThreadTitle: String? = null
 
-    private var mThreadAttachment: Posts.ThreadAttachment? = null
-    private var mMenuThreadAttachment: MenuItem? = null
-
     private var readProgress: ReadProgress? = null
     private var tempReadProgress: ReadProgress? = null
     private val scrollState = PagerScrollState()
@@ -83,9 +78,8 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
 
     private val mPostListPagerAdapter: PostListPagerAdapter by lazy { PostListPagerAdapter(fragmentManager) }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        App.getAppComponent().inject(this)
         App.getAppComponent().inject(this)
 
         val bundle = arguments
@@ -110,13 +104,13 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
             if (jumpPage != 0) {
                 // we do not know the total page if we open this thread by URL
                 // so we set the jump page to total page
-                totalPages = jumpPage
+                setTotalPages(jumpPage)
                 currentPage = jumpPage - 1
             } else {
                 // +1 for original post
                 setTotalPageByPosts(thread.reliesCount + 1)
                 if (bundle.getBoolean(ARG_SHOULD_GO_TO_LAST_PAGE, false)) {
-                    currentPage = totalPages - 1
+                    currentPage = getTotalPages() - 1
                 }
             }
             saveHistory()
@@ -153,9 +147,9 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         mRxBus.get()
                 .ofType(EditPostEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
-                .subscribe { event ->
-                    val thread = event.thread
-                    val post = event.post
+                .subscribe {
+                    val thread = it.thread
+                    val post = it.post
                     EditPostActivity.startActivityForResultMessage(this, RequestCode.REQUEST_CODE_EDIT_POST, thread, post)
                 }
         mRxBus.get()
@@ -200,24 +194,17 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
 
         //Auto save read progress
         if (mReadProgressPrefManager.isSaveAuto) {
-            if (tempReadProgress != null) {
-                PostListPagerFragment.saveReadProgressBack(tempReadProgress)
-            }
+            tempReadProgress?.let { PostListPagerFragment.saveReadProgressBack(it) }
         }
         super.onDestroy()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.fragment_post, menu)
-
-        mMenuThreadAttachment = menu?.findItem(R.id.menu_thread_attachment)
-        if (mThreadAttachment == null) {
-            mMenuThreadAttachment?.isVisible = false
-        }
+        inflater.inflate(R.menu.fragment_post, menu)
 
         if (mReadProgressPrefManager.isSaveAuto) {
-            val saveMenu = menu?.findItem(R.id.menu_save_progress)
+            val saveMenu = menu.findItem(R.id.menu_save_progress)
             saveMenu?.isVisible = false
         }
     }
@@ -230,15 +217,8 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         mMenuQuickSideBarEnable?.isChecked = mGeneralPreferencesManager.isQuickSideBarEnable
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.menu_thread_attachment -> {
-                ThreadAttachmentDialogFragment.newInstance(mThreadAttachment).show(
-                        activity.supportFragmentManager,
-                        ThreadAttachmentDialogFragment.TAG)
-
-                return true
-            }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.menu_favourites_add -> {
                 if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(activity, mUser)) {
                     ThreadFavouritesAddDialogFragment.newInstance(mThreadId).show(
@@ -324,16 +304,16 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         }
     }
 
-    internal override fun getPagerAdapter(fragmentManager: FragmentManager): BaseViewPagerFragment.BaseFragmentStatePagerAdapter<*> {
+    override fun getPagerAdapter(fragmentManager: FragmentManager): BaseViewPagerFragment.BaseFragmentStatePagerAdapter<*> {
         return mPostListPagerAdapter
     }
 
-    internal override fun getTitleWithoutPosition(): CharSequence? {
+    override fun getTitleWithoutPosition(): CharSequence? {
         return mThreadTitle
     }
 
     override fun setTotalPageByPosts(threads: Int) {
-        totalPages = MathUtil.divide(threads, Api.POSTS_PER_PAGE)
+        setTotalPages(MathUtil.divide(threads, Api.POSTS_PER_PAGE))
         //save reply count in database
         try {
             mLastThreadInfoSubject.onNext(threads - 1)
@@ -349,16 +329,6 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
             setTitleWithPosition(currentPage)
             saveHistory()
         }
-    }
-
-    override fun setupThreadAttachment(threadAttachment: Posts.ThreadAttachment) {
-        this.mThreadAttachment = threadAttachment
-
-        // mMenuThreadAttachment = null when configuration changes (like orientation changes)
-        // but we don't need to care about the visibility of mMenuThreadAttachment
-        // because mThreadAttachment != null and we won't invoke
-        // mMenuThreadAttachment.setVisible(false) during onCreateOptionsMenu(Menu)
-        mMenuThreadAttachment?.isVisible = true
     }
 
     override fun onClick(v: View) {

@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.api.model.Post
-import me.ykrank.s1next.data.api.model.Thread
+import me.ykrank.s1next.data.api.app.AppPost
+import me.ykrank.s1next.data.api.app.AppThread
 import me.ykrank.s1next.view.fragment.EditPostFragment
 
 /**
@@ -22,8 +22,8 @@ class EditPostActivity : BaseActivity() {
         setupNavCrossIcon()
 
         val intent = intent
-        val mThread = intent.getParcelableExtra<Thread>(ARG_THREAD)
-        val mPost = intent.getParcelableExtra<Post>(ARG_POST)
+        val mThread = intent.getParcelableExtra<AppThread>(ARG_THREAD)
+        val mPost = intent.getParcelableExtra<AppPost>(ARG_POST)
         setTitle(R.string.title_new_thread)
 
         val fragmentManager = supportFragmentManager
@@ -53,7 +53,7 @@ class EditPostActivity : BaseActivity() {
         private val ARG_THREAD = "thread"
         private val ARG_POST = "post"
 
-        fun startActivityForResultMessage(fragment: Fragment, requestCode: Int, thread: Thread, post: Post) {
+        fun startActivityForResultMessage(fragment: Fragment, requestCode: Int, thread: AppThread, post: AppPost) {
             val intent = Intent(fragment.context, EditPostActivity::class.java)
             intent.putExtra(ARG_THREAD, thread)
             intent.putExtra(ARG_POST, post)

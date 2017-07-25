@@ -48,7 +48,7 @@
                 android:layout_toRightOf="@id/avatar"
                 android:includeFontPadding="false"
                 android:lines="1"
-                android:text="@{postViewModel.post.authorName}"
+                android:text="@{postViewModel.post.author}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
             <TextView
@@ -61,7 +61,7 @@
                 android:includeFontPadding="false"
                 android:lines="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                app:relativeDateTime="@{postViewModel.post.datetime}" />
+                app:relativeDateTime="@{postViewModel.post.dateline*1000}" />
 
             <!-- enable `textIsSelectable` in order to add click effect -->
             <!-- see https://code.google.com/p/android/issues/detail?id=13895 -->
@@ -87,16 +87,6 @@
                 android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 app:reply="@{postViewModel.post}" />
-
-            <TextView
-                style="?attr/buttonBarPositiveButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_reply"
-                android:layout_centerHorizontal="true"
-                android:onClick="@{postViewModel::onExtraHtmlClick}"
-                android:text="@string/click_to_extra_html"
-                android:visibility="@{postViewModel.post.trade?View.VISIBLE:View.GONE}" />
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

@@ -8,13 +8,17 @@ import io.rx_cache2.DynamicKeyGroup;
 import io.rx_cache2.EvictDynamicKey;
 import io.rx_cache2.EvictDynamicKeyGroup;
 import io.rx_cache2.LifeCache;
+import io.rx_cache2.Migration;
 import io.rx_cache2.Reply;
+import io.rx_cache2.SchemeMigration;
 
 /**
  * RxCache provide cache for retrofit
  * Created by ykrank on 2017/4/22.
  */
-
+@SchemeMigration({
+        @Migration(version = 1, evictClasses = {String.class})
+})
 public interface ApiCacheProvider {
 
     @LifeCache(duration = 1, timeUnit = TimeUnit.MINUTES)
