@@ -39,10 +39,10 @@ public final class LoginDialogFragment extends ProgressDialogFragment<AccountRes
     protected Observable<AccountResultWrapper> getSourceObservable() {
         String username = getArguments().getString(ARG_USERNAME);
         String password = getArguments().getString(ARG_PASSWORD);
-        return mS1Service.login(username, password).map(resultWrapper -> {
+        return getMS1Service().login(username, password).map(resultWrapper -> {
             // the authenticity token is not fresh after login
             resultWrapper.getData().setAuthenticityToken(null);
-            mUserValidator.validate(resultWrapper.getData());
+            getMUserValidator().validate(resultWrapper.getData());
             return resultWrapper;
         });
     }

@@ -17,8 +17,8 @@ class SimpleSupportProgressDialogFragment : ProgressDialogFragment<Any>() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun getSourceObservable(): Observable<Any>? {
-        return null
+    override fun getSourceObservable(): Observable<Any> {
+        return Observable.empty()
     }
 
     override fun onNext(data: Any) {

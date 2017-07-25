@@ -6,8 +6,9 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonGetter
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.google.common.base.Objects
 import me.ykrank.s1next.data.SameItem
+import me.ykrank.s1next.data.api.app.model.AppListWrapper
+import me.ykrank.s1next.data.api.app.model.BaseAppList
 import me.ykrank.s1next.data.db.BlackListDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.util.L
@@ -18,13 +19,15 @@ import java.util.regex.Pattern
 /**
  * Created by ykrank on 2017/7/22.
  */
-class AppPostsWrapper() : BaseAppListWrapper<AppPost>() {
+class AppPostsWrapper() : AppListWrapper<AppPost>() {
     @JsonIgnore
     var thread: AppThread? = null
 
     @JsonCreator
-    constructor(@JsonProperty("data") data: BaseAppList<AppPost>) : this() {
-        data.list = filterPostList(data.list)
+    constructor(@JsonProperty("data") data: BaseAppList<AppPost>?) : this() {
+        if (data != null) {
+            data.list = filterPostList(data.list)
+        }
         this.data = data
     }
 
@@ -78,7 +81,7 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
     @JsonProperty("authorid")
     var authorId: Int = 0
     @JsonProperty("dateline")
-    var dateline: Int = 0
+    var dateline: Long = 0
     @JsonIgnore
     var message: String? = null
         @JsonGetter("message")
@@ -96,7 +99,7 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
     @JsonProperty("grouptitle")
     var groupTitle: String? = null
     @JsonProperty("gorupid")
-    var gorupId: Int = 0
+    var groupId: Int = 0
     @JsonProperty("avatarurl")
     var avatarUrl: String? = null
     @JsonIgnore
@@ -243,7 +246,7 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
         tid = parcel.readInt()
         author = parcel.readString()
         authorId = parcel.readInt()
-        dateline = parcel.readInt()
+        dateline = parcel.readLong()
         message = parcel.readString()
         status = parcel.readInt()
         position = parcel.readInt()
@@ -251,7 +254,7 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
         e = parcel.readInt()
         customStatus = parcel.readString()
         groupTitle = parcel.readString()
-        gorupId = parcel.readInt()
+        groupId = parcel.readInt()
         avatarUrl = parcel.readString()
     }
 
@@ -262,7 +265,7 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
         dest.writeInt(tid)
         dest.writeString(author)
         dest.writeInt(authorId)
-        dest.writeInt(dateline)
+        dest.writeLong(dateline)
         dest.writeString(message)
         dest.writeInt(status)
         dest.writeInt(position)
@@ -270,7 +273,7 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
         dest.writeInt(e)
         dest.writeString(customStatus)
         dest.writeString(groupTitle)
-        dest.writeInt(gorupId)
+        dest.writeInt(groupId)
         dest.writeString(avatarUrl)
     }
 
@@ -296,9 +299,7 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other?.javaClass != javaClass) return false
-
-        other as AppPost
+        if (other !is AppPost) return false
 
         if (pid != other.pid) return false
         if (fid != other.fid) return false
@@ -312,7 +313,7 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
         if (e != other.e) return false
         if (customStatus != other.customStatus) return false
         if (groupTitle != other.groupTitle) return false
-        if (gorupId != other.gorupId) return false
+        if (groupId != other.groupId) return false
         if (avatarUrl != other.avatarUrl) return false
         if (hide != other.hide) return false
         if (remark != other.remark) return false
@@ -326,14 +327,14 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
         result = 31 * result + tid
         result = 31 * result + (author?.hashCode() ?: 0)
         result = 31 * result + authorId
-        result = 31 * result + dateline
+        result = 31 * result + dateline.hashCode()
         result = 31 * result + status
         result = 31 * result + position
         result = 31 * result + blocked.hashCode()
         result = 31 * result + e
         result = 31 * result + (customStatus?.hashCode() ?: 0)
         result = 31 * result + (groupTitle?.hashCode() ?: 0)
-        result = 31 * result + gorupId
+        result = 31 * result + groupId
         result = 31 * result + (avatarUrl?.hashCode() ?: 0)
         result = 31 * result + hide.hashCode()
         result = 31 * result + (remark?.hashCode() ?: 0)

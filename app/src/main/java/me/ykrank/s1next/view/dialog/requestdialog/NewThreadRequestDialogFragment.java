@@ -52,7 +52,7 @@ public final class NewThreadRequestDialogFragment extends BaseRequestDialogFragm
         Integer saveAsDraft = BuildConfig.DEBUG ? 1 : null;
 
         return flatMappedWithAuthenticityToken(token ->
-                mS1Service.newThread(forumId, token, System.currentTimeMillis(), typeId, title, message, 1, 1, saveAsDraft));
+                getMS1Service().newThread(forumId, token, System.currentTimeMillis(), typeId, title, message, 1, 1, saveAsDraft));
     }
 
     @Override
