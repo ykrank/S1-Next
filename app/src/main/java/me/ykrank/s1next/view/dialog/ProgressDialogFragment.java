@@ -17,8 +17,8 @@ import com.github.ykrank.androidlifecycle.event.FragmentEvent;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import kotlin.jvm.functions.Function1;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.AppComponent;
 import me.ykrank.s1next.data.User;
@@ -113,9 +113,9 @@ public abstract class ProgressDialogFragment<D> extends BaseDialogFragment {
     protected abstract Observable<D> getSourceObservable();
 
     /**
-     * @see ApiFlatTransformer#flatMappedWithAuthenticityToken(S1Service, UserValidator, User, Function)
+     * @see ApiFlatTransformer#flatMappedWithAuthenticityToken(S1Service, UserValidator, User, Function1)
      */
-    final protected Observable<D> flatMappedWithAuthenticityToken(Function<String, Observable<D>> func) {
+    final protected Observable<D> flatMappedWithAuthenticityToken(Function1<String, Observable<D>> func) {
         return ApiFlatTransformer.INSTANCE.flatMappedWithAuthenticityToken(mS1Service, mUserValidator, mUser, func);
     }
 
