@@ -4,6 +4,7 @@ import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.User
+import me.ykrank.s1next.data.api.app.model.AppResult
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper
 import me.ykrank.s1next.data.api.model.wrapper.OriginWrapper
 import me.ykrank.s1next.util.L
@@ -24,6 +25,11 @@ object ApiFlatTransformer {
                     is OriginWrapper<*> -> {
                         if (!it.error.isNullOrEmpty()) {
                             return@flatMap Observable.error<T>(ApiException.ApiServerException(it.error))
+                        }
+                    }
+                    is AppResult -> {
+                        if (!it.success) {
+                            return@flatMap Observable.error<T>(ApiException.AppServerException(it.message, it.code))
                         }
                     }
                 }
