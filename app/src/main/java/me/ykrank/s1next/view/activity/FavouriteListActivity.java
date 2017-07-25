@@ -27,7 +27,7 @@ public final class FavouriteListActivity extends BaseActivity {
         if (savedInstanceState == null) {
             Fragment fragment = new FavouriteListFragment();
             getSupportFragmentManager().beginTransaction().add(R.id.frame_layout, fragment,
-                    FavouriteListFragment.TAG).commit();
+                    FavouriteListFragment.Companion.getTAG()).commit();
         }
     }
 }

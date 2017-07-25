@@ -44,7 +44,7 @@ public final class FavouriteListPagerFragment extends BaseRecyclerViewFragment<B
         super.onAttach(context);
 
         mPagerCallback = (PagerCallback) getFragmentManager().findFragmentByTag(
-                FavouriteListFragment.TAG);
+                FavouriteListFragment.Companion.getTAG());
     }
 
     @Override

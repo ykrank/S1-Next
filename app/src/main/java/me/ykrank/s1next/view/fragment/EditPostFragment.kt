@@ -10,9 +10,9 @@ import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.S1Service
-import me.ykrank.s1next.data.api.model.Post
+import me.ykrank.s1next.data.api.app.AppPost
+import me.ykrank.s1next.data.api.app.AppThread
 import me.ykrank.s1next.data.api.model.PostEditor
-import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.ThreadType
 import me.ykrank.s1next.databinding.FragmentEditPostBinding
 import me.ykrank.s1next.util.ErrorUtil
@@ -31,8 +31,8 @@ class EditPostFragment : BasePostFragment() {
     @Inject
     internal lateinit var mS1Service: S1Service
 
-    private lateinit var mThread: Thread
-    private lateinit var mPost: Post
+    private lateinit var mThread: AppThread
+    private lateinit var mPost: AppPost
     private var isHost: Boolean = false
 
     private lateinit var binding: FragmentEditPostBinding
@@ -41,10 +41,10 @@ class EditPostFragment : BasePostFragment() {
         binding = FragmentEditPostBinding.inflate(inflater, container, false)
         initCreateView(binding.layoutPost)
 
-        mThread = arguments.getParcelable<Thread>(ARG_THREAD)
-        mPost = arguments.getParcelable<Post>(ARG_POST)
+        mThread = arguments.getParcelable(ARG_THREAD)
+        mPost = arguments.getParcelable(ARG_POST)
 
-        isHost = mPost.isFirst
+        isHost = mPost.position == 1
         binding.host = isHost
         L.leaveMsg(String.format("EditPostFragment##post:%s", mPost))
 
@@ -108,7 +108,7 @@ class EditPostFragment : BasePostFragment() {
     }
 
     private fun init() {
-        mS1Service.getEditPostInfo(mThread.fid, mThread.id, mPost.id)
+        mS1Service.getEditPostInfo(mThread.fid, mThread.tid, mPost.pid)
                 .map<PostEditor>({ PostEditor.fromHtml(it) })
                 .compose(RxJavaUtil.iOTransformer<PostEditor>())
                 .to(AndroidRxDispose.withObservable<PostEditor>(this, FragmentEvent.DESTROY))
@@ -148,7 +148,7 @@ class EditPostFragment : BasePostFragment() {
         private val ARG_THREAD = "thread"
         private val ARG_POST = "post"
 
-        fun newInstance(thread: Thread, post: Post): EditPostFragment {
+        fun newInstance(thread: AppThread, post: AppPost): EditPostFragment {
             val fragment = EditPostFragment()
             val bundle = Bundle()
             bundle.putParcelable(ARG_THREAD, thread)

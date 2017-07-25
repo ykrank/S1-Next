@@ -18,8 +18,8 @@ import org.apache.commons.lang3.StringUtils;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.Api;
-import me.ykrank.s1next.data.api.model.Post;
-import me.ykrank.s1next.data.api.model.Thread;
+import me.ykrank.s1next.data.api.app.AppPost;
+import me.ykrank.s1next.data.api.app.AppThread;
 import me.ykrank.s1next.util.ContextUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.UserHomeActivity;
@@ -33,8 +33,8 @@ import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
 
 public final class PostViewModel {
 
-    public final ObservableField<Post> post = new ObservableField<>();
-    public final ObservableField<Thread> thread = new ObservableField<>();
+    public final ObservableField<AppPost> post = new ObservableField<>();
+    public final ObservableField<AppThread> thread = new ObservableField<>();
     public final ObservableField<CharSequence> floor = new ObservableField<>();
     private final RxBus rxBus;
     private final User user;
@@ -52,11 +52,11 @@ public final class PostViewModel {
     }
 
     private CharSequence getPostFloor() {
-        Post p = post.get();
+        AppPost p = post.get();
         if (p == null) {
             return null;
         }
-        String text = "#" + p.getCount();
+        String text = "#" + p.getPosition();
         Spannable spannable = new SpannableString(text);
         URLSpan urlSpan = new URLSpan(StringUtils.EMPTY) {
             @Override
@@ -70,25 +70,25 @@ public final class PostViewModel {
 
     public void onAvatarClick(View v) {
         //Clear avatar false cache
-        AvatarUrlsCache.clearUserAvatarCache(post.get().getAuthorId());
+        AvatarUrlsCache.clearUserAvatarCache("" + post.get().getAuthorId());
         //个人主页
-        UserHomeActivity.start(v.getContext(), post.get().getAuthorId(), post.get().getAuthorName(), v);
+        UserHomeActivity.start(v.getContext(), "" + post.get().getAuthorId(), post.get().getAuthor(), v);
     }
 
     public boolean onLongClick(View v) {
         //长按显示抹布菜单
         PopupMenu popup = new PopupMenu(v.getContext(), v);
-        Post postData = post.get();
+        AppPost postData = post.get();
         popup.setOnMenuItemClickListener((MenuItem menuitem) -> {
             switch (menuitem.getItemId()) {
                 case R.id.menu_popup_blacklist:
                     if (menuitem.getTitle().equals(v.getContext().getString(R.string.menu_blacklist_remove))) {
-                        BlacklistMenuAction.removeBlacklist(rxBus, Integer.valueOf(postData.getAuthorId()), postData.getAuthorName());
+                        BlacklistMenuAction.removeBlacklist(rxBus, postData.getAuthorId(), postData.getAuthor());
                     } else {
                         Context context = ContextUtils.getBaseContext(v.getContext());
                         if (context instanceof FragmentActivity) {
                             BlacklistMenuAction.addBlacklist((FragmentActivity) context,
-                                    Integer.valueOf(postData.getAuthorId()), postData.getAuthorName());
+                                    postData.getAuthorId(), postData.getAuthor());
                         } else {
                             L.report(new IllegalStateException("抹布时头像Context不为FragmentActivity" + context));
                         }
@@ -99,7 +99,7 @@ public final class PostViewModel {
             }
         });
         popup.inflate(R.menu.popup_blacklist);
-        if (postData.isHide()) {
+        if (postData.getHide()) {
             popup.getMenu().findItem(R.id.menu_popup_blacklist).setTitle(R.string.menu_blacklist_remove);
         }
         popup.show();
@@ -127,7 +127,7 @@ public final class PostViewModel {
         popup.inflate(R.menu.popup_post_floor);
 
         MenuItem editPostMenuItem = popup.getMenu().findItem(R.id.menu_popup_edit);
-        if (user.isLogged() && TextUtils.equals(user.getUid(), post.get().getAuthorId())) {
+        if (user.isLogged() && TextUtils.equals(user.getUid(), String.valueOf(post.get().getAuthorId()))) {
             editPostMenuItem.setVisible(true);
         } else {
             editPostMenuItem.setVisible(false);
@@ -136,19 +136,14 @@ public final class PostViewModel {
     }
 
     public void onReplyClick(View v) {
-        rxBus.post(new QuoteEvent(String.valueOf(post.get().getId()), post.get().getCount()));
+        rxBus.post(new QuoteEvent(String.valueOf(post.get().getPid()), String.valueOf(post.get().getPosition())));
     }
 
     public void onRateClick(View v) {
-        rxBus.post(new RateEvent(thread.get().getId(), String.valueOf(post.get().getId())));
+        rxBus.post(new RateEvent(String.valueOf(post.get().getTid()), String.valueOf(post.get().getPid())));
     }
 
     public void onEditClick(View v) {
         rxBus.post(new EditPostEvent(post.get(), thread.get()));
-    }
-
-    public void onExtraHtmlClick(View v) {
-        String url = String.format("%sforum.php?mod=viewthread&do=tradeinfo&tid=%s&pid=%s", Api.BASE_URL, thread.get().getId(), post.get().getId() + 1);
-        WebViewActivity.Companion.start(v.getContext(), url, true);
     }
 }

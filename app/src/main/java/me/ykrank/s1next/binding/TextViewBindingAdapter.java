@@ -28,10 +28,10 @@ import java.io.InputStreamReader;
 import io.reactivex.Single;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
+import me.ykrank.s1next.data.api.app.AppPost;
 import me.ykrank.s1next.data.api.model.Forum;
 import me.ykrank.s1next.data.api.model.HomeThread;
 import me.ykrank.s1next.data.api.model.PmGroup;
-import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.db.dbmodel.History;
 import me.ykrank.s1next.data.pref.ThemeManager;
@@ -156,11 +156,11 @@ public final class TextViewBindingAdapter {
     }
 
     @BindingAdapter({"reply"})
-    public static void setReply(TextView textView, Post post) {
+    public static void setReply(TextView textView, AppPost post) {
         if (post == null) {
             return;
         }
-        if (post.isHide()) {
+        if (post.getHide()) {
             textView.setText("");
             String text = "[" + textView.getContext().getString(R.string.user_in_blacklist) + "]";
             if (!TextUtils.isEmpty(post.getRemark())) {
@@ -170,11 +170,8 @@ public final class TextViewBindingAdapter {
             ViewUtil.concatWithTwoSpacesForRtlSupport(textView, text);
             return;
         }
-        if (post.isTrade()) {
-            setHtmlWithImage(textView, post.getExtraHtml());
-        } else {
-            setHtmlWithImage(textView, post.getReply());
-        }
+
+        setHtmlWithImage(textView, post.getMessage());
     }
 
     @BindingAdapter({"imgHtml"})

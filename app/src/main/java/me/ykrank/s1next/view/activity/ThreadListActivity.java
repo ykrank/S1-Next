@@ -69,9 +69,9 @@ public final class ThreadListActivity extends BaseActivity
         L.leaveMsg("ThreadListActivity##forum" + forum);
 
         if (savedInstanceState == null) {
-            Fragment fragment = ThreadListFragment.newInstance(forum);
+            Fragment fragment = ThreadListFragment.Companion.newInstance(forum);
             getSupportFragmentManager().beginTransaction().add(R.id.frame_layout, fragment,
-                    ThreadListFragment.TAG).commit();
+                    ThreadListFragment.Companion.getTAG()).commit();
         }
     }
 
