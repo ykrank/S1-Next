@@ -48,17 +48,11 @@ public class ApiException extends Exception {
     }
 
     public static class AppServerException extends ApiException {
+        private final int code;
 
-        public AppServerException(String msg) {
+        public AppServerException(String msg, int code) {
             super(msg);
-        }
-
-        public AppServerException(Throwable cause) {
-            super(cause);
-        }
-
-        public AppServerException(String message, Throwable cause) {
-            super(message, cause);
+            this.code = code;
         }
     }
 }
