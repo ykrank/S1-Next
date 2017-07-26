@@ -14,7 +14,7 @@ object AppApiUtil {
         if (throwable is ApiException.AppServerException) {
             if (throwable.code == 503) {
 //                user.appSecureToken = null
-                LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(activity, user)
+                LoginPromptDialogFragment.showAppLoginPromptDialogIfNeeded(activity, user)
                 return true
             }
         }

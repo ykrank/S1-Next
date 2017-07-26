@@ -20,6 +20,7 @@ import io.reactivex.subjects.PublishSubject
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
+import me.ykrank.s1next.data.api.app.model.AppThread
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.ThreadLink
 import me.ykrank.s1next.data.db.BlackListDbWrapper
@@ -312,7 +313,17 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         return mThreadTitle
     }
 
-    override fun setTotalPageByPosts(threads: Int) {
+    override var threadInfo: AppThread? = null
+        get() = field
+        set(value) {
+            if (field == null && value != null) {
+                field = value
+                setThreadTitle(value.subject)
+                setTotalPageByPosts(value.replies + 1)
+            }
+        }
+
+    private fun setTotalPageByPosts(threads: Int) {
         setTotalPages(MathUtil.divide(threads, Api.POSTS_PER_PAGE))
         //save reply count in database
         try {
@@ -323,8 +334,8 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
 
     }
 
-    override fun setThreadTitle(title: CharSequence) {
-        if (!TextUtils.isEmpty(title) && !TextUtils.equals(mThreadTitle, title.toString())) {
+    private fun setThreadTitle(title: CharSequence?) {
+        if (!title.isNullOrEmpty() && mThreadTitle != title.toString()) {
             mThreadTitle = title.toString()
             setTitleWithPosition(currentPage)
             saveHistory()

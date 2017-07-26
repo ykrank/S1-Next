@@ -28,7 +28,7 @@ import java.io.InputStreamReader;
 import io.reactivex.Single;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
-import me.ykrank.s1next.data.api.app.AppPost;
+import me.ykrank.s1next.data.api.app.model.AppPost;
 import me.ykrank.s1next.data.api.model.Forum;
 import me.ykrank.s1next.data.api.model.HomeThread;
 import me.ykrank.s1next.data.api.model.PmGroup;

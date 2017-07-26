@@ -10,8 +10,8 @@ import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.S1Service
-import me.ykrank.s1next.data.api.app.AppPost
-import me.ykrank.s1next.data.api.app.AppThread
+import me.ykrank.s1next.data.api.app.model.AppPost
+import me.ykrank.s1next.data.api.app.model.AppThread
 import me.ykrank.s1next.data.api.model.PostEditor
 import me.ykrank.s1next.data.api.model.ThreadType
 import me.ykrank.s1next.databinding.FragmentEditPostBinding
