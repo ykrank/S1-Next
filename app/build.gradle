@@ -22,8 +22,8 @@ android {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 31
-        versionName '1.2.2'
+        versionCode 32
+        versionName '1.3.0'
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
@@ -119,7 +119,6 @@ dependencies {
 
     compile 'com.google.dagger:dagger:2.11'
     kapt 'com.google.dagger:dagger-compiler:2.11'
-    kapt 'com.google.dagger:dagger-compiler:2.10'
     // https://github.com/google/dagger/issues/95
 //    provided 'javax.annotation:javax.annotation-api:1.3'
 
