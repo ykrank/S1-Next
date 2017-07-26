@@ -17,11 +17,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
+import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.app.model.AppPost;
 import me.ykrank.s1next.data.api.app.model.AppThread;
 import me.ykrank.s1next.util.ContextUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.UserHomeActivity;
+import me.ykrank.s1next.view.activity.WebViewActivity;
 import me.ykrank.s1next.view.event.EditPostEvent;
 import me.ykrank.s1next.view.event.QuoteEvent;
 import me.ykrank.s1next.view.event.RateEvent;
@@ -143,5 +145,10 @@ public final class PostViewModel {
 
     public void onEditClick(View v) {
         rxBus.post(new EditPostEvent(post.get(), thread.get()));
+    }
+
+    public void onTradeHtmlClick(View v) {
+        String url = String.format("%sforum.php?mod=viewthread&do=tradeinfo&tid=%s&pid=%s", Api.BASE_URL, post.get().getTid(), post.get().getPid() + 1);
+        WebViewActivity.Companion.start(v.getContext(), url, true);
     }
 }
