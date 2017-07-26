@@ -36,11 +36,28 @@ class LoginPromptDialogFragment : BaseDialogFragment() {
         private val APP_LOGIN = "app_login"
 
         /**
-         * Show [LoginPromptDialogFragment] if user hasn't logged in.
+         * Show [LoginPromptDialogFragment] if user hasn't logged in api server.
 
          * @return `true` if we need to show dialog, `false` otherwise.
          */
         fun showLoginPromptDialogIfNeeded(fragmentActivity: FragmentActivity, user: User): Boolean {
+            if (!user.isLogged) {
+                val fragment = LoginPromptDialogFragment()
+                fragment.show(fragmentActivity.supportFragmentManager,
+                        LoginPromptDialogFragment.TAG)
+
+                return true
+            }
+
+            return false
+        }
+
+        /**
+         * Show [LoginPromptDialogFragment] if user hasn't logged in api server or app server.
+
+         * @return `true` if we need to show dialog, `false` otherwise.
+         */
+        fun showAppLoginPromptDialogIfNeeded(fragmentActivity: FragmentActivity, user: User): Boolean {
             if (!user.isLogged || !user.isAppLogged) {
                 val fragment = LoginPromptDialogFragment()
                 val bundle = Bundle()

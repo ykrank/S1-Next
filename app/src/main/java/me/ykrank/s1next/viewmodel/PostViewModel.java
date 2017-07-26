@@ -17,13 +17,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
-import me.ykrank.s1next.data.api.Api;
-import me.ykrank.s1next.data.api.app.AppPost;
-import me.ykrank.s1next.data.api.app.AppThread;
+import me.ykrank.s1next.data.api.app.model.AppPost;
+import me.ykrank.s1next.data.api.app.model.AppThread;
 import me.ykrank.s1next.util.ContextUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.UserHomeActivity;
-import me.ykrank.s1next.view.activity.WebViewActivity;
 import me.ykrank.s1next.view.event.EditPostEvent;
 import me.ykrank.s1next.view.event.QuoteEvent;
 import me.ykrank.s1next.view.event.RateEvent;

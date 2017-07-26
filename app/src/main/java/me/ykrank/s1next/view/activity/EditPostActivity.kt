@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.api.app.AppPost
-import me.ykrank.s1next.data.api.app.AppThread
+import me.ykrank.s1next.data.api.app.model.AppPost
+import me.ykrank.s1next.data.api.app.model.AppThread
 import me.ykrank.s1next.view.fragment.EditPostFragment
 
 /**

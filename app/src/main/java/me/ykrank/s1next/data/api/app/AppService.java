@@ -4,6 +4,7 @@ import io.reactivex.Observable;
 import me.ykrank.s1next.data.api.app.model.AppDataWrapper;
 import me.ykrank.s1next.data.api.app.model.AppLoginResult;
 import me.ykrank.s1next.data.api.app.model.AppResult;
+import me.ykrank.s1next.data.api.app.model.AppThread;
 import me.ykrank.s1next.data.api.app.model.AppUserInfo;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -28,4 +29,8 @@ public interface AppService {
     @FormUrlEncoded
     @POST("thread/page")
     Observable<String> getPostsWrapper(@Field("sid") String security, @Field("tid") String threadId, @Field("pageNo") int page);
+
+    @FormUrlEncoded
+    @POST("thread")
+    Observable<AppDataWrapper<AppThread>> getThreadInfo(@Field("sid") String security, @Field("tid") String threadId);
 }

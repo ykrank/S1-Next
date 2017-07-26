@@ -1,4 +1,4 @@
-package me.ykrank.s1next.data.api.app
+package me.ykrank.s1next.data.api.app.model
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -15,6 +15,25 @@ import paperparcel.PaperParcelable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @PaperParcel
 class AppThread() : PaperParcelable, SameItem {
+    /**
+     * tid : 1355959
+     * fid : 4
+     * typeid : 12
+     * author : 斯卡哈
+     * authorid : 458227
+     * subject : 真·三国无双8~[情报更新]中文配音，争取国行同步发售
+     * dateline : 1481978677
+     * lastpost : 1501079733
+     * views : 38586
+     * replies : 552
+     * special : 0
+     * type : 新闻
+     * statusicon : normal
+     * pid : 34516097
+     * fname : 游戏论坛
+     * favorite : false
+     */
+
     @JsonProperty("tid")
     var tid: Int = 0
     @JsonProperty("fid")
@@ -28,9 +47,9 @@ class AppThread() : PaperParcelable, SameItem {
     @JsonProperty("subject")
     var subject: String? = null
     @JsonProperty("dateline")
-    var dateline: Int = 0
+    var dateline: Long = 0
     @JsonProperty("lastpost")
-    var lastPost: Int = 0
+    var lastPost: Long = 0
     @JsonProperty("views")
     var views: Int = 0
     @JsonProperty("replies")
@@ -55,8 +74,8 @@ class AppThread() : PaperParcelable, SameItem {
         author = parcel.readString()
         authorid = parcel.readInt()
         subject = parcel.readString()
-        dateline = parcel.readInt()
-        lastPost = parcel.readInt()
+        dateline = parcel.readLong()
+        lastPost = parcel.readLong()
         views = parcel.readInt()
         replies = parcel.readInt()
         special = parcel.readString()
@@ -75,8 +94,8 @@ class AppThread() : PaperParcelable, SameItem {
         dest.writeString(author)
         dest.writeInt(authorid)
         dest.writeString(subject)
-        dest.writeInt(dateline)
-        dest.writeInt(lastPost)
+        dest.writeLong(dateline)
+        dest.writeLong(lastPost)
         dest.writeInt(views)
         dest.writeInt(replies)
         dest.writeString(special)
@@ -135,8 +154,8 @@ class AppThread() : PaperParcelable, SameItem {
         result = 31 * result + (author?.hashCode() ?: 0)
         result = 31 * result + authorid
         result = 31 * result + (subject?.hashCode() ?: 0)
-        result = 31 * result + dateline
-        result = 31 * result + lastPost
+        result = 31 * result + dateline.hashCode()
+        result = 31 * result + lastPost.hashCode()
         result = 31 * result + views
         result = 31 * result + replies
         result = 31 * result + (special?.hashCode() ?: 0)

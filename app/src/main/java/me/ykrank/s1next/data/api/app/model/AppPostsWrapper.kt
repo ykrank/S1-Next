@@ -1,4 +1,4 @@
-package me.ykrank.s1next.data.api.app
+package me.ykrank.s1next.data.api.app.model
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonGetter
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import me.ykrank.s1next.data.SameItem
-import me.ykrank.s1next.data.api.app.model.AppListWrapper
-import me.ykrank.s1next.data.api.app.model.BaseAppList
 import me.ykrank.s1next.data.db.BlackListDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.util.L

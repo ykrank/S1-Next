@@ -5,8 +5,8 @@ import android.os.Bundle
 import io.reactivex.Observable
 import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.api.app.AppPost
-import me.ykrank.s1next.data.api.app.AppThread
+import me.ykrank.s1next.data.api.app.model.AppPost
+import me.ykrank.s1next.data.api.app.model.AppThread
 
 /**
  * A dialog requests to reply to post.
@@ -20,7 +20,7 @@ class EditPostRequestDialogFragment : BaseRequestDialogFragment<String>() {
     override fun getSourceObservable(): Observable<String> {
         val bundle = arguments
         val mThread: AppThread = bundle.getParcelable(ARG_THREAD)
-        val mPost:AppPost = bundle.getParcelable(ARG_POST)
+        val mPost: AppPost = bundle.getParcelable(ARG_POST)
         val title = bundle.getString(ARG_TITLE)
         val typeId = bundle.getString(ARG_TYPE_ID)
         val message = bundle.getString(ARG_MESSAGE)

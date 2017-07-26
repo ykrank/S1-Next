@@ -18,6 +18,8 @@ import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.BiFunction
+import io.reactivex.schedulers.Schedulers
 import io.rx_cache2.DynamicKeyGroup
 import io.rx_cache2.EvictDynamicKeyGroup
 import io.rx_cache2.Source
@@ -25,9 +27,11 @@ import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.app.AppApiUtil
-import me.ykrank.s1next.data.api.app.AppPost
-import me.ykrank.s1next.data.api.app.AppPostsWrapper
 import me.ykrank.s1next.data.api.app.AppService
+import me.ykrank.s1next.data.api.app.model.AppDataWrapper
+import me.ykrank.s1next.data.api.app.model.AppPost
+import me.ykrank.s1next.data.api.app.model.AppPostsWrapper
+import me.ykrank.s1next.data.api.app.model.AppThread
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
@@ -248,7 +252,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), OnQui
     }
 
     internal override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Observable<AppPostsWrapper> {
-        return apiCacheProvider.getPostsWrapper(appService.getPostsWrapper(mUser.appSecureToken, mThreadId, mPageNum),
+        val postObservable = apiCacheProvider.getPostsWrapper(appService.getPostsWrapper(mUser.appSecureToken, mThreadId, mPageNum),
                 DynamicKeyGroup(mThreadId + "," + mPageNum, mUser.key),
                 EvictDynamicKeyGroup(isForceLoading || mPageNum >= mPagerCallback?.getTotalPages() ?: 0))
                 .flatMap<AppPostsWrapper> {
@@ -261,9 +265,22 @@ class PostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), OnQui
                     }
                     Observable.just(wrapper)
                 }
+        val mThreadInfo = mPagerCallback?.threadInfo
+        if (mThreadInfo != null) {
+            return postObservable.map { it.apply { it.thread = mThreadInfo } }
+        } else {
+            return postObservable.observeOn(Schedulers.io())
+                    .zipWith(appService.getThreadInfo(mUser.appSecureToken, mThreadId),
+                            BiFunction<AppPostsWrapper, AppDataWrapper<AppThread>, AppPostsWrapper> { p0, p1 ->
+                                p0.thread = p1.data
+                                return@BiFunction p0
+                            })
+        }
+
     }
 
     internal override fun onNext(data: AppPostsWrapper) {
+        mPagerCallback?.threadInfo = data.thread
         val pullUpToRefresh = isPullUpToRefresh
         var postList: List<AppPost>? = null
 
@@ -314,13 +331,6 @@ class PostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), OnQui
                     // clear this argument after redirecting
                     arguments.putString(ARG_QUOTE_POST_ID, null)
                 }
-            }
-
-            if (postListInfo != null) {
-                // we have no title if we open a thread link in our app
-                postListInfo.subject?.let { mPagerCallback?.setThreadTitle(it) }
-
-                mPagerCallback?.setTotalPageByPosts(postListInfo.replies + 1)
             }
 
             initQuickSidebar(mPageNum, postList.size)
@@ -388,13 +398,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), OnQui
          */
         fun getTotalPages(): Int
 
-        /**
-         * A callback to set actual total pages
-         * which used for [android.support.v4.view.PagerAdapter]。
-         */
-        fun setTotalPageByPosts(threads: Int)
-
-        fun setThreadTitle(title: CharSequence)
+        var threadInfo: AppThread?
     }
 
     companion object {
