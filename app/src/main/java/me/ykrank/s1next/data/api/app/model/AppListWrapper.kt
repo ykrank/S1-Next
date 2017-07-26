@@ -13,5 +13,5 @@ class BaseAppList<D> {
     var totalCount: Int = 0
     @JsonProperty("webpageurl")
     var webPageUrl: String? = null
-    var list: List<D> = arrayListOf()
+    var list: ArrayList<D> = arrayListOf()
 }

@@ -252,7 +252,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), OnQui
     }
 
     internal override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Observable<AppPostsWrapper> {
-        val postObservable = apiCacheProvider.getPostsWrapper(appService.getPostsWrapper(mUser.appSecureToken, mThreadId, mPageNum),
+        var postObservable = apiCacheProvider.getPostsWrapper(appService.getPostsWrapper(mUser.appSecureToken, mThreadId, mPageNum),
                 DynamicKeyGroup(mThreadId + "," + mPageNum, mUser.key),
                 EvictDynamicKeyGroup(isForceLoading || mPageNum >= mPagerCallback?.getTotalPages() ?: 0))
                 .flatMap<AppPostsWrapper> {
@@ -267,16 +267,29 @@ class PostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), OnQui
                 }
         val mThreadInfo = mPagerCallback?.threadInfo
         if (mThreadInfo != null) {
-            return postObservable.map { it.apply { it.thread = mThreadInfo } }
+            postObservable = postObservable.map { it.apply { it.thread = mThreadInfo } }
         } else {
-            return postObservable.observeOn(Schedulers.io())
+            postObservable = postObservable.observeOn(Schedulers.io())
                     .zipWith(appService.getThreadInfo(mUser.appSecureToken, mThreadId),
                             BiFunction<AppPostsWrapper, AppDataWrapper<AppThread>, AppPostsWrapper> { p0, p1 ->
                                 p0.thread = p1.data
                                 return@BiFunction p0
                             })
         }
-
+        return postObservable.map {
+            //二手交易区
+            if (it.thread?.fid == 115) {
+                val data = it.data
+                //first position in first page, message is empty
+                if (data != null && data.pageNo == 1) {
+                    val post = data.list[0]
+                    if (post.position == 1 && post.message.isNullOrBlank()) {
+                        data.list[0].trade = true
+                    }
+                }
+            }
+            return@map it
+        }
     }
 
     internal override fun onNext(data: AppPostsWrapper) {

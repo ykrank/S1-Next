@@ -33,8 +33,8 @@ class AppPostsWrapper() : AppListWrapper<AppPost>() {
         /**
          * @see .filterPost
          */
-        fun filterPostList(oPosts: List<AppPost>): List<AppPost> {
-            return oPosts.mapNotNull { filterPost(it) }
+        fun filterPostList(oPosts: ArrayList<AppPost>): ArrayList<AppPost> {
+            return oPosts.mapNotNullTo(arrayListOf(), { filterPost(it) })
         }
 
         /**
@@ -104,6 +104,31 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
     var hide: Boolean = false
     @JsonIgnore
     var remark: String? = null
+    @JsonIgnore
+    var trade: Boolean = false
+    @JsonIgnore
+    var extraHtml: String? = null
+
+    constructor(parcel: Parcel) : this() {
+        pid = parcel.readInt()
+        fid = parcel.readInt()
+        tid = parcel.readInt()
+        author = parcel.readString()
+        authorId = parcel.readInt()
+        dateline = parcel.readLong()
+        status = parcel.readInt()
+        position = parcel.readInt()
+        blocked = parcel.readByte() != 0.toByte()
+        e = parcel.readInt()
+        customStatus = parcel.readString()
+        groupTitle = parcel.readString()
+        groupId = parcel.readInt()
+        avatarUrl = parcel.readString()
+        hide = parcel.readByte() != 0.toByte()
+        remark = parcel.readString()
+        trade = parcel.readByte() != 0.toByte()
+        extraHtml = parcel.readString()
+    }
 
     @JsonCreator
     constructor(@JsonProperty("message") message: String?) : this() {
@@ -238,47 +263,6 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
         return reply
     }
 
-    constructor(parcel: Parcel) : this() {
-        pid = parcel.readInt()
-        fid = parcel.readInt()
-        tid = parcel.readInt()
-        author = parcel.readString()
-        authorId = parcel.readInt()
-        dateline = parcel.readLong()
-        message = parcel.readString()
-        status = parcel.readInt()
-        position = parcel.readInt()
-        blocked = parcel.readByte() != 0.toByte()
-        e = parcel.readInt()
-        customStatus = parcel.readString()
-        groupTitle = parcel.readString()
-        groupId = parcel.readInt()
-        avatarUrl = parcel.readString()
-    }
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        super.writeToParcel(dest, flags)
-        dest.writeInt(pid)
-        dest.writeInt(fid)
-        dest.writeInt(tid)
-        dest.writeString(author)
-        dest.writeInt(authorId)
-        dest.writeLong(dateline)
-        dest.writeString(message)
-        dest.writeInt(status)
-        dest.writeInt(position)
-        dest.writeByte(if (blocked) 1 else 0)
-        dest.writeInt(e)
-        dest.writeString(customStatus)
-        dest.writeString(groupTitle)
-        dest.writeInt(groupId)
-        dest.writeString(avatarUrl)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
     override fun isSameItem(other: Any?): Boolean {
         if (this === other) return true
         if (other?.javaClass != javaClass) return false
@@ -295,9 +279,37 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
         return super.clone() as AppPost
     }
 
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        super.writeToParcel(parcel, flags)
+        parcel.writeInt(pid)
+        parcel.writeInt(fid)
+        parcel.writeInt(tid)
+        parcel.writeString(author)
+        parcel.writeInt(authorId)
+        parcel.writeLong(dateline)
+        parcel.writeInt(status)
+        parcel.writeInt(position)
+        parcel.writeByte(if (blocked) 1 else 0)
+        parcel.writeInt(e)
+        parcel.writeString(customStatus)
+        parcel.writeString(groupTitle)
+        parcel.writeInt(groupId)
+        parcel.writeString(avatarUrl)
+        parcel.writeByte(if (hide) 1 else 0)
+        parcel.writeString(remark)
+        parcel.writeByte(if (trade) 1 else 0)
+        parcel.writeString(extraHtml)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is AppPost) return false
+        if (other?.javaClass != javaClass) return false
+
+        other as AppPost
 
         if (pid != other.pid) return false
         if (fid != other.fid) return false
@@ -315,6 +327,8 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
         if (avatarUrl != other.avatarUrl) return false
         if (hide != other.hide) return false
         if (remark != other.remark) return false
+        if (trade != other.trade) return false
+        if (extraHtml != other.extraHtml) return false
 
         return true
     }
@@ -336,6 +350,8 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
         result = 31 * result + (avatarUrl?.hashCode() ?: 0)
         result = 31 * result + hide.hashCode()
         result = 31 * result + (remark?.hashCode() ?: 0)
+        result = 31 * result + trade.hashCode()
+        result = 31 * result + (extraHtml?.hashCode() ?: 0)
         return result
     }
 
@@ -348,4 +364,6 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
             return arrayOfNulls(size)
         }
     }
+
+
 }
