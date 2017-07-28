@@ -1,6 +1,5 @@
 package me.ykrank.s1next.view.fragment;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -109,8 +108,8 @@ public final class AppLoginFragment extends BaseFragment {
             focusView.requestFocus();
         } else {
             // start to log in
-            AppLoginDialogFragment.newInstance(username, password, questionId, answer).show(getFragmentManager(),
-                    AppLoginDialogFragment.TAG);
+            AppLoginDialogFragment.Companion.newInstance(username, password, questionId, answer).show(getFragmentManager(),
+                    AppLoginDialogFragment.Companion.getTAG());
         }
     }
 }
