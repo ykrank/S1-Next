@@ -33,6 +33,7 @@
 
 # Jackson Model
 -keep public class me.ykrank.s1next.data.api.model.** { *; }
+-keep public class me.ykrank.s1next.data.api.app.model.** { *; }
 -keep public class me.ykrank.s1next.data.cache.** { *; }
 -keep public class me.ykrank.s1next.data.db.dbmodel.ReadProgress { *; }
 # GreenDao model

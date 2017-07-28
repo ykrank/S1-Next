@@ -167,6 +167,14 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                                 { this.afterBlackListChange() })
                     }
                 }
+        mRxBus.get()
+                .ofType(AppNotLoginEvent::class.java)
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
+                .subscribe {
+                    if (!LoginPromptDialogFragment.isShowing(fragmentManager)) {
+                        LoginPromptDialogFragment.showAppLoginPromptDialogIfNeeded(fragmentManager, mUser)
+                    }
+                }
     }
 
     override fun onPause() {
@@ -221,7 +229,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_favourites_add -> {
-                if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(activity, mUser)) {
+                if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(fragmentManager, mUser)) {
                     ThreadFavouritesAddDialogFragment.newInstance(mThreadId).show(
                             activity.supportFragmentManager,
                             ThreadFavouritesAddDialogFragment.TAG)
@@ -404,7 +412,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     }
 
     private fun startReplyActivity(quotePostId: String?, quotePostCount: String?) {
-        if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(activity, mUser)) {
+        if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(fragmentManager, mUser)) {
             return
         }
 
@@ -413,7 +421,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     }
 
     private fun startRateActivity(threadId: String?, postId: String?) {
-        if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(activity, mUser)) {
+        if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(fragmentManager, mUser)) {
             return
         }
 

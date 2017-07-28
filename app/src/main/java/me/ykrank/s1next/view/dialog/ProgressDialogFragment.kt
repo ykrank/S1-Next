@@ -128,7 +128,7 @@ abstract class ProgressDialogFragment<D> : BaseDialogFragment() {
     /**
      * @see me.ykrank.s1next.view.activity.BaseActivity.showShortText
      */
-    protected fun showShortText(text: CharSequence) {
+    protected fun showShortText(text: CharSequence?) {
         (activity as CoordinatorLayoutAnchorDelegate).showShortText(text)
     }
 
@@ -141,7 +141,7 @@ abstract class ProgressDialogFragment<D> : BaseDialogFragment() {
      * *
      * @see BaseActivity.onActivityResult
      */
-    protected fun showShortTextAndFinishCurrentActivity(text: CharSequence) {
+    protected fun showShortTextAndFinishCurrentActivity(text: CharSequence?) {
         val activity = activity
         val app = activity.applicationContext as App
         // Because Activity#onActivityResult(int, int, Intent) is always invoked when current app

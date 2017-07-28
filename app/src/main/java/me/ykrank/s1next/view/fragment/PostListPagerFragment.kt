@@ -40,6 +40,7 @@ import me.ykrank.s1next.util.L
 import me.ykrank.s1next.util.LooperUtil
 import me.ykrank.s1next.util.RxJavaUtil
 import me.ykrank.s1next.view.adapter.PostListRecyclerViewAdapter
+import me.ykrank.s1next.view.event.AppLoginEvent
 import me.ykrank.s1next.view.event.PostSelectableChangeEvent
 import me.ykrank.s1next.view.event.QuickSidebarEnableChangeEvent
 import me.ykrank.s1next.view.fragment.PostListPagerFragment.PagerCallback
@@ -127,13 +128,18 @@ class PostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), OnQui
 
         mRxBus.get()
                 .ofType(PostSelectableChangeEvent::class.java)
-                .to(AndroidRxDispose.withObservable<PostSelectableChangeEvent>(this, FragmentEvent.DESTROY_VIEW))
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
                 .subscribe({ mRecyclerAdapter.notifyDataSetChanged() }, { super.onError(it) })
 
         mRxBus.get()
                 .ofType(QuickSidebarEnableChangeEvent::class.java)
-                .to(AndroidRxDispose.withObservable<QuickSidebarEnableChangeEvent>(this, FragmentEvent.DESTROY_VIEW))
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
                 .subscribe({ invalidateQuickSidebarVisible() }, { super.onError(it) })
+
+        mRxBus.get()
+                .ofType(AppLoginEvent::class.java)
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
+                .subscribe { startSwipeRefresh() }
     }
 
     override fun onAttach(context: Context?) {
@@ -351,7 +357,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), OnQui
     }
 
     internal override fun onError(throwable: Throwable) {
-        if (AppApiUtil.appLoginIfNeed(activity, mUser, throwable)) {
+        if (AppApiUtil.appLoginIfNeed(mRxBus, throwable)) {
             return
         }
 
