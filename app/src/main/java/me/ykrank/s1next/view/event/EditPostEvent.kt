@@ -1,6 +1,6 @@
 package me.ykrank.s1next.view.event
 
-import me.ykrank.s1next.data.api.app.model.AppPost
-import me.ykrank.s1next.data.api.app.model.AppThread
+import me.ykrank.s1next.data.api.model.Post
+import me.ykrank.s1next.data.api.model.Thread
 
-data class EditPostEvent(val post: AppPost, val thread: AppThread)
+data class EditPostEvent(val post: Post, val thread: Thread)

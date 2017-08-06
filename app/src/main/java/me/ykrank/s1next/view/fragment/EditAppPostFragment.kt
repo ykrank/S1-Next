@@ -10,15 +10,16 @@ import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.S1Service
-import me.ykrank.s1next.data.api.model.Post
+import me.ykrank.s1next.data.api.app.model.AppPost
+import me.ykrank.s1next.data.api.app.model.AppThread
 import me.ykrank.s1next.data.api.model.PostEditor
-import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.ThreadType
 import me.ykrank.s1next.databinding.FragmentEditPostBinding
 import me.ykrank.s1next.util.ErrorUtil
 import me.ykrank.s1next.util.L
 import me.ykrank.s1next.util.RxJavaUtil
 import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter
+import me.ykrank.s1next.view.dialog.requestdialog.EditAppPostRequestDialogFragment
 import me.ykrank.s1next.view.dialog.requestdialog.EditPostRequestDialogFragment
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
 import javax.inject.Inject
@@ -26,13 +27,13 @@ import javax.inject.Inject
 /**
  * A Fragment shows [EditText] to let the user enter reply.
  */
-class EditPostFragment : BasePostFragment() {
+class EditAppPostFragment : BasePostFragment() {
 
     @Inject
     internal lateinit var mS1Service: S1Service
 
-    private lateinit var mThread: Thread
-    private lateinit var mPost: Post
+    private lateinit var mThread: AppThread
+    private lateinit var mPost: AppPost
     private var isHost: Boolean = false
 
     private lateinit var binding: FragmentEditPostBinding
@@ -41,12 +42,12 @@ class EditPostFragment : BasePostFragment() {
         binding = FragmentEditPostBinding.inflate(inflater, container, false)
         initCreateView(binding.layoutPost)
 
-        mThread = arguments.getParcelable<Thread>(ARG_THREAD)
-        mPost = arguments.getParcelable<Post>(ARG_POST)
+        mThread = arguments.getParcelable(ARG_THREAD)
+        mPost = arguments.getParcelable(ARG_POST)
 
-        isHost = mPost.isFirst
+        isHost = mPost.position == 1
         binding.host = isHost
-        L.leaveMsg(String.format("EditPostFragment##post:%s", mPost))
+        L.leaveMsg(String.format("EditAppPostFragment##post:%s", mPost))
 
         return binding.root
     }
@@ -81,7 +82,7 @@ class EditPostFragment : BasePostFragment() {
             return true
         }
 
-        EditPostRequestDialogFragment.newInstance(mThread, mPost, typeId, title, message)
+        EditAppPostRequestDialogFragment.newInstance(mThread, mPost, typeId, title, message)
                 .show(fragmentManager, EditPostRequestDialogFragment.TAG)
 
         return true
@@ -108,7 +109,7 @@ class EditPostFragment : BasePostFragment() {
     }
 
     private fun init() {
-        mS1Service.getEditPostInfo(mThread.fid.toInt(), mThread.id.toInt(), mPost.id)
+        mS1Service.getEditPostInfo(mThread.fid, mThread.tid, mPost.pid)
                 .map<PostEditor>({ PostEditor.fromHtml(it) })
                 .compose(RxJavaUtil.iOTransformer<PostEditor>())
                 .to(AndroidRxDispose.withObservable<PostEditor>(this, FragmentEvent.DESTROY))
@@ -143,13 +144,13 @@ class EditPostFragment : BasePostFragment() {
 
     companion object {
 
-        val TAG: String = EditPostFragment::class.java.name
+        val TAG: String = EditAppPostFragment::class.java.name
 
         private val ARG_THREAD = "thread"
         private val ARG_POST = "post"
 
-        fun newInstance(thread: Thread, post: Post): EditPostFragment {
-            val fragment = EditPostFragment()
+        fun newInstance(thread: AppThread, post: AppPost): EditAppPostFragment {
+            val fragment = EditAppPostFragment()
             val bundle = Bundle()
             bundle.putParcelable(ARG_THREAD, thread)
             bundle.putParcelable(ARG_POST, post)

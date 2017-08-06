@@ -4,6 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.ykrank.s1next.view.fragment.PostListFragment">
     <item
+        android:id="@+id/menu_thread_attachment"
+        android:icon="?attr/iconMenuThreadAttachment"
+        android:orderInCategory="21"
+        android:title="@string/menu_thread_attachment"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/menu_favourites_add"
         android:orderInCategory="22"
         android:title="@string/menu_favourites_add"

@@ -20,9 +20,9 @@ import io.reactivex.subjects.PublishSubject
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
-import me.ykrank.s1next.data.api.app.model.AppThread
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.ThreadLink
+import me.ykrank.s1next.data.api.model.collection.Posts
 import me.ykrank.s1next.data.db.BlackListDbWrapper
 import me.ykrank.s1next.data.db.HistoryDbWrapper
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper
@@ -39,6 +39,7 @@ import me.ykrank.s1next.view.activity.NewRateActivity
 import me.ykrank.s1next.view.activity.ReplyActivity
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.dialog.PostSelectableChangeDialogFragment
+import me.ykrank.s1next.view.dialog.ThreadAttachmentDialogFragment
 import me.ykrank.s1next.view.dialog.ThreadFavouritesAddDialogFragment
 import me.ykrank.s1next.view.event.*
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate
@@ -70,6 +71,9 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
 
     private lateinit var mThreadId: String
     private var mThreadTitle: String? = null
+
+    private var mThreadAttachment: Posts.ThreadAttachment? = null
+    private var mMenuThreadAttachment: MenuItem? = null
 
     private var readProgress: ReadProgress? = null
     private var tempReadProgress: ReadProgress? = null
@@ -167,14 +171,6 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                                 { this.afterBlackListChange() })
                     }
                 }
-        mRxBus.get()
-                .ofType(AppNotLoginEvent::class.java)
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
-                .subscribe {
-                    if (!LoginPromptDialogFragment.isShowing(fragmentManager)) {
-                        LoginPromptDialogFragment.showAppLoginPromptDialogIfNeeded(fragmentManager, mUser)
-                    }
-                }
     }
 
     override fun onPause() {
@@ -212,6 +208,11 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.fragment_post, menu)
 
+        mMenuThreadAttachment = menu.findItem(R.id.menu_thread_attachment)
+        if (mThreadAttachment == null) {
+            mMenuThreadAttachment?.isVisible = false
+        }
+
         if (mReadProgressPrefManager.isSaveAuto) {
             val saveMenu = menu.findItem(R.id.menu_save_progress)
             saveMenu?.isVisible = false
@@ -228,6 +229,13 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.menu_thread_attachment -> {
+                ThreadAttachmentDialogFragment.newInstance(mThreadAttachment).show(
+                        activity.supportFragmentManager,
+                        ThreadAttachmentDialogFragment.TAG)
+
+                return true
+            }
             R.id.menu_favourites_add -> {
                 if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(fragmentManager, mUser)) {
                     ThreadFavouritesAddDialogFragment.newInstance(mThreadId).show(
@@ -321,13 +329,13 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         return mThreadTitle
     }
 
-    override var threadInfo: AppThread? = null
+    override var threadInfo: Thread? = null
         get() = field
         set(value) {
             if (field == null && value != null) {
                 field = value
-                setThreadTitle(value.subject)
-                setTotalPageByPosts(value.replies + 1)
+                setThreadTitle(value.title)
+                setTotalPageByPosts(value.reliesCount + 1)
             }
         }
 
@@ -348,6 +356,16 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
             setTitleWithPosition(currentPage)
             saveHistory()
         }
+    }
+
+    override fun setupThreadAttachment(threadAttachment: Posts.ThreadAttachment) {
+        this.mThreadAttachment = threadAttachment
+
+        // mMenuThreadAttachment = null when configuration changes (like orientation changes)
+        // but we don't need to care about the visibility of mMenuThreadAttachment
+        // because mThreadAttachment != null and we won't invoke
+        // mMenuThreadAttachment.setVisible(false) during onCreateOptionsMenu(Menu)
+        mMenuThreadAttachment?.isVisible = true
     }
 
     override fun onClick(v: View) {

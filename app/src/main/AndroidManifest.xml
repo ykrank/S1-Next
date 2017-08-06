@@ -86,6 +86,10 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
+            android:name=".view.activity.AppPostListActivity"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
             android:name=".view.activity.PostListGatewayActivity"
             android:theme="@style/Theme.Translucent.Light">
             <intent-filter>

@@ -32,6 +32,7 @@ import me.ykrank.s1next.data.api.app.model.AppPost;
 import me.ykrank.s1next.data.api.model.Forum;
 import me.ykrank.s1next.data.api.model.HomeThread;
 import me.ykrank.s1next.data.api.model.PmGroup;
+import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.db.dbmodel.History;
 import me.ykrank.s1next.data.pref.ThemeManager;
@@ -174,6 +175,28 @@ public final class TextViewBindingAdapter {
         setHtmlWithImage(textView, post.getMessage());
     }
 
+    @BindingAdapter({"reply"})
+    public static void setReply(TextView textView, Post post) {
+        if (post == null) {
+            return;
+        }
+        if (post.isHide()) {
+            textView.setText("");
+            String text = "[" + textView.getContext().getString(R.string.user_in_blacklist) + "]";
+            if (!TextUtils.isEmpty(post.getRemark())) {
+                text += "-[" + post.getRemark() + "]";
+            }
+            // add reply's blacklist hint
+            ViewUtil.concatWithTwoSpacesForRtlSupport(textView, text);
+            return;
+        }
+        if (post.isTrade()) {
+            setHtmlWithImage(textView, post.getExtraHtml());
+        } else {
+            setHtmlWithImage(textView, post.getReply());
+        }
+    }
+
     @BindingAdapter({"imgHtml"})
     public static void setHtmlWithImage(TextView textView, @Nullable String html) {
         if (TextUtils.isEmpty(html)) {
@@ -181,7 +204,8 @@ public final class TextViewBindingAdapter {
         } else {
             // use GlideImageGetter to show images in TextView
             //noinspection deprecation
-            Single.fromCallable(() -> HtmlCompat.fromHtml(html, GlideImageGetter.get(textView), new TagHandler()))
+            Single.just(GlideImageGetter.get(textView))
+                    .map(f -> HtmlCompat.fromHtml(html, f, new TagHandler()))
                     .compose(RxJavaUtil.computationSingleTransformer())
                     .subscribe(textView::setText, L::report);
         }
