@@ -35,6 +35,7 @@ import me.ykrank.s1next.view.activity.PostListGatewayActivity;
 import me.ykrank.s1next.view.activity.SearchActivity;
 import me.ykrank.s1next.view.activity.UserHomeActivity;
 import me.ykrank.s1next.view.adapter.SubForumArrayAdapter;
+import me.ykrank.s1next.view.adapter.delegate.AppPostAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.FavouriteAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.ForumAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmGroupsAdapterDelegate;
@@ -49,6 +50,7 @@ import me.ykrank.s1next.view.dialog.DiscardEditPromptDialogFragment;
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
 import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment;
+import me.ykrank.s1next.view.fragment.AppPostListPagerFragment;
 import me.ykrank.s1next.view.fragment.BaseFragment;
 import me.ykrank.s1next.view.fragment.BasePostFragment;
 import me.ykrank.s1next.view.fragment.EditPostFragment;
@@ -251,4 +253,8 @@ public interface AppComponent {
     void inject(AppLoginDialogFragment fragment);
 
     void inject(LoginPromptDialogFragment fragment);
+
+    void inject(AppPostAdapterDelegate appPostAdapterDelegate);
+
+    void inject(AppPostListPagerFragment fragment);
 }

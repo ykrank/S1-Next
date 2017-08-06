@@ -5,13 +5,13 @@ import android.os.Bundle
 import io.reactivex.Observable
 import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.api.model.Post
-import me.ykrank.s1next.data.api.model.Thread
+import me.ykrank.s1next.data.api.app.model.AppPost
+import me.ykrank.s1next.data.api.app.model.AppThread
 
 /**
  * A dialog requests to reply to post.
  */
-class EditPostRequestDialogFragment : BaseRequestDialogFragment<String>() {
+class EditAppPostRequestDialogFragment : BaseRequestDialogFragment<String>() {
 
     override fun getProgressMessage(): CharSequence? {
         return getText(R.string.dialog_progress_message_reply)
@@ -19,19 +19,15 @@ class EditPostRequestDialogFragment : BaseRequestDialogFragment<String>() {
 
     override fun getSourceObservable(): Observable<String> {
         val bundle = arguments
-        val mThread = bundle.getParcelable<Thread>(ARG_THREAD)
-        val mPost = bundle.getParcelable<Post>(ARG_POST)
+        val mThread: AppThread = bundle.getParcelable(ARG_THREAD)
+        val mPost: AppPost = bundle.getParcelable(ARG_POST)
         val title = bundle.getString(ARG_TITLE)
         val typeId = bundle.getString(ARG_TYPE_ID)
         val message = bundle.getString(ARG_MESSAGE)
 
-        if (mPost == null || mThread == null) {
-            return Observable.error<String>(NullPointerException())
-        }
-
-        val saveAsDraft = if (BuildConfig.DEBUG && mPost.isFirst) 1 else null
+        val saveAsDraft = if (BuildConfig.DEBUG && mPost.position == 1) 1 else null
         return flatMappedWithAuthenticityToken { token ->
-            mS1Service.editPost(mThread.fid.toInt(), mThread.id.toInt(), mPost.id, token, System.currentTimeMillis(),
+            mS1Service.editPost(mThread.fid, mThread.tid, mPost.pid, token, System.currentTimeMillis(),
                     typeId, title, message, 1, 1, saveAsDraft)
         }
     }
@@ -46,7 +42,7 @@ class EditPostRequestDialogFragment : BaseRequestDialogFragment<String>() {
 
     companion object {
 
-        val TAG: String = EditPostRequestDialogFragment::class.java.name
+        val TAG: String = EditAppPostRequestDialogFragment::class.java.name
 
         private val ARG_THREAD = "thread"
         private val ARG_POST = "post"
@@ -54,9 +50,9 @@ class EditPostRequestDialogFragment : BaseRequestDialogFragment<String>() {
         private val ARG_TITLE = "title"
         private val ARG_MESSAGE = "message"
 
-        fun newInstance(thread: Thread, post: Post, typeId: String?, title: String,
-                        message: String): EditPostRequestDialogFragment {
-            val fragment = EditPostRequestDialogFragment()
+        fun newInstance(thread: AppThread, post: AppPost, typeId: String?, title: String,
+                        message: String): EditAppPostRequestDialogFragment {
+            val fragment = EditAppPostRequestDialogFragment()
             val bundle = Bundle()
             bundle.putParcelable(ARG_THREAD, thread)
             bundle.putParcelable(ARG_POST, post)

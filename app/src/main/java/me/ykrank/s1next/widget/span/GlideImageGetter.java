@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
@@ -32,6 +33,7 @@ import com.bumptech.glide.request.target.ViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.github.ykrank.androidautodispose.AndroidRxDispose;
 import com.github.ykrank.androidlifecycle.event.ViewEvent;
+import com.uber.autodispose.SingleScoper;
 
 import java.util.Collections;
 import java.util.Set;
@@ -64,6 +66,7 @@ public final class GlideImageGetter
 
     private final Context mContext;
     private final TextView mTextView;
+    private final SingleScoper<RequestBuilder<Drawable>> imageGetterScoper;
     private final DataTrackAgent trackAgent;
 
     /**
@@ -77,6 +80,7 @@ public final class GlideImageGetter
     protected GlideImageGetter(Context context, TextView textView) {
         this.mContext = context;
         this.mTextView = textView;
+        this.imageGetterScoper = AndroidRxDispose.withSingle(mTextView, ViewEvent.DESTROY);
         this.trackAgent = App.getAppComponent().getDataTrackAgent();
 
         // save Drawable.Callback in TextView
@@ -90,7 +94,9 @@ public final class GlideImageGetter
         initRectHolder();
     }
 
-    public static synchronized GlideImageGetter get(TextView textView) {
+    @MainThread
+    public static GlideImageGetter get(TextView textView) {
+
         Object object = textView.getTag(R.id.tag_drawable_callback);
         if (object == null) {
             return new GlideImageGetter(textView.getContext(), textView);
@@ -181,7 +187,7 @@ public final class GlideImageGetter
                                             ImageGetterViewTarget imageGetterViewTarget) {
         Single.just(glideRequestBuilder)
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .to(AndroidRxDispose.withSingle(mTextView, ViewEvent.DESTROY))
+                .to(imageGetterScoper)
                 .subscribe(builder -> builder.into(imageGetterViewTarget), L::report);
     }
 

@@ -4,16 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.api.model.Post
-import me.ykrank.s1next.data.api.model.Thread
-import me.ykrank.s1next.view.fragment.EditPostFragment
+import me.ykrank.s1next.data.api.app.model.AppPost
+import me.ykrank.s1next.data.api.app.model.AppThread
+import me.ykrank.s1next.view.fragment.EditAppPostFragment
 
 /**
  * An Activity to new a thread.
  */
-class EditPostActivity : BaseActivity() {
+class EditAppPostActivity : BaseActivity() {
 
-    private lateinit var mFragment: EditPostFragment
+    private lateinit var mFragment: EditAppPostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,18 +22,18 @@ class EditPostActivity : BaseActivity() {
         setupNavCrossIcon()
 
         val intent = intent
-        val mThread = intent.getParcelableExtra<Thread>(ARG_THREAD)
-        val mPost = intent.getParcelableExtra<Post>(ARG_POST)
+        val mThread = intent.getParcelableExtra<AppThread>(ARG_THREAD)
+        val mPost = intent.getParcelableExtra<AppPost>(ARG_POST)
         setTitle(R.string.title_new_thread)
 
         val fragmentManager = supportFragmentManager
-        val fragment = fragmentManager.findFragmentByTag(EditPostFragment.TAG)
+        val fragment = fragmentManager.findFragmentByTag(EditAppPostFragment.TAG)
         if (fragment == null) {
-            mFragment = EditPostFragment.newInstance(mThread, mPost)
+            mFragment = EditAppPostFragment.newInstance(mThread, mPost)
             fragmentManager.beginTransaction().add(R.id.frame_layout, mFragment,
-                    EditPostFragment.TAG).commit()
+                    EditAppPostFragment.TAG).commit()
         } else {
-            mFragment = fragment as EditPostFragment
+            mFragment = fragment as EditAppPostFragment
         }
     }
 
@@ -53,8 +53,8 @@ class EditPostActivity : BaseActivity() {
         private val ARG_THREAD = "thread"
         private val ARG_POST = "post"
 
-        fun startActivityForResultMessage(fragment: Fragment, requestCode: Int, thread: Thread, post: Post) {
-            val intent = Intent(fragment.context, EditPostActivity::class.java)
+        fun startActivityForResultMessage(fragment: Fragment, requestCode: Int, thread: AppThread, post: AppPost) {
+            val intent = Intent(fragment.context, EditAppPostActivity::class.java)
             intent.putExtra(ARG_THREAD, thread)
             intent.putExtra(ARG_POST, post)
             fragment.startActivityForResult(intent, requestCode)
