@@ -49,9 +49,9 @@ class Post : PaperParcelable, Cloneable, SameItem {
             // This may be the best way to deal with it though
             // we may replace something wrong by accident.
             // Also maps some colors, see mapColors(String).
-            field = mapColors(tReply).replace("<imgwidth=\"".toRegex(), "<img width=\"")
+            tReply = mapColors(tReply).replace("<imgwidth=\"".toRegex(), "<img width=\"")
 
-            processAttachment()
+            field = processAttachment(tReply)
         }
     @JsonIgnore
     var isFirst: Boolean = false
@@ -63,7 +63,7 @@ class Post : PaperParcelable, Cloneable, SameItem {
     var attachmentMap: Map<Int, Attachment> = mapOf()
         set(value) {
             field = value
-            processAttachment()
+            reply = processAttachment(reply)
         }
     /**
      * is in blacklist
@@ -247,22 +247,25 @@ class Post : PaperParcelable, Cloneable, SameItem {
      * Also concats the missing img tag from attachment.
      * See https://github.com/floating-cat/S1-Next/issues/7
      */
-    private fun processAttachment() {
+    private fun processAttachment(reply: String?): String? {
         if (reply == null) {
-            return
+            return null
         }
 
+        var tReply: String = reply
         for ((key, attachment) in attachmentMap) {
             val imgTag = "<img src=\"" + attachment.url + "\" />"
-            val replyCopy = reply
+            val replyCopy = tReply
             // get the original string if there is nothing to replace
-            reply = reply?.replace("[attach]$key[/attach]", imgTag)
+            tReply = tReply.replace("[attach]$key[/attach]", imgTag)
 
-            if (reply === replyCopy) {
+            if (replyCopy === tReply) {
                 // concat the missing img tag
-                reply += imgTag
+                tReply += imgTag
             }
         }
+
+        return tReply
     }
 
     override fun equals(other: Any?): Boolean {
