@@ -248,4 +248,5 @@
     <string name="click_to_trade_html">ClickToTradeHtml</string>
     <string name="clear_image_cache_error">Clear image cache error</string>
     <string name="clear_image_cache_success">Clear image cache success</string>
+    <string name="click_to_cast_dark_magic">CLICK TO CAST DARK MAGIC</string>
 </resources>

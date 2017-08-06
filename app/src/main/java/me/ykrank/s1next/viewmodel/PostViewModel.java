@@ -22,6 +22,7 @@ import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.util.ContextUtils;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.view.activity.AppPostListActivity;
 import me.ykrank.s1next.view.activity.UserHomeActivity;
 import me.ykrank.s1next.view.activity.WebViewActivity;
 import me.ykrank.s1next.view.event.EditPostEvent;
@@ -150,5 +151,9 @@ public final class PostViewModel {
     public void onExtraHtmlClick(View v) {
         String url = String.format("%sforum.php?mod=viewthread&do=tradeinfo&tid=%s&pid=%s", Api.BASE_URL, thread.get().getId(), post.get().getId() + 1);
         WebViewActivity.Companion.start(v.getContext(), url, true);
+    }
+
+    public void onAppPostClick(View v) {
+        AppPostListActivity.Companion.start(v.getContext(), thread.get(), post.get().getPage(), String.valueOf(post.get().getId()));
     }
 }

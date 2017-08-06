@@ -34,7 +34,7 @@ import me.ykrank.s1next.util.ContextUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.util.TransitionUtils;
-import me.ykrank.s1next.view.event.BlackListAddEvent;
+import me.ykrank.s1next.view.event.BlackListChangeEvent;
 import me.ykrank.s1next.view.internal.BlacklistMenuAction;
 import me.ykrank.s1next.widget.AppBarOffsetChangedListener;
 import me.ykrank.s1next.widget.glide.model.ImageInfo;
@@ -184,7 +184,7 @@ public class UserHomeActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         mRxBus.get()
-                .ofType(BlackListAddEvent.class)
+                .ofType(BlackListChangeEvent.class)
                 .to(AndroidRxDispose.withObservable(this, ActivityEvent.PAUSE))
                 .subscribe(blackListEvent -> {
                     BlackListDbWrapper dbWrapper = BlackListDbWrapper.getInstance();

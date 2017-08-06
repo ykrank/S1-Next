@@ -37,6 +37,7 @@ import me.ykrank.s1next.util.L
 import me.ykrank.s1next.util.LooperUtil
 import me.ykrank.s1next.util.RxJavaUtil
 import me.ykrank.s1next.view.adapter.PostListRecyclerViewAdapter
+import me.ykrank.s1next.view.event.BlackListChangeEvent
 import me.ykrank.s1next.view.event.PostSelectableChangeEvent
 import me.ykrank.s1next.view.event.QuickSidebarEnableChangeEvent
 import me.ykrank.s1next.view.fragment.PostListPagerFragment.PagerCallback
@@ -128,6 +129,11 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                 .ofType(QuickSidebarEnableChangeEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
                 .subscribe({ invalidateQuickSidebarVisible() }, { super.onError(it) })
+
+        mRxBus.get()
+                .ofType(BlackListChangeEvent::class.java)
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
+                .subscribe { startBlackListRefresh() }
     }
 
     override fun onAttach(context: Context?) {
@@ -331,6 +337,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                 }
             }
 
+            mPagerCallback?.threadInfo = postListInfo
             if (posts.threadAttachment != null) {
                 mPagerCallback?.setupThreadAttachment(posts.threadAttachment)
             }
