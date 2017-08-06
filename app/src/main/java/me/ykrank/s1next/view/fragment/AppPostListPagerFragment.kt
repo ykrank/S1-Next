@@ -3,7 +3,6 @@ package me.ykrank.s1next.view.fragment
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.util.Pair
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -37,6 +36,7 @@ import me.ykrank.s1next.util.LooperUtil
 import me.ykrank.s1next.util.RxJavaUtil
 import me.ykrank.s1next.view.adapter.AppPostListRecyclerViewAdapter
 import me.ykrank.s1next.view.event.AppLoginEvent
+import me.ykrank.s1next.view.event.BlackListChangeEvent
 import me.ykrank.s1next.view.event.PostSelectableChangeEvent
 import me.ykrank.s1next.view.event.QuickSidebarEnableChangeEvent
 import me.ykrank.s1next.view.fragment.AppPostListPagerFragment.PagerCallback
@@ -137,6 +137,11 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
                 .subscribe { startSwipeRefresh() }
 
+        mRxBus.get()
+                .ofType(BlackListChangeEvent::class.java)
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
+                .subscribe { startBlackListRefresh() }
+
     }
 
     override fun onAttach(context: Context?) {
@@ -177,81 +182,6 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
     internal fun startBlackListRefresh() {
         blacklistChanged = true
         startPullToRefresh()
-    }
-
-    internal fun loadReadProgressInRecycleView(readProgress: ReadProgress, smooth: Boolean) {
-        this.readProgress = readProgress
-        if (scrollState == null) {
-            scrollState = PagerScrollState()
-            scrollState!!.state = PagerScrollState.BEFORE_SCROLL_POSITION
-        }
-        if (!isLoading) {
-            var position = readProgress.position
-            var offset = readProgress.offset
-            if (position <= 0) {
-                //if position invalid or first, offset should below zero
-                position = 0
-                if (offset > 0) {
-                    offset = 0
-                }
-            }
-            val totalItemCount = mRecyclerAdapter.itemCount
-            if (totalItemCount <= position) {
-                position = totalItemCount - 1
-            }
-            if (smooth) {
-                mLayoutManager.smoothScrollToPosition(position, offset)
-            } else {
-                mLayoutManager.scrollToPositionWithOffset(position, offset)
-            }
-        }
-    }
-
-    /**
-     * 保存当前阅读进度
-     */
-    internal fun saveReadProgress() {
-        val readProgress = curReadProgress
-        if (readProgress != null) {
-            Single.fromCallable {
-                LooperUtil.enforceOnWorkThread()
-                val dbWrapper = ReadProgressDbWrapper.getInstance()
-                dbWrapper.saveReadProgress(readProgress)
-                true
-            }.compose(RxJavaUtil.iOSingleTransformer<Boolean>())
-                    .to(AndroidRxDispose.withSingle<Boolean>(this, FragmentEvent.DESTROY))
-                    .subscribe({
-                        LooperUtil.enforceOnMainThread()
-                        showShortText(R.string.save_read_progress_success)
-                    }, { L.report(it) })
-        }
-    }
-
-    internal val curReadProgress: ReadProgress?
-        get() {
-            if (isLoading) {
-                return null
-            }
-            val itemPosition = findNowItemPosition()
-            return ReadProgress(Integer.valueOf(mThreadId), mPageNum, itemPosition.first, itemPosition.second)
-        }
-
-    /**
-     * 现在Item的位置
-
-     * @return
-     */
-    private fun findNowItemPosition(): Pair<Int, Int> {
-        var itemPosition = mLayoutManager.findFirstCompletelyVisibleItemPosition()
-        if (itemPosition == RecyclerView.NO_POSITION) {
-            itemPosition = mLayoutManager.findFirstVisibleItemPosition()
-        }
-        var offset = 0
-        val view = mLayoutManager.findViewByPosition(itemPosition)
-        if (view != null) {
-            offset = view.top
-        }
-        return Pair(itemPosition, offset)
     }
 
     internal override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Observable<AppPostsWrapper> {

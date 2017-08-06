@@ -23,7 +23,6 @@ import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.ThreadLink
 import me.ykrank.s1next.data.api.model.collection.Posts
-import me.ykrank.s1next.data.db.BlackListDbWrapper
 import me.ykrank.s1next.data.db.HistoryDbWrapper
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper
 import me.ykrank.s1next.data.db.ThreadDbWrapper
@@ -158,19 +157,9 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                     EditPostActivity.startActivityForResultMessage(this, RequestCode.REQUEST_CODE_EDIT_POST, thread, post)
                 }
         mRxBus.get()
-                .ofType(BlackListAddEvent::class.java)
+                .ofType(BlackListChangeEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
-                .subscribe {
-                    val dbWrapper = BlackListDbWrapper.getInstance()
-                    if (it.isAdd) {
-                        RxJavaUtil.workWithUiThread({
-                            dbWrapper.saveDefaultBlackList(it.authorPostId, it.authorPostName, it.remark)
-                        }, { this.afterBlackListChange() })
-                    } else {
-                        RxJavaUtil.workWithUiThread({ dbWrapper.delDefaultBlackList(it.authorPostId, it.authorPostName) },
-                                { this.afterBlackListChange() })
-                    }
-                }
+                .subscribe { activity.setResult(Activity.RESULT_OK) }
     }
 
     override fun onPause() {
@@ -421,12 +410,6 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                 currentPage = progress.page - 1
             }
         }
-    }
-
-    private fun afterBlackListChange() {
-        val currFragment = curPostPageFragment
-        currFragment?.startBlackListRefresh()
-        activity.setResult(Activity.RESULT_OK)
     }
 
     private fun startReplyActivity(quotePostId: String?, quotePostCount: String?) {

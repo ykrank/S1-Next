@@ -4,8 +4,10 @@ import android.support.annotation.MainThread;
 import android.support.v4.app.FragmentActivity;
 
 import me.ykrank.s1next.App;
+import me.ykrank.s1next.data.db.BlackListDbWrapper;
+import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment;
-import me.ykrank.s1next.view.event.BlackListAddEvent;
+import me.ykrank.s1next.view.event.BlackListChangeEvent;
 import me.ykrank.s1next.widget.RxBus;
 import me.ykrank.s1next.widget.track.event.BlackListTrackEvent;
 
@@ -25,6 +27,7 @@ public class BlacklistMenuAction {
     @MainThread
     public static void removeBlacklist(RxBus rxBus, int uid, String name) {
         App.get().getTrackAgent().post(new BlackListTrackEvent(false, String.valueOf(uid), name));
-        rxBus.post(new BlackListAddEvent(uid, name, null, false));
+        RxJavaUtil.workWithUiThread(() -> BlackListDbWrapper.getInstance().delDefaultBlackList(uid, name),
+                () -> rxBus.post(new BlackListChangeEvent(uid, name, null, false)));
     }
 }
