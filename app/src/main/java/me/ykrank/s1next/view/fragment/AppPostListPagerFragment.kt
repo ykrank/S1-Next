@@ -35,10 +35,7 @@ import me.ykrank.s1next.util.L
 import me.ykrank.s1next.util.LooperUtil
 import me.ykrank.s1next.util.RxJavaUtil
 import me.ykrank.s1next.view.adapter.AppPostListRecyclerViewAdapter
-import me.ykrank.s1next.view.event.AppLoginEvent
-import me.ykrank.s1next.view.event.BlackListChangeEvent
-import me.ykrank.s1next.view.event.PostSelectableChangeEvent
-import me.ykrank.s1next.view.event.QuickSidebarEnableChangeEvent
+import me.ykrank.s1next.view.event.*
 import me.ykrank.s1next.view.fragment.AppPostListPagerFragment.PagerCallback
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegate
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateQuickSidebarImpl
@@ -133,7 +130,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
                 .subscribe({ invalidateQuickSidebarVisible() }, { super.onError(it) })
 
         mRxBus.get()
-                .ofType(AppLoginEvent::class.java)
+                .filter { it is AppLoginEvent || it is LoginEvent }
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
                 .subscribe { startSwipeRefresh() }
 
@@ -215,6 +212,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
     }
 
     internal override fun onNext(data: AppPostsWrapper) {
+        L.print(data.toString())
         mPagerCallback?.threadInfo = data.thread
         val pullUpToRefresh = isPullUpToRefresh
         var postList: List<AppPost>? = null

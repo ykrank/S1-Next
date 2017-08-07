@@ -6,11 +6,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.TextUtils
+import com.github.ykrank.androidautodispose.AndroidRxDispose
+import com.github.ykrank.androidlifecycle.event.ActivityEvent
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.app.model.AppThread
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.util.MathUtil
+import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
+import me.ykrank.s1next.view.event.AppNotLoginEvent
 import me.ykrank.s1next.view.fragment.AppPostListPagerFragment
 import me.ykrank.s1next.view.fragment.PostListFragment
 import me.ykrank.s1next.widget.WifiBroadcastReceiver
@@ -41,6 +45,18 @@ class AppPostListActivity : BaseActivity(), AppPostListPagerFragment.PagerCallba
             supportFragmentManager.beginTransaction().add(R.id.frame_layout, fragment,
                     PostListFragment.TAG).commit()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mRxBus.get()
+                .ofType(AppNotLoginEvent::class.java)
+                .to(AndroidRxDispose.withObservable(this, ActivityEvent.PAUSE))
+                .subscribe {
+                    if (!LoginPromptDialogFragment.isShowing(supportFragmentManager)) {
+                        LoginPromptDialogFragment.showAppLoginPromptDialogIfNeeded(supportFragmentManager, mUser)
+                    }
+                }
     }
 
     override fun getTotalPages(): Int {

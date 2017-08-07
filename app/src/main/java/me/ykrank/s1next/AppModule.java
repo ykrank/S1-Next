@@ -196,7 +196,8 @@ public final class AppModule {
     @Singleton
     ObjectMapper provideJsonObjectMapper() {
         return new ObjectMapper()
-                .configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+                .configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true)
+                .configure(JsonParser.Feature.IGNORE_UNDEFINED, true);
     }
 
     @Provides

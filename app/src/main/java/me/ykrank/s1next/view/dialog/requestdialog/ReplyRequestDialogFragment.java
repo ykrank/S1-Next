@@ -54,12 +54,12 @@ public final class ReplyRequestDialogFragment extends BaseRequestDialogFragment<
         String reply = getArguments().getString(ARG_REPLY);
 
         if (TextUtils.isEmpty(quotePostId)) {
-            return flatMappedWithAuthenticityToken(s -> getMS1Service().reply(s, threadId, reply));
+            return flatMappedWithAuthenticityToken(s -> mS1Service.reply(s, threadId, reply));
         } else {
-            return getMS1Service().getQuoteInfo(threadId, quotePostId).flatMap(s -> {
+            return mS1Service.getQuoteInfo(threadId, quotePostId).flatMap(s -> {
                 Quote quote = Quote.fromXmlString(s);
                 return flatMappedWithAuthenticityToken(token ->
-                        getMS1Service().replyQuote(token, threadId, reply, quote.getEncodedUserId(),
+                        mS1Service.replyQuote(token, threadId, reply, quote.getEncodedUserId(),
                                 quote.getQuoteMessage(), StringUtils.abbreviate(reply,
                                         Api.REPLY_NOTIFICATION_MAX_LENGTH)));
             });

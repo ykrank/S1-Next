@@ -54,7 +54,7 @@ public class L {
     }
 
     public static boolean showLog() {
-        return BuildConfig.DEBUG;
+        return BuildConfig.DEBUG || "alpha".equals(BuildConfig.BUILD_TYPE);
     }
 
     public static void l(String msg) {
