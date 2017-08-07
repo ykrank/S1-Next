@@ -129,8 +129,8 @@ public final class LoginFragment extends BaseFragment {
             focusView.requestFocus();
         } else {
             // start to log in
-            LoginDialogFragment.newInstance(username, password).show(getFragmentManager(),
-                    LoginDialogFragment.TAG);
+            LoginDialogFragment.Companion.newInstance(username, password).show(getFragmentManager(),
+                    LoginDialogFragment.Companion.getTAG());
         }
     }
 

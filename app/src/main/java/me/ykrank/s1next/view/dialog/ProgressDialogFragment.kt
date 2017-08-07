@@ -22,6 +22,7 @@ import me.ykrank.s1next.util.ErrorUtil
 import me.ykrank.s1next.view.activity.BaseActivity
 import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate
+import javax.inject.Inject
 
 /**
  * A dialog shows [ProgressDialog].
@@ -35,11 +36,12 @@ import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate
 </D> */
 abstract class ProgressDialogFragment<D> : BaseDialogFragment() {
 
-    protected lateinit var mS1Service: S1Service
-
-    protected lateinit var mUserValidator: UserValidator
-
-    private lateinit var mUser: User
+    @Inject
+    internal lateinit var mS1Service: S1Service
+    @Inject
+    internal lateinit var mUserValidator: UserValidator
+    @Inject
+    internal lateinit var mUser: User
 
     private var dialogNotCancelableOnTouchOutside: Boolean = false
 

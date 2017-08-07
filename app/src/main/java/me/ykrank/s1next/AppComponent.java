@@ -47,6 +47,7 @@ import me.ykrank.s1next.view.dialog.AppLoginDialogFragment;
 import me.ykrank.s1next.view.dialog.BaseDialogFragment;
 import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment;
 import me.ykrank.s1next.view.dialog.DiscardEditPromptDialogFragment;
+import me.ykrank.s1next.view.dialog.LoginDialogFragment;
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
 import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment;
@@ -163,6 +164,8 @@ public interface AppComponent {
     void inject(BaseFragment baseFragment);
 
     void inject(BaseDialogFragment baseDialogFragment);
+
+    void inject(LoginDialogFragment fragment);
 
     void inject(LogoutDialogFragment fragment);
 
