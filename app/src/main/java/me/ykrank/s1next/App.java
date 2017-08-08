@@ -11,6 +11,7 @@ import com.squareup.leakcanary.RefWatcher;
 import me.ykrank.s1next.data.db.DbModule;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.data.pref.PrefModule;
+import me.ykrank.s1next.util.BuglyUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.LeaksUtil;
 import me.ykrank.s1next.util.ProcessUtil;
@@ -71,6 +72,7 @@ public final class App extends MultiDexApplication {
         }
         refWatcher = LeaksUtil.install(this);
         L.init(this);
+        BuglyUtils.init(this);
 
         mAppComponent = DaggerAppComponent.builder()
                 .buildTypeModule(new BuildTypeModule(this))

@@ -23,9 +23,9 @@ import static me.ykrank.s1next.App.LOG_TAG;
  * 对Log的包装
  */
 public class L {
+    static final String BUGLY_APP_ID = "eae39d8732";
 
     public static void init(@NonNull Context context) {
-        Context appContext = context.getApplicationContext();
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
                 .showThreadInfo(true)  // (Optional) Whether to show thread info or not. Default true
                 .methodCount(0)         // (Optional) How many method line to show. Default 2
@@ -39,13 +39,6 @@ public class L {
             public boolean isLoggable(int priority, String tag) {
                 return showLog();
             }
-        });
-
-        RxJavaUtil.workInRxIoThread(() -> {
-            CrashReport.UserStrategy userStrategy = new CrashReport.UserStrategy(appContext);
-            userStrategy.setAppVersion(BuildConfig.VERSION_NAME + "-" + BuildConfig.VERSION_CODE);
-            CrashReport.initCrashReport(appContext, userStrategy);
-            CrashReport.setIsDevelopmentDevice(appContext, BuildConfig.DEBUG);
         });
     }
 
