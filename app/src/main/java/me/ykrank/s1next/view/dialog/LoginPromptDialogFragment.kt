@@ -15,7 +15,7 @@ import me.ykrank.s1next.view.activity.LoginActivity
 class LoginPromptDialogFragment : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val appLogin = arguments.getBoolean(APP_LOGIN, false)
+        val appLogin = arguments?.getBoolean(APP_LOGIN, false) ?: false
         return AlertDialog.Builder(context)
                 .setMessage(R.string.dialog_message_login_prompt)
                 .setPositiveButton(R.string.action_login) { dialog, which ->
