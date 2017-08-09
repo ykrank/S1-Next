@@ -138,6 +138,8 @@
 }
 -keep class com.talkingdata.sdk.TalkingDataSDK {public *;}
 -keep class com.apptalkingdata.** {*;}
+-keep class dice.** {*; }
+-dontwarn dice.**
 
 #Bugly
 -dontwarn com.tencent.bugly.**
