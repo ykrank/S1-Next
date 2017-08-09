@@ -2,8 +2,6 @@ package me.ykrank.s1next;
 
 import android.content.Context;
 
-import com.google.common.base.Preconditions;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -27,8 +25,6 @@ public final class BuildTypeModule {
     @Provides
     @Singleton
     OkHttpClient providerDataOkHttpClient(@Data OkHttpClient.Builder builder) {
-        Preconditions.checkState("release".equals(BuildConfig.BUILD_TYPE));
-
         return builder.build();
     }
 
@@ -36,8 +32,6 @@ public final class BuildTypeModule {
     @Provides
     @Singleton
     OkHttpClient providerImageOkHttpClient(@Image OkHttpClient.Builder builder) {
-        Preconditions.checkState("release".equals(BuildConfig.BUILD_TYPE));
-
         return builder.build();
     }
 
@@ -45,8 +39,6 @@ public final class BuildTypeModule {
     @Provides
     @Singleton
     OkHttpClient providerAppdataOkHttpClient(@AppData OkHttpClient.Builder builder) {
-        Preconditions.checkState("alpha".equals(BuildConfig.BUILD_TYPE));
-
         return builder.build();
     }
 }
