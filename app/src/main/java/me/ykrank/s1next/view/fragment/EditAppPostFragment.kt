@@ -20,7 +20,6 @@ import me.ykrank.s1next.util.L
 import me.ykrank.s1next.util.RxJavaUtil
 import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter
 import me.ykrank.s1next.view.dialog.requestdialog.EditAppPostRequestDialogFragment
-import me.ykrank.s1next.view.dialog.requestdialog.EditPostRequestDialogFragment
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
 import javax.inject.Inject
 
@@ -83,7 +82,7 @@ class EditAppPostFragment : BasePostFragment() {
         }
 
         EditAppPostRequestDialogFragment.newInstance(mThread, mPost, typeId, title, message)
-                .show(fragmentManager, EditPostRequestDialogFragment.TAG)
+                .show(fragmentManager, EditAppPostRequestDialogFragment.TAG)
 
         return true
     }
@@ -139,7 +138,7 @@ class EditAppPostFragment : BasePostFragment() {
     }
 
     override fun isRequestDialogAccept(event: RequestDialogSuccessEvent): Boolean {
-        return false
+        return event.dialogFragment is EditAppPostRequestDialogFragment
     }
 
     companion object {

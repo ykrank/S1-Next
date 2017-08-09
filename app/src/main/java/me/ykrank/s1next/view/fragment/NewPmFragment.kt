@@ -6,7 +6,6 @@ import android.widget.EditText
 
 import me.ykrank.s1next.util.L
 import me.ykrank.s1next.view.dialog.requestdialog.PmRequestDialogFragment
-import me.ykrank.s1next.view.dialog.requestdialog.ReplyRequestDialogFragment
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
 
 /**
@@ -27,7 +26,7 @@ class NewPmFragment : BasePostFragment() {
 
     override fun OnMenuSendClick(): Boolean {
         PmRequestDialogFragment.newInstance(mToUid, mReplyView.text.toString()).show(fragmentManager,
-                ReplyRequestDialogFragment.TAG)
+                PmRequestDialogFragment.TAG)
 
         return true
     }

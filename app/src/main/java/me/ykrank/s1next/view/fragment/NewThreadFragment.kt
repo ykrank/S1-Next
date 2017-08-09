@@ -24,7 +24,6 @@ import me.ykrank.s1next.util.L
 import me.ykrank.s1next.util.RxJavaUtil
 import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter
 import me.ykrank.s1next.view.dialog.requestdialog.NewThreadRequestDialogFragment
-import me.ykrank.s1next.view.dialog.requestdialog.ReplyRequestDialogFragment
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
 import javax.inject.Inject
 
@@ -86,7 +85,7 @@ class NewThreadFragment : BasePostFragment() {
         }
 
         NewThreadRequestDialogFragment.newInstance(mForumId, typeId, title, message, cacheKey)
-                .show(fragmentManager, ReplyRequestDialogFragment.TAG)
+                .show(fragmentManager, NewThreadRequestDialogFragment.TAG)
 
         return true
     }
@@ -95,7 +94,7 @@ class NewThreadFragment : BasePostFragment() {
         get() = mCacheKey
 
     override fun isRequestDialogAccept(event: RequestDialogSuccessEvent): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return event.dialogFragment is NewThreadRequestDialogFragment
     }
 
     override fun isContentEmpty(): Boolean {

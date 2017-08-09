@@ -138,7 +138,7 @@ class EditPostFragment : BasePostFragment() {
     }
 
     override fun isRequestDialogAccept(event: RequestDialogSuccessEvent): Boolean {
-        return false
+        return event.dialogFragment is EditPostRequestDialogFragment
     }
 
     companion object {
