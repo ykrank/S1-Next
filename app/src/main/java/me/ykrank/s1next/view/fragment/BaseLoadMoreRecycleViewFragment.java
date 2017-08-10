@@ -31,8 +31,6 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
     private int mPageNum = 1;
     private int mPageCount;
 
-    private int footerProgressPosition = -1;
-
     @CallSuper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,10 +61,9 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
 
 
     public void startPullUpLoadMore() {
-        footerProgressPosition = getRecyclerViewAdapter().getItemCount();
         getRecyclerViewAdapter().showFooterProgress();
         setLoading(LoadingViewModel.LOADING_PULL_UP_TO_REFRESH);
-        getRecyclerView().scrollToPosition(footerProgressPosition);
+        getRecyclerView().scrollToPosition(getRecyclerViewAdapter().getItemCount());
         loadMore();
     }
 
@@ -96,11 +93,6 @@ public abstract class BaseLoadMoreRecycleViewFragment<D> extends BaseRecyclerVie
      */
     private void onLoadMoreNext(D data) {
         onNext(data);
-        //remove footer progress
-        if (footerProgressPosition >= 0) {
-            getRecyclerViewAdapter().removeItem(footerProgressPosition);
-            getRecyclerViewAdapter().notifyItemRemoved(footerProgressPosition);
-        }
     }
 
     @Override
