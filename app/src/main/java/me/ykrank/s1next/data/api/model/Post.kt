@@ -27,44 +27,16 @@ class Post : PaperParcelable, Cloneable, SameItem {
     var authorName: String? = null
     @JsonProperty("authorid")
     var authorId: String? = null
-    @JsonProperty("message")
+    @JsonIgnore
     var reply: String? = null
-        set(value) {
-            if (value.isNullOrEmpty()) {
-                field = value
-                return
-            }
-
-            if ("提示: <em>作者被禁止或删除 内容自动屏蔽</em>" == value) {
-                this.banned = true
-            }
-
-            var tReply: String = value!!
-            tReply = hideBlackListQuote(tReply)
-
-            tReply = replaceBilibiliTag(tReply)
-
-            // Replaces "imgwidth" with "img width",
-            // because some img tags in S1 aren't correct.
-            // This may be the best way to deal with it though
-            // we may replace something wrong by accident.
-            // Also maps some colors, see mapColors(String).
-            tReply = mapColors(tReply).replace("<imgwidth=\"".toRegex(), "<img width=\"")
-
-            field = processAttachment(tReply)
-        }
     @JsonIgnore
     var isFirst: Boolean = false
     @JsonProperty("number")
     var count: String? = null
     @JsonProperty("dbdateline")
     var dateTime: Long = 0
-    @JsonProperty("attachments")
+    @JsonIgnore
     var attachmentMap: Map<Int, Attachment> = mapOf()
-        set(value) {
-            field = value
-            reply = processAttachment(reply)
-        }
     /**
      * is in blacklist
      */
@@ -82,8 +54,14 @@ class Post : PaperParcelable, Cloneable, SameItem {
     constructor()
 
     @JsonCreator
-    constructor(@JsonProperty("first") first: String) {
+    constructor(@JsonProperty("first") first: String?, @JsonProperty("message") reply: String?,
+                @JsonProperty("attachments") attachmentMap: Map<Int, Attachment>?) {
         this.isFirst = "1" == first
+        this.reply = filterReply(reply)
+        if (attachmentMap != null) {
+            this.attachmentMap = attachmentMap
+            this.reply = processAttachment()
+        }
     }
 
     public override fun clone(): Post {
@@ -114,6 +92,30 @@ class Post : PaperParcelable, Cloneable, SameItem {
 
     fun getPage(): Int {
         return MathUtil.divide(count?.toInt() ?: 1, Api.POSTS_PER_PAGE)
+    }
+
+    private fun filterReply(value: String?): String? {
+        if (value.isNullOrEmpty()) {
+            return value
+        }
+
+        if ("提示: <em>作者被禁止或删除 内容自动屏蔽</em>" == value) {
+            this.banned = true
+        }
+
+        var tReply: String = value!!
+        tReply = hideBlackListQuote(tReply)
+
+        tReply = replaceBilibiliTag(tReply)
+
+        // Replaces "imgwidth" with "img width",
+        // because some img tags in S1 aren't correct.
+        // This may be the best way to deal with it though
+        // we may replace something wrong by accident.
+        // Also maps some colors, see mapColors(String).
+        tReply = mapColors(tReply).replace("<imgwidth=\"".toRegex(), "<img width=\"")
+
+        return tReply
     }
 
     /**
@@ -247,19 +249,16 @@ class Post : PaperParcelable, Cloneable, SameItem {
      * Also concats the missing img tag from attachment.
      * See https://github.com/floating-cat/S1-Next/issues/7
      */
-    private fun processAttachment(reply: String?): String? {
-        if (reply == null) {
-            return null
-        }
+    private fun processAttachment(): String? {
+        var tReply: String = reply ?: return null
 
-        var tReply: String = reply
         for ((key, attachment) in attachmentMap) {
             val imgTag = "<img src=\"" + attachment.url + "\" />"
             val replyCopy = tReply
             // get the original string if there is nothing to replace
             tReply = tReply.replace("[attach]$key[/attach]", imgTag)
 
-            if (replyCopy === tReply) {
+            if (replyCopy == tReply) {
                 // concat the missing img tag
                 tReply += imgTag
             }
