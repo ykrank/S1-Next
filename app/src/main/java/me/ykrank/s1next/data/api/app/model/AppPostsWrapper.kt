@@ -203,7 +203,7 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
      * *
      * @return
      */
-    private fun replaceBlockQuoteContent(reply: String, remark: String): String {
+    private fun replaceBlockQuoteContent(reply: String, remark: String?): String {
         var pattern = Pattern.compile("</font></a>[\\s\\S]*</blockquote>")
         var matcher = pattern.matcher(reply)
         val reText: String

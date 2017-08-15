@@ -125,8 +125,8 @@ class Post : PaperParcelable, Cloneable, SameItem {
      * *
      * @return
      */
-    private fun hideBlackListQuote(reply: String): String {
-        var reply = reply
+    private fun hideBlackListQuote(oReply: String): String {
+        var reply = oReply
         val quoteName = findBlockQuoteName(reply)
         if (quoteName != null) {
             reply = replaceQuoteBr(reply)
@@ -180,7 +180,7 @@ class Post : PaperParcelable, Cloneable, SameItem {
      * *
      * @return
      */
-    private fun replaceBlockQuoteContent(reply: String, remark: String): String {
+    private fun replaceBlockQuoteContent(reply: String, remark: String?): String {
         var pattern = Pattern.compile("</font></a>[\\s\\S]*</blockquote>")
         var matcher = pattern.matcher(reply)
         val reText: String

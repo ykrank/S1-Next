@@ -186,6 +186,7 @@ public class BlackList implements Parcelable {
         this.forum = forum;
     }
 
+    @Nullable
     public String getRemark() {
         return remark;
     }
