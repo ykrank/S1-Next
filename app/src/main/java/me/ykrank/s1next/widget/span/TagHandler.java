@@ -60,6 +60,9 @@ public final class TagHandler implements Html.TagHandler {
             ImageSpan imageSpan = output.getSpans(end - len, end, ImageSpan.class)[0];
 
             String url = imageSpan.getSource();
+            if (url == null) {
+                url = "";
+            }
             // replace \uFFFC with ImageSpan's source
             // in order to support url copyFrom when selected
             output.replace(end - len, end, url);
