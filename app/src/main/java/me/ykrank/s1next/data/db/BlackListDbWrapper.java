@@ -62,7 +62,8 @@ public class BlackListDbWrapper {
         BlackList oBlackList = null;
         if (id > 0) {
             oBlackList = getBlackListWithAuthorId(id);
-        } else if (name != null && !TextUtils.isEmpty(name)) {
+        }
+        if (oBlackList == null && !TextUtils.isEmpty(name)) {
             oBlackList = getBlackListWithAuthorName(name);
         }
         return oBlackList;
