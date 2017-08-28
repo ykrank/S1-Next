@@ -316,9 +316,9 @@ class Post : PaperParcelable, Cloneable, SameItem {
         constructor()
 
         @JsonCreator
-        constructor(@JsonProperty("url") urlPrefix: String,
-                    @JsonProperty("attachment") urlSuffix: String) {
-            url = urlPrefix + urlSuffix
+        constructor(@JsonProperty("url") urlPrefix: String?,
+                    @JsonProperty("attachment") urlSuffix: String?) {
+            url = if (urlPrefix != null && urlSuffix != null) urlPrefix + urlSuffix else "http://img.saraba1st.com/forum/error"
         }
 
         override fun equals(other: Any?): Boolean {
