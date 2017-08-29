@@ -167,9 +167,9 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.9.0'
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0"
 
-    compile 'nz.bradcampbell:paperparcel:2.0.2'
-    compile 'nz.bradcampbell:paperparcel-kotlin:2.0.2' // Optional
-    kapt 'nz.bradcampbell:paperparcel-compiler:2.0.2'
+    compile 'nz.bradcampbell:paperparcel:2.0.4'
+    compile 'nz.bradcampbell:paperparcel-kotlin:2.0.4' // Optional
+    kapt 'nz.bradcampbell:paperparcel-compiler:2.0.4'
 
     compile 'com.github.bumptech.glide:glide:4.0.0'
     compile 'com.github.bumptech.glide:okhttp3-integration:4.0.0'
