@@ -27,6 +27,7 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.databinding.FragmentWebviewBinding;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.WebViewUtils;
 import me.ykrank.s1next.view.activity.ForumActivity;
 import me.ykrank.s1next.viewmodel.WebPageViewModel;
 
@@ -65,6 +66,8 @@ public final class WebLoginFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         L.leaveMsg(WebLoginFragment.class.getName());
+
+        WebViewUtils.clearWebViewCookies(getContext());
 
         WebPageViewModel viewModel = new WebPageViewModel();
         mFragmentHelpBinding.setWebPageViewModel(viewModel);
