@@ -21,7 +21,7 @@ class MultiHostInterceptor(private val baseHostUrl: BaseHostUrl) : Interceptor {
         val originRequest = chain.request()
         val originHttpUrl = originRequest.url()
 
-        val newHttpUrl = mergeHttpUrl(originHttpUrl, baseHostUrl.baseUrl)
+        val newHttpUrl = mergeHttpUrl(originHttpUrl, baseHostUrl.baseHttpUrl?.toString())
 
         var newRequest = originRequest
         if (originHttpUrl !== newHttpUrl) {

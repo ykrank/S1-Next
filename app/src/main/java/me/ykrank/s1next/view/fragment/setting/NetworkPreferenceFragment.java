@@ -49,7 +49,7 @@ public final class NetworkPreferenceFragment extends BasePreferenceFragment {
         if (TextUtils.isEmpty(baseUrl)) {
             findPreference(key).setSummary(Api.BASE_URL);
         } else {
-            if (BaseHostUrl.checkBaseHostUrl(baseUrl) == null) {
+            if (BaseHostUrl.Companion.checkBaseHostUrl(baseUrl) == null) {
                 Toast.makeText(getActivity(), R.string.error_force_base_url, Toast.LENGTH_SHORT).show();
             }
             findPreference(key).setSummary(baseUrl);
