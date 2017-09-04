@@ -19,7 +19,7 @@ public final class Api {
             "bbs.saraba1st.com", "www.saraba1st.com", "stage1st.com", "www.stage1st.com"
     };
 
-    public static boolean SUPPORT_HTTPS = false;
+    public static boolean SUPPORT_HTTPS = true;
 
     static final String RANDOM_IMAGE_URL = "http://ac.stage3rd.com/S1_ACG_randpic.asp";
     static final String BASE_API_PREFIX = "index.php?module=";

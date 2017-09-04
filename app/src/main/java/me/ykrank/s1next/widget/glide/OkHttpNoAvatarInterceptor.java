@@ -39,7 +39,7 @@ public class OkHttpNoAvatarInterceptor implements Interceptor {
             //eg http://avatar.saraba1st.com/images/noavatar_small.gif
             list.add(String.format("http://%s/%s", AVATAR_HOST, prefix));
             if (Api.SUPPORT_HTTPS) {
-                list.add(String.format("http://%s/%s", AVATAR_HOST, prefix));
+                list.add(String.format("https://%s/%s", AVATAR_HOST, prefix));
             }
             for (String host : Api.HOST_LIST) {
                 //eg http://bbs.saraba1st.com/uc_server/images/noavatar_small.gif
