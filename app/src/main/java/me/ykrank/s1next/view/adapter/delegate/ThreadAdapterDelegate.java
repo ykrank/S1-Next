@@ -58,6 +58,9 @@ public final class ThreadAdapterDelegate extends BaseAdapterDelegate<Thread, Thr
 
     @Override
     public void onBindViewHolderData(Thread thread, int position, @NonNull BindingViewHolder holder, @NonNull List<Object> payloads) {
+        if (thread == null){
+            return;
+        }
         ItemThreadBinding binding = holder.itemThreadBinding;
         binding.getModel().thread.set(thread);
         binding.executePendingBindings();
