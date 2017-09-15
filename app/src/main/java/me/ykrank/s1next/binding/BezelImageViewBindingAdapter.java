@@ -233,7 +233,7 @@ public final class BezelImageViewBindingAdapter {
             requestOptions = requestOptions.placeholder(R.drawable.ic_drawer_avatar_placeholder);
         }
         if (fade) {
-            listener = listener.transition(DrawableTransitionOptions.withCrossFade(android.R.anim.fade_in, 300));
+            listener = listener.transition(DrawableTransitionOptions.withCrossFade(300));
         }
         listener.into(imageView);
 

@@ -117,7 +117,7 @@ public final class ViewBindingAdapter {
                     .apply(new RequestOptions()
                             .transform(blurTransformation)
                     )
-                    .transition(DrawableTransitionOptions.withCrossFade(android.R.anim.fade_in, 300))
+                    .transition(DrawableTransitionOptions.withCrossFade(300))
                     .into(new DrawableViewBackgroundTarget(view));
             return;
         }

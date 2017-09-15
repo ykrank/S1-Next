@@ -41,7 +41,7 @@ abstract class BaseViewPagerFragment : BaseFragment(), PageJumpDialogFragment.On
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mViewPager = view.findViewById(R.id.view_pager) as ViewPager
+        mViewPager = view.findViewById(R.id.view_pager)
         mViewPager.offscreenPageLimit = 2
         loadViewPager()
     }
