@@ -68,8 +68,8 @@ public class AppDaoOpenHelper extends DaoMaster.OpenHelper {
             //copy old data  to new table
             db.execSQL("INSERT INTO BlackList(AuthorId,Author,Post,Forum,Remark,Timestamp,Upload) " +
                     "SELECT AuthorId,Author,Post,Forum,Remark,Timestamp,Upload FROM " + tempDbBlackList + ";");
-            db.execSQL("INSERT INTO ReadProgress(ThreadId,Page,Position,Timestamp) " +
-                    "SELECT ThreadId,Page,Position,Timestamp FROM " + tempDbReadProgress + ";");
+            db.execSQL("INSERT INTO ReadProgress(ThreadId,Page,Position,Offset,Timestamp) " +
+                    "SELECT ThreadId,Page,Position,0 as Offset,Timestamp FROM " + tempDbReadProgress + ";");
             //drop old table
             db.execSQL("DROP TABLE " + tempDbBlackList + ";");
             db.execSQL("DROP TABLE " + tempDbReadProgress + ";");
