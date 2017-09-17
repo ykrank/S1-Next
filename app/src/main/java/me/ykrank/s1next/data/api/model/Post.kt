@@ -234,6 +234,7 @@ class Post : PaperParcelable, Cloneable, SameItem {
 
                 reply = reply.replace(content, tagString)
             } catch (e: Exception) {
+                L.leaveMsg(reply)
                 L.report("replaceBilibiliTag error", e)
             }
 
