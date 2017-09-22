@@ -65,7 +65,7 @@
 
             <!-- enable `textIsSelectable` in order to add click effect -->
             <!-- see https://code.google.com/p/android/issues/detail?id=13895 -->
-            <TextView
+            <me.ykrank.s1next.widget.uglyfix.FixTextView
                 android:id="@+id/tv_floor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
 
             <!-- layout_marginTop = 72dp (two line height with avatar) - 16dp (RelativeLayout's top padding) -->
             <!-- use custom movement method to provides selection and click -->
-            <TextView
+            <me.ykrank.s1next.widget.uglyfix.FixTextView
                 android:id="@+id/tv_reply"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
