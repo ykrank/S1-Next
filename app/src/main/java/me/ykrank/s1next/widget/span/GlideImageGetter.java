@@ -348,7 +348,6 @@ public final class GlideImageGetter
                     L.l("onResourceReady run before imageSpan add to textView");
                     return;
                 }
-                span.removeSpan(imageSpan);
                 span.setSpan(imageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else {
                 SpannableStringBuilder span = (SpannableStringBuilder) text;
@@ -359,7 +358,6 @@ public final class GlideImageGetter
                     L.d("onResourceReady run before imageSpan add to textView");
                     return;
                 }
-                span.removeSpan(imageSpan);
                 span.setSpan(imageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
 

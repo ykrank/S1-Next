@@ -1,6 +1,7 @@
 package me.ykrank.s1next.widget.span
 
 import android.graphics.drawable.Drawable
+import android.text.style.DynamicDrawableSpan
 import android.text.style.ImageSpan
 import android.view.View
 import android.webkit.URLUtil
@@ -12,7 +13,7 @@ import me.ykrank.s1next.view.activity.GalleryActivity
  * Clickable and resize after drawable invalidate
  */
 internal class ImageClickableResizeSpan(d: Drawable, source: String, private val images: ArrayList<String>)
-    : ImageSpan(d, source), View.OnClickListener {
+    : ImageSpan(d, source, DynamicDrawableSpan.ALIGN_BOTTOM), View.OnClickListener {
 
     private val url: String?
 
