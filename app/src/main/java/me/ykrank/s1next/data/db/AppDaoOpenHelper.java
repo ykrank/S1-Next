@@ -37,6 +37,7 @@ public class AppDaoOpenHelper extends DaoMaster.OpenHelper {
         }
         update3to4(db, oldVersion, newVersion);
         update4to5(db, oldVersion, newVersion);
+        update5to6(db, oldVersion, newVersion);
     }
 
     /**
@@ -102,6 +103,27 @@ public class AppDaoOpenHelper extends DaoMaster.OpenHelper {
             } catch (Throwable e) {
                 L.report(e);
                 RxJavaUtil.workInMainThread(() -> Toast.makeText(App.get(), R.string.database_update_error, Toast.LENGTH_LONG).show());
+            }
+        }
+    }
+
+    /**
+     * Make {@link me.ykrank.s1next.data.db.dbmodel.BlackList} authorId, author index not unique
+     */
+    private void update5to6(Database db, int oldVersion, int newVersion) {
+        if (oldVersion <= 5) {
+            db.beginTransaction();
+            try {
+                db.execSQL("DROP INDEX IDX_BlackList_AuthorId;");
+                db.execSQL("DROP INDEX IDX_BlackList_Author;");
+                db.execSQL("CREATE INDEX IDX_BlackList_AuthorId ON BlackList(AuthorId ASC);");
+                db.execSQL("CREATE INDEX IDX_BlackList_Author ON BlackList(Author ASC);");
+                db.setTransactionSuccessful();
+            } catch (Throwable e) {
+                L.report(e);
+                RxJavaUtil.workInMainThread(() -> Toast.makeText(App.get(), R.string.database_update_error, Toast.LENGTH_LONG).show());
+            } finally {
+                db.endTransaction();
             }
         }
     }

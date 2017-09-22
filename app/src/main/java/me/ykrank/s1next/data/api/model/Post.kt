@@ -130,7 +130,7 @@ class Post : PaperParcelable, Cloneable, SameItem {
         val quoteName = findBlockQuoteName(reply)
         if (quoteName != null) {
             reply = replaceQuoteBr(reply)
-            val blackList = BlackListDbWrapper.getInstance().getBlackListDefault(-1, quoteName)
+            val blackList = BlackListDbWrapper.getInstance().getMergedBlackList(-1, quoteName)
             if (blackList != null && blackList.post != BlackList.NORMAL) {
                 return replaceBlockQuoteContent(reply, blackList.remark)
             }

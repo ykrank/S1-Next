@@ -75,7 +75,7 @@ public final class Posts extends Account {
     public static Post filterPost(final Post post) {
         Post nPost = post;
         BlackListDbWrapper blackListWrapper = BlackListDbWrapper.getInstance();
-        BlackList blackList = blackListWrapper.getBlackListDefault(Integer.valueOf(post.getAuthorId()), post.getAuthorName());
+        BlackList blackList = blackListWrapper.getMergedBlackList(Integer.valueOf(post.getAuthorId()), post.getAuthorName());
         if (blackList == null || blackList.getPost() == BlackList.NORMAL) {
             if (post.isHide()) {
                 nPost = post.clone();

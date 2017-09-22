@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.text.TextUtils;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
@@ -51,13 +52,13 @@ public class BlackList implements Parcelable {
      * Id
      */
     @Property(nameInDb = "AuthorId")
-    @Index(unique = true)
+    @Index(name = "IDX_BlackList_AuthorId")
     private int authorId;
     /**
      * 用户名
      */
     @Property(nameInDb = "Author")
-    @Index(unique = true)
+    @Index(name = "IDX_BlackList_Author")
     private String author;
     /**
      * 回复的屏蔽状态
@@ -129,12 +130,18 @@ public class BlackList implements Parcelable {
         this.upload = upload;
     }
 
-    public void copyFrom(BlackList bList) {
-        this.authorId = bList.authorId;
-        this.author = bList.author;
+    public void mergeFrom(BlackList bList) {
+        if (bList.authorId > 0) {
+            this.authorId = bList.authorId;
+        }
+        if (!TextUtils.isEmpty(bList.author)) {
+            this.author = bList.author;
+        }
         this.post = bList.post;
         this.forum = bList.forum;
-        this.remark = bList.remark;
+        if (!TextUtils.isEmpty(bList.remark)) {
+            this.remark = bList.remark;
+        }
         this.timestamp = bList.timestamp;
         this.upload = bList.upload;
     }

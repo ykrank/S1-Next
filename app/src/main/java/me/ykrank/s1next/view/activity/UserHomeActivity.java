@@ -246,7 +246,7 @@ public class UserHomeActivity extends BaseActivity {
             return;
         }
         BlackListDbWrapper wrapper = BlackListDbWrapper.getInstance();
-        Single.just(Optional.fromNullable(wrapper.getBlackListDefault(Integer.valueOf(uid), name)))
+        Single.just(Optional.fromNullable(wrapper.getMergedBlackList(Integer.valueOf(uid), name)))
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .subscribe(blackListOptional -> {
                     if (blackListOptional.isPresent()) {
