@@ -34,6 +34,8 @@ import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.github.ykrank.androidautodispose.AndroidRxDispose;
+import com.github.ykrank.androidlifecycle.AndroidLifeCycle;
+import com.github.ykrank.androidlifecycle.event.ActivityEvent;
 import com.github.ykrank.androidlifecycle.event.ViewEvent;
 import com.uber.autodispose.SingleScoper;
 
@@ -98,6 +100,21 @@ public final class GlideImageGetter
         mTextView.addOnAttachStateChangeListener(this);
 
         initRectHolder();
+
+        AndroidLifeCycle.with(context)
+                .listen(ActivityEvent.RESUME, () -> {
+                    if (ViewCompat.isAttachedToWindow(mTextView)) {
+                        for (Animatable anim : animatableTargetHashMap.keySet()) {
+                            anim.start();
+                        }
+                    }
+                })
+                .listen(ActivityEvent.PAUSE, () -> {
+                    for (Animatable anim : animatableTargetHashMap.keySet()) {
+                        anim.stop();
+                    }
+                })
+                .listen(ActivityEvent.DESTROY, this::invalidate);
     }
 
     @MainThread
