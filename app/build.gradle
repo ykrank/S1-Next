@@ -103,7 +103,7 @@ tasks.withType(JavaCompile) {
 }
 
 greendao {
-    schemaVersion 5
+    schemaVersion 6
 }
 
 //http://stackoverflow.com/questions/28683327/how-to-check-if-gradle-dependency-has-new-version
@@ -128,9 +128,9 @@ dependencies {
 
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.5.1'
 
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.3'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.3'
-    alphaCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.3'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.2'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.2'
+    alphaCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.2'
 
     debugCompile 'com.facebook.stetho:stetho:1.5.0'
     debugCompile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
