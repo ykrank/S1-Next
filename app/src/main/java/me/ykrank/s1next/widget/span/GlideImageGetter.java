@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -112,6 +113,7 @@ public final class GlideImageGetter
         }
     }
 
+    @MainThread
     private void invalidate() {
         LooperUtil.enforceOnMainThread();
         serial = serial + 1;
@@ -210,12 +212,16 @@ public final class GlideImageGetter
 
     @Override
     public void onViewAttachedToWindow(View v) {
-        animatableTargetHashMap.keySet().forEach(Animatable::start);
+        for (Animatable anim : animatableTargetHashMap.keySet()) {
+            anim.start();
+        }
     }
 
     @Override
     public void onViewDetachedFromWindow(View v) {
-        animatableTargetHashMap.keySet().forEach(Animatable::stop);
+        for (Animatable anim : animatableTargetHashMap.keySet()) {
+            anim.stop();
+        }
     }
 
     /**
@@ -230,7 +236,11 @@ public final class GlideImageGetter
                 return;
             }
             if (target.serial == serial) {
-                mTextView.invalidate();
+                if (ViewCompat.isAttachedToWindow(mTextView)) {
+                    mTextView.invalidate();
+                } else {
+                    ((Animatable) who).stop();
+                }
             } else {
                 requestManager.clear(target);
                 animatableTargetHashMap.remove(who);
@@ -270,13 +280,12 @@ public final class GlideImageGetter
 
         @Override
         public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-            if (serial != mGlideImageGetter.serial) {
-                L.l("serial:" + serial + ",GlideImageGetter serial:" + mGlideImageGetter.serial);
+            if (!checkTextViewValidate()) {
                 return;
             }
-            setDrawable(resource);
-
             TextView textView = getView();
+
+            setDrawable(resource);
             if (resource instanceof Animatable) {
                 Drawable.Callback callback = (Drawable.Callback) textView.getTag(
                         R.id.tag_drawable_callback);
@@ -295,13 +304,20 @@ public final class GlideImageGetter
 
         @Override
         public void onLoadFailed(@Nullable Drawable errorDrawable) {
-            if (serial != mGlideImageGetter.serial) {
-                L.l("serial:" + serial + ",GlideImageGetter serial:" + mGlideImageGetter.serial);
+            if (checkTextViewValidate()) {
                 return;
             }
             if (errorDrawable != null) {
                 setDrawable(errorDrawable);
             }
+        }
+
+        private boolean checkTextViewValidate() {
+            if (serial != mGlideImageGetter.serial) {
+                L.l("serial:" + serial + ",GlideImageGetter serial:" + mGlideImageGetter.serial);
+                return false;
+            }
+            return true;
         }
 
         private void setDrawable(@NonNull Drawable resource) {
