@@ -1,12 +1,14 @@
 package me.ykrank.s1next.view.adapter.delegate;
 
-import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
 import android.view.ViewGroup;
+
+import com.github.ykrank.androidlifecycle.AndroidLifeCycle;
 
 import java.util.List;
 
@@ -32,12 +34,14 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
     @Inject
     GeneralPreferencesManager mGeneralPreferencesManager;
 
+    private final Fragment fragment;
     @Nullable
     private Thread threadInfo;
 
-    public PostAdapterDelegate(Activity activity) {
-        super(activity);
+    public PostAdapterDelegate(Fragment fragment) {
+        super(fragment.getContext());
 
+        this.fragment = fragment;
         App.getAppComponent().inject(this);
     }
 
@@ -68,6 +72,9 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
         ItemPostBinding binding = DataBindingUtil.inflate(mLayoutInflater,
                 R.layout.item_post, parent, false);
         binding.setPostViewModel(new PostViewModel(mRxBus, mUser));
+
+        //Bind textview lifecycle to fragment
+        AndroidLifeCycle.bindFragment(binding.tvReply, fragment);
 
         //If setTextIsSelectable, then should reset movement
         boolean selectable = mGeneralPreferencesManager.isPostSelectable();

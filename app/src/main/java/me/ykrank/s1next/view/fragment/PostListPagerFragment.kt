@@ -101,7 +101,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         mRecyclerView = recyclerView
         mLayoutManager = StartSnapLinearLayoutManager(activity)
         mRecyclerView.layoutManager = mLayoutManager
-        mRecyclerAdapter = PostListRecyclerViewAdapter(activity)
+        mRecyclerAdapter = PostListRecyclerViewAdapter(this)
         mRecyclerView.adapter = mRecyclerAdapter
 
         // add pull up to refresh to RecyclerView

@@ -1,6 +1,5 @@
 package me.ykrank.s1next.widget.span;
 
-import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
@@ -35,7 +34,6 @@ import com.bumptech.glide.request.target.ViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.github.ykrank.androidautodispose.AndroidRxDispose;
 import com.github.ykrank.androidlifecycle.AndroidLifeCycle;
-import com.github.ykrank.androidlifecycle.event.ActivityEvent;
 import com.github.ykrank.androidlifecycle.event.ViewEvent;
 import com.uber.autodispose.SingleScoper;
 
@@ -67,7 +65,6 @@ import me.ykrank.s1next.widget.track.event.EmoticonNotFoundTrackEvent;
 public final class GlideImageGetter
         implements Html.ImageGetter, View.OnAttachStateChangeListener, Drawable.Callback {
 
-    private final Context mContext;
     private final TextView mTextView;
     private final RequestManager requestManager;
     private final SingleScoper<RequestBuilder<Drawable>> imageGetterScoper;
@@ -82,12 +79,11 @@ public final class GlideImageGetter
     private float density;
     private Rect emoticonInitRect, unknownImageInitRect;
 
-    protected GlideImageGetter(Context context, TextView textView) {
+    protected GlideImageGetter(TextView textView) {
         LooperUtil.enforceOnMainThread();
 
-        this.mContext = context;
         this.mTextView = textView;
-        this.requestManager = Glide.with(mContext);
+        this.requestManager = Glide.with(mTextView);
         this.imageGetterScoper = AndroidRxDispose.withSingle(mTextView, ViewEvent.DESTROY);
         this.trackAgent = App.getAppComponent().getDataTrackAgent();
 
@@ -101,20 +97,20 @@ public final class GlideImageGetter
 
         initRectHolder();
 
-        AndroidLifeCycle.with(context)
-                .listen(ActivityEvent.RESUME, () -> {
+        AndroidLifeCycle.with(mTextView)
+                .listen(ViewEvent.RESUME, () -> {
                     if (ViewCompat.isAttachedToWindow(mTextView)) {
                         for (Animatable anim : animatableTargetHashMap.keySet()) {
                             anim.start();
                         }
                     }
                 })
-                .listen(ActivityEvent.PAUSE, () -> {
+                .listen(ViewEvent.PAUSE, () -> {
                     for (Animatable anim : animatableTargetHashMap.keySet()) {
                         anim.stop();
                     }
                 })
-                .listen(ActivityEvent.DESTROY, this::invalidate);
+                .listen(ViewEvent.DESTROY, this::invalidate);
     }
 
     @MainThread
@@ -122,7 +118,7 @@ public final class GlideImageGetter
 
         Object object = textView.getTag(R.id.tag_drawable_callback);
         if (object == null) {
-            return new GlideImageGetter(textView.getContext(), textView);
+            return new GlideImageGetter(textView);
         } else {
             GlideImageGetter glideImageGetter = (GlideImageGetter) object;
             glideImageGetter.invalidate();
@@ -143,11 +139,11 @@ public final class GlideImageGetter
     }
 
     private void initRectHolder() {
-        density = mContext.getResources().getDisplayMetrics().density;
+        density = mTextView.getContext().getResources().getDisplayMetrics().density;
         //init bounds
         emoticonInitRect = new Rect(0, 0, (int) (Api.EMOTICON_INIT_WIDTH * density), (int) (Api.EMOTICON_INIT_HEIGHT * density));
 
-        Drawable unknownDrawable = ContextCompat.getDrawable(mContext, R.mipmap.unknown_image);
+        Drawable unknownDrawable = ContextCompat.getDrawable(mTextView.getContext(), R.mipmap.unknown_image);
         unknownImageInitRect = new Rect(0, 0, unknownDrawable.getIntrinsicWidth(), unknownDrawable.getIntrinsicHeight());
     }
 
