@@ -100,10 +100,21 @@
                 android:visibility="@{postViewModel.post.trade?View.VISIBLE:View.GONE}" />
 
             <TextView
+                android:id="@+id/tv_show_vote"
                 style="?attr/buttonBarPositiveButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_show_trade"
+                android:layout_centerHorizontal="true"
+                android:onClick="@{postViewModel::onVoteClick}"
+                android:text="@string/click_to_vote"
+                android:visibility="@{postViewModel.vote!=null?View.VISIBLE:View.GONE}" />
+
+            <TextView
+                style="?attr/buttonBarPositiveButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_show_vote"
                 android:layout_centerHorizontal="true"
                 android:onClick="@{postViewModel::onAppPostClick}"
                 android:text="@string/click_to_cast_dark_magic"

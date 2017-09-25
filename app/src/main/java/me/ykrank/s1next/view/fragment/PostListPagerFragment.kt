@@ -309,6 +309,9 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             if (postListInfo != null) {
                 mRecyclerAdapter.setThreadInfo(postListInfo)
             }
+            posts.vote?.let {
+                mRecyclerAdapter.setVoteInfo(it)
+            }
 
             mRecyclerAdapter.diffNewDataSet(postList, true)
             if (blacklistChanged) {
@@ -338,8 +341,8 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             }
 
             mPagerCallback?.threadInfo = postListInfo
-            if (posts.threadAttachment != null) {
-                mPagerCallback?.setupThreadAttachment(posts.threadAttachment)
+            posts.threadAttachment?.let {
+                mPagerCallback?.setupThreadAttachment(it)
             }
 
             initQuickSidebar(mPageNum, postList.size)

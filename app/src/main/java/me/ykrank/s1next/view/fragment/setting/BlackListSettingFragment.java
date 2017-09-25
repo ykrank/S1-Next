@@ -31,6 +31,7 @@ import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.BlackListCursorListViewAdapter;
 import me.ykrank.s1next.view.dialog.BlacklistDialogFragment;
 import me.ykrank.s1next.view.fragment.BaseFragment;
+import me.ykrank.s1next.view.internal.RequestCode;
 
 public final class BlackListSettingFragment extends BaseFragment {
     public static final String TAG = BlackListSettingFragment.class.getName();
@@ -78,7 +79,7 @@ public final class BlackListSettingFragment extends BaseFragment {
                         }
                     }
                     BlacklistDialogFragment dialogFragment1 = BlacklistDialogFragment.newInstance(blackList);
-                    dialogFragment1.setTargetFragment(BlackListSettingFragment.this, BlacklistDialogFragment.DIALOG_REQUEST_CODE);
+                    dialogFragment1.setTargetFragment(BlackListSettingFragment.this, RequestCode.REQUEST_CODE_BLACKLIST);
                     dialogFragment1.show(getFragmentManager(), BlackListSettingFragment.class.getName());
                     return true;
                 case R.id.menu_delete:
@@ -187,7 +188,7 @@ public final class BlackListSettingFragment extends BaseFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == BlacklistDialogFragment.DIALOG_REQUEST_CODE) {
+        if (requestCode == RequestCode.REQUEST_CODE_BLACKLIST) {
             if (resultCode == Activity.RESULT_OK) {
                 BlackList blackList = data.getParcelableExtra(BlacklistDialogFragment.BLACKLIST_TAG);
                 if (blackList != null) {
@@ -201,7 +202,7 @@ public final class BlackListSettingFragment extends BaseFragment {
 
     private void add() {
         BlacklistDialogFragment dialogFragment = BlacklistDialogFragment.newInstance(null);
-        dialogFragment.setTargetFragment(BlackListSettingFragment.this, BlacklistDialogFragment.DIALOG_REQUEST_CODE);
+        dialogFragment.setTargetFragment(BlackListSettingFragment.this, RequestCode.REQUEST_CODE_BLACKLIST);
         dialogFragment.show(getFragmentManager(), BlackListSettingFragment.class.getName());
     }
 }

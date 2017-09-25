@@ -47,6 +47,8 @@ class Post : PaperParcelable, Cloneable, SameItem {
     @JsonIgnore
     var isTrade: Boolean = false
     @JsonIgnore
+    var isVote: Boolean = false
+    @JsonIgnore
     var extraHtml: String? = null
     @JsonIgnore
     var banned: Boolean = false
@@ -270,7 +272,7 @@ class Post : PaperParcelable, Cloneable, SameItem {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other?.javaClass != javaClass) return false
+        if (javaClass != other?.javaClass) return false
 
         other as Post
 
@@ -285,6 +287,7 @@ class Post : PaperParcelable, Cloneable, SameItem {
         if (isHide != other.isHide) return false
         if (remark != other.remark) return false
         if (isTrade != other.isTrade) return false
+        if (isVote != other.isVote) return false
         if (extraHtml != other.extraHtml) return false
         if (banned != other.banned) return false
 
@@ -299,10 +302,11 @@ class Post : PaperParcelable, Cloneable, SameItem {
         result = 31 * result + isFirst.hashCode()
         result = 31 * result + (count?.hashCode() ?: 0)
         result = 31 * result + dateTime.hashCode()
-        result = 31 * result + (attachmentMap?.hashCode() ?: 0)
+        result = 31 * result + attachmentMap.hashCode()
         result = 31 * result + isHide.hashCode()
         result = 31 * result + (remark?.hashCode() ?: 0)
         result = 31 * result + isTrade.hashCode()
+        result = 31 * result + isVote.hashCode()
         result = 31 * result + (extraHtml?.hashCode() ?: 0)
         result = 31 * result + banned.hashCode()
         return result

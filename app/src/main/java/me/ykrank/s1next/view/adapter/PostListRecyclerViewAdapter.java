@@ -1,9 +1,11 @@
 package me.ykrank.s1next.view.adapter;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import me.ykrank.s1next.data.api.model.Thread;
+import me.ykrank.s1next.data.api.model.Vote;
 import me.ykrank.s1next.view.adapter.delegate.FooterProgressAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
 
@@ -26,5 +28,9 @@ public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
     public void setThreadInfo(@NonNull Thread threadInfo) {
         postAdapterDelegate.setThreadInfo(threadInfo);
+    }
+
+    public void setVoteInfo(@Nullable Vote voteInfo) {
+        postAdapterDelegate.setVoteInfo(voteInfo);
     }
 }

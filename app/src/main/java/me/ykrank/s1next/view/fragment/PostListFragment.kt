@@ -36,10 +36,7 @@ import me.ykrank.s1next.view.activity.BaseActivity
 import me.ykrank.s1next.view.activity.EditPostActivity
 import me.ykrank.s1next.view.activity.NewRateActivity
 import me.ykrank.s1next.view.activity.ReplyActivity
-import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
-import me.ykrank.s1next.view.dialog.PostSelectableChangeDialogFragment
-import me.ykrank.s1next.view.dialog.ThreadAttachmentDialogFragment
-import me.ykrank.s1next.view.dialog.ThreadFavouritesAddDialogFragment
+import me.ykrank.s1next.view.dialog.*
 import me.ykrank.s1next.view.event.*
 import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate
 import me.ykrank.s1next.view.internal.PagerScrollState
@@ -155,6 +152,12 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                     val thread = it.thread
                     val post = it.post
                     EditPostActivity.startActivityForResultMessage(this, RequestCode.REQUEST_CODE_EDIT_POST, thread, post)
+                }
+        mRxBus.get()
+                .ofType(VotePostEvent::class.java)
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
+                .subscribe {
+                    VoteDialogFragment.newInstance(it.vote).show(fragmentManager, VoteDialogFragment.TAG)
                 }
         mRxBus.get()
                 .ofType(BlackListChangeEvent::class.java)

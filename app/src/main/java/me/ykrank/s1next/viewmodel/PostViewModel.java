@@ -20,6 +20,7 @@ import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
+import me.ykrank.s1next.data.api.model.Vote;
 import me.ykrank.s1next.util.ContextUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.AppPostListActivity;
@@ -28,6 +29,7 @@ import me.ykrank.s1next.view.activity.WebViewActivity;
 import me.ykrank.s1next.view.event.EditPostEvent;
 import me.ykrank.s1next.view.event.QuoteEvent;
 import me.ykrank.s1next.view.event.RateEvent;
+import me.ykrank.s1next.view.event.VotePostEvent;
 import me.ykrank.s1next.view.internal.BlacklistMenuAction;
 import me.ykrank.s1next.widget.RxBus;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
@@ -36,7 +38,9 @@ public final class PostViewModel {
 
     public final ObservableField<Post> post = new ObservableField<>();
     public final ObservableField<Thread> thread = new ObservableField<>();
+    public final ObservableField<Vote> vote = new ObservableField<>();
     public final ObservableField<CharSequence> floor = new ObservableField<>();
+
     private final RxBus rxBus;
     private final User user;
 
@@ -151,6 +155,10 @@ public final class PostViewModel {
     public void onExtraHtmlClick(View v) {
         String url = String.format("%sforum.php?mod=viewthread&do=tradeinfo&tid=%s&pid=%s", Api.BASE_URL, thread.get().getId(), post.get().getId() + 1);
         WebViewActivity.Companion.start(v.getContext(), url, true);
+    }
+
+    public void onVoteClick(View v) {
+        rxBus.post(new VotePostEvent(vote.get()));
     }
 
     public void onAppPostClick(View v) {

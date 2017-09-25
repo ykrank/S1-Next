@@ -19,6 +19,7 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
+import me.ykrank.s1next.data.api.model.Vote;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.databinding.ItemPostBinding;
 import me.ykrank.s1next.viewmodel.PostViewModel;
@@ -37,6 +38,8 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
     private final Fragment fragment;
     @Nullable
     private Thread threadInfo;
+    @Nullable
+    private Vote voteInfo;
 
     public PostAdapterDelegate(Fragment fragment) {
         super(fragment.getContext());
@@ -94,6 +97,13 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
 
         binding.getPostViewModel().thread.set(threadInfo);
         binding.getPostViewModel().post.set(post);
+
+        if ("1".equals(post.getCount())) {
+            binding.getPostViewModel().vote.set(voteInfo);
+        } else {
+            binding.getPostViewModel().vote.set(null);
+        }
+
         binding.executePendingBindings();
     }
 
@@ -115,6 +125,10 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
 
     public void setThreadInfo(@NonNull Thread threadInfo) {
         this.threadInfo = threadInfo;
+    }
+
+    public void setVoteInfo(@Nullable Vote voteInfo) {
+        this.voteInfo = voteInfo;
     }
 
     static final class ItemViewBindingHolder extends RecyclerView.ViewHolder {

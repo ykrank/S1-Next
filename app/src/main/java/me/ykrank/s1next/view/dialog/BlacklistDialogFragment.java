@@ -13,13 +13,13 @@ import android.view.WindowManager;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.db.dbmodel.BlackList;
 import me.ykrank.s1next.databinding.DialogBlacklistBinding;
+import me.ykrank.s1next.view.internal.RequestCode;
 import me.ykrank.s1next.viewmodel.BlackListViewModel;
 
 /**
- * A dialog lets the user enter thread link/ID to go to that thread.
+ * A dialog lets the user add or edit blacklist.
  */
 public final class BlacklistDialogFragment extends BaseDialogFragment {
-    public static final int DIALOG_REQUEST_CODE = 11;
 
     public static final String BLACKLIST_TAG = "blacklist";
     public static final String TAG = BlacklistDialogFragment.class.getName();
@@ -40,9 +40,9 @@ public final class BlacklistDialogFragment extends BaseDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Activity activity = getActivity();
         Object blacklist = getArguments().get(BLACKLIST_TAG);
-        if (blacklist != null)
+        if (blacklist != null) {
             mBlacklist = (BlackList) blacklist;
-        setRetainInstance(true);
+        }
 
         DialogBlacklistBinding binding = DataBindingUtil.inflate(activity.getLayoutInflater(),
                 R.layout.dialog_blacklist, null, false);
@@ -64,7 +64,7 @@ public final class BlacklistDialogFragment extends BaseDialogFragment {
                     BlackList blackList = new BlackList(authorId, authorName, post, forum);
                     Intent intent = new Intent();
                     intent.putExtra(BLACKLIST_TAG, blackList);
-                    getTargetFragment().onActivityResult(DIALOG_REQUEST_CODE, Activity.RESULT_OK, intent);
+                    getTargetFragment().onActivityResult(RequestCode.REQUEST_CODE_BLACKLIST, Activity.RESULT_OK, intent);
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();

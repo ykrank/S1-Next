@@ -22,7 +22,7 @@ import me.ykrank.s1next.widget.RxBus;
 import me.ykrank.s1next.widget.track.event.BlackListTrackEvent;
 
 /**
- * A dialog lets the user enter thread link/ID to go to that thread.
+ * A dialog lets the user enter blacklist remark.
  */
 public final class BlackListRemarkDialogFragment extends BaseDialogFragment {
 
