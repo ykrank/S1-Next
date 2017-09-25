@@ -31,7 +31,7 @@ public final class LoginActivity extends BaseActivity implements LoginFragment.L
     @Override
     public void loginInWeb() {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout, WebLoginFragment.getInstance(), WebLoginFragment.TAG)
+                .replace(R.id.frame_layout, WebLoginFragment.Companion.getInstance(), WebLoginFragment.Companion.getTAG())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .addToBackStack(null)
                 .commit();
