@@ -1,11 +1,15 @@
 package me.ykrank.s1next.binding;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
@@ -28,6 +32,8 @@ import io.reactivex.functions.Consumer;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
+import me.ykrank.s1next.util.ColorUtils;
+import me.ykrank.s1next.util.DrawableUtils;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.widget.glide.transformations.BlurTransformation;
 import me.ykrank.s1next.widget.glide.viewtarget.DrawableViewBackgroundTarget;
@@ -40,23 +46,85 @@ public final class ViewBindingAdapter {
     private ViewBindingAdapter() {
     }
 
+    private static final int UNABLE = Color.LTGRAY;
+    private static final int RIPPLE_DEFAULT = Color.parseColor("#61000000");
+
     @BindingAdapter("backTintColor")
-    public static void setBackgroundTint(View view, @ColorInt int tintColor) {
-        setBackgroundTint(view, tintColor, null);
+    public static void setBackgroundTint(View view, @ColorInt int oldTintColor, @ColorInt int tintColor) {
+        if (oldTintColor != tintColor) {
+            setBackgroundTint(view, tintColor, PorterDuff.Mode.SRC_OVER, RIPPLE_DEFAULT);
+        }
     }
 
     @BindingAdapter({"backTintColor", "tintMode"})
     public static void setBackgroundTint(View view, @ColorInt int tintColor, @Nullable PorterDuff.Mode tintMode) {
+        setBackgroundTint(view, tintColor, tintMode, RIPPLE_DEFAULT);
+    }
+
+    @BindingAdapter({"backTintColor", "ripple"})
+    public static void setBackgroundTint(View view, @ColorInt int tintColor, @Nullable Integer ripple) {
+        setBackgroundTint(view, tintColor, PorterDuff.Mode.SRC_OVER, ripple);
+    }
+
+    @BindingAdapter({"backTintColor", "tintMode", "ripple"})
+    public static void setBackgroundTint(View view, @ColorInt int tintColor, @Nullable PorterDuff.Mode tintMode, @Nullable Integer ripple) {
         Drawable originalDrawable = view.getBackground();
         if (originalDrawable == null) {
             return;
         }
+
+        int pressed = ColorUtils.getDarkerColor(tintColor);
+
         Drawable tintDrawable = DrawableCompat.wrap(originalDrawable.mutate());
         if (tintMode != null) {
             DrawableCompat.setTintMode(tintDrawable, tintMode);
         }
-        DrawableCompat.setTint(tintDrawable, tintColor);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (tintDrawable instanceof RippleDrawable) {
+                ColorStateList colorStateList = DrawableUtils.createColorStateList(tintColor, pressed, UNABLE);
+                ((RippleDrawable) tintDrawable).setColor(colorStateList);
+                ViewCompat.setBackground(view, tintDrawable);
+                return;
+            }
+            if (ripple != null) {
+                ColorStateList colorStateList = DrawableUtils.createColorStateList(tintColor, UNABLE);
+                DrawableCompat.setTintList(tintDrawable, colorStateList);
+                tintDrawable = DrawableUtils.getRippleDrawable(tintDrawable, ripple, 4);
+                ViewCompat.setBackground(view, tintDrawable);
+                return;
+            }
+        }
+
+        ColorStateList colorStateList = DrawableUtils.createColorStateList(tintColor, pressed, UNABLE);
+        DrawableCompat.setTintList(tintDrawable, colorStateList);
+
         ViewCompat.setBackground(view, tintDrawable);
+    }
+
+    @BindingAdapter({"ripple"})
+    public static void setRipple(View view, int ripple) {
+        setRipple(view, ripple, 4);
+    }
+
+    @BindingAdapter({"ripple", "radius"})
+    public static void setRipple(View view, int ripple, int radius) {
+        Drawable tintDrawable = null;
+        Drawable originalDrawable = view.getBackground();
+        if (originalDrawable != null) {
+            tintDrawable = DrawableCompat.wrap(originalDrawable.mutate());
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            tintDrawable = DrawableUtils.getRippleDrawable(tintDrawable, ripple, radius);
+            ViewCompat.setBackground(view, tintDrawable);
+        } else {
+            if (tintDrawable == null) {
+                tintDrawable = new ColorDrawable();
+            }
+            ColorStateList colorStateList = DrawableUtils.createColorStateList(Color.TRANSPARENT, ripple, UNABLE);
+            DrawableCompat.setTintList(tintDrawable, colorStateList);
+            ViewCompat.setBackground(view, tintDrawable);
+        }
     }
 
     @BindingAdapter("marginEnd")
