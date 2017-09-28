@@ -6,6 +6,7 @@ import me.ykrank.s1next.data.api.app.model.AppLoginResult;
 import me.ykrank.s1next.data.api.app.model.AppResult;
 import me.ykrank.s1next.data.api.app.model.AppThread;
 import me.ykrank.s1next.data.api.app.model.AppUserInfo;
+import me.ykrank.s1next.data.api.app.model.AppVote;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -33,4 +34,8 @@ public interface AppService {
     @FormUrlEncoded
     @POST("thread")
     Observable<AppDataWrapper<AppThread>> getThreadInfo(@Field("sid") String security, @Field("tid") String threadId);
+
+    @FormUrlEncoded
+    @POST("poll/poll")
+    Observable<AppDataWrapper<AppVote>> getPollInfo(@Field("sid") String security, @Field("tid") String threadId);
 }

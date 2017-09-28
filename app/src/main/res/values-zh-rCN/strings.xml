@@ -193,6 +193,7 @@
     <string name="clear_image_cache_success">清除图片缓存成功</string>
     <string name="click_to_cast_dark_magic">点击施放黑魔法</string>
     <string name="vote_view_all_voter">查看投票参与人</string>
-    <string name="go_vote">投票去</string>
+    <string name="vote">投票</string>
     <string name="click_to_vote">点击前往投票</string>
+    <string name="voted">已投票</string>
 </resources>

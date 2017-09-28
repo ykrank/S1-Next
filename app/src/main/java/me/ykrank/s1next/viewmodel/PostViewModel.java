@@ -158,7 +158,7 @@ public final class PostViewModel {
     }
 
     public void onVoteClick(View v) {
-        rxBus.post(new VotePostEvent(vote.get()));
+        rxBus.post(new VotePostEvent(thread.get().getId(), vote.get()));
     }
 
     public void onAppPostClick(View v) {

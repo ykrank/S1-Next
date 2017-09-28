@@ -51,6 +51,7 @@ import me.ykrank.s1next.view.dialog.LoginDialogFragment;
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
 import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment;
+import me.ykrank.s1next.view.dialog.VoteDialogFragment;
 import me.ykrank.s1next.view.fragment.AppPostListPagerFragment;
 import me.ykrank.s1next.view.fragment.BaseFragment;
 import me.ykrank.s1next.view.fragment.BasePostFragment;
@@ -260,4 +261,6 @@ public interface AppComponent {
     void inject(AppPostAdapterDelegate appPostAdapterDelegate);
 
     void inject(AppPostListPagerFragment fragment);
+
+    void inject(VoteDialogFragment fragment);
 }

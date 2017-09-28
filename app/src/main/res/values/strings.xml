@@ -250,6 +250,7 @@
     <string name="clear_image_cache_success">Clear image cache success</string>
     <string name="click_to_cast_dark_magic">CLICK TO CAST DARK MAGIC</string>
     <string name="vote_view_all_voter">View all voter</string>
-    <string name="go_vote">Go vote</string>
+    <string name="vote">Vote</string>
+    <string name="voted">Voted</string>
     <string name="click_to_vote">Click to vote</string>
 </resources>

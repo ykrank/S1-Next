@@ -1,5 +1,7 @@
 package me.ykrank.s1next.data.api.model
 
+import android.graphics.Color
+import android.support.annotation.ColorInt
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
@@ -115,6 +117,15 @@ class Vote : PaperParcelable {
         var optionId: Int = 0
         @JsonProperty("votes")
         var votes: Int = 0
+
+        @ColorInt
+        fun getColorInt(): Int {
+            val color = this.color
+            if (color != null && color.length == 6) {
+                return Color.parseColor("#$color")
+            }
+            return Color.TRANSPARENT
+        }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true

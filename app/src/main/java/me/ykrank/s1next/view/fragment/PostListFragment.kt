@@ -157,7 +157,9 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                 .ofType(VotePostEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe {
-                    VoteDialogFragment.newInstance(it.vote).show(fragmentManager, VoteDialogFragment.TAG)
+                    if (!LoginPromptDialogFragment.showAppLoginPromptDialogIfNeeded(fragmentManager, mUser)) {
+                        VoteDialogFragment.newInstance(it.threadId, it.vote).show(fragmentManager, VoteDialogFragment.TAG)
+                    }
                 }
         mRxBus.get()
                 .ofType(BlackListChangeEvent::class.java)

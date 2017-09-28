@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -10,40 +12,54 @@
             type="me.ykrank.s1next.viewmodel.VoteViewModel" />
     </data>
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:paddingBottom="8dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/tv_vote_intro"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="@{model.getVoteSummary(model.vote)}" />
+            android:text="@{model.getVoteSummary(model.appVote)}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="共有10人投票" />
 
         <Button
+            android:id="@+id/btn_view_all_voter"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:onClick="@{model.clickViewAllVoter(model.vote)}"
-            android:text="@string/vote_view_all_voter" />
+            android:enabled="@{model.appVote.isOvert}"
+            android:onClick="@{model.clickViewAllVoter()}"
+            android:text="@string/vote_view_all_voter"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/btn_vote"
+            app:layout_constraintTop_toBottomOf="@id/tv_vote_intro" />
 
         <Button
+            android:id="@+id/btn_vote"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:text="@string/go_vote"
-            android:visibility="@{model.vote.allow?View.VISIBLE:View.GONE}" />
+            android:enabled="@{model.isVoteable(model.appVote)}"
+            android:text="@{model.appVote.isVoted?@string/voted:@string/vote}"
+            app:layout_constraintBottom_toBottomOf="@id/btn_view_all_voter"
+            app:layout_constraintLeft_toRightOf="@id/btn_view_all_voter"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_view_all_voter" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycleView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp" />
+            android:layout_margin="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_view_all_voter" />
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 </layout>
