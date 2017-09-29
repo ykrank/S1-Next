@@ -20,7 +20,9 @@ class WebViewActivity : BaseActivity() {
         setContentView(R.layout.activity_base_without_drawer)
 
         if (savedInstanceState == null) {
-            fragment = WebViewFragment.getInstance(intent.getStringExtra(ARG_URL), intent.getBooleanExtra(ARG_ENABLE_JS, false))
+            fragment = WebViewFragment.getInstance(intent.getStringExtra(ARG_URL),
+                    intent.getBooleanExtra(ARG_ENABLE_JS, false),
+                    intent.getBooleanExtra(ARG_PC_AGENT, false))
             supportFragmentManager.beginTransaction()
                     .add(R.id.frame_layout, fragment, WebViewFragment.TAG)
                     .commit()
@@ -41,12 +43,14 @@ class WebViewActivity : BaseActivity() {
 
     companion object {
         val ARG_URL = "arg_url"
-        var ARG_ENABLE_JS = "arg_enable_js"
+        val ARG_ENABLE_JS = "arg_enable_js"
+        val ARG_PC_AGENT = "arg_pc_agent"
 
-        fun start(context: Context, url: String, enableJS: Boolean = false) {
+        fun start(context: Context, url: String, enableJS: Boolean = false, pcAgent: Boolean = true) {
             val intent = Intent(context, WebViewActivity::class.java)
             intent.putExtra(ARG_URL, url)
             intent.putExtra(ARG_ENABLE_JS, enableJS)
+            intent.putExtra(ARG_PC_AGENT, pcAgent)
             context.startActivity(intent)
         }
     }

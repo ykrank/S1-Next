@@ -85,6 +85,9 @@ class WebLoginFragment : BaseFragment() {
                 }
             }
         }
+
+        //Only one webView instance in application, so we should resume timers because we stop it onDestroy
+        webView?.resumeTimers()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {

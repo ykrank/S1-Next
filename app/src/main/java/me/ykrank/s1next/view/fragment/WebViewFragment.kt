@@ -29,6 +29,7 @@ import javax.inject.Inject
 class WebViewFragment : BaseFragment(), BackPressDelegate {
     private lateinit var url: String
     private var enableJs: Boolean = false
+    private var pcAgent: Boolean = false
 
     @Inject
     internal lateinit var mCookieManager: CookieManager
@@ -37,7 +38,7 @@ class WebViewFragment : BaseFragment(), BackPressDelegate {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         App.getAppComponent().inject(this)
-        binding = DataBindingUtil.inflate<FragmentWebviewBinding>(inflater, R.layout.fragment_webview, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_webview, container, false)
         return binding.root
     }
 
@@ -46,6 +47,7 @@ class WebViewFragment : BaseFragment(), BackPressDelegate {
         L.leaveMsg(TAG)
         url = arguments.getString(ARG_URL)
         enableJs = arguments.getBoolean(ARG_ENABLE_JS)
+        pcAgent = arguments.getBoolean(ARG_PC_AGENT)
 
         binding.webPageViewModel = WebPageViewModel()
 
@@ -63,6 +65,9 @@ class WebViewFragment : BaseFragment(), BackPressDelegate {
                 binding.webView.loadUrl(url)
             }
         }
+
+        //Only one webView instance in application, so we should resume timers because we stop it onDestroy
+        binding.webView.resumeTimers()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -102,41 +107,46 @@ class WebViewFragment : BaseFragment(), BackPressDelegate {
             webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
         }
         webSettings.javaScriptCanOpenWindowsAutomatically = true //支持通过JS打开新窗口
-        webSettings.userAgentString = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:51.0) Gecko/20100101 Firefox/51.0"
+        if (pcAgent) {
+            webSettings.userAgentString = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:51.0) Gecko/20100101 Firefox/51.0"
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //Since Lollipop (API 21), WebView blocks all mixed content by default.
+            //But login page need load mixed content
+            webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
+        }
     }
 
     private fun initWebViewClient() {
-        binding.webView.setWebViewClient(object : CookieSyncWebViewClient() {
+        binding.webView.webViewClient = object : WebViewClient() {
 
             override fun onPageFinished(view: WebView, url: String) {
                 binding.webPageViewModel.setFinishedLoading(true)
                 super.onPageFinished(view, url)
             }
-        })
+        }
 
-        binding.webView.setWebChromeClient(ProgressWebChromeClient(binding.progressBar))
+        binding.webView.webChromeClient = ProgressWebChromeClient(binding.progressBar)
 
         WebViewUtils.syncWebViewCookies(context, mCookieManager.cookieStore)
     }
 
     companion object {
-        val TAG: String = WebLoginFragment::class.java.name
+        val TAG: String = WebViewFragment::class.java.name
         val ARG_URL = "arg_url"
-        var ARG_ENABLE_JS = "arg_enable_js"
+        val ARG_ENABLE_JS = "arg_enable_js"
+        val ARG_PC_AGENT = "arg_pc_agent"
 
-        fun getInstance(url: String, enableJS: Boolean = false): WebViewFragment {
+        fun getInstance(url: String, enableJS: Boolean = false, pcAgent: Boolean = true): WebViewFragment {
             val fragment = WebViewFragment()
             val bundle = Bundle()
             bundle.putString(ARG_URL, url)
             bundle.putBoolean(ARG_ENABLE_JS, enableJS)
+            bundle.putBoolean(ARG_PC_AGENT, pcAgent)
             fragment.arguments = bundle
             return fragment
         }
     }
-}
-
-open class CookieSyncWebViewClient : WebViewClient() {
-
 }
 
 open class ProgressWebChromeClient(private val mProgressBar: ProgressBar) : WebChromeClient() {
