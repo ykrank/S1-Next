@@ -121,7 +121,7 @@ public final class NewRateFragment extends BaseFragment {
     }
 
     private void init() {
-        bindViewHolderCallback = bind -> {
+        bindViewHolderCallback = (position, bind) -> {
             ItemRateReasonBinding itemBinding = (ItemRateReasonBinding) bind;
             itemBinding.getRoot().setOnClickListener(v -> {
                 binding.etReason.setText(itemBinding.getModel());

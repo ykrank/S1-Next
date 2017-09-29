@@ -15,9 +15,11 @@ import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.ApiFlatTransformer
 import me.ykrank.s1next.data.api.app.AppService
 import me.ykrank.s1next.data.api.model.Vote
+import me.ykrank.s1next.databinding.ItemVoteBinding
 import me.ykrank.s1next.databinding.LayoutVoteBinding
 import me.ykrank.s1next.util.L
 import me.ykrank.s1next.util.RxJavaUtil
+import me.ykrank.s1next.view.adapter.simple.BindViewHolderCallback
 import me.ykrank.s1next.view.adapter.simple.SimpleRecycleViewAdapter
 import me.ykrank.s1next.viewmodel.ItemVoteViewModel
 import me.ykrank.s1next.viewmodel.VoteViewModel
@@ -38,12 +40,19 @@ class VoteDialogFragment : BaseDialogFragment() {
     private lateinit var binding: LayoutVoteBinding
     private lateinit var adapter: SimpleRecycleViewAdapter
 
+    private lateinit var data: List<ItemVoteViewModel>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         App.getAppComponent().inject(this)
         super.onCreate(savedInstanceState)
         tid = arguments.getString(ARG_THREAD_ID)
         mVote = arguments.getParcelable(ARG_VOTE)
-        adapter = SimpleRecycleViewAdapter(context, R.layout.item_vote)
+
+        adapter = SimpleRecycleViewAdapter(context, R.layout.item_vote, BindViewHolderCallback { position, itemBind ->
+            itemBind as ItemVoteBinding
+            itemBind.radio.setOnClickListener { refreshSelectedItem(position, itemBind) }
+            itemBind.checkBox.setOnClickListener { refreshSelectedItem(position, itemBind) }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -55,11 +64,8 @@ class VoteDialogFragment : BaseDialogFragment() {
         binding.recycleView.adapter = adapter
         binding.recycleView.layoutManager = LinearLayoutManager(context)
         mVote.voteOptions?.let {
-            adapter.swapDataSet(it.values.map {
-                val vm = ItemVoteViewModel(model)
-                vm.option.set(it)
-                vm
-            })
+            data = it.values.map { ItemVoteViewModel(binding.model, it) }
+            adapter.swapDataSet(data)
         }
 
         loadData()
@@ -84,7 +90,26 @@ class VoteDialogFragment : BaseDialogFragment() {
                 .compose(ApiFlatTransformer.apiErrorTransformer())
                 .compose(RxJavaUtil.iOTransformer())
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
-                .subscribe({ binding.model.appVote.set(it.data) }, L::e)
+                .subscribe({
+                    binding.model.appVote.set(it.data)
+                    adapter.notifyDataSetChanged()
+                }, L::e)
+    }
+
+    private fun refreshSelectedItem(position: Int, itemBind: ItemVoteBinding) {
+        if (mVote.isMultiple) {
+            if (itemBind.model.selected.get()) {
+                itemBind.model.selected.set(false)
+            } else {
+                val selected = data.filter { it.selected.get() }
+                if (selected.size < mVote.maxChoices) {
+                    itemBind.model.selected.set(true)
+                }
+            }
+        } else {
+            data.forEachIndexed { index, vm -> vm.selected.set(index == position) }
+        }
+        adapter.notifyDataSetChanged()
     }
 
     companion object {

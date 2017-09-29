@@ -1,6 +1,6 @@
 package me.ykrank.s1next.viewmodel;
 
-import android.databinding.ObservableField;
+import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 
 import me.ykrank.s1next.data.api.model.Vote;
@@ -12,10 +12,13 @@ import me.ykrank.s1next.data.api.model.Vote;
 public class ItemVoteViewModel {
     @NonNull
     private final VoteViewModel voteVM;
-    public final ObservableField<Vote.VoteOption> option = new ObservableField<>();
+    @NonNull
+    public final Vote.VoteOption option;
+    public final ObservableBoolean selected = new ObservableBoolean();
 
-    public ItemVoteViewModel(@NonNull VoteViewModel voteVM) {
+    public ItemVoteViewModel(@NonNull VoteViewModel voteVM, @NonNull Vote.VoteOption option) {
         this.voteVM = voteVM;
+        this.option = option;
     }
 
     public boolean isSingleVotable() {

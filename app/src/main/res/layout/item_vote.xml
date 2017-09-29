@@ -20,6 +20,7 @@
             android:id="@+id/radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="@{model.selected}"
             android:visibility="@{model.singleVotable?View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -29,6 +30,7 @@
             android:id="@+id/checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="@{model.selected}"
             android:visibility="@{model.multiVotable?View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/radio"
@@ -36,12 +38,15 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{model.option.option}"
             app:layout_constraintLeft_toRightOf="@id/checkBox"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="+2：极力推荐" />
+            app:layout_constraintRight_toLeftOf="@+id/tv_percent"
+            tools:text="+2：极力推荐极力推荐极力推荐极力推荐极力推荐极力推荐极力推荐极力推荐极力推荐极力推荐极力推荐"
+            android:paddingRight="@dimen/spacing_micro"
+            android:layout_marginTop="4dp" />
 
         <TextView
             android:id="@+id/tv_percent"
@@ -62,10 +67,10 @@
             android:layout_marginLeft="@dimen/spacing_micro"
             android:layout_marginRight="@dimen/spacing_micro"
             android:text="@{`(`+model.option.votes+`)`}"
+            android:textColor="@{model.option.colorInt}"
             android:textSize="@dimen/text_size_caption"
             app:layout_constraintBottom_toBottomOf="@id/textView"
             app:layout_constraintRight_toRightOf="parent"
-            android:textColor="@{model.option.colorInt}"
             tools:text="(360)" />
 
         <ProgressBar

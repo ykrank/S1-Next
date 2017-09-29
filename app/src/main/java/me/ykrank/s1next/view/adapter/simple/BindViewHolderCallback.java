@@ -14,5 +14,5 @@ public interface BindViewHolderCallback {
      *
      * @param binding store view and data model
      */
-    void onBindViewHolder(ViewDataBinding binding);
+    void onBindViewHolder(int position, ViewDataBinding binding);
 }

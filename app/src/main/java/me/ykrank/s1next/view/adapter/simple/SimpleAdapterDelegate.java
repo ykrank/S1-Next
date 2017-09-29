@@ -46,7 +46,7 @@ public class SimpleAdapterDelegate extends AdapterDelegate<List<Object>> {
         ViewDataBinding binding = ((SimpleRecycleViewHolder) holder).binding;
         binding.setVariable(BR.model, items.get(position));
         if (bindViewHolderCallback != null) {
-            bindViewHolderCallback.onBindViewHolder(binding);
+            bindViewHolderCallback.onBindViewHolder(position, binding);
         }
         binding.executePendingBindings();
     }
