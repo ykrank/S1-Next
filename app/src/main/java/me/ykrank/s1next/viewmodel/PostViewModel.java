@@ -154,7 +154,7 @@ public final class PostViewModel {
 
     public void onExtraHtmlClick(View v) {
         String url = String.format("%sforum.php?mod=viewthread&do=tradeinfo&tid=%s&pid=%s", Api.BASE_URL, thread.get().getId(), post.get().getId() + 1);
-        WebViewActivity.Companion.start(v.getContext(), url, true);
+        WebViewActivity.Companion.start(v.getContext(), url, true, true);
     }
 
     public void onVoteClick(View v) {

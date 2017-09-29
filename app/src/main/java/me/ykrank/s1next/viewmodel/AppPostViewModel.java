@@ -149,6 +149,6 @@ public final class AppPostViewModel {
 
     public void onTradeHtmlClick(View v) {
         String url = String.format("%sforum.php?mod=viewthread&do=tradeinfo&tid=%s&pid=%s", Api.BASE_URL, post.get().getTid(), post.get().getPid() + 1);
-        WebViewActivity.Companion.start(v.getContext(), url, true);
+        WebViewActivity.Companion.start(v.getContext(), url, true, true);
     }
 }

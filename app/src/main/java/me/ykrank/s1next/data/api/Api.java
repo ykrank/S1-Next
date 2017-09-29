@@ -50,6 +50,8 @@ public final class Api {
     private static final String URL_BROWSER_THREAD_LIST = prepend("forum-%s-%d.html");
     private static final String URL_BROWSER_POST_LIST = prepend("thread-%s-%d-1.html");
 
+    public static final String URL_VIEW_VOTE = prepend("forum.php?mod=misc&action=viewvote");
+
     private Api() {
     }
 

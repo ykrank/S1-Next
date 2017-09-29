@@ -5,8 +5,10 @@ import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.app.model.AppVote;
 import me.ykrank.s1next.data.api.model.Vote;
+import me.ykrank.s1next.view.activity.WebViewActivity;
 
 public final class VoteViewModel {
     @NonNull
@@ -50,9 +52,15 @@ public final class VoteViewModel {
         return vote.isMultiple();
     }
 
-    public View.OnClickListener clickViewAllVoter() {
+    public View.OnClickListener clickViewAllVoter(AppVote appVote) {
         return v -> {
-            
+            WebViewActivity.Companion.start(v.getContext(), Api.URL_VIEW_VOTE + "&tid=" + appVote.getTid(), true, true);
+        };
+    }
+
+    public View.OnClickListener clickVote() {
+        return v -> {
+
         };
     }
 }
