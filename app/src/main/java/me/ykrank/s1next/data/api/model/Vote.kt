@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.JsonNode
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
+import java.text.DecimalFormat
 
 /**
  * Created by ykrank on 2017/2/15.
@@ -117,6 +118,9 @@ class Vote : PaperParcelable {
         var optionId: Int = 0
         @JsonProperty("votes")
         var votes: Int = 0
+        val percentStr: String
+            @JsonIgnore
+            get() = DecimalFormat("0.00").format(percent)
 
         @ColorInt
         fun getColorInt(): Int {
@@ -153,6 +157,11 @@ class Vote : PaperParcelable {
 
         override fun toString(): String =
                 "VoteOption(color=$color, percent=$percent, option=$option, optionId=$optionId, votes=$votes)"
+
+        fun mergeWithAppVoteOption(other: VoteOption, voteCount: Int) {
+            this.votes = other.votes
+            this.percent = (votes * 100.0f) / voteCount
+        }
 
         companion object {
             @JvmField

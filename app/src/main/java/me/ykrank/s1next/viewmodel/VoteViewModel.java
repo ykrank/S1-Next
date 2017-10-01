@@ -35,7 +35,10 @@ public final class VoteViewModel {
         if (appVote.isOvert()) {
             builder.append("公开投票, ");
         }
-        builder.append(" 共有 ").append(appVote.getVoters()).append(" 人参与投票");
+        builder.append(" 共有 ").append(appVote.getVoters()).append(" 人参与投票。");
+        if (appVote.isVoted()){
+            builder.append(" 你已投票。");
+        }
 
         return builder.toString();
     }
@@ -60,7 +63,7 @@ public final class VoteViewModel {
 
     public View.OnClickListener clickVote() {
         return v -> {
-
+            
         };
     }
 }

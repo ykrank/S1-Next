@@ -1,5 +1,7 @@
 package me.ykrank.s1next.data.api.app;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import me.ykrank.s1next.data.api.app.model.AppDataWrapper;
 import me.ykrank.s1next.data.api.app.model.AppLoginResult;
@@ -7,6 +9,7 @@ import me.ykrank.s1next.data.api.app.model.AppResult;
 import me.ykrank.s1next.data.api.app.model.AppThread;
 import me.ykrank.s1next.data.api.app.model.AppUserInfo;
 import me.ykrank.s1next.data.api.app.model.AppVote;
+import me.ykrank.s1next.data.api.model.Vote;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -38,4 +41,8 @@ public interface AppService {
     @FormUrlEncoded
     @POST("poll/poll")
     Observable<AppDataWrapper<AppVote>> getPollInfo(@Field("sid") String security, @Field("tid") String threadId);
+
+    @FormUrlEncoded
+    @POST("poll/vote")
+    Observable<AppDataWrapper<List<Vote.VoteOption>>> vote(@Field("sid") String security, @Field("tid") String threadId, @Field("options") String optionId);
 }

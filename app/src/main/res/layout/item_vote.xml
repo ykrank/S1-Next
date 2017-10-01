@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/spacing_micro"
             android:layout_marginRight="@dimen/spacing_micro"
-            android:text="@{model.option.percent+`%`}"
+            android:text="@{model.option.percentStr+`%`}"
             android:textSize="@dimen/text_size_caption"
             app:layout_constraintBottom_toBottomOf="@id/textView"
             app:layout_constraintRight_toLeftOf="@+id/tv_count"
