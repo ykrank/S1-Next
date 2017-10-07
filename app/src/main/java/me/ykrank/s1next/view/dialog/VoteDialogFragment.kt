@@ -92,7 +92,7 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
 
     private fun loadData() {
         Observables.zip(appService.getPollInfo(mUser.appSecureToken, tid), appService.getPollOptions(mUser.appSecureToken, tid))
-                .compose(ApiFlatTransformer.apiErrorTransformer())
+                .compose(ApiFlatTransformer.apiPairErrorTransformer())
                 .compose(RxJavaUtil.iOTransformer())
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
                 .subscribe({

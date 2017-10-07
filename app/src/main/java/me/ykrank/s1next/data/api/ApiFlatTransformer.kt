@@ -21,21 +21,48 @@ object ApiFlatTransformer {
     fun <T> apiErrorTransformer(): ObservableTransformer<T, T> {
         return ObservableTransformer {
             it.flatMap {
-                when (it) {
-                    is OriginWrapper<*> -> {
-                        if (!it.error.isNullOrEmpty()) {
-                            return@flatMap Observable.error<T>(ApiException.ApiServerException(it.error))
-                        }
-                    }
-                    is AppResult -> {
-                        if (!it.success) {
-                            return@flatMap Observable.error<T>(ApiException.AppServerException(it.message, it.code))
-                        }
-                    }
+                val error = getApiResultError(it)
+                if (error != null) {
+                    return@flatMap Observable.error<T>(error)
                 }
                 return@flatMap createData(it)
             }
         }
+    }
+
+    /**
+     * A rxjava transformer to judge whether server throw error in pair wrapped data
+     */
+    fun <T1, T2> apiPairErrorTransformer(): ObservableTransformer<kotlin.Pair<T1, T2>, kotlin.Pair<T1, T2>> {
+        return ObservableTransformer {
+            it.flatMap {
+                var error = getApiResultError(it.first)
+                if (error == null) {
+                    error = getApiResultError(it.second)
+                }
+                if (error != null) {
+                    return@flatMap Observable.error<kotlin.Pair<T1, T2>>(error)
+                }
+                return@flatMap createData(it)
+            }
+        }
+    }
+
+
+    private fun getApiResultError(it: Any?): ApiException? {
+        when (it) {
+            is OriginWrapper<*> -> {
+                if (!it.error.isNullOrEmpty()) {
+                    return ApiException.ApiServerException(it.error)
+                }
+            }
+            is AppResult -> {
+                if (!it.success) {
+                    return ApiException.AppServerException(it.message, it.code)
+                }
+            }
+        }
+        return null
     }
 
     /**
@@ -58,7 +85,7 @@ object ApiFlatTransformer {
                 // return the AccountResultWrapper if we cannot get the authenticity token
                 // (if account has expired or network error)
                 if (account.authenticityToken.isNullOrEmpty()) {
-                    return@flatMap Observable.error <T>(ApiException.AuthenticityTokenException("获取登录信息错误",
+                    return@flatMap Observable.error<T>(ApiException.AuthenticityTokenException("获取登录信息错误",
                             ApiException("AccountResultWrapper:" + it)))
                 } else {
                     mUserValidator.validate(account)
@@ -70,7 +97,7 @@ object ApiFlatTransformer {
                 return func.invoke(authenticityToken!!)
             } catch (e: Exception) {
                 L.report(e)
-                return Observable.error <T>(e)
+                return Observable.error<T>(e)
             }
 
         }
