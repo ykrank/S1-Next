@@ -160,7 +160,9 @@ class Vote : PaperParcelable {
 
         fun mergeWithAppVoteOption(other: VoteOption, voteCount: Int) {
             this.votes = other.votes
-            this.percent = (votes * 100.0f) / voteCount
+            if (voteCount > 0) {
+                this.percent = (votes * 100.0f) / voteCount
+            }
         }
 
         companion object {

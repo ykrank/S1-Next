@@ -144,6 +144,6 @@ public interface S1Service {
 
     @FormUrlEncoded
     @POST(ApiForum.URL_VOTE)
-    Observable<String> vote(@Query("fid") String fid, @Query("tid") String threadId, @Field("formhash") String authenticityToken
+    Observable<String> vote(@Query("tid") String threadId, @Field("formhash") String authenticityToken
             , @Field("pollanswers[]") List<Integer> answers);
 }

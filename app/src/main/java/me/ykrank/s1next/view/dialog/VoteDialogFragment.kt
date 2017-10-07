@@ -9,14 +9,13 @@ import android.view.ViewGroup
 import android.view.Window
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
+import io.reactivex.rxkotlin.Observables
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.ApiFlatTransformer
 import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.app.AppService
-import me.ykrank.s1next.data.api.app.model.AppDataWrapper
-import me.ykrank.s1next.data.api.app.model.AppVote
 import me.ykrank.s1next.data.api.model.Vote
 import me.ykrank.s1next.databinding.ItemVoteBinding
 import me.ykrank.s1next.databinding.LayoutVoteBinding
@@ -27,7 +26,6 @@ import me.ykrank.s1next.view.adapter.simple.BindViewHolderCallback
 import me.ykrank.s1next.view.adapter.simple.SimpleRecycleViewAdapter
 import me.ykrank.s1next.viewmodel.ItemVoteViewModel
 import me.ykrank.s1next.viewmodel.VoteViewModel
-import java.util.function.BiFunction
 import javax.inject.Inject
 
 
@@ -93,26 +91,18 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
     }
 
     private fun loadData() {
-        appService.getPollInfo(mUser.appSecureToken, tid)
-                .zipWith(appService.getPollOptions(mUser.appSecureToken, tid), BiFunction<AppDataWrapper<AppVote>, AppDataWrapper<List<Vote.VoteOption>>, Any> { p0, p1 ->
-                    Pair(p0.data, p1.data)
-                })
+        Observables.zip(appService.getPollInfo(mUser.appSecureToken, tid), appService.getPollOptions(mUser.appSecureToken, tid))
                 .compose(ApiFlatTransformer.apiErrorTransformer())
                 .compose(RxJavaUtil.iOTransformer())
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
                 .subscribe({
-                    binding.model.appVote.set(it.data)
-                }, { showShortSnackbar(ErrorUtil.parse(activity, it)) })
-        appService.getPollOptions(mUser.appSecureToken, tid)
-                .compose(ApiFlatTransformer.apiErrorTransformer())
-                .compose(RxJavaUtil.iOTransformer())
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
-                .subscribe({
-                    it.data?.let {
-                        data.forEachIndexed { index, vm -> vm.option.mergeWithAppVoteOption(it[index].votes) }
+                    val appVote = it.first.data
+                    binding.model.appVote.set(appVote)
+                    it.second.data?.let {
+                        data.forEachIndexed { index, vm -> vm.option.mergeWithAppVoteOption(it[index], appVote?.voters ?: mVote.voteCount) }
                     }
                     adapter.notifyDataSetChanged()
-                }, { showShortSnackbar(ErrorUtil.parse(activity, it)) })
+                }, { activity?.toast(ErrorUtil.parse(activity, it)) })
     }
 
     private fun refreshSelectedItem(position: Int, itemBind: ItemVoteBinding) {
@@ -133,14 +123,14 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
 
     override fun onClickVote(view: View?) {
         val selected = data.filter { it.selected.get() }.map { it.option.optionId }
-        s1Service.vote(null, tid, mUser.authenticityToken, selected)
+        s1Service.vote(tid, mUser.authenticityToken, selected)
                 .compose(ApiFlatTransformer.apiErrorTransformer())
                 .compose(RxJavaUtil.iOTransformer())
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
                 .subscribe({
                     activity.toast(R.string.vote_success)
                     loadData()
-                }, { showShortSnackbar(ErrorUtil.parse(activity, it)) })
+                }, { activity?.toast(ErrorUtil.parse(activity, it)) })
     }
 
     companion object {
