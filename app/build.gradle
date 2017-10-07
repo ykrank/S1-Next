@@ -22,8 +22,8 @@ android {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 35
-        versionName '1.3.1.0'
+        versionCode 36
+        versionName '1.3.2.0'
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
@@ -134,6 +134,8 @@ dependencies {
 
     debugCompile 'com.facebook.stetho:stetho:1.5.0'
     debugCompile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+    alphaCompile 'com.facebook.stetho:stetho:1.5.0'
+    alphaCompile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 
     compile "com.android.support:design:$rootProject.supportVersion"
     compile "com.android.support:cardview-v7:$rootProject.supportVersion"
