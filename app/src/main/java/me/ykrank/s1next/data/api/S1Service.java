@@ -1,5 +1,7 @@
 package me.ykrank.s1next.data.api;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import me.ykrank.s1next.data.api.model.Profile;
 import me.ykrank.s1next.data.api.model.collection.Favourites;
@@ -139,4 +141,9 @@ public interface S1Service {
 
     @GET(ApiMember.URL_AUTO_SIGN)
     Observable<String> autoSign(@Query("formhash") String authenticityToken);
+
+    @FormUrlEncoded
+    @POST(ApiForum.URL_VOTE)
+    Observable<String> vote(@Query("fid") String fid, @Query("tid") String threadId, @Field("formhash") String authenticityToken
+            , @Field("pollanswers[]") List<Integer> answers);
 }

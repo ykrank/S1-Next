@@ -253,4 +253,5 @@
     <string name="vote">Vote</string>
     <string name="voted">Voted</string>
     <string name="click_to_vote">Click to vote</string>
+    <string name="vote_success">Vote success</string>
 </resources>

@@ -43,6 +43,10 @@ public interface AppService {
     Observable<AppDataWrapper<AppVote>> getPollInfo(@Field("sid") String security, @Field("tid") String threadId);
 
     @FormUrlEncoded
+    @POST("poll/options")
+    Observable<AppDataWrapper<List<Vote.VoteOption>>> getPollOptions(@Field("sid") String security, @Field("tid") String threadId);
+
+    @FormUrlEncoded
     @POST("poll/vote")
     Observable<AppDataWrapper<List<Vote.VoteOption>>> vote(@Field("sid") String security, @Field("tid") String threadId, @Field("options") String optionId);
 }

@@ -196,4 +196,5 @@
     <string name="vote">投票</string>
     <string name="click_to_vote">点击前往投票</string>
     <string name="voted">已投票</string>
+    <string name="vote_success">投票成功</string>
 </resources>
