@@ -135,7 +135,7 @@ public final class Threads extends Account {
     }
 
     public void setThreadList(List<Thread> threadList) {
-        this.threadList = getFilterThreadList(threadList);
+        this.threadList = threadList;
     }
 
     public List<Forum> getSubForumList() {

@@ -326,7 +326,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     override var threadInfo: Thread? = null
         get() = field
         set(value) {
-            if (value != null) {
+            if (value != null && field != value) {
                 field = value
                 setThreadTitle(value.title)
                 setTotalPageByPosts(value.reliesCount + 1)

@@ -12,6 +12,7 @@ import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper;
+import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper;
 import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -31,7 +32,7 @@ public interface S1Service {
     Observable<String> getThreadsWrapper(@Query("fid") String forumId, @Query("page") int page);
 
     @GET(ApiForum.URL_POST_LIST)
-    Observable<String> getPostsWrapper(@Query("tid") String threadId, @Query("page") int page);
+    Observable<PostsWrapper> getPostsWrapper(@Query("tid") String threadId, @Query("page") int page);
 
     @GET(ApiForum.URL_TRADE_POST_INFO)
     Observable<String> getTradePostInfo(@Query("tid") String threadId, @Query("pid") int pid);
