@@ -1,4 +1,4 @@
-package me.ykrank.s1next.widget.glide.transformations
+package me.ykrank.s1next.widget.glide.downsamplestrategy
 
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 

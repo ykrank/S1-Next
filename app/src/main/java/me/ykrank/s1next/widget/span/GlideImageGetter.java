@@ -47,6 +47,7 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.LooperUtil;
 import me.ykrank.s1next.widget.EmoticonFactory;
+import me.ykrank.s1next.widget.glide.downsamplestrategy.SizeDownSampleStrategy;
 import me.ykrank.s1next.widget.glide.transformations.FitOutWidthBitmapTransformation;
 import me.ykrank.s1next.widget.glide.transformations.SizeMultiplierBitmapTransformation;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
@@ -175,18 +176,24 @@ public final class GlideImageGetter
 
             RequestBuilder<Drawable> glideRequestBuilder = requestManager
                     .load(Uri.parse(EmoticonFactory.ASSET_PATH_EMOTICON + emoticonName))
-                    .apply(RequestOptions.bitmapTransform(transformation))
+                    // TODO: 2017/10/10 Use correct downsample 
+                    .apply(RequestOptions.downsampleOf(new SizeDownSampleStrategy(density * Api.EMOTICON_INIT_WIDTH)))
+//                    .apply(RequestOptions.bitmapTransform(transformation))
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                             L.leaveMsg("Exception in emoticon uri:" + model);
                             trackAgent.post(new EmoticonNotFoundTrackEvent(model.toString()));
-                            // append domain to this url
-                            requestManager
-                                    .load(Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX + finalUrl)
-                                    .apply(RequestOptions.bitmapTransform(transformation))
-                                    .into(imageGetterViewTarget);
 
+                            // append domain to this url
+                            Single.just(requestManager
+                                    .load(Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX + finalUrl)
+//                                    .apply(RequestOptions.bitmapTransform(transformation))
+                                            .apply(RequestOptions.downsampleOf(new SizeDownSampleStrategy(density * Api.EMOTICON_INIT_WIDTH)))
+                            )
+                                    .subscribeOn(AndroidSchedulers.mainThread())
+                                    .to(imageGetterScoper)
+                                    .subscribe(builder -> builder.into(imageGetterViewTarget), L::report);
                             return true;
                         }
 

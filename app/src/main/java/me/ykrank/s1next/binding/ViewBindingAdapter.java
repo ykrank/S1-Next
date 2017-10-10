@@ -35,6 +35,7 @@ import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.util.ColorUtils;
 import me.ykrank.s1next.util.DrawableUtils;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.widget.glide.transformations.BlurTransformation;
 import me.ykrank.s1next.widget.glide.viewtarget.DrawableViewBackgroundTarget;
 import me.ykrank.s1next.widget.glide.viewtarget.ViewBackgroundTarget;
@@ -201,7 +202,7 @@ public final class ViewBindingAdapter {
                     .listener(new RequestListener<Bitmap>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                            setBlurBackground(view, oldManager, null, newManager, null);
+                            RxJavaUtil.workInMainThreadWithView(view, () -> setBlurBackground(view, oldManager, null, newManager, null));
                             return true;
                         }
 

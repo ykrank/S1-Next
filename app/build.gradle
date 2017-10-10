@@ -22,7 +22,7 @@ android {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 36
+        versionCode 37
         versionName '1.3.2.0'
         vectorDrawables.useSupportLibrary = true
     }
@@ -170,11 +170,11 @@ dependencies {
     compile 'nz.bradcampbell:paperparcel-kotlin:2.0.4' // Optional
     kapt 'nz.bradcampbell:paperparcel-compiler:2.0.4'
 
-    compile 'com.github.bumptech.glide:glide:4.1.1'
-    compile 'com.github.bumptech.glide:okhttp3-integration:4.1.1'
-    kapt 'com.github.bumptech.glide:compiler:4.1.1'
+    compile 'com.github.bumptech.glide:glide:4.2.0'
+    compile 'com.github.bumptech.glide:okhttp3-integration:4.2.0'
+    kapt 'com.github.bumptech.glide:compiler:4.2.0'
 
-    compile 'io.reactivex.rxjava2:rxjava:2.1.4'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.5'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxkotlin:2.1.0'
 

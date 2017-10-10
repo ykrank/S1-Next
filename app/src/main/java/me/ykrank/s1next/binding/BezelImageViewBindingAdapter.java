@@ -29,6 +29,7 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.util.ContextUtils;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.widget.BezelImageView;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
 import me.ykrank.s1next.widget.glide.model.AvatarUrl;
@@ -171,7 +172,7 @@ public final class BezelImageViewBindingAdapter {
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         if (urls.size() > 0) {
                             urls.remove(0);
-                            preloadRoundAvatar(imageView, downloadPreferencesManager, urls);
+                            RxJavaUtil.workInMainThreadWithView(imageView, () -> preloadRoundAvatar(imageView, downloadPreferencesManager, urls));
                             return true;
                         }
                         return false;
@@ -210,7 +211,7 @@ public final class BezelImageViewBindingAdapter {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         urls.remove(0);
-                        loadRoundAvatar(imageView, downloadPreferencesManager, urls, thumbUrl, fade);
+                        RxJavaUtil.workInMainThreadWithView(imageView, () -> loadRoundAvatar(imageView, downloadPreferencesManager, urls, thumbUrl, fade));
                         return true;
                     }
 
