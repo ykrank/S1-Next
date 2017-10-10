@@ -21,8 +21,8 @@ public final class TransformationUtil {
      * @param sizeMultiplier The multiplier to apply to the {@code toTransform}'s dimensions.
      */
     static Bitmap sizeMultiplier(BitmapPool pool, Bitmap toTransform, float sizeMultiplier) {
-        final int targetWidth = (int) (sizeMultiplier * toTransform.getWidth());
-        final int targetHeight = (int) (sizeMultiplier * toTransform.getHeight());
+        final int targetWidth = Math.round(sizeMultiplier * toTransform.getWidth());
+        final int targetHeight = Math.round(sizeMultiplier * toTransform.getHeight());
 
         Bitmap.Config config = getSafeConfig(toTransform);
         Bitmap toReuse = pool.get(targetWidth, targetHeight, config);

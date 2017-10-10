@@ -31,8 +31,7 @@ public final class Api {
     /**
      * emoticon init rect size
      */
-    public static final int EMOTICON_INIT_WIDTH = 38;
-    public static final int EMOTICON_INIT_HEIGHT = 38;
+    public static final int EMOTICON_INIT_DP = 32;
 
     public static final int REPLY_NOTIFICATION_MAX_LENGTH = 100;
     public static final String URL_EMOTICON_IMAGE_PREFIX = "static/image/smiley/";

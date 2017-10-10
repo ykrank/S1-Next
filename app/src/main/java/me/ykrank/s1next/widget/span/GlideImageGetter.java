@@ -8,7 +8,6 @@ import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.text.Html;
 import android.text.SpannableString;
@@ -47,9 +46,12 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.LooperUtil;
 import me.ykrank.s1next.widget.EmoticonFactory;
+import me.ykrank.s1next.widget.glide.downsamplestrategy.MultiDownSampleStrategy;
 import me.ykrank.s1next.widget.glide.downsamplestrategy.SizeDownSampleStrategy;
 import me.ykrank.s1next.widget.glide.transformations.FitOutWidthBitmapTransformation;
-import me.ykrank.s1next.widget.glide.transformations.SizeMultiplierBitmapTransformation;
+import me.ykrank.s1next.widget.glide.transformations.FitOutWidthDownSampleStrategy;
+import me.ykrank.s1next.widget.glide.transformations.GlMaxTextureSizeDownSampleStrategy;
+import me.ykrank.s1next.widget.glide.transformations.SizeLimitBitmapTransformation;
 import me.ykrank.s1next.widget.track.DataTrackAgent;
 import me.ykrank.s1next.widget.track.event.EmoticonNotFoundTrackEvent;
 
@@ -77,8 +79,7 @@ public final class GlideImageGetter
     private WeakHashMap<Animatable, ImageGetterViewTarget> animatableTargetHashMap = new WeakHashMap<>();
     private int serial = 0;
 
-    private float density;
-    private Rect emoticonInitRect, unknownImageInitRect;
+    private int emoticonSize;
 
     protected GlideImageGetter(TextView textView) {
         LooperUtil.enforceOnMainThread();
@@ -140,12 +141,7 @@ public final class GlideImageGetter
     }
 
     private void initRectHolder() {
-        density = mTextView.getContext().getResources().getDisplayMetrics().density;
-        //init bounds
-        emoticonInitRect = new Rect(0, 0, (int) (Api.EMOTICON_INIT_WIDTH * density), (int) (Api.EMOTICON_INIT_HEIGHT * density));
-
-        Drawable unknownDrawable = ContextCompat.getDrawable(mTextView.getContext(), R.mipmap.unknown_image);
-        unknownImageInitRect = new Rect(0, 0, unknownDrawable.getIntrinsicWidth(), unknownDrawable.getIntrinsicHeight());
+        emoticonSize = (int) (mTextView.getContext().getResources().getDisplayMetrics().density * Api.EMOTICON_INIT_DP);
     }
 
     /**
@@ -167,18 +163,18 @@ public final class GlideImageGetter
             url = Api.BASE_URL + url;
         }
         if (emoticonName != null) {
-            urlDrawable = new UrlDrawable(url, emoticonInitRect);
+            urlDrawable = new UrlDrawable(url);
             ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(this, mTextView,
                     urlDrawable, serial);
 
-            SizeMultiplierBitmapTransformation transformation = new SizeMultiplierBitmapTransformation(density);
+            RequestOptions emoticonRequestOptions = new RequestOptions()
+                    .downsample(new SizeDownSampleStrategy(emoticonSize))
+                    .transform(new SizeLimitBitmapTransformation(emoticonSize));
             String finalUrl = url;
 
             RequestBuilder<Drawable> glideRequestBuilder = requestManager
                     .load(Uri.parse(EmoticonFactory.ASSET_PATH_EMOTICON + emoticonName))
-                    // TODO: 2017/10/10 Use correct downsample 
-                    .apply(RequestOptions.downsampleOf(new SizeDownSampleStrategy(density * Api.EMOTICON_INIT_WIDTH)))
-//                    .apply(RequestOptions.bitmapTransform(transformation))
+                    .apply(emoticonRequestOptions)
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -188,9 +184,7 @@ public final class GlideImageGetter
                             // append domain to this url
                             Single.just(requestManager
                                     .load(Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX + finalUrl)
-//                                    .apply(RequestOptions.bitmapTransform(transformation))
-                                            .apply(RequestOptions.downsampleOf(new SizeDownSampleStrategy(density * Api.EMOTICON_INIT_WIDTH)))
-                            )
+                                    .apply(emoticonRequestOptions))
                                     .subscribeOn(AndroidSchedulers.mainThread())
                                     .to(imageGetterScoper)
                                     .subscribe(builder -> builder.into(imageGetterViewTarget), L::report);
@@ -202,12 +196,12 @@ public final class GlideImageGetter
                             return false;
                         }
                     });
-            startImageGetterViewTarget(glideRequestBuilder, imageGetterViewTarget);
+            startImageGetterViewTarget(glideRequestBuilder, imageGetterViewTarget, true);
 
             return urlDrawable;
         }
 
-        urlDrawable = new UrlDrawable(url, unknownImageInitRect);
+        urlDrawable = new UrlDrawable(url);
         ImageGetterViewTarget imageGetterViewTarget = new ImageGetterViewTarget(this, mTextView,
                 urlDrawable, serial);
 
@@ -216,18 +210,29 @@ public final class GlideImageGetter
                 .apply(new RequestOptions()
                         .placeholder(R.mipmap.unknown_image)
                         .diskCacheStrategy(DiskCacheStrategy.DATA)
+                        .downsample(new MultiDownSampleStrategy(new GlMaxTextureSizeDownSampleStrategy(), new FitOutWidthDownSampleStrategy()))
                         .transform(new FitOutWidthBitmapTransformation()));
-        startImageGetterViewTarget(glideRequestBuilder, imageGetterViewTarget);
+        startImageGetterViewTarget(glideRequestBuilder, imageGetterViewTarget, false);
 
         return urlDrawable;
     }
 
     private void startImageGetterViewTarget(RequestBuilder<Drawable> glideRequestBuilder,
-                                            ImageGetterViewTarget imageGetterViewTarget) {
+                                            ImageGetterViewTarget imageGetterViewTarget, boolean emoticon) {
         Single.just(glideRequestBuilder)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .to(imageGetterScoper)
-                .subscribe(builder -> builder.into(imageGetterViewTarget), L::report);
+                .subscribe(builder -> {
+                    if (emoticon) {
+                        imageGetterViewTarget.mDrawable.setWidthTargetSize(emoticonSize);
+                        imageGetterViewTarget.mDrawable.setHeightTargetSize(emoticonSize);
+                    } else {
+                        //Big image scale to fit width
+                        imageGetterViewTarget.mDrawable.setTriggerSize(200);
+                        imageGetterViewTarget.mDrawable.setWidthTargetSize(mTextView.getWidth());
+                    }
+                    builder.into(imageGetterViewTarget);
+                }, L::report);
     }
 
     @Override
@@ -356,9 +361,8 @@ public final class GlideImageGetter
             }
 
             Rect rect = new Rect(0, 0, width, height);
-            resource.setBounds(rect);
-            mDrawable.setBounds(rect);
             mDrawable.setDrawable(resource);
+            mDrawable.setBounds(rect);
 
             refreshLayout();
         }

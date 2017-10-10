@@ -8,7 +8,7 @@ import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
  */
 class SizeMultiplierDownSampleStrategy(val sizeMultiplier: Float) : DownsampleStrategy() {
     override fun getScaleFactor(sourceWidth: Int, sourceHeight: Int, requestedWidth: Int, requestedHeight: Int): Float {
-        return sizeMultiplier
+        return if (sizeMultiplier < 1) sizeMultiplier else 1.0F
     }
 
     override fun getSampleSizeRounding(sourceWidth: Int, sourceHeight: Int, requestedWidth: Int, requestedHeight: Int): SampleSizeRounding {

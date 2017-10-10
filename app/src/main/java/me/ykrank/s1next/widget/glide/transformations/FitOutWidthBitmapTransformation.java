@@ -10,7 +10,7 @@ import java.security.MessageDigest;
 
 /**
  * A {@link com.bumptech.glide.load.Transformation} for transforming {@link Bitmap}'s
- * size match parent width.
+ * size limit to parent width and opengl max size.
  */
 public final class FitOutWidthBitmapTransformation extends BitmapTransformation {
 
