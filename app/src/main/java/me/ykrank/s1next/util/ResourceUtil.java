@@ -50,14 +50,13 @@ public final class ResourceUtil {
     public static void setScaledDensity(Context context, float scale) {
         Resources resources = context.getApplicationContext().getResources();
         DisplayMetrics displayMetrics = resources.getDisplayMetrics();
-        Configuration config = resources.getConfiguration();
+        Resources sysResources = Resources.getSystem();
 
-        // https://android.googlesource.com/platform/packages/apps/Settings/+/master/src/com/android/settings/Display.java#99
-        displayMetrics.scaledDensity = config.fontScale * displayMetrics.density * scale;
+        displayMetrics.scaledDensity = sysResources.getDisplayMetrics().scaledDensity * scale;
 
         //if use vector drawable, and SDK <= 20, use this to compat
         if (VectorEnabledTintResources.shouldBeUsed()) {
-            Resources sysResources = Resources.getSystem();
+            Configuration config = resources.getConfiguration();
             config.fontScale = sysResources.getConfiguration().fontScale * scale;
             //noinspection deprecation
             resources.updateConfiguration(config, displayMetrics);
