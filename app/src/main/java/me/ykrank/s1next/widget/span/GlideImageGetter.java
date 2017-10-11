@@ -4,10 +4,10 @@ import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.AnyThread;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.WorkerThread;
 import android.support.v4.view.ViewCompat;
 import android.text.Html;
 import android.text.SpannableString;
@@ -149,7 +149,7 @@ public final class GlideImageGetter
      * but display emoticons at any time.
      */
     @Override
-    @WorkerThread
+    @AnyThread
     public Drawable getDrawable(@Nullable String url) {
         if (TextUtils.isEmpty(url)) {
             return null;
@@ -182,12 +182,10 @@ public final class GlideImageGetter
                             trackAgent.post(new EmoticonNotFoundTrackEvent(model.toString()));
 
                             // append domain to this url
-                            Single.just(requestManager
+                            RequestBuilder<Drawable> emoticonNetRequestBuilder = requestManager
                                     .load(Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX + finalUrl)
-                                    .apply(emoticonRequestOptions))
-                                    .subscribeOn(AndroidSchedulers.mainThread())
-                                    .to(imageGetterScoper)
-                                    .subscribe(builder -> builder.into(imageGetterViewTarget), L::report);
+                                    .apply(emoticonRequestOptions);
+                            startImageGetterViewTarget(emoticonNetRequestBuilder, imageGetterViewTarget, true);
                             return true;
                         }
 
@@ -229,7 +227,9 @@ public final class GlideImageGetter
                     } else {
                         //Big image scale to fit width
                         imageGetterViewTarget.mDrawable.setTriggerSize(200);
-                        imageGetterViewTarget.mDrawable.setWidthTargetSize(mTextView.getWidth());
+                        if (mTextView.getWidth() > 0) {
+                            imageGetterViewTarget.mDrawable.setWidthTargetSize(mTextView.getWidth());
+                        }
                     }
                     builder.into(imageGetterViewTarget);
                 }, L::report);
