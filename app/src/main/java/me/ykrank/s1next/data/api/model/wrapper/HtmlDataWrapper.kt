@@ -14,7 +14,7 @@ class HtmlDataWrapper {
     var notice: Int? = null
 
     companion object {
-        fun fromHtml(document: Document): HtmlDataWrapper {
+        fun preTreatHtml(document: Document): HtmlDataWrapper {
             val result = HtmlDataWrapper()
             try {
                 val elements = document.select("#myprompt")

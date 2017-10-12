@@ -6,11 +6,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import me.ykrank.s1next.data.api.model.wrapper.HtmlDataWrapper;
 import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.LooperUtil;
 
@@ -46,33 +50,25 @@ public final class ThreadType implements Parcelable {
     /**
      * Extracts {@link Quote} from XML string.
      *
-     * @param xmlString raw html
+     * @param html raw html
      * @return if no type, return empty list. return null if html error.
      */
     @NonNull
-    public static List<ThreadType> fromXmlString(String xmlString) {
+    public static List<ThreadType> fromXmlString(@Nullable String html) {
         LooperUtil.enforceOnWorkThread();
         List<ThreadType> types = new ArrayList<>();
-        
-        //<span>发表帖子</span>
-        if (xmlString == null || !xmlString.contains("<span>发表帖子</span>")) {
-            return types;
-        }
         try {
-            // example: <select name="typeid" id="typeid" width="80"> <option value="0">选择主题分类</option> </select>
-            Pattern pattern = Pattern.compile("<select name=\"typeid\" id=\"typeid\"[\\s\\S]+?</select>");
-            Matcher matcher = pattern.matcher(xmlString);
-
-            if (matcher.find()) {
-                // example: <option value="290">漫画</option>
-                pattern = Pattern.compile("<option value=\"([0-9]+)\">([^\\x00-\\xff]+)</option>");
-                Matcher matcher2 = pattern.matcher(matcher.group(0));
-                while (matcher2.find()) {
-                    ThreadType threadType = new ThreadType(matcher2.group(1), matcher2.group(2));
-                    types.add(threadType);
-                }
+            Document document = Jsoup.parse(html);
+            HtmlDataWrapper.Companion.preTreatHtml(document);
+            Elements typeIdElements = document.select("#typeid>option");
+            for (int i = 0; i < typeIdElements.size(); i++) {
+                Element element = typeIdElements.get(i);
+                String typeId = element.attr("value").trim();
+                String typeName = element.text();
+                types.add(new ThreadType(typeId, typeName));
             }
         } catch (Exception e) {
+            L.leaveMsg("Source:" + html);
             L.report(e);
         }
 

@@ -36,7 +36,7 @@ public class PostEditor {
         PostEditor editor = new PostEditor();
         try {
             Document document = Jsoup.parse(html);
-            HtmlDataWrapper.Companion.fromHtml(document);
+            HtmlDataWrapper.Companion.preTreatHtml(document);
             //thread types
             Elements typeIdElements = document.select("#typeid>option");
             if (typeIdElements.size() > 0) {

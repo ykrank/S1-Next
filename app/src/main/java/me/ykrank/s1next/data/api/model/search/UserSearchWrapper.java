@@ -33,7 +33,7 @@ public class UserSearchWrapper {
         List<UserSearchResult> userSearchResults = new ArrayList<>();
         try {
             Document document = Jsoup.parse(source);
-            HtmlDataWrapper.Companion.fromHtml(document);
+            HtmlDataWrapper.Companion.preTreatHtml(document);
             Elements errorElements = document.select("div#messagetext");
             if (errorElements.size() > 0) {
                 wrapper.setErrorMsg(errorElements.text());

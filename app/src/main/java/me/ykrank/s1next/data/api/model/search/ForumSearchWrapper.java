@@ -34,7 +34,7 @@ public class ForumSearchWrapper {
         ForumSearchWrapper wrapper = new ForumSearchWrapper();
         try {
             Document document = Jsoup.parse(source);
-            HtmlDataWrapper.Companion.fromHtml(document);
+            HtmlDataWrapper.Companion.preTreatHtml(document);
             //count
             Elements elements = document.select("em");
             if (elements.isEmpty()) {
