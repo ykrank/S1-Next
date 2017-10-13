@@ -9,6 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.style.ImageSpan;
 
+import me.ykrank.s1next.util.L;
+
 /**
  * Implements {@link Drawable.Callback} in order to show animated GIFs in the TextView.
  * <p>
@@ -78,7 +80,13 @@ final class UrlDrawable extends Drawable implements Drawable.Callback {
     @Override
     public void draw(@NonNull Canvas canvas) {
         if (mDrawable != null) {
-            mDrawable.draw(canvas);
+            //Sometime, glide gifDrawable frame bitmap is null, cause null point exception
+            try {
+                mDrawable.draw(canvas);
+            } catch (NullPointerException e) {
+                L.leaveMsg("UrlDrawable:" + url);
+                L.report(e);
+            }
         }
     }
 
