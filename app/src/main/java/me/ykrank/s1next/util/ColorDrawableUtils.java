@@ -1,14 +1,17 @@
 package me.ykrank.s1next.util;
 
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.DrawableUtils;
 
 import java.util.Arrays;
 
@@ -16,7 +19,30 @@ import java.util.Arrays;
  * Created by ykrank on 2017/9/27.
  */
 
-public class DrawableUtils {
+public class ColorDrawableUtils {
+
+    /**
+     * drawable 复制
+     *
+     * @param drawable
+     * @return
+     */
+    @NonNull
+    public static <T extends Drawable> T getNewDrawable(@NonNull T drawable) {
+        //noinspection ConstantConditions
+        return (T) drawable.getConstantState().newDrawable();
+    }
+
+    @NonNull
+    public static <T extends Drawable> T safeMutableDrawable(@NonNull T drawable) {
+        T tDrawable;
+        if (DrawableUtils.canSafelyMutateDrawable(drawable)) {
+            tDrawable = (T) drawable.mutate();
+        } else {
+            tDrawable = ColorDrawableUtils.getNewDrawable(drawable);
+        }
+        return tDrawable;
+    }
 
     /**
      * 通过颜色构建ColorStateList。
@@ -80,19 +106,36 @@ public class DrawableUtils {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
-    public static Drawable getRippleDrawable(@Nullable Drawable content, int ripple, int radius) {
-        return new RippleDrawable(ColorStateList.valueOf(ripple), content, getRippleMask(ripple, radius));
+    public static RippleDrawable getRippleDrawable(@Nullable Drawable content, int ripple) {
+        return new RippleDrawable(ColorStateList.valueOf(ripple), content, getRippleMask(4));
     }
 
-    private static Drawable getRippleMask(int color, int radius) {
+    private static Drawable getRippleMask(int radius) {
         float[] outerRadii = new float[8];
         // 3 is radius of final ripple, 
         // instead of 3 you can give required final radius
         Arrays.fill(outerRadii, radius);
 
         RoundRectShape r = new RoundRectShape(outerRadii, null, null);
-        ShapeDrawable shapeDrawable = new ShapeDrawable(r);
-        shapeDrawable.getPaint().setColor(color);
-        return shapeDrawable;
+        return new ShapeDrawable(r);
+    }
+
+    public static int getDarkerColor(int color) {
+        float ratio = 1.0f - 0.2f;
+        int a = (color >> 24) & 0xFF;
+        int r = (int) (((color >> 16) & 0xFF) * ratio);
+        int g = (int) (((color >> 8) & 0xFF) * ratio);
+        int b = (int) ((color & 0xFF) * ratio);
+
+        return (a << 24) | (r << 16) | (g << 8) | b;
+    }
+
+    public static int getBrighterColor(int color) {
+        float[] hsv = new float[3];
+        Color.colorToHSV(color, hsv); // convert to hsv
+
+        hsv[1] = hsv[1] - 0.1f; // less saturation
+        hsv[2] = hsv[2] + 0.1f; // more brightness
+        return Color.HSVToColor(hsv);
     }
 }
