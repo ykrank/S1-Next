@@ -254,4 +254,7 @@
     <string name="voted">Voted</string>
     <string name="click_to_vote">Click to vote</string>
     <string name="vote_success">Vote success</string>
+    <string name="menu_send_report">Send error report</string>
+    <string name="prompt_report_error_msg">Error msg</string>
+    <string name="dialog_report">Report</string>
 </resources>

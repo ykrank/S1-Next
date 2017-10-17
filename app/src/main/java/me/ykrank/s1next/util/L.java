@@ -13,6 +13,8 @@ import com.orhanobut.logger.PrettyFormatStrategy;
 import com.tencent.bugly.crashreport.BuglyLog;
 import com.tencent.bugly.crashreport.CrashReport;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.BuildConfig;
 
@@ -23,6 +25,8 @@ import static me.ykrank.s1next.App.LOG_TAG;
  * 对Log的包装
  */
 public class L {
+    static AtomicBoolean init = new AtomicBoolean(false);
+    static boolean showLog = false;
     static final String BUGLY_APP_ID = "eae39d8732";
 
     public static void init(@NonNull Context context) {
@@ -47,12 +51,15 @@ public class L {
     }
 
     public static boolean showLog() {
-        return BuildConfig.DEBUG || "alpha".equals(BuildConfig.BUILD_TYPE);
+        if (!init.get()) {
+            showLog = BuildConfig.DEBUG || "alpha".equals(BuildConfig.BUILD_TYPE);
+        }
+        return showLog;
     }
 
     public static void l(String msg) {
-        if (BuildConfig.DEBUG) {
-            Log.e("msg", msg);
+        if (showLog()) {
+            BuglyLog.d("LogMsg", msg);
         }
     }
 
@@ -141,12 +148,14 @@ public class L {
     }
 
     public static void leaveMsg(String msg) {
-        d(msg);
-        BuglyLog.i("MSG", msg);
+        leaveMsg("MSG", msg);
+    }
+
+    public static void leaveMsg(String tag, String msg) {
+        BuglyLog.i(tag, msg);
     }
 
     public static void leaveMsg(Throwable tr) {
-        w(tr);
         BuglyLog.e("MSG", "Error", tr);
     }
 

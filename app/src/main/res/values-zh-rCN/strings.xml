@@ -197,4 +197,7 @@
     <string name="click_to_vote">点击前往投票</string>
     <string name="voted">已投票</string>
     <string name="vote_success">投票成功</string>
+    <string name="menu_send_report">发送错误报告</string>
+    <string name="prompt_report_error_msg">错误信息</string>
+    <string name="dialog_report">发送</string>
 </resources>

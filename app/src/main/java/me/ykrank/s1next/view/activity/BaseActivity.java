@@ -38,6 +38,7 @@ import me.ykrank.s1next.data.pref.DataPreferencesManager;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.util.L;
+import me.ykrank.s1next.view.dialog.ReportErrorDialogFragment;
 import me.ykrank.s1next.view.dialog.ThreadGoDialogFragment;
 import me.ykrank.s1next.view.event.FontSizeChangeEvent;
 import me.ykrank.s1next.view.event.NoticeRefreshEvent;
@@ -201,7 +202,8 @@ public abstract class BaseActivity extends OriginActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // we show thread go menu only if this Activity has drawer
         if (mDrawerLayoutDelegate != null) {
-            getMenuInflater().inflate(R.menu.thread_go, menu);
+            getMenuInflater().inflate(R.menu.activity_base, menu);
+            menu.findItem(R.id.menu_send_report).setVisible(L.showLog());
         }
 
         return super.onCreateOptionsMenu(menu);
@@ -230,6 +232,9 @@ public abstract class BaseActivity extends OriginActivity
                 new ThreadGoDialogFragment().show(getSupportFragmentManager(),
                         ThreadGoDialogFragment.TAG);
 
+                return true;
+            case R.id.menu_send_report:
+                new ReportErrorDialogFragment().show(getSupportFragmentManager(), null);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

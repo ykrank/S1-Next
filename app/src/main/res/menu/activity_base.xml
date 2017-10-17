@@ -6,4 +6,9 @@
         android:orderInCategory="31"
         android:title="@string/menu_thread_go"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_send_report"
+        android:orderInCategory="100"
+        android:title="@string/menu_send_report"
+        app:showAsAction="never" />
 </menu>
