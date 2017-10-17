@@ -87,11 +87,11 @@ public final class ForumActivity extends BaseActivity
             restoreFromInterrupt();
 
             fragment = new ForumFragment();
-            fragmentManager.beginTransaction().add(R.id.frame_layout, fragment, ForumFragment.TAG)
+            fragmentManager.beginTransaction().add(R.id.frame_layout, fragment, ForumFragment.Companion.getTAG())
                     .commit();
         } else {
             mSelectedPosition = savedInstanceState.getInt(STATE_SPINNER_SELECTED_POSITION);
-            fragment = (ForumFragment) fragmentManager.findFragmentByTag(ForumFragment.TAG);
+            fragment = (ForumFragment) fragmentManager.findFragmentByTag(ForumFragment.Companion.getTAG());
         }
 
         onItemSelectedListener = fragment;
@@ -103,7 +103,7 @@ public final class ForumActivity extends BaseActivity
         setIntent(intent);
         if (fragment == null) {
             fragment = (ForumFragment) getSupportFragmentManager()
-                    .findFragmentByTag(ForumFragment.TAG);
+                    .findFragmentByTag(ForumFragment.Companion.getTAG());
         }
         fragment.startSwipeRefresh();
     }

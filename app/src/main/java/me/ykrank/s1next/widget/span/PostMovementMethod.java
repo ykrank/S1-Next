@@ -53,6 +53,10 @@ public class PostMovementMethod extends ArrowKeyMovementMethod {
         return sInstance;
     }
 
+    private static boolean isSelecting(Spannable buffer) {
+        return Selection.getSelectionStart(buffer) != -1 && Selection.getSelectionEnd(buffer) != -1;
+    }
+
     /**
      * @see android.text.method.LinkMovementMethod#onTouchEvent(TextView, Spannable, MotionEvent)
      */
@@ -94,11 +98,12 @@ public class PostMovementMethod extends ArrowKeyMovementMethod {
                 } else {
                     //http://stackoverflow.com/questions/15836306/can-a-textview-be-selectable-and-contain-links
                     //error: Error when selecting text from Textview (java.lang.IndexOutOfBoundsException: setSpan (-1 ... -1) starts before 0)
-                    Selection.setSelection(buffer,
-                            buffer.getSpanStart(link[0]),
-                            buffer.getSpanEnd(link[0]));
+                    if (!isSelecting(buffer)) {
+                        Selection.setSelection(buffer,
+                                buffer.getSpanStart(link[0]),
+                                buffer.getSpanEnd(link[0]));
+                    }
                 }
-
                 return true;
             }
 
@@ -122,10 +127,13 @@ public class PostMovementMethod extends ArrowKeyMovementMethod {
                     imageClickableSpans[0].onClick(widget);
                     return true;
                 } else {
-                    Selection.setSelection(buffer,
-                            buffer.getSpanStart(imageClickableSpans[0]),
-                            buffer.getSpanEnd(imageClickableSpans[0]));
+                    if (!isSelecting(buffer)) {
+                        Selection.setSelection(buffer,
+                                buffer.getSpanStart(imageClickableSpans[0]),
+                                buffer.getSpanEnd(imageClickableSpans[0]));
+                    }
                 }
+                return true;
             }
         }
 

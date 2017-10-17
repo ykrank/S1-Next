@@ -298,6 +298,7 @@ public final class GlideImageGetter
 
         @Override
         public void onLoadStarted(Drawable placeholder) {
+            L.l("onLoadStarted:" + mDrawable.getUrl());
             if (placeholder != null) {
                 setDrawable(placeholder);
             }
@@ -305,6 +306,7 @@ public final class GlideImageGetter
 
         @Override
         public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+            L.l("onResourceReady:" + mDrawable.getUrl());
             if (!checkTextViewValidate()) {
                 return;
             }
@@ -329,6 +331,7 @@ public final class GlideImageGetter
 
         @Override
         public void onLoadFailed(@Nullable Drawable errorDrawable) {
+            L.l("onLoadFailed:" + mDrawable.getUrl());
             if (checkTextViewValidate()) {
                 return;
             }
@@ -375,19 +378,22 @@ public final class GlideImageGetter
             ImageSpan imageSpan = mDrawable.getImageSpan();
             if (imageSpan == null) {
                 //onResourceReady run before imageSpan init. do nothing
-                L.l("onResourceReady run before imageSpan init");
+                L.l("refreshLayout run before imageSpan init");
                 return;
             }
-            CharSequence text = getView().getText();
+            TextView textView = getView();
+            CharSequence text = textView.getText();
             if (text instanceof SpannableString) {
                 SpannableString span = (SpannableString) text;
                 int start = span.getSpanStart(imageSpan);
                 int end = span.getSpanEnd(imageSpan);
                 if (!isSpanValid(start, end)) {
                     //onResourceReady run before imageSpan add to textView. do nothing
-                    L.l("onResourceReady run before imageSpan add to textView");
+                    L.l("refreshLayout run before imageSpan add to textView");
                     return;
                 }
+                //Or image overlapping error
+                span.removeSpan(imageSpan);
                 span.setSpan(imageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else {
                 SpannableStringBuilder span = (SpannableStringBuilder) text;
@@ -395,9 +401,11 @@ public final class GlideImageGetter
                 int end = span.getSpanEnd(imageSpan);
                 if (!isSpanValid(start, end)) {
                     //onResourceReady run before imageSpan add to textView. do nothing
-                    L.d("onResourceReady run before imageSpan add to textView");
+                    L.l("refreshLayout run before imageSpan add to textView");
                     return;
                 }
+                //Or image overlapping error
+                span.removeSpan(imageSpan);
                 span.setSpan(imageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
 

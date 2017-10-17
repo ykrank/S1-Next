@@ -30,6 +30,7 @@ import me.ykrank.s1next.data.api.ApiFlatTransformer;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.app.model.AppResult;
 import me.ykrank.s1next.data.api.model.Result;
+import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.databinding.FragmentBaseBinding;
 import me.ykrank.s1next.databinding.FragmentBaseCardViewContainerBinding;
 import me.ykrank.s1next.util.ErrorUtil;
@@ -62,6 +63,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
 
     S1Service mS1Service;
     ApiCacheProvider apiCacheProvider;
+    DownloadPreferencesManager mDownloadPrefManager;
 
     private LoadingViewModelBindingDelegate mLoadingViewModelBindingDelegate;
     private LoadingViewModel mLoadingViewModel;
@@ -80,6 +82,7 @@ public abstract class BaseRecyclerViewFragment<D> extends BaseFragment {
         super.onCreate(savedInstanceState);
         mS1Service = App.getAppComponent().getS1Service();
         apiCacheProvider = App.getAppComponent().getApiCacheProvider();
+        mDownloadPrefManager = App.getAppComponent().getDownloadPreferencesManager();
 
         if (savedInstanceState == null) {
             mLoadingViewModel = new LoadingViewModel();

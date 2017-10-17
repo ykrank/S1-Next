@@ -15,6 +15,9 @@ class DownloadPreferencesImpl(context: Context, sharedPreferences: SharedPrefere
     override val totalDataCacheSizeIndex: Int by PreferenceDelegates.int(
             R.string.pref_key_data_total_cache_size, R.string.pref_data_total_cache_size_default_value)
 
+    override val netCacheEnable: Boolean by PreferenceDelegates.bool(
+            R.string.pref_key_net_cache_enable, R.bool.pref_net_cache_default_value)
+
     override val avatarsDownloadStrategyIndex: Int by PreferenceDelegates.int(
             R.string.pref_key_download_avatars_strategy, R.string.pref_download_avatars_strategy_default_value)
 
@@ -31,6 +34,7 @@ class DownloadPreferencesImpl(context: Context, sharedPreferences: SharedPrefere
 interface DownloadPreferences {
     val totalImageCacheSizeIndex: Int
     val totalDataCacheSizeIndex: Int
+    val netCacheEnable: Boolean
     val avatarsDownloadStrategyIndex: Int
     val avatarResolutionStrategyIndex: Int
     val avatarCacheInvalidationInterval: Int

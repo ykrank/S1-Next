@@ -87,7 +87,9 @@ public final class ViewBindingAdapter {
 
         //Appcompat view
         if (view instanceof TintableBackgroundView) {
-            ((TintableBackgroundView) view).setSupportBackgroundTintMode(tintMode);
+            if (tintMode != null) {
+                ((TintableBackgroundView) view).setSupportBackgroundTintMode(tintMode);
+            }
             ((TintableBackgroundView) view).setSupportBackgroundTintList(colorStateList);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

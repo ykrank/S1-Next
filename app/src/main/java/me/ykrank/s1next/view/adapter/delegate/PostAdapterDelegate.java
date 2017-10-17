@@ -50,12 +50,12 @@ public final class PostAdapterDelegate extends BaseAdapterDelegate<Post, PostAda
 
     private static void setTextSelectable(ItemPostBinding binding, boolean selectable) {
         binding.authorName.setTextIsSelectable(selectable);
-        binding.tvFloor.setTextIsSelectable(selectable);
-        binding.tvReply.setTextIsSelectable(selectable);
-        binding.authorName.setMovementMethod(LinkMovementMethod.getInstance());
+
         binding.tvFloor.setMovementMethod(LinkMovementMethod.getInstance());
-        binding.tvReply.setMovementMethod(PostMovementMethod.getInstance());
         binding.tvFloor.setLongClickable(false);
+
+        binding.tvReply.setTextIsSelectable(selectable);
+        binding.tvReply.setMovementMethod(PostMovementMethod.getInstance());
     }
 
     @NonNull

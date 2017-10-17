@@ -18,8 +18,12 @@ import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
+import io.rx_cache2.DynamicKeyGroup
+import io.rx_cache2.EvictDynamicKeyGroup
+import io.rx_cache2.Source
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
+import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.ApiUtil
 import me.ykrank.s1next.data.api.model.Post
 import me.ykrank.s1next.data.api.model.Thread
@@ -249,25 +253,42 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
     }
 
     internal override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Observable<PostsWrapper> {
-        return mS1Service.getPostsWrapper(mThreadId, mPageNum)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .flatMap { o ->
-                    if (o.data != null) {
-                        val postList = o.data.postList
-                        if (postList.isNotEmpty()) {
-                            val post = postList[0]
-                            if (post.isTrade) {
-                                post.extraHtml = ""
-                                return@flatMap mS1Service.getTradePostInfo(mThreadId, post.id + 1)
-                                        .map<PostsWrapper> { html ->
-                                            post.extraHtml = ApiUtil.replaceAjaxHeader(html)
-                                            return@map o
-                                        }
-                            }
+        val source: Observable<PostsWrapper> = if (mDownloadPrefManager.netCacheEnable) {
+            apiCacheProvider.getPostsWrapper(mS1Service.getPostsWrapper(mThreadId, mPageNum),
+                    DynamicKeyGroup(mThreadId + "," + mPageNum, mUser.key),
+                    EvictDynamicKeyGroup(isForceLoading || mPageNum >= mPagerCallback?.getTotalPages() ?: 0))
+                    .throttleFirst(500, TimeUnit.MILLISECONDS)
+                    .flatMap {
+                        val wrapper = objectMapper.readValue(it.data, PostsWrapper::class.java)
+                        if (it.source != Source.CLOUD && wrapper.data.postList.size < Api.POSTS_PER_PAGE) {
+                            return@flatMap apiCacheProvider.getPostsWrapper(mS1Service.getPostsWrapper(mThreadId, mPageNum),
+                                    DynamicKeyGroup(mThreadId + "," + mPageNum, mUser.key), EvictDynamicKeyGroup(true))
+                                    .map<String>({ it.data })
+                                    .compose(RxJavaUtil.jsonTransformer(PostsWrapper::class.java))
                         }
+                        Observable.just(wrapper)
                     }
-                    Observable.just(o)
+        } else {
+            mS1Service.getPostsWrapper(mThreadId, mPageNum)
+                    .compose(RxJavaUtil.jsonTransformer(PostsWrapper::class.java))
+        }
+        return source.flatMap { o ->
+            if (o.data != null) {
+                val postList = o.data.postList
+                if (postList.isNotEmpty()) {
+                    val post = postList[0]
+                    if (post.isTrade) {
+                        post.extraHtml = ""
+                        return@flatMap mS1Service.getTradePostInfo(mThreadId, post.id + 1)
+                                .map<PostsWrapper> { html ->
+                                    post.extraHtml = ApiUtil.replaceAjaxHeader(html)
+                                    return@map o
+                                }
+                    }
                 }
+            }
+            Observable.just(o)
+        }
     }
 
     internal override fun onNext(data: PostsWrapper) {

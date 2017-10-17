@@ -17,6 +17,9 @@ class DownloadPreferencesManager(private val mPreferencesProvider: DownloadPrefe
     val totalDataCacheSize: Int
         get() = TotalDownloadCacheSize.getMByte(mPreferencesProvider.totalDataCacheSizeIndex)
 
+    val netCacheEnable: Boolean
+        get() = mPreferencesProvider.netCacheEnable
+
     val isAvatarsDownload: Boolean
         get() = DownloadStrategyInternal.isDownload(mPreferencesProvider.avatarsDownloadStrategyIndex, mWifi.isWifiEnabled)
 

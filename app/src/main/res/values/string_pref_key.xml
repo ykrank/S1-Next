@@ -21,6 +21,7 @@
     <!-- Download -->
     <string name="pref_key_image_total_cache_size" translatable="false">pref_key_image_total_cache_size</string>
     <string name="pref_key_data_total_cache_size" translatable="false">pref_key_data_total_cache_size</string>
+    <string name="pref_key_net_cache_enable" translatable="false">pref_key_net_cache_enable</string>
     <string name="pref_key_download_avatars_strategy" translatable="false">pref_key_download_avatars_strategy</string>
     <string name="pref_key_avatar_resolution_strategy" translatable="false">pref_key_avatar_resolution_strategy</string>
     <string name="pref_key_avatar_cache_invalidation_interval" translatable="false">pref_key_avatar_cache_invalidation_interval</string>

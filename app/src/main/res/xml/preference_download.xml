@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:persistent="false"
     tools:context=".view.fragment.setting.DownloadPreferenceFragment">
@@ -18,7 +19,13 @@
         android:entryValues="@array/pref_data_total_cache_size_entry_values"
         android:key="@string/pref_key_data_total_cache_size"
         android:summary="%s"
-        android:title="@string/pref_data_total_cache_size" />
+        android:title="@string/pref_data_total_cache_size"
+        app:dependency="@string/pref_key_net_cache_enable" />
+
+    <SwitchPreference
+        android:defaultValue="@bool/pref_net_cache_default_value"
+        android:key="@string/pref_key_net_cache_enable"
+        android:title="@string/pref_net_cache_enable" />
 
     <PreferenceCategory
         android:persistent="false"
@@ -63,8 +70,8 @@
             android:title="@string/pref_downloads" />
 
         <Preference
-            android:persistent="false"
             android:key="@string/pref_key_clear_image_cache"
+            android:persistent="false"
             android:title="@string/pref_clear_image_cache" />
     </PreferenceCategory>
 

@@ -200,4 +200,5 @@
     <string name="menu_send_report">发送错误报告</string>
     <string name="prompt_report_error_msg">错误信息</string>
     <string name="dialog_report">发送</string>
+    <string name="pref_net_cache_enable">网络数据缓存</string>
 </resources>

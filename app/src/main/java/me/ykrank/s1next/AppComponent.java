@@ -57,6 +57,7 @@ import me.ykrank.s1next.view.fragment.BaseFragment;
 import me.ykrank.s1next.view.fragment.BasePostFragment;
 import me.ykrank.s1next.view.fragment.EditPostFragment;
 import me.ykrank.s1next.view.fragment.FavouriteListFragment;
+import me.ykrank.s1next.view.fragment.ForumFragment;
 import me.ykrank.s1next.view.fragment.GalleryFragment;
 import me.ykrank.s1next.view.fragment.HistoryListFragment;
 import me.ykrank.s1next.view.fragment.NewRateFragment;
@@ -263,4 +264,6 @@ public interface AppComponent {
     void inject(AppPostListPagerFragment fragment);
 
     void inject(VoteDialogFragment fragment);
+
+    void inject(ForumFragment fragment);
 }
