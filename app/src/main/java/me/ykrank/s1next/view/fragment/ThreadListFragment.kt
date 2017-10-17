@@ -22,7 +22,7 @@ import me.ykrank.s1next.util.MathUtil
 class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.PagerCallback {
 
     private var mForumName: String? = null
-    private var mForumId: String? = null
+    private lateinit var mForumId: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
