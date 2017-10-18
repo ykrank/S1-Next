@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name" translatable="false">S1 Next Goose Debug</string>
+    <string name="app_name" translatable="false">S1 Next Debug</string>
     <string name="leak_canary_display_activity_label" translatable="false">S1 Next Goose Debug Leaks</string>
 
 </resources>
