@@ -12,6 +12,7 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.util.DeviceUtil;
+import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.util.ResourceUtil;
 import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.activity.SettingsActivity;
@@ -63,6 +64,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
             mThemeManager.invalidateTheme();
             mRxBus.post(new ThemeChangeEvent());
         } else if (key.equals(getString(R.string.pref_key_font_size))) {
+            L.l("Setting");
             // change scaling factor for fonts
             ResourceUtil.setScaledDensity(getActivity(),
                     mGeneralPreferencesManager.getFontScale());

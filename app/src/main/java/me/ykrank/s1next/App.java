@@ -82,6 +82,7 @@ public final class App extends MultiDexApplication {
                 .build();
         mAppComponent.getDataTrackAgent().init();
 
+        L.l("App init");
         //如果不是主进程，不做多余的初始化
         if (!ProcessUtil.isMainProcess(this))
             return;
@@ -99,6 +100,7 @@ public final class App extends MultiDexApplication {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        L.l("App onConfigurationChanged");
 
         //如果不是主进程，不做多余的初始化
         if (!ProcessUtil.isMainProcess(this))

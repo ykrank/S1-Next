@@ -48,16 +48,23 @@ public final class ResourceUtil {
      * @param scale the scaling factor.
      */
     public static void setScaledDensity(Context context, float scale) {
+        L.l("setScale:" + scale);
         Resources resources = context.getApplicationContext().getResources();
         DisplayMetrics displayMetrics = resources.getDisplayMetrics();
         Resources sysResources = Resources.getSystem();
 
-        displayMetrics.scaledDensity = sysResources.getDisplayMetrics().scaledDensity * scale;
+        float sysScaledDensity = sysResources.getDisplayMetrics().scaledDensity;
+        L.l("SysScaledDensity:" + sysScaledDensity);
+        L.l("AppScaledDensity:" + displayMetrics.scaledDensity);
+        displayMetrics.scaledDensity = sysScaledDensity * scale;
 
         //if use vector drawable, and SDK <= 20, use this to compat
         if (VectorEnabledTintResources.shouldBeUsed()) {
             Configuration config = resources.getConfiguration();
-            config.fontScale = sysResources.getConfiguration().fontScale * scale;
+            float sysFontScale = sysResources.getConfiguration().fontScale;
+            L.l("SysFontScale:" + sysFontScale);
+            L.l("AppFontScale:" + config.fontScale);
+            config.fontScale = sysFontScale * scale;
             //noinspection deprecation
             resources.updateConfiguration(config, displayMetrics);
         }
