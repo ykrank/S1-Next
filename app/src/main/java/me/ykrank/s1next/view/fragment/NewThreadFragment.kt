@@ -61,7 +61,7 @@ class NewThreadFragment : BasePostFragment() {
         init()
     }
 
-    override fun OnMenuSendClick(): Boolean {
+    override fun onMenuSendClick(): Boolean {
         var typeId: String? = null
         if (typeSpinner.visibility == View.VISIBLE) {
             val selectType = typeSpinner.selectedItem as ThreadType?

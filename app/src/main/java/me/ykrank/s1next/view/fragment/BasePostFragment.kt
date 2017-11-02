@@ -177,12 +177,12 @@ abstract class BasePostFragment : BaseFragment() {
 
                 return true
             }
-            R.id.menu_send -> return OnMenuSendClick()
+            R.id.menu_send -> return onMenuSendClick()
             else -> return super.onOptionsItemSelected(item)
         }
     }
 
-    protected abstract fun OnMenuSendClick(): Boolean
+    protected abstract fun onMenuSendClick(): Boolean
 
     /**
      * Key of EditorDiskCache cache. not save/restore if return null

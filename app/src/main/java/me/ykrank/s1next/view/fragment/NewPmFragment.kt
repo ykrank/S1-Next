@@ -24,7 +24,7 @@ class NewPmFragment : BasePostFragment() {
         L.leaveMsg("NewPmFragment##mToUid" + mToUid)
     }
 
-    override fun OnMenuSendClick(): Boolean {
+    override fun onMenuSendClick(): Boolean {
         PmRequestDialogFragment.newInstance(mToUid, mReplyView.text.toString()).show(fragmentManager,
                 PmRequestDialogFragment.TAG)
 

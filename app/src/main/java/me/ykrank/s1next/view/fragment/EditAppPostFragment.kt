@@ -58,7 +58,7 @@ class EditAppPostFragment : BasePostFragment() {
         init()
     }
 
-    override fun OnMenuSendClick(): Boolean {
+    override fun onMenuSendClick(): Boolean {
         var typeId: String? = null
         if (binding.spinner.visibility == View.VISIBLE) {
             val selectType = binding.spinner.selectedItem as ThreadType?

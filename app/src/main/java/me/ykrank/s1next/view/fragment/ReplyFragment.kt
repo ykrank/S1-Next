@@ -27,7 +27,7 @@ class ReplyFragment : BasePostFragment() {
         L.leaveMsg("ReplyFragment##mThreadId:$mThreadId,mQuotePostId$mQuotePostId")
     }
 
-    override fun OnMenuSendClick(): Boolean {
+    override fun onMenuSendClick(): Boolean {
         val stringBuilder = StringBuilder(mReplyView.text)
         if (mGeneralPreferencesManager.isSignatureEnabled) {
             stringBuilder.append("\n\n").append(DeviceUtil.getPostSignature(context))
