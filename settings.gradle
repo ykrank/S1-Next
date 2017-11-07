@@ -1,1 +1,3 @@
 include ':app'
+include 'lib'
+project(':lib').projectDir= new File(rootDir, '../AndroidTools/library')
