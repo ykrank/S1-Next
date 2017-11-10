@@ -33,7 +33,7 @@ public final class S1NextGlideModule extends AppGlideModule {
     public void applyOptions(Context context, GlideBuilder builder) {
         // set max size of the disk cache for images
         builder.setDiskCache(new InternalCacheDiskCacheFactory(
-                context, App.getAppComponent().getDownloadPreferencesManager()
+                context, App.Companion.getAppComponent().getDownloadPreferencesManager()
                 .getTotalImageCacheSize()));
 
         ViewTarget.setTagId(R.id.tag_glide);
@@ -46,6 +46,6 @@ public final class S1NextGlideModule extends AppGlideModule {
     public void registerComponents(Context context, Glide glide, Registry registry) {
         super.registerComponents(context, glide, registry);
         registry.replace(GlideUrl.class, InputStream.class, new AppHttpUrlLoader.Factory(
-                App.getAppComponent().getImageOkHttpClient()));
+                App.Companion.getAppComponent().getImageOkHttpClient()));
     }
 }

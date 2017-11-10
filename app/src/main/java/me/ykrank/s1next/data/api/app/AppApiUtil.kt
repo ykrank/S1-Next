@@ -1,8 +1,8 @@
 package me.ykrank.s1next.data.api.app
 
+import com.github.ykrank.androidtools.widget.RxBus
 import me.ykrank.s1next.data.api.ApiException
 import me.ykrank.s1next.view.event.AppNotLoginEvent
-import me.ykrank.s1next.widget.RxBus
 
 /**
  * Created by ykrank on 2017/7/25.

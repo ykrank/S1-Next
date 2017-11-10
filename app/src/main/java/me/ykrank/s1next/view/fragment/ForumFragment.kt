@@ -8,7 +8,9 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import io.reactivex.Observable
+import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
+import com.github.ykrank.androidtools.util.L
+import io.reactivex.Single
 import io.rx_cache2.DynamicKey
 import io.rx_cache2.EvictDynamicKey
 import me.ykrank.s1next.App
@@ -17,12 +19,10 @@ import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.model.collection.ForumGroups
 import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper
 import me.ykrank.s1next.util.IntentUtil
-import me.ykrank.s1next.util.L
-import me.ykrank.s1next.util.RxJavaUtil
+import me.ykrank.s1next.util.JsonUtil
 import me.ykrank.s1next.view.activity.SearchActivity
 import me.ykrank.s1next.view.adapter.ForumRecyclerViewAdapter
 import me.ykrank.s1next.view.internal.ToolbarDropDownInterface
-import me.ykrank.s1next.viewmodel.LoadingViewModel
 
 /**
  * A Fragment represents forum list.
@@ -46,7 +46,7 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
     }
 
     override fun onAttach(context: Context?) {
-        App.getAppComponent().inject(this)
+        App.appComponent.inject(this)
         super.onAttach(context)
 
         mToolbarCallback = context as ToolbarDropDownInterface.Callback?
@@ -58,9 +58,9 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
         mToolbarCallback = null
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.fragment_forum, menu)
+        inflater.inflate(R.menu.fragment_forum, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -78,16 +78,16 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
         }
     }
 
-    internal override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Observable<ForumGroupsWrapper> {
-        val source: Observable<String> = if (mDownloadPrefManager.netCacheEnable) {
+    override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<ForumGroupsWrapper> {
+        val source: Single<String> = if (mDownloadPrefManager.netCacheEnable) {
             apiCacheProvider.getForumGroupsWrapper(mS1Service.forumGroupsWrapper, DynamicKey(mUser.key), EvictDynamicKey(isForceLoading))
         } else {
             mS1Service.forumGroupsWrapper
         }
-        return source.compose(RxJavaUtil.jsonTransformer(ForumGroupsWrapper::class.java))
+        return source.compose(JsonUtil.jsonSingleTransformer(ForumGroupsWrapper::class.java))
     }
 
-    internal override fun onNext(data: ForumGroupsWrapper) {
+    override fun onNext(data: ForumGroupsWrapper) {
         super.onNext(data)
 
         mForumGroups = data.data

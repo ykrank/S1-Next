@@ -8,12 +8,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.github.ykrank.androidtools.ui.adapter.model.SameItem;
 import com.google.common.base.Objects;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import me.ykrank.s1next.data.SameItem;
 
 /**
  * Created by ykrank on 2017/1/5.

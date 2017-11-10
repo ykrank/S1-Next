@@ -1,13 +1,13 @@
 package me.ykrank.s1next.data.api.model.collection
 
 import com.fasterxml.jackson.annotation.*
+import com.github.ykrank.androidtools.util.StringUtil
 import me.ykrank.s1next.data.api.model.Account
 import me.ykrank.s1next.data.api.model.Post
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.Vote
 import me.ykrank.s1next.data.db.BlackListDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.BlackList
-import me.ykrank.s1next.util.StringUtil
 import org.apache.commons.lang3.StringUtils
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable

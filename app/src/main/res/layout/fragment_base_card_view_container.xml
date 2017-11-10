@@ -7,7 +7,7 @@
 
         <variable
             name="loadingViewModel"
-            type="me.ykrank.s1next.viewmodel.LoadingViewModel" />
+            type="com.github.ykrank.androidtools.ui.vm.LoadingViewModel" />
     </data>
 
     <android.support.v4.widget.SwipeRefreshLayout

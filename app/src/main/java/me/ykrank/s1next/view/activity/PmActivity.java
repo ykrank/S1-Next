@@ -33,9 +33,9 @@ public class PmActivity extends BaseActivity {
         setContentView(R.layout.activity_base_without_drawer_and_scrolling_effect);
 
         if (savedInstanceState == null) {
-            fragment = PmGroupsFragment.newInstance();
+            fragment = PmGroupsFragment.Companion.newInstance();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.frame_layout, fragment, PmGroupsFragment.TAG)
+                    .add(R.id.frame_layout, fragment, PmGroupsFragment.Companion.getTAG())
                     .commit();
         }
 
@@ -44,8 +44,8 @@ public class PmActivity extends BaseActivity {
                 .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
                 .subscribe(event -> {
                     PmGroup pmGroup = event.getPmGroup();
-                    fragment = PmFragment.newInstance(pmGroup.getToUid(), pmGroup.getToUsername());
-                    replaceFragmentWithBackStack(fragment, PmFragment.TAG);
+                    fragment = PmFragment.Companion.newInstance(pmGroup.getToUid(), pmGroup.getToUsername());
+                    replaceFragmentWithBackStack(fragment, PmFragment.Companion.getTAG());
                 });
     }
 
@@ -65,7 +65,7 @@ public class PmActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RequestCode.REQUEST_CODE_MESSAGE_IF_SUCCESS) {
             if (resultCode == Activity.RESULT_OK) {
-                PmFragment pmFragment = (PmFragment) getSupportFragmentManager().findFragmentByTag(PmFragment.TAG);
+                PmFragment pmFragment = (PmFragment) getSupportFragmentManager().findFragmentByTag(PmFragment.Companion.getTAG());
                 if (pmFragment != null) {
                     pmFragment.startSwipeRefresh();
                 }

@@ -13,7 +13,7 @@
 
         <variable
             name="rxBus"
-            type="me.ykrank.s1next.widget.RxBus" />
+            type="com.github.ykrank.androidtools.widget.RxBus" />
 
         <variable
             name="model"
@@ -43,7 +43,7 @@
             android:onClick="@{model.clickGroup(rxBus)}"
             android:padding="@dimen/item_padding">
 
-            <me.ykrank.s1next.widget.BezelImageView
+            <com.github.ykrank.androidtools.widget.BezelImageView
                 android:id="@+id/avatar"
                 android:layout_width="@dimen/avatar_size"
                 android:layout_height="@dimen/avatar_size"

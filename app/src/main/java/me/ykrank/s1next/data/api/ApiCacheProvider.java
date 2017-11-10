@@ -2,7 +2,7 @@ package me.ykrank.s1next.data.api;
 
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.rx_cache2.DynamicKey;
 import io.rx_cache2.DynamicKeyGroup;
 import io.rx_cache2.EvictDynamicKey;
@@ -19,14 +19,14 @@ public interface ApiCacheProvider {
 
     @ProviderKey("forum_groups_wrapper")
     @LifeCache(duration = 1, timeUnit = TimeUnit.MINUTES)
-    Observable<String> getForumGroupsWrapper(Observable<String> oWrapper, DynamicKey user, EvictDynamicKey evictDynamicKey);
+    Single<String> getForumGroupsWrapper(Single<String> oWrapper, DynamicKey user, EvictDynamicKey evictDynamicKey);
 
     @ProviderKey("threads_wrapper")
     @LifeCache(duration = 1, timeUnit = TimeUnit.MINUTES)
-    Observable<String> getThreadsWrapper(Observable<String> oWrapper, DynamicKeyGroup user, EvictDynamicKeyGroup evictDynamicKey);
+    Single<String> getThreadsWrapper(Single<String> oWrapper, DynamicKeyGroup user, EvictDynamicKeyGroup evictDynamicKey);
 
 
     @ProviderKey("posts_wrapper")
     @LifeCache(duration = 30, timeUnit = TimeUnit.MINUTES)
-    Observable<Reply<String>> getPostsWrapper(Observable<String> oWrapper, DynamicKeyGroup page, EvictDynamicKeyGroup evictDynamicKey);
+    Single<Reply<String>> getPostsWrapper(Single<String> oWrapper, DynamicKeyGroup page, EvictDynamicKeyGroup evictDynamicKey);
 }

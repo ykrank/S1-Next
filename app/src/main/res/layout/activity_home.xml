@@ -68,7 +68,7 @@
                     android:orientation="vertical"
                     tools:visibility="visible">
 
-                    <me.ykrank.s1next.widget.BezelImageView
+                    <com.github.ykrank.androidtools.widget.BezelImageView
                         android:id="@+id/avatar"
                         android:layout_width="@dimen/avatar_size_home"
                         android:layout_height="@dimen/avatar_size_home"

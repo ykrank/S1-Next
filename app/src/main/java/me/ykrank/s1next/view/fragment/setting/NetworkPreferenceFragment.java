@@ -5,15 +5,16 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.github.ykrank.androidtools.util.RxJavaUtil;
+import com.github.ykrank.androidtools.widget.hostcheck.HttpDns;
+
 import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
-import me.ykrank.s1next.util.RxJavaUtil;
-import me.ykrank.s1next.widget.hostcheck.BaseHostUrl;
-import me.ykrank.s1next.widget.hostcheck.HttpDns;
+import me.ykrank.s1next.widget.hostcheck.AppHostUrl;
 
 public final class NetworkPreferenceFragment extends BasePreferenceFragment {
     public static final String TAG = NetworkPreferenceFragment.class.getName();
@@ -21,11 +22,11 @@ public final class NetworkPreferenceFragment extends BasePreferenceFragment {
     @Inject
     NetworkPreferencesManager mPreferencesManager;
     @Inject
-    BaseHostUrl baseHostUrl;
+    AppHostUrl baseHostUrl;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
-        App.getAppComponent().inject(this);
+        App.Companion.getAppComponent().inject(this);
         addPreferencesFromResource(R.xml.preference_network);
 
         checkForceBaseUrlSummary();
@@ -49,7 +50,7 @@ public final class NetworkPreferenceFragment extends BasePreferenceFragment {
         if (TextUtils.isEmpty(baseUrl)) {
             findPreference(key).setSummary(Api.BASE_URL);
         } else {
-            if (BaseHostUrl.Companion.checkBaseHostUrl(baseUrl) == null) {
+            if (AppHostUrl.Companion.checkBaseHostUrl(baseUrl) == null) {
                 Toast.makeText(getActivity(), R.string.error_force_base_url, Toast.LENGTH_SHORT).show();
             }
             findPreference(key).setSummary(baseUrl);

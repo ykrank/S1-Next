@@ -17,11 +17,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import com.github.ykrank.androidtools.util.L;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import me.ykrank.s1next.util.IntentUtil;
-import me.ykrank.s1next.util.L;
 
 /**
  * A movement method that provides selection and clicking on links,

@@ -30,6 +30,8 @@ import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
 
+import com.github.ykrank.androidtools.util.L;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.XMLReader;
 
@@ -40,8 +42,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import me.ykrank.s1next.util.L;
 
 /**
  * This class processes HTML strings into displayable styled text.

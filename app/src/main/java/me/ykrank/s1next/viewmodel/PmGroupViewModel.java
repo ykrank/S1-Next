@@ -3,9 +3,10 @@ package me.ykrank.s1next.viewmodel;
 import android.databinding.ObservableField;
 import android.view.View;
 
+import com.github.ykrank.androidtools.widget.RxBus;
+
 import me.ykrank.s1next.data.api.model.PmGroup;
 import me.ykrank.s1next.view.event.PmGroupClickEvent;
-import me.ykrank.s1next.widget.RxBus;
 
 
 public final class PmGroupViewModel {

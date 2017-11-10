@@ -18,18 +18,19 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.chrisbanes.photoview.PhotoView
+import com.github.ykrank.androidtools.util.FileUtil
+import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.RxJavaUtil
+import com.github.ykrank.androidtools.widget.glide.model.ForcePassUrl
+import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.databinding.FragmentGalleryBinding
-import me.ykrank.s1next.util.FileUtil
+import me.ykrank.s1next.util.AppFileUtil
 import me.ykrank.s1next.util.IntentUtil
-import me.ykrank.s1next.util.L
-import me.ykrank.s1next.util.RxJavaUtil
 import me.ykrank.s1next.viewmodel.ImageViewModel
-import me.ykrank.s1next.widget.glide.model.ForcePassUrl
-import me.ykrank.s1next.widget.track.DataTrackAgent
 import me.ykrank.s1next.widget.track.event.ViewImageTrackEvent
 import okhttp3.HttpUrl
 import java.io.File
@@ -51,7 +52,7 @@ class GalleryFragment : Fragment() {
     internal lateinit var mDownloadPrefManager: DownloadPreferencesManager
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        App.getAppComponent().inject(this)
+        App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
@@ -154,7 +155,7 @@ class GalleryFragment : Fragment() {
                         }
                         file = File(downloadDir, name)
                     } else {
-                        file = FileUtil.newFileInDirectory(downloadDir, imageType)
+                        file = AppFileUtil.newFileInDirectory(downloadDir, imageType)
                     }
                     FileUtil.copyFile(resource, file)
                     file

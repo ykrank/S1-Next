@@ -16,6 +16,10 @@ import android.widget.EditText;
 
 import com.github.ykrank.androidautodispose.AndroidRxDispose;
 import com.github.ykrank.androidlifecycle.event.FragmentEvent;
+import com.github.ykrank.androidtools.ui.adapter.simple.BindViewHolderCallback;
+import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter;
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.util.RxJavaUtil;
 
 import java.util.List;
 
@@ -29,11 +33,7 @@ import me.ykrank.s1next.data.api.model.RatePreInfo;
 import me.ykrank.s1next.databinding.FragmentNewRateBinding;
 import me.ykrank.s1next.databinding.ItemRateReasonBinding;
 import me.ykrank.s1next.util.ErrorUtil;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter;
-import me.ykrank.s1next.view.adapter.simple.BindViewHolderCallback;
-import me.ykrank.s1next.view.adapter.simple.SimpleRecycleViewAdapter;
 import me.ykrank.s1next.view.dialog.requestdialog.RateRequestDialogFragment;
 import me.ykrank.s1next.viewmodel.NewRateViewModel;
 
@@ -83,7 +83,7 @@ public final class NewRateFragment extends BaseFragment {
         postID = getArguments().getString(ARG_POST_ID);
         L.leaveMsg("NewRateFragment##threadId:" + threadId + ",postID:" + postID);
 
-        App.getAppComponent().inject(this);
+        App.Companion.getAppComponent().inject(this);
         init();
         refreshData();
     }
@@ -138,8 +138,8 @@ public final class NewRateFragment extends BaseFragment {
 
         s1Service.getRatePreInfo(threadId, postID, System.currentTimeMillis())
                 .map(RatePreInfo::fromHtml)
-                .compose(RxJavaUtil.iOTransformer())
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
+                .compose(RxJavaUtil.iOSingleTransformer())
+                .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
                 .subscribe(info -> {
                     ratePreInfo = info;
                     if (!TextUtils.isEmpty(info.getAlertError())) {

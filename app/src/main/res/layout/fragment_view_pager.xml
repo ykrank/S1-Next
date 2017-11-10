@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<me.ykrank.s1next.widget.uglyfix.FixViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+<com.github.ykrank.androidtools.widget.uglyfix.FixViewPager xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/view_pager"
     android:layout_width="match_parent"

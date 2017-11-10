@@ -11,15 +11,15 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
+import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.WebViewUtils
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.databinding.FragmentWebviewBinding
-import me.ykrank.s1next.util.L
-import me.ykrank.s1next.util.WebViewUtils
 import me.ykrank.s1next.view.activity.ForumActivity
 import me.ykrank.s1next.viewmodel.WebPageViewModel
-import me.ykrank.s1next.widget.hostcheck.BaseHostUrl
+import me.ykrank.s1next.widget.hostcheck.AppHostUrl
 import java.net.URI
 import java.util.*
 import java.util.regex.Pattern
@@ -33,14 +33,14 @@ class WebLoginFragment : BaseFragment() {
     @Inject
     internal lateinit var cookieManger: java.net.CookieManager
     @Inject
-    internal lateinit var baseHostUrl: BaseHostUrl
+    internal lateinit var baseHostUrl: AppHostUrl
 
     private lateinit var mFragmentHelpBinding: FragmentWebviewBinding
     private var webView: WebView? = null
     private lateinit var mProgressBar: ProgressBar
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        App.getAppComponent().inject(this)
+        App.appComponent.inject(this)
         mFragmentHelpBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_webview, container,
                 false)
         webView = mFragmentHelpBinding.webView

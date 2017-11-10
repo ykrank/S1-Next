@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.github.ykrank.androidtools.util.L;
 import com.google.common.base.Objects;
 
 import org.jsoup.Jsoup;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.ykrank.s1next.data.api.ApiUtil;
-import me.ykrank.s1next.util.L;
 
 /**
  * Created by ykrank on 2017/3/19.

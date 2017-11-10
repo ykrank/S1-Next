@@ -18,6 +18,10 @@ import android.view.TouchDelegate;
 import android.view.View;
 import android.widget.TextView;
 
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.util.ResourceUtil;
+import com.github.ykrank.androidtools.util.RxJavaUtil;
+import com.github.ykrank.androidtools.util.ViewUtil;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 
@@ -36,10 +40,6 @@ import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.db.dbmodel.History;
 import me.ykrank.s1next.data.pref.ThemeManager;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.ResourceUtil;
-import me.ykrank.s1next.util.RxJavaUtil;
-import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.widget.span.GlideImageGetter;
 import me.ykrank.s1next.widget.span.HtmlCompat;
 import me.ykrank.s1next.widget.span.TagHandler;

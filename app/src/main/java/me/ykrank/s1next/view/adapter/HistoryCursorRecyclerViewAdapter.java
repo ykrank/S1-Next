@@ -5,9 +5,10 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder;
+
 import me.ykrank.s1next.data.db.HistoryDbWrapper;
 import me.ykrank.s1next.databinding.ItemHistoryBinding;
-import me.ykrank.s1next.view.adapter.simple.SimpleRecycleViewHolder;
 import me.ykrank.s1next.viewmodel.HistoryViewModel;
 
 

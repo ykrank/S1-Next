@@ -4,13 +4,13 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.github.ykrank.androidtools.util.LooperUtil;
 
 import java.util.List;
 
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.model.Pm;
 import me.ykrank.s1next.data.api.model.collection.Pms;
-import me.ykrank.s1next.util.LooperUtil;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PmsWrapper extends BaseDataWrapper<Pms> {

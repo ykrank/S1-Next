@@ -26,9 +26,9 @@ public class NoteActivity extends BaseActivity {
         setContentView(R.layout.activity_base_without_drawer);
 
         if (savedInstanceState == null) {
-            fragment = NoteFragment.newInstance();
+            fragment = NoteFragment.Companion.newInstance();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.frame_layout, fragment, NoteFragment.TAG)
+                    .add(R.id.frame_layout, fragment, NoteFragment.Companion.getTAG())
                     .commit();
         }
     }

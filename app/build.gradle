@@ -72,6 +72,8 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            matchingFallbacks = ['debug', 'release']
         }
 
         release {
@@ -110,6 +112,7 @@ greendao {
 
 //http://stackoverflow.com/questions/28683327/how-to-check-if-gradle-dependency-has-new-version
 dependencies {
+    implementation  project(path: ':lib')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     playCompile fileTree(include: ['*.jar'], dir: 'libs/flavors/play')
     normalCompile fileTree(include: ['*.jar'], dir: 'libs/flavors/normal')

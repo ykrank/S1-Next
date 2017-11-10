@@ -2,7 +2,8 @@ package me.ykrank.s1next.view.adapter;
 
 import android.app.Activity;
 
-import me.ykrank.s1next.view.adapter.delegate.FooterProgressAdapterDelegate;
+import com.github.ykrank.androidtools.ui.adapter.delegate.FooterProgressAdapterDelegate;
+
 import me.ykrank.s1next.view.adapter.delegate.HomeThreadAdapterDelegate;
 
 public final class HomeThreadRecyclerViewAdapter extends BaseRecyclerViewAdapter {

@@ -7,14 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.ykrank.androidtools.ui.adapter.simple.SimpleViewHolderAdapter;
+import com.github.ykrank.androidtools.util.L;
 import com.google.common.base.Objects;
 
 import java.util.List;
 
 import io.reactivex.functions.Function;
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.view.adapter.simple.SimpleViewHolderAdapter;
 
 public class SimpleSpinnerAdapter<T> extends SimpleViewHolderAdapter<T, SimpleSpinnerAdapter.SimpleSpinnerViewHolder> {
     @NonNull

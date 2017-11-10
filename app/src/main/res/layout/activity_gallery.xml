@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <me.ykrank.s1next.widget.uglyfix.FixViewPager
+        <com.github.ykrank.androidtools.widget.uglyfix.FixViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

@@ -4,8 +4,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate;
+import com.github.ykrank.androidtools.ui.vm.LoadingViewModel;
+
 import me.ykrank.s1next.databinding.FragmentBaseCardViewContainerBinding;
-import me.ykrank.s1next.viewmodel.LoadingViewModel;
 
 public final class LoadingViewModelBindingDelegateBaseCardViewContainerImpl
         implements LoadingViewModelBindingDelegate {

@@ -17,6 +17,8 @@ import android.widget.ListView;
 
 import com.github.ykrank.androidautodispose.AndroidRxDispose;
 import com.github.ykrank.androidlifecycle.event.FragmentEvent;
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.util.RxJavaUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +28,6 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.db.BlackListDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.BlackList;
 import me.ykrank.s1next.databinding.FragmentBlacklistBinding;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.BlackListCursorListViewAdapter;
 import me.ykrank.s1next.view.dialog.BlacklistDialogFragment;
 import me.ykrank.s1next.view.fragment.BaseFragment;

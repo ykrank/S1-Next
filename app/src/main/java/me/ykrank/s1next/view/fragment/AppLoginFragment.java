@@ -12,12 +12,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.util.ViewUtil;
+
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.databinding.FragmentAppLoginBinding;
 import me.ykrank.s1next.util.IntentUtil;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.view.dialog.AppLoginDialogFragment;
 
 /**

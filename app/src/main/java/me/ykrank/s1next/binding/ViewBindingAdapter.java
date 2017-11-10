@@ -28,17 +28,17 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.github.ykrank.androidtools.util.ColorDrawableUtils;
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.util.RxJavaUtil;
+import com.github.ykrank.androidtools.widget.glide.transformations.BlurTransformation;
+import com.github.ykrank.androidtools.widget.glide.viewtarget.DrawableViewBackgroundTarget;
+import com.github.ykrank.androidtools.widget.glide.viewtarget.ViewBackgroundTarget;
 
 import io.reactivex.functions.Consumer;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
-import me.ykrank.s1next.util.ColorDrawableUtils;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.RxJavaUtil;
-import me.ykrank.s1next.widget.glide.transformations.BlurTransformation;
-import me.ykrank.s1next.widget.glide.viewtarget.DrawableViewBackgroundTarget;
-import me.ykrank.s1next.widget.glide.viewtarget.ViewBackgroundTarget;
 
 /**
  * Created by AdminYkrank on 2016/4/17.

@@ -10,7 +10,7 @@
 
         <variable
             name="loadingViewModel"
-            type="me.ykrank.s1next.viewmodel.LoadingViewModel" />
+            type="com.github.ykrank.androidtools.ui.vm.LoadingViewModel" />
 
         <variable
             name="quickSidebarEnable"

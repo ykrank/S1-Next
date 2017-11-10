@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.github.ykrank.androidtools.util.L;
+
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.fragment.FriendListFragment;
 import me.ykrank.s1next.widget.track.event.ViewUserFriendsTrackEvent;
 

@@ -4,6 +4,11 @@ import android.content.Context;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.ykrank.androidtools.widget.EditorDiskCache;
+import com.github.ykrank.androidtools.widget.PersistentHttpCookieStore;
+import com.github.ykrank.androidtools.widget.RxBus;
+import com.github.ykrank.androidtools.widget.hostcheck.HttpDns;
+import com.github.ykrank.androidtools.widget.track.DataTrackAgent;
 
 import java.io.File;
 import java.net.CookieManager;
@@ -31,20 +36,15 @@ import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
 import me.ykrank.s1next.task.AutoSignTask;
 import me.ykrank.s1next.viewmodel.UserViewModel;
-import me.ykrank.s1next.widget.EditorDiskCache;
-import me.ykrank.s1next.widget.PersistentHttpCookieStore;
 import me.ykrank.s1next.widget.RawJsonConverterFactory;
-import me.ykrank.s1next.widget.RxBus;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
 import me.ykrank.s1next.widget.glide.OkHttpNoAvatarInterceptor;
-import me.ykrank.s1next.widget.hostcheck.BaseHostUrl;
-import me.ykrank.s1next.widget.hostcheck.HttpDns;
-import me.ykrank.s1next.widget.hostcheck.MultiHostInterceptor;
+import me.ykrank.s1next.widget.hostcheck.AppHostUrl;
+import me.ykrank.s1next.widget.hostcheck.AppMultiHostInterceptor;
 import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask;
 import me.ykrank.s1next.widget.net.AppData;
 import me.ykrank.s1next.widget.net.Data;
 import me.ykrank.s1next.widget.net.Image;
-import me.ykrank.s1next.widget.track.DataTrackAgent;
 import okhttp3.CookieJar;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
@@ -73,13 +73,13 @@ public final class AppModule {
 
     @Provides
     @Singleton
-    BaseHostUrl provideBaseHostUrl(NetworkPreferencesManager networkPreferencesManager) {
-        return new BaseHostUrl(networkPreferencesManager);
+    AppHostUrl provideBaseHostUrl(NetworkPreferencesManager networkPreferencesManager) {
+        return new AppHostUrl(networkPreferencesManager);
     }
 
     @Provides
     @Singleton
-    HttpDns provideHttpDns(BaseHostUrl baseHostUrl) {
+    HttpDns provideHttpDns(AppHostUrl baseHostUrl) {
         return new HttpDns(baseHostUrl);
     }
 
@@ -98,7 +98,7 @@ public final class AppModule {
     @Data
     @Provides
     @Singleton
-    OkHttpClient.Builder providerDataOkHttpClientBuilder(CookieJar cookieJar, BaseHostUrl baseHostUrl) {
+    OkHttpClient.Builder providerDataOkHttpClientBuilder(CookieJar cookieJar, AppHostUrl baseHostUrl) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.dns(new HttpDns(baseHostUrl));
         builder.connectTimeout(10, TimeUnit.SECONDS);
@@ -107,7 +107,7 @@ public final class AppModule {
         builder.retryOnConnectionFailure(true);
         builder.cookieJar(cookieJar);
         builder.addInterceptor(new ApiVersionInterceptor());
-        builder.addInterceptor(new MultiHostInterceptor(baseHostUrl));
+        builder.addInterceptor(new AppMultiHostInterceptor(baseHostUrl));
 
         return builder;
     }
@@ -130,7 +130,7 @@ public final class AppModule {
     @Image
     @Provides
     @Singleton
-    OkHttpClient.Builder providerImageOkHttpClientBuilder(CookieJar cookieJar, BaseHostUrl baseHostUrl) {
+    OkHttpClient.Builder providerImageOkHttpClientBuilder(CookieJar cookieJar, AppHostUrl baseHostUrl) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.dns(new HttpDns(baseHostUrl));
         builder.connectTimeout(17, TimeUnit.SECONDS);
@@ -139,7 +139,7 @@ public final class AppModule {
         builder.retryOnConnectionFailure(true);
         builder.cookieJar(cookieJar);
         builder.addNetworkInterceptor(new OkHttpNoAvatarInterceptor());
-        builder.addInterceptor(new MultiHostInterceptor(baseHostUrl));
+        builder.addInterceptor(new AppMultiHostInterceptor(baseHostUrl));
 
         return builder;
     }
@@ -245,8 +245,9 @@ public final class AppModule {
 
     @Provides
     @Singleton
-    EditorDiskCache provideEditorDiskCache() {
-        return new EditorDiskCache();
+    EditorDiskCache provideEditorDiskCache(Context context) {
+        return new EditorDiskCache(context.getCacheDir().getPath()
+                + File.separator + "editor_disk_cache");
     }
 
     @Provides

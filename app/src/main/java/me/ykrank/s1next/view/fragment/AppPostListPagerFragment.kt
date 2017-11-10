@@ -14,7 +14,13 @@ import com.bigkoo.quicksidebar.listener.OnQuickSideBarTouchListener
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
-import io.reactivex.Observable
+import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
+import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
+import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.LooperUtil
+import com.github.ykrank.androidtools.util.RxJavaUtil
+import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.recycleview.StartSnapLinearLayoutManager
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
@@ -31,18 +37,12 @@ import me.ykrank.s1next.data.db.ReadProgressDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.databinding.FragmentBaseWithQuickSideBarBinding
-import me.ykrank.s1next.util.L
-import me.ykrank.s1next.util.LooperUtil
-import me.ykrank.s1next.util.RxJavaUtil
+import me.ykrank.s1next.util.JsonUtil
 import me.ykrank.s1next.view.adapter.AppPostListRecyclerViewAdapter
 import me.ykrank.s1next.view.event.*
 import me.ykrank.s1next.view.fragment.AppPostListPagerFragment.PagerCallback
-import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegate
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateQuickSidebarImpl
 import me.ykrank.s1next.view.internal.PagerScrollState
-import me.ykrank.s1next.viewmodel.LoadingViewModel
-import me.ykrank.s1next.widget.RxBus
-import me.ykrank.s1next.widget.recycleview.StartSnapLinearLayoutManager
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -86,7 +86,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
     private var refreshAfterBlacklistChangeDisposable: Disposable? = null
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        App.getAppComponent().inject(this)
+        App.appComponent.inject(this)
         super.onViewCreated(view, savedInstanceState)
 
         mThreadId = arguments.getString(ARG_THREAD_ID)
@@ -158,15 +158,15 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
         super.onDestroy()
     }
 
-    internal override fun getLoadingViewModelBindingDelegateImpl(inflater: LayoutInflater, container: ViewGroup): LoadingViewModelBindingDelegate {
-        binding = DataBindingUtil.inflate<FragmentBaseWithQuickSideBarBinding>(inflater, R.layout.fragment_base_with_quick_side_bar, container, false)
+    override fun getLoadingViewModelBindingDelegateImpl(inflater: LayoutInflater, container: ViewGroup?): LoadingViewModelBindingDelegate {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_base_with_quick_side_bar, container, false)
         binding.quickSidebarEnable = false
         quickSideBarView = binding.quickSideBarView
         quickSideBarTipsView = binding.quickSideBarViewTips
         return LoadingViewModelBindingDelegateQuickSidebarImpl(binding)
     }
 
-    internal override fun startPullToRefresh() {
+    override fun startPullToRefresh() {
         if (isPullUpToRefreshValid) {
             mRecyclerAdapter.showFooterProgress()
             super.startPullToRefresh()
@@ -181,9 +181,9 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
         startPullToRefresh()
     }
 
-    internal override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Observable<AppPostsWrapper> {
+    override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<AppPostsWrapper> {
         var postObservable = appService.getPostsWrapper(mUser.appSecureToken, mThreadId, mPageNum)
-                .compose(RxJavaUtil.jsonTransformer(AppPostsWrapper::class.java))
+                .compose(JsonUtil.jsonSingleTransformer(AppPostsWrapper::class.java))
         val mThreadInfo = mPagerCallback?.threadInfo
         if (mThreadInfo != null) {
             postObservable = postObservable.map { it.apply { it.thread = mThreadInfo } }
@@ -211,7 +211,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
         }
     }
 
-    internal override fun onNext(data: AppPostsWrapper) {
+    override fun onNext(data: AppPostsWrapper) {
         L.print(data.toString())
         mPagerCallback?.threadInfo = data.thread
         val pullUpToRefresh = isPullUpToRefresh
@@ -270,7 +270,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
         }
     }
 
-    internal override fun onError(throwable: Throwable) {
+    override fun onError(throwable: Throwable) {
         if (AppApiUtil.appLoginIfNeed(mRxBus, throwable)) {
             return
         }

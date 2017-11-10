@@ -5,11 +5,12 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.github.ykrank.androidtools.widget.EditorDiskCache;
+
 import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.widget.EditorDiskCache;
 
 /**
  * A dialog shows prompt if user's reply is not empty and want
@@ -46,7 +47,7 @@ public final class DiscardEditPromptDialogFragment extends BaseDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        App.getAppComponent().inject(this);
+        App.Companion.getAppComponent().inject(this);
         
         String msg = getArguments().getString(ARG_MESSAGE);
         if (msg == null) msg = getString(R.string.dialog_message_reply_discard_prompt);

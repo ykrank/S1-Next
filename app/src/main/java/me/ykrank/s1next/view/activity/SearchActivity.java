@@ -39,6 +39,10 @@ import android.widget.TextView;
 
 import com.github.ykrank.androidautodispose.AndroidRxDispose;
 import com.github.ykrank.androidlifecycle.event.ActivityEvent;
+import com.github.ykrank.androidtools.util.ImeUtils;
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.util.RxJavaUtil;
+import com.github.ykrank.androidtools.util.TransitionUtils;
 
 import java.util.List;
 
@@ -54,10 +58,6 @@ import me.ykrank.s1next.data.api.model.search.ForumSearchWrapper;
 import me.ykrank.s1next.data.api.model.search.SearchResult;
 import me.ykrank.s1next.data.api.model.search.UserSearchWrapper;
 import me.ykrank.s1next.databinding.ActivitySearchBinding;
-import me.ykrank.s1next.util.ImeUtils;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.RxJavaUtil;
-import me.ykrank.s1next.util.TransitionUtils;
 import me.ykrank.s1next.view.adapter.SearchRecyclerViewAdapter;
 import me.ykrank.s1next.view.transition.CircularReveal;
 import me.ykrank.s1next.view.transition.TransitionCompatCreator;
@@ -100,7 +100,7 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        App.getAppComponent().inject(this);
+        App.Companion.getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
         L.leaveMsg("SearchActivity");
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
@@ -301,15 +301,15 @@ public class SearchActivity extends BaseActivity {
             ApiFlatTransformer.INSTANCE.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
                     token -> s1Service.searchUser(token, query))
                     .map(UserSearchWrapper::fromSource)
-                    .compose(RxJavaUtil.iOTransformer())
-                    .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
+                    .compose(RxJavaUtil.iOSingleTransformer())
+                    .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
                     .subscribe(wrapper -> setResults(wrapper.getUserSearchResults(), wrapper.getErrorMsg()), L::e);
         } else {
             ApiFlatTransformer.INSTANCE.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
                     token -> s1Service.searchForum(token, query))
                     .map(ForumSearchWrapper::fromSource)
-                    .compose(RxJavaUtil.iOTransformer())
-                    .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
+                    .compose(RxJavaUtil.iOSingleTransformer())
+                    .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
                     .subscribe(wrapper -> setResults(wrapper.getForumSearchResults(), null), L::e);
         }
     }

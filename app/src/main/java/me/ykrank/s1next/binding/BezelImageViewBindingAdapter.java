@@ -17,6 +17,11 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.github.ykrank.androidtools.util.ContextUtils;
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.util.RxJavaUtil;
+import com.github.ykrank.androidtools.widget.BezelImageView;
+import com.github.ykrank.androidtools.widget.glide.model.ImageInfo;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -27,13 +32,8 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
-import me.ykrank.s1next.util.ContextUtils;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.RxJavaUtil;
-import me.ykrank.s1next.widget.BezelImageView;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
 import me.ykrank.s1next.widget.glide.model.AvatarUrl;
-import me.ykrank.s1next.widget.glide.model.ImageInfo;
 
 public final class BezelImageViewBindingAdapter {
 
@@ -52,7 +52,7 @@ public final class BezelImageViewBindingAdapter {
         if (ContextUtils.isActivityDestroyedForGlide(context)) {
             return;
         }
-        DownloadPreferencesManager downloadPreferencesManager = App.getAppComponent()
+        DownloadPreferencesManager downloadPreferencesManager = App.Companion.getAppComponent()
                 .getDownloadPreferencesManager();
         if (user.isLogged()) {
             bezelImageView.setTag(R.id.tag_drawable_info, null);
@@ -94,7 +94,7 @@ public final class BezelImageViewBindingAdapter {
         if (TextUtils.equals(oldUid, newUid)) {
             return;
         }
-        DownloadPreferencesManager downloadPreferencesManager = App.getAppComponent()
+        DownloadPreferencesManager downloadPreferencesManager = App.Companion.getAppComponent()
                 .getDownloadPreferencesManager();
         loadAvatar(bezelImageView, null, null, false, false, null, downloadPreferencesManager, newUid, false, false, null);
     }

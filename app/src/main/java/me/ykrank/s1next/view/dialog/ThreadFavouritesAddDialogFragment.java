@@ -8,9 +8,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.WindowManager;
 
+import com.github.ykrank.androidtools.util.ViewUtil;
+
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.databinding.DialogFavouritesAddBinding;
-import me.ykrank.s1next.util.ViewUtil;
 
 /**
  * A dialog lets user enter remark if user want to add this thread to his/her favourites.

@@ -3,6 +3,7 @@ package me.ykrank.s1next.data.api.model.search;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.github.ykrank.androidtools.util.L;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 
@@ -16,7 +17,6 @@ import java.util.List;
 
 import me.ykrank.s1next.data.api.model.UserLink;
 import me.ykrank.s1next.data.api.model.wrapper.HtmlDataWrapper;
-import me.ykrank.s1next.util.L;
 
 /**
  * Created by ykrank on 2017/04/01.

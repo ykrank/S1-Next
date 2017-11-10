@@ -7,13 +7,14 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import com.github.ykrank.androidtools.ui.LibBaseViewPagerFragment
+import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.MathUtil
 import com.google.common.base.Preconditions
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.model.Forum
 import me.ykrank.s1next.util.IntentUtil
-import me.ykrank.s1next.util.L
-import me.ykrank.s1next.util.MathUtil
 
 /**
  * A Fragment includes [android.support.v4.view.ViewPager]
@@ -37,11 +38,11 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.fragment_thread, menu)
 
-        menu.findItem(R.id.menu_page_jump).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+        menu?.findItem(R.id.menu_page_jump)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -57,7 +58,7 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
     }
 
     override fun getPagerAdapter(fragmentManager: FragmentManager)
-            : BaseViewPagerFragment.BaseFragmentStatePagerAdapter<*> {
+            : LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<*> {
         return ThreadListPagerAdapter(fragmentManager)
     }
 
@@ -73,7 +74,7 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
      * Returns a Fragment corresponding to one of the pages of threads.
      */
     private inner class ThreadListPagerAdapter(fm: FragmentManager)
-        : BaseViewPagerFragment.BaseFragmentStatePagerAdapter<ThreadListPagerFragment>(fm) {
+        : LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<ThreadListPagerFragment>(fm) {
 
         override fun getItem(i: Int): ThreadListPagerFragment {
             return ThreadListPagerFragment.newInstance(mForumId, i + 1)

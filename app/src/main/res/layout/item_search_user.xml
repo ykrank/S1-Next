@@ -30,7 +30,7 @@
             android:orientation="horizontal"
             android:padding="@dimen/item_padding_small">
 
-            <me.ykrank.s1next.widget.BezelImageView
+            <com.github.ykrank.androidtools.widget.BezelImageView
                 android:id="@+id/avatar"
                 android:layout_width="@dimen/avatar_size"
                 android:layout_height="@dimen/avatar_size"

@@ -8,13 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.util.RxJavaUtil;
+
 import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.db.HistoryDbWrapper;
 import me.ykrank.s1next.databinding.FragmentBaseBinding;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.adapter.HistoryCursorRecyclerViewAdapter;
 
 /**
@@ -44,7 +45,7 @@ public final class HistoryListFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        App.getAppComponent().inject(this);
+        App.Companion.getAppComponent().inject(this);
         super.onViewCreated(view, savedInstanceState);
         L.leaveMsg("HistoryListFragment");
 

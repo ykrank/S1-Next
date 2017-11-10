@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/item_padding">
 
-            <me.ykrank.s1next.widget.BezelImageView
+            <com.github.ykrank.androidtools.widget.BezelImageView
                 android:id="@+id/avatar"
                 android:layout_width="@dimen/avatar_size"
                 android:layout_height="@dimen/avatar_size"
@@ -67,7 +67,7 @@
 
             <!-- enable `textIsSelectable` in order to add click effect -->
             <!-- see https://code.google.com/p/android/issues/detail?id=13895 -->
-            <me.ykrank.s1next.widget.uglyfix.FixTextView
+            <com.github.ykrank.androidtools.widget.uglyfix.FixTextView
                 android:id="@+id/tv_floor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
 
             <!-- layout_marginTop = 72dp (two line height with avatar) - 16dp (RelativeLayout's top padding) -->
             <!-- use custom movement method to provides selection and click -->
-            <me.ykrank.s1next.widget.uglyfix.FixTextView
+            <com.github.ykrank.androidtools.widget.uglyfix.FixTextView
                 android:id="@+id/tv_reply"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -4,13 +4,13 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.preference.Preference
 import com.bumptech.glide.Glide
+import com.github.ykrank.androidtools.extension.toast
+import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.RxJavaUtil
 import io.reactivex.disposables.Disposable
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
-import me.ykrank.s1next.extension.toast
-import me.ykrank.s1next.util.L
-import me.ykrank.s1next.util.RxJavaUtil
 import javax.inject.Inject
 
 /**
@@ -26,7 +26,7 @@ class DownloadPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefer
     private var disposable: Disposable? = null
 
     override fun onCreatePreferences(bundle: Bundle?, s: String?) {
-        App.getAppComponent().inject(this)
+        App.appComponent.inject(this)
         addPreferencesFromResource(R.xml.preference_download)
 
         findPreference(getString(R.string.pref_key_clear_image_cache)).onPreferenceClickListener = this

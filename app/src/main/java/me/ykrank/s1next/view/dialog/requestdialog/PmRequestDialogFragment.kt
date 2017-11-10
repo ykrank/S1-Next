@@ -1,7 +1,7 @@
 package me.ykrank.s1next.view.dialog.requestdialog
 
 import android.os.Bundle
-import io.reactivex.Observable
+import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper
@@ -16,7 +16,7 @@ class PmRequestDialogFragment : BaseRequestDialogFragment<AccountResultWrapper>(
         return getText(R.string.dialog_progress_message_reply)
     }
 
-    override fun getSourceObservable(): Observable<AccountResultWrapper> {
+    override fun getSourceObservable(): Single<AccountResultWrapper> {
         val toUid = arguments.getString(ARG_TO_UID)
         val msg = arguments.getString(ARG_MESSAGE)
 

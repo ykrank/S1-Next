@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import me.ykrank.s1next.data.SameItem
+import com.github.ykrank.androidtools.ui.adapter.model.SameItem
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 

@@ -1,6 +1,6 @@
 package me.ykrank.s1next.widget
 
-import me.ykrank.s1next.util.StringUtil
+import com.github.ykrank.androidtools.util.StringUtil
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit

@@ -10,9 +10,9 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ClickableSpan;
 import android.view.View;
 
-import org.xml.sax.Attributes;
+import com.github.ykrank.androidtools.util.L;
 
-import me.ykrank.s1next.util.L;
+import org.xml.sax.Attributes;
 
 /**
  * Created by ykrank on 2016/10/16 0016.

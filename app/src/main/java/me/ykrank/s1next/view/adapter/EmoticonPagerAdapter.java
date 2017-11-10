@@ -7,11 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.ykrank.androidtools.widget.GridAutofitLayoutManager;
+
 import java.util.List;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.widget.EmoticonFactory;
-import me.ykrank.s1next.widget.GridAutofitLayoutManager;
 
 public final class EmoticonPagerAdapter extends PagerAdapter {
 

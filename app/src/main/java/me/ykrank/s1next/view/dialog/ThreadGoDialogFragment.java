@@ -15,12 +15,12 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.github.ykrank.androidtools.util.ViewUtil;
 import com.google.common.base.Optional;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.ThreadLink;
 import me.ykrank.s1next.databinding.DialogThreadGoBinding;
-import me.ykrank.s1next.util.ViewUtil;
 import me.ykrank.s1next.view.activity.PostListActivity;
 
 /**

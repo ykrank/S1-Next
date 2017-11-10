@@ -10,11 +10,11 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.github.ykrank.androidtools.util.ResourceUtil;
 import com.google.common.base.Preconditions;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.databinding.PopWindowTitleBinding;
-import me.ykrank.s1next.util.ResourceUtil;
 
 /**
  * This class represents a delegate which you can use to add

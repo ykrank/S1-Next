@@ -1,12 +1,12 @@
 package me.ykrank.s1next.view.dialog
 
 import android.os.Bundle
-import io.reactivex.Observable
+import com.github.ykrank.androidtools.widget.RxBus
+import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper
 import me.ykrank.s1next.view.event.LoginEvent
-import me.ykrank.s1next.widget.RxBus
 import javax.inject.Inject
 
 /**
@@ -18,11 +18,11 @@ class LoginDialogFragment : ProgressDialogFragment<AccountResultWrapper>() {
     internal lateinit var mRxBus: RxBus
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.getAppComponent().inject(this)
+        App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
     }
 
-    override fun getSourceObservable(): Observable<AccountResultWrapper> {
+    override fun getSourceObservable(): Single<AccountResultWrapper> {
         val username = arguments.getString(ARG_USERNAME)
         val password = arguments.getString(ARG_PASSWORD)
         return mS1Service.login(username, password).map { resultWrapper ->

@@ -25,7 +25,7 @@ public final class NewRateActivity extends BaseActivity {
         intent.putExtra(ARG_THREAD_ID, threadId);
         intent.putExtra(ARG_POST_ID, postId);
 
-        BaseActivity.startActivityForResultMessage(activity, intent);
+        BaseActivity.Companion.startActivityForResultMessage(activity, intent);
     }
 
     @Override

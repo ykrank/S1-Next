@@ -2,7 +2,7 @@ package me.ykrank.s1next.view.dialog.requestdialog;
 
 import android.os.Bundle;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Result;
@@ -43,7 +43,7 @@ public final class NewThreadRequestDialogFragment extends BaseRequestDialogFragm
     }
 
     @Override
-    protected Observable<AccountResultWrapper> getSourceObservable() {
+    protected Single<AccountResultWrapper> getSourceObservable() {
         Bundle bundle = getArguments();
         int forumId = bundle.getInt(ARG_FORUM_ID);
         String title = bundle.getString(ARG_TITLE);

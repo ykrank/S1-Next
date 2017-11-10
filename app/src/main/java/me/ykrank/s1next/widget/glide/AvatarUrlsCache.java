@@ -7,6 +7,7 @@ import com.bumptech.glide.disklrucache.DiskLruCache;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.util.Util;
+import com.github.ykrank.androidtools.util.L;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +18,6 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
-import me.ykrank.s1next.util.L;
 
 /**
  * We would get 404 status code if user hasn't set up their
@@ -63,7 +63,7 @@ public class AvatarUrlsCache {
     public AvatarUrlsCache() {
         lruCache = new LruCache<>(MEMORY_CACHE_MAX_NUMBER);
 
-        File file = new File(App.get().getCacheDir().getPath()
+        File file = new File(App.Companion.get().getCacheDir().getPath()
                 + File.separator + DISK_CACHE_DIRECTORY);
         try {
             diskLruCache = DiskLruCache.open(file, BuildConfig.VERSION_CODE, 1,
@@ -137,13 +137,13 @@ public class AvatarUrlsCache {
     }
 
     public static void clearUserAvatarCache(String uid) {
-        AvatarUrlsCache avatarUrlsCache = App.getAppComponent().getAvatarUrlsCache();
+        AvatarUrlsCache avatarUrlsCache = App.Companion.getAppComponent().getAvatarUrlsCache();
         
         //clear avatar img error cache
         String smallAvatarUrl = Api.getAvatarSmallUrl(uid);
         String mediumAvatarUrl = Api.getAvatarMediumUrl(uid);
         String bigAvatarUrl = Api.getAvatarBigUrl(uid);
-        DownloadPreferencesManager manager = App.getAppComponent()
+        DownloadPreferencesManager manager = App.Companion.getAppComponent()
                 .getDownloadPreferencesManager();
         avatarUrlsCache.remove(OriginalKey.obtainAvatarKey(manager, smallAvatarUrl));
         avatarUrlsCache.remove(OriginalKey.obtainAvatarKey(manager, mediumAvatarUrl));

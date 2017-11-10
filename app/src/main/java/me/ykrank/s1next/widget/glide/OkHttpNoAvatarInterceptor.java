@@ -1,5 +1,7 @@
 package me.ykrank.s1next.widget.glide;
 
+import com.github.ykrank.androidtools.widget.glide.NoAvatarException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

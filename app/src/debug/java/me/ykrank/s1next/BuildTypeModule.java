@@ -2,6 +2,7 @@ package me.ykrank.s1next;
 
 import android.content.Context;
 
+import com.github.ykrank.androidtools.widget.NullTrustManager;
 import com.google.common.base.Preconditions;
 
 import java.security.SecureRandom;
@@ -13,7 +14,6 @@ import javax.net.ssl.X509TrustManager;
 
 import dagger.Module;
 import dagger.Provides;
-import me.ykrank.s1next.widget.NullTrustManager;
 import me.ykrank.s1next.widget.net.AppData;
 import me.ykrank.s1next.widget.net.Data;
 import me.ykrank.s1next.widget.net.Image;

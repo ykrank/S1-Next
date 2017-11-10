@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
@@ -30,7 +30,7 @@ public final class ReplyRequestDialogFragment extends BaseRequestDialogFragment<
 
     public static ReplyRequestDialogFragment newInstance(String threadId, @Nullable String quotePostId,
                                                          String reply) {
-        App.get().getTrackAgent().post(new NewReplyTrackEvent(threadId, quotePostId));
+        App.Companion.get().getTrackAgent().post(new NewReplyTrackEvent(threadId, quotePostId));
 
         ReplyRequestDialogFragment fragment = new ReplyRequestDialogFragment();
         Bundle bundle = new Bundle();
@@ -48,7 +48,7 @@ public final class ReplyRequestDialogFragment extends BaseRequestDialogFragment<
     }
 
     @Override
-    protected Observable<AccountResultWrapper> getSourceObservable() {
+    protected Single<AccountResultWrapper> getSourceObservable() {
         String threadId = getArguments().getString(ARG_THREAD_ID);
         String quotePostId = getArguments().getString(ARG_QUOTE_POST_ID);
         String reply = getArguments().getString(ARG_REPLY);

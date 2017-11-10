@@ -17,12 +17,12 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.github.ykrank.androidtools.widget.glide.model.ForcePassUrl;
+import com.github.ykrank.androidtools.widget.glide.transformations.GlMaxTextureSizeBitmapTransformation;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
-import me.ykrank.s1next.widget.glide.model.ForcePassUrl;
-import me.ykrank.s1next.widget.glide.transformations.GlMaxTextureSizeBitmapTransformation;
 
 public final class PhotoViewBindingAdapter {
 

@@ -1,14 +1,14 @@
 package me.ykrank.s1next.task
 
 import android.os.SystemClock
-import io.reactivex.Observable
+import com.github.ykrank.androidtools.extension.toast
+import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.RxJavaUtil
+import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.model.AutoSignResult
-import me.ykrank.s1next.extension.toast
-import me.ykrank.s1next.util.L
-import me.ykrank.s1next.util.RxJavaUtil
 
 /**
  * Created by ykrank on 2017/6/4.
@@ -21,8 +21,8 @@ class AutoSignTask(val s1Service: S1Service, val user: User) {
         if (SystemClock.elapsedRealtime() - lastCheck < Check_Interval) {
             return
         }
-        autoSign().compose(RxJavaUtil.iOTransformer())
-                .doOnComplete { lastCheck = SystemClock.elapsedRealtime() }
+        autoSign().compose(RxJavaUtil.iOSingleTransformer())
+                .doOnSuccess { lastCheck = SystemClock.elapsedRealtime() }
                 .subscribe({
                     user.isSigned = it.signed
                     if (it.success) {
@@ -31,7 +31,7 @@ class AutoSignTask(val s1Service: S1Service, val user: User) {
                 }, L::report)
     }
 
-    fun autoSign(): Observable<AutoSignResult> {
+    fun autoSign(): Single<AutoSignResult> {
         return s1Service.autoSign(user.authenticityToken)
                 .map { AutoSignResult.fromHtml(it) }
     }

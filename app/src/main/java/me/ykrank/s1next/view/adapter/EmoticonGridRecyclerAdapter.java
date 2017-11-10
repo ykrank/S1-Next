@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.github.ykrank.androidtools.widget.RxBus;
 
 import java.util.List;
 
@@ -16,7 +17,6 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Emoticon;
 import me.ykrank.s1next.databinding.ItemEmoticonBinding;
 import me.ykrank.s1next.viewmodel.EmoticonViewModel;
-import me.ykrank.s1next.widget.RxBus;
 
 public final class EmoticonGridRecyclerAdapter
         extends RecyclerView.Adapter<EmoticonGridRecyclerAdapter.BindingViewHolder> {
@@ -32,7 +32,7 @@ public final class EmoticonGridRecyclerAdapter
         mLayoutInflater = activity.getLayoutInflater();
         this.mEmoticons = emoticons;
         mEmoticonRequestBuilder = Glide.with(activity);
-        mRxBus = App.getAppComponent().getRxBus();
+        mRxBus = App.Companion.getAppComponent().getRxBus();
 
         setHasStableIds(true);
     }

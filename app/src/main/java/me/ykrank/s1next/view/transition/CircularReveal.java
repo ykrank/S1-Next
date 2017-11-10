@@ -31,8 +31,9 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 
+import com.github.ykrank.androidtools.util.AnimUtils;
+
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.util.AnimUtils;
 
 /**
  * A transition which shows/hides a view with a circular clipping mask. Callers should provide the

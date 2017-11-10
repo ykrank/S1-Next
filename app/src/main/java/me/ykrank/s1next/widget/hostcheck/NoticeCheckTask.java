@@ -2,12 +2,13 @@ package me.ykrank.s1next.widget.hostcheck;
 
 import android.os.SystemClock;
 
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.util.RxJavaUtil;
+import com.github.ykrank.androidtools.widget.RxBus;
+
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.S1Service;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.RxJavaUtil;
 import me.ykrank.s1next.view.event.NoticeRefreshEvent;
-import me.ykrank.s1next.widget.RxBus;
 
 public class NoticeCheckTask {
     private static final int periodic = 300_000;
@@ -44,8 +45,8 @@ public class NoticeCheckTask {
     private void startCheckNotice() {
         checking = true;
         mS1Service.getPmGroups(1)
-                .compose(RxJavaUtil.iOTransformer())
-                .doOnTerminate(() -> lastCheckTime = SystemClock.elapsedRealtime())
+                .compose(RxJavaUtil.iOSingleTransformer())
+                .doAfterTerminate(() -> lastCheckTime = SystemClock.elapsedRealtime())
                 .subscribe(wrapper -> {
                     mRxBus.post(NoticeRefreshEvent.class, new NoticeRefreshEvent(wrapper.getData().hasNew(), null));
                 }, L::e);

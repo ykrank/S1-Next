@@ -8,10 +8,11 @@ import android.net.Uri;
 import android.support.v4.util.Pair;
 import android.view.View;
 
+import com.github.ykrank.androidtools.util.L;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.PostListGatewayActivity;
 
 /**

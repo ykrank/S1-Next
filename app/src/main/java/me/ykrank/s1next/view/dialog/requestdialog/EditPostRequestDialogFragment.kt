@@ -1,8 +1,7 @@
 package me.ykrank.s1next.view.dialog.requestdialog
 
 import android.os.Bundle
-
-import io.reactivex.Observable
+import io.reactivex.Single
 import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.Post
@@ -17,7 +16,7 @@ class EditPostRequestDialogFragment : BaseRequestDialogFragment<String>() {
         return getText(R.string.dialog_progress_message_reply)
     }
 
-    override fun getSourceObservable(): Observable<String> {
+    override fun getSourceObservable(): Single<String> {
         val bundle = arguments
         val mThread = bundle.getParcelable<Thread>(ARG_THREAD)
         val mPost = bundle.getParcelable<Post>(ARG_POST)
@@ -26,7 +25,7 @@ class EditPostRequestDialogFragment : BaseRequestDialogFragment<String>() {
         val message = bundle.getString(ARG_MESSAGE)
 
         if (mPost == null || mThread == null) {
-            return Observable.error<String>(NullPointerException())
+            return Single.error<String>(NullPointerException())
         }
 
         val saveAsDraft = if (BuildConfig.DEBUG && mPost.isFirst) 1 else null

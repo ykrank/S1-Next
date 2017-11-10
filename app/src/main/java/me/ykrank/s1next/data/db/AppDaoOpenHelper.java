@@ -3,6 +3,9 @@ package me.ykrank.s1next.data.db;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.util.RxJavaUtil;
+
 import org.greenrobot.greendao.database.Database;
 
 import me.ykrank.s1next.App;
@@ -10,8 +13,6 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.db.dbmodel.BlackListDao;
 import me.ykrank.s1next.data.db.dbmodel.DaoMaster;
 import me.ykrank.s1next.data.db.dbmodel.HistoryDao;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.RxJavaUtil;
 
 /**
  * Created by ykrank on 2017/1/16.
@@ -77,7 +78,7 @@ public class AppDaoOpenHelper extends DaoMaster.OpenHelper {
             db.setTransactionSuccessful();
         } catch (Throwable e) {
             L.report(e);
-            RxJavaUtil.workInMainThread(() -> Toast.makeText(App.get(), R.string.database_update_error, Toast.LENGTH_LONG).show());
+            RxJavaUtil.workInMainThread(() -> Toast.makeText(App.Companion.get(), R.string.database_update_error, Toast.LENGTH_LONG).show());
         } finally {
             db.endTransaction();
         }
@@ -102,7 +103,7 @@ public class AppDaoOpenHelper extends DaoMaster.OpenHelper {
                 db.execSQL("ALTER TABLE ReadProgress ADD COLUMN `offset` INTEGER default 0;");
             } catch (Throwable e) {
                 L.report(e);
-                RxJavaUtil.workInMainThread(() -> Toast.makeText(App.get(), R.string.database_update_error, Toast.LENGTH_LONG).show());
+                RxJavaUtil.workInMainThread(() -> Toast.makeText(App.Companion.get(), R.string.database_update_error, Toast.LENGTH_LONG).show());
             }
         }
     }
@@ -121,7 +122,7 @@ public class AppDaoOpenHelper extends DaoMaster.OpenHelper {
                 db.setTransactionSuccessful();
             } catch (Throwable e) {
                 L.report(e);
-                RxJavaUtil.workInMainThread(() -> Toast.makeText(App.get(), R.string.database_update_error, Toast.LENGTH_LONG).show());
+                RxJavaUtil.workInMainThread(() -> Toast.makeText(App.Companion.get(), R.string.database_update_error, Toast.LENGTH_LONG).show());
             } finally {
                 db.endTransaction();
             }

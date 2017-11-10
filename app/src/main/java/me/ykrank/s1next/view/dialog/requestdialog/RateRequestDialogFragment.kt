@@ -1,8 +1,7 @@
 package me.ykrank.s1next.view.dialog.requestdialog
 
 import android.os.Bundle
-
-import io.reactivex.Observable
+import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.RatePreInfo
@@ -19,12 +18,12 @@ class RateRequestDialogFragment : ProgressDialogFragment<RateResult>() {
         return getText(R.string.dialog_progress_message_reply)
     }
 
-    override fun getSourceObservable(): Observable<RateResult> {
+    override fun getSourceObservable(): Single<RateResult> {
         val ratePreInfo = arguments.getParcelable<RatePreInfo>(ARG_RATE_PRE_INFO)
         val score = arguments.getString(ARG_SCORE)
         val reason = arguments.getString(ARG_REASON)
         if (ratePreInfo == null) {
-            return Observable.error<RateResult>(IllegalStateException("RatePreInfo is null"))
+            return Single.error<RateResult>(IllegalStateException("RatePreInfo is null"))
         }
         return mS1Service.rate(ratePreInfo.formHash, ratePreInfo.tid, ratePreInfo.pid,
                 ratePreInfo.refer, ratePreInfo.handleKey, score, reason)

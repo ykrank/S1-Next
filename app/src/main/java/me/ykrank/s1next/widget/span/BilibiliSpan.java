@@ -12,10 +12,10 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ClickableSpan;
 import android.view.View;
 
+import com.github.ykrank.androidtools.util.L;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import me.ykrank.s1next.util.L;
 
 /**
  * <xmp>

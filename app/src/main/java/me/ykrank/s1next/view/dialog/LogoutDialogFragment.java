@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 
+import com.github.ykrank.androidtools.util.WebViewUtils;
+
 import java.net.CookieManager;
 
 import javax.inject.Inject;
@@ -13,7 +15,6 @@ import javax.inject.Inject;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
-import me.ykrank.s1next.util.WebViewUtils;
 
 /**
  * A dialog shows logout prompt.
@@ -48,7 +49,7 @@ public final class LogoutDialogFragment extends BaseDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        App.getAppComponent().inject(this);
+        App.Companion.getAppComponent().inject(this);
         return new AlertDialog.Builder(getContext())
                 .setMessage(R.string.dialog_message_log_out)
                 .setPositiveButton(R.string.dialog_button_text_log_out, (dialog, which) -> logout())
@@ -61,7 +62,7 @@ public final class LogoutDialogFragment extends BaseDialogFragment {
      */
     private void logout() {
         mCookieManager.getCookieStore().removeAll();
-        WebViewUtils.clearWebViewCookies(App.get());
+        WebViewUtils.clearWebViewCookies(App.Companion.get());
         mUser.setAppSecureToken(null);
         mUser.setLogged(false);
     }

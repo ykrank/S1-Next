@@ -3,17 +3,19 @@ package me.ykrank.s1next.util
 import android.content.Context
 import android.util.Log
 import com.fasterxml.jackson.core.JsonProcessingException
+import com.github.ykrank.androidtools.util.ErrorParser
+import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.ApiException
 import retrofit2.HttpException
 import java.io.IOException
 
-object ErrorUtil {
+object ErrorUtil : ErrorParser {
 
     private val TAG_LOG = ErrorUtil::class.java.simpleName
 
-    fun parse(context: Context, throwable: Throwable): String {
+    override fun parse(context: Context, throwable: Throwable): String {
         var msg = parseNetError(context, throwable)
         var cause: Throwable? = throwable.cause
         while (msg == null && cause != null) {
@@ -49,7 +51,7 @@ object ErrorUtil {
         return msg
     }
 
-    fun throwNewErrorIfDebug(throwable: RuntimeException) {
+    override fun throwNewErrorIfDebug(throwable: RuntimeException) {
         if (BuildConfig.DEBUG) {
             throw throwable
         } else {

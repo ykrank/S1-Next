@@ -11,6 +11,8 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
+import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.RxJavaUtil
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import me.ykrank.s1next.App
@@ -20,8 +22,6 @@ import me.ykrank.s1next.data.api.model.ThreadType
 import me.ykrank.s1next.data.cache.NewThreadCacheModel
 import me.ykrank.s1next.databinding.FragmentNewThreadBinding
 import me.ykrank.s1next.util.ErrorUtil
-import me.ykrank.s1next.util.L
-import me.ykrank.s1next.util.RxJavaUtil
 import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter
 import me.ykrank.s1next.view.dialog.requestdialog.NewThreadRequestDialogFragment
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
@@ -57,7 +57,7 @@ class NewThreadFragment : BasePostFragment() {
         mCacheKey = String.format(CACHE_KEY_PREFIX, mForumId)
         L.leaveMsg("NewThreadFragment##mForumId:" + mForumId)
 
-        App.getAppComponent().inject(this)
+        App.appComponent.inject(this)
         init()
     }
 
@@ -139,17 +139,17 @@ class NewThreadFragment : BasePostFragment() {
     private fun init() {
         mS1Service.getNewThreadInfo(mForumId)
                 .map<List<ThreadType>>(ThreadType::fromXmlString)
-                .compose(RxJavaUtil.iOTransformer<List<ThreadType>>())
-                .to(AndroidRxDispose.withObservable<List<ThreadType>>(this, FragmentEvent.DESTROY))
+                .compose(RxJavaUtil.iOSingleTransformer())
+                .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
                 .subscribe({
                     if (it.isEmpty()) {
-                        showRetrySnackbar(getString(R.string.message_network_error)) { v -> init() }
+                        showRetrySnackbar(getString(R.string.message_network_error), View.OnClickListener { v -> init() })
                     } else {
                         setSpinner(it)
                     }
                 }, {
                     L.report(it)
-                    showRetrySnackbar(ErrorUtil.parse(context, it), { init() })
+                    showRetrySnackbar(ErrorUtil.parse(context, it), View.OnClickListener { init() })
                 })
     }
 

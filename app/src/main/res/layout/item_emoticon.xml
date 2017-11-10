@@ -15,7 +15,7 @@
 
         <variable
             name="rxBus"
-            type="me.ykrank.s1next.widget.RxBus" />
+            type="com.github.ykrank.androidtools.widget.RxBus" />
 
         <variable
             name="requestManager"

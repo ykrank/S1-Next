@@ -4,17 +4,17 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import io.reactivex.Observable
+import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
+import com.github.ykrank.androidtools.util.L
+import io.reactivex.Single
 import io.rx_cache2.DynamicKeyGroup
 import io.rx_cache2.EvictDynamicKeyGroup
 import me.ykrank.s1next.data.api.model.Forum
 import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper
-import me.ykrank.s1next.util.L
-import me.ykrank.s1next.util.RxJavaUtil
+import me.ykrank.s1next.util.JsonUtil
 import me.ykrank.s1next.view.adapter.ThreadRecyclerViewAdapter
 import me.ykrank.s1next.view.fragment.ThreadListPagerFragment.PagerCallback
 import me.ykrank.s1next.view.fragment.ThreadListPagerFragment.SubForumsCallback
-import me.ykrank.s1next.viewmodel.LoadingViewModel
 
 /**
  * A Fragment representing one of the pages of threads.
@@ -61,17 +61,17 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
         mSubForumsCallback = null
     }
 
-    internal override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Observable<ThreadsWrapper> {
-        val source: Observable<String> = if (mDownloadPrefManager.netCacheEnable) {
+    override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<ThreadsWrapper> {
+        val source: Single<String> = if (mDownloadPrefManager.netCacheEnable) {
             apiCacheProvider.getThreadsWrapper(mS1Service.getThreadsWrapper(mForumId, mPageNum),
                     DynamicKeyGroup(mForumId + "," + mPageNum, mUser.key), EvictDynamicKeyGroup(isForceLoading))
         } else {
             mS1Service.getThreadsWrapper(mForumId, mPageNum)
         }
-        return source.compose(RxJavaUtil.jsonTransformer(ThreadsWrapper::class.java))
+        return source.compose(JsonUtil.jsonSingleTransformer(ThreadsWrapper::class.java))
     }
 
-    internal override fun onNext(data: ThreadsWrapper) {
+    override fun onNext(data: ThreadsWrapper) {
         val threads = data.data
         if (threads.threadList.isEmpty()) {
             consumeResult(data.result)

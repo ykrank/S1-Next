@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.R
-import me.ykrank.s1next.util.L
 import me.ykrank.s1next.view.fragment.ReplyFragment
 import org.apache.commons.lang3.StringUtils
 

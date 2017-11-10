@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/item_padding">
 
-            <me.ykrank.s1next.widget.BezelImageView
+            <com.github.ykrank.androidtools.widget.BezelImageView
                 android:id="@+id/avatar"
                 android:layout_width="@dimen/avatar_size"
                 android:layout_height="@dimen/avatar_size"

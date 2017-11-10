@@ -9,15 +9,15 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.MenuItem
+import com.github.ykrank.androidtools.util.LeaksUtil
+import com.github.ykrank.androidtools.widget.track.DataTrackAgent
+import com.github.ykrank.androidtools.widget.track.event.page.ActivityEndEvent
+import com.github.ykrank.androidtools.widget.track.event.page.ActivityStartEvent
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.databinding.ActivityGalleryBinding
-import me.ykrank.s1next.util.LeaksUtil
 import me.ykrank.s1next.view.fragment.GalleryFragment
 import me.ykrank.s1next.view.internal.ToolbarDelegate
-import me.ykrank.s1next.widget.track.DataTrackAgent
-import me.ykrank.s1next.widget.track.event.page.ActivityEndEvent
-import me.ykrank.s1next.widget.track.event.page.ActivityStartEvent
 import javax.inject.Inject
 
 /**
@@ -34,7 +34,7 @@ class GalleryActivity : OriginActivity() {
     private var position: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.getAppComponent().inject(this)
+        App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView<ActivityGalleryBinding>(this, R.layout.activity_gallery)
         imageUrls = intent.getStringArrayListExtra(ARG_IMAGE_URL) ?: arrayListOf()

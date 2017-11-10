@@ -2,6 +2,8 @@ package me.ykrank.s1next.data.api.model.search;
 
 import android.support.annotation.NonNull;
 
+import com.github.ykrank.androidtools.util.L;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,7 +16,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import me.ykrank.s1next.data.api.model.wrapper.HtmlDataWrapper;
-import me.ykrank.s1next.util.L;
 
 /**
  * Created by ykrank on 2016/10/21.

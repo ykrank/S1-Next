@@ -8,13 +8,14 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.preference.Preference;
 
+import com.github.ykrank.androidtools.util.LooperUtil;
+
 import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.db.AppDaoSessionManager;
-import me.ykrank.s1next.util.LooperUtil;
 import me.ykrank.s1next.widget.BackupDelegate;
 import me.ykrank.s1next.widget.BackupDelegate.BackupResult;
 
@@ -36,7 +37,7 @@ public final class BackupPreferenceFragment extends BasePreferenceFragment
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
-        App.getAppComponent().inject(this);
+        App.Companion.getAppComponent().inject(this);
         addPreferencesFromResource(R.xml.preference_backup);
 
         findPreference(getString(R.string.pref_key_backup_backup)).setOnPreferenceClickListener(this);

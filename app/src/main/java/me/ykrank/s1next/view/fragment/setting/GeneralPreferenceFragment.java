@@ -4,6 +4,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
 
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.util.ResourceUtil;
+import com.github.ykrank.androidtools.util.RxJavaUtil;
+import com.github.ykrank.androidtools.widget.RxBus;
+import com.github.ykrank.androidtools.widget.track.event.ThemeChangeTrackEvent;
+
 import javax.inject.Inject;
 
 import io.reactivex.Single;
@@ -11,16 +17,11 @@ import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.data.pref.ThemeManager;
-import me.ykrank.s1next.util.DeviceUtil;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.ResourceUtil;
-import me.ykrank.s1next.util.RxJavaUtil;
+import me.ykrank.s1next.util.AppDeviceUtil;
 import me.ykrank.s1next.view.activity.SettingsActivity;
 import me.ykrank.s1next.view.event.FontSizeChangeEvent;
 import me.ykrank.s1next.view.event.ThemeChangeEvent;
-import me.ykrank.s1next.widget.RxBus;
 import me.ykrank.s1next.widget.span.HtmlCompat;
-import me.ykrank.s1next.widget.track.event.ThemeChangeTrackEvent;
 
 import static me.ykrank.s1next.widget.span.HtmlCompat.FROM_HTML_MODE_LEGACY;
 
@@ -44,7 +45,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
         addPreferencesFromResource(R.xml.preference_general);
-        App.getAppComponent().inject(this);
+        App.Companion.getAppComponent().inject(this);
 
         findPreference(getString(R.string.pref_key_downloads)).setOnPreferenceClickListener(this);
         findPreference(getString(R.string.pref_key_blacklists)).setOnPreferenceClickListener(this);
@@ -52,7 +53,7 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
         findPreference(getString(R.string.pref_key_backup)).setOnPreferenceClickListener(this);
         findPreference(getString(R.string.pref_key_network)).setOnPreferenceClickListener(this);
 
-        Single.fromCallable(() -> HtmlCompat.fromHtml(DeviceUtil.getSignature(getActivity()), FROM_HTML_MODE_LEGACY))
+        Single.fromCallable(() -> HtmlCompat.fromHtml(AppDeviceUtil.getSignature(getActivity()), FROM_HTML_MODE_LEGACY))
                 .compose(RxJavaUtil.computationSingleTransformer())
                 .subscribe(findPreference(getString(R.string.pref_key_signature))::setSummary);
     }

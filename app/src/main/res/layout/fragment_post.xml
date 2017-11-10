@@ -53,7 +53,7 @@
                 android:elevation="@dimen/emoticon_keyboard_tab_layout_elevation"
                 tools:ignore="UnusedAttribute" />
 
-            <me.ykrank.s1next.widget.uglyfix.FixViewPager
+            <com.github.ykrank.androidtools.widget.uglyfix.FixViewPager
                 android:id="@+id/emoticon_keyboard_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

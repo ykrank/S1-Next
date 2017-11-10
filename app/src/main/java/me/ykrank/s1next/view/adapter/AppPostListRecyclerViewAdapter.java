@@ -3,9 +3,10 @@ package me.ykrank.s1next.view.adapter;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 
+import com.github.ykrank.androidtools.ui.adapter.delegate.FooterProgressAdapterDelegate;
+
 import me.ykrank.s1next.data.api.app.model.AppThread;
 import me.ykrank.s1next.view.adapter.delegate.AppPostAdapterDelegate;
-import me.ykrank.s1next.view.adapter.delegate.FooterProgressAdapterDelegate;
 
 /**
  * This {@link android.support.v7.widget.RecyclerView.Adapter}

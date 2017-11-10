@@ -10,11 +10,11 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
+import com.github.ykrank.androidtools.widget.glide.model.ForcePassUrl;
 
 import java.io.InputStream;
 
 import me.ykrank.s1next.widget.glide.model.AvatarUrl;
-import me.ykrank.s1next.widget.glide.model.ForcePassUrl;
 import okhttp3.OkHttpClient;
 
 /**

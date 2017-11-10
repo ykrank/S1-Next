@@ -4,8 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.github.ykrank.androidtools.util.L;
+
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.fragment.setting.BackupPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.BlackListSettingFragment;
 import me.ykrank.s1next.view.fragment.setting.DownloadPreferenceFragment;

@@ -13,6 +13,10 @@ import android.text.style.URLSpan;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.github.ykrank.androidtools.util.ContextUtils;
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.widget.RxBus;
+
 import org.apache.commons.lang3.StringUtils;
 
 import me.ykrank.s1next.R;
@@ -21,8 +25,6 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.api.model.Vote;
-import me.ykrank.s1next.util.ContextUtils;
-import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.AppPostListActivity;
 import me.ykrank.s1next.view.activity.UserHomeActivity;
 import me.ykrank.s1next.view.activity.WebViewActivity;
@@ -31,7 +33,6 @@ import me.ykrank.s1next.view.event.QuoteEvent;
 import me.ykrank.s1next.view.event.RateEvent;
 import me.ykrank.s1next.view.event.VotePostEvent;
 import me.ykrank.s1next.view.internal.BlacklistMenuAction;
-import me.ykrank.s1next.widget.RxBus;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
 
 public final class PostViewModel {
@@ -77,7 +78,7 @@ public final class PostViewModel {
         //Clear avatar false cache
         AvatarUrlsCache.clearUserAvatarCache(post.get().getAuthorId());
         //个人主页
-        UserHomeActivity.start(v.getContext(), post.get().getAuthorId(), post.get().getAuthorName(), v);
+        UserHomeActivity.Companion.start(v.getContext(), post.get().getAuthorId(), post.get().getAuthorName(), v);
     }
 
     public boolean onLongClick(View v) {

@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.github.ykrank.androidtools.util.L;
+
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.fragment.UserReplyFragment;
 import me.ykrank.s1next.widget.track.event.ViewUserReplyTrackEvent;
 
@@ -39,9 +40,9 @@ public class UserReplyActivity extends BaseActivity {
         setTitle(getString(R.string.title_user_replies, name));
 
         if (savedInstanceState == null) {
-            fragment = UserReplyFragment.newInstance(uid);
+            fragment = UserReplyFragment.Companion.newInstance(uid);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.frame_layout, fragment, UserReplyFragment.TAG)
+                    .add(R.id.frame_layout, fragment, UserReplyFragment.Companion.getTAG())
                     .commit();
         }
     }

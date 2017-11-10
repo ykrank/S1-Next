@@ -34,6 +34,15 @@ import com.bumptech.glide.request.transition.Transition;
 import com.github.ykrank.androidautodispose.AndroidRxDispose;
 import com.github.ykrank.androidlifecycle.AndroidLifeCycle;
 import com.github.ykrank.androidlifecycle.event.ViewEvent;
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.util.LooperUtil;
+import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.FitOutWidthDownSampleStrategy;
+import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.GlMaxTextureSizeDownSampleStrategy;
+import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.MultiDownSampleStrategy;
+import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.SizeDownSampleStrategy;
+import com.github.ykrank.androidtools.widget.glide.transformations.FitOutWidthBitmapTransformation;
+import com.github.ykrank.androidtools.widget.glide.transformations.SizeLimitBitmapTransformation;
+import com.github.ykrank.androidtools.widget.track.DataTrackAgent;
 import com.uber.autodispose.SingleScoper;
 
 import java.util.WeakHashMap;
@@ -43,16 +52,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.Api;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.LooperUtil;
 import me.ykrank.s1next.widget.EmoticonFactory;
-import me.ykrank.s1next.widget.glide.downsamplestrategy.MultiDownSampleStrategy;
-import me.ykrank.s1next.widget.glide.downsamplestrategy.SizeDownSampleStrategy;
-import me.ykrank.s1next.widget.glide.transformations.FitOutWidthBitmapTransformation;
-import me.ykrank.s1next.widget.glide.transformations.FitOutWidthDownSampleStrategy;
-import me.ykrank.s1next.widget.glide.transformations.GlMaxTextureSizeDownSampleStrategy;
-import me.ykrank.s1next.widget.glide.transformations.SizeLimitBitmapTransformation;
-import me.ykrank.s1next.widget.track.DataTrackAgent;
 import me.ykrank.s1next.widget.track.event.EmoticonNotFoundTrackEvent;
 
 /**
@@ -87,7 +87,7 @@ public final class GlideImageGetter
         this.mTextView = textView;
         this.requestManager = Glide.with(mTextView);
         this.imageGetterScoper = AndroidRxDispose.withSingle(mTextView, ViewEvent.DESTROY);
-        this.trackAgent = App.getAppComponent().getDataTrackAgent();
+        this.trackAgent = App.Companion.getAppComponent().getDataTrackAgent();
 
         // save Drawable.Callback in TextView
         // and get back when finish fetching image

@@ -2,7 +2,7 @@ package me.ykrank.s1next.view.activity;
 
 import android.support.v7.app.AppCompatActivity;
 
-import me.ykrank.s1next.util.LeaksUtil;
+import com.github.ykrank.androidtools.util.LeaksUtil;
 
 /**
  * Created by ykrank on 2016/12/27.

@@ -35,7 +35,7 @@
             app:layout_aspectRatio="@fraction/drawer_header_aspect_ratio"
             app:layout_widthPercent="100%" />
 
-        <me.ykrank.s1next.widget.BezelImageView
+        <com.github.ykrank.androidtools.widget.BezelImageView
             android:id="@+id/drawer_user_avatar"
             android:layout_width="@dimen/drawer_avatar_size"
             android:layout_height="@dimen/drawer_avatar_size"

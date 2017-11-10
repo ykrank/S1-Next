@@ -12,6 +12,9 @@ import android.view.View;
 
 import com.github.ykrank.androidautodispose.AndroidRxDispose;
 import com.github.ykrank.androidlifecycle.event.ViewEvent;
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.util.OnceClickUtil;
+import com.github.ykrank.androidtools.widget.net.WifiBroadcastReceiver;
 import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
 
@@ -27,10 +30,7 @@ import me.ykrank.s1next.data.api.model.ThreadLink;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress;
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.OnceClickUtil;
 import me.ykrank.s1next.view.fragment.PostListFragment;
-import me.ykrank.s1next.widget.WifiBroadcastReceiver;
 
 /**
  * An Activity which includes {@link android.support.v4.view.ViewPager}
@@ -94,7 +94,7 @@ public final class PostListActivity extends BaseActivity
      * @return
      */
     public static Disposable bindClickStartForView(@NonNull View view, @NonNull Supplier<Thread> thread) {
-        ReadProgressPreferencesManager preferencesManager = App.getAppComponent().getReadProgressPreferencesManager();
+        ReadProgressPreferencesManager preferencesManager = App.Companion.getAppComponent().getReadProgressPreferencesManager();
         if (preferencesManager.isLoadAuto()) {
             return OnceClickUtil.onceClickObservable(view, 1000)
                     .observeOn(Schedulers.io())
@@ -149,7 +149,7 @@ public final class PostListActivity extends BaseActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 if (getIntent().getBooleanExtra(ARG_COME_FROM_OTHER_APP, false)) {
-                    ForumActivity.start(this);
+                    ForumActivity.Companion.start(this);
                     return true;
                 }
             default:

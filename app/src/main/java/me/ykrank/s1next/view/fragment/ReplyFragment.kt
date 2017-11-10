@@ -3,9 +3,8 @@ package me.ykrank.s1next.view.fragment
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-
-import me.ykrank.s1next.util.DeviceUtil
-import me.ykrank.s1next.util.L
+import com.github.ykrank.androidtools.util.L
+import me.ykrank.s1next.util.AppDeviceUtil
 import me.ykrank.s1next.view.dialog.requestdialog.ReplyRequestDialogFragment
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
 
@@ -30,7 +29,7 @@ class ReplyFragment : BasePostFragment() {
     override fun onMenuSendClick(): Boolean {
         val stringBuilder = StringBuilder(mReplyView.text)
         if (mGeneralPreferencesManager.isSignatureEnabled) {
-            stringBuilder.append("\n\n").append(DeviceUtil.getPostSignature(context))
+            stringBuilder.append("\n\n").append(AppDeviceUtil.getPostSignature(context))
         }
 
         ReplyRequestDialogFragment.newInstance(mThreadId, mQuotePostId,

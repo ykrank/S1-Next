@@ -29,7 +29,7 @@ public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
 
     public SubForumArrayAdapter(Activity activity, @LayoutRes int resource, List<Forum> objects) {
         super(activity, resource, objects);
-        App.getAppComponent().inject(this);
+        App.Companion.getAppComponent().inject(this);
 
         mLayoutInflater = activity.getLayoutInflater();
         this.mResource = resource;

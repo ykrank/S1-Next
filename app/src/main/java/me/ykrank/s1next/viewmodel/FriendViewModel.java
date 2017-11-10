@@ -12,6 +12,6 @@ public final class FriendViewModel {
     public final ObservableField<Friend> friend = new ObservableField<>();
 
     public final void onClick(View v) {
-        UserHomeActivity.start(v.getContext(), friend.get().getUid(), friend.get().getUsername(), v);
+        UserHomeActivity.Companion.start(v.getContext(), friend.get().getUid(), friend.get().getUsername(), v);
     }
 }

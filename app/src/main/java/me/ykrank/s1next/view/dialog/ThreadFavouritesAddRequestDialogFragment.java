@@ -2,7 +2,7 @@ package me.ykrank.s1next.view.dialog;
 
 import android.os.Bundle;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Result;
@@ -24,7 +24,7 @@ public final class ThreadFavouritesAddRequestDialogFragment
     private static final String STATUS_ADD_TO_FAVOURITES_REPEAT = "favorite_repeat";
 
     public static ThreadFavouritesAddRequestDialogFragment newInstance(String threadId, String remark) {
-        App.get().getTrackAgent().post(new AddFavoriteTrackEvent(threadId));
+        App.Companion.get().getTrackAgent().post(new AddFavoriteTrackEvent(threadId));
         
         ThreadFavouritesAddRequestDialogFragment fragment =
                 new ThreadFavouritesAddRequestDialogFragment();
@@ -37,7 +37,7 @@ public final class ThreadFavouritesAddRequestDialogFragment
     }
 
     @Override
-    protected Observable<AccountResultWrapper> getSourceObservable() {
+    protected Single<AccountResultWrapper> getSourceObservable() {
         return flatMappedWithAuthenticityToken(s ->
                 mS1Service.addThreadFavorite(s, getArguments().getString(ARG_THREAD_ID),
                         getArguments().getString(ARG_REMARK)));

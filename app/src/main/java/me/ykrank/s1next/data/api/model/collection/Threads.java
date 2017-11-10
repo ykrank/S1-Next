@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.util.LooperUtil;
 import com.google.common.base.Objects;
 
 import java.util.ArrayList;
@@ -23,8 +25,6 @@ import me.ykrank.s1next.data.db.BlackListDbWrapper;
 import me.ykrank.s1next.data.db.ThreadDbWrapper;
 import me.ykrank.s1next.data.db.dbmodel.BlackList;
 import me.ykrank.s1next.data.db.dbmodel.DbThread;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.LooperUtil;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)

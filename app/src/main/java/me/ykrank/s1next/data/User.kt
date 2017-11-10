@@ -1,15 +1,16 @@
 package me.ykrank.s1next.data
 
 import android.text.TextUtils
+import com.github.ykrank.androidtools.data.TrackUser
 import me.ykrank.s1next.data.pref.AppDataPreferencesManager
 
-open class User(private val appDataPref: AppDataPreferencesManager) {
+open class User(private val appDataPref: AppDataPreferencesManager) : TrackUser {
 
-    @Volatile var uid: String? = null
+    @Volatile override var uid: String? = null
 
-    @Volatile var name: String? = null
+    @Volatile override var name: String? = null
 
-    @Volatile var permission: Int = 0
+    @Volatile override var permission: Int = 0
 
     @Volatile var authenticityToken: String? = null
 

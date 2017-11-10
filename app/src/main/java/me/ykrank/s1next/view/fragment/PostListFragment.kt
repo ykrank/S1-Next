@@ -13,6 +13,10 @@ import android.view.MenuItem
 import android.view.View
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
+import com.github.ykrank.androidtools.ui.LibBaseViewPagerFragment
+import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate
+import com.github.ykrank.androidtools.util.*
+import com.github.ykrank.androidtools.widget.RxBus
 import com.google.common.base.Preconditions
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -31,17 +35,15 @@ import me.ykrank.s1next.data.db.dbmodel.History
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager
-import me.ykrank.s1next.util.*
+import me.ykrank.s1next.util.IntentUtil
 import me.ykrank.s1next.view.activity.BaseActivity
 import me.ykrank.s1next.view.activity.EditPostActivity
 import me.ykrank.s1next.view.activity.NewRateActivity
 import me.ykrank.s1next.view.activity.ReplyActivity
 import me.ykrank.s1next.view.dialog.*
 import me.ykrank.s1next.view.event.*
-import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate
 import me.ykrank.s1next.view.internal.PagerScrollState
 import me.ykrank.s1next.view.internal.RequestCode
-import me.ykrank.s1next.widget.RxBus
 import me.ykrank.s1next.widget.track.event.ViewThreadTrackEvent
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -81,7 +83,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        App.getAppComponent().inject(this)
+        App.appComponent.inject(this)
 
         val bundle = arguments
         val thread = Preconditions.checkNotNull(bundle.getParcelable<Thread>(ARG_THREAD))
@@ -198,17 +200,17 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         super.onDestroy()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.fragment_post, menu)
 
-        mMenuThreadAttachment = menu.findItem(R.id.menu_thread_attachment)
+        mMenuThreadAttachment = menu?.findItem(R.id.menu_thread_attachment)
         if (mThreadAttachment == null) {
             mMenuThreadAttachment?.isVisible = false
         }
 
         if (mReadProgressPrefManager.isSaveAuto) {
-            val saveMenu = menu.findItem(R.id.menu_save_progress)
+            val saveMenu = menu?.findItem(R.id.menu_save_progress)
             saveMenu?.isVisible = false
         }
     }
@@ -315,7 +317,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         }
     }
 
-    override fun getPagerAdapter(fragmentManager: FragmentManager): BaseViewPagerFragment.BaseFragmentStatePagerAdapter<*> {
+    override fun getPagerAdapter(fragmentManager: FragmentManager): LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<*> {
         return mPostListPagerAdapter
     }
 
@@ -444,7 +446,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     /**
      * Returns a Fragment corresponding to one of the pages of posts.
      */
-    private inner class PostListPagerAdapter constructor(fm: FragmentManager) : BaseViewPagerFragment.BaseFragmentStatePagerAdapter<PostListPagerFragment>(fm) {
+    private inner class PostListPagerAdapter constructor(fm: FragmentManager) : LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<PostListPagerFragment>(fm) {
 
         override fun getItem(i: Int): PostListPagerFragment {
             val progress = readProgress

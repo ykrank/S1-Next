@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 
-import me.ykrank.s1next.util.L
+import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.view.dialog.requestdialog.PmRequestDialogFragment
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
 

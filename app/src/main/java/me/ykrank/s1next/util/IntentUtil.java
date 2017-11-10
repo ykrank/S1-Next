@@ -11,11 +11,12 @@ import android.os.Parcelable;
 import android.support.v4.app.BundleCompat;
 import android.widget.Toast;
 
+import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 
 public final class IntentUtil {
 

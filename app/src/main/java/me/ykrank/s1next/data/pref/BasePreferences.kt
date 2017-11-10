@@ -5,8 +5,8 @@ import android.content.SharedPreferences
 import android.support.annotation.BoolRes
 import android.support.annotation.StringRes
 import android.text.TextUtils
-import me.ykrank.s1next.extension.resBool
-import me.ykrank.s1next.extension.resStr
+import com.github.ykrank.androidtools.extension.resBool
+import com.github.ykrank.androidtools.extension.resStr
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 

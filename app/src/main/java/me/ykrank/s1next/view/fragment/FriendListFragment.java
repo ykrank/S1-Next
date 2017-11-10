@@ -6,12 +6,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import io.reactivex.Observable;
+import com.github.ykrank.androidtools.ui.vm.LoadingViewModel;
+import com.github.ykrank.androidtools.util.L;
+
+import io.reactivex.Single;
 import me.ykrank.s1next.data.api.model.collection.Friends;
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
-import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.adapter.FriendRecyclerViewAdapter;
-import me.ykrank.s1next.viewmodel.LoadingViewModel;
 
 /**
  * Created by ykrank on 2017/1/16.
@@ -46,12 +47,12 @@ public class FriendListFragment extends BaseRecyclerViewFragment<BaseDataWrapper
     }
 
     @Override
-    Observable<BaseDataWrapper<Friends>> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
+    protected Single<BaseDataWrapper<Friends>> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
         return mS1Service.getFriends(uid);
     }
 
     @Override
-    void onNext(BaseDataWrapper<Friends> data) {
+    protected void onNext(BaseDataWrapper<Friends> data) {
         Friends friends = data.getData();
         if (friends.getFriendList() == null || friends.getFriendList().isEmpty()) {
             //No data

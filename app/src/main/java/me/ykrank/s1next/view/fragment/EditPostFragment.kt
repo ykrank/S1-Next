@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.EditText
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
+import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.RxJavaUtil
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.S1Service
@@ -16,8 +18,6 @@ import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.ThreadType
 import me.ykrank.s1next.databinding.FragmentEditPostBinding
 import me.ykrank.s1next.util.ErrorUtil
-import me.ykrank.s1next.util.L
-import me.ykrank.s1next.util.RxJavaUtil
 import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter
 import me.ykrank.s1next.view.dialog.requestdialog.EditPostRequestDialogFragment
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
@@ -54,7 +54,7 @@ class EditPostFragment : BasePostFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        App.getAppComponent().inject(this)
+        App.appComponent.inject(this)
         init()
     }
 
@@ -110,8 +110,8 @@ class EditPostFragment : BasePostFragment() {
     private fun init() {
         mS1Service.getEditPostInfo(mThread.fid.toInt(), mThread.id.toInt(), mPost.id)
                 .map<PostEditor>({ PostEditor.fromHtml(it) })
-                .compose(RxJavaUtil.iOTransformer<PostEditor>())
-                .to(AndroidRxDispose.withObservable<PostEditor>(this, FragmentEvent.DESTROY))
+                .compose(RxJavaUtil.iOSingleTransformer())
+                .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
                 .subscribe({ postEditor ->
                     if (isHost) {
                         setSpinner(postEditor.threadTypes)
@@ -121,7 +121,7 @@ class EditPostFragment : BasePostFragment() {
                     binding.layoutPost.reply.setText(postEditor.message)
                 }, { e ->
                     L.report(e)
-                    showRetrySnackbar(ErrorUtil.parse(context, e)) { init() }
+                    showRetrySnackbar(ErrorUtil.parse(context, e), View.OnClickListener { init() })
                 })
 
     }

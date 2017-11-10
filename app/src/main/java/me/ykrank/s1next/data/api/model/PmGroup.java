@@ -4,9 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.ykrank.androidtools.ui.adapter.model.SameItem;
 import com.google.common.base.Objects;
-
-import me.ykrank.s1next.data.SameItem;
 
 /**
  * Created by ykrank on 2016/11/12 0012.

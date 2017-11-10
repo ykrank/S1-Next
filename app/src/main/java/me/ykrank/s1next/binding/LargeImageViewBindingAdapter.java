@@ -9,14 +9,14 @@ import android.text.TextUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
+import com.github.ykrank.androidtools.widget.glide.model.ForcePassUrl;
+import com.github.ykrank.androidtools.widget.glide.viewtarget.LargeImageViewTarget;
 import com.shizhefei.view.largeimage.LargeImageView;
 
 import java.io.File;
 
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
-import me.ykrank.s1next.widget.glide.model.ForcePassUrl;
-import me.ykrank.s1next.widget.glide.viewtarget.LargeImageViewTarget;
 
 public final class LargeImageViewBindingAdapter {
 

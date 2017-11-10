@@ -16,6 +16,6 @@ public final class SearchUserViewModel {
         //Clear avatar false cache
         AvatarUrlsCache.clearUserAvatarCache(search.get().getUid());
         //个人主页
-        UserHomeActivity.start(v.getContext(), search.get().getUid(), search.get().getName(), avatarView);
+        UserHomeActivity.Companion.start(v.getContext(), search.get().getUid(), search.get().getName(), avatarView);
     }
 }

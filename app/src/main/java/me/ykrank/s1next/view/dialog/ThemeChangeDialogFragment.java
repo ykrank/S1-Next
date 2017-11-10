@@ -6,13 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 
+import com.github.ykrank.androidtools.widget.RxBus;
+
 import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.view.event.ThemeChangeEvent;
-import me.ykrank.s1next.widget.RxBus;
 
 /**
  * A dialog which used to change theme.
@@ -35,7 +36,7 @@ public final class ThemeChangeDialogFragment extends BaseDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        App.getAppComponent().inject(this);
+        App.Companion.getAppComponent().inject(this);
         int checkedItem = mThemeManager.getThemeIndex();
         return new AlertDialog.Builder(getContext())
                 .setTitle(R.string.pref_theme)

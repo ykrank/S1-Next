@@ -15,12 +15,13 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate;
+import com.github.ykrank.androidtools.util.L;
+
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.databinding.FragmentWebviewBinding;
-import me.ykrank.s1next.util.L;
 import me.ykrank.s1next.view.activity.OpenSourceLicensesActivity;
 import me.ykrank.s1next.view.dialog.VersionInfoDialogFragment;
-import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate;
 import me.ykrank.s1next.viewmodel.WebPageViewModel;
 
 /**

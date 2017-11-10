@@ -3,6 +3,9 @@ package me.ykrank.s1next.data.api.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.util.LooperUtil;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,8 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.ykrank.s1next.data.api.model.wrapper.HtmlDataWrapper;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.LooperUtil;
 
 /**
  * Model for edit post

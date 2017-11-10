@@ -3,8 +3,8 @@ package me.ykrank.s1next.data.pref
 import android.support.annotation.IntDef
 import com.bumptech.glide.load.Key
 import com.bumptech.glide.signature.ObjectKey
+import com.github.ykrank.androidtools.util.DateUtil
 import me.ykrank.s1next.data.Wifi
-import me.ykrank.s1next.util.DateUtil
 
 /**
  * A manager manage the download preferences that are associated with settings.

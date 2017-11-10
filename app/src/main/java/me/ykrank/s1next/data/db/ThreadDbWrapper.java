@@ -20,7 +20,7 @@ public class ThreadDbWrapper {
     }
 
     public static ThreadDbWrapper getInstance() {
-        return App.getAppComponent().getThreadDbWrapper();
+        return App.Companion.getAppComponent().getThreadDbWrapper();
     }
 
     private DbThreadDao getThreadDao() {

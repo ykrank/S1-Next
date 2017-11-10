@@ -3,6 +3,9 @@ package me.ykrank.s1next.data.api;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.util.Objects;
+
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.app.model.AppLoginResult;
@@ -11,8 +14,6 @@ import me.ykrank.s1next.data.api.model.Account;
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
 import me.ykrank.s1next.task.AutoSignTask;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.Objects;
 
 public final class UserValidator {
 
@@ -81,7 +82,7 @@ public final class UserValidator {
                 mAutoSignTask.silentCheck();
             }
         }
-        App.get().getTrackAgent().setUser(mUser);
+        App.Companion.get().getTrackAgent().setUser(mUser);
     }
 
     /**

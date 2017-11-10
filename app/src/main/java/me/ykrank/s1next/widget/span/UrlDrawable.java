@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.style.ImageSpan;
 
-import me.ykrank.s1next.util.L;
+import com.github.ykrank.androidtools.util.L;
 
 /**
  * Implements {@link Drawable.Callback} in order to show animated GIFs in the TextView.

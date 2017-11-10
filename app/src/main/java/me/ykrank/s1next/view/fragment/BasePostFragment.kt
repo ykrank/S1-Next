@@ -14,22 +14,22 @@ import android.view.*
 import android.widget.EditText
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
+import com.github.ykrank.androidtools.util.ImeUtils
+import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.ResourceUtil
+import com.github.ykrank.androidtools.util.RxJavaUtil
+import com.github.ykrank.androidtools.widget.EditorDiskCache
+import com.github.ykrank.androidtools.widget.RxBus
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.databinding.FragmentPostBinding
-import me.ykrank.s1next.util.ImeUtils
-import me.ykrank.s1next.util.L
-import me.ykrank.s1next.util.ResourceUtil
-import me.ykrank.s1next.util.RxJavaUtil
 import me.ykrank.s1next.view.activity.BaseActivity
 import me.ykrank.s1next.view.adapter.EmoticonPagerAdapter
 import me.ykrank.s1next.view.event.EmoticonClickEvent
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
-import me.ykrank.s1next.widget.EditorDiskCache
-import me.ykrank.s1next.widget.RxBus
 import javax.inject.Inject
 
 /**
@@ -87,7 +87,7 @@ abstract class BasePostFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        App.getAppComponent().inject(this)
+        App.appComponent.inject(this)
 
         mReplyView.addTextChangedListener(object : TextWatcher {
 

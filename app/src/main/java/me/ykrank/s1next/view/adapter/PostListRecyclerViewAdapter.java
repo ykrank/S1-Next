@@ -4,9 +4,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import com.github.ykrank.androidtools.ui.adapter.delegate.FooterProgressAdapterDelegate;
+
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.api.model.Vote;
-import me.ykrank.s1next.view.adapter.delegate.FooterProgressAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
 
 /**

@@ -25,7 +25,7 @@ public final class HelpActivity extends OriginActivity {
     private HelpFragment mHelpFragment;
 
     public static void startHelpActivity(Context context, @StyleRes int styleId) {
-        App.get().getTrackAgent().post(new ViewHelpTrackEvent());
+        App.Companion.get().getTrackAgent().post(new ViewHelpTrackEvent());
         Intent intent = new Intent(context, HelpActivity.class);
         intent.putExtra(ARG_STYLE, styleId);
         context.startActivity(intent);

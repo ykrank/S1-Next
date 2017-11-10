@@ -1,5 +1,6 @@
 package me.ykrank.s1next.view.internal
 
+import android.annotation.SuppressLint
 import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.os.Build
@@ -11,6 +12,12 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.view.WindowInsets
 import android.widget.Toast
+import com.github.ykrank.androidtools.extension.toast
+import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.RxJavaUtil
+import com.github.ykrank.androidtools.widget.track.DataTrackAgent
+import com.github.ykrank.androidtools.widget.track.event.ThemeChangeTrackEvent
+import com.rk.a91.a91video.ui.internal.DrawerLayoutDelegate
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
@@ -18,23 +25,19 @@ import me.ykrank.s1next.data.pref.DataPreferencesManager
 import me.ykrank.s1next.data.pref.ThemeManager
 import me.ykrank.s1next.databinding.ActionViewNoticeCountBinding
 import me.ykrank.s1next.databinding.NavigationViewHeaderBinding
-import me.ykrank.s1next.extension.toast
 import me.ykrank.s1next.task.AutoSignTask
-import me.ykrank.s1next.util.L
-import me.ykrank.s1next.util.RxJavaUtil
 import me.ykrank.s1next.view.activity.*
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment
 import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment
 import me.ykrank.s1next.viewmodel.UserViewModel
-import me.ykrank.s1next.widget.track.DataTrackAgent
-import me.ykrank.s1next.widget.track.event.ThemeChangeTrackEvent
 import javax.inject.Inject
 
 /**
  * Implements the concrete UI logic for [DrawerLayoutDelegate].
  */
-class DrawerLayoutDelegateConcrete(activity: FragmentActivity, drawerLayout: DrawerLayout, navigationView: NavigationView) : DrawerLayoutDelegate(activity, drawerLayout, navigationView), NavigationView.OnNavigationItemSelectedListener {
+class DrawerLayoutDelegateConcrete(activity: FragmentActivity, drawerLayout: DrawerLayout, navigationView: NavigationView)
+    : DrawerLayoutDelegate(activity, drawerLayout, navigationView), NavigationView.OnNavigationItemSelectedListener {
 
     private val mUser: User
     @Inject
@@ -53,7 +56,7 @@ class DrawerLayoutDelegateConcrete(activity: FragmentActivity, drawerLayout: Dra
     private lateinit var binding: NavigationViewHeaderBinding
 
     init {
-        App.getAppComponent().inject(this)
+        App.appComponent.inject(this)
         mUser = mUserViewModel.user
     }
 
@@ -65,6 +68,7 @@ class DrawerLayoutDelegateConcrete(activity: FragmentActivity, drawerLayout: Dra
         setupNavDrawerItemChecked(navigationView)
     }
 
+    @SuppressLint("RestrictedApi")
     private fun setupNavDrawerHeader(drawerLayout: DrawerLayout, navigationView: NavigationView) {
         binding = DataBindingUtil.bind<NavigationViewHeaderBinding>(navigationView.getHeaderView(0))
         binding.userViewModel = mUserViewModel
@@ -96,7 +100,7 @@ class DrawerLayoutDelegateConcrete(activity: FragmentActivity, drawerLayout: Dra
 
         binding.drawerUserAvatar.setOnClickListener {
             if (mUser.isLogged) {
-                UserHomeActivity.start(it.context, mUser.uid, mUser.name, it)
+                UserHomeActivity.start(it.context, mUser.uid!!, mUser.name!!, it)
             } else {
                 binding.drawerUserName.performClick()
             }
@@ -106,13 +110,13 @@ class DrawerLayoutDelegateConcrete(activity: FragmentActivity, drawerLayout: Dra
         // otherwise show LogoutDialogFragment.
         binding.drawerUserName.setOnClickListener { v ->
             if (!LogoutDialogFragment.showLogoutDialogIfNeeded(mFragmentActivity, mUser)) {
-                closeDrawer { LoginActivity.startLoginActivityForResultMessage(mFragmentActivity) }
+                closeDrawer(Runnable { LoginActivity.startLoginActivityForResultMessage(mFragmentActivity) })
             }
         }
 
         binding.drawerAutoSign.setOnClickListener {
             if (!mUser.isSigned) {
-                mAutoSignTask.autoSign().compose(RxJavaUtil.iOTransformer())
+                mAutoSignTask.autoSign().compose(RxJavaUtil.iOSingleTransformer())
                         .subscribe({ d ->
                             mUser.isSigned = d.signed
                             App.get().toast(d.msg, Toast.LENGTH_SHORT)
@@ -137,7 +141,7 @@ class DrawerLayoutDelegateConcrete(activity: FragmentActivity, drawerLayout: Dra
     /**
      * refresh label in navigation menu to show whether new pm or notice
      */
-    override fun refreshNoticeMenuItem() {
+    fun refreshNoticeMenuItem() {
         pmNoticeBinding.msg = if (mDataPreferencesManager.hasNewPm) "new" else null
         noteNoticeBinding.msg = if (mDataPreferencesManager.hasNewNotice) "new" else null
     }

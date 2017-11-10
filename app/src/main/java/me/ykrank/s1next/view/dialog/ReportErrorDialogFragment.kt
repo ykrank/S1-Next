@@ -8,11 +8,11 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.WindowManager
+import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.ViewUtil
+import com.github.ykrank.androidtools.widget.AppException
 import me.ykrank.s1next.R
 import me.ykrank.s1next.databinding.DialogReportErrorBinding
-import me.ykrank.s1next.util.L
-import me.ykrank.s1next.util.ViewUtil
-import me.ykrank.s1next.widget.AppException
 
 /**
  * Created by ykrank on 2017/10/16.

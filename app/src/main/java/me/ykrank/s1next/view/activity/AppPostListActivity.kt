@@ -8,16 +8,16 @@ import android.support.v4.app.Fragment
 import android.text.TextUtils
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ActivityEvent
+import com.github.ykrank.androidtools.util.MathUtil
+import com.github.ykrank.androidtools.widget.net.WifiBroadcastReceiver
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.app.model.AppThread
 import me.ykrank.s1next.data.api.model.Thread
-import me.ykrank.s1next.util.MathUtil
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.event.AppNotLoginEvent
 import me.ykrank.s1next.view.fragment.AppPostListPagerFragment
 import me.ykrank.s1next.view.fragment.PostListFragment
-import me.ykrank.s1next.widget.WifiBroadcastReceiver
 
 /**
  * An Activity which includes [android.support.v4.view.ViewPager]

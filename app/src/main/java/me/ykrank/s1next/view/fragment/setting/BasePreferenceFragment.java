@@ -5,10 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.v14.preference.PreferenceFragment;
 
+import com.github.ykrank.androidtools.widget.track.DataTrackAgent;
+import com.github.ykrank.androidtools.widget.track.event.page.LocalFragmentEndEvent;
+import com.github.ykrank.androidtools.widget.track.event.page.LocalFragmentStartEvent;
+
 import me.ykrank.s1next.App;
-import me.ykrank.s1next.widget.track.DataTrackAgent;
-import me.ykrank.s1next.widget.track.event.page.LocalFragmentEndEvent;
-import me.ykrank.s1next.widget.track.event.page.LocalFragmentStartEvent;
 
 /**
  * A helper class for registering/unregistering
@@ -22,7 +23,7 @@ public abstract class BasePreferenceFragment extends PreferenceFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        trackAgent = App.get().getTrackAgent();
+        trackAgent = App.Companion.get().getTrackAgent();
     }
 
     @Override

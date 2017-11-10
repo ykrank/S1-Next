@@ -2,6 +2,7 @@ package me.ykrank.s1next.data.api.model.wrapper;
 
 import android.support.annotation.NonNull;
 
+import com.github.ykrank.androidtools.util.L;
 import com.google.common.base.Objects;
 
 import org.jsoup.Jsoup;
@@ -14,7 +15,6 @@ import java.util.List;
 
 import me.ykrank.s1next.data.api.model.HomeReply;
 import me.ykrank.s1next.data.api.model.HomeThread;
-import me.ykrank.s1next.util.L;
 
 /**
  * Created by ykrank on 2017/2/4.

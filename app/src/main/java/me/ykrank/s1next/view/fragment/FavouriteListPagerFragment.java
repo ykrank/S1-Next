@@ -6,14 +6,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import io.reactivex.Observable;
+import com.github.ykrank.androidtools.ui.internal.PagerCallback;
+import com.github.ykrank.androidtools.ui.vm.LoadingViewModel;
+import com.github.ykrank.androidtools.util.L;
+import com.github.ykrank.androidtools.util.MathUtil;
+
+import io.reactivex.Single;
 import me.ykrank.s1next.data.api.model.collection.Favourites;
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
-import me.ykrank.s1next.util.L;
-import me.ykrank.s1next.util.MathUtil;
 import me.ykrank.s1next.view.adapter.FavouriteRecyclerViewAdapter;
-import me.ykrank.s1next.view.internal.PagerCallback;
-import me.ykrank.s1next.viewmodel.LoadingViewModel;
 
 /**
  * A Fragment representing one of the pages of favourites.
@@ -68,12 +69,12 @@ public final class FavouriteListPagerFragment extends BaseRecyclerViewFragment<B
     }
 
     @Override
-    Observable<BaseResultWrapper<Favourites>> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
+    protected Single<BaseResultWrapper<Favourites>> getSourceObservable(@LoadingViewModel.LoadingDef int loading) {
         return mS1Service.getFavouritesWrapper(mPageNum);
     }
 
     @Override
-    void onNext(BaseResultWrapper<Favourites> data) {
+    protected void onNext(BaseResultWrapper<Favourites> data) {
         Favourites favourites = data.getData();
         if (favourites.getFavouriteList() == null) {
             consumeResult(data.getResult());

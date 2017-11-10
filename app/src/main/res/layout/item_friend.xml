@@ -33,7 +33,7 @@
             android:padding="@dimen/item_padding"
             android:onClick="@{data::onClick}">
 
-            <me.ykrank.s1next.widget.BezelImageView
+            <com.github.ykrank.androidtools.widget.BezelImageView
                 android:id="@+id/avatar"
                 android:layout_width="40dp"
                 android:layout_height="40dp"

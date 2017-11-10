@@ -1,7 +1,7 @@
 package me.ykrank.s1next.data.api.model.wrapper
 
+import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.App
-import me.ykrank.s1next.util.L
 import me.ykrank.s1next.view.event.NoticeRefreshEvent
 import org.jsoup.nodes.Document
 import java.util.regex.Pattern
@@ -35,7 +35,7 @@ class HtmlDataWrapper {
 
         fun notifyData(data: HtmlDataWrapper) {
             if (data.notice != null) {
-                App.getAppComponent().rxBus.post(NoticeRefreshEvent::class.java, NoticeRefreshEvent(null, data.notice!! > 0))
+                App.appComponent.rxBus.post(NoticeRefreshEvent::class.java, NoticeRefreshEvent(null, data.notice!! > 0))
             }
         }
     }

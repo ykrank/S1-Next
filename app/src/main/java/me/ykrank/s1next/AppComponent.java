@@ -4,6 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.ykrank.androidtools.widget.EditorDiskCache;
+import com.github.ykrank.androidtools.widget.RxBus;
+import com.github.ykrank.androidtools.widget.hostcheck.HttpDns;
+import com.github.ykrank.androidtools.widget.net.WifiBroadcastReceiver;
+import com.github.ykrank.androidtools.widget.track.DataTrackAgent;
+
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Singleton;
 
@@ -55,6 +62,7 @@ import me.ykrank.s1next.view.dialog.VoteDialogFragment;
 import me.ykrank.s1next.view.fragment.AppPostListPagerFragment;
 import me.ykrank.s1next.view.fragment.BaseFragment;
 import me.ykrank.s1next.view.fragment.BasePostFragment;
+import me.ykrank.s1next.view.fragment.BaseViewPagerFragment;
 import me.ykrank.s1next.view.fragment.EditPostFragment;
 import me.ykrank.s1next.view.fragment.FavouriteListFragment;
 import me.ykrank.s1next.view.fragment.ForumFragment;
@@ -77,17 +85,13 @@ import me.ykrank.s1next.view.fragment.setting.NetworkPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.ReadProgressPreferenceFragment;
 import me.ykrank.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import me.ykrank.s1next.viewmodel.UserViewModel;
-import me.ykrank.s1next.widget.EditorDiskCache;
-import me.ykrank.s1next.widget.RxBus;
-import me.ykrank.s1next.widget.WifiBroadcastReceiver;
+import me.ykrank.s1next.widget.AppActivityLifecycleCallbacks;
 import me.ykrank.s1next.widget.glide.AppHttpStreamFetcher;
 import me.ykrank.s1next.widget.glide.AvatarStreamFetcher;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
-import me.ykrank.s1next.widget.hostcheck.BaseHostUrl;
-import me.ykrank.s1next.widget.hostcheck.HttpDns;
+import me.ykrank.s1next.widget.hostcheck.AppHostUrl;
 import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask;
 import me.ykrank.s1next.widget.net.Image;
-import me.ykrank.s1next.widget.track.DataTrackAgent;
 import okhttp3.OkHttpClient;
 
 /**
@@ -100,7 +104,7 @@ public interface AppComponent {
 
     Context getContext();
 
-    BaseHostUrl getBaseHostUrl();
+    AppHostUrl getBaseHostUrl();
 
     HttpDns getHttpDns();
 
@@ -266,4 +270,8 @@ public interface AppComponent {
     void inject(VoteDialogFragment fragment);
 
     void inject(ForumFragment fragment);
+
+    void inject(@NotNull BaseViewPagerFragment baseViewPagerFragment);
+
+    void inject(@NotNull AppActivityLifecycleCallbacks appActivityLifecycleCallbacks);
 }

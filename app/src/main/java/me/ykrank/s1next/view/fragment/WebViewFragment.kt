@@ -12,11 +12,11 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
+import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.WebViewUtils
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.databinding.FragmentWebviewBinding
-import me.ykrank.s1next.util.L
-import me.ykrank.s1next.util.WebViewUtils
 import me.ykrank.s1next.view.internal.BackPressDelegate
 import me.ykrank.s1next.viewmodel.WebPageViewModel
 import java.net.CookieManager
@@ -37,7 +37,7 @@ class WebViewFragment : BaseFragment(), BackPressDelegate {
     private lateinit var binding: FragmentWebviewBinding
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        App.getAppComponent().inject(this)
+        App.appComponent.inject(this)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_webview, container, false)
         return binding.root
     }

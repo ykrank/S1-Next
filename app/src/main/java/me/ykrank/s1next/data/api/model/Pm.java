@@ -3,9 +3,8 @@ package me.ykrank.s1next.data.api.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.ykrank.androidtools.ui.adapter.model.SameItem;
 import com.google.common.base.Objects;
-
-import me.ykrank.s1next.data.SameItem;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Pm implements Cloneable, SameItem {

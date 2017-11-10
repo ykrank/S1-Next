@@ -10,7 +10,8 @@ import android.support.v4.app.DialogFragment
 import android.widget.Toast
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
-import io.reactivex.Observable
+import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import me.ykrank.s1next.App
@@ -21,7 +22,6 @@ import me.ykrank.s1next.data.api.UserValidator
 import me.ykrank.s1next.util.ErrorUtil
 import me.ykrank.s1next.view.activity.BaseActivity
 import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment
-import me.ykrank.s1next.view.internal.CoordinatorLayoutAnchorDelegate
 import javax.inject.Inject
 
 /**
@@ -29,7 +29,7 @@ import javax.inject.Inject
  * Also wraps some related methods to request data.
  *
  *
- * This [DialogFragment] is retained in order
+ * This [DialogFragment] is retained in orde
  * to retain request when configuration changes.
 
  * @param <D> The data we want to request.
@@ -48,7 +48,7 @@ abstract class ProgressDialogFragment<D> : BaseDialogFragment() {
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val appComponent = App.getAppComponent()
+        val appComponent = App.appComponent
         mS1Service = appComponent.s1Service
         mUser = appComponent.user
         mUserValidator = appComponent.userValidator
@@ -92,19 +92,19 @@ abstract class ProgressDialogFragment<D> : BaseDialogFragment() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { this.finallyDo() }
-                .to(AndroidRxDispose.withObservable<D>(this, FragmentEvent.DESTROY))
+                .to(AndroidRxDispose.withSingle<D>(this, FragmentEvent.DESTROY))
                 .subscribe({ this.onNext(it) }, { this.onError(it) })
     }
 
     /**
      * @see BaseRecyclerViewFragment.getSourceObservable
      */
-    protected abstract fun getSourceObservable(): Observable<D>
+    protected abstract fun getSourceObservable(): Single<D>
 
     /**
      * @see ApiFlatTransformer.flatMappedWithAuthenticityToken
      */
-    protected fun flatMappedWithAuthenticityToken(func: (String) -> Observable<D>): Observable<D> {
+    protected fun flatMappedWithAuthenticityToken(func: (String) -> Single<D>): Single<D> {
         return ApiFlatTransformer.flatMappedWithAuthenticityToken(mS1Service, mUserValidator, mUser, func)
     }
 
