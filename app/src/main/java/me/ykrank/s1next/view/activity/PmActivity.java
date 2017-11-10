@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import com.github.ykrank.androidautodispose.AndroidRxDispose;
 import com.github.ykrank.androidlifecycle.event.ActivityEvent;
 
+import org.jetbrains.annotations.Nullable;
+
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.PmGroup;
 import me.ykrank.s1next.view.event.PmGroupClickEvent;
@@ -61,7 +63,7 @@ public class PmActivity extends BaseActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RequestCode.REQUEST_CODE_MESSAGE_IF_SUCCESS) {
             if (resultCode == Activity.RESULT_OK) {

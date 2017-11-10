@@ -7,7 +7,6 @@ import com.google.common.base.Preconditions;
 
 import java.security.SecureRandom;
 
-import javax.inject.Singleton;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -30,7 +29,7 @@ public final class BuildTypeModule {
 
     @Data
     @Provides
-    @Singleton
+    @AppLife
     OkHttpClient providerDataOkHttpClient(@Data OkHttpClient.Builder builder) {
         Preconditions.checkState("debug".equals(BuildConfig.BUILD_TYPE));
 
@@ -48,7 +47,7 @@ public final class BuildTypeModule {
 
     @Image
     @Provides
-    @Singleton
+    @AppLife
     OkHttpClient providerImageOkHttpClient(@Image OkHttpClient.Builder builder) {
         Preconditions.checkState("debug".equals(BuildConfig.BUILD_TYPE));
 
@@ -66,7 +65,7 @@ public final class BuildTypeModule {
 
     @AppData
     @Provides
-    @Singleton
+    @AppLife
     OkHttpClient providerAppdataOkHttpClient(@AppData OkHttpClient.Builder builder) {
         Preconditions.checkState("debug".equals(BuildConfig.BUILD_TYPE));
 

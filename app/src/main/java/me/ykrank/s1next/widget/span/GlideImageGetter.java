@@ -87,7 +87,7 @@ public final class GlideImageGetter
         this.mTextView = textView;
         this.requestManager = Glide.with(mTextView);
         this.imageGetterScoper = AndroidRxDispose.withSingle(mTextView, ViewEvent.DESTROY);
-        this.trackAgent = App.Companion.getAppComponent().getDataTrackAgent();
+        this.trackAgent = App.Companion.getPreAppComponent().getDataTrackAgent();
 
         // save Drawable.Callback in TextView
         // and get back when finish fetching image

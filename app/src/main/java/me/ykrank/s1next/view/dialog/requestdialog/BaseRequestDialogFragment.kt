@@ -16,7 +16,7 @@ abstract class BaseRequestDialogFragment<D> : ProgressDialogFragment<D>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        rxBus = App.appComponent.rxBus
+        rxBus = App.preAppComponent.rxBus
     }
 
     protected fun onRequestSuccess(msg: String?) {

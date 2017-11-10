@@ -1,5 +1,6 @@
 package me.ykrank.s1next
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.StrictMode
@@ -24,9 +25,15 @@ import me.ykrank.s1next.widget.AppActivityLifecycleCallbacks
 
 class App : MultiDexApplication() {
 
+    init {
+        sApp = this
+    }
+
     private lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
 
     private lateinit var mAppComponent: AppComponent
+
+    private lateinit var mPreAppComponent: PreAppComponent
 
     private lateinit var mAppActivityLifecycleCallbacks: AppActivityLifecycleCallbacks
 
@@ -34,15 +41,20 @@ class App : MultiDexApplication() {
         private set
 
     val trackAgent: DataTrackAgent
-        get() = mAppComponent.dataTrackAgent
+        get() = mPreAppComponent.dataTrackAgent
 
     val isAppVisible: Boolean
         get() = mAppActivityLifecycleCallbacks.isAppVisible
 
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        mPreAppComponent = DaggerPreAppComponent.builder()
+                .preAppModule(PreAppModule(this))
+                .build()
+    }
+
     override fun onCreate() {
         super.onCreate()
-        sApp = this
-
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.
@@ -61,6 +73,7 @@ class App : MultiDexApplication() {
                     .build())
         }
 
+        mPreAppComponent.dataTrackAgent.init(this)
         GlobalData.init(object : AppDataProvider {
             override val errorParser: ErrorParser?
                 get() = ErrorUtil
@@ -84,12 +97,12 @@ class App : MultiDexApplication() {
         BuglyUtils.init(this)
 
         mAppComponent = DaggerAppComponent.builder()
+                .preAppComponent(mPreAppComponent)
                 .buildTypeModule(BuildTypeModule(this))
-                .appModule(AppModule(this))
+                .appModule(AppModule())
                 .dbModule(DbModule())
                 .prefModule(PrefModule())
                 .build()
-        mAppComponent.dataTrackAgent.init(this)
 
         L.l("App init")
         //如果不是主进程，不做多余的初始化
@@ -111,7 +124,7 @@ class App : MultiDexApplication() {
             override val actLifeCallback: WifiActivityLifecycleCallbacks
                 get() = mAppActivityLifecycleCallbacks
             override val trackAgent: DataTrackAgent
-                get() = mAppComponent.dataTrackAgent
+                get() = mPreAppComponent.dataTrackAgent
         }, object : RProvider {
 
         })
@@ -139,5 +152,8 @@ class App : MultiDexApplication() {
 
         val appComponent: AppComponent
             get() = sApp.mAppComponent
+
+        val preAppComponent: PreAppComponent
+            get() = sApp.mPreAppComponent
     }
 }

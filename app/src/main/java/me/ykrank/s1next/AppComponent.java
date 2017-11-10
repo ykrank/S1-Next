@@ -1,22 +1,15 @@
 package me.ykrank.s1next;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.ykrank.androidtools.widget.EditorDiskCache;
-import com.github.ykrank.androidtools.widget.RxBus;
 import com.github.ykrank.androidtools.widget.hostcheck.HttpDns;
 import com.github.ykrank.androidtools.widget.net.WifiBroadcastReceiver;
-import com.github.ykrank.androidtools.widget.track.DataTrackAgent;
 
 import org.jetbrains.annotations.NotNull;
 
-import javax.inject.Singleton;
-
 import dagger.Component;
 import me.ykrank.s1next.data.User;
-import me.ykrank.s1next.data.Wifi;
 import me.ykrank.s1next.data.api.ApiCacheProvider;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
@@ -98,11 +91,12 @@ import okhttp3.OkHttpClient;
  * Indicates the class where this module is going to inject dependencies
  * or the dependencies we want to get.
  */
-@Singleton
-@Component(modules = {DbModule.class, PrefModule.class, AppModule.class})
+@AppLife
+@Component(dependencies = PreAppComponent.class,
+        modules = {DbModule.class, PrefModule.class, AppModule.class})
 public interface AppComponent {
 
-    Context getContext();
+    PreAppComponent getPreAppComponent();
 
     AppHostUrl getBaseHostUrl();
 
@@ -117,19 +111,11 @@ public interface AppComponent {
 
     ApiCacheProvider getApiCacheProvider();
 
-    Wifi getWifi();
-
-    ObjectMapper getJsonMapper();
-
-    RxBus getRxBus();
-
     User getUser();
 
     UserValidator getUserValidator();
 
     UserViewModel getUserViewModel();
-
-    DataTrackAgent getDataTrackAgent();
 
     NoticeCheckTask getNoticeCheckTask();
 

@@ -107,7 +107,7 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == PostListActivity.RESULT_BLACKLIST) {
             if (resultCode == Activity.RESULT_OK) {
                 refreshBlackList = true

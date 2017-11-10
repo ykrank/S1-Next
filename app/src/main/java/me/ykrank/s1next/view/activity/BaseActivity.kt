@@ -111,7 +111,7 @@ abstract class BaseActivity : LibBaseActivity() {
                 .subscribe({ event -> refreshNoticeMenuItem(event.isNewPm, event.isNewNotice) })
     }
 
-    override fun setTitle(title: CharSequence) {
+    override fun setTitle(title: CharSequence?) {
         if (mToolbarDelegate?.setTitle(title) != true) {
             super.setTitle(title)
         }
@@ -211,13 +211,15 @@ abstract class BaseActivity : LibBaseActivity() {
      * @see .startActivityForResultMessage
      * @see .setResultMessage
      */
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RequestCode.REQUEST_CODE_MESSAGE_IF_SUCCESS) {
             if (resultCode == Activity.RESULT_OK) {
                 // We can't use #showShortText(String) because #onActivityResult(int, int, Intent)
                 // is always invoked when current app is running in the foreground (so we are
                 // unable to show a Toast if our app is running in the background).
-                showShortSnackbar(data.getStringExtra(EXTRA_MESSAGE))
+                data?.let {
+                    showShortSnackbar(it.getStringExtra(EXTRA_MESSAGE))
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data)

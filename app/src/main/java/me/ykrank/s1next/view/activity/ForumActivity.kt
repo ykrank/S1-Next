@@ -76,12 +76,14 @@ class ForumActivity : BaseActivity(), ToolbarDropDownInterface.Callback, Adapter
         fragment.startSwipeRefresh()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RequestCode.REQUEST_CODE_LOGIN) {
             if (resultCode == Activity.RESULT_OK) {
-                showShortSnackbar(data.getStringExtra(BaseActivity.Companion.EXTRA_MESSAGE))
-                if (fragment != null) {
-                    fragment.forceSwipeRefresh()
+                data?.let {
+                    showShortSnackbar(data.getStringExtra(BaseActivity.Companion.EXTRA_MESSAGE))
+                    if (fragment != null) {
+                        fragment.forceSwipeRefresh()
+                    }
                 }
             }
         }
