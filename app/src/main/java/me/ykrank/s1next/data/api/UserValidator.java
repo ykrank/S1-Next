@@ -3,8 +3,8 @@ package me.ykrank.s1next.data.api;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.github.ykrank.androidtools.guava.Objects;
 import com.github.ykrank.androidtools.util.L;
-import com.github.ykrank.androidtools.util.Objects;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.data.User;
@@ -94,7 +94,7 @@ public final class UserValidator {
         if (appUserInfo == null) {
             return false;
         }
-        if (!Objects.equals(appUserInfo.isSigned(), mUser.isSigned())) {
+        if (!Objects.equal(appUserInfo.isSigned(), mUser.isSigned())) {
             mUser.setSigned(appUserInfo.isSigned());
             return true;
         }

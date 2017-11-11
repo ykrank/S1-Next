@@ -238,7 +238,7 @@ class UserHomeActivity : BaseActivity() {
                 L.report(IllegalStateException("UserHomeActivity start error: context not instance of activity"))
                 return
             }
-            val imageInfo = avatarView.getTag(R.id.tag_drawable_info) as ImageInfo
+            val imageInfo = avatarView.getTag(R.id.tag_drawable_info) as ImageInfo?
             val intent = Intent(baseContext, UserHomeActivity::class.java)
             intent.putExtra(ARG_UID, uid)
             intent.putExtra(ARG_USERNAME, userName)

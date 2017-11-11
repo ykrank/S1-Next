@@ -8,10 +8,13 @@ import android.text.TextUtils
 import android.view.*
 import com.github.ykrank.androidtools.ui.LibBaseRecyclerViewFragment
 import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
+import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
+import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.ApiCacheProvider
+import me.ykrank.s1next.data.api.ApiFlatTransformer
 import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.UserValidator
 import me.ykrank.s1next.data.api.app.model.AppResult
@@ -90,6 +93,12 @@ abstract class BaseRecyclerViewFragment<D> : LibBaseRecyclerViewFragment<D>() {
             return LoadingViewModelBindingDelegateBaseImpl(binding)
         }
     }
+
+    protected abstract fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<D>
+
+    override fun getLibSourceObservable(loading: Int): Single<D> =
+            getSourceObservable(loading)
+                    .compose(ApiFlatTransformer.apiErrorTransformer())
 
     /**
      * Called when a data was emitted from [.getSourceObservable].
