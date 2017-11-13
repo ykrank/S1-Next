@@ -6,95 +6,95 @@ import android.support.v7.preference.PreferenceManager
 import com.fasterxml.jackson.databind.ObjectMapper
 import dagger.Module
 import dagger.Provides
-import me.ykrank.s1next.AppLife
 import me.ykrank.s1next.data.Wifi
+import javax.inject.Singleton
 
 /**
  * Created by ykrank on 2016/11/4.
  */
 @Module
-class PrefModule {
+class PrefModule(private val prefContext: Context) {
 
     @Provides
-    @AppLife
-    internal fun provideSharedPreferences(context: Context): SharedPreferences {
-        return PreferenceManager.getDefaultSharedPreferences(context)
+    @Singleton
+    internal fun provideSharedPreferences(): SharedPreferences {
+        return PreferenceManager.getDefaultSharedPreferences(prefContext)
     }
 
     @Provides
-    @AppLife
-    internal fun provideNetworkPreferencesRepository(context: Context, sharedPreferences: SharedPreferences): NetworkPreferences {
-        return NetworkPreferencesImpl(context, sharedPreferences)
+    @Singleton
+    internal fun provideNetworkPreferencesRepository(sharedPreferences: SharedPreferences): NetworkPreferences {
+        return NetworkPreferencesImpl(prefContext, sharedPreferences)
     }
 
     @Provides
-    @AppLife
+    @Singleton
     internal fun provideNetworkPreferencesManager(networkPreferences: NetworkPreferences): NetworkPreferencesManager {
         return NetworkPreferencesManager(networkPreferences)
     }
 
     @Provides
-    @AppLife
-    internal fun provideGeneralPreferencesProvider(context: Context, sharedPreferences: SharedPreferences): GeneralPreferences {
-        return GeneralPreferencesImpl(context, sharedPreferences)
+    @Singleton
+    internal fun provideGeneralPreferencesProvider(sharedPreferences: SharedPreferences): GeneralPreferences {
+        return GeneralPreferencesImpl(prefContext, sharedPreferences)
     }
 
     @Provides
-    @AppLife
+    @Singleton
     internal fun provideGeneralPreferencesManager(generalPreferencesProvider: GeneralPreferences): GeneralPreferencesManager {
         return GeneralPreferencesManager(generalPreferencesProvider)
     }
 
     @Provides
-    @AppLife
-    internal fun provideThemeManager(context: Context, generalPreferencesProvider: GeneralPreferences): ThemeManager {
-        return ThemeManager(context, generalPreferencesProvider)
+    @Singleton
+    internal fun provideThemeManager(generalPreferencesProvider: GeneralPreferences): ThemeManager {
+        return ThemeManager(prefContext, generalPreferencesProvider)
     }
 
     @Provides
-    @AppLife
-    internal fun provideDownloadPreferencesProvider(context: Context, sharedPreferences: SharedPreferences): DownloadPreferences {
-        return DownloadPreferencesImpl(context, sharedPreferences)
+    @Singleton
+    internal fun provideDownloadPreferencesProvider(sharedPreferences: SharedPreferences): DownloadPreferences {
+        return DownloadPreferencesImpl(prefContext, sharedPreferences)
     }
 
     @Provides
-    @AppLife
+    @Singleton
     internal fun provideDownloadPreferencesManager(downloadPreferencesProvider: DownloadPreferences, wifi: Wifi): DownloadPreferencesManager {
         return DownloadPreferencesManager(downloadPreferencesProvider, wifi)
     }
 
     @Provides
-    @AppLife
-    internal fun provideReadProgressPreferencesProvider(context: Context, sharedPreferences: SharedPreferences, objectMapper: ObjectMapper): ReadProgressPreferences {
-        return ReadProgressPreferencesImpl(context, sharedPreferences, objectMapper)
+    @Singleton
+    internal fun provideReadProgressPreferencesProvider(sharedPreferences: SharedPreferences, objectMapper: ObjectMapper): ReadProgressPreferences {
+        return ReadProgressPreferencesImpl(prefContext, sharedPreferences, objectMapper)
     }
 
     @Provides
-    @AppLife
+    @Singleton
     internal fun provideReadProgressPreferencesManager(readProgressPreferences: ReadProgressPreferences): ReadProgressPreferencesManager {
         return ReadProgressPreferencesManager(readProgressPreferences)
     }
 
     @Provides
-    @AppLife
-    internal fun provideDataPreferencesProvider(context: Context, sharedPreferences: SharedPreferences): DataPreferences {
-        return DataPreferencesImpl(context, sharedPreferences)
+    @Singleton
+    internal fun provideDataPreferencesProvider(sharedPreferences: SharedPreferences): DataPreferences {
+        return DataPreferencesImpl(prefContext, sharedPreferences)
     }
 
     @Provides
-    @AppLife
+    @Singleton
     internal fun provideDataPreferencesManager(preferencesRepository: DataPreferences): DataPreferencesManager {
         return DataPreferencesManager(preferencesRepository)
     }
 
     @Provides
-    @AppLife
-    internal fun provideAppDataPreferencesProvider(context: Context, sharedPreferences: SharedPreferences): AppDataPreferences {
-        return AppDataPreferencesImpl(context, sharedPreferences)
+    @Singleton
+    internal fun provideAppDataPreferencesProvider(sharedPreferences: SharedPreferences): AppDataPreferences {
+        return AppDataPreferencesImpl(prefContext, sharedPreferences)
     }
 
     @Provides
-    @AppLife
+    @Singleton
     internal fun provideAppDataPreferencesManager(preferencesRepository: AppDataPreferences): AppDataPreferencesManager {
         return AppDataPreferencesManager(preferencesRepository)
     }

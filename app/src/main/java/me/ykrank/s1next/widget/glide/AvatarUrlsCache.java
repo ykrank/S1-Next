@@ -143,7 +143,7 @@ public class AvatarUrlsCache {
         String smallAvatarUrl = Api.getAvatarSmallUrl(uid);
         String mediumAvatarUrl = Api.getAvatarMediumUrl(uid);
         String bigAvatarUrl = Api.getAvatarBigUrl(uid);
-        DownloadPreferencesManager manager = App.Companion.getAppComponent()
+        DownloadPreferencesManager manager = App.Companion.getPreAppComponent()
                 .getDownloadPreferencesManager();
         avatarUrlsCache.remove(OriginalKey.obtainAvatarKey(manager, smallAvatarUrl));
         avatarUrlsCache.remove(OriginalKey.obtainAvatarKey(manager, mediumAvatarUrl));

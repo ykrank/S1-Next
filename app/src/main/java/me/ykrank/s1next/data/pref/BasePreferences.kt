@@ -13,9 +13,7 @@ import kotlin.reflect.KProperty
 /**
  * A base class wraps [SharedPreferences].
  */
-abstract class BasePreferences(context: Context, val preferences: SharedPreferences) {
-
-    val mContext: Context = context.applicationContext
+abstract class BasePreferences(internal val mContext: Context, val preferences: SharedPreferences) {
 
     fun getPrefString(@StringRes keyResId: Int, @StringRes defValueResId: Int): String {
         return getPrefString(keyResId, mContext.getString(defValueResId))

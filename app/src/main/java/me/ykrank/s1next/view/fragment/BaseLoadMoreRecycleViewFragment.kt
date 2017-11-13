@@ -41,7 +41,7 @@ abstract class BaseLoadMoreRecycleViewFragment<D> : LibBaseLoadMoreRecycleViewFr
         mUserValidator = App.appComponent.userValidator
         mS1Service = App.appComponent.s1Service
         apiCacheProvider = App.appComponent.apiCacheProvider
-        mDownloadPrefManager = App.appComponent.downloadPreferencesManager
+        mDownloadPrefManager = App.preAppComponent.downloadPreferencesManager
         mUser = App.appComponent.user
     }
 

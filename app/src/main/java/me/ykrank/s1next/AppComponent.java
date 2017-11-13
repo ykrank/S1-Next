@@ -1,7 +1,5 @@
 package me.ykrank.s1next;
 
-import android.content.SharedPreferences;
-
 import com.github.ykrank.androidtools.widget.EditorDiskCache;
 import com.github.ykrank.androidtools.widget.hostcheck.HttpDns;
 import com.github.ykrank.androidtools.widget.net.WifiBroadcastReceiver;
@@ -20,13 +18,6 @@ import me.ykrank.s1next.data.db.DbModule;
 import me.ykrank.s1next.data.db.HistoryDbWrapper;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.data.db.ThreadDbWrapper;
-import me.ykrank.s1next.data.pref.DataPreferencesManager;
-import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
-import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
-import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
-import me.ykrank.s1next.data.pref.PrefModule;
-import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
-import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.task.AutoSignTask;
 import me.ykrank.s1next.view.activity.BaseActivity;
 import me.ykrank.s1next.view.activity.ForumActivity;
@@ -92,8 +83,8 @@ import okhttp3.OkHttpClient;
  * or the dependencies we want to get.
  */
 @AppLife
-@Component(dependencies = PreAppComponent.class,
-        modules = {DbModule.class, PrefModule.class, AppModule.class})
+@Component(dependencies = {PreAppComponent.class},
+        modules = {DbModule.class, AppModule.class})
 public interface AppComponent {
 
     PreAppComponent getPreAppComponent();
@@ -124,22 +115,6 @@ public interface AppComponent {
     AvatarUrlsCache getAvatarUrlsCache();
 
     AutoSignTask getAutoSignTask();
-
-    //region SharedPreferences
-    SharedPreferences getSharedPreferences();
-
-    NetworkPreferencesManager getNetworkPreferencesManager();
-
-    GeneralPreferencesManager getGeneralPreferencesManager();
-
-    ThemeManager getThemeManager();
-
-    DownloadPreferencesManager getDownloadPreferencesManager();
-
-    ReadProgressPreferencesManager getReadProgressPreferencesManager();
-
-    DataPreferencesManager getDataPreferencesManager();
-    //endregion
 
     //region DataBase
     AppDaoSessionManager getAppDaoSessionManager();

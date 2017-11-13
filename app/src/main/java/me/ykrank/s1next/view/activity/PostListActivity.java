@@ -94,7 +94,7 @@ public final class PostListActivity extends BaseActivity
      * @return
      */
     public static Disposable bindClickStartForView(@NonNull View view, @NonNull Supplier<Thread> thread) {
-        ReadProgressPreferencesManager preferencesManager = App.Companion.getAppComponent().getReadProgressPreferencesManager();
+        ReadProgressPreferencesManager preferencesManager = App.Companion.getPreAppComponent().getReadProgressPreferencesManager();
         if (preferencesManager.isLoadAuto()) {
             return OnceClickUtil.onceClickObservable(view, 1000)
                     .observeOn(Schedulers.io())

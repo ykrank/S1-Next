@@ -1,6 +1,7 @@
 package me.ykrank.s1next.view.activity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -20,6 +21,7 @@ import com.github.ykrank.androidlifecycle.event.ActivityEvent
 import com.github.ykrank.androidtools.ui.LibBaseActivity
 import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate
 import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.ResourceUtil
 import com.github.ykrank.androidtools.widget.RxBus
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.google.common.base.Optional
@@ -30,6 +32,7 @@ import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.pref.DataPreferencesManager
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
+import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.data.pref.ThemeManager
 import me.ykrank.s1next.view.dialog.ReportErrorDialogFragment
 import me.ykrank.s1next.view.dialog.ThreadGoDialogFragment
@@ -54,6 +57,9 @@ abstract class BaseActivity : LibBaseActivity() {
 
     @Inject
     internal lateinit var mUser: User
+
+    @Inject
+    lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
 
     @Inject
     internal lateinit var mDownloadPreferencesManager: DownloadPreferencesManager
@@ -82,10 +88,13 @@ abstract class BaseActivity : LibBaseActivity() {
             Optional.of(mToolbarDelegate!!.toolbar)
         }
 
+    override fun attachBaseContext(newBase: Context?) {
+        App.appComponent.inject(this)
+        super.attachBaseContext(ResourceUtil.setScaledDensity(newBase, mGeneralPreferencesManager.fontScale))
+    }
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent.inject(this)
         // change the theme depends on preference
         if (!mThemeManager.isDefaultTheme) {
             if (isTranslucent) {

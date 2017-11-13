@@ -37,6 +37,8 @@ class App : MultiDexApplication() {
 
     private lateinit var mAppActivityLifecycleCallbacks: AppActivityLifecycleCallbacks
 
+    var resourceContext: Context? = null
+
     lateinit var refWatcher: RefWatcher
         private set
 
@@ -46,11 +48,13 @@ class App : MultiDexApplication() {
     val isAppVisible: Boolean
         get() = mAppActivityLifecycleCallbacks.isAppVisible
 
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
+    override fun attachBaseContext(base: Context) {
         mPreAppComponent = DaggerPreAppComponent.builder()
                 .preAppModule(PreAppModule(this))
+                .prefModule(PrefModule(base))
                 .build()
+        mGeneralPreferencesManager = mPreAppComponent.generalPreferencesManager
+        super.attachBaseContext(ResourceUtil.setScaledDensity(base, mGeneralPreferencesManager.fontScale))
     }
 
     override fun onCreate() {
@@ -101,7 +105,6 @@ class App : MultiDexApplication() {
                 .buildTypeModule(BuildTypeModule(this))
                 .appModule(AppModule())
                 .dbModule(DbModule())
-                .prefModule(PrefModule())
                 .build()
 
         L.l("App init")
@@ -111,12 +114,8 @@ class App : MultiDexApplication() {
         mAppActivityLifecycleCallbacks = AppActivityLifecycleCallbacks(this, mAppComponent.noticeCheckTask)
         registerActivityLifecycleCallbacks(mAppActivityLifecycleCallbacks)
 
-        mGeneralPreferencesManager = mAppComponent.generalPreferencesManager
-
         //enable vector drawable
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
-        // set scaling factor for fonts
-        ResourceUtil.setScaledDensity(this, mGeneralPreferencesManager.fontScale)
 
         UiGlobalData.init(object : UiDataProvider {
             override val refWatcher: RefWatcher
@@ -137,8 +136,6 @@ class App : MultiDexApplication() {
         //如果不是主进程，不做多余的初始化
         if (!ProcessUtil.isMainProcess(this))
             return
-
-        ResourceUtil.setScaledDensity(this, mGeneralPreferencesManager.fontScale)
     }
 
     companion object {
