@@ -169,6 +169,9 @@ dependencies {
     compile 'com.github.bumptech.glide:okhttp3-integration:4.2.0'
     kapt 'com.github.bumptech.glide:compiler:4.2.0'
 
+    compile 'cn.dreamtobe.filedownloader:filedownloader-okhttp3-connection:1.0.0'
+    compile 'com.liulishuo.filedownloader:library:1.6.8'
+
     compile 'io.reactivex.rxjava2:rxjava:2.1.5'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxkotlin:2.1.0'

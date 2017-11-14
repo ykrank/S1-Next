@@ -70,9 +70,11 @@ import me.ykrank.s1next.view.fragment.setting.ReadProgressPreferenceFragment;
 import me.ykrank.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.AppActivityLifecycleCallbacks;
+import me.ykrank.s1next.widget.download.ImageDownloadManager;
 import me.ykrank.s1next.widget.glide.AppHttpStreamFetcher;
 import me.ykrank.s1next.widget.glide.AvatarStreamFetcher;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
+import me.ykrank.s1next.widget.glide.MultiThreadHttpStreamFetcher;
 import me.ykrank.s1next.widget.hostcheck.AppHostUrl;
 import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask;
 import me.ykrank.s1next.widget.net.Image;
@@ -115,6 +117,8 @@ public interface AppComponent {
     AvatarUrlsCache getAvatarUrlsCache();
 
     AutoSignTask getAutoSignTask();
+
+    ImageDownloadManager getImageDownloadManager();
 
     //region DataBase
     AppDaoSessionManager getAppDaoSessionManager();
@@ -235,4 +239,6 @@ public interface AppComponent {
     void inject(@NotNull BaseViewPagerFragment baseViewPagerFragment);
 
     void inject(@NotNull AppActivityLifecycleCallbacks appActivityLifecycleCallbacks);
+
+    void inject(MultiThreadHttpStreamFetcher multiThreadHttpStreamFetcher);
 }

@@ -127,6 +127,8 @@ class App : MultiDexApplication() {
         }, object : RProvider {
 
         })
+
+        mAppComponent.imageDownloadManager.setup(this)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
