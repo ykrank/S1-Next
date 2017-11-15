@@ -8,3 +8,4 @@
 
 .directory
 /doc
+/app/*.log
