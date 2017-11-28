@@ -85,7 +85,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
 
     private var refreshAfterBlacklistChangeDisposable: Disposable? = null
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onViewCreated(view, savedInstanceState)
 

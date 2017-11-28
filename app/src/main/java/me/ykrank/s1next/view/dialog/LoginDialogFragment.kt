@@ -39,7 +39,7 @@ class LoginDialogFragment : ProgressDialogFragment<AccountResultWrapper>() {
             showShortTextAndFinishCurrentActivity(result.message)
             mRxBus.post(LoginEvent())
         } else {
-            showShortText(result.message)
+            showToastText(result.message)
         }
     }
 

@@ -17,7 +17,7 @@ class NewPmFragment : BasePostFragment() {
 
     private lateinit var mToUid: String
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mToUid = arguments.getString(ARG_TO_UID)
         cacheKey = String.format(CACHE_KEY_PREFIX, mToUid)

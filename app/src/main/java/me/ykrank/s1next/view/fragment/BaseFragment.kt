@@ -22,7 +22,7 @@ abstract class BaseFragment : LibBaseFragment() {
     internal lateinit var mUser: User
 
     @CallSuper
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         App.appComponent.inject(this)
     }

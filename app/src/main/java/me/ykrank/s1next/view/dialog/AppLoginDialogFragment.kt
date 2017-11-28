@@ -40,10 +40,10 @@ class AppLoginDialogFragment : ProgressDialogFragment<AppDataWrapper<AppLoginRes
                 showShortTextAndFinishCurrentActivity(data.message)
                 mRxBus.post(AppLoginEvent())
             } else {
-                showShortText(getString(R.string.app_login_info_error))
+                showToastText(getString(R.string.app_login_info_error))
             }
         } else {
-            showShortText(data.message)
+            showToastText(data.message)
         }
     }
 

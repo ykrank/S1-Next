@@ -34,7 +34,7 @@ class RateRequestDialogFragment : ProgressDialogFragment<RateResult>() {
         if (data.isSuccess) {
             showShortTextAndFinishCurrentActivity(getString(R.string.rate_success))
         } else {
-            showShortText(data.errorMsg)
+            showToastText(data.errorMsg)
         }
     }
 

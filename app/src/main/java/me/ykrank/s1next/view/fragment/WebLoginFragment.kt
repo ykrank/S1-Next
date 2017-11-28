@@ -49,7 +49,7 @@ class WebLoginFragment : BaseFragment() {
         return mFragmentHelpBinding.root
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         L.leaveMsg(WebLoginFragment::class.java.name)
 

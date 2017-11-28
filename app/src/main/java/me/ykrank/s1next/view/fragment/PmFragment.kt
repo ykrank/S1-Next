@@ -49,7 +49,7 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
         }
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         App.appComponent.inject(this)
 
@@ -68,9 +68,9 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
         recyclerView.adapter = mRecyclerAdapter
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState?.putString(ARG_DATA_ID, dataId)
+        outState.putString(ARG_DATA_ID, dataId)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {

@@ -1,42 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr name="toolbarTheme" format="reference" />
-    <attr name="navigationViewTheme" format="reference" />
-    <attr name="cardViewStyle" format="reference" />
-    <attr name="cardViewContainerBackground" format="color|reference" />
-
-    <attr name="drawerTextColor" format="color" />
-    <attr name="fabBackgroundTint" format="color|reference" />
     <attr name="emoticonKeyboardTabLayoutBackground" format="color|reference" />
     <attr name="emoticonKeyboardBackground" format="color|reference" />
 
-    <attr name="iconClose" format="reference" />
-
-    <attr name="iconMenuPageJump" format="reference" />
-    <attr name="iconMenuPersonAdd" format="reference" />
     <attr name="iconMenuThreadAttachment" format="reference" />
-    <attr name="iconMenuEmoticon" format="reference" />
-    <attr name="iconMenuKeyboard" format="reference" />
-    <attr name="iconMenuSend" format="reference" />
 
     <attr name="chatFromBackground" format="color|reference" />
     <attr name="chatToBackground" format="color|reference" />
-
-    <attr name="divisionBackground" format="color|reference" />
-
-    <attr name="textShadowColor" format="color" />
-
-    <attr name="colorTranslucent" format="color|reference" />
-
-    <declare-styleable name="BezelImageView">
-        <attr name="maskDrawable" format="reference" />
-        <attr name="borderDrawable" format="reference" />
-        <attr name="desaturateOnPress" format="boolean" />
-    </declare-styleable>
-
-    <attr name="titlePopWindowBackground" format="reference" />
-    <attr name="titlePopWindowTextColor" format="reference" />
-
-    <attr name="divideLineColor" format="color" />
 </resources>

@@ -51,6 +51,8 @@ abstract class BaseRecyclerViewFragment<D> : LibBaseRecyclerViewFragment<D>() {
         apiCacheProvider = App.appComponent.apiCacheProvider
         mDownloadPrefManager = App.preAppComponent.downloadPreferencesManager
         mUser = App.appComponent.user
+
+        setHasOptionsMenu(true)
     }
 
     @CallSuper

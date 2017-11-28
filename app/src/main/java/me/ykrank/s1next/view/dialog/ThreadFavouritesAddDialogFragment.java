@@ -49,10 +49,10 @@ public final class ThreadFavouritesAddDialogFragment extends BaseDialogFragment 
         // http://stackoverflow.com/a/7636468
         alertDialog.setOnShowListener(dialog -> {
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v ->
-                    ThreadFavouritesAddRequestDialogFragment.newInstance(
+                    ThreadFavouritesAddRequestDialogFragment.Companion.newInstance(
                             getArguments().getString(ARG_THREAD_ID),
                             binding.remark.getText().toString())
-                            .show(getFragmentManager(), ThreadFavouritesAddRequestDialogFragment.TAG));
+                            .show(getFragmentManager(), ThreadFavouritesAddRequestDialogFragment.Companion.getTAG()));
             ViewUtil.consumeRunnableWhenImeActionPerformed(binding.remark, () ->
                     alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick());
         });

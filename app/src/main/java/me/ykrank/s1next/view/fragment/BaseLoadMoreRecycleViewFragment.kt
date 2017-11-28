@@ -43,6 +43,8 @@ abstract class BaseLoadMoreRecycleViewFragment<D> : LibBaseLoadMoreRecycleViewFr
         apiCacheProvider = App.appComponent.apiCacheProvider
         mDownloadPrefManager = App.preAppComponent.downloadPreferencesManager
         mUser = App.appComponent.user
+
+        setHasOptionsMenu(true)
     }
 
     @CallSuper

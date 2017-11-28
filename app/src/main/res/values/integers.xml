@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- According to the material design guidelines, list tiles can only contain up to three lines of text. -->
-    <integer name="list_max_line">3</integer>
-
-    <!-- http://stackoverflow.com/a/23740834 -->
-    <integer name="ime_action_id">77</integer>
-
-    <integer name="rapid_animation">120</integer>
-
-    <integer name="scrim_animation_duration">300</integer>
 </resources>

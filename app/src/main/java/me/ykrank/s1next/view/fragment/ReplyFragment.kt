@@ -18,7 +18,7 @@ class ReplyFragment : BasePostFragment() {
     private var mThreadId: String? = null
     private var mQuotePostId: String? = null
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mThreadId = arguments.getString(ARG_THREAD_ID)
         mQuotePostId = arguments.getString(ARG_QUOTE_POST_ID)
