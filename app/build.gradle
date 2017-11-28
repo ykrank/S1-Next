@@ -21,8 +21,8 @@ android {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 38
-        versionName '1.3.2.1'
+        versionCode 39
+        versionName '1.3.2.2'
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
@@ -117,14 +117,14 @@ dependencies {
     playCompile fileTree(include: ['*.jar'], dir: 'libs/flavors/play')
     normalCompile fileTree(include: ['*.jar'], dir: 'libs/flavors/normal')
 
-    playCompile 'com.tencent.bugly:crashreport:2.6.5'
+    playCompile 'com.tencent.bugly:crashreport:2.6.6.1'
     normalCompile 'com.tencent.bugly:crashreport_upgrade:1.3.1'
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     kapt "com.android.databinding:compiler:$databinding_version"
 
-    compile 'com.google.dagger:dagger:2.12'
-    kapt 'com.google.dagger:dagger-compiler:2.12'
+    compile 'com.google.dagger:dagger:2.13'
+    kapt 'com.google.dagger:dagger-compiler:2.13'
     // https://github.com/google/dagger/issues/95
 //    provided 'javax.annotation:javax.annotation-api:1.3'
 
@@ -147,9 +147,9 @@ dependencies {
     compile 'com.google.guava:guava:19.0'
     provided 'com.google.code.findbugs:jsr305:3.0.2'
     provided 'com.google.j2objc:j2objc-annotations:1.3'
-    compile 'org.apache.commons:commons-lang3:3.6'
+    compile 'org.apache.commons:commons-lang3:3.7'
 
-    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.9.0'
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.9.1'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     compile 'com.squareup.retrofit2:converter-jackson:2.3.0'
@@ -165,16 +165,16 @@ dependencies {
     compile 'nz.bradcampbell:paperparcel-kotlin:2.0.4' // Optional
     kapt 'nz.bradcampbell:paperparcel-compiler:2.0.4'
 
-    compile 'com.github.bumptech.glide:glide:4.2.0'
-    compile 'com.github.bumptech.glide:okhttp3-integration:4.2.0'
-    kapt 'com.github.bumptech.glide:compiler:4.2.0'
+    compile 'com.github.bumptech.glide:glide:4.3.1'
+    compile 'com.github.bumptech.glide:okhttp3-integration:4.3.1'
+    kapt 'com.github.bumptech.glide:compiler:4.3.1'
 
     compile 'cn.dreamtobe.filedownloader:filedownloader-okhttp3-connection:1.0.0'
     compile 'com.liulishuo.filedownloader:library:1.6.8'
 
-    compile 'io.reactivex.rxjava2:rxjava:2.1.5'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.7'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'io.reactivex.rxjava2:rxkotlin:2.1.0'
+    compile 'io.reactivex.rxjava2:rxkotlin:2.2.0'
 
     compile 'com.github.ykrank:androidautodispose:0.4.0'
 
@@ -183,7 +183,7 @@ dependencies {
     compile 'com.hannesdorfmann:adapterdelegates3:3.0.2-SNAPSHOT'
     compile 'org.greenrobot:greendao:3.2.2'
     compile 'com.nononsenseapps:filepicker:4.1.0'
-    compile 'org.jsoup:jsoup:1.10.3'
+    compile 'org.jsoup:jsoup:1.11.2'
     compile 'com.bigkoo:quicksidebar:1.0.3'
     compile 'com.orhanobut:logger:2.1.1'
 }
