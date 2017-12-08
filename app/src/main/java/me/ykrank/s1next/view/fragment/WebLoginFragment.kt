@@ -1,15 +1,13 @@
 package me.ykrank.s1next.view.fragment
 
 import android.databinding.DataBindingUtil
+import android.net.http.SslError
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.CookieManager
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import android.widget.ProgressBar
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -130,6 +128,18 @@ class WebLoginFragment : BaseFragment() {
     }
 
     private open inner class CookieWebViewClient : WebViewClient() {
+
+        override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler, error: SslError?) {
+            error?.let {
+                L.w(it.toString())
+                if (it.certificate.issuedTo.cName?.contains("saraba1st.com", false) == true) {
+                    handler.proceed()
+                    return
+                }
+            }
+            handler.cancel()
+        }
+
         override fun onPageFinished(view: WebView, url: String) {
             try {
                 val activity = activity

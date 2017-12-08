@@ -2,6 +2,8 @@ package me.ykrank.s1next;
 
 import android.content.Context;
 
+import com.github.ykrank.androidtools.guava.Preconditions;
+
 import java.security.SecureRandom;
 
 import javax.inject.Singleton;
