@@ -8,6 +8,7 @@ import android.support.multidex.MultiDexApplication
 import android.support.v7.app.AppCompatDelegate
 import com.github.ykrank.androidtools.AppDataProvider
 import com.github.ykrank.androidtools.GlobalData
+import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.ui.RProvider
 import com.github.ykrank.androidtools.ui.UiDataProvider
 import com.github.ykrank.androidtools.ui.UiGlobalData
@@ -107,15 +108,8 @@ class App : MultiDexApplication() {
                 .dbModule(DbModule())
                 .build()
 
-        L.l("App init")
-        //如果不是主进程，不做多余的初始化
-        if (!ProcessUtil.isMainProcess(this))
-            return
         mAppActivityLifecycleCallbacks = AppActivityLifecycleCallbacks(this, mAppComponent.noticeCheckTask)
         registerActivityLifecycleCallbacks(mAppActivityLifecycleCallbacks)
-
-        //enable vector drawable
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
 
         UiGlobalData.init(object : UiDataProvider {
             override val refWatcher: RefWatcher
@@ -126,8 +120,15 @@ class App : MultiDexApplication() {
                 get() = mPreAppComponent.dataTrackAgent
         }, object : RProvider {
 
-        })
+        }, this::toast)
 
+        L.l("App init")
+        //如果不是主进程，不做多余的初始化
+        if (!ProcessUtil.isMainProcess(this))
+            return
+
+        //enable vector drawable
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         mAppComponent.imageDownloadManager.setup(this)
     }
 
