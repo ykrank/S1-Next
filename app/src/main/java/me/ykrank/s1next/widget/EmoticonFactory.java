@@ -271,6 +271,14 @@ public final class EmoticonFactory {
         add(builder, "face2017/206.gif", "[f:206]");
         add(builder, "face2017/207.png", "[f:207]");
         add(builder, "face2017/208.png", "[f:208]");
+        add(builder, "face2017/209.gif", "[f:209]");
+        add(builder, "face2017/210.gif", "[f:210]");
+        add(builder, "face2017/211.gif", "[f:211]");
+        add(builder, "face2017/212.gif", "[f:212]");
+        add(builder, "face2017/213.png", "[f:213]");
+        add(builder, "face2017/214.png", "[f:214]");
+        add(builder, "face2017/215.png", "[f:215]");
+        add(builder, "face2017/216.png", "[f:216]");
         return builder.build();
     }
 
@@ -498,6 +506,35 @@ public final class EmoticonFactory {
         add(builder, "carton2017/220.png", "[c:220]");
         add(builder, "carton2017/221.png", "[c:221]");
         add(builder, "carton2017/222.png", "[c:222]");
+        add(builder, "carton2017/223.png", "[c:223]");
+        add(builder, "carton2017/224.png", "[c:224]");
+        add(builder, "carton2017/225.png", "[c:225]");
+        add(builder, "carton2017/226.png", "[c:226]");
+        add(builder, "carton2017/227.png", "[c:227]");
+        add(builder, "carton2017/228.png", "[c:228]");
+        add(builder, "carton2017/229.png", "[c:229]");
+        add(builder, "carton2017/230.png", "[c:230]");
+        add(builder, "carton2017/231.png", "[c:231]");
+        add(builder, "carton2017/232.png", "[c:232]");
+        add(builder, "carton2017/233.png", "[c:233]");
+        add(builder, "carton2017/234.png", "[c:234]");
+        add(builder, "carton2017/235.png", "[c:235]");
+        add(builder, "carton2017/236.png", "[c:236]");
+        add(builder, "carton2017/237.png", "[c:237]");
+        add(builder, "carton2017/238.png", "[c:238]");
+        add(builder, "carton2017/239.png", "[c:239]");
+        add(builder, "carton2017/240.png", "[c:240]");
+        add(builder, "carton2017/241.png", "[c:241]");
+        add(builder, "carton2017/242.png", "[c:242]");
+        add(builder, "carton2017/243.png", "[c:243]");
+        add(builder, "carton2017/244.png", "[c:244]");
+        add(builder, "carton2017/245.gif", "[c:245]");
+        add(builder, "carton2017/246.gif", "[c:246]");
+        add(builder, "carton2017/247.gif", "[c:247]");
+        add(builder, "carton2017/248.png", "[c:248]");
+        add(builder, "carton2017/249.png", "[c:249]");
+        add(builder, "carton2017/250.png", "[c:250]");
+        add(builder, "carton2017/251.png", "[c:251]");
         return builder.build();
     }
 

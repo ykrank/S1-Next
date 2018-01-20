@@ -129,7 +129,7 @@ public final class NewRateFragment extends BaseFragment {
         };
 
         binding.recycleView.setLayoutManager(new LinearLayoutManager(getContext()));
-        reasonAdapter = new SimpleRecycleViewAdapter(getContext(), R.layout.item_rate_reason, bindViewHolderCallback);
+        reasonAdapter = new SimpleRecycleViewAdapter(getContext(), R.layout.item_rate_reason, bindViewHolderCallback, null);
         binding.recycleView.setAdapter(reasonAdapter);
     }
 
