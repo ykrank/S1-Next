@@ -10,14 +10,14 @@ import com.tencent.bugly.crashreport.CrashReport;
 
 import me.ykrank.s1next.BuildConfig;
 
+import static me.ykrank.s1next.util.ErrorUtil.BUGLY_APP_ID;
+
 
 /**
  * Created by ykrank on 2017/8/9.
  */
 
 public class BuglyUtils {
-
-    private static final String BUGLY_APP_ID = "";
 
     public static void init(@NonNull Context context) {
         final Context appContext = context.getApplicationContext();

@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.google.common.base.Preconditions;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import me.ykrank.s1next.widget.net.AppData;
@@ -24,7 +22,7 @@ public final class BuildTypeModule {
 
     @Data
     @Provides
-    @Singleton
+    @AppLife
     OkHttpClient providerDataOkHttpClient(@Data OkHttpClient.Builder builder) {
         Preconditions.checkState("alpha".equals(BuildConfig.BUILD_TYPE));
 
@@ -33,7 +31,7 @@ public final class BuildTypeModule {
 
     @Image
     @Provides
-    @Singleton
+    @AppLife
     OkHttpClient providerImageOkHttpClient(@Image OkHttpClient.Builder builder) {
         Preconditions.checkState("alpha".equals(BuildConfig.BUILD_TYPE));
 
@@ -42,7 +40,7 @@ public final class BuildTypeModule {
 
     @AppData
     @Provides
-    @Singleton
+    @AppLife
     OkHttpClient providerAppdataOkHttpClient(@AppData OkHttpClient.Builder builder) {
         Preconditions.checkState("alpha".equals(BuildConfig.BUILD_TYPE));
 

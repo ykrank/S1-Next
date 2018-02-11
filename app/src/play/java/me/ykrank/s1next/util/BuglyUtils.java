@@ -3,11 +3,12 @@ package me.ykrank.s1next.util;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.github.ykrank.androidtools.util.RxJavaUtil;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import me.ykrank.s1next.BuildConfig;
 
-import static me.ykrank.s1next.util.L.BUGLY_APP_ID;
+import static me.ykrank.s1next.util.ErrorUtil.BUGLY_APP_ID;
 
 /**
  * Created by ykrank on 2017/8/9.

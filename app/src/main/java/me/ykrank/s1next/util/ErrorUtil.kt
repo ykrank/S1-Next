@@ -13,6 +13,8 @@ import java.io.IOException
 
 object ErrorUtil : ErrorParser {
 
+    const val BUGLY_APP_ID = "eae39d8732"
+
     private val TAG_LOG = ErrorUtil::class.java.simpleName
 
     override fun parse(context: Context, throwable: Throwable): String {

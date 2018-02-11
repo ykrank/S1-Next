@@ -21,8 +21,8 @@ android {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 39
-        versionName '1.3.2.2'
+        versionCode 40
+        versionName '1.3.2.3'
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
@@ -73,7 +73,7 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
-            matchingFallbacks = ['debug', 'release']
+            matchingFallbacks = ['release', 'debug']
         }
 
         release {

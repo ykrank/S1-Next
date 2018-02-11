@@ -2,8 +2,6 @@ package me.ykrank.s1next;
 
 import android.content.Context;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import me.ykrank.s1next.widget.net.AppData;
@@ -23,21 +21,21 @@ public final class BuildTypeModule {
 
     @Data
     @Provides
-    @Singleton
+    @AppLife
     OkHttpClient providerDataOkHttpClient(@Data OkHttpClient.Builder builder) {
         return builder.build();
     }
 
     @Image
     @Provides
-    @Singleton
+    @AppLife
     OkHttpClient providerImageOkHttpClient(@Image OkHttpClient.Builder builder) {
         return builder.build();
     }
 
     @AppData
     @Provides
-    @Singleton
+    @AppLife
     OkHttpClient providerAppdataOkHttpClient(@AppData OkHttpClient.Builder builder) {
         return builder.build();
     }
