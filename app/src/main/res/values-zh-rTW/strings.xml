@@ -1,204 +1,402 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_icon_content_desc">应用图标</string>
-    <string name="intent_title_which_view_application">打开方式</string>
-    <string name="message_chooser_no_applications">没有应用可执行此操作</string>
-    <string name="action_login">登录</string>
-    <string name="avatar_content_desc">头像</string>
-    <string name="picture_content_desc">图片</string>
-    <string name="dialog_message_login_prompt">请先登录。</string>
+        
+    <string name="app_icon_content_desc">應用圖標</string>
+        
+    <string name="intent_title_which_view_application">打開方式</string>
+        
+    <string name="message_chooser_no_applications">沒有應用可執行此操作</string>
+        
+    <string name="action_login">登錄</string>
+        
+    <string name="avatar_content_desc">頭像</string>
+        
+    <string name="picture_content_desc">圖片</string>
+        
+    <string name="dialog_message_login_prompt">請先登錄。 </string>
+        
     <string name="dialog_button_text_done">完成</string>
+        
     <string name="dialog_button_text_go">前往</string>
-    <string name="dialog_button_text_jump">跳转</string>
-    <string name="navigation_drawer_open">打开导航抽屉</string>
-    <string name="navigation_drawer_close">关闭导航抽屉</string>
+        
+    <string name="dialog_button_text_jump">跳轉</string>
+        
+    <string name="navigation_drawer_open">打開導航抽屜</string>
+        
+    <string name="navigation_drawer_close">關閉導航抽屜</string>
+        
     <string name="drawer_top_background_content_desc">背景</string>
-    <string name="drawer_avatar_content_desc">用户头像</string>
-    <string name="dialog_message_log_out">退出登录？</string>
+        
+    <string name="drawer_avatar_content_desc">用戶頭像</string>
+        
+    <string name="dialog_message_log_out">退出登錄？ </string>
+        
     <string name="dialog_button_text_log_out">退出</string>
+        
     <string name="user_in_blacklist">已被抹布</string>
-    <string name="message_network_error">发生了网络错误</string>
-    <string name="message_server_connect_error">无法与服务器进行通信，请稍后再试。</string>
-    <string name="message_unknown_error">发生了一个未知的错误</string>
-    <string name="home">首页</string>
+        
+    <string name="message_network_error">發生了網絡錯誤</string>
+        
+    <string name="message_server_connect_error">無法與服務器進行通信，請稍後再試。 </string>
+        
+    <string name="message_unknown_error">發生了一個未知的錯誤</string>
+        
+    <string name="home">首頁</string>
+        
     <string name="favourites">收藏</string>
-    <string name="settings">设置</string>
-    <string name="help">帮助</string>
-    <string name="menu_account_new">创建帐户</string>
+        
+    <string name="settings">設置</string>
+        
+    <string name="help">幫助</string>
+        
+    <string name="menu_account_new">創建帳戶</string>
+        
     <string name="menu_refresh">刷新</string>
-    <string name="menu_page_jump">跳至特定页数</string>
-    <string name="menu_browser">从浏览器中打开</string>
+        
+    <string name="menu_page_jump">跳至特定頁數</string>
+        
+    <string name="menu_browser">從瀏覽器中打開</string>
+        
     <string name="menu_thread_go">前往特定帖子</string>
+        
     <string name="menu_favourites_add">加入收藏</string>
-    <string name="menu_link">链接</string>
+        
+    <string name="menu_link">鏈接</string>
+        
     <string name="menu_share">分享</string>
+        
     <string name="menu_title_share">分享到</string>
+        
     <string name="menu_thread_attachment">附件</string>
+        
     <string name="menu_emoticon">表情</string>
-    <string name="menu_keyboard">键盘</string>
-    <string name="menu_send">发送</string>
-    <string name="menu_download">下载</string>
+        
+    <string name="menu_keyboard">鍵盤</string>
+        
+    <string name="menu_send">發送</string>
+        
+    <string name="menu_download">下載</string>
+        
     <string name="menu_blacklist_add">塞抹布</string>
-    <string name="prompt_username">用户名/UID/Email</string>
-    <string name="prompt_password">密码</string>
-    <string name="error_field_required">此处不能留空</string>
-    <string name="dialog_progress_message_login">登录中…</string>
+        
+    <string name="prompt_username">用戶名/UID/Email</string>
+        
+    <string name="prompt_password">密碼</string>
+        
+    <string name="error_field_required">此處不能留空</string>
+        
+    <string name="dialog_progress_message_login">登錄中…</string>
+        
     <string name="dialog_button_text_add">添加</string>
+        
     <string name="dialog_progress_message_favourites_add">添加中…</string>
-    <string name="prompt_remark">备注</string>
-    <string name="snackbar_action_retry">重试</string>
-    <string name="dialog_message_invalid_or_unsupported_link">无效的、或者是并不支持的链接。</string>
-    <string name="dialog_button_text_use_a_different_app">使用其他应用</string>
+        
+    <string name="prompt_remark">備註</string>
+        
+    <string name="snackbar_action_retry">重試</string>
+        
+    <string name="dialog_message_invalid_or_unsupported_link">無效的、或者是並不支持的鏈接。 </string>
+        
+    <string name="dialog_button_text_use_a_different_app">使用其他應用</string>
+        
     <string name="dialog_message_processing">解析中…</string>
-    <string name="dialog_message_quote_not_found">找不到该引用。</string>
-    <string name="prompt_thread_link_or_id">帖子链接/ID</string>
-    <string name="error_field_invalid_or_unsupported_thread_link_or_id">无效的、或者是并不支持的帖子链接/ID格式</string>
-    <string name="message_thread_link_copy">帖子的链接已复制到剪切板</string>
-    <string name="prompt_reply">写点内容吧…</string>
-    <string name="signature">—— 来自 %1$s上的 &lt;a href=\"https://github.com/ykrank/S1-Next/releases\">S1Next-鹅版&lt;/a> v%2$s</string>
-    <string name="signature_in_reply">—— 来自 %1$s上的 [url=https://github.com/ykrank/S1-Next/releases]S1Next-鹅版[/url] v%2$s</string>
-    <string name="dialog_progress_message_reply">回复中…</string>
-    <string name="dialog_message_reply_discard_prompt">要舍弃这条回复吗？</string>
-    <string name="dialog_message_text_discard">舍弃</string>
-    <string name="snackbar_action_downloading">下载中…</string>
+        
+    <string name="dialog_message_quote_not_found">​​找不到該引用。 </string>
+        
+    <string name="prompt_thread_link_or_id">帖子鏈接/ID</string>
+        
+    <string name="error_field_invalid_or_unsupported_thread_link_or_id">無效的、或者是並不支持的帖子鏈接/ID格式</string>
+        
+    <string name="message_thread_link_copy">帖子的鏈接已復製到剪切板</string>
+        
+    <string name="prompt_reply">寫點內容吧…</string>
+        
+    <string name="signature">—— 來自 %1$s上的 &lt;a href=\"https://github.com/ykrank/S1-Next/releases\">S1Next-鵝版&lt;/a> v%2$s</string>
+    <string name="signature_in_reply">—— 來自 %1$s上的 [url=https://github.com/ykrank/S1-Next/releases]S1Next-鵝版[/url] v%2$s</string>
+        
+    <string name="dialog_progress_message_reply">回復中…</string>
+        
+    <string name="dialog_message_reply_discard_prompt">要捨棄這條回复嗎？ </string>
+        
+    <string name="dialog_message_text_discard">捨棄</string>
+        
+    <string name="snackbar_action_downloading">下載中…</string>
+        
     <string name="menu_view_in_google_play_store">在 Google Play 商店中查看</string>
-    <string name="open_source_licenses">开放源代码许可</string>
+        
+    <string name="open_source_licenses">開放源代碼許可</string>
+        
     <string name="menu_version_info">版本信息</string>
+        
     <string name="version">版本 %1$s</string>
-    <string name="blacklist_add_time">添加时间</string>
-    <string name="blacklist_author_name">用户名</string>
-    <string name="blacklist_authorid">用户ID</string>
-    <string name="blacklist_forum_flag">主题</string>
+        
+    <string name="blacklist_add_time">添加時間</string>
+        
+    <string name="blacklist_author_name">用戶名</string>
+        
+    <string name="blacklist_authorid">用戶ID</string>
+        
+    <string name="blacklist_forum_flag">主題</string>
+        
     <string name="blacklist_post_flag">回复</string>
+        
     <string name="blacklist_flag_del">刪除</string>
-    <string name="blacklist_flag_hide">隐藏</string>
+        
+    <string name="blacklist_flag_hide">隱藏</string>
+        
     <string name="blacklist_flag_normal">正常</string>
+        
     <string name="menu_blacklist_remove">取抹布</string>
-    <string name="menu_delete">删除</string>
-    <string name="menu_edit">编辑</string>
-    <string name="blacklist_refresh_warn">黑名单已更新，刷新以更新主题列表</string>
+        
+    <string name="menu_delete">刪除</string>
+        
+    <string name="menu_edit">編輯</string>
+        
+    <string name="blacklist_refresh_warn">黑名單已更新，刷新以更新主題列表</string>
+        
     <string name="menu_add">增加</string>
-    <string name="menu_all">全选</string>
-    <string name="menu_clear">清空选择</string>
-    <string name="blacklist_hide_forum">隐藏主题</string>
-    <string name="blacklist_hide_post">隐藏回复</string>
-    <string name="prompt_author_id">用户ID</string>
-    <string name="prompt_author_name">用户名</string>
-    <string name="menu_load_progress">加载上次进度</string>
-    <string name="menu_save_progress">保存阅读进度</string>
-    <string name="save_read_progress_success">阅读进度保存成功</string>
-    <string name="message_permission_denied">权限不足</string>
-    <string name="message_backup_success">备份成功</string>
-    <string name="message_io_exception">读写错误</string>
-    <string name="message_no_setting_data">没有有效的设置数据</string>
-    <string name="message_restore_success">还原成功</string>
-    <string name="prompt_title">输入主题</string>
-    <string name="error_no_type_id">请选择主题对应的分类</string>
-    <string name="error_no_title_or_message">抱歉，您尚未输入标题或内容</string>
-    <string name="error_not_init">请等待初始化完成</string>
-    <string name="title_new_thread">发布新帖</string>
-    <string name="dialog_message_new_thread_discard_prompt">要舍弃这条新帖吗？</string>
-    <string name="menu_new_thread">发布新帖</string>
+        
+    <string name="menu_all">全選</string>
+        
+    <string name="menu_clear">清空選擇</string>
+        
+    <string name="blacklist_hide_forum">隱藏主題</string>
+        
+    <string name="blacklist_hide_post">隱藏回复</string>
+        
+    <string name="prompt_author_id">用戶ID</string>
+        
+    <string name="prompt_author_name">用戶名</string>
+        
+    <string name="menu_load_progress">加載上次進度</string>
+        
+    <string name="menu_save_progress">保存閱讀進度</string>
+        
+    <string name="save_read_progress_success">閱讀進度保存成功</string>
+    <string name="message_permission_denied">權限不足</string>
+        
+    <string name="message_backup_success">備份成功</string>
+        
+    <string name="message_io_exception">讀寫錯誤</string>
+        
+    <string name="message_no_setting_data">沒有有效的設置數據</string>
+        
+    <string name="message_restore_success">還原成功</string>
+        
+    <string name="prompt_title">輸入主題</string>
+        
+    <string name="error_no_type_id">請選擇主題對應的分類</string>
+        
+    <string name="error_no_title_or_message">抱歉，您尚未輸入標題或內容</string>
+        
+    <string name="error_not_init">請等待初始化完成</string>
+        
+    <string name="title_new_thread">發布新帖</string>
+        
+    <string name="dialog_message_new_thread_discard_prompt">要捨棄這條新帖嗎？ </string>
+        
+    <string name="menu_new_thread">發布新帖</string>
+        
     <string name="menu_search">搜索</string>
-    <string name="search_hint">请输入搜索内容</string>
-    <string name="no_search_results">没有找到结果：\n“%1$s”</string>
-    <string name="login_in_web">网页登录</string>
-    <string name="login_success">登录成功</string>
+        
+    <string name="search_hint">請輸入搜索內容</string>
+        
+    <string name="no_search_results">沒有找到結果：\n“%1$s”</string>
+        
+    <string name="login_in_web">網頁登錄</string>
+        
+    <string name="login_success">登錄成功</string>
+        
     <string name="menu_favourites_remove">移除收藏</string>
-    <string name="how_to_remove_favourites">长按列表，将对应收藏移除</string>
-    <string name="message_api_error">服务器异常</string>
-    <string name="pm_desc_to_me"><![CDATA[<b>%s</b> 对 <b>我</b> 说 ：]]></string>
-    <string name="pm_desc_to_other"><![CDATA[<b>我</b> 对 <b>%s</b> 说 ：]]></string>
+        
+    <string name="how_to_remove_favourites">長按列表，將對應收藏移除</string>
+        
+    <string name="message_api_error">服務器異常</string>
+        
+    <string name="pm_desc_to_me"><![CDATA[<b>%s</b> 對 <b>我</b> 說 ：]]></string>
+        
+    <string name="pm_desc_to_other"><![CDATA[<b>我</b> 對 <b>%s</b> 說 ：]]></string>
+        
     <string name="pms">私信</string>
+        
     <string name="title_new_pm">新私信</string>
-    <string name="menu_post_selectable">帖子可复制</string>
-    <string name="dialog_message_post_selectable_warn">如果帖子文本可选，则切换页面时帖子文本将自动滚动到顶部（用来复制文本）</string>
-    <string name="dialog_message_post_unselectable_warn">如果帖子文本不可选，则帖子在切换页面时将不再自动滚动到顶部（阅读时推荐）</string>
-    <string name="dialog_message_text_switch">切换</string>
-    <string name="dialog_button_text_confirm">确定</string>
-    <string name="prompt_blacklist_remark">抹布备注</string>
+        
+    <string name="menu_post_selectable">帖子可複制</string>
+        
+    <string name="dialog_message_post_selectable_warn">如果帖子文本可選，則切換頁面時帖子文本將自動滾動到頂部（用來複製文本）</string>
+        
+    <string name="dialog_message_post_unselectable_warn">如果帖子文本不可選，則帖子在切換頁面時將不再自動滾動到頂部（閱讀時推薦）</string>
+        
+    <string name="dialog_message_text_switch">切換</string>
+        
+    <string name="dialog_button_text_confirm">確定</string>
+        
+    <string name="prompt_blacklist_remark">抹布備註</string>
+        
     <string name="message_operation_canceled">操作被取消</string>
-    <string name="replied">回复了</string>
+        
+    <string name="replied">回復了</string>
+        
     <string name="title_note">提醒</string>
+        
     <string name="notes">提醒</string>
-    <string name="menu_random_image">随机图</string>
-    <string name="title_user_home">个人空间</string>
+        
+    <string name="menu_random_image">隨機圖</string>
+        
+    <string name="title_user_home">個人空間</string>
+        
     <string name="home_label_friends">%1$d\n好友</string>
+        
     <string name="home_label_replies">%1$d\n回帖</string>
-    <string name="home_label_threads">%1$d\n主题</string>
-    <string name="personal_signature">个人签名</string>
-    <string name="online_time">在线时间</string>
-    <string name="reg_date">注册时间</string>
-    <string name="online_time_content">%1$d 小时</string>
-    <string name="last_visit_date">最后访问</string>
-    <string name="last_active_date">上次活动时间</string>
-    <string name="last_post_date">上次发表时间</string>
-    <string name="user_credits">积分</string>
-    <string name="user_combat_effectiveness">战斗力</string>
-    <string name="user_gold">金币</string>
+        
+    <string name="home_label_threads">%1$d\n主題</string>
+        
+    <string name="personal_signature">個人簽名</string>
+        
+    <string name="online_time">在線時間</string>
+        
+    <string name="reg_date">註冊時間</string>
+        
+    <string name="online_time_content">%1$d 小時</string>
+        
+    <string name="last_visit_date">最後訪問</string>
+        
+    <string name="last_active_date">上次活動時間</string>
+        
+    <string name="last_post_date">上次發表時間</string>
+        
+    <string name="user_credits">積分</string>
+        
+    <string name="user_combat_effectiveness">戰鬥力</string>
+        
+    <string name="user_gold">金幣</string>
+        
     <string name="user_rp">人品</string>
-    <string name="user_shame_sense">节操</string>
-    <string name="user_combat_effectiveness_content">%1$d 鹅</string>
+        
+    <string name="user_shame_sense">節操</string>
+        
+    <string name="user_combat_effectiveness_content">%1$d 鵝</string>
+        
     <string name="user_gold_content">%1$d G</string>
+        
     <string name="user_rp_content">%1$d RP</string>
+        
     <string name="user_shame_sense_content">%1$d 斤</string>
+        
     <string name="title_friends">好友列表</string>
-    <string name="database_update_error">数据库升级异常</string>
+        
+    <string name="database_update_error">數據庫升級異常</string>
+        
     <string name="reply">回复</string>
+        
     <string name="view">查看</string>
-    <string name="title_user_threads">%1$s的主题</string>
+        
+    <string name="title_user_threads">%1$s的主題</string>
+        
     <string name="title_user_replies">%1$s的回复</string>
-    <string name="last_replier">最后回复 %1$s</string>
-    <string name="menu_quick_side_bar_enable">使用快速导航</string>
-    <string name="menu_blacklist_edit">编辑黑名单</string>
-    <string name="rate">评分</string>
+        
+    <string name="last_replier">最後回复 %1$s</string>
+        
+    <string name="menu_quick_side_bar_enable">使用快速導航</string>
+        
+    <string name="menu_blacklist_edit">編輯黑名單</string>
+        
+    <string name="rate">評分</string>
+        
     <string name="blacklist_add_success">塞抹布成功</string>
+        
     <string name="blacklist_remove_success">取抹布成功</string>
-    <string name="title_new_rate">新评分</string>
-    <string name="invalid_thread_info">无效的帖子信息</string>
-    <string name="score_region">评分区间</string>
-    <string name="score_today_left">今日剩余</string>
-    <string name="score_reason">评分理由</string>
-    <string name="prompt_reason">输入理由</string>
+        
+    <string name="title_new_rate">新評分</string>
+        
+    <string name="invalid_thread_info">無效的帖子信息</string>
+        
+    <string name="score_region">評分區間</string>
+        
+    <string name="score_today_left">今日剩餘</string>
+        
+    <string name="score_reason">評分理由</string>
+        
+    <string name="prompt_reason">輸入理由</string>
+        
     <string name="notice_author">通知作者</string>
-    <string name="score_reason_example">可选评分理由</string>
-    <string name="invalid_score">无效的评分</string>
-    <string name="rate_success">评分成功</string>
-    <string name="menu_large_image_mode">大图模式</string>
+        
+    <string name="score_reason_example">可選評分理由</string>
+        
+    <string name="invalid_score">無效的評分</string>
+        
+    <string name="rate_success">評分成功</string>
+        
+    <string name="menu_large_image_mode">大圖模式</string>
+        
     <string name="search_type_entry_forum">帖子</string>
-    <string name="search_type_entry_user">用户</string>
-    <string name="edit_post_succeed">编辑帖子成功</string>
-    <string name="title_edit_post">编辑帖子</string>
-    <string name="error_host_ip">域名IP格式错误</string>
-    <string name="error_force_base_url">错误的基础网址</string>
-    <string name="error_force_host_ip">错误的IP列表:%s</string>
-    <string name="pref_force_base_url">基础网址</string>
-    <string name="pref_force_base_url_enabled">强制替换基础网址</string>
+        
+    <string name="search_type_entry_user">用戶</string>
+        
+    <string name="edit_post_succeed">編輯帖子成功</string>
+        
+    <string name="title_edit_post">編輯帖子</string>
+        
+    <string name="error_host_ip">域名IP格式錯誤</string>
+        
+    <string name="error_force_base_url">錯誤的基礎網址</string>
+        
+    <string name="error_force_host_ip">錯誤的IP列表:%s</string>
+        
+    <string name="pref_force_base_url">基礎網址</string>
+        
+    <string name="pref_force_base_url_enabled">強制替換基礎網址</string>
+        
     <string name="pref_force_host_ip">IP列表</string>
-    <string name="pref_force_host_ip_enabled">强制使用IP列表</string>
-    <string name="pref_network">网络参数</string>
-    <string name="pref_network_summary">专业的技术参数，谨慎修改</string>
-    <string name="title_history">历史记录</string>
-    <string name="histories">历史记录</string>
+        
+    <string name="pref_force_host_ip_enabled">強制使用IP列表</string>
+        
+    <string name="pref_network">網絡參數</string>
+        
+    <string name="pref_network_summary">專業的技術參數，謹慎修改</string>
+        
+    <string name="title_history">歷史記錄</string>
+        
+    <string name="histories">歷史記錄</string>
     <string name="prompt_answer">答案</string>
-    <string name="app_login_info_error">登录应用服务器失败</string>
-    <string name="action_auto_sign">自动签到</string>
-    <string name="action_check_in">签到</string>
-    <string name="already_checked_in">已签到</string>
-    <string name="download_unknown_error">下载失败</string>
-    <string name="download_success">下载成功</string>
-    <string name="click_to_trade_html">点击查看交易网页</string>
-    <string name="message_server_data_error">服务器数据解析错误</string>
-    <string name="clear_image_cache_error">清除图片缓存失败</string>
-    <string name="clear_image_cache_success">清除图片缓存成功</string>
-    <string name="click_to_cast_dark_magic">点击施放黑魔法</string>
-    <string name="vote_view_all_voter">查看投票参与人</string>
+        
+    <string name="app_login_info_error">登錄應用服務器失敗</string>
+        
+    <string name="action_auto_sign">自動簽到</string>
+        
+    <string name="action_check_in">簽到</string>
+        
+    <string name="already_checked_in">已簽到</string>
+        
+    <string name="download_unknown_error">下載失敗</string>
+        
+    <string name="download_success">下載成功</string>
+        
+    <string name="click_to_trade_html">點擊查看交易網頁</string>
+        
+    <string name="message_server_data_error">服務器數據解析錯誤</string>
+        
+    <string name="clear_image_cache_error">清除圖片緩存失敗</string>
+        
+    <string name="clear_image_cache_success">清除圖片緩存成功</string>
+        
+    <string name="click_to_cast_dark_magic">點擊施放黑魔法</string>
+        
+    <string name="vote_view_all_voter">查看投票參與人</string>
+        
     <string name="vote">投票</string>
-    <string name="click_to_vote">点击前往投票</string>
+        
+    <string name="click_to_vote">點擊前往投票</string>
+        
     <string name="voted">已投票</string>
+        
     <string name="vote_success">投票成功</string>
-    <string name="menu_send_report">发送错误报告</string>
-    <string name="prompt_report_error_msg">错误信息</string>
-    <string name="dialog_report">发送</string>
-    <string name="pref_net_cache_enable">网络数据缓存</string>
+        
+    <string name="menu_send_report">發送錯誤報告</string>
+        
+    <string name="prompt_report_error_msg">錯誤信息</string>
+        
+    <string name="dialog_report">發送</string>
+        
+    <string name="pref_net_cache_enable">網絡數據緩存</string>
 </resources>
