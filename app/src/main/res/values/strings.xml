@@ -14,16 +14,11 @@
     <string name="dialog_message_login_prompt">Please sign in first.</string>
     <string name="dialog_button_text_done">Done</string>
     <string name="dialog_button_text_go">Go</string>
-    <string name="dialog_button_text_jump">Jump</string>
 
     <string name="message_network_error">There was a network error</string>
     <string name="message_server_connect_error">Unable to connect to the server, please try again later.</string>
     <string name="message_unknown_error">Unknown error occurred</string>
     <string name="message_server_data_error">Server data parse error</string>
-
-    <!-- drawer -->
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="drawer_top_background_content_desc">background</string>
     <string name="drawer_avatar_content_desc">User avatar</string>
@@ -79,8 +74,6 @@
     <string name="dialog_button_text_add">Add</string>
     <string name="dialog_progress_message_favourites_add">Adding…</string>
     <string name="prompt_remark">Remark</string>
-
-    <string name="snackbar_action_retry">Retry</string>
 
     <string name="dialog_message_invalid_or_unsupported_link">Invalid or unsupported link.</string>
     <string name="dialog_button_text_use_a_different_app">Use a different app</string>

@@ -19,12 +19,6 @@
         
     <string name="dialog_button_text_go">前往</string>
         
-    <string name="dialog_button_text_jump">跳轉</string>
-        
-    <string name="navigation_drawer_open">打開導航抽屜</string>
-        
-    <string name="navigation_drawer_close">關閉導航抽屜</string>
-        
     <string name="drawer_top_background_content_desc">背景</string>
         
     <string name="drawer_avatar_content_desc">用戶頭像</string>
@@ -92,8 +86,6 @@
     <string name="dialog_progress_message_favourites_add">添加中…</string>
         
     <string name="prompt_remark">備註</string>
-        
-    <string name="snackbar_action_retry">重試</string>
         
     <string name="dialog_message_invalid_or_unsupported_link">無效的、或者是並不支持的鏈接。 </string>
         

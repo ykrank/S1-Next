@@ -91,5 +91,5 @@
     <string name="pref_force_base_url">Base url</string>
     <string name="pref_force_host_ip_enabled">Force use ip</string>
     <string name="pref_force_host_ip">IP</string>
-    <string name="pref_key_force_host_ip_default_value" translatable="false">220.196.42.172, 220.196.42.170</string>
+    <string name="pref_key_force_host_ip_default_value" translatable="false">47.97.161.219</string>
 </resources>
