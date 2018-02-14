@@ -56,7 +56,10 @@ class NewPmActivity : BaseActivity() {
         private val ARG_TO_UID = "arg_to_uid"
         private val ARG_TO_USERNAME = "to_user_name"
 
-        fun startNewPmActivityForResultMessage(activity: Activity, toUid: String, toUsername: String) {
+        fun startNewPmActivityForResultMessage(activity: Activity, toUid: String?, toUsername: String?) {
+            if (toUid.isNullOrEmpty() || toUsername.isNullOrEmpty()) {
+                return
+            }
             val intent = Intent(activity, NewPmActivity::class.java)
             intent.putExtra(ARG_TO_UID, toUid)
             intent.putExtra(ARG_TO_USERNAME, toUsername)
