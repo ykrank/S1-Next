@@ -19,9 +19,10 @@ class RateRequestDialogFragment : ProgressDialogFragment<RateResult>() {
     }
 
     override fun getSourceObservable(): Single<RateResult> {
-        val ratePreInfo = arguments.getParcelable<RatePreInfo>(ARG_RATE_PRE_INFO)
-        val score = arguments.getString(ARG_SCORE)
-        val reason = arguments.getString(ARG_REASON)
+        val bundle = arguments!!
+        val ratePreInfo = bundle.getParcelable<RatePreInfo>(ARG_RATE_PRE_INFO)
+        val score = bundle.getString(ARG_SCORE)
+        val reason = bundle.getString(ARG_REASON)
         if (ratePreInfo == null) {
             return Single.error<RateResult>(IllegalStateException("RatePreInfo is null"))
         }

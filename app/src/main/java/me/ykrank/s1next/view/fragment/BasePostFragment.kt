@@ -63,7 +63,7 @@ abstract class BasePostFragment : BaseFragment() {
     private var post = false
 
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mFragmentPostBinding = DataBindingUtil.inflate<FragmentPostBinding>(inflater, R.layout.fragment_post, container,
                 false)
         mReplyView = mFragmentPostBinding.reply
@@ -205,7 +205,7 @@ abstract class BasePostFragment : BaseFragment() {
                 .subscribe({ mReplyView.setText(it) }, L::report)
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
         outState?.putBoolean(STATE_IS_EMOTICON_KEYBOARD_SHOWING, isEmoticonKeyboardShowing)
@@ -220,8 +220,8 @@ abstract class BasePostFragment : BaseFragment() {
                     .subscribe({
                         post = true
                         editorDiskCache.remove(cacheKey)
-                        BaseActivity.setResultMessage(activity, it.msg)
-                        activity.finish()
+                        BaseActivity.setResultMessage(activity!!, it.msg)
+                        activity?.finish()
                     }, L::report)
         }
     }
@@ -240,7 +240,7 @@ abstract class BasePostFragment : BaseFragment() {
         // hide keyboard
         ImeUtils.setShowSoftInputOnFocus(mReplyView, false)
         ImeUtils.hideIme(mReplyView)
-        activity.window.setSoftInputMode(
+        activity!!.window.setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
         mEmoticonKeyboard.visibility = View.VISIBLE
@@ -272,7 +272,7 @@ abstract class BasePostFragment : BaseFragment() {
                         mEmoticonKeyboard.visibility = View.GONE
 
                         ImeUtils.setShowSoftInputOnFocus(mReplyView, true)
-                        activity.window.setSoftInputMode(
+                        activity!!.window.setSoftInputMode(
                                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
                         if (shouldShowKeyboard) {
@@ -288,13 +288,13 @@ abstract class BasePostFragment : BaseFragment() {
     }
 
     private fun setEmoticonIcon() {
-        mMenuEmoticon?.setIcon(ResourceUtil.getResourceId(context.theme,
+        mMenuEmoticon?.setIcon(ResourceUtil.getResourceId(context!!.theme,
                 R.attr.iconMenuEmoticon))
         mMenuEmoticon?.setTitle(R.string.menu_emoticon)
     }
 
     private fun setKeyboardIcon() {
-        mMenuEmoticon?.setIcon(ResourceUtil.getResourceId(context.theme,
+        mMenuEmoticon?.setIcon(ResourceUtil.getResourceId(context!!.theme,
                 R.attr.iconMenuKeyboard))
         mMenuEmoticon?.setTitle(R.string.menu_keyboard)
     }

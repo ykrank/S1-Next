@@ -53,14 +53,14 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
         super.onViewCreated(view, savedInstanceState)
         App.appComponent.inject(this)
 
-        toUid = arguments.getString(ARG_TO_UID)
-        toUsername = arguments.getString(ARG_TO_USERNAME)
+        toUid = arguments!!.getString(ARG_TO_UID)
+        toUsername = arguments!!.getString(ARG_TO_USERNAME)
         L.leaveMsg("PmFragment##toUid:$toUid,toUsername$toUsername")
         if (toUid.isNullOrEmpty() || toUsername.isNullOrEmpty()) {
             showShortSnackbar(R.string.message_api_error)
             return
         }
-        activity.title = toUsername
+        activity?.title = toUsername
 
         val recyclerView = recyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -81,7 +81,7 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.menu_new_pm -> {
-                NewPmActivity.startNewPmActivityForResultMessage(activity, toUid!!, toUsername!!)
+                NewPmActivity.startNewPmActivityForResultMessage(activity!!, toUid!!, toUsername!!)
                 return true
             }
         }

@@ -39,7 +39,7 @@ class WebLoginFragment : BaseFragment() {
     private var webView: WebView? = null
     private lateinit var mProgressBar: ProgressBar
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         App.appComponent.inject(this)
         mFragmentHelpBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_webview, container,
                 false)
@@ -90,7 +90,7 @@ class WebLoginFragment : BaseFragment() {
         webView?.resumeTimers()
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
         webView?.saveState(outState)

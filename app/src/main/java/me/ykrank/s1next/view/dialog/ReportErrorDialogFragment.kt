@@ -20,7 +20,7 @@ import me.ykrank.s1next.databinding.DialogReportErrorBinding
 class ReportErrorDialogFragment : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val binding = DataBindingUtil.inflate<DialogReportErrorBinding>(activity.layoutInflater,
+        val binding = DataBindingUtil.inflate<DialogReportErrorBinding>(activity!!.layoutInflater,
                 R.layout.dialog_report_error, null, false)
         val alertDialog = AlertDialog.Builder(activity)
                 .setTitle(R.string.menu_send_report)

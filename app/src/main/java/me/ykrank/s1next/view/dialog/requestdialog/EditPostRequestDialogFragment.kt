@@ -17,7 +17,7 @@ class EditPostRequestDialogFragment : BaseRequestDialogFragment<String>() {
     }
 
     override fun getSourceObservable(): Single<String> {
-        val bundle = arguments
+        val bundle = arguments!!
         val mThread = bundle.getParcelable<Thread>(ARG_THREAD)
         val mPost = bundle.getParcelable<Post>(ARG_POST)
         val title = bundle.getString(ARG_TITLE)

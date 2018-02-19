@@ -68,7 +68,7 @@
                     android:orientation="vertical"
                     tools:visibility="visible">
 
-                    <com.github.ykrank.androidtools.widget.BezelImageView
+                    <ImageView
                         android:id="@+id/avatar"
                         android:layout_width="@dimen/avatar_size_home"
                         android:layout_height="@dimen/avatar_size_home"
@@ -77,7 +77,6 @@
                         android:visibility="@{downloadPreferencesManager.isAvatarsDownload ? View.VISIBLE : View.GONE}"
                         app:big="@{big}"
                         app:downloadPreferencesManager="@{downloadPreferencesManager}"
-                        app:maskDrawable="@drawable/rounded_mask"
                         app:uid="@{data.homeUid}"
                         app:preLoad="@{preLoad}"
                         app:thumb="@{thumb}"

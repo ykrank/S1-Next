@@ -36,15 +36,16 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        mPagerCallback = fragmentManager.findFragmentByTag(ThreadListFragment.TAG) as PagerCallback
+        mPagerCallback = fragmentManager!!.findFragmentByTag(ThreadListFragment.TAG) as PagerCallback
         mSubForumsCallback = context as SubForumsCallback?
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mForumId = arguments.getString(ARG_FORUM_ID)
-        mPageNum = arguments.getInt(ARG_PAGE_NUM)
+        val bundle = arguments!!
+        mForumId = bundle.getString(ARG_FORUM_ID)
+        mPageNum = bundle.getInt(ARG_PAGE_NUM)
         L.leaveMsg("ThreadListPagerFragment##ForumId:$mForumId,PageNum:$mPageNum")
 
         val recyclerView = recyclerView

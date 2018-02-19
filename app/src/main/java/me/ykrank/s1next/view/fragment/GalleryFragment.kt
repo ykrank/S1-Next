@@ -51,15 +51,15 @@ class GalleryFragment : Fragment() {
     @Inject
     internal lateinit var mDownloadPrefManager: DownloadPreferencesManager
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
         binding = FragmentGalleryBinding.inflate(inflater, container, false)
         mPhotoView = binding.photoView
-        mImageUrl = arguments.getString(ARG_IMAGE_URL)
-        mImageThumbUrl = arguments.getString(ARG_IMAGE_THUMB_URL)
+        mImageUrl = arguments!!.getString(ARG_IMAGE_URL)
+        mImageThumbUrl = arguments!!.getString(ARG_IMAGE_THUMB_URL)
 
         L.leaveMsg("GalleryActivity##url:$mImageUrl,thumb:$mImageThumbUrl")
 
@@ -79,7 +79,7 @@ class GalleryFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_download -> {
-                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                             REQUEST_CODE_WRITE_EXTERNAL_STORAGE)
@@ -126,8 +126,9 @@ class GalleryFragment : Fragment() {
                     .signature(mDownloadPrefManager.avatarCacheInvalidationIntervalSignature))
         }
         builder.into(object : SimpleTarget<File>() {
-            override fun onResourceReady(resource: File, transition: Transition<in File>) {
+            override fun onResourceReady(resource: File, transition: Transition<in File>?) {
                 RxJavaUtil.workWithUiResult({
+                    val context = context ?: throw IllegalStateException("Context is null")
                     var name: String? = null
                     val file: File
                     val downloadDir = FileUtil.getDownloadDirectory(context)
@@ -161,7 +162,7 @@ class GalleryFragment : Fragment() {
                     file
                 }, { f ->
                     Snackbar.make(binding.root, R.string.download_success, Snackbar.LENGTH_SHORT).show()
-                    FileUtil.notifyImageInMediaStore(context, f)
+                    context?.let { FileUtil.notifyImageInMediaStore(it, f) }
                 }) { e ->
                     L.report(e)
                     Toast.makeText(context, R.string.download_unknown_error, Toast.LENGTH_SHORT).show()

@@ -79,13 +79,13 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
 
     private lateinit var mLastThreadInfoSubject: PublishSubject<Int>
 
-    private val mPostListPagerAdapter: PostListPagerAdapter by lazy { PostListPagerAdapter(fragmentManager) }
+    private val mPostListPagerAdapter: PostListPagerAdapter by lazy { PostListPagerAdapter(fragmentManager!!) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         App.appComponent.inject(this)
 
-        val bundle = arguments
+        val bundle = arguments!!
         val thread = Preconditions.checkNotNull(bundle.getParcelable<Thread>(ARG_THREAD))
         // thread title is null if this thread comes from ThreadLink
         mThreadTitle = thread.title
@@ -159,14 +159,14 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                 .ofType(VotePostEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe {
-                    if (!LoginPromptDialogFragment.showAppLoginPromptDialogIfNeeded(fragmentManager, mUser)) {
+                    if (!LoginPromptDialogFragment.showAppLoginPromptDialogIfNeeded(fragmentManager!!, mUser)) {
                         VoteDialogFragment.newInstance(it.threadId, it.vote).show(fragmentManager, VoteDialogFragment.TAG)
                     }
                 }
         mRxBus.get()
                 .ofType(BlackListChangeEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
-                .subscribe { activity.setResult(Activity.RESULT_OK) }
+                .subscribe { activity?.setResult(Activity.RESULT_OK) }
     }
 
     override fun onPause() {
@@ -227,15 +227,15 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         when (item.itemId) {
             R.id.menu_thread_attachment -> {
                 ThreadAttachmentDialogFragment.newInstance(mThreadAttachment).show(
-                        activity.supportFragmentManager,
+                        activity!!.supportFragmentManager,
                         ThreadAttachmentDialogFragment.TAG)
 
                 return true
             }
             R.id.menu_favourites_add -> {
-                if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(fragmentManager, mUser)) {
+                if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(fragmentManager!!, mUser)) {
                     ThreadFavouritesAddDialogFragment.newInstance(mThreadId).show(
-                            activity.supportFragmentManager,
+                            activity!!.supportFragmentManager,
                             ThreadFavouritesAddDialogFragment.TAG)
                 }
 
@@ -420,7 +420,9 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     }
 
     private fun startReplyActivity(quotePostId: String?, quotePostCount: String?) {
-        if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(fragmentManager, mUser)) {
+        val fm = fragmentManager ?: return
+        val activity = activity ?: return
+        if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(fm, mUser)) {
             return
         }
 
@@ -429,7 +431,9 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     }
 
     private fun startRateActivity(threadId: String?, postId: String?) {
-        if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(fragmentManager, mUser)) {
+        val fm = fragmentManager ?: return
+        val activity = activity ?: return
+        if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(fm, mUser)) {
             return
         }
 
@@ -450,7 +454,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
 
         override fun getItem(i: Int): PostListPagerFragment {
             val progress = readProgress
-            val bundle = arguments
+            val bundle = arguments!!
             val jumpPage = bundle.getInt(ARG_JUMP_PAGE, -1)
             val quotePostId = bundle.getString(ARG_QUOTE_POST_ID)
             if (jumpPage == i + 1 && !TextUtils.isEmpty(quotePostId)) {

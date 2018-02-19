@@ -23,13 +23,13 @@ class QuotePostPageParserDialogFragment : ProgressDialogFragment<String>() {
         super.onDestroy()
 
         if (mShouldFinishActivity) {
-            activity.finish()
+            activity?.finish()
         }
     }
 
     override fun getSourceObservable(): Single<String> {
-        val threadLink = Preconditions.checkNotNull(arguments.getParcelable<ThreadLink>(
-                ARG_THREAD_LINK))
+        val threadLink = arguments!!.getParcelable<ThreadLink>(
+                ARG_THREAD_LINK)
         return mS1Service.getQuotePostResponseBody(threadLink.threadId,
                 threadLink.quotePostId.get()).map { voidResponse -> voidResponse.raw().request().url().toString() }
     }
@@ -37,7 +37,7 @@ class QuotePostPageParserDialogFragment : ProgressDialogFragment<String>() {
     override fun onNext(url: String) {
         val jumpPage = parseQuotePostPage(url)
         if (jumpPage.isPresent) {
-            val threadLink = Preconditions.checkNotNull(arguments.getParcelable<ThreadLink>(
+            val threadLink = Preconditions.checkNotNull(arguments!!.getParcelable<ThreadLink>(
                     ARG_THREAD_LINK))
             val threadLinkWithJumpPage = ThreadLink.Builder(threadLink.threadId)
                     .jumpPage(jumpPage.get())
@@ -53,6 +53,7 @@ class QuotePostPageParserDialogFragment : ProgressDialogFragment<String>() {
     }
 
     override fun onError(throwable: Throwable) {
+        val context = context ?: return
         val errorMsg = ErrorUtil.parse(context, throwable)
         if (isVisible) {
             ThreadLinkInvalidPromptDialogFragment.newInstance(context, errorMsg)

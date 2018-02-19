@@ -1,5 +1,6 @@
 package me.ykrank.s1next.view.adapter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,12 +20,12 @@ public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     @NonNull
     private PostAdapterDelegate postAdapterDelegate;
 
-    public PostListRecyclerViewAdapter(Fragment fragment) {
-        super(fragment.getContext());
+    public PostListRecyclerViewAdapter(Fragment fragment, @NonNull Context context) {
+        super(context);
 
-        postAdapterDelegate = new PostAdapterDelegate(fragment);
+        postAdapterDelegate = new PostAdapterDelegate(fragment, context);
         addAdapterDelegate(postAdapterDelegate);
-        addAdapterDelegate(new FooterProgressAdapterDelegate(fragment.getContext()));
+        addAdapterDelegate(new FooterProgressAdapterDelegate(context));
     }
 
     public void setThreadInfo(@NonNull Thread threadInfo) {

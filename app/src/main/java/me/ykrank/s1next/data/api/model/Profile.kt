@@ -35,7 +35,7 @@ class Profile : Account {
     constructor(@JsonProperty("extcredits") extCredits: JsonNode, @JsonProperty("space") space: JsonNode) {
         this.homeUsername = space.get("username")?.asText()
         this.homeUid = space.get("uid")?.asText()
-        this.groupTitle = space.get("group").get("grouptitle")?.asText()
+        this.groupTitle = space.get("group")?.get("grouptitle")?.asText()
         this.friends = space.get("friends")?.asInt() ?: -1
         val posts = space.get("posts")?.asInt() ?: -1
         this.threads = space.get("threads")?.asInt() ?: -1

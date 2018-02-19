@@ -10,6 +10,7 @@ import com.github.ykrank.androidtools.widget.track.event.page.FragmentStartEvent
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.UserValidator
+import me.ykrank.s1next.util.ErrorUtil
 import javax.inject.Inject
 
 abstract class BaseFragment : LibBaseFragment() {
@@ -35,5 +36,10 @@ abstract class BaseFragment : LibBaseFragment() {
     override fun onPause() {
         trackAgent.post(FragmentEndEvent(this))
         super.onPause()
+    }
+
+    fun showRetrySnackbar(throwable: Throwable, onClickListener: View.OnClickListener) {
+        val context = context?:return
+        showRetrySnackbar(ErrorUtil.parse(context, throwable), onClickListener)
     }
 }

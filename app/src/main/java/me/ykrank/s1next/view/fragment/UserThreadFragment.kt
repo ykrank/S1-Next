@@ -28,7 +28,7 @@ class UserThreadFragment : BaseLoadMoreRecycleViewFragment<HomeThreadWebWrapper>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        uid = arguments.getString(ARG_UID)
+        uid = arguments!!.getString(ARG_UID)
         L.leaveMsg("UserThreadFragment")
 
         val recyclerView = recyclerView

@@ -39,6 +39,6 @@ task clean(type: Delete) {
 
 ext {
     databinding_version = '2.3.2'
-    supportVersion = '26.1.0'
+    supportVersion = '27.0.2'
     buildToolsVersion = '27.0.1'
 }

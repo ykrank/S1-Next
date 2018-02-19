@@ -35,7 +35,7 @@
             app:layout_aspectRatio="@fraction/drawer_header_aspect_ratio"
             app:layout_widthPercent="100%" />
 
-        <com.github.ykrank.androidtools.widget.BezelImageView
+        <ImageView
             android:id="@+id/drawer_user_avatar"
             android:layout_width="@dimen/drawer_avatar_size"
             android:layout_height="@dimen/drawer_avatar_size"
@@ -43,8 +43,6 @@
             android:layout_marginStart="@dimen/item_padding"
             android:layout_marginTop="@dimen/drawer_avatar_margin_top"
             android:contentDescription="@string/drawer_avatar_content_desc"
-            app:borderDrawable="@drawable/selector_rounded_border"
-            app:maskDrawable="@drawable/rounded_mask"
             app:user="@{userViewModel.user}" />
 
         <TextView

@@ -23,8 +23,8 @@ class LoginDialogFragment : ProgressDialogFragment<AccountResultWrapper>() {
     }
 
     override fun getSourceObservable(): Single<AccountResultWrapper> {
-        val username = arguments.getString(ARG_USERNAME)
-        val password = arguments.getString(ARG_PASSWORD)
+        val username = arguments?.getString(ARG_USERNAME)
+        val password = arguments?.getString(ARG_PASSWORD)
         return mS1Service.login(username, password).map { resultWrapper ->
             // the authenticity token is not fresh after login
             resultWrapper.data.authenticityToken = null

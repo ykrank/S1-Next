@@ -24,7 +24,7 @@ public interface AppService {
     @FormUrlEncoded
     @POST("user/login")
     Single<AppDataWrapper<AppLoginResult>> login(@Field("username") String username, @Field("password") String password,
-                                                 @Field("questionid") int questionId, @Field("answer") String answer);
+                                                 @Field("questionid") Integer questionId, @Field("answer") String answer);
 
     @FormUrlEncoded
     @POST("user/sign")

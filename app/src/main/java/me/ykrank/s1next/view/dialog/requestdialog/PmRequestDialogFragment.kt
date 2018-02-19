@@ -17,8 +17,9 @@ class PmRequestDialogFragment : BaseRequestDialogFragment<AccountResultWrapper>(
     }
 
     override fun getSourceObservable(): Single<AccountResultWrapper> {
-        val toUid = arguments.getString(ARG_TO_UID)
-        val msg = arguments.getString(ARG_MESSAGE)
+        val bundle = arguments!!
+        val toUid = bundle.getString(ARG_TO_UID)
+        val msg = bundle.getString(ARG_MESSAGE)
 
         return flatMappedWithAuthenticityToken { token -> mS1Service.postPm(token, toUid, msg) }
     }

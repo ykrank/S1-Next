@@ -43,7 +43,7 @@ class NewThreadFragment : BasePostFragment() {
 
     private var cacheModel: NewThreadCacheModel? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val newThreadBinding = DataBindingUtil.inflate<FragmentNewThreadBinding>(inflater, R.layout.fragment_new_thread, container, false)
         initCreateView(newThreadBinding.layoutPost)
         titleEditText = newThreadBinding.title
@@ -53,7 +53,7 @@ class NewThreadFragment : BasePostFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mForumId = arguments.getInt(ARG_FORUM_ID)
+        mForumId = arguments!!.getInt(ARG_FORUM_ID)
         mCacheKey = String.format(CACHE_KEY_PREFIX, mForumId)
         L.leaveMsg("NewThreadFragment##mForumId:" + mForumId)
 
@@ -149,7 +149,7 @@ class NewThreadFragment : BasePostFragment() {
                     }
                 }, {
                     L.report(it)
-                    showRetrySnackbar(ErrorUtil.parse(context, it), View.OnClickListener { init() })
+                    showRetrySnackbar(it, View.OnClickListener { init() })
                 })
     }
 

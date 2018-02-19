@@ -20,8 +20,9 @@ class ReplyFragment : BasePostFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mThreadId = arguments.getString(ARG_THREAD_ID)
-        mQuotePostId = arguments.getString(ARG_QUOTE_POST_ID)
+        val bundle = arguments!!
+        mThreadId = bundle.getString(ARG_THREAD_ID)
+        mQuotePostId = bundle.getString(ARG_QUOTE_POST_ID)
         cacheKey = String.format(CACHE_KEY_PREFIX, mThreadId, mQuotePostId)
         L.leaveMsg("ReplyFragment##mThreadId:$mThreadId,mQuotePostId$mQuotePostId")
     }

@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/item_padding">
 
-            <com.github.ykrank.androidtools.widget.BezelImageView
+            <ImageView
                 android:id="@+id/avatar"
                 android:layout_width="@dimen/avatar_size"
                 android:layout_height="@dimen/avatar_size"
@@ -36,7 +36,6 @@
                 android:onLongClick="@{postViewModel::onLongClick}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:maskDrawable="@drawable/rounded_mask"
                 app:uid="@{postViewModel.post.authorId}"
                 tools:src="@drawable/ic_avatar_placeholder" />
 

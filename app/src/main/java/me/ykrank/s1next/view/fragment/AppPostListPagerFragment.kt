@@ -89,16 +89,17 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
         App.appComponent.inject(this)
         super.onViewCreated(view, savedInstanceState)
 
-        mThreadId = arguments.getString(ARG_THREAD_ID)
-        mPageNum = arguments.getInt(ARG_PAGE_NUM)
+        val bundle = arguments!!
+        mThreadId = bundle.getString(ARG_THREAD_ID)
+        mPageNum = bundle.getInt(ARG_PAGE_NUM)
         if (readProgress == null) {
-            readProgress = arguments.getParcelable<ReadProgress>(ARG_READ_PROGRESS)
-            scrollState = arguments.getParcelable<PagerScrollState>(ARG_PAGER_SCROLL_STATE)
+            readProgress = bundle.getParcelable<ReadProgress>(ARG_READ_PROGRESS)
+            scrollState = bundle.getParcelable<PagerScrollState>(ARG_PAGER_SCROLL_STATE)
         }
         L.leaveMsg("AppPostListPagerFragment##ThreadId:$mThreadId,PageNum:$mPageNum")
 
         mRecyclerView = recyclerView
-        mLayoutManager = StartSnapLinearLayoutManager(activity)
+        mLayoutManager = StartSnapLinearLayoutManager(activity!!)
         mRecyclerView.layoutManager = mLayoutManager
         mRecyclerAdapter = AppPostListRecyclerViewAdapter(activity)
         mRecyclerView.adapter = mRecyclerAdapter
@@ -249,7 +250,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
                 readProgress = null
                 scrollState!!.state = PagerScrollState.FREE
             } else {
-                val quotePostId = arguments.getString(ARG_QUOTE_POST_ID)
+                val quotePostId = arguments?.getString(ARG_QUOTE_POST_ID)
                 if (!TextUtils.isEmpty(quotePostId)) {
                     var i = 0
                     val length = postList.size
@@ -262,7 +263,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
                         i++
                     }
                     // clear this argument after redirecting
-                    arguments.putString(ARG_QUOTE_POST_ID, null)
+                    arguments?.putString(ARG_QUOTE_POST_ID, null)
                 }
             }
 

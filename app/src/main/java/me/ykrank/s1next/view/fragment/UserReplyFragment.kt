@@ -27,7 +27,7 @@ class UserReplyFragment : BaseLoadMoreRecycleViewFragment<HomeReplyWebWrapper>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        uid = arguments.getString(ARG_UID)
+        uid = arguments!!.getString(ARG_UID)
         L.leaveMsg("UserReplyFragment")
 
         val recyclerView = recyclerView

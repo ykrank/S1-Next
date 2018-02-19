@@ -46,7 +46,7 @@ abstract class BaseViewPagerFragment : LibBaseViewPagerFragment() {
     override fun setTitleWithPosition(position: Int) {
         val titleWithoutPosition = getTitleWithoutPosition()
         if (titleWithoutPosition == null) {
-            activity.title = null
+            activity?.title = null
             return
         }
 
@@ -56,6 +56,6 @@ abstract class BaseViewPagerFragment : LibBaseViewPagerFragment() {
         } else {
             titleWithPosition = StringUtil.concatWithTwoSpaces(titleWithoutPosition, position + 1)
         }
-        activity.title = titleWithPosition
+        activity?.title = titleWithPosition
     }
 }

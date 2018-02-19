@@ -50,17 +50,17 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
-        tid = arguments.getString(ARG_THREAD_ID)
-        mVote = arguments.getParcelable(ARG_VOTE)
+        tid = arguments!!.getString(ARG_THREAD_ID)
+        mVote = arguments!!.getParcelable(ARG_VOTE)
 
-        adapter = SimpleRecycleViewAdapter(context, R.layout.item_vote, BindViewHolderCallback { position, itemBind ->
+        adapter = SimpleRecycleViewAdapter(context!!, R.layout.item_vote, BindViewHolderCallback { position, itemBind ->
             itemBind as ItemVoteBinding
             itemBind.radio.setOnClickListener { refreshSelectedItem(position, itemBind) }
             itemBind.checkBox.setOnClickListener { refreshSelectedItem(position, itemBind) }
         })
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = LayoutVoteBinding.inflate(inflater, container, false)
 
         val model = VoteViewModel(mVote, this)
@@ -99,10 +99,16 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
                     val appVote = it.first.data
                     binding.model.appVote.set(appVote)
                     it.second.data?.let {
-                        data.forEachIndexed { index, vm -> vm.option.mergeWithAppVoteOption(it[index], appVote?.voters ?: mVote.voteCount) }
+                        data.forEachIndexed { index, vm ->
+                            vm.option.mergeWithAppVoteOption(it[index], appVote?.voters
+                                    ?: mVote.voteCount)
+                        }
                     }
                     adapter.notifyDataSetChanged()
-                }, { activity?.toast(ErrorUtil.parse(activity, it)) })
+                }, {
+                    val activity = activity ?: return@subscribe
+                    activity.toast(ErrorUtil.parse(activity, it))
+                })
     }
 
     private fun refreshSelectedItem(position: Int, itemBind: ItemVoteBinding) {
@@ -128,9 +134,12 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
                 .subscribe({
-                    activity.toast(R.string.vote_success)
+                    activity?.toast(R.string.vote_success)
                     loadData()
-                }, { activity?.toast(ErrorUtil.parse(activity, it)) })
+                }, {
+                    val activity = activity ?: return@subscribe
+                    activity.toast(ErrorUtil.parse(activity, it))
+                })
     }
 
     companion object {

@@ -36,7 +36,7 @@ class WebViewFragment : BaseFragment(), BackPressDelegate {
 
     private lateinit var binding: FragmentWebviewBinding
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         App.appComponent.inject(this)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_webview, container, false)
         return binding.root
@@ -45,9 +45,10 @@ class WebViewFragment : BaseFragment(), BackPressDelegate {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         L.leaveMsg(TAG)
-        url = arguments.getString(ARG_URL)
-        enableJs = arguments.getBoolean(ARG_ENABLE_JS)
-        pcAgent = arguments.getBoolean(ARG_PC_AGENT)
+        val bundle = arguments!!
+        url = bundle.getString(ARG_URL)
+        enableJs = bundle.getBoolean(ARG_ENABLE_JS)
+        pcAgent = bundle.getBoolean(ARG_PC_AGENT)
 
         binding.webPageViewModel = WebPageViewModel()
 
@@ -70,7 +71,7 @@ class WebViewFragment : BaseFragment(), BackPressDelegate {
         binding.webView.resumeTimers()
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
         binding.webView.saveState(outState)
@@ -128,7 +129,7 @@ class WebViewFragment : BaseFragment(), BackPressDelegate {
 
         binding.webView.webChromeClient = ProgressWebChromeClient(binding.progressBar)
 
-        WebViewUtils.syncWebViewCookies(context, mCookieManager.cookieStore)
+        WebViewUtils.syncWebViewCookies(context!!, mCookieManager.cookieStore)
     }
 
     companion object {

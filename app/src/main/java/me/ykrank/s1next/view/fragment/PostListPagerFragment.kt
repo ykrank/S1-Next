@@ -90,18 +90,19 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         App.appComponent.inject(this)
         super.onViewCreated(view, savedInstanceState)
 
-        mThreadId = arguments.getString(ARG_THREAD_ID)
-        mPageNum = arguments.getInt(ARG_PAGE_NUM)
+        val bundle = arguments!!
+        mThreadId = bundle.getString(ARG_THREAD_ID)
+        mPageNum = bundle.getInt(ARG_PAGE_NUM)
         if (readProgress == null) {
-            readProgress = arguments.getParcelable<ReadProgress>(ARG_READ_PROGRESS)
-            scrollState = arguments.getParcelable<PagerScrollState>(ARG_PAGER_SCROLL_STATE)
+            readProgress = bundle.getParcelable<ReadProgress>(ARG_READ_PROGRESS)
+            scrollState = bundle.getParcelable<PagerScrollState>(ARG_PAGER_SCROLL_STATE)
         }
         L.leaveMsg("PostListPagerFragment##ThreadId:$mThreadId,PageNum:$mPageNum")
 
         mRecyclerView = recyclerView
-        mLayoutManager = StartSnapLinearLayoutManager(activity)
+        mLayoutManager = StartSnapLinearLayoutManager(activity!!)
         mRecyclerView.layoutManager = mLayoutManager
-        mRecyclerAdapter = PostListRecyclerViewAdapter(this)
+        mRecyclerAdapter = PostListRecyclerViewAdapter(this, context!!)
         mRecyclerView.adapter = mRecyclerAdapter
 
         // add pull up to refresh to RecyclerView
@@ -139,7 +140,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        mPagerCallback = fragmentManager.findFragmentByTag(PostListFragment.TAG) as PagerCallback
+        mPagerCallback = fragmentManager!!.findFragmentByTag(PostListFragment.TAG) as PagerCallback
     }
 
     override fun onDetach() {
@@ -230,7 +231,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                 return null
             }
             val itemPosition = findNowItemPosition()
-            return ReadProgress(Integer.valueOf(mThreadId), mPageNum, itemPosition.first, itemPosition.second)
+            return ReadProgress(Integer.valueOf(mThreadId), mPageNum, itemPosition.first!!, itemPosition.second!!)
         }
 
     /**
@@ -328,7 +329,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                 readProgress = null
                 scrollState!!.state = PagerScrollState.FREE
             } else {
-                val quotePostId = arguments.getString(ARG_QUOTE_POST_ID)
+                val quotePostId = arguments?.getString(ARG_QUOTE_POST_ID)
                 if (!TextUtils.isEmpty(quotePostId)) {
                     var i = 0
                     val length = postList.size
@@ -341,7 +342,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                         i++
                     }
                     // clear this argument after redirecting
-                    arguments.putString(ARG_QUOTE_POST_ID, null)
+                    arguments?.putString(ARG_QUOTE_POST_ID, null)
                 }
             }
 

@@ -34,14 +34,13 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/item_padding">
 
-            <com.github.ykrank.androidtools.widget.BezelImageView
+            <ImageView
                 android:id="@+id/avatar"
                 android:layout_width="@dimen/avatar_size"
                 android:layout_height="@dimen/avatar_size"
                 android:layout_marginEnd="@dimen/item_padding"
                 android:layout_marginRight="@dimen/item_padding"
                 android:contentDescription="@string/avatar_content_desc"
-                app:maskDrawable="@drawable/rounded_mask"
                 app:uid="@{model.data.authorId}" />
 
             <TextView

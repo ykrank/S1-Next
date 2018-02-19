@@ -28,7 +28,7 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val forum = Preconditions.checkNotNull(arguments.getParcelable<Forum>(ARG_FORUM))
+        val forum = Preconditions.checkNotNull(arguments!!.getParcelable<Forum>(ARG_FORUM))
         mForumName = forum.name
         mForumId = forum.id
         L.leaveMsg("ThreadListFragment##ForumName:$mForumName,ForumId:$mForumId")

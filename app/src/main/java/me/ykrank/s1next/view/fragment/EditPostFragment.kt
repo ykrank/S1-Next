@@ -37,12 +37,12 @@ class EditPostFragment : BasePostFragment() {
 
     private lateinit var binding: FragmentEditPostBinding
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentEditPostBinding.inflate(inflater, container, false)
         initCreateView(binding.layoutPost)
 
-        mThread = arguments.getParcelable<Thread>(ARG_THREAD)
-        mPost = arguments.getParcelable<Post>(ARG_POST)
+        mThread = arguments!!.getParcelable<Thread>(ARG_THREAD)
+        mPost = arguments!!.getParcelable<Post>(ARG_POST)
 
         isHost = mPost.isFirst
         binding.host = isHost
@@ -121,7 +121,7 @@ class EditPostFragment : BasePostFragment() {
                     binding.layoutPost.reply.setText(postEditor.message)
                 }, { e ->
                     L.report(e)
-                    showRetrySnackbar(ErrorUtil.parse(context, e), View.OnClickListener { init() })
+                    showRetrySnackbar(e, View.OnClickListener { init() })
                 })
 
     }

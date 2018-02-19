@@ -35,7 +35,7 @@ class PmGroupsFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<PmGroup
         App.appComponent.inject(this)
         super.onViewCreated(view, savedInstanceState)
         L.leaveMsg("PmGroupsFragment")
-        activity.setTitle(R.string.pms)
+        activity?.setTitle(R.string.pms)
 
         val recyclerView = recyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)

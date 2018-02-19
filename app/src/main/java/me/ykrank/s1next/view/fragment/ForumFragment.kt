@@ -70,7 +70,7 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
                 return true
             }
             R.id.app_bar_search -> {
-                val activity = activity
+                val activity = activity!!
                 SearchActivity.start(activity, activity.findViewById(R.id.app_bar_search))
                 return true
             }

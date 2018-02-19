@@ -1,5 +1,6 @@
 package me.ykrank.s1next.view.adapter.delegate
 
+import android.content.Context
 import android.databinding.DataBindingUtil
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
@@ -19,7 +20,7 @@ import me.ykrank.s1next.viewmodel.PostViewModel
 import me.ykrank.s1next.widget.span.PostMovementMethod
 import javax.inject.Inject
 
-class PostAdapterDelegate(private val fragment: Fragment) : BaseAdapterDelegate<Post, PostAdapterDelegate.ItemViewBindingHolder>(fragment.context, Post::class.java) {
+class PostAdapterDelegate(private val fragment: Fragment, context:Context) : BaseAdapterDelegate<Post, PostAdapterDelegate.ItemViewBindingHolder>(context, Post::class.java) {
 
     @Inject
     internal lateinit var mRxBus: RxBus

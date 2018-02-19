@@ -33,14 +33,13 @@
             android:padding="@dimen/item_padding"
             android:onClick="@{data::onClick}">
 
-            <com.github.ykrank.androidtools.widget.BezelImageView
+            <ImageView
                 android:id="@+id/avatar"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginEnd="@dimen/item_padding"
                 android:layout_marginRight="@dimen/item_padding"
                 android:contentDescription="@string/avatar_content_desc"
-                app:maskDrawable="@drawable/rounded_mask"
                 app:uid="@{data.friend.uid}"
                 tools:src="@drawable/ic_avatar_placeholder" />
 

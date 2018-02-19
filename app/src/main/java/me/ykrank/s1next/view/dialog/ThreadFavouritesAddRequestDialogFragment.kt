@@ -14,15 +14,16 @@ class ThreadFavouritesAddRequestDialogFragment : ProgressDialogFragment<AccountR
 
     override fun getSourceObservable(): Single<AccountResultWrapper> {
         return flatMappedWithAuthenticityToken { s ->
-            mS1Service.addThreadFavorite(s, arguments.getString(ARG_THREAD_ID),
-                    arguments.getString(ARG_REMARK))
+            mS1Service.addThreadFavorite(s, arguments!!.getString(ARG_THREAD_ID),
+                    arguments!!.getString(ARG_REMARK))
         }
     }
 
     override fun onNext(data: AccountResultWrapper) {
+        val fm = fragmentManager?:return
         val result = data.result
         if (result.status == STATUS_ADD_TO_FAVOURITES_SUCCESS || result.status == STATUS_ADD_TO_FAVOURITES_REPEAT) {
-            (fragmentManager.findFragmentByTag(
+            (fm.findFragmentByTag(
                     ThreadFavouritesAddDialogFragment.TAG) as ThreadFavouritesAddDialogFragment).dismissAllowingStateLoss()
         }
 

@@ -71,7 +71,7 @@ abstract class ProgressDialogFragment<D> : LibProgressDialogFragment<D>() {
      * @see BaseActivity.onActivityResult
      */
     protected fun showShortTextAndFinishCurrentActivity(text: CharSequence?) {
-        val activity = activity
+        val activity = activity ?: return
         val app = activity.applicationContext as App
         // Because Activity#onActivityResult(int, int, Intent) is always invoked when current app
         // is running in the foreground (so we are unable to set result message to Activity to

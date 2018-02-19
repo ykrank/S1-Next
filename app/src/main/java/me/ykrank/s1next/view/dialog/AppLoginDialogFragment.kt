@@ -27,10 +27,10 @@ class AppLoginDialogFragment : ProgressDialogFragment<AppDataWrapper<AppLoginRes
     }
 
     override fun getSourceObservable(): Single<AppDataWrapper<AppLoginResult>> {
-        val username = arguments.getString(ARG_USERNAME)
-        val password = arguments.getString(ARG_PASSWORD)
-        val questionId = arguments.getInt(ARG_QUESTION_ID)
-        val answer = arguments.getString(ARG_ANSWER)
+        val username = arguments?.getString(ARG_USERNAME)
+        val password = arguments?.getString(ARG_PASSWORD)
+        val questionId = arguments?.getInt(ARG_QUESTION_ID)
+        val answer = arguments?.getString(ARG_ANSWER)
         return mAppService.login(username, password, questionId, answer)
     }
 

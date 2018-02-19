@@ -4,7 +4,7 @@ import android.app.Application
 import cn.dreamtobe.filedownloader.OkHttp3Connection
 import com.liulishuo.filedownloader.FileDownloadListener
 import com.liulishuo.filedownloader.FileDownloader
-import com.liulishuo.filedownloader.services.NoDatabaseImpl
+import com.liulishuo.filedownloader.database.NoDatabaseImpl
 import com.liulishuo.filedownloader.util.FileDownloadUtils
 import okhttp3.OkHttpClient
 import java.io.File

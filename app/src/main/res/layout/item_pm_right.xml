@@ -35,7 +35,7 @@
             app:relativeDateTime="@{pmViewModel.pm.dateline*1000}"
             tools:text="1602-46-52" />
 
-        <com.github.ykrank.androidtools.widget.BezelImageView
+        <ImageView
             android:id="@+id/avatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -44,7 +44,6 @@
             android:onClick="@{pmViewModel::onClick}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_time"
-            app:maskDrawable="@drawable/rounded_mask"
             app:uid="@{pmViewModel.pm.authorId}"
             tools:src="@drawable/ic_avatar_placeholder" />
 
