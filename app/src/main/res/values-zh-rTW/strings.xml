@@ -47,8 +47,6 @@
         
     <string name="menu_refresh">刷新</string>
         
-    <string name="menu_page_jump">跳至特定頁數</string>
-        
     <string name="menu_browser">從瀏覽器中打開</string>
         
     <string name="menu_thread_go">前往特定帖子</string>

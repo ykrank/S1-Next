@@ -23,10 +23,6 @@
 # Keep fragment name
 -keepnames class me.ykrank.s1next.** implements android.support.v4.app.Fragment
 -keepnames class me.ykrank.s1next.** implements android.app.Fragment
-# Keep R resource
--keepclassmembers class **.R$* {
-    public static <fields>;
-}
 
 # Guava
 # https://github.com/google/guava/wiki/UsingProGuardWithGuava
