@@ -53,7 +53,7 @@ class AppVote {
      * 过期时间
      */
     @JsonProperty("expiration")
-    var expiration: Int = 0
+    var expiration: Long = 0
     /**
      * 投票的人数
      */
