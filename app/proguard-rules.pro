@@ -31,6 +31,13 @@
 -dontwarn android.databinding.tool.util.**
 -dontwarn java.lang.ClassValue
 
+#PaperParcel
+-keepclassmembers class **.PaperParcel* {
+  static void writeToParcel(...);
+}
+-keepnames class **.PaperParcel*
+-keepnames @paperparcel.PaperParcel class *
+
 # Dagger
 -dontwarn dagger.**
 
