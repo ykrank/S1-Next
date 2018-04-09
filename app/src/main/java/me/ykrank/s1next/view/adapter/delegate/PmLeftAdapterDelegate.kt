@@ -38,7 +38,7 @@ class PmLeftAdapterDelegate(context: Context) : BaseAdapterDelegate<Pm, PmLeftAd
 
     override fun onBindViewHolderData(t: Pm, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
         val binding = holder.binding
-        binding.pmViewModel.pm.set(t)
+        binding.pmViewModel?.pm?.set(t)
         binding.executePendingBindings()
     }
 

@@ -29,9 +29,9 @@ class ForumAdapterDelegate(context: Context) : BaseAdapterDelegate<Forum, ForumA
         return BindingViewHolder(binding)
     }
 
-    override fun onBindViewHolderData(forum: Forum, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
+    override fun onBindViewHolderData(t: Forum, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
         val binding = holder.itemForumBinding
-        binding.forumViewModel.forum.set(forum)
+        binding.forumViewModel?.forum?.set(t)
         binding.executePendingBindings()
     }
 

@@ -41,8 +41,8 @@ class DownloadPreferencesManager(private val mPreferencesProvider: DownloadPrefe
      * download avatars or images.
      */
     fun needMonitorWifi(): Boolean {
-        val avatarDownloadStrategy = mPreferencesProvider.avatarsDownloadStrategyIndex.toLong()
-        val imageDownloadStrategy = mPreferencesProvider.imagesDownloadStrategyIndex.toLong()
+        val avatarDownloadStrategy = mPreferencesProvider.avatarsDownloadStrategyIndex
+        val imageDownloadStrategy = mPreferencesProvider.imagesDownloadStrategyIndex
         return avatarDownloadStrategy == DownloadStrategyInternal.WIFI || imageDownloadStrategy == DownloadStrategyInternal.WIFI
     }
 
@@ -63,30 +63,30 @@ class DownloadPreferencesManager(private val mPreferencesProvider: DownloadPrefe
     }
 
     private object DownloadStrategyInternal {
-        const val NOT = 0L
-        const val WIFI = 1L
-        const val ALWAYS = 2L
+        const val NOT = 0
+        const val WIFI = 1
+        const val ALWAYS = 2
 
         @IntDef(NOT, WIFI, ALWAYS)
         @Retention(AnnotationRetention.SOURCE)
         internal annotation class DownloadStrategy
 
         fun isDownload(@DownloadStrategy downloadStrategy: Int, hasWifi: Boolean): Boolean {
-            return downloadStrategy.toLong() == WIFI && hasWifi || downloadStrategy.toLong() == ALWAYS
+            return downloadStrategy == WIFI && hasWifi || downloadStrategy == ALWAYS
         }
     }
 
     private object AvatarResolutionStrategy {
-        const val LOW = 0L
-        const val HIGH_WIFI = 1L
-        const val HIGH = 2L
+        const val LOW = 0
+        const val HIGH_WIFI = 1
+        const val HIGH = 2
 
         @IntDef(LOW, HIGH_WIFI, HIGH)
         @Retention(AnnotationRetention.SOURCE)
         internal annotation class AvatarStrategy
 
         fun isHigherResolutionDownload(@AvatarStrategy avatarResolutionStrategy: Int, hasWifi: Boolean): Boolean {
-            return avatarResolutionStrategy.toLong() == HIGH_WIFI && hasWifi || avatarResolutionStrategy.toLong() == HIGH
+            return avatarResolutionStrategy == HIGH_WIFI && hasWifi || avatarResolutionStrategy == HIGH
         }
     }
 

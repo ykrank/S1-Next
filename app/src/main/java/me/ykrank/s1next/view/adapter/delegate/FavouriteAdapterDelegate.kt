@@ -29,9 +29,9 @@ class FavouriteAdapterDelegate(context: Context) : BaseAdapterDelegate<Favourite
         return BindingViewHolder(binding)
     }
 
-    override fun onBindViewHolderData(favourite: Favourite, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
+    override fun onBindViewHolderData(t: Favourite, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
         val binding = holder.itemFavouriteBinding
-        binding.model.favourite.set(favourite)
+        binding.model?.favourite?.set(t)
         binding.executePendingBindings()
     }
 

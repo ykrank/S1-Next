@@ -92,8 +92,10 @@ class UserHomeActivity : BaseActivity() {
         }
 
         binding.ivNewPm.setOnClickListener { v ->
-            NewPmActivity.startNewPmActivityForResultMessage(this,
-                    binding.data.homeUid, binding.data.homeUsername)
+            binding.data?.let {
+                NewPmActivity.startNewPmActivityForResultMessage(this,
+                        it.homeUid, it.homeUsername)
+            }
         }
 
         binding.tvFriends.setOnClickListener { v -> FriendListActivity.start(this, uid, name) }
@@ -184,10 +186,12 @@ class UserHomeActivity : BaseActivity() {
     }
 
     private fun loadData() {
-        s1Service.getProfile(binding.data.homeUid)
-                .compose(RxJavaUtil.iOSingleTransformer())
-                .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
-                .subscribe({ wrapper -> binding.data = wrapper.data }, L::e)
+        binding.data?.let {
+            s1Service.getProfile(it.homeUid)
+                    .compose(RxJavaUtil.iOSingleTransformer())
+                    .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
+                    .subscribe({ wrapper -> binding.data = wrapper.data }, L::e)
+        }
     }
 
     @MainThread

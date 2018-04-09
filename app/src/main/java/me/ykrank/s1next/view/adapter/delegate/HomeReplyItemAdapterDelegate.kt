@@ -14,9 +14,9 @@ import me.ykrank.s1next.viewmodel.HomeReplyItemViewModel
 
 class HomeReplyItemAdapterDelegate(context: Context) : BaseAdapterDelegate<HomeReply, HomeReplyItemAdapterDelegate.BindingViewHolder>(context, HomeReply::class.java) {
 
-    override fun onBindViewHolderData(thread: HomeReply, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
+    override fun onBindViewHolderData(t: HomeReply, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
         val binding = holder.binding
-        binding.model.reply.set(thread)
+        binding.model?.reply?.set(t)
         binding.executePendingBindings()
     }
 

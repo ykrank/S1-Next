@@ -14,9 +14,9 @@ import me.ykrank.s1next.viewmodel.FriendViewModel
 
 class FriendAdapterDelegate(context: Context) : BaseAdapterDelegate<Friend, FriendAdapterDelegate.BindingViewHolder>(context, Friend::class.java) {
 
-    override fun onBindViewHolderData(friend: Friend, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
+    override fun onBindViewHolderData(t: Friend, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
         val binding = holder.binding
-        binding.data.friend.set(friend)
+        binding.data?.friend?.set(t)
         binding.executePendingBindings()
     }
 

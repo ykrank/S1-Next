@@ -39,9 +39,9 @@ class ThreadAdapterDelegate(context: Context, private val forumId: String) : Bas
         return BindingViewHolder(binding)
     }
 
-    override fun onBindViewHolderData(thread: Thread, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
+    override fun onBindViewHolderData(t: Thread, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
         val binding = holder.itemThreadBinding
-        binding.model.thread.set(thread)
+        binding.model?.thread?.set(t)
         binding.executePendingBindings()
     }
 

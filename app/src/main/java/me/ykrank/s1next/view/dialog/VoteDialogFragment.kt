@@ -69,7 +69,7 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
         binding.recycleView.adapter = adapter
         binding.recycleView.layoutManager = LinearLayoutManager(context)
         mVote.voteOptions?.let {
-            data = it.values.map { ItemVoteViewModel(binding.model, it) }
+            data = it.values.map { ItemVoteViewModel(binding.model!!, it) }
             adapter.swapDataSet(data)
         }
 
@@ -97,7 +97,7 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
                 .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
                 .subscribe({
                     val appVote = it.first.data
-                    binding.model.appVote.set(appVote)
+                    binding.model?.appVote?.set(appVote)
                     it.second.data?.let {
                         data.forEachIndexed { index, vm ->
                             vm.option.mergeWithAppVoteOption(it[index], appVote?.voters
@@ -113,12 +113,14 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
 
     private fun refreshSelectedItem(position: Int, itemBind: ItemVoteBinding) {
         if (mVote.isMultiple) {
-            if (itemBind.model.selected.get()) {
-                itemBind.model.selected.set(false)
-            } else {
-                val selected = data.filter { it.selected.get() }
-                if (selected.size < mVote.maxChoices) {
-                    itemBind.model.selected.set(true)
+            itemBind.model?.let {
+                if (it.selected.get()) {
+                    it.selected.set(false)
+                } else {
+                    val selected = data.filter { it.selected.get() }
+                    if (selected.size < mVote.maxChoices) {
+                        it.selected.set(true)
+                    }
                 }
             }
         } else {

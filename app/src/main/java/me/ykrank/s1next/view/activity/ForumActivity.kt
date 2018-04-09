@@ -105,23 +105,29 @@ class ForumActivity : BaseActivity(), ToolbarDropDownInterface.Callback, Adapter
     override fun onNothingSelected(parent: AdapterView<*>) {}
 
     override fun setupToolbarDropDown(dropDownItemList: List<CharSequence>) {
+        val binding: ToolbarSpinnerBinding
         if (mToolbarSpinnerBinding == null) {
             setTitle("")
 
             // add Spinner to Toolbar
-            mToolbarSpinnerBinding = DataBindingUtil.inflate<ToolbarSpinnerBinding>(layoutInflater,
+            binding = DataBindingUtil.inflate<ToolbarSpinnerBinding>(layoutInflater,
                     R.layout.toolbar_spinner, toolbar.get(), true)
-            mToolbarSpinnerBinding!!.spinner.onItemSelectedListener = this
+            binding.spinner.onItemSelectedListener = this
             // let spinner's parent to handle clicking event in order
             // to increase spinner's clicking area.
-            mToolbarSpinnerBinding!!.spinnerContainer.setOnClickListener { v -> mToolbarSpinnerBinding!!.spinner.performClick() }
-            mToolbarSpinnerBinding!!.dropDownItemListViewModel = DropDownItemListViewModel()
+            binding.spinnerContainer.setOnClickListener { v -> binding.spinner.performClick() }
+            binding.dropDownItemListViewModel = DropDownItemListViewModel()
+        } else {
+            binding = mToolbarSpinnerBinding as ToolbarSpinnerBinding
         }
 
-        val viewModel = mToolbarSpinnerBinding!!.dropDownItemListViewModel
-        viewModel.selectedItemPosition = mSelectedPosition
-        viewModel.dropDownItemList.clear()
-        viewModel.dropDownItemList.addAll(dropDownItemList)
+        val viewModel = binding.dropDownItemListViewModel
+        viewModel?.let {
+            it.selectedItemPosition = mSelectedPosition
+            it.dropDownItemList.clear()
+            it.dropDownItemList.addAll(dropDownItemList)
+        }
+
     }
 
     private fun restoreFromInterrupt() {

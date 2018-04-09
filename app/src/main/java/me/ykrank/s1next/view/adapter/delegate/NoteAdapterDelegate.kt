@@ -14,9 +14,9 @@ import me.ykrank.s1next.viewmodel.NoteViewModel
 
 class NoteAdapterDelegate(context: Context) : BaseAdapterDelegate<Note, NoteAdapterDelegate.BindingViewHolder>(context, Note::class.java) {
 
-    override fun onBindViewHolderData(note: Note, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
+    override fun onBindViewHolderData(t: Note, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
         val binding = holder.binding
-        binding.model.data.set(note)
+        binding.model?.data?.set(t)
         binding.executePendingBindings()
     }
 

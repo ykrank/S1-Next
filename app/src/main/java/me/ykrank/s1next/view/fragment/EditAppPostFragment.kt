@@ -17,7 +17,6 @@ import me.ykrank.s1next.data.api.app.model.AppThread
 import me.ykrank.s1next.data.api.model.PostEditor
 import me.ykrank.s1next.data.api.model.ThreadType
 import me.ykrank.s1next.databinding.FragmentEditPostBinding
-import me.ykrank.s1next.util.ErrorUtil
 import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter
 import me.ykrank.s1next.view.dialog.requestdialog.EditAppPostRequestDialogFragment
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
@@ -39,7 +38,7 @@ class EditAppPostFragment : BasePostFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentEditPostBinding.inflate(inflater, container, false)
-        initCreateView(binding.layoutPost)
+        initCreateView(binding.layoutPost!!)
 
         val bundle = arguments!!
         mThread = bundle.getParcelable(ARG_THREAD)
@@ -119,7 +118,7 @@ class EditAppPostFragment : BasePostFragment() {
                         binding.spinner.setSelection(postEditor.typeIndex)
                         binding.title.setText(postEditor.subject)
                     }
-                    binding.layoutPost.reply.setText(postEditor.message)
+                    binding.layoutPost?.reply?.setText(postEditor.message)
                 }, { e ->
                     L.report(e)
                     showRetrySnackbar(e, View.OnClickListener { init() })

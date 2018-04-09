@@ -122,7 +122,7 @@ class WebViewFragment : BaseFragment(), BackPressDelegate {
         binding.webView.webViewClient = object : WebViewClient() {
 
             override fun onPageFinished(view: WebView, url: String) {
-                binding.webPageViewModel.setFinishedLoading(true)
+                binding.webPageViewModel?.setFinishedLoading(true)
                 super.onPageFinished(view, url)
             }
         }

@@ -70,7 +70,7 @@ class DrawerLayoutDelegateConcrete(activity: FragmentActivity, drawerLayout: Dra
 
     @SuppressLint("RestrictedApi")
     private fun setupNavDrawerHeader(drawerLayout: DrawerLayout, navigationView: NavigationView) {
-        binding = DataBindingUtil.bind<NavigationViewHeaderBinding>(navigationView.getHeaderView(0))
+        binding = DataBindingUtil.bind(navigationView.getHeaderView(0))!!
         binding.userViewModel = mUserViewModel
 
         // let status bar display over drawer if API >= 21

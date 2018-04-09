@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
+import me.ykrank.s1next.viewmodel.UserViewModel;
 
 /**
  * A dialog shows logout prompt.
@@ -28,7 +29,7 @@ public final class LogoutDialogFragment extends BaseDialogFragment {
     CookieManager mCookieManager;
 
     @Inject
-    User mUser;
+    UserViewModel mUser;
 
     /**
      * Show {@link LogoutDialogFragment} if user has logged in.
@@ -63,7 +64,7 @@ public final class LogoutDialogFragment extends BaseDialogFragment {
     private void logout() {
         mCookieManager.getCookieStore().removeAll();
         WebViewUtils.clearWebViewCookies(App.Companion.get());
-        mUser.setAppSecureToken(null);
-        mUser.setLogged(false);
+        mUser.getUser().setAppSecureToken(null);
+        mUser.getUser().setLogged(false);
     }
 }

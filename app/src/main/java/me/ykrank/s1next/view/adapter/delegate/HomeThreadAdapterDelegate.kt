@@ -16,7 +16,7 @@ class HomeThreadAdapterDelegate(context: Context) : BaseAdapterDelegate<HomeThre
 
     override fun onBindViewHolderData(thread: HomeThread, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
         val binding = holder.binding
-        binding.model.thread.set(thread)
+        binding.model?.thread?.set(thread)
         binding.executePendingBindings()
     }
 

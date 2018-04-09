@@ -34,9 +34,9 @@ class PmGroupsAdapterDelegate(context: Context) : BaseAdapterDelegate<PmGroup, P
         return BindingViewHolder(binding)
     }
 
-    override fun onBindViewHolderData(pmGroup: PmGroup, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
+    override fun onBindViewHolderData(t: PmGroup, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
         val binding = holder.binding
-        binding.model.pmGroup.set(pmGroup)
+        binding.model?.pmGroup?.set(t)
         binding.executePendingBindings()
     }
 

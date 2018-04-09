@@ -72,13 +72,15 @@ class PostAdapterDelegate(private val fragment: Fragment, context:Context) : Bas
             setTextSelectable(binding, selectable)
         }
 
-        binding.postViewModel.thread.set(threadInfo)
-        binding.postViewModel.post.set(post)
+        binding.postViewModel?.let {
+            it.thread.set(threadInfo)
+            it.post.set(post)
 
-        if ("1" == post.count) {
-            binding.postViewModel.vote.set(voteInfo)
-        } else {
-            binding.postViewModel.vote.set(null)
+            if ("1" == post.count) {
+                it.vote.set(voteInfo)
+            } else {
+                it.vote.set(null)
+            }
         }
 
         binding.executePendingBindings()

@@ -63,8 +63,10 @@ class AppPostAdapterDelegate(activity: Activity) : BaseAdapterDelegate<AppPost, 
             setTextSelectable(binding, selectable)
         }
 
-        binding.postViewModel.thread.set(threadInfo)
-        binding.postViewModel.post.set(post)
+        binding.postViewModel?.let {
+            it.thread.set(threadInfo)
+            it.post.set(post)
+        }
         binding.executePendingBindings()
     }
 
