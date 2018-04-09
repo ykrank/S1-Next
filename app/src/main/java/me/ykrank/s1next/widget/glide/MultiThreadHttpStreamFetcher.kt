@@ -4,14 +4,15 @@ import com.bumptech.glide.Priority
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.data.DataFetcher
 import com.bumptech.glide.load.model.GlideUrl
+import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.AppException
 import com.liulishuo.filedownloader.BaseDownloadTask
 import me.ykrank.s1next.App
 import me.ykrank.s1next.widget.download.ImageDownloadListener
 import me.ykrank.s1next.widget.download.ImageDownloadManager
 import java.io.FileInputStream
+import java.io.IOException
 import java.io.InputStream
-import java.lang.Exception
 import javax.inject.Inject
 
 open class MultiThreadHttpStreamFetcher(val url: GlideUrl) : DataFetcher<InputStream> {
@@ -33,7 +34,17 @@ open class MultiThreadHttpStreamFetcher(val url: GlideUrl) : DataFetcher<InputSt
 
             override fun completed(task: BaseDownloadTask?) {
                 super.completed(task)
-                callback.onDataReady(FileInputStream(task?.targetFilePath))
+                //java.io.FileNotFoundException
+                var inputStream: FileInputStream? = null
+                try {
+                    inputStream = FileInputStream(task?.targetFilePath)
+                } catch (e: IOException) {
+                    callback.onLoadFailed(e)
+                    return
+                } catch (e: Exception) {
+                    L.report(e)
+                }
+                callback.onDataReady(inputStream)
             }
 
             override fun error(task: BaseDownloadTask?, e: Throwable?) {
