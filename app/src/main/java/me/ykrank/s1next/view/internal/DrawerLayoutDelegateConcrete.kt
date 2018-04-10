@@ -126,8 +126,8 @@ class DrawerLayoutDelegateConcrete(activity: FragmentActivity, drawerLayout: Dra
     }
 
     private fun setupNavDrawerNotice(navigationView: NavigationView) {
-        pmNoticeBinding = ActionViewNoticeCountBinding.inflate(LayoutInflater.from(mFragmentActivity))
-        noteNoticeBinding = ActionViewNoticeCountBinding.inflate(LayoutInflater.from(mFragmentActivity))
+        pmNoticeBinding = ActionViewNoticeCountBinding.inflate(LayoutInflater.from(mFragmentActivity))!!
+        noteNoticeBinding = ActionViewNoticeCountBinding.inflate(LayoutInflater.from(mFragmentActivity))!!
         navigationView.menu.findItem(R.id.menu_pms).actionView = pmNoticeBinding.root
         navigationView.menu.findItem(R.id.menu_note).actionView = noteNoticeBinding.root
         refreshNoticeMenuItem()
