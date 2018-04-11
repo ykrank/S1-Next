@@ -20,8 +20,8 @@ android {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 41
-        versionName '1.3.3'
+        versionCode 42
+        versionName '1.3.3.1'
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
@@ -65,21 +65,23 @@ android {
         }
 
         alpha {
+            multiDexEnabled true
             applicationIdSuffix '.alpha'
             versionNameSuffix '-alpha'
             signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             matchingFallbacks = ['release', 'debug']
         }
 
         release {
+            multiDexEnabled true
             signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     buildTypes.each {
