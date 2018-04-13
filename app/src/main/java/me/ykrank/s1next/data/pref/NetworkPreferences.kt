@@ -2,6 +2,8 @@ package me.ykrank.s1next.data.pref
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.github.ykrank.androidtools.data.BasePreferences
+import com.github.ykrank.androidtools.data.PreferenceDelegates
 
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api

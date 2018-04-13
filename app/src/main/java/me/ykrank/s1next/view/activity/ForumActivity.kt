@@ -117,6 +117,8 @@ class ForumActivity : BaseActivity(), ToolbarDropDownInterface.Callback, Adapter
             // to increase spinner's clicking area.
             binding.spinnerContainer.setOnClickListener { v -> binding.spinner.performClick() }
             binding.dropDownItemListViewModel = DropDownItemListViewModel()
+
+            mToolbarSpinnerBinding = binding
         } else {
             binding = mToolbarSpinnerBinding as ToolbarSpinnerBinding
         }
