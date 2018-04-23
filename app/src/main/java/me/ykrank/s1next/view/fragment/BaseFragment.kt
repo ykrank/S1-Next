@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.support.annotation.CallSuper
 import android.view.View
 import com.github.ykrank.androidtools.ui.LibBaseFragment
-import com.github.ykrank.androidtools.widget.track.DataTrackAgent
-import com.github.ykrank.androidtools.widget.track.event.page.FragmentEndEvent
-import com.github.ykrank.androidtools.widget.track.event.page.FragmentStartEvent
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.UserValidator
@@ -18,8 +15,6 @@ abstract class BaseFragment : LibBaseFragment() {
     @Inject
     internal lateinit var mUserValidator: UserValidator
     @Inject
-    internal lateinit var trackAgent: DataTrackAgent
-    @Inject
     internal lateinit var mUser: User
 
     @CallSuper
@@ -28,18 +23,8 @@ abstract class BaseFragment : LibBaseFragment() {
         App.appComponent.inject(this)
     }
 
-    override fun onResume() {
-        super.onResume()
-        trackAgent.post(FragmentStartEvent(this))
-    }
-
-    override fun onPause() {
-        trackAgent.post(FragmentEndEvent(this))
-        super.onPause()
-    }
-
     fun showRetrySnackbar(throwable: Throwable, onClickListener: View.OnClickListener) {
-        val context = context?:return
+        val context = context ?: return
         showRetrySnackbar(ErrorUtil.parse(context, throwable), onClickListener)
     }
 }

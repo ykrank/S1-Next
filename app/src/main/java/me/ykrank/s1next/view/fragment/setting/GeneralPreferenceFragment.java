@@ -8,6 +8,7 @@ import com.github.ykrank.androidtools.util.L;
 import com.github.ykrank.androidtools.util.ResourceUtil;
 import com.github.ykrank.androidtools.util.RxJavaUtil;
 import com.github.ykrank.androidtools.widget.RxBus;
+import com.github.ykrank.androidtools.widget.track.DataTrackAgent;
 import com.github.ykrank.androidtools.widget.track.event.ThemeChangeTrackEvent;
 
 import javax.inject.Inject;
@@ -41,6 +42,9 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
 
     @Inject
     ThemeManager mThemeManager;
+
+    @Inject
+    DataTrackAgent trackAgent;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
