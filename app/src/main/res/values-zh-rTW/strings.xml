@@ -33,8 +33,6 @@
         
     <string name="message_server_connect_error">無法與服務器進行通信，請稍後再試。 </string>
         
-    <string name="message_unknown_error">發生了一個未知的錯誤</string>
-        
     <string name="home">首頁</string>
         
     <string name="favourites">收藏</string>
@@ -163,15 +161,6 @@
     <string name="menu_save_progress">保存閱讀進度</string>
         
     <string name="save_read_progress_success">閱讀進度保存成功</string>
-    <string name="message_permission_denied">權限不足</string>
-        
-    <string name="message_backup_success">備份成功</string>
-        
-    <string name="message_io_exception">讀寫錯誤</string>
-        
-    <string name="message_no_setting_data">沒有有效的設置數據</string>
-        
-    <string name="message_restore_success">還原成功</string>
         
     <string name="prompt_title">輸入主題</string>
         
@@ -222,8 +211,6 @@
     <string name="dialog_button_text_confirm">確定</string>
         
     <string name="prompt_blacklist_remark">抹布備註</string>
-        
-    <string name="message_operation_canceled">操作被取消</string>
         
     <string name="replied">回復了</string>
         

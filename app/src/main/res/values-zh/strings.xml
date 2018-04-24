@@ -16,7 +16,6 @@
     <string name="user_in_blacklist">已被抹布</string>
     <string name="message_network_error">发生了网络错误</string>
     <string name="message_server_connect_error">无法与服务器进行通信，请稍后再试。</string>
-    <string name="message_unknown_error">发生了一个未知的错误</string>
     <string name="home">首页</string>
     <string name="favourites">收藏</string>
     <string name="settings">设置</string>
@@ -82,11 +81,6 @@
     <string name="menu_load_progress">加载上次进度</string>
     <string name="menu_save_progress">保存阅读进度</string>
     <string name="save_read_progress_success">阅读进度保存成功</string>
-    <string name="message_permission_denied">权限不足</string>
-    <string name="message_backup_success">备份成功</string>
-    <string name="message_io_exception">读写错误</string>
-    <string name="message_no_setting_data">没有有效的设置数据</string>
-    <string name="message_restore_success">还原成功</string>
     <string name="prompt_title">输入主题</string>
     <string name="error_no_type_id">请选择主题对应的分类</string>
     <string name="error_no_title_or_message">抱歉，您尚未输入标题或内容</string>
@@ -112,7 +106,6 @@
     <string name="dialog_message_text_switch">切换</string>
     <string name="dialog_button_text_confirm">确定</string>
     <string name="prompt_blacklist_remark">抹布备注</string>
-    <string name="message_operation_canceled">操作被取消</string>
     <string name="replied">回复了</string>
     <string name="title_note">提醒</string>
     <string name="notes">提醒</string>
