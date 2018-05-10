@@ -18,13 +18,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ActivityEvent
+import com.github.ykrank.androidtools.guava.Optional
 import com.github.ykrank.androidtools.ui.LibBaseActivity
 import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.ResourceUtil
 import com.github.ykrank.androidtools.widget.RxBus
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
-import com.google.common.base.Optional
 import com.rk.a91.a91video.ui.internal.DrawerLayoutDelegate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import me.ykrank.s1next.App

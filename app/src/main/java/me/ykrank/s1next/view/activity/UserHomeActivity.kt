@@ -16,10 +16,10 @@ import android.view.MenuItem
 import android.view.View
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ActivityEvent
+import com.github.ykrank.androidtools.guava.Optional
 import com.github.ykrank.androidtools.util.*
 import com.github.ykrank.androidtools.widget.AppBarOffsetChangedListener
 import com.github.ykrank.androidtools.widget.glide.model.ImageInfo
-import com.google.common.base.Optional
 import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R

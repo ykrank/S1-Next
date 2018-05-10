@@ -2,7 +2,7 @@ package me.ykrank.s1next.data.api.model;
 
 import android.util.Pair;
 
-import com.google.common.base.Objects;
+import com.github.ykrank.androidtools.guava.Objects;
 
 public final class Emoticon {
 

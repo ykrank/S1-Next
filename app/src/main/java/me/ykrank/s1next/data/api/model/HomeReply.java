@@ -2,9 +2,9 @@ package me.ykrank.s1next.data.api.model;
 
 import android.support.annotation.Nullable;
 
+import com.github.ykrank.androidtools.guava.Objects;
 import com.github.ykrank.androidtools.ui.adapter.model.SameItem;
 import com.github.ykrank.androidtools.util.L;
-import com.google.common.base.Objects;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

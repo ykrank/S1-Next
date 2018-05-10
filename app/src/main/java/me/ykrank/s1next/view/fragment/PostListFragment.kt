@@ -13,11 +13,11 @@ import android.view.MenuItem
 import android.view.View
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
+import com.github.ykrank.androidtools.guava.Preconditions
 import com.github.ykrank.androidtools.ui.LibBaseViewPagerFragment
 import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate
 import com.github.ykrank.androidtools.util.*
 import com.github.ykrank.androidtools.widget.RxBus
-import com.google.common.base.Preconditions
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject

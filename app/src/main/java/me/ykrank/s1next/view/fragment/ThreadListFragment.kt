@@ -7,10 +7,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import com.github.ykrank.androidtools.guava.Preconditions
 import com.github.ykrank.androidtools.ui.LibBaseViewPagerFragment
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.MathUtil
-import com.google.common.base.Preconditions
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.model.Forum

@@ -7,9 +7,9 @@ import android.support.annotation.NonNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.ykrank.androidtools.guava.Objects;
 import com.github.ykrank.androidtools.ui.adapter.model.SameItem;
 import com.github.ykrank.androidtools.util.L;
-import com.google.common.base.Objects;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 

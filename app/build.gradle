@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'org.greenrobot.greendao'
 
 
@@ -44,6 +43,7 @@ android {
     }
     sourceSets {
         main.java.srcDirs += 'build/generated/source/greendao'
+        main.java.srcDirs += 'src/main/kotlin'
     }
     lintOptions {
         abortOnError = Boolean.valueOf(System.getProperty('abort-on-error', 'true'))
@@ -122,26 +122,18 @@ dependencies {
     playImplementation fileTree(include: ['*.jar'], dir: 'libs/flavors/play')
     normalImplementation fileTree(include: ['*.jar'], dir: 'libs/flavors/normal')
 
-    implementation 'com.google.dagger:dagger:2.15'
-    kapt 'com.google.dagger:dagger-compiler:2.15'
+    implementation 'com.google.dagger:dagger:2.16'
+    kapt 'com.google.dagger:dagger-compiler:2.16'
     // https://github.com/google/dagger/issues/95
 //    provided 'javax.annotation:javax.annotation-api:1.3'
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     alphaImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
     implementation "com.android.support:transition:$rootProject.supportVersion"
-    implementation 'com.android.support:multidex:1.0.3'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
-    // https://github.com/google/guava/wiki/UsingProGuardWithGuava
-    // https://github.com/google/guava/issues/2117
-    // do not update
-    //noinspection NewerVersionAvailable
-    implementation 'com.google.guava:guava:19.0'
-    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
-    compileOnly 'com.google.j2objc:j2objc-annotations:1.3'
+//    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+//    compileOnly 'com.google.j2objc:j2objc-annotations:1.3'
 
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.10.0'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
@@ -155,18 +147,17 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.5'
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.5"
 
-    implementation 'nz.bradcampbell:paperparcel:2.0.5'
-    implementation 'nz.bradcampbell:paperparcel-kotlin:2.0.5' // Optional
-    kapt 'nz.bradcampbell:paperparcel-compiler:2.0.5'
+    implementation 'nz.bradcampbell:paperparcel:2.0.6'
+    implementation 'nz.bradcampbell:paperparcel-kotlin:2.0.6' // Optional
+    kapt 'nz.bradcampbell:paperparcel-compiler:2.0.6'
 
-    kapt 'com.github.bumptech.glide:compiler:4.6.1'
+    kapt 'com.github.bumptech.glide:compiler:4.7.1'
 
     implementation 'cn.dreamtobe.filedownloader:filedownloader-okhttp3-connection:1.1.0'
-    implementation 'com.liulishuo.filedownloader:library:1.7.2'
+    implementation 'com.liulishuo.filedownloader:library:1.7.3'
 
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
     implementation 'org.greenrobot:greendao:3.2.2'
-    implementation 'com.nononsenseapps:filepicker:4.1.0'
-    implementation 'org.jsoup:jsoup:1.11.2'
+    implementation 'org.jsoup:jsoup:1.11.3'
     implementation 'com.bigkoo:quicksidebar:1.0.3'
 }

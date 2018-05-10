@@ -9,9 +9,9 @@ import android.support.v4.app.NavUtils
 import android.support.v4.app.TaskStackBuilder
 import android.view.View
 import android.widget.AdapterView
+import com.github.ykrank.androidtools.guava.Optional
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
-import com.google.common.base.Optional
 import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R

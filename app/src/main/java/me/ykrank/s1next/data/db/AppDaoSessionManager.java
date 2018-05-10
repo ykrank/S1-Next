@@ -1,7 +1,7 @@
 package me.ykrank.s1next.data.db;
 
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
+import com.github.ykrank.androidtools.guava.Supplier;
+import com.github.ykrank.androidtools.guava.Suppliers;
 
 import me.ykrank.s1next.data.db.dbmodel.DaoMaster;
 import me.ykrank.s1next.data.db.dbmodel.DaoSession;

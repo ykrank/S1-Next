@@ -4,9 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
+import com.github.ykrank.androidtools.guava.Objects;
+import com.github.ykrank.androidtools.guava.Optional;
+import com.github.ykrank.androidtools.guava.Preconditions;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

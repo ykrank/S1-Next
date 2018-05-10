@@ -53,7 +53,7 @@ class WebLoginFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         L.leaveMsg(WebLoginFragment::class.java.name)
 
-        WebViewUtils.clearWebViewCookies(context)
+        WebViewUtils.clearWebViewCookies(context!!)
 
         val viewModel = WebPageViewModel()
         mFragmentHelpBinding.webPageViewModel = viewModel

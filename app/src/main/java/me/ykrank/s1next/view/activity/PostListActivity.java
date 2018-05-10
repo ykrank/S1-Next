@@ -12,11 +12,11 @@ import android.view.View;
 
 import com.github.ykrank.androidautodispose.AndroidRxDispose;
 import com.github.ykrank.androidlifecycle.event.ViewEvent;
+import com.github.ykrank.androidtools.guava.Optional;
+import com.github.ykrank.androidtools.guava.Supplier;
 import com.github.ykrank.androidtools.util.L;
 import com.github.ykrank.androidtools.util.OnceClickUtil;
 import com.github.ykrank.androidtools.widget.net.WifiBroadcastReceiver;
-import com.google.common.base.Optional;
-import com.google.common.base.Supplier;
 
 import javax.inject.Inject;
 

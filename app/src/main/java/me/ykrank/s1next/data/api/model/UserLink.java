@@ -3,8 +3,8 @@ package me.ykrank.s1next.data.api.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+import com.github.ykrank.androidtools.guava.Objects;
+import com.github.ykrank.androidtools.guava.Optional;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

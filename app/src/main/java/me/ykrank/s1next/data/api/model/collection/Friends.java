@@ -3,7 +3,7 @@ package me.ykrank.s1next.data.api.model.collection;
 import android.support.annotation.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
+import com.github.ykrank.androidtools.guava.Objects;
 
 import java.util.List;
 

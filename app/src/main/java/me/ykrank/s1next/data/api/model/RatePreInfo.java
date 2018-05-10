@@ -5,8 +5,8 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.github.ykrank.androidtools.guava.Objects;
 import com.github.ykrank.androidtools.util.L;
-import com.google.common.base.Objects;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

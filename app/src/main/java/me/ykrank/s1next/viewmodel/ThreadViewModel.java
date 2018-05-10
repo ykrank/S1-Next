@@ -3,7 +3,7 @@ package me.ykrank.s1next.viewmodel;
 import android.databinding.ObservableField;
 import android.view.View;
 
-import com.google.common.base.Supplier;
+import com.github.ykrank.androidtools.guava.Supplier;
 
 import io.reactivex.functions.Consumer;
 import me.ykrank.s1next.data.api.model.Thread;

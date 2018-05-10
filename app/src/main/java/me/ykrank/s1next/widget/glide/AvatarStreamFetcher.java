@@ -1,5 +1,8 @@
 package me.ykrank.s1next.widget.glide;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.integration.okhttp3.OkHttpStreamFetcher;
 import com.bumptech.glide.load.DataSource;
@@ -11,8 +14,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
@@ -75,7 +76,7 @@ public class AvatarStreamFetcher implements DataFetcher<InputStream> {
         call = client.newCall(request);
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(@Nonnull Call call, @Nullable IOException e) {
+            public void onFailure(@NonNull Call call, @Nullable IOException e) {
                 if (avatarKey != null) {
                     avatarUrlsCache.put(avatarKey);
                 }
@@ -83,7 +84,7 @@ public class AvatarStreamFetcher implements DataFetcher<InputStream> {
             }
 
             @Override
-            public void onResponse(@Nonnull Call call, @Nonnull Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 responseBody = response.body();
                 if (!response.isSuccessful()) {
                     // if (this this a avatar URL) && (this URL is cacheable)

@@ -3,7 +3,7 @@ package me.ykrank.s1next.widget.span;
 import android.net.Uri;
 import android.view.View;
 
-import com.google.common.base.Optional;
+import com.github.ykrank.androidtools.guava.Optional;
 
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.model.ThreadLink;

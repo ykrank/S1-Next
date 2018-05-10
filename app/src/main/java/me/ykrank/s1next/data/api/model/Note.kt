@@ -3,8 +3,8 @@ package me.ykrank.s1next.data.api.model
 import android.os.Parcel
 import android.os.Parcelable
 import com.fasterxml.jackson.annotation.*
+import com.github.ykrank.androidtools.guava.Objects
 import com.github.ykrank.androidtools.ui.adapter.model.SameItem
-import com.google.common.base.Objects
 import java.util.regex.Pattern
 
 /**

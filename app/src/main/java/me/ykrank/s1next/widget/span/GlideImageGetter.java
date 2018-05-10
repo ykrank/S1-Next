@@ -173,7 +173,7 @@ public final class GlideImageGetter
             String finalUrl = url;
 
             RequestBuilder<Drawable> glideRequestBuilder = requestManager
-                    .load(Uri.parse(EmoticonFactory.ASSET_PATH_EMOTICON + emoticonName))
+                    .load(Uri.parse(EmoticonFactory.Companion.getASSET_PATH_EMOTICON() + emoticonName))
                     .apply(emoticonRequestOptions)
                     .listener(new RequestListener<Drawable>() {
                         @Override

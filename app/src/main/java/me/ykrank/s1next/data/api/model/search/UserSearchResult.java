@@ -1,6 +1,6 @@
 package me.ykrank.s1next.data.api.model.search;
 
-import com.google.common.base.Objects;
+import com.github.ykrank.androidtools.guava.Objects;
 
 /**
  * Created by ykrank on 2017/04/01.

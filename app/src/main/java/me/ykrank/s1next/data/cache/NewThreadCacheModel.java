@@ -2,7 +2,7 @@ package me.ykrank.s1next.data.cache;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
+import com.github.ykrank.androidtools.guava.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NewThreadCacheModel {

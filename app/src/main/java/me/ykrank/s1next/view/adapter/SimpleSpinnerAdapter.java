@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.ykrank.androidtools.guava.Objects;
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleViewHolderAdapter;
 import com.github.ykrank.androidtools.util.L;
-import com.google.common.base.Objects;
 
 import java.util.List;
 

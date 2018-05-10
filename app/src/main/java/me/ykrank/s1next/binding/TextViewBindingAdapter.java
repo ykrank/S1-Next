@@ -22,12 +22,10 @@ import com.github.ykrank.androidtools.util.L;
 import com.github.ykrank.androidtools.util.ResourceUtil;
 import com.github.ykrank.androidtools.util.RxJavaUtil;
 import com.github.ykrank.androidtools.util.ViewUtil;
-import com.google.common.base.Charsets;
-import com.google.common.io.CharStreams;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 import io.reactivex.Single;
 import me.ykrank.s1next.R;
@@ -43,6 +41,9 @@ import me.ykrank.s1next.data.pref.ThemeManager;
 import me.ykrank.s1next.widget.span.GlideImageGetter;
 import me.ykrank.s1next.widget.span.HtmlCompat;
 import me.ykrank.s1next.widget.span.TagHandler;
+import okio.BufferedSource;
+import okio.Okio;
+import okio.Source;
 
 public final class TextViewBindingAdapter {
     private static int defaultTextColor;
@@ -80,7 +81,9 @@ public final class TextViewBindingAdapter {
     public static void loadTextAsset(TextView textView, String textPath) {
         try {
             InputStream inputStream = textView.getContext().getAssets().open(textPath);
-            textView.setText(CharStreams.toString(new InputStreamReader(inputStream, Charsets.UTF_8)));
+            Source source = Okio.source(inputStream);
+            BufferedSource bufferedSource = Okio.buffer(source);
+            textView.setText(bufferedSource.readString(Charset.forName("utf-8")));
         } catch (IOException e) {
             throw new IllegalStateException("Can't find license.", e);
         }

@@ -2,8 +2,8 @@ package me.ykrank.s1next.view.dialog
 
 import android.os.Bundle
 import com.github.ykrank.androidtools.extension.toast
-import com.google.common.base.Optional
-import com.google.common.base.Preconditions
+import com.github.ykrank.androidtools.guava.Optional
+import com.github.ykrank.androidtools.guava.Preconditions
 import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R

@@ -2,8 +2,8 @@ package me.ykrank.s1next;
 
 import android.content.Context;
 
+import com.github.ykrank.androidtools.guava.Preconditions;
 import com.github.ykrank.androidtools.widget.NullTrustManager;
-import com.google.common.base.Preconditions;
 
 import java.security.SecureRandom;
 
