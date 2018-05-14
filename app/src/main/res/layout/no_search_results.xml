@@ -23,6 +23,6 @@
     android:padding="@dimen/spacing_huge"
     android:paddingTop="@dimen/spacing_huge"
     android:textAlignment="center"
-    android:drawableTop="@drawable/ic_search_24dp"
+    android:drawableTop="@drawable/ic_search_selector"
     android:drawablePadding="@dimen/spacing_micro"
     android:textColor="@android:color/white"/>
