@@ -16,6 +16,7 @@ import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -119,6 +120,9 @@ public interface S1Service {
 
     @GET(ApiHome.URL_PROFILE)
     Single<BaseDataWrapper<Profile>> getProfile(@Query("uid") String uid);
+
+    @GET(ApiHome.URL_PROFILE_WEB)
+    Single<String> getProfileWeb(@Header("Referer") String referer, @Query("uid") String uid);
 
     @GET(ApiHome.URL_FRIENDS)
     Single<BaseDataWrapper<Friends>> getFriends(@Query("uid") String uid);

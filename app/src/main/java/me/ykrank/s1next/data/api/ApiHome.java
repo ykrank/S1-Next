@@ -23,6 +23,7 @@ public class ApiHome {
 
     //Profile
     static final String URL_PROFILE = Api.BASE_API_PREFIX + "profile";
+    static final String URL_PROFILE_WEB = Api.BASE_URL + "home.php?mod=space&do=profile&from=space";
 
     //Friends
     static final String URL_FRIENDS = Api.BASE_API_PREFIX + "friend";

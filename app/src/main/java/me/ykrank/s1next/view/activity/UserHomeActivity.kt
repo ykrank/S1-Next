@@ -187,10 +187,11 @@ class UserHomeActivity : BaseActivity() {
 
     private fun loadData() {
         binding.data?.let {
-            s1Service.getProfile(it.homeUid)
+            s1Service.getProfileWeb("https://bbs.saraba1st.com/2b/space-uid-${it.homeUid}.html", it.homeUid)
+                    .map { Profile.fromHtml(it) }
                     .compose(RxJavaUtil.iOSingleTransformer())
                     .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
-                    .subscribe({ wrapper -> binding.data = wrapper.data }, L::e)
+                    .subscribe({ binding.data = it }, L::e)
         }
     }
 

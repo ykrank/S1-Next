@@ -2,6 +2,7 @@ package me.ykrank.s1next;
 
 import android.content.Context;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.github.ykrank.androidtools.guava.Preconditions;
 import com.github.ykrank.androidtools.widget.NullTrustManager;
 
@@ -42,6 +43,10 @@ public final class BuildTypeModule {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //Stetho
+        builder.addNetworkInterceptor(new StethoInterceptor());
+
         return builder.build();
     }
 
@@ -60,6 +65,10 @@ public final class BuildTypeModule {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //Stetho
+        builder.addNetworkInterceptor(new StethoInterceptor());
+
         return builder.build();
     }
 
@@ -78,6 +87,10 @@ public final class BuildTypeModule {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //Stetho
+        builder.addNetworkInterceptor(new StethoInterceptor());
+
         return builder.build();
     }
 }
