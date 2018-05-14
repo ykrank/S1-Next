@@ -2,6 +2,7 @@ package me.ykrank.s1next.widget.glide;
 
 import android.support.annotation.Nullable;
 
+import com.bumptech.glide.integration.okhttp3.OkHttpStreamFetcher;
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.data.DataFetcher;
@@ -44,9 +45,9 @@ final class AppHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
         if (model instanceof AvatarUrl) {
             return new AvatarStreamFetcher(mOkHttpClient, (AvatarUrl) model);
         } else if (model instanceof ForcePassUrl) {
-            return new MultiThreadHttpStreamFetcher(model);
+            return new OkHttpStreamFetcher(mOkHttpClient, model);
         }
-        return new AppHttpStreamFetcher(model);
+        return new AppHttpStreamFetcher(mOkHttpClient, model);
     }
 
     /**
