@@ -7,6 +7,8 @@
 
         <import type="android.view.View" />
 
+        <import type="com.github.ykrank.androidtools.util.ResourceUtil" />
+
         <variable
             name="data"
             type="me.ykrank.s1next.data.api.model.Profile" />
@@ -74,13 +76,13 @@
                         android:layout_height="@dimen/avatar_size_home"
                         android:layout_marginTop="@dimen/spacing_xlarge"
                         android:contentDescription="@string/avatar_content_desc"
+                        android:transitionName="@string/transition_avatar"
                         android:visibility="@{downloadPreferencesManager.isAvatarsDownload ? View.VISIBLE : View.GONE}"
                         app:big="@{big}"
                         app:downloadPreferencesManager="@{downloadPreferencesManager}"
-                        app:uid="@{data.homeUid}"
                         app:preLoad="@{preLoad}"
                         app:thumb="@{thumb}"
-                        android:transitionName="@string/transition_avatar"
+                        app:uid="@{data.homeUid}"
                         tools:src="@drawable/ic_avatar_placeholder" />
 
                     <RelativeLayout
@@ -100,13 +102,13 @@
 
                         <ImageView
                             android:id="@+id/iv_new_pm"
-                            android:padding="@dimen/spacing_micro"
                             android:layout_width="28dp"
                             android:layout_height="28dp"
                             android:layout_marginLeft="@dimen/spacing_normal"
                             android:layout_marginRight="@dimen/spacing_normal"
                             android:layout_toEndOf="@id/tv_name"
                             android:layout_toRightOf="@id/tv_name"
+                            android:padding="@dimen/spacing_micro"
                             app:srcCompat="@drawable/ic_chat_black_24dp" />
                     </RelativeLayout>
 
@@ -218,7 +220,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_normal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="@{ResourceUtil.getNavigationBarHeight(context)}">
 
                 <android.support.v7.widget.CardView
                     style="?attr/cardViewStyle"
@@ -558,6 +561,36 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@{@string/user_rp_content(data.rp)}"
+                                tools:text="551 RP" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="@dimen/spacing_micro"
+                                android:background="?attr/divisionBackground" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/spacing_big"
+                            android:layout_marginRight="@dimen/spacing_big"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_micro"
+                                android:text="@string/user_sign"
+                                android:textColor="?attr/colorAccent"
+                                android:textSize="@dimen/text_size_caption"
+                                android:typeface="serif"
+                                tools:text="签到" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{@string/user_sign_content(data.sign)}"
                                 tools:text="551 RP" />
 
                             <View

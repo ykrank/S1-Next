@@ -17,11 +17,11 @@ class Profile : Account {
 
     var homeUsername: String? = null
     var homeUid: String? = null
-    var groupTitle: String? = null
-    var friends: Int = 0
-    var threads: Int = 0
-    var replies: Int = 0
     var signHtml: String? = null
+    var friends: Int = 0
+    var replies: Int = 0
+    var threads: Int = 0
+    var groupTitle: String? = null
     var onlineHour: Int = 0
     var regDate: Long? = null
     var lastVisitDate: Long? = null
@@ -31,6 +31,7 @@ class Profile : Account {
     var combatEffectiveness: Int = 0
     var gold: Int = 0
     var rp: Int = 0
+    var sign: Int = 0
     var shameSense: Int = 0
 
     constructor()
@@ -39,12 +40,12 @@ class Profile : Account {
     constructor(@JsonProperty("extcredits") extCredits: JsonNode, @JsonProperty("space") space: JsonNode) {
         this.homeUsername = space.get("username")?.asText()
         this.homeUid = space.get("uid")?.asText()
-        this.groupTitle = space.get("group")?.get("grouptitle")?.asText()
-        this.friends = space.get("friends")?.asInt() ?: -1
+        this.signHtml = space.get("sightml")?.asText()
         val posts = space.get("posts")?.asInt() ?: -1
+        this.friends = space.get("friends")?.asInt() ?: -1
         this.threads = space.get("threads")?.asInt() ?: -1
         this.replies = posts - threads
-        this.signHtml = space.get("sightml")?.asText()
+        this.groupTitle = space.get("group")?.get("grouptitle")?.asText()
         this.onlineHour = space.get("oltime")?.asInt() ?: -1
         this.regDate = space.get("regdate")?.asLong()
         this.lastVisitDate = space.get("lastvisit")?.asLong()
@@ -70,11 +71,11 @@ class Profile : Account {
                 val baseElement = profileDiv.child(0)
                 //<h2 class="mbn">
                 val nameEle = baseElement.child(0)
-                profile.homeUsername = nameEle.child(0).text()
+                profile.homeUsername = nameEle.textNodes()[0]?.text()?.trim()
                 profile.homeUid = nameEle.selectFirst("span").text().trim().let {
                     it.substring(6, it.length - 1)
                 }
-                profile.signHtml = nameEle.selectFirst("table")?.html()
+                profile.signHtml = baseElement.child(2)?.selectFirst("table")?.html()
                 val countEle = baseElement.child(3).child(0)
                 profile.friends = countEle.child(1).text().trim().substring(4).toInt()
                 profile.replies = countEle.child(3).text().trim().substring(4).toInt()
@@ -90,24 +91,43 @@ class Profile : Account {
                         "在线时间" -> profile.onlineHour = it.textNodes()[0].text().trim().let {
                             it.substring(0, it.length - 3)
                         }.toInt()
-                    //TODO 解析界面
+                        "注册时间" -> profile.regDate = it.textNodes()[0].text().trim().let {
+                            df.parse(it).time / 1000
+                        }
+                        "最后访问" -> profile.lastVisitDate = it.textNodes()[0].text().trim().let {
+                            df.parse(it).time / 1000
+                        }
+                        "上次活动时间" -> profile.lastActiveDate = it.textNodes()[0].text().trim().let {
+                            df.parse(it).time / 1000
+                        }
+                        "上次发表时间" -> profile.lastPostDate = it.textNodes()[0].text().trim().let {
+                            df.parse(it).time / 1000
+                        }
                     }
                 }
-                profile.onlineHour = pbbsEle.child(0).textNodes()[0].text().trim().let {
-                    it.substring(0, it.length - 3)
-                }.toInt()
-                profile.regDate = pbbsEle.child(1).textNodes()[0].text().trim().let {
-                    df.parse(it).time / 1000
-                }
-                profile.lastVisitDate = pbbsEle.child(2).textNodes()[0].text().trim().let {
-                    df.parse(it).time / 1000
-                }
-                profile.lastVisitDate = pbbsEle.child(2).textNodes()[0].text().trim().let {
-                    df.parse(it).time / 1000
-                }
-
                 //统计信息
                 val postElement = profileDiv.getElementById("psts")
+                val postUlElement = postElement.selectFirst("ul.pf_l")
+                postUlElement.children().forEach {
+                    when (it.child(0).text().trim()) {
+                        "积分" -> profile.credits = it.textNodes()[0].text().trim().toInt()
+                        "战斗力" -> profile.combatEffectiveness = it.textNodes()[0].text().trim().let {
+                            it.substring(0, it.length - 1)
+                        }.trim().toInt()
+                        "金币" -> profile.gold = it.textNodes()[0].text().trim().let {
+                            it.substring(0, it.length - 1)
+                        }.trim().toInt()
+                        "人品" -> profile.rp = it.textNodes()[0].text().trim().let {
+                            it.substring(0, it.length - 2)
+                        }.trim().toInt()
+                        "签到" -> profile.sign = it.textNodes()[0].text().trim().let {
+                            it.substring(0, it.length - 1)
+                        }.trim().toInt()
+                        "节操" -> profile.shameSense = it.textNodes()[0].text().trim().let {
+                            it.substring(0, it.length - 1)
+                        }.trim().toInt()
+                    }
+                }
             } catch (e: Exception) {
                 L.report(e)
             }

@@ -376,4 +376,6 @@
     <string name="dialog_report">發送</string>
         
     <string name="pref_net_cache_enable">網絡數據緩存</string>
+    <string name="user_sign_content">%1$d 點</string>
+    <string name="user_sign">簽到</string>
 </resources>

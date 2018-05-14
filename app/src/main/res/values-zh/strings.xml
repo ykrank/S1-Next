@@ -189,4 +189,6 @@
     <string name="prompt_report_error_msg">错误信息</string>
     <string name="dialog_report">发送</string>
     <string name="pref_net_cache_enable">网络数据缓存</string>
+    <string name="user_sign">签到</string>
+    <string name="user_sign_content">%1$d 点</string>
 </resources>

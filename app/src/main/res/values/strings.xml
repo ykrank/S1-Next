@@ -33,7 +33,6 @@
     <!-- menu -->
     <string name="menu_account_new">Create account</string>
     <string name="menu_refresh">Refresh</string>
-    <string name="menu_page_jump">Jump to page</string>
     <string name="menu_browser">Open in browser</string>
     <string name="menu_thread_go">Go to thread</string>
     <string name="menu_sub_forums" translatable="false">子版块</string>
@@ -194,6 +193,8 @@
     <string name="user_gold_content">%1$d G</string>
     <string name="user_rp">RP</string>
     <string name="user_rp_content">%1$d RP</string>
+    <string name="user_sign">Sign</string>
+    <string name="user_sign_content">%1$d Sign</string>
     <string name="user_shame_sense">Sense of shame</string>
     <string name="user_shame_sense_content">%1$d Jin</string>
 
