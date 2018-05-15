@@ -160,5 +160,4 @@ dependencies {
 
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
     debugImplementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
-    compileOnly 'com.facebook.stetho:stetho:1.5.0'
 }

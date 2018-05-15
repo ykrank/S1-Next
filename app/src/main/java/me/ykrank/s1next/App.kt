@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.StrictMode
 import android.support.multidex.MultiDexApplication
 import android.support.v7.app.AppCompatDelegate
-import com.facebook.stetho.Stetho
 import com.github.ykrank.androidtools.AppDataProvider
 import com.github.ykrank.androidtools.GlobalData
 import com.github.ykrank.androidtools.extension.toast
@@ -124,16 +123,14 @@ class App : MultiDexApplication() {
         }, this::toast)
 
         L.l("App init")
+        PreApp.onCreate(this)
+
         //如果不是主进程，不做多余的初始化
         if (!ProcessUtil.isMainProcess(this))
             return
 
         //enable vector drawable
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
-
-        if (BuildConfig.DEBUG) {
-            Stetho.initializeWithDefaults(this)
-        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
