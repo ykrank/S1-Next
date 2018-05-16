@@ -52,6 +52,11 @@ class Post : PaperParcelable, Cloneable, SameItem {
     var extraHtml: String? = null
     @JsonIgnore
     var banned: Boolean = false
+    /**
+     * Null if no rates, empty if not init.
+     */
+    @JsonIgnore
+    var rates: MutableList<Rate>? = null
 
     constructor()
 
@@ -290,6 +295,7 @@ class Post : PaperParcelable, Cloneable, SameItem {
         if (isVote != other.isVote) return false
         if (extraHtml != other.extraHtml) return false
         if (banned != other.banned) return false
+        if (rates != other.rates) return false
 
         return true
     }
@@ -309,6 +315,7 @@ class Post : PaperParcelable, Cloneable, SameItem {
         result = 31 * result + isVote.hashCode()
         result = 31 * result + (extraHtml?.hashCode() ?: 0)
         result = 31 * result + banned.hashCode()
+        result = 31 * result + (rates?.hashCode() ?: 0)
         return result
     }
 

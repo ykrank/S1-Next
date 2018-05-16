@@ -31,12 +31,21 @@ class Posts : Account {
     constructor() {}
 
     @JsonCreator
-    constructor(@JsonProperty("special_trade") trade: Map<Int, Any>?, @JsonProperty("postlist") postList: List<Post>?) {
+    constructor(@JsonProperty("special_trade") trade: Map<Int, Any>?,
+                @JsonProperty("postlist") postList: List<Post>?,
+                @JsonProperty("commentcount") commentCount: Map<Int, Int?>?) {
         this.postList = filterPostList(postList)
         if (trade != null && postList != null && postList.isNotEmpty()) {
             val post = postList[0]
             if (trade.containsKey(post.id + 1)) {
                 post.isTrade = true
+            }
+        }
+        if (commentCount != null) {
+            this.postList.forEach {
+                if (commentCount.containsKey(it.id)) {
+                    it.rates = mutableListOf()
+                }
             }
         }
     }
@@ -60,10 +69,11 @@ class Posts : Account {
         var result = super.hashCode()
         result = 31 * result + (postListInfo?.hashCode() ?: 0)
         result = 31 * result + (threadAttachment?.hashCode() ?: 0)
-        result = 31 * result + (postList?.hashCode() ?: 0)
+        result = 31 * result + postList.hashCode()
         result = 31 * result + (vote?.hashCode() ?: 0)
         return result
     }
+
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     class ThreadAttachment {
