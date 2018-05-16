@@ -6,12 +6,16 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.JsonNode
 import com.github.ykrank.androidtools.ui.adapter.model.SameItem
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.MathUtil
+import me.ykrank.s1next.App
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.db.BlackListDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.BlackList
+import me.ykrank.s1next.util.JsonUtil
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 import java.util.*
@@ -56,17 +60,20 @@ class Post : PaperParcelable, Cloneable, SameItem {
      * Null if no rates, empty if not init.
      */
     @JsonIgnore
-    var rates: MutableList<Rate>? = null
+    var rates: List<Rate>? = null
 
     constructor()
 
     @JsonCreator
     constructor(@JsonProperty("first") first: String?, @JsonProperty("message") reply: String?,
-                @JsonProperty("attachments") attachmentMap: Map<Int, Attachment>?) {
+                @JsonProperty("attachments") attachments: JsonNode?) {
+        //if "attachments" is empty, it's array, but map if not empty
         this.isFirst = "1" == first
         this.reply = filterReply(reply)
-        if (attachmentMap != null) {
-            this.attachmentMap = attachmentMap
+        if (attachments != null && attachments.isObject) {
+            this.attachmentMap = App.preAppComponent.jsonMapper.let {
+                JsonUtil.readJsonNode(it, attachments, object : TypeReference<Map<Int, Attachment>>() {})
+            }
             this.reply = processAttachment()
         }
     }
@@ -349,7 +356,8 @@ class Post : PaperParcelable, Cloneable, SameItem {
         }
 
         companion object {
-            @JvmField val CREATOR = PaperParcelPost_Attachment.CREATOR
+            @JvmField
+            val CREATOR = PaperParcelPost_Attachment.CREATOR
         }
     }
 
@@ -388,7 +396,8 @@ class Post : PaperParcelable, Cloneable, SameItem {
             COLOR_NAME_MAP.put("white", "#FFFFFF")
         }
 
-        @JvmField val CREATOR = PaperParcelPost.CREATOR
+        @JvmField
+        val CREATOR = PaperParcelPost.CREATOR
 
         /**
          * [Color] doesn't support all HTML color names.

@@ -131,6 +131,15 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_show_vote" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycleView_rates"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="@{postViewModel.post.rates.size > 0?View.VISIBLE:View.GONE}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_reply" />
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>

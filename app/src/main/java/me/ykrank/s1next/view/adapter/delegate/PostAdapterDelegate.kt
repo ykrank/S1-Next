@@ -3,10 +3,12 @@ package me.ykrank.s1next.view.adapter.delegate
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.method.LinkMovementMethod
 import android.view.ViewGroup
 import com.github.ykrank.androidlifecycle.AndroidLifeCycle
+import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
 import com.github.ykrank.androidtools.widget.RxBus
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -82,6 +84,18 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
             } else {
                 it.vote.set(null)
             }
+        }
+
+        val rates = post.rates
+        if (rates != null && rates.isNotEmpty()) {
+            val context = binding.root.context
+            if (binding.recycleViewRates.adapter == null) {
+                binding.recycleViewRates.adapter = SimpleRecycleViewAdapter(context, R.layout.item_rate_detail)
+                binding.recycleViewRates.layoutManager = LinearLayoutManager(context)
+                binding.recycleViewRates.isNestedScrollingEnabled = false
+            }
+            val adapter = binding.recycleViewRates.adapter as SimpleRecycleViewAdapter
+            adapter.swapDataSet(rates)
         }
 
         binding.executePendingBindings()

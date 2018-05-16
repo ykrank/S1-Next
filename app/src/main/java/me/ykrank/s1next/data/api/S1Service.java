@@ -150,4 +150,7 @@ public interface S1Service {
     @POST(ApiForum.URL_VOTE)
     Single<String> vote(@Query("tid") String threadId, @Field("formhash") String authenticityToken
             , @Field("pollanswers[]") List<Integer> answers);
+
+    @GET(ApiForum.URL_RATE_LIST)
+    Single<String> getRates(@Query("tid") String threadId, @Query("pid") String postId);
 }

@@ -43,4 +43,6 @@ public class ApiForum {
     static final String URL_SEARCH_USER = Api.BASE_URL + "search.php?searchsubmit=yes&mod=user";
 
     static final String URL_VOTE = Api.BASE_URL + "forum.php?mod=misc&action=votepoll&pollsubmit=yes&quickforward=yes&inajax=1";
+
+    static final String URL_RATE_LIST = Api.BASE_URL + "forum.php?mod=misc&action=viewratings&inajax=1";
 }

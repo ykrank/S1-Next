@@ -34,7 +34,7 @@ public interface PreAppComponent {
 
     Wifi getWifi();
 
-    ObjectMapper getJsontMapper();
+    ObjectMapper getJsonMapper();
 
     CookieManager getCookieManager();
 

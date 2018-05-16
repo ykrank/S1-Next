@@ -22,6 +22,7 @@ import com.github.ykrank.androidtools.util.LooperUtil
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.RxBus
 import com.github.ykrank.androidtools.widget.recycleview.StartSnapLinearLayoutManager
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.rx_cache2.DynamicKeyGroup
@@ -32,6 +33,7 @@ import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.ApiUtil
 import me.ykrank.s1next.data.api.model.Post
+import me.ykrank.s1next.data.api.model.Rate
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.collection.Posts
 import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper
@@ -311,7 +313,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             consumeResult(data.result)
         } else {
             super.onNext(data)
-            //TODO get rates from web and set to post, then notify item change if posts have set to adapter
+            loadRates(postList)
 
             val postListInfo = posts.postListInfo
             if (postListInfo != null) {
@@ -378,6 +380,26 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         val enable = mGeneralPreferencesManager.isQuickSideBarEnable
         binding.quickSidebarEnable = enable
         return enable
+    }
+
+    private fun loadRates(posts: List<Post>) {
+        Observable.fromIterable(posts.filter { it.rates != null }.distinctBy { it.id })
+                .flatMap {
+                    val pid = it.id
+                    mS1Service.getRates(mThreadId, pid.toString())
+                            .map { Pair(pid, Rate.fromHtml(it)) }
+                            .toObservable()
+                }
+                .compose(RxJavaUtil.iOTransformer())
+                .subscribe({
+                    mRecyclerAdapter.dataSet.filterIsInstance(Post::class.java)
+                            .forEachIndexed { index, post ->
+                                if (post.id == it.first) {
+                                    post.rates = it.second
+                                    mRecyclerAdapter.notifyItemChanged(index)
+                                }
+                            }
+                }, L::report)
     }
 
     private fun initQuickSidebar(page: Int, postSize: Int) {
