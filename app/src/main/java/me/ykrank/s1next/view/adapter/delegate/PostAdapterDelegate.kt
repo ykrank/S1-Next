@@ -20,7 +20,8 @@ import me.ykrank.s1next.viewmodel.PostViewModel
 import me.ykrank.s1next.widget.span.PostMovementMethod
 import javax.inject.Inject
 
-class PostAdapterDelegate(private val fragment: Fragment, context:Context) : BaseAdapterDelegate<Post, PostAdapterDelegate.ItemViewBindingHolder>(context, Post::class.java) {
+class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
+        BaseAdapterDelegate<Post, PostAdapterDelegate.ItemViewBindingHolder>(context, Post::class.java) {
 
     @Inject
     internal lateinit var mRxBus: RxBus

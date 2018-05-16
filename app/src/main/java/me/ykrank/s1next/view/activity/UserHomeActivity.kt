@@ -1,7 +1,6 @@
 package me.ykrank.s1next.view.activity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Build
@@ -10,6 +9,7 @@ import android.support.annotation.MainThread
 import android.support.design.widget.AppBarLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.app.FragmentActivity
 import android.transition.Transition
 import android.view.Menu
 import android.view.MenuItem
@@ -28,6 +28,7 @@ import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.model.Profile
 import me.ykrank.s1next.data.db.BlackListDbWrapper
 import me.ykrank.s1next.databinding.ActivityHomeBinding
+import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.event.BlackListChangeEvent
 import me.ykrank.s1next.view.internal.BlacklistMenuAction
 import me.ykrank.s1next.widget.track.event.ViewHomeTrackEvent
@@ -223,20 +224,28 @@ class UserHomeActivity : BaseActivity() {
         private val ARG_USERNAME = "username"
         private val ARG_IMAGE_INFO = "image_info"
 
-        fun start(context: Context, uid: String, userName: String) {
-            val intent = Intent(context, UserHomeActivity::class.java)
-            intent.putExtra(ARG_UID, uid)
-            intent.putExtra(ARG_USERNAME, userName)
-            context.startActivity(intent)
-        }
-
-        fun start(context: Context, uid: String, userName: String, avatarView: View) {
-            //@see http://stackoverflow.com/questions/31381385/nullpointerexception-drawable-setbounds-probably-due-to-fragment-transitions#answer-31383033
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-                start(context, uid, userName)
+        fun start(activity: FragmentActivity, uid: String, userName: String) {
+            if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(activity.supportFragmentManager, App.appComponent.user)) {
                 return
             }
-            val baseContext = ContextUtils.getBaseContext(context)
+
+            val intent = Intent(activity, UserHomeActivity::class.java)
+            intent.putExtra(ARG_UID, uid)
+            intent.putExtra(ARG_USERNAME, userName)
+            activity.startActivity(intent)
+        }
+
+        fun start(activity: FragmentActivity, uid: String, userName: String, avatarView: View) {
+            //@see http://stackoverflow.com/questions/31381385/nullpointerexception-drawable-setbounds-probably-due-to-fragment-transitions#answer-31383033
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+                start(activity, uid, userName)
+                return
+            }
+            if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(activity.supportFragmentManager, App.appComponent.user)) {
+                return
+            }
+
+            val baseContext = ContextUtils.getBaseContext(activity)
             if (baseContext !is Activity) {
                 L.leaveMsg("uid:" + uid)
                 L.leaveMsg("userName:" + userName)

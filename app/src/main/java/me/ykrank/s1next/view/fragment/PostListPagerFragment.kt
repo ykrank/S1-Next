@@ -311,6 +311,8 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             consumeResult(data.result)
         } else {
             super.onNext(data)
+            //TODO get comments from web and set to post, then notify item change if posts have set to adapter
+
             val postListInfo = posts.postListInfo
             if (postListInfo != null) {
                 mRecyclerAdapter.setThreadInfo(postListInfo)

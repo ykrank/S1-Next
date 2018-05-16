@@ -73,7 +73,7 @@ public final class AppPostViewModel {
         //Clear avatar false cache
         AvatarUrlsCache.clearUserAvatarCache("" + post.get().getAuthorId());
         //个人主页
-        UserHomeActivity.Companion.start(v.getContext(), "" + post.get().getAuthorId(), post.get().getAuthor(), v);
+        UserHomeActivity.Companion.start((FragmentActivity) v.getContext(), "" + post.get().getAuthorId(), post.get().getAuthor(), v);
     }
 
     public boolean onLongClick(View v) {

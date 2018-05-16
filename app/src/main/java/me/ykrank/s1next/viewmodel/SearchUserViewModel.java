@@ -1,6 +1,7 @@
 package me.ykrank.s1next.viewmodel;
 
 import android.databinding.ObservableField;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import me.ykrank.s1next.data.api.model.search.UserSearchResult;
@@ -16,6 +17,6 @@ public final class SearchUserViewModel {
         //Clear avatar false cache
         AvatarUrlsCache.clearUserAvatarCache(search.get().getUid());
         //个人主页
-        UserHomeActivity.Companion.start(v.getContext(), search.get().getUid(), search.get().getName(), avatarView);
+        UserHomeActivity.Companion.start((FragmentActivity) v.getContext(), search.get().getUid(), search.get().getName(), avatarView);
     }
 }

@@ -36,7 +36,7 @@ import javax.inject.Inject
 /**
  * Implements the concrete UI logic for [DrawerLayoutDelegate].
  */
-class DrawerLayoutDelegateConcrete(activity: FragmentActivity, drawerLayout: DrawerLayout, navigationView: NavigationView)
+class DrawerLayoutDelegateConcrete(val activity: FragmentActivity, drawerLayout: DrawerLayout, navigationView: NavigationView)
     : DrawerLayoutDelegate(activity, drawerLayout, navigationView), NavigationView.OnNavigationItemSelectedListener {
 
     private val mUser: User
@@ -100,7 +100,7 @@ class DrawerLayoutDelegateConcrete(activity: FragmentActivity, drawerLayout: Dra
 
         binding.drawerUserAvatar.setOnClickListener {
             if (mUser.isLogged) {
-                UserHomeActivity.start(it.context, mUser.uid!!, mUser.name!!, it)
+                UserHomeActivity.start(activity, mUser.uid!!, mUser.name!!, it)
             } else {
                 binding.drawerUserName.performClick()
             }
