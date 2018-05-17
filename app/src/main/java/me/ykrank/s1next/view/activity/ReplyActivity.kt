@@ -51,8 +51,8 @@ class ReplyActivity : BaseActivity() {
      * Show [android.app.AlertDialog] when reply content is not empty.
      */
     override fun onBackPressed() {
-        if (mReplyFragment.isEmoticonKeyboardShowing) {
-            mReplyFragment.hideEmoticonKeyboard()
+        if (mReplyFragment.isToolsKeyboardShowing) {
+            mReplyFragment.hideToolsKeyboard()
         } else {
             super.onBackPressed()
         }

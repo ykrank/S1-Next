@@ -44,7 +44,7 @@ class NewThreadFragment : BasePostFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val newThreadBinding = DataBindingUtil.inflate<FragmentNewThreadBinding>(inflater, R.layout.fragment_new_thread, container, false)
-        initCreateView(newThreadBinding.layoutPost!!)
+        initCreateView(newThreadBinding.layoutPost!!, newThreadBinding.title)
         titleEditText = newThreadBinding.title
         typeSpinner = newThreadBinding.spinner
         return newThreadBinding.root

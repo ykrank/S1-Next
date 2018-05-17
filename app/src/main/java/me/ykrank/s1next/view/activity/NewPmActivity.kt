@@ -44,8 +44,8 @@ class NewPmActivity : BaseActivity() {
      * Show [android.app.AlertDialog] when reply content is not empty.
      */
     override fun onBackPressed() {
-        if (newPmFragment.isEmoticonKeyboardShowing) {
-            newPmFragment.hideEmoticonKeyboard()
+        if (newPmFragment.isToolsKeyboardShowing) {
+            newPmFragment.hideToolsKeyboard()
         } else {
             super.onBackPressed()
         }

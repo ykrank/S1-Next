@@ -38,8 +38,8 @@ class NewThreadActivity : BaseActivity() {
      * Show [android.app.AlertDialog] when reply content is not empty.
      */
     override fun onBackPressed() {
-        if (mNewThreadFragment.isEmoticonKeyboardShowing) {
-            mNewThreadFragment.hideEmoticonKeyboard()
+        if (mNewThreadFragment.isToolsKeyboardShowing) {
+            mNewThreadFragment.hideToolsKeyboard()
         } else {
             super.onBackPressed()
         }

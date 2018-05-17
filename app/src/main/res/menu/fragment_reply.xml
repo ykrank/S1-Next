@@ -4,12 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.ykrank.s1next.view.fragment.ReplyFragment">
     <item
-        android:id="@+id/menu_emoticon"
-        android:icon="?attr/iconMenuEmoticon"
-        android:orderInCategory="21"
-        android:title="@string/menu_emoticon"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/menu_send"
         android:icon="?attr/iconMenuSend"
         android:orderInCategory="22"

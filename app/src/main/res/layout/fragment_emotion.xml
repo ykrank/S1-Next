@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/emoticon_keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.github.ykrank.androidtools.widget.uglyfix.FixViewPager
+            android:id="@+id/emoticon_keyboard_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="?attr/emoticonKeyboardBackground" />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/emoticon_keyboard_tab_layout"
+            style="@style/Widget.Design.TabLayout.Keyboard"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/emoticon_keyboard_tab_layout_height"
+            android:background="?attr/emoticonKeyboardTabLayoutBackground"
+            android:elevation="@dimen/emoticon_keyboard_tab_layout_elevation"
+            tools:ignore="UnusedAttribute" />
+    </LinearLayout>
+
+
+</layout>

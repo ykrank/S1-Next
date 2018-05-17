@@ -4,9 +4,8 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.annotation.CallSuper
 import android.support.annotation.UiThread
-import android.support.v4.view.ViewCompat
-import android.support.v4.view.ViewPropertyAnimatorListener
-import android.support.v4.view.animation.FastOutSlowInInterpolator
+import android.support.design.widget.TabLayout
+import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -16,7 +15,6 @@ import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.util.ImeUtils
 import com.github.ykrank.androidtools.util.L
-import com.github.ykrank.androidtools.util.ResourceUtil
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.EditorDiskCache
 import com.github.ykrank.androidtools.widget.RxBus
@@ -27,7 +25,6 @@ import me.ykrank.s1next.R
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.databinding.FragmentPostBinding
 import me.ykrank.s1next.view.activity.BaseActivity
-import me.ykrank.s1next.view.adapter.EmoticonPagerAdapter
 import me.ykrank.s1next.view.event.EmoticonClickEvent
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
 import javax.inject.Inject
@@ -36,14 +33,9 @@ import javax.inject.Inject
  * Created by ykrank on 2016/7/31 0031.
  */
 abstract class BasePostFragment : BaseFragment() {
-    private val mInterpolator = FastOutSlowInInterpolator()
     protected lateinit var mFragmentPostBinding: FragmentPostBinding
     protected lateinit var mReplyView: EditText
-    /**
-     * `mMenuEmoticon` is null before [.onCreateOptionsMenu].
-     */
-    protected var mMenuEmoticon: MenuItem? = null
-    protected lateinit var mEmoticonKeyboard: View
+
     /**
      * `mMenuSend` is null when configuration changes.
      */
@@ -54,7 +46,7 @@ abstract class BasePostFragment : BaseFragment() {
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
     @Inject
     internal lateinit var editorDiskCache: EditorDiskCache
-    internal var isEmoticonKeyboardShowing: Boolean = false
+    internal var isToolsKeyboardShowing: Boolean = false
     private var mCacheDisposable: Disposable? = null
     private var requestDialogDisposable: Disposable? = null
     /**
@@ -62,26 +54,27 @@ abstract class BasePostFragment : BaseFragment() {
      */
     private var post = false
 
+    private val toolsFragments: List<Fragment> by lazy {
+        listOf(
+                EmotionFragment.newInstance(), ImageUploadFragment.newInstance(), PostToolsExtrasFragment.newInstance()
+        )
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mFragmentPostBinding = DataBindingUtil.inflate<FragmentPostBinding>(inflater, R.layout.fragment_post, container,
-                false)
+        mFragmentPostBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_post, container, false)
         mReplyView = mFragmentPostBinding.reply
-        mEmoticonKeyboard = mFragmentPostBinding.emoticonKeyboard
+
+        bindViewFocusWithToolsKeyboard(mReplyView)
         return mFragmentPostBinding.root
     }
 
-    protected fun initCreateView(fragmentPostBinding: FragmentPostBinding) {
+    protected fun initCreateView(fragmentPostBinding: FragmentPostBinding, vararg focusView: View) {
         mFragmentPostBinding = fragmentPostBinding
         mReplyView = mFragmentPostBinding.reply
-        mEmoticonKeyboard = mFragmentPostBinding.emoticonKeyboard
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (savedInstanceState != null) {
-            isEmoticonKeyboardShowing = savedInstanceState.getBoolean(
-                    STATE_IS_EMOTICON_KEYBOARD_SHOWING)
+        bindViewFocusWithToolsKeyboard(mReplyView)
+        focusView.forEach {
+            bindViewFocusWithToolsKeyboard(it)
         }
     }
 
@@ -101,13 +94,7 @@ abstract class BasePostFragment : BaseFragment() {
             }
         })
 
-        setupEmoticonKeyboard()
-
-        if (savedInstanceState != null) {
-            if (isEmoticonKeyboardShowing) {
-                showEmoticonKeyboard()
-            }
-        }
+        setupToolsKeyboard()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -158,25 +145,11 @@ abstract class BasePostFragment : BaseFragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_reply, menu)
 
-        mMenuEmoticon = menu.findItem(R.id.menu_emoticon)
-        if (isEmoticonKeyboardShowing) {
-            setKeyboardIcon()
-        }
-
         mMenuSend = menu.findItem(R.id.menu_send).setEnabled(!TextUtils.isEmpty(mReplyView.text))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_emoticon -> {
-                if (isEmoticonKeyboardShowing) {
-                    hideEmoticonKeyboard(true)
-                } else {
-                    showEmoticonKeyboard()
-                }
-
-                return true
-            }
             R.id.menu_send -> return onMenuSendClick()
             else -> return super.onOptionsItemSelected(item)
         }
@@ -205,12 +178,6 @@ abstract class BasePostFragment : BaseFragment() {
                 .subscribe({ mReplyView.setText(it) }, L::report)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        outState?.putBoolean(STATE_IS_EMOTICON_KEYBOARD_SHOWING, isEmoticonKeyboardShowing)
-    }
-
     private fun bindRequestDialog() {
         if (requestDialogDisposable == null) {
             requestDialogDisposable = mRxBus.get()
@@ -226,77 +193,67 @@ abstract class BasePostFragment : BaseFragment() {
         }
     }
 
-    private fun setupEmoticonKeyboard() {
-        val viewPager = mFragmentPostBinding.emoticonKeyboardPager
-        viewPager.adapter = EmoticonPagerAdapter(activity)
-
-        val tabLayout = mFragmentPostBinding.emoticonKeyboardTabLayout
-        tabLayout.setupWithViewPager(viewPager)
+    /**
+     * hideToolsKeyboard when view has focus
+     */
+    private fun bindViewFocusWithToolsKeyboard(view: View){
+        view.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                hideToolsKeyboard()
+            }
+        }
     }
 
-    private fun showEmoticonKeyboard() {
-        isEmoticonKeyboardShowing = true
+    private fun setupToolsKeyboard() {
+        val tabLayout = mFragmentPostBinding.tabLayoutPostTools
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                if (!isToolsKeyboardShowing) {
+                    showHideToolsTab(tab, true)
+                }
+            }
 
-        // hide keyboard
-        ImeUtils.setShowSoftInputOnFocus(mReplyView, false)
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                showHideToolsTab(tab, false)
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                showHideToolsTab(tab, true)
+            }
+
+        })
+        fragmentManager?.beginTransaction()?.also {
+            val t = it
+            toolsFragments.forEach {
+                t.add(R.id.fragment_post_tools, it)
+                t.hide(it)
+            }
+        }?.commit()
+    }
+
+    private fun showHideToolsTab(tab: TabLayout.Tab?, show: Boolean) {
+        val pos = tab?.position ?: -1
+        if (pos >= 0 && pos < toolsFragments.size) {
+            if (show) {
+                showToolsKeyboard()
+                fragmentManager?.beginTransaction()?.show(toolsFragments[pos])?.commit()
+            } else {
+                fragmentManager?.beginTransaction()?.hide(toolsFragments[pos])?.commit()
+            }
+        } else {
+            L.report(IllegalStateException("Illegal TabLayout pos: $pos, ${toolsFragments.size}"))
+        }
+    }
+
+    private fun showToolsKeyboard() {
+        isToolsKeyboardShowing = true
         ImeUtils.hideIme(mReplyView)
-        activity!!.window.setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
-
-        mEmoticonKeyboard.visibility = View.VISIBLE
-        // translationYBy(-mEmoticonKeyboard.getHeight())
-        // doesn't work when orientation change
-        ViewCompat.animate(mEmoticonKeyboard)
-                .alpha(1f)
-                .translationY(0f)
-                .setInterpolator(mInterpolator)
-                .withLayer()
-                .setListener(EmoticonKeyboardAnimator())
-
-        setKeyboardIcon()
+        mFragmentPostBinding.fragmentPostTools.visibility = View.VISIBLE
     }
 
-    fun hideEmoticonKeyboard() {
-        hideEmoticonKeyboard(false)
-    }
-
-    private fun hideEmoticonKeyboard(shouldShowKeyboard: Boolean) {
-        ViewCompat.animate(mEmoticonKeyboard)
-                .alpha(0f)
-                .translationY(mEmoticonKeyboard.height.toFloat())
-                .setInterpolator(mInterpolator)
-                .withLayer()
-                .setListener(object : EmoticonKeyboardAnimator() {
-
-                    override fun onAnimationEnd(view: View) {
-                        mEmoticonKeyboard.visibility = View.GONE
-
-                        ImeUtils.setShowSoftInputOnFocus(mReplyView, true)
-                        activity!!.window.setSoftInputMode(
-                                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-
-                        if (shouldShowKeyboard) {
-                            ImeUtils.showIme(mReplyView)
-                        }
-
-                        super.onAnimationEnd(view)
-                    }
-                })
-
-        isEmoticonKeyboardShowing = false
-        setEmoticonIcon()
-    }
-
-    private fun setEmoticonIcon() {
-        mMenuEmoticon?.setIcon(ResourceUtil.getResourceId(context!!.theme,
-                R.attr.iconMenuEmoticon))
-        mMenuEmoticon?.setTitle(R.string.menu_emoticon)
-    }
-
-    private fun setKeyboardIcon() {
-        mMenuEmoticon?.setIcon(ResourceUtil.getResourceId(context!!.theme,
-                R.attr.iconMenuKeyboard))
-        mMenuEmoticon?.setTitle(R.string.menu_keyboard)
+    fun hideToolsKeyboard() {
+        isToolsKeyboardShowing = false
+        mFragmentPostBinding.fragmentPostTools.visibility = View.GONE
     }
 
     @CallSuper
@@ -309,24 +266,4 @@ abstract class BasePostFragment : BaseFragment() {
             return mReplyView.text.toString()
         }
 
-    private open inner class EmoticonKeyboardAnimator : ViewPropertyAnimatorListener {
-
-        override fun onAnimationStart(view: View) {
-            mMenuEmoticon?.isEnabled = false
-        }
-
-        override fun onAnimationEnd(view: View) {
-            mMenuEmoticon?.isEnabled = true
-        }
-
-        override fun onAnimationCancel(view: View) {}
-    }
-
-    companion object {
-        /**
-         * The serialization (saved instance state) Bundle key representing whether emoticon
-         * keyboard is showing when configuration changes.
-         */
-        private val STATE_IS_EMOTICON_KEYBOARD_SHOWING = "is_emoticon_keyboard_showing"
-    }
 }

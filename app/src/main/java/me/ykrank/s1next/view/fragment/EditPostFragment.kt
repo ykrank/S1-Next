@@ -38,7 +38,7 @@ class EditPostFragment : BasePostFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentEditPostBinding.inflate(inflater, container, false)
-        initCreateView(binding.layoutPost!!)
+        initCreateView(binding.layoutPost!!, binding.title)
 
         mThread = arguments!!.getParcelable<Thread>(ARG_THREAD)
         mPost = arguments!!.getParcelable<Post>(ARG_POST)

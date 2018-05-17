@@ -13,6 +13,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            tools:visibility="gone"
             android:layout_weight="1">
 
             <!-- see http://stackoverflow.com/a/28618889 -->
@@ -36,30 +37,35 @@
 
         </ScrollView>
 
-        <LinearLayout
-            android:id="@+id/emoticon_keyboard"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout_post_tools"
+            style="@style/Widget.Design.TabLayout.Keyboard"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/emoticon_keyboard_height"
-            android:orientation="vertical"
-            android:translationY="@dimen/emoticon_keyboard_height"
-            android:visibility="gone">
+            android:layout_height="@dimen/post_tools_tab_layout_height"
+            android:background="?attr/emoticonKeyboardTabLayoutBackground"
+            android:elevation="@dimen/post_tools_tab_layout_elevation">
 
-            <android.support.design.widget.TabLayout
-                android:id="@+id/emoticon_keyboard_tab_layout"
-                style="@style/Widget.Design.TabLayout.Keyboard"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/emoticon_keyboard_tab_layout_height"
-                android:background="?attr/emoticonKeyboardTabLayoutBackground"
-                android:elevation="@dimen/emoticon_keyboard_tab_layout_elevation"
-                tools:ignore="UnusedAttribute" />
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:icon="?attr/iconMenuKeyboard"
+                android:layout_height="match_parent" />
 
-            <com.github.ykrank.androidtools.widget.uglyfix.FixViewPager
-                android:id="@+id/emoticon_keyboard_pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?attr/emoticonKeyboardBackground" />
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:icon="?attr/iconMenuKeyboard"
+                android:layout_height="match_parent" />
 
-        </LinearLayout>
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:icon="?attr/iconMenuKeyboard"
+                android:layout_height="match_parent" />
+        </android.support.design.widget.TabLayout>
+
+        <FrameLayout
+            android:id="@+id/fragment_post_tools"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/post_tools_content_height"
+            android:visibility="gone" />
 
     </LinearLayout>
 
