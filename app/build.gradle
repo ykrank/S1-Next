@@ -130,7 +130,6 @@ dependencies {
     alphaImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
     implementation "com.android.support:transition:$rootProject.supportVersion"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
 //    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
 //    compileOnly 'com.google.j2objc:j2objc-annotations:1.3'
