@@ -20,6 +20,10 @@
         <variable
             name="large"
             type="boolean" />
+
+        <variable
+            name="progress"
+            type="com.github.ykrank.androidtools.ui.adapter.delegate.item.ProgressItem" />
     </data>
 
     <FrameLayout
@@ -47,6 +51,17 @@
             app:show="@{large}"
             app:thumbUrl="@{imageViewModel.thumbUrl}"
             app:url="@{imageViewModel.url}" />
+
+        <TextView
+            android:id="@+id/tv_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="@dimen/spacing_huge"
+            android:textColor="@color/white_100p"
+            android:text="@{progress.kbStr}"
+            android:visibility="@{progress.finished?View.GONE:View.VISIBLE}"
+            tools:text="1000/2048KB" />
 
     </FrameLayout>
 

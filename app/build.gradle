@@ -161,4 +161,6 @@ dependencies {
     debugImplementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 
     implementation 'me.jessyan:progressmanager:1.5.0'
+
+    implementation 'com.nononsenseapps:filepicker:4.1.0'
 }

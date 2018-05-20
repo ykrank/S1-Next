@@ -18,11 +18,15 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.chrisbanes.photoview.PhotoView
+import com.github.ykrank.androidtools.ui.adapter.delegate.item.ProgressItem
 import com.github.ykrank.androidtools.util.FileUtil
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.glide.model.ForcePassUrl
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
+import me.jessyan.progressmanager.ProgressListener
+import me.jessyan.progressmanager.ProgressManager
+import me.jessyan.progressmanager.body.ProgressInfo
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
@@ -34,6 +38,7 @@ import me.ykrank.s1next.viewmodel.ImageViewModel
 import me.ykrank.s1next.widget.track.event.ViewImageTrackEvent
 import okhttp3.HttpUrl
 import java.io.File
+import java.lang.Exception
 import javax.inject.Inject
 
 /**
@@ -42,6 +47,8 @@ import javax.inject.Inject
 class GalleryFragment : Fragment() {
     private var mImageUrl: String? = null
     private var mImageThumbUrl: String? = null
+
+    private var downloadId: String? = null
 
     private lateinit var mPhotoView: PhotoView
     private lateinit var binding: FragmentGalleryBinding
@@ -68,6 +75,8 @@ class GalleryFragment : Fragment() {
         binding.imageViewModel = ImageViewModel(mImageUrl, mImageThumbUrl)
 
         mPhotoView.attacher.scaleType = ImageView.ScaleType.CENTER_INSIDE
+
+        addProgressListener()
 
         return binding.root
     }
@@ -169,6 +178,28 @@ class GalleryFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun addProgressListener() {
+        downloadId = mImageUrl?.let { String(it.toCharArray()) }
+        downloadId?.also {
+            ProgressManager.getInstance().addResponseListener(it, object : ProgressListener {
+                override fun onProgress(progressInfo: ProgressInfo) {
+                    binding.progress = ProgressItem(progressInfo.contentLength, progressInfo.currentbytes, progressInfo.isFinish)
+                }
+
+                override fun onError(id: Long, e: Exception?) {
+                    binding.progress = ProgressItem(0, 0, true)
+                    L.report(e)
+                }
+
+            })
+        }
+    }
+
+    override fun onDestroy() {
+        downloadId = null
+        super.onDestroy()
     }
 
     companion object {
