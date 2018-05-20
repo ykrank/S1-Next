@@ -16,6 +16,7 @@ class Rate : PaperParcelable {
     var score: Int? = null
     var time: Long? = null
 
+    val symbolScore: String get() = if (score ?: 0 < 0) "$score" else "+$score"
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -60,7 +61,7 @@ class Rate : PaperParcelable {
                     rate.score = it.child(0).text()?.let {
                         it.substring(3, it.length - 1).trim()
                     }?.toInt()
-                    it.child(1).child(0).apply {
+                    it.child(1).child(0).also {
                         UserLink.parse(it.attr("href")).apply {
                             if (isPresent) {
                                 rate.uid = get().uid

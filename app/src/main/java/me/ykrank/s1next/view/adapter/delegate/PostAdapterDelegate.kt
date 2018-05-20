@@ -3,11 +3,13 @@ package me.ykrank.s1next.view.adapter.delegate
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.method.LinkMovementMethod
 import android.view.ViewGroup
 import com.github.ykrank.androidlifecycle.AndroidLifeCycle
+import com.github.ykrank.androidtools.ui.adapter.simple.BindViewHolderCallback
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
 import com.github.ykrank.androidtools.widget.RxBus
 import me.ykrank.s1next.App
@@ -18,7 +20,10 @@ import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.Vote
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.databinding.ItemPostBinding
+import me.ykrank.s1next.databinding.ItemRateDetailBinding
+import me.ykrank.s1next.view.activity.UserHomeActivity
 import me.ykrank.s1next.viewmodel.PostViewModel
+import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 import me.ykrank.s1next.widget.span.PostMovementMethod
 import javax.inject.Inject
 
@@ -90,12 +95,36 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
         if (rates != null && rates.isNotEmpty()) {
             val context = binding.root.context
             if (binding.recycleViewRates.adapter == null) {
-                binding.recycleViewRates.adapter = SimpleRecycleViewAdapter(context, R.layout.item_rate_detail)
+                binding.recycleViewRates.adapter = SimpleRecycleViewAdapter(context, R.layout.item_rate_detail, BindViewHolderCallback { position, binding ->
+                    val bind = binding as ItemRateDetailBinding?
+                    bind?.model?.apply {
+                        val uid = this.uid
+                        val uname = this.uname
+                        bind.avatar.setOnClickListener {
+                            if (uid != null && uname != null) {
+                                //Clear avatar false cache
+                                AvatarUrlsCache.clearUserAvatarCache(uid)
+                                //个人主页
+                                UserHomeActivity.start(it.context as FragmentActivity, uid, uname, it)
+                            }
+                        }
+                    }
+
+                })
                 binding.recycleViewRates.layoutManager = LinearLayoutManager(context)
                 binding.recycleViewRates.isNestedScrollingEnabled = false
             }
             val adapter = binding.recycleViewRates.adapter as SimpleRecycleViewAdapter
-            adapter.swapDataSet(rates)
+
+            if (rates.size > 10) {
+                adapter.swapDataSet(rates.subList(0, 10))
+            } else {
+                adapter.swapDataSet(rates)
+            }
+
+            binding.tvRateViewAll.setOnClickListener {
+                TODO("跳转到所有评分的列表")
+            }
         }
 
         binding.executePendingBindings()
