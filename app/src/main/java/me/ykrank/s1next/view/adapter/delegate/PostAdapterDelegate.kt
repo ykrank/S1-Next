@@ -21,6 +21,7 @@ import me.ykrank.s1next.data.api.model.Vote
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.databinding.ItemPostBinding
 import me.ykrank.s1next.databinding.ItemRateDetailBinding
+import me.ykrank.s1next.view.activity.RateDetailsListActivity
 import me.ykrank.s1next.view.activity.UserHomeActivity
 import me.ykrank.s1next.viewmodel.PostViewModel
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache
@@ -123,7 +124,7 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
             }
 
             binding.tvRateViewAll.setOnClickListener {
-                TODO("跳转到所有评分的列表")
+                RateDetailsListActivity.start(context, ArrayList(rates))
             }
         }
 

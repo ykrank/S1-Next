@@ -191,8 +191,8 @@
         <activity
             android:name=".view.activity.UserHomeActivity"
             android:label=""
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/Theme.Translucent.AfternoonTea" />
+            android:theme="@style/Theme.Translucent.AfternoonTea"
+            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".view.activity.FriendListActivity"
@@ -247,6 +247,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".view.activity.RateDetailsListActivity"
+            android:label="@string/rate" />
 
     </application>
 
