@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.TabLayout
 import android.support.v7.widget.ListPopupWindow
 import android.text.TextUtils
 import android.view.Menu
@@ -11,33 +12,53 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SpinnerAdapter
+import com.github.ykrank.androidautodispose.AndroidRxDispose
+import com.github.ykrank.androidlifecycle.event.ActivityEvent
 import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.net.WifiBroadcastReceiver
+import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
+import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.model.Forum
+import me.ykrank.s1next.data.api.model.ThreadType
 import me.ykrank.s1next.view.adapter.SubForumArrayAdapter
 import me.ykrank.s1next.view.fragment.ThreadListFragment
 import me.ykrank.s1next.view.fragment.ThreadListPagerFragment
 import me.ykrank.s1next.widget.track.event.RandomImageTrackEvent
 import me.ykrank.s1next.widget.track.event.ViewForumTrackEvent
+import javax.inject.Inject
 
 /**
  * An Activity shows the thread lists.
  */
 class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCallback, WifiBroadcastReceiver.NeedMonitorWifi {
 
+    @Inject
+    internal lateinit var mS1Service: S1Service
+
     private var mMenuSubForums: MenuItem? = null
     private var mListPopupWindow: ListPopupWindow? = null
     private var mSubForumArrayAdapter: SubForumArrayAdapter? = null
 
     private lateinit var forum: Forum
+    private lateinit var tabLayout: TabLayout
     private var refreshBlackList = false
+
+    private var threadTypes: ArrayList<ThreadType>? = null
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(newBase)
+        App.appComponent.inject(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_base)
+        setContentView(R.layout.activity_thead_list)
 
+        tabLayout = findViewById(R.id.tab)
+        initTabLayout()
         disableDrawerIndicator()
 
         val forum = intent.getParcelableExtra<Forum?>(ARG_FORUM)
@@ -55,6 +76,8 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
             supportFragmentManager.beginTransaction().add(R.id.frame_layout, fragment,
                     ThreadListFragment.TAG).commit()
         }
+
+        init()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -157,6 +180,19 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
         // mListPopupWindow.setContentWidth(measureContentWidth(mSubForumArrayAdapter));
     }
 
+    private fun init() {
+        mS1Service.getNewThreadInfo(forum.id.toInt())
+                .map<List<ThreadType>>(ThreadType::fromXmlString)
+                .compose(RxJavaUtil.iOSingleTransformer())
+                .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
+                .subscribe({
+                    threadTypes = ArrayList(it)
+                    initTabLayout()
+                }, {
+                    L.report(it)
+                })
+    }
+
     /**
      * Forked from android.widget.Spinner#measureContentWidth(SpinnerAdapter, Drawable).
      */
@@ -195,6 +231,13 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
         }
 
         return width
+    }
+
+    private fun initTabLayout() {
+//        if (threadTypes == null){
+//            tabLayout.visibility = View.GONE
+//        }
+        tabLayout.visibility = View.GONE
     }
 
     companion object {

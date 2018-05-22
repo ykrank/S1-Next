@@ -24,6 +24,7 @@ import me.ykrank.s1next.view.activity.ForumActivity;
 import me.ykrank.s1next.view.activity.GalleryActivity;
 import me.ykrank.s1next.view.activity.PostListGatewayActivity;
 import me.ykrank.s1next.view.activity.SearchActivity;
+import me.ykrank.s1next.view.activity.ThreadListActivity;
 import me.ykrank.s1next.view.activity.UserHomeActivity;
 import me.ykrank.s1next.view.adapter.SubForumArrayAdapter;
 import me.ykrank.s1next.view.adapter.delegate.AppPostAdapterDelegate;
@@ -167,6 +168,8 @@ public interface AppComponent {
     void inject(BasePostFragment fragment);
 
     void inject(BaseActivity activity);
+
+    void inject(ThreadListActivity activity);
 
     void inject(ForumActivity activity);
 
