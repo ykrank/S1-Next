@@ -380,4 +380,6 @@
     <string name="user_sign">簽到</string>
 
     <string name="view_all">查看所有</string>
+
+    <string name="all">全部</string>
 </resources>

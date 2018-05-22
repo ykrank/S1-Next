@@ -192,4 +192,5 @@
     <string name="user_sign">签到</string>
     <string name="user_sign_content">%1$d 点</string>
     <string name="view_all">查看所有</string>
+    <string name="all">全部</string>
 </resources>

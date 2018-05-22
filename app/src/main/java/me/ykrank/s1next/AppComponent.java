@@ -61,6 +61,7 @@ import me.ykrank.s1next.view.fragment.PmGroupsFragment;
 import me.ykrank.s1next.view.fragment.PostListFragment;
 import me.ykrank.s1next.view.fragment.PostListPagerFragment;
 import me.ykrank.s1next.view.fragment.ReplyFragment;
+import me.ykrank.s1next.view.fragment.ThreadListPagerFragment;
 import me.ykrank.s1next.view.fragment.WebLoginFragment;
 import me.ykrank.s1next.view.fragment.WebViewFragment;
 import me.ykrank.s1next.view.fragment.setting.BackupPreferenceFragment;
@@ -238,4 +239,6 @@ public interface AppComponent {
     void inject(@NotNull BaseViewPagerFragment baseViewPagerFragment);
 
     void inject(@NotNull AppActivityLifecycleCallbacks appActivityLifecycleCallbacks);
+
+    void inject(@NotNull ThreadListPagerFragment fragment);
 }

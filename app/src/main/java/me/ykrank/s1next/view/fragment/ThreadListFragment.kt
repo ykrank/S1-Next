@@ -23,6 +23,7 @@ import me.ykrank.s1next.util.IntentUtil
 class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.PagerCallback {
 
     private var mForumName: String? = null
+    private var mTypeId: String = "0"
     private lateinit var mForumId: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,6 +71,10 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
         setTotalPages(MathUtil.divide(threads, Api.THREADS_PER_PAGE))
     }
 
+    fun changeTypeId(typeId: String?) {
+        mTypeId = typeId ?: "0"
+    }
+
     /**
      * Returns a Fragment corresponding to one of the pages of threads.
      */
@@ -77,7 +82,7 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
         : LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<ThreadListPagerFragment>(fm) {
 
         override fun getItem(i: Int): ThreadListPagerFragment {
-            return ThreadListPagerFragment.newInstance(mForumId, i + 1)
+            return ThreadListPagerFragment.newInstance(mForumId, mTypeId, i + 1)
         }
     }
 

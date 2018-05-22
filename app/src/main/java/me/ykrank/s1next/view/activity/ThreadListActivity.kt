@@ -24,6 +24,7 @@ import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.model.Forum
 import me.ykrank.s1next.data.api.model.ThreadType
 import me.ykrank.s1next.view.adapter.SubForumArrayAdapter
+import me.ykrank.s1next.view.event.ThreadTypeChangeEvent
 import me.ykrank.s1next.view.fragment.ThreadListFragment
 import me.ykrank.s1next.view.fragment.ThreadListPagerFragment
 import me.ykrank.s1next.widget.track.event.RandomImageTrackEvent
@@ -48,6 +49,8 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
 
     private var threadTypes: ArrayList<ThreadType>? = null
 
+    private var fragment: ThreadListFragment? = null
+
     override fun attachBaseContext(newBase: Context?) {
         super.attachBaseContext(newBase)
         App.appComponent.inject(this)
@@ -69,12 +72,14 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
         }
         this.forum = forum
         trackAgent.post(ViewForumTrackEvent(forum.id, forum.name))
-        L.leaveMsg("ThreadListActivity##forum" + forum)
+        L.leaveMsg("ThreadListActivity##forum:$forum")
 
         if (savedInstanceState == null) {
-            val fragment = ThreadListFragment.newInstance(forum)
+            fragment = ThreadListFragment.newInstance(forum)
             supportFragmentManager.beginTransaction().add(R.id.frame_layout, fragment,
                     ThreadListFragment.TAG).commit()
+        } else {
+            fragment = supportFragmentManager.findFragmentByTag(ThreadListFragment.TAG) as ThreadListFragment?
         }
 
         init()
@@ -187,7 +192,7 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
                 .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
                 .subscribe({
                     threadTypes = ArrayList(it)
-                    initTabLayout()
+                    refreshTabLayout()
                 }, {
                     L.report(it)
                 })
@@ -234,10 +239,40 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
     }
 
     private fun initTabLayout() {
-//        if (threadTypes == null){
-//            tabLayout.visibility = View.GONE
-//        }
-        tabLayout.visibility = View.GONE
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                val type = tab?.tag as ThreadType?
+                fragment?.changeTypeId(type?.typeId)
+                mRxBus.post(ThreadTypeChangeEvent(type?.typeId ?: "0"))
+            }
+
+        })
+        refreshTabLayout()
+    }
+
+    private fun refreshTabLayout() {
+        if (threadTypes == null) {
+            tabLayout.visibility = View.GONE
+        } else {
+            tabLayout.removeAllTabs()
+            tabLayout.addTab(tabLayout.newTab().setText(R.string.all))
+            threadTypes?.forEach { type ->
+                if (type.typeId != "0") {
+                    type.typeName?.also {
+                        tabLayout.addTab(tabLayout.newTab().setText(it).setTag(type))
+                    }
+                }
+            }
+            tabLayout.visibility = View.VISIBLE
+        }
     }
 
     companion object {

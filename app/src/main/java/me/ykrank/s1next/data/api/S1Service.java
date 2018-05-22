@@ -29,7 +29,7 @@ public interface S1Service {
     Single<BaseResultWrapper<Favourites>> getFavouritesWrapper(@Query("page") int page);
 
     @GET(ApiForum.URL_THREAD_LIST)
-    Single<String> getThreadsWrapper(@Query("fid") String forumId, @Query("page") int page);
+    Single<String> getThreadsWrapper(@Query("fid") String forumId, @Query("typeid") String typeId, @Query("page") int page);
 
     @GET(ApiForum.URL_POST_LIST)
     Single<String> getPostsWrapper(@Query("tid") String threadId, @Query("page") int page);
@@ -97,7 +97,7 @@ public interface S1Service {
 
     @GET(ApiForum.URL_EDIT_POST_HELPER)
     Single<String> getEditPostInfo(@Query("fid") int fid, @Query("tid") int tid, @Query("pid") int pid);
-    
+
     @FormUrlEncoded
     @POST(ApiForum.URL_EDIT_POST)
     Single<String> editPost(@Field("fid") int fid, @Field("tid") int tid, @Field("pid") int pid,
