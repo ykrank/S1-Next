@@ -26,6 +26,7 @@ import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.databinding.FragmentPostBinding
 import me.ykrank.s1next.view.activity.BaseActivity
 import me.ykrank.s1next.view.event.EmoticonClickEvent
+import me.ykrank.s1next.view.event.PostAddImageEvent
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
 import javax.inject.Inject
 
@@ -65,17 +66,12 @@ abstract class BasePostFragment : BaseFragment() {
         mFragmentPostBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_post, container, false)
         mReplyView = mFragmentPostBinding.reply
 
-        bindViewFocusWithToolsKeyboard(mReplyView)
         return mFragmentPostBinding.root
     }
 
-    protected fun initCreateView(fragmentPostBinding: FragmentPostBinding, vararg focusView: View) {
+    protected fun initCreateView(fragmentPostBinding: FragmentPostBinding) {
         mFragmentPostBinding = fragmentPostBinding
         mReplyView = mFragmentPostBinding.reply
-        bindViewFocusWithToolsKeyboard(mReplyView)
-        focusView.forEach {
-            bindViewFocusWithToolsKeyboard(it)
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -109,10 +105,17 @@ abstract class BasePostFragment : BaseFragment() {
 
         mRxBus.get()
                 .ofType(EmoticonClickEvent::class.java)
-                .to(AndroidRxDispose.withObservable<EmoticonClickEvent>(this, FragmentEvent.PAUSE))
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe({ event ->
                     mReplyView.text.replace(mReplyView.selectionStart,
                             mReplyView.selectionEnd, event.emoticonEntity)
+                })
+        mRxBus.get()
+                .ofType(PostAddImageEvent::class.java)
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
+                .subscribe({ event ->
+                    mReplyView.text.replace(mReplyView.selectionStart,
+                            mReplyView.selectionEnd, "[img]${event.url}[/img]")
                 })
 
         RxJavaUtil.disposeIfNotNull(mCacheDisposable)
@@ -193,17 +196,6 @@ abstract class BasePostFragment : BaseFragment() {
         }
     }
 
-    /**
-     * hideToolsKeyboard when view has focus
-     */
-    private fun bindViewFocusWithToolsKeyboard(view: View){
-        view.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus) {
-                hideToolsKeyboard()
-            }
-        }
-    }
-
     private fun setupToolsKeyboard() {
         val tabLayout = mFragmentPostBinding.tabLayoutPostTools
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -229,6 +221,58 @@ abstract class BasePostFragment : BaseFragment() {
                 t.hide(it)
             }
         }?.commit()
+
+        //Check IME show or hide
+//        view?.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+//            L.d("Bottom:$bottom, $oldBottom")
+//        }
+        view?.also {
+            it.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                var imeShowHeight = -1
+                var imeHideHeight = -1
+                var oldHeight = -1
+
+                override fun onGlobalLayout() {
+                    val heightDiff = it.rootView.height - it.height
+                    if (heightDiff != oldHeight) {
+                        if (oldHeight == -1) {
+                            //Not init
+                            imeHideHeight = heightDiff
+                        } else {
+                            if (imeShowHeight == -1) {
+                                //Not save show height
+                                if (heightDiff > oldHeight) {
+                                    imeShowHeight = heightDiff
+                                } else {
+                                    imeShowHeight = oldHeight
+                                    imeHideHeight = heightDiff
+                                }
+                                afterImeHeightInit(imeShowHeight - imeHideHeight)
+                            }
+                            afterImeStateChanged(heightDiff > oldHeight)
+                        }
+
+                        oldHeight = heightDiff
+                    }
+                }
+            })
+        }
+    }
+
+    private fun afterImeHeightInit(height: Int) {
+        L.d("Ime init:$height")
+        val layoutParams = mFragmentPostBinding.fragmentPostTools.layoutParams
+        mFragmentPostBinding.fragmentPostTools.layoutParams = layoutParams.apply {
+            L.d("fragmentPostTools height: ${this.height}")
+            this.height = height
+        }
+    }
+
+    private fun afterImeStateChanged(show: Boolean) {
+        L.d("Ime changed:$show")
+        if (show) {
+            hideToolsKeyboard()
+        }
     }
 
     private fun showHideToolsTab(tab: TabLayout.Tab?, show: Boolean) {

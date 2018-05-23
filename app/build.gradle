@@ -163,4 +163,6 @@ dependencies {
     implementation 'me.jessyan:progressmanager:1.5.0'
 
     implementation 'com.nononsenseapps:filepicker:4.1.0'
+
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
 }

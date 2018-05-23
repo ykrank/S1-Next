@@ -22,7 +22,8 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.Light.AfternoonTea"
-        tools:ignore="UnusedAttribute">
+        tools:ignore="UnusedAttribute"
+        tools:replace="android:theme">
 
         <!-- Bugly -->
         <meta-data

@@ -53,6 +53,7 @@ import me.ykrank.s1next.view.fragment.FavouriteListFragment;
 import me.ykrank.s1next.view.fragment.ForumFragment;
 import me.ykrank.s1next.view.fragment.GalleryFragment;
 import me.ykrank.s1next.view.fragment.HistoryListFragment;
+import me.ykrank.s1next.view.fragment.ImageUploadFragment;
 import me.ykrank.s1next.view.fragment.NewRateFragment;
 import me.ykrank.s1next.view.fragment.NewThreadFragment;
 import me.ykrank.s1next.view.fragment.NoteFragment;
@@ -241,4 +242,6 @@ public interface AppComponent {
     void inject(@NotNull AppActivityLifecycleCallbacks appActivityLifecycleCallbacks);
 
     void inject(@NotNull ThreadListPagerFragment fragment);
+
+    void inject(@NotNull ImageUploadFragment fragment);
 }

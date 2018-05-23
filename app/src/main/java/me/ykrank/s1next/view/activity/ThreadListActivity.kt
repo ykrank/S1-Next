@@ -171,9 +171,7 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
             // but we don't need to care about the visibility of mMenuSubForums
             // because mListPopupWindow != null and we won't invoke
             // mMenuSubForums.setVisible(false) during onCreateOptionsMenu(Menu)
-            if (mMenuSubForums != null) {
-                mMenuSubForums?.isVisible = true
-            }
+            mMenuSubForums?.isVisible = true
         } else {
             mSubForumArrayAdapter?.clear()
             mSubForumArrayAdapter?.addAll(forumList)

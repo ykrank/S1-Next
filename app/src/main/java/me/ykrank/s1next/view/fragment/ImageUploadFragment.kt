@@ -1,22 +1,29 @@
 package me.ykrank.s1next.view.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import me.ykrank.s1next.databinding.FragmentImageUploadBinding
+import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.uploadimg.LibImageUploadFragment
+import com.github.ykrank.androidtools.widget.uploadimg.ModelImageUpload
+import me.ykrank.s1next.App
+import me.ykrank.s1next.view.event.PostAddImageEvent
+import javax.inject.Inject
 
-class ImageUploadFragment :BaseFragment(){
+class ImageUploadFragment : LibImageUploadFragment() {
 
-    private lateinit var binding:FragmentImageUploadBinding
+    @Inject
+    internal lateinit var mRxBus: RxBus
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentImageUploadBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        App.appComponent.inject(this)
     }
 
+    override val imageClickListener: ((View, ModelImageUpload) -> Unit)? =
+            { view, model -> model.url?.also { mRxBus.post(PostAddImageEvent(it)) } }
+
     companion object {
-        fun newInstance():ImageUploadFragment{
+        fun newInstance(): ImageUploadFragment {
             return ImageUploadFragment()
         }
     }
