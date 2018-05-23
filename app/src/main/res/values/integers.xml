@@ -1,4 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--blacklist edit-->
+    <integer name="menu_add">11</integer>
+    <integer name="menu_edit">12</integer>
+    <integer name="menu_delete">13</integer>
+    <integer name="menu_all">14</integer>
+    <integer name="menu_clear">15</integer>
+
+    <!--activity_base-->
+    <integer name="menu_thread_go">31</integer>
+    <integer name="menu_send_report">100</integer>
+
+    <!--fragment_base-->
+    <integer name="menu_refresh">21</integer>
+
+    <!--activity_thread-->
+    <integer name="menu_sub_forums">3</integer>
+    <integer name="menu_new_thread">4</integer>
+    <integer name="menu_random_image">25</integer>
+
+    <!--fragment_thread-->
+    <integer name="menu_browser">90</integer>
+
+    <!--fragment_view_pager-->
+    <integer name="menu_page_jump">5</integer>
 </resources>

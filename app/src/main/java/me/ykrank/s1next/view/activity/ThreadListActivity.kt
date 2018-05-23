@@ -39,7 +39,6 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
     @Inject
     internal lateinit var mS1Service: S1Service
 
-    private var mMenuSubForums: MenuItem? = null
     private var mListPopupWindow: ListPopupWindow? = null
     private var mSubForumArrayAdapter: SubForumArrayAdapter? = null
 
@@ -88,10 +87,9 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.activity_thread, menu)
 
-        mMenuSubForums = menu.findItem(R.id.menu_sub_forums)
-        if (mListPopupWindow == null) {
-            mMenuSubForums?.isVisible = false
-        }
+        //TODO Now change menu item visible will cause show error
+//        val mMenuSubForums = menu.findItem(R.id.menu_sub_forums)
+//        mMenuSubForums?.isVisible = mListPopupWindow != null
 
         val newThreadMenu = menu.findItem(R.id.menu_new_thread)
         if (!mUser.isLogged) {
@@ -167,11 +165,7 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
 
             mListPopupWindow?.setContentWidth(measureContentWidth(mSubForumArrayAdapter))
 
-            // mMenuSubForums = null when configuration changes (like orientation changes)
-            // but we don't need to care about the visibility of mMenuSubForums
-            // because mListPopupWindow != null and we won't invoke
-            // mMenuSubForums.setVisible(false) during onCreateOptionsMenu(Menu)
-            mMenuSubForums?.isVisible = true
+//            invalidateOptionsMenu()
         } else {
             mSubForumArrayAdapter?.clear()
             mSubForumArrayAdapter?.addAll(forumList)

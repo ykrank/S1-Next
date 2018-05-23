@@ -5,7 +5,7 @@
     tools:context="me.ykrank.s1next.view.fragment.ThreadListFragment">
     <item
         android:id="@+id/menu_browser"
-        android:orderInCategory="21"
+        android:orderInCategory="@integer/menu_browser"
         android:title="@string/menu_browser"
         app:showAsAction="never" />
 </menu>

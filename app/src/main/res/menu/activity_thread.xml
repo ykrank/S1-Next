@@ -5,18 +5,18 @@
     tools:context="me.ykrank.s1next.view.activity.ThreadListActivity">
     <item
         android:id="@+id/menu_sub_forums"
-        android:orderInCategory="11"
+        android:orderInCategory="@integer/menu_sub_forums"
         android:title="@string/menu_sub_forums"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/menu_new_thread"
         android:icon="@drawable/ic_create_content_24dp"
-        android:orderInCategory="21"
+        android:orderInCategory="@integer/menu_new_thread"
         android:title="@string/menu_new_thread"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_random_image"
-        android:orderInCategory="25"
+        android:orderInCategory="@integer/menu_random_image"
         android:title="@string/menu_random_image"
         android:visible="false"
         app:showAsAction="never" />

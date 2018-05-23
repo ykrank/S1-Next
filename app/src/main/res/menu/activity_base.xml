@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_thread_go"
-        android:orderInCategory="31"
+        android:orderInCategory="@integer/menu_thread_go"
         android:title="@string/menu_thread_go"
         app:showAsAction="never" />
     <item
         android:id="@+id/menu_send_report"
-        android:orderInCategory="100"
+        android:orderInCategory="@integer/menu_send_report"
         android:title="@string/menu_send_report"
         app:showAsAction="never" />
 </menu>

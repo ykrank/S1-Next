@@ -6,7 +6,7 @@
     <item
         android:id="@+id/menu_page_jump"
         android:icon="?attr/iconMenuPageJump"
-        android:orderInCategory="2"
+        android:orderInCategory="@integer/menu_page_jump"
         android:title="@string/menu_page_jump"
         app:showAsAction="ifRoom" />
 </menu>

@@ -5,7 +5,7 @@
     tools:context="me.ykrank.s1next.view.fragment.BaseFragment">
     <item
         android:id="@+id/menu_refresh"
-        android:orderInCategory="1"
+        android:orderInCategory="@integer/menu_refresh"
         android:title="@string/menu_refresh"
         app:showAsAction="never" />
 </menu>
