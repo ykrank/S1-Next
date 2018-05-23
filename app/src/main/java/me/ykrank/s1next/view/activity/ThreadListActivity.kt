@@ -259,7 +259,7 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
     }
 
     private fun refreshTabLayout() {
-        if (threadTypes == null) {
+        if (threadTypes?.size ?: 0 <= 1) {
             tabLayout.visibility = View.GONE
         } else {
             tabLayout.removeAllTabs()
