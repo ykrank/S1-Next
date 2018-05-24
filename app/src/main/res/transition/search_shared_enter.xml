@@ -27,6 +27,6 @@
     <changeBounds android:interpolator="@android:interpolator/fast_out_slow_in" />
     <transition
         class="me.ykrank.s1next.view.transition.StartAnimatable"
-        android:src="@drawable/avd_search_to_back" />
+        android:src="@drawable/transition_avd_search_to_back" />
 
 </transitionSet>

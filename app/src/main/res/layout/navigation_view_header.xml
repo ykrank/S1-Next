@@ -31,7 +31,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/scrim"
+            android:background="@drawable/shape_scrim"
             app:layout_aspectRatio="@fraction/drawer_header_aspect_ratio"
             app:layout_widthPercent="100%" />
 
