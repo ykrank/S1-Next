@@ -382,4 +382,8 @@
     <string name="view_all">查看所有</string>
 
     <string name="all">全部</string>
+    <string name="bold">加粗</string>
+    <string name="italic">斜體</string>
+    <string name="underline">下劃線</string>
+    <string name="link">鏈接</string>
 </resources>

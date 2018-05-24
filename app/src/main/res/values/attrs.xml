@@ -8,4 +8,7 @@
 
     <attr name="chatFromBackground" format="color|reference" />
     <attr name="chatToBackground" format="color|reference" />
+
+    <attr name="iconMenuImage" format="reference" />
+    <attr name="iconMenuExtension" format="reference" />
 </resources>

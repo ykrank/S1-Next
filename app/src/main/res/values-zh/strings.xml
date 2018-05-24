@@ -193,4 +193,8 @@
     <string name="user_sign_content">%1$d 点</string>
     <string name="view_all">查看所有</string>
     <string name="all">全部</string>
+    <string name="bold">加粗</string>
+    <string name="italic">斜体</string>
+    <string name="underline">下划线</string>
+    <string name="link">链接</string>
 </resources>

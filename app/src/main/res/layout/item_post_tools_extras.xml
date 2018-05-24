@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <import type="me.ykrank.s1next.widget.span.PostMovementMethod" />
-
         <variable
-            name="pmViewModel"
-            type="me.ykrank.s1next.viewmodel.PmViewModel" />
+            name="model"
+            type="me.ykrank.s1next.view.internal.PostToolsExtra" />
     </data>
 
 
@@ -19,25 +18,28 @@
         android:paddingLeft="@dimen/item_padding_small"
         android:paddingRight="@dimen/item_padding_small">
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:id="@+id/iv_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_big"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_bold" />
+            app:imageResource="@{model.icon}"
+            tools:src="@drawable/ic_bold" />
 
         <TextView
             android:id="@+id/tv_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_normal"
             android:layout_marginTop="@dimen/spacing_micro"
+            android:text="@{model.name}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            tools:text="@string/bold"
             app:layout_constraintTop_toBottomOf="@id/iv_icon" />
     </android.support.constraint.ConstraintLayout>
 

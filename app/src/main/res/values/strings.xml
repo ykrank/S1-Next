@@ -251,4 +251,10 @@
     <string name="dialog_report">Report</string>
     <string name="view_all">View all</string>
     <string name="all">All</string>
+
+    <!--edit text-->
+    <string name="bold">Bold</string>
+    <string name="italic">Italic</string>
+    <string name="underline">Underline</string>
+    <string name="link">Link</string>
 </resources>

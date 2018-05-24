@@ -33,7 +33,7 @@ import javax.inject.Inject
 /**
  * Created by ykrank on 2016/7/31 0031.
  */
-abstract class BasePostFragment : BaseFragment() {
+abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostToolsExtrasContextProvider {
     protected lateinit var mFragmentPostBinding: FragmentPostBinding
     protected lateinit var mReplyView: EditText
 
@@ -56,11 +56,14 @@ abstract class BasePostFragment : BaseFragment() {
     private var post = false
 
     private val toolsFragments: List<Fragment> by lazy {
+        //TODO api=15的适配
         listOf(
                 EmotionFragment.newInstance(), ImageUploadFragment.newInstance(), PostToolsExtrasFragment.newInstance()
         )
     }
 
+    override val currentEditText: EditText
+        get() = mFragmentPostBinding.reply
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mFragmentPostBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_post, container, false)
@@ -214,7 +217,7 @@ abstract class BasePostFragment : BaseFragment() {
             }
 
         })
-        fragmentManager?.beginTransaction()?.also {
+        childFragmentManager?.beginTransaction()?.also {
             val t = it
             toolsFragments.forEach {
                 t.add(R.id.fragment_post_tools, it)
@@ -260,16 +263,16 @@ abstract class BasePostFragment : BaseFragment() {
     }
 
     private fun afterImeHeightInit(height: Int) {
-        L.d("Ime init:$height")
+//        L.d("Ime init:$height")
         val layoutParams = mFragmentPostBinding.fragmentPostTools.layoutParams
         mFragmentPostBinding.fragmentPostTools.layoutParams = layoutParams.apply {
-            L.d("fragmentPostTools height: ${this.height}")
+            //            L.d("fragmentPostTools height: ${this.height}")
             this.height = height
         }
     }
 
     private fun afterImeStateChanged(show: Boolean) {
-        L.d("Ime changed:$show")
+//        L.d("Ime changed:$show")
         if (show) {
             hideToolsKeyboard()
         }
@@ -280,9 +283,9 @@ abstract class BasePostFragment : BaseFragment() {
         if (pos >= 0 && pos < toolsFragments.size) {
             if (show) {
                 showToolsKeyboard()
-                fragmentManager?.beginTransaction()?.show(toolsFragments[pos])?.commit()
+                childFragmentManager.beginTransaction()?.show(toolsFragments[pos])?.commit()
             } else {
-                fragmentManager?.beginTransaction()?.hide(toolsFragments[pos])?.commit()
+                childFragmentManager.beginTransaction()?.hide(toolsFragments[pos])?.commit()
             }
         } else {
             L.report(IllegalStateException("Illegal TabLayout pos: $pos, ${toolsFragments.size}"))
