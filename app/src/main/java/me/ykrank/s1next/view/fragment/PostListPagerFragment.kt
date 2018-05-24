@@ -1,6 +1,5 @@
 package me.ykrank.s1next.view.fragment
 
-import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.util.Pair
@@ -139,20 +138,14 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                 .subscribe { startBlackListRefresh() }
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-
-        mPagerCallback = fragmentManager!!.findFragmentByTag(PostListFragment.TAG) as PagerCallback
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-
-        mPagerCallback = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mPagerCallback = parentFragment as PagerCallback
     }
 
     override fun onDestroy() {
         RxJavaUtil.disposeIfNotNull(refreshAfterBlacklistChangeDisposable)
+        mPagerCallback = null
         super.onDestroy()
     }
 

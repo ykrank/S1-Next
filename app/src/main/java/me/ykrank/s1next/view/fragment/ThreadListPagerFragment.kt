@@ -46,7 +46,6 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        mPagerCallback = fragmentManager!!.findFragmentByTag(ThreadListFragment.TAG) as PagerCallback
         mSubForumsCallback = context as SubForumsCallback?
     }
 
@@ -68,6 +67,8 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mPagerCallback = parentFragment as PagerCallback
+
         App.appComponent.inject(this)
         mRxBus.get()
                 .ofType(ThreadTypeChangeEvent::class.java)
@@ -80,11 +81,14 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
                 })
     }
 
-    override fun onDetach() {
-        super.onDetach()
-
+    override fun onDestroy() {
         mPagerCallback = null
+        super.onDestroy()
+    }
+
+    override fun onDetach() {
         mSubForumsCallback = null
+        super.onDetach()
     }
 
     override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<ThreadsWrapper> {

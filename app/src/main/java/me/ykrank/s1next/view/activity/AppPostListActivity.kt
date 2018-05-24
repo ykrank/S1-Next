@@ -17,7 +17,6 @@ import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.event.AppNotLoginEvent
 import me.ykrank.s1next.view.fragment.AppPostListPagerFragment
-import me.ykrank.s1next.view.fragment.PostListFragment
 
 /**
  * An Activity which includes [android.support.v4.view.ViewPager]
@@ -43,7 +42,7 @@ class AppPostListActivity : BaseActivity(), AppPostListPagerFragment.PagerCallba
 
             fragment = AppPostListPagerFragment.newInstance(thread.id, pageNum, postId)
             supportFragmentManager.beginTransaction().add(R.id.frame_layout, fragment,
-                    PostListFragment.TAG).commit()
+                    AppPostListPagerFragment.TAG).commit()
         }
     }
 

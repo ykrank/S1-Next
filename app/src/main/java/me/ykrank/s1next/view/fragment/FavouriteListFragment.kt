@@ -84,7 +84,7 @@ class FavouriteListFragment : BaseViewPagerFragment() {
     }
 
     override fun getPagerAdapter(fragmentManager: FragmentManager): LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<*> {
-        return FavouriteListPagerAdapter(fragmentManager)
+        return FavouriteListPagerAdapter(childFragmentManager)
     }
 
     /**

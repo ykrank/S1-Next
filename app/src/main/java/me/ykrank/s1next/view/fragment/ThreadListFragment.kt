@@ -60,7 +60,7 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
 
     override fun getPagerAdapter(fragmentManager: FragmentManager)
             : LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<*> {
-        return ThreadListPagerAdapter(fragmentManager)
+        return ThreadListPagerAdapter(childFragmentManager)
     }
 
     override fun getTitleWithoutPosition(): CharSequence? {

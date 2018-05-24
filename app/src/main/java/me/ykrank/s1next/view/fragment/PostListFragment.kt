@@ -79,7 +79,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
 
     private lateinit var mLastThreadInfoSubject: PublishSubject<Int>
 
-    private val mPostListPagerAdapter: PostListPagerAdapter by lazy { PostListPagerAdapter(fragmentManager!!) }
+    private val mPostListPagerAdapter: PostListPagerAdapter by lazy { PostListPagerAdapter(childFragmentManager) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
