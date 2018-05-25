@@ -16,7 +16,7 @@ class NewPmActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_base_without_drawer_and_scrolling_effect)
+        setContentView(R.layout.activity_base_with_ime_panel)
 
         setupNavCrossIcon()
 

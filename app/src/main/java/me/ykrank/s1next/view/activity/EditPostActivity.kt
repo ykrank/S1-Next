@@ -9,7 +9,7 @@ import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.view.fragment.EditPostFragment
 
 /**
- * An Activity to new a thread.
+ * An Activity to edit post.
  */
 class EditPostActivity : BaseActivity() {
 
@@ -17,14 +17,13 @@ class EditPostActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_base_without_drawer_and_scrolling_effect)
+        setContentView(R.layout.activity_base_with_ime_panel)
 
         setupNavCrossIcon()
 
         val intent = intent
         val mThread = intent.getParcelableExtra<Thread>(ARG_THREAD)
         val mPost = intent.getParcelableExtra<Post>(ARG_POST)
-        setTitle(R.string.title_new_thread)
 
         val fragmentManager = supportFragmentManager
         val fragment = fragmentManager.findFragmentByTag(EditPostFragment.TAG)

@@ -11,9 +11,11 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.*
 import android.widget.EditText
+import cn.dreamtobe.kpswitch.util.KPSwitchConflictUtil
+import cn.dreamtobe.kpswitch.util.KeyboardUtil
+import cn.dreamtobe.kpswitch.widget.KPSwitchPanelFrameLayout
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
-import com.github.ykrank.androidtools.util.ImeUtils
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.EditorDiskCache
@@ -36,6 +38,7 @@ import javax.inject.Inject
 abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostToolsExtrasContextProvider {
     protected lateinit var mFragmentPostBinding: FragmentPostBinding
     protected lateinit var mReplyView: EditText
+    protected lateinit var mImePanelView: KPSwitchPanelFrameLayout
 
     /**
      * `mMenuSend` is null when configuration changes.
@@ -47,7 +50,6 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
     @Inject
     internal lateinit var editorDiskCache: EditorDiskCache
-    internal var isToolsKeyboardShowing: Boolean = false
     private var mCacheDisposable: Disposable? = null
     private var requestDialogDisposable: Disposable? = null
     /**
@@ -66,8 +68,7 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
         get() = mFragmentPostBinding.reply
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mFragmentPostBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_post, container, false)
-        mReplyView = mFragmentPostBinding.reply
+        initCreateView(DataBindingUtil.inflate(inflater, R.layout.fragment_post, container, false))
 
         return mFragmentPostBinding.root
     }
@@ -75,6 +76,7 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
     protected fun initCreateView(fragmentPostBinding: FragmentPostBinding) {
         mFragmentPostBinding = fragmentPostBinding
         mReplyView = mFragmentPostBinding.reply
+        mImePanelView = mFragmentPostBinding.fragmentPostTools
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -217,7 +219,8 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
             }
 
         })
-        childFragmentManager?.beginTransaction()?.also {
+
+        childFragmentManager.beginTransaction()?.also {
             val t = it
             toolsFragments.forEach {
                 t.add(R.id.fragment_post_tools, it)
@@ -225,64 +228,16 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
             }
         }?.commit()
 
-        //Check IME show or hide
-//        view?.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-//            L.d("Bottom:$bottom, $oldBottom")
-//        }
-        view?.also {
-            it.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                var imeShowHeight = -1
-                var imeHideHeight = -1
-                var oldHeight = -1
-
-                override fun onGlobalLayout() {
-                    val heightDiff = it.rootView.height - it.height
-                    if (heightDiff != oldHeight) {
-                        if (oldHeight == -1) {
-                            //Not init
-                            imeHideHeight = heightDiff
-                        } else {
-                            if (imeShowHeight == -1) {
-                                //Not save show height
-                                if (heightDiff > oldHeight) {
-                                    imeShowHeight = heightDiff
-                                } else {
-                                    imeShowHeight = oldHeight
-                                    imeHideHeight = heightDiff
-                                }
-                                afterImeHeightInit(imeShowHeight - imeHideHeight)
-                            }
-                            afterImeStateChanged(heightDiff > oldHeight)
-                        }
-
-                        oldHeight = heightDiff
-                    }
-                }
-            })
-        }
+        KeyboardUtil.attach(activity, mImePanelView, { if (it) isToolsKeyboardShowing = false })
+        KPSwitchConflictUtil.attach(mImePanelView, mReplyView)
     }
 
-    private fun afterImeHeightInit(height: Int) {
-//        L.d("Ime init:$height")
-        val layoutParams = mFragmentPostBinding.fragmentPostTools.layoutParams
-        mFragmentPostBinding.fragmentPostTools.layoutParams = layoutParams.apply {
-            //            L.d("fragmentPostTools height: ${this.height}")
-            this.height = height
-        }
-    }
-
-    private fun afterImeStateChanged(show: Boolean) {
-//        L.d("Ime changed:$show")
-        if (show) {
-            hideToolsKeyboard()
-        }
-    }
+    internal var isToolsKeyboardShowing: Boolean = false
 
     private fun showHideToolsTab(tab: TabLayout.Tab?, show: Boolean) {
         val pos = tab?.position ?: -1
         if (pos >= 0 && pos < toolsFragments.size) {
             if (show) {
-                showToolsKeyboard()
                 childFragmentManager.beginTransaction()?.show(toolsFragments[pos])?.commit()
             } else {
                 childFragmentManager.beginTransaction()?.hide(toolsFragments[pos])?.commit()
@@ -290,17 +245,20 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
         } else {
             L.report(IllegalStateException("Illegal TabLayout pos: $pos, ${toolsFragments.size}"))
         }
+        if (show && !isToolsKeyboardShowing) {
+            showToolsKeyboard()
+        }
     }
 
     private fun showToolsKeyboard() {
         isToolsKeyboardShowing = true
-        ImeUtils.hideIme(mReplyView)
-        mFragmentPostBinding.fragmentPostTools.visibility = View.VISIBLE
+        KPSwitchConflictUtil.showPanel(mImePanelView)
+
     }
 
     fun hideToolsKeyboard() {
         isToolsKeyboardShowing = false
-        mFragmentPostBinding.fragmentPostTools.visibility = View.GONE
+        KPSwitchConflictUtil.hidePanelAndKeyboard(mImePanelView)
     }
 
     @CallSuper

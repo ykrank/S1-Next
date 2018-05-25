@@ -148,19 +148,15 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".view.activity.ReplyActivity"
-            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".view.activity.ReplyActivity" />
 
         <activity
             android:name=".view.activity.NewThreadActivity"
-            android:label="@string/title_new_thread"
-            android:windowSoftInputMode="adjustResize" />
+            android:label="@string/title_new_thread" />
 
         <activity
             android:name=".view.activity.EditPostActivity"
-            android:label="@string/title_edit_post"
-            android:windowSoftInputMode="adjustResize" />
+            android:label="@string/title_edit_post" />
 
         <activity
             android:name=".view.activity.GalleryActivity"
@@ -173,8 +169,7 @@
 
         <activity
             android:name=".view.activity.NewPmActivity"
-            android:label="@string/title_new_pm"
-            android:windowSoftInputMode="adjustResize" />
+            android:label="@string/title_new_pm" />
 
         <activity
             android:name=".view.activity.SearchActivity"
