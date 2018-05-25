@@ -48,6 +48,8 @@ class PostToolsExtrasFragment : BaseFragment() {
     }
 
     companion object {
+        val TAG: String = PostToolsExtrasFragment::class.java.name
+
         fun newInstance(): PostToolsExtrasFragment {
             return PostToolsExtrasFragment()
         }

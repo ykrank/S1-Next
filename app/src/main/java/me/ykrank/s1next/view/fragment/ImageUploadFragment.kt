@@ -23,6 +23,8 @@ class ImageUploadFragment : LibImageUploadFragment() {
             { view, model -> model.url?.also { mRxBus.post(PostAddImageEvent(it)) } }
 
     companion object {
+        val TAG: String = ImageUploadFragment::class.java.name
+
         fun newInstance(): ImageUploadFragment {
             return ImageUploadFragment()
         }

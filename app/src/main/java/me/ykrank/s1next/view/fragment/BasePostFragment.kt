@@ -57,15 +57,37 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
      */
     private var post = false
 
-    private val toolsFragments: List<Fragment> by lazy {
-        //TODO api=15的适配
-        listOf(
-                EmotionFragment.newInstance(), ImageUploadFragment.newInstance(), PostToolsExtrasFragment.newInstance()
-        )
-    }
+    private lateinit var toolsFragments: List<Pair<String, Fragment>>
+    //Init onCreate
+    private var toolsFirstInit = false
 
     override val currentEditText: EditText
         get() = mFragmentPostBinding.reply
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState != null) {
+            toolsFirstInit = false
+            //Find tools fragment from childFragmentManager
+            val fragments = listOf<Fragment>(
+                    childFragmentManager.findFragmentByTag(EmotionFragment.TAG),
+                    childFragmentManager.findFragmentByTag(ImageUploadFragment.TAG),
+                    childFragmentManager.findFragmentByTag(PostToolsExtrasFragment.TAG)
+            )
+            toolsFragments = listOf(
+                    Pair(EmotionFragment.TAG, fragments[0]),
+                    Pair(ImageUploadFragment.TAG, fragments[1]),
+                    Pair(PostToolsExtrasFragment.TAG, fragments[2])
+            )
+        } else {
+            toolsFirstInit = true
+            toolsFragments = listOf(
+                    Pair(EmotionFragment.TAG, EmotionFragment.newInstance()),
+                    Pair(ImageUploadFragment.TAG, ImageUploadFragment.newInstance()),
+                    Pair(PostToolsExtrasFragment.TAG, PostToolsExtrasFragment.newInstance())
+            )
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         initCreateView(DataBindingUtil.inflate(inflater, R.layout.fragment_post, container, false))
@@ -206,27 +228,28 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 if (!isToolsKeyboardShowing) {
-                    showHideToolsTab(tab, true)
+                    showToolsTab(tab)
                 }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                showHideToolsTab(tab, false)
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                showHideToolsTab(tab, true)
+                showToolsTab(tab)
             }
 
         })
 
-        childFragmentManager.beginTransaction()?.also {
-            val t = it
-            toolsFragments.forEach {
-                t.add(R.id.fragment_post_tools, it)
-                t.hide(it)
-            }
-        }?.commit()
+        //Add all tools fragment to childFragmentManager if first init, or it had add
+        if (toolsFirstInit) {
+            childFragmentManager.beginTransaction()?.also { t ->
+                toolsFragments.forEach {
+                    t.add(R.id.fragment_post_tools, it.second, it.first)
+                    t.hide(it.second)
+                }
+            }?.commit()
+        }
 
         KeyboardUtil.attach(activity, mImePanelView, { if (it) isToolsKeyboardShowing = false })
         KPSwitchConflictUtil.attach(mImePanelView, mReplyView)
@@ -234,18 +257,22 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
 
     internal var isToolsKeyboardShowing: Boolean = false
 
-    private fun showHideToolsTab(tab: TabLayout.Tab?, show: Boolean) {
+    private fun showToolsTab(tab: TabLayout.Tab?) {
         val pos = tab?.position ?: -1
         if (pos >= 0 && pos < toolsFragments.size) {
-            if (show) {
-                childFragmentManager.beginTransaction()?.show(toolsFragments[pos])?.commit()
-            } else {
-                childFragmentManager.beginTransaction()?.hide(toolsFragments[pos])?.commit()
-            }
+            childFragmentManager.beginTransaction()?.also { t ->
+                toolsFragments.forEachIndexed { index, pair ->
+                    if (index == pos) {
+                        t.show(pair.second)
+                    } else {
+                        t.hide(pair.second)
+                    }
+                }
+            }?.commit()
         } else {
             L.report(IllegalStateException("Illegal TabLayout pos: $pos, ${toolsFragments.size}"))
         }
-        if (show && !isToolsKeyboardShowing) {
+        if (!isToolsKeyboardShowing) {
             showToolsKeyboard()
         }
     }

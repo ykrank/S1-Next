@@ -37,6 +37,8 @@ class EmotionFragment : BaseFragment() {
     }
 
     companion object {
+        val TAG: String = EmotionFragment::class.java.name
+
         fun newInstance(): EmotionFragment {
             return EmotionFragment()
         }
