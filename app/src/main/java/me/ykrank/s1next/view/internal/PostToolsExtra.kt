@@ -49,7 +49,8 @@ class PostToolsExtraLink : PostToolsExtra(R.drawable.ic_link, R.string.link) {
         val start = editText.selectionStart
         val end = editText.selectionEnd
         val selectText = editText.text.substring(start, end)
-        editText.text.replace(start, end, "[u]$selectText[/u]")
+
+        editText.text.replace(start, end, "[url=]$selectText[/url]")
     }
 
 }
