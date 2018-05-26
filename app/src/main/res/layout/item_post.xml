@@ -138,8 +138,9 @@
                 android:id="@+id/layout_rates"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_micro"
+                android:layout_marginTop="@dimen/spacing_big"
                 android:orientation="vertical"
+                android:background="@drawable/shape_stroke_corners"
                 android:visibility="@{postViewModel.post.rates != null?View.VISIBLE:View.GONE}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -149,7 +150,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_micro"
-                    android:background="?attr/colorPrimary"
+                    android:background="?attr/divideLineColor"
                     android:orientation="horizontal">
 
                     <TextView
@@ -192,6 +193,9 @@
                     android:id="@+id/recycleView_rates"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_micro"
+                    android:layout_marginRight="@dimen/spacing_micro"
+                    android:layout_marginBottom="@dimen/spacing_micro"
                     android:visibility="@{postViewModel.post.rates.size > 0?View.VISIBLE:View.GONE}" />
             </LinearLayout>
 
