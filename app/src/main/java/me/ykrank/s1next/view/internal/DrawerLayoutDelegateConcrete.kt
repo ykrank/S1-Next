@@ -1,8 +1,10 @@
 package me.ykrank.s1next.view.internal
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.support.design.widget.NavigationView
 import android.support.v4.app.FragmentActivity
@@ -13,11 +15,12 @@ import android.view.ViewGroup
 import android.view.WindowInsets
 import android.widget.Toast
 import com.github.ykrank.androidtools.extension.toast
+import com.github.ykrank.androidtools.ui.internal.DrawerLayoutDelegate
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
+import com.github.ykrank.androidtools.widget.AlipayDonate
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.github.ykrank.androidtools.widget.track.event.ThemeChangeTrackEvent
-import com.rk.a91.a91video.ui.internal.DrawerLayoutDelegate
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
@@ -156,7 +159,11 @@ class DrawerLayoutDelegateConcrete(val activity: FragmentActivity, drawerLayout:
             R.id.menu_history -> runnable = Runnable { this.onHistoryMenuSelected() }
             R.id.menu_settings -> runnable = Runnable { this.onSettingsMenuSelected() }
             R.id.menu_help -> runnable = Runnable { this.onHelpMenuSelected() }
-            else -> throw IllegalStateException("Unknown menu item ID: " + menuItem.itemId + ".")
+            R.id.menu_donate -> runnable = Runnable { this.onDonateMenuSelected() }
+            else -> {
+                mFragmentActivity.toast("Unknown menu item ID: " + menuItem.itemId + ".")
+                return false
+            }
         }
         closeDrawer(runnable)
 
@@ -236,5 +243,14 @@ class DrawerLayoutDelegateConcrete(val activity: FragmentActivity, drawerLayout:
 
     private fun onHistoryMenuSelected() {
         HistoryActivity.start(mFragmentActivity)
+    }
+
+    private fun onDonateMenuSelected() {
+        if (AlipayDonate.hasInstalledAlipayClient(mFragmentActivity)) {
+            if (AlipayDonate.startAlipayClient(mFragmentActivity, "FKX01763C5SCSCCJIB6UE8")) {
+                return
+            }
+        }
+        mFragmentActivity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://QR.ALIPAY.COM/FKX01763C5SCSCCJIB6UE8")))
     }
 }

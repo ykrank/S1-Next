@@ -197,4 +197,5 @@
     <string name="italic">斜体</string>
     <string name="underline">下划线</string>
     <string name="link">链接</string>
+    <string name="donate">捐赠</string>
 </resources>

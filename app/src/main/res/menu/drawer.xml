@@ -35,5 +35,9 @@
             android:id="@+id/menu_help"
             android:icon="@drawable/ic_menu_help_black_24dp"
             android:title="@string/help" />
+        <item
+            android:id="@+id/menu_donate"
+            android:icon="@drawable/ic_menu_donate_black_24dp"
+            android:title="@string/donate" />
     </group>
 </menu>
