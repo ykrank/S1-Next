@@ -16,6 +16,8 @@ import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.db.BlackListDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.util.JsonUtil
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Element
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 import java.util.*
@@ -118,6 +120,7 @@ class Post : PaperParcelable, Cloneable, SameItem {
         }
 
         var tReply: String = value!!
+        tReply = replaceNewQuoteToOld(tReply)
         tReply = hideBlackListQuote(tReply)
 
         tReply = replaceBilibiliTag(tReply)
@@ -130,6 +133,31 @@ class Post : PaperParcelable, Cloneable, SameItem {
         tReply = mapColors(tReply).replace("<imgwidth=\"".toRegex(), "<img width=\"")
 
         return tReply
+    }
+
+    /**
+     * After version 4, api not return blockquote, but class div, so replace it
+     */
+    private fun replaceNewQuoteToOld(oReply: String): String {
+        if (oReply.contains("<div class=\"reply_wrap\">")) {
+            try {
+                val document = Jsoup.parse(oReply)
+                val oReplyElement = document.selectFirst("div.reply_wrap")
+                if (oReplyElement != null) {
+                    val quoteElement = Element("blockquote")
+                    quoteElement.append("<p>引用:</p>")
+                    oReplyElement.childNodesCopy().forEach {
+                        quoteElement.appendChild(it)
+                    }
+                    oReplyElement.replaceWith(quoteElement)
+                    return quoteElement.parent().html()
+                }
+            } catch (e: Exception) {
+                L.report(e)
+            }
+        }
+
+        return oReply
     }
 
     /**
