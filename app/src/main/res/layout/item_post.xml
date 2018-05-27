@@ -158,6 +158,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/spacing_micro"
+                        android:layout_marginLeft="@dimen/spacing_micro"
+                        android:layout_marginStart="@dimen/spacing_micro"
                         android:text="@string/rate"
                         android:textSize="@dimen/text_size_caption"
                         app:layout_constraintBottom_toBottomOf="parent"
