@@ -198,4 +198,5 @@
     <string name="underline">下划线</string>
     <string name="link">链接</string>
     <string name="donate">捐赠</string>
+    <string name="strike_through">删除线</string>
 </resources>

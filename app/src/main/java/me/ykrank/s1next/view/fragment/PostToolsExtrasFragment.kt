@@ -11,10 +11,7 @@ import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
 import me.ykrank.s1next.R
 import me.ykrank.s1next.databinding.FragmentPostToolsExtrasBinding
 import me.ykrank.s1next.databinding.ItemPostToolsExtrasBinding
-import me.ykrank.s1next.view.internal.PostToolsExtraBold
-import me.ykrank.s1next.view.internal.PostToolsExtraItalic
-import me.ykrank.s1next.view.internal.PostToolsExtraLink
-import me.ykrank.s1next.view.internal.PostToolsExtraUnderline
+import me.ykrank.s1next.view.internal.*
 
 class PostToolsExtrasFragment : BaseFragment() {
 
@@ -37,7 +34,8 @@ class PostToolsExtrasFragment : BaseFragment() {
                 bind.model?.onClick(provider.currentEditText)
             }
         })
-        adapter.swapDataSet(listOf(PostToolsExtraBold(), PostToolsExtraItalic(), PostToolsExtraUnderline(), PostToolsExtraLink()))
+        adapter.swapDataSet(listOf(PostToolsExtraBold(), PostToolsExtraItalic(), PostToolsExtraUnderline(),
+                PostToolsExtraLink(), PostToolsExtraStrikethrough()))
         binding.recycleView.adapter = adapter
 
         return binding.root

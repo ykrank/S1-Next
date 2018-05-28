@@ -102,6 +102,7 @@
         <item name="iconClose">@drawable/ic_close_black_24dp</item>
 
         <item name="iconTintColor">@color/black_100p</item>
+        <item name="iconTintColorLight">@color/black_30p</item>
         <item name="iconMenuPageJump">@drawable/selector_menu_swap_horiz_black</item>
         <item name="iconMenuPersonAdd">@drawable/ic_menu_person_add_black_24dp</item>
         <item name="iconMenuThreadAttachment">@drawable/ic_menu_attachment_black_24dp</item>
@@ -133,6 +134,7 @@
         <item name="fabBackgroundTint">?attr/colorPrimary</item>
         <item name="iconClose">@drawable/ic_close_white_24dp</item>
         <item name="iconTintColor">@color/white_100p</item>
+        <item name="iconTintColorLight">@color/grey_400</item>
         <item name="iconMenuPageJump">@drawable/selector_menu_swap_horiz_white</item>
         <item name="iconMenuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
         <item name="iconMenuThreadAttachment">@drawable/ic_menu_attachment_white_24dp</item>
@@ -163,6 +165,7 @@
         <item name="emoticonKeyboardBackground">@color/dark_emoticon_keyboard_background</item>
         <item name="iconClose">@drawable/ic_close_white_24dp</item>
         <item name="iconTintColor">@color/white_100p</item>
+        <item name="iconTintColorLight">@color/grey_400</item>
         <item name="iconMenuPageJump">@drawable/selector_menu_swap_horiz_white</item>
         <item name="iconMenuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
         <item name="iconMenuThreadAttachment">@drawable/ic_menu_attachment_white_24dp</item>

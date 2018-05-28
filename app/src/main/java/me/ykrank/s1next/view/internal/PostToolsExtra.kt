@@ -54,3 +54,15 @@ class PostToolsExtraLink : PostToolsExtra(R.drawable.ic_link, R.string.link) {
     }
 
 }
+
+class PostToolsExtraStrikethrough : PostToolsExtra(R.drawable.ic_strikethrough, R.string.strike_through) {
+
+    override fun onClick(editText: EditText) {
+        val start = editText.selectionStart
+        val end = editText.selectionEnd
+        val selectText = editText.text.substring(start, end)
+
+        editText.text.replace(start, end, "[s]$selectText[/s]")
+    }
+
+}
