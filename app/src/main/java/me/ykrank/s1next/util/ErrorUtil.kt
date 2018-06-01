@@ -1,11 +1,9 @@
 package me.ykrank.s1next.util
 
 import android.content.Context
-import android.util.Log
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.github.ykrank.androidtools.util.ErrorParser
 import com.github.ykrank.androidtools.util.L
-import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.ApiException
 import retrofit2.HttpException
@@ -53,11 +51,7 @@ object ErrorUtil : ErrorParser {
         return msg
     }
 
-    override fun throwNewErrorIfDebug(throwable: RuntimeException) {
-        if (BuildConfig.DEBUG) {
-            throw throwable
-        } else {
-            L.report(throwable, Log.WARN)
-        }
+    override fun ignoreError(throwable: Throwable): Boolean {
+        return false
     }
 }

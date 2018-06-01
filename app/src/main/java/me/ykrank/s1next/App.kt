@@ -6,7 +6,7 @@ import android.os.Build
 import android.os.StrictMode
 import android.support.multidex.MultiDexApplication
 import android.support.v7.app.AppCompatDelegate
-import com.github.ykrank.androidtools.AppDataProvider
+import com.github.ykrank.androidtools.DefaultAppDataProvider
 import com.github.ykrank.androidtools.GlobalData
 import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.ui.RProvider
@@ -79,21 +79,11 @@ class App : MultiDexApplication() {
         }
 
         mPreAppComponent.dataTrackAgent.init(this)
-        GlobalData.init(object : AppDataProvider {
+        GlobalData.init(object : DefaultAppDataProvider() {
             override val errorParser: ErrorParser?
                 get() = ErrorUtil
             override val logTag: String
                 get() = LOG_TAG
-            override val debug: Boolean
-                get() = BuildConfig.DEBUG
-            override val buildType: String
-                get() = BuildConfig.BUILD_TYPE
-            override val itemModelBRid: Int
-                get() = BR.model
-            override val recycleViewLoadingImgId: Int
-                get() = R.drawable.loading
-            override val recycleViewErrorImgId: Int
-                get() = R.drawable.recycleview_error_symbol
             override val appR: Class<out Any>
                 get() = R::class.java
         })
