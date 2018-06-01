@@ -298,6 +298,7 @@ public final class GlideImageGetter
 
         @Override
         public void onLoadStarted(Drawable placeholder) {
+            super.onLoadStarted(placeholder);
             L.l("onLoadStarted:" + mDrawable.getUrl());
             if (placeholder != null) {
                 setDrawable(placeholder);

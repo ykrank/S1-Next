@@ -59,7 +59,8 @@ class Rate : PaperParcelable {
                 rateElementList.forEach {
                     val rate = Rate()
                     rate.score = it.child(0).text()?.let {
-                        it.substring(3, it.length - 1).trim()
+                        //In java 1.6, Integer.parseInt could not parse like "+1"
+                        it.substring(3, it.length - 1).replace("+", "").trim()
                     }?.toInt()
                     it.child(1).child(0).also {
                         UserLink.parse(it.attr("href")).apply {

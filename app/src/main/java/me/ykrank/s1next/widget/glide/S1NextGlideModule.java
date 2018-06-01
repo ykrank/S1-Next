@@ -3,6 +3,7 @@ package me.ykrank.s1next.widget.glide;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
@@ -39,6 +40,7 @@ public final class S1NextGlideModule extends AppGlideModule {
                 .getTotalImageCacheSize()));
 
         ViewTarget.setTagId(R.id.tag_glide);
+        builder.setLogLevel(Log.ERROR);
 
         RequestOptions requestOptions = new RequestOptions();
 
@@ -49,7 +51,7 @@ public final class S1NextGlideModule extends AppGlideModule {
         //https://muyangmin.github.io/glide-docs-cn/doc/hardwarebitmaps.html
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
             requestOptions = requestOptions.disallowHardwareConfig();
-        }
+    }
 
         builder.setDefaultRequestOptions(requestOptions);
     }
