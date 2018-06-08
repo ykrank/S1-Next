@@ -90,6 +90,11 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
             } else {
                 it.vote.set(null)
             }
+            if (it.post.get()?.authorName?.equals(it.thread.get()?.author)!!) {
+                it.isOp.set(true)
+            } else {
+                it.isOp.set(false)
+            }
         }
 
         val rates = post.rates

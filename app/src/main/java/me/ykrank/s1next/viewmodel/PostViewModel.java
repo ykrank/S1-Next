@@ -41,6 +41,7 @@ public final class PostViewModel {
     public final ObservableField<Thread> thread = new ObservableField<>();
     public final ObservableField<Vote> vote = new ObservableField<>();
     public final ObservableField<CharSequence> floor = new ObservableField<>();
+    public final ObservableField<Boolean> isOp = new ObservableField<>();
 
     private final RxBus rxBus;
     private final User user;

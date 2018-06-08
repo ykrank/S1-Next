@@ -264,6 +264,8 @@
         
     <string name="database_update_error">數據庫升級異常</string>
         
+    <string name="original_poster">樓主</string>
+
     <string name="reply">回复</string>
         
     <string name="view">查看</string>
