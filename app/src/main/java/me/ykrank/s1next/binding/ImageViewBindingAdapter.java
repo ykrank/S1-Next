@@ -70,13 +70,13 @@ public final class ImageViewBindingAdapter {
                     .load(new AvatarUrl(Api.getAvatarMediumUrl(user.getUid())))
                     .apply(new RequestOptions()
                             .circleCrop()
-                            .error(R.drawable.ic_drawer_avatar_placeholder)
                             .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
                     )
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            return false;
+                            loadPlaceHolderAvatar(bezelImageView);
+                            return true;
                         }
 
                         @Override

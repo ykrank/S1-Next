@@ -1,6 +1,8 @@
 package me.ykrank.s1next.widget.glide;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
@@ -30,7 +32,7 @@ public final class S1NextGlideModule extends AppGlideModule {
     }
 
     @Override
-    public void applyOptions(Context context, GlideBuilder builder) {
+    public void applyOptions(@NonNull Context context, GlideBuilder builder) {
         // set max size of the disk cache for images
         builder.setDiskCache(new InternalCacheDiskCacheFactory(
                 context, App.Companion.getPreAppComponent().getDownloadPreferencesManager()
@@ -38,12 +40,22 @@ public final class S1NextGlideModule extends AppGlideModule {
 
         ViewTarget.setTagId(R.id.tag_glide);
 
-        //从默认的RGB_565改为ARGB_8888显示
-        builder.setDefaultRequestOptions(new RequestOptions().format(DecodeFormat.PREFER_ARGB_8888));
+        RequestOptions requestOptions = new RequestOptions();
+
+        //Change default RGB_565 to ARGB_8888, show image with transparent
+        requestOptions = requestOptions.format(DecodeFormat.PREFER_ARGB_8888);
+
+        //shared element transition crash in version O, fix in O MR1
+        //https://muyangmin.github.io/glide-docs-cn/doc/hardwarebitmaps.html
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
+            requestOptions = requestOptions.disallowHardwareConfig();
+        }
+
+        builder.setDefaultRequestOptions(requestOptions);
     }
 
     @Override
-    public void registerComponents(Context context, Glide glide, Registry registry) {
+    public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
         super.registerComponents(context, glide, registry);
         registry.replace(GlideUrl.class, InputStream.class, new AppHttpUrlLoader.Factory(
                 App.Companion.getAppComponent().getImageOkHttpClient()));
