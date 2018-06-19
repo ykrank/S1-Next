@@ -24,7 +24,7 @@ class ThreadFavouritesAddRequestDialogFragment : ProgressDialogFragment<AccountR
         val result = data.result
         if (result.status == STATUS_ADD_TO_FAVOURITES_SUCCESS || result.status == STATUS_ADD_TO_FAVOURITES_REPEAT) {
             (fm.findFragmentByTag(
-                    ThreadFavouritesAddDialogFragment.TAG) as ThreadFavouritesAddDialogFragment).dismissAllowingStateLoss()
+                    ThreadFavouritesAddDialogFragment.TAG) as ThreadFavouritesAddDialogFragment?)?.dismissAllowingStateLoss()
         }
 
         showToastText(result.message)
