@@ -133,6 +133,12 @@ abstract class BaseActivity : LibBaseActivity() {
     }
 
     @CallSuper
+    override fun setContentView(view: View) {
+        super.setContentView(view)
+        setupToolbar()
+    }
+
+    @CallSuper
     override fun setContentView(view: View, params: ViewGroup.LayoutParams) {
         super.setContentView(view, params)
         setupToolbar()
