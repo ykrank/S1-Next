@@ -63,7 +63,7 @@
                 android:lines="1"
                 android:text="@string/original_poster"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:visibility="@{postViewModel.isOp?View.VISIBLE:View.GONE}"
+                android:visibility="@{postViewModel.post.isOpPost?View.VISIBLE:View.GONE}"
                 app:layout_constraintLeft_toRightOf="@id/author_name"
                 app:layout_constraintTop_toTopOf="@id/avatar"
                 tools:text="楼主" />
