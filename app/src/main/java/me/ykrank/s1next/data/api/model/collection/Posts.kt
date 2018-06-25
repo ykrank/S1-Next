@@ -20,8 +20,15 @@ import java.util.*
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Posts : Account {
 
-    @JsonProperty("thread")
+    @JsonIgnore
     var postListInfo: Thread? = null
+        @JsonSetter("thread") set(p) {
+            this.postList.forEach {
+                if (p?.author == it.authorName) {
+                    it.isOpPost = true
+                }
+            }
+        }
 
     @JsonProperty("threadsortshow")
     var threadAttachment: ThreadAttachment? = null

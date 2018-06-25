@@ -70,6 +70,7 @@
     <string name="thread_permission_hint" translatable="false">阅读权限</string>
 
     <!-- post -->
+    <string name="original_poster">OP</string>
     <string name="dialog_button_text_add">Add</string>
     <string name="dialog_progress_message_favourites_add">Adding…</string>
     <string name="prompt_remark">Remark</string>

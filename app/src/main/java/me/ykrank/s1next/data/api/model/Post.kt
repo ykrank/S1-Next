@@ -63,6 +63,11 @@ class Post : PaperParcelable, Cloneable, SameItem {
      */
     @JsonIgnore
     var rates: List<Rate>? = null
+    /**
+     * whether the author of this post is Original Poster
+     */
+    @JsonIgnore
+    var isOpPost: Boolean = false
 
     constructor()
 
@@ -331,6 +336,7 @@ class Post : PaperParcelable, Cloneable, SameItem {
         if (extraHtml != other.extraHtml) return false
         if (banned != other.banned) return false
         if (rates != other.rates) return false
+        if (isOpPost != other.isOpPost) return false
 
         return true
     }
@@ -351,6 +357,7 @@ class Post : PaperParcelable, Cloneable, SameItem {
         result = 31 * result + (extraHtml?.hashCode() ?: 0)
         result = 31 * result + banned.hashCode()
         result = 31 * result + (rates?.hashCode() ?: 0)
+        result = 31 * result + isOpPost.hashCode()
         return result
     }
 
