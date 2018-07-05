@@ -19,8 +19,8 @@ android {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 48
-        versionName '2.0'
+        versionCode 49
+        versionName '2.0.1'
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
@@ -144,8 +144,8 @@ dependencies {
     implementation "com.github.VictorAlbertos.RxCache:runtime:1.8.3-2.x"
     implementation 'com.github.VictorAlbertos.Jolyglot:jackson:0.0.4'
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.5'
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.5"
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.6'
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.6"
 
     implementation 'nz.bradcampbell:paperparcel:2.0.6'
     implementation 'nz.bradcampbell:paperparcel-kotlin:2.0.6' // Optional
