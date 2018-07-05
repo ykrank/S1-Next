@@ -8,8 +8,8 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
+import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import com.github.ykrank.androidtools.util.LeaksUtil
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.github.ykrank.androidtools.widget.track.event.page.ActivityEndEvent
 import com.github.ykrank.androidtools.widget.track.event.page.ActivityStartEvent
@@ -23,7 +23,7 @@ import javax.inject.Inject
 /**
  * An Activity shows an ImageView that supports multi-touch.
  */
-class GalleryActivity : OriginActivity() {
+class GalleryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityGalleryBinding
 
@@ -64,12 +64,6 @@ class GalleryActivity : OriginActivity() {
             }
             else -> return super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onDestroy() {
-        // Clean up views and other components
-        super.onDestroy()
-        LeaksUtil.releaseGestureBoostManagerLeaks(this)
     }
 
     override fun onResume() {
