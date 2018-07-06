@@ -72,11 +72,15 @@ public final class ImageViewBindingAdapter {
                             .circleCrop()
                             .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
                     )
+                    .error(Glide.with(context)
+                            .load(R.drawable.ic_drawer_avatar_placeholder)
+                            .apply(RequestOptions.circleCropTransform()))
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            loadPlaceHolderAvatar(bezelImageView);
-                            return true;
+                            //You can't start or clear loads in RequestListener or Target callbacks.
+                            bezelImageView.setTag(R.id.tag_drawable_info, null);
+                            return false;
                         }
 
                         @Override
