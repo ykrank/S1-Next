@@ -19,7 +19,7 @@ android {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 49
+        versionCode 50
         versionName '2.0.1'
         vectorDrawables.useSupportLibrary = true
     }
