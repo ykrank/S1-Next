@@ -308,10 +308,10 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             super.onNext(data)
             loadRates(postList)
 
-            val postListInfo = posts.postListInfo
-            if (postListInfo != null) {
-                mRecyclerAdapter.setThreadInfo(postListInfo)
-            }
+            //Thread info must not null, or exception
+            val postListInfo = posts.postListInfo as Thread
+            mRecyclerAdapter.setThreadInfo(postListInfo)
+
             posts.vote?.let {
                 mRecyclerAdapter.setVoteInfo(it)
             }

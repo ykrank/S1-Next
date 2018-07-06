@@ -28,6 +28,7 @@ class Posts : Account {
                     it.isOpPost = true
                 }
             }
+            field = p
         }
 
     @JsonProperty("threadsortshow")
