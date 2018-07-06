@@ -1,15 +1,15 @@
 package me.ykrank.s1next.widget.glide;
 
-import com.github.ykrank.androidtools.widget.glide.NoAvatarException;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import me.ykrank.s1next.data.api.Api;
 import okhttp3.Interceptor;
+import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.internal.Util;
 
 /**
  * Created by ykrank on 2017/3/6.
@@ -30,7 +30,15 @@ public class OkHttpNoAvatarInterceptor implements Interceptor {
         Request request = chain.request();
         String url = request.url().toString();
         if (NO_AVATAR_URLS.contains(url)) {
-            throw new NoAvatarException(url);
+            return new Response.Builder()
+                    .request(request)
+                    .protocol(Protocol.HTTP_1_1)
+                    .code(504)
+                    .message("Empty avatar image")
+                    .body(Util.EMPTY_RESPONSE)
+                    .sentRequestAtMillis(-1L)
+                    .receivedResponseAtMillis(System.currentTimeMillis())
+                    .build();
         }
         return chain.proceed(request);
     }
