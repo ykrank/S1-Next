@@ -16,12 +16,12 @@ public final class ThreadViewModel {
     private final Supplier<Thread> threadSupplier = thread::get;
 
     public Consumer<View> onBind() {
-        return v -> PostListActivity.bindClickStartForView(v, threadSupplier);
+        return v -> PostListActivity.Companion.bindClickStartForView(v, threadSupplier);
     }
 
     public View.OnLongClickListener goToThisThreadLastPage() {
         return v -> {
-            PostListActivity.startPostListActivity(v.getContext(), thread.get(), true);
+            PostListActivity.Companion.start(v.getContext(), thread.get(), true);
             return true;
         };
     }

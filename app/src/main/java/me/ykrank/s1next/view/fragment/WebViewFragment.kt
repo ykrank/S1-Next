@@ -134,9 +134,9 @@ class WebViewFragment : BaseFragment(), BackPressDelegate {
 
     companion object {
         val TAG: String = WebViewFragment::class.java.name
-        val ARG_URL = "arg_url"
-        val ARG_ENABLE_JS = "arg_enable_js"
-        val ARG_PC_AGENT = "arg_pc_agent"
+        const val ARG_URL = "arg_url"
+        const val ARG_ENABLE_JS = "arg_enable_js"
+        const val ARG_PC_AGENT = "arg_pc_agent"
 
         fun getInstance(url: String, enableJS: Boolean = false, pcAgent: Boolean = true): WebViewFragment {
             val fragment = WebViewFragment()

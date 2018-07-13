@@ -79,8 +79,8 @@ class GalleryActivity : AppCompatActivity() {
     companion object {
         val TAG: String = GalleryActivity::class.java.name
 
-        private val ARG_IMAGE_URL = "image_urls"
-        private val ARG_POSITION = "position"
+        private const val ARG_IMAGE_URL = "image_urls"
+        private const val ARG_POSITION = "position"
 
         fun start(context: Context, imageUrls: ArrayList<String>, position: Int = 0) {
             val intent = Intent(context, GalleryActivity::class.java)

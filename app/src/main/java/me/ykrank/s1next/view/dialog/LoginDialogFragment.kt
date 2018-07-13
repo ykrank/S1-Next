@@ -51,8 +51,8 @@ class LoginDialogFragment : ProgressDialogFragment<AccountResultWrapper>() {
 
         val TAG = LoginDialogFragment::class.java.name
 
-        private val ARG_USERNAME = "username"
-        private val ARG_PASSWORD = "password"
+        private const val ARG_USERNAME = "username"
+        private const val ARG_PASSWORD = "password"
 
         /**
          * For desktop is "login_succeed".

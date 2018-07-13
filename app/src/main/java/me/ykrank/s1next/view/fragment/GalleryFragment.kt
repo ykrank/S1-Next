@@ -207,8 +207,8 @@ class GalleryFragment : Fragment() {
 
         private val REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 0
 
-        private val ARG_IMAGE_URL = "image_url"
-        private val ARG_IMAGE_THUMB_URL = "image_thumb_url"
+        private const val ARG_IMAGE_URL = "image_url"
+        private const val ARG_IMAGE_THUMB_URL = "image_thumb_url"
 
         fun instance(imageUrl: String, thumbUrl: String? = null): GalleryFragment {
             val fragment = GalleryFragment()

@@ -43,9 +43,9 @@ class RateRequestDialogFragment : ProgressDialogFragment<RateResult>() {
 
         val TAG: String = RateRequestDialogFragment::class.java.name
 
-        private val ARG_RATE_PRE_INFO = "rate_pre_info"
-        private val ARG_SCORE = "score"
-        private val ARG_REASON = "reason"
+        private const val ARG_RATE_PRE_INFO = "rate_pre_info"
+        private const val ARG_SCORE = "score"
+        private const val ARG_REASON = "reason"
 
         private val STATUS_REPLY_SUCCESS = "post_reply_succeed"
 

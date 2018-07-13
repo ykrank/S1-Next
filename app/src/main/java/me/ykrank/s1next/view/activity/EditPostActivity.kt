@@ -49,8 +49,8 @@ class EditPostActivity : BaseActivity() {
 
     companion object {
 
-        private val ARG_THREAD = "thread"
-        private val ARG_POST = "post"
+        private const val ARG_THREAD = "thread"
+        private const val ARG_POST = "post"
 
         fun startActivityForResultMessage(fragment: Fragment, requestCode: Int, thread: Thread, post: Post) {
             val intent = Intent(fragment.context, EditPostActivity::class.java)

@@ -43,11 +43,11 @@ class EditAppPostRequestDialogFragment : BaseRequestDialogFragment<String>() {
 
         val TAG: String = EditAppPostRequestDialogFragment::class.java.name
 
-        private val ARG_THREAD = "thread"
-        private val ARG_POST = "post"
-        private val ARG_TYPE_ID = "type_id"
-        private val ARG_TITLE = "title"
-        private val ARG_MESSAGE = "message"
+        private const val ARG_THREAD = "thread"
+        private const val ARG_POST = "post"
+        private const val ARG_TYPE_ID = "type_id"
+        private const val ARG_TITLE = "title"
+        private const val ARG_MESSAGE = "message"
 
         fun newInstance(thread: AppThread, post: AppPost, typeId: String?, title: String,
                         message: String): EditAppPostRequestDialogFragment {

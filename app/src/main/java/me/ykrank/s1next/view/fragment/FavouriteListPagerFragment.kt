@@ -69,7 +69,7 @@ class FavouriteListPagerFragment : BaseRecyclerViewFragment<BaseResultWrapper<Fa
 
     companion object {
 
-        private val ARG_PAGE_NUM = "page_num"
+        private const val ARG_PAGE_NUM = "page_num"
 
         fun newInstance(pageNum: Int): FavouriteListPagerFragment {
             val fragment = FavouriteListPagerFragment()

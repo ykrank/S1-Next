@@ -60,11 +60,11 @@ class ReplyActivity : BaseActivity() {
 
     companion object {
 
-        private val ARG_THREAD_ID = "thread_id"
-        private val ARG_THREAD_TITLE = "thread_title"
+        private const val ARG_THREAD_ID = "thread_id"
+        private const val ARG_THREAD_TITLE = "thread_title"
 
-        private val ARG_QUOTE_POST_ID = "quote_post_id"
-        private val ARG_QUOTE_POST_COUNT = "quote_post_count"
+        private const val ARG_QUOTE_POST_ID = "quote_post_id"
+        private const val ARG_QUOTE_POST_COUNT = "quote_post_count"
 
         fun startReplyActivityForResultMessage(activity: Activity, threadId: String, threadTitle: String?,
                                                quotePostId: String?, quotePostCount: String?) {

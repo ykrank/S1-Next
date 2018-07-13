@@ -46,9 +46,9 @@ class SimpleProgressDialogFragment : DialogFragment() {
 
     companion object {
         val TAG: String = SimpleProgressDialogFragment::class.java.name
-        private val ARG_DIALOG_NOT_CANCELABLE_ON_TOUCH_OUTSIDE = "dialog_not_cancelable_on_touch_outside"
+        private const val ARG_DIALOG_NOT_CANCELABLE_ON_TOUCH_OUTSIDE = "dialog_not_cancelable_on_touch_outside"
 
-        private val ARG_PROGRESS_MSG = "progress_msg"
+        private const val ARG_PROGRESS_MSG = "progress_msg"
 
         /**
          * start a progress dialog to subscribe a observable and show msg (or not) after subscribed

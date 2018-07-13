@@ -38,8 +38,8 @@ class ThreadFavouritesAddRequestDialogFragment : ProgressDialogFragment<AccountR
 
         val TAG = ThreadFavouritesAddRequestDialogFragment::class.java.name
 
-        private val ARG_THREAD_ID = "thread_id"
-        private val ARG_REMARK = "remark"
+        private const val ARG_THREAD_ID = "thread_id"
+        private const val ARG_REMARK = "remark"
 
         private val STATUS_ADD_TO_FAVOURITES_SUCCESS = "favorite_do_success"
         private val STATUS_ADD_TO_FAVOURITES_REPEAT = "favorite_repeat"

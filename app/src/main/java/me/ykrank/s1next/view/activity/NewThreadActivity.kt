@@ -47,7 +47,7 @@ class NewThreadActivity : BaseActivity() {
 
     companion object {
 
-        private val ARG_FORUM_ID = "forum_id"
+        private const val ARG_FORUM_ID = "forum_id"
 
         fun startNewThreadActivityForResultMessage(activity: Activity, forumId: Int) {
             val intent = Intent(activity, NewThreadActivity::class.java)

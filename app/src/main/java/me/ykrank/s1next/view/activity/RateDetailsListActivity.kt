@@ -26,7 +26,7 @@ class RateDetailsListActivity : BaseActivity() {
 
     companion object {
 
-        private val ARG_RATES = "rates"
+        private const val ARG_RATES = "rates"
 
         fun start(context: Context, rates: ArrayList<Rate>) {
             val intent = Intent(context, RateDetailsListActivity::class.java)

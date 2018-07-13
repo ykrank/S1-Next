@@ -42,9 +42,9 @@ class WebViewActivity : BaseActivity() {
     }
 
     companion object {
-        val ARG_URL = "arg_url"
-        val ARG_ENABLE_JS = "arg_enable_js"
-        val ARG_PC_AGENT = "arg_pc_agent"
+        const val ARG_URL = "arg_url"
+        const val ARG_ENABLE_JS = "arg_enable_js"
+        const val ARG_PC_AGENT = "arg_pc_agent"
 
         fun start(context: Context, url: String, enableJS: Boolean = false, pcAgent: Boolean = true) {
             val intent = Intent(context, WebViewActivity::class.java)

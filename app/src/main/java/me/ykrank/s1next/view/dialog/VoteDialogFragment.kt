@@ -146,8 +146,8 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
 
     companion object {
 
-        val ARG_VOTE = "vote"
-        val ARG_THREAD_ID = "thread_id"
+        const val ARG_VOTE = "vote"
+        const val ARG_THREAD_ID = "thread_id"
         val TAG: String = VoteDialogFragment::class.java.name
 
         fun newInstance(threadId: String, vote: Vote): VoteDialogFragment {

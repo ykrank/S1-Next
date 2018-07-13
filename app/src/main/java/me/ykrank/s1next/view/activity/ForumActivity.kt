@@ -139,7 +139,7 @@ class ForumActivity : BaseActivity(), ToolbarDropDownInterface.Callback, Adapter
                 .doFinally { mReadProgressPrefManager.saveLastReadProgress(null) }
                 .subscribe({ readProgress ->
                     if (readProgress.isPresent()) {
-                        PostListActivity.startPostListActivity(this@ForumActivity, readProgress.get())
+                        PostListActivity.start(this@ForumActivity, readProgress.get())
                     }
                 }, { L.report(it) })
     }

@@ -48,8 +48,8 @@ class ReplyFragment : BasePostFragment() {
 
         val TAG: String = ReplyFragment::class.java.name
 
-        private val ARG_THREAD_ID = "thread_id"
-        private val ARG_QUOTE_POST_ID = "quote_post_id"
+        private const val ARG_THREAD_ID = "thread_id"
+        private const val ARG_QUOTE_POST_ID = "quote_post_id"
 
         private val CACHE_KEY_PREFIX = "NewReply_%s_%s"
 

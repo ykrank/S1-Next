@@ -55,10 +55,10 @@ class AppLoginDialogFragment : ProgressDialogFragment<AppDataWrapper<AppLoginRes
 
         val TAG: String = AppLoginDialogFragment::class.java.name
 
-        private val ARG_USERNAME = "username"
-        private val ARG_PASSWORD = "password"
-        private val ARG_QUESTION_ID = "question_id"
-        private val ARG_ANSWER = "answer"
+        private const val ARG_USERNAME = "username"
+        private const val ARG_PASSWORD = "password"
+        private const val ARG_QUESTION_ID = "question_id"
+        private const val ARG_ANSWER = "answer"
 
         fun newInstance(username: String, password: String, questionId: Int, answer: String): AppLoginDialogFragment {
             val fragment = AppLoginDialogFragment()

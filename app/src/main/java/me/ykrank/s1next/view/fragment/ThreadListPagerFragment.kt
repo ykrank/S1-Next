@@ -135,9 +135,9 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
 
     companion object {
 
-        private val ARG_FORUM_ID = "forum_id"
-        private val ARG_TYPE_ID = "type_id"
-        private val ARG_PAGE_NUM = "page_num"
+        private const val ARG_FORUM_ID = "forum_id"
+        private const val ARG_TYPE_ID = "type_id"
+        private const val ARG_PAGE_NUM = "page_num"
 
         fun newInstance(forumId: String, typeId: String, pageNum: Int): ThreadListPagerFragment {
             val fragment = ThreadListPagerFragment()

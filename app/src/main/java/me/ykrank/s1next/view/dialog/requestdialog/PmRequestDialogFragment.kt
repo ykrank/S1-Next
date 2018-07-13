@@ -37,8 +37,8 @@ class PmRequestDialogFragment : BaseRequestDialogFragment<AccountResultWrapper>(
 
         val TAG: String = PmRequestDialogFragment::class.java.name
 
-        private val ARG_TO_UID = "arg_to_uid"
-        private val ARG_MESSAGE = "message"
+        private const val ARG_TO_UID = "arg_to_uid"
+        private const val ARG_MESSAGE = "message"
 
         private val STATUS_PM_SUCCESS = "do_success"
 

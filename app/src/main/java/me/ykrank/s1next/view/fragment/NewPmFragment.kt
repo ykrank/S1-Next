@@ -39,7 +39,7 @@ class NewPmFragment : BasePostFragment() {
 
         val TAG: String = NewPmFragment::class.java.name
 
-        private val ARG_TO_UID = "arg_to_uid"
+        private const val ARG_TO_UID = "arg_to_uid"
 
         private val CACHE_KEY_PREFIX = "NewPm_%s"
 

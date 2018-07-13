@@ -169,7 +169,7 @@ class NewThreadFragment : BasePostFragment() {
     companion object {
         val TAG: String = NewThreadFragment::class.java.name
 
-        private val ARG_FORUM_ID = "forum_id"
+        private const val ARG_FORUM_ID = "forum_id"
 
         private val CACHE_KEY_PREFIX = "NewThread_%s"
 

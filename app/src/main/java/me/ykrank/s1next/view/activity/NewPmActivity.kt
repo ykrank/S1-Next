@@ -53,8 +53,8 @@ class NewPmActivity : BaseActivity() {
 
     companion object {
 
-        private val ARG_TO_UID = "arg_to_uid"
-        private val ARG_TO_USERNAME = "to_user_name"
+        private const val ARG_TO_UID = "arg_to_uid"
+        private const val ARG_TO_USERNAME = "to_user_name"
 
         fun startNewPmActivityForResultMessage(activity: Activity, toUid: String?, toUsername: String?) {
             if (toUid.isNullOrEmpty() || toUsername.isNullOrEmpty()) {

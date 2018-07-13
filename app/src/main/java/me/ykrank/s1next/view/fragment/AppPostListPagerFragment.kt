@@ -338,15 +338,15 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
     companion object {
         val TAG = AppPostListPagerFragment::class.java.name
 
-        private val ARG_THREAD_ID = "thread_id"
-        private val ARG_PAGE_NUM = "page_num"
-        private val ARG_READ_PROGRESS = "read_progress"
-        private val ARG_PAGER_SCROLL_STATE = "pager_scroll_state"
+        private const val ARG_THREAD_ID = "thread_id"
+        private const val ARG_PAGE_NUM = "page_num"
+        private const val ARG_READ_PROGRESS = "read_progress"
+        private const val ARG_PAGER_SCROLL_STATE = "pager_scroll_state"
 
         /**
          * Used for post post redirect.
          */
-        private val ARG_QUOTE_POST_ID = "quote_post_id"
+        private const val ARG_QUOTE_POST_ID = "quote_post_id"
 
         fun newInstance(threadId: String, pageNum: Int): AppPostListPagerFragment {
             return newInstance(threadId, pageNum, null, null, null)

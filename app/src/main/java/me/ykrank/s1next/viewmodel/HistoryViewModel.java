@@ -17,6 +17,6 @@ public final class HistoryViewModel {
     private final Supplier<Thread> threadSupplier = () -> new Thread(history.get());
 
     public Consumer<View> onBind() {
-        return v -> PostListActivity.bindClickStartForView(v, threadSupplier);
+        return v -> PostListActivity.Companion.bindClickStartForView(v, threadSupplier);
     }
 }

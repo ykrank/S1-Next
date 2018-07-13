@@ -67,9 +67,9 @@ class AppPostListActivity : BaseActivity(), AppPostListPagerFragment.PagerCallba
     companion object {
         val RESULT_BLACKLIST = 11
 
-        private val ARG_THREAD = "thread"
-        private val ARG_PAGE_NUM = "page_num"
-        private val ARG_QUOTE_POST_ID = "quote_post_id"
+        private const val ARG_THREAD = "thread"
+        private const val ARG_PAGE_NUM = "page_num"
+        private const val ARG_QUOTE_POST_ID = "quote_post_id"
 
         fun start(context: Context, thread: Thread, pageNum: Int, postId: String) {
             val intent = Intent(context, AppPostListActivity::class.java)

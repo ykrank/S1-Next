@@ -17,7 +17,7 @@ public final class NoteViewModel {
         return v -> {
             String url = data.get().getUrl();
             if (!TextUtils.isEmpty(url)) {
-                PostListGatewayActivity.start(v.getContext(), Uri.parse(url));
+                PostListGatewayActivity.Companion.start(v.getContext(), Uri.parse(url));
             }
         };
     }

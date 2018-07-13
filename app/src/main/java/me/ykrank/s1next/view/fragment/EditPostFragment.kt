@@ -144,8 +144,8 @@ class EditPostFragment : BasePostFragment() {
 
         val TAG: String = EditPostFragment::class.java.name
 
-        private val ARG_THREAD = "thread"
-        private val ARG_POST = "post"
+        private const val ARG_THREAD = "thread"
+        private const val ARG_POST = "post"
 
         fun newInstance(thread: Thread, post: Post): EditPostFragment {
             val fragment = EditPostFragment()

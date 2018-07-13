@@ -90,7 +90,7 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
 
         val TAG = ThreadListFragment::class.java.name
 
-        private val ARG_FORUM = "forum"
+        private const val ARG_FORUM = "forum"
 
         fun newInstance(forum: Forum): ThreadListFragment {
             val fragment = ThreadListFragment()

@@ -269,7 +269,7 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
 
     companion object {
 
-        private val ARG_FORUM = "forum"
+        private const val ARG_FORUM = "forum"
 
         /**
          * Only measures this many items to get a decent max width.

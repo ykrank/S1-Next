@@ -15,6 +15,6 @@ public final class HomeReplyItemViewModel {
     public final ObservableField<HomeReply> reply = new ObservableField<>();
 
     public final void onClick(View v) {
-        PostListGatewayActivity.start(v.getContext(), Uri.parse(reply.get().getUrl()));
+        PostListGatewayActivity.Companion.start(v.getContext(), Uri.parse(reply.get().getUrl()));
     }
 }

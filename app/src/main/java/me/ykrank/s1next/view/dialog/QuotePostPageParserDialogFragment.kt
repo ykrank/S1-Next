@@ -43,7 +43,9 @@ class QuotePostPageParserDialogFragment : ProgressDialogFragment<String>() {
                     .jumpPage(jumpPage.get())
                     .quotePostId(threadLink.quotePostId.get())
                     .build()
-            PostListActivity.startPostListActivity(activity, threadLinkWithJumpPage)
+            activity?.let {
+                PostListActivity.start(it, threadLinkWithJumpPage)
+            }
         } else {
             ThreadLinkInvalidPromptDialogFragment.newInstance(context,
                     getString(R.string.dialog_message_quote_not_found)).show(fragmentManager,
@@ -87,7 +89,7 @@ class QuotePostPageParserDialogFragment : ProgressDialogFragment<String>() {
 
         val TAG = QuotePostPageParserDialogFragment::class.java.name
 
-        private val ARG_THREAD_LINK = "thread_link"
+        private const val ARG_THREAD_LINK = "thread_link"
 
         fun newInstance(threadLink: ThreadLink): QuotePostPageParserDialogFragment {
             val fragment = QuotePostPageParserDialogFragment()

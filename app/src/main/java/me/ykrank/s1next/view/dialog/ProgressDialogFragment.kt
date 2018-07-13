@@ -16,7 +16,6 @@ import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.UserValidator
 import me.ykrank.s1next.view.activity.BaseActivity
 import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment
-import javax.inject.Inject
 
 /**
  * A dialog shows [ProgressDialog].
@@ -84,10 +83,5 @@ abstract class ProgressDialogFragment<D> : LibProgressDialogFragment<D>() {
         }
 
         activity.finish()
-    }
-
-    companion object {
-
-        internal val ARG_DIALOG_NOT_CANCELABLE_ON_TOUCH_OUTSIDE = "dialog_not_cancelable_on_touch_outside"
     }
 }

@@ -29,7 +29,7 @@ public final class FavouriteViewModel {
     };
 
     public Consumer<View> onBind() {
-        return v -> PostListActivity.bindClickStartForView(v, threadSupplier);
+        return v -> PostListActivity.Companion.bindClickStartForView(v, threadSupplier);
     }
 
     public View.OnLongClickListener removeFromFavourites(final RxBus rxBus) {

@@ -220,9 +220,9 @@ class UserHomeActivity : BaseActivity() {
         private val PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.71f
         private val TITLE_ANIMATIONS_DURATION = 300
 
-        private val ARG_UID = "uid"
-        private val ARG_USERNAME = "username"
-        private val ARG_IMAGE_INFO = "image_info"
+        private const val ARG_UID = "uid"
+        private const val ARG_USERNAME = "username"
+        private const val ARG_IMAGE_INFO = "image_info"
 
         fun start(activity: FragmentActivity, uid: String, userName: String) {
             if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(activity.supportFragmentManager, App.appComponent.user)) {

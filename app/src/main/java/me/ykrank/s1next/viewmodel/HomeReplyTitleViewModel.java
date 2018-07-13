@@ -15,6 +15,6 @@ public final class HomeReplyTitleViewModel {
     public final ObservableField<HomeThread> thread = new ObservableField<>();
 
     public final void onClick(View v) {
-        PostListGatewayActivity.start(v.getContext(), Uri.parse(thread.get().getUrl()));
+        PostListGatewayActivity.Companion.start(v.getContext(), Uri.parse(thread.get().getUrl()));
     }
 }
