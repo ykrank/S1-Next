@@ -71,6 +71,7 @@
 
     <!-- post -->
     <string name="original_poster">OP</string>
+    <string name="only_see_him">Only see him</string>
     <string name="dialog_button_text_add">Add</string>
     <string name="dialog_progress_message_favourites_add">Adding…</string>
     <string name="prompt_remark">Remark</string>

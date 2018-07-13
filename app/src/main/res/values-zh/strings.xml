@@ -133,6 +133,7 @@
     <string name="title_friends">好友列表</string>
     <string name="database_update_error">数据库升级异常</string>
     <string name="original_poster">楼主</string>
+    <string name="only_see_him">只看他</string>
     <string name="reply">回复</string>
     <string name="view">查看</string>
     <string name="title_user_threads">%1$s的主题</string>

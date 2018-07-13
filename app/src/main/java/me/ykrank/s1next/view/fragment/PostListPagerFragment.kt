@@ -479,6 +479,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             if (!TextUtils.isEmpty(postId)) {
                 bundle.putString(ARG_QUOTE_POST_ID, postId)
             }
+            bundle.putString(ARG_AUTHOR_ID, authorId)
             bundle.putInt(ARG_PAGE_NUM, pageNum)
             bundle.putParcelable(ARG_READ_PROGRESS, progress)
             bundle.putParcelable(ARG_PAGER_SCROLL_STATE, scrollState)

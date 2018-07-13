@@ -26,6 +26,7 @@ import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.api.model.Vote;
 import me.ykrank.s1next.view.activity.AppPostListActivity;
+import me.ykrank.s1next.view.activity.PostListActivity;
 import me.ykrank.s1next.view.activity.UserHomeActivity;
 import me.ykrank.s1next.view.activity.WebViewActivity;
 import me.ykrank.s1next.view.event.EditPostEvent;
@@ -164,5 +165,9 @@ public final class PostViewModel {
 
     public void onAppPostClick(View v) {
         AppPostListActivity.Companion.start(v.getContext(), thread.get(), post.get().getPage(), String.valueOf(post.get().getId()));
+    }
+
+    public void onOnlySeeHimClick(View v) {
+        PostListActivity.Companion.start(v.getContext(), thread.get(), post.get().getAuthorId());
     }
 }

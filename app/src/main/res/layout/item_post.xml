@@ -64,9 +64,26 @@
                 android:text="@string/original_poster"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:visibility="@{postViewModel.post.isOpPost?View.VISIBLE:View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@id/author_name"
                 app:layout_constraintLeft_toRightOf="@id/author_name"
-                app:layout_constraintTop_toTopOf="@id/avatar"
-                tools:text="楼主" />
+                app:layout_constraintTop_toTopOf="@id/author_name"
+                tools:text="楼主"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tv_only_see_him"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/item_padding"
+                android:includeFontPadding="false"
+                android:lines="1"
+                android:text="@string/only_see_him"
+                android:onClick="@{postViewModel::onOnlySeeHimClick}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintBottom_toBottomOf="@id/author_name"
+                app:layout_constraintLeft_toRightOf="@id/original_poster_tag"
+                app:layout_constraintTop_toTopOf="@id/author_name"
+                tools:text="只看它" />
 
             <TextView
                 android:layout_width="wrap_content"
