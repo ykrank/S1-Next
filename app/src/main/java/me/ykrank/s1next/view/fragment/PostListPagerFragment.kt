@@ -26,6 +26,7 @@ import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.rx_cache2.DynamicKeyGroup
 import io.rx_cache2.EvictDynamicKeyGroup
+import io.rx_cache2.Reply
 import io.rx_cache2.Source
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -69,6 +70,10 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
     private var mThreadId: String? = null
     private var mPageNum: Int = 0
     /**
+     * Only see this author, or all if null
+     */
+    private var mAuthorId: String? = null
+    /**
      * 之前记录的阅读进度
      */
     private var readProgress: ReadProgress? = null
@@ -94,9 +99,10 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         val bundle = arguments!!
         mThreadId = bundle.getString(ARG_THREAD_ID)
         mPageNum = bundle.getInt(ARG_PAGE_NUM)
+        mAuthorId = bundle.getString(ARG_AUTHOR_ID)
         if (readProgress == null) {
-            readProgress = bundle.getParcelable<ReadProgress>(ARG_READ_PROGRESS)
-            scrollState = bundle.getParcelable<PagerScrollState>(ARG_PAGER_SCROLL_STATE)
+            readProgress = bundle.getParcelable(ARG_READ_PROGRESS)
+            scrollState = bundle.getParcelable(ARG_PAGER_SCROLL_STATE)
         }
         L.leaveMsg("PostListPagerFragment##ThreadId:$mThreadId,PageNum:$mPageNum")
 
@@ -150,7 +156,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
     }
 
     override fun getLoadingViewModelBindingDelegateImpl(inflater: LayoutInflater, container: ViewGroup?): LoadingViewModelBindingDelegate {
-        binding = DataBindingUtil.inflate<FragmentBaseWithQuickSideBarBinding>(inflater, R.layout.fragment_base_with_quick_side_bar, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_base_with_quick_side_bar, container, false)
         binding.quickSidebarEnable = false
         quickSideBarView = binding.quickSideBarView
         quickSideBarTipsView = binding.quickSideBarViewTips
@@ -249,22 +255,18 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
 
     override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<PostsWrapper> {
         val source: Single<PostsWrapper> = if (mDownloadPrefManager.netCacheEnable) {
-            apiCacheProvider.getPostsWrapper(mS1Service.getPostsWrapper(mThreadId, mPageNum),
-                    DynamicKeyGroup(mThreadId + "," + mPageNum, mUser.key),
-                    EvictDynamicKeyGroup(isForceLoading || mPageNum >= mPagerCallback?.getTotalPages() ?: 0))
+            apiCacheObservable(isForceLoading || mPageNum >= mPagerCallback?.getTotalPages() ?: 0)
                     .flatMap {
                         val wrapper = objectMapper.readValue(it.data, PostsWrapper::class.java)
                         if (it.source != Source.CLOUD && wrapper.data.postList.size < Api.POSTS_PER_PAGE) {
-                            return@flatMap apiCacheProvider.getPostsWrapper(mS1Service.getPostsWrapper(mThreadId, mPageNum),
-                                    DynamicKeyGroup(mThreadId + "," + mPageNum, mUser.key), EvictDynamicKeyGroup(true))
-                                    .map<String>({ it.data })
+                            return@flatMap apiCacheObservable(true)
+                                    .map<String> { it.data }
                                     .compose(JsonUtil.jsonSingleTransformer(PostsWrapper::class.java))
                         }
                         Single.just(wrapper)
                     }
         } else {
-            mS1Service.getPostsWrapper(mThreadId, mPageNum)
-                    .compose(JsonUtil.jsonSingleTransformer(PostsWrapper::class.java))
+            apiObservable().compose(JsonUtil.jsonSingleTransformer(PostsWrapper::class.java))
         }
         return source.flatMap { o ->
             if (o.data != null) {
@@ -283,6 +285,16 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             }
             Single.just(o)
         }
+    }
+
+    private fun apiObservable(): Single<String> {
+        return mS1Service.getPostsWrapper(mThreadId, mPageNum, mAuthorId)
+    }
+
+    private fun apiCacheObservable(evict: Boolean): Single<Reply<String>> {
+        return apiCacheProvider.getPostsWrapper(apiObservable(),
+                DynamicKeyGroup("$mThreadId,$mPageNum,$mAuthorId", mUser.key),
+                EvictDynamicKeyGroup(evict))
     }
 
     override fun onNext(data: PostsWrapper) {
@@ -359,7 +371,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             RxJavaUtil.disposeIfNotNull(refreshAfterBlacklistChangeDisposable)
             val dataSet = mRecyclerAdapter.dataSet
             refreshAfterBlacklistChangeDisposable = Single.just(dataSet)
-                    .map({ filterPostAfterBlacklistChanged(it) })
+                    .map { filterPostAfterBlacklistChanged(it) }
                     .compose(RxJavaUtil.iOSingleTransformer())
                     .subscribe({ mRecyclerAdapter.diffNewDataSet(it, false) }, { L.report(it) })
         } else if (isPullUpToRefresh) {
@@ -398,7 +410,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
     private fun initQuickSidebar(page: Int, postSize: Int) {
         invalidateQuickSidebarVisible()
         val customLetters = ArrayList<String>()
-        for (i in 0..postSize - 1) {
+        for (i in 0 until postSize) {
             //1-10, then interval 2
             if (i >= 10 && i % 2 == 0) {
                 continue
@@ -436,29 +448,31 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
 
     companion object {
 
-        private val ARG_THREAD_ID = "thread_id"
-        private val ARG_PAGE_NUM = "page_num"
-        private val ARG_READ_PROGRESS = "read_progress"
-        private val ARG_PAGER_SCROLL_STATE = "pager_scroll_state"
+        private const val ARG_THREAD_ID = "thread_id"
+        private const val ARG_PAGE_NUM = "page_num"
+        private const val ARG_AUTHOR_ID = "author_id"
+        private const val ARG_READ_PROGRESS = "read_progress"
+        private const val ARG_PAGER_SCROLL_STATE = "pager_scroll_state"
 
         /**
          * Used for post post redirect.
          */
-        private val ARG_QUOTE_POST_ID = "quote_post_id"
+        private const val ARG_QUOTE_POST_ID = "quote_post_id"
 
         fun newInstance(threadId: String, pageNum: Int): PostListPagerFragment {
-            return newInstance(threadId, pageNum, null, null, null)
+            return newInstance(threadId, pageNum, null, null, null, null)
         }
 
         fun newInstance(threadId: String, pageNum: Int, progress: ReadProgress, scrollState: PagerScrollState): PostListPagerFragment {
-            return newInstance(threadId, pageNum, null, progress, scrollState)
+            return newInstance(threadId, pageNum, null, null, progress, scrollState)
         }
 
         fun newInstance(threadId: String, pageNum: Int, postId: String): PostListPagerFragment {
-            return newInstance(threadId, pageNum, postId, null, null)
+            return newInstance(threadId, pageNum, null, postId, null, null)
         }
 
-        private fun newInstance(threadId: String, pageNum: Int, postId: String?, progress: ReadProgress?, scrollState: PagerScrollState?): PostListPagerFragment {
+        fun newInstance(threadId: String, pageNum: Int, authorId: String?,
+                        postId: String?, progress: ReadProgress?, scrollState: PagerScrollState?): PostListPagerFragment {
             val fragment = PostListPagerFragment()
             val bundle = Bundle()
             bundle.putString(ARG_THREAD_ID, threadId)

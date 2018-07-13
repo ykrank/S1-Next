@@ -32,7 +32,7 @@ public interface S1Service {
     Single<String> getThreadsWrapper(@Query("fid") String forumId, @Query("typeid") String typeId, @Query("page") int page);
 
     @GET(ApiForum.URL_POST_LIST)
-    Single<String> getPostsWrapper(@Query("tid") String threadId, @Query("page") int page);
+    Single<String> getPostsWrapper(@Query("tid") String threadId, @Query("page") int page, @Query("authorid") String authorId);
 
     @GET(ApiForum.URL_TRADE_POST_INFO)
     Single<String> getTradePostInfo(@Query("tid") String threadId, @Query("pid") int pid);

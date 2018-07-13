@@ -96,7 +96,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         if (savedInstanceState == null) {
             val jumpPage: Int
             //读取进度
-            readProgress = bundle.getParcelable<ReadProgress>(ARG_READ_PROGRESS)
+            readProgress = bundle.getParcelable(ARG_READ_PROGRESS)
             if (readProgress != null) {
                 scrollState.state = PagerScrollState.BEFORE_SCROLL_POSITION
                 jumpPage = readProgress?.page ?: 0
@@ -457,33 +457,38 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
             val bundle = arguments!!
             val jumpPage = bundle.getInt(ARG_JUMP_PAGE, -1)
             val quotePostId = bundle.getString(ARG_QUOTE_POST_ID)
+            val authorId = bundle.getString(ARG_AUTHOR_ID)
             if (jumpPage == i + 1 && !TextUtils.isEmpty(quotePostId)) {
                 // clear this arg string because we only need to tell PostListPagerFragment once
-                bundle.putString(ARG_QUOTE_POST_ID, null)
+                arguments?.putString(ARG_QUOTE_POST_ID, null)
                 return PostListPagerFragment.newInstance(mThreadId, jumpPage, quotePostId)
             } else if (progress != null && progress.page == i + 1
                     && scrollState.state == PagerScrollState.BEFORE_SCROLL_POSITION) {
                 return PostListPagerFragment.newInstance(mThreadId, i + 1, progress, scrollState)
             } else {
-                return PostListPagerFragment.newInstance(mThreadId, i + 1)
+                return PostListPagerFragment.newInstance(mThreadId, i + 1, authorId, null, null, null)
             }
         }
     }
 
     companion object {
 
-        val TAG = PostListFragment::class.java.name
+        val TAG = PostListFragment::class.java.name!!
 
-        private val ARG_THREAD = "thread"
-        private val ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page"
+        private const val ARG_THREAD = "thread"
+        private const val ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page"
+        /**
+         * Only see this author post
+         */
+        private const val ARG_AUTHOR_ID = "author_id"
 
         /**
          * ARG_JUMP_PAGE takes precedence over [.ARG_SHOULD_GO_TO_LAST_PAGE].
          */
-        private val ARG_JUMP_PAGE = "jump_page"
-        private val ARG_QUOTE_POST_ID = "quote_post_id"
+        private const val ARG_JUMP_PAGE = "jump_page"
+        private const val ARG_QUOTE_POST_ID = "quote_post_id"
 
-        private val ARG_READ_PROGRESS = "read_progress"
+        private const val ARG_READ_PROGRESS = "read_progress"
 
         fun newInstance(thread: Thread, shouldGoToLastPage: Boolean): PostListFragment {
             val fragment = PostListFragment()
@@ -517,6 +522,16 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
             val bundle = Bundle()
             bundle.putParcelable(ARG_THREAD, thread)
             bundle.putParcelable(ARG_READ_PROGRESS, progress)
+            fragment.arguments = bundle
+
+            return fragment
+        }
+
+        fun newInstance(thread: Thread, authorId: String?): PostListFragment {
+            val fragment = PostListFragment()
+            val bundle = Bundle()
+            bundle.putParcelable(ARG_THREAD, thread)
+            bundle.putString(ARG_AUTHOR_ID, authorId)
             fragment.arguments = bundle
 
             return fragment
