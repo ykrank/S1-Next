@@ -137,6 +137,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_show_trade" />
 
             <TextView
+                android:id="@+id/tv_cast_magic"
                 style="?attr/buttonBarPositiveButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -153,12 +154,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_big"
-                android:orientation="vertical"
                 android:background="@drawable/shape_stroke_corners"
+                android:orientation="vertical"
                 android:visibility="@{postViewModel.post.rates != null?View.VISIBLE:View.GONE}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_reply">
+                app:layout_constraintTop_toBottomOf="@id/tv_cast_magic">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
@@ -171,9 +172,9 @@
                         android:id="@+id/tv_rate_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_micro"
                         android:layout_marginLeft="@dimen/spacing_micro"
                         android:layout_marginStart="@dimen/spacing_micro"
+                        android:padding="@dimen/spacing_micro"
                         android:text="@string/rate"
                         android:textSize="@dimen/text_size_caption"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -209,9 +210,9 @@
                     android:id="@+id/recycleView_rates"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_micro"
                     android:layout_marginLeft="@dimen/spacing_micro"
                     android:layout_marginRight="@dimen/spacing_micro"
-                    android:layout_marginBottom="@dimen/spacing_micro"
                     android:visibility="@{postViewModel.post.rates.size > 0?View.VISIBLE:View.GONE}" />
             </LinearLayout>
 
