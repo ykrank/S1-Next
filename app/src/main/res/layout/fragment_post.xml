@@ -52,12 +52,12 @@
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
-                android:icon="?attr/iconMenuImage"
+                android:icon="?attr/iconPostToolMenuImage"
                 android:layout_height="match_parent" />
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
-                android:icon="?attr/iconMenuExtension"
+                android:icon="?attr/iconPostToolMenuExtension"
                 android:layout_height="match_parent" />
         </android.support.design.widget.TabLayout>
 
