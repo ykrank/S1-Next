@@ -1,109 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Light.AfternoonTea" parent="Base.Theme.Light.AfternoonTea" />
+    <style name="Theme.Light.AfternoonTea" parent="Lib.Theme.Light.AfternoonTea" />
 
-    <style name="Theme.Light" parent="Base.Theme.Light" />
+    <style name="Theme.Light" parent="Lib.Theme.Light" />
 
-    <style name="Theme.Light.Amber" parent="Base.Theme.Light.Amber" />
+    <style name="Theme.Light.Amber" parent="Lib.Theme.Light.Amber" />
 
-    <style name="Theme.Light.Green" parent="Base.Theme.Light.Green" />
+    <style name="Theme.Light.Green" parent="Lib.Theme.Light.Green" />
 
-    <style name="Theme.Light.LightBlue" parent="Base.Theme.Light.LightBlue" />
+    <style name="Theme.Light.LightBlue" parent="Lib.Theme.Light.LightBlue" />
 
-    <style name="Theme.Light.Purple" parent="Base.Theme.Light.Purple" />
+    <style name="Theme.Light.Purple" parent="Lib.Theme.Light.Purple" />
 
-    <style name="Theme.Dark" parent="Base.Theme.Dark" />
+    <style name="Theme.Dark" parent="Lib.Theme.Dark" />
 
-    <style name="Theme.Dark.NightMode" parent="Base.Theme.Dark.NightMode" />
+    <style name="Theme.Dark.NightMode" parent="Lib.Theme.Dark.NightMode" />
 
-    <style name="Theme.Dark.NightMode.Amoled" parent="Base.Theme.Dark.NightMode.Amoled" />
+    <style name="Theme.Dark.NightMode.Amoled" parent="Lib.Theme.Dark.NightMode.Amoled" />
 
-    <style name="Base.Theme.Light.AfternoonTea" parent="Base.Theme.Light">
-        <item name="colorPrimaryDark">@color/saraba_main_top_color_dark</item>
-        <item name="colorPrimary">@color/saraba_main_top_color</item>
-        <item name="android:colorBackground">@color/saraba_main_bg_color</item>
-        <item name="colorAccent">@color/light_blue_700</item>
-        <item name="actionModeBackground">?attr/colorPrimary</item>
-        <item name="colorControlActivated">?attr/colorAccent</item>
-        <item name="cardViewStyle">@style/CardView.Light.AfternoonTea</item>
-    </style>
-
-    <style name="Base.Theme.Light.Amber" parent="Base.Theme.Light.Inverse">
-        <item name="colorPrimaryDark">@color/amber_700</item>
-        <item name="colorPrimary">@color/amber_500</item>
-        <item name="colorAccent">@color/deep_orange_A200</item>
-    </style>
-
-    <style name="Base.Theme.Light.Green" parent="Base.Theme.Light.Inverse">
-        <item name="colorPrimaryDark">@color/green_700</item>
-        <item name="colorPrimary">@color/green_500</item>
-        <item name="colorAccent">@color/deep_orange_A200</item>
-    </style>
-
-    <style name="Base.Theme.Light.LightBlue" parent="Base.Theme.Light.Inverse">
-        <item name="colorPrimaryDark">@color/light_blue_700</item>
-        <item name="colorPrimary">@color/light_blue_500</item>
-        <item name="colorAccent">@color/pink_A200</item>
-    </style>
-
-    <style name="Base.Theme.Light.Purple" parent="Base.Theme.Light.Inverse">
-        <item name="colorPrimaryDark">@color/purple_700</item>
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorAccent">@color/pink_A200</item>
-    </style>
-
-    <style name="Base.Theme.Dark.NightMode" parent="Base.Theme.Dark">
-        <item name="colorAccent">@color/dark_cyan</item>
-        <item name="android:textColorPrimary">@color/white_69p</item>
-        <item name="android:textColorLink">@color/teal_200_70p</item>
-        <item name="navigationViewTheme">@style/Theme.Dark.NightMode.NavigationView</item>
-        <item name="divideLineColor">@color/grey_800</item>
-    </style>
-
-    <style name="Base.Theme.Dark.NightMode.Amoled" parent="Base.Theme.Dark.NightMode">
-        <item name="android:colorBackground">@android:color/black</item>
-        <item name="colorPrimaryDark">@android:color/black</item>
-        <item name="colorPrimary">@android:color/black</item>
-        <item name="navigationViewTheme">@style/Theme.Dark.NightMode.Amoled.NavigationView</item>
-        <item name="cardViewStyle">@style/CardView.Dark.NightMode.Amoled</item>
-        <item name="cardViewContainerBackground">@android:color/black</item>
-    </style>
-
-    <style name="Base.Theme.Light" parent="Origin.Theme.Light" />
-
-    <style name="Base.Theme.Light.Inverse" parent="Origin.Theme.Light.Inverse" />
-
-    <style name="Base.Theme.Dark" parent="Origin.Theme.Dark" />
-
-    <style name="Origin.Theme.Light" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- disable window preview in order to avoid the undelightful color transitions
-        when app starts-->
-        <item name="android:windowDisablePreview">true</item>
-        <!-- show contextual action bar -->
-        <item name="windowActionModeOverlay">true</item>
-
-        <item name="android:colorBackground">@color/light_background</item>
-        <item name="android:windowBackground">?android:attr/colorBackground</item>
-        <item name="colorPrimaryDark">@color/light_status_bar</item>
-        <item name="colorPrimary">@color/light_app_bar</item>
-        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
-        <item name="navigationViewTheme">@style/Theme.Light.NavigationView</item>
-        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="preferenceTheme">@style/Preference.Overlay</item>
-        <item name="cardViewStyle">@style/CustomCardView.Light</item>
-        <item name="cardViewContainerBackground">@color/light_card_view_container</item>
-
-        <item name="drawerTextColor">?android:attr/textColorPrimaryInverse</item>
-        <item name="fabBackgroundTint">?attr/colorAccent</item>
-        <item name="emoticonKeyboardTabLayoutBackground">@color/light_emoticon_keyboard_tab_layout_background</item>
+    <style name="Lib.Base.Theme.Light" parent="Lib.Base.V.Theme.Light">
+        <item name="emoticonKeyboardTabLayoutBackground">
+            @color/light_emoticon_keyboard_tab_layout_background
+        </item>
         <item name="emoticonKeyboardBackground">@color/light_emoticon_keyboard_background</item>
 
-        <item name="iconClose">@drawable/ic_close_black_24dp</item>
-
-        <item name="iconTintColor">@color/black_100p</item>
-        <item name="iconTintColorLight">@color/black_30p</item>
-        <item name="iconMenuPageJump">@drawable/selector_menu_swap_horiz_black</item>
         <item name="iconMenuPersonAdd">@drawable/ic_menu_person_add_black_24dp</item>
         <item name="iconMenuThreadAttachment">@drawable/ic_menu_attachment_black_24dp</item>
         <item name="iconMenuEmoticon">@drawable/ic_menu_insert_emoticon_black_24dp</item>
@@ -114,28 +35,11 @@
 
         <item name="chatFromBackground">@drawable/selector_chat_from_bg</item>
         <item name="chatToBackground">@drawable/selector_chat_to_bg</item>
-
-        <item name="divisionBackground">@color/grey_400</item>
-
-        <item name="textShadowColor">@android:color/white</item>
-        <item name="colorTranslucent">@color/black_70p</item>
-
-        <item name="titlePopWindowBackground">@drawable/shape_round_corners_white</item>
-        <item name="titlePopWindowTextColor">@android:color/secondary_text_light</item>
-
-        <item name="divideLineColor">@color/grey_500</item>
     </style>
 
-    <style name="Origin.Theme.Light.Inverse">
-        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    <style name="Lib.Base.Theme.Light.Inverse" parent="Lib.Base.V.Theme.Light.Inverse">
         <item name="navigationViewTheme">?attr/theme</item>
-        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
 
-        <item name="fabBackgroundTint">?attr/colorPrimary</item>
-        <item name="iconClose">@drawable/ic_close_white_24dp</item>
-        <item name="iconTintColor">@color/white_100p</item>
-        <item name="iconTintColorLight">@color/grey_400</item>
-        <item name="iconMenuPageJump">@drawable/selector_menu_swap_horiz_white</item>
         <item name="iconMenuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
         <item name="iconMenuThreadAttachment">@drawable/ic_menu_attachment_white_24dp</item>
         <item name="iconMenuEmoticon">@drawable/ic_menu_insert_emoticon_white_24dp</item>
@@ -145,28 +49,11 @@
         <item name="iconMenuSend">@drawable/selector_menu_send_white</item>
     </style>
 
-    <style name="Origin.Theme.Dark" parent="Theme.AppCompat.NoActionBar">
-        <item name="windowActionModeOverlay">true</item>
-        <item name="android:colorBackground">@color/dark_background</item>
-        <item name="android:windowBackground">?android:attr/colorBackground</item>
-        <item name="colorPrimaryDark">@color/dark_status_bar</item>
-        <item name="colorPrimary">@color/dark_app_bar</item>
-        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="navigationViewTheme">@style/Theme.Dark.NavigationView</item>
-        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="cardViewStyle">@style/CustomCardView.Dark</item>
-        <!-- Actually the dark CardView background is not same to `android:colorBackground` which
-        is inconsistent with light theme. But it looks much better. May fix this inconsistency later.-->
-        <item name="cardViewContainerBackground">@color/dark_background</item>
-        <item name="preferenceTheme">@style/Preference.Overlay</item>
-        <item name="drawerTextColor">?android:attr/textColorPrimary</item>
-        <item name="fabBackgroundTint">?attr/colorAccent</item>
-        <item name="emoticonKeyboardTabLayoutBackground">@color/dark_emoticon_keyboard_tab_layout_background</item>
+    <style name="Lib.Base.Theme.Dark" parent="Lib.Base.V.Theme.Dark">
+        <item name="emoticonKeyboardTabLayoutBackground">
+            @color/dark_emoticon_keyboard_tab_layout_background
+        </item>
         <item name="emoticonKeyboardBackground">@color/dark_emoticon_keyboard_background</item>
-        <item name="iconClose">@drawable/ic_close_white_24dp</item>
-        <item name="iconTintColor">@color/white_100p</item>
-        <item name="iconTintColorLight">@color/grey_400</item>
-        <item name="iconMenuPageJump">@drawable/selector_menu_swap_horiz_white</item>
         <item name="iconMenuPersonAdd">@drawable/ic_menu_person_add_white_24dp</item>
         <item name="iconMenuThreadAttachment">@drawable/ic_menu_attachment_white_24dp</item>
         <item name="iconMenuEmoticon">@drawable/ic_menu_insert_emoticon_white_24dp</item>
@@ -177,15 +64,5 @@
 
         <item name="chatFromBackground">@drawable/selector_chat_from_bg_night</item>
         <item name="chatToBackground">@drawable/selector_chat_to_bg_night</item>
-
-        <item name="divisionBackground">@color/grey_600</item>
-
-        <item name="textShadowColor">@android:color/black</item>
-        <item name="colorTranslucent">@color/white_70p</item>
-
-        <item name="titlePopWindowBackground">@drawable/shape_round_corners_black</item>
-        <item name="titlePopWindowTextColor">@android:color/secondary_text_dark</item>
-
-        <item name="divideLineColor">@color/grey_700</item>
     </style>
 </resources>
