@@ -350,8 +350,8 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         if (!title.isNullOrEmpty() && mThreadTitle != title.toString()) {
             mThreadTitle = title.toString()
             setTitleWithPosition(currentPage)
-            saveHistory()
         }
+        saveHistory()
     }
 
     override fun setupThreadAttachment(threadAttachment: Posts.ThreadAttachment) {
