@@ -2,6 +2,7 @@ package me.ykrank.s1next.view.fragment
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.os.SystemClock
 import android.support.v4.util.Pair
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
@@ -91,6 +92,9 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
     private var mPagerCallback: PagerCallback? = null
 
     private var refreshAfterBlacklistChangeDisposable: Disposable? = null
+
+    private val rateMap = hashMapOf<Int, List<Rate>>()
+    private var rateStamp: Long = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
@@ -318,7 +322,18 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             consumeResult(data.result)
         } else {
             super.onNext(data)
-            loadRates(postList)
+
+            //Set old rates to data
+            postList.forEach {
+                val rates = rateMap[it.id]
+                if (rates != null) {
+                    it.rates = rates
+                }
+            }
+            if (!pullUpToRefresh) {
+                //Do not load rates if pull up refresh
+                loadRates(postList)
+            }
 
             //Thread info must not null, or exception
             val postListInfo = posts.postListInfo as Thread
@@ -388,6 +403,13 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
     }
 
     private fun loadRates(posts: List<Post>) {
+        val time = SystemClock.elapsedRealtime()
+        if (time - rateStamp < 10_000) {
+            //Do not load too frequently
+            return
+        }
+        rateStamp = time
+
         Observable.fromIterable(posts.filter { it.rates != null }.distinctBy { it.id })
                 .flatMap {
                     val pid = it.id
@@ -397,13 +419,18 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                 }
                 .compose(RxJavaUtil.iOTransformer())
                 .subscribe({
-                    mRecyclerAdapter.dataSet.filterIsInstance(Post::class.java)
-                            .forEachIndexed { index, post ->
-                                if (post.id == it.first) {
-                                    post.rates = it.second
-                                    mRecyclerAdapter.notifyItemChanged(index)
+                    val pid = it.first
+                    val rates = it.second
+                    if (pid != null && rates != null) {
+                        rateMap[pid] = rates
+                        mRecyclerAdapter.dataSet.filterIsInstance(Post::class.java)
+                                .forEachIndexed { index, post ->
+                                    if (post.id == pid) {
+                                        post.rates = rates
+                                        mRecyclerAdapter.notifyItemChanged(index)
+                                    }
                                 }
-                            }
+                    }
                 }, L::report)
     }
 
@@ -417,7 +444,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             }
             val letter = (i + 1 + 30 * (page - 1)).toString()
             customLetters.add(letter)
-            letters.put(letter, i)
+            letters[letter] = i
         }
         quickSideBarView.letters = customLetters
     }
