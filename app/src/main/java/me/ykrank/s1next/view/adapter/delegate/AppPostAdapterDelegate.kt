@@ -2,6 +2,7 @@ package me.ykrank.s1next.view.adapter.delegate
 
 import android.app.Activity
 import android.databinding.DataBindingUtil
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.text.method.LinkMovementMethod
 import android.view.ViewGroup
@@ -18,7 +19,7 @@ import me.ykrank.s1next.viewmodel.AppPostViewModel
 import me.ykrank.s1next.widget.span.PostMovementMethod
 import javax.inject.Inject
 
-class AppPostAdapterDelegate(activity: Activity) : BaseAdapterDelegate<AppPost, SimpleRecycleViewHolder<ItemAppPostBinding>>(activity, AppPost::class.java) {
+class AppPostAdapterDelegate(activity: Activity, private val quotePid: String?) : BaseAdapterDelegate<AppPost, SimpleRecycleViewHolder<ItemAppPostBinding>>(activity, AppPost::class.java) {
 
     @Inject
     internal lateinit var mRxBus: RxBus
@@ -49,7 +50,7 @@ class AppPostAdapterDelegate(activity: Activity) : BaseAdapterDelegate<AppPost, 
         binding.postViewModel = AppPostViewModel(mRxBus, mUser)
 
         //If setTextIsSelectable, then should reset movement
-        val selectable = mGeneralPreferencesManager!!.isPostSelectable
+        val selectable = mGeneralPreferencesManager.isPostSelectable
         setTextSelectable(binding, selectable)
 
         return SimpleRecycleViewHolder(binding)
@@ -58,7 +59,7 @@ class AppPostAdapterDelegate(activity: Activity) : BaseAdapterDelegate<AppPost, 
     override fun onBindViewHolderData(post: AppPost, position: Int, holder: SimpleRecycleViewHolder<ItemAppPostBinding>, payloads: List<Any>) {
         val binding = holder.binding
 
-        val selectable = mGeneralPreferencesManager!!.isPostSelectable
+        val selectable = mGeneralPreferencesManager.isPostSelectable
         if (selectable != binding.tvReply.isTextSelectable) {
             setTextSelectable(binding, selectable)
         }
@@ -67,6 +68,13 @@ class AppPostAdapterDelegate(activity: Activity) : BaseAdapterDelegate<AppPost, 
             it.thread.set(threadInfo)
             it.post.set(post)
         }
+        val quote = post.pid == quotePid?.toInt()
+        if (quote) {
+            binding.container.setBackgroundResource(R.drawable.shape_stroke_corners_wide)
+        } else {
+            binding.container.setBackgroundColor(Color.TRANSPARENT)
+        }
+
         binding.executePendingBindings()
     }
 

@@ -355,15 +355,12 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             } else {
                 val quotePostId = arguments?.getString(ARG_QUOTE_POST_ID)
                 if (!TextUtils.isEmpty(quotePostId)) {
-                    var i = 0
-                    val length = postList.size
-                    while (i < length) {
-                        if (Integer.parseInt(quotePostId) == postList[i].id) {
+                    for (i in 0 until postList.size) {
+                        if (quotePostId?.toInt() == postList[i].id) {
                             // scroll to post post
                             mLayoutManager.scrollToPositionWithOffset(i, 0)
                             break
                         }
-                        i++
                     }
                     // clear this argument after redirecting
                     arguments?.putString(ARG_QUOTE_POST_ID, null)

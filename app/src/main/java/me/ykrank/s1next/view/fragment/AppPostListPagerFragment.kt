@@ -33,8 +33,6 @@ import me.ykrank.s1next.data.api.app.model.AppDataWrapper
 import me.ykrank.s1next.data.api.app.model.AppPost
 import me.ykrank.s1next.data.api.app.model.AppPostsWrapper
 import me.ykrank.s1next.data.api.app.model.AppThread
-import me.ykrank.s1next.data.db.ReadProgressDbWrapper
-import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.databinding.FragmentBaseWithQuickSideBarBinding
 import me.ykrank.s1next.util.JsonUtil
@@ -42,7 +40,6 @@ import me.ykrank.s1next.view.adapter.AppPostListRecyclerViewAdapter
 import me.ykrank.s1next.view.event.*
 import me.ykrank.s1next.view.fragment.AppPostListPagerFragment.PagerCallback
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateQuickSidebarImpl
-import me.ykrank.s1next.view.internal.PagerScrollState
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -66,11 +63,8 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
 
     private var mThreadId: String? = null
     private var mPageNum: Int = 0
-    /**
-     * 之前记录的阅读进度
-     */
-    private var readProgress: ReadProgress? = null
-    private var scrollState: PagerScrollState? = null
+    private var mQuotePid: String? = null
+
     private var blacklistChanged = false
 
     private lateinit var binding: FragmentBaseWithQuickSideBarBinding
@@ -92,31 +86,14 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
         val bundle = arguments!!
         mThreadId = bundle.getString(ARG_THREAD_ID)
         mPageNum = bundle.getInt(ARG_PAGE_NUM)
-        if (readProgress == null) {
-            readProgress = bundle.getParcelable<ReadProgress>(ARG_READ_PROGRESS)
-            scrollState = bundle.getParcelable<PagerScrollState>(ARG_PAGER_SCROLL_STATE)
-        }
+        mQuotePid = bundle.getString(ARG_QUOTE_POST_ID)
         L.leaveMsg("AppPostListPagerFragment##ThreadId:$mThreadId,PageNum:$mPageNum")
 
         mRecyclerView = recyclerView
         mLayoutManager = StartSnapLinearLayoutManager(activity!!)
         mRecyclerView.layoutManager = mLayoutManager
-        mRecyclerAdapter = AppPostListRecyclerViewAdapter(activity)
+        mRecyclerAdapter = AppPostListRecyclerViewAdapter(activity!!, mQuotePid)
         mRecyclerView.adapter = mRecyclerAdapter
-
-        // add pull up to refresh to RecyclerView
-        mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-                if (!isPullUpToRefresh
-                        && mPageNum == mPagerCallback?.getTotalPages()
-                        && !isLoading
-                        && mRecyclerAdapter.itemCount != 0
-                        && !mRecyclerView.canScrollVertically(1)) {
-                    startPullToRefresh()
-                }
-            }
-        })
 
         quickSideBarView.setOnQuickSideBarTouchListener(this)
 
@@ -240,27 +217,20 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
                 mRecyclerAdapter.setThreadInfo(postListInfo)
             }
 
-            mRecyclerAdapter.diffNewDataSet(postList, true)
+            mRecyclerAdapter.swapDataSet(postList)
             if (blacklistChanged) {
                 blacklistChanged = false
             } else if (pullUpToRefresh) {
 
-            } else if (readProgress != null && scrollState?.state == PagerScrollState.BEFORE_SCROLL_POSITION) {
-                mLayoutManager.scrollToPositionWithOffset(readProgress!!.position, readProgress!!.offset)
-                readProgress = null
-                scrollState!!.state = PagerScrollState.FREE
             } else {
                 val quotePostId = arguments?.getString(ARG_QUOTE_POST_ID)
                 if (!TextUtils.isEmpty(quotePostId)) {
-                    var i = 0
-                    val length = postList.size
-                    while (i < length) {
-                        if (Integer.parseInt(quotePostId) == postList[i].pid) {
+                    for (i in 0 until postList.size) {
+                        if (quotePostId?.toInt() == postList[i].pid) {
                             // scroll to post post
                             mLayoutManager.scrollToPositionWithOffset(i, 0)
                             break
                         }
-                        i++
                     }
                     // clear this argument after redirecting
                     arguments?.putString(ARG_QUOTE_POST_ID, null)
@@ -284,7 +254,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
             refreshAfterBlacklistChangeDisposable = Single.just(dataSet)
                     .map { filterPostAfterBlacklistChanged(it) }
                     .compose(RxJavaUtil.iOSingleTransformer<List<Any>>())
-                    .subscribe({ mRecyclerAdapter.diffNewDataSet(it, false) }, { L.report(it) })
+                    .subscribe({ mRecyclerAdapter.refreshDataSet(it, true) }, { L.report(it) })
         } else if (isPullUpToRefresh) {
             mRecyclerAdapter.hideFooterProgress()
         }
@@ -336,31 +306,17 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
     }
 
     companion object {
-        val TAG = AppPostListPagerFragment::class.java.name
+        val TAG = AppPostListPagerFragment::class.java.name!!
 
         private const val ARG_THREAD_ID = "thread_id"
         private const val ARG_PAGE_NUM = "page_num"
-        private const val ARG_READ_PROGRESS = "read_progress"
-        private const val ARG_PAGER_SCROLL_STATE = "pager_scroll_state"
 
         /**
          * Used for post post redirect.
          */
         private const val ARG_QUOTE_POST_ID = "quote_post_id"
 
-        fun newInstance(threadId: String, pageNum: Int): AppPostListPagerFragment {
-            return newInstance(threadId, pageNum, null, null, null)
-        }
-
-        fun newInstance(threadId: String, pageNum: Int, progress: ReadProgress, scrollState: PagerScrollState): AppPostListPagerFragment {
-            return newInstance(threadId, pageNum, null, progress, scrollState)
-        }
-
         fun newInstance(threadId: String, pageNum: Int, postId: String): AppPostListPagerFragment {
-            return newInstance(threadId, pageNum, postId, null, null)
-        }
-
-        private fun newInstance(threadId: String, pageNum: Int, postId: String?, progress: ReadProgress?, scrollState: PagerScrollState?): AppPostListPagerFragment {
             val fragment = AppPostListPagerFragment()
             val bundle = Bundle()
             bundle.putString(ARG_THREAD_ID, threadId)
@@ -368,18 +324,9 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
                 bundle.putString(ARG_QUOTE_POST_ID, postId)
             }
             bundle.putInt(ARG_PAGE_NUM, pageNum)
-            bundle.putParcelable(ARG_READ_PROGRESS, progress)
-            bundle.putParcelable(ARG_PAGER_SCROLL_STATE, scrollState)
             fragment.arguments = bundle
 
             return fragment
-        }
-
-        internal fun saveReadProgressBack(readProgress: ReadProgress) {
-            java.lang.Thread {
-                val dbWrapper = ReadProgressDbWrapper.getInstance()
-                dbWrapper.saveReadProgress(readProgress)
-            }.start()
         }
 
         private fun filterPostAfterBlacklistChanged(dataSet: List<Any>): List<Any> {

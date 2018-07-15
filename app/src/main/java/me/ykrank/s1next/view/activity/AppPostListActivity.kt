@@ -32,7 +32,7 @@ class AppPostListActivity : BaseActivity(), AppPostListPagerFragment.PagerCallba
 
         disableDrawerIndicator()
 
-        thread = intent.getParcelableExtra<Thread>(ARG_THREAD)
+        thread = intent.getParcelableExtra(ARG_THREAD)
         title = thread.title
 
         if (savedInstanceState == null) {
@@ -65,7 +65,7 @@ class AppPostListActivity : BaseActivity(), AppPostListPagerFragment.PagerCallba
     override var threadInfo: AppThread? = null
 
     companion object {
-        val RESULT_BLACKLIST = 11
+        private const val RESULT_BLACKLIST = 11
 
         private const val ARG_THREAD = "thread"
         private const val ARG_PAGE_NUM = "page_num"
