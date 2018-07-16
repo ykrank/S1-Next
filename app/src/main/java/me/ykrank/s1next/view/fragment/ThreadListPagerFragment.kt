@@ -73,12 +73,12 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
         mRxBus.get()
                 .ofType(ThreadTypeChangeEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
-                .subscribe({
+                .subscribe {
                     if (mTypeId != it.typeId) {
                         mTypeId = it.typeId
                         startSwipeRefresh()
                     }
-                })
+                }
     }
 
     override fun onDestroy() {
@@ -94,7 +94,7 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
     override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<ThreadsWrapper> {
         val source: Single<String> = if (mDownloadPrefManager.netCacheEnable) {
             apiCacheProvider.getThreadsWrapper(mS1Service.getThreadsWrapper(mForumId, mTypeId, mPageNum),
-                    DynamicKeyGroup("$mForumId,$mPageNum", mUser.key), EvictDynamicKeyGroup(isForceLoading))
+                    DynamicKeyGroup("$mForumId,$mTypeId,$mPageNum", mUser.key), EvictDynamicKeyGroup(isForceLoading))
         } else {
             mS1Service.getThreadsWrapper(mForumId, mTypeId, mPageNum)
         }
