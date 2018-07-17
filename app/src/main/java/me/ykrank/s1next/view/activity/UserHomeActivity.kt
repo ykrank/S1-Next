@@ -10,6 +10,7 @@ import android.support.design.widget.AppBarLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.FragmentActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.transition.Transition
 import android.view.Menu
 import android.view.MenuItem
@@ -17,6 +18,7 @@ import android.view.View
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ActivityEvent
 import com.github.ykrank.androidtools.guava.Optional
+import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
 import com.github.ykrank.androidtools.util.*
 import com.github.ykrank.androidtools.widget.AppBarOffsetChangedListener
 import com.github.ykrank.androidtools.widget.glide.model.ImageInfo
@@ -48,6 +50,7 @@ class UserHomeActivity : BaseActivity() {
     private var name: String? = null
     private var isInBlacklist: Boolean = false
     private var blacklistMenu: MenuItem? = null
+    private lateinit var adapter: SimpleRecycleViewAdapter
 
     override val isTranslucent: Boolean
         get() = true
@@ -105,6 +108,11 @@ class UserHomeActivity : BaseActivity() {
 
         binding.tvReplies.setOnClickListener { v -> UserReplyActivity.start(this, uid, name) }
 
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.isNestedScrollingEnabled = false
+        adapter = SimpleRecycleViewAdapter(this, R.layout.item_home_stat)
+        binding.recyclerView.adapter = adapter
+
         setupImage()
         loadData()
     }
@@ -143,7 +151,7 @@ class UserHomeActivity : BaseActivity() {
         mRxBus.get()
                 .ofType(BlackListChangeEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, ActivityEvent.PAUSE))
-                .subscribe({ blackListEvent ->
+                .subscribe { blackListEvent ->
                     val dbWrapper = BlackListDbWrapper.getInstance()
                     if (blackListEvent.isAdd) {
                         Single.just(true)
@@ -163,7 +171,7 @@ class UserHomeActivity : BaseActivity() {
                                 .compose(RxJavaUtil.iOSingleTransformer())
                                 .subscribe({ this.afterBlackListChange(it) }, { L.report(it) })
                     }
-                })
+                }
     }
 
     private fun afterBlackListChange(isAdd: Boolean) {
@@ -192,7 +200,10 @@ class UserHomeActivity : BaseActivity() {
                     .map { Profile.fromHtml(it) }
                     .compose(RxJavaUtil.iOSingleTransformer())
                     .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
-                    .subscribe({ binding.data = it }, L::e)
+                    .subscribe({
+                        binding.data = it
+                        adapter.swapDataSet(it.stats)
+                    }, L::e)
         }
     }
 
@@ -205,7 +216,7 @@ class UserHomeActivity : BaseActivity() {
         Single.just(Optional.fromNullable(wrapper.getMergedBlackList(Integer.valueOf(uid), name)))
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .subscribe({ blackListOptional ->
-                    if (blackListOptional.isPresent()) {
+                    if (blackListOptional.isPresent) {
                         isInBlacklist = true
                         blacklistMenu?.setTitle(R.string.menu_blacklist_remove)
                     } else {
@@ -217,8 +228,8 @@ class UserHomeActivity : BaseActivity() {
 
     companion object {
 
-        private val PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.71f
-        private val TITLE_ANIMATIONS_DURATION = 300
+        private const val PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.71f
+        private const val TITLE_ANIMATIONS_DURATION = 300
 
         private const val ARG_UID = "uid"
         private const val ARG_USERNAME = "username"

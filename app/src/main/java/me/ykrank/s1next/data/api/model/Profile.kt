@@ -27,12 +27,7 @@ class Profile : Account {
     var lastVisitDate: Long? = null
     var lastActiveDate: Long? = null
     var lastPostDate: Long? = null
-    var credits: Int = 0
-    var combatEffectiveness: Int = 0
-    var gold: Int = 0
-    var rp: Int = 0
-    var sign: Int = 0
-    var shameSense: Int = 0
+    var stats: List<Pair<String, String>> = listOf()
 
     constructor()
 
@@ -51,11 +46,6 @@ class Profile : Account {
         this.lastVisitDate = space.get("lastvisit")?.asLong()
         this.lastActiveDate = space.get("lastactivity")?.asLong()
         this.lastPostDate = space.get("lastpost")?.asLong()
-        this.credits = space.get("credits")?.asInt() ?: -1
-        this.combatEffectiveness = space.get("extcredits1")?.asInt() ?: -1
-        this.gold = space.get("extcredits2")?.asInt() ?: -1
-        this.rp = space.get("extcredits4")?.asInt() ?: -1
-        this.shameSense = space.get("extcredits7")?.asInt() ?: -1
     }
 
     companion object {
@@ -108,26 +98,15 @@ class Profile : Account {
                 //统计信息
                 val postElement = profileDiv.getElementById("psts")
                 val postUlElement = postElement.selectFirst("ul.pf_l")
+                val stats = mutableListOf<Pair<String, String>>()
                 postUlElement.children().forEach {
-                    when (it.child(0).text().trim()) {
-                        "积分" -> profile.credits = it.textNodes()[0].text().trim().toInt()
-                        "战斗力" -> profile.combatEffectiveness = it.textNodes()[0].text().trim().let {
-                            it.substring(0, it.length - 1)
-                        }.trim().toInt()
-                        "金币" -> profile.gold = it.textNodes()[0].text().trim().let {
-                            it.substring(0, it.length - 1)
-                        }.trim().toInt()
-                        "人品" -> profile.rp = it.textNodes()[0].text().trim().let {
-                            it.substring(0, it.length - 2)
-                        }.trim().toInt()
-                        "签到" -> profile.sign = it.textNodes()[0].text().trim().let {
-                            it.substring(0, it.length - 1)
-                        }.trim().toInt()
-                        "节操" -> profile.shameSense = it.textNodes()[0].text().trim().let {
-                            it.substring(0, it.length - 1)
-                        }.trim().toInt()
+                    val title = it.child(0).text().trim()
+                    val content = it.textNodes()[0].text().trim()
+                    if (!title.isEmpty()) {
+                        stats.add(Pair(title, content))
                     }
                 }
+                profile.stats = stats
             } catch (e: Exception) {
                 L.report(e)
             }
