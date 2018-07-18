@@ -87,13 +87,15 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
 
         val bundle = arguments!!
         val thread = Preconditions.checkNotNull(bundle.getParcelable<Thread>(ARG_THREAD))
+        val authorId = bundle.getString(ARG_AUTHOR_ID)
         // thread title is null if this thread comes from ThreadLink
         mThreadTitle = thread.title
         mThreadId = thread.id
         trackAgent.post(ViewThreadTrackEvent(mThreadTitle, mThreadId))
         L.leaveMsg("PostListFragment##ThreadTitle:$mThreadTitle,ThreadId:$mThreadId")
 
-        if (savedInstanceState == null) {
+        //when seeing one's post, the authorId isn't null. Skip initialization in this case.
+        if (savedInstanceState == null && authorId == null) {
             val jumpPage: Int
             //读取进度
             readProgress = bundle.getParcelable(ARG_READ_PROGRESS)
