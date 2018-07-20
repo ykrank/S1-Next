@@ -147,16 +147,14 @@ class Post : PaperParcelable, Cloneable, SameItem {
         if (oReply.contains("<div class=\"reply_wrap\">")) {
             try {
                 val document = Jsoup.parse(oReply)
-                val oReplyElement = document.selectFirst("div.reply_wrap")
-                if (oReplyElement != null) {
-                    val quoteElement = Element("blockquote")
-                    quoteElement.append("<p>引用:</p>")
-                    oReplyElement.childNodesCopy().forEach {
-                        quoteElement.appendChild(it)
-                    }
-                    oReplyElement.replaceWith(quoteElement)
-                    return quoteElement.parent().html()
-                }
+                val oReplyElements = document.select("div.reply_wrap")
+
+                oReplyElements?.forEach({
+                    it.clearAttributes()
+                    it.tagName("blockquote")
+                })
+                //get the closest parent element
+                return oReplyElements.parents().first().html()
             } catch (e: Exception) {
                 L.report(e)
             }
