@@ -242,6 +242,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
     }
 
     override fun onError(throwable: Throwable) {
+        //TODO 2018-08-23 If log session invalid, log out and show log in dialog.
         if (AppApiUtil.appLoginIfNeed(mRxBus, throwable)) {
             return
         }
