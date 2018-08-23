@@ -25,6 +25,8 @@ import com.github.ykrank.androidtools.widget.recycleview.StartSnapLinearLayoutMa
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.zipWith
+import io.reactivex.schedulers.Schedulers
 import io.rx_cache2.DynamicKeyGroup
 import io.rx_cache2.EvictDynamicKeyGroup
 import io.rx_cache2.Reply
@@ -38,6 +40,7 @@ import me.ykrank.s1next.data.api.model.Rate
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.collection.Posts
 import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper
+import me.ykrank.s1next.data.api.model.wrapper.RatePostsWrapper
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
@@ -258,10 +261,14 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
     }
 
     override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<PostsWrapper> {
+        //If enable cache, load cache
         val source: Single<PostsWrapper> = if (mDownloadPrefManager.netCacheEnable) {
+            //If last page, force refresh cache
             apiCacheObservable(isForceLoading || mPageNum >= mPagerCallback?.getTotalPages() ?: 0)
                     .flatMap {
+                        L.d("Source:$mPageNum," + java.lang.Thread.currentThread().toString())
                         val wrapper = objectMapper.readValue(it.data, PostsWrapper::class.java)
+                        //If load cache and this page size < POSTS_PER_PAGE, it's the last page, then force refresh
                         if (it.source != Source.CLOUD && wrapper.data.postList.size < Api.POSTS_PER_PAGE) {
                             return@flatMap apiCacheObservable(true)
                                     .map<String> { it.data }
@@ -272,23 +279,47 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         } else {
             apiObservable().compose(JsonUtil.jsonSingleTransformer(PostsWrapper::class.java))
         }
-        return source.flatMap { o ->
-            if (o.data != null) {
-                val postList = o.data.postList
-                if (postList.isNotEmpty()) {
-                    val post = postList[0]
-                    if (post.isTrade) {
-                        post.extraHtml = ""
-                        return@flatMap mS1Service.getTradePostInfo(mThreadId, post.id + 1)
-                                .map<PostsWrapper> { html ->
-                                    post.extraHtml = ApiUtil.replaceAjaxHeader(html)
-                                    return@map o
-                                }
+
+        val rateSource: Single<RatePostsWrapper> = if (mDownloadPrefManager.netCacheEnable) {
+            rateApiCacheObservable(isForceLoading || mPageNum >= mPagerCallback?.getTotalPages() ?: 0)
+                    .flatMap {
+                        L.d("RateSource:$mPageNum," + java.lang.Thread.currentThread().toString())
+                        val wrapper = objectMapper.readValue(it.data, RatePostsWrapper::class.java)
+                        if (it.source != Source.CLOUD && wrapper.data.postList?.size ?: 0 < Api.POSTS_PER_PAGE) {
+                            return@flatMap rateApiCacheObservable(true)
+                                    .map<String> { it.data }
+                                    .compose(JsonUtil.jsonSingleTransformer(RatePostsWrapper::class.java))
+                        }
+                        Single.just(wrapper)
                     }
-                }
-            }
-            Single.just(o)
+        } else {
+            rateApiObservable().compose(JsonUtil.jsonSingleTransformer(RatePostsWrapper::class.java))
         }
+
+        return source.subscribeOn(Schedulers.io())
+                .zipWith(rateSource.subscribeOn(Schedulers.io()))
+                .flatMap { pair ->
+                    val o = pair.first
+                    //Set comment init info(if it has comment)
+                    pair.second.data?.commentCountMap?.apply {
+                        o.data?.initCommentCount(this)
+                    }
+                    if (o.data != null) {
+                        val postList = o.data.postList
+                        if (postList.isNotEmpty()) {
+                            val post = postList[0]
+                            if (post.isTrade) {
+                                post.extraHtml = ""
+                                return@flatMap mS1Service.getTradePostInfo(mThreadId, post.id + 1)
+                                        .map<PostsWrapper> { html ->
+                                            post.extraHtml = ApiUtil.replaceAjaxHeader(html)
+                                            return@map o
+                                        }
+                            }
+                        }
+                    }
+                    Single.just(o)
+                }
     }
 
     private fun apiObservable(): Single<String> {
@@ -297,6 +328,16 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
 
     private fun apiCacheObservable(evict: Boolean): Single<Reply<String>> {
         return apiCacheProvider.getPostsWrapper(apiObservable(),
+                DynamicKeyGroup("$mThreadId,$mPageNum,$mAuthorId", mUser.key),
+                EvictDynamicKeyGroup(evict))
+    }
+
+    private fun rateApiObservable(): Single<String> {
+        return mS1Service.getPostsWrapperNew(mThreadId, mPageNum, mAuthorId)
+    }
+
+    private fun rateApiCacheObservable(evict: Boolean): Single<Reply<String>> {
+        return apiCacheProvider.getPostsWrapperNew(rateApiObservable(),
                 DynamicKeyGroup("$mThreadId,$mPageNum,$mAuthorId", mUser.key),
                 EvictDynamicKeyGroup(evict))
     }

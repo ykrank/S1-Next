@@ -106,14 +106,13 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                 jumpPage = bundle.getInt(ARG_JUMP_PAGE, 0)
             }
 
+            // +1 for original post
+            val threadPage = MathUtil.divide(thread.reliesCount + 1, Api.POSTS_PER_PAGE)
+            setTotalPages(Math.max(jumpPage, threadPage))
+
             if (jumpPage != 0) {
-                // we do not know the total page if we open this thread by URL
-                // so we set the jump page to total page
-                setTotalPages(jumpPage)
                 currentPage = jumpPage - 1
             } else {
-                // +1 for original post
-                setTotalPageByPosts(thread.reliesCount + 1)
                 if (bundle.getBoolean(ARG_SHOULD_GO_TO_LAST_PAGE, false)) {
                     currentPage = getTotalPages() - 1
                 }

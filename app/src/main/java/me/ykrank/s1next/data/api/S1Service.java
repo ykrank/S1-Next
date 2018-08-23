@@ -34,6 +34,9 @@ public interface S1Service {
     @GET(ApiForum.URL_POST_LIST)
     Single<String> getPostsWrapper(@Query("tid") String threadId, @Query("page") int page, @Query("authorid") String authorId);
 
+    @GET(ApiForum.URL_POST_LIST_NEW)
+    Single<String> getPostsWrapperNew(@Query("tid") String threadId, @Query("page") int page, @Query("authorid") String authorId);
+
     @GET(ApiForum.URL_TRADE_POST_INFO)
     Single<String> getTradePostInfo(@Query("tid") String threadId, @Query("pid") int pid);
 

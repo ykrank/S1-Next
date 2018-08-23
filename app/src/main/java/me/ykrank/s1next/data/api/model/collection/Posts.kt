@@ -1,17 +1,13 @@
 package me.ykrank.s1next.data.api.model.collection
 
 import com.fasterxml.jackson.annotation.*
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.JsonNode
 import com.github.ykrank.androidtools.util.StringUtil
-import me.ykrank.s1next.App
 import me.ykrank.s1next.data.api.model.Account
 import me.ykrank.s1next.data.api.model.Post
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.Vote
 import me.ykrank.s1next.data.db.BlackListDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.BlackList
-import me.ykrank.s1next.util.JsonUtil
 import org.apache.commons.lang3.StringUtils
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
@@ -44,8 +40,7 @@ class Posts : Account {
 
     @JsonCreator
     constructor(@JsonProperty("special_trade") trade: Map<Int, Any>?,
-                @JsonProperty("postlist") postList: List<Post>?,
-                @JsonProperty("commentcount") commentCount: JsonNode?) {
+                @JsonProperty("postlist") postList: List<Post>?) {
         this.postList = filterPostList(postList)
         if (trade != null && postList != null && postList.isNotEmpty()) {
             val post = postList[0]
@@ -53,12 +48,12 @@ class Posts : Account {
                 post.isTrade = true
             }
         }
-        if (commentCount != null && commentCount.isObject) {
-            val commentCountMap = JsonUtil.readJsonNode(App.preAppComponent.jsonMapper, commentCount, object : TypeReference<Map<Int, Int?>>() {})
-            this.postList.forEach {
-                if (commentCountMap.containsKey(it.id)) {
-                    it.rates = listOf()
-                }
+    }
+
+    fun initCommentCount(commentCountMap: Map<Int, Int?>) {
+        this.postList.forEach {
+            if (commentCountMap.containsKey(it.id)) {
+                it.rates = listOf()
             }
         }
     }
