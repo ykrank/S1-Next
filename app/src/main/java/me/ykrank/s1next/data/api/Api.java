@@ -14,7 +14,7 @@ public final class Api {
     public static final String BASE_URL = "https://" + BASE_HOST + "/2b/";
     public static final String BASE_AVATAR_URL = "https://avatar.saraba1st.com/";
     public static final String BASE_API_URL = "https://" + BASE_HOST + "/2b/api/mobile/";
-    public static final String BASE_STATIC_URL = "http://static.saraba1st.com/";
+    public static final String BASE_STATIC_URL = "https://static.saraba1st.com/";
     public static final String[] HOST_LIST = new String[]{
             "bbs.saraba1st.com", "www.saraba1st.com", "stage1st.com", "www.stage1st.com"
     };
