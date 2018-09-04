@@ -17,6 +17,7 @@ import com.github.ykrank.androidtools.widget.net.WifiActivityLifecycleCallbacks
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
+import io.reactivex.plugins.RxJavaPlugins
 import me.ykrank.s1next.data.db.DbModule
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.data.pref.PrefModule
@@ -114,6 +115,15 @@ class App : MultiDexApplication() {
 
         L.l("App init")
         PreApp.onCreate(this)
+
+        //RxJava default error handler
+        RxJavaPlugins.setErrorHandler {
+            L.report(it)
+
+            if (L.showLog()) {
+                toast(ErrorUtil.parse(this, it))
+            }
+        }
 
         //如果不是主进程，不做多余的初始化
         if (!ProcessUtil.isMainProcess(this))

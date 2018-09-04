@@ -4,6 +4,7 @@ import android.content.Context
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.github.ykrank.androidtools.util.ErrorParser
 import com.github.ykrank.androidtools.util.L
+import io.reactivex.exceptions.CompositeException
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.ApiException
 import retrofit2.HttpException
@@ -16,11 +17,16 @@ object ErrorUtil : ErrorParser {
     private val TAG_LOG = ErrorUtil::class.java.simpleName
 
     override fun parse(context: Context, throwable: Throwable): String {
-        var msg = parseNetError(context, throwable)
-        var cause: Throwable? = throwable.cause
-        while (msg == null && cause != null) {
-            msg = parseNetError(context, cause)
-            cause = cause.cause
+        var msg: String? = null
+        var root: Throwable? = throwable
+
+        while (msg == null && root != null) {
+            msg = parseNetError(context, root)
+            val cause: Throwable? = throwable.cause
+            if (cause === null || cause === root) {
+                break
+            }
+            root = cause
         }
         if (msg == null) {
             L.report(throwable)
@@ -45,6 +51,15 @@ object ErrorUtil : ErrorParser {
                 msg = throwable.getLocalizedMessage()
                 if (msg.isNullOrEmpty()) {
                     msg = context.getString(R.string.message_server_connect_error)
+                }
+            }
+            is CompositeException -> {
+                for (ex in throwable.exceptions) {
+                    val exMsg = parseNetError(context, ex)
+                    if (exMsg != null) {
+                        msg = exMsg
+                        break
+                    }
                 }
             }
         }

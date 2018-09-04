@@ -266,7 +266,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             //If last page, force refresh cache
             apiCacheObservable(isForceLoading || mPageNum >= mPagerCallback?.getTotalPages() ?: 0)
                     .flatMap {
-                        L.d("Source:$mPageNum," + java.lang.Thread.currentThread().toString())
+                        //                        L.d("Source:$mPageNum," + java.lang.Thread.currentThread().toString())
                         val wrapper = objectMapper.readValue(it.data, PostsWrapper::class.java)
                         //If load cache and this page size < POSTS_PER_PAGE, it's the last page, then force refresh
                         if (it.source != Source.CLOUD && wrapper.data.postList.size < Api.POSTS_PER_PAGE) {
@@ -283,7 +283,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         val rateSource: Single<RatePostsWrapper> = if (mDownloadPrefManager.netCacheEnable) {
             rateApiCacheObservable(isForceLoading || mPageNum >= mPagerCallback?.getTotalPages() ?: 0)
                     .flatMap {
-                        L.d("RateSource:$mPageNum," + java.lang.Thread.currentThread().toString())
+                        //                        L.d("RateSource:$mPageNum," + java.lang.Thread.currentThread().toString())
                         val wrapper = objectMapper.readValue(it.data, RatePostsWrapper::class.java)
                         if (it.source != Source.CLOUD && wrapper.data.postList?.size ?: 0 < Api.POSTS_PER_PAGE) {
                             return@flatMap rateApiCacheObservable(true)
