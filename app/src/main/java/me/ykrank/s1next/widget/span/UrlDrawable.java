@@ -125,6 +125,10 @@ final class UrlDrawable extends Drawable implements Drawable.Callback {
         this.mDrawable = drawable;
     }
 
+    public Drawable getDrawable() {
+        return mDrawable;
+    }
+
     @Override
     public void setBounds(int left, int top, int right, int bottom) {
         //Size is big enough

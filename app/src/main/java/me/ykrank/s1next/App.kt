@@ -118,8 +118,6 @@ class App : MultiDexApplication() {
 
         //RxJava default error handler
         RxJavaPlugins.setErrorHandler {
-            L.report(it)
-
             if (L.showLog()) {
                 toast(ErrorUtil.parse(this, it))
             }

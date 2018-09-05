@@ -207,7 +207,7 @@ public final class TextViewBindingAdapter {
         } else {
             // use GlideImageGetter to show images in TextView
             //noinspection deprecation
-            Single.just(GlideImageGetter.get(textView))
+            Single.just(GlideImageGetter.Companion.get(textView))
                     .map(f -> HtmlCompat.fromHtml(html, f, new TagHandler()))
                     .compose(RxJavaUtil.computationSingleTransformer())
                     .subscribe(textView::setText, L::report);
