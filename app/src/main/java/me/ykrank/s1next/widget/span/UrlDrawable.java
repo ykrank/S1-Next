@@ -26,6 +26,7 @@ final class UrlDrawable extends Drawable implements Drawable.Callback {
     private int widthTargetSize = TARGET_SIZE_UNSET;
     private int heightTargetSize = TARGET_SIZE_UNSET;
     private boolean keepScaleRatio = true;
+    private float multiplier = 1.0f;
     /**
      * Size over this will scale to target size
      */
@@ -33,6 +34,11 @@ final class UrlDrawable extends Drawable implements Drawable.Callback {
 
     public UrlDrawable(String url) {
         this(url, TARGET_SIZE_UNSET, TARGET_SIZE_UNSET, true);
+    }
+
+    public UrlDrawable(String url, float multiplier) {
+        this.url = url;
+        this.multiplier = multiplier;
     }
 
     /**
@@ -131,7 +137,7 @@ final class UrlDrawable extends Drawable implements Drawable.Callback {
 
     @Override
     public void setBounds(int left, int top, int right, int bottom) {
-        //Size is big enough
+        //Size is big enough to set to target size
         if ((widthTargetSize != TARGET_SIZE_UNSET && (right - left) > triggerSize) ||
                 (heightTargetSize != TARGET_SIZE_UNSET && (bottom - top) > triggerSize)) {
             if (keepScaleRatio) {
@@ -162,6 +168,9 @@ final class UrlDrawable extends Drawable implements Drawable.Callback {
                     bottom = top + heightTargetSize;
                 }
             }
+        } else {
+            right = (int) (left + multiplier * (right - left));
+            bottom = (int) (top + multiplier * (bottom - top));
         }
 
         Rect oldBounds = getBounds();

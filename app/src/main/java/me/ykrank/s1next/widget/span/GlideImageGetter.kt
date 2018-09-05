@@ -21,19 +21,17 @@ import com.bumptech.glide.request.Request
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-import com.bumptech.glide.request.target.ViewTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.ykrank.androidautodispose.AndroidRxDispose
-import com.github.ykrank.androidlifecycle.AndroidLifeCycle
 import com.github.ykrank.androidlifecycle.event.ViewEvent
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.LooperUtil
 import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.FitOutWidthDownSampleStrategy
 import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.GlMaxTextureSizeDownSampleStrategy
 import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.MultiDownSampleStrategy
-import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.SizeDownSampleStrategy
+import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.SizeMultiplierDownSampleStrategy
 import com.github.ykrank.androidtools.widget.glide.transformations.FitOutWidthBitmapTransformation
-import com.github.ykrank.androidtools.widget.glide.transformations.SizeLimitBitmapTransformation
+import com.github.ykrank.androidtools.widget.glide.viewtarget.CustomViewTarget
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.uber.autodispose.SingleScoper
 import io.reactivex.Single
@@ -68,17 +66,21 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
     private val animatableTargetHashMap = WeakHashMap<Animatable, ImageGetterViewTarget>()
     private var serial = 0
 
-    private val emoticonSize: Int by lazy {
-        (mTextView.context.resources.displayMetrics.density * Api.EMOTICON_INIT_DP).toInt()
+    private val density: Float by lazy {
+        mTextView.context.resources.displayMetrics.density
     }
     private val emoticonRequestOptions by lazy {
         RequestOptions()
-                .downsample(SizeDownSampleStrategy(emoticonSize))
-                .transform(SizeLimitBitmapTransformation(emoticonSize))
+                .error(R.mipmap.unknown_image)
+                //Only cache data before decode, because we change drawable bounds
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                //Original size because gif could not downSample
+                .downsample(SizeMultiplierDownSampleStrategy(1.0f))
     }
     private val glideRequestOptions by lazy {
         RequestOptions()
                 .placeholder(R.mipmap.unknown_image)
+                .error(R.mipmap.unknown_image)
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .downsample(MultiDownSampleStrategy(GlMaxTextureSizeDownSampleStrategy(), FitOutWidthDownSampleStrategy()))
                 .transform(FitOutWidthBitmapTransformation())
@@ -98,21 +100,6 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
         // add this listener in order to clean any pending images loading
         // and set drawable callback tag to null when detached from window
         mTextView.addOnAttachStateChangeListener(this)
-
-        AndroidLifeCycle.with(mTextView)
-                .listen(ViewEvent.RESUME) {
-                    if (ViewCompat.isAttachedToWindow(mTextView)) {
-                        for (anim in animatableTargetHashMap.keys) {
-                            anim.start()
-                        }
-                    }
-                }
-                .listen(ViewEvent.PAUSE) {
-                    for (anim in animatableTargetHashMap.keys) {
-                        anim.stop()
-                    }
-                }
-                .listen(ViewEvent.DESTROY) { this.invalidate() }
     }
 
     @MainThread
@@ -146,7 +133,8 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
             url = Api.BASE_URL + url
         }
         if (emoticonName != null) {
-            urlDrawable = UrlDrawable(url)
+            //Scale
+            urlDrawable = UrlDrawable(url, density)
             val imageGetterViewTarget = ImageGetterViewTarget(this, mTextView,
                     urlDrawable, serial)
 
@@ -196,8 +184,11 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
                 .to(imageGetterScoper)
                 .subscribe({ builder ->
                     if (emoticon) {
-                        imageGetterViewTarget.mDrawable.setWidthTargetSize(emoticonSize)
-                        imageGetterViewTarget.mDrawable.setHeightTargetSize(emoticonSize)
+                        imageGetterViewTarget.mDrawable.let {
+                            it.setKeepScaleRatio(true)
+//                            it.setWidthTargetSize(emoticonSize)
+//                            it.setHeightTargetSize(emoticonSize)
+                        }
                     } else {
                         //Big image scale to fit width
                         imageGetterViewTarget.mDrawable.setTriggerSize(200)
@@ -246,13 +237,13 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
     override fun unscheduleDrawable(who: Drawable, what: Runnable) {}
 
     private class ImageGetterViewTarget constructor(private val mGlideImageGetter: GlideImageGetter, view: TextView, val mDrawable: UrlDrawable, val serial: Int)
-        : ViewTarget<TextView, Drawable>(view) {
+        : CustomViewTarget<TextView, Drawable>(view) {
 
         private var mRequest: Request? = null
 
-        override fun onLoadStarted(placeholder: Drawable?) {
-            super.onLoadStarted(placeholder)
-            L.l("onLoadStarted:" + mDrawable.url)
+        override fun onResourceLoading(placeholder: Drawable?) {
+            super.onResourceLoading(placeholder)
+            L.l("onResourceLoading:" + mDrawable.url)
             if (placeholder != null) {
                 setDrawable(placeholder)
             }
@@ -268,7 +259,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
             setDrawable(resource)
             if (resource is Animatable) {
                 val callback = textView.getTag(
-                        R.id.tag_drawable_callback) as Drawable.Callback
+                        R.id.tag_drawable_callback) as Drawable.Callback?
                 // note: not sure whether callback would be null sometimes
                 // when this Drawable' host view is detached from View
                 if (callback != null) {
@@ -290,6 +281,35 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
             if (errorDrawable != null) {
                 setDrawable(errorDrawable)
             }
+        }
+
+        override fun onResourceCleared(placeholder: Drawable?) {
+            mDrawable.drawable?.let {
+                if (it is Animatable) {
+                    it.stop()
+                }
+            }
+            mDrawable.drawable = null
+        }
+
+        override fun onStart() {
+            mDrawable.drawable?.let {
+                if (it is Animatable) {
+                    it.start()
+                }
+            }
+        }
+
+        override fun onStop() {
+            mDrawable.drawable?.let {
+                if (it is Animatable) {
+                    it.stop()
+                }
+            }
+        }
+
+        override fun onDestroy() {
+            mGlideImageGetter.invalidate()
         }
 
         private fun checkTextViewValidate(): Boolean {
@@ -386,11 +406,11 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
         @MainThread
         operator fun get(textView: TextView): GlideImageGetter {
 
-            val `object` = textView.getTag(R.id.tag_drawable_callback)
-            if (`object` == null) {
+            val obj = textView.getTag(R.id.tag_drawable_callback)
+            if (obj == null) {
                 return GlideImageGetter(textView)
             } else {
-                val glideImageGetter = `object` as GlideImageGetter
+                val glideImageGetter = obj as GlideImageGetter
                 glideImageGetter.invalidate()
                 return glideImageGetter
             }
