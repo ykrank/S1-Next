@@ -14,7 +14,8 @@ public final class Api {
     public static final String BASE_URL = "https://" + BASE_HOST + "/2b/";
     public static final String BASE_AVATAR_URL = "https://avatar.saraba1st.com/";
     public static final String BASE_API_URL = "https://" + BASE_HOST + "/2b/api/mobile/";
-    public static final String BASE_STATIC_URL = "https://static.saraba1st.com/";
+    private static final String BASE_STATIC_URL = "https://static.saraba1st.com/";
+    private static final String BASE_STATIC_URL_HTTP = "http://static.saraba1st.com/";
     public static final String[] HOST_LIST = new String[]{
             "bbs.saraba1st.com", "www.saraba1st.com", "stage1st.com", "www.stage1st.com"
     };
@@ -120,6 +121,8 @@ public final class Api {
             return url.substring((Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX).length());
         } else if (url.startsWith(Api.BASE_STATIC_URL + Api.URL_EMOTICON_IMAGE_PREFIX_STATIC)) {
             return url.substring((Api.BASE_STATIC_URL + Api.URL_EMOTICON_IMAGE_PREFIX_STATIC).length());
+        } else if (url.startsWith(Api.BASE_STATIC_URL_HTTP + Api.URL_EMOTICON_IMAGE_PREFIX_STATIC)) {
+            return url.substring((Api.BASE_STATIC_URL_HTTP + Api.URL_EMOTICON_IMAGE_PREFIX_STATIC).length());
         }
         return null;
     }

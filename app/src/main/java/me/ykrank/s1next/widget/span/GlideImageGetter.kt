@@ -138,7 +138,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
             val imageGetterViewTarget = ImageGetterViewTarget(this, mTextView,
                     urlDrawable, serial)
 
-            val finalUrl = url
+            val finalUrl = if (URLUtil.isNetworkUrl(url)) url else Api.BASE_URL + url
 
             val glideRequestBuilder = requestManager
                     .load(Uri.parse(EmoticonFactory.ASSET_PATH_EMOTICON + emoticonName))

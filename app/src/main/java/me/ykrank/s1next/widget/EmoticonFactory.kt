@@ -678,10 +678,11 @@ class EmoticonFactory(context: Context) {
 
 
     companion object {
-        val ASSET_PATH_EMOTICON = "file:///android_asset/image/emoticon/"
+        const val ASSET_PATH_EMOTICON = "file:///android_asset/image/emoticon/"
 
         private fun emoticon(emoticonFileName: String, emoticonEntity: String): Emoticon {
             return Emoticon(ASSET_PATH_EMOTICON + emoticonFileName, emoticonEntity)
         }
+
     }
 }
