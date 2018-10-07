@@ -145,8 +145,8 @@ dependencies {
     implementation "com.github.VictorAlbertos.RxCache:runtime:1.8.3-2.x"
     implementation 'com.github.VictorAlbertos.Jolyglot:jackson:0.0.4'
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.6'
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.6"
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.7'
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.7"
 
     implementation 'nz.bradcampbell:paperparcel:2.0.6'
     implementation 'nz.bradcampbell:paperparcel-kotlin:2.0.6' // Optional
@@ -154,7 +154,7 @@ dependencies {
 
     kapt 'com.github.bumptech.glide:compiler:4.8.0'
 
-    implementation 'com.github.chrisbanes:PhotoView:2.1.3'
+    implementation 'com.github.chrisbanes:PhotoView:2.1.4'
     implementation 'org.greenrobot:greendao:3.2.2'
     implementation 'org.jsoup:jsoup:1.11.3'
     implementation 'com.bigkoo:quicksidebar:1.0.3'
