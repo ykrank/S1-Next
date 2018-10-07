@@ -13,7 +13,7 @@ def keypassword = properties.getProperty('keyPassword')
 
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 	buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {

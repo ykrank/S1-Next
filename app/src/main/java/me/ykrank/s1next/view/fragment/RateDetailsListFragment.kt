@@ -40,7 +40,7 @@ class RateDetailsListFragment : BaseRecyclerViewFragment<List<Rate>>() {
         recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             val d16 = 16.dp2px(context!!)
 
-            override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                 outRect?.set(d16, 0, d16, 0)
             }
         })

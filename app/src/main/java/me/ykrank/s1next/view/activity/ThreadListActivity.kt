@@ -75,7 +75,7 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
 
         if (savedInstanceState == null) {
             fragment = ThreadListFragment.newInstance(forum)
-            supportFragmentManager.beginTransaction().add(R.id.frame_layout, fragment,
+            supportFragmentManager.beginTransaction().add(R.id.frame_layout, fragment!!,
                     ThreadListFragment.TAG).commit()
         } else {
             fragment = supportFragmentManager.findFragmentByTag(ThreadListFragment.TAG) as ThreadListFragment?

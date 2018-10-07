@@ -122,7 +122,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         // add pull up to refresh to RecyclerView
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!isPullUpToRefresh
                         && mPageNum == mPagerCallback?.getTotalPages()
                         && !isLoading

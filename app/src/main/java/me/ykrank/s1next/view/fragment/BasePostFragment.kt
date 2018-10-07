@@ -70,9 +70,9 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
             toolsFirstInit = false
             //Find tools fragment from childFragmentManager
             val fragments = listOf<Fragment>(
-                    childFragmentManager.findFragmentByTag(EmotionFragment.TAG),
-                    childFragmentManager.findFragmentByTag(ImageUploadFragment.TAG),
-                    childFragmentManager.findFragmentByTag(PostToolsExtrasFragment.TAG)
+                    childFragmentManager.findFragmentByTag(EmotionFragment.TAG)!!,
+                    childFragmentManager.findFragmentByTag(ImageUploadFragment.TAG)!!,
+                    childFragmentManager.findFragmentByTag(PostToolsExtrasFragment.TAG)!!
             )
             toolsFragments = listOf(
                     Pair(EmotionFragment.TAG, fragments[0]),
