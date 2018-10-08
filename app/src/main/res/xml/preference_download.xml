@@ -30,6 +30,7 @@
         android:title="@string/pref_net_cache_enable"
         app:iconSpaceReserved="false" />
 
+    <!--FIXME PreferenceCategory future support iconSpaceReserved after support release 28.0.0 -->
     <PreferenceCategory
         android:persistent="false"
         android:title="@string/pref_avatar"
