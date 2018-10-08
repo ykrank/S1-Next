@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:persistent="false"
     tools:context=".view.fragment.setting.GeneralPreferenceFragment">
@@ -7,11 +8,13 @@
     <SwitchPreference
         android:defaultValue="@bool/pref_read_progress_save_auto_default_value"
         android:key="@string/pref_key_read_progress_save_auto"
-        android:title="@string/pref_read_progress_save_auto" />
+        android:title="@string/pref_read_progress_save_auto"
+        app:iconSpaceReserved="false" />
 
     <SwitchPreference
         android:defaultValue="@bool/pref_read_progress_load_auto_default_value"
         android:key="@string/pref_key_read_progress_load_auto"
-        android:title="@string/pref_read_progress_load_auto" />
+        android:title="@string/pref_read_progress_load_auto"
+        app:iconSpaceReserved="false" />
 
 </PreferenceScreen>

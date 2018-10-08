@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:persistent="false"
     tools:context=".view.fragment.setting.GeneralPreferenceFragment">
 
     <PreferenceCategory
         android:persistent="false"
-        android:title="@string/pref_general">
+        android:title="@string/pref_general"
+        app:iconSpaceReserved="false">
 
         <ListPreference
             android:defaultValue="@string/pref_theme_default_value"
@@ -14,7 +16,8 @@
             android:entryValues="@array/pref_theme_entry_values"
             android:key="@string/pref_key_theme"
             android:summary="%s"
-            android:title="@string/pref_theme" />
+            android:title="@string/pref_theme"
+            app:iconSpaceReserved="false" />
 
         <ListPreference
             android:defaultValue="@string/pref_font_size_default_value"
@@ -22,48 +25,56 @@
             android:entryValues="@array/pref_font_size_entry_values"
             android:key="@string/pref_key_font_size"
             android:summary="%s"
-            android:title="@string/pref_font_size" />
+            android:title="@string/pref_font_size"
+            app:iconSpaceReserved="false" />
 
         <SwitchPreference
             android:defaultValue="@bool/pref_signature_default_value"
             android:key="@string/pref_key_signature"
-            android:title="@string/pref_signature" />
+            android:title="@string/pref_signature"
+            app:iconSpaceReserved="false" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
         android:persistent="false"
-        android:title="@string/pref_advanced">
+        android:title="@string/pref_advanced"
+        app:iconSpaceReserved="false">
 
         <Preference
             android:key="@string/pref_key_downloads"
             android:persistent="false"
             android:summary="@string/pref_downloads_summary"
-            android:title="@string/pref_downloads" />
+            android:title="@string/pref_downloads"
+            app:iconSpaceReserved="false" />
 
         <Preference
             android:key="@string/pref_key_blacklists"
             android:persistent="false"
             android:summary="@string/pref_blacklists_summary"
-            android:title="@string/pref_blacklists" />
+            android:title="@string/pref_blacklists"
+            app:iconSpaceReserved="false" />
 
         <Preference
             android:key="@string/pref_key_post_read_progress"
             android:persistent="false"
             android:summary="@string/pref_post_read_progress_summary"
-            android:title="@string/pref_post_read_progress" />
+            android:title="@string/pref_post_read_progress"
+            app:iconSpaceReserved="false" />
 
         <Preference
             android:key="@string/pref_key_backup"
             android:persistent="false"
             android:summary="@string/pref_backup_summary"
-            android:title="@string/pref_backup" />
+            android:title="@string/pref_backup"
+            app:iconSpaceReserved="false" />
 
         <Preference
             android:key="@string/pref_key_network"
             android:persistent="false"
             android:summary="@string/pref_network_summary"
-            android:title="@string/pref_network" />
+            android:title="@string/pref_network"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 
 </PreferenceScreen>

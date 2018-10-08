@@ -8,21 +8,25 @@
     <SwitchPreference
         android:defaultValue="@bool/pref_key_force_base_url_enabled_default_value"
         android:key="@string/pref_key_force_base_url_enabled"
-        android:title="@string/pref_force_base_url_enabled" />
+        android:title="@string/pref_force_base_url_enabled"
+        app:iconSpaceReserved="false" />
 
     <EditTextPreference
         android:key="@string/pref_key_force_base_url"
         android:title="@string/pref_force_base_url"
-        app:dependency="@string/pref_key_force_base_url_enabled" />
+        app:dependency="@string/pref_key_force_base_url_enabled"
+        app:iconSpaceReserved="false" />
 
     <SwitchPreference
         android:defaultValue="@bool/pref_key_force_host_ip_enabled_default_value"
         android:key="@string/pref_key_force_host_ip_enabled"
-        android:title="@string/pref_force_host_ip_enabled" />
+        android:title="@string/pref_force_host_ip_enabled"
+        app:iconSpaceReserved="false" />
 
     <EditTextPreference
         android:defaultValue="@string/pref_key_force_host_ip_default_value"
         android:key="@string/pref_key_force_host_ip"
         android:title="@string/pref_force_host_ip"
-        app:dependency="@string/pref_key_force_host_ip_enabled" />
+        app:dependency="@string/pref_key_force_host_ip_enabled"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>

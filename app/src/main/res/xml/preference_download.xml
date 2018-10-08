@@ -11,7 +11,8 @@
         android:entryValues="@array/pref_image_total_cache_size_entry_values"
         android:key="@string/pref_key_image_total_cache_size"
         android:summary="%s"
-        android:title="@string/pref_image_total_cache_size" />
+        android:title="@string/pref_image_total_cache_size"
+        app:iconSpaceReserved="false" />
 
     <ListPreference
         android:defaultValue="@string/pref_data_total_cache_size_default_value"
@@ -20,16 +21,19 @@
         android:key="@string/pref_key_data_total_cache_size"
         android:summary="%s"
         android:title="@string/pref_data_total_cache_size"
-        app:dependency="@string/pref_key_net_cache_enable" />
+        app:dependency="@string/pref_key_net_cache_enable"
+        app:iconSpaceReserved="false" />
 
     <SwitchPreference
         android:defaultValue="@bool/pref_net_cache_default_value"
         android:key="@string/pref_key_net_cache_enable"
-        android:title="@string/pref_net_cache_enable" />
+        android:title="@string/pref_net_cache_enable"
+        app:iconSpaceReserved="false" />
 
     <PreferenceCategory
         android:persistent="false"
-        android:title="@string/pref_avatar">
+        android:title="@string/pref_avatar"
+        app:iconSpaceReserved="false">
 
         <ListPreference
             android:defaultValue="@string/pref_download_avatars_strategy_default_value"
@@ -37,7 +41,8 @@
             android:entryValues="@array/pref_download_avatars_strategy_entry_values"
             android:key="@string/pref_key_download_avatars_strategy"
             android:summary="%s"
-            android:title="@string/pref_downloads" />
+            android:title="@string/pref_downloads"
+            app:iconSpaceReserved="false" />
 
         <ListPreference
             android:defaultValue="@string/pref_avatar_resolution_strategy_default_value"
@@ -45,7 +50,8 @@
             android:entryValues="@array/pref_avatar_resolution_strategy_entry_values"
             android:key="@string/pref_key_avatar_resolution_strategy"
             android:summary="%s"
-            android:title="@string/pref_avatar_resolution" />
+            android:title="@string/pref_avatar_resolution"
+            app:iconSpaceReserved="false" />
 
         <ListPreference
             android:defaultValue="@string/pref_avatar_cache_invalidation_interval_default_value"
@@ -53,12 +59,14 @@
             android:entryValues="@array/pref_avatar_cache_invalidation_interval_entry_values"
             android:key="@string/pref_key_avatar_cache_invalidation_interval"
             android:summary="%s"
-            android:title="@string/pref_avatar_cache_invalidation_interval" />
+            android:title="@string/pref_avatar_cache_invalidation_interval"
+            app:iconSpaceReserved="false" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
         android:persistent="false"
+        app:iconSpaceReserved="false"
         android:title="@string/pref_image">
 
         <ListPreference
@@ -67,12 +75,14 @@
             android:entryValues="@array/pref_download_images_strategy_entry_values"
             android:key="@string/pref_key_download_images_strategy"
             android:summary="%s"
-            android:title="@string/pref_downloads" />
+            android:title="@string/pref_downloads"
+            app:iconSpaceReserved="false" />
 
         <Preference
             android:key="@string/pref_key_clear_image_cache"
             android:persistent="false"
-            android:title="@string/pref_clear_image_cache" />
+            android:title="@string/pref_clear_image_cache"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 
 </PreferenceScreen>

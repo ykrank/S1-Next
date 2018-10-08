@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:persistent="false"
     tools:context=".view.fragment.setting.GeneralPreferenceFragment">
@@ -7,11 +8,13 @@
     <Preference
         android:key="@string/pref_key_backup_backup"
         android:persistent="false"
-        android:title="@string/pref_backup_backup" />
+        android:title="@string/pref_backup_backup"
+        app:iconSpaceReserved="false" />
 
     <Preference
         android:key="@string/pref_key_backup_restore"
         android:persistent="false"
-        android:title="@string/pref_backup_restore" />
+        android:title="@string/pref_backup_restore"
+        app:iconSpaceReserved="false" />
 
 </PreferenceScreen>

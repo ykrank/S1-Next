@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:persistent="false"
     tools:context="me.ykrank.s1next.view.fragment.OpenSourceLicensesFragment">
@@ -7,11 +8,13 @@
     <PreferenceCategory
         android:key="@string/pref_key_libraries"
         android:persistent="false"
-        android:title="@string/pref_libraries" />
+        android:title="@string/pref_libraries"
+        app:iconSpaceReserved="false" />
 
     <PreferenceCategory
         android:key="@string/pref_key_files"
         android:persistent="false"
-        android:title="@string/pref_files" />
+        android:title="@string/pref_files"
+        app:iconSpaceReserved="false" />
 
 </PreferenceScreen>
