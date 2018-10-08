@@ -35,13 +35,13 @@ class RateDetailsListFragment : BaseRecyclerViewFragment<List<Rate>>() {
         val recyclerView = recyclerView
         val activity = activity
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        mRecyclerAdapter = SimpleRecycleViewAdapter(activity!!, R.layout.item_rate_detail)
+        mRecyclerAdapter = SimpleRecycleViewAdapter(activity!!, R.layout.item_rate_detail_multi)
         recyclerView.adapter = mRecyclerAdapter
         recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             val d16 = 16.dp2px(context!!)
 
             override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-                outRect?.set(d16, 0, d16, 0)
+                outRect.set(d16, 0, d16, 0)
             }
         })
     }
