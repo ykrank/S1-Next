@@ -534,7 +534,8 @@ class EmoticonFactory(context: Context) {
             emoticon("carton2017/287.png", "[c:287]"),
             emoticon("carton2017/288.png", "[c:288]"),
             emoticon("carton2017/289.gif", "[c:289]"),
-            emoticon("carton2017/290.png", "[c:290]")
+            emoticon("carton2017/290.png", "[c:290]"),
+            emoticon("carton2017/291.gif", "[c:291]")
     )
 
     private val animalEmoticonList: List<Emoticon> = listOf(
