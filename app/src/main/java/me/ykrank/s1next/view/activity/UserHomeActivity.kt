@@ -136,9 +136,9 @@ class UserHomeActivity : BaseActivity() {
             }
             R.id.menu_blacklist -> {
                 if (isInBlacklist) {
-                    BlacklistMenuAction.removeBlacklist(mRxBus, Integer.valueOf(uid), name)
+                    BlacklistMenuAction.removeBlacklist(mRxBus, uid?.toInt() ?: 0, name)
                 } else {
-                    BlacklistMenuAction.addBlacklist(this, Integer.valueOf(uid), name)
+                    BlacklistMenuAction.addBlacklist(this, uid?.toInt() ?: 0, name)
                 }
                 return true
             }
@@ -195,8 +195,8 @@ class UserHomeActivity : BaseActivity() {
     }
 
     private fun loadData() {
-        binding.data?.let {
-            s1Service.getProfileWeb("https://bbs.saraba1st.com/2b/space-uid-${it.homeUid}.html", it.homeUid)
+        binding.data?.let { profile ->
+            s1Service.getProfileWeb("https://bbs.saraba1st.com/2b/space-uid-${profile.homeUid}.html", profile.homeUid)
                     .map { Profile.fromHtml(it) }
                     .compose(RxJavaUtil.iOSingleTransformer())
                     .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
@@ -213,8 +213,9 @@ class UserHomeActivity : BaseActivity() {
             return
         }
         val wrapper = BlackListDbWrapper.getInstance()
-        Single.just(Optional.fromNullable(wrapper.getMergedBlackList(Integer.valueOf(uid), name)))
+        Single.just(Optional.fromNullable(wrapper.getMergedBlackList(uid?.toInt() ?: 0, name)))
                 .compose(RxJavaUtil.iOSingleTransformer())
+                .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
                 .subscribe({ blackListOptional ->
                     if (blackListOptional.isPresent) {
                         isInBlacklist = true
@@ -235,7 +236,7 @@ class UserHomeActivity : BaseActivity() {
         private const val ARG_USERNAME = "username"
         private const val ARG_IMAGE_INFO = "image_info"
 
-        fun start(activity: FragmentActivity, uid: String, userName: String) {
+        fun start(activity: FragmentActivity, uid: String, userName: String?) {
             if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(activity.supportFragmentManager, App.appComponent.user)) {
                 return
             }
@@ -246,7 +247,7 @@ class UserHomeActivity : BaseActivity() {
             activity.startActivity(intent)
         }
 
-        fun start(activity: FragmentActivity, uid: String, userName: String, avatarView: View) {
+        fun start(activity: FragmentActivity, uid: String, userName: String?, avatarView: View) {
             //@see http://stackoverflow.com/questions/31381385/nullpointerexception-drawable-setbounds-probably-due-to-fragment-transitions#answer-31383033
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
                 start(activity, uid, userName)
@@ -258,8 +259,8 @@ class UserHomeActivity : BaseActivity() {
 
             val baseContext = ContextUtils.getBaseContext(activity)
             if (baseContext !is Activity) {
-                L.leaveMsg("uid:" + uid)
-                L.leaveMsg("userName:" + userName)
+                L.leaveMsg("uid:$uid")
+                L.leaveMsg("userName:$userName")
                 L.report(IllegalStateException("UserHomeActivity start error: context not instance of activity"))
                 return
             }
