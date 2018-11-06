@@ -148,7 +148,7 @@ class NewThreadFragment : BasePostFragment() {
                     }
                 }, {
                     L.report(it)
-                    showRetrySnackbar(it, View.OnClickListener { init() })
+                    showRetrySnackbar(it, View.OnClickListener { v -> init() })
                 })
     }
 
@@ -159,7 +159,7 @@ class NewThreadFragment : BasePostFragment() {
         } else {
             typeSpinner.visibility = View.VISIBLE
         }
-        val spinnerAdapter = SimpleSpinnerAdapter(context, types, { it.typeName })
+        val spinnerAdapter = SimpleSpinnerAdapter(context!!, types) { it?.typeName.toString() }
         typeSpinner.adapter = spinnerAdapter
         if (cacheModel != null && types.size > cacheModel!!.selectPosition) {
             typeSpinner.setSelection(cacheModel!!.selectPosition)

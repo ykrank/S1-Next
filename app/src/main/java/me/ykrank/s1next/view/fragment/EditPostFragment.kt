@@ -132,7 +132,7 @@ class EditPostFragment : BasePostFragment() {
         } else {
             binding.spinner.visibility = View.VISIBLE
         }
-        val spinnerAdapter = SimpleSpinnerAdapter(context, types, { it.typeName })
+        val spinnerAdapter = SimpleSpinnerAdapter(context!!, types) { it?.typeName.toString() }
         binding.spinner.adapter = spinnerAdapter
     }
 
