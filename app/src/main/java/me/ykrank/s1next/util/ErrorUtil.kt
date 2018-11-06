@@ -7,8 +7,13 @@ import com.github.ykrank.androidtools.util.L
 import io.reactivex.exceptions.CompositeException
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.ApiException
+import okhttp3.internal.http2.StreamResetException
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.SocketException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
+import javax.net.ssl.SSLException
 
 object ErrorUtil : ErrorParser {
 
@@ -67,6 +72,13 @@ object ErrorUtil : ErrorParser {
     }
 
     override fun ignoreError(throwable: Throwable): Boolean {
+        when (throwable) {
+            is UnknownHostException -> return true
+            is SocketException -> return true
+            is SocketTimeoutException -> return true
+            is StreamResetException -> return true
+            is SSLException -> return true
+        }
         return false
     }
 }
