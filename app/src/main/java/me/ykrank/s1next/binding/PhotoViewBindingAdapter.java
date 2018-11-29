@@ -1,6 +1,5 @@
 package me.ykrank.s1next.binding;
 
-import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
@@ -34,7 +33,6 @@ public final class PhotoViewBindingAdapter {
         if (TextUtils.isEmpty(url)) {
             return;
         }
-        Context context = photoView.getContext();
 
         RequestOptions requestOptions = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
@@ -52,11 +50,11 @@ public final class PhotoViewBindingAdapter {
                 thumbRequestOptions = thumbRequestOptions.signature(manager.getAvatarCacheInvalidationIntervalSignature());
             }
             thumbnailRequest = Glide
-                    .with(context)
+                    .with(photoView)
                     .load(thumbUrl)
                     .apply(thumbRequestOptions);
         } else {
-            thumbnailRequest = Glide.with(context).load(R.drawable.loading);
+            thumbnailRequest = Glide.with(photoView).load(R.drawable.loading);
         }
 
         //avatar signature
@@ -64,7 +62,7 @@ public final class PhotoViewBindingAdapter {
             requestOptions = requestOptions.signature(manager.getAvatarCacheInvalidationIntervalSignature());
         }
 
-        RequestBuilder<Drawable> builder = Glide.with(context)
+        RequestBuilder<Drawable> builder = Glide.with(photoView)
                 .load(new ForcePassUrl(url))
                 .apply(requestOptions)
                 .thumbnail(thumbnailRequest)
@@ -73,7 +71,7 @@ public final class PhotoViewBindingAdapter {
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         //stop thumnal animatable like gif
                         target.onStop();
-                        target.onLoadFailed(ContextCompat.getDrawable(context, R.mipmap.error_symbol));
+                        target.onLoadFailed(ContextCompat.getDrawable(photoView.getContext(), R.mipmap.error_symbol));
                         return true;
                     }
 

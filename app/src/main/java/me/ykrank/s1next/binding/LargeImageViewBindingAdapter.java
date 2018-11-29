@@ -28,8 +28,7 @@ public final class LargeImageViewBindingAdapter {
         if (!show || TextUtils.isEmpty(url)) {
             return;
         }
-        Context context = largeImageView.getContext();
-        RequestBuilder<File> builder = Glide.with(context)
+        RequestBuilder<File> builder = Glide.with(largeImageView)
                 .download(new ForcePassUrl(url));
         //avatar signature
         if (manager != null && Api.isAvatarUrl(url)) {

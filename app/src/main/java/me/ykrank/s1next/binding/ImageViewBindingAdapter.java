@@ -1,6 +1,5 @@
 package me.ykrank.s1next.binding;
 
-import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -54,25 +53,24 @@ public final class ImageViewBindingAdapter {
      */
     @BindingAdapter("user")
     public static void loadUserAvatar(ImageView bezelImageView, User user) {
-        Context context = bezelImageView.getContext();
-
         //in device before 4.4, destroyed activity will cause glide error
-        if (ContextUtils.isActivityDestroyedForGlide(context)) {
+        if (ContextUtils.isActivityDestroyedForGlide(bezelImageView.getContext())) {
             return;
         }
         DownloadPreferencesManager downloadPreferencesManager = App.Companion.getPreAppComponent()
                 .getDownloadPreferencesManager();
         if (user.isLogged()) {
+            RequestManager requestManager = Glide.with(bezelImageView);
             bezelImageView.setTag(R.id.tag_drawable_info, null);
             AvatarUrlsCache.clearUserAvatarCache(user.getUid());
             // setup user's avatar
-            Glide.with(context)
+            requestManager
                     .load(new AvatarUrl(Api.getAvatarMediumUrl(user.getUid())))
                     .apply(new RequestOptions()
                             .circleCrop()
                             .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
                     )
-                    .error(Glide.with(context)
+                    .error(requestManager
                             .load(R.drawable.ic_drawer_avatar_placeholder)
                             .apply(RequestOptions.circleCropTransform()))
                     .listener(new RequestListener<Drawable>() {
@@ -130,8 +128,7 @@ public final class ImageViewBindingAdapter {
 
     private static void loadPlaceHolderAvatar(ImageView imageView) {
         imageView.setTag(R.id.tag_drawable_info, null);
-        Context context = imageView.getContext();
-        Glide.with(context)
+        Glide.with(imageView)
                 .load(R.drawable.ic_drawer_avatar_placeholder)
                 .apply(RequestOptions.circleCropTransform())
                 .into(imageView);
@@ -169,8 +166,7 @@ public final class ImageViewBindingAdapter {
         if (urls == null || urls.isEmpty() || TextUtils.isEmpty(urls.get(0))) {
             return;
         }
-        Context context = imageView.getContext();
-        RequestBuilder<Drawable> listener = Glide.with(context)
+        RequestBuilder<Drawable> listener = Glide.with(imageView)
                 .load(new AvatarUrl(urls.get(0)))
                 .apply(new RequestOptions()
                         .circleCrop()
@@ -204,9 +200,9 @@ public final class ImageViewBindingAdapter {
             loadPlaceHolderAvatar(imageView);
             return;
         }
-        Context context = imageView.getContext();
+        RequestManager requestManager = Glide.with(imageView);
 
-        RequestBuilder<Drawable> listener = Glide.with(context)
+        RequestBuilder<Drawable> listener = requestManager
                 .load(new AvatarUrl(urls.get(0)))
                 .apply(new RequestOptions()
                         .circleCrop()
@@ -232,14 +228,14 @@ public final class ImageViewBindingAdapter {
                 });
         if (!TextUtils.isEmpty(thumbUrl)) {
             listener = listener.thumbnail(
-                    Glide.with(context)
+                    requestManager
                             .load(new AvatarUrl(thumbUrl))
                             .apply(new RequestOptions()
                                     .circleCrop()
                                     .signature(downloadPreferencesManager.getAvatarCacheInvalidationIntervalSignature())
                                     .diskCacheStrategy(DiskCacheStrategy.DATA)));
         } else {
-            listener = listener.thumbnail(Glide.with(context).load(R.drawable.ic_drawer_avatar_placeholder).apply(RequestOptions.circleCropTransform()));
+            listener = listener.thumbnail(requestManager.load(R.drawable.ic_drawer_avatar_placeholder).apply(RequestOptions.circleCropTransform()));
         }
         if (fade) {
             listener = listener.transition(DrawableTransitionOptions.withCrossFade(300));

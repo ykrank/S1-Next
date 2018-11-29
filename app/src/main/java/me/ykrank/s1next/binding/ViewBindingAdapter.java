@@ -89,7 +89,7 @@ public final class ViewBindingAdapter {
         BlurTransformation blurTransformation = new BlurTransformation(context, 20);
         blurTransformation.setTargetSize(50);
         if (TextUtils.isEmpty(newBlurUrl)) {
-            Glide.with(context)
+            Glide.with(view)
                     .load(R.drawable.ic_avatar_placeholder)
                     .apply(new RequestOptions()
                             .centerCrop()
@@ -100,7 +100,7 @@ public final class ViewBindingAdapter {
             return;
         }
         if (!TextUtils.equals(oldBlurUrl, newBlurUrl)) {
-            Glide.with(context)
+            Glide.with(view)
                     .asBitmap()
                     .load(newBlurUrl)
                     .apply(new RequestOptions()
