@@ -2,6 +2,7 @@ package me.ykrank.s1next.data.api.model.wrapper
 
 import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.App
+import me.ykrank.s1next.data.api.ApiException
 import me.ykrank.s1next.view.event.NoticeRefreshEvent
 import org.jsoup.nodes.Document
 import java.util.regex.Pattern
@@ -36,6 +37,17 @@ class HtmlDataWrapper {
         fun notifyData(data: HtmlDataWrapper) {
             if (data.notice != null) {
                 App.preAppComponent.rxBus.post(NoticeRefreshEvent::class.java, NoticeRefreshEvent(null, data.notice!! > 0))
+            }
+        }
+
+        /**
+         * Check if server alert
+         */
+        @Throws(ApiException.ApiServerException::class)
+        fun preAlertHtml(document: Document) {
+            val errorElements = document.select("div#messagetext")
+            if (errorElements.size > 0) {
+                throw ApiException.ApiServerException(errorElements.text())
             }
         }
     }

@@ -107,7 +107,8 @@ public interface S1Service {
                             @Field("formhash") String authenticityToken, @Field("posttime") long postTime,
                             @Field("typeid") String typeId, @Field("subject") String subject,
                             @Field("message") String message, @Field("allownoticeauthor") int allowNoticeAuthor,
-                            @Field("usesig") int useSign, @Field("save") Integer saveAsDraft);
+                            @Field("usesig") int useSign, @Field("save") Integer saveAsDraft,
+                            @Field("readperm") String readPerm);
 
     @FormUrlEncoded
     @POST(ApiForum.URL_SEARCH_FORUM)

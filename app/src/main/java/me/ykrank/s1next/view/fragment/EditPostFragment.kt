@@ -38,10 +38,10 @@ class EditPostFragment : BasePostFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentEditPostBinding.inflate(inflater, container, false)
-        initCreateView(binding.layoutPost!!)
+        initCreateView(binding.layoutPost)
 
-        mThread = arguments!!.getParcelable<Thread>(ARG_THREAD)
-        mPost = arguments!!.getParcelable<Post>(ARG_POST)
+        mThread = arguments?.getParcelable(ARG_THREAD) as Thread
+        mPost = arguments?.getParcelable(ARG_POST) as Post
 
         isHost = mPost.isFirst
         binding.host = isHost
@@ -59,28 +59,32 @@ class EditPostFragment : BasePostFragment() {
 
     override fun onMenuSendClick(): Boolean {
         var typeId: String? = null
-        if (binding.spinner.visibility == View.VISIBLE) {
-            val selectType = binding.spinner.selectedItem as ThreadType?
+        if (binding.spinnerType.visibility == View.VISIBLE) {
+            val selectType = binding.spinnerType.selectedItem as ThreadType?
             if (selectType == null) {
                 showShortSnackbar(R.string.error_not_init)
                 return true
             }
             typeId = selectType.typeId
             //未选择类别
-            if (typeId == null || "0" == typeId.trim { it <= ' ' }) {
+            if (typeId == null || "0" == typeId.trim()) {
                 showShortSnackbar(R.string.error_no_type_id)
                 return true
             }
         }
+        var readPerm: String? = null
+        if (binding.spinnerPerm.visibility == View.VISIBLE) {
+            readPerm = binding.spinnerPerm.selectedItem as String?
+        }
 
-        val title = binding.title.text.toString()
-        val message = mReplyView.text.toString()
+        val title = binding.title.text?.toString()
+        val message = mReplyView.text?.toString()
         if (!isTitleValid(title) || !isMessageValid(message)) {
             showShortSnackbar(R.string.error_no_title_or_message)
             return true
         }
 
-        EditPostRequestDialogFragment.newInstance(mThread, mPost, typeId, title, message)
+        EditPostRequestDialogFragment.newInstance(mThread, mPost, typeId, readPerm, title!!, message!!)
                 .show(fragmentManager, EditPostRequestDialogFragment.TAG)
 
         return true
@@ -89,7 +93,7 @@ class EditPostFragment : BasePostFragment() {
     override val cacheKey: String?
         get() = null
 
-    private fun isTitleValid(string: String): Boolean {
+    private fun isTitleValid(string: String?): Boolean {
         if (!isHost) {
             return true
         }
@@ -99,7 +103,7 @@ class EditPostFragment : BasePostFragment() {
         return true
     }
 
-    private fun isMessageValid(string: String): Boolean {
+    private fun isMessageValid(string: String?): Boolean {
         if (string.isNullOrBlank()) {
             return false
         }
@@ -108,16 +112,20 @@ class EditPostFragment : BasePostFragment() {
 
     private fun init() {
         mS1Service.getEditPostInfo(mThread.fid.toInt(), mThread.id.toInt(), mPost.id)
-                .map<PostEditor>({ PostEditor.fromHtml(it) })
+                .map<PostEditor> { PostEditor.fromHtml(it) }
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
                 .subscribe({ postEditor ->
                     if (isHost) {
-                        setSpinner(postEditor.threadTypes)
-                        binding.spinner.setSelection(postEditor.typeIndex)
+                        setSpinnerType(postEditor.threadTypes)
+                        binding.spinnerType.setSelection(postEditor.typeIndex)
+
+                        setSpinnerPerm(postEditor.readPermTypes)
+                        binding.spinnerPerm.setSelection(postEditor.readPermIndex)
+
                         binding.title.setText(postEditor.subject)
                     }
-                    binding.layoutPost?.reply?.setText(postEditor.message)
+                    binding.layoutPost.reply.setText(postEditor.message)
                 }, { e ->
                     L.report(e)
                     showRetrySnackbar(e, View.OnClickListener { init() })
@@ -125,15 +133,26 @@ class EditPostFragment : BasePostFragment() {
 
     }
 
-    private fun setSpinner(types: List<ThreadType>?) {
+    private fun setSpinnerType(types: List<ThreadType>?) {
         if (types == null || types.isEmpty()) {
-            binding.spinner.visibility = View.GONE
+            binding.spinnerType.visibility = View.GONE
             return
         } else {
-            binding.spinner.visibility = View.VISIBLE
+            binding.spinnerType.visibility = View.VISIBLE
         }
         val spinnerAdapter = SimpleSpinnerAdapter(context!!, types) { it?.typeName.toString() }
-        binding.spinner.adapter = spinnerAdapter
+        binding.spinnerType.adapter = spinnerAdapter
+    }
+
+    private fun setSpinnerPerm(types: List<String>?) {
+        if (types == null || types.isEmpty()) {
+            binding.spinnerPerm.visibility = View.GONE
+            return
+        } else {
+            binding.spinnerPerm.visibility = View.VISIBLE
+        }
+        val spinnerAdapter = SimpleSpinnerAdapter(context!!, types) { it.toString() }
+        binding.spinnerPerm.adapter = spinnerAdapter
     }
 
     override fun isRequestDialogAccept(event: RequestDialogSuccessEvent): Boolean {

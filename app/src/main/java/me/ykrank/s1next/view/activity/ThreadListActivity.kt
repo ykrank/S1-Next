@@ -179,7 +179,7 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
 
     private fun init() {
         mS1Service.getNewThreadInfo(forum.id.toInt())
-                .map<List<ThreadType>>(ThreadType::fromXmlString)
+                .map<List<ThreadType>>(ThreadType.Companion::fromXmlString)
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
                 .subscribe({

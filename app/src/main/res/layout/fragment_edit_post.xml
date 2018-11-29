@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.ykrank.s1next.view.fragment.EditPostFragment">
 
@@ -13,35 +14,52 @@
             type="boolean" />
     </data>
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/spinner_type"
             style="@style/Widget.AppCompat.Spinner.Underlined"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:visibility="@{host?View.VISIBLE:View.GONE}" />
+            android:visibility="@{host?View.VISIBLE:View.GONE}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/spinner_perm"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/spinner_perm"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:dropDownWidth="56dp"
+            android:visibility="@{host?View.VISIBLE:View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/spinner_type" />
 
         <EditText
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
             android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
             android:gravity="start"
             android:hint="@string/prompt_title"
             android:imeOptions="flagNoFullscreen"
             android:inputType="text"
-            android:visibility="@{host?View.VISIBLE:View.GONE}" />
-
+            android:visibility="@{host?View.VISIBLE:View.GONE}"
+            app:layout_constraintTop_toBottomOf="@id/spinner_type" />
 
         <include
             android:id="@+id/layout_post"
-            layout="@layout/fragment_post" />
-    </LinearLayout>
+            layout="@layout/fragment_post"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title" />
+    </android.support.constraint.ConstraintLayout>
 </layout>

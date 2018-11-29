@@ -137,7 +137,7 @@ class NewThreadFragment : BasePostFragment() {
 
     private fun init() {
         mS1Service.getNewThreadInfo(mForumId)
-                .map<List<ThreadType>>(ThreadType::fromXmlString)
+                .map<List<ThreadType>>(ThreadType.Companion::fromXmlString)
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
                 .subscribe({
