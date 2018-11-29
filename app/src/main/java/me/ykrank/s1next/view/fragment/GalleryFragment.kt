@@ -2,6 +2,7 @@ package me.ykrank.s1next.view.fragment
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.support.annotation.RequiresPermission
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.github.chrisbanes.photoview.PhotoView
 import com.github.ykrank.androidtools.ui.adapter.delegate.item.ProgressItem
@@ -38,7 +40,6 @@ import me.ykrank.s1next.viewmodel.ImageViewModel
 import me.ykrank.s1next.widget.track.event.ViewImageTrackEvent
 import okhttp3.HttpUrl
 import java.io.File
-import java.lang.Exception
 import javax.inject.Inject
 
 /**
@@ -52,6 +53,7 @@ class GalleryFragment : Fragment() {
 
     private lateinit var mPhotoView: PhotoView
     private lateinit var binding: FragmentGalleryBinding
+    private var preloadTarget: Target<Drawable>? = null
 
     @Inject
     internal lateinit var trackAgent: DataTrackAgent
@@ -71,6 +73,9 @@ class GalleryFragment : Fragment() {
         L.leaveMsg("GalleryActivity##url:$mImageUrl,thumb:$mImageThumbUrl")
 
         trackAgent.post(ViewImageTrackEvent(mImageUrl, mImageThumbUrl != null))
+
+        preload()
+
         binding.downloadPrefManager = mDownloadPrefManager
         binding.imageViewModel = ImageViewModel(mImageUrl, mImageThumbUrl)
 
@@ -123,6 +128,12 @@ class GalleryFragment : Fragment() {
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
+    }
+
+    private fun preload() {
+        preloadTarget = Glide.with(App.get())
+                .load(mImageUrl)
+                .preload()
     }
 
     @RequiresPermission(value = Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -181,6 +192,7 @@ class GalleryFragment : Fragment() {
     }
 
     private fun addProgressListener() {
+        //Avoid leak memory
         downloadId = mImageUrl?.let { String(it.toCharArray()) }
         downloadId?.also {
             ProgressManager.getInstance().addResponseListener(it, object : ProgressListener {
@@ -199,6 +211,7 @@ class GalleryFragment : Fragment() {
 
     override fun onDestroy() {
         downloadId = null
+        Glide.with(App.get()).clear(preloadTarget)
         super.onDestroy()
     }
 
