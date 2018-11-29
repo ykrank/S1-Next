@@ -22,10 +22,7 @@ import me.ykrank.s1next.view.activity.AppPostListActivity
 import me.ykrank.s1next.view.activity.PostListActivity
 import me.ykrank.s1next.view.activity.UserHomeActivity
 import me.ykrank.s1next.view.activity.WebViewActivity
-import me.ykrank.s1next.view.event.EditPostEvent
-import me.ykrank.s1next.view.event.QuoteEvent
-import me.ykrank.s1next.view.event.RateEvent
-import me.ykrank.s1next.view.event.VotePostEvent
+import me.ykrank.s1next.view.event.*
 import me.ykrank.s1next.view.internal.BlacklistMenuAction
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 import org.apache.commons.lang3.StringUtils
@@ -128,6 +125,10 @@ class PostViewModel(private val rxBus: RxBus, private val user: User) {
                     onEditClick(v)
                     return@setOnMenuItemClickListener true
                 }
+                R.id.menu_popup_report -> {
+                    onReportClick(v)
+                    return@setOnMenuItemClickListener true
+                }
                 else -> return@setOnMenuItemClickListener false
             }
         }
@@ -151,6 +152,14 @@ class PostViewModel(private val rxBus: RxBus, private val user: User) {
         val pid = post.get()?.id?.toString()
         if (tid != null && pid != null) {
             rxBus.post(RateEvent(tid, pid))
+        }
+    }
+
+    fun onReportClick(v: View) {
+        val tid = thread.get()?.id
+        val pid = post.get()?.id?.toString()
+        if (tid != null && pid != null) {
+            rxBus.post(ReportEvent(tid, pid))
         }
     }
 

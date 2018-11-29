@@ -104,7 +104,7 @@ class NewRateFragment : BaseFragment() {
         s1Service.getRatePreInfo(threadId, postID, System.currentTimeMillis())
                 .map<RatePreInfo> { RatePreInfo.fromHtml(it) }
                 .compose(RxJavaUtil.iOSingleTransformer())
-                .to<SingleSubscribeProxy<RatePreInfo>>(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
+                .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
                 .subscribe({ info ->
                     ratePreInfo = info
                     if (!TextUtils.isEmpty(info.alertError)) {

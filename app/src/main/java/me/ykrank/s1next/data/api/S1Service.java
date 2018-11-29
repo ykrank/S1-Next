@@ -1,6 +1,7 @@
 package me.ykrank.s1next.data.api;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Single;
 import me.ykrank.s1next.data.api.model.Profile;
@@ -14,6 +15,7 @@ import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper;
 import retrofit2.Response;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -146,6 +148,13 @@ public interface S1Service {
     @POST(ApiHome.URL_RATE)
     Single<String> rate(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("pid") String postId
             , @Field("referer") String refer, @Field("handlekey") String handleKey, @Field("score1") String score, @Field("reason") String reason);
+
+    @GET(ApiHome.URL_REPORT_PRE)
+    Single<String> getReportPreInfo(@Query("tid") String threadId, @Query("rid") String postId, @Query("t") long timestamp);
+
+    @FormUrlEncoded
+    @POST(ApiHome.URL_REPORT)
+    Single<String> report(@FieldMap Map<String, String> fields);
 
     @GET(ApiMember.URL_AUTO_SIGN)
     Single<String> autoSign(@Query("formhash") String authenticityToken);

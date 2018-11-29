@@ -456,6 +456,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                             .toObservable()
                 }
                 .compose(RxJavaUtil.iOTransformer())
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
                 .subscribe({
                     val pid = it.first
                     val rates = it.second

@@ -50,5 +50,16 @@ class HtmlDataWrapper {
                 throw ApiException.ApiServerException(errorElements.text())
             }
         }
+
+        /**
+         * Check if server alert in ajax
+         */
+        @Throws(ApiException.ApiServerException::class)
+        fun preAlertAjaxHtml(document: Document) {
+            val errorElements = document.select("div.alert_error")
+            if (errorElements.size > 0) {
+                throw ApiException.ApiServerException(errorElements[0].text())
+            }
+        }
     }
 }

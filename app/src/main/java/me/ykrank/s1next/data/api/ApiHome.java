@@ -37,4 +37,8 @@ public class ApiHome {
     //Rate
     static final String URL_RATE_PRE = Api.BASE_URL + "forum.php?mod=misc&action=rate&infloat=yes&handlekey=rate&inajax=1&ajaxtarget=fwin_content_rate";
     static final String URL_RATE = Api.BASE_URL + "forum.php?mod=misc&action=rate&ratesubmit=yes&infloat=yes&inajax=1";
+
+    //Report
+    static final String URL_REPORT_PRE = Api.BASE_URL + "misc.php?mod=report&rtype=post&rid=41759641&tid=1793919&t=1543462376208&inajax=1";
+    static final String URL_REPORT = Api.BASE_URL + "misc.php?mod=report&inajax=1";
 }

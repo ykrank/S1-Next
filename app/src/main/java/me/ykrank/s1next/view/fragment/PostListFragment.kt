@@ -36,10 +36,7 @@ import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager
 import me.ykrank.s1next.util.IntentUtil
-import me.ykrank.s1next.view.activity.BaseActivity
-import me.ykrank.s1next.view.activity.EditPostActivity
-import me.ykrank.s1next.view.activity.NewRateActivity
-import me.ykrank.s1next.view.activity.ReplyActivity
+import me.ykrank.s1next.view.activity.*
 import me.ykrank.s1next.view.dialog.*
 import me.ykrank.s1next.view.event.*
 import me.ykrank.s1next.view.internal.PagerScrollState
@@ -148,6 +145,11 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                 .ofType(RateEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe { event -> startRateActivity(event.threadId, event.postId) }
+        mRxBus.get()
+                .ofType(ReportEvent::class.java)
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
+                .subscribe { event -> startReportActivity(event.threadId, event.postId) }
+
         mRxBus.get()
                 .ofType(EditPostEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
@@ -431,7 +433,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                 quotePostId, quotePostCount)
     }
 
-    private fun startRateActivity(threadId: String?, postId: String?) {
+    private fun startRateActivity(threadId: String, postId: String) {
         val fm = fragmentManager ?: return
         val activity = activity ?: return
         if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(fm, mUser)) {
@@ -439,6 +441,16 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         }
 
         NewRateActivity.start(activity, threadId, postId)
+    }
+
+    private fun startReportActivity(threadId: String, postId: String) {
+        val fm = fragmentManager ?: return
+        val activity = activity ?: return
+        if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(fm, mUser)) {
+            return
+        }
+
+        NewReportActivity.start(activity, threadId, postId)
     }
 
     private fun saveHistory() {

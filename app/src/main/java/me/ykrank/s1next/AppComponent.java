@@ -55,6 +55,7 @@ import me.ykrank.s1next.view.fragment.GalleryFragment;
 import me.ykrank.s1next.view.fragment.HistoryListFragment;
 import me.ykrank.s1next.view.fragment.ImageUploadFragment;
 import me.ykrank.s1next.view.fragment.NewRateFragment;
+import me.ykrank.s1next.view.fragment.NewReportFragment;
 import me.ykrank.s1next.view.fragment.NewThreadFragment;
 import me.ykrank.s1next.view.fragment.NoteFragment;
 import me.ykrank.s1next.view.fragment.PmFragment;
@@ -237,11 +238,13 @@ public interface AppComponent {
 
     void inject(ForumFragment fragment);
 
-    void inject(@NotNull BaseViewPagerFragment baseViewPagerFragment);
+    void inject(BaseViewPagerFragment baseViewPagerFragment);
 
-    void inject(@NotNull AppActivityLifecycleCallbacks appActivityLifecycleCallbacks);
+    void inject(AppActivityLifecycleCallbacks appActivityLifecycleCallbacks);
 
-    void inject(@NotNull ThreadListPagerFragment fragment);
+    void inject(ThreadListPagerFragment fragment);
 
-    void inject(@NotNull ImageUploadFragment fragment);
+    void inject(ImageUploadFragment fragment);
+
+    void inject(NewReportFragment fragment);
 }
