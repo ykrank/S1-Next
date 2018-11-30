@@ -28,8 +28,8 @@ public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter {
         addAdapterDelegate(new FooterProgressAdapterDelegate(context));
     }
 
-    public void setThreadInfo(@NonNull Thread threadInfo) {
-        postAdapterDelegate.setThreadInfo(threadInfo);
+    public void setThreadInfo(@NonNull Thread threadInfo, int pageNum) {
+        postAdapterDelegate.setThreadInfo(threadInfo, pageNum);
     }
 
     public void setVoteInfo(@Nullable Vote voteInfo) {

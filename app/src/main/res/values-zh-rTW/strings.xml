@@ -394,4 +394,6 @@
     <string name="strike_through">刪除線</string>
     <string name="menu_report">舉報</string>
     <string name="title_new_report">舉報</string>
+    <string name="report_msg_hint">舉報理由</string>
+    <string name="error_reason_required">請填寫理由</string>
 </resources>

@@ -2,6 +2,7 @@ package me.ykrank.s1next.viewmodel
 
 import android.databinding.Observable
 import android.databinding.ObservableField
+import android.databinding.ObservableInt
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.PopupMenu
 import android.text.Spannable
@@ -33,6 +34,7 @@ class PostViewModel(private val rxBus: RxBus, private val user: User) {
     val thread = ObservableField<Thread>()
     val vote = ObservableField<Vote>()
     val floor = ObservableField<CharSequence>()
+    val pageNum = ObservableInt()
 
     private val postFloor: CharSequence?
         get() {
@@ -159,7 +161,7 @@ class PostViewModel(private val rxBus: RxBus, private val user: User) {
         val tid = thread.get()?.id
         val pid = post.get()?.id?.toString()
         if (tid != null && pid != null) {
-            rxBus.post(ReportEvent(tid, pid))
+            rxBus.post(ReportEvent(tid, pid, pageNum.get()))
         }
     }
 

@@ -148,7 +148,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         mRxBus.get()
                 .ofType(ReportEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
-                .subscribe { event -> startReportActivity(event.threadId, event.postId) }
+                .subscribe { event -> startReportActivity(event.threadId, event.postId, event.pageNum) }
 
         mRxBus.get()
                 .ofType(EditPostEvent::class.java)
@@ -443,14 +443,14 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         NewRateActivity.start(activity, threadId, postId)
     }
 
-    private fun startReportActivity(threadId: String, postId: String) {
+    private fun startReportActivity(threadId: String, postId: String, pageNum: Int) {
         val fm = fragmentManager ?: return
         val activity = activity ?: return
         if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(fm, mUser)) {
             return
         }
 
-        NewReportActivity.start(activity, threadId, postId)
+        NewReportActivity.start(activity, threadId, postId, pageNum)
     }
 
     private fun saveHistory() {

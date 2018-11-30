@@ -154,7 +154,7 @@ public interface S1Service {
 
     @FormUrlEncoded
     @POST(ApiHome.URL_REPORT)
-    Single<String> report(@FieldMap Map<String, String> fields);
+    Single<String> report(@FieldMap Map<String, String> fields, @Field("report_select") String report, @Field("message") String msg);
 
     @GET(ApiMember.URL_AUTO_SIGN)
     Single<String> autoSign(@Query("formhash") String authenticityToken);

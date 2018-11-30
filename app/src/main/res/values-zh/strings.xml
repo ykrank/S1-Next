@@ -203,4 +203,6 @@
     <string name="strike_through">删除线</string>
     <string name="menu_report">举报</string>
     <string name="title_new_report">举报</string>
+    <string name="report_msg_hint">举报理由</string>
+    <string name="error_reason_required">请填写理由</string>
 </resources>

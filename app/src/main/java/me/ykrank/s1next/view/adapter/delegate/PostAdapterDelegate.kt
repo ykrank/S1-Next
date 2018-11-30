@@ -39,6 +39,7 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
     private var threadInfo: Thread? = null
     private var voteInfo: Vote? = null
+    private var pageNum: Int = 1
 
     init {
         App.appComponent.inject(this)
@@ -83,6 +84,7 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
 
         binding.postViewModel?.let {
             it.thread.set(threadInfo)
+            it.pageNum.set(pageNum)
             it.post.set(post)
 
             if ("1" == post.count) {
@@ -146,8 +148,9 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
         }
     }
 
-    fun setThreadInfo(threadInfo: Thread) {
+    fun setThreadInfo(threadInfo: Thread, pageNum: Int) {
         this.threadInfo = threadInfo
+        this.pageNum = pageNum
     }
 
     fun setVoteInfo(voteInfo: Vote?) {

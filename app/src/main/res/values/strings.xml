@@ -265,4 +265,6 @@
     <string name="link">Link</string>
     <string name="strike_through">StrikeThrough</string>
     <string name="title_new_report">Report</string>
+    <string name="report_msg_hint">Report reason</string>
+    <string name="error_reason_required">Please write reason</string>
 </resources>

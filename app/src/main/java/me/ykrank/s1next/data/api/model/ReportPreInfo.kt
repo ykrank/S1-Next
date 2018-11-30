@@ -8,13 +8,13 @@ import org.jsoup.Jsoup
 
 class ReportPreInfo {
 
-    val reason: List<String> = listOf("广告垃圾", "违规内容", "恶意灌水", "重复发帖")
+    val reason: List<String> = listOf("广告垃圾", "违规内容", "恶意灌水", "重复发帖", "其他")
     var fields: Map<String, String> = hashMapOf()
 
     companion object {
 
         @Throws
-        fun fromHtml(html: String): ReportPreInfo {
+        fun fromHtml(tid: String?, pageNum: Int, html: String): ReportPreInfo {
             var html = html
             val info = ReportPreInfo()
             //remove html wrap
@@ -27,6 +27,13 @@ class ReportPreInfo {
                 val input = document.select("input")
                 input.forEach {
                     fields[it.attr("name")] = it.attr("value")
+                }
+
+                if (!tid.isNullOrEmpty()) {
+                    val refer = fields["referer"]
+                    if (refer != null) {
+                        fields["referer"] = refer.replaceFirst("/./", "/thread-$tid-$pageNum-1.html")
+                    }
                 }
 
                 info.fields = fields

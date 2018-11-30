@@ -378,7 +378,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
 
             //Thread info must not null, or exception
             val postListInfo = posts.postListInfo as Thread
-            mRecyclerAdapter.setThreadInfo(postListInfo)
+            mRecyclerAdapter.setThreadInfo(postListInfo, mPageNum)
 
             posts.vote?.let {
                 mRecyclerAdapter.setVoteInfo(it)
