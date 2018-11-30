@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import com.github.ykrank.androidtools.ui.adapter.delegate.item.FooterItem
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.MathUtil
 import io.reactivex.Single
@@ -97,9 +98,17 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
         super.onNext(data)
         val pms = data.data
         pms.pmList?.let {
-            mRecyclerAdapter.diffNewDataSet(it, false)
             // update total page
             val totalPage = MathUtil.divide(pms.total, pms.pmPerPage)
+
+            //Add footer
+            if (pageNum == totalPage) {
+                val d = arrayListOf<Any>()
+                d.addAll(it)
+                d.add(FooterItem())
+                mRecyclerAdapter.diffNewDataSet(d, false)
+            }
+
             setTotalPages(totalPage)
             //if this is first page and total page > 1, then load more
             if (pageNum == 1 && totalPage > 1) {
