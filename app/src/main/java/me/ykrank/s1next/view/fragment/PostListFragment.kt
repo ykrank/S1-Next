@@ -87,7 +87,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         val authorId = bundle.getString(ARG_AUTHOR_ID)
         // thread title is null if this thread comes from ThreadLink
         mThreadTitle = thread.title
-        mThreadId = thread.id
+        mThreadId = thread.id!!
         trackAgent.post(ViewThreadTrackEvent(mThreadTitle, mThreadId))
         L.leaveMsg("PostListFragment##ThreadTitle:$mThreadTitle,ThreadId:$mThreadId")
 

@@ -7,7 +7,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import com.github.ykrank.androidtools.guava.Preconditions
 import com.github.ykrank.androidtools.ui.LibBaseViewPagerFragment
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.MathUtil
@@ -29,9 +28,9 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val forum = Preconditions.checkNotNull(arguments!!.getParcelable<Forum>(ARG_FORUM))
+        val forum = arguments!!.getParcelable(ARG_FORUM) as Forum
         mForumName = forum.name
-        mForumId = forum.id
+        mForumId = forum.id!!
         L.leaveMsg("ThreadListFragment##ForumName:$mForumName,ForumId:$mForumId")
 
         if (savedInstanceState == null) {

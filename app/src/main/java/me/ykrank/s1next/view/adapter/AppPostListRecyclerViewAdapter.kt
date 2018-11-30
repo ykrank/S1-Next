@@ -18,7 +18,6 @@ class AppPostListRecyclerViewAdapter(activity: Activity, quotePid: String?) : Ba
 
     init {
         addAdapterDelegate(postAdapterDelegate)
-        addAdapterDelegate(FooterProgressAdapterDelegate(activity))
     }
 
     fun setThreadInfo(threadInfo: AppThread) {

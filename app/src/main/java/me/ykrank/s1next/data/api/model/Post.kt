@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.JsonNode
+import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.SameItem
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.MathUtil
@@ -17,7 +18,6 @@ import me.ykrank.s1next.data.db.BlackListDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.util.JsonUtil
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Element
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 import java.util.*
@@ -25,7 +25,7 @@ import java.util.regex.Pattern
 
 @PaperParcel
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Post : PaperParcelable, Cloneable, SameItem {
+class Post : PaperParcelable, Cloneable, SameItem, StableIdModel {
 
     @JsonProperty("pid")
     var id: Int = 0
@@ -84,6 +84,9 @@ class Post : PaperParcelable, Cloneable, SameItem {
             this.reply = processAttachment()
         }
     }
+
+    override val stableId: Long
+        get() = id.toLong()
 
     public override fun clone(): Post {
         var o: Post? = null

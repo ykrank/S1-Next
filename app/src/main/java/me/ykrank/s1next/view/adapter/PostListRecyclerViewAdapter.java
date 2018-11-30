@@ -25,7 +25,6 @@ public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
         postAdapterDelegate = new PostAdapterDelegate(fragment, context);
         addAdapterDelegate(postAdapterDelegate);
-        addAdapterDelegate(new FooterProgressAdapterDelegate(context));
     }
 
     public void setThreadInfo(@NonNull Thread threadInfo, int pageNum) {

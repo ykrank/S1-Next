@@ -1,17 +1,19 @@
 package me.ykrank.s1next.data.api.model
 
-import android.os.Parcel
-import android.os.Parcelable
 import com.fasterxml.jackson.annotation.*
 import com.github.ykrank.androidtools.guava.Objects
+import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.SameItem
+import paperparcel.PaperParcel
+import paperparcel.PaperParcelable
 import java.util.regex.Pattern
 
 /**
  * Created by ykrank on 2017/1/5.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Note : Parcelable, SameItem {
+@PaperParcel
+class Note : PaperParcelable, SameItem, StableIdModel {
     @JsonProperty("author")
     var author: String? = null
     @JsonProperty("authorid")
@@ -46,17 +48,6 @@ class Note : Parcelable, SameItem {
         }
     }
 
-    constructor(`in`: Parcel) {
-        author = `in`.readString()
-        authorId = `in`.readString()
-        dateline = `in`.readLong()
-        id = `in`.readString()
-        isNew = `in`.readByte().toInt() != 0
-        note = `in`.readString()
-        url = `in`.readString()
-        content = `in`.readString()
-    }
-
     fun isNew(): Boolean {
         return isNew
     }
@@ -68,21 +59,6 @@ class Note : Parcelable, SameItem {
     @JsonSetter("new")
     fun setNew(aNew: Int) {
         isNew = aNew > 0
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeString(author)
-        dest.writeString(authorId)
-        dest.writeLong(dateline)
-        dest.writeString(id)
-        dest.writeByte((if (isNew) 1 else 0).toByte())
-        dest.writeString(note)
-        dest.writeString(url)
-        dest.writeString(content)
     }
 
     override fun isSameItem(o: Any): Boolean {
@@ -120,14 +96,10 @@ class Note : Parcelable, SameItem {
         return result
     }
 
-    companion object CREATOR : Parcelable.Creator<Note> {
-        override fun createFromParcel(parcel: Parcel): Note {
-            return Note(parcel)
-        }
+    companion object {
 
-        override fun newArray(size: Int): Array<Note?> {
-            return arrayOfNulls(size)
-        }
+        @JvmField
+        val CREATOR = PaperParcelNote.CREATOR
     }
 
 }

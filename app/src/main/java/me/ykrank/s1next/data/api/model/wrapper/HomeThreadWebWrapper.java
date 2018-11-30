@@ -31,7 +31,7 @@ public class HomeThreadWebWrapper {
             HtmlDataWrapper.Companion.preTreatHtml(document);
             Elements elements = document.select("#delform tr");
             for (int i = 1; i < elements.size(); i++) {
-                HomeThread homeThread = HomeThread.fromHtmlElement(elements.get(i));
+                HomeThread homeThread = HomeThread.Companion.fromHtmlElement(elements.get(i));
                 if (homeThread != null) {
                     threads.add(homeThread);
                 }

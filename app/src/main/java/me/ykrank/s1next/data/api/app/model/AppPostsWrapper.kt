@@ -1,7 +1,5 @@
 package me.ykrank.s1next.data.api.app.model
 
-import android.os.Parcel
-import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonGetter
 import com.fasterxml.jackson.annotation.JsonIgnore
@@ -10,6 +8,7 @@ import com.github.ykrank.androidtools.ui.adapter.model.SameItem
 import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.data.db.BlackListDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.BlackList
+import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 import java.util.*
 import java.util.regex.Pattern
@@ -67,6 +66,7 @@ class AppPostsWrapper() : AppListWrapper<AppPost>() {
     }
 }
 
+@PaperParcel
 class AppPost() : PaperParcelable, Cloneable, SameItem {
     @JsonProperty("pid")
     var pid: Int = 0
@@ -108,27 +108,6 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
     var trade: Boolean = false
     @JsonIgnore
     var extraHtml: String? = null
-
-    constructor(parcel: Parcel) : this() {
-        pid = parcel.readInt()
-        fid = parcel.readInt()
-        tid = parcel.readInt()
-        author = parcel.readString()
-        authorId = parcel.readInt()
-        dateline = parcel.readLong()
-        status = parcel.readInt()
-        position = parcel.readInt()
-        blocked = parcel.readByte() != 0.toByte()
-        e = parcel.readInt()
-        customStatus = parcel.readString()
-        groupTitle = parcel.readString()
-        groupId = parcel.readInt()
-        avatarUrl = parcel.readString()
-        hide = parcel.readByte() != 0.toByte()
-        remark = parcel.readString()
-        trade = parcel.readByte() != 0.toByte()
-        extraHtml = parcel.readString()
-    }
 
     @JsonCreator
     constructor(@JsonProperty("message") message: String?) : this() {
@@ -242,13 +221,13 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
                 if (!avMatcher.find()) {
                     continue
                 }
-                val avNum = Integer.valueOf(avMatcher.group().substring(6))!!
+                val avNum = Integer.valueOf(avMatcher.group().substring(6))
                 //find page
                 var page = 1
                 val pagePattern = Pattern.compile("\\{,=page\\}[0-9]+")
                 val pageMatcher = pagePattern.matcher(content)
                 if (pageMatcher.find()) {
-                    page = Integer.valueOf(pageMatcher.group().substring(8))!!
+                    page = Integer.valueOf(pageMatcher.group().substring(8))
                 }
 
                 //like "<bilibili>http://www.bilibili.com/video/av6706141/index_3.html</bilibili>"
@@ -277,32 +256,6 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
 
     override public fun clone(): AppPost {
         return super.clone() as AppPost
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        super.writeToParcel(parcel, flags)
-        parcel.writeInt(pid)
-        parcel.writeInt(fid)
-        parcel.writeInt(tid)
-        parcel.writeString(author)
-        parcel.writeInt(authorId)
-        parcel.writeLong(dateline)
-        parcel.writeInt(status)
-        parcel.writeInt(position)
-        parcel.writeByte(if (blocked) 1 else 0)
-        parcel.writeInt(e)
-        parcel.writeString(customStatus)
-        parcel.writeString(groupTitle)
-        parcel.writeInt(groupId)
-        parcel.writeString(avatarUrl)
-        parcel.writeByte(if (hide) 1 else 0)
-        parcel.writeString(remark)
-        parcel.writeByte(if (trade) 1 else 0)
-        parcel.writeString(extraHtml)
-    }
-
-    override fun describeContents(): Int {
-        return 0
     }
 
     override fun equals(other: Any?): Boolean {
@@ -355,15 +308,9 @@ class AppPost() : PaperParcelable, Cloneable, SameItem {
         return result
     }
 
-    companion object CREATOR : Parcelable.Creator<AppPost> {
-        override fun createFromParcel(parcel: Parcel): AppPost {
-            return AppPost(parcel)
-        }
-
-        override fun newArray(size: Int): Array<AppPost?> {
-            return arrayOfNulls(size)
-        }
+    companion object {
+        @JvmField
+        val CREATOR = PaperParcelAppPost.CREATOR
     }
-
 
 }

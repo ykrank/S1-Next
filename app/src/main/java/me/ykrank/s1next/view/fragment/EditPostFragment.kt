@@ -111,7 +111,7 @@ class EditPostFragment : BasePostFragment() {
     }
 
     private fun init() {
-        mS1Service.getEditPostInfo(mThread.fid.toInt(), mThread.id.toInt(), mPost.id)
+        mS1Service.getEditPostInfo(mThread.fid!!.toInt(), mThread.id!!.toInt(), mPost.id)
                 .map<PostEditor> { PostEditor.fromHtml(it) }
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))

@@ -111,7 +111,7 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
             mRecyclerAdapter.diffNewDataSet(threads.threadList, true)
 
             // update total page
-            mPagerCallback?.setTotalPageByThreads(threads.threadListInfo.threads)
+            mPagerCallback?.setTotalPageByThreads(threads.threadListInfo?.threads ?: 0)
 
             if (!threads.subForumList.isEmpty()) {
                 mSubForumsCallback?.setupSubForums(threads.subForumList)

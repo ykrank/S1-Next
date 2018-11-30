@@ -63,7 +63,7 @@ public final class PmGroups extends Account {
     public boolean hasNew() {
         if (pmGroupList != null && !pmGroupList.isEmpty()) {
             for (PmGroup pmGroup : pmGroupList) {
-                if (pmGroup.getIsNew()) {
+                if (pmGroup.isNew()) {
                     return true;
                 }
             }

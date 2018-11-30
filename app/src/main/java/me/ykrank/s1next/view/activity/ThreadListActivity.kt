@@ -70,7 +70,7 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
             return
         }
         this.forum = forum
-        trackAgent.post(ViewForumTrackEvent(forum.id, forum.name))
+        trackAgent.post(ViewForumTrackEvent(forum.id!!, forum.name!!))
         L.leaveMsg("ThreadListActivity##forum:$forum")
 
         if (savedInstanceState == null) {
@@ -178,7 +178,7 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
     }
 
     private fun init() {
-        mS1Service.getNewThreadInfo(forum.id.toInt())
+        mS1Service.getNewThreadInfo(forum.id!!.toInt())
                 .map<List<ThreadType>>(ThreadType.Companion::fromXmlString)
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))

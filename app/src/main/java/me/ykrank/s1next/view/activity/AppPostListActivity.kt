@@ -40,7 +40,7 @@ class AppPostListActivity : BaseActivity(), AppPostListPagerFragment.PagerCallba
             val pageNum = intent.getIntExtra(ARG_PAGE_NUM, 1)
             val postId = intent.getStringExtra(ARG_QUOTE_POST_ID)
 
-            fragment = AppPostListPagerFragment.newInstance(thread.id, pageNum, postId)
+            fragment = AppPostListPagerFragment.newInstance(thread.id!!, pageNum, postId)
             supportFragmentManager.beginTransaction().add(R.id.frame_layout, fragment,
                     AppPostListPagerFragment.TAG).commit()
         }

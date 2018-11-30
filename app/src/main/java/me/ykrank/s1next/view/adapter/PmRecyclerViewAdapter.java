@@ -2,8 +2,6 @@ package me.ykrank.s1next.view.adapter;
 
 import android.app.Activity;
 
-import com.github.ykrank.androidtools.ui.adapter.delegate.FooterProgressAdapterDelegate;
-
 import me.ykrank.s1next.view.adapter.delegate.PmLeftAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmRightAdapterDelegate;
 
@@ -14,6 +12,5 @@ public final class PmRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
         addAdapterDelegate(new PmLeftAdapterDelegate(activity));
         addAdapterDelegate(new PmRightAdapterDelegate(activity));
-        addAdapterDelegate(new FooterProgressAdapterDelegate(activity));
     }
 }

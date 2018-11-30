@@ -183,10 +183,10 @@ class PostViewModel(private val rxBus: RxBus, private val user: User) {
     }
 
     fun onVoteClick(v: View) {
-        val t = thread.get()
+        val tid = thread.get()?.id
         val vo = vote.get()
-        if (t != null && vo != null) {
-            rxBus.post(VotePostEvent(t.id, vo))
+        if (tid != null && vo != null) {
+            rxBus.post(VotePostEvent(tid, vo))
         }
     }
 

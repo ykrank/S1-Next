@@ -31,7 +31,7 @@ class EditPostRequestDialogFragment : BaseRequestDialogFragment<String>() {
 
         val saveAsDraft = if (BuildConfig.DEBUG && mPost.isFirst) 1 else null
         return flatMappedWithAuthenticityToken { token ->
-            mS1Service.editPost(mThread.fid.toInt(), mThread.id.toInt(), mPost.id, token, System.currentTimeMillis(),
+            mS1Service.editPost(mThread.fid!!.toInt(), mThread.id!!.toInt(), mPost.id, token, System.currentTimeMillis(),
                     typeId, title, message, 1, 1, saveAsDraft, readPerm)
         }
     }

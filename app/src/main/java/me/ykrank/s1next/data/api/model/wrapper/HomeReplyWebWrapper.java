@@ -36,12 +36,12 @@ public class HomeReplyWebWrapper {
                 Element element = elements.get(i);
                 int childSize = element.children().size();
                 if (childSize >= 5) {
-                    HomeThread homeThread = HomeThread.fromHtmlElement(element);
+                    HomeThread homeThread = HomeThread.Companion.fromHtmlElement(element);
                     if (homeThread != null) {
                         replyItems.add(homeThread);
                     }
                 } else if (childSize >= 1) {
-                    HomeReply homeReply = HomeReply.fromHtmlElement(element);
+                    HomeReply homeReply = HomeReply.Companion.fromHtmlElement(element);
                     if (homeReply != null) {
                         replyItems.add(homeReply);
                     }
