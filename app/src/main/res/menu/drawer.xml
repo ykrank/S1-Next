@@ -25,6 +25,11 @@
             android:id="@+id/menu_history"
             android:icon="@drawable/ic_history_black_24dp"
             android:title="@string/histories" />
+
+        <item
+            android:id="@+id/menu_dark_room"
+            android:icon="@drawable/ic_block_black_24dp"
+            android:title="@string/dark_room" />
     </group>
     <group android:id="@+id/sub_header">
         <item

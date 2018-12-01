@@ -9,6 +9,7 @@ import me.ykrank.s1next.data.api.model.collection.Favourites;
 import me.ykrank.s1next.data.api.model.collection.Friends;
 import me.ykrank.s1next.data.api.model.collection.Notes;
 import me.ykrank.s1next.data.api.model.collection.PmGroups;
+import me.ykrank.s1next.data.api.model.darkroom.DarkRoomWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
@@ -166,4 +167,7 @@ public interface S1Service {
 
     @GET(ApiForum.URL_RATE_LIST)
     Single<String> getRates(@Query("tid") String threadId, @Query("pid") String postId);
+
+    @GET(Api.URL_DARK_ROOM)
+    Single<DarkRoomWrapper> getDarkRoom(@Query("cid") String cid);
 }

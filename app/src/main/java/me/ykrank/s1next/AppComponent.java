@@ -48,6 +48,7 @@ import me.ykrank.s1next.view.fragment.AppPostListPagerFragment;
 import me.ykrank.s1next.view.fragment.BaseFragment;
 import me.ykrank.s1next.view.fragment.BasePostFragment;
 import me.ykrank.s1next.view.fragment.BaseViewPagerFragment;
+import me.ykrank.s1next.view.fragment.DarkRoomFragment;
 import me.ykrank.s1next.view.fragment.EditPostFragment;
 import me.ykrank.s1next.view.fragment.FavouriteListFragment;
 import me.ykrank.s1next.view.fragment.ForumFragment;
@@ -247,4 +248,6 @@ public interface AppComponent {
     void inject(ImageUploadFragment fragment);
 
     void inject(NewReportFragment fragment);
+
+    void inject(@NotNull DarkRoomFragment fragment);
 }

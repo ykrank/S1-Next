@@ -396,4 +396,6 @@
     <string name="title_new_report">舉報</string>
     <string name="report_msg_hint">舉報理由</string>
     <string name="error_reason_required">請填寫理由</string>
+    <string name="dark_room">小黑屋</string>
+    <string name="menu_new_pm">私信</string>
 </resources>

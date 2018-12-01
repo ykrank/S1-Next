@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="me.ykrank.s1next.widget.span.PostMovementMethod" />
+
+        <variable
+            name="model"
+            type="me.ykrank.s1next.viewmodel.DarkRoomViewModel" />
+    </data>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/item_padding_small"
+        android:paddingRight="@dimen/item_padding_small">
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/item_padding_small"
+            android:contentDescription="@string/avatar_content_desc"
+            android:onClick="@{model::onAvatarClick}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:uid="@{model.darkRoom.uid}"
+            tools:src="@drawable/ic_avatar_placeholder" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

@@ -267,4 +267,6 @@
     <string name="title_new_report">Report</string>
     <string name="report_msg_hint">Report reason</string>
     <string name="error_reason_required">Please write reason</string>
+    <string name="dark_room">Dark room</string>
+    <string name="menu_new_pm">Pm</string>
 </resources>

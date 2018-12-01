@@ -217,6 +217,10 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
+            android:name=".view.activity.DarkRoomActivity"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
             android:name=".view.activity.OpenSourceLicensesActivity"
             android:label="@string/open_source_licenses" />
 
