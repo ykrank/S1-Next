@@ -22,6 +22,5 @@ class SearchUserAdapterDelegate(context: Context) : BaseAdapterDelegate<UserSear
     override fun onBindViewHolderData(t: UserSearchResult, position: Int, holder: SimpleRecycleViewHolder<ItemSearchUserBinding>, payloads: List<Any>) {
         val binding = holder.binding
         binding.model?.search?.set(t)
-        binding.executePendingBindings()
     }
 }

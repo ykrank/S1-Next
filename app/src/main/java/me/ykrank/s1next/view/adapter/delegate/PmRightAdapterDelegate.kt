@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.ViewGroup
+import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
@@ -13,7 +14,7 @@ import me.ykrank.s1next.databinding.ItemPmRightBinding
 import me.ykrank.s1next.viewmodel.PmViewModel
 import javax.inject.Inject
 
-class PmRightAdapterDelegate(context: Context) : BaseAdapterDelegate<Pm, PmRightAdapterDelegate.BindingViewHolder>(context, Pm::class.java) {
+class PmRightAdapterDelegate(context: Context) : BaseAdapterDelegate<Pm, SimpleRecycleViewHolder<ItemPmRightBinding>>(context, Pm::class.java) {
 
     @Inject
     internal lateinit var user: User
@@ -33,13 +34,12 @@ class PmRightAdapterDelegate(context: Context) : BaseAdapterDelegate<Pm, PmRight
         val binding = DataBindingUtil.inflate<ItemPmRightBinding>(mLayoutInflater,
                 R.layout.item_pm_right, parent, false)
         binding.pmViewModel = PmViewModel()
-        return BindingViewHolder(binding)
+        return SimpleRecycleViewHolder<ItemPmRightBinding>(binding)
     }
 
-    override fun onBindViewHolderData(t: Pm, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
+    override fun onBindViewHolderData(t: Pm, position: Int, holder: SimpleRecycleViewHolder<ItemPmRightBinding>, payloads: List<Any>) {
         val binding = holder.binding
         binding.pmViewModel?.pm?.set(t)
-        binding.executePendingBindings()
     }
 
     /**
@@ -49,10 +49,9 @@ class PmRightAdapterDelegate(context: Context) : BaseAdapterDelegate<Pm, PmRight
      */
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
-        val binding = (holder as BindingViewHolder).binding
+        val binding = (holder as SimpleRecycleViewHolder<ItemPmRightBinding>).binding
         binding.tvMessage.isEnabled = false
         binding.tvMessage.isEnabled = true
     }
 
-    class BindingViewHolder(val binding: ItemPmRightBinding) : RecyclerView.ViewHolder(binding.root)
 }

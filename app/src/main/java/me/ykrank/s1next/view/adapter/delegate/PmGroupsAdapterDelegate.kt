@@ -4,6 +4,7 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
 import com.github.ykrank.androidtools.widget.RxBus
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -13,7 +14,7 @@ import me.ykrank.s1next.databinding.ItemPmGroupBinding
 import me.ykrank.s1next.viewmodel.PmGroupViewModel
 import javax.inject.Inject
 
-class PmGroupsAdapterDelegate(context: Context) : BaseAdapterDelegate<PmGroup, PmGroupsAdapterDelegate.BindingViewHolder>(context, PmGroup::class.java) {
+class PmGroupsAdapterDelegate(context: Context) : BaseAdapterDelegate<PmGroup, SimpleRecycleViewHolder<ItemPmGroupBinding>>(context, PmGroup::class.java) {
 
     @Inject
     lateinit var mRxBus: RxBus
@@ -31,14 +32,12 @@ class PmGroupsAdapterDelegate(context: Context) : BaseAdapterDelegate<PmGroup, P
         binding.model = PmGroupViewModel()
         binding.rxBus = mRxBus
         binding.user = mUser
-        return BindingViewHolder(binding)
+        return SimpleRecycleViewHolder<ItemPmGroupBinding>(binding)
     }
 
-    override fun onBindViewHolderData(t: PmGroup, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
+    override fun onBindViewHolderData(t: PmGroup, position: Int, holder: SimpleRecycleViewHolder<ItemPmGroupBinding>, payloads: List<Any>) {
         val binding = holder.binding
         binding.model?.pmGroup?.set(t)
-        binding.executePendingBindings()
     }
 
-    class BindingViewHolder(val binding: ItemPmGroupBinding) : RecyclerView.ViewHolder(binding.root)
 }

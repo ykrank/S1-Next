@@ -50,6 +50,7 @@ class NoteFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<Notes>>() {
             var newNotes: MutableList<Note>? = newData.data.noteList
             if (newNotes == null) {
                 newNotes = ArrayList()
+                newData.data.noteList = newNotes
             }
             if (oldNotes != null) {
                 newNotes.addAll(0, oldNotes)

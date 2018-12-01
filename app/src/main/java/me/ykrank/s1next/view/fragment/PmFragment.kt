@@ -33,8 +33,6 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
     private var toUid: String? = null
     private var toUsername: String? = null
 
-    private val pmId: String? = null
-
     override var dataId: String? = null
 
     override val recyclerViewAdapter: BaseRecyclerViewAdapter
@@ -123,6 +121,7 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
             var newPmGroups: MutableList<Pm>? = newData.data.pmList
             if (newPmGroups == null) {
                 newPmGroups = ArrayList()
+                newData.data.pmList = newPmGroups
             }
             if (oldPmGroups != null) {
                 newPmGroups.addAll(0, oldPmGroups)

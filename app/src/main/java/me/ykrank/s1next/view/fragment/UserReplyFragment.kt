@@ -8,7 +8,6 @@ import io.reactivex.Single
 import me.ykrank.s1next.data.api.model.wrapper.HomeReplyWebWrapper
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter
 import me.ykrank.s1next.view.adapter.HomeReplyRecyclerViewAdapter
-import java.util.*
 
 /**
  * Created by ykrank on 2017/2/4.
@@ -41,7 +40,8 @@ class UserReplyFragment : BaseLoadMoreRecycleViewFragment<HomeReplyWebWrapper>()
             val oldReplyItems = oldData.replyItems
             var newReplyItems: MutableList<HomeReplyWebWrapper.HomeReplyItem>? = newData.replyItems
             if (newReplyItems == null) {
-                newReplyItems = ArrayList<HomeReplyWebWrapper.HomeReplyItem>()
+                newReplyItems = arrayListOf()
+                newData.replyItems = newReplyItems
             }
             if (oldReplyItems != null) {
                 newReplyItems.addAll(0, oldReplyItems)

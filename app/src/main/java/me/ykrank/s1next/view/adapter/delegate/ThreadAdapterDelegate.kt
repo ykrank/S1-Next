@@ -4,6 +4,7 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.Thread
@@ -13,7 +14,8 @@ import me.ykrank.s1next.viewmodel.ThreadViewModel
 import me.ykrank.s1next.viewmodel.UserViewModel
 import javax.inject.Inject
 
-class ThreadAdapterDelegate(context: Context, private val forumId: String) : BaseAdapterDelegate<Thread, ThreadAdapterDelegate.BindingViewHolder>(context, Thread::class.java) {
+class ThreadAdapterDelegate(context: Context, private val forumId: String) :
+        BaseAdapterDelegate<Thread, SimpleRecycleViewHolder<ItemThreadBinding>>(context, Thread::class.java) {
 
     @Inject
     internal lateinit var mUserViewModel: UserViewModel
@@ -36,14 +38,12 @@ class ThreadAdapterDelegate(context: Context, private val forumId: String) : Bas
         binding.forumId = forumId
         binding.model = ThreadViewModel()
 
-        return BindingViewHolder(binding)
+        return SimpleRecycleViewHolder<ItemThreadBinding>(binding)
     }
 
-    override fun onBindViewHolderData(t: Thread, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
-        val binding = holder.itemThreadBinding
+    override fun onBindViewHolderData(t: Thread, position: Int, holder: SimpleRecycleViewHolder<ItemThreadBinding>, payloads: List<Any>) {
+        val binding = holder.binding
         binding.model?.thread?.set(t)
-        binding.executePendingBindings()
     }
 
-    class BindingViewHolder(internal val itemThreadBinding: ItemThreadBinding) : RecyclerView.ViewHolder(itemThreadBinding.root)
 }

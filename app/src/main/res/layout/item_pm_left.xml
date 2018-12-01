@@ -41,7 +41,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="@dimen/item_padding_small"
             android:contentDescription="@string/avatar_content_desc"
-            android:onClick="@{pmViewModel::onClick}"
+            android:onClick="@{pmViewModel::onAvatarClick}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_time"
             app:uid="@{pmViewModel.pm.authorId}"

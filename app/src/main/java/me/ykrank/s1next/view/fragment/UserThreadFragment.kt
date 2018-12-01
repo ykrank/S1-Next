@@ -9,7 +9,6 @@ import me.ykrank.s1next.data.api.model.HomeThread
 import me.ykrank.s1next.data.api.model.wrapper.HomeThreadWebWrapper
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter
 import me.ykrank.s1next.view.adapter.HomeThreadRecyclerViewAdapter
-import java.util.*
 
 /**
  * Created by ykrank on 2017/2/4.
@@ -42,7 +41,8 @@ class UserThreadFragment : BaseLoadMoreRecycleViewFragment<HomeThreadWebWrapper>
             val oldThreads = oldData.threads
             var newThreads: MutableList<HomeThread>? = newData.threads
             if (newThreads == null) {
-                newThreads = ArrayList()
+                newThreads = arrayListOf()
+                newData.threads = newThreads
             }
             if (oldThreads != null) {
                 newThreads.addAll(0, oldThreads)

@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import com.github.ykrank.androidlifecycle.AndroidLifeCycle
 import com.github.ykrank.androidtools.ui.adapter.simple.BindViewHolderCallback
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
+import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
 import com.github.ykrank.androidtools.widget.RxBus
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -29,7 +30,7 @@ import me.ykrank.s1next.widget.span.PostMovementMethod
 import javax.inject.Inject
 
 class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
-        BaseAdapterDelegate<Post, PostAdapterDelegate.ItemViewBindingHolder>(context, Post::class.java) {
+        BaseAdapterDelegate<Post, SimpleRecycleViewHolder<ItemPostBinding>>(context, Post::class.java) {
 
     @Inject
     internal lateinit var mRxBus: RxBus
@@ -71,11 +72,11 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
         val selectable = mGeneralPreferencesManager.isPostSelectable
         setTextSelectable(binding, selectable)
 
-        return ItemViewBindingHolder(binding)
+        return SimpleRecycleViewHolder<ItemPostBinding>(binding)
     }
 
-    override fun onBindViewHolderData(post: Post, position: Int, holder: ItemViewBindingHolder, payloads: List<Any>) {
-        val binding = holder.itemPostBinding
+    override fun onBindViewHolderData(post: Post, position: Int, holder: SimpleRecycleViewHolder<ItemPostBinding>, payloads: List<Any>) {
+        val binding = holder.binding
 
         val selectable = mGeneralPreferencesManager.isPostSelectable
         if (selectable != binding.tvReply.isTextSelectable) {
@@ -138,7 +139,7 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
         if (mGeneralPreferencesManager.isPostSelectable) {
-            val binding = (holder as ItemViewBindingHolder).itemPostBinding
+            val binding = (holder as SimpleRecycleViewHolder<ItemPostBinding>).binding
             binding.authorName.isEnabled = false
             binding.tvFloor.isEnabled = false
             binding.tvReply.isEnabled = false
@@ -157,5 +158,4 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
         this.voteInfo = voteInfo
     }
 
-    class ItemViewBindingHolder(val itemPostBinding: ItemPostBinding) : RecyclerView.ViewHolder(itemPostBinding.root)
 }

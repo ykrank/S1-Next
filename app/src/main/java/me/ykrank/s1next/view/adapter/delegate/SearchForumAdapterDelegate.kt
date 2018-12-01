@@ -21,6 +21,5 @@ class SearchForumAdapterDelegate(context: Context) : BaseAdapterDelegate<ForumSe
     override fun onBindViewHolderData(forumSearchResult: ForumSearchResult, position: Int, holder: SimpleRecycleViewHolder<ItemSearchForumBinding>, payloads: List<Any>) {
         val binding = holder.binding
         binding.model = forumSearchResult
-        binding.executePendingBindings()
     }
 }

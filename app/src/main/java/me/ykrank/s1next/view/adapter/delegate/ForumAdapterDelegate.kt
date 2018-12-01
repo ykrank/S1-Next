@@ -4,6 +4,7 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.Forum
@@ -12,7 +13,7 @@ import me.ykrank.s1next.databinding.ItemForumBinding
 import me.ykrank.s1next.viewmodel.ForumViewModel
 import javax.inject.Inject
 
-class ForumAdapterDelegate(context: Context) : BaseAdapterDelegate<Forum, ForumAdapterDelegate.BindingViewHolder>(context, Forum::class.java) {
+class ForumAdapterDelegate(context: Context) : BaseAdapterDelegate<Forum, SimpleRecycleViewHolder<ItemForumBinding>>(context, Forum::class.java) {
     @Inject
     internal lateinit var themeManager: ThemeManager
 
@@ -26,14 +27,12 @@ class ForumAdapterDelegate(context: Context) : BaseAdapterDelegate<Forum, ForumA
         binding.gentleAccentColor = themeManager.gentleAccentColor
         binding.forumViewModel = ForumViewModel()
 
-        return BindingViewHolder(binding)
+        return SimpleRecycleViewHolder<ItemForumBinding>(binding)
     }
 
-    override fun onBindViewHolderData(t: Forum, position: Int, holder: BindingViewHolder, payloads: List<Any>) {
-        val binding = holder.itemForumBinding
+    override fun onBindViewHolderData(t: Forum, position: Int, holder: SimpleRecycleViewHolder<ItemForumBinding>, payloads: List<Any>) {
+        val binding = holder.binding
         binding.forumViewModel?.forum?.set(t)
-        binding.executePendingBindings()
     }
 
-    class BindingViewHolder(val itemForumBinding: ItemForumBinding) : RecyclerView.ViewHolder(itemForumBinding.root)
 }

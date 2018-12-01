@@ -67,6 +67,7 @@ class PmGroupsFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<PmGroup
             var newPmGroups: MutableList<PmGroup>? = newData.data.pmGroupList
             if (newPmGroups == null) {
                 newPmGroups = ArrayList()
+                newData.data.pmGroupList = newPmGroups
             }
             if (oldPmGroups != null) {
                 newPmGroups.addAll(0, oldPmGroups)
