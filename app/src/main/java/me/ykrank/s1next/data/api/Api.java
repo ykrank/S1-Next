@@ -52,7 +52,7 @@ public final class Api {
 
     public static final String URL_VIEW_VOTE = prepend("forum.php?mod=misc&action=viewvote");
 
-    public static final String URL_DARK_ROOM = "forum.php?mod=misc&action=showdarkroom&ajaxdata=json";
+    public static final String URL_DARK_ROOM = BASE_URL + "forum.php?mod=misc&action=showdarkroom&ajaxdata=json";
 
     private Api() {
     }

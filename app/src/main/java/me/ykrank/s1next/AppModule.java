@@ -2,6 +2,7 @@ package me.ykrank.s1next;
 
 import android.content.Context;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.ykrank.androidtools.widget.EditorDiskCache;
 import com.github.ykrank.androidtools.widget.RxBus;
 import com.github.ykrank.androidtools.widget.hostcheck.HttpDns;
@@ -116,13 +117,13 @@ public final class AppModule {
 
     @Provides
     @AppLife
-    S1Service providerRetrofit(@Data OkHttpClient okHttpClient) {
+    S1Service providerRetrofit(@Data OkHttpClient okHttpClient, ObjectMapper mapper) {
         return new Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(Api.BASE_API_URL)
                 .addConverterFactory(RawJsonConverterFactory.Companion.create())
                 .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(JacksonConverterFactory.create())
+                .addConverterFactory(JacksonConverterFactory.create(mapper))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
                 .create(S1Service.class);

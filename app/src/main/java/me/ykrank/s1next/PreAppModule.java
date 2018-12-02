@@ -48,6 +48,7 @@ public final class PreAppModule {
     ObjectMapper provideJsonObjectMapper() {
         return new ObjectMapper()
                 .configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true)
+                .configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
                 .configure(JsonParser.Feature.IGNORE_UNDEFINED, true);
     }
 

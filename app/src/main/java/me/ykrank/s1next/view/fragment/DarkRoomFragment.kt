@@ -21,6 +21,8 @@ class DarkRoomFragment : BaseLoadMoreRecycleViewFragment<DarkRoomWrapper>() {
     internal lateinit var user: User
     private lateinit var mRecyclerAdapter: DarkRoomRecyclerViewAdapter
 
+    private var lastCid = ""
+
     override val recyclerViewAdapter: BaseRecyclerViewAdapter
         get() = mRecyclerAdapter
 
@@ -37,24 +39,32 @@ class DarkRoomFragment : BaseLoadMoreRecycleViewFragment<DarkRoomWrapper>() {
     }
 
     override fun getPageSourceObservable(pageNum: Int): Single<DarkRoomWrapper> {
-        return mS1Service.getDarkRoom("")
+        return mS1Service.getDarkRoom(lastCid)
     }
 
     override fun onNext(data: DarkRoomWrapper) {
         super.onNext(data)
-        val wrapper = data.data
+
+        lastCid = data.message?.cid ?: ""
+        mRecyclerAdapter.diffNewDataSet(data.darkRooms, false)
+
+        if (data.last) {
+            setTotalPages(pageNum)
+        } else {
+            setTotalPages(pageNum + 1)
+        }
     }
 
     override fun appendNewData(oldData: DarkRoomWrapper?, newData: DarkRoomWrapper): DarkRoomWrapper {
         if (oldData != null) {
-            val oldPmGroups = oldData.data
-            var newPmGroups = newData.data
-            if (newPmGroups == null) {
-                newPmGroups = hashMapOf()
+            val olds = oldData.darkRooms
+            val news = newData.darkRooms.toMutableList()
+
+            if (news.isEmpty()) {
+                newData.last = true
             }
-            if (oldPmGroups != null) {
-                newPmGroups.putAll(oldPmGroups)
-            }
+            news.addAll(0, olds)
+            newData.darkRooms = news
         }
         return newData
     }

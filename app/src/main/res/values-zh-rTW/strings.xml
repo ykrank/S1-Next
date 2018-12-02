@@ -398,4 +398,6 @@
     <string name="error_reason_required">請填寫理由</string>
     <string name="dark_room">小黑屋</string>
     <string name="menu_new_pm">私信</string>
+    <string name="expire_time_hint">過期時間</string>
+    <string name="op_time_hint">操作時間</string>
 </resources>

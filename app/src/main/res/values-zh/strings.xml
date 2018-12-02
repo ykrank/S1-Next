@@ -207,4 +207,6 @@
     <string name="error_reason_required">请填写理由</string>
     <string name="dark_room">小黑屋</string>
     <string name="menu_new_pm">  私信</string>
+    <string name="expire_time_hint">过期时间</string>
+    <string name="op_time_hint">操作时间</string>
 </resources>

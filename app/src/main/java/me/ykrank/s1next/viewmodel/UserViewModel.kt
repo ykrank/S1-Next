@@ -15,6 +15,10 @@ class UserViewModel(appDataPref: AppDataPreferencesManager) : BaseObservable() {
         @Bindable
         get() = user.isSigned
 
+    val isAuthor: Boolean
+        @Bindable
+        get() = user.uid == "223963"
+
     private class ObservableUser(private val mBaseObservable: BaseObservable,
                                  appDataPref: AppDataPreferencesManager) : User(appDataPref) {
 
