@@ -269,6 +269,6 @@
     <string name="error_reason_required">Please write reason</string>
     <string name="dark_room">Dark room</string>
     <string name="menu_new_pm">Pm</string>
-    <string name="expire_time_hint">Expire time</string>
-    <string name="op_time_hint">Operate time</string>
+    <string name="expire_time_hint">Expire</string>
+    <string name="op_time_hint">Operate</string>
 </resources>

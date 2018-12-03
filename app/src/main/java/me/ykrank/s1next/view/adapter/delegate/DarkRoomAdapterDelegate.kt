@@ -24,16 +24,4 @@ class DarkRoomAdapterDelegate(context: Context) : BaseAdapterDelegate<DarkRoom, 
         binding.model?.darkRoom?.set(t)
     }
 
-    /**
-     * make textview selectable
-     *
-     * @param holder
-     */
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
-        super.onViewAttachedToWindow(holder)
-        val binding = (holder as SimpleRecycleViewHolder<ItemDarkRoomBinding>).binding
-//        binding.tvMessage.isEnabled = false
-//        binding.tvMessage.isEnabled = true
-    }
-
 }
