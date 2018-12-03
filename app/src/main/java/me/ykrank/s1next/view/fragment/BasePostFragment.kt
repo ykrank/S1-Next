@@ -20,13 +20,13 @@ import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.EditorDiskCache
 import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.uploadimg.ModelImageUpload
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.databinding.FragmentPostBinding
-import me.ykrank.s1next.view.activity.BaseActivity
 import me.ykrank.s1next.view.event.EmoticonClickEvent
 import me.ykrank.s1next.view.event.PostAddImageEvent
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
@@ -60,6 +60,8 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
     private lateinit var toolsFragments: List<Pair<String, Fragment>>
     //Init onCreate
     private var toolsFirstInit = false
+
+    private val addImages: HashSet<String> = hashSetOf()
 
     override val currentEditText: EditText
         get() = mFragmentPostBinding.reply
@@ -133,17 +135,18 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
         mRxBus.get()
                 .ofType(EmoticonClickEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
-                .subscribe({ event ->
+                .subscribe { event ->
                     mReplyView.text.replace(mReplyView.selectionStart,
                             mReplyView.selectionEnd, event.emoticonEntity)
-                })
+                }
         mRxBus.get()
                 .ofType(PostAddImageEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
-                .subscribe({ event ->
+                .subscribe { event ->
+                    addImages.add(event.url)
                     mReplyView.text.replace(mReplyView.selectionStart,
                             mReplyView.selectionEnd, "[img]${event.url}[/img]")
-                })
+                }
 
         RxJavaUtil.disposeIfNotNull(mCacheDisposable)
         mCacheDisposable = null
@@ -180,7 +183,20 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_send -> return onMenuSendClick()
+            R.id.menu_send -> {
+                //Check selected image added?
+                for (image in selectImages) {
+                    if (image.url.isNullOrEmpty()) {
+                        showShortSnackbar("请先等待图片上传完成")
+                        return false
+                    }
+                    if (!addImages.contains(image.url)) {
+                        showShortSnackbar("点击上传完成的图片，才能插入到帖子中")
+                        return false
+                    }
+                }
+                return onMenuSendClick()
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -217,8 +233,7 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
                     .subscribe({
                         post = true
                         editorDiskCache.remove(cacheKey)
-                        BaseActivity.setResultMessage(activity!!, it.msg)
-                        activity?.finish()
+                        showShortTextAndFinishCurrentActivity(it.msg)
                     }, L::report)
         }
     }
@@ -298,4 +313,8 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
             return mReplyView.text.toString()
         }
 
+    private val selectImages: List<ModelImageUpload>
+        get() {
+            return (toolsFragments[1].second as ImageUploadFragment).images
+        }
 }
