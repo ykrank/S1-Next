@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.ykrank.androidtools.guava.Objects
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
-import com.github.ykrank.androidtools.ui.adapter.model.SameItem
+import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 import org.apache.commons.lang3.StringEscapeUtils
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @PaperParcel
-class Forum : PaperParcelable, SameItem, StableIdModel {
+class Forum : PaperParcelable, DiffSameItem, StableIdModel {
 
     @JsonProperty("fid")
     var id: String? = null

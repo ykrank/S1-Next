@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.ykrank.androidtools.guava.Objects
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
-import com.github.ykrank.androidtools.ui.adapter.model.SameItem
+import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 import me.ykrank.s1next.data.db.dbmodel.History
 import org.apache.commons.lang3.StringEscapeUtils
 import paperparcel.PaperParcel
@@ -16,7 +16,7 @@ import paperparcel.PaperParcelable
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @PaperParcel
-class Thread : PaperParcelable, Cloneable, SameItem, StableIdModel {
+class Thread : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
     @JsonProperty("tid")
     var id: String? = null
 

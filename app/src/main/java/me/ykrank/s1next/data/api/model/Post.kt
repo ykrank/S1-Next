@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.JsonNode
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
-import com.github.ykrank.androidtools.ui.adapter.model.SameItem
+import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.MathUtil
 import me.ykrank.s1next.App
@@ -25,7 +25,7 @@ import java.util.regex.Pattern
 
 @PaperParcel
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Post : PaperParcelable, Cloneable, SameItem, StableIdModel {
+class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
 
     @JsonProperty("pid")
     var id: Int = 0

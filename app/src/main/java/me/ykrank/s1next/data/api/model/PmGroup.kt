@@ -6,13 +6,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.ykrank.androidtools.guava.Objects
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
-import com.github.ykrank.androidtools.ui.adapter.model.SameItem
+import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 
 /**
  * Created by ykrank on 2016/11/12 0012.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-class PmGroup : Cloneable, SameItem, StableIdModel {
+class PmGroup : Cloneable, DiffSameItem, StableIdModel {
     /**
      * who create this pm list
      */

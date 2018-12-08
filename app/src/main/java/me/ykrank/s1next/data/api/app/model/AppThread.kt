@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.github.ykrank.androidtools.ui.adapter.model.SameItem
+import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 
@@ -14,7 +14,7 @@ import paperparcel.PaperParcelable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @PaperParcel
-class AppThread() : PaperParcelable, SameItem {
+class AppThread() : PaperParcelable, DiffSameItem {
     /**
      * tid : 1355959
      * fid : 4

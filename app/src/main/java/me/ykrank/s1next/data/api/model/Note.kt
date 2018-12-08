@@ -3,7 +3,7 @@ package me.ykrank.s1next.data.api.model
 import com.fasterxml.jackson.annotation.*
 import com.github.ykrank.androidtools.guava.Objects
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
-import com.github.ykrank.androidtools.ui.adapter.model.SameItem
+import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 import java.util.regex.Pattern
@@ -13,7 +13,7 @@ import java.util.regex.Pattern
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @PaperParcel
-class Note : PaperParcelable, SameItem, StableIdModel {
+class Note : PaperParcelable, DiffSameItem, StableIdModel {
     @JsonProperty("author")
     var author: String? = null
     @JsonProperty("authorid")

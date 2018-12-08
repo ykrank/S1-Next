@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.ykrank.androidtools.guava.Objects
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
-import com.github.ykrank.androidtools.ui.adapter.model.SameItem
+import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Pm : Cloneable, SameItem, StableIdModel {
+class Pm : Cloneable, DiffSameItem, StableIdModel {
     @JsonProperty("plid")
     var plId: String? = null
     @JsonProperty("pmid")

@@ -2,7 +2,7 @@ package me.ykrank.s1next.data.api.model
 
 import com.github.ykrank.androidtools.guava.Objects
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
-import com.github.ykrank.androidtools.ui.adapter.model.SameItem
+import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.data.api.model.wrapper.HomeReplyWebWrapper
 import org.jsoup.nodes.Element
@@ -12,7 +12,7 @@ import org.jsoup.nodes.Element
  * User's thread model
  */
 
-class HomeThread : SameItem, HomeReplyWebWrapper.HomeReplyItem, StableIdModel {
+class HomeThread : DiffSameItem, HomeReplyWebWrapper.HomeReplyItem, StableIdModel {
     var title: String? = null
     var forum: String? = null
     var view: String? = null

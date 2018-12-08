@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.ykrank.androidtools.guava.Objects
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
-import com.github.ykrank.androidtools.ui.adapter.model.SameItem
+import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 
 /**
  * Created by ykrank on 2017/1/16.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Friend : SameItem, StableIdModel {
+class Friend : DiffSameItem, StableIdModel {
     @JsonProperty("uid")
     var uid: String? = null
     @JsonProperty("username")
