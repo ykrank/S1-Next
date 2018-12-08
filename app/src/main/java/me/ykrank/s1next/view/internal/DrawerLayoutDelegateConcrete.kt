@@ -157,7 +157,7 @@ class DrawerLayoutDelegateConcrete(val activity: FragmentActivity, drawerLayout:
             R.id.menu_pms -> runnable = Runnable { this.onWhispersMenuSelected() }
             R.id.menu_note -> runnable = Runnable { this.onNoteMenuSelected() }
             R.id.menu_history -> runnable = Runnable { this.onHistoryMenuSelected() }
-            R.id.menu_dark_room -> runnable = Runnable { this.onDarkRoomMenuSelected() }
+            R.id.menu_blacklist -> runnable = Runnable { this.onBlackListMenuSelected() }
             R.id.menu_settings -> runnable = Runnable { this.onSettingsMenuSelected() }
             R.id.menu_help -> runnable = Runnable { this.onHelpMenuSelected() }
             R.id.menu_donate -> runnable = Runnable { this.onDonateMenuSelected() }
@@ -246,8 +246,8 @@ class DrawerLayoutDelegateConcrete(val activity: FragmentActivity, drawerLayout:
         HistoryActivity.start(mFragmentActivity)
     }
 
-    private fun onDarkRoomMenuSelected() {
-        DarkRoomActivity.start(mFragmentActivity)
+    private fun onBlackListMenuSelected() {
+        BlackListActivity.start(mFragmentActivity)
     }
 
     private fun onDonateMenuSelected() {

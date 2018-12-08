@@ -271,4 +271,5 @@
     <string name="menu_new_pm">Pm</string>
     <string name="expire_time_hint">Expire</string>
     <string name="op_time_hint">Operate</string>
+    <string name="blacklist">BlackList</string>
 </resources>

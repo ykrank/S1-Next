@@ -27,9 +27,9 @@
             android:title="@string/histories" />
 
         <item
-            android:id="@+id/menu_dark_room"
+            android:id="@+id/menu_blacklist"
             android:icon="@drawable/ic_block_black_24dp"
-            android:title="@string/dark_room" />
+            android:title="@string/blacklist" />
     </group>
     <group android:id="@+id/sub_header">
         <item

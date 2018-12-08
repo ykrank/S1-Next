@@ -79,7 +79,7 @@ public final class SettingsActivity extends BaseActivity {
                 case EXTRA_SHOW_SETTING_BLACKLIST:
                     setTitle(R.string.pref_blacklists);
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,
-                            new BlackListSettingFragment(), BlackListSettingFragment.TAG).commit();
+                            new BlackListSettingFragment(), BlackListSettingFragment.Companion.getTAG()).commit();
                     break;
                 case EXTRA_SHOW_SETTING_READ_PROGRESS:
                     setTitle(R.string.pref_post_read_progress);
