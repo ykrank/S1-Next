@@ -30,17 +30,17 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <android.support.v7.widget.SearchView
+                    <SearchView
                         android:id="@+id/search_view"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:iconifiedByDefault="false"
-                        android:transitionGroup="true"
-                        app:queryBackground="@android:color/transparent"
-                        app:searchHintIcon="@android:color/transparent"
-                        app:searchIcon="@android:color/transparent"
-                        app:submitBackground="@android:color/transparent" />
+                        android:queryBackground="@android:color/transparent"
+                        android:searchHintIcon="@android:color/transparent"
+                        android:searchIcon="@android:color/transparent"
+                        android:submitBackground="@android:color/transparent"
+                        android:transitionGroup="true" />
 
                     <android.support.v7.widget.AppCompatSpinner
                         android:id="@+id/spinner"

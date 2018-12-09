@@ -8,8 +8,7 @@
         android:icon="@drawable/ic_search_24dp"
         android:orderInCategory="21"
         android:title="@string/menu_search"
-        app:showAsAction="ifRoom"
-        app:actionViewClass="android.support.v7.widget.SearchView" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_browser"
