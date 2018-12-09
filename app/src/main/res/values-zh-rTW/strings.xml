@@ -94,6 +94,7 @@
     <string name="prompt_thread_link_or_id">帖子鏈接/ID</string>
         
     <string name="error_field_invalid_or_unsupported_thread_link_or_id">無效的、或者是並不支持的帖子鏈接/ID格式</string>
+    <string name="error_field_invalid_or_unsupported_word">無效的、或者是並不支持的屏蔽詞格式</string>
         
     <string name="message_thread_link_copy">帖子的鏈接已復製到剪切板</string>
         
@@ -401,4 +402,12 @@
     <string name="expire_time_hint">過期</string>
     <string name="op_time_hint">操作</string>
     <string name="blacklist">黑名單</string>
+    <string name="black_word">屏蔽詞</string>
+    <string name="prompt_black_word">屏蔽詞</string>
+    <string name="status">狀態</string>
+    <string name="pref_black_words">屏蔽詞</string>
+    <string name="title_black_word_edit">編輯屏蔽詞</string>
+    <string name="title_black_word_add">增加屏蔽詞</string>
+    <string name="error_duplicate_word">已存在的屏蔽詞</string>
+    <string name="black_word_verify">驗證屏蔽詞</string>
 </resources>

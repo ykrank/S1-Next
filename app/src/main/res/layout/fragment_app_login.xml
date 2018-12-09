@@ -2,7 +2,6 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="me.ykrank.s1next.view.fragment.LoginFragment">
 
     <data>
@@ -42,7 +41,7 @@
             android:lines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
-        <Spinner
+        <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/questionSpinner"
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"

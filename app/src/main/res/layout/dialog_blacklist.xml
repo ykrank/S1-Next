@@ -3,7 +3,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="me.ykrank.s1next.view.dialog.ThreadGoDialogFragment">
+    tools:context="me.ykrank.s1next.view.dialog.BlacklistDialogFragment">
 
     <data>
 
@@ -15,26 +15,27 @@
     </data>
 
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/dialog_padding_bottom"
-            android:paddingEnd="@dimen/dialog_padding"
-            android:paddingLeft="@dimen/dialog_padding"
-            android:paddingRight="@dimen/dialog_padding"
             android:paddingStart="@dimen/dialog_padding"
-            android:paddingTop="@dimen/dialog_padding">
+            android:paddingLeft="@dimen/dialog_padding"
+            android:paddingTop="@dimen/dialog_padding"
+            android:paddingEnd="@dimen/dialog_padding"
+            android:paddingRight="@dimen/dialog_padding"
+            android:paddingBottom="@dimen/dialog_padding_bottom">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hintAnimationEnabled="true">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/blacklist_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -53,7 +54,7 @@
                 android:layout_height="wrap_content"
                 app:hintAnimationEnabled="true">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/blacklist_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

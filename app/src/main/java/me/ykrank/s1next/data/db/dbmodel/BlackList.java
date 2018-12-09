@@ -290,6 +290,37 @@ public class BlackList implements Parcelable {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BlackList blackList = (BlackList) o;
+
+        if (authorId != blackList.authorId) return false;
+        if (post != blackList.post) return false;
+        if (forum != blackList.forum) return false;
+        if (timestamp != blackList.timestamp) return false;
+        if (upload != blackList.upload) return false;
+        if (id != null ? !id.equals(blackList.id) : blackList.id != null) return false;
+        if (author != null ? !author.equals(blackList.author) : blackList.author != null)
+            return false;
+        return remark != null ? remark.equals(blackList.remark) : blackList.remark == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + authorId;
+        result = 31 * result + (author != null ? author.hashCode() : 0);
+        result = 31 * result + post;
+        result = 31 * result + forum;
+        result = 31 * result + (remark != null ? remark.hashCode() : 0);
+        result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
+        result = 31 * result + (upload ? 1 : 0);
+        return result;
+    }
+
     public boolean getUpload() {
         return this.upload;
     }

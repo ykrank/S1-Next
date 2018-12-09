@@ -47,6 +47,7 @@
     <string name="dialog_message_quote_not_found">找不到该引用。</string>
     <string name="prompt_thread_link_or_id">帖子链接/ID</string>
     <string name="error_field_invalid_or_unsupported_thread_link_or_id">无效的、或者是并不支持的帖子链接/ID格式</string>
+    <string name="error_field_invalid_or_unsupported_word">无效的、或者是并不支持的屏蔽词格式</string>
     <string name="message_thread_link_copy">帖子的链接已复制到剪切板</string>
     <string name="prompt_reply">写点内容吧…</string>
     <string name="signature">—— 来自 %1$s上的 &lt;a href=\"https://github.com/ykrank/S1-Next/releases\">S1Next-鹅版&lt;/a> v%2$s</string>
@@ -210,4 +211,12 @@
     <string name="expire_time_hint">过期</string>
     <string name="op_time_hint">操作</string>
     <string name="blacklist">黑名单</string>
+    <string name="black_word">屏蔽词</string>
+    <string name="prompt_black_word">屏蔽词</string>
+    <string name="status">状态</string>
+    <string name="error_duplicate_word">已存在的屏蔽词</string>
+    <string name="title_black_word_edit">编辑屏蔽词</string>
+    <string name="title_black_word_add">增加屏蔽词</string>
+    <string name="pref_black_words">屏蔽词</string>
+    <string name="black_word_verify">验证屏蔽词</string>
 </resources>

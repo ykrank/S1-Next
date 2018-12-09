@@ -136,4 +136,10 @@
         <item>您最喜欢的餐馆名称</item>
         <item>驾驶执照最后四位数字</item>
     </string-array>
+
+    <string-array name="black_list_stat_entry_values">
+        <item>@string/blacklist_flag_normal</item>
+        <item>@string/blacklist_flag_hide</item>
+        <item>@string/blacklist_flag_del</item>
+    </string-array>
 </resources>

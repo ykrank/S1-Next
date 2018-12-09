@@ -32,6 +32,5 @@ public final class HistoryCursorRecyclerViewAdapter extends CursorRecyclerViewAd
     public void onBindViewHolder(SimpleRecycleViewHolder<ItemHistoryBinding> viewHolder, Cursor cursor) {
         ItemHistoryBinding binding = viewHolder.getBinding();
         binding.getModel().history.set(HistoryDbWrapper.getInstance().fromCursor(cursor));
-        binding.executePendingBindings();
     }
 }

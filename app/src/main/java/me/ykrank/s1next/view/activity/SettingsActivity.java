@@ -9,6 +9,7 @@ import com.github.ykrank.androidtools.util.L;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.view.fragment.setting.BackupPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.BlackListSettingFragment;
+import me.ykrank.s1next.view.fragment.setting.BlackWordSettingFragment;
 import me.ykrank.s1next.view.fragment.setting.DownloadPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.GeneralPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.NetworkPreferenceFragment;
@@ -27,6 +28,7 @@ public final class SettingsActivity extends BaseActivity {
     private static final int EXTRA_SHOW_SETTING_READ_PROGRESS = 3;
     private static final int EXTRA_SHOW_SETTING_BACKUP = 4;
     private static final int EXTRA_SHOW_SETTING_NETWORK = 5;
+    private static final int EXTRA_SHOW_SETTING_BLACK_WORD = 6;
 
     public static void startSettingsActivity(Context context) {
         Intent intent = new Intent(context, SettingsActivity.class);
@@ -42,6 +44,12 @@ public final class SettingsActivity extends BaseActivity {
     public static void startBlackListSettingsActivity(Context context) {
         Intent intent = new Intent(context, SettingsActivity.class);
         intent.putExtra(ARG_SHOW_SETTINGS, EXTRA_SHOW_SETTING_BLACKLIST);
+        context.startActivity(intent);
+    }
+
+    public static void startBlackWordSettingsActivity(Context context) {
+        Intent intent = new Intent(context, SettingsActivity.class);
+        intent.putExtra(ARG_SHOW_SETTINGS, EXTRA_SHOW_SETTING_BLACK_WORD);
         context.startActivity(intent);
     }
 
@@ -79,7 +87,7 @@ public final class SettingsActivity extends BaseActivity {
                 case EXTRA_SHOW_SETTING_BLACKLIST:
                     setTitle(R.string.pref_blacklists);
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,
-                            new BlackListSettingFragment(), BlackListSettingFragment.Companion.getTAG()).commit();
+                            BlackListSettingFragment.Companion.newInstance(), BlackListSettingFragment.Companion.getTAG()).commit();
                     break;
                 case EXTRA_SHOW_SETTING_READ_PROGRESS:
                     setTitle(R.string.pref_post_read_progress);
@@ -95,6 +103,11 @@ public final class SettingsActivity extends BaseActivity {
                     setTitle(R.string.pref_network);
                     getFragmentManager().beginTransaction().replace(R.id.frame_layout,
                             new NetworkPreferenceFragment()).commit();
+                    break;
+                case EXTRA_SHOW_SETTING_BLACK_WORD:
+                    setTitle(R.string.pref_black_words);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,
+                            BlackWordSettingFragment.Companion.newInstance(), BlackWordSettingFragment.Companion.getTAG()).commit();
                     break;
                 default:
                     getFragmentManager().beginTransaction().replace(R.id.frame_layout,

@@ -19,6 +19,7 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SearchView
 import android.text.InputType
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -30,7 +31,6 @@ import android.transition.TransitionSet
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageButton
-import android.widget.SearchView
 import android.widget.TextView
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ActivityEvent

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="me.ykrank.s1next.view.dialog.BlackWordDialogFragment">
+
+    <data>
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="model"
+            type="me.ykrank.s1next.viewmodel.BlackWordViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/dialog_padding"
+            android:paddingLeft="@dimen/dialog_padding"
+            android:paddingTop="@dimen/dialog_padding"
+            android:paddingEnd="@dimen/dialog_padding"
+            android:paddingRight="@dimen/dialog_padding"
+            android:paddingBottom="@dimen/dialog_padding_bottom">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_word"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintAnimationEnabled="true"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_word"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_black_word"
+                    android:imeActionId="@integer/ime_action_id"
+                    android:imeActionLabel="@string/dialog_button_text_go"
+                    android:inputType="text"
+                    android:text="@{model.blackword.word}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:gravity="center"
+                android:text="@string/status"
+                app:layout_constraintTop_toBottomOf="@id/input_word" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:entries="@array/black_list_stat_entry_values"
+                app:layout_constraintBottom_toBottomOf="@id/tv_status"
+                app:layout_constraintStart_toEndOf="@id/tv_status"
+                app:layout_constraintTop_toTopOf="@id/tv_status" />
+
+            <android.support.design.button.MaterialButton
+                android:id="@+id/btn_verify"
+                android:theme="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_big"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_status"
+                android:text="@string/black_word_verify" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+</layout>

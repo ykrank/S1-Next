@@ -30,6 +30,12 @@ public class DbModule {
 
     @Provides
     @AppLife
+    BlackWordDbWrapper provideBlackWordWDbWrapper(AppDaoSessionManager appDaoSessionManager) {
+        return new BlackWordDbWrapper(appDaoSessionManager);
+    }
+
+    @Provides
+    @AppLife
     ReadProgressDbWrapper provideReadProgressDbWrapper(AppDaoSessionManager appDaoSessionManager) {
         return new ReadProgressDbWrapper(appDaoSessionManager);
     }

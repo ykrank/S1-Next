@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.adapter.BlackWordCursorListViewAdapter">
+
+    <data>
+
+        <variable
+            name="model"
+            type="me.ykrank.s1next.viewmodel.BlackWordViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/activatedBackgroundIndicator"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/single_line_height"
+            android:layout_weight="5"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@{model.blackword.word}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/single_line_height"
+            android:layout_weight="2"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@{model.blackword.statRes}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            tools:text="@string/blacklist_flag_normal" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/single_line_height"
+            android:layout_weight="4"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@{model.blackword.time}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            tools:text="2018-12-08 16:38" />
+
+    </LinearLayout>
+
+
+</layout>

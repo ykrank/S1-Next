@@ -247,7 +247,7 @@ class DrawerLayoutDelegateConcrete(val activity: FragmentActivity, drawerLayout:
     }
 
     private fun onBlackListMenuSelected() {
-        BlackListActivity.start(mFragmentActivity)
+        SettingsActivity.startBlackListSettingsActivity(mFragmentActivity)
     }
 
     private fun onDonateMenuSelected() {

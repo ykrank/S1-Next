@@ -113,7 +113,7 @@ tasks.withType(JavaCompile) {
 }
 
 greendao {
-    schemaVersion 6
+    schemaVersion 7
 }
 
 //http://stackoverflow.com/questions/28683327/how-to-check-if-gradle-dependency-has-new-version

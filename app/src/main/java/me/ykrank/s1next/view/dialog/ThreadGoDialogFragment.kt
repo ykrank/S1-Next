@@ -42,12 +42,12 @@ class ThreadGoDialogFragment : BaseDialogFragment() {
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()
-        alertDialog.window.setSoftInputMode(
+        alertDialog.window?.setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         // http://stackoverflow.com/a/7636468
         alertDialog.setOnShowListener { dialog ->
             val positionButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
-            ViewUtil.consumeRunnableWhenImeActionPerformed(binding.threadLinkOrId) {
+            ViewUtil.consumeRunnableWhenImeActionPerformed(threadLinkOrIdView) {
                 if (positionButton.isEnabled) {
                     positionButton.performClick()
                 } else {

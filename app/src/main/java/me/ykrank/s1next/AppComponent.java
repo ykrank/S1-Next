@@ -14,6 +14,7 @@ import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.data.api.app.AppService;
 import me.ykrank.s1next.data.db.AppDaoSessionManager;
 import me.ykrank.s1next.data.db.BlackListDbWrapper;
+import me.ykrank.s1next.data.db.BlackWordDbWrapper;
 import me.ykrank.s1next.data.db.DbModule;
 import me.ykrank.s1next.data.db.HistoryDbWrapper;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
@@ -125,6 +126,8 @@ public interface AppComponent {
     AppDaoSessionManager getAppDaoSessionManager();
 
     BlackListDbWrapper getBlackListDbWrapper();
+
+    BlackWordDbWrapper getBlackWordDbWrapper();
 
     ReadProgressDbWrapper getReadProgressDbWrapper();
 

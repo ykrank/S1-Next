@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="dark_cyan">#5a8e89</color>
-    <color name="teal_200_70p">#b380cbc4</color>
-    <color name="white_69p">#b1ffffff</color>
-
-    <color name="swipe_refresh_1">@color/pink_A200</color>
-    <color name="swipe_refresh_2">@color/orange_A200</color>
-    <color name="swipe_refresh_3">@color/light_blue_A200</color>
-    <color name="swipe_refresh_4">@color/green_A200</color>
-
     <color name="light_emoticon_keyboard_tab_layout_background">#e4e7e9</color>
     <color name="light_emoticon_keyboard_background">#eceff1</color>
     <color name="dark_emoticon_keyboard_tab_layout_background">#21272b</color>

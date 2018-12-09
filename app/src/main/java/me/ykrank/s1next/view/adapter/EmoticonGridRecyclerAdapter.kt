@@ -39,7 +39,6 @@ class EmoticonGridRecyclerAdapter(activity: Activity, private val mEmoticons: Li
 
     override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
         holder.itemEmoticonBinding.emoticonViewModel?.emoticon?.set(mEmoticons[position])
-        holder.itemEmoticonBinding.executePendingBindings()
     }
 
     override fun onViewRecycled(holder: BindingViewHolder) {

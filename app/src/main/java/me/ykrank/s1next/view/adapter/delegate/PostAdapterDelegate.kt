@@ -130,8 +130,6 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
                 RateDetailsListActivity.start(context, ArrayList(rates))
             }
         }
-
-        binding.executePendingBindings()
     }
 
     // Bug workaround for losing text selection ability, see:

@@ -11,6 +11,7 @@ import org.greenrobot.greendao.database.Database;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.db.dbmodel.BlackListDao;
+import me.ykrank.s1next.data.db.dbmodel.BlackWordDao;
 import me.ykrank.s1next.data.db.dbmodel.DaoMaster;
 import me.ykrank.s1next.data.db.dbmodel.HistoryDao;
 
@@ -39,6 +40,7 @@ public class AppDaoOpenHelper extends DaoMaster.OpenHelper {
         update3to4(db, oldVersion, newVersion);
         update4to5(db, oldVersion, newVersion);
         update5to6(db, oldVersion, newVersion);
+        update6to7(db, oldVersion, newVersion);
     }
 
     /**
@@ -126,6 +128,12 @@ public class AppDaoOpenHelper extends DaoMaster.OpenHelper {
             } finally {
                 db.endTransaction();
             }
+        }
+    }
+
+    private void update6to7(Database db, int oldVersion, int newVersion) {
+        if (oldVersion <= 6) {
+            BlackWordDao.createTable(db, false);
         }
     }
 }

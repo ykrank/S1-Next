@@ -51,7 +51,7 @@ public class BlackListDbWrapper {
     }
 
     @NonNull
-    public BlackList fromCursor(@NonNull Cursor cursor) {
+    public BlackList fromBlackListCursor(@NonNull Cursor cursor) {
         return getBlackListDao().readEntity(cursor, 0);
     }
 

@@ -74,8 +74,6 @@ class AppPostAdapterDelegate(activity: Activity, private val quotePid: String?) 
         } else {
             binding.container.setBackgroundColor(Color.TRANSPARENT)
         }
-
-        binding.executePendingBindings()
     }
 
     // Bug workaround for losing text selection ability, see:

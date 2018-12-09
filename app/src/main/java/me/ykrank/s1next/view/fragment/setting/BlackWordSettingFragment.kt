@@ -14,21 +14,20 @@ import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import io.reactivex.Single
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.db.BlackListDbWrapper
-import me.ykrank.s1next.data.db.dbmodel.BlackList
-import me.ykrank.s1next.databinding.FragmentBlacklistBinding
+import me.ykrank.s1next.data.db.BlackWordDbWrapper
+import me.ykrank.s1next.data.db.dbmodel.BlackWord
+import me.ykrank.s1next.databinding.FragmentBlackWordBinding
 import me.ykrank.s1next.view.activity.DarkRoomActivity
-import me.ykrank.s1next.view.activity.SettingsActivity
-import me.ykrank.s1next.view.adapter.BlackListCursorListViewAdapter
-import me.ykrank.s1next.view.dialog.BlacklistDialogFragment
+import me.ykrank.s1next.view.adapter.BlackWordCursorListViewAdapter
+import me.ykrank.s1next.view.dialog.BlackWordDialogFragment
 import me.ykrank.s1next.view.fragment.BaseFragment
 import me.ykrank.s1next.view.internal.RequestCode
 import java.util.*
 
-class BlackListSettingFragment : BaseFragment() {
+class BlackWordSettingFragment : BaseFragment() {
 
     private lateinit var mListView: ListView
-    private lateinit var mListViewAdapter: BlackListCursorListViewAdapter
+    private lateinit var mListViewAdapter: BlackWordCursorListViewAdapter
 
     private val mActionModeCallback = object : AbsListView.MultiChoiceModeListener {
 
@@ -59,26 +58,26 @@ class BlackListSettingFragment : BaseFragment() {
                     return true
                 }
                 R.id.menu_edit -> {
-                    var blackList: BlackList? = null
+                    var blackWord: BlackWord? = null
                     for (i in 0 until checklist.size()) {
                         if (checklist.valueAt(i)) {
-                            blackList = mListViewAdapter.getItem(checklist.keyAt(i))
+                            blackWord = mListViewAdapter.getItem(checklist.keyAt(i))
                             break
                         }
                     }
-                    val dialogFragment1 = BlacklistDialogFragment.newInstance(blackList)
-                    dialogFragment1.setTargetFragment(this@BlackListSettingFragment, RequestCode.REQUEST_CODE_BLACKLIST)
-                    dialogFragment1.show(fragmentManager, BlackListSettingFragment::class.java.name)
+                    val dialogFragment1 = BlackWordDialogFragment.newInstance(blackWord)
+                    dialogFragment1.setTargetFragment(this@BlackWordSettingFragment, RequestCode.REQUEST_CODE_BLACKLIST)
+                    dialogFragment1.show(fragmentManager, BlackWordSettingFragment::class.java.name)
                     return true
                 }
                 R.id.menu_delete -> {
-                    val blackLists = ArrayList<BlackList>()
+                    val blackWords = ArrayList<BlackWord>()
                     for (i in 0 until checklist.size()) {
                         if (checklist.valueAt(i)) {
-                            blackLists.add(mListViewAdapter.getItem(checklist.keyAt(i)))
+                            blackWords.add(mListViewAdapter.getItem(checklist.keyAt(i)))
                         }
                     }
-                    BlackListDbWrapper.getInstance().delBlackLists(blackLists)
+                    BlackWordDbWrapper.instance.delBlackWords(blackWords)
                     load()
                     return true
                 }
@@ -105,11 +104,11 @@ class BlackListSettingFragment : BaseFragment() {
     }
 
     internal val sourceObservable: Single<Cursor>
-        get() = BlackListDbWrapper.getInstance().blackListCursor
+        get() = BlackWordDbWrapper.instance.blackWordCursor
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding = DataBindingUtil.inflate<FragmentBlacklistBinding>(inflater,
-                R.layout.fragment_blacklist, container, false)
+        val binding = DataBindingUtil.inflate<FragmentBlackWordBinding>(inflater,
+                R.layout.fragment_black_word, container, false)
         mListView = binding.listview
         return binding.root
     }
@@ -117,7 +116,7 @@ class BlackListSettingFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mListViewAdapter = BlackListCursorListViewAdapter(activity!!)
+        mListViewAdapter = BlackWordCursorListViewAdapter(activity!!)
         mListView.adapter = mListViewAdapter
         mListView.choiceMode = AbsListView.CHOICE_MODE_MULTIPLE_MODAL
         mListView.setMultiChoiceModeListener(mActionModeCallback)
@@ -150,12 +149,6 @@ class BlackListSettingFragment : BaseFragment() {
                 }
                 return true
             }
-            R.id.menu_black_word -> {
-                activity?.let {
-                    SettingsActivity.startBlackWordSettingsActivity(it)
-                }
-                return true
-            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -184,9 +177,9 @@ class BlackListSettingFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RequestCode.REQUEST_CODE_BLACKLIST) {
             if (resultCode == Activity.RESULT_OK) {
-                val blackList = data?.getParcelableExtra<BlackList>(BlacklistDialogFragment.BLACKLIST_TAG)
-                if (blackList != null) {
-                    BlackListDbWrapper.getInstance().saveBlackList(blackList)
+                val blackWord = data?.getParcelableExtra<BlackWord>(BlackWordDialogFragment.TAG_BLACK_WORD)
+                if (blackWord != null) {
+                    BlackWordDbWrapper.instance.saveBlackWord(blackWord)
                     load()
                 }
             }
@@ -195,16 +188,16 @@ class BlackListSettingFragment : BaseFragment() {
     }
 
     private fun add() {
-        val dialogFragment = BlacklistDialogFragment.newInstance(null)
-        dialogFragment.setTargetFragment(this@BlackListSettingFragment, RequestCode.REQUEST_CODE_BLACKLIST)
-        dialogFragment.show(fragmentManager, BlackListSettingFragment::class.java.name)
+        val dialogFragment = BlackWordDialogFragment.newInstance(null)
+        dialogFragment.setTargetFragment(this@BlackWordSettingFragment, RequestCode.REQUEST_CODE_BLACKLIST)
+        dialogFragment.show(fragmentManager, BlackWordSettingFragment::class.java.name)
     }
 
     companion object {
-        val TAG = BlackListSettingFragment::class.java.name
+        val TAG = BlackWordSettingFragment::class.java.name
 
-        fun newInstance(): BlackListSettingFragment {
-            return BlackListSettingFragment()
+        fun newInstance(): BlackWordSettingFragment {
+            return BlackWordSettingFragment()
         }
     }
 }
