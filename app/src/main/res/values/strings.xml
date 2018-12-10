@@ -157,6 +157,7 @@
 
     <string name="error_field_invalid_or_unsupported_word">Invalid or unsupported black word format</string>
     <string name="error_duplicate_word">Duplicate black word</string>
+    <string name="error_word_out_of_bound">Black word could only 10 max</string>
     <!---->
     <string name="gallery_transition" translatable="false">gallery_transition</string>
 

@@ -40,6 +40,10 @@ class BlackWordDbWrapper internal constructor(private val appDaoSessionManager: 
         return blackWordDao.readEntity(cursor, 0)
     }
 
+    fun count(): Long {
+        return blackWordDao.count();
+    }
+
     fun getBlackWord(word: String): BlackWord? {
         return blackWordDao.queryBuilder()
                 .where(BlackWordDao.Properties.Word.eq(word))

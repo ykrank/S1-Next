@@ -33,6 +33,17 @@ class BlackWordDialogFragment : BaseDialogFragment() {
 
         val mBlackWord = arguments?.get(TAG_BLACK_WORD) as BlackWord?
 
+        //Check could add
+        if (mBlackWord == null) {
+            if (BlackWordDbWrapper.instance.count() >= 10) {
+                return AlertDialog.Builder(activity)
+                        .setTitle(R.string.title_black_word_add)
+                        .setMessage(R.string.error_word_out_of_bound)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .create()
+            }
+        }
+
         val binding = DataBindingUtil.inflate<DialogBlackWordBinding>(activity.layoutInflater,
                 R.layout.dialog_black_word, null, false)
         val inputWord = binding.inputWord

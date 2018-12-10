@@ -411,4 +411,5 @@
     <string name="error_duplicate_word">已存在的屏蔽詞</string>
     <string name="black_word_verify">驗證屏蔽詞</string>
     <string name="word_in_black_word">用詞已被屏蔽</string>
+    <string name="error_word_out_of_bound">屏蔽詞最多10個</string>
 </resources>

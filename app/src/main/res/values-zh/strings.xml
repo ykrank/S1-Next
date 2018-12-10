@@ -220,4 +220,5 @@
     <string name="pref_black_words">屏蔽词</string>
     <string name="black_word_verify">验证屏蔽词</string>
     <string name="word_in_black_word">用词已被屏蔽</string>
+    <string name="error_word_out_of_bound">屏蔽词最多10个</string>
 </resources>
