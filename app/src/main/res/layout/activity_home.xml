@@ -336,7 +336,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:second="@{data.regDate}"
+                                app:secondTime="@{data.regDate}"
                                 tools:text="2008-6-19 19:50" />
 
                             <View
@@ -366,7 +366,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:second="@{data.lastVisitDate}"
+                                app:secondTime="@{data.lastVisitDate}"
                                 tools:text="2017-1-12 14:11" />
 
                             <View
@@ -396,7 +396,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:second="@{data.lastActiveDate}"
+                                app:secondTime="@{data.lastActiveDate}"
                                 tools:text="2017-1-14 19:40" />
 
                             <View
@@ -426,7 +426,7 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:second="@{data.lastPostDate}"
+                                app:secondTime="@{data.lastPostDate}"
                                 tools:text="2017-1-14 19:40" />
 
                         </LinearLayout>

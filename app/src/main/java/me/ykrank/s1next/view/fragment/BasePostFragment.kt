@@ -186,11 +186,12 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
             R.id.menu_send -> {
                 //Check selected image added?
                 for (image in selectImages) {
-                    if (image.url.isNullOrEmpty()) {
+                    val url = image.url
+                    if (url.isNullOrEmpty()) {
                         showShortSnackbar("请先等待图片上传完成")
                         return false
                     }
-                    if (!addImages.contains(image.url)) {
+                    if (!addImages.contains(url)) {
                         showShortSnackbar("点击上传完成的图片，才能插入到帖子中")
                         return false
                     }
