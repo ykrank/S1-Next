@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dialog_padding"
+        android:paddingLeft="@dimen/dialog_padding"
+        android:paddingTop="@dimen/dialog_padding"
+        android:paddingEnd="@dimen/dialog_padding"
+        android:paddingRight="@dimen/dialog_padding"
+        android:paddingBottom="@dimen/dialog_padding_bottom">
+
+
+        <TextView
+            android:id="@+id/tv_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/red_envelopes_text"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:text="@string/red_envelopes_text_hint"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_code" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

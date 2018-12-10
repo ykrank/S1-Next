@@ -32,6 +32,7 @@ import me.ykrank.s1next.task.AutoSignTask
 import me.ykrank.s1next.view.activity.*
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment
+import me.ykrank.s1next.view.dialog.RedEnvelopesDialogFragment
 import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment
 import me.ykrank.s1next.viewmodel.UserViewModel
 import javax.inject.Inject
@@ -161,6 +162,7 @@ class DrawerLayoutDelegateConcrete(val activity: FragmentActivity, drawerLayout:
             R.id.menu_settings -> runnable = Runnable { this.onSettingsMenuSelected() }
             R.id.menu_help -> runnable = Runnable { this.onHelpMenuSelected() }
             R.id.menu_donate -> runnable = Runnable { this.onDonateMenuSelected() }
+            R.id.menu_red_envelopes -> runnable = Runnable { this.onRedEnvelopedMenuSelected() }
             else -> {
                 mFragmentActivity.toast("Unknown menu item ID: " + menuItem.itemId + ".")
                 return false
@@ -252,10 +254,14 @@ class DrawerLayoutDelegateConcrete(val activity: FragmentActivity, drawerLayout:
 
     private fun onDonateMenuSelected() {
         if (AlipayDonate.hasInstalledAlipayClient(mFragmentActivity)) {
-            if (AlipayDonate.startAlipayClient(mFragmentActivity, "FKX01763C5SCSCCJIB6UE8")) {
+            if (AlipayDonate.startAlipayTrans(mFragmentActivity, "FKX01763C5SCSCCJIB6UE8")) {
                 return
             }
         }
         mFragmentActivity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://QR.ALIPAY.COM/FKX01763C5SCSCCJIB6UE8")))
+    }
+
+    private fun onRedEnvelopedMenuSelected() {
+        RedEnvelopesDialogFragment.newInstance().show(mFragmentActivity.supportFragmentManager, RedEnvelopesDialogFragment.TAG)
     }
 }
