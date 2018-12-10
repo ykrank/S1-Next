@@ -284,6 +284,7 @@
     <string name="expire_time_hint">Expire</string>
     <string name="op_time_hint">Operate</string>
     <string name="black_word_verify">Verify black word</string>
+    <string name="red_envelopes">Reward red envelopes</string>
 
     <!---->
 </resources>
