@@ -129,7 +129,7 @@ class BlackWordSettingFragment : BaseFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_blacklist, menu)
+        inflater.inflate(R.menu.fragment_black_word, menu)
         menu?.findItem(R.id.menu_refresh)?.isEnabled = true
     }
 

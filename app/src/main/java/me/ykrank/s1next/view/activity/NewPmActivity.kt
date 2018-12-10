@@ -41,7 +41,7 @@ class NewPmActivity : BaseActivity() {
     }
 
     /**
-     * Show [android.app.AlertDialog] when reply content is not empty.
+     * Show [android.support.v7.app.AlertDialog] when reply content is not empty.
      */
     override fun onBackPressed() {
         if (newPmFragment.isToolsKeyboardShowing) {

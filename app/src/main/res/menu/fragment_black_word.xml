@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="me.ykrank.s1next.view.fragment.BaseFragment">
+
+    <item
+        android:id="@+id/menu_dark_room"
+        android:orderInCategory="1"
+        android:title="@string/dark_room"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_add"
+        android:orderInCategory="2"
+        android:title="@string/menu_add"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_refresh"
+        android:orderInCategory="20"
+        android:title="@string/menu_refresh"
+        app:showAsAction="never" />
+</menu>

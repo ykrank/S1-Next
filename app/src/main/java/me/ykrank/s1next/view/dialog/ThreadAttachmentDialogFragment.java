@@ -1,9 +1,9 @@
 package me.ykrank.s1next.view.dialog;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.collection.Posts;

@@ -1,10 +1,10 @@
 package me.ykrank.s1next.view.dialog
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
