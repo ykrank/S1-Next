@@ -39,6 +39,9 @@ class DarkRoomFragment : BaseLoadMoreRecycleViewFragment<DarkRoomWrapper>() {
     }
 
     override fun getPageSourceObservable(pageNum: Int): Single<DarkRoomWrapper> {
+        if (pageNum <= 1) {
+            lastCid = ""
+        }
         return mS1Service.getDarkRoom(lastCid)
     }
 
