@@ -183,9 +183,15 @@ public final class TextViewBindingAdapter {
         if (post == null) {
             return;
         }
-        if (post.isHide()) {
+        if (post.getHide() != Post.Hide_Normal) {
             textView.setText("");
-            String text = "[" + textView.getContext().getString(R.string.user_in_blacklist) + "]";
+            String textHide;
+            if (post.getHide() == Post.Hide_User) {
+                textHide = textView.getContext().getString(R.string.user_in_blacklist);
+            } else {
+                textHide = textView.getContext().getString(R.string.word_in_black_word);
+            }
+            String text = "[" + textHide + "]";
             if (!TextUtils.isEmpty(post.getRemark())) {
                 text += "-[" + post.getRemark() + "]";
             }

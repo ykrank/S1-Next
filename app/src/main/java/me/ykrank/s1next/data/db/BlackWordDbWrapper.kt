@@ -30,6 +30,12 @@ class BlackWordDbWrapper internal constructor(private val appDaoSessionManager: 
                 .list()
     }
 
+    fun getAllNotNormalBlackWord(): List<BlackWord> {
+        return blackWordDao.queryBuilder()
+                .where(BlackWordDao.Properties.Stat.notEq(BlackWord.NORMAL))
+                .list()
+    }
+
     fun fromBlackWordCursor(cursor: Cursor): BlackWord {
         return blackWordDao.readEntity(cursor, 0)
     }

@@ -27,7 +27,7 @@
         
     <string name="dialog_button_text_log_out">退出</string>
         
-    <string name="user_in_blacklist">已被抹布</string>
+    <string name="user_in_blacklist">用戶已被抹布</string>
         
     <string name="message_network_error">發生了網絡錯誤</string>
         
@@ -410,4 +410,5 @@
     <string name="title_black_word_add">增加屏蔽詞</string>
     <string name="error_duplicate_word">已存在的屏蔽詞</string>
     <string name="black_word_verify">驗證屏蔽詞</string>
+    <string name="word_in_black_word">用詞已被屏蔽</string>
 </resources>

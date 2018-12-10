@@ -1,5 +1,6 @@
 package me.ykrank.s1next.data.api.model.collection
 
+import android.support.annotation.WorkerThread
 import com.fasterxml.jackson.annotation.*
 import com.github.ykrank.androidtools.util.StringUtil
 import me.ykrank.s1next.data.api.model.Account
@@ -7,7 +8,9 @@ import me.ykrank.s1next.data.api.model.Post
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.Vote
 import me.ykrank.s1next.data.db.BlackListDbWrapper
+import me.ykrank.s1next.data.db.BlackWordDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.BlackList
+import me.ykrank.s1next.data.db.dbmodel.BlackWord
 import org.apache.commons.lang3.StringUtils
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
@@ -162,11 +165,13 @@ class Posts : Account {
         /**
          * @see .filterPost
          */
+        @WorkerThread
         fun filterPostList(oPosts: List<Post>?): List<Post> {
             val posts = ArrayList<Post>()
             if (oPosts != null) {
+                val blackWords = BlackWordDbWrapper.instance.getAllNotNormalBlackWord()
                 for (post in oPosts) {
-                    val fPost = filterPost(post)
+                    val fPost = filterPost(post, false, blackWords)
                     if (fPost != null) {
                         posts.add(fPost)
                     }
@@ -180,27 +185,58 @@ class Posts : Account {
          *
          *  * 标记黑名单用户
          *  * 回复引用新版替换回老版样式
+         *  * 过滤屏蔽词（已屏蔽的对象不会在修改屏蔽词后自动更新，而必须是重新的原始对象）
          *
          * 如果修改了过滤状态，则会返回不同的对象
          */
-        fun filterPost(post: Post): Post? {
-            var nPost: Post? = post
+        @WorkerThread
+        fun filterPost(post: Post, clone: Boolean = false, blackWords: List<BlackWord>? = null): Post? {
+            var nPost: Post = post
             val blackListWrapper = BlackListDbWrapper.getInstance()
-            val blackList = blackListWrapper.getMergedBlackList(Integer.valueOf(post.authorId), post.authorName)
+            val blackList = blackListWrapper.getMergedBlackList(post.authorId?.toIntOrNull()
+                    ?: -1, post.authorName)
             if (blackList == null || blackList.post == BlackList.NORMAL) {
-                if (post.isHide) {
-                    nPost = post.clone()
-                    nPost.isHide = false
+                if (post.hide == Post.Hide_User) {
+                    if (clone) {
+                        nPost = post.clone()
+                    }
+                    nPost.hide = Post.Hide_Normal
                 }
             } else if (blackList.post == BlackList.DEL_POST) {
-                nPost = null
+                return null
             } else if (blackList.post == BlackList.HIDE_POST) {
-                if (!post.isHide) {
-                    nPost = post.clone()
-                    nPost.isHide = true
+                if (post.hide != Post.Hide_User) {
+                    if (clone) {
+                        nPost = post.clone()
+                    }
+                    nPost.hide = Post.Hide_User
                 }
-                nPost!!.remark = blackList.remark
+                nPost.remark = blackList.remark
             }
+
+            val reply = nPost.reply
+            if (reply != null && nPost.hide == Post.Hide_Normal) {
+                val mBlackWords = blackWords
+                        ?: BlackWordDbWrapper.instance.getAllNotNormalBlackWord()
+                mBlackWords.forEach {
+                    val word = it.word
+                    if (!word.isNullOrEmpty() && it.stat != BlackWord.NORMAL) {
+                        if (reply.contains(word, false)) {
+                            if (it.stat == BlackWord.DEL) {
+                                return null
+                            } else if (it.stat == BlackWord.HIDE) {
+                                //Only clone if not cloned before
+                                if (clone && nPost === post) {
+                                    nPost = post.clone()
+                                }
+                                nPost.hide = Post.Hide_Word
+                                return@forEach
+                            }
+                        }
+                    }
+                }
+            }
+
             return nPost
         }
     }

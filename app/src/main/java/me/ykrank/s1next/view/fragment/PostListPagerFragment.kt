@@ -564,7 +564,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         private fun filterPostAfterBlacklistChanged(dataSet: List<Any>): List<Any> {
             LooperUtil.enforceOnWorkThread()
             return dataSet.filterIsInstance<Post>()
-                    .mapNotNull { Posts.filterPost(it) }
+                    .mapNotNull { Posts.filterPost(it, true) }
         }
     }
 }

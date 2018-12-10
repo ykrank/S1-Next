@@ -103,7 +103,7 @@ class PostViewModel(private val rxBus: RxBus, private val user: User) {
             }
         }
         popup.inflate(R.menu.popup_blacklist)
-        if (postData?.isHide == true) {
+        if (postData?.hide == Post.Hide_User) {
             popup.menu.findItem(R.id.menu_popup_blacklist).setTitle(R.string.menu_blacklist_remove)
         }
         popup.show()

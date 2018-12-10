@@ -1,6 +1,7 @@
 package me.ykrank.s1next.data.api.model
 
 import android.graphics.Color
+import android.support.annotation.IntDef
 import android.support.v4.util.SimpleArrayMap
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
@@ -47,7 +48,8 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
      * is in blacklist
      */
     @JsonIgnore
-    var isHide = false
+    @HideFLag
+    var hide: Int = Hide_Normal
     @JsonIgnore
     var remark: String? = null
     @JsonIgnore
@@ -330,7 +332,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         if (count != other.count) return false
         if (dateTime != other.dateTime) return false
         if (attachmentMap != other.attachmentMap) return false
-        if (isHide != other.isHide) return false
+        if (hide != other.hide) return false
         if (remark != other.remark) return false
         if (isTrade != other.isTrade) return false
         if (isVote != other.isVote) return false
@@ -351,7 +353,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         result = 31 * result + (count?.hashCode() ?: 0)
         result = 31 * result + dateTime.hashCode()
         result = 31 * result + attachmentMap.hashCode()
-        result = 31 * result + isHide.hashCode()
+        result = 31 * result + hide
         result = 31 * result + (remark?.hashCode() ?: 0)
         result = 31 * result + isTrade.hashCode()
         result = 31 * result + isVote.hashCode()
@@ -397,7 +399,14 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         }
     }
 
+    @IntDef(Hide_Normal, Hide_User, Hide_Word)
+    annotation class HideFLag
+
     companion object {
+        const val Hide_Normal = 0
+        const val Hide_User = 1
+        const val Hide_Word = 2
+
         private val TAG = Post::class.java.simpleName
         private val COLOR_NAME_MAP: SimpleArrayMap<String, String> = SimpleArrayMap()
 

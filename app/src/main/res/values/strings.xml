@@ -119,7 +119,8 @@
     <string name="copyright" translatable="false">&#169;2016 ykrank</string>
 
     <!-- blacklist -->
-    <string name="user_in_blacklist">In blacklist</string>
+    <string name="user_in_blacklist">User in blacklist</string>
+    <string name="word_in_black_word">Word in black word</string>
 
     <string name="blacklist_authorid">Author id</string>
     <string name="blacklist_author_name">Author name</string>
