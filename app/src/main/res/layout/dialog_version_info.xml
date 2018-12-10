@@ -5,7 +5,7 @@
     tools:context="me.ykrank.s1next.view.dialog.VersionInfoDialogFragment">
 
     <data>
-
+        <import type="me.ykrank.s1next.data.db.dbmodel.DaoMaster"/>
         <import type="me.ykrank.s1next.BuildConfig" />
     </data>
 
@@ -47,7 +47,7 @@
             android:layout_below="@id/app_name"
             android:layout_marginTop="@dimen/subtitle_margin_top"
             android:includeFontPadding="false"
-            android:text="@{@string/version(BuildConfig.VERSION_NAME)}"
+            android:text="@{@string/version(BuildConfig.VERSION_NAME, DaoMaster.SCHEMA_VERSION)}"
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
         <TextView
