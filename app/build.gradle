@@ -20,8 +20,8 @@ android {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 53
-        versionName '2.0.4'
+        versionCode 54
+        versionName '2.1.0'
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
@@ -63,6 +63,7 @@ android {
             multiDexEnabled true
             applicationIdSuffix '.debug'
             versionNameSuffix '-debug'
+            signingConfig signingConfigs.release
         }
 
         alpha {
