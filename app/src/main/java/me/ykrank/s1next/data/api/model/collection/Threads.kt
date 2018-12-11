@@ -69,7 +69,7 @@ class Threads : Account {
             val threads = ArrayList<Thread>()
             if (oThreads != null) {
                 for (thread in oThreads) {
-                    val fThread = getFilterThread(thread)
+                    val fThread = getFilterThread(thread, false)
                     if (fThread != null) {
                         threads.add(fThread)
                     }
@@ -85,31 +85,36 @@ class Threads : Account {
          *
          * 如果修改了过滤状态，则会返回不同的对象
          */
-        fun getFilterThread(oThread: Thread): Thread? {
+        fun getFilterThread(oThread: Thread, copyed: Boolean = false): Thread? {
             LooperUtil.enforceOnWorkThread()
-            var nThread: Thread? = oThread
+            var nThread: Thread = oThread
             val blackListWrapper = BlackListDbWrapper.getInstance()
             when (blackListWrapper.getForumFlag(oThread.authorId, oThread.author)) {
-                BlackList.DEL_FORUM -> nThread = null
+                BlackList.DEL_FORUM -> return null
                 BlackList.HIDE_FORUM -> if (!oThread.isHide) {
-                    nThread = oThread.clone() as Thread
+                    if (copyed) {
+                        nThread = oThread.clone() as Thread
+                    }
                     nThread.isHide = true
                 }
                 BlackList.NORMAL -> if (oThread.isHide) {
-                    nThread = oThread.clone() as Thread
+                    if (copyed) {
+                        nThread = oThread.clone() as Thread
+                    }
                     nThread.isHide = false
                 }
                 else -> if (oThread.isHide) {
-                    nThread = oThread.clone() as Thread
+                    if (copyed) {
+                        nThread = oThread.clone() as Thread
+                    }
                     nThread.isHide = false
                 }
             }
-            if (nThread != null) {
-                val dbThread = ThreadDbWrapper.getInstance().getWithThreadId(nThread.id?.toInt()
-                        ?: 0)
-                if (dbThread != null) {
-                    nThread.lastReplyCount = dbThread.lastCountWhenView
-                }
+
+            val dbThread = ThreadDbWrapper.getInstance().getWithThreadId(nThread.id?.toInt()
+                    ?: 0)
+            if (dbThread != null) {
+                nThread.lastReplyCount = dbThread.lastCountWhenView
             }
             return nThread
         }
