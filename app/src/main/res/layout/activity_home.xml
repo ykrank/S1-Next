@@ -132,8 +132,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/spacing_micro"
                         android:layout_marginTop="@dimen/spacing_normal"
+                        android:layout_marginBottom="@dimen/spacing_micro"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -141,10 +141,10 @@
                             android:id="@+id/tv_friends"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_micro"
                             android:layout_marginLeft="@dimen/spacing_normal"
-                            android:layout_marginRight="@dimen/spacing_normal"
                             android:layout_marginTop="@dimen/spacing_micro"
+                            android:layout_marginRight="@dimen/spacing_normal"
+                            android:layout_marginBottom="@dimen/spacing_micro"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="@{@string/home_label_friends(data.friends)}"
@@ -160,10 +160,10 @@
                             android:id="@+id/tv_threads"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_micro"
                             android:layout_marginLeft="@dimen/spacing_normal"
-                            android:layout_marginRight="@dimen/spacing_normal"
                             android:layout_marginTop="@dimen/spacing_micro"
+                            android:layout_marginRight="@dimen/spacing_normal"
+                            android:layout_marginBottom="@dimen/spacing_micro"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="@{@string/home_label_threads(data.threads)}"
@@ -179,10 +179,10 @@
                             android:id="@+id/tv_replies"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_micro"
                             android:layout_marginLeft="@dimen/spacing_normal"
-                            android:layout_marginRight="@dimen/spacing_normal"
                             android:layout_marginTop="@dimen/spacing_micro"
+                            android:layout_marginRight="@dimen/spacing_normal"
+                            android:layout_marginBottom="@dimen/spacing_micro"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="@{@string/home_label_replies(data.replies)}"
@@ -227,12 +227,12 @@
                     style="?attr/cardViewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/card_view_vertical_margin"
-                    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
-                    android:layout_marginLeft="@dimen/card_view_horizontal_margin"
-                    android:layout_marginRight="@dimen/card_view_horizontal_margin"
                     android:layout_marginStart="@dimen/card_view_horizontal_margin"
+                    android:layout_marginLeft="@dimen/card_view_horizontal_margin"
                     android:layout_marginTop="@dimen/card_view_vertical_margin"
+                    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
+                    android:layout_marginRight="@dimen/card_view_horizontal_margin"
+                    android:layout_marginBottom="@dimen/card_view_vertical_margin"
                     tools:visibility="visible">
 
                     <LinearLayout
@@ -244,8 +244,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginBottom="@dimen/spacing_normal"
                             android:layout_marginTop="@dimen/spacing_normal"
+                            android:layout_marginBottom="@dimen/spacing_normal"
                             android:text="@string/personal_signature"
                             android:textSize="@dimen/text_size_subtitle" />
 
@@ -253,9 +253,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginBottom="@dimen/spacing_normal"
                             android:layout_marginLeft="@dimen/spacing_big"
                             android:layout_marginRight="@dimen/spacing_big"
+                            android:layout_marginBottom="@dimen/spacing_normal"
                             android:textIsSelectable="true"
                             app:html="@{data.signHtml}"
                             tools:text="S1Next-Goose-0.7.2
@@ -272,12 +272,12 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                     style="?attr/cardViewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/card_view_vertical_margin"
-                    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
-                    android:layout_marginLeft="@dimen/card_view_horizontal_margin"
-                    android:layout_marginRight="@dimen/card_view_horizontal_margin"
                     android:layout_marginStart="@dimen/card_view_horizontal_margin"
+                    android:layout_marginLeft="@dimen/card_view_horizontal_margin"
                     android:layout_marginTop="@dimen/card_view_vertical_margin"
+                    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
+                    android:layout_marginRight="@dimen/card_view_horizontal_margin"
+                    android:layout_marginBottom="@dimen/card_view_vertical_margin"
                     tools:visibility="visible">
 
                     <LinearLayout
@@ -285,6 +285,37 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/spacing_micro"
                         android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/spacing_big"
+                            android:layout_marginRight="@dimen/spacing_big"
+                            android:orientation="vertical"
+                            android:visibility="@{data.manager!=null ? View.VISIBLE : View.GONE}">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_micro"
+                                android:text="@string/manage_forum"
+                                android:textColor="?attr/colorAccent"
+                                android:textSize="@dimen/text_size_caption"
+                                android:typeface="serif"
+                                tools:text="管理板块" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{data.managerString}"
+                                tools:text="7177 小时" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="@dimen/spacing_micro"
+                                android:background="?attr/divisionBackground" />
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -438,12 +469,12 @@ googleplay: https://play.google.com/store/apps/details?id=me.ykrank.s1next
                     style="?attr/cardViewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/card_view_vertical_margin"
-                    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
-                    android:layout_marginLeft="@dimen/card_view_horizontal_margin"
-                    android:layout_marginRight="@dimen/card_view_horizontal_margin"
                     android:layout_marginStart="@dimen/card_view_horizontal_margin"
-                    android:layout_marginTop="@dimen/card_view_vertical_margin">
+                    android:layout_marginLeft="@dimen/card_view_horizontal_margin"
+                    android:layout_marginTop="@dimen/card_view_vertical_margin"
+                    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
+                    android:layout_marginRight="@dimen/card_view_horizontal_margin"
+                    android:layout_marginBottom="@dimen/card_view_vertical_margin">
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recyclerView"

@@ -1,6 +1,7 @@
 package me.ykrank.s1next.data.api.model
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.JsonNode
@@ -27,7 +28,12 @@ class Profile : Account {
     var lastVisitDate: Long? = null
     var lastActiveDate: Long? = null
     var lastPostDate: Long? = null
+    @JsonIgnore
     var stats: List<Pair<String, String>> = listOf()
+    @JsonIgnore
+    var manager: List<String>? = null
+    val managerString: String?
+        get() = manager.toString()
 
     constructor()
 
@@ -71,27 +77,35 @@ class Profile : Account {
                 profile.replies = countEle.child(3).text().trim().substring(4).toInt()
                 profile.threads = countEle.child(5).text().trim().substring(4).toInt()
 
-                //活跃概况
-                val timeElement = profileDiv.child(1)
-                profile.groupTitle = timeElement.child(1).selectFirst("span").text()
-                //<ul id="pbbs" class="pf_l">
-                val pbbsEle = profileDiv.getElementById("pbbs")
-                pbbsEle.children().forEach {
-                    when (it.child(0).text().trim()) {
-                        "在线时间" -> profile.onlineHour = it.textNodes()[0].text().trim().let {
-                            it.substring(0, it.length - 3)
-                        }.toInt()
-                        "注册时间" -> profile.regDate = it.textNodes()[0].text().trim().let {
-                            df.parse(it).time / 1000
+                profileDiv.children().forEach { ele ->
+                    val h2 = ele.selectFirst("h2.mbn")
+                    when (h2?.text()?.trim()) {
+                        "管理以下版块" -> {
+                            profile.manager = ele.select("a").mapNotNull { it.text() }
                         }
-                        "最后访问" -> profile.lastVisitDate = it.textNodes()[0].text().trim().let {
-                            df.parse(it).time / 1000
-                        }
-                        "上次活动时间" -> profile.lastActiveDate = it.textNodes()[0].text().trim().let {
-                            df.parse(it).time / 1000
-                        }
-                        "上次发表时间" -> profile.lastPostDate = it.textNodes()[0].text().trim().let {
-                            df.parse(it).time / 1000
+                        "活跃概况" -> {
+                            profile.groupTitle = ele.child(1).selectFirst("span").text()
+                            //<ul id="pbbs" class="pf_l">
+                            val pbbsEle = profileDiv.getElementById("pbbs")
+                            pbbsEle.children().forEach {
+                                when (it.child(0).text().trim()) {
+                                    "在线时间" -> profile.onlineHour = it.textNodes()[0].text().trim().let {
+                                        it.substring(0, it.length - 3)
+                                    }.toInt()
+                                    "注册时间" -> profile.regDate = it.textNodes()[0].text().trim().let {
+                                        df.parse(it).time / 1000
+                                    }
+                                    "最后访问" -> profile.lastVisitDate = it.textNodes()[0].text().trim().let {
+                                        df.parse(it).time / 1000
+                                    }
+                                    "上次活动时间" -> profile.lastActiveDate = it.textNodes()[0].text().trim().let {
+                                        df.parse(it).time / 1000
+                                    }
+                                    "上次发表时间" -> profile.lastPostDate = it.textNodes()[0].text().trim().let {
+                                        df.parse(it).time / 1000
+                                    }
+                                }
+                            }
                         }
                     }
                 }

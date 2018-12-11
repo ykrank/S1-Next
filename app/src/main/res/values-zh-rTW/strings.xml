@@ -414,4 +414,5 @@
     <string name="error_word_out_of_bound">屏蔽詞最多10個</string>
     <string name="red_envelopes">賞金紅包</string>
     <string name="copied">已複製</string>
+    <string name="manage_forum">管理板塊</string>
 </resources>

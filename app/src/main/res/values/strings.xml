@@ -288,6 +288,7 @@
     <string name="red_envelopes_text" translatable="false">打开支付宝首页搜“549327946”领红包</string>
     <string name="red_envelopes_text_hint" translatable="false">点击复制</string>
     <string name="copied">Already copied</string>
+    <string name="manage_forum">Manage forum</string>
 
     <!---->
 </resources>
