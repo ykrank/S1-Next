@@ -143,7 +143,10 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
             if (preferencesManager.isLoadAuto) {
                 return OnceClickUtil.onceClickObservable(view, 1000)
                         .observeOn(Schedulers.io())
-                        .map { Optional.fromNullable(ReadProgressDbWrapper.getInstance().getWithThreadId(Integer.valueOf(thread.get().id))) }
+                        .map {
+                            Optional.fromNullable(ReadProgressDbWrapper.getInstance().getWithThreadId(thread.get().id?.toInt()
+                                    ?: 0))
+                        }
                         .observeOn(AndroidSchedulers.mainThread())
                         .to(AndroidRxDispose.withObservable(view, ViewEvent.DESTROY))
                         .subscribe({ progress ->

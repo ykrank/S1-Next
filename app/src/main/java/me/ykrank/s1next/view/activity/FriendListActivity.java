@@ -38,9 +38,9 @@ public class FriendListActivity extends BaseActivity {
         L.leaveMsg("FriendListActivity##uid:" + uid + ",name:" + name);
 
         if (savedInstanceState == null) {
-            Fragment fragment = FriendListFragment.newInstance(uid);
+            Fragment fragment = FriendListFragment.Companion.newInstance(uid);
             getSupportFragmentManager().beginTransaction().add(R.id.frame_layout, fragment,
-                    FriendListFragment.TAG).commit();
+                    FriendListFragment.Companion.getTAG()).commit();
         }
     }
 }

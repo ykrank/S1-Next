@@ -239,7 +239,8 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                 return null
             }
             val itemPosition = findNowItemPosition()
-            return ReadProgress(Integer.valueOf(mThreadId), mPageNum, itemPosition.first!!, itemPosition.second!!)
+            return ReadProgress(mThreadId?.toInt()
+                    ?: 0, mPageNum, itemPosition.first!!, itemPosition.second!!)
         }
 
     /**
@@ -255,7 +256,8 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         var offset = 0
         val view = mLayoutManager.findViewByPosition(itemPosition)
         if (view != null) {
-            offset = view.top
+            val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+            offset = view.top + layoutParams.topMargin
         }
         return Pair(itemPosition, offset)
     }
@@ -384,27 +386,28 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                 mRecyclerAdapter.setVoteInfo(it)
             }
 
-            mRecyclerAdapter.diffNewDataSet(postList, true)
-            if (blacklistChanged) {
-                blacklistChanged = false
-            } else if (pullUpToRefresh) {
+            mRecyclerAdapter.diffNewDataSet(postList, true) {
+                if (blacklistChanged) {
+                    blacklistChanged = false
+                } else if (pullUpToRefresh) {
 
-            } else if (readProgress != null && scrollState?.state == PagerScrollState.BEFORE_SCROLL_POSITION) {
-                mLayoutManager.scrollToPositionWithOffset(readProgress!!.position, readProgress!!.offset)
-                readProgress = null
-                scrollState!!.state = PagerScrollState.FREE
-            } else {
-                val quotePostId = arguments?.getString(ARG_QUOTE_POST_ID)
-                if (!TextUtils.isEmpty(quotePostId)) {
-                    for (i in 0 until postList.size) {
-                        if (quotePostId?.toInt() == postList[i].id) {
-                            // scroll to post post
-                            mLayoutManager.scrollToPositionWithOffset(i, 0)
-                            break
+                } else if (readProgress != null && scrollState?.state == PagerScrollState.BEFORE_SCROLL_POSITION) {
+                    mLayoutManager.scrollToPositionWithOffset(readProgress!!.position, readProgress!!.offset)
+                    readProgress = null
+                    scrollState!!.state = PagerScrollState.FREE
+                } else {
+                    val quotePostId = arguments?.getString(ARG_QUOTE_POST_ID)
+                    if (!TextUtils.isEmpty(quotePostId)) {
+                        for (i in 0 until postList.size) {
+                            if (quotePostId?.toInt() == postList[i].id) {
+                                // scroll to post post
+                                mLayoutManager.scrollToPositionWithOffset(i, 0)
+                                break
+                            }
                         }
+                        // clear this argument after redirecting
+                        arguments?.putString(ARG_QUOTE_POST_ID, null)
                     }
-                    // clear this argument after redirecting
-                    arguments?.putString(ARG_QUOTE_POST_ID, null)
                 }
             }
 
