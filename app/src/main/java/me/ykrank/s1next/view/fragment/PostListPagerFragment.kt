@@ -249,15 +249,16 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
      * @return
      */
     private fun findNowItemPosition(): Pair<Int, Int> {
-        var itemPosition = mLayoutManager.findFirstCompletelyVisibleItemPosition()
-        if (itemPosition == RecyclerView.NO_POSITION) {
-            itemPosition = mLayoutManager.findFirstVisibleItemPosition()
-        }
+        val itemPosition = mLayoutManager.findFirstVisibleItemPosition()
         var offset = 0
         val view = mLayoutManager.findViewByPosition(itemPosition)
         if (view != null) {
-            val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
-            offset = view.top + layoutParams.topMargin
+            //See LinearSmoothScroller#calculateDyToMakeVisible
+            val params = view.layoutParams as RecyclerView.LayoutParams
+            val top = mLayoutManager.getDecoratedTop(view) - params.topMargin
+            val start = mLayoutManager.paddingTop
+
+            offset = top - start
         }
         return Pair(itemPosition, offset)
     }

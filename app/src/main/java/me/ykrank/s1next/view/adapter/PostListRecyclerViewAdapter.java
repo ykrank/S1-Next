@@ -21,7 +21,7 @@ public final class PostListRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     private PostAdapterDelegate postAdapterDelegate;
 
     public PostListRecyclerViewAdapter(Fragment fragment, @NonNull Context context) {
-        super(context);
+        super(context, true);
 
         postAdapterDelegate = new PostAdapterDelegate(fragment, context);
         addAdapterDelegate(postAdapterDelegate);
