@@ -23,10 +23,9 @@
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tab"
-                style="@style/Widget.MaterialComponents.TabLayout"
+                style="@style/Widget.Design.TabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/transparent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tabMode="scrollable" />
 
