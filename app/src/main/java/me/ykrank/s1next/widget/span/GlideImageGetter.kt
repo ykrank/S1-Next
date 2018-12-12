@@ -408,7 +408,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
         /**
          * Too big image make app looks like blocked
          */
-        private const val MaxImageSize = 6000
+        private const val MaxImageSize = 6400
 
         @MainThread
         operator fun get(textView: TextView): GlideImageGetter {
