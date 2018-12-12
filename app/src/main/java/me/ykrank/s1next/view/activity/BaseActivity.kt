@@ -121,7 +121,9 @@ abstract class BaseActivity : LibBaseActivity() {
     }
 
     override fun setTitle(title: CharSequence?) {
-        if (mToolbarDelegate?.setTitle(title) != true) {
+        if (mToolbarDelegate?.setTitle(title) == true) {
+            super.setTitle("")
+        } else {
             super.setTitle(title)
         }
     }
