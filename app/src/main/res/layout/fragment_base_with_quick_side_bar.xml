@@ -27,7 +27,6 @@
             android:layout_height="match_parent"
             app:colorSchemeColors="@{@intArray/swipe_refresh_layout_color_scheme}"
             app:enabled="@{loadingViewModel.swipeRefreshLayoutEnabled}"
-            app:marginEnd="@{quickSidebarEnable?(int)@dimen/spacing_normal:0}"
             app:refreshing="@{loadingViewModel.swipeRefresh}">
 
             <android.support.v7.widget.RecyclerView

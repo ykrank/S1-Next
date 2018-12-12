@@ -78,6 +78,8 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
     override fun onBindViewHolderData(post: Post, position: Int, holder: SimpleRecycleViewHolder<ItemPostBinding>, payloads: List<Any>) {
         val binding = holder.binding
 
+        binding.quickSidebarEnable = mGeneralPreferencesManager.isQuickSideBarEnable
+
         val selectable = mGeneralPreferencesManager.isPostSelectable
         if (selectable != binding.tvReply.isTextSelectable) {
             setTextSelectable(binding, selectable)

@@ -12,20 +12,24 @@
         <variable
             name="postViewModel"
             type="me.ykrank.s1next.viewmodel.PostViewModel" />
+
+        <variable
+            name="quickSidebarEnable"
+            type="boolean" />
     </data>
 
-    <android.support.v7.widget.CardView
-        style="?attr/cardViewStyle"
+    <android.support.design.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/card_view_vertical_margin"
-        android:layout_marginTop="@dimen/card_view_vertical_margin"
+        android:layout_marginTop="@dimen/spacing_micro"
+        android:layout_marginBottom="@dimen/spacing_micro"
         app:cardCornerRadius="0dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/item_padding">
+            android:padding="@dimen/item_padding"
+            app:marginEnd="@{quickSidebarEnable?(int)@dimen/spacing_normal:0}">
 
             <ImageView
                 android:id="@+id/avatar"
@@ -77,8 +81,8 @@
                 android:layout_marginLeft="@dimen/item_padding"
                 android:includeFontPadding="false"
                 android:lines="1"
-                android:text="@string/only_see_him"
                 android:onClick="@{postViewModel::onOnlySeeHimClick}"
+                android:text="@string/only_see_him"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 app:layout_constraintBottom_toBottomOf="@id/author_name"
                 app:layout_constraintLeft_toRightOf="@id/original_poster_tag"
@@ -190,8 +194,8 @@
                         android:id="@+id/tv_rate_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/spacing_micro"
                         android:layout_marginStart="@dimen/spacing_micro"
+                        android:layout_marginLeft="@dimen/spacing_micro"
                         android:padding="@dimen/spacing_micro"
                         android:text="@string/rate"
                         android:textSize="@dimen/text_size_caption"
@@ -228,14 +232,14 @@
                     android:id="@+id/recycleView_rates"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_micro"
                     android:layout_marginLeft="@dimen/spacing_micro"
                     android:layout_marginRight="@dimen/spacing_micro"
+                    android:layout_marginBottom="@dimen/spacing_micro"
                     android:visibility="@{postViewModel.post.rates.size > 0?View.VISIBLE:View.GONE}" />
             </LinearLayout>
 
         </android.support.constraint.ConstraintLayout>
 
-    </android.support.v7.widget.CardView>
+    </android.support.design.card.MaterialCardView>
 
 </layout>

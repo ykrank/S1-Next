@@ -441,6 +441,9 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
     internal fun invalidateQuickSidebarVisible(): Boolean {
         val enable = mGeneralPreferencesManager.isQuickSideBarEnable
         binding.quickSidebarEnable = enable
+
+        //Post notify
+        mRecyclerAdapter.notifyDataSetChanged()
         return enable
     }
 
