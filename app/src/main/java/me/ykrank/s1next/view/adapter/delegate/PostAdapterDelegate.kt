@@ -99,7 +99,7 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
         if (rates != null && rates.isNotEmpty()) {
             val context = binding.root.context
             if (binding.recycleViewRates.adapter == null) {
-                binding.recycleViewRates.adapter = SimpleRecycleViewAdapter(context, R.layout.item_rate_detail, BindViewHolderCallback { position, binding ->
+                binding.recycleViewRates.adapter = SimpleRecycleViewAdapter(context, R.layout.item_rate_detail, true, BindViewHolderCallback { position, binding ->
                     val bind = binding as ItemRateDetailBinding?
                     bind?.model?.apply {
                         val uid = this.uid
@@ -121,9 +121,9 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
             val adapter = binding.recycleViewRates.adapter as SimpleRecycleViewAdapter
 
             if (rates.size > 10) {
-                adapter.swapDataSet(rates.subList(0, 10))
+                adapter.diffNewDataSet(rates.subList(0, 10), true)
             } else {
-                adapter.swapDataSet(rates)
+                adapter.diffNewDataSet(rates, true)
             }
 
             binding.tvRateViewAll.setOnClickListener {

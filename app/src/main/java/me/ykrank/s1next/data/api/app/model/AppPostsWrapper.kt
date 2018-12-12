@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonGetter
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.data.db.BlackListDbWrapper
@@ -67,7 +68,7 @@ class AppPostsWrapper() : AppListWrapper<AppPost>() {
 }
 
 @PaperParcel
-class AppPost() : PaperParcelable, Cloneable, DiffSameItem {
+class AppPost() : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
     @JsonProperty("pid")
     var pid: Int = 0
     @JsonProperty("fid")
@@ -108,6 +109,9 @@ class AppPost() : PaperParcelable, Cloneable, DiffSameItem {
     var trade: Boolean = false
     @JsonIgnore
     var extraHtml: String? = null
+
+    override val stableId: Long
+        get() = pid.toLong()
 
     @JsonCreator
     constructor(@JsonProperty("message") message: String?) : this() {

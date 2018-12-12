@@ -53,7 +53,7 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
         tid = arguments!!.getString(ARG_THREAD_ID)
         mVote = arguments!!.getParcelable(ARG_VOTE)
 
-        adapter = SimpleRecycleViewAdapter(context!!, R.layout.item_vote, BindViewHolderCallback { position, itemBind ->
+        adapter = SimpleRecycleViewAdapter(context!!, R.layout.item_vote, false, BindViewHolderCallback { position, itemBind ->
             itemBind as ItemVoteBinding
             itemBind.radio.setOnClickListener { refreshSelectedItem(position, itemBind) }
             itemBind.checkBox.setOnClickListener { refreshSelectedItem(position, itemBind) }

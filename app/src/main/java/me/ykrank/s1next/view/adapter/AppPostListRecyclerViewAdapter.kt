@@ -12,7 +12,7 @@ import me.ykrank.s1next.view.adapter.delegate.AppPostAdapterDelegate
  * has another item type [FooterProgressAdapterDelegate]
  * in order to implement pull up to refresh.
  */
-class AppPostListRecyclerViewAdapter(activity: Activity, quotePid: String?) : BaseRecyclerViewAdapter(activity) {
+class AppPostListRecyclerViewAdapter(activity: Activity, quotePid: String?) : BaseRecyclerViewAdapter(activity, true) {
 
     private val postAdapterDelegate: AppPostAdapterDelegate = AppPostAdapterDelegate(activity, quotePid)
 

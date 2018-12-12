@@ -28,7 +28,7 @@ class PostToolsExtrasFragment : BaseFragment() {
         binding = FragmentPostToolsExtrasBinding.inflate(inflater, container, false)
 
         binding.recycleView.layoutManager = GridLayoutManager(context, 5, LinearLayoutManager.VERTICAL, false)
-        val adapter = SimpleRecycleViewAdapter(context!!, R.layout.item_post_tools_extras, createViewHolderCallback = {
+        val adapter = SimpleRecycleViewAdapter(context!!, R.layout.item_post_tools_extras, false, createViewHolderCallback = {
             val bind = it as ItemPostToolsExtrasBinding
             bind.root.setOnClickListener {
                 bind.model?.onClick(provider.currentEditText)

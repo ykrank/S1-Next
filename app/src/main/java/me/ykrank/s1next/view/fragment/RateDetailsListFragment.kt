@@ -35,7 +35,7 @@ class RateDetailsListFragment : BaseRecyclerViewFragment<List<Rate>>() {
         val recyclerView = recyclerView
         val activity = activity
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        mRecyclerAdapter = SimpleRecycleViewAdapter(activity!!, R.layout.item_rate_detail_multi)
+        mRecyclerAdapter = SimpleRecycleViewAdapter(activity!!, R.layout.item_rate_detail_multi, true)
         recyclerView.adapter = mRecyclerAdapter
         recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             val d16 = 16.dp2px(context!!)
@@ -52,7 +52,7 @@ class RateDetailsListFragment : BaseRecyclerViewFragment<List<Rate>>() {
 
     override fun onNext(data: List<Rate>) {
         super.onNext(data)
-        mRecyclerAdapter.swapDataSet(data)
+        mRecyclerAdapter.diffNewDataSet(data, true)
     }
 
     companion object {

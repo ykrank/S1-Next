@@ -12,7 +12,6 @@ import com.github.ykrank.androidtools.ui.adapter.simple.BindViewHolderCallback
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
-import com.uber.autodispose.SingleSubscribeProxy
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.S1Service
@@ -94,7 +93,7 @@ class NewRateFragment : BaseFragment() {
         }
 
         binding.recycleView.layoutManager = LinearLayoutManager(context)
-        reasonAdapter = SimpleRecycleViewAdapter(context!!, R.layout.item_rate_reason, bindViewHolderCallback, null)
+        reasonAdapter = SimpleRecycleViewAdapter(context!!, R.layout.item_rate_reason, false, bindViewHolderCallback, null)
         binding.recycleView.adapter = reasonAdapter
     }
 

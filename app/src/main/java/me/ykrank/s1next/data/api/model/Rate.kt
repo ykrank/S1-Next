@@ -1,5 +1,7 @@
 package me.ykrank.s1next.data.api.model
 
+import android.support.v7.widget.RecyclerView
+import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.data.api.ApiUtil
 import org.jsoup.Jsoup
@@ -9,7 +11,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @PaperParcel
-class Rate : PaperParcelable {
+class Rate : PaperParcelable, StableIdModel {
     var uid: String? = null
     var uname: String? = null
     var content: String? = null
@@ -17,6 +19,9 @@ class Rate : PaperParcelable {
     var time: Long? = null
 
     val symbolScore: String get() = if (score ?: 0 < 0) "$score" else "+$score"
+
+    override val stableId: Long
+        get() = uid?.toLongOrNull() ?: RecyclerView.NO_ID
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

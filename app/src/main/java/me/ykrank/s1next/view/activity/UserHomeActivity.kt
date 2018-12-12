@@ -110,7 +110,7 @@ class UserHomeActivity : BaseActivity() {
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.isNestedScrollingEnabled = false
-        adapter = SimpleRecycleViewAdapter(this, R.layout.item_home_stat)
+        adapter = SimpleRecycleViewAdapter(this, R.layout.item_home_stat, false)
         binding.recyclerView.adapter = adapter
 
         setupImage()

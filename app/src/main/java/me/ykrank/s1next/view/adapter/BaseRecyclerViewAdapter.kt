@@ -5,7 +5,7 @@ import com.github.ykrank.androidtools.ui.adapter.LibBaseRecyclerViewAdapter
 
 abstract class BaseRecyclerViewAdapter : LibBaseRecyclerViewAdapter {
 
-    constructor(context: Context) : this(context, false)
+    constructor(context: Context) : this(context, true)
 
     constructor(context: Context, stableId: Boolean) : super(context, stableId)
 }
