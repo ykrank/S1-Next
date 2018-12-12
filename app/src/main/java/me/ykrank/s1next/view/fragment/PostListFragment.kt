@@ -83,7 +83,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         App.appComponent.inject(this)
 
         val bundle = arguments!!
-        val thread = Preconditions.checkNotNull(bundle.getParcelable<Thread>(ARG_THREAD))
+        val thread = bundle.getParcelable<Thread>(ARG_THREAD) as Thread
         val authorId = bundle.getString(ARG_AUTHOR_ID)
         // thread title is null if this thread comes from ThreadLink
         mThreadTitle = thread.title
@@ -184,7 +184,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                         .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
                         .subscribe { b ->
                             mReadProgressPrefManager.saveLastReadProgress(b)
-                            L.i("Save last read progress:" + b)
+                            L.i("Save last read progress:$b")
                         }
             }
         } else {

@@ -145,7 +145,8 @@ public final class TextViewBindingAdapter {
             if (addReplies >= 0) {
                 repliesStr += " (+" + addReplies + ")";
             } else {
-                repliesStr += " (" + addReplies + ")";
+                //Because cache need invalid
+                repliesStr += " (-)";
             }
         }
         ViewUtil.concatWithTwoSpacesForRtlSupport(textView, repliesStr,

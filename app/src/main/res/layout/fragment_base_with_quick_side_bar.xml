@@ -48,6 +48,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="end"
             app:sidebarTextColor="?android:attr/textColorPrimary"
+            app:sidebarTextSize="8sp"
+            app:sidebarTextSizeChoose="11sp"
             app:sidebarTextColorChoose="?android:attr/textColorPrimary"
             app:visibility="@{quickSidebarEnable?View.VISIBLE:View.GONE}"
             tools:visibility="visible" />

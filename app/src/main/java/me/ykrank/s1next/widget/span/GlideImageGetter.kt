@@ -26,10 +26,7 @@ import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ViewEvent
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.LooperUtil
-import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.FitOutWidthDownSampleStrategy
-import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.GlMaxTextureSizeDownSampleStrategy
-import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.MultiDownSampleStrategy
-import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.SizeMultiplierDownSampleStrategy
+import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.*
 import com.github.ykrank.androidtools.widget.glide.transformations.FitOutWidthBitmapTransformation
 import com.github.ykrank.androidtools.widget.glide.viewtarget.CustomViewTarget
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
@@ -82,7 +79,9 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
                 .placeholder(R.mipmap.unknown_image)
                 .error(R.mipmap.unknown_image)
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
-                .downsample(MultiDownSampleStrategy(GlMaxTextureSizeDownSampleStrategy(), FitOutWidthDownSampleStrategy()))
+                .downsample(MultiDownSampleStrategy(GlMaxTextureSizeDownSampleStrategy(),
+                        FitOutWidthDownSampleStrategy(),
+                        SizeDownSampleStrategy(MaxImageSize)))
                 .transform(FitOutWidthBitmapTransformation())
     }
 
@@ -191,7 +190,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
                         }
                     } else {
                         //Big image scale to fit width
-                        imageGetterViewTarget.mDrawable.setTriggerSize(200)
+                        imageGetterViewTarget.mDrawable.setTriggerSize(TriggerSize)
                         if (mTextView.width > 0) {
                             imageGetterViewTarget.mDrawable.setWidthTargetSize(mTextView.width)
                         }
@@ -402,6 +401,14 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
     }
 
     companion object {
+        /**
+         * Image bigger then this will fit width
+         */
+        private const val TriggerSize = 200
+        /**
+         * Too big image make app looks like blocked
+         */
+        private const val MaxImageSize = 6000
 
         @MainThread
         operator fun get(textView: TextView): GlideImageGetter {
