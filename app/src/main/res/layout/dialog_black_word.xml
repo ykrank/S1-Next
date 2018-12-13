@@ -72,13 +72,14 @@
 
             <android.support.design.button.MaterialButton
                 android:id="@+id/btn_verify"
-                android:theme="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_big"
+                android:text="@string/black_word_verify"
+                android:textColor="?android:attr/textColorPrimaryInverse"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_status"
-                android:text="@string/black_word_verify" />
+                app:layout_constraintTop_toBottomOf="@id/tv_status" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 </layout>

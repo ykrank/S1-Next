@@ -29,7 +29,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:theme="?attr/navigationViewTheme"
         app:headerLayout="@layout/navigation_view_header"
         app:itemBackground="@drawable/selector_empty"
         app:menu="@menu/drawer" />

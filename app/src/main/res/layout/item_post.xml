@@ -19,6 +19,7 @@
     </data>
 
     <android.support.design.card.MaterialCardView
+        style="?attr/materialCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_micro"
@@ -49,6 +50,7 @@
                 android:id="@+id/author_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/item_padding"
                 android:layout_marginLeft="@dimen/item_padding"
                 android:includeFontPadding="false"
                 android:lines="1"
@@ -62,22 +64,28 @@
                 android:id="@+id/original_poster_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/item_padding"
                 android:layout_marginLeft="@dimen/item_padding"
+                android:background="?attr/colorPrimaryDark"
+                android:gravity="center"
                 android:includeFontPadding="false"
                 android:lines="1"
+                android:padding="1dp"
                 android:text="@string/original_poster"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="?android:attr/textColorPrimaryInverse"
+                android:textSize="@dimen/text_size_caption"
                 android:visibility="@{postViewModel.post.isOpPost?View.VISIBLE:View.GONE}"
                 app:layout_constraintBottom_toBottomOf="@id/author_name"
                 app:layout_constraintLeft_toRightOf="@id/author_name"
                 app:layout_constraintTop_toTopOf="@id/author_name"
-                tools:text="楼主"
+                tools:text="楼"
                 tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/tv_only_see_him"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/item_padding"
                 android:layout_marginLeft="@dimen/item_padding"
                 android:includeFontPadding="false"
                 android:lines="1"

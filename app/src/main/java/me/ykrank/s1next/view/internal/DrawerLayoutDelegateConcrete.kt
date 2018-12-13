@@ -188,7 +188,8 @@ class DrawerLayoutDelegateConcrete(val activity: FragmentActivity, drawerLayout:
         // SettingsActivity and HelpActivity don't have drawer
         // so it's no need to set checked theirs MenuItem
         if (menuItem != null) {
-            menuItem.isChecked = true
+            //TODO Now theme could not support
+//            menuItem.isChecked = true
         }
     }
 
