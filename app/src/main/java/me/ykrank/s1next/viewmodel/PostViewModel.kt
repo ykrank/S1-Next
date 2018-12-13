@@ -5,9 +5,6 @@ import android.databinding.ObservableField
 import android.databinding.ObservableInt
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.PopupMenu
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.URLSpan
 import android.view.MenuItem
 import android.view.View
 import com.github.ykrank.androidtools.util.ContextUtils
@@ -26,7 +23,6 @@ import me.ykrank.s1next.view.activity.WebViewActivity
 import me.ykrank.s1next.view.event.*
 import me.ykrank.s1next.view.internal.BlacklistMenuAction
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache
-import org.apache.commons.lang3.StringUtils
 
 class PostViewModel(private val rxBus: RxBus, private val user: User) {
 
@@ -39,15 +35,7 @@ class PostViewModel(private val rxBus: RxBus, private val user: User) {
     private val postFloor: CharSequence?
         get() {
             val p = post.get() ?: return null
-            val text = "#${p.count}"
-            val spannable = SpannableString(text)
-            val urlSpan = object : URLSpan(StringUtils.EMPTY) {
-                override fun onClick(widget: View) {
-                    showFloorActionMenu(widget)
-                }
-            }
-            spannable.setSpan(urlSpan, 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            return spannable
+            return "#${p.count}"
         }
 
 
@@ -111,7 +99,7 @@ class PostViewModel(private val rxBus: RxBus, private val user: User) {
     }
 
     //click floor textView, show popup menu
-    private fun showFloorActionMenu(v: View) {
+    fun showFloorActionMenu(v: View) {
         val popup = PopupMenu(v.context, v)
         popup.setOnMenuItemClickListener { menuitem: MenuItem ->
             when (menuitem.itemId) {

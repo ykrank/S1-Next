@@ -49,9 +49,6 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
     private fun setTextSelectable(binding: ItemPostBinding, selectable: Boolean) {
         binding.authorName.setTextIsSelectable(selectable)
 
-        binding.tvFloor.movementMethod = LinkMovementMethod.getInstance()
-        binding.tvFloor.isLongClickable = false
-
         binding.tvReply.setTextIsSelectable(selectable)
         binding.tvReply.movementMethod = PostMovementMethod.getInstance()
     }
@@ -143,10 +140,8 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
         if (mGeneralPreferencesManager.isPostSelectable) {
             val binding = (holder as SimpleRecycleViewHolder<ItemPostBinding>).binding
             binding.authorName.isEnabled = false
-            binding.tvFloor.isEnabled = false
             binding.tvReply.isEnabled = false
             binding.authorName.isEnabled = true
-            binding.tvFloor.isEnabled = true
             binding.tvReply.isEnabled = true
         }
     }
