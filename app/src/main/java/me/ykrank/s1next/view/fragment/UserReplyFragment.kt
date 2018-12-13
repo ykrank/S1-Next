@@ -3,7 +3,6 @@ package me.ykrank.s1next.view.fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import com.github.ykrank.androidtools.util.L
 import io.reactivex.Single
 import me.ykrank.s1next.data.api.model.wrapper.HomeReplyWebWrapper
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter
@@ -27,7 +26,7 @@ class UserReplyFragment : BaseLoadMoreRecycleViewFragment<HomeReplyWebWrapper>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         uid = arguments!!.getString(ARG_UID)
-        L.leaveMsg("UserReplyFragment")
+        leavePageMsg("UserReplyFragment")
 
         val recyclerView = recyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)

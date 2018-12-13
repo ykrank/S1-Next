@@ -3,7 +3,6 @@ package me.ykrank.s1next.view.fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.MathUtil
 import com.github.ykrank.androidtools.widget.RxBus
 import io.reactivex.Single
@@ -34,7 +33,7 @@ class PmGroupsFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<PmGroup
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onViewCreated(view, savedInstanceState)
-        L.leaveMsg("PmGroupsFragment")
+        leavePageMsg("PmGroupsFragment")
         activity?.setTitle(R.string.pms)
 
         val recyclerView = recyclerView

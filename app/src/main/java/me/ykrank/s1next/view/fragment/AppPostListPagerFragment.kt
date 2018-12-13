@@ -87,7 +87,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
         mThreadId = bundle.getString(ARG_THREAD_ID)
         mPageNum = bundle.getInt(ARG_PAGE_NUM)
         mQuotePid = bundle.getString(ARG_QUOTE_POST_ID)
-        L.leaveMsg("AppPostListPagerFragment##ThreadId:$mThreadId,PageNum:$mPageNum")
+        leavePageMsg("AppPostListPagerFragment##ThreadId:$mThreadId,PageNum:$mPageNum")
 
         mRecyclerView = recyclerView
         mLayoutManager = StartSnapLinearLayoutManager(activity!!)

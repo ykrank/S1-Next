@@ -7,7 +7,6 @@ import android.view.View
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
-import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.RxBus
 import io.reactivex.Single
 import io.rx_cache2.DynamicKeyGroup
@@ -56,7 +55,7 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
         mForumId = bundle.getString(ARG_FORUM_ID)
         mTypeId = bundle.getString(ARG_TYPE_ID)
         mPageNum = bundle.getInt(ARG_PAGE_NUM)
-        L.leaveMsg("ThreadListPagerFragment##ForumId:$mForumId, TypeId:$mTypeId, PageNum:$mPageNum")
+        leavePageMsg("ThreadListPagerFragment##ForumId:$mForumId, TypeId:$mTypeId, PageNum:$mPageNum")
 
         val recyclerView = recyclerView
         val activity = activity

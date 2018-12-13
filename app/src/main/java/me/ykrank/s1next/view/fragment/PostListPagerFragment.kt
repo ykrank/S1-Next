@@ -111,7 +111,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             readProgress = bundle.getParcelable(ARG_READ_PROGRESS)
             scrollState = bundle.getParcelable(ARG_PAGER_SCROLL_STATE)
         }
-        L.leaveMsg("PostListPagerFragment##ThreadId:$mThreadId,PageNum:$mPageNum")
+        leavePageMsg("PostListPagerFragment##ThreadId:$mThreadId,PageNum:$mPageNum")
 
         mRecyclerView = recyclerView
         mLayoutManager = StartSnapLinearLayoutManager(activity!!)

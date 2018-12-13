@@ -13,7 +13,6 @@ import android.view.MenuItem
 import android.view.View
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
-import com.github.ykrank.androidtools.guava.Preconditions
 import com.github.ykrank.androidtools.ui.LibBaseViewPagerFragment
 import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate
 import com.github.ykrank.androidtools.util.*
@@ -33,6 +32,7 @@ import me.ykrank.s1next.data.db.ThreadDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.DbThread
 import me.ykrank.s1next.data.db.dbmodel.History
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
+import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager
 import me.ykrank.s1next.util.IntentUtil
@@ -62,6 +62,9 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     internal lateinit var mReadProgressPrefManager: ReadProgressPreferencesManager
 
     @Inject
+    internal lateinit var mDownloadPrefManager: DownloadPreferencesManager
+
+    @Inject
     internal lateinit var historyDbWrapper: HistoryDbWrapper
 
     private lateinit var mThreadId: String
@@ -83,13 +86,30 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         App.appComponent.inject(this)
 
         val bundle = arguments!!
-        val thread = bundle.getParcelable<Thread>(ARG_THREAD) as Thread
+        val type = bundle.getInt(ARG_TYPE)
+        val thread = bundle.getParcelable(ARG_THREAD) as Thread
         val authorId = bundle.getString(ARG_AUTHOR_ID)
         // thread title is null if this thread comes from ThreadLink
         mThreadTitle = thread.title
         mThreadId = thread.id!!
-        trackAgent.post(ViewThreadTrackEvent(mThreadTitle, mThreadId))
-        L.leaveMsg("PostListFragment##ThreadTitle:$mThreadTitle,ThreadId:$mThreadId")
+
+        trackAgent.post(ViewThreadTrackEvent(mThreadTitle, mThreadId, hashMapOf(
+                Pair("Type", type.toString()),
+                Pair("Theme", mGeneralPreferencesManager.themeIndex.toString()),
+                Pair("FontScale", mGeneralPreferencesManager.fontScale.toString()),
+                Pair("SignatureEnabled", mGeneralPreferencesManager.isSignatureEnabled.toString()),
+                Pair("PostSelectable", mGeneralPreferencesManager.isPostSelectable.toString()),
+                Pair("QuickSideBarEnable", mGeneralPreferencesManager.isQuickSideBarEnable.toString()),
+                Pair("SaveAuto", mReadProgressPrefManager.isSaveAuto.toString()),
+                Pair("LoadAuto", mReadProgressPrefManager.isLoadAuto.toString()),
+                Pair("TotalImageCacheSize", mDownloadPrefManager.totalImageCacheSize.toString()),
+                Pair("TotalDataCacheSize", mDownloadPrefManager.totalDataCacheSize.toString()),
+                Pair("NetCacheEnable", mDownloadPrefManager.netCacheEnable.toString()),
+                Pair("AvatarsDownload", mDownloadPrefManager.isAvatarsDownload.toString()),
+                Pair("HighResolutionAvatarsDownload", mDownloadPrefManager.isHighResolutionAvatarsDownload.toString()),
+                Pair("ImagesDownload", mDownloadPrefManager.isImagesDownload.toString())
+        )))
+        leavePageMsg("PostListFragment##ThreadTitle:$mThreadTitle,ThreadId:$mThreadId,Type:$type")
 
         //when seeing one's post, the authorId isn't null. Skip initialization in this case.
         if (savedInstanceState == null && authorId == null) {
@@ -454,7 +474,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     }
 
     private fun saveHistory() {
-        val threadId = Integer.valueOf(mThreadId)
+        val threadId = mThreadId.toInt()
         if (threadId > 0 && !TextUtils.isEmpty(mThreadTitle)) {
             historyDbWrapper.addNewHistory(History(threadId, mThreadTitle))
         }
@@ -485,9 +505,14 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     }
 
     companion object {
+        val TAG = PostListFragment::class.java.name
 
-        val TAG = PostListFragment::class.java.name!!
+        const val Type_Thread = 0
+        const val Type_Thread_Link = 1
+        const val Type_Thread_Read_Progress = 2
+        const val Type_Thread_One_Author = 3
 
+        private const val ARG_TYPE = "type"
         private const val ARG_THREAD = "thread"
         private const val ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page"
         /**
@@ -506,6 +531,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         fun newInstance(thread: Thread, shouldGoToLastPage: Boolean): PostListFragment {
             val fragment = PostListFragment()
             val bundle = Bundle()
+            bundle.putInt(ARG_TYPE, Type_Thread)
             bundle.putParcelable(ARG_THREAD, thread)
             bundle.putBoolean(ARG_SHOULD_GO_TO_LAST_PAGE, shouldGoToLastPage)
             fragment.arguments = bundle
@@ -519,6 +545,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
 
             val fragment = PostListFragment()
             val bundle = Bundle()
+            bundle.putInt(ARG_TYPE, Type_Thread_Link)
             bundle.putParcelable(ARG_THREAD, thread)
             bundle.putInt(ARG_JUMP_PAGE, threadLink.jumpPage)
             val quotePostId = threadLink.quotePostId
@@ -533,6 +560,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         fun newInstance(thread: Thread, progress: ReadProgress): PostListFragment {
             val fragment = PostListFragment()
             val bundle = Bundle()
+            bundle.putInt(ARG_TYPE, Type_Thread_Read_Progress)
             bundle.putParcelable(ARG_THREAD, thread)
             bundle.putParcelable(ARG_READ_PROGRESS, progress)
             fragment.arguments = bundle
@@ -543,6 +571,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         fun newInstance(thread: Thread, authorId: String?): PostListFragment {
             val fragment = PostListFragment()
             val bundle = Bundle()
+            bundle.putInt(ARG_TYPE, Type_Thread_One_Author)
             bundle.putParcelable(ARG_THREAD, thread)
             bundle.putString(ARG_AUTHOR_ID, authorId)
             fragment.arguments = bundle

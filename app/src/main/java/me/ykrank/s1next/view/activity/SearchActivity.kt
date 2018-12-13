@@ -77,7 +77,7 @@ class SearchActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
-        L.leaveMsg("SearchActivity")
+        leavePageMsg("SearchActivity")
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
 
         appBar = binding.appBar

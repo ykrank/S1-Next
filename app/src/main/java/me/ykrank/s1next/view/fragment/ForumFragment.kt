@@ -9,7 +9,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
-import com.github.ykrank.androidtools.util.L
 import io.reactivex.Single
 import io.rx_cache2.DynamicKey
 import io.rx_cache2.EvictDynamicKey
@@ -37,7 +36,7 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        L.leaveMsg("ForumFragment")
+        leavePageMsg("ForumFragment")
 
         val recyclerView = recyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)

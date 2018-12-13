@@ -47,7 +47,7 @@ public final class HistoryListFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         App.Companion.getAppComponent().inject(this);
         super.onViewCreated(view, savedInstanceState);
-        L.leaveMsg("HistoryListFragment");
+        leavePageMsg("HistoryListFragment");
 
         Activity activity = getActivity();
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(activity));

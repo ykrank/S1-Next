@@ -3,7 +3,6 @@ package me.ykrank.s1next.view.fragment
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.util.AppDeviceUtil
 import me.ykrank.s1next.view.dialog.requestdialog.ReplyRequestDialogFragment
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
@@ -24,7 +23,7 @@ class ReplyFragment : BasePostFragment() {
         mThreadId = bundle.getString(ARG_THREAD_ID)
         mQuotePostId = bundle.getString(ARG_QUOTE_POST_ID)
         cacheKey = String.format(CACHE_KEY_PREFIX, mThreadId, mQuotePostId)
-        L.leaveMsg("ReplyFragment##mThreadId:$mThreadId,mQuotePostId$mQuotePostId")
+        leavePageMsg("ReplyFragment##mThreadId:$mThreadId,mQuotePostId$mQuotePostId")
     }
 
     override fun onMenuSendClick(): Boolean {

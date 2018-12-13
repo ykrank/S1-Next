@@ -45,7 +45,7 @@ class EditPostFragment : BasePostFragment() {
 
         isHost = mPost.isFirst
         binding.host = isHost
-        L.leaveMsg(String.format("EditPostFragment##post:%s", mPost))
+        leavePageMsg(String.format("EditPostFragment##post:%s", mPost))
 
         return binding.root
     }

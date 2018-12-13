@@ -51,7 +51,6 @@ class WebLoginFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        L.leaveMsg(WebLoginFragment::class.java.name)
 
         WebViewUtils.clearWebViewCookies(context!!)
 

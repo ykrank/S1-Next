@@ -8,7 +8,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import com.github.ykrank.androidtools.ui.LibBaseViewPagerFragment
-import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.MathUtil
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
@@ -31,7 +30,7 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
         val forum = arguments!!.getParcelable(ARG_FORUM) as Forum
         mForumName = forum.name
         mForumId = forum.id!!
-        L.leaveMsg("ThreadListFragment##ForumName:$mForumName,ForumId:$mForumId")
+        leavePageMsg("ThreadListFragment##ForumName:$mForumName,ForumId:$mForumId")
 
         if (savedInstanceState == null) {
             setTotalPageByThreads(forum.threads)

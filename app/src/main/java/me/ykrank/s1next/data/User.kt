@@ -6,13 +6,19 @@ import me.ykrank.s1next.data.pref.AppDataPreferencesManager
 
 open class User(private val appDataPref: AppDataPreferencesManager) : TrackUser {
 
-    @Volatile override var uid: String? = null
+    @Volatile
+    override var uid: String? = null
 
-    @Volatile override var name: String? = null
+    @Volatile
+    override var name: String? = null
 
-    @Volatile override var permission: Int = 0
+    @Volatile
+    override var permission: Int = 0
 
-    @Volatile var authenticityToken: String? = null
+    override val extras: Map<String, String> = hashMapOf()
+
+    @Volatile
+    var authenticityToken: String? = null
 
     var appSecureToken: String?
         get() = appDataPref.appToken
@@ -20,9 +26,11 @@ open class User(private val appDataPref: AppDataPreferencesManager) : TrackUser 
             appDataPref.appToken = value
         }
 
-    @Volatile open var isLogged: Boolean = false
+    @Volatile
+    open var isLogged: Boolean = false
 
-    @Volatile open var isSigned: Boolean = false
+    @Volatile
+    open var isSigned: Boolean = false
 
     val isAppLogged: Boolean
         get() = !TextUtils.isEmpty(appSecureToken)

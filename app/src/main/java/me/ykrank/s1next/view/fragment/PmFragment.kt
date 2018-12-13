@@ -7,7 +7,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import com.github.ykrank.androidtools.ui.adapter.delegate.item.FooterItem
-import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.MathUtil
 import io.reactivex.Single
 import me.ykrank.s1next.App
@@ -54,7 +53,7 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
 
         toUid = arguments!!.getString(ARG_TO_UID)
         toUsername = arguments!!.getString(ARG_TO_USERNAME)
-        L.leaveMsg("PmFragment##toUid:$toUid,toUsername$toUsername")
+        leavePageMsg("PmFragment##toUid:$toUid,toUsername$toUsername")
         if (toUid.isNullOrEmpty() || toUsername.isNullOrEmpty()) {
             showShortSnackbar(R.string.message_api_error)
             return

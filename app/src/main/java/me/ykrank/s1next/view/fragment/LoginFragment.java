@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.github.ykrank.androidtools.util.L;
 import com.github.ykrank.androidtools.util.ViewUtil;
 
 import me.ykrank.s1next.R;
@@ -67,7 +66,7 @@ public final class LoginFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        L.leaveMsg("LoginFragment");
+        leavePageMsg("LoginFragment");
 
         ViewUtil.consumeRunnableWhenImeActionPerformed(mPasswordView, this::prepareLogin);
         mLoginButton.setOnClickListener(v -> prepareLogin());

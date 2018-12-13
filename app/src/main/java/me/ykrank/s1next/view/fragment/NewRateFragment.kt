@@ -10,7 +10,6 @@ import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.ui.adapter.simple.BindViewHolderCallback
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
-import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -64,7 +63,7 @@ class NewRateFragment : BaseFragment() {
 
         threadId = arguments?.getString(ARG_THREAD_ID)
         postID = arguments?.getString(ARG_POST_ID)
-        L.leaveMsg("NewRateFragment##threadId:$threadId,postID:$postID")
+        leavePageMsg("NewRateFragment##threadId:$threadId,postID:$postID")
 
         App.appComponent.inject(this)
         init()

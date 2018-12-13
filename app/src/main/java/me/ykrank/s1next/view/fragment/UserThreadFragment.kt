@@ -3,7 +3,6 @@ package me.ykrank.s1next.view.fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import com.github.ykrank.androidtools.util.L
 import io.reactivex.Single
 import me.ykrank.s1next.data.api.model.HomeThread
 import me.ykrank.s1next.data.api.model.wrapper.HomeThreadWebWrapper
@@ -28,7 +27,7 @@ class UserThreadFragment : BaseLoadMoreRecycleViewFragment<HomeThreadWebWrapper>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         uid = arguments!!.getString(ARG_UID)
-        L.leaveMsg("UserThreadFragment")
+        leavePageMsg("UserThreadFragment")
 
         val recyclerView = recyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)

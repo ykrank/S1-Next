@@ -3,8 +3,6 @@ package me.ykrank.s1next.view.fragment
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-
-import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.view.dialog.requestdialog.PmRequestDialogFragment
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
 
@@ -21,7 +19,7 @@ class NewPmFragment : BasePostFragment() {
         super.onViewCreated(view, savedInstanceState)
         mToUid = arguments!!.getString(ARG_TO_UID)
         cacheKey = String.format(CACHE_KEY_PREFIX, mToUid)
-        L.leaveMsg("NewPmFragment##mToUid" + mToUid)
+        leavePageMsg("NewPmFragment##mToUid" + mToUid)
     }
 
     override fun onMenuSendClick(): Boolean {

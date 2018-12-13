@@ -95,7 +95,7 @@ object ApiFlatTransformer {
             }
         } else {
             try {
-                return func.invoke(authenticityToken!!)
+                return func.invoke(authenticityToken)
             } catch (e: Exception) {
                 L.report(e)
                 return Single.error<T>(e)

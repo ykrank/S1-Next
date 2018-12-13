@@ -5,7 +5,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.github.ykrank.androidtools.ui.internal.PagerCallback
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
-import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.MathUtil
 import io.reactivex.Single
 import me.ykrank.s1next.data.api.model.collection.Favourites
@@ -35,7 +34,7 @@ class FavouriteListPagerFragment : BaseRecyclerViewFragment<BaseResultWrapper<Fa
         super.onViewCreated(view, savedInstanceState)
 
         mPageNum = arguments?.getInt(ARG_PAGE_NUM) ?: 0
-        L.leaveMsg("FavouriteListPagerFragment##mPageNum$mPageNum")
+        leavePageMsg("FavouriteListPagerFragment##mPageNum$mPageNum")
 
         val recyclerView = recyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)

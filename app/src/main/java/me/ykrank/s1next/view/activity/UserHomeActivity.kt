@@ -63,7 +63,7 @@ class UserHomeActivity : BaseActivity() {
         name = intent.getStringExtra(ARG_USERNAME)
         val thumbImageInfo = intent.getParcelableExtra<ImageInfo>(ARG_IMAGE_INFO)
         trackAgent.post(ViewHomeTrackEvent(uid, name))
-        L.leaveMsg("UserHomeActivity##uid:$uid,name:$name")
+        leavePageMsg("UserHomeActivity##uid:$uid,name:$name")
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         binding.downloadPreferencesManager = mDownloadPreferencesManager

@@ -3,7 +3,6 @@ package me.ykrank.s1next.view.fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import com.github.ykrank.androidtools.util.L
 import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.User
@@ -30,7 +29,7 @@ class DarkRoomFragment : BaseLoadMoreRecycleViewFragment<DarkRoomWrapper>() {
         super.onViewCreated(view, savedInstanceState)
         App.appComponent.inject(this)
 
-        L.leaveMsg("DarkRoomFragment")
+        leavePageMsg("DarkRoomFragment")
 
         val recyclerView = recyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)

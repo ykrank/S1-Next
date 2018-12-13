@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.R
 import me.ykrank.s1next.view.fragment.ReplyFragment
 import org.apache.commons.lang3.StringUtils
@@ -25,7 +24,7 @@ class ReplyActivity : BaseActivity() {
         val intent = intent
         val threadId = intent.getStringExtra(ARG_THREAD_ID)
         val quotePostId = intent.getStringExtra(ARG_QUOTE_POST_ID)
-        L.leaveMsg("ReplyActivity##threadId:$threadId,quotePostId:$quotePostId")
+        leavePageMsg("ReplyActivity##threadId:$threadId,quotePostId:$quotePostId")
 
         val titlePrefix = if (TextUtils.isEmpty(quotePostId))
             getString(R.string.reply_activity_title_prefix)

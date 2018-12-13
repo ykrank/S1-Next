@@ -12,7 +12,6 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
-import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.WebViewUtils
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -44,7 +43,7 @@ class WebViewFragment : BaseFragment(), BackPressDelegate {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        L.leaveMsg(TAG)
+
         val bundle = arguments!!
         url = bundle.getString(ARG_URL)
         enableJs = bundle.getBoolean(ARG_ENABLE_JS)

@@ -10,7 +10,6 @@ import android.view.View
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.ui.LibBaseViewPagerFragment
-import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.RxBus
 import com.uber.autodispose.ObservableSubscribeProxy
@@ -42,7 +41,7 @@ class FavouriteListFragment : BaseViewPagerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onViewCreated(view, savedInstanceState)
-        L.leaveMsg("FavouriteListFragment")
+        leavePageMsg("FavouriteListFragment")
 
         mTitle = getText(R.string.favourites)
 

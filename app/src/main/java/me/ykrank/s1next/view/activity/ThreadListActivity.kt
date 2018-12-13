@@ -71,7 +71,7 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
         }
         this.forum = forum
         trackAgent.post(ViewForumTrackEvent(forum.id!!, forum.name!!))
-        L.leaveMsg("ThreadListActivity##forum:$forum")
+        leavePageMsg("ThreadListActivity##forum:$forum")
 
         if (savedInstanceState == null) {
             fragment = ThreadListFragment.newInstance(forum)

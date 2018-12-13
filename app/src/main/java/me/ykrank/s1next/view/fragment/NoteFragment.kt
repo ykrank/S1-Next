@@ -3,7 +3,6 @@ package me.ykrank.s1next.view.fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.MathUtil
 import com.github.ykrank.androidtools.widget.RxBus
 import io.reactivex.Single
@@ -36,7 +35,7 @@ class NoteFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<Notes>>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onViewCreated(view, savedInstanceState)
-        L.leaveMsg("NoteFragment")
+        leavePageMsg("NoteFragment")
 
         val recyclerView = recyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)

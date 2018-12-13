@@ -54,7 +54,7 @@ class NewThreadFragment : BasePostFragment() {
         super.onActivityCreated(savedInstanceState)
         mForumId = arguments!!.getInt(ARG_FORUM_ID)
         mCacheKey = String.format(CACHE_KEY_PREFIX, mForumId)
-        L.leaveMsg("NewThreadFragment##mForumId:" + mForumId)
+        leavePageMsg("NewThreadFragment##mForumId:" + mForumId)
 
         App.appComponent.inject(this)
         init()

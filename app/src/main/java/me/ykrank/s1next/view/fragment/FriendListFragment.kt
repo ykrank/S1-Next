@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
-import com.github.ykrank.androidtools.util.L
 import io.reactivex.Single
 import me.ykrank.s1next.data.api.model.collection.Friends
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper
@@ -22,7 +21,7 @@ class FriendListFragment : BaseRecyclerViewFragment<BaseDataWrapper<Friends>>() 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         uid = arguments?.getString(ARG_UID)
-        L.leaveMsg("FriendListFragment##Uid:$uid")
+        leavePageMsg("FriendListFragment##Uid:$uid")
 
         val recyclerView = recyclerView
         val activity = activity

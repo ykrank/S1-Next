@@ -109,15 +109,15 @@ abstract class BaseActivity : LibBaseActivity() {
         mRxBus.get()
                 .filter { o -> o is ThemeChangeEvent || o is FontSizeChangeEvent }
                 .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
-                .subscribe({ o ->
+                .subscribe { o ->
                     window.setWindowAnimations(R.style.Animation_Recreate)
                     recreate()
-                })
+                }
         mRxBus.get(NoticeRefreshEvent::class.java)
                 .ofType(NoticeRefreshEvent::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
                 .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
-                .subscribe({ event -> refreshNoticeMenuItem(event.isNewPm, event.isNewNotice) })
+                .subscribe { event -> refreshNoticeMenuItem(event.isNewPm, event.isNewNotice) }
     }
 
     override fun setTitle(title: CharSequence?) {

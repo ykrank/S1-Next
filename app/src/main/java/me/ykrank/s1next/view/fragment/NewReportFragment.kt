@@ -52,7 +52,7 @@ class NewReportFragment : BaseFragment() {
         threadId = arguments?.getString(ARG_THREAD_ID)
         postID = arguments?.getString(ARG_POST_ID)
         pageNum = arguments?.getInt(ARG_PAGE_NUM, 1) ?: 1
-        L.leaveMsg("NewReportFragment##threadId:$threadId,postID:$postID,pageNum:$pageNum")
+        leavePageMsg("NewReportFragment##threadId:$threadId,postID:$postID,pageNum:$pageNum")
 
         App.appComponent.inject(this)
         init()
