@@ -20,7 +20,7 @@ class ThreadFavouritesAddRequestDialogFragment : ProgressDialogFragment<AccountR
     }
 
     override fun onNext(data: AccountResultWrapper) {
-        val fm = fragmentManager?:return
+        val fm = fragmentManager ?: return
         val result = data.result
         if (result.status == STATUS_ADD_TO_FAVOURITES_SUCCESS || result.status == STATUS_ADD_TO_FAVOURITES_REPEAT) {
             (fm.findFragmentByTag(
@@ -44,8 +44,8 @@ class ThreadFavouritesAddRequestDialogFragment : ProgressDialogFragment<AccountR
         private val STATUS_ADD_TO_FAVOURITES_SUCCESS = "favorite_do_success"
         private val STATUS_ADD_TO_FAVOURITES_REPEAT = "favorite_repeat"
 
-        fun newInstance(threadId: String, remark: String): ThreadFavouritesAddRequestDialogFragment {
-            App.get().trackAgent.post(AddFavoriteTrackEvent(threadId))
+        fun newInstance(threadId: String, remark: String, threadTitle: String?): ThreadFavouritesAddRequestDialogFragment {
+            App.get().trackAgent.post(AddFavoriteTrackEvent(threadId, threadTitle))
 
             val fragment = ThreadFavouritesAddRequestDialogFragment()
             val bundle = Bundle()
