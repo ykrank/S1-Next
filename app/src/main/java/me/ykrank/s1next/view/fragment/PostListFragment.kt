@@ -257,7 +257,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
             }
             R.id.menu_favourites_add -> {
                 if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(fragmentManager!!, mUser)) {
-                    ThreadFavouritesAddDialogFragment.newInstance(mThreadId).show(
+                    ThreadFavouritesAddDialogFragment.newInstance(mThreadId, mThreadTitle).show(
                             activity!!.supportFragmentManager,
                             ThreadFavouritesAddDialogFragment.TAG)
                 }

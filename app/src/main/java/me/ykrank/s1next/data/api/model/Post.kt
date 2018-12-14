@@ -321,7 +321,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         var tReply: String = reply ?: return null
 
         for ((key, attachment) in attachmentMap) {
-            val imgTag = "<img src=\"" + attachment.url + "\" />"
+            val imgTag = "\n<img src=\"" + attachment.url + "\" />"
             val replyCopy = tReply
             // get the original string if there is nothing to replace
             tReply = tReply.replace("[attach]$key[/attach]", imgTag)

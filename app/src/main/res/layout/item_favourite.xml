@@ -30,7 +30,7 @@
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:includeFontPadding="false"
-        android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
+        android:lineSpacingExtra="@dimen/text_line_spacing_extra"
         android:maxLines="@integer/list_max_line"
         android:paddingBottom="14.5dp"
         android:paddingEnd="@dimen/item_padding"

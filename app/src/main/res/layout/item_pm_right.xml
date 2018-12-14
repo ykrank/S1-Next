@@ -57,7 +57,7 @@
             android:layout_marginStart="@dimen/spacing_huge"
             android:layout_marginTop="@dimen/item_padding_small"
             android:background="?attr/chatToBackground"
-            android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
+            android:lineSpacingExtra="@dimen/text_line_spacing_extra"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textIsSelectable="true"
             app:imgHtml="@{pmViewModel.pm.message}"

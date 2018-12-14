@@ -86,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/single_line_height_with_avatar"
-                android:lineSpacingMultiplier="@dimen/line_spacing_multiplier"
+                android:lineSpacingExtra="@dimen/text_line_spacing_extra"
                 android:onClick="@{model.clickNote()}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 app:underlineText="@{model.data.content}"

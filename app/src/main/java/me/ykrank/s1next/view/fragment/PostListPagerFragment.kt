@@ -366,6 +366,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             consumeResult(data.result)
         } else {
             super.onNext(data)
+            initQuickSidebar(mPageNum, postList.size)
 
             //Set old rates to data
             postList.forEach {
@@ -416,8 +417,6 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             posts.threadAttachment?.let {
                 mPagerCallback?.setupThreadAttachment(it)
             }
-
-            initQuickSidebar(mPageNum, postList.size)
         }
     }
 
@@ -442,8 +441,10 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         val enable = mGeneralPreferencesManager.isQuickSideBarEnable
         binding.quickSidebarEnable = enable
 
-        //Post notify
-        mRecyclerAdapter.notifyDataSetChanged()
+        if (!isLoading) {
+            //Post notify
+            mRecyclerAdapter.notifyDataSetChanged()
+        }
         return enable
     }
 
