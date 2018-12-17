@@ -224,4 +224,6 @@
     <string name="red_envelopes">赏金红包</string>
     <string name="copied">已复制</string>
     <string name="manage_forum">管理板块</string>
+    <string name="red_envelopes_copy_label">红包码</string>
+    <string name="title_copied">标题已复制</string>
 </resources>

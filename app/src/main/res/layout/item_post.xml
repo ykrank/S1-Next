@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_micro"
                 android:layout_marginLeft="@dimen/spacing_micro"
-                android:background="?attr/colorPrimaryDark"
+                android:background="?attr/colorPrimary"
                 android:gravity="center"
                 android:includeFontPadding="false"
                 android:lines="1"

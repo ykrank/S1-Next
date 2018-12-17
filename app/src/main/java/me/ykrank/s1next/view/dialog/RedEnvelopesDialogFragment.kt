@@ -6,7 +6,7 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import com.github.ykrank.androidtools.extension.toast
-import com.github.ykrank.androidtools.util.ClipboardUtils
+import com.github.ykrank.androidtools.util.ClipboardUtil
 import com.github.ykrank.androidtools.widget.AlipayDonate
 import me.ykrank.s1next.R
 import me.ykrank.s1next.databinding.DialogRedEnvelopesBinding
@@ -22,7 +22,7 @@ class RedEnvelopesDialogFragment : BaseDialogFragment() {
                 R.layout.dialog_red_envelopes, null, false)
 
         val clickListener = {
-            ClipboardUtils.copy(binding.tvCode.text.toString(), activity)
+            ClipboardUtil.copyText(activity, getString(R.string.red_envelopes_copy_label), binding.tvCode.text.toString())
             activity.toast(R.string.copied)
         }
 

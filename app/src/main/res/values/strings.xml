@@ -31,6 +31,7 @@
     <string name="help">Help</string>
     <string name="donate">Donate</string>
 
+    <string name="title_copied">Title copied</string>
     <!-- menu -->
     <string name="menu_account_new">Create account</string>
     <string name="menu_refresh">Refresh</string>
@@ -285,6 +286,7 @@
     <string name="op_time_hint">Operate</string>
     <string name="black_word_verify">Verify black word</string>
     <string name="red_envelopes">Reward red envelopes</string>
+    <string name="red_envelopes_copy_label">Red envelopes code</string>
     <string name="red_envelopes_text" translatable="false">打开支付宝首页搜“549327946”领红包</string>
     <string name="red_envelopes_text_hint" translatable="false">点击复制</string>
     <string name="copied">Already copied</string>
