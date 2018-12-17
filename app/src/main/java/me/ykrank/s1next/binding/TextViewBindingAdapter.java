@@ -38,9 +38,7 @@ import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.db.dbmodel.History;
 import me.ykrank.s1next.data.pref.ThemeManager;
-import me.ykrank.s1next.widget.span.GlideImageGetter;
-import me.ykrank.s1next.widget.span.HtmlCompat;
-import me.ykrank.s1next.widget.span.TagHandler;
+import me.ykrank.s1next.widget.span.*;
 import okio.BufferedSource;
 import okio.Okio;
 import okio.Source;
@@ -215,7 +213,7 @@ public final class TextViewBindingAdapter {
             // use GlideImageGetter to show images in TextView
             //noinspection deprecation
             Single.just(GlideImageGetter.Companion.get(textView))
-                    .map(f -> HtmlCompat.fromHtml(html, f, new TagHandler()))
+                    .map(f -> QuoteSpanKt.replaceQuoteSpans(HtmlCompat.fromHtml(html, f, new TagHandler()), textView.getContext()))
                     .compose(RxJavaUtil.computationSingleTransformer())
                     .subscribe(textView::setText, L::report);
         }
@@ -227,7 +225,7 @@ public final class TextViewBindingAdapter {
             textView.setText(null);
         } else {
             //noinspection deprecation
-            Single.fromCallable(() -> HtmlCompat.fromHtml(html))
+            Single.fromCallable(() -> QuoteSpanKt.replaceQuoteSpans(HtmlCompat.fromHtml(html), textView.getContext()))
                     .compose(RxJavaUtil.computationSingleTransformer())
                     .subscribe(textView::setText, L::report);
         }
