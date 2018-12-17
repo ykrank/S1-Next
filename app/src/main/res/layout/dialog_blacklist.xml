@@ -30,16 +30,21 @@
             android:paddingRight="@dimen/dialog_padding"
             android:paddingBottom="@dimen/dialog_padding_bottom">
 
+            <!-- Fix the NullPointerException on MEIZU below 8.0 due to TextInputEditText's getHint() doesn't match mHint. (https://github.com/android-in-china/Compatibility/issues/11)-->
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/prompt_author_id"
                 app:hintAnimationEnabled="true">
 
+
+                <!-- hint = "" is necessary -->
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/blacklist_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_author_id"
+                    android:hint=""
                     android:imeActionId="@integer/ime_action_id"
                     android:imeActionLabel="@string/dialog_button_text_go"
                     android:inputType="number"
@@ -49,16 +54,19 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <!-- Fix the NullPointerException on MEIZU below 8.0 due to TextInputEditText's getHint() doesn't match mHint. (https://github.com/android-in-china/Compatibility/issues/11)-->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/prompt_author_name"
                 app:hintAnimationEnabled="true">
 
+                <!-- hint = "" is necessary -->
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/blacklist_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_author_name"
+                    android:hint=""
                     android:imeActionId="@integer/ime_action_id"
                     android:imeActionLabel="@string/dialog_button_text_go"
                     android:inputType="text"
