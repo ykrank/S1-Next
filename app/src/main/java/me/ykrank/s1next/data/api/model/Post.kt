@@ -180,6 +180,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         val quoteName = findBlockQuoteName(reply)
         if (quoteName != null) {
             reply = replaceQuoteBr(reply)
+            reply = replaceTextColor(reply)
             val blackList = BlackListDbWrapper.getInstance().getMergedBlackList(-1, quoteName)
             if (blackList != null && blackList.post != BlackList.NORMAL) {
                 return replaceBlockQuoteContent(reply, blackList.remark)
@@ -220,6 +221,22 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
     private fun replaceQuoteBr(reply: String): String {
         return reply.replace("</blockquote></div><br />", "</blockquote></div>")
     }
+
+    /**
+     * 替换引用时字体的颜色
+     *
+     * @param reply
+     *
+     * @return
+     *
+     */
+
+    private fun replaceTextColor(reply: String): String {
+        var replacedReply = reply.replace("<blockquote>", "<font color=\"#999999\"><blockquote>")
+        replacedReply = replacedReply.replace("</blockquote>","</font></blockquote>")
+        return replacedReply
+    }
+
 
     /**
      * 替换对已屏蔽对象的引用内容
