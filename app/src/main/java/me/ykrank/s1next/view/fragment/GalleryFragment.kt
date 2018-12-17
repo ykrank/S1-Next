@@ -37,6 +37,7 @@ import me.ykrank.s1next.databinding.FragmentGalleryBinding
 import me.ykrank.s1next.util.AppFileUtil
 import me.ykrank.s1next.util.IntentUtil
 import me.ykrank.s1next.viewmodel.ImageViewModel
+import me.ykrank.s1next.widget.track.event.LargeImageTrackEvent
 import me.ykrank.s1next.widget.track.event.ViewImageTrackEvent
 import okhttp3.HttpUrl
 import java.io.File
@@ -67,8 +68,8 @@ class GalleryFragment : Fragment() {
 
         binding = FragmentGalleryBinding.inflate(inflater, container, false)
         mPhotoView = binding.photoView
-        mImageUrl = arguments!!.getString(ARG_IMAGE_URL)
-        mImageThumbUrl = arguments!!.getString(ARG_IMAGE_THUMB_URL)
+        mImageUrl = arguments?.getString(ARG_IMAGE_URL)
+        mImageThumbUrl = arguments?.getString(ARG_IMAGE_THUMB_URL)
 
         L.leaveMsg("GalleryActivity##url:$mImageUrl,thumb:$mImageThumbUrl")
 
@@ -106,6 +107,11 @@ class GalleryFragment : Fragment() {
                 val checked = item.isChecked
                 item.isChecked = !checked
                 binding.large = !checked
+                if (!checked) {
+                    mImageUrl?.let {
+                        trackAgent.post(LargeImageTrackEvent(it, mImageThumbUrl))
+                    }
+                }
                 return true
             }
             R.id.menu_browser -> {
