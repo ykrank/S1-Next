@@ -1,5 +1,7 @@
 package me.ykrank.s1next.widget.glide;
 
+import android.support.annotation.NonNull;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +27,9 @@ public class OkHttpNoAvatarInterceptor implements Interceptor {
     };
     private static final List<String> NO_AVATAR_URLS = initNoAvatarUrls();
 
+    @NonNull
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(@NonNull Chain chain) throws IOException {
         Request request = chain.request();
         String url = request.url().toString();
         if (NO_AVATAR_URLS.contains(url)) {

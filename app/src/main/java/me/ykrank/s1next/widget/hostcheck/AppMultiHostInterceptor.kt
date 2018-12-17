@@ -28,7 +28,7 @@ class AppMultiHostInterceptor : MultiHostInterceptor<AppHostUrl> {
             if (ArrayUtils.contains(Api.HOST_LIST, originHttpUrl.host())) {
                 val originUrl = originHttpUrl.toString()
                 val originReplacedUrl = Api.parseBaseUrl(originHttpUrl)
-                return HttpUrl.parse(originUrl.replace(originReplacedUrl, baseUrl!!)) ?: originHttpUrl
+                return HttpUrl.parse(originUrl.replace(originReplacedUrl, baseUrl)) ?: originHttpUrl
             }
             return originHttpUrl
         }

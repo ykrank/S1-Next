@@ -8,8 +8,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- only need IMEI to verify user -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- only need IMEI to update log when crash -->
-    <uses-permission android:name="android.permission.READ_LOGS" />
     <!-- see https://code.google.com/p/android/issues/detail?id=170734 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- self update -->
