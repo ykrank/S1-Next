@@ -37,8 +37,6 @@ class ReportPreInfo {
                 }
 
                 info.fields = fields
-
-                //TODO referer和report_message需要填充
             } catch (e: Exception) {
                 L.leaveMsg(html)
                 throw e

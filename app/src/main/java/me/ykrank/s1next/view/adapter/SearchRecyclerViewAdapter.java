@@ -8,7 +8,7 @@ import me.ykrank.s1next.view.adapter.delegate.SearchUserAdapterDelegate;
 public final class SearchRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
     public SearchRecyclerViewAdapter(Activity activity) {
-        super(activity);
+        super(activity, false);
 
         addAdapterDelegate(new SearchForumAdapterDelegate(activity));
         addAdapterDelegate(new SearchUserAdapterDelegate(activity));

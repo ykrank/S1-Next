@@ -45,6 +45,7 @@ import me.ykrank.s1next.data.api.model.search.SearchResult
 import me.ykrank.s1next.data.api.model.search.UserSearchWrapper
 import me.ykrank.s1next.databinding.ActivitySearchBinding
 import me.ykrank.s1next.databinding.AppBarSearchBinding
+import me.ykrank.s1next.util.ErrorUtil
 import me.ykrank.s1next.view.adapter.SearchRecyclerViewAdapter
 import me.ykrank.s1next.view.transition.CircularReveal
 import me.ykrank.s1next.view.transition.TransitionCompatCreator
@@ -53,8 +54,9 @@ import javax.inject.Inject
 
 /**
  * Created by ykrank on 2016/9/28 0028.
+ *
+ * TODO Remove debug message for track error
  */
-
 class SearchActivity : BaseActivity() {
 
     @Inject
@@ -77,7 +79,6 @@ class SearchActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
-        leavePageMsg("SearchActivity")
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
 
         appBar = binding.appBar
@@ -94,12 +95,35 @@ class SearchActivity : BaseActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        searchBack.setOnClickListener { dismiss() }
+        searchBack.setOnClickListener {
+            L.leaveMsg("SearchBack click")
+            dismiss()
+        }
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         setupSearchView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        L.leaveMsg("SearchActivity onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        L.leaveMsg("SearchActivity onPause")
+    }
+
+    override fun onBackPressed() {
+        L.leaveMsg("SearchActivity onBackPressed")
+        super.onBackPressed()
+    }
+
+    override fun onDestroy() {
+        L.leaveMsg("SearchActivity onDestroy")
+        super.onDestroy()
     }
 
     private fun setupWindowAnimations() {
@@ -182,16 +206,16 @@ class SearchActivity : BaseActivity() {
                     EditorInfo.IME_FLAG_NO_EXTRACT_UI or EditorInfo.IME_FLAG_NO_FULLSCREEN
         }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                searchFor(query)
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                L.leaveMsg("onQueryTextSubmit:$query")
+                if (query != null) {
+                    searchFor(query)
+                }
                 return true
             }
 
-            override fun onQueryTextChange(query: String): Boolean {
-                if (TextUtils.isEmpty(query)) {
-                    clearResults(true)
-                }
-                return true
+            override fun onQueryTextChange(query: String?): Boolean {
+                return false
             }
         })
     }
@@ -208,6 +232,7 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun setResults(data: List<SearchResult>?, errorMsg: String?) {
+        L.leaveMsg("setResults error:$errorMsg")
         if (data != null && data.isNotEmpty()) {
             if (recyclerView.visibility != View.VISIBLE) {
                 TransitionManager.beginDelayedTransition(binding.resultsContainer, autoTransitionCompat)
@@ -265,13 +290,17 @@ class SearchActivity : BaseActivity() {
                     .map { UserSearchWrapper.fromSource(it) }
                     .compose(RxJavaUtil.iOSingleTransformer())
                     .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
-                    .subscribe({ wrapper -> setResults(wrapper.userSearchResults, wrapper.errorMsg) }, L::e)
+                    .subscribe({ setResults(it.userSearchResults, it.errorMsg) }, {
+                        setResults(null, ErrorUtil.parse(this, it))
+                    })
         } else {
             ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser) { token -> s1Service.searchForum(token, query) }
                     .map { ForumSearchWrapper.fromSource(it) }
                     .compose(RxJavaUtil.iOSingleTransformer())
                     .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
-                    .subscribe({ wrapper -> setResults(wrapper.forumSearchResults, null) }, L::e)
+                    .subscribe({ setResults(it.forumSearchResults, null) }, {
+                        setResults(null, ErrorUtil.parse(this, it))
+                    })
         }
     }
 
