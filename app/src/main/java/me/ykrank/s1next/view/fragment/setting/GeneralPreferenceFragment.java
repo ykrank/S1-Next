@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
 
+import com.github.ykrank.androidautodispose.AndroidRxDispose;
+import com.github.ykrank.androidlifecycle.event.FragmentEvent;
 import com.github.ykrank.androidtools.util.L;
 import com.github.ykrank.androidtools.util.ResourceUtil;
 import com.github.ykrank.androidtools.util.RxJavaUtil;
@@ -59,11 +61,15 @@ public final class GeneralPreferenceFragment extends BasePreferenceFragment
 
         Single.fromCallable(() -> HtmlCompat.fromHtml(AppDeviceUtil.getSignature(getActivity()), FROM_HTML_MODE_LEGACY))
                 .compose(RxJavaUtil.computationSingleTransformer())
+                .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
                 .subscribe(findPreference(getString(R.string.pref_key_signature))::setSummary);
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (!isAdded()) {
+            return;
+        }
         if (key.equals(getString(R.string.pref_key_theme))) {
             trackAgent.post(new ThemeChangeTrackEvent(false));
             mThemeManager.invalidateTheme();
