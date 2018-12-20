@@ -1,10 +1,8 @@
 package me.ykrank.s1next.view.internal
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Color
-import android.net.Uri
 import android.os.Build
 import android.support.design.widget.NavigationView
 import android.support.v4.app.FragmentActivity
@@ -30,9 +28,9 @@ import me.ykrank.s1next.databinding.ActionViewNoticeCountBinding
 import me.ykrank.s1next.databinding.NavigationViewHeaderBinding
 import me.ykrank.s1next.task.AutoSignTask
 import me.ykrank.s1next.view.activity.*
+import me.ykrank.s1next.view.dialog.AlipayDialogFragment
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment
-import me.ykrank.s1next.view.dialog.RedEnvelopesDialogFragment
 import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment
 import me.ykrank.s1next.viewmodel.UserViewModel
 import javax.inject.Inject
@@ -259,11 +257,14 @@ class DrawerLayoutDelegateConcrete(val activity: FragmentActivity, drawerLayout:
                 return
             }
         }
+        AlipayDialogFragment.newInstance(mFragmentActivity.getString(R.string.donate), mFragmentActivity.getString(R.string.donate_text))
+                .show(mFragmentActivity.supportFragmentManager, AlipayDialogFragment.TAG)
         //For GooglePlay privacy-security
 //        mFragmentActivity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://QR.ALIPAY.COM/FKX01763C5SCSCCJIB6UE8")))
     }
 
     private fun onRedEnvelopedMenuSelected() {
-        RedEnvelopesDialogFragment.newInstance().show(mFragmentActivity.supportFragmentManager, RedEnvelopesDialogFragment.TAG)
+        AlipayDialogFragment.newInstance(mFragmentActivity.getString(R.string.red_envelopes_copy_label), mFragmentActivity.getString(R.string.red_envelopes_text))
+                .show(mFragmentActivity.supportFragmentManager, AlipayDialogFragment.TAG)
     }
 }
