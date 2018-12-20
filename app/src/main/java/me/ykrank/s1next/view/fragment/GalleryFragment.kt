@@ -34,6 +34,7 @@ import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.databinding.FragmentGalleryBinding
+import me.ykrank.s1next.databinding.MenuGalleryLargeImageSwitchBinding
 import me.ykrank.s1next.util.AppFileUtil
 import me.ykrank.s1next.util.IntentUtil
 import me.ykrank.s1next.viewmodel.ImageViewModel
@@ -56,6 +57,10 @@ class GalleryFragment : Fragment() {
     private lateinit var binding: FragmentGalleryBinding
     private var preloadTarget: Target<Drawable>? = null
 
+    private var largeModeBinding: MenuGalleryLargeImageSwitchBinding? = null
+    private var largeModeMenu: MenuItem? = null
+    private var large = false
+
     @Inject
     internal lateinit var trackAgent: DataTrackAgent
     @Inject
@@ -71,7 +76,7 @@ class GalleryFragment : Fragment() {
         mImageUrl = arguments?.getString(ARG_IMAGE_URL)
         mImageThumbUrl = arguments?.getString(ARG_IMAGE_THUMB_URL)
 
-        L.leaveMsg("GalleryActivity##url:$mImageUrl,thumb:$mImageThumbUrl")
+        L.leaveMsg("GalleryFragment##url:$mImageUrl,thumb:$mImageThumbUrl")
 
         trackAgent.post(ViewImageTrackEvent(mImageUrl, mImageThumbUrl != null))
 
@@ -89,6 +94,16 @@ class GalleryFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.fragment_gallery, menu)
+        largeModeMenu = menu?.findItem(R.id.menu_large_image_mode)
+        largeModeMenu?.isChecked = large
+        val largeModeMenu = largeModeMenu?.actionView
+        if (largeModeMenu != null) {
+            largeModeBinding = MenuGalleryLargeImageSwitchBinding.bind(largeModeMenu)
+            largeModeBinding?.check = large
+            largeModeBinding?.switchLarge?.setOnCheckedChangeListener { buttonView, isChecked ->
+                switchLargeImage(isChecked)
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -104,14 +119,7 @@ class GalleryFragment : Fragment() {
                 return true
             }
             R.id.menu_large_image_mode -> {
-                val checked = item.isChecked
-                item.isChecked = !checked
-                binding.large = !checked
-                if (!checked) {
-                    mImageUrl?.let {
-                        trackAgent.post(LargeImageTrackEvent(it, mImageThumbUrl))
-                    }
-                }
+                switchLargeImage(!item.isChecked)
                 return true
             }
             R.id.menu_browser -> {
@@ -140,6 +148,22 @@ class GalleryFragment : Fragment() {
         preloadTarget = Glide.with(App.get())
                 .load(mImageUrl)
                 .preload()
+    }
+
+    private fun switchLargeImage(large: Boolean) {
+        if (this.large == large) {
+            return
+        }
+        this.large = large
+        largeModeMenu?.isChecked = large
+        largeModeBinding?.check = large
+
+        binding.large = large
+        if (large) {
+            mImageUrl?.let {
+                trackAgent.post(LargeImageTrackEvent(it, mImageThumbUrl))
+            }
+        }
     }
 
     @RequiresPermission(value = Manifest.permission.WRITE_EXTERNAL_STORAGE)

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="check"
+            type="boolean" />
+    </data>
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/switch_large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="@{check}"
+        android:thumb="@drawable/ic_large_image_action_menu" />
+</layout>

@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.github.ykrank.androidtools.widget.track.event.page.ActivityEndEvent
 import com.github.ykrank.androidtools.widget.track.event.page.ActivityStartEvent
