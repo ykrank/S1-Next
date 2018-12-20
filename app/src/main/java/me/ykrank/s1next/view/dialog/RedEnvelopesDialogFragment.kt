@@ -35,6 +35,8 @@ class RedEnvelopesDialogFragment : BaseDialogFragment() {
                     clickListener.invoke()
                     if (AlipayDonate.hasInstalledAlipayClient(activity)) {
                         AlipayDonate.startAlipay(activity)
+                    } else {
+                        activity.toast("需要安装支付宝")
                     }
                 }
                 .setNegativeButton(android.R.string.cancel, null)

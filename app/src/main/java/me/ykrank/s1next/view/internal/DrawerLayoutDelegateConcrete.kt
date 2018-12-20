@@ -259,7 +259,8 @@ class DrawerLayoutDelegateConcrete(val activity: FragmentActivity, drawerLayout:
                 return
             }
         }
-        mFragmentActivity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://QR.ALIPAY.COM/FKX01763C5SCSCCJIB6UE8")))
+        //For GooglePlay privacy-security
+//        mFragmentActivity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://QR.ALIPAY.COM/FKX01763C5SCSCCJIB6UE8")))
     }
 
     private fun onRedEnvelopedMenuSelected() {
