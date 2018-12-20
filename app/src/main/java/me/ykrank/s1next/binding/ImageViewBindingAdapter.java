@@ -119,6 +119,10 @@ public final class ImageViewBindingAdapter {
                 oldPreLoad == newPreLoad && TextUtils.equals(oldThumbUrl, newThumbUrl)) {
             return;
         }
+        //in device before 4.4, destroyed activity will cause glide error
+        if (ContextUtils.isActivityDestroyedForGlide(bezelImageView.getContext())) {
+            return;
+        }
         if (TextUtils.isEmpty(newUid)) {
             loadPlaceHolderAvatar(bezelImageView);
         } else {
