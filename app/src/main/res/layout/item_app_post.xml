@@ -18,11 +18,11 @@
         style="?attr/materialCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/card_view_vertical_margin"
         android:layout_marginTop="@dimen/card_view_vertical_margin"
+        android:layout_marginBottom="@dimen/card_view_vertical_margin"
         app:cardCornerRadius="0dp">
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,6 +37,8 @@
                 android:contentDescription="@string/avatar_content_desc"
                 android:onClick="@{postViewModel::onAvatarClick}"
                 android:onLongClick="@{postViewModel::onLongClick}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:uid="@{postViewModel.post.authorId}"
                 tools:src="@drawable/ic_avatar_placeholder" />
 
@@ -44,60 +46,76 @@
                 android:id="@+id/author_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/avatar"
-                android:layout_toRightOf="@id/avatar"
+                android:layout_marginStart="@dimen/item_padding"
+                android:layout_marginLeft="@dimen/item_padding"
                 android:includeFontPadding="false"
                 android:lines="1"
                 android:text="@{postViewModel.post.author}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                app:layout_constraintLeft_toRightOf="@id/avatar"
+                app:layout_constraintTop_toTopOf="@id/avatar"
+                tools:text="name" />
 
             <TextView
+                android:id="@+id/tv_datetime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/author_name"
-                android:layout_alignStart="@id/author_name"
-                android:layout_below="@id/author_name"
                 android:layout_marginTop="@dimen/subtitle_margin_top"
                 android:includeFontPadding="false"
                 android:lines="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                app:relativeDateTime="@{postViewModel.post.dateline*1000}" />
+                app:layout_constraintLeft_toLeftOf="@id/author_name"
+                app:layout_constraintTop_toBottomOf="@id/author_name"
+                app:relativeDateTime="@{postViewModel.post.dateline*1000}"
+                tools:text="2017-5-17" />
 
             <!-- enable `textIsSelectable` in order to add click effect -->
             <!-- see https://code.google.com/p/android/issues/detail?id=13895 -->
-            <TextView
+            <com.github.ykrank.androidtools.widget.uglyfix.FixTextView
                 android:id="@+id/tv_floor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:includeFontPadding="false"
                 android:maxLines="1"
+                android:onClick="@{postViewModel::showFloorActionMenu}"
                 android:text="@{postViewModel.floor}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                app:increaseClickingArea="@{@dimen/minimum_touch_target_size}" />
+                android:textColor="?attr/colorAccent"
+                android:textStyle="bold"
+                android:typeface="serif"
+                app:increaseClickingArea="@{@dimen/minimum_touch_target_size}"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/avatar"
+                tools:text="#28" />
 
             <!-- layout_marginTop = 72dp (two line height with avatar) - 16dp (RelativeLayout's top padding) -->
             <!-- use custom movement method to provides selection and click -->
-            <TextView
+            <com.github.ykrank.androidtools.widget.uglyfix.FixTextView
                 android:id="@+id/tv_reply"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/single_line_height_with_avatar"
+                android:layout_marginTop="@dimen/item_padding"
                 android:lineSpacingExtra="@dimen/text_line_spacing_extra"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:reply="@{postViewModel.post}" />
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/avatar"
+                app:reply="@{postViewModel.post}"
+                tools:text="主贴" />
 
             <TextView
+                android:id="@+id/tv_show_trade"
                 style="?attr/buttonBarPositiveButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_reply"
                 android:layout_centerHorizontal="true"
                 android:onClick="@{postViewModel::onTradeHtmlClick}"
                 android:text="@string/click_to_trade_html"
-                android:visibility="@{postViewModel.post.trade?View.VISIBLE:View.GONE}" />
-        </RelativeLayout>
+                android:visibility="@{postViewModel.post.trade?View.VISIBLE:View.GONE}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_reply" />
+        </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>
 
