@@ -125,12 +125,12 @@ dependencies {
     playImplementation fileTree(include: ['*.jar'], dir: 'libs/flavors/play')
     normalImplementation fileTree(include: ['*.jar'], dir: 'libs/flavors/normal')
 
-    implementation 'com.google.dagger:dagger:2.19'
-    kapt 'com.google.dagger:dagger-compiler:2.19'
+    implementation 'com.google.dagger:dagger:2.21'
+    kapt 'com.google.dagger:dagger-compiler:2.21'
     // https://github.com/google/dagger/issues/95
 //    provided 'javax.annotation:javax.annotation-api:1.3'
 
-    alphaImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.2'
+    alphaImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
 
     implementation "com.android.support:transition:$rootProject.supportVersion"
 
@@ -138,7 +138,7 @@ dependencies {
 //    compileOnly 'com.google.j2objc:j2objc-annotations:1.3'
 
     //okhttp 3.12.0 have bug https://github.com/square/okhttp/issues/4395
-    implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.11.0'
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.12.2'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.5.0'
@@ -147,14 +147,14 @@ dependencies {
     implementation "com.github.VictorAlbertos.RxCache:runtime:1.8.3-2.x"
     implementation 'com.github.VictorAlbertos.Jolyglot:jackson:0.0.4'
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.7'
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.7"
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8"
 
     implementation 'nz.bradcampbell:paperparcel:2.0.6'
     implementation 'nz.bradcampbell:paperparcel-kotlin:2.0.6' // Optional
     kapt 'nz.bradcampbell:paperparcel-compiler:2.0.6'
 
-    kapt 'com.github.bumptech.glide:compiler:4.8.0'
+    kapt 'com.github.bumptech.glide:compiler:4.9.0'
 
     implementation 'com.github.chrisbanes:PhotoView:2.1.4'
     implementation 'org.greenrobot:greendao:3.2.2'
