@@ -9,6 +9,7 @@
     <string name="intent_title_which_view_application">Open with</string>
     <string name="message_chooser_no_applications">No apps can perform this action</string>
     <string name="action_login">Sign in</string>
+    <string name="action_app_login">Sign in magic</string>
     <string name="avatar_content_desc">Avatar</string>
     <string name="picture_content_desc">Picture</string>
     <string name="dialog_message_login_prompt">Please sign in first.</string>

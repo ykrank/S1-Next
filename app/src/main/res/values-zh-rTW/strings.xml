@@ -417,4 +417,5 @@
     <string name="manage_forum">管理板塊</string>
     <string name="red_envelopes_copy_label">紅包碼</string>
     <string name="title_copied">標題已複製</string>
+    <string name="action_app_login">登錄黑魔法</string>
 </resources>

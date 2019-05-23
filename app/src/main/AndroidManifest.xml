@@ -49,7 +49,7 @@
 
         <activity
             android:name=".view.activity.AppLoginActivity"
-            android:label="@string/activity_label_login"
+            android:label="@string/action_app_login"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity

@@ -226,4 +226,5 @@
     <string name="manage_forum">管理板块</string>
     <string name="red_envelopes_copy_label">红包码</string>
     <string name="title_copied">标题已复制</string>
+    <string name="action_app_login">登录黑魔法</string>
 </resources>

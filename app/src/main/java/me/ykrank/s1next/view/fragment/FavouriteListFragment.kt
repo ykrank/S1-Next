@@ -12,7 +12,6 @@ import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.ui.LibBaseViewPagerFragment
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.RxBus
-import com.uber.autodispose.ObservableSubscribeProxy
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
@@ -47,18 +46,18 @@ class FavouriteListFragment : BaseViewPagerFragment() {
 
         mRxBus.get()
                 .ofType(FavoriteRemoveEvent::class.java)
-                .to<ObservableSubscribeProxy<FavoriteRemoveEvent>>(AndroidRxDispose.withObservable<FavoriteRemoveEvent>(this, FragmentEvent.DESTROY_VIEW))
-                .subscribe({ event ->
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
+                .subscribe { event ->
                     // reload when favorite remove
-                    ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser,
-                            { token -> s1Service.removeThreadFavorite(token, event.favId) })
+                    ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser
+                    ) { token -> s1Service.removeThreadFavorite(token, event.favId) }
                             .compose(RxJavaUtil.iOSingleTransformer())
                             .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY_VIEW))
                             .subscribe({ wrapper ->
                                 showShortSnackbar(wrapper.result.message)
                                 loadViewPager()
                             }, { this.onError(it) })
-                })
+                }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
