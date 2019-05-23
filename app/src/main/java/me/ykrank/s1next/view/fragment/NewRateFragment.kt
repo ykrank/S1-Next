@@ -17,7 +17,6 @@ import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.model.RatePreInfo
 import me.ykrank.s1next.databinding.FragmentNewRateBinding
 import me.ykrank.s1next.databinding.ItemRateReasonBinding
-import me.ykrank.s1next.util.ErrorUtil
 import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter
 import me.ykrank.s1next.view.dialog.requestdialog.RateRequestDialogFragment
 import me.ykrank.s1next.viewmodel.NewRateViewModel
@@ -105,19 +104,12 @@ class NewRateFragment : BaseFragment() {
                 .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
                 .subscribe({ info ->
                     ratePreInfo = info
-                    if (!TextUtils.isEmpty(info.alertError)) {
-                        reasonAdapter.setHasProgress(false)
-                        info.alertError?.apply {
-                            showRetrySnackbar(this, View.OnClickListener { v -> refreshData() })
-                        }
-                    } else {
-                        binding.model?.info?.set(info)
-                        setSpinner(info.scoreChoices)
-                        setReasonRecycleView(info.reasons)
-                    }
+                    binding.model?.info?.set(info)
+                    setSpinner(info.scoreChoices)
+                    setReasonRecycleView(info.reasons)
                 }, { e ->
                     reasonAdapter.setHasProgress(false)
-                    showRetrySnackbar(ErrorUtil.parse(context!!, e), View.OnClickListener { v -> refreshData() })
+                    showRetrySnackbar(e, View.OnClickListener { v -> refreshData() })
                 }
                 )
     }

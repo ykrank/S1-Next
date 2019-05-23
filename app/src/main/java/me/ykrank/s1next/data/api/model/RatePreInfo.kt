@@ -3,6 +3,7 @@ package me.ykrank.s1next.data.api.model
 import com.fasterxml.jackson.core.JsonParseException
 import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.data.api.ApiUtil
+import me.ykrank.s1next.data.api.model.wrapper.HtmlDataWrapper
 import org.jsoup.Jsoup
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
@@ -25,7 +26,6 @@ class RatePreInfo : PaperParcelable {
     var isChecked: Boolean = false
     var isDisabled: Boolean = false
     var scoreChoices: List<String> = arrayListOf()
-    var alertError: String? = null
 
     fun setScoreChoices() {
         val list = ArrayList<String>()
@@ -51,7 +51,6 @@ class RatePreInfo : PaperParcelable {
                 ", checked=" + isChecked +
                 ", disabled=" + isDisabled +
                 ", scoreChoices=" + scoreChoices +
-                ", alertError='" + alertError + '\''.toString() +
                 '}'.toString()
     }
 
@@ -73,7 +72,6 @@ class RatePreInfo : PaperParcelable {
         if (isChecked != other.isChecked) return false
         if (isDisabled != other.isDisabled) return false
         if (scoreChoices != other.scoreChoices) return false
-        if (alertError != other.alertError) return false
 
         return true
     }
@@ -91,7 +89,6 @@ class RatePreInfo : PaperParcelable {
         result = 31 * result + isChecked.hashCode()
         result = 31 * result + isDisabled.hashCode()
         result = 31 * result + (scoreChoices?.hashCode() ?: 0)
-        result = 31 * result + (alertError?.hashCode() ?: 0)
         return result
     }
 
@@ -107,14 +104,9 @@ class RatePreInfo : PaperParcelable {
             html = ApiUtil.replaceAjaxHeader(html)
             try {
                 val document = Jsoup.parse(html)
-                //alert error
-                var elements = document.select("div.alert_error")
-                if (!elements.isEmpty()) {
-                    info.alertError = elements[0].text()
-                    return info
-                }
+                HtmlDataWrapper.preAlertAjaxHtml(document)
 
-                elements = document.select("#rateform>input")
+                var elements = document.select("#rateform>input")
                 if (elements.size != 5) {
                     throw JsonParseException(null, "#rateform>input size is " + elements.size)
                 }
@@ -153,6 +145,7 @@ class RatePreInfo : PaperParcelable {
                 info.setScoreChoices()
             } catch (e: Exception) {
                 L.report(e)
+                throw e
             }
 
             return info
