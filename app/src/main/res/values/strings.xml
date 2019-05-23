@@ -152,6 +152,7 @@
 
     <string name="blacklist">BlackList</string>
     <string name="black_word">Black word</string>
+    <string name="menu_load_from_web">Load from website</string>
     <string name="prompt_black_word">Black word</string>
     <string name="status">Status</string>
     <string name="title_black_word_edit">Edit black word</string>

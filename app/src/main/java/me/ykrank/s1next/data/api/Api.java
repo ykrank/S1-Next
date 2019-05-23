@@ -54,6 +54,8 @@ public final class Api {
 
     public static final String URL_DARK_ROOM = BASE_URL + "forum.php?mod=misc&action=showdarkroom&ajaxdata=json";
 
+    public static final String URL_WEB_BLACK_LIST = BASE_URL + "home.php?mod=space&do=friend&view=blacklist";
+
     private Api() {
     }
 

@@ -170,4 +170,7 @@ public interface S1Service {
 
     @GET(Api.URL_DARK_ROOM)
     Single<DarkRoomWrapper> getDarkRoom(@Query("cid") String cid);
+
+    @GET(Api.URL_WEB_BLACK_LIST)
+    Single<String> getWebBlackList(@Query("uid") String uid, @Query("page") int page);
 }

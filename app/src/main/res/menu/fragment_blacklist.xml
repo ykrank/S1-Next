@@ -17,6 +17,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/menu_load_from_web"
+        android:orderInCategory="1"
+        android:title="@string/menu_load_from_web"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/menu_add"
         android:orderInCategory="2"
         android:title="@string/menu_add"

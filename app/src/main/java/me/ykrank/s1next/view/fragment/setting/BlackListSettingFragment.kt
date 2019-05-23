@@ -156,6 +156,10 @@ class BlackListSettingFragment : BaseFragment() {
                 }
                 return true
             }
+            R.id.menu_load_from_web -> {
+
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
