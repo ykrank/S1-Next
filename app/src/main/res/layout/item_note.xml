@@ -6,8 +6,8 @@
     tools:context="me.ykrank.s1next.view.adapter.delegate.FavouriteAdapterDelegate">
 
     <data>
-
         <import type="android.graphics.Color" />
+        <import type="com.github.ykrank.androidtools.util.ResourceUtil" />
 
         <import type="android.graphics.PorterDuff.Mode" />
 
@@ -26,8 +26,7 @@
         android:layout_marginRight="@dimen/card_view_horizontal_margin"
         android:layout_marginStart="@dimen/card_view_horizontal_margin"
         android:layout_marginTop="@dimen/card_view_vertical_margin"
-        app:backTintColor="@{model.data.isNew?@color/red_A100:Color.TRANSPARENT}"
-        app:tintMode="@{Mode.MULTIPLY}">
+        app:cardTintColor="@{model.data.isNew?@color/red_A100:(Integer.MIN_VALUE)}">
 
         <RelativeLayout
             android:layout_width="match_parent"
