@@ -9,7 +9,7 @@ import org.jsoup.Jsoup
  * Created by ykrank on 2019/5/23.
  */
 class WebBlackListInfo {
-    var users: List<Pair<String, String>> = listOf()
+    var users: List<Pair<Int, String>> = listOf()
     var page: Int = 1
     var max: Int = 1
 
@@ -31,12 +31,16 @@ class WebBlackListInfo {
                     return@mapNotNull userElement?.let { ue ->
                         val userLink = UserLink.parse(ue.attr("href")).orNull()
                         return@let userLink?.let { ul ->
-                            Pair(ul.uid, ue.text())
+                            Pair(ul.uid.toInt(), ue.text())
                         }
                     }
                 }
 
-
+                val pageElement = document.selectFirst(".pg>label")
+                if (pageElement != null) {
+                    info.page = pageElement.selectFirst("input").attr("value").toInt()
+                    info.max = pageElement.selectFirst("span").text().replace(" ", "").let { it.substring(1, it.length - 1) }.trim().toInt()
+                }
 
             } catch (e: Exception) {
                 L.report(e)

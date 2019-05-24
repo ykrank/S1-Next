@@ -1,6 +1,7 @@
 package me.ykrank.s1next.view.fragment.setting
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.database.Cursor
 import android.databinding.DataBindingUtil
@@ -21,11 +22,13 @@ import me.ykrank.s1next.view.activity.DarkRoomActivity
 import me.ykrank.s1next.view.activity.SettingsActivity
 import me.ykrank.s1next.view.adapter.BlackListCursorListViewAdapter
 import me.ykrank.s1next.view.dialog.BlacklistDialogFragment
+import me.ykrank.s1next.view.dialog.LoadBlackListFromWebDialogFragment
+import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.fragment.BaseFragment
 import me.ykrank.s1next.view.internal.RequestCode
 import java.util.*
 
-class BlackListSettingFragment : BaseFragment() {
+class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListener {
 
     private lateinit var mListView: ListView
     private lateinit var mListViewAdapter: BlackListCursorListViewAdapter
@@ -157,11 +160,20 @@ class BlackListSettingFragment : BaseFragment() {
                 return true
             }
             R.id.menu_load_from_web -> {
-
+                childFragmentManager.apply {
+                    if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(this, mUser)) {
+                        val dialogFragment = LoadBlackListFromWebDialogFragment.newInstance()
+                        dialogFragment.show(this, LoadBlackListFromWebDialogFragment.TAG)
+                    }
+                }
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onDismiss(dialog: DialogInterface?) {
+        mListViewAdapter.notifyDataSetChanged()
     }
 
     /**

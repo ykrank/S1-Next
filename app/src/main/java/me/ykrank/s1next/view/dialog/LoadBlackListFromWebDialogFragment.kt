@@ -1,8 +1,9 @@
 package me.ykrank.s1next.view.dialog
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import android.support.annotation.MainThread
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,23 +11,15 @@ import android.view.Window
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.extension.toast
-import com.github.ykrank.androidtools.ui.adapter.simple.BindViewHolderCallback
-import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
 import com.github.ykrank.androidtools.util.RxJavaUtil
-import io.reactivex.rxkotlin.Singles
 import me.ykrank.s1next.App
-import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
-import me.ykrank.s1next.data.api.ApiFlatTransformer
 import me.ykrank.s1next.data.api.S1Service
-import me.ykrank.s1next.data.api.app.AppService
-import me.ykrank.s1next.data.api.model.Vote
 import me.ykrank.s1next.data.api.model.WebBlackListInfo
-import me.ykrank.s1next.databinding.ItemVoteBinding
+import me.ykrank.s1next.data.db.BlackListDbWrapper
+import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.databinding.DialogLoadBlacklistFromWebBinding
 import me.ykrank.s1next.util.ErrorUtil
-import me.ykrank.s1next.viewmodel.ItemVoteViewModel
-import me.ykrank.s1next.viewmodel.VoteViewModel
 import javax.inject.Inject
 
 
@@ -38,6 +31,8 @@ class LoadBlackListFromWebDialogFragment : BaseDialogFragment() {
     lateinit var s1Service: S1Service
     @Inject
     lateinit var mUser: User
+    @Inject
+    lateinit var blackListDbWrapper: BlackListDbWrapper
 
     private lateinit var binding: DialogLoadBlacklistFromWebBinding
 
@@ -49,7 +44,7 @@ class LoadBlackListFromWebDialogFragment : BaseDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DialogLoadBlacklistFromWebBinding.inflate(inflater, container, false)
 
-        loadData()
+        loadNextPage()
 
         return binding.root
     }
@@ -66,18 +61,39 @@ class LoadBlackListFromWebDialogFragment : BaseDialogFragment() {
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    private fun loadData(page:Int = 1) {
+    @MainThread
+    private fun loadNextPage(page: Int = 1) {
         s1Service.getWebBlackList(mUser.uid, page)
                 .map { WebBlackListInfo.fromHtml(it) }
+                .map {
+                    it.users.forEach { pair ->
+                        blackListDbWrapper.saveBlackList(BlackList(pair.first, pair.second, BlackList.HIDE_POST, BlackList.HIDE_FORUM))
+                    }
+                    it
+                }
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
                 .subscribe({
                     binding.max = it.max
                     binding.progress = it.page
+
+                    if (it.max > it.page) {
+                        loadNextPage(it.page + 1)
+                    }else{
+                        this@LoadBlackListFromWebDialogFragment.dismiss()
+                    }
                 }, {
                     val activity = activity ?: return@subscribe
                     activity.toast(ErrorUtil.parse(activity, it))
                 })
+    }
+
+    override fun onDismiss(dialog: DialogInterface?) {
+        super.onDismiss(dialog)
+        val parentFragment = parentFragment
+        if (parentFragment is DialogInterface.OnDismissListener) {
+            (parentFragment as DialogInterface.OnDismissListener).onDismiss(dialog)
+        }
     }
 
     companion object {
