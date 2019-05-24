@@ -2,7 +2,7 @@ package me.ykrank.s1next.data.api.model.wrapper;
 
 import android.support.annotation.NonNull;
 
-import com.github.ykrank.androidtools.guava.Objects;
+import com.google.common.base.Objects;
 import com.github.ykrank.androidtools.util.L;
 
 import org.jsoup.Jsoup;

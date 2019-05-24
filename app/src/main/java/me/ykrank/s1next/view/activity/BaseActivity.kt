@@ -18,7 +18,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ActivityEvent
-import com.github.ykrank.androidtools.guava.Optional
+import com.google.common.base.Optional
 import com.github.ykrank.androidtools.ui.LibBaseActivity
 import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate
 import com.github.ykrank.androidtools.ui.internal.DrawerLayoutDelegate

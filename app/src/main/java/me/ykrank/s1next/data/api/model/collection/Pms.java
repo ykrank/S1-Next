@@ -4,7 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.ykrank.androidtools.guava.Objects;
+import com.google.common.base.Objects;
 
 import java.util.List;
 

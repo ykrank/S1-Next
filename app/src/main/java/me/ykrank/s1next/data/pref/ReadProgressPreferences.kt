@@ -7,8 +7,8 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.ykrank.androidtools.data.BasePreferences
 import com.github.ykrank.androidtools.data.PreferenceDelegates
-import com.github.ykrank.androidtools.guava.Supplier
-import com.github.ykrank.androidtools.guava.Suppliers
+import com.google.common.base.Supplier
+import com.google.common.base.Suppliers
 import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress

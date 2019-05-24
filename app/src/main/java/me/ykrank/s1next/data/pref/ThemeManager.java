@@ -7,9 +7,9 @@ import android.support.annotation.IntDef;
 import android.support.annotation.StyleRes;
 import android.support.v4.graphics.ColorUtils;
 
-import com.github.ykrank.androidtools.guava.Preconditions;
-import com.github.ykrank.androidtools.guava.Supplier;
-import com.github.ykrank.androidtools.guava.Suppliers;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

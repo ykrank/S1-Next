@@ -2,8 +2,8 @@ package me.ykrank.s1next.data.api.model;
 
 import android.text.TextUtils;
 
-import com.github.ykrank.androidtools.guava.Objects;
-import com.github.ykrank.androidtools.guava.Preconditions;
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 

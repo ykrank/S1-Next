@@ -186,7 +186,10 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
                     threadTypes = ArrayList(it)
                     refreshTabLayout()
                 }, {
-                    L.report(it)
+                    val msg = it.message?.trim()
+                    if ("抱歉，您所在的用户组(游客)无法进行此操作" != msg && "抱歉，您尚未登录，没有权限在该版块发帖" != msg) {
+                        L.report(it)
+                    }
                 })
     }
 

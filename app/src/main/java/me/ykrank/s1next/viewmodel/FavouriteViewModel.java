@@ -5,7 +5,7 @@ import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.github.ykrank.androidtools.guava.Supplier;
+import com.google.common.base.Supplier;
 import com.github.ykrank.androidtools.widget.RxBus;
 
 import io.reactivex.functions.Consumer;

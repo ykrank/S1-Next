@@ -3,7 +3,7 @@ package me.ykrank.s1next.data.api;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import com.github.ykrank.androidtools.guava.Objects;
+import com.google.common.base.Objects;
 import com.github.ykrank.androidtools.util.L;
 
 import me.ykrank.s1next.App;

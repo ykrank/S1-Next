@@ -49,8 +49,6 @@ class LoadBlackListFromWebDialogFragment : BaseDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DialogLoadBlacklistFromWebBinding.inflate(inflater, container, false)
 
-        binding.max = 100
-
         loadData()
 
         return binding.root
@@ -74,7 +72,8 @@ class LoadBlackListFromWebDialogFragment : BaseDialogFragment() {
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
                 .subscribe({
-
+                    binding.max = it.max
+                    binding.progress = it.page
                 }, {
                     val activity = activity ?: return@subscribe
                     activity.toast(ErrorUtil.parse(activity, it))

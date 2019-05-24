@@ -3,8 +3,8 @@ package me.ykrank.s1next.data.api.model.search;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.github.ykrank.androidtools.guava.Objects;
-import com.github.ykrank.androidtools.guava.Optional;
+import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.github.ykrank.androidtools.util.L;
 
 import org.jsoup.Jsoup;

@@ -3,7 +3,7 @@ package me.ykrank.s1next;
 import android.content.Context;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
-import com.github.ykrank.androidtools.guava.Preconditions;
+import com.google.common.base.Preconditions;
 import com.github.ykrank.androidtools.widget.NullTrustManager;
 
 import java.security.SecureRandom;

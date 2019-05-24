@@ -2,7 +2,7 @@ package me.ykrank.s1next;
 
 import android.content.Context;
 
-import com.github.ykrank.androidtools.guava.Preconditions;
+import com.google.common.base.Preconditions;
 
 import dagger.Module;
 import dagger.Provides;

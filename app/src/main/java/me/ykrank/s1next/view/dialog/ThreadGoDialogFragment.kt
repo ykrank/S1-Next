@@ -9,7 +9,7 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.WindowManager
-import com.github.ykrank.androidtools.guava.Optional
+import com.google.common.base.Optional
 import com.github.ykrank.androidtools.util.ViewUtil
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.ThreadLink

@@ -5,7 +5,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.github.ykrank.androidtools.guava.Objects
+import com.google.common.base.Objects
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleViewHolderAdapter
 import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.R
