@@ -39,14 +39,16 @@
         android:includeFontPadding="false"
         android:lineSpacingExtra="@dimen/text_line_spacing_extra"
         android:maxLines="@integer/list_max_line"
-        android:padding="@dimen/item_padding"
-        android:paddingBottom="14.5dp"
-        android:paddingTop="14.5dp"
+        android:paddingLeft="@dimen/item_padding"
+        android:paddingRight="@dimen/item_padding"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:textAppearance="@style/TextAppearance.ThreadList.Title"
         app:bindEvent="@{model.onBind()}"
         app:forumId="@{forumId}"
         app:onLongClickListener="@{model.goToThisThreadLastPage()}"
         app:themeManager="@{themeManager}"
         app:thread="@{model.thread}"
-        app:user="@{userViewModel.user}" />
+        app:user="@{userViewModel.user}"
+        tools:text="Content" />
 </layout>
