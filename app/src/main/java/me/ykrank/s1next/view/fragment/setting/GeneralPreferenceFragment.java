@@ -2,7 +2,7 @@ package me.ykrank.s1next.view.fragment.setting;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.preference.Preference;
+import androidx.preference.Preference;
 
 import com.github.ykrank.androidautodispose.AndroidRxDispose;
 import com.github.ykrank.androidlifecycle.event.FragmentEvent;

@@ -1,8 +1,8 @@
 package me.ykrank.s1next.view.fragment
 
 import android.content.Context
-import android.support.annotation.CallSuper
-import android.support.v4.view.ViewPager
+import androidx.annotation.CallSuper
+import androidx.viewpager.widget.ViewPager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem

@@ -2,7 +2,7 @@ package me.ykrank.s1next.view.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,7 +67,7 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
         binding.model = model
 
         binding.recycleView.adapter = adapter
-        binding.recycleView.layoutManager = LinearLayoutManager(context)
+        binding.recycleView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         mVote.voteOptions?.let {
             data = it.values.map { ItemVoteViewModel(binding.model!!, it) }
             adapter.swapDataSet(data)

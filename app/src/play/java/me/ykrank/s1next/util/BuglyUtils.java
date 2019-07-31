@@ -1,7 +1,7 @@
 package me.ykrank.s1next.util;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.github.ykrank.androidtools.util.RxJavaUtil;
 import com.tencent.bugly.crashreport.CrashReport;

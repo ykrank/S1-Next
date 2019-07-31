@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v7.widget.ListPopupWindow
+import com.google.android.material.tabs.TabLayout
+import androidx.appcompat.widget.ListPopupWindow
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem

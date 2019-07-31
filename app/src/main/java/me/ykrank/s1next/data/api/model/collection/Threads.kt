@@ -1,6 +1,6 @@
 package me.ykrank.s1next.data.api.model.collection
 
-import android.support.v4.util.ArrayMap
+import androidx.collection.ArrayMap
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
@@ -39,7 +39,7 @@ class Threads : Account {
                 @JsonProperty("forum_threadlist") threadList: List<Thread>?) {
         val threadTypes = ArrayList<ThreadType>()
         try {
-            val typeMap = ArrayMap<String, String>()
+            val typeMap = androidx.collection.ArrayMap<String, String>()
             val fields = typesNode.get("types").fields()
             while (fields.hasNext()) {
                 val entry = fields.next()

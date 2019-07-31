@@ -3,7 +3,7 @@ package me.ykrank.s1next.view.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import me.ykrank.s1next.R
 import me.ykrank.s1next.view.fragment.WebViewFragment
 import me.ykrank.s1next.view.internal.BackPressDelegate
@@ -13,7 +13,7 @@ import me.ykrank.s1next.view.internal.BackPressDelegate
  */
 
 class WebViewActivity : BaseActivity() {
-    private var fragment: Fragment? = null
+    private var fragment: androidx.fragment.app.Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

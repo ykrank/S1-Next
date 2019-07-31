@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.annotation.MainThread
-import android.support.v4.app.FragmentManager
+import androidx.annotation.MainThread
+import androidx.fragment.app.FragmentManager
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuInflater
@@ -340,7 +340,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         }
     }
 
-    override fun getPagerAdapter(fragmentManager: FragmentManager): LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<*> {
+    override fun getPagerAdapter(fragmentManager: androidx.fragment.app.FragmentManager): LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<*> {
         return mPostListPagerAdapter
     }
 
@@ -483,7 +483,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     /**
      * Returns a Fragment corresponding to one of the pages of posts.
      */
-    private inner class PostListPagerAdapter constructor(fm: FragmentManager) : LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<PostListPagerFragment>(fm) {
+    private inner class PostListPagerAdapter constructor(fm: androidx.fragment.app.FragmentManager) : LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<PostListPagerFragment>(fm) {
 
         override fun getItem(i: Int): PostListPagerFragment {
             val progress = readProgress

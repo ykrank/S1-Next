@@ -4,10 +4,10 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AlertDialog
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher

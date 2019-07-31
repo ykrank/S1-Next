@@ -1,11 +1,11 @@
 package me.ykrank.s1next.view.fragment
 
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.annotation.CallSuper
-import android.support.annotation.UiThread
-import android.support.design.widget.TabLayout
-import android.support.v4.app.Fragment
+import androidx.annotation.CallSuper
+import androidx.annotation.UiThread
+import com.google.android.material.tabs.TabLayout
+import androidx.fragment.app.Fragment
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -57,7 +57,7 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
      */
     private var post = false
 
-    private lateinit var toolsFragments: List<Pair<String, Fragment>>
+    private lateinit var toolsFragments: List<Pair<String, androidx.fragment.app.Fragment>>
     //Init onCreate
     private var toolsFirstInit = false
 
@@ -71,7 +71,7 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
         if (savedInstanceState != null) {
             toolsFirstInit = false
             //Find tools fragment from childFragmentManager
-            val fragments = listOf<Fragment>(
+            val fragments = listOf<androidx.fragment.app.Fragment>(
                     childFragmentManager.findFragmentByTag(EmotionFragment.TAG)!!,
                     childFragmentManager.findFragmentByTag(ImageUploadFragment.TAG)!!,
                     childFragmentManager.findFragmentByTag(PostToolsExtrasFragment.TAG)!!

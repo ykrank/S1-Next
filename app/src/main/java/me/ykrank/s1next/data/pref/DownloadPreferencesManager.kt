@@ -1,6 +1,6 @@
 package me.ykrank.s1next.data.pref
 
-import android.support.annotation.IntDef
+import androidx.annotation.IntDef
 import com.bumptech.glide.load.Key
 import com.bumptech.glide.signature.ObjectKey
 import com.github.ykrank.androidtools.util.DateUtil

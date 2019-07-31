@@ -1,7 +1,7 @@
 package me.ykrank.s1next.viewmodel;
 
-import android.databinding.ObservableField;
-import android.support.v7.widget.PopupMenu;
+import androidx.databinding.ObservableField;
+import androidx.appcompat.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
 

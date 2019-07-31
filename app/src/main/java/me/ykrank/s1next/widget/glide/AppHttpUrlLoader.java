@@ -1,6 +1,6 @@
 package me.ykrank.s1next.widget.glide;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.integration.okhttp3.OkHttpStreamFetcher;
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;

@@ -1,6 +1,6 @@
 package me.ykrank.s1next.data.api.model.wrapper;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

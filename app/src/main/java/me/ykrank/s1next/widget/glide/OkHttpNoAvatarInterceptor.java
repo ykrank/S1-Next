@@ -1,6 +1,6 @@
 package me.ykrank.s1next.widget.glide;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.util.ArrayList;

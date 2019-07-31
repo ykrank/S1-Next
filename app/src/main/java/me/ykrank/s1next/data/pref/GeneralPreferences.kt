@@ -16,7 +16,7 @@ class GeneralPreferencesImpl(context: Context, sharedPreferences: SharedPreferen
             R.string.pref_key_theme, R.string.pref_theme_default_value)
 
     override val fontScale: Float
-        get() = getPrefString(R.string.pref_key_font_size, R.string.pref_font_size_default_value).toFloat()
+        get() = getPrefString(R.string.pref_key_font_size, R.string.pref_font_size_default_value)?.toFloat()?:1.0f
 
     override val isSignatureEnabled: Boolean by PreferenceDelegates.bool(
             R.string.pref_key_signature, R.bool.pref_signature_default_value)

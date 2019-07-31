@@ -2,8 +2,8 @@ package me.ykrank.s1next.view.adapter;
 
 import android.app.Activity;
 import android.content.res.Resources;
-import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 

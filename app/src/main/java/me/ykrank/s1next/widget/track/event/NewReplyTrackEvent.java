@@ -1,6 +1,6 @@
 package me.ykrank.s1next.widget.track.event;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.github.ykrank.androidtools.widget.track.event.TrackEvent;
 

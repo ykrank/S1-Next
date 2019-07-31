@@ -13,7 +13,7 @@
             type="me.ykrank.s1next.data.api.model.search.ForumSearchResult" />
     </data>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         style="?attr/materialCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,5 +35,5 @@
             app:movementMethod="@{SearchMovementMethod.instance}"
             tools:text="ABC\nkhk"/>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </layout>

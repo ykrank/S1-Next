@@ -1,8 +1,8 @@
 package me.ykrank.s1next.viewmodel;
 
-import android.databinding.BaseObservable;
-import android.databinding.ObservableArrayList;
-import android.databinding.ObservableList;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.ObservableArrayList;
+import androidx.databinding.ObservableList;
 
 public final class DropDownItemListViewModel {
 

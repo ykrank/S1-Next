@@ -1,6 +1,6 @@
 package me.ykrank.s1next.binding;
 
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 import android.widget.EditText;
 
 public final class EditTextBindingAdapter {

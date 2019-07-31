@@ -1,6 +1,6 @@
 package me.ykrank.s1next.data.api.model
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.data.api.ApiUtil
@@ -21,7 +21,7 @@ class Rate : PaperParcelable, StableIdModel {
     val symbolScore: String get() = if (score ?: 0 < 0) "$score" else "+$score"
 
     override val stableId: Long
-        get() = uid?.toLongOrNull() ?: RecyclerView.NO_ID
+        get() = uid?.toLongOrNull() ?: androidx.recyclerview.widget.RecyclerView.NO_ID
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

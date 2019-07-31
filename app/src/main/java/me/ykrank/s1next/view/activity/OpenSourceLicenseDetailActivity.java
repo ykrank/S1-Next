@@ -2,7 +2,7 @@ package me.ykrank.s1next.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 
 import me.ykrank.s1next.R;

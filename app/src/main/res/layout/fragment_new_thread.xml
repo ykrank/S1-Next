@@ -10,7 +10,7 @@
         android:orientation="vertical">
 
 
-        <android.support.v7.widget.AppCompatSpinner
+        <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spinner"
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"

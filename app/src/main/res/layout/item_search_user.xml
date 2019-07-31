@@ -14,7 +14,7 @@
             type="me.ykrank.s1next.viewmodel.SearchUserViewModel" />
     </data>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         style="?attr/materialCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,5 +52,5 @@
                 tools:text="ykrank" />
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </layout>

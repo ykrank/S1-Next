@@ -1,7 +1,7 @@
 package me.ykrank.s1next.viewmodel
 
-import android.databinding.ObservableField
-import android.support.v4.app.FragmentActivity
+import androidx.databinding.ObservableField
+import androidx.fragment.app.FragmentActivity
 import android.view.View
 
 import me.ykrank.s1next.data.api.model.Pm
@@ -16,7 +16,7 @@ class PmViewModel {
         val uid = pm.get()?.authorId
         val name = pm.get()?.author
         if (uid != null) {
-            UserHomeActivity.start(v.context as FragmentActivity, uid, name, v)
+            UserHomeActivity.start(v.context as androidx.fragment.app.FragmentActivity, uid, name, v)
         }
     }
 }

@@ -2,9 +2,9 @@ package me.ykrank.s1next.data.db.dbmodel;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.IntDef;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
+import androidx.annotation.IntDef;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import android.text.TextUtils;
 
 import org.greenrobot.greendao.annotation.Entity;

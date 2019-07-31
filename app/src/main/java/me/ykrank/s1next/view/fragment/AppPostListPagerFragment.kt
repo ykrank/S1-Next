@@ -1,9 +1,9 @@
 package me.ykrank.s1next.view.fragment
 
 import android.content.Context
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -68,7 +68,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
     private var blacklistChanged = false
 
     private lateinit var binding: FragmentBaseWithQuickSideBarBinding
-    private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mRecyclerView: androidx.recyclerview.widget.RecyclerView
     private lateinit var mRecyclerAdapter: AppPostListRecyclerViewAdapter
     private lateinit var mLayoutManager: StartSnapLinearLayoutManager
     private lateinit var quickSideBarView: QuickSideBarView

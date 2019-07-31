@@ -37,7 +37,7 @@
 
         </ScrollView>
 
-        <android.support.design.widget.TabLayout
+        <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout_post_tools"
             style="@style/Widget.Design.TabLayout.Keyboard"
             android:layout_width="match_parent"
@@ -45,21 +45,21 @@
             android:background="?attr/emoticonKeyboardTabLayoutBackground"
             android:elevation="@dimen/post_tools_tab_layout_elevation">
 
-            <android.support.design.widget.TabItem
+            <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:icon="?attr/iconMenuEmoticon"
                 android:layout_height="match_parent" />
 
-            <android.support.design.widget.TabItem
+            <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:icon="?attr/iconPostToolMenuImage"
                 android:layout_height="match_parent" />
 
-            <android.support.design.widget.TabItem
+            <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:icon="?attr/iconPostToolMenuExtension"
                 android:layout_height="match_parent" />
-        </android.support.design.widget.TabLayout>
+        </com.google.android.material.tabs.TabLayout>
 
         <cn.dreamtobe.kpswitch.widget.KPSwitchPanelFrameLayout
             android:id="@+id/fragment_post_tools"

@@ -1,12 +1,12 @@
 package me.ykrank.s1next.view.internal
 
 import android.annotation.SuppressLint
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.graphics.Color
 import android.os.Build
-import android.support.design.widget.NavigationView
-import android.support.v4.app.FragmentActivity
-import android.support.v4.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
+import androidx.fragment.app.FragmentActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
@@ -38,7 +38,7 @@ import javax.inject.Inject
 /**
  * Implements the concrete UI logic for [DrawerLayoutDelegate].
  */
-class DrawerLayoutDelegateConcrete(val activity: FragmentActivity, drawerLayout: DrawerLayout, navigationView: NavigationView)
+class DrawerLayoutDelegateConcrete(val activity: androidx.fragment.app.FragmentActivity, drawerLayout: DrawerLayout, navigationView: NavigationView)
     : DrawerLayoutDelegate(activity, drawerLayout, navigationView), NavigationView.OnNavigationItemSelectedListener {
 
     private val mUser: User

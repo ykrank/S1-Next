@@ -10,7 +10,7 @@
             type="com.github.ykrank.androidtools.ui.vm.LoadingViewModel" />
     </data>
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,7 +18,7 @@
         app:enabled="@{loadingViewModel.swipeRefreshLayoutEnabled}"
         app:refreshing="@{loadingViewModel.swipeRefresh}">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,6 +29,6 @@
             android:scrollbars="vertical"
             app:loadingFirstTime="@{loadingViewModel.loadingFirstTime}" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </layout>

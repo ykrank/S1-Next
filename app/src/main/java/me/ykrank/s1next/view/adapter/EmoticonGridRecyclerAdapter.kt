@@ -1,8 +1,8 @@
 package me.ykrank.s1next.view.adapter
 
 import android.app.Activity
-import android.databinding.DataBindingUtil
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
@@ -16,7 +16,7 @@ import me.ykrank.s1next.data.api.model.Emoticon
 import me.ykrank.s1next.databinding.ItemEmoticonBinding
 import me.ykrank.s1next.viewmodel.EmoticonViewModel
 
-class EmoticonGridRecyclerAdapter(activity: Activity, private val mEmoticons: List<Emoticon>) : RecyclerView.Adapter<EmoticonGridRecyclerAdapter.BindingViewHolder>() {
+class EmoticonGridRecyclerAdapter(activity: Activity, private val mEmoticons: List<Emoticon>) : androidx.recyclerview.widget.RecyclerView.Adapter<EmoticonGridRecyclerAdapter.BindingViewHolder>() {
 
     private val mLayoutInflater: LayoutInflater = activity.layoutInflater
     private val mEmoticonRequestBuilder: RequestManager = Glide.with(activity)
@@ -53,5 +53,5 @@ class EmoticonGridRecyclerAdapter(activity: Activity, private val mEmoticons: Li
         return position.toLong()
     }
 
-    class BindingViewHolder(val itemEmoticonBinding: ItemEmoticonBinding) : RecyclerView.ViewHolder(itemEmoticonBinding.root)
+    class BindingViewHolder(val itemEmoticonBinding: ItemEmoticonBinding) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemEmoticonBinding.root)
 }

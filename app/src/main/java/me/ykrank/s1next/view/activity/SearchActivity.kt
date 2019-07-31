@@ -5,20 +5,20 @@ import android.app.SearchManager
 import android.app.SharedElementCallback
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.graphics.Point
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.StateListDrawable
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
-import android.support.transition.TransitionManager
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.view.ViewCompat
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.annotation.RequiresApi
+import androidx.transition.TransitionManager
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.ViewCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.text.InputType
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -67,7 +67,7 @@ class SearchActivity : BaseActivity() {
     private lateinit var binding: ActivitySearchBinding
 
     private lateinit var searchView: SearchView
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerView: androidx.recyclerview.widget.RecyclerView
     private lateinit var searchBack: ImageButton
     private lateinit var appBar: AppBarSearchBinding
     private var noResults: TextView? = null
@@ -92,7 +92,7 @@ class SearchActivity : BaseActivity() {
         compatBackIcon()
 
         adapter = SearchRecyclerViewAdapter(this)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
         searchBack.setOnClickListener {

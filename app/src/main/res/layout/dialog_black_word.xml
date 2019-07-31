@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -30,14 +30,14 @@
             android:paddingRight="@dimen/dialog_padding"
             android:paddingBottom="@dimen/dialog_padding_bottom">
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_word"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hintAnimationEnabled="true"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_word"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                     android:text="@{model.blackword.word}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/tv_status"
@@ -59,7 +59,7 @@
                 android:text="@string/status"
                 app:layout_constraintTop_toBottomOf="@id/input_word" />
 
-            <android.support.v7.widget.AppCompatSpinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                 app:layout_constraintStart_toEndOf="@id/tv_status"
                 app:layout_constraintTop_toTopOf="@id/tv_status" />
 
-            <android.support.design.button.MaterialButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_verify"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
@@ -80,6 +80,6 @@
                 android:textColor="?android:attr/textColorPrimaryInverse"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_status" />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

@@ -1,11 +1,11 @@
 package me.ykrank.s1next.view.adapter.delegate
 
 import android.content.Context
-import android.databinding.DataBindingUtil
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.text.method.LinkMovementMethod
 import android.view.ViewGroup
 import com.github.ykrank.androidlifecycle.AndroidLifeCycle
@@ -29,7 +29,7 @@ import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 import me.ykrank.s1next.widget.span.PostMovementMethod
 import javax.inject.Inject
 
-class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
+class PostAdapterDelegate(private val fragment: androidx.fragment.app.Fragment, context: Context) :
         BaseAdapterDelegate<Post, SimpleRecycleViewHolder<ItemPostBinding>>(context, Post::class.java) {
 
     @Inject
@@ -57,7 +57,7 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
         return super.isForViewType(items, position)
     }
 
-    public override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+    public override fun onCreateViewHolder(parent: ViewGroup): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         val binding = DataBindingUtil.inflate<ItemPostBinding>(mLayoutInflater,
                 R.layout.item_post, parent, false)
         binding.postViewModel = PostViewModel(mRxBus, mUser)
@@ -108,13 +108,13 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
                                 //Clear avatar false cache
                                 AvatarUrlsCache.clearUserAvatarCache(uid)
                                 //个人主页
-                                UserHomeActivity.start(it.context as FragmentActivity, uid, uname, it)
+                                UserHomeActivity.start(it.context as androidx.fragment.app.FragmentActivity, uid, uname, it)
                             }
                         }
                     }
 
                 })
-                binding.recycleViewRates.layoutManager = LinearLayoutManager(context)
+                binding.recycleViewRates.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
                 binding.recycleViewRates.isNestedScrollingEnabled = false
             }
             val adapter = binding.recycleViewRates.adapter as SimpleRecycleViewAdapter
@@ -135,7 +135,7 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
 
     // Bug workaround for losing text selection ability, see:
     // https://code.google.com/p/android/issues/detail?id=208169
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+    override fun onViewAttachedToWindow(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
         if (mGeneralPreferencesManager.isPostSelectable) {
             val binding = (holder as SimpleRecycleViewHolder<ItemPostBinding>).binding

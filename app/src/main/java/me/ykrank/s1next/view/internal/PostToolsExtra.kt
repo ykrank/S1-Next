@@ -1,7 +1,7 @@
 package me.ykrank.s1next.view.internal
 
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import android.widget.EditText
 import me.ykrank.s1next.R
 

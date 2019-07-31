@@ -1,9 +1,9 @@
 package me.ykrank.s1next.viewmodel;
 
 
-import android.databinding.ObservableField;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.databinding.ObservableField;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.View;
 
 import me.ykrank.s1next.data.api.Api;

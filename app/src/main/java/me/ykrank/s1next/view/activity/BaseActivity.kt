@@ -5,13 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.support.annotation.CallSuper
-import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.widget.Toolbar
+import androidx.annotation.CallSuper
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -152,7 +152,7 @@ abstract class BaseActivity : LibBaseActivity() {
     }
 
     override fun findDrawerLayoutDelegate(): DrawerLayoutDelegate? {
-        val drawerLayout: DrawerLayout? = findViewById(R.id.drawer_layout)
+        val drawerLayout: androidx.drawerlayout.widget.DrawerLayout? = findViewById(R.id.drawer_layout)
         if (drawerLayout != null) {
             val navigationView: NavigationView = findViewById(R.id.navigation_view)
             drawerLayoutDelegate = DrawerLayoutDelegateConcrete(this, drawerLayout, navigationView)
@@ -278,10 +278,10 @@ abstract class BaseActivity : LibBaseActivity() {
         mDrawerIndicatorEnabled = false
     }
 
-    fun replaceFragmentWithBackStack(fragment: Fragment, tag: String) {
+    fun replaceFragmentWithBackStack(fragment: androidx.fragment.app.Fragment, tag: String) {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.frame_layout, fragment, tag)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .addToBackStack(null)
                 .commit()
     }

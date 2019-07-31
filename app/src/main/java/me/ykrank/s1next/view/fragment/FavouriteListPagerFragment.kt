@@ -1,7 +1,7 @@
 package me.ykrank.s1next.view.fragment
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import com.github.ykrank.androidtools.ui.internal.PagerCallback
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
@@ -37,7 +37,7 @@ class FavouriteListPagerFragment : BaseRecyclerViewFragment<BaseResultWrapper<Fa
         leavePageMsg("FavouriteListPagerFragment##mPageNum$mPageNum")
 
         val recyclerView = recyclerView
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         mRecyclerAdapter = FavouriteRecyclerViewAdapter(activity)
         recyclerView.adapter = mRecyclerAdapter
     }

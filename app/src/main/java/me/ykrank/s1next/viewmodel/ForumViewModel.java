@@ -1,6 +1,6 @@
 package me.ykrank.s1next.viewmodel;
 
-import android.databinding.ObservableField;
+import androidx.databinding.ObservableField;
 import android.view.View;
 
 import me.ykrank.s1next.data.api.model.Forum;

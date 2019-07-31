@@ -3,9 +3,9 @@ package me.ykrank.s1next.view.dialog
 import android.app.Activity
 import android.app.ProgressDialog
 import android.os.Bundle
-import android.support.annotation.CallSuper
-import android.support.design.widget.Snackbar
-import android.support.v4.app.DialogFragment
+import androidx.annotation.CallSuper
+import com.google.android.material.snackbar.Snackbar
+import androidx.fragment.app.DialogFragment
 import android.widget.Toast
 import com.github.ykrank.androidtools.ui.dialog.LibProgressDialogFragment
 import io.reactivex.Single

@@ -1,9 +1,10 @@
 package me.ykrank.s1next.view.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.ykrank.androidtools.ui.adapter.delegate.FooterProgressAdapterDelegate;
 
@@ -12,7 +13,7 @@ import me.ykrank.s1next.data.api.model.Vote;
 import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
 
 /**
- * This {@link android.support.v7.widget.RecyclerView.Adapter}
+ * This {@link RecyclerView.Adapter}
  * has another item type {@link FooterProgressAdapterDelegate}
  * in order to implement pull up to refresh.
  */

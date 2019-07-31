@@ -1,6 +1,6 @@
 package me.ykrank.s1next.data.api;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by ykrank on 2017/6/8.

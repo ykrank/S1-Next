@@ -1,7 +1,7 @@
 package me.ykrank.s1next.viewmodel;
 
-import android.databinding.ObservableField;
-import android.support.v4.app.FragmentActivity;
+import androidx.databinding.ObservableField;
+import androidx.fragment.app.FragmentActivity;
 import android.view.View;
 
 import me.ykrank.s1next.data.api.model.search.UserSearchResult;

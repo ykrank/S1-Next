@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
+import androidx.fragment.app.FragmentActivity
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.ThreadLink
@@ -20,7 +20,7 @@ import javax.inject.Inject
  *
  * This Activity is only used for Intent filter.
  */
-class PostListGatewayActivity : FragmentActivity() {
+class PostListGatewayActivity : androidx.fragment.app.FragmentActivity() {
 
     @Inject
     lateinit var mThemeManager: ThemeManager

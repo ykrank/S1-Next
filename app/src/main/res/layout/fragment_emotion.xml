@@ -16,7 +16,7 @@
             android:layout_weight="1"
             android:background="?attr/emoticonKeyboardBackground" />
 
-        <android.support.design.widget.TabLayout
+        <com.google.android.material.tabs.TabLayout
             android:id="@+id/emoticon_keyboard_tab_layout"
             style="@style/Widget.Design.TabLayout.Keyboard"
             android:layout_width="match_parent"

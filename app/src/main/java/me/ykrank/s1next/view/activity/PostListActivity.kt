@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Browser
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.MenuItem
 import android.view.View
 import com.github.ykrank.androidautodispose.AndroidRxDispose
@@ -39,7 +39,7 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
         disableDrawerIndicator()
 
         if (savedInstanceState == null) {
-            val fragment: Fragment
+            val fragment: androidx.fragment.app.Fragment
             val intent = intent
             val thread = intent.getParcelableExtra<Thread>(ARG_THREAD)
             val progress = intent.getParcelableExtra<ReadProgress>(ARG_READ_PROGRESS)

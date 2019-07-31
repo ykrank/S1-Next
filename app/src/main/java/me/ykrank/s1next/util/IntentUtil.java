@@ -8,7 +8,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.BundleCompat;
+import androidx.core.app.BundleCompat;
 import android.widget.Toast;
 
 import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate;

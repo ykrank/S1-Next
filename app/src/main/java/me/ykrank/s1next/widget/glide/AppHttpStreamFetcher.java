@@ -1,6 +1,6 @@
 package me.ykrank.s1next.widget.glide;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.integration.okhttp3.OkHttpStreamFetcher;

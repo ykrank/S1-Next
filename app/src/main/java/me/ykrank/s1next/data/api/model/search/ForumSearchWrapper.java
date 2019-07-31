@@ -1,6 +1,6 @@
 package me.ykrank.s1next.data.api.model.search;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.github.ykrank.androidtools.util.L;
 

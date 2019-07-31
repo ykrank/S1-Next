@@ -2,9 +2,9 @@ package me.ykrank.s1next.view.dialog
 
 import android.app.Dialog
 import android.content.DialogInterface
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.WindowManager

@@ -2,7 +2,7 @@ package me.ykrank.s1next.view.internal;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 /**
  * Created by ykrank on 2017/1/18.

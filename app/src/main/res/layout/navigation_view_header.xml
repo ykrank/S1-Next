@@ -14,7 +14,7 @@
             type="me.ykrank.s1next.viewmodel.UserViewModel" />
     </data>
 
-    <android.support.percent.PercentRelativeLayout
+    <androidx.percentlayout.widget.PercentRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -85,6 +85,6 @@
             android:textColor="?attr/drawerTextColor"
             android:visibility="@{userViewModel.user.logged ? View.VISIBLE:View.GONE}" />
 
-    </android.support.percent.PercentRelativeLayout>
+    </androidx.percentlayout.widget.PercentRelativeLayout>
 
 </layout>

@@ -1,6 +1,6 @@
 package me.ykrank.s1next.data.api.model.collection
 
-import android.support.annotation.WorkerThread
+import androidx.annotation.WorkerThread
 import com.fasterxml.jackson.annotation.*
 import com.github.ykrank.androidtools.util.StringUtil
 import me.ykrank.s1next.data.api.model.Account

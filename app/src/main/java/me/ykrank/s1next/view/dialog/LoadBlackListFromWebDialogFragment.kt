@@ -3,7 +3,7 @@ package me.ykrank.s1next.view.dialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.support.annotation.MainThread
+import androidx.annotation.MainThread
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

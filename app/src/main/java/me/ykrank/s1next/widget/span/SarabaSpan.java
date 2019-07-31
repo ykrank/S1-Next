@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.v4.util.Pair;
+import androidx.core.util.Pair;
 import android.view.View;
 
 import com.github.ykrank.androidtools.util.L;

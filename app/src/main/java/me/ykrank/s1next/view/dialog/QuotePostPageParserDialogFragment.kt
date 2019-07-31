@@ -31,7 +31,7 @@ class QuotePostPageParserDialogFragment : ProgressDialogFragment<String>() {
         val threadLink = arguments!!.getParcelable<ThreadLink>(
                 ARG_THREAD_LINK)
         return mS1Service.getQuotePostResponseBody(threadLink.threadId,
-                threadLink.quotePostId.get()).map { voidResponse -> voidResponse.raw().request().url().toString() }
+                threadLink.quotePostId.get()).map { voidResponse -> voidResponse.raw().request.url.toString() }
     }
 
     override fun onNext(url: String) {

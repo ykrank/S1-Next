@@ -2,13 +2,13 @@ package me.ykrank.s1next.view.activity
 
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
-import android.support.v4.view.ViewPager
-import android.support.v7.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.viewpager.widget.ViewPager
+import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
@@ -50,7 +50,7 @@ class GalleryActivity : AppCompatActivity() {
 
         binding.viewPager.adapter = GalleryViewPagerAdapter(supportFragmentManager, imageUrls)
         binding.viewPager.currentItem = position
-        binding.viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+        binding.viewPager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(pos: Int) {
                 binding.position = pos
             }
@@ -96,9 +96,9 @@ class GalleryActivity : AppCompatActivity() {
     }
 }
 
-class GalleryViewPagerAdapter(fm: FragmentManager, private val imageUrls: List<String>) : FragmentStatePagerAdapter(fm) {
+class GalleryViewPagerAdapter(fm: androidx.fragment.app.FragmentManager, private val imageUrls: List<String>) : androidx.fragment.app.FragmentStatePagerAdapter(fm) {
 
-    override fun getItem(position: Int): Fragment {
+    override fun getItem(position: Int): androidx.fragment.app.Fragment {
         return GalleryFragment.instance(imageUrls[position])
     }
 

@@ -12,13 +12,13 @@
     </data>
 
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/item_padding_small"
         android:paddingRight="@dimen/item_padding_small">
 
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
@@ -41,6 +41,6 @@
             app:layout_constraintRight_toRightOf="parent"
             tools:text="@string/bold"
             app:layout_constraintTop_toBottomOf="@id/iv_icon" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

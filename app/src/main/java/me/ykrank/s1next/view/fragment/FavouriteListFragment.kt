@@ -2,7 +2,7 @@ package me.ykrank.s1next.view.fragment
 
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.FragmentManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -81,14 +81,14 @@ class FavouriteListFragment : BaseViewPagerFragment() {
         }
     }
 
-    override fun getPagerAdapter(fragmentManager: FragmentManager): LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<*> {
+    override fun getPagerAdapter(fragmentManager: androidx.fragment.app.FragmentManager): LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<*> {
         return FavouriteListPagerAdapter(childFragmentManager)
     }
 
     /**
      * Returns a Fragment corresponding to one of the pages of favourites.
      */
-    private inner class FavouriteListPagerAdapter(fm: FragmentManager)
+    private inner class FavouriteListPagerAdapter(fm: androidx.fragment.app.FragmentManager)
         : LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<FavouriteListPagerFragment>(fm) {
 
         override fun getItem(i: Int): FavouriteListPagerFragment {

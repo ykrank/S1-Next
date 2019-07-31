@@ -3,10 +3,10 @@ package me.ykrank.s1next.view.fragment.setting;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.MainThread;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
-import android.support.v7.preference.Preference;
+import androidx.annotation.MainThread;
+import androidx.annotation.StringRes;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.preference.Preference;
 
 import com.github.ykrank.androidtools.util.LooperUtil;
 import com.github.ykrank.androidtools.widget.BackupDelegate;

@@ -1,7 +1,7 @@
 package me.ykrank.s1next.viewmodel;
 
-import android.databinding.ObservableBoolean;
-import android.support.annotation.NonNull;
+import androidx.databinding.ObservableBoolean;
+import androidx.annotation.NonNull;
 
 import me.ykrank.s1next.data.api.model.Vote;
 

@@ -3,8 +3,8 @@ package me.ykrank.s1next.view.adapter
 import android.app.Activity
 import android.content.Context
 import android.database.Cursor
-import android.databinding.DataBindingUtil
-import android.support.v4.widget.CursorAdapter
+import androidx.databinding.DataBindingUtil
+import androidx.cursoradapter.widget.CursorAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +16,7 @@ import me.ykrank.s1next.databinding.ItemBlacklistBinding
 import me.ykrank.s1next.viewmodel.BlackListViewModel
 
 
-class BlackListCursorListViewAdapter(activity: Activity) : CursorAdapter(activity, null, true) {
+class BlackListCursorListViewAdapter(activity: Activity) : androidx.cursoradapter.widget.CursorAdapter(activity, null, true) {
     private val mLayoutInflater: LayoutInflater = activity.layoutInflater
 
     override fun newView(context: Context, cursor: Cursor, parent: ViewGroup): View {

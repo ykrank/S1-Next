@@ -2,10 +2,10 @@ package me.ykrank.s1next.data.pref;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.ColorInt;
-import android.support.annotation.IntDef;
-import android.support.annotation.StyleRes;
-import android.support.v4.graphics.ColorUtils;
+import androidx.annotation.ColorInt;
+import androidx.annotation.IntDef;
+import androidx.annotation.StyleRes;
+import androidx.core.graphics.ColorUtils;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;

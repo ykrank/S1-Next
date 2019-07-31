@@ -1,7 +1,7 @@
 package me.ykrank.s1next.view.internal;
 
-import android.support.annotation.MainThread;
-import android.support.v4.app.FragmentActivity;
+import androidx.annotation.MainThread;
+import androidx.fragment.app.FragmentActivity;
 
 import com.github.ykrank.androidtools.util.RxJavaUtil;
 import com.github.ykrank.androidtools.widget.RxBus;

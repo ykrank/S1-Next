@@ -1,7 +1,7 @@
 package me.ykrank.s1next.view.fragment
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -61,7 +61,7 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
         activity?.title = toUsername
 
         val recyclerView = recyclerView
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         mRecyclerAdapter = PmRecyclerViewAdapter(activity)
         recyclerView.adapter = mRecyclerAdapter
     }

@@ -1,6 +1,6 @@
 package me.ykrank.s1next.data.api;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import org.apache.commons.lang3.ArrayUtils;

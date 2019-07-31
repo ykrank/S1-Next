@@ -84,7 +84,7 @@
                 android:textSize="@dimen/text_size_caption"
                 android:text="@string/user_combat_effectiveness" />
 
-            <android.support.v7.widget.AppCompatSpinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spinner"
                 style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
@@ -128,12 +128,12 @@
             android:layout_margin="@dimen/spacing_normal"
             android:text="@string/score_reason_example" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycleView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
 
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 </layout>

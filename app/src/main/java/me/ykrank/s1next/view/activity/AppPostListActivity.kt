@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.text.TextUtils
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ActivityEvent
@@ -36,7 +36,7 @@ class AppPostListActivity : BaseActivity(), AppPostListPagerFragment.PagerCallba
         title = thread.title
 
         if (savedInstanceState == null) {
-            val fragment: Fragment
+            val fragment: androidx.fragment.app.Fragment
             val pageNum = intent.getIntExtra(ARG_PAGE_NUM, 1)
             val postId = intent.getStringExtra(ARG_QUOTE_POST_ID)
 

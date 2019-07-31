@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.StrictMode
-import android.support.multidex.MultiDexApplication
-import android.support.v7.app.AppCompatDelegate
+import androidx.multidex.MultiDexApplication
+import androidx.appcompat.app.AppCompatDelegate
 import com.github.ykrank.androidtools.DefaultAppDataProvider
 import com.github.ykrank.androidtools.GlobalData
 import com.github.ykrank.androidtools.extension.toast

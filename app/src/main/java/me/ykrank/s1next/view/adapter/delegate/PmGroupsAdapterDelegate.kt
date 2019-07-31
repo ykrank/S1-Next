@@ -1,8 +1,8 @@
 package me.ykrank.s1next.view.adapter.delegate
 
 import android.content.Context
-import android.databinding.DataBindingUtil
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
 import com.github.ykrank.androidtools.widget.RxBus
@@ -26,7 +26,7 @@ class PmGroupsAdapterDelegate(context: Context) : BaseAdapterDelegate<PmGroup, S
         App.appComponent.inject(this)
     }
 
-    public override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+    public override fun onCreateViewHolder(parent: ViewGroup): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         val binding = DataBindingUtil.inflate<ItemPmGroupBinding>(mLayoutInflater,
                 R.layout.item_pm_group, parent, false)
         binding.model = PmGroupViewModel()

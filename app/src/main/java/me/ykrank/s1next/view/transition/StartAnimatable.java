@@ -24,7 +24,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.transition.Transition;
 import android.transition.TransitionValues;
 import android.util.AttributeSet;

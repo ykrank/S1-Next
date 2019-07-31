@@ -2,9 +2,9 @@ package me.ykrank.s1next.view.dialog
 
 import android.app.Activity
 import android.app.Dialog
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.util.ClipboardUtil
 import com.github.ykrank.androidtools.widget.AlipayDonate

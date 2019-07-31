@@ -2,11 +2,11 @@ package me.ykrank.s1next.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Size;
-import android.support.v14.preference.PreferenceFragment;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceCategory;
-import android.support.v7.preference.PreferenceScreen;
+import androidx.annotation.Size;
+import androidx.preference.PreferenceFragment;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceScreen;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.view.activity.OpenSourceLicenseDetailActivity;

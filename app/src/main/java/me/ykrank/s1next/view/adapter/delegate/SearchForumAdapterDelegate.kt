@@ -1,8 +1,8 @@
 package me.ykrank.s1next.view.adapter.delegate
 
 import android.content.Context
-import android.databinding.DataBindingUtil
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
 import me.ykrank.s1next.R
@@ -11,7 +11,7 @@ import me.ykrank.s1next.databinding.ItemSearchForumBinding
 
 class SearchForumAdapterDelegate(context: Context) : BaseAdapterDelegate<ForumSearchResult, SimpleRecycleViewHolder<ItemSearchForumBinding>>(context, ForumSearchResult::class.java) {
 
-    public override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+    public override fun onCreateViewHolder(parent: ViewGroup): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         val binding = DataBindingUtil.inflate<ItemSearchForumBinding>(mLayoutInflater,
                 R.layout.item_search_forum, parent, false)
 

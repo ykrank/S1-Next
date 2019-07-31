@@ -1,6 +1,6 @@
 package me.ykrank.s1next.data.api;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.common.base.Objects;

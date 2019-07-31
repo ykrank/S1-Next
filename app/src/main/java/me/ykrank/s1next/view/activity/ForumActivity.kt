@@ -2,11 +2,11 @@ package me.ykrank.s1next.view.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.NavUtils
-import android.support.v4.app.TaskStackBuilder
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NavUtils
+import androidx.core.app.TaskStackBuilder
 import android.view.View
 import android.widget.AdapterView
 import com.google.common.base.Optional

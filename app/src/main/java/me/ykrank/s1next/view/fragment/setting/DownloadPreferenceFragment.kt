@@ -2,7 +2,7 @@ package me.ykrank.s1next.view.fragment.setting
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.support.v7.preference.Preference
+import androidx.preference.Preference
 import com.bumptech.glide.Glide
 import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.util.L

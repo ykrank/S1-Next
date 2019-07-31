@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -41,7 +41,7 @@
                 android:text='@{String.format("%s/%s", position+1, size)}'
                 android:visibility="@{size > 1 ? View.VISIBLE:View.GONE}"
                 tools:text="1/10" />
-        </android.support.v7.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>
 
     </FrameLayout>
 

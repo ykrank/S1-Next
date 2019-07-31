@@ -1,7 +1,7 @@
 package me.ykrank.s1next.view.fragment
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
 import io.reactivex.Single
@@ -25,7 +25,7 @@ class FriendListFragment : BaseRecyclerViewFragment<BaseDataWrapper<Friends>>() 
 
         val recyclerView = recyclerView
         val activity = activity
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
         mRecyclerAdapter = FriendRecyclerViewAdapter(activity)
         recyclerView.adapter = mRecyclerAdapter
     }

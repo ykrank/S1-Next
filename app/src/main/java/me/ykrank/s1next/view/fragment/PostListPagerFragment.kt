@@ -1,10 +1,10 @@
 package me.ykrank.s1next.view.fragment
 
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.os.SystemClock
-import android.support.v4.util.Pair
-import android.support.v7.widget.RecyclerView
+import androidx.core.util.Pair
+import androidx.recyclerview.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -85,7 +85,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
     private var blacklistChanged = false
 
     private lateinit var binding: FragmentBaseWithQuickSideBarBinding
-    private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mRecyclerView: androidx.recyclerview.widget.RecyclerView
     private lateinit var mRecyclerAdapter: PostListRecyclerViewAdapter
     private lateinit var mLayoutManager: StartSnapLinearLayoutManager
     private lateinit var quickSideBarView: QuickSideBarView
@@ -120,9 +120,9 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         mRecyclerView.adapter = mRecyclerAdapter
 
         // add pull up to refresh to RecyclerView
-        mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        mRecyclerView.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
 
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            override fun onScrollStateChanged(recyclerView: androidx.recyclerview.widget.RecyclerView, newState: Int) {
                 if (!isPullUpToRefresh
                         && mPageNum == mPagerCallback?.getTotalPages()
                         && !isLoading
@@ -254,7 +254,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         val view = mLayoutManager.findViewByPosition(itemPosition)
         if (view != null) {
             //See LinearSmoothScroller#calculateDyToMakeVisible
-            val params = view.layoutParams as RecyclerView.LayoutParams
+            val params = view.layoutParams as androidx.recyclerview.widget.RecyclerView.LayoutParams
             val top = mLayoutManager.getDecoratedTop(view) - params.topMargin
             val start = mLayoutManager.paddingTop
 

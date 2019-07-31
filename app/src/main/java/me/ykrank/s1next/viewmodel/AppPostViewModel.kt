@@ -1,9 +1,9 @@
 package me.ykrank.s1next.viewmodel
 
-import android.databinding.Observable
-import android.databinding.ObservableField
-import android.support.v4.app.FragmentActivity
-import android.support.v7.widget.PopupMenu
+import androidx.databinding.Observable
+import androidx.databinding.ObservableField
+import androidx.fragment.app.FragmentActivity
+import androidx.appcompat.widget.PopupMenu
 import android.view.MenuItem
 import android.view.View
 import com.github.ykrank.androidtools.util.ContextUtils
@@ -48,7 +48,7 @@ class AppPostViewModel(private val rxBus: RxBus, private val user: User) {
             //Clear avatar false cache
             AvatarUrlsCache.clearUserAvatarCache("" + it.authorId)
             //个人主页
-            UserHomeActivity.start(v.context as FragmentActivity, "" + it.authorId, it.author, v)
+            UserHomeActivity.start(v.context as androidx.fragment.app.FragmentActivity, "" + it.authorId, it.author, v)
         }
     }
 
@@ -64,7 +64,7 @@ class AppPostViewModel(private val rxBus: RxBus, private val user: User) {
                                 ?: 0, postData?.author)
                     } else {
                         val context = ContextUtils.getBaseContext(v.context)
-                        if (context is FragmentActivity) {
+                        if (context is androidx.fragment.app.FragmentActivity) {
                             BlacklistMenuAction.addBlacklist(context,
                                     postData?.authorId ?: 0, postData?.author)
                         } else {

@@ -2,9 +2,9 @@ package me.ykrank.s1next.view.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.ThemedSpinnerAdapter;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.ThemedSpinnerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

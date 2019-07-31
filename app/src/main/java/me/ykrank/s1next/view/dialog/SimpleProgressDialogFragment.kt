@@ -5,7 +5,7 @@ import android.app.DialogFragment
 import android.app.FragmentManager
 import android.app.ProgressDialog
 import android.os.Bundle
-import android.support.annotation.CallSuper
+import androidx.annotation.CallSuper
 
 /**
  * A [ProgressDialogFragment] subscribe a observable

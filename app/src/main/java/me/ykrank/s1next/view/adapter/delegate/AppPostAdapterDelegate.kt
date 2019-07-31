@@ -1,9 +1,9 @@
 package me.ykrank.s1next.view.adapter.delegate
 
 import android.app.Activity
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.graphics.Color
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.text.method.LinkMovementMethod
 import android.view.ViewGroup
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
@@ -44,7 +44,7 @@ class AppPostAdapterDelegate(activity: Activity, private val quotePid: String?) 
         binding.tvFloor.isLongClickable = false
     }
 
-    public override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+    public override fun onCreateViewHolder(parent: ViewGroup): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         val binding = DataBindingUtil.inflate<ItemAppPostBinding>(mLayoutInflater,
                 R.layout.item_app_post, parent, false)
         binding.postViewModel = AppPostViewModel(mRxBus, mUser)
@@ -78,7 +78,7 @@ class AppPostAdapterDelegate(activity: Activity, private val quotePid: String?) 
 
     // Bug workaround for losing text selection ability, see:
     // https://code.google.com/p/android/issues/detail?id=208169
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+    override fun onViewAttachedToWindow(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
         if (mGeneralPreferencesManager!!.isPostSelectable) {
             val binding = (holder as SimpleRecycleViewHolder<ItemAppPostBinding>).binding

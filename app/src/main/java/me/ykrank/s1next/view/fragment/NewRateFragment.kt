@@ -1,8 +1,8 @@
 package me.ykrank.s1next.view.fragment
 
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.text.TextUtils
 import android.view.*
 import android.widget.EditText
@@ -90,7 +90,7 @@ class NewRateFragment : BaseFragment() {
             itemBinding.root.setOnClickListener { v -> binding.etReason.setText(itemBinding.model) }
         }
 
-        binding.recycleView.layoutManager = LinearLayoutManager(context)
+        binding.recycleView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         reasonAdapter = SimpleRecycleViewAdapter(context!!, R.layout.item_rate_reason, false, bindViewHolderCallback, null)
         binding.recycleView.adapter = reasonAdapter
     }

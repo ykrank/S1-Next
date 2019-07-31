@@ -2,8 +2,8 @@ package me.ykrank.s1next.view.fragment
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.github.ykrank.androidtools.extension.dp2px
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
@@ -34,13 +34,13 @@ class RateDetailsListFragment : BaseRecyclerViewFragment<List<Rate>>() {
 
         val recyclerView = recyclerView
         val activity = activity
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
         mRecyclerAdapter = SimpleRecycleViewAdapter(activity!!, R.layout.item_rate_detail_multi, true)
         recyclerView.adapter = mRecyclerAdapter
-        recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
+        recyclerView.addItemDecoration(object : androidx.recyclerview.widget.RecyclerView.ItemDecoration() {
             val d16 = 16.dp2px(context!!)
 
-            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: androidx.recyclerview.widget.RecyclerView, state: androidx.recyclerview.widget.RecyclerView.State) {
                 outRect.set(d16, 0, d16, 0)
             }
         })

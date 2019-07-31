@@ -1,9 +1,9 @@
 package me.ykrank.s1next.view.fragment
 
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.annotation.CallSuper
-import android.support.v4.widget.SwipeRefreshLayout
+import androidx.annotation.CallSuper
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.text.TextUtils
 import android.view.*
 import com.github.ykrank.androidtools.ui.LibBaseRecyclerViewFragment

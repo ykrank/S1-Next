@@ -41,7 +41,7 @@
             android:lines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
-        <android.support.v7.widget.AppCompatSpinner
+        <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/questionSpinner"
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"

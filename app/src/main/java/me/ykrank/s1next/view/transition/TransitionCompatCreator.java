@@ -1,8 +1,8 @@
 package me.ykrank.s1next.view.transition;
 
-import android.support.transition.AutoTransition;
-import android.support.transition.Transition;
-import android.support.v4.view.animation.PathInterpolatorCompat;
+import androidx.transition.AutoTransition;
+import androidx.transition.Transition;
+import androidx.core.view.animation.PathInterpolatorCompat;
 import android.view.animation.Interpolator;
 
 /**

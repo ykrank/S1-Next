@@ -1,7 +1,7 @@
 package me.ykrank.s1next.binding;
 
 import android.content.Context;
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 import android.os.Build;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;

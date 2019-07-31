@@ -1,7 +1,7 @@
 package me.ykrank.s1next.view.adapter.delegate
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
 
@@ -20,7 +20,7 @@ class HomeReplyItemAdapterDelegate(context: Context) : BaseAdapterDelegate<HomeR
         binding.model?.reply?.set(t)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         val binding = ItemHomeReplyItemBinding.inflate(mLayoutInflater, parent, false)
         binding.model = HomeReplyItemViewModel()
         return SimpleRecycleViewHolder<ItemHomeReplyItemBinding>(binding)

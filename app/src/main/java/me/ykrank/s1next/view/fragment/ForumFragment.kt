@@ -3,7 +3,7 @@ package me.ykrank.s1next.view.fragment
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -39,7 +39,7 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
         leavePageMsg("ForumFragment")
 
         val recyclerView = recyclerView
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         mRecyclerAdapter = ForumRecyclerViewAdapter(activity)
         recyclerView.adapter = mRecyclerAdapter
     }

@@ -1,8 +1,8 @@
 package me.ykrank.s1next.data.api.model
 
 import android.graphics.Color
-import android.support.annotation.IntDef
-import android.support.v4.util.SimpleArrayMap
+import androidx.annotation.IntDef
+import androidx.collection.SimpleArrayMap
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
@@ -425,7 +425,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         const val Hide_Word = 2
 
         private val TAG = Post::class.java.simpleName
-        private val COLOR_NAME_MAP: SimpleArrayMap<String, String> = SimpleArrayMap()
+        private val COLOR_NAME_MAP: androidx.collection.SimpleArrayMap<String, String> = androidx.collection.SimpleArrayMap()
 
         init {
 

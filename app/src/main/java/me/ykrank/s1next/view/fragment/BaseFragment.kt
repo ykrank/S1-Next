@@ -2,8 +2,8 @@ package me.ykrank.s1next.view.fragment
 
 import android.app.Activity
 import android.os.Bundle
-import android.support.annotation.CallSuper
-import android.support.design.widget.Snackbar
+import androidx.annotation.CallSuper
+import com.google.android.material.snackbar.Snackbar
 import android.view.View
 import android.widget.Toast
 import com.github.ykrank.androidtools.ui.LibBaseFragment

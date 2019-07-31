@@ -2,7 +2,7 @@ package me.ykrank.s1next.widget.span;
 
 import android.graphics.Color;
 import android.os.Build;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
 

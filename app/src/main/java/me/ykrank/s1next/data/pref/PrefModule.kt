@@ -2,7 +2,7 @@ package me.ykrank.s1next.data.pref
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.support.v7.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import com.fasterxml.jackson.databind.ObjectMapper
 import dagger.Module
 import dagger.Provides

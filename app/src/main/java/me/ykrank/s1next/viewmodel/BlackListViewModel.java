@@ -1,7 +1,7 @@
 package me.ykrank.s1next.viewmodel;
 
-import android.databinding.ObservableField;
-import android.support.design.widget.Snackbar;
+import androidx.databinding.ObservableField;
+import com.google.android.material.snackbar.Snackbar;
 import android.view.View;
 import android.widget.TextView;
 

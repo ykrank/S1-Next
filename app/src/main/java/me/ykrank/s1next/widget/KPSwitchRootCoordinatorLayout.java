@@ -16,7 +16,7 @@
 package me.ykrank.s1next.widget;
 
 import android.content.Context;
-import android.support.design.widget.CoordinatorLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 
 import cn.dreamtobe.kpswitch.handler.KPSwitchRootLayoutHandler;

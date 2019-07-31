@@ -1,13 +1,13 @@
 package me.ykrank.s1next.binding;
 
 import android.content.res.ColorStateList;
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import androidx.annotation.ColorInt;
+import androidx.core.graphics.drawable.DrawableCompat;
 import android.widget.ProgressBar;
 
 /**

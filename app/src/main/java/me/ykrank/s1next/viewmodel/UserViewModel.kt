@@ -1,7 +1,7 @@
 package me.ykrank.s1next.viewmodel
 
-import android.databinding.BaseObservable
-import android.databinding.Bindable
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
 
 import me.ykrank.s1next.BR
 import me.ykrank.s1next.data.User

@@ -1,7 +1,7 @@
 package me.ykrank.s1next.view.fragment
 
 import android.annotation.SuppressLint
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater

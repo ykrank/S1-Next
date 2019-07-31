@@ -32,7 +32,7 @@
 
             <!-- Fix the NullPointerException on MEIZU below 8.0 due to TextInputEditText's getHint() doesn't match mHint. (https://github.com/android-in-china/Compatibility/issues/11)-->
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_author_id"
@@ -40,7 +40,7 @@
 
 
                 <!-- hint = "" is necessary -->
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/blacklist_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -52,17 +52,17 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     app:editable="@{blackListViewModel.blacklist.authorId == 0}" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Fix the NullPointerException on MEIZU below 8.0 due to TextInputEditText's getHint() doesn't match mHint. (https://github.com/android-in-china/Compatibility/issues/11)-->
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_author_name"
                 app:hintAnimationEnabled="true">
 
                 <!-- hint = "" is necessary -->
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/blacklist_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -74,9 +74,9 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     app:editable="@{TextUtils.isEmpty(blackListViewModel.blacklist.author)}" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_forum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 app:checked="@{blackListViewModel.blacklist.isForumHide()}" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_post"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

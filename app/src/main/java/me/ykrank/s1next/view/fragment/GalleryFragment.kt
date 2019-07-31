@@ -5,10 +5,10 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.support.annotation.RequiresPermission
-import android.support.design.widget.Snackbar
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.Fragment
+import androidx.annotation.RequiresPermission
+import com.google.android.material.snackbar.Snackbar
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import android.text.TextUtils
 import android.view.*
 import android.widget.ImageView
@@ -41,13 +41,14 @@ import me.ykrank.s1next.viewmodel.ImageViewModel
 import me.ykrank.s1next.widget.track.event.LargeImageTrackEvent
 import me.ykrank.s1next.widget.track.event.ViewImageTrackEvent
 import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import java.io.File
 import javax.inject.Inject
 
 /**
  * Created by ykrank on 2017/6/16.
  */
-class GalleryFragment : Fragment() {
+class GalleryFragment : androidx.fragment.app.Fragment() {
     private var mImageUrl: String? = null
     private var mImageThumbUrl: String? = null
 
@@ -182,9 +183,9 @@ class GalleryFragment : Fragment() {
                     var name: String? = null
                     val file: File
                     val downloadDir = FileUtil.getDownloadDirectory(context)
-                    val url = HttpUrl.parse(mImageUrl)
+                    val url = mImageUrl?.toHttpUrlOrNull()
                     if (url != null) {
-                        val segments = url.encodedPathSegments()
+                        val segments = url.encodedPathSegments
                         if (segments.size > 0) {
                             name = segments[segments.size - 1]
                         }

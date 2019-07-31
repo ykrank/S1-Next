@@ -1,6 +1,6 @@
 package me.ykrank.s1next.data.api.model.collection;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;

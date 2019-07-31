@@ -1,8 +1,8 @@
 package me.ykrank.s1next.view.fragment
 
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +27,7 @@ class PostToolsExtrasFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentPostToolsExtrasBinding.inflate(inflater, container, false)
 
-        binding.recycleView.layoutManager = GridLayoutManager(context, 5, LinearLayoutManager.VERTICAL, false)
+        binding.recycleView.layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 5, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         val adapter = SimpleRecycleViewAdapter(context!!, R.layout.item_post_tools_extras, false, createViewHolderCallback = {
             val bind = it as ItemPostToolsExtrasBinding
             bind.root.setOnClickListener {

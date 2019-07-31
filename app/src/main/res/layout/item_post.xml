@@ -19,7 +19,7 @@
     </data>
 
     <!-- Now MaterialCardView error in 4.+ -->
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         style="?attr/materialCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
         android:layout_marginBottom="@dimen/spacing_micro"
         app:cardCornerRadius="0dp">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/item_padding"
@@ -196,7 +196,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_cast_magic">
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_micro"
@@ -228,7 +228,7 @@
                         app:layout_constraintRight_toLeftOf="@+id/iv_rate_add"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <android.support.v7.widget.AppCompatImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/iv_rate_add"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
@@ -239,9 +239,9 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/ic_add_color_accent" />
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycleView_rates"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -251,8 +251,8 @@
                     android:visibility="@{postViewModel.post.rates.size > 0?View.VISIBLE:View.GONE}" />
             </LinearLayout>
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </layout>

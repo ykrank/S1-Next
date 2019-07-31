@@ -2,7 +2,7 @@ package me.ykrank.s1next.data.api.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;

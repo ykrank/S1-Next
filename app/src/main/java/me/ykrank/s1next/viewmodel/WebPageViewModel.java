@@ -1,6 +1,6 @@
 package me.ykrank.s1next.viewmodel;
 
-import android.databinding.BaseObservable;
+import androidx.databinding.BaseObservable;
 import android.view.View;
 
 public final class WebPageViewModel extends BaseObservable {

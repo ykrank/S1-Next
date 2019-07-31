@@ -2,15 +2,15 @@ package me.ykrank.s1next.view.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.MainThread
-import android.support.design.widget.AppBarLayout
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.app.FragmentActivity
-import android.support.v7.widget.LinearLayoutManager
+import androidx.annotation.MainThread
+import com.google.android.material.appbar.AppBarLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
+import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.transition.Transition
 import android.view.Menu
 import android.view.MenuItem
@@ -108,7 +108,7 @@ class UserHomeActivity : BaseActivity() {
 
         binding.tvReplies.setOnClickListener { v -> UserReplyActivity.start(this, uid, name) }
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         binding.recyclerView.isNestedScrollingEnabled = false
         adapter = SimpleRecycleViewAdapter(this, R.layout.item_home_stat, false)
         binding.recyclerView.adapter = adapter
@@ -236,7 +236,7 @@ class UserHomeActivity : BaseActivity() {
         private const val ARG_USERNAME = "username"
         private const val ARG_IMAGE_INFO = "image_info"
 
-        fun start(activity: FragmentActivity, uid: String, userName: String?) {
+        fun start(activity: androidx.fragment.app.FragmentActivity, uid: String, userName: String?) {
             if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(activity.supportFragmentManager, App.appComponent.user)) {
                 return
             }
@@ -247,7 +247,7 @@ class UserHomeActivity : BaseActivity() {
             activity.startActivity(intent)
         }
 
-        fun start(activity: FragmentActivity, uid: String, userName: String?, avatarView: View) {
+        fun start(activity: androidx.fragment.app.FragmentActivity, uid: String, userName: String?, avatarView: View) {
             //@see http://stackoverflow.com/questions/31381385/nullpointerexception-drawable-setbounds-probably-due-to-fragment-transitions#answer-31383033
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
                 start(activity, uid, userName)

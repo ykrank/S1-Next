@@ -15,7 +15,7 @@
         android:paddingStart="@dimen/dialog_padding"
         android:paddingTop="@dimen/dialog_padding">
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintAnimationEnabled="false">
@@ -28,7 +28,7 @@
                 android:inputType="textMultiLine"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 

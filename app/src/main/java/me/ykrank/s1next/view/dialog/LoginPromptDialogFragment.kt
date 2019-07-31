@@ -2,8 +2,8 @@ package me.ykrank.s1next.view.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AlertDialog
+import androidx.fragment.app.FragmentManager
+import androidx.appcompat.app.AlertDialog
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.view.activity.AppLoginActivity
@@ -39,7 +39,7 @@ class LoginPromptDialogFragment : BaseDialogFragment() {
 
          * @return `true` if we need to show dialog, `false` otherwise.
          */
-        fun showLoginPromptDialogIfNeeded(fm: FragmentManager, user: User): Boolean {
+        fun showLoginPromptDialogIfNeeded(fm: androidx.fragment.app.FragmentManager, user: User): Boolean {
             if (!user.isLogged) {
                 val fragment = LoginPromptDialogFragment()
                 fragment.show(fm, TAG)
@@ -55,7 +55,7 @@ class LoginPromptDialogFragment : BaseDialogFragment() {
 
          * @return `true` if we need to show dialog, `false` otherwise.
          */
-        fun showAppLoginPromptDialogIfNeeded(fm: FragmentManager, user: User): Boolean {
+        fun showAppLoginPromptDialogIfNeeded(fm: androidx.fragment.app.FragmentManager, user: User): Boolean {
             if (!user.isLogged || !user.isAppLogged) {
                 val fragment = LoginPromptDialogFragment()
                 val bundle = Bundle()
@@ -70,7 +70,7 @@ class LoginPromptDialogFragment : BaseDialogFragment() {
             return false
         }
 
-        fun isShowing(fm: FragmentManager): Boolean {
+        fun isShowing(fm: androidx.fragment.app.FragmentManager): Boolean {
             val fragment = fm.findFragmentByTag(TAG) as LoginPromptDialogFragment?
             return fragment != null && fragment.dialog?.isShowing ?: false
         }

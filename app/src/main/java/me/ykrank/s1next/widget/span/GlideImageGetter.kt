@@ -4,9 +4,9 @@ import android.graphics.Rect
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.support.annotation.AnyThread
-import android.support.annotation.MainThread
-import android.support.v4.view.ViewCompat
+import androidx.annotation.AnyThread
+import androidx.annotation.MainThread
+import androidx.core.view.ViewCompat
 import android.text.*
 import android.view.View
 import android.webkit.URLUtil
