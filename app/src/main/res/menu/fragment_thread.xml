@@ -8,4 +8,12 @@
         android:orderInCategory="@integer/menu_browser"
         android:title="@string/menu_browser"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_post_disable_sticky"
+        android:orderInCategory="30"
+        android:title="@string/menu_post_disable_sticky"
+        android:checkable="true"
+        android:checked="@bool/pref_post_disable_sticky_default_value"
+        app:showAsAction="never" />
 </menu>

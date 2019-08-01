@@ -66,6 +66,7 @@ import me.ykrank.s1next.view.fragment.PmGroupsFragment;
 import me.ykrank.s1next.view.fragment.PostListFragment;
 import me.ykrank.s1next.view.fragment.PostListPagerFragment;
 import me.ykrank.s1next.view.fragment.ReplyFragment;
+import me.ykrank.s1next.view.fragment.ThreadListFragment;
 import me.ykrank.s1next.view.fragment.ThreadListPagerFragment;
 import me.ykrank.s1next.view.fragment.WebLoginFragment;
 import me.ykrank.s1next.view.fragment.WebViewFragment;
@@ -254,4 +255,6 @@ public interface AppComponent {
     void inject(DarkRoomFragment fragment);
 
     void inject(LoadBlackListFromWebDialogFragment fragment);
+
+    void inject(ThreadListFragment fragment);
 }

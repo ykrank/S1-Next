@@ -71,6 +71,7 @@
     <!-- Because thread titles are usually Chinese, so this string is Chinese for all locales. -->
     <string name="thread_permission_hint" translatable="false">阅读权限</string>
 
+    <string name="menu_post_disable_sticky">Disable sticky</string>
     <!-- post -->
     <string name="original_poster">OP</string>
     <string name="only_see_him">Only see him</string>

@@ -228,4 +228,5 @@
     <string name="title_copied">标题已复制</string>
     <string name="action_app_login">登录黑魔法</string>
     <string name="menu_load_from_web">从网站加载</string>
+    <string name="menu_post_disable_sticky">不显示置顶</string>
 </resources>

@@ -2,7 +2,6 @@ package me.ykrank.s1next.view.fragment
 
 import android.content.Context
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
@@ -14,8 +13,10 @@ import io.rx_cache2.EvictDynamicKeyGroup
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.api.model.Forum
 import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper
+import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.util.JsonUtil
 import me.ykrank.s1next.view.adapter.ThreadRecyclerViewAdapter
+import me.ykrank.s1next.view.event.PostDisableStickyChangeEvent
 import me.ykrank.s1next.view.event.ThreadTypeChangeEvent
 import me.ykrank.s1next.view.fragment.ThreadListPagerFragment.PagerCallback
 import me.ykrank.s1next.view.fragment.ThreadListPagerFragment.SubForumsCallback
@@ -32,6 +33,9 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
 
     @Inject
     internal lateinit var mRxBus: RxBus
+
+    @Inject
+    internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
 
     private var mForumId: String? = null
     private var mTypeId: String? = null
@@ -78,6 +82,12 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
                         startSwipeRefresh()
                     }
                 }
+        mRxBus.get()
+                .ofType(PostDisableStickyChangeEvent::class.java)
+                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
+                .subscribe {
+                    startSwipeRefresh()
+                }
     }
 
     override fun onDestroy() {
@@ -97,7 +107,14 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
         } else {
             mS1Service.getThreadsWrapper(mForumId, mTypeId, mPageNum)
         }
-        return source.compose(JsonUtil.jsonSingleTransformer(ThreadsWrapper::class.java))
+        var result = source.compose(JsonUtil.jsonSingleTransformer(ThreadsWrapper::class.java))
+        if (mGeneralPreferencesManager.isPostDisableSticky) {
+            result = result.map { threadsWrapper ->
+                threadsWrapper.data.threadList = threadsWrapper.data.threadList.filter { it.displayOrder == 0 }
+                threadsWrapper
+            }
+        }
+        return result
     }
 
     override fun onNext(data: ThreadsWrapper) {

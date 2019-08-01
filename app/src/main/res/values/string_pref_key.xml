@@ -18,6 +18,7 @@
     <!-- PostListFragment -->
     <string name="pref_key_post_selectable" translatable="false">pref_key_post_selectable</string>
     <string name="pref_key_quick_side_bar_enable" translatable="false">pref_key_quick_side_bar_enable</string>
+    <string name="pref_key_post_disable_sticky" translatable="false">pref_key_post_disable_sticky</string>
     <!-- Download -->
     <string name="pref_key_image_total_cache_size" translatable="false">pref_key_image_total_cache_size</string>
     <string name="pref_key_data_total_cache_size" translatable="false">pref_key_data_total_cache_size</string>
