@@ -1,10 +1,8 @@
 package me.ykrank.s1next;
 
 import com.github.ykrank.androidtools.widget.EditorDiskCache;
-import com.github.ykrank.androidtools.widget.hostcheck.HttpDns;
+import com.github.ykrank.androidtools.widget.hostcheck.BaseDns;
 import com.github.ykrank.androidtools.widget.net.WifiBroadcastReceiver;
-
-import org.jetbrains.annotations.NotNull;
 
 import dagger.Component;
 import me.ykrank.s1next.data.User;
@@ -37,7 +35,6 @@ import me.ykrank.s1next.view.adapter.delegate.PmRightAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate;
 import me.ykrank.s1next.view.dialog.AppLoginDialogFragment;
-import me.ykrank.s1next.view.dialog.BaseDialogFragment;
 import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment;
 import me.ykrank.s1next.view.dialog.DiscardEditPromptDialogFragment;
 import me.ykrank.s1next.view.dialog.LoadBlackListFromWebDialogFragment;
@@ -99,7 +96,7 @@ public interface AppComponent {
 
     AppHostUrl getBaseHostUrl();
 
-    HttpDns getHttpDns();
+    BaseDns getHttpDns();
 
     @Image
     OkHttpClient getImageOkHttpClient();

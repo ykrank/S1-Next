@@ -5,7 +5,7 @@ import android.content.Context;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.ykrank.androidtools.widget.EditorDiskCache;
 import com.github.ykrank.androidtools.widget.RxBus;
-import com.github.ykrank.androidtools.widget.hostcheck.HttpDns;
+import com.github.ykrank.androidtools.widget.hostcheck.BaseDns;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -59,8 +59,8 @@ public final class AppModule {
 
     @Provides
     @AppLife
-    HttpDns provideHttpDns(AppHostUrl baseHostUrl) {
-        return new HttpDns(baseHostUrl);
+    BaseDns provideHttpDns(AppHostUrl baseHostUrl) {
+        return new BaseDns(baseHostUrl);
     }
 
     @Data
@@ -68,7 +68,7 @@ public final class AppModule {
     @AppLife
     OkHttpClient.Builder providerDataOkHttpClientBuilder(CookieJar cookieJar, AppHostUrl baseHostUrl) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.dns(new HttpDns(baseHostUrl));
+        builder.dns(new BaseDns(baseHostUrl));
         builder.connectTimeout(10, TimeUnit.SECONDS);
         builder.writeTimeout(20, TimeUnit.SECONDS);
         builder.readTimeout(10, TimeUnit.SECONDS);
@@ -100,7 +100,7 @@ public final class AppModule {
     @AppLife
     OkHttpClient.Builder providerImageOkHttpClientBuilder(CookieJar cookieJar, AppHostUrl baseHostUrl) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.dns(new HttpDns(baseHostUrl));
+        builder.dns(new BaseDns(baseHostUrl));
         builder.connectTimeout(17, TimeUnit.SECONDS);
         builder.writeTimeout(17, TimeUnit.SECONDS);
         builder.readTimeout(77, TimeUnit.SECONDS);

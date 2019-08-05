@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.github.ykrank.androidtools.util.RxJavaUtil;
-import com.github.ykrank.androidtools.widget.hostcheck.HttpDns;
+import com.github.ykrank.androidtools.widget.hostcheck.BaseDns;
 
 import javax.inject.Inject;
 
@@ -63,7 +63,7 @@ public final class NetworkPreferenceFragment extends BasePreferenceFragment {
         if (TextUtils.isEmpty(hostIp)) {
             findPreference(key).setSummary(getString(R.string.pref_key_force_host_ip_default_value));
         } else {
-            RxJavaUtil.workWithUiResult(() -> HttpDns.checkHostIp(hostIp), inetAddresses -> {
+            RxJavaUtil.workWithUiResult(() -> BaseDns.checkHostIp(hostIp), inetAddresses -> {
                 if (inetAddresses.size() == 0) {
                     Toast.makeText(getActivity(), getString(R.string.error_force_host_ip, hostIp), Toast.LENGTH_SHORT).show();
                 }
