@@ -78,6 +78,16 @@ object ErrorUtil : ErrorParser {
             is SocketTimeoutException -> return true
             is StreamResetException -> return true
             is SSLException -> return true
+            is ApiException.ApiServerException -> {
+                val msg = throwable.message
+                if (msg != null){
+                    if (msg.contains("您需要绑定自己的手机", false) ||
+                            msg.contains("您尚未登录", false)||
+                            msg.contains("您需要升级所在的用户组", false)){
+                        return true
+                    }
+                }
+            }
         }
         return false
     }
