@@ -1,9 +1,10 @@
 package me.ykrank.s1next.data.api;
 
 import android.net.Uri;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.webkit.URLUtil;
+
+import androidx.annotation.Nullable;
 
 import java.util.List;
 
@@ -134,7 +135,8 @@ public final class Api {
     public static boolean isEmoticonName(String url) {
         if (URLUtil.isNetworkUrl(url)) {
             return url.startsWith(Api.BASE_URL + Api.URL_EMOTICON_IMAGE_PREFIX) ||
-                    url.startsWith(Api.BASE_STATIC_URL + Api.URL_EMOTICON_IMAGE_PREFIX_STATIC);
+                    url.startsWith(Api.BASE_STATIC_URL + Api.URL_EMOTICON_IMAGE_PREFIX_STATIC) ||
+                    url.startsWith(Api.BASE_STATIC_URL_HTTP + Api.URL_EMOTICON_IMAGE_PREFIX_STATIC);
         } else {
             return url.startsWith(Api.URL_EMOTICON_IMAGE_PREFIX);
         }
