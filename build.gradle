@@ -29,6 +29,7 @@ allprojects {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://jitpack.io" }
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/releases/' }
     }
 }
 
@@ -38,5 +39,5 @@ task clean(type: Delete) {
 
 ext {
     supportVersion = '28.0.0'
-	buildToolsVersion = '28.0.3'
+    buildToolsVersion = '28.0.3'
 }

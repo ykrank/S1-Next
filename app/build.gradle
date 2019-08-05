@@ -10,7 +10,8 @@ def storefile = properties.getProperty('storeFile')
 def storepassword = properties.getProperty('storePassword')
 def keyalias = properties.getProperty('keyAlias')
 def keypassword = properties.getProperty('keyPassword')
-
+def httpDnsId = properties.getProperty('httpDnsId')
+def httpDnsSecret = properties.getProperty('httpDnsSecret')
 
 android {
     compileSdkVersion 28
@@ -88,6 +89,8 @@ android {
     }
     buildTypes.each {
         it.buildConfigField "String", "DB_NAME", '"s1.db"'
+        it.buildConfigField "String", "HTTP_DNS_ID", httpDnsId
+        it.buildConfigField "String", "HTTP_DNS_SECRET", httpDnsSecret
     }
     flavorDimensions "market"
     productFlavors {
@@ -171,4 +174,8 @@ dependencies {
     implementation 'com.nononsenseapps:filepicker:4.1.0'
 
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
+
+    implementation ('com.aliyun.ams:alicloud-android-httpdns:1.2.5@aar') {
+        transitive true
+    }
 }

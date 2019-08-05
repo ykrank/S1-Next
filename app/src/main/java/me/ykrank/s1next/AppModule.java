@@ -5,7 +5,6 @@ import android.content.Context;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.ykrank.androidtools.widget.EditorDiskCache;
 import com.github.ykrank.androidtools.widget.RxBus;
-import com.github.ykrank.androidtools.widget.hostcheck.BaseDns;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -36,9 +35,11 @@ import me.ykrank.s1next.widget.hostcheck.AppHostUrl;
 import me.ykrank.s1next.widget.hostcheck.AppMultiHostInterceptor;
 import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask;
 import me.ykrank.s1next.widget.net.AppData;
+import me.ykrank.s1next.widget.net.AppDns;
 import me.ykrank.s1next.widget.net.Data;
 import me.ykrank.s1next.widget.net.Image;
 import okhttp3.CookieJar;
+import okhttp3.Dns;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -59,16 +60,16 @@ public final class AppModule {
 
     @Provides
     @AppLife
-    BaseDns provideHttpDns(AppHostUrl baseHostUrl) {
-        return new BaseDns(baseHostUrl);
+    Dns provideHttpDns(Context context, AppHostUrl baseHostUrl) {
+        return new AppDns(context, baseHostUrl);
     }
 
     @Data
     @Provides
     @AppLife
-    OkHttpClient.Builder providerDataOkHttpClientBuilder(CookieJar cookieJar, AppHostUrl baseHostUrl) {
+    OkHttpClient.Builder providerDataOkHttpClientBuilder(CookieJar cookieJar, AppHostUrl baseHostUrl, Dns dns) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.dns(new BaseDns(baseHostUrl));
+        builder.dns(dns);
         builder.connectTimeout(10, TimeUnit.SECONDS);
         builder.writeTimeout(20, TimeUnit.SECONDS);
         builder.readTimeout(10, TimeUnit.SECONDS);
@@ -98,9 +99,9 @@ public final class AppModule {
     @Image
     @Provides
     @AppLife
-    OkHttpClient.Builder providerImageOkHttpClientBuilder(CookieJar cookieJar, AppHostUrl baseHostUrl) {
+    OkHttpClient.Builder providerImageOkHttpClientBuilder(CookieJar cookieJar, AppHostUrl baseHostUrl, Dns dns) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.dns(new BaseDns(baseHostUrl));
+        builder.dns(dns);
         builder.connectTimeout(17, TimeUnit.SECONDS);
         builder.writeTimeout(17, TimeUnit.SECONDS);
         builder.readTimeout(77, TimeUnit.SECONDS);
