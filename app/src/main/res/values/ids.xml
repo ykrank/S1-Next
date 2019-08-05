@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <item name="tag_text_view_span_images" type="id" />
 </resources>

@@ -5,11 +5,14 @@ import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
+import android.widget.TextView;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.XMLReader;
 
 import java.util.ArrayList;
+
+import me.ykrank.s1next.R;
 
 /**
  * Adds {@link android.view.View.OnClickListener}
@@ -20,6 +23,10 @@ public final class TagHandler implements Html.TagHandler {
     private static final String TAG = TagHandler.class.getCanonicalName();
 
     private ArrayList<String> images = new ArrayList<>();
+
+    public TagHandler(TextView textView){
+        textView.setTag(R.id.tag_text_view_span_images, images);
+    }
 
     /**
      * See android.text.Html.HtmlToSpannedConverter#getLast(android.text.Spanned, java.lang.Class)

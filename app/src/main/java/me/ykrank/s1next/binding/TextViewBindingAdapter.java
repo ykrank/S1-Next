@@ -18,6 +18,8 @@ import android.view.TouchDelegate;
 import android.view.View;
 import android.widget.TextView;
 
+import com.github.ykrank.androidautodispose.AndroidRxDispose;
+import com.github.ykrank.androidlifecycle.event.ViewEvent;
 import com.github.ykrank.androidtools.util.L;
 import com.github.ykrank.androidtools.util.ResourceUtil;
 import com.github.ykrank.androidtools.util.RxJavaUtil;
@@ -213,8 +215,9 @@ public final class TextViewBindingAdapter {
             // use GlideImageGetter to show images in TextView
             //noinspection deprecation
             Single.just(GlideImageGetter.Companion.get(textView))
-                    .map(f -> QuoteSpanKt.replaceQuoteSpans(HtmlCompat.fromHtml(html, f, new TagHandler()), textView.getContext()))
+                    .map(f -> QuoteSpanKt.replaceQuoteSpans(HtmlCompat.fromHtml(html, f, new TagHandler(textView)), textView.getContext()))
                     .compose(RxJavaUtil.computationSingleTransformer())
+                    .to(AndroidRxDispose.withSingle(textView, ViewEvent.DESTROY))
                     .subscribe(textView::setText, L::report);
         }
     }
@@ -227,6 +230,7 @@ public final class TextViewBindingAdapter {
             //noinspection deprecation
             Single.fromCallable(() -> QuoteSpanKt.replaceQuoteSpans(HtmlCompat.fromHtml(html), textView.getContext()))
                     .compose(RxJavaUtil.computationSingleTransformer())
+                    .to(AndroidRxDispose.withSingle(textView, ViewEvent.DESTROY))
                     .subscribe(textView::setText, L::report);
         }
     }

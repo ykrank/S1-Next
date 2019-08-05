@@ -4,13 +4,14 @@ import android.graphics.Rect
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import androidx.annotation.AnyThread
-import androidx.annotation.MainThread
-import androidx.core.view.ViewCompat
 import android.text.*
 import android.view.View
 import android.webkit.URLUtil
 import android.widget.TextView
+import androidx.annotation.AnyThread
+import androidx.annotation.MainThread
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.RequestManager
@@ -39,6 +40,7 @@ import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.widget.EmoticonFactory
 import me.ykrank.s1next.widget.track.event.EmoticonNotFoundTrackEvent
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Implements [android.text.Html.ImageGetter]
@@ -165,6 +167,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
         }
 
         urlDrawable = UrlDrawable(url)
+
         val imageGetterViewTarget = ImageGetterViewTarget(this, mTextView,
                 urlDrawable, serial)
 
@@ -254,6 +257,12 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
                 return
             }
             val textView = getView()
+
+            val images = (textView.getTag(R.id.tag_text_view_span_images)
+                    ?: arrayListOf<String>()) as ArrayList<String>
+            if (images.indexOf(mDrawable.url) >=  MaxImageShow) {
+                return
+            }
 
             setDrawable(resource)
             if (resource is Animatable) {
@@ -409,6 +418,10 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
          * Too big image make app looks like blocked
          */
         private const val MaxImageSize = 6400
+        /**
+         * Too many images make list slow, so hide it default
+         */
+        private const val MaxImageShow = 5
 
         @MainThread
         operator fun get(textView: TextView): GlideImageGetter {
