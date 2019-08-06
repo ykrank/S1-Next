@@ -229,4 +229,6 @@
     <string name="action_app_login">登录黑魔法</string>
     <string name="menu_load_from_web">从网站加载</string>
     <string name="menu_post_disable_sticky">不显示置顶</string>
+    <string name="go_url">跳转链接</string>
+    <string name="show_image">显示图片</string>
 </resources>

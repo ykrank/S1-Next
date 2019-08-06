@@ -420,4 +420,6 @@
     <string name="action_app_login">登錄黑魔法</string>
     <string name="menu_load_from_web">從網站加載</string>
     <string name="menu_post_disable_sticky">不顯示置頂</string>
+    <string name="go_url">跳轉鏈接</string>
+    <string name="show_image">顯示圖片</string>
 </resources>

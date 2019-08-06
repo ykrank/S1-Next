@@ -33,6 +33,9 @@
     <string name="donate">Donate</string>
 
     <string name="title_copied">Title copied</string>
+
+    <string name="show_image">Show image</string>
+    <string name="go_url">Go url</string>
     <!-- menu -->
     <string name="menu_account_new">Create account</string>
     <string name="menu_refresh">Refresh</string>

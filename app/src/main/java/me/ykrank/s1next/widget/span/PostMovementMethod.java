@@ -2,10 +2,10 @@ package me.ykrank.s1next.widget.span;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.Browser;
-import androidx.annotation.NonNull;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
@@ -17,11 +17,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+
 import com.github.ykrank.androidtools.util.L;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import me.ykrank.s1next.R;
 import me.ykrank.s1next.util.IntentUtil;
 
 /**
@@ -83,18 +87,27 @@ public class PostMovementMethod extends ArrowKeyMovementMethod {
 
             if (link.length != 0) {
                 if (action == MotionEvent.ACTION_UP) {
-                    ClickableSpan clickableSpan = link[0];
-                    if (clickableSpan instanceof URLSpan) {
-                        Uri uri = Uri.parse(((URLSpan) clickableSpan).getURL());
-                        for (URLSpanClick click : urlSpanClicks) {
-                            if (click.isMatch(uri)) {
-                                click.onClick(uri, widget);
-                                return true;
-                            }
-                        }
-                        defaultURLSpanClick.onClick(uri, widget);
+                    ImageClickableResizeSpan[] imageClickableSpans = buffer.getSpans(off, off,
+                            ImageClickableResizeSpan.class);
+                    if (imageClickableSpans.length != 0) {
+                        Context context = widget.getContext();
+                        AlertDialog dialog = new AlertDialog.Builder(context)
+                                .setItems(new CharSequence[]{context.getString(R.string.show_image), context.getString(R.string.go_url)}, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch (which) {
+                                            case 0:
+                                                showImage(widget, buffer, line, off, imageClickableSpans);
+                                                break;
+                                            case 1:
+                                                goUrl(widget, link);
+                                                break;
+                                        }
+                                    }
+                                }).create();
+                        dialog.show();
                     } else {
-                        clickableSpan.onClick(widget);
+                        goUrl(widget, link);
                     }
                 } else {
                     //http://stackoverflow.com/questions/15836306/can-a-textview-be-selectable-and-contain-links
@@ -113,20 +126,7 @@ public class PostMovementMethod extends ArrowKeyMovementMethod {
                     ImageClickableResizeSpan.class);
             if (imageClickableSpans.length != 0) {
                 if (action == MotionEvent.ACTION_UP) {
-                    if (imageClickableSpans.length > 1) {
-                        //if use getSpans(off, off , sometime click mid in two span will cause error
-                        ImageClickableResizeSpan[] spans = buffer.getSpans(off, off + 1,
-                                ImageClickableResizeSpan.class);
-                        if (spans.length == 1) {
-                            spans[0].onClick(widget);
-                            return true;
-                        }
-                        L.report(new IllegalStateException("ImageClickableResizeSpan length warn; \n" +
-                                "length" + imageClickableSpans.length + ",line:" + line + ",off:" + off
-                                + ",newLength:" + spans.length));
-                    }
-                    imageClickableSpans[0].onClick(widget);
-                    return true;
+                    showImage(widget, buffer, line, off, imageClickableSpans);
                 } else {
                     if (!isSelecting(buffer)) {
                         Selection.setSelection(buffer,
@@ -139,6 +139,41 @@ public class PostMovementMethod extends ArrowKeyMovementMethod {
         }
 
         return super.onTouchEvent(widget, buffer, event);
+    }
+
+    private void showImage(@NonNull TextView widget, @NonNull Spannable buffer, int line, int off,
+                           @NonNull ImageClickableResizeSpan[] imageClickableSpans) {
+        if (imageClickableSpans.length > 1) {
+            //if use getSpans(off, off , sometime click mid in two span will cause error
+            ImageClickableResizeSpan[] spans = buffer.getSpans(off, off + 1,
+                    ImageClickableResizeSpan.class);
+            if (spans.length == 1) {
+                spans[0].onClick(widget);
+                return;
+            }
+            L.report(new IllegalStateException("ImageClickableResizeSpan length warn; \n" +
+                    "length" + imageClickableSpans.length + ",line:" + line + ",off:" + off
+                    + ",newLength:" + spans.length));
+        }
+        imageClickableSpans[0].onClick(widget);
+        return;
+    }
+
+    private void goUrl(@NonNull TextView widget, ClickableSpan[] link) {
+        ClickableSpan clickableSpan = link[0];
+        if (clickableSpan instanceof URLSpan) {
+            Uri uri = Uri.parse(((URLSpan) clickableSpan).getURL());
+            for (URLSpanClick click : urlSpanClicks) {
+                if (click.isMatch(uri)) {
+                    click.onClick(uri, widget);
+                    return;
+                }
+            }
+            defaultURLSpanClick.onClick(uri, widget);
+        } else {
+            clickableSpan.onClick(widget);
+        }
+        return;
     }
 
     public void addURLSpanClick(URLSpanClick click) {

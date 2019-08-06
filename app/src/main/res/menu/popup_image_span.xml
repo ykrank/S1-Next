@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_popup_show_image"
+        android:orderInCategory="30"
+        android:title="@string/show_image" />
+
+    <item
+        android:id="@+id/menu_popup_go_url"
+        android:orderInCategory="31"
+        android:title="@string/go_url" />
+</menu>
