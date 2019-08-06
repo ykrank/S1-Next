@@ -5,16 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Browser
-import androidx.fragment.app.Fragment
+import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ViewEvent
-import com.google.common.base.Optional
-import com.google.common.base.Supplier
+import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.OnceClickUtil
 import com.github.ykrank.androidtools.widget.net.WifiBroadcastReceiver
+import com.google.common.base.Optional
+import com.google.common.base.Supplier
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -32,6 +33,8 @@ import me.ykrank.s1next.view.fragment.PostListFragment
  */
 class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
 
+    var fragment: PostListFragment? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base_long_title)
@@ -39,7 +42,6 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
         disableDrawerIndicator()
 
         if (savedInstanceState == null) {
-            val fragment: androidx.fragment.app.Fragment
             val intent = intent
             val thread = intent.getParcelableExtra<Thread>(ARG_THREAD)
             val progress = intent.getParcelableExtra<ReadProgress>(ARG_READ_PROGRESS)
@@ -54,9 +56,23 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
                 fragment = PostListFragment.newInstance(thread, intent.getBooleanExtra(
                         ARG_SHOULD_GO_TO_LAST_PAGE, false))
             }
-            supportFragmentManager.beginTransaction().add(R.id.frame_layout, fragment,
+            supportFragmentManager.beginTransaction().add(R.id.frame_layout, fragment!!,
                     PostListFragment.TAG).commit()
         }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        when (keyCode) {
+            KeyEvent.KEYCODE_VOLUME_UP -> {
+                fragment?.moveToNext(-1)
+                return true
+            }
+            KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                fragment?.moveToNext(1)
+                return true
+            }
+        }
+        return super.onKeyDown(keyCode, event)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
