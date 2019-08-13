@@ -42,6 +42,8 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
     var count: String? = null
     @JsonProperty("dbdateline")
     var dateTime: Long = 0
+    @JsonProperty("groupid")
+    var groupId: Int = 0
     @JsonIgnore
     var attachmentMap: Map<Int, Attachment> = mapOf()
     /**
@@ -348,6 +350,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         if (isFirst != other.isFirst) return false
         if (count != other.count) return false
         if (dateTime != other.dateTime) return false
+        if (groupId != other.groupId) return false
         if (attachmentMap != other.attachmentMap) return false
         if (hide != other.hide) return false
         if (remark != other.remark) return false
@@ -369,6 +372,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         result = 31 * result + isFirst.hashCode()
         result = 31 * result + (count?.hashCode() ?: 0)
         result = 31 * result + dateTime.hashCode()
+        result = 31 * result + groupId
         result = 31 * result + attachmentMap.hashCode()
         result = 31 * result + hide
         result = 31 * result + (remark?.hashCode() ?: 0)
