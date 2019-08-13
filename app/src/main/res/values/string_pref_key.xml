@@ -8,6 +8,7 @@
     <string name="pref_key_blacklists" translatable="false">pref_key_blacklists</string>
     <string name="pref_key_post_read_progress" translatable="false">pref_key_post_read_progress</string>
     <string name="pref_key_backup" translatable="false">pref_key_backup</string>
+    <string name="pref_key_check_update" translatable="false">pref_key_check_update</string>
     <!-- Network -->
     <string name="pref_key_network" translatable="false">pref_key_network</string>
     <string name="pref_key_force_base_url_enabled" translatable="false">pref_key_force_base_url_enabled</string>
