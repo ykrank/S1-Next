@@ -48,6 +48,11 @@
             android:title="@string/help" />
 
         <item
+            android:id="@+id/menu_advise"
+            android:icon="@drawable/ic_menu_advise_black_24dp"
+            android:title="@string/advise" />
+
+        <item
             android:id="@+id/menu_settings"
             android:icon="@drawable/ic_menu_settings_black_24dp"
             android:title="@string/settings" />

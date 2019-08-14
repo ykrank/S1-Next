@@ -1,17 +1,17 @@
 package me.ykrank.s1next.view.internal
 
 import android.annotation.SuppressLint
-import androidx.databinding.DataBindingUtil
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
-import com.google.android.material.navigation.NavigationView
-import androidx.fragment.app.FragmentActivity
-import androidx.drawerlayout.widget.DrawerLayout
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.view.WindowInsets
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.ui.internal.DrawerLayoutDelegate
 import com.github.ykrank.androidtools.util.L
@@ -19,7 +19,9 @@ import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.AlipayDonate
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.github.ykrank.androidtools.widget.track.event.ThemeChangeTrackEvent
+import com.google.android.material.navigation.NavigationView
 import me.ykrank.s1next.App
+import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.pref.DataPreferencesManager
@@ -27,6 +29,7 @@ import me.ykrank.s1next.data.pref.ThemeManager
 import me.ykrank.s1next.databinding.ActionViewNoticeCountBinding
 import me.ykrank.s1next.databinding.NavigationViewHeaderBinding
 import me.ykrank.s1next.task.AutoSignTask
+import me.ykrank.s1next.util.DonateUtils
 import me.ykrank.s1next.view.activity.*
 import me.ykrank.s1next.view.dialog.AlipayDialogFragment
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
@@ -252,15 +255,7 @@ class DrawerLayoutDelegateConcrete(val activity: androidx.fragment.app.FragmentA
     }
 
     private fun onDonateMenuSelected() {
-        if (AlipayDonate.hasInstalledAlipayClient(mFragmentActivity)) {
-            if (AlipayDonate.startAlipayTrans(mFragmentActivity, "FKX01763C5SCSCCJIB6UE8")) {
-                return
-            }
-        }
-        AlipayDialogFragment.newInstance(mFragmentActivity.getString(R.string.donate), mFragmentActivity.getString(R.string.donate_text))
-                .show(mFragmentActivity.supportFragmentManager, AlipayDialogFragment.TAG)
-        //For GooglePlay privacy-security
-//        mFragmentActivity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://QR.ALIPAY.COM/FKX01763C5SCSCCJIB6UE8")))
+        DonateUtils.alipayDonate(mFragmentActivity)
     }
 
     private fun onRedEnvelopedMenuSelected() {
