@@ -251,7 +251,14 @@ class EmoticonFactory(context: Context) {
             emoticon("face2017/234.gif", "[f:234]"),
             emoticon("face2017/235.png", "[f:235]"),
             emoticon("face2017/236.png", "[f:236]"),
-            emoticon("face2017/237.gif", "[f:237]")
+            emoticon("face2017/237.gif", "[f:237]"),
+            emoticon("face2017/238.png", "[f:238]"),
+            emoticon("face2017/239.png", "[f:239]"),
+            emoticon("face2017/240.png", "[f:240]"),
+            emoticon("face2017/241.png", "[f:241]"),
+            emoticon("face2017/242.gif", "[f:242]"),
+            emoticon("face2017/243.gif", "[f:243]"),
+            emoticon("face2017/244.gif", "[f:244]")
     )
 
 
@@ -547,13 +554,21 @@ class EmoticonFactory(context: Context) {
             emoticon("carton2017/289.gif", "[c:289]"),
             emoticon("carton2017/290.png", "[c:290]"),
             emoticon("carton2017/291.gif", "[c:291]"),
+            emoticon("carton2017/292.png", "[c:292]"),
             emoticon("carton2017/293.gif", "[c:293]"),
             emoticon("carton2017/294.gif", "[c:294]"),
             emoticon("carton2017/295.png", "[c:295]"),
             emoticon("carton2017/296.png", "[c:296]"),
             emoticon("carton2017/297.png", "[c:297]"),
             emoticon("carton2017/298.png", "[c:298]"),
-            emoticon("carton2017/299.gif", "[c:299]")
+            emoticon("carton2017/299.gif", "[c:299]"),
+            emoticon("carton2017/300.png", "[c:300]"),
+            emoticon("carton2017/301.png", "[c:301]"),
+            emoticon("carton2017/302.png", "[c:302]"),
+            emoticon("carton2017/303.gif", "[c:303]"),
+            emoticon("carton2017/304.png", "[c:304]"),
+            emoticon("carton2017/305.png", "[c:305]"),
+            emoticon("carton2017/306.png", "[c:306]")
             )
 
     private val animalEmoticonList: List<Emoticon> = listOf(
@@ -610,7 +625,13 @@ class EmoticonFactory(context: Context) {
             emoticon("device2017/029.png", "[d:029]"),
             emoticon("device2017/030.png", "[d:030]"),
             emoticon("device2017/031.png", "[d:031]"),
-            emoticon("device2017/032.png", "[d:032]")
+            emoticon("device2017/032.png", "[d:032]"),
+            emoticon("device2017/033.png", "[d:033]"),
+            emoticon("device2017/034.png", "[d:034]"),
+            emoticon("device2017/035.png", "[d:035]"),
+            emoticon("device2017/036.png", "[d:036]"),
+            emoticon("device2017/037.png", "[d:037]"),
+            emoticon("device2017/038.png", "[d:038]")
     )
 
     private val gooseEmoticonList: List<Emoticon> = listOf(
