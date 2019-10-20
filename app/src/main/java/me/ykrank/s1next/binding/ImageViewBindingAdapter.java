@@ -1,9 +1,8 @@
 package me.ykrank.s1next.binding;
 
-import androidx.databinding.BindingAdapter;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
@@ -27,6 +26,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
+import androidx.databinding.BindingAdapter;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.User;
@@ -206,7 +207,7 @@ public final class ImageViewBindingAdapter {
         }
         RequestManager requestManager = Glide.with(imageView);
 
-        RequestBuilder<Drawable> listener = requestManager
+        RequestBuilder<Drawable> listener = createBuilder(requestManager, downloadPreferencesManager)
                 .load(new AvatarUrl(urls.get(0)))
                 .apply(new RequestOptions()
                         .circleCrop()
@@ -232,7 +233,7 @@ public final class ImageViewBindingAdapter {
                 });
         if (!TextUtils.isEmpty(thumbUrl)) {
             listener = listener.thumbnail(
-                    requestManager
+                    createBuilder(requestManager, downloadPreferencesManager)
                             .load(new AvatarUrl(thumbUrl))
                             .apply(new RequestOptions()
                                     .circleCrop()
@@ -246,5 +247,12 @@ public final class ImageViewBindingAdapter {
         }
         listener.into(imageView);
 
+    }
+
+    private static RequestBuilder<Drawable> createBuilder(RequestManager requestManager, DownloadPreferencesManager downloadPreferencesManager) {
+        return downloadPreferencesManager.isAvatarGifEnable()
+                ? requestManager.asDrawable()
+                // 必须强转, 否则编译不通过...
+                : (RequestBuilder) requestManager.as(BitmapDrawable.class);
     }
 }

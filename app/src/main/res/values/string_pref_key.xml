@@ -26,6 +26,7 @@
     <string name="pref_key_net_cache_enable" translatable="false">pref_key_net_cache_enable</string>
     <string name="pref_key_download_avatars_strategy" translatable="false">pref_key_download_avatars_strategy</string>
     <string name="pref_key_avatar_resolution_strategy" translatable="false">pref_key_avatar_resolution_strategy</string>
+    <string name="pref_key_avatar_gif_enable" translatable="false">pref_key_avatar_gif_enable</string>
     <string name="pref_key_avatar_cache_invalidation_interval" translatable="false">pref_key_avatar_cache_invalidation_interval</string>
     <string name="pref_key_download_images_strategy" translatable="false">pref_key_download_images_strategy</string>
     <string name="pref_key_clear_image_cache" translatable="false">pref_key_clear_image_cache</string>
