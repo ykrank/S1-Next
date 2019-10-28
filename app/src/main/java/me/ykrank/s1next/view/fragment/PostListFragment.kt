@@ -183,7 +183,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe {
                     if (!LoginPromptDialogFragment.showAppLoginPromptDialogIfNeeded(fragmentManager!!, mUser)) {
-                        VoteDialogFragment.newInstance(it.threadId, it.vote).show(fragmentManager, VoteDialogFragment.TAG)
+                        VoteDialogFragment.newInstance(it.threadId, it.vote).show(fragmentManager!!, VoteDialogFragment.TAG)
                     }
                 }
         mRxBus.get()
@@ -223,26 +223,26 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         super.onDestroy()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.fragment_post, menu)
 
-        mMenuThreadAttachment = menu?.findItem(R.id.menu_thread_attachment)
+        mMenuThreadAttachment = menu.findItem(R.id.menu_thread_attachment)
         if (mThreadAttachment == null) {
             mMenuThreadAttachment?.isVisible = false
         }
 
         if (mReadProgressPrefManager.isSaveAuto) {
-            val saveMenu = menu?.findItem(R.id.menu_save_progress)
+            val saveMenu = menu.findItem(R.id.menu_save_progress)
             saveMenu?.isVisible = false
         }
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?) {
+    override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
-        val mMenuPostSelectable = menu?.findItem(R.id.menu_post_selectable)
+        val mMenuPostSelectable = menu.findItem(R.id.menu_post_selectable)
         mMenuPostSelectable?.isChecked = mGeneralPreferencesManager.isPostSelectable
-        val mMenuQuickSideBarEnable = menu?.findItem(R.id.menu_quick_side_bar_enable)
+        val mMenuQuickSideBarEnable = menu.findItem(R.id.menu_quick_side_bar_enable)
         mMenuQuickSideBarEnable?.isChecked = mGeneralPreferencesManager.isQuickSideBarEnable
     }
 
@@ -314,7 +314,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                             mGeneralPreferencesManager.isPostSelectable = item.isChecked
                             mRxBus.post(PostSelectableChangeEvent())
                         }
-                        .show(fragmentManager, null)
+                        .show(fragmentManager!!, null)
                 return true
             }
             R.id.menu_quick_side_bar_enable -> {
@@ -340,7 +340,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         }
     }
 
-    override fun getPagerAdapter(fragmentManager: androidx.fragment.app.FragmentManager): LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<*> {
+    override fun getPagerAdapter(fragmentManager: FragmentManager): FragmentStatePagerAdapter<*> {
         return mPostListPagerAdapter
     }
 
@@ -483,7 +483,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     /**
      * Returns a Fragment corresponding to one of the pages of posts.
      */
-    private inner class PostListPagerAdapter constructor(fm: androidx.fragment.app.FragmentManager) : LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<PostListPagerFragment>(fm) {
+    private inner class PostListPagerAdapter constructor(fm: FragmentManager) : FragmentStatePagerAdapter<PostListPagerFragment>(fm) {
 
         override fun getItem(i: Int): PostListPagerFragment {
             val progress = readProgress

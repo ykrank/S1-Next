@@ -59,7 +59,7 @@ class NewReportFragment : BaseFragment() {
         refreshData()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.fragment_new_report, menu)
         sendMenu = menu?.findItem(R.id.menu_send)

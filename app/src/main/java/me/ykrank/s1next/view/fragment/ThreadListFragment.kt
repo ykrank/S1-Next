@@ -48,12 +48,12 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.fragment_thread, menu)
 
-        menu?.findItem(R.id.menu_page_jump)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
-        val mMenuPostDisableSticky = menu?.findItem(R.id.menu_post_disable_sticky)
+        menu.findItem(R.id.menu_page_jump)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+        val mMenuPostDisableSticky = menu.findItem(R.id.menu_post_disable_sticky)
         mMenuPostDisableSticky?.isChecked = mGeneralPreferencesManager.isPostDisableSticky
     }
 
@@ -76,7 +76,7 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
     }
 
     override fun getPagerAdapter(fragmentManager: androidx.fragment.app.FragmentManager)
-            : LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<*> {
+            : FragmentStatePagerAdapter<*> {
         return ThreadListPagerAdapter(childFragmentManager)
     }
 
@@ -96,7 +96,7 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
      * Returns a Fragment corresponding to one of the pages of threads.
      */
     private inner class ThreadListPagerAdapter(fm: androidx.fragment.app.FragmentManager)
-        : LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<ThreadListPagerFragment>(fm) {
+        : FragmentStatePagerAdapter<ThreadListPagerFragment>(fm) {
 
         override fun getItem(i: Int): ThreadListPagerFragment {
             return ThreadListPagerFragment.newInstance(mForumId, mTypeId, i + 1)

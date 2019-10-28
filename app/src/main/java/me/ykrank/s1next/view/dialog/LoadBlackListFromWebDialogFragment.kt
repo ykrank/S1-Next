@@ -58,7 +58,7 @@ class LoadBlackListFromWebDialogFragment : BaseDialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     @MainThread
@@ -88,7 +88,7 @@ class LoadBlackListFromWebDialogFragment : BaseDialogFragment() {
                 })
     }
 
-    override fun onDismiss(dialog: DialogInterface?) {
+    override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         val parentFragment = parentFragment
         if (parentFragment is DialogInterface.OnDismissListener) {

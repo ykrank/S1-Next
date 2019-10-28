@@ -46,7 +46,7 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
     private var mPagerCallback: PagerCallback? = null
     private var mSubForumsCallback: SubForumsCallback? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
 
         mSubForumsCallback = context as SubForumsCallback?

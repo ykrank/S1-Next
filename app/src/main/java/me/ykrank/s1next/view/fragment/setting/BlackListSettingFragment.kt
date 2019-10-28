@@ -71,7 +71,7 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
                     }
                     val dialogFragment1 = BlacklistDialogFragment.newInstance(blackList)
                     dialogFragment1.setTargetFragment(this@BlackListSettingFragment, RequestCode.REQUEST_CODE_BLACKLIST)
-                    dialogFragment1.show(fragmentManager, BlackListSettingFragment::class.java.name)
+                    dialogFragment1.show(fragmentManager!!, BlackListSettingFragment::class.java.name)
                     return true
                 }
                 R.id.menu_delete -> {
@@ -132,9 +132,9 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_blacklist, menu)
-        menu?.findItem(R.id.menu_refresh)?.isEnabled = true
+        menu.findItem(R.id.menu_refresh)?.isEnabled = true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -213,7 +213,7 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
     private fun add() {
         val dialogFragment = BlacklistDialogFragment.newInstance(null)
         dialogFragment.setTargetFragment(this@BlackListSettingFragment, RequestCode.REQUEST_CODE_BLACKLIST)
-        dialogFragment.show(fragmentManager, BlackListSettingFragment::class.java.name)
+        dialogFragment.show(fragmentManager!!, BlackListSettingFragment::class.java.name)
     }
 
     companion object {

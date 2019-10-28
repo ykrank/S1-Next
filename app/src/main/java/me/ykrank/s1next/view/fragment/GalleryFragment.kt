@@ -93,7 +93,7 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
         return binding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater?.inflate(R.menu.fragment_gallery, menu)
         largeModeMenu = menu?.findItem(R.id.menu_large_image_mode)
         largeModeMenu?.isChecked = large

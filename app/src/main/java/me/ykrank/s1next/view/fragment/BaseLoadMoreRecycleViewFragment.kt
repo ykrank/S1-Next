@@ -48,18 +48,18 @@ abstract class BaseLoadMoreRecycleViewFragment<D> : LibBaseLoadMoreRecycleViewFr
     }
 
     @CallSuper
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_base, menu)
     }
 
     @CallSuper
-    override fun onPrepareOptionsMenu(menu: Menu?) {
+    override fun onPrepareOptionsMenu(menu: Menu) {
         // Disables the refresh menu when loading data.
         menu?.findItem(R.id.menu_refresh)?.isEnabled = !isLoading
     }
 
     @CallSuper
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
             R.id.menu_refresh -> {
                 startSwipeRefresh()

@@ -60,7 +60,7 @@ class FavouriteListFragment : BaseViewPagerFragment() {
                 }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.fragment_favourites, menu)
     }
@@ -81,15 +81,15 @@ class FavouriteListFragment : BaseViewPagerFragment() {
         }
     }
 
-    override fun getPagerAdapter(fragmentManager: androidx.fragment.app.FragmentManager): LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<*> {
+    override fun getPagerAdapter(fragmentManager: FragmentManager): FragmentStatePagerAdapter<*> {
         return FavouriteListPagerAdapter(childFragmentManager)
     }
 
     /**
      * Returns a Fragment corresponding to one of the pages of favourites.
      */
-    private inner class FavouriteListPagerAdapter(fm: androidx.fragment.app.FragmentManager)
-        : LibBaseViewPagerFragment.BaseFragmentStatePagerAdapter<FavouriteListPagerFragment>(fm) {
+    private inner class FavouriteListPagerAdapter(fm: FragmentManager)
+        : LibBaseViewPagerFragment.FragmentStatePagerAdapter<FavouriteListPagerFragment>(fm) {
 
         override fun getItem(i: Int): FavouriteListPagerFragment {
             return FavouriteListPagerFragment.newInstance(i + 1)

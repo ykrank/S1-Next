@@ -28,8 +28,7 @@ class QuotePostPageParserDialogFragment : ProgressDialogFragment<String>() {
     }
 
     override fun getSourceObservable(): Single<String> {
-        val threadLink = arguments!!.getParcelable<ThreadLink>(
-                ARG_THREAD_LINK)
+        val threadLink = arguments!!.getParcelable<ThreadLink>(ARG_THREAD_LINK)!!
         return mS1Service.getQuotePostResponseBody(threadLink.threadId,
                 threadLink.quotePostId.get()).map { voidResponse -> voidResponse.raw().request.url.toString() }
     }
@@ -37,8 +36,7 @@ class QuotePostPageParserDialogFragment : ProgressDialogFragment<String>() {
     override fun onNext(url: String) {
         val jumpPage = parseQuotePostPage(url)
         if (jumpPage.isPresent) {
-            val threadLink = Preconditions.checkNotNull(arguments!!.getParcelable<ThreadLink>(
-                    ARG_THREAD_LINK))
+            val threadLink = arguments!!.getParcelable<ThreadLink>(ARG_THREAD_LINK)!!
             val threadLinkWithJumpPage = ThreadLink.Builder(threadLink.threadId)
                     .jumpPage(jumpPage.get())
                     .quotePostId(threadLink.quotePostId.get())
@@ -48,7 +46,7 @@ class QuotePostPageParserDialogFragment : ProgressDialogFragment<String>() {
             }
         } else {
             ThreadLinkInvalidPromptDialogFragment.newInstance(context,
-                    getString(R.string.dialog_message_quote_not_found)).show(fragmentManager,
+                    getString(R.string.dialog_message_quote_not_found)).show(fragmentManager!!,
                     ThreadLinkInvalidPromptDialogFragment.TAG)
             mShouldFinishActivity = false
         }
@@ -59,7 +57,7 @@ class QuotePostPageParserDialogFragment : ProgressDialogFragment<String>() {
         val errorMsg = ErrorUtil.parse(context, throwable)
         if (isVisible) {
             ThreadLinkInvalidPromptDialogFragment.newInstance(context, errorMsg)
-                    .show(fragmentManager, ThreadLinkInvalidPromptDialogFragment.TAG)
+                    .show(fragmentManager!!, ThreadLinkInvalidPromptDialogFragment.TAG)
             mShouldFinishActivity = false
         } else {
             App.get().toast(errorMsg)

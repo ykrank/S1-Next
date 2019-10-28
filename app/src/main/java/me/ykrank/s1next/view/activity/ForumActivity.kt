@@ -91,7 +91,7 @@ class ForumActivity : BaseActivity(), ToolbarDropDownInterface.Callback, Adapter
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    public override fun onSaveInstanceState(outState: Bundle?) {
+    public override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
         outState?.putInt(STATE_SPINNER_SELECTED_POSITION, mSelectedPosition)

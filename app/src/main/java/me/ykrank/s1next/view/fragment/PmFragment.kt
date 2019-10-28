@@ -71,12 +71,12 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
         outState.putString(ARG_DATA_ID, dataId)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.fragment_pm, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
             R.id.menu_new_pm -> {
                 NewPmActivity.startNewPmActivityForResultMessage(activity!!, toUid!!, toUsername!!)

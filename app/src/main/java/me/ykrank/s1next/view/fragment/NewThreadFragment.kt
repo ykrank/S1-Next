@@ -84,7 +84,7 @@ class NewThreadFragment : BasePostFragment() {
         }
 
         NewThreadRequestDialogFragment.newInstance(mForumId, typeId, title, message, cacheKey)
-                .show(fragmentManager, NewThreadRequestDialogFragment.TAG)
+                .show(fragmentManager!!, NewThreadRequestDialogFragment.TAG)
 
         return true
     }

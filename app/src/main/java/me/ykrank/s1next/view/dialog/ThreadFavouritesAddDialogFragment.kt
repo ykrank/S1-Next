@@ -39,7 +39,7 @@ class ThreadFavouritesAddDialogFragment : BaseDialogFragment() {
                 if (!threadId.isNullOrEmpty()) {
                     ThreadFavouritesAddRequestDialogFragment.newInstance(threadId,
                             binding.remark.text.toString(), arguments?.getString(ARG_THREAD_TITLE))
-                            .show(fragmentManager, ThreadFavouritesAddRequestDialogFragment.TAG)
+                            .show(fragmentManager!!, ThreadFavouritesAddRequestDialogFragment.TAG)
                 }
             }
             ViewUtil.consumeRunnableWhenImeActionPerformed(binding.remark) { alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick() }

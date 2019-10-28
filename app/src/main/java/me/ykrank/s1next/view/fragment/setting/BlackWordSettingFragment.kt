@@ -67,7 +67,7 @@ class BlackWordSettingFragment : BaseFragment() {
                     }
                     val dialogFragment1 = BlackWordDialogFragment.newInstance(blackWord)
                     dialogFragment1.setTargetFragment(this@BlackWordSettingFragment, RequestCode.REQUEST_CODE_BLACKLIST)
-                    dialogFragment1.show(fragmentManager, BlackWordSettingFragment::class.java.name)
+                    dialogFragment1.show(fragmentManager!!, BlackWordSettingFragment::class.java.name)
                     return true
                 }
                 R.id.menu_delete -> {
@@ -128,9 +128,9 @@ class BlackWordSettingFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_black_word, menu)
-        menu?.findItem(R.id.menu_refresh)?.isEnabled = true
+        menu.findItem(R.id.menu_refresh)?.isEnabled = true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -190,7 +190,7 @@ class BlackWordSettingFragment : BaseFragment() {
     private fun add() {
         val dialogFragment = BlackWordDialogFragment.newInstance(null)
         dialogFragment.setTargetFragment(this@BlackWordSettingFragment, RequestCode.REQUEST_CODE_BLACKLIST)
-        dialogFragment.show(fragmentManager, BlackWordSettingFragment::class.java.name)
+        dialogFragment.show(fragmentManager!!, BlackWordSettingFragment::class.java.name)
     }
 
     companion object {

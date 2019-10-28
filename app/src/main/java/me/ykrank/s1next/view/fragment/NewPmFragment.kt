@@ -23,7 +23,7 @@ class NewPmFragment : BasePostFragment() {
     }
 
     override fun onMenuSendClick(): Boolean {
-        PmRequestDialogFragment.newInstance(mToUid, mReplyView.text.toString()).show(fragmentManager,
+        PmRequestDialogFragment.newInstance(mToUid, mReplyView.text.toString()).show(fragmentManager!!,
                 PmRequestDialogFragment.TAG)
 
         return true

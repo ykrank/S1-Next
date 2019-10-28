@@ -44,7 +44,7 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
         recyclerView.adapter = mRecyclerAdapter
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         App.appComponent.inject(this)
         super.onAttach(context)
 
@@ -57,12 +57,12 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
         mToolbarCallback = null
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.fragment_forum, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
             R.id.menu_browser -> {
                 IntentUtil.startViewIntentExcludeOurApp(context, Uri.parse(Api.BASE_URL))

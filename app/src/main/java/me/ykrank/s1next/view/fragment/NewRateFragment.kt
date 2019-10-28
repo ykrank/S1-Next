@@ -69,7 +69,7 @@ class NewRateFragment : BaseFragment() {
         refreshData()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.fragment_new_rate, menu)
     }
@@ -133,7 +133,7 @@ class NewRateFragment : BaseFragment() {
             showShortSnackbar(R.string.invalid_score)
             return
         }
-        RateRequestDialogFragment.newInstance(ratePreInfo, score, reason).show(fragmentManager,
+        RateRequestDialogFragment.newInstance(ratePreInfo, score, reason).show(fragmentManager!!,
                 RateRequestDialogFragment.TAG)
     }
 

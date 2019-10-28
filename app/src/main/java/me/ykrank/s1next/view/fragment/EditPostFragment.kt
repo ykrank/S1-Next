@@ -85,7 +85,7 @@ class EditPostFragment : BasePostFragment() {
         }
 
         EditPostRequestDialogFragment.newInstance(mThread, mPost, typeId, readPerm, title!!, message!!)
-                .show(fragmentManager, EditPostRequestDialogFragment.TAG)
+                .show(fragmentManager!!, EditPostRequestDialogFragment.TAG)
 
         return true
     }

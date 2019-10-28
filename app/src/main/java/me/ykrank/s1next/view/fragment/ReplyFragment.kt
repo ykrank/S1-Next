@@ -33,7 +33,7 @@ class ReplyFragment : BasePostFragment() {
         }
 
         ReplyRequestDialogFragment.newInstance(mThreadId, mQuotePostId,
-                stringBuilder.toString()).show(fragmentManager,
+                stringBuilder.toString()).show(fragmentManager!!,
                 ReplyRequestDialogFragment.TAG)
 
         return true
