@@ -122,11 +122,15 @@ greendao {
 
 //http://stackoverflow.com/questions/28683327/how-to-check-if-gradle-dependency-has-new-version
 dependencies {
-    implementation project(path: ':lib')
-    implementation project(path: ':lib_keyboard')
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     playImplementation fileTree(include: ['*.jar'], dir: 'libs/flavors/play')
     normalImplementation fileTree(include: ['*.jar'], dir: 'libs/flavors/normal')
+
+    // implementation project(path: ':lib')
+    // implementation project(path: ':lib_keyboard')
+    normalImplementation "com.github.ykrank.AndroidTools:library:v1.2.0:normal@aar"
+    playImplementation "com.github.ykrank.AndroidTools:library:v1.2.0:play@aar"
+    implementation 'com.github.ykrank.AndroidTools:JKeyboardPanelSwitch:v1.2.0'
 
     implementation 'com.google.dagger:dagger:2.24'
     kapt 'com.google.dagger:dagger-compiler:2.24'
