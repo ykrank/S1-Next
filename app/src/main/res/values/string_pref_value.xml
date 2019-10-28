@@ -23,6 +23,7 @@
     <string name="pref_avatar">Avatar</string>
     <string name="pref_download_avatars_strategy_default_value" translatable="false">2</string>
     <string name="pref_avatar_resolution">Resolution</string>
+    <string name="pref_avatar_gif">GIF Avatar</string>
     <string name="pref_avatar_resolution_strategy_default_value" translatable="false">1</string>
     <string name="pref_avatar_cache_invalidation_interval">Cache invalidation interval</string>
     <string name="pref_avatar_cache_invalidation_interval_default_value" translatable="false">1</string>
