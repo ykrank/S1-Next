@@ -85,6 +85,10 @@ class App : MultiDexApplication() {
                 get() = ErrorUtil
             override val logTag: String
                 get() = LOG_TAG
+            override val buildType: String
+                get() = BuildConfig.BUILD_TYPE
+            override val debug: Boolean
+                get() = BuildConfig.DEBUG
             override val appR: Class<out Any>
                 get() = R::class.java
         })

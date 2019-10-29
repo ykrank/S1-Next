@@ -42,7 +42,7 @@ open class MultiThreadHttpStreamFetcher(client: Call.Factory, val url: GlideUrl)
             }
 
             override fun taskEnd(task: DownloadTask, cause: EndCause, realCause: Exception?) {
-                if (StatusUtil.isCompleted(task)) {
+                if (cause == EndCause.COMPLETED || StatusUtil.isCompleted(task)) {
                     L.d("多线程下载完成：${task.url}")
                     callback.onDataReady(task.file?.inputStream())
                 } else {
