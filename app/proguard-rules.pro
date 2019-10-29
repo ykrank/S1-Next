@@ -9,3 +9,6 @@
 -keep public class me.ykrank.s1next.data.db.dbmodel.ReadProgress { *; }
 # GreenDao model
 -keep public class me.ykrank.s1next.data.db.dbmodel.** { *; }
+
+# OkDownload
+-keepnames class com.liulishuo.okdownload.core.connection.DownloadOkHttp3Connection

@@ -29,6 +29,7 @@
     <string name="pref_key_avatar_gif_enable" translatable="false">pref_key_avatar_gif_enable</string>
     <string name="pref_key_avatar_cache_invalidation_interval" translatable="false">pref_key_avatar_cache_invalidation_interval</string>
     <string name="pref_key_download_images_strategy" translatable="false">pref_key_download_images_strategy</string>
+    <string name="pref_key_multi_download" translatable="false">pref_key_multi_download</string>
     <string name="pref_key_clear_image_cache" translatable="false">pref_key_clear_image_cache</string>
     <!-- ReadProgress -->
     <string name="pref_key_read_progress_save_auto" translatable="false">pref_key_read_progress_save_auto</string>

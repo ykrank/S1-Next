@@ -29,6 +29,7 @@ import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
 import me.ykrank.s1next.task.AutoSignTask;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.RawJsonConverterFactory;
+import me.ykrank.s1next.widget.download.ImageDownloadManager;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
 import me.ykrank.s1next.widget.glide.OkHttpNoAvatarInterceptor;
 import me.ykrank.s1next.widget.hostcheck.AppHostUrl;
@@ -201,4 +202,9 @@ public final class AppModule {
         return new AvatarUrlsCache();
     }
 
+    @Provides
+    @AppLife
+    ImageDownloadManager provideImageDownloadManager(@Image OkHttpClient.Builder okHttpClientBuilder) {
+        return new ImageDownloadManager(okHttpClientBuilder);
+    }
 }

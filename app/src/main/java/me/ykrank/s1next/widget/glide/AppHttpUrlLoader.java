@@ -12,8 +12,14 @@ import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 import com.github.ykrank.androidtools.widget.glide.model.ForcePassUrl;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.InputStream;
 
+import javax.inject.Inject;
+
+import me.ykrank.s1next.App;
+import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.widget.glide.model.AvatarUrl;
 import okhttp3.OkHttpClient;
 
@@ -22,7 +28,7 @@ import okhttp3.OkHttpClient;
  * <p>
  * Forked from {@link OkHttpUrlLoader}
  */
-final class AppHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
+final public class AppHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
 
     private final OkHttpClient mOkHttpClient;
 
@@ -30,14 +36,13 @@ final class AppHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
         this.mOkHttpClient = okHttpClient;
     }
 
-    @Nullable
     @Override
-    public LoadData<InputStream> buildLoadData(GlideUrl glideUrl, int width, int height, Options options) {
+    public LoadData<InputStream> buildLoadData(@NotNull GlideUrl glideUrl, int width, int height, @NotNull Options options) {
         return new LoadData<>(glideUrl, buildResourceFetcher(glideUrl, width, height, options));
     }
 
     @Override
-    public boolean handles(GlideUrl glideUrl) {
+    public boolean handles(@NotNull GlideUrl glideUrl) {
         return true;
     }
 
@@ -45,7 +50,7 @@ final class AppHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
         if (model instanceof AvatarUrl) {
             return new AvatarStreamFetcher(mOkHttpClient, (AvatarUrl) model);
         } else if (model instanceof ForcePassUrl) {
-            return new OkHttpStreamFetcher(mOkHttpClient, model);
+            return new MultiThreadHttpStreamFetcher(mOkHttpClient, model);
         }
         return new AppHttpStreamFetcher(mOkHttpClient, model);
     }
@@ -65,7 +70,7 @@ final class AppHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
         }
 
         @Override
-        public ModelLoader<GlideUrl, InputStream> build(MultiModelLoaderFactory multiFactory) {
+        public ModelLoader<GlideUrl, InputStream> build(@NotNull MultiModelLoaderFactory multiFactory) {
             return new AppHttpUrlLoader(mOkHttpClient);
         }
 

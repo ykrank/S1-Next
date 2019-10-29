@@ -12,4 +12,5 @@
     <bool name="pref_post_disable_sticky_default_value">false</bool>
     <bool name="pref_key_force_base_url_enabled_default_value">false</bool>
     <bool name="pref_key_force_host_ip_enabled_default_value">false</bool>
+    <bool name="pref_key_multi_download_default_value">true</bool>
 </resources>

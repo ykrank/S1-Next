@@ -34,6 +34,9 @@ class DownloadPreferencesImpl(context: Context, sharedPreferences: SharedPrefere
 
     override val imagesDownloadStrategyIndex: Int by PreferenceDelegates.int(
             R.string.pref_key_download_images_strategy, R.string.pref_download_images_strategy_default_value)
+
+    override val multiThreadDownload:Boolean by PreferenceDelegates.bool(
+            R.string.pref_key_multi_download, R.bool.pref_key_multi_download_default_value)
 }
 
 interface DownloadPreferences {
@@ -45,4 +48,5 @@ interface DownloadPreferences {
     val avatarCacheInvalidationInterval: Int
     val avatarGifEnable: Boolean
     val imagesDownloadStrategyIndex: Int
+    val multiThreadDownload:Boolean
 }

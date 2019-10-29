@@ -129,6 +129,7 @@ class App : MultiDexApplication() {
 
         //enable vector drawable
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
+        mAppComponent.imageDownloadManager.setup(this)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

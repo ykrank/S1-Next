@@ -233,4 +233,5 @@
     <string name="show_image">显示图片</string>
     <string name="pref_check_update">检查更新</string>
     <string name="advise">提点建议</string>
+    <string name="pref_multi_download">多线程下载</string>
 </resources>

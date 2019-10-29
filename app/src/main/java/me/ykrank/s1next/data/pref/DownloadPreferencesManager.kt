@@ -38,6 +38,9 @@ class DownloadPreferencesManager(private val mPreferencesProvider: DownloadPrefe
     val isImagesDownload: Boolean
         get() = DownloadStrategyInternal.isDownload(mPreferencesProvider.imagesDownloadStrategyIndex, mWifi.isWifiEnabled)
 
+    val multiThreadDownload:Boolean
+        get() = mPreferencesProvider.multiThreadDownload
+
     /**
      * Checks whether we need to monitor the Wi-Fi status.
      * We needn't monitor the Wi-Fi status if we needn't/should
