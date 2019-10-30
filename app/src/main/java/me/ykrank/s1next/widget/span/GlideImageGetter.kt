@@ -37,6 +37,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
+import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.widget.EmoticonFactory
 import me.ykrank.s1next.widget.track.event.EmoticonNotFoundTrackEvent
 import java.util.*
@@ -241,6 +242,8 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
     private class ImageGetterViewTarget constructor(private val mGlideImageGetter: GlideImageGetter, view: TextView, val mDrawable: UrlDrawable, val serial: Int)
         : CustomViewTarget<TextView, Drawable>(view) {
 
+        private val mDownloadPreferencesManager: DownloadPreferencesManager = App.preAppComponent.downloadPreferencesManager
+
         private var mRequest: Request? = null
 
         override fun onResourceLoading(placeholder: Drawable?) {
@@ -260,7 +263,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
 
             val images = (textView.getTag(R.id.tag_text_view_span_images)
                     ?: arrayListOf<String>()) as ArrayList<String>
-            if (images.indexOf(mDrawable.url) >=  MaxImageShow) {
+            if (images.indexOf(mDrawable.url) >=  mDownloadPreferencesManager.postMaxImageShow) {
                 return
             }
 
@@ -418,10 +421,6 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
          * Too big image make app looks like blocked
          */
         private const val MaxImageSize = 6400
-        /**
-         * Too many images make list slow, so hide it default
-         */
-        private const val MaxImageShow = 5
 
         @MainThread
         operator fun get(textView: TextView): GlideImageGetter {

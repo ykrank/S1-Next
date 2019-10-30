@@ -37,6 +37,9 @@ class DownloadPreferencesImpl(context: Context, sharedPreferences: SharedPrefere
 
     override val multiThreadDownload:Boolean by PreferenceDelegates.bool(
             R.string.pref_key_multi_download, R.bool.pref_key_multi_download_default_value)
+
+    override val postMaxImageShow: Int by PreferenceDelegates.int(
+            R.string.pref_key_post_max_image_show, R.string.pref_post_max_image_show_default_value)
 }
 
 interface DownloadPreferences {
@@ -49,4 +52,5 @@ interface DownloadPreferences {
     val avatarGifEnable: Boolean
     val imagesDownloadStrategyIndex: Int
     val multiThreadDownload:Boolean
+    val postMaxImageShow:Int
 }

@@ -13,7 +13,7 @@ import java.io.InputStream
 class AppHttpStreamFetcher(client: Call.Factory, url: GlideUrl) : MultiThreadHttpStreamFetcher(client, url) {
 
     override fun loadData(priority: Priority, callback: DataFetcher.DataCallback<in InputStream>) {
-        if (mDownloadPreferencesManager?.isImagesDownload != true) {
+        if (!mDownloadPreferencesManager.isImagesDownload) {
             callback.onDataReady(null)
             return
         }
