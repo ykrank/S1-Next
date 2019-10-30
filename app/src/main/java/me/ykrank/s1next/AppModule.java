@@ -4,10 +4,16 @@ import android.content.Context;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.ykrank.androidtools.widget.EditorDiskCache;
+import com.github.ykrank.androidtools.widget.NullTrustManager;
 import com.github.ykrank.androidtools.widget.RxBus;
 
 import java.io.File;
+import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import dagger.Module;
 import dagger.Provides;
@@ -110,6 +116,16 @@ public final class AppModule {
         builder.cookieJar(cookieJar);
         builder.addNetworkInterceptor(new OkHttpNoAvatarInterceptor());
         builder.addInterceptor(new AppMultiHostInterceptor(baseHostUrl));
+
+        //trust https
+        try {
+            X509TrustManager trustManager = new NullTrustManager();
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, new TrustManager[]{trustManager}, new SecureRandom());
+            builder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //Add progress manage
         builder = ProgressManager.getInstance().with(builder);
