@@ -19,7 +19,6 @@ import dagger.Module;
 import dagger.Provides;
 import io.rx_cache2.internal.RxCache;
 import io.victoralbertos.jolyglot.JacksonSpeaker;
-import me.jessyan.progressmanager.ProgressManager;
 import me.ykrank.s1next.data.User;
 import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.data.api.ApiCacheProvider;
@@ -126,9 +125,6 @@ public final class AppModule {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //Add progress manage
-        builder = ProgressManager.getInstance().with(builder);
 
         return builder;
     }

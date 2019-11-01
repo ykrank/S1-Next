@@ -31,7 +31,7 @@ class ImageDownloadManager(private val okhttpBuilder: OkHttpClient.Builder) {
         dir = File(application.cacheDir, "image/")
     }
 
-    fun download(url: String, downloadListener: DownloadListener): DownloadTask {
+    fun download(url: String, downloadListener: ImageDownloadListener): DownloadTask {
         val task = DownloadTask.Builder(url, dir)
                 // the minimal interval millisecond for callback progress
                 .setMinIntervalMillisCallbackProcess(3000)
@@ -40,7 +40,7 @@ class ImageDownloadManager(private val okhttpBuilder: OkHttpClient.Builder) {
                 .setFilenameFromResponse(false)
                 .setFilename(digest.md5(url))
                 .build()
-        task.enqueue(downloadListener)
+        task.enqueue(AppDownloadListener(downloadListener))
         return task
     }
 

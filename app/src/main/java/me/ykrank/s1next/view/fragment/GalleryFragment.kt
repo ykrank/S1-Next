@@ -5,14 +5,12 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import androidx.annotation.RequiresPermission
-import com.google.android.material.snackbar.Snackbar
-import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
 import android.text.TextUtils
 import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.annotation.RequiresPermission
+import androidx.core.app.ActivityCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.request.RequestOptions
@@ -26,9 +24,10 @@ import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.glide.model.ForcePassUrl
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
-import me.jessyan.progressmanager.ProgressListener
-import me.jessyan.progressmanager.ProgressManager
-import me.jessyan.progressmanager.body.ProgressInfo
+import com.google.android.material.snackbar.Snackbar
+import com.liulishuo.okdownload.DownloadTask
+import com.liulishuo.okdownload.core.cause.EndCause
+import com.liulishuo.okdownload.core.listener.assist.Listener1Assist
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
@@ -38,9 +37,10 @@ import me.ykrank.s1next.databinding.MenuGalleryLargeImageSwitchBinding
 import me.ykrank.s1next.util.AppFileUtil
 import me.ykrank.s1next.util.IntentUtil
 import me.ykrank.s1next.viewmodel.ImageViewModel
+import me.ykrank.s1next.widget.download.ProgressListener
+import me.ykrank.s1next.widget.download.ProgressManager
 import me.ykrank.s1next.widget.track.event.LargeImageTrackEvent
 import me.ykrank.s1next.widget.track.event.ViewImageTrackEvent
-import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import java.io.File
 import javax.inject.Inject
@@ -226,14 +226,16 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
         //Avoid leak memory
         downloadId = mImageUrl?.let { String(it.toCharArray()) }
         downloadId?.also {
-            ProgressManager.getInstance().addResponseListener(it, object : ProgressListener {
-                override fun onProgress(progressInfo: ProgressInfo) {
-                    binding.progress = ProgressItem(progressInfo.contentLength, progressInfo.currentbytes, progressInfo.isFinish)
+            ProgressManager.addListener(it, object : ProgressListener {
+                override fun onProgress(task: DownloadTask, currentOffset: Long, totalLength: Long) {
+                    binding.progress = ProgressItem(totalLength, currentOffset, totalLength == currentOffset)
                 }
 
-                override fun onError(id: Long, e: Exception?) {
-                    binding.progress = ProgressItem(0, 0, true)
-                    L.report(e)
+                override fun taskEnd(task: DownloadTask, cause: EndCause, realCause: java.lang.Exception?, model: Listener1Assist.Listener1Model) {
+                    binding.progress = ProgressItem(model.totalLength, model.totalLength, true)
+                    if (realCause != null) {
+                        L.report(realCause)
+                    }
                 }
 
             })
