@@ -38,7 +38,7 @@ public final class BuildTypeModule {
         try {
             X509TrustManager trustManager = new NullTrustManager();
             SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, new TrustManager[]{trustManager}, new SecureRandom());
+            sslContext.init(null, new TrustManager[]{trustManager}, null);
             builder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,7 +72,7 @@ public final class BuildTypeModule {
         try {
             X509TrustManager trustManager = new NullTrustManager();
             SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, new TrustManager[]{trustManager}, new SecureRandom());
+            sslContext.init(null, new TrustManager[]{trustManager}, null);
             builder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
         } catch (Exception e) {
             e.printStackTrace();
