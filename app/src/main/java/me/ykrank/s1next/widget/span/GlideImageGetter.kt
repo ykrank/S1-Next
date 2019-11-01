@@ -320,7 +320,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
         }
 
         override fun onDestroy() {
-            mGlideImageGetter.invalidate()
+//            mGlideImageGetter.invalidate()
         }
 
         private fun checkTextViewValidate(): Boolean {

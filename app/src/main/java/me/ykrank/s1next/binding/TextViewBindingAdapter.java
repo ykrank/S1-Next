@@ -1,11 +1,9 @@
 package me.ykrank.s1next.binding;
 
 import android.content.Context;
-import androidx.databinding.BindingAdapter;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import androidx.annotation.Nullable;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -17,6 +15,9 @@ import android.text.style.TextAppearanceSpan;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.BindingAdapter;
 
 import com.github.ykrank.androidautodispose.AndroidRxDispose;
 import com.github.ykrank.androidlifecycle.event.ViewEvent;
@@ -40,7 +41,10 @@ import me.ykrank.s1next.data.api.model.Post;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.data.db.dbmodel.History;
 import me.ykrank.s1next.data.pref.ThemeManager;
-import me.ykrank.s1next.widget.span.*;
+import me.ykrank.s1next.widget.span.GlideImageGetter;
+import me.ykrank.s1next.widget.span.HtmlCompat;
+import me.ykrank.s1next.widget.span.QuoteSpanKt;
+import me.ykrank.s1next.widget.span.TagHandler;
 import okio.BufferedSource;
 import okio.Okio;
 import okio.Source;
@@ -161,8 +165,12 @@ public final class TextViewBindingAdapter {
     }
 
     @BindingAdapter({"reply"})
-    public static void setReply(TextView textView, AppPost post) {
+    public static void setReply(TextView textView, AppPost oPost, AppPost post) {
+        if (oPost == post) {
+            return;
+        }
         if (post == null) {
+            textView.setText("");
             return;
         }
         if (post.getHide()) {
@@ -176,12 +184,20 @@ public final class TextViewBindingAdapter {
             return;
         }
 
-        setHtmlWithImage(textView, post.getMessage());
+        String oMsg = null;
+        if (oPost != null) {
+            oMsg = oPost.getMessage();
+        }
+        setHtmlWithImage(textView, oMsg, post.getMessage());
     }
 
     @BindingAdapter({"reply"})
-    public static void setReply(TextView textView, Post post) {
+    public static void setReply(TextView textView, Post oPost, Post post) {
+        if (oPost == post) {
+            return;
+        }
         if (post == null) {
+            textView.setText("");
             return;
         }
         if (post.getHide() != Post.Hide_Normal) {
@@ -200,15 +216,25 @@ public final class TextViewBindingAdapter {
             ViewUtil.concatWithTwoSpacesForRtlSupport(textView, text);
             return;
         }
+        String oReply = null;
         if (post.isTrade()) {
-            setHtmlWithImage(textView, post.getExtraHtml());
+            if (oPost != null) {
+                oReply = oPost.getExtraHtml();
+            }
+            setHtmlWithImage(textView, oReply, post.getExtraHtml());
         } else {
-            setHtmlWithImage(textView, post.getReply());
+            if (oPost != null) {
+                oReply = oPost.getReply();
+            }
+            setHtmlWithImage(textView, oReply, post.getReply());
         }
     }
 
     @BindingAdapter({"imgHtml"})
-    public static void setHtmlWithImage(TextView textView, @Nullable String html) {
+    public static void setHtmlWithImage(TextView textView, @Nullable String oHtml, @Nullable String html) {
+        if (TextUtils.equals(oHtml, html)) {
+            return;
+        }
         if (TextUtils.isEmpty(html)) {
             textView.setText(null);
         } else {
