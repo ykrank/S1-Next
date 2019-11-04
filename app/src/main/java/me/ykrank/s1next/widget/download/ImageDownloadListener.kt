@@ -103,7 +103,7 @@ class AppDownloadListener : DownloadListener1 {
     }
 
     override fun progress(task: DownloadTask, currentOffset: Long, totalLength: Long) {
-        L.d("progress ${task.url} $currentOffset / $totalLength")
+//        L.d("progress ${task.url} $currentOffset / $totalLength")
         imageDownloadListener?.progress(task, currentOffset, totalLength)
 
         conflictListeners.forEach {

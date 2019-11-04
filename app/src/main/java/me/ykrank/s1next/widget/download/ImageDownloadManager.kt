@@ -34,7 +34,7 @@ class ImageDownloadManager(private val okhttpBuilder: OkHttpClient.Builder) {
     fun download(url: String, downloadListener: ImageDownloadListener): DownloadTask {
         val task = DownloadTask.Builder(url, dir)
                 // the minimal interval millisecond for callback progress
-                .setMinIntervalMillisCallbackProcess(3000)
+                .setMinIntervalMillisCallbackProcess(300)
                 // ignore the same task has already completed in the past.
                 .setPassIfAlreadyCompleted(true)
                 .setFilenameFromResponse(false)
