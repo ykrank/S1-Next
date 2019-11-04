@@ -116,16 +116,6 @@ public final class AppModule {
         builder.addNetworkInterceptor(new OkHttpNoAvatarInterceptor());
         builder.addInterceptor(new AppMultiHostInterceptor(baseHostUrl));
 
-        //trust https
-        try {
-            X509TrustManager trustManager = new NullTrustManager();
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, new TrustManager[]{trustManager}, null);
-            builder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         return builder;
     }
 

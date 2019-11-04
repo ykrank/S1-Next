@@ -34,16 +34,6 @@ public final class BuildTypeModule {
     OkHttpClient providerDataOkHttpClient(@Data OkHttpClient.Builder builder) {
         Preconditions.checkState("debug".equals(BuildConfig.BUILD_TYPE));
 
-        //trust https
-        try {
-            X509TrustManager trustManager = new NullTrustManager();
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, new TrustManager[]{trustManager}, null);
-            builder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         //Stetho
         builder.addNetworkInterceptor(new StethoInterceptor());
 
@@ -67,16 +57,6 @@ public final class BuildTypeModule {
     @AppLife
     OkHttpClient providerAppdataOkHttpClient(@AppData OkHttpClient.Builder builder) {
         Preconditions.checkState("debug".equals(BuildConfig.BUILD_TYPE));
-
-        //trust https
-        try {
-            X509TrustManager trustManager = new NullTrustManager();
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, new TrustManager[]{trustManager}, null);
-            builder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         //Stetho
         builder.addNetworkInterceptor(new StethoInterceptor());

@@ -1,5 +1,6 @@
 package me.ykrank.s1next.widget.download
 
+import com.github.ykrank.androidtools.util.L
 import com.liulishuo.okdownload.DownloadListener
 import com.liulishuo.okdownload.DownloadTask
 import com.liulishuo.okdownload.OkDownload
@@ -102,6 +103,7 @@ class AppDownloadListener : DownloadListener1 {
     }
 
     override fun progress(task: DownloadTask, currentOffset: Long, totalLength: Long) {
+        L.d("progress ${task.url} $currentOffset / $totalLength")
         imageDownloadListener?.progress(task, currentOffset, totalLength)
 
         conflictListeners.forEach {
