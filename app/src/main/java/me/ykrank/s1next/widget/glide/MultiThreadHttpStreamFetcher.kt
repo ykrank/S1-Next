@@ -14,6 +14,7 @@ import me.ykrank.s1next.App
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.widget.download.ImageDownloadListener
 import me.ykrank.s1next.widget.download.ImageDownloadManager
+import me.ykrank.s1next.widget.download.ProgressDownloadListener
 import okhttp3.Call
 import java.io.IOException
 import java.io.InputStream
@@ -41,7 +42,7 @@ open class MultiThreadHttpStreamFetcher(client: Call.Factory, val url: GlideUrl)
         }
         connecting = false
         end = false
-        downloadTask = imageDownloadManager.download(url.toStringUrl(), object : ImageDownloadListener() {
+        downloadTask = imageDownloadManager.download(url.toStringUrl(), object : ProgressDownloadListener() {
 
             override fun taskStart(task: DownloadTask) {
                 connecting = true
@@ -49,6 +50,8 @@ open class MultiThreadHttpStreamFetcher(client: Call.Factory, val url: GlideUrl)
             }
 
             override fun taskEnd(task: DownloadTask, cause: EndCause, realCause: java.lang.Exception?, model: Listener1Assist.Listener1Model) {
+                super.taskEnd(task, cause, realCause, model)
+
                 end = true
 
                 if (cause == EndCause.COMPLETED) {
@@ -62,7 +65,7 @@ open class MultiThreadHttpStreamFetcher(client: Call.Factory, val url: GlideUrl)
                 } else {
                     L.d("多线程下载失败：${task.url}")
                     if (realCause != null) {
-                        L.d(realCause)
+                        L.print(realCause)
                     }
                     callback.onLoadFailed(realCause ?: AppException("Image download error"))
                 }

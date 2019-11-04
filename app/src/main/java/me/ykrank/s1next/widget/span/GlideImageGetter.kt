@@ -4,13 +4,16 @@ import android.graphics.Rect
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.text.*
+import android.text.style.ImageSpan
 import android.view.View
 import android.webkit.URLUtil
 import android.widget.TextView
 import androidx.annotation.AnyThread
 import androidx.annotation.MainThread
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
@@ -41,7 +44,6 @@ import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.widget.EmoticonFactory
 import me.ykrank.s1next.widget.track.event.EmoticonNotFoundTrackEvent
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Implements [android.text.Html.ImageGetter]
@@ -59,6 +61,8 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
     private val requestManager: RequestManager
     private val imageGetterScoper: SingleScoper<RequestBuilder<Drawable>>
     private val trackAgent: DataTrackAgent
+    private val handler: Handler
+    private var lastValidateSpanTime = 0L
 
     /**
      * Manage target to clear target if textview re bind
@@ -102,6 +106,25 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
         // add this listener in order to clean any pending images loading
         // and set drawable callback tag to null when detached from window
         mTextView.addOnAttachStateChangeListener(this)
+
+        handler = Handler(Looper.getMainLooper(), Handler.Callback {
+            when (it.what) {
+                Msg_Invalidate_Span -> {
+                    val time = System.currentTimeMillis()
+                    if (time - lastValidateSpanTime >= SpanInvalidateColdTime) {
+                        lastValidateSpanTime = time
+                        val pair = it.obj as Pair<ImageSpan?, TextView>
+                        ImageGetterViewTarget.refreshLayout(pair.first, pair.second)
+                    } else {
+                        it.target.sendMessageDelayed(Message.obtain(it),
+                                lastValidateSpanTime + SpanInvalidateColdTime - time)
+                    }
+
+                    return@Callback true
+                }
+            }
+            false
+        })
     }
 
     @MainThread
@@ -210,6 +233,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
     }
 
     override fun onViewDetachedFromWindow(v: View) {
+        handler.removeCallbacksAndMessages(null)
         for (anim in animatableTargetHashMap.keys) {
             anim.stop()
         }
@@ -224,6 +248,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
             val target = animatableTargetHashMap[who] ?: return
             if (target.serial == serial) {
                 if (ViewCompat.isAttachedToWindow(mTextView)) {
+//                    Log.d("GlideImage", "invalidate ${Integer.toHexString(mTextView.hashCode())}")
                     mTextView.invalidate()
                 } else {
                     (who as Animatable).stop()
@@ -263,7 +288,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
 
             val images = (textView.getTag(R.id.tag_text_view_span_images)
                     ?: arrayListOf<String>()) as ArrayList<String>
-            if (images.indexOf(mDrawable.url) >=  mDownloadPreferencesManager.postMaxImageShow) {
+            if (images.indexOf(mDrawable.url) >= mDownloadPreferencesManager.postMaxImageShow) {
                 return
             }
 
@@ -320,7 +345,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
         }
 
         override fun onDestroy() {
-//            mGlideImageGetter.invalidate()
+
         }
 
         private fun checkTextViewValidate(): Boolean {
@@ -351,54 +376,9 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
             mDrawable.drawable = resource
             mDrawable.bounds = rect
 
-            refreshLayout()
+            Message.obtain(mGlideImageGetter.handler, Msg_Invalidate_Span, Pair(mDrawable.getImageSpan(), textView)).sendToTarget()
         }
 
-        /**
-         * refresh textView layout after drawable invalidate
-         */
-        private fun refreshLayout() {
-            L.l("refreshLayout start")
-            val imageSpan = mDrawable.imageSpan
-            if (imageSpan == null) {
-                //onResourceReady run before imageSpan init. do nothing
-                L.l("refreshLayout run before imageSpan init")
-                return
-            }
-            val textView = getView()
-            val text = textView.text
-            if (text is SpannableString) {
-                val start = text.getSpanStart(imageSpan)
-                val end = text.getSpanEnd(imageSpan)
-                if (!isSpanValid(start, end)) {
-                    //onResourceReady run before imageSpan add to textView. do nothing
-                    L.l("refreshLayout run before imageSpan add to textView")
-                    return
-                }
-                //Or image overlapping error
-                text.removeSpan(imageSpan)
-                text.setSpan(imageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            } else {
-                val span = text as SpannableStringBuilder
-                val start = span.getSpanStart(imageSpan)
-                val end = span.getSpanEnd(imageSpan)
-                if (!isSpanValid(start, end)) {
-                    //onResourceReady run before imageSpan add to textView. do nothing
-                    L.l("refreshLayout run before imageSpan add to textView")
-                    return
-                }
-                //Or image overlapping error
-                span.removeSpan(imageSpan)
-                span.setSpan(imageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            }
-
-            L.l("refreshLayout end")
-        }
-
-
-        private fun isSpanValid(start: Int, end: Int): Boolean {
-            return start >= 0 && end >= 0
-        }
 
         /**
          * See https://github.com/bumptech/glide/issues/550#issuecomment-123693051
@@ -410,6 +390,54 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
         override fun setRequest(request: Request?) {
             this.mRequest = request
         }
+
+        companion object {
+
+            private fun isSpanValid(start: Int, end: Int): Boolean {
+                return start >= 0 && end >= 0
+            }
+
+            /**
+             * refresh textView layout after drawable invalidate
+             */
+            fun refreshLayout(imageSpan: ImageSpan?, textView: TextView) {
+                L.l("refreshLayout start")
+                if (imageSpan == null) {
+                    //onResourceReady run before imageSpan init. do nothing
+                    L.l("refreshLayout run before imageSpan init")
+                    return
+                }
+                val text = textView.text
+                if (text is SpannableString) {
+                    val start = text.getSpanStart(imageSpan)
+                    val end = text.getSpanEnd(imageSpan)
+                    if (!isSpanValid(start, end)) {
+                        //onResourceReady run before imageSpan add to textView. do nothing
+                        L.l("refreshLayout run before imageSpan add to textView")
+                        return
+                    }
+                    //Or image overlapping error
+                    text.removeSpan(imageSpan)
+                    text.setSpan(imageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                } else {
+                    val span = text as SpannableStringBuilder
+                    val start = span.getSpanStart(imageSpan)
+                    val end = span.getSpanEnd(imageSpan)
+                    if (!isSpanValid(start, end)) {
+                        //onResourceReady run before imageSpan add to textView. do nothing
+                        L.l("refreshLayout run before imageSpan add to textView")
+                        return
+                    }
+                    //Or image overlapping error
+                    span.removeSpan(imageSpan)
+                    span.setSpan(imageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                }
+
+                L.l("refreshLayout end")
+            }
+        }
+
+
     }
 
     companion object {
@@ -421,6 +449,8 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
          * Too big image make app looks like blocked
          */
         private const val MaxImageSize = 6400
+        private const val Msg_Invalidate_Span = 2
+        const val SpanInvalidateColdTime = 200
 
         @MainThread
         operator fun get(textView: TextView): GlideImageGetter {
