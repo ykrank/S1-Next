@@ -1,8 +1,6 @@
 package me.ykrank.s1next.widget.download
 
 import android.app.Application
-import android.net.Uri
-import com.liulishuo.okdownload.DownloadListener
 import com.liulishuo.okdownload.DownloadTask
 import com.liulishuo.okdownload.OkDownload
 import com.liulishuo.okdownload.core.connection.DownloadOkHttp3Connection
@@ -31,7 +29,7 @@ class ImageDownloadManager(private val okhttpBuilder: OkHttpClient.Builder) {
         dir = File(application.cacheDir, "image/")
     }
 
-    fun download(url: String, downloadListener: ImageDownloadListener): DownloadTask {
+    fun download(url: String, downloadListener: ImageDownloadListener): ImageDownloadTask {
         val task = DownloadTask.Builder(url, dir)
                 // the minimal interval millisecond for callback progress
                 .setMinIntervalMillisCallbackProcess(300)
@@ -40,12 +38,9 @@ class ImageDownloadManager(private val okhttpBuilder: OkHttpClient.Builder) {
                 .setFilenameFromResponse(false)
                 .setFilename(digest.md5(url))
                 .build()
-        task.enqueue(AppDownloadListener(downloadListener))
-        return task
-    }
-
-    fun pause(task: DownloadTask) {
-        task.cancel()
+        val imageDownloadTask = ImageDownloadTask(task)
+        imageDownloadTask.enqueue(downloadListener)
+        return imageDownloadTask
     }
 
     fun clear(downloadId: Int) {
