@@ -14,6 +14,7 @@ import me.ykrank.s1next.App
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.widget.download.ImageDownloadListener
 import me.ykrank.s1next.widget.download.ImageDownloadManager
+import me.ykrank.s1next.widget.download.ImageDownloadTask
 import me.ykrank.s1next.widget.download.ProgressDownloadListener
 import okhttp3.Call
 import java.io.IOException
@@ -27,7 +28,7 @@ open class MultiThreadHttpStreamFetcher(client: Call.Factory, val url: GlideUrl)
     @Inject
     lateinit var mDownloadPreferencesManager: DownloadPreferencesManager
 
-    var downloadTask: DownloadTask? = null
+    var downloadTask: ImageDownloadTask? = null
     private var stream: InputStream? = null
     var connecting = false
     var end = false

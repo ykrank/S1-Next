@@ -117,6 +117,10 @@ class NewRateFragment : BaseFragment() {
     private fun setSpinner(choices: List<String>) {
         val spinnerAdapter = SimpleSpinnerAdapter(context!!, choices) { it.toString() }
         binding.spinner.adapter = spinnerAdapter
+        var select = choices.indexOf("1")
+        if(select >= 0) {
+            binding.spinner.setSelection(select)
+        }
     }
 
     private fun setReasonRecycleView(reasons: List<String>) {

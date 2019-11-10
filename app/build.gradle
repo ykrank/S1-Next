@@ -128,10 +128,8 @@ dependencies {
 
     // implementation project(path: ':lib')
     // implementation project(path: ':lib_keyboard')
-//    normalImplementation "com.github.ykrank.AndroidTools:library:develop-SNAPSHOT:normal@aar"
-//    playImplementation "com.github.ykrank.AndroidTools:library:develop-SNAPSHOT:play@aar"
-    normalImplementation "com.github.ykrank.AndroidTools:library:v1.2.0.3:normal@aar"
-    playImplementation "com.github.ykrank.AndroidTools:library:v1.2.0.3:play@aar"
+    normalImplementation "com.github.ykrank.AndroidTools:library:v1.2.0.4:normal@aar"
+    playImplementation "com.github.ykrank.AndroidTools:library:v1.2.0.4:play@aar"
     implementation 'com.github.ykrank.AndroidTools:JKeyboardPanelSwitch:v1.2.0'
 
     // Library start
