@@ -5,18 +5,15 @@ import com.liulishuo.okdownload.DownloadTask
 import com.liulishuo.okdownload.OkDownload
 import com.liulishuo.okdownload.core.connection.DownloadOkHttp3Connection
 import com.liulishuo.okdownload.core.dispatcher.DownloadDispatcher
-import me.ykrank.s1next.util.md5
+import me.ykrank.s1next.data.api.ApiUtil
 import okhttp3.OkHttpClient
 import java.io.File
-import java.security.MessageDigest
 
 /**
  * Created by ykrank on 2017/11/14.
  */
 class ImageDownloadManager(private val okhttpBuilder: OkHttpClient.Builder) {
     private lateinit var dir: File
-
-    private val digest = MessageDigest.getInstance("MD5")
 
     fun setup(application: Application) {
         val builder = OkDownload.Builder(application)
@@ -36,7 +33,7 @@ class ImageDownloadManager(private val okhttpBuilder: OkHttpClient.Builder) {
                 // ignore the same task has already completed in the past.
                 .setPassIfAlreadyCompleted(true)
                 .setFilenameFromResponse(false)
-                .setFilename(digest.md5(url))
+                .setFilename(ApiUtil.getUrlId(url))
                 .build()
         val imageDownloadTask = ImageDownloadTask(task)
         imageDownloadTask.enqueue(downloadListener)
