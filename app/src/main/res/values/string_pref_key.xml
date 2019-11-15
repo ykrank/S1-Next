@@ -36,6 +36,7 @@
     <string name="pref_key_read_progress_save_auto" translatable="false">pref_key_read_progress_save_auto</string>
     <string name="pref_key_read_progress_load_auto" translatable="false">pref_key_read_progress_load_auto</string>
     <string name="pref_key_last_read_progress" translatable="false">pref_key_last_read_progress</string>
+    <string name="pref_key_volume_key_paging" translatable="false">pref_key_volume_key_paging</string>
     <!-- Data -->
     <string name="pref_key_has_new_pm" translatable="false">pref_key_has_new_pm</string>
     <string name="pref_key_has_new_notice" translatable="false">pref_key_has_new_notice</string>

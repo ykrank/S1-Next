@@ -34,6 +34,9 @@ public final class AppDaoSessionManager {
     }
 
     public DaoSession getDaoSession() {
+        if (mDaoSessionMemorized == null){
+            invalidateDaoSession();
+        }
         return mDaoSessionMemorized.get();
     }
 

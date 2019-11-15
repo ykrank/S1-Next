@@ -7,9 +7,9 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.ykrank.androidtools.data.BasePreferences
 import com.github.ykrank.androidtools.data.PreferenceDelegates
+import com.github.ykrank.androidtools.util.L
 import com.google.common.base.Supplier
 import com.google.common.base.Suppliers
-import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 import java.io.IOException
@@ -47,24 +47,32 @@ class ReadProgressPreferencesImpl(context: Context, sharedPreferences: SharedPre
                 L.report(e)
             }
         }
+
+    override var volumeKeyPaging: Boolean by PreferenceDelegates.bool(
+            R.string.pref_key_volume_key_paging, R.bool.pref_volume_key_paging_default_value)
 }
 
 interface ReadProgressPreferences {
     val isSaveAuto: Boolean
     val isLoadAuto: Boolean
     var lastReadProgress: ReadProgress?
+    var volumeKeyPaging: Boolean
 }
 
 class ReadProgressPreferencesManager(private val mPreferencesProvider: ReadProgressPreferences) {
     private val mLastReadProgressSupplier = Supplier<ReadProgress> { mPreferencesProvider.lastReadProgress }
 
-    @Volatile private var mLastReadProgressMemorized = Suppliers.memoize(mLastReadProgressSupplier)
+    @Volatile
+    private var mLastReadProgressMemorized = Suppliers.memoize(mLastReadProgressSupplier)
 
     val isSaveAuto: Boolean
         get() = mPreferencesProvider.isSaveAuto
 
     val isLoadAuto: Boolean
         get() = mPreferencesProvider.isLoadAuto
+
+    val volumeKeyPaging: Boolean
+        get() = mPreferencesProvider.volumeKeyPaging
 
     val lastReadProgress: ReadProgress?
         get() = mLastReadProgressMemorized.get()

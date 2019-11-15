@@ -4,13 +4,14 @@
     <bool name="pref_signature_default_value">true</bool>
     <bool name="pref_net_cache_default_value">true</bool>
     <bool name="pref_avatar_gif_enable_default_value">true</bool>
-    <bool name="pref_read_progress_save_auto_default_value">false</bool>
-    <bool name="pref_read_progress_load_auto_default_value">false</bool>
+    <bool name="pref_read_progress_save_auto_default_value">true</bool>
+    <bool name="pref_read_progress_load_auto_default_value">true</bool>
+    <bool name="pref_volume_key_paging_default_value">true</bool>
     <bool name="pref_post_selectable_default_value">false</bool>
     <bool name="pref_quick_side_bar_enable_default_value">true</bool>
     <bool name="pref_key_auto_check_base_url_default_value">false</bool>
     <bool name="pref_post_disable_sticky_default_value">false</bool>
     <bool name="pref_key_force_base_url_enabled_default_value">false</bool>
     <bool name="pref_key_force_host_ip_enabled_default_value">false</bool>
-    <bool name="pref_key_multi_download_default_value">true</bool>
+    <bool name="pref_key_multi_download_default_value">false</bool>
 </resources>

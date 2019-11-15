@@ -12,11 +12,11 @@ import com.liulishuo.okdownload.core.cause.EndCause
 import com.liulishuo.okdownload.core.listener.assist.Listener1Assist
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
-import me.ykrank.s1next.widget.download.ImageDownloadListener
 import me.ykrank.s1next.widget.download.ImageDownloadManager
 import me.ykrank.s1next.widget.download.ImageDownloadTask
 import me.ykrank.s1next.widget.download.ProgressDownloadListener
 import okhttp3.Call
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import java.io.IOException
 import java.io.InputStream
 import javax.inject.Inject
@@ -41,6 +41,10 @@ open class MultiThreadHttpStreamFetcher(client: Call.Factory, val url: GlideUrl)
         if (!mDownloadPreferencesManager.multiThreadDownload) {
             return super.loadData(priority, callback)
         }
+        if (url.toStringUrl()?.toHttpUrlOrNull() == null) {
+            return super.loadData(priority, callback)
+        }
+
         connecting = false
         end = false
         downloadTask = imageDownloadManager.download(url.toStringUrl(), object : ProgressDownloadListener() {

@@ -25,7 +25,10 @@ import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.ThreadLink
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
+import me.ykrank.s1next.data.pref.ReadProgressPreferences
+import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager
 import me.ykrank.s1next.view.fragment.PostListFragment
+import javax.inject.Inject
 
 /**
  * An Activity which includes [android.support.v4.view.ViewPager]
@@ -33,10 +36,15 @@ import me.ykrank.s1next.view.fragment.PostListFragment
  */
 class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
 
+    @Inject
+    lateinit var mReadProgressPreferences: ReadProgressPreferencesManager
+
+
     var fragment: PostListFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        App.appComponent.inject(this)
         setContentView(R.layout.activity_base_long_title)
 
         disableDrawerIndicator()
@@ -62,14 +70,16 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        when (keyCode) {
-            KeyEvent.KEYCODE_VOLUME_UP -> {
-                fragment?.moveToNext(-1)
-                return true
-            }
-            KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                fragment?.moveToNext(1)
-                return true
+        if (mReadProgressPreferences.volumeKeyPaging) {
+            when (keyCode) {
+                KeyEvent.KEYCODE_VOLUME_UP -> {
+                    fragment?.moveToNext(-1)
+                    return true
+                }
+                KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                    fragment?.moveToNext(1)
+                    return true
+                }
             }
         }
         return super.onKeyDown(keyCode, event)

@@ -17,4 +17,9 @@
         android:title="@string/pref_read_progress_load_auto"
         app:iconSpaceReserved="false" />
 
+    <SwitchPreference
+        android:defaultValue="@bool/pref_volume_key_paging_default_value"
+        android:key="@string/pref_key_volume_key_paging"
+        android:title="@string/pref_volume_key_paging"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>

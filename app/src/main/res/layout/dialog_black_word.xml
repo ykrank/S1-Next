@@ -57,6 +57,7 @@
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:gravity="center"
                 android:text="@string/status"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/input_word" />
 
             <androidx.appcompat.widget.AppCompatSpinner
@@ -70,14 +71,13 @@
                 app:layout_constraintStart_toEndOf="@id/tv_status"
                 app:layout_constraintTop_toTopOf="@id/tv_status" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/btn_verify"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_big"
                 android:text="@string/black_word_verify"
-                android:textColor="?android:attr/textColorPrimaryInverse"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_status" />
         </androidx.constraintlayout.widget.ConstraintLayout>

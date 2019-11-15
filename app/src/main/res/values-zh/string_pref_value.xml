@@ -44,7 +44,7 @@
     <string name="pref_libraries">类库</string>
     <string name="pref_files">文件</string>
     <string name="pref_post_read_progress">浏览进度</string>
-    <string name="pref_post_read_progress_summary"><![CDATA[自动保存&读取]]></string>
+    <string name="pref_post_read_progress_summary"><![CDATA[自动保存&读取&翻页]]></string>
     <string name="pref_read_progress_load_auto">自动读取</string>
     <string name="pref_read_progress_save_auto">自动存储</string>
     <string name="pref_backup_backup">备份</string>
@@ -52,4 +52,5 @@
     <string name="pref_backup">备份</string>
     <string name="pref_backup_summary">设置备份和还原</string>
     <string name="pref_clear_image_cache">清除图片缓存</string>
+    <string name="pref_volume_key_paging">音量键翻页</string>
 </resources>
