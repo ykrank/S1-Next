@@ -5,9 +5,10 @@ import android.graphics.ColorFilter;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.text.style.ImageSpan;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.text.style.ImageSpan;
 
 import com.github.ykrank.androidtools.util.L;
 

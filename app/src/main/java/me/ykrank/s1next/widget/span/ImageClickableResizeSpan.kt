@@ -37,4 +37,8 @@ internal class ImageClickableResizeSpan(d: Drawable, source: String, private val
     override fun onClick(v: View) {
         url?.let { GalleryActivity.start(v.context, images, images.indexOf(url)) }
     }
+
+    override fun toString(): String {
+        return "ImageClickableResizeSpan(url=$url)"
+    }
 }
