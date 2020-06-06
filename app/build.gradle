@@ -137,7 +137,7 @@ dependencies {
     //For jackson
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    implementation "com.google.android.material:material:1.1.0-beta01"
+    implementation "com.google.android.material:material:1.2.0-alpha05"
     implementation "androidx.cardview:cardview:$rootProject.androdiXVersion"
     implementation "androidx.percentlayout:percentlayout:$rootProject.androdiXVersion"
     implementation "androidx.legacy:legacy-preference-v14:$rootProject.androdiXVersion"
@@ -151,14 +151,14 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.9'
     implementation 'com.google.guava:guava:28.1-android'
 
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.13'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.18'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.4.0'
 
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.10.0'
     //okhttp 3.12.0 have bug https://github.com/square/okhttp/issues/4395
-    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
+    implementation 'com.squareup.okhttp3:okhttp:4.7.2'
 
     implementation 'com.shizhefei:LargeImageView:1.1.0'
     implementation 'com.github.ykrank:androidautodispose:0.4.0'
@@ -187,17 +187,17 @@ dependencies {
     implementation 'androidx.transition:transition:1.2.0'
 
     //okhttp 3.12.0 have bug https://github.com/square/okhttp/issues/4395
-    implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.2.2'
-    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
-    implementation 'com.squareup.retrofit2:converter-jackson:2.6.2'
-    implementation 'com.squareup.retrofit2:converter-scalars:2.6.2'
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.7.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.2'
+    implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
 
     implementation "com.github.VictorAlbertos.RxCache:runtime:1.8.3-2.x"
     implementation 'com.github.VictorAlbertos.Jolyglot:jackson:0.0.4'
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.0.pr1'
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.10.0.pr1"
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.11.0"
 
     implementation 'nz.bradcampbell:paperparcel:2.0.8'
     implementation 'nz.bradcampbell:paperparcel-kotlin:2.0.8' // Optional
@@ -208,7 +208,7 @@ dependencies {
 
     implementation 'com.github.chrisbanes:PhotoView:2.1.4'
     implementation 'org.greenrobot:greendao:3.2.2'
-    debugImplementation 'net.zetetic:android-database-sqlcipher:4.2.0'
+//    debugImplementation 'net.zetetic:android-database-sqlcipher:4.4.0'
     implementation 'org.jsoup:jsoup:1.12.1'
     implementation 'com.bigkoo:quicksidebar:1.0.3'
 
