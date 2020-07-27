@@ -4,8 +4,14 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.StrictMode
-import androidx.multidex.MultiDexApplication
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.multidex.MultiDexApplication
+import com.facebook.flipper.android.AndroidFlipperClient
+import com.facebook.flipper.android.utils.FlipperUtils
+import com.facebook.flipper.plugins.inspector.DescriptorMapping
+import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
+import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
+import com.facebook.soloader.SoLoader
 import com.github.ykrank.androidtools.DefaultAppDataProvider
 import com.github.ykrank.androidtools.GlobalData
 import com.github.ykrank.androidtools.extension.toast
@@ -24,6 +30,7 @@ import me.ykrank.s1next.data.pref.PrefModule
 import me.ykrank.s1next.util.BuglyUtils
 import me.ykrank.s1next.util.ErrorUtil
 import me.ykrank.s1next.widget.AppActivityLifecycleCallbacks
+
 
 class App : MultiDexApplication() {
 
@@ -79,6 +86,17 @@ class App : MultiDexApplication() {
                     .build())
         }
 
+        val networkFlipperPlugin = NetworkFlipperPlugin()
+        if (BuildConfig.Debug) {
+            SoLoader.init(this, false)
+            if (FlipperUtils.shouldEnableFlipper(this)) {
+                val client = AndroidFlipperClient.getInstance(this)
+                client.addPlugin(InspectorFlipperPlugin(this, DescriptorMapping.withDefaults()))
+                client.addPlugin(networkFlipperPlugin)
+                client.start()
+            }
+        }
+
         mPreAppComponent.dataTrackAgent.init(this)
         GlobalData.init(object : DefaultAppDataProvider() {
             override val errorParser: ErrorParser?
@@ -99,7 +117,7 @@ class App : MultiDexApplication() {
         mAppComponent = DaggerAppComponent.builder()
                 .preAppComponent(mPreAppComponent)
                 .buildTypeModule(BuildTypeModule(this))
-                .appModule(AppModule())
+                .appModule(AppModule(networkFlipperPlugin))
                 .dbModule(DbModule())
                 .build()
 

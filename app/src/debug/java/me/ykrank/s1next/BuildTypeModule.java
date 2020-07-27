@@ -2,16 +2,6 @@ package me.ykrank.s1next;
 
 import android.content.Context;
 
-import com.facebook.stetho.okhttp3.StethoInterceptor;
-import com.google.common.base.Preconditions;
-import com.github.ykrank.androidtools.widget.NullTrustManager;
-
-import java.security.SecureRandom;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
 import dagger.Module;
 import dagger.Provides;
 import me.ykrank.s1next.widget.net.AppData;
@@ -32,11 +22,6 @@ public final class BuildTypeModule {
     @Provides
     @AppLife
     OkHttpClient providerDataOkHttpClient(@Data OkHttpClient.Builder builder) {
-        Preconditions.checkState("debug".equals(BuildConfig.BUILD_TYPE));
-
-        //Stetho
-        builder.addNetworkInterceptor(new StethoInterceptor());
-
         return builder.build();
     }
 
@@ -44,11 +29,6 @@ public final class BuildTypeModule {
     @Provides
     @AppLife
     OkHttpClient providerImageOkHttpClient(@Image OkHttpClient.Builder builder) {
-        Preconditions.checkState("debug".equals(BuildConfig.BUILD_TYPE));
-
-        //Stetho
-        builder.addNetworkInterceptor(new StethoInterceptor());
-
         return builder.build();
     }
 
@@ -56,11 +36,6 @@ public final class BuildTypeModule {
     @Provides
     @AppLife
     OkHttpClient providerAppdataOkHttpClient(@AppData OkHttpClient.Builder builder) {
-        Preconditions.checkState("debug".equals(BuildConfig.BUILD_TYPE));
-
-        //Stetho
-        builder.addNetworkInterceptor(new StethoInterceptor());
-
         return builder.build();
     }
 }

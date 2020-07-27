@@ -2,18 +2,14 @@ package me.ykrank.s1next;
 
 import android.content.Context;
 
+import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor;
+import com.facebook.flipper.plugins.network.NetworkFlipperPlugin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.ykrank.androidtools.widget.EditorDiskCache;
-import com.github.ykrank.androidtools.widget.NullTrustManager;
 import com.github.ykrank.androidtools.widget.RxBus;
 
 import java.io.File;
-import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import dagger.Module;
 import dagger.Provides;
@@ -57,6 +53,11 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  */
 @Module(includes = BuildTypeModule.class)
 public final class AppModule {
+    final NetworkFlipperPlugin networkFlipperPlugin;
+
+    AppModule(NetworkFlipperPlugin networkFlipperPlugin) {
+        this.networkFlipperPlugin = networkFlipperPlugin;
+    }
 
     @Provides
     @AppLife
@@ -83,6 +84,7 @@ public final class AppModule {
         builder.cookieJar(cookieJar);
         builder.addInterceptor(new ApiVersionInterceptor());
         builder.addInterceptor(new AppMultiHostInterceptor(baseHostUrl));
+        builder.addInterceptor(new FlipperOkhttpInterceptor(networkFlipperPlugin));
 
         return builder;
     }
