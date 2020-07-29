@@ -18,11 +18,12 @@ import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.ui.RProvider
 import com.github.ykrank.androidtools.ui.UiDataProvider
 import com.github.ykrank.androidtools.ui.UiGlobalData
-import com.github.ykrank.androidtools.util.*
+import com.github.ykrank.androidtools.util.ErrorParser
+import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.ProcessUtil
+import com.github.ykrank.androidtools.util.ResourceUtil
 import com.github.ykrank.androidtools.widget.net.WifiActivityLifecycleCallbacks
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
-import com.squareup.leakcanary.LeakCanary
-import com.squareup.leakcanary.RefWatcher
 import io.reactivex.plugins.RxJavaPlugins
 import me.ykrank.s1next.data.db.DbModule
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
@@ -48,9 +49,6 @@ class App : MultiDexApplication() {
 
     var resourceContext: Context? = null
 
-    lateinit var refWatcher: RefWatcher
-        private set
-
     val trackAgent: DataTrackAgent
         get() = mPreAppComponent.dataTrackAgent
 
@@ -68,11 +66,6 @@ class App : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return
-        }
 
         // enable StrictMode when debug
         if (BuildConfig.DEBUG && Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -87,7 +80,7 @@ class App : MultiDexApplication() {
         }
 
         val networkFlipperPlugin = NetworkFlipperPlugin()
-        if (BuildConfig.Debug) {
+        if (BuildConfig.DEBUG) {
             SoLoader.init(this, false)
             if (FlipperUtils.shouldEnableFlipper(this)) {
                 val client = AndroidFlipperClient.getInstance(this)
@@ -110,7 +103,6 @@ class App : MultiDexApplication() {
             override val appR: Class<out Any>
                 get() = R::class.java
         })
-        refWatcher = LeaksUtil.install(this)
         L.init(this)
         BuglyUtils.init(this)
 
@@ -125,8 +117,6 @@ class App : MultiDexApplication() {
         registerActivityLifecycleCallbacks(mAppActivityLifecycleCallbacks)
 
         UiGlobalData.init(object : UiDataProvider {
-            override val refWatcher: RefWatcher
-                get() = this@App.refWatcher
             override val actLifeCallback: WifiActivityLifecycleCallbacks
                 get() = mAppActivityLifecycleCallbacks
             override val trackAgent: DataTrackAgent

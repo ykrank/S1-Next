@@ -4,7 +4,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Build;
 import android.text.Html;
+import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -238,6 +240,9 @@ public final class TextViewBindingAdapter {
         if (TextUtils.isEmpty(html)) {
             textView.setText(null);
         } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                textView.setBreakStrategy(Layout.BREAK_STRATEGY_SIMPLE);
+            }
             // use GlideImageGetter to show images in TextView
             //noinspection deprecation
             Single.just(GlideImageGetter.Companion.get(textView))
