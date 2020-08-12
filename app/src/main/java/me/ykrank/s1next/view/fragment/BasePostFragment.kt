@@ -1,16 +1,14 @@
 package me.ykrank.s1next.view.fragment
 
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.annotation.CallSuper
-import androidx.annotation.UiThread
-import com.google.android.material.tabs.TabLayout
-import androidx.fragment.app.Fragment
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.*
 import android.widget.EditText
+import androidx.annotation.CallSuper
+import androidx.annotation.UiThread
+import androidx.databinding.DataBindingUtil
 import cn.dreamtobe.kpswitch.util.KPSwitchConflictUtil
 import cn.dreamtobe.kpswitch.util.KeyboardUtil
 import cn.dreamtobe.kpswitch.widget.KPSwitchPanelFrameLayout
@@ -21,6 +19,7 @@ import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.EditorDiskCache
 import com.github.ykrank.androidtools.widget.RxBus
 import com.github.ykrank.androidtools.widget.uploadimg.ModelImageUpload
+import com.google.android.material.tabs.TabLayout
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import me.ykrank.s1next.App
@@ -30,6 +29,7 @@ import me.ykrank.s1next.databinding.FragmentPostBinding
 import me.ykrank.s1next.view.event.EmoticonClickEvent
 import me.ykrank.s1next.view.event.PostAddImageEvent
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
+import me.ykrank.s1next.view.page.post.PostToolsExtrasFragment
 import javax.inject.Inject
 
 /**

@@ -1,11 +1,11 @@
-package me.ykrank.s1next.view.activity
+package me.ykrank.s1next.view.page.edit
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.Post
 import me.ykrank.s1next.data.api.model.Thread
+import me.ykrank.s1next.view.activity.BaseActivity
 import me.ykrank.s1next.view.fragment.EditPostFragment
 
 /**

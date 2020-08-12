@@ -1,12 +1,13 @@
 package me.ykrank.s1next.viewmodel;
 
-import androidx.databinding.ObservableField;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 
+import androidx.databinding.ObservableField;
+
 import me.ykrank.s1next.data.api.model.Note;
-import me.ykrank.s1next.view.activity.PostListGatewayActivity;
+import me.ykrank.s1next.view.page.post.PostListGatewayActivity;
 
 
 public final class NoteViewModel {

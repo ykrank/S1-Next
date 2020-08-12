@@ -8,7 +8,7 @@
 
         <variable
             name="model"
-            type="me.ykrank.s1next.view.internal.PostToolsExtra" />
+            type="me.ykrank.s1next.view.page.post.internal.PostToolsExtra" />
     </data>
 
 

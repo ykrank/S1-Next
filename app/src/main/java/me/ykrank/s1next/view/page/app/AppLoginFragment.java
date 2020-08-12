@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.fragment;
+package me.ykrank.s1next.view.page.app;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +19,7 @@ import me.ykrank.s1next.data.api.Api;
 import me.ykrank.s1next.databinding.FragmentAppLoginBinding;
 import me.ykrank.s1next.util.IntentUtil;
 import me.ykrank.s1next.view.dialog.AppLoginDialogFragment;
+import me.ykrank.s1next.view.fragment.BaseFragment;
 
 /**
  * A Fragment offers login via username and password.

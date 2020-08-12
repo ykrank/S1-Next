@@ -1,22 +1,18 @@
-package me.ykrank.s1next.view.activity
+package me.ykrank.s1next.view.page.app
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.text.TextUtils
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ActivityEvent
-import com.github.ykrank.androidtools.util.MathUtil
 import com.github.ykrank.androidtools.widget.net.WifiBroadcastReceiver
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.app.model.AppThread
-import me.ykrank.s1next.data.api.model.Thread
+import me.ykrank.s1next.view.activity.BaseActivity
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.event.AppNotLoginEvent
-import me.ykrank.s1next.view.fragment.AppPostListPagerFragment
 
 /**
  * An Activity which includes [android.support.v4.view.ViewPager]
@@ -24,7 +20,7 @@ import me.ykrank.s1next.view.fragment.AppPostListPagerFragment
  */
 class AppPostListActivity : BaseActivity(), AppPostListPagerFragment.PagerCallback, WifiBroadcastReceiver.NeedMonitorWifi {
 
-    private lateinit var thread: Thread
+    private lateinit var threadId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,17 +28,22 @@ class AppPostListActivity : BaseActivity(), AppPostListPagerFragment.PagerCallba
 
         disableDrawerIndicator()
 
-        thread = intent.getParcelableExtra(ARG_THREAD)
-        title = thread.title
+        threadId = intent.getStringExtra(ARG_THREAD_ID)
 
         if (savedInstanceState == null) {
             val fragment: androidx.fragment.app.Fragment
             val pageNum = intent.getIntExtra(ARG_PAGE_NUM, 1)
             val postId = intent.getStringExtra(ARG_QUOTE_POST_ID)
 
-            fragment = AppPostListPagerFragment.newInstance(thread.id!!, pageNum, postId)
-            supportFragmentManager.beginTransaction().add(R.id.frame_layout, fragment,
-                    AppPostListPagerFragment.TAG).commit()
+            if (postId != null) {
+                fragment = AppPostListPagerFragment.newInstance(threadId, pageNum, postId)
+                supportFragmentManager.beginTransaction().add(R.id.frame_layout, fragment,
+                        AppPostListPagerFragment.TAG).commit()
+            } else {
+                fragment = AppPostListFragment.newInstance(threadId, pageNum, postId)
+                supportFragmentManager.beginTransaction().add(R.id.frame_layout, fragment,
+                        AppPostListFragment.TAG).commit()
+            }
         }
     }
 
@@ -58,8 +59,8 @@ class AppPostListActivity : BaseActivity(), AppPostListPagerFragment.PagerCallba
                 }
     }
 
-    override fun getTotalPages(): Int {
-        return MathUtil.divide(thread.reliesCount + 1, Api.POSTS_PER_PAGE)
+    override fun setTotalPages(page: Int?) {
+        title = "${threadInfo?.subject} $page"
     }
 
     override var threadInfo: AppThread? = null
@@ -67,13 +68,13 @@ class AppPostListActivity : BaseActivity(), AppPostListPagerFragment.PagerCallba
     companion object {
         private const val RESULT_BLACKLIST = 11
 
-        private const val ARG_THREAD = "thread"
+        private const val ARG_THREAD_ID = "thread_id"
         private const val ARG_PAGE_NUM = "page_num"
         private const val ARG_QUOTE_POST_ID = "quote_post_id"
 
-        fun start(context: Context, thread: Thread, pageNum: Int, postId: String) {
+        fun start(context: Context, threadId: String, pageNum: Int, postId: String?) {
             val intent = Intent(context, AppPostListActivity::class.java)
-            intent.putExtra(ARG_THREAD, thread)
+            intent.putExtra(ARG_THREAD_ID, threadId)
             if (!TextUtils.isEmpty(postId)) {
                 intent.putExtra(ARG_QUOTE_POST_ID, postId)
             }
@@ -85,4 +86,6 @@ class AppPostListActivity : BaseActivity(), AppPostListPagerFragment.PagerCallba
                 context.startActivity(intent)
         }
     }
+
+
 }

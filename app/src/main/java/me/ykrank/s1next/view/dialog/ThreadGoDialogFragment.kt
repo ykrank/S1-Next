@@ -2,19 +2,19 @@ package me.ykrank.s1next.view.dialog
 
 import android.app.Dialog
 import android.content.DialogInterface
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.WindowManager
-import com.google.common.base.Optional
+import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
 import com.github.ykrank.androidtools.util.ViewUtil
+import com.google.common.base.Optional
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.ThreadLink
 import me.ykrank.s1next.databinding.DialogThreadGoBinding
-import me.ykrank.s1next.view.activity.PostListActivity
+import me.ykrank.s1next.view.page.post.PostListActivity
 
 /**
  * A dialog lets the user enter thread link/ID to go to that thread.

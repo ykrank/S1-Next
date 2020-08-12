@@ -1,10 +1,9 @@
-package me.ykrank.s1next.view.activity
+package me.ykrank.s1next.view.page.post
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.ThreadLink

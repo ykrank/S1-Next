@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.activity
+package me.ykrank.s1next.view.page.post
 
 import android.app.Activity
 import android.content.Context
@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.view.View
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ViewEvent
-import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.OnceClickUtil
 import com.github.ykrank.androidtools.widget.net.WifiBroadcastReceiver
@@ -25,9 +24,9 @@ import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.ThreadLink
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
-import me.ykrank.s1next.data.pref.ReadProgressPreferences
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager
-import me.ykrank.s1next.view.fragment.PostListFragment
+import me.ykrank.s1next.view.activity.BaseActivity
+import me.ykrank.s1next.view.activity.ForumActivity
 import javax.inject.Inject
 
 /**
@@ -188,7 +187,7 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
                         }, { L.report(it) })
             } else {
                 return OnceClickUtil.setOnceClickLister(view) {
-                    PostListActivity.start(it.context, thread.get(), false)
+                    start(it.context, thread.get(), false)
                 }
             }
         }

@@ -1,11 +1,11 @@
 package me.ykrank.s1next.view.fragment
 
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.annotation.CallSuper
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.text.TextUtils
 import android.view.*
+import androidx.annotation.CallSuper
+import androidx.databinding.DataBindingUtil
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.ykrank.androidtools.ui.LibBaseRecyclerViewFragment
 import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
@@ -125,7 +125,7 @@ abstract class BaseRecyclerViewFragment<D> : LibBaseRecyclerViewFragment<D>() {
      *
      * @param result The data's result we get.
      */
-    protected fun consumeResult(result: Result?) {
+    protected open fun consumeResult(result: Result?) {
         if (isAdded && userVisibleHint) {
             if (result != null) {
                 val message = result.message

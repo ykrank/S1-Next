@@ -5,15 +5,16 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import androidx.core.util.Pair;
 import android.view.View;
+
+import androidx.core.util.Pair;
 
 import com.github.ykrank.androidtools.util.L;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.ykrank.s1next.view.activity.PostListGatewayActivity;
+import me.ykrank.s1next.view.page.post.PostListGatewayActivity;
 
 /**
  * <xmp>

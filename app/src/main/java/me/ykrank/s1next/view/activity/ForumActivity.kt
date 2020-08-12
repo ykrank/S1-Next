@@ -2,16 +2,16 @@ package me.ykrank.s1next.view.activity
 
 import android.app.Activity
 import android.content.Intent
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NavUtils
 import androidx.core.app.TaskStackBuilder
-import android.view.View
-import android.widget.AdapterView
-import com.google.common.base.Optional
+import androidx.databinding.DataBindingUtil
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
+import com.google.common.base.Optional
 import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -20,6 +20,7 @@ import me.ykrank.s1next.databinding.ToolbarSpinnerBinding
 import me.ykrank.s1next.view.fragment.ForumFragment
 import me.ykrank.s1next.view.internal.RequestCode
 import me.ykrank.s1next.view.internal.ToolbarDropDownInterface
+import me.ykrank.s1next.view.page.post.PostListActivity
 import me.ykrank.s1next.viewmodel.DropDownItemListViewModel
 import javax.inject.Inject
 

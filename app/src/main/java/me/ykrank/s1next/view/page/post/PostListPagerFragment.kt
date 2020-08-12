@@ -1,15 +1,14 @@
-package me.ykrank.s1next.view.fragment
+package me.ykrank.s1next.view.page.post
 
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.os.SystemClock
-import androidx.core.util.Pair
-import androidx.recyclerview.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.util.Pair
+import androidx.databinding.DataBindingUtil
 import com.bigkoo.quicksidebar.QuickSideBarView
 import com.bigkoo.quicksidebar.listener.OnQuickSideBarTouchListener
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -22,6 +21,7 @@ import com.github.ykrank.androidtools.util.LooperUtil
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.RxBus
 import com.github.ykrank.androidtools.widget.recycleview.StartSnapLinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
@@ -50,9 +50,11 @@ import me.ykrank.s1next.view.adapter.PostListRecyclerViewAdapter
 import me.ykrank.s1next.view.event.BlackListChangeEvent
 import me.ykrank.s1next.view.event.PostSelectableChangeEvent
 import me.ykrank.s1next.view.event.QuickSidebarEnableChangeEvent
-import me.ykrank.s1next.view.fragment.PostListPagerFragment.PagerCallback
+import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateQuickSidebarImpl
 import me.ykrank.s1next.view.internal.PagerScrollState
+import me.ykrank.s1next.view.page.app.AppPostListActivity
+import me.ykrank.s1next.view.page.post.PostListPagerFragment.PagerCallback
 import java.util.*
 import javax.inject.Inject
 
@@ -66,17 +68,21 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
 
     @Inject
     internal lateinit var mRxBus: RxBus
+
     @Inject
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
+
     @Inject
     internal lateinit var objectMapper: ObjectMapper
 
     private var mThreadId: String? = null
     private var mPageNum: Int = 0
+
     /**
      * Only see this author, or all if null
      */
     private var mAuthorId: String? = null
+
     /**
      * 之前记录的阅读进度
      */
@@ -363,7 +369,18 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                     mRecyclerAdapter.hideFooterProgress()
                 }
             }
-            consumeResult(data.result)
+
+            val threadId = mThreadId ?: posts.postListInfo?.id
+            if (threadId != null) {
+                if (isAdded && userVisibleHint) {
+                    Snackbar.make(binding.root, data.result?.message
+                            ?: "加载失败", Snackbar.LENGTH_INDEFINITE).setAction(R.string.click_to_cast_dark_magic, View.OnClickListener {
+                        AppPostListActivity.start(context!!, threadId, mPageNum, null)
+                    }).show()
+                }
+            } else {
+                consumeResult(data.result)
+            }
         } else {
             super.onNext(data)
             initQuickSidebar(mPageNum, postList.size)
@@ -413,7 +430,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                 }
             }
 
-            mPagerCallback?.threadInfo = postListInfo
+            mPagerCallback?.setThreadInfo(postListInfo)
             posts.threadAttachment?.let {
                 mPagerCallback?.setupThreadAttachment(it)
             }
@@ -517,7 +534,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
 
         fun setupThreadAttachment(threadAttachment: Posts.ThreadAttachment)
 
-        var threadInfo: Thread?
+        fun setThreadInfo(thread: Thread?)
     }
 
     companion object {

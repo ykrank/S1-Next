@@ -3,13 +3,12 @@ package me.ykrank.s1next.view.dialog
 import android.os.Bundle
 import com.github.ykrank.androidtools.extension.toast
 import com.google.common.base.Optional
-import com.google.common.base.Preconditions
 import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.ThreadLink
 import me.ykrank.s1next.util.ErrorUtil
-import me.ykrank.s1next.view.activity.PostListActivity
+import me.ykrank.s1next.view.page.post.PostListActivity
 import java.util.regex.Pattern
 
 /**

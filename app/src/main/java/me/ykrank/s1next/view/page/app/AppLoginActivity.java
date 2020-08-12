@@ -1,14 +1,14 @@
-package me.ykrank.s1next.view.activity;
+package me.ykrank.s1next.view.page.app;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.view.fragment.AppLoginFragment;
+import me.ykrank.s1next.view.activity.BaseActivity;
 import me.ykrank.s1next.view.internal.RequestCode;
 
-public final class AppLoginActivity extends BaseActivity{
+public final class AppLoginActivity extends BaseActivity {
 
     public static void startLoginActivityForResultMessage(Activity activity) {
         Intent intent = new Intent(activity, AppLoginActivity.class);
