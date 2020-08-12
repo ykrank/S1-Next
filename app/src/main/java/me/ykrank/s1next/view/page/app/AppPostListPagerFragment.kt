@@ -1,14 +1,13 @@
-package me.ykrank.s1next.view.fragment
+package me.ykrank.s1next.view.page.app
 
 import android.content.Context
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.recyclerview.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import com.bigkoo.quicksidebar.QuickSideBarView
 import com.bigkoo.quicksidebar.listener.OnQuickSideBarTouchListener
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -18,6 +17,7 @@ import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegat
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.LooperUtil
+import com.github.ykrank.androidtools.util.MathUtil
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.RxBus
 import com.github.ykrank.androidtools.widget.recycleview.StartSnapLinearLayoutManager
@@ -38,8 +38,9 @@ import me.ykrank.s1next.databinding.FragmentBaseWithQuickSideBarBinding
 import me.ykrank.s1next.util.JsonUtil
 import me.ykrank.s1next.view.adapter.AppPostListRecyclerViewAdapter
 import me.ykrank.s1next.view.event.*
-import me.ykrank.s1next.view.fragment.AppPostListPagerFragment.PagerCallback
+import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateQuickSidebarImpl
+import me.ykrank.s1next.view.page.app.AppPostListPagerFragment.PagerCallback
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -54,10 +55,13 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
 
     @Inject
     internal lateinit var mRxBus: RxBus
+
     @Inject
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
+
     @Inject
     internal lateinit var objectMapper: ObjectMapper
+
     @Inject
     internal lateinit var appService: AppService
 
@@ -122,7 +126,11 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        mPagerCallback = context as PagerCallback
+        mPagerCallback = if (parentFragment != null) {
+            parentFragment as PagerCallback
+        } else {
+            context as PagerCallback
+        }
     }
 
     override fun onDetach() {
@@ -192,6 +200,8 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
     override fun onNext(data: AppPostsWrapper) {
         L.print(data.toString())
         mPagerCallback?.threadInfo = data.thread
+        mPagerCallback?.setTotalPages(MathUtil.divide(data.data?.totalCount
+                ?: 0, data.data?.pageSize ?: 1))
         val pullUpToRefresh = isPullUpToRefresh
         var postList: List<AppPost>? = null
 
@@ -297,17 +307,13 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
     }
 
     interface PagerCallback {
-
-        /**
-         * Gets [android.support.v4.view.PagerAdapter.getCount].
-         */
-        fun getTotalPages(): Int
+        fun setTotalPages(page: Int?)
 
         var threadInfo: AppThread?
     }
 
     companion object {
-        val TAG = AppPostListPagerFragment::class.java.name!!
+        val TAG = AppPostListPagerFragment::class.java.name
 
         private const val ARG_THREAD_ID = "thread_id"
         private const val ARG_PAGE_NUM = "page_num"
@@ -317,7 +323,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
          */
         private const val ARG_QUOTE_POST_ID = "quote_post_id"
 
-        fun newInstance(threadId: String, pageNum: Int, postId: String): AppPostListPagerFragment {
+        fun newInstance(threadId: String, pageNum: Int, postId: String?): AppPostListPagerFragment {
             val fragment = AppPostListPagerFragment()
             val bundle = Bundle()
             bundle.putString(ARG_THREAD_ID, threadId)

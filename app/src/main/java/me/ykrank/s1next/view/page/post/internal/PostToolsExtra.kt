@@ -1,8 +1,8 @@
-package me.ykrank.s1next.view.internal
+package me.ykrank.s1next.view.page.post.internal
 
+import android.widget.EditText
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import android.widget.EditText
 import me.ykrank.s1next.R
 
 abstract class PostToolsExtra(@DrawableRes val icon: Int, @StringRes val name: Int) {

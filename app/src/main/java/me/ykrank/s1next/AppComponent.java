@@ -1,7 +1,6 @@
 package me.ykrank.s1next;
 
 import com.github.ykrank.androidtools.widget.EditorDiskCache;
-import com.github.ykrank.androidtools.widget.hostcheck.BaseDns;
 import com.github.ykrank.androidtools.widget.net.WifiBroadcastReceiver;
 
 import dagger.Component;
@@ -21,8 +20,6 @@ import me.ykrank.s1next.task.AutoSignTask;
 import me.ykrank.s1next.view.activity.BaseActivity;
 import me.ykrank.s1next.view.activity.ForumActivity;
 import me.ykrank.s1next.view.activity.GalleryActivity;
-import me.ykrank.s1next.view.activity.PostListActivity;
-import me.ykrank.s1next.view.activity.PostListGatewayActivity;
 import me.ykrank.s1next.view.activity.SearchActivity;
 import me.ykrank.s1next.view.activity.ThreadListActivity;
 import me.ykrank.s1next.view.activity.UserHomeActivity;
@@ -44,7 +41,6 @@ import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
 import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment;
 import me.ykrank.s1next.view.dialog.VoteDialogFragment;
-import me.ykrank.s1next.view.fragment.AppPostListPagerFragment;
 import me.ykrank.s1next.view.fragment.BaseFragment;
 import me.ykrank.s1next.view.fragment.BasePostFragment;
 import me.ykrank.s1next.view.fragment.BaseViewPagerFragment;
@@ -61,8 +57,6 @@ import me.ykrank.s1next.view.fragment.NewThreadFragment;
 import me.ykrank.s1next.view.fragment.NoteFragment;
 import me.ykrank.s1next.view.fragment.PmFragment;
 import me.ykrank.s1next.view.fragment.PmGroupsFragment;
-import me.ykrank.s1next.view.fragment.PostListFragment;
-import me.ykrank.s1next.view.fragment.PostListPagerFragment;
 import me.ykrank.s1next.view.fragment.ReplyFragment;
 import me.ykrank.s1next.view.fragment.ThreadListFragment;
 import me.ykrank.s1next.view.fragment.ThreadListPagerFragment;
@@ -74,11 +68,15 @@ import me.ykrank.s1next.view.fragment.setting.GeneralPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.NetworkPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.ReadProgressPreferenceFragment;
 import me.ykrank.s1next.view.internal.DrawerLayoutDelegateConcrete;
+import me.ykrank.s1next.view.page.app.AppPostListFragment;
+import me.ykrank.s1next.view.page.app.AppPostListPagerFragment;
+import me.ykrank.s1next.view.page.post.PostListActivity;
+import me.ykrank.s1next.view.page.post.PostListFragment;
+import me.ykrank.s1next.view.page.post.PostListGatewayActivity;
+import me.ykrank.s1next.view.page.post.PostListPagerFragment;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.AppActivityLifecycleCallbacks;
 import me.ykrank.s1next.widget.download.ImageDownloadManager;
-import me.ykrank.s1next.widget.glide.AppHttpStreamFetcher;
-import me.ykrank.s1next.widget.glide.AppHttpUrlLoader;
 import me.ykrank.s1next.widget.glide.AvatarStreamFetcher;
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache;
 import me.ykrank.s1next.widget.glide.MultiThreadHttpStreamFetcher;
@@ -246,7 +244,7 @@ public interface AppComponent {
 
     void inject(ForumFragment fragment);
 
-    void inject(BaseViewPagerFragment baseViewPagerFragment);
+    void inject(BaseViewPagerFragment fragment);
 
     void inject(AppActivityLifecycleCallbacks appActivityLifecycleCallbacks);
 
@@ -263,4 +261,6 @@ public interface AppComponent {
     void inject(ThreadListFragment fragment);
 
     void inject(MultiThreadHttpStreamFetcher multiThreadHttpStreamFetcher);
+
+    void inject(AppPostListFragment fragment);
 }

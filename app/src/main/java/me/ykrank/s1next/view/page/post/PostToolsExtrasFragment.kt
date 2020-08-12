@@ -1,8 +1,6 @@
-package me.ykrank.s1next.view.fragment
+package me.ykrank.s1next.view.page.post
 
 import android.os.Bundle
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +9,8 @@ import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
 import me.ykrank.s1next.R
 import me.ykrank.s1next.databinding.FragmentPostToolsExtrasBinding
 import me.ykrank.s1next.databinding.ItemPostToolsExtrasBinding
-import me.ykrank.s1next.view.internal.*
+import me.ykrank.s1next.view.fragment.BaseFragment
+import me.ykrank.s1next.view.page.post.internal.*
 
 class PostToolsExtrasFragment : BaseFragment() {
 

@@ -1,11 +1,12 @@
 package me.ykrank.s1next.viewmodel;
 
-import androidx.databinding.ObservableField;
 import android.net.Uri;
 import android.view.View;
 
+import androidx.databinding.ObservableField;
+
 import me.ykrank.s1next.data.api.model.HomeReply;
-import me.ykrank.s1next.view.activity.PostListGatewayActivity;
+import me.ykrank.s1next.view.page.post.PostListGatewayActivity;
 
 /**
  * Created by ykrank on 2017/2/4.

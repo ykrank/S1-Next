@@ -1,12 +1,11 @@
 package me.ykrank.s1next.viewmodel
 
+import android.view.MenuItem
+import android.view.View
+import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
-import androidx.fragment.app.FragmentActivity
-import androidx.appcompat.widget.PopupMenu
-import android.view.MenuItem
-import android.view.View
 import com.github.ykrank.androidtools.util.ContextUtils
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.RxBus
@@ -16,12 +15,12 @@ import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.model.Post
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.Vote
-import me.ykrank.s1next.view.activity.AppPostListActivity
-import me.ykrank.s1next.view.activity.PostListActivity
 import me.ykrank.s1next.view.activity.UserHomeActivity
 import me.ykrank.s1next.view.activity.WebViewActivity
 import me.ykrank.s1next.view.event.*
 import me.ykrank.s1next.view.internal.BlacklistMenuAction
+import me.ykrank.s1next.view.page.app.AppPostListActivity
+import me.ykrank.s1next.view.page.post.PostListActivity
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 
 class PostViewModel(private val rxBus: RxBus, private val user: User) {
@@ -181,8 +180,8 @@ class PostViewModel(private val rxBus: RxBus, private val user: User) {
     fun onAppPostClick(v: View) {
         val p = post.get()
         val t = thread.get()
-        if (p != null && t != null) {
-            AppPostListActivity.start(v.context, t, p.getPage(), p.id.toString())
+        if (p != null && t?.id != null) {
+            AppPostListActivity.start(v.context, t.id!!, p.getPage(), p.id.toString())
         }
     }
 

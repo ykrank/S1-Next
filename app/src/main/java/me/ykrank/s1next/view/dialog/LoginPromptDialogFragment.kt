@@ -2,12 +2,11 @@ package me.ykrank.s1next.view.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.FragmentManager
 import androidx.appcompat.app.AlertDialog
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
-import me.ykrank.s1next.view.activity.AppLoginActivity
 import me.ykrank.s1next.view.activity.LoginActivity
+import me.ykrank.s1next.view.page.app.AppLoginActivity
 
 /**
  * A dialog shows login prompt.

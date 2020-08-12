@@ -48,7 +48,7 @@
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
-            android:name=".view.activity.AppLoginActivity"
+            android:name=".view.page.app.AppLoginActivity"
             android:label="@string/action_app_login"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
@@ -80,15 +80,15 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".view.activity.PostListActivity"
+            android:name=".view.page.post.PostListActivity"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".view.activity.AppPostListActivity"
+            android:name=".view.page.app.AppPostListActivity"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".view.activity.PostListGatewayActivity"
+            android:name=".view.page.post.PostListGatewayActivity"
             android:theme="@style/Theme.Translucent.Light">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -155,7 +155,7 @@
             android:label="@string/title_new_thread" />
 
         <activity
-            android:name=".view.activity.EditPostActivity"
+            android:name=".view.page.edit.EditPostActivity"
             android:label="@string/title_edit_post" />
 
         <activity

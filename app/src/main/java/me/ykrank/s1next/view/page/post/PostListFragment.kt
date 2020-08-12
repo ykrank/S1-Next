@@ -1,19 +1,18 @@
-package me.ykrank.s1next.view.fragment
+package me.ykrank.s1next.view.page.post
 
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.annotation.MainThread
-import androidx.fragment.app.FragmentManager
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.MainThread
+import androidx.fragment.app.FragmentManager
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
-import com.github.ykrank.androidtools.ui.LibBaseViewPagerFragment
 import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate
 import com.github.ykrank.androidtools.util.*
 import com.github.ykrank.androidtools.widget.RxBus
@@ -36,11 +35,16 @@ import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager
 import me.ykrank.s1next.util.IntentUtil
-import me.ykrank.s1next.view.activity.*
+import me.ykrank.s1next.view.activity.BaseActivity
+import me.ykrank.s1next.view.activity.NewRateActivity
+import me.ykrank.s1next.view.activity.NewReportActivity
+import me.ykrank.s1next.view.activity.ReplyActivity
 import me.ykrank.s1next.view.dialog.*
 import me.ykrank.s1next.view.event.*
+import me.ykrank.s1next.view.fragment.BaseViewPagerFragment
 import me.ykrank.s1next.view.internal.PagerScrollState
 import me.ykrank.s1next.view.internal.RequestCode
+import me.ykrank.s1next.view.page.edit.EditPostActivity
 import me.ykrank.s1next.widget.track.event.ViewThreadTrackEvent
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -348,15 +352,12 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         return mThreadTitle
     }
 
-    override var threadInfo: Thread? = null
-        get() = field
-        set(value) {
-            if (value != null && field != value) {
-                field = value
-                setThreadTitle(value.title)
-                setTotalPageByPosts(value.reliesCount + 1)
-            }
+    override fun setThreadInfo(thread: Thread?) {
+        if (thread != null) {
+            setThreadTitle(thread.title)
+            setTotalPageByPosts(thread.reliesCount + 1)
         }
+    }
 
     private fun setTotalPageByPosts(threads: Int) {
         setTotalPages(MathUtil.divide(threads, Api.POSTS_PER_PAGE))
@@ -515,6 +516,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         private const val ARG_TYPE = "type"
         private const val ARG_THREAD = "thread"
         private const val ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page"
+
         /**
          * Only see this author post
          */
