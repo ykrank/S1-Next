@@ -289,7 +289,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
         private const val MaxImageSize = 6400
         private const val Msg_Invalidate_Span = 2
         private const val Msg_Invalidate_Span_Late = 3
-        const val SpanInvalidateColdTime = 50
+        const val SpanInvalidateColdTime = 100
 
         @MainThread
         operator fun get(textView: TextView): GlideImageGetter {

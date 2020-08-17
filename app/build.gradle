@@ -126,8 +126,8 @@ dependencies {
     playImplementation fileTree(include: ['*.jar'], dir: 'libs/flavors/play')
     normalImplementation fileTree(include: ['*.jar'], dir: 'libs/flavors/normal')
 
-    normalImplementation "com.github.ykrank.AndroidTools:library:v1.3.0:normal@aar"
-    playImplementation "com.github.ykrank.AndroidTools:library:v1.3.0:play@aar"
+    normalImplementation "com.github.ykrank.AndroidTools:library:v1.4.0:normal@aar"
+    playImplementation "com.github.ykrank.AndroidTools:library:v1.4.0:play@aar"
     implementation 'com.github.ykrank.AndroidTools:JKeyboardPanelSwitch:v1.2.0'
 
     // Library start
@@ -162,7 +162,7 @@ dependencies {
 
     playImplementation 'com.tencent.bugly:crashreport:3.2.3'
     normalImplementation 'com.tencent.bugly:crashreport_upgrade:1.4.2'
-    implementation 'com.tencent.bugly:nativecrashreport:3.7.1'
+    implementation 'com.tencent.bugly:nativecrashreport:3.7.47'
 
     implementation 'com.orhanobut:logger:2.2.0'
 
