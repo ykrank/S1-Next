@@ -14,6 +14,7 @@ class NoticeCheckTask(private val mRxBus: RxBus, private val mS1Service: S1Servi
 
     @Volatile
     private var lastCheckTime: Long = 0
+
     @Volatile
     private var checking = false
 
@@ -35,10 +36,14 @@ class NoticeCheckTask(private val mRxBus: RxBus, private val mS1Service: S1Servi
 
     private fun startCheckNotice() {
         checking = true
-        mS1Service.getPmGroups(1)
-                .compose(RxJavaUtil.iOSingleTransformer())
-                .doAfterTerminate { lastCheckTime = SystemClock.elapsedRealtime() }
-                .subscribe({ mRxBus.post(NoticeRefreshEvent::class.java, NoticeRefreshEvent(it.data?.hasNew(), null)) }, L::e)
+        try {
+            mS1Service.getPmGroups(1)
+                    .compose(RxJavaUtil.iOSingleTransformer())
+                    .doAfterTerminate { lastCheckTime = SystemClock.elapsedRealtime() }
+                    .subscribe({ mRxBus.post(NoticeRefreshEvent::class.java, NoticeRefreshEvent(it.data?.hasNew(), null)) }, L::e)
+        } catch (e: Exception) {
+
+        }
     }
 
     companion object {
