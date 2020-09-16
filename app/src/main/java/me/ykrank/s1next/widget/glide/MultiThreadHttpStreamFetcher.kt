@@ -25,6 +25,7 @@ open class MultiThreadHttpStreamFetcher(client: Call.Factory, val url: GlideUrl)
 
     @Inject
     lateinit var imageDownloadManager: ImageDownloadManager
+
     @Inject
     lateinit var mDownloadPreferencesManager: DownloadPreferencesManager
 
@@ -38,7 +39,7 @@ open class MultiThreadHttpStreamFetcher(client: Call.Factory, val url: GlideUrl)
     }
 
     override fun loadData(priority: Priority, callback: DataFetcher.DataCallback<in InputStream>) {
-        if (!mDownloadPreferencesManager.multiThreadDownload) {
+        if (true || !mDownloadPreferencesManager.multiThreadDownload) {
             return super.loadData(priority, callback)
         }
         if (url.toStringUrl()?.toHttpUrlOrNull() == null) {
