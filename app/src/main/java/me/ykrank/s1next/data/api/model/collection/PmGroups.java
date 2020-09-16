@@ -23,7 +23,6 @@ public final class PmGroups extends Account {
     @JsonProperty("count")
     private int total;
 
-    @Nullable
     @JsonProperty("list")
     private List<PmGroup> pmGroupList;
 
