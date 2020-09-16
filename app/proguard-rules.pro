@@ -7,6 +7,7 @@
 -keep public class me.ykrank.s1next.data.api.app.model.** { *; }
 -keep public class me.ykrank.s1next.data.cache.** { *; }
 -keep public class me.ykrank.s1next.data.db.dbmodel.ReadProgress { *; }
+-keep public class me.ykrank.s1next.widget.uploadimg.model.** { *; }
 # GreenDao model
 -keep public class me.ykrank.s1next.data.db.dbmodel.** { *; }
 

@@ -70,6 +70,14 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
     private val density: Float by lazy {
         mTextView.context.resources.displayMetrics.density
     }
+    private val emoticonAssetRequestOptions by lazy {
+        RequestOptions()
+                .error(R.mipmap.unknown_image)
+                //Do not cache asset
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                //Original size because gif could not downSample
+                .downsample(SizeMultiplierDownSampleStrategy(1.0f))
+    }
     private val emoticonRequestOptions by lazy {
         RequestOptions()
                 .error(R.mipmap.unknown_image)
@@ -177,7 +185,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
 
             val glideRequestBuilder = requestManager
                     .load(Uri.parse(EmoticonFactory.ASSET_PATH_EMOTICON + emoticonName))
-                    .apply(emoticonRequestOptions)
+                    .apply(emoticonAssetRequestOptions)
                     .listener(object : RequestListener<Drawable> {
                         override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Drawable>, isFirstResource: Boolean): Boolean {
                             L.leaveMsg("Exception in emoticon uri:$model")

@@ -126,8 +126,8 @@ dependencies {
     playImplementation fileTree(include: ['*.jar'], dir: 'libs/flavors/play')
     normalImplementation fileTree(include: ['*.jar'], dir: 'libs/flavors/normal')
 
-    normalImplementation "com.github.ykrank.AndroidTools:library:v1.4.1:normal@aar"
-    playImplementation "com.github.ykrank.AndroidTools:library:v1.4.1:play@aar"
+    normalImplementation "com.github.ykrank.AndroidTools:library:v1.4.2:normal@aar"
+    playImplementation "com.github.ykrank.AndroidTools:library:v1.4.2:play@aar"
     implementation 'com.github.ykrank.AndroidTools:JKeyboardPanelSwitch:v1.2.0'
 
     // Library start

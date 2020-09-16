@@ -46,7 +46,12 @@ object ErrorUtil : ErrorParser {
             is ApiException -> msg = throwable.getLocalizedMessage()
             is JsonProcessingException -> {
                 msg = context.getString(R.string.message_server_data_error)
-                L.report(throwable)
+                val source = throwable.location?.sourceRef
+                if (source is String && source.trimStart().startsWith("<!DOCTYPE html")) {
+                    L.print(throwable)
+                } else {
+                    L.report(throwable)
+                }
             }
             is IOException -> {
                 msg = context.getString(R.string.message_network_error)
@@ -60,6 +65,9 @@ object ErrorUtil : ErrorParser {
             }
             is CompositeException -> {
                 for (ex in throwable.exceptions) {
+                    L.leaveMsg("CompositeException")
+                    L.leaveMsg(ex)
+                    L.report(ex)
                     val exMsg = parseNetError(context, ex)
                     if (exMsg != null) {
                         msg = exMsg
@@ -80,12 +88,16 @@ object ErrorUtil : ErrorParser {
             is SSLException -> return true
             is ApiException.ApiServerException -> {
                 val msg = throwable.message
-                if (msg != null){
-                    if (msg.contains("您需要绑定自己的手机", false) ||
-                            msg.contains("您尚未登录", false)||
-                            msg.contains("您需要升级所在的用户组", false)){
+                if (msg != null) {
+                    if (msg.contains("您需要绑定", false) ||
+                            msg.contains("您尚未登录", false) ||
+                            msg.contains("您需要升级所在的用户组", false) ||
+                            msg.contains("论坛维护中", false) ||
+                            msg.contains("抱歉", false)) {
                         return true
                     }
+                    if (msg.trim() == "HTTP 503") return true
+
                 }
             }
         }

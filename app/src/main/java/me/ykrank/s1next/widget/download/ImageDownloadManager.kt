@@ -5,7 +5,6 @@ import com.liulishuo.okdownload.DownloadTask
 import com.liulishuo.okdownload.OkDownload
 import com.liulishuo.okdownload.core.connection.DownloadOkHttp3Connection
 import com.liulishuo.okdownload.core.dispatcher.DownloadDispatcher
-import me.ykrank.s1next.data.api.ApiUtil
 import okhttp3.OkHttpClient
 import java.io.File
 
@@ -31,9 +30,7 @@ class ImageDownloadManager(private val okhttpBuilder: OkHttpClient.Builder) {
                 // the minimal interval millisecond for callback progress
                 .setMinIntervalMillisCallbackProcess(300)
                 // ignore the same task has already completed in the past.
-                .setPassIfAlreadyCompleted(true)
-                .setFilenameFromResponse(false)
-                .setFilename(ApiUtil.getUrlId(url))
+                .setPassIfAlreadyCompleted(false)
                 .build()
         val imageDownloadTask = ImageDownloadTask(task)
         imageDownloadTask.enqueue(downloadListener)
