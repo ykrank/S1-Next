@@ -91,7 +91,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
 
         val bundle = arguments!!
         val type = bundle.getInt(ARG_TYPE)
-        val thread = bundle.getParcelable(ARG_THREAD) as Thread
+        val thread: Thread = bundle.getParcelable(ARG_THREAD)!!
         val authorId = bundle.getString(ARG_AUTHOR_ID)
         // thread title is null if this thread comes from ThreadLink
         mThreadTitle = thread.title
@@ -490,9 +490,9 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
             val progress = readProgress
             val bundle = arguments!!
             val jumpPage = bundle.getInt(ARG_JUMP_PAGE, -1)
-            val quotePostId = bundle.getString(ARG_QUOTE_POST_ID)
+            val quotePostId: String? = bundle.getString(ARG_QUOTE_POST_ID)
             val authorId = bundle.getString(ARG_AUTHOR_ID)
-            if (jumpPage == i + 1 && !TextUtils.isEmpty(quotePostId)) {
+            if (jumpPage == i + 1 && !quotePostId.isNullOrEmpty()) {
                 // clear this arg string because we only need to tell PostListPagerFragment once
                 arguments?.putString(ARG_QUOTE_POST_ID, null)
                 return PostListPagerFragment.newInstance(mThreadId, jumpPage, quotePostId)

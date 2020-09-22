@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- only get mac to verify user -->
+    <!-- to update image loader policy -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- only need IMEI to verify user -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />

@@ -45,7 +45,7 @@ class WebViewFragment : BaseFragment(), BackPressDelegate {
         super.onViewCreated(view, savedInstanceState)
 
         val bundle = arguments!!
-        url = bundle.getString(ARG_URL)
+        url = bundle.getString(ARG_URL)!!
         enableJs = bundle.getBoolean(ARG_ENABLE_JS)
         pcAgent = bundle.getBoolean(ARG_PC_AGENT)
 
