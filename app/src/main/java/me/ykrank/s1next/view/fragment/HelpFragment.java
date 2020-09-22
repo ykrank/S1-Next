@@ -2,10 +2,8 @@ package me.ykrank.s1next.view.fragment;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,8 +13,13 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
 import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate;
 import com.github.ykrank.androidtools.util.L;
+
+import org.jetbrains.annotations.NotNull;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.databinding.FragmentWebviewBinding;
@@ -49,7 +52,7 @@ public final class HelpFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mFragmentHelpBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_webview, container,
                 false);
         mWebView = mFragmentHelpBinding.webView;
@@ -57,7 +60,7 @@ public final class HelpFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         L.leaveMsg("HelpFragment");
 
