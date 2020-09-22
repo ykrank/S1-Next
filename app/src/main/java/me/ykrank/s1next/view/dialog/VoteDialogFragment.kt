@@ -35,8 +35,10 @@ import javax.inject.Inject
 class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
     @Inject
     lateinit var appService: AppService
+
     @Inject
     lateinit var s1Service: S1Service
+
     @Inject
     lateinit var mUser: User
 
@@ -50,8 +52,8 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
-        tid = arguments!!.getString(ARG_THREAD_ID)
-        mVote = arguments!!.getParcelable(ARG_VOTE)
+        tid = arguments!!.getString(ARG_THREAD_ID)!!
+        mVote = arguments!!.getParcelable(ARG_VOTE)!!
 
         adapter = SimpleRecycleViewAdapter(context!!, R.layout.item_vote, false, BindViewHolderCallback { position, itemBind ->
             itemBind as ItemVoteBinding
@@ -80,7 +82,7 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.window.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
         return dialog
     }

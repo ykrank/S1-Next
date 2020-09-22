@@ -114,7 +114,8 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
                 return true
             }
             R.id.menu_new_thread -> {
-                NewThreadActivity.startNewThreadActivityForResultMessage(this, Integer.parseInt(forum.id))
+                NewThreadActivity.startNewThreadActivityForResultMessage(this, forum.id?.toInt()
+                        ?: 0)
                 return true
             }
             R.id.menu_random_image -> {

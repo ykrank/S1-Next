@@ -38,7 +38,7 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
         super.onViewCreated(view, savedInstanceState)
         App.appComponent.inject(this)
 
-        val forum = arguments!!.getParcelable(ARG_FORUM) as Forum
+        val forum:Forum = arguments!!.getParcelable(ARG_FORUM)!!
         mForumName = forum.name
         mForumId = forum.id!!
         leavePageMsg("ThreadListFragment##ForumName:$mForumName,ForumId:$mForumId")

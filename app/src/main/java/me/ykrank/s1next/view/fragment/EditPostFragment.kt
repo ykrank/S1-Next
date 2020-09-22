@@ -40,8 +40,8 @@ class EditPostFragment : BasePostFragment() {
         binding = FragmentEditPostBinding.inflate(inflater, container, false)
         initCreateView(binding.layoutPost)
 
-        mThread = arguments?.getParcelable(ARG_THREAD) as Thread
-        mPost = arguments?.getParcelable(ARG_POST) as Post
+        mThread = arguments!!.getParcelable(ARG_THREAD)!!
+        mPost = arguments!!.getParcelable(ARG_POST)!!
 
         isHost = mPost.isFirst
         binding.host = isHost
