@@ -274,13 +274,13 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         val source: Single<PostsWrapper> = if (mDownloadPrefManager.netCacheEnable) {
             //If last page, force refresh cache
             apiCacheObservable(isForceLoading || mPageNum >= mPagerCallback?.getTotalPages() ?: 0)
-                    .flatMap {
+                    .flatMap { reply ->
                         //                        L.d("Source:$mPageNum," + java.lang.Thread.currentThread().toString())
-                        val wrapper = objectMapper.readValue(it.data, PostsWrapper::class.java)
+                        val wrapper = objectMapper.readValue(reply.data, PostsWrapper::class.java)
                         //If load cache and this page size < POSTS_PER_PAGE, it's the last page, then force refresh
-                        if (it.source != Source.CLOUD && wrapper.data.postList.size < Api.POSTS_PER_PAGE) {
+                        if (reply.source != Source.CLOUD && wrapper.data.postList.size < Api.POSTS_PER_PAGE) {
                             return@flatMap apiCacheObservable(true)
-                                    .map<String> { it.data }
+                                    .map { it.data }
                                     .compose(JsonUtil.jsonSingleTransformer(PostsWrapper::class.java))
                         }
                         Single.just(wrapper)
@@ -291,12 +291,12 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
 
         val rateSource: Single<RatePostsWrapper> = if (mDownloadPrefManager.netCacheEnable) {
             rateApiCacheObservable(isForceLoading || mPageNum >= mPagerCallback?.getTotalPages() ?: 0)
-                    .flatMap {
+                    .flatMap { reply ->
                         //                        L.d("RateSource:$mPageNum," + java.lang.Thread.currentThread().toString())
-                        val wrapper = objectMapper.readValue(it.data, RatePostsWrapper::class.java)
-                        if (it.source != Source.CLOUD && wrapper.data.postList?.size ?: 0 < Api.POSTS_PER_PAGE) {
+                        val wrapper = objectMapper.readValue(reply.data, RatePostsWrapper::class.java)
+                        if (reply.source != Source.CLOUD && wrapper.data.postList?.size ?: 0 < Api.POSTS_PER_PAGE) {
                             return@flatMap rateApiCacheObservable(true)
-                                    .map<String> { it.data }
+                                    .map { it.data }
                                     .compose(JsonUtil.jsonSingleTransformer(RatePostsWrapper::class.java))
                         }
                         Single.just(wrapper)
@@ -320,7 +320,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                             if (post.isTrade) {
                                 post.extraHtml = ""
                                 return@flatMap mS1Service.getTradePostInfo(mThreadId, post.id + 1)
-                                        .map<PostsWrapper> { html ->
+                                        .map { html ->
                                             post.extraHtml = ApiUtil.replaceAjaxHeader(html)
                                             return@map o
                                         }
@@ -392,10 +392,8 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                     it.rates = rates
                 }
             }
-            if (!pullUpToRefresh) {
-                //Do not load rates if pull up refresh
-                loadRates(postList)
-            }
+
+            loadRates(postList)
 
             //Thread info must not null, or exception
             val postListInfo = posts.postListInfo as Thread
@@ -473,11 +471,11 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         }
         rateStamp = time
 
-        Observable.fromIterable(posts.filter { it.rates != null }.distinctBy { it.id })
+        Observable.fromIterable(posts.filter { it.rates?.size == 0 && rateMap[it.id] == null }.distinctBy { it.id })
                 .flatMap {
                     val pid = it.id
                     mS1Service.getRates(mThreadId, pid.toString())
-                            .map { Pair(pid, Rate.fromHtml(it)) }
+                            .map { s -> Pair(pid, Rate.fromHtml(s)) }
                             .toObservable()
                 }
                 .compose(RxJavaUtil.iOTransformer())
@@ -485,7 +483,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                 .subscribe({
                     val pid = it.first
                     val rates = it.second
-                    if (pid != null && rates != null) {
+                    if (pid != null && rates?.isNotEmpty() == true) {
                         rateMap[pid] = rates
                         mRecyclerAdapter.dataSet.filterIsInstance(Post::class.java)
                                 .forEachIndexed { index, post ->

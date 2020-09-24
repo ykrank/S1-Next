@@ -21,7 +21,7 @@ class Rate : PaperParcelable, StableIdModel {
     val symbolScore: String get() = if (score ?: 0 < 0) "$score" else "+$score"
 
     override val stableId: Long
-        get() = uid?.toLongOrNull() ?: androidx.recyclerview.widget.RecyclerView.NO_ID
+        get() = uid?.toLongOrNull() ?: RecyclerView.NO_ID
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -75,7 +75,7 @@ class Rate : PaperParcelable, StableIdModel {
                         }
                         rate.uname = it.text()
                     }
-                    rate.time = df.parse(it.child(2).text()).time
+                    rate.time = df.parse(it.child(2).text())?.time
                     rate.content = it.child(3).text()
                     rates.add(rate)
                 }
