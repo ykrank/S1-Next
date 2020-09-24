@@ -21,8 +21,8 @@ android {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 66
-        versionName '2.4.2'
+        versionCode 68
+        versionName '2.4.2.2'
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
@@ -126,8 +126,8 @@ dependencies {
     playImplementation fileTree(include: ['*.jar'], dir: 'libs/flavors/play')
     normalImplementation fileTree(include: ['*.jar'], dir: 'libs/flavors/normal')
 
-    normalImplementation "com.github.ykrank.AndroidTools:library:1.4.2.2:normal@aar"
-    playImplementation "com.github.ykrank.AndroidTools:library:1.4.2.2:play@aar"
+    normalImplementation "com.github.ykrank.AndroidTools:library:1.4.2.4:normal@aar"
+    playImplementation "com.github.ykrank.AndroidTools:library:1.4.2.4:play@aar"
     implementation 'com.github.ykrank.AndroidTools:JKeyboardPanelSwitch:v1.2.0'
 
     // Library start
@@ -154,7 +154,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.11.0'
     //okhttp 3.12.0 have bug https://github.com/square/okhttp/issues/4395
-    implementation 'com.squareup.okhttp3:okhttp:4.8.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
 
     implementation 'com.shizhefei:LargeImageView:1.1.0'
     implementation 'com.github.ykrank:androidautodispose:0.4.0'

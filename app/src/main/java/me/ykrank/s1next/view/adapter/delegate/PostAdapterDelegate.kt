@@ -1,22 +1,24 @@
 package me.ykrank.s1next.view.adapter.delegate
 
 import android.content.Context
+import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.text.method.LinkMovementMethod
-import android.view.ViewGroup
+import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.AndroidLifeCycle
+import com.github.ykrank.androidlifecycle.event.ViewEvent
 import com.github.ykrank.androidtools.ui.adapter.simple.BindViewHolderCallback
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
+import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.RxBus
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
+import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.model.Post
+import me.ykrank.s1next.data.api.model.Rate
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.Vote
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
@@ -34,8 +36,13 @@ class PostAdapterDelegate(private val fragment: androidx.fragment.app.Fragment, 
 
     @Inject
     internal lateinit var mRxBus: RxBus
+
     @Inject
     internal lateinit var mUser: User
+
+    @Inject
+    internal lateinit var mS1Service: S1Service
+
     @Inject
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
     private var threadInfo: Thread? = null
@@ -57,7 +64,7 @@ class PostAdapterDelegate(private val fragment: androidx.fragment.app.Fragment, 
         return super.isForViewType(items, position)
     }
 
-    public override fun onCreateViewHolder(parent: ViewGroup): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+    public override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         val binding = DataBindingUtil.inflate<ItemPostBinding>(mLayoutInflater,
                 R.layout.item_post, parent, false)
         binding.postViewModel = PostViewModel(mRxBus, mUser)
@@ -95,8 +102,28 @@ class PostAdapterDelegate(private val fragment: androidx.fragment.app.Fragment, 
         }
 
         val rates = post.rates
-        if (rates != null && rates.isNotEmpty()) {
-            val context = binding.root.context
+        val context = binding.root.context
+        binding.tvRateViewAll.setOnClickListener {
+            if (rates?.isNotEmpty() == true) {
+                RateDetailsListActivity.start(context, ArrayList(rates))
+            } else {
+                mS1Service.getRates(threadInfo?.id, post.id.toString())
+                        .to(AndroidRxDispose.withSingle(holder.itemView, ViewEvent.DESTROY))
+                        .subscribe({
+                            val rates = Rate.fromHtml(it)
+                            post.rates = rates
+                            val adapter = binding.recycleViewRates.adapter as SimpleRecycleViewAdapter?
+                            if (adapter != null) {
+                                if (rates.size > 10) {
+                                    adapter.diffNewDataSet(rates.subList(0, 10), true)
+                                } else {
+                                    adapter.diffNewDataSet(rates, true)
+                                }
+                            }
+                        }, L::report)
+            }
+        }
+        if (rates?.isNotEmpty() == true) {
             if (binding.recycleViewRates.adapter == null) {
                 binding.recycleViewRates.adapter = SimpleRecycleViewAdapter(context, R.layout.item_rate_detail, true, BindViewHolderCallback { position, binding ->
                     val bind = binding as ItemRateDetailBinding?
@@ -114,7 +141,7 @@ class PostAdapterDelegate(private val fragment: androidx.fragment.app.Fragment, 
                     }
 
                 })
-                binding.recycleViewRates.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+                binding.recycleViewRates.layoutManager = LinearLayoutManager(context)
                 binding.recycleViewRates.isNestedScrollingEnabled = false
             }
             val adapter = binding.recycleViewRates.adapter as SimpleRecycleViewAdapter
@@ -124,10 +151,6 @@ class PostAdapterDelegate(private val fragment: androidx.fragment.app.Fragment, 
             } else {
                 adapter.diffNewDataSet(rates, true)
             }
-
-            binding.tvRateViewAll.setOnClickListener {
-                RateDetailsListActivity.start(context, ArrayList(rates))
-            }
         }
 
         binding.executePendingBindings()
@@ -135,7 +158,7 @@ class PostAdapterDelegate(private val fragment: androidx.fragment.app.Fragment, 
 
     // Bug workaround for losing text selection ability, see:
     // https://code.google.com/p/android/issues/detail?id=208169
-    override fun onViewAttachedToWindow(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder) {
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
         if (mGeneralPreferencesManager.isPostSelectable) {
             val binding = (holder as SimpleRecycleViewHolder<ItemPostBinding>).binding
