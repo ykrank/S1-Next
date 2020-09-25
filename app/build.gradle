@@ -6,16 +6,16 @@ apply plugin: 'org.greenrobot.greendao'
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
-def storefile = properties.getProperty('storeFile')
-def storepassword = properties.getProperty('storePassword')
-def keyalias = properties.getProperty('keyAlias')
-def keypassword = properties.getProperty('keyPassword')
+def _storeFile = properties.getProperty('storeFile')
+def _storePassword = properties.getProperty('storePassword')
+def _keyAlias = properties.getProperty('keyAlias')
+def _keyPassword = properties.getProperty('keyPassword')
 def httpDnsId = properties.getProperty('httpDnsId')
 def httpDnsSecret = properties.getProperty('httpDnsSecret')
 
 android {
     compileSdkVersion 29
-	buildToolsVersion rootProject.ext.buildToolsVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId 'me.ykrank.s1next'
@@ -26,11 +26,13 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
-        release {
-            storeFile file(storefile)
-            storePassword storepassword
-            keyAlias keyalias
-            keyPassword keypassword
+        if (_storeFile != null && !_storeFile.isEmpty()) {
+            release {
+                storeFile file(_storeFile)
+                storePassword _storePassword
+                keyAlias _keyAlias
+                keyPassword _keyPassword
+            }
         }
     }
     compileOptions {
@@ -81,7 +83,9 @@ android {
 
         release {
             multiDexEnabled true
-            signingConfig signingConfigs.release
+            if (signingConfigs.hasProperty('release')) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -94,12 +98,12 @@ android {
     }
     flavorDimensions "market"
     productFlavors {
-        play{
+        play {
             dimension "market"
             manifestPlaceholders["APP_CHANNEL"] = "play.google.com"
             versionNameSuffix '-play'
         }
-        normal{
+        normal {
             dimension "market"
             manifestPlaceholders["APP_CHANNEL"] = "normal"
         }
@@ -224,7 +228,7 @@ dependencies {
 
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.9'
 
-    implementation ('com.aliyun.ams:alicloud-android-httpdns:1.2.5@aar') {
+    implementation('com.aliyun.ams:alicloud-android-httpdns:1.2.5@aar') {
         transitive true
     }
 

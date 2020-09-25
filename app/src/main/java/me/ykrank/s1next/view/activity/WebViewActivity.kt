@@ -13,7 +13,7 @@ import me.ykrank.s1next.view.internal.BackPressDelegate
  */
 
 class WebViewActivity : BaseActivity() {
-    private var fragment: androidx.fragment.app.Fragment? = null
+    private var fragment: Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

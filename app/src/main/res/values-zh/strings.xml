@@ -235,4 +235,5 @@
     <string name="advise">提点建议</string>
     <string name="pref_multi_download">多线程下载</string>
     <string name="pref_post_max_image_show">每帖最多显示图片数</string>
+    <string name="go_note_web_hint">没找到消息？点击查看全部消息</string>
 </resources>
