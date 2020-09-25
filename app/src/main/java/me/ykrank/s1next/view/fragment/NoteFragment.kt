@@ -1,15 +1,24 @@
 package me.ykrank.s1next.view.fragment
 
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
+import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
 import com.github.ykrank.androidtools.util.MathUtil
 import com.github.ykrank.androidtools.widget.RxBus
 import io.reactivex.Single
 import me.ykrank.s1next.App
+import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.model.Note
 import me.ykrank.s1next.data.api.model.collection.Notes
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper
+import me.ykrank.s1next.databinding.FragmentNoteBinding
+import me.ykrank.s1next.view.activity.WebViewActivity
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter
 import me.ykrank.s1next.view.adapter.NoteRecyclerViewAdapter
 import me.ykrank.s1next.view.event.NoticeRefreshEvent
@@ -38,9 +47,16 @@ class NoteFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<Notes>>() {
         leavePageMsg("NoteFragment")
 
         val recyclerView = recyclerView
-        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+        recyclerView.layoutManager = LinearLayoutManager(context)
         mRecyclerAdapter = NoteRecyclerViewAdapter(activity)
         recyclerView.adapter = mRecyclerAdapter
+    }
+
+    override fun getLoadingViewModelBindingDelegateImpl(inflater: LayoutInflater, container: ViewGroup?): LoadingViewModelBindingDelegate {
+        val binding = FragmentNoteBinding.inflate(inflater, container, false)
+
+        binding.tvHint.setOnClickListener { WebViewActivity.start(context!!, Api.URL_VIEW_NOTE, enableJS = true, pcAgent = true) }
+        return LoadingViewModelBindingDelegateNoteImpl(binding)
     }
 
     override fun appendNewData(oldData: BaseDataWrapper<Notes>?, newData: BaseDataWrapper<Notes>): BaseDataWrapper<Notes> {
@@ -82,5 +98,24 @@ class NoteFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<Notes>>() {
         fun newInstance(): NoteFragment {
             return NoteFragment()
         }
+    }
+}
+
+class LoadingViewModelBindingDelegateNoteImpl(
+        private val binding: FragmentNoteBinding) : LoadingViewModelBindingDelegate {
+    override fun getRootView(): View {
+        return binding.root
+    }
+
+    override fun getSwipeRefreshLayout(): SwipeRefreshLayout {
+        return binding.swipeRefreshLayout
+    }
+
+    override fun getRecyclerView(): RecyclerView {
+        return binding.recyclerView
+    }
+
+    override fun setLoadingViewModel(loadingViewModel: LoadingViewModel) {
+        binding.loadingViewModel = loadingViewModel
     }
 }

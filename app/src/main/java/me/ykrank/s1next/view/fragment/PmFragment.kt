@@ -1,12 +1,10 @@
 package me.ykrank.s1next.view.fragment
 
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import com.github.ykrank.androidtools.ui.adapter.delegate.item.FooterItem
 import com.github.ykrank.androidtools.util.MathUtil
 import io.reactivex.Single
 import me.ykrank.s1next.App
@@ -88,7 +86,7 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
 
     override fun getPageSourceObservable(pageNum: Int): Single<PmsWrapper> {
         return mS1Service.getPmList(toUid, pageNum)
-                .map({ pmsWrapper -> pmsWrapper.setMsgToUsername(user, toUsername) })
+                .map { pmsWrapper -> pmsWrapper.setMsgToUsername(user, toUsername) }
     }
 
     override fun onNext(data: PmsWrapper) {
@@ -98,17 +96,11 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
             // update total page
             val totalPage = MathUtil.divide(pms.total, pms.pmPerPage)
 
-            //Add footer
-            if (pageNum == totalPage) {
-                val d = arrayListOf<Any>()
-                d.addAll(it)
-                d.add(FooterItem())
-                mRecyclerAdapter.diffNewDataSet(d, false)
-            }
+            mRecyclerAdapter.diffNewDataSet(it, false)
 
             setTotalPages(totalPage)
             //if this is first page and total page > 1, then load more
-            if (pageNum == 1 && totalPage > 1) {
+            if (pageNum < totalPage) {
                 startPullUpLoadMore()
             }
         }

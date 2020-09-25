@@ -1,10 +1,9 @@
 package me.ykrank.s1next.view.fragment
 
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.annotation.CallSuper
 import android.text.TextUtils
 import android.view.*
+import androidx.annotation.CallSuper
 import com.github.ykrank.androidtools.ui.LibBaseLoadMoreRecycleViewFragment
 import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
 import io.reactivex.Single
@@ -78,12 +77,10 @@ abstract class BaseLoadMoreRecycleViewFragment<D> : LibBaseLoadMoreRecycleViewFr
     override fun getLoadingViewModelBindingDelegateImpl(inflater: LayoutInflater,
                                                         container: ViewGroup?): LoadingViewModelBindingDelegate {
         if (isCardViewContainer) {
-            val binding = DataBindingUtil.inflate<FragmentBaseCardViewContainerBinding>(inflater,
-                    R.layout.fragment_base_card_view_container, container, false)
+            val binding = FragmentBaseCardViewContainerBinding.inflate(inflater, container, false)
             return LoadingViewModelBindingDelegateBaseCardViewContainerImpl(binding)
         } else {
-            val binding = DataBindingUtil.inflate<FragmentBaseBinding>(inflater, R.layout.fragment_base,
-                    container, false)
+            val binding = FragmentBaseBinding.inflate(inflater, container, false)
             return LoadingViewModelBindingDelegateBaseImpl(binding)
         }
     }

@@ -57,6 +57,8 @@ public final class Api {
 
     public static final String URL_WEB_BLACK_LIST = BASE_URL + "home.php?mod=space&do=friend&view=blacklist";
 
+    public static final String URL_VIEW_NOTE = prepend("home.php?mod=space&do=notice&view=system");
+
     private Api() {
     }
 
