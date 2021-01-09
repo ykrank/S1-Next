@@ -31,7 +31,13 @@ internal class ImageClickableResizeSpan(d: Drawable, source: String, private val
         } else {
             url = source
         }
-        url?.let { images.add(url) }
+        url?.let {
+            if (it.startsWith("https:")) {
+                images.add(it.replaceFirst("https:", "http:"))
+            } else {
+                images.add(it)
+            }
+        }
     }
 
     override fun onClick(v: View) {
