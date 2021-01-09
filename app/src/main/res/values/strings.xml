@@ -32,6 +32,7 @@
     <string name="help">Help</string>
     <string name="advise">Have advice</string>
     <string name="donate">Donate</string>
+    <string name="format_error">Format error</string>
 
     <string name="title_copied">Title copied</string>
 
@@ -284,7 +285,10 @@
     <string name="italic">Italic</string>
     <string name="underline">Underline</string>
     <string name="link">Link</string>
+    <string name="image">Image</string>
     <string name="strike_through">StrikeThrough</string>
+    <string name="quote">Quote</string>
+    <string name="credit_permission">Credit Permission</string>
     <string name="title_new_report">Report</string>
     <string name="report_msg_hint">Report reason</string>
     <string name="error_reason_required">Please write reason</string>

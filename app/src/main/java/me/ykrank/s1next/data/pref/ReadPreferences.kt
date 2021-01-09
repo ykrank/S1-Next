@@ -17,9 +17,9 @@ import java.io.IOException
 /**
  * A helper class retrieving the download preferences from [SharedPreferences].
  */
-class ReadProgressPreferencesImpl(context: Context, sharedPreferences: SharedPreferences,
-                                  private val objectMapper: ObjectMapper)
-    : BasePreferences(context, sharedPreferences), ReadProgressPreferences {
+class ReadPreferencesImpl(context: Context, sharedPreferences: SharedPreferences,
+                          private val objectMapper: ObjectMapper)
+    : BasePreferences(context, sharedPreferences), ReadPreferences {
 
     override val isSaveAuto: Boolean by PreferenceDelegates.bool(
             R.string.pref_key_read_progress_save_auto, R.bool.pref_read_progress_save_auto_default_value)
@@ -50,16 +50,20 @@ class ReadProgressPreferencesImpl(context: Context, sharedPreferences: SharedPre
 
     override var volumeKeyPaging: Boolean by PreferenceDelegates.bool(
             R.string.pref_key_volume_key_paging, R.bool.pref_volume_key_paging_default_value)
+
+    override var threadPadding: String? by PreferenceDelegates.string(
+            R.string.pref_key_thread_padding, null)
 }
 
-interface ReadProgressPreferences {
+interface ReadPreferences {
     val isSaveAuto: Boolean
     val isLoadAuto: Boolean
     var lastReadProgress: ReadProgress?
     var volumeKeyPaging: Boolean
+    var threadPadding: String?
 }
 
-class ReadProgressPreferencesManager(private val mPreferencesProvider: ReadProgressPreferences) {
+class ReadPreferencesManager(private val mPreferencesProvider: ReadPreferences) {
     private val mLastReadProgressSupplier = Supplier<ReadProgress> { mPreferencesProvider.lastReadProgress }
 
     @Volatile
@@ -73,6 +77,9 @@ class ReadProgressPreferencesManager(private val mPreferencesProvider: ReadProgr
 
     val volumeKeyPaging: Boolean
         get() = mPreferencesProvider.volumeKeyPaging
+
+    val threadPadding: Int?
+        get() = mPreferencesProvider.threadPadding?.toIntOrNull()
 
     val lastReadProgress: ReadProgress?
         get() = mLastReadProgressMemorized.get()

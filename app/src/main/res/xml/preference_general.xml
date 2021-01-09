@@ -56,10 +56,10 @@
             app:iconSpaceReserved="false" />
 
         <Preference
-            android:key="@string/pref_key_post_read_progress"
+            android:key="@string/pref_key_post_read"
             android:persistent="false"
-            android:summary="@string/pref_post_read_progress_summary"
-            android:title="@string/pref_post_read_progress"
+            android:summary="@string/pref_post_read_summary"
+            android:title="@string/pref_post_read"
             app:iconSpaceReserved="false" />
 
         <Preference

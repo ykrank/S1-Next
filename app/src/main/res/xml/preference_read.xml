@@ -22,4 +22,10 @@
         android:key="@string/pref_key_volume_key_paging"
         android:title="@string/pref_volume_key_paging"
         app:iconSpaceReserved="false" />
+
+    <EditTextPreference
+        android:defaultValue="12"
+        android:key="@string/pref_key_thread_padding"
+        android:title="@string/pref_thread_padding"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>

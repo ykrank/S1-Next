@@ -6,7 +6,7 @@
     <string name="pref_key_signature" translatable="false">pref_key_signature</string>
     <string name="pref_key_downloads" translatable="false">pref_key_downloads</string>
     <string name="pref_key_blacklists" translatable="false">pref_key_blacklists</string>
-    <string name="pref_key_post_read_progress" translatable="false">pref_key_post_read_progress</string>
+    <string name="pref_key_post_read" translatable="false">pref_key_post_read_progress</string>
     <string name="pref_key_backup" translatable="false">pref_key_backup</string>
     <string name="pref_key_check_update" translatable="false">pref_key_check_update</string>
     <!-- Network -->
@@ -32,11 +32,12 @@
     <string name="pref_key_multi_download" translatable="false">pref_key_multi_download</string>
     <string name="pref_key_post_max_image_show" translatable="false">pref_key_post_max_image_show</string>
     <string name="pref_key_clear_image_cache" translatable="false">pref_key_clear_image_cache</string>
-    <!-- ReadProgress -->
+    <!-- Read -->
     <string name="pref_key_read_progress_save_auto" translatable="false">pref_key_read_progress_save_auto</string>
     <string name="pref_key_read_progress_load_auto" translatable="false">pref_key_read_progress_load_auto</string>
     <string name="pref_key_last_read_progress" translatable="false">pref_key_last_read_progress</string>
     <string name="pref_key_volume_key_paging" translatable="false">pref_key_volume_key_paging</string>
+    <string name="pref_key_thread_padding" translatable="false">pref_key_thread_padding</string>
     <!-- Data -->
     <string name="pref_key_has_new_pm" translatable="false">pref_key_has_new_pm</string>
     <string name="pref_key_has_new_notice" translatable="false">pref_key_has_new_notice</string>

@@ -43,8 +43,8 @@
     <string name="pref_download_images_entries_3">任何时候都下载图片</string>
     <string name="pref_libraries">类库</string>
     <string name="pref_files">文件</string>
-    <string name="pref_post_read_progress">浏览进度</string>
-    <string name="pref_post_read_progress_summary"><![CDATA[自动保存&读取&翻页]]></string>
+    <string name="pref_post_read">浏览</string>
+    <string name="pref_post_read_summary"><![CDATA[自动保存&读取&翻页]]></string>
     <string name="pref_read_progress_load_auto">自动读取</string>
     <string name="pref_read_progress_save_auto">自动存储</string>
     <string name="pref_backup_backup">备份</string>

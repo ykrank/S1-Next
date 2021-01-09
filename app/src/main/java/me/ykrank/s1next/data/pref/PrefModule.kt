@@ -65,14 +65,14 @@ class PrefModule(private val prefContext: Context) {
 
     @Provides
     @Singleton
-    internal fun provideReadProgressPreferencesProvider(sharedPreferences: SharedPreferences, objectMapper: ObjectMapper): ReadProgressPreferences {
-        return ReadProgressPreferencesImpl(prefContext, sharedPreferences, objectMapper)
+    internal fun provideReadProgressPreferencesProvider(sharedPreferences: SharedPreferences, objectMapper: ObjectMapper): ReadPreferences {
+        return ReadPreferencesImpl(prefContext, sharedPreferences, objectMapper)
     }
 
     @Provides
     @Singleton
-    internal fun provideReadProgressPreferencesManager(readProgressPreferences: ReadProgressPreferences): ReadProgressPreferencesManager {
-        return ReadProgressPreferencesManager(readProgressPreferences)
+    internal fun provideReadProgressPreferencesManager(readPreferences: ReadPreferences): ReadPreferencesManager {
+        return ReadPreferencesManager(readPreferences)
     }
 
     @Provides

@@ -24,7 +24,7 @@ import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.ThreadLink
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
-import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager
+import me.ykrank.s1next.data.pref.ReadPreferencesManager
 import me.ykrank.s1next.view.activity.BaseActivity
 import me.ykrank.s1next.view.activity.ForumActivity
 import javax.inject.Inject
@@ -36,7 +36,7 @@ import javax.inject.Inject
 class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
 
     @Inject
-    lateinit var mReadProgressPreferences: ReadProgressPreferencesManager
+    lateinit var mReadPreferences: ReadPreferencesManager
 
 
     var fragment: PostListFragment? = null
@@ -69,7 +69,7 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (mReadProgressPreferences.volumeKeyPaging) {
+        if (mReadPreferences.volumeKeyPaging) {
             when (keyCode) {
                 KeyEvent.KEYCODE_VOLUME_UP -> {
                     fragment?.moveToNext(-1)

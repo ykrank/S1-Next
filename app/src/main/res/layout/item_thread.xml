@@ -30,6 +30,7 @@
     We set top/bottom padding to 14.5dp because `includeFontPadding`
     doesn't remove all extra space. -->
     <TextView
+        android:id="@+id/tv_thread"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"

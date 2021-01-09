@@ -34,7 +34,8 @@ class PostToolsExtrasFragment : BaseFragment() {
             }
         })
         adapter.swapDataSet(listOf(PostToolsExtraBold(), PostToolsExtraItalic(), PostToolsExtraUnderline(),
-                PostToolsExtraLink(), PostToolsExtraStrikethrough()))
+                PostToolsExtraImg(), PostToolsExtraLink(), PostToolsExtraStrikethrough(), PostToolsExtraQuote(),
+                PostToolsExtraCreditPermission()))
         binding.recycleView.adapter = adapter
 
         return binding.root

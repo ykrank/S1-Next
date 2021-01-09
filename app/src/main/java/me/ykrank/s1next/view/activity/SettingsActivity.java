@@ -13,7 +13,7 @@ import me.ykrank.s1next.view.fragment.setting.BlackWordSettingFragment;
 import me.ykrank.s1next.view.fragment.setting.DownloadPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.GeneralPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.NetworkPreferenceFragment;
-import me.ykrank.s1next.view.fragment.setting.ReadProgressPreferenceFragment;
+import me.ykrank.s1next.view.fragment.setting.ReadPreferenceFragment;
 
 /**
  * An Activity includes settings that allow users
@@ -90,9 +90,9 @@ public final class SettingsActivity extends BaseActivity {
                             BlackListSettingFragment.Companion.newInstance(), BlackListSettingFragment.Companion.getTAG()).commit();
                     break;
                 case EXTRA_SHOW_SETTING_READ_PROGRESS:
-                    setTitle(R.string.pref_post_read_progress);
+                    setTitle(R.string.pref_post_read);
                     getFragmentManager().beginTransaction().replace(R.id.frame_layout,
-                            new ReadProgressPreferenceFragment()).commit();
+                            new ReadPreferenceFragment()).commit();
                     break;
                 case EXTRA_SHOW_SETTING_BACKUP:
                     setTitle(R.string.pref_backup);

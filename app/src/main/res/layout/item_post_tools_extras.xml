@@ -39,7 +39,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            tools:text="@string/bold"
+            app:autoSizeTextType="uniform"
+            tools:text="BoldBold"
             app:layout_constraintTop_toBottomOf="@id/iv_icon" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

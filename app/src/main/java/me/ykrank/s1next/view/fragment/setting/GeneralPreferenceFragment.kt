@@ -51,7 +51,7 @@ class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefere
 
         findPreference(getString(R.string.pref_key_downloads)).onPreferenceClickListener = this
         findPreference(getString(R.string.pref_key_blacklists)).onPreferenceClickListener = this
-        findPreference(getString(R.string.pref_key_post_read_progress)).onPreferenceClickListener = this
+        findPreference(getString(R.string.pref_key_post_read)).onPreferenceClickListener = this
         findPreference(getString(R.string.pref_key_backup)).onPreferenceClickListener = this
         findPreference(getString(R.string.pref_key_network)).onPreferenceClickListener = this
         findPreference(getString(R.string.pref_key_check_update)).onPreferenceClickListener = this
@@ -90,7 +90,7 @@ class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefere
                 SettingsActivity.startBlackListSettingsActivity(preference.context)
                 return true
             }
-            getString(R.string.pref_key_post_read_progress) -> {
+            getString(R.string.pref_key_post_read) -> {
                 SettingsActivity.startReadProgressSettingsActivity(preference.context)
                 return true
             }

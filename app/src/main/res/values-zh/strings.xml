@@ -236,4 +236,9 @@
     <string name="pref_multi_download">多线程下载</string>
     <string name="pref_post_max_image_show">每帖最多显示图片数</string>
     <string name="go_note_web_hint">没找到消息？点击查看全部消息</string>
+    <string name="image">图片</string>
+    <string name="quote">引用</string>
+    <string name="credit_permission">积分权限</string>
+    <string name="pref_thread_padding">主帖间距</string>
+    <string name="format_error">格式错误</string>
 </resources>

@@ -43,6 +43,18 @@ class PostToolsExtraUnderline : PostToolsExtra(R.drawable.ic_underline, R.string
 
 }
 
+class PostToolsExtraImg : PostToolsExtra(R.drawable.ic_image, R.string.image) {
+
+    override fun onClick(editText: EditText) {
+        val start = editText.selectionStart
+        val end = editText.selectionEnd
+        val selectText = editText.text.substring(start, end)
+
+        editText.text.replace(start, end, "[img]$selectText[/img]")
+    }
+
+}
+
 class PostToolsExtraLink : PostToolsExtra(R.drawable.ic_link, R.string.link) {
 
     override fun onClick(editText: EditText) {
@@ -63,6 +75,28 @@ class PostToolsExtraStrikethrough : PostToolsExtra(R.drawable.ic_strikethrough, 
         val selectText = editText.text.substring(start, end)
 
         editText.text.replace(start, end, "[s]$selectText[/s]")
+    }
+
+}
+
+class PostToolsExtraQuote : PostToolsExtra(R.drawable.ic_quote, R.string.quote) {
+    override fun onClick(editText: EditText) {
+        val start = editText.selectionStart
+        val end = editText.selectionEnd
+        val selectText = editText.text.substring(start, end)
+
+        editText.text.replace(start, end, "[quote]$selectText[/quote]")
+    }
+}
+
+class PostToolsExtraCreditPermission : PostToolsExtra(R.drawable.ic_lock, R.string.credit_permission) {
+
+    override fun onClick(editText: EditText) {
+        val start = editText.selectionStart
+        val end = editText.selectionEnd
+        val selectText = editText.text.substring(start, end)
+
+        editText.text.replace(start, end, "[hide=积分数]$selectText[/hide]")
     }
 
 }
