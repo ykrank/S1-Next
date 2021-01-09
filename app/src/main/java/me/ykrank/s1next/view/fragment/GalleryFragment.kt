@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresPermission
 import androidx.core.app.ActivityCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
@@ -148,6 +149,7 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
     private fun preload() {
         preloadTarget = Glide.with(App.get())
                 .load(mImageUrl)
+                .priority(Priority.HIGH)
                 .preload()
     }
 
