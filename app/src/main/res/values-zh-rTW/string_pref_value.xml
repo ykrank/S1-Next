@@ -87,9 +87,9 @@
         
     <string name="pref_files">文件</string>
         
-    <string name="pref_post_read_progress">瀏覽進度</string>
+    <string name="pref_post_read">瀏覽</string>
         
-    <string name="pref_post_read_progress_summary"><![CDATA[自動保存&讀取&翻頁]]></string>
+    <string name="pref_post_read_summary"><![CDATA[自動保存&讀取&翻頁]]></string>
         
     <string name="pref_read_progress_load_auto">自動讀取</string>
         

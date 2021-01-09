@@ -19,7 +19,7 @@ import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager;
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager;
 import me.ykrank.s1next.data.pref.PrefModule;
-import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager;
+import me.ykrank.s1next.data.pref.ReadPreferencesManager;
 import me.ykrank.s1next.data.pref.ThemeManager;
 import okhttp3.CookieJar;
 
@@ -55,7 +55,7 @@ public interface PreAppComponent {
 
     DownloadPreferencesManager getDownloadPreferencesManager();
 
-    ReadProgressPreferencesManager getReadProgressPreferencesManager();
+    ReadPreferencesManager getReadProgressPreferencesManager();
 
     DataPreferencesManager getDataPreferencesManager();
 

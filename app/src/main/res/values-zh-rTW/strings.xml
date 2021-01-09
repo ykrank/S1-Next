@@ -427,4 +427,9 @@
     <string name="pref_multi_download">多線程下載</string>
     <string name="pref_post_max_image_show">每帖最多顯示圖片數</string>
     <string name="go_note_web_hint">沒找到消息？點擊查看全部消息</string>
+    <string name="image">圖片</string>
+    <string name="quote">引用</string>
+    <string name="credit_permission">積分權限</string>
+    <string name="pref_thread_padding">主貼間距</string>
+    <string name="format_error">格式錯誤</string>
 </resources>

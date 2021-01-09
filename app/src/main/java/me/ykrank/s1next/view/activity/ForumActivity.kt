@@ -15,7 +15,7 @@ import com.google.common.base.Optional
 import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager
+import me.ykrank.s1next.data.pref.ReadPreferencesManager
 import me.ykrank.s1next.databinding.ToolbarSpinnerBinding
 import me.ykrank.s1next.view.fragment.ForumFragment
 import me.ykrank.s1next.view.internal.RequestCode
@@ -33,7 +33,7 @@ import javax.inject.Inject
 class ForumActivity : BaseActivity(), ToolbarDropDownInterface.Callback, AdapterView.OnItemSelectedListener {
 
     @Inject
-    internal lateinit var mReadProgressPrefManager: ReadProgressPreferencesManager
+    internal lateinit var mReadPrefManager: ReadPreferencesManager
 
     private var mToolbarSpinnerBinding: ToolbarSpinnerBinding? = null
 
@@ -135,9 +135,9 @@ class ForumActivity : BaseActivity(), ToolbarDropDownInterface.Callback, Adapter
 
     private fun restoreFromInterrupt() {
         Single.just(0)
-                .map { Optional.fromNullable(mReadProgressPrefManager.lastReadProgress) }
+                .map { Optional.fromNullable(mReadPrefManager.lastReadProgress) }
                 .compose(RxJavaUtil.iOSingleTransformer())
-                .doFinally { mReadProgressPrefManager.saveLastReadProgress(null) }
+                .doFinally { mReadPrefManager.saveLastReadProgress(null) }
                 .subscribe({ readProgress ->
                     if (readProgress.isPresent()) {
                         PostListActivity.start(this@ForumActivity, readProgress.get())

@@ -66,7 +66,7 @@ import me.ykrank.s1next.view.fragment.setting.BackupPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.DownloadPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.GeneralPreferenceFragment;
 import me.ykrank.s1next.view.fragment.setting.NetworkPreferenceFragment;
-import me.ykrank.s1next.view.fragment.setting.ReadProgressPreferenceFragment;
+import me.ykrank.s1next.view.fragment.setting.ReadPreferenceFragment;
 import me.ykrank.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import me.ykrank.s1next.view.page.app.AppPostListFragment;
 import me.ykrank.s1next.view.page.app.AppPostListPagerFragment;
@@ -224,7 +224,7 @@ public interface AppComponent {
 
     void inject(ForumAdapterDelegate forumAdapterDelegate);
 
-    void inject(ReadProgressPreferenceFragment readProgressPreferenceFragment);
+    void inject(ReadPreferenceFragment readProgressPreferenceFragment);
 
     void inject(DiscardEditPromptDialogFragment discardEditPromptDialogFragment);
 

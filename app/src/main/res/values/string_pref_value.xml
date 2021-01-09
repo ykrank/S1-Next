@@ -70,15 +70,16 @@
     <string name="pref_libraries">Libraries</string>
     <string name="pref_files">Files</string>
 
-    <!-- read progress -->
-    <string name="pref_post_read_progress">Read  progress</string>
-    <string name="pref_post_read_progress_summary"><![CDATA[Auto save & load & page]]></string>
+    <!-- read -->
+    <string name="pref_post_read">Read</string>
+    <string name="pref_post_read_summary"><![CDATA[Auto save & load & page]]></string>
     <string name="pref_read_progress_save_auto">Auto save</string>
     <string name="pref_read_progress_load_auto">Auto load</string>
     <string name="menu_save_progress">Save read progress</string>
     <string name="menu_load_progress">Load last read progress</string>
     <string name="save_read_progress_success">Save read progress success</string>
     <string name="pref_volume_key_paging">Volume key paging</string>
+    <string name="pref_thread_padding">Thread padding</string>
 
     <!-- backup -->
     <string name="pref_backup_backup">Backup</string>

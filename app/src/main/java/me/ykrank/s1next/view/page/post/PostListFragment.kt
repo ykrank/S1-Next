@@ -33,7 +33,7 @@ import me.ykrank.s1next.data.db.dbmodel.History
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
-import me.ykrank.s1next.data.pref.ReadProgressPreferencesManager
+import me.ykrank.s1next.data.pref.ReadPreferencesManager
 import me.ykrank.s1next.util.IntentUtil
 import me.ykrank.s1next.view.activity.BaseActivity
 import me.ykrank.s1next.view.activity.NewRateActivity
@@ -63,7 +63,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
 
     @Inject
-    internal lateinit var mReadProgressPrefManager: ReadProgressPreferencesManager
+    internal lateinit var mReadPrefManager: ReadPreferencesManager
 
     @Inject
     internal lateinit var mDownloadPrefManager: DownloadPreferencesManager
@@ -104,8 +104,8 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                 Pair("SignatureEnabled", mGeneralPreferencesManager.isSignatureEnabled.toString()),
                 Pair("PostSelectable", mGeneralPreferencesManager.isPostSelectable.toString()),
                 Pair("QuickSideBarEnable", mGeneralPreferencesManager.isQuickSideBarEnable.toString()),
-                Pair("SaveAuto", mReadProgressPrefManager.isSaveAuto.toString()),
-                Pair("LoadAuto", mReadProgressPrefManager.isLoadAuto.toString()),
+                Pair("SaveAuto", mReadPrefManager.isSaveAuto.toString()),
+                Pair("LoadAuto", mReadPrefManager.isLoadAuto.toString()),
                 Pair("TotalImageCacheSize", mDownloadPrefManager.totalImageCacheSize.toString()),
                 Pair("TotalDataCacheSize", mDownloadPrefManager.totalDataCacheSize.toString()),
                 Pair("NetCacheEnable", mDownloadPrefManager.netCacheEnable.toString()),
@@ -207,7 +207,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                         .doOnError(L::report)
                         .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
                         .subscribe { b ->
-                            mReadProgressPrefManager.saveLastReadProgress(b)
+                            mReadPrefManager.saveLastReadProgress(b)
                             L.i("Save last read progress:$b")
                         }
             }
@@ -218,10 +218,10 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     }
 
     override fun onDestroy() {
-        mReadProgressPrefManager.saveLastReadProgress(null)
+        mReadPrefManager.saveLastReadProgress(null)
 
         //Auto save read progress
-        if (mReadProgressPrefManager.isSaveAuto) {
+        if (mReadPrefManager.isSaveAuto) {
             tempReadProgress?.let { PostListPagerFragment.saveReadProgressBack(it) }
         }
         super.onDestroy()
@@ -236,7 +236,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
             mMenuThreadAttachment?.isVisible = false
         }
 
-        if (mReadProgressPrefManager.isSaveAuto) {
+        if (mReadPrefManager.isSaveAuto) {
             val saveMenu = menu.findItem(R.id.menu_save_progress)
             saveMenu?.isVisible = false
         }
