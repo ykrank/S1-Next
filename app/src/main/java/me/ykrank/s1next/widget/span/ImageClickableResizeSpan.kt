@@ -24,6 +24,7 @@ internal class ImageClickableResizeSpan(d: Drawable, source: String, private val
         // we don't want to
         // make this image (emoticon or something
         // others) clickable
+        val url: String?
         if (Api.isEmoticonName(source)) {
             url = null
         } else if (!URLUtil.isNetworkUrl(source)) {
@@ -31,12 +32,13 @@ internal class ImageClickableResizeSpan(d: Drawable, source: String, private val
         } else {
             url = source
         }
-        url?.let {
-            if (it.startsWith("https:")) {
-                images.add(it.replaceFirst("https:", "http:"))
-            } else {
-                images.add(it)
-            }
+        if (url?.startsWith("https:") == true) {
+            this.url = url.replaceFirst("https:", "http:")
+        } else {
+            this.url = url
+        }
+        this.url?.let {
+            images.add(it)
         }
     }
 
