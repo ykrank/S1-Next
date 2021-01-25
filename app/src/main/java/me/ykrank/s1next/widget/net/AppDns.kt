@@ -14,9 +14,11 @@ import java.net.UnknownHostException
 
 class AppDns(context: Context, baseHostUrl: BaseHostUrl) : BaseDns(baseHostUrl) {
 
-    private val httpDns: HttpDnsService = HttpDns.getService(context, BuildConfig.HTTP_DNS_ID, BuildConfig.HTTP_DNS_SECRET)//httpdns 解析服务
+    private val httpDns: HttpDnsService? = if (BuildConfig.HTTP_DNS_ID.isNullOrEmpty() ||
+            BuildConfig.HTTP_DNS_SECRET.isNullOrEmpty()) null
+    else HttpDns.getService(context, BuildConfig.HTTP_DNS_ID, BuildConfig.HTTP_DNS_SECRET)//httpdns 解析服务
 
-    private var hostIp:String? = null
+    private var hostIp: String? = null
 
     override fun lookup(hostname: String): List<InetAddress> {
         if (Api.BASE_HOST == hostname) {
@@ -29,8 +31,8 @@ class AppDns(context: Context, baseHostUrl: BaseHostUrl) : BaseDns(baseHostUrl) 
             }
 
             if (address.isNullOrEmpty()) {
-                if (hostIp == null){
-                    hostIp = httpDns.getIpByHostAsync(hostname)
+                if (hostIp == null) {
+                    hostIp = httpDns?.getIpByHostAsync(hostname)
                     if (hostIp != null) {
                         L.d("HttpDns ip: $hostIp")
                     }
