@@ -12,6 +12,12 @@ def _keyAlias = properties.getProperty('keyAlias')
 def _keyPassword = properties.getProperty('keyPassword')
 def httpDnsId = properties.getProperty('httpDnsId')
 def httpDnsSecret = properties.getProperty('httpDnsSecret')
+if(httpDnsId == null){
+    httpDnsId = '""'
+}
+if(httpDnsSecret == null){
+    httpDnsSecret = '""'
+}
 
 android {
     compileSdkVersion 29
@@ -66,14 +72,18 @@ android {
             multiDexEnabled true
             applicationIdSuffix '.debug'
             versionNameSuffix '-debug'
-            signingConfig signingConfigs.release
+            if(signingConfigs.hasProperty('release')){
+                signingConfig signingConfigs.release
+            }
         }
 
         alpha {
             multiDexEnabled true
             applicationIdSuffix '.alpha'
             versionNameSuffix '-alpha'
-            signingConfig signingConfigs.release
+            if(signingConfigs.hasProperty('release')){
+                signingConfig signingConfigs.release
+            }
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
