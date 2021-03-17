@@ -14,7 +14,7 @@ import me.ykrank.s1next.data.api.model.AutoSignResult
  * Created by ykrank on 2017/6/4.
  */
 class AutoSignTask(val s1Service: S1Service, val user: User) {
-    val Check_Interval = 30L
+    val Check_Interval = 3000L
     var lastCheck = 0L
 
     fun silentCheck() {
