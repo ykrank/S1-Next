@@ -3,9 +3,7 @@ package me.ykrank.s1next.widget.span
 import android.graphics.Rect
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
-import android.text.SpanWatcher
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
+import android.text.*
 import android.text.style.ImageSpan
 import android.widget.TextView
 import com.bumptech.glide.request.Request
@@ -17,8 +15,12 @@ import me.ykrank.s1next.R
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import java.util.*
 
-internal class ImageGetterViewTarget constructor(private val mGlideImageGetter: GlideImageGetter, view: TextView, val mDrawable: UrlDrawable, val serial: Int)
-    : CustomViewTarget<TextView, Drawable>(view) {
+internal class ImageGetterViewTarget constructor(
+    private val mGlideImageGetter: GlideImageGetter,
+    view: TextView,
+    val mDrawable: UrlDrawable,
+    val serial: Int
+) : CustomViewTarget<TextView, Drawable>(view) {
 
     private val mDownloadPreferencesManager: DownloadPreferencesManager = App.preAppComponent.downloadPreferencesManager
 
@@ -40,7 +42,7 @@ internal class ImageGetterViewTarget constructor(private val mGlideImageGetter: 
         val textView = getView()
 
         val images = (textView.getTag(R.id.tag_text_view_span_images)
-                ?: arrayListOf<String>()) as ArrayList<String>
+            ?: arrayListOf<String>()) as ArrayList<String>
         if (images.indexOf(mDrawable.url) >= mDownloadPreferencesManager.postMaxImageShow) {
             return
         }
@@ -48,7 +50,8 @@ internal class ImageGetterViewTarget constructor(private val mGlideImageGetter: 
         setDrawable(resource, 10)
         if (resource is Animatable) {
             val callback = textView.getTag(
-                    R.id.tag_drawable_callback) as Drawable.Callback?
+                R.id.tag_drawable_callback
+            ) as Drawable.Callback?
             // note: not sure whether callback would be null sometimes
             // when this Drawable' host view is detached from View
             if (callback != null) {
@@ -164,7 +167,7 @@ internal class ImageGetterViewTarget constructor(private val mGlideImageGetter: 
                 return
             }
             val text = textView.text
-            if (text is SpannableString) {
+            if (text is Spannable) {
                 val start = text.getSpanStart(imageSpan)
                 val end = text.getSpanEnd(imageSpan)
                 if (!isSpanValid(start, end)) {
@@ -173,34 +176,18 @@ internal class ImageGetterViewTarget constructor(private val mGlideImageGetter: 
                     return
                 }
                 //sendSpanChanged
-                val spanWatchers: Array<SpanWatcher> = text.getSpans<SpanWatcher>(start,
-                        end, SpanWatcher::class.java)
-                val n = spanWatchers.size
-                for (i in 0 until n) {
-                    spanWatchers[i].onSpanChanged(text, imageSpan, start, end, start, end)
-                }
-                //Or image overlapping error
-//                    text.removeSpan(imageSpan)
-//                    text.setSpan(imageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            } else {
-                val span = text as SpannableStringBuilder
-                val start = span.getSpanStart(imageSpan)
-                val end = span.getSpanEnd(imageSpan)
-                if (!isSpanValid(start, end)) {
-                    //onResourceReady run before imageSpan add to textView. do nothing
-                    L.l("refreshLayout run before imageSpan add to textView $imageSpanChangedMsg")
-                    return
-                }
-                //sendSpanChanged
-                val spanWatchers: Array<SpanWatcher> = text.getSpans<SpanWatcher>(start,
-                        end, SpanWatcher::class.java)
-                val n = spanWatchers.size
-                for (i in 0 until n) {
-                    spanWatchers[i].onSpanChanged(text, imageSpan, start, end, start, end)
-                }
-                //Or image overlapping error
-//                    span.removeSpan(imageSpan)
-//                    span.setSpan(imageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+//                val spanWatchers: Array<SpanWatcher> = text.getSpans<SpanWatcher>(
+//                    start,
+//                    end, SpanWatcher::class.java
+//                )
+//                val n = spanWatchers.size
+//                for (i in 0 until n) {
+//                    spanWatchers[i].onSpanChanged(text, imageSpan, start, end, start, end)
+//                }
+//                Or image overlapping error
+//                text.removeSpan(imageSpan)
+//                text.setSpan(imageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                textView.text = text
             }
 
             L.l("refreshLayout end $imageSpanChangedMsg")
