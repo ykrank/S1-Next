@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="loadingViewModel"
+            type="com.github.ykrank.androidtools.ui.vm.LoadingViewModel" />
+    </data>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:colorSchemeColors="@{@intArray/swipe_refresh_layout_color_scheme}"
+        app:enabled="@{loadingViewModel.swipeRefreshLayoutEnabled}"
+        app:refreshing="@{loadingViewModel.swipeRefresh}">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/list_view_padding"
+            android:paddingTop="@dimen/list_view_padding"
+            android:scrollbars="vertical"
+            app:loadingFirstTime="@{loadingViewModel.loadingFirstTime}" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</layout>

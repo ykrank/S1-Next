@@ -22,6 +22,7 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.Light.AfternoonTea"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:ignore="UnusedAttribute"
         tools:replace="android:theme">
 

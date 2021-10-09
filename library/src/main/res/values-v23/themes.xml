@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Lib.V.Theme.Light.AfternoonTea" parent="Lib.Base.Theme.Light.AfternoonTea.V23" />
+
+    <style name="Lib.Base.Theme.Light.AfternoonTea.V23" parent="Lib.Base.Theme.Light.AfternoonTea">
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+
+    <style name="Lib.Base.V.Theme.Light" parent="Lib.Origin.Theme.Light.V23" />
+
+    <style name="Lib.Base.V.Theme.Light.Inverse" parent="Lib.Origin.Theme.Light.Inverse.V23" />
+
+    <style name="Lib.Base.V.Theme.Dark" parent="Lib.Origin.Theme.Dark.V23" />
+
+    <style name="Lib.Origin.Theme.Light.V23" parent="Lib.Origin.Theme.Light.V21">
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorPrimaryDark">@color/light_status_bar_v23</item>
+    </style>
+
+    <style name="Lib.Origin.Theme.Light.Inverse.V23" parent="Lib.Origin.Theme.Light.Inverse.V21">
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="Lib.Origin.Theme.Dark.V23" parent="Lib.Origin.Theme.Dark.V21">
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

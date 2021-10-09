@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Lib.Base.V.Theme.Light.Translucent" parent="Lib.Base.V.Theme.Light.Translucent.V21" />
+
+    <style name="Lib.Base.V.Theme.Light.Inverse.Translucent" parent="Lib.Base.V.Theme.Light.Inverse.Translucent.V21" />
+
+    <style name="Lib.Base.V.Theme.Dark.Translucent" parent="Lib.Base.V.Theme.Dark.Translucent.V21" />
+
+    <style name="Lib.Base.V.Theme.Light.Translucent.V21" parent="Lib.Base.V.Theme.Light.Translucent.V19">
+        <item name="android:windowContentTransitions">true</item>
+    </style>
+
+    <style name="Lib.Base.V.Theme.Light.Inverse.Translucent.V21" parent="Lib.Base.V.Theme.Light.Inverse.Translucent.V19">
+        <item name="android:windowContentTransitions">true</item>
+    </style>
+
+    <style name="Lib.Base.V.Theme.Dark.Translucent.V21" parent="Lib.Base.V.Theme.Dark.Translucent.V19">
+        <item name="android:windowContentTransitions">true</item>
+    </style>
+
+    <style name="Lib.Base.V.Theme.Gallery" parent="Lib.Base.V.Theme.Gallery.V21" />
+
+    <style name="Lib.Base.V.Theme.Gallery.V21" parent="Lib.Base.V.Theme.Gallery.V19">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowEnterTransition">@android:transition/fade</item>
+    </style>
+</resources>

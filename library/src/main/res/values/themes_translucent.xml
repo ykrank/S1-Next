@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Lib.Theme.Translucent.AfternoonTea" parent="Lib.Base.Theme.Light.Translucent.AfternoonTea" />
+
+    <style name="Lib.Theme.Translucent.Light" parent="Lib.Base.Theme.Light.Translucent" />
+
+    <style name="Lib.Theme.Translucent.Amber" parent="Lib.Base.Theme.Light.Translucent.Amber" />
+
+    <style name="Lib.Theme.Translucent.Green" parent="Lib.Base.Theme.Light.Translucent.Green" />
+
+    <style name="Lib.Theme.Translucent.LightBlue" parent="Lib.Base.Theme.Light.Translucent.LightBlue" />
+
+    <style name="Lib.Theme.Translucent.Purple" parent="Lib.Base.Theme.Light.Translucent.Purple" />
+
+    <style name="Lib.Theme.Translucent.Dark" parent="Lib.Base.Theme.Dark.Translucent" />
+
+    <style name="Lib.Theme.Translucent.Dark.NightMode" parent="Lib.Base.Theme.Dark.Translucent.NightMode" />
+
+    <style name="Lib.Theme.Translucent.Dark.NightMode.Amoled" parent="Lib.Base.Theme.Dark.Translucent.NightMode.Amoled" />
+
+    <style name="Lib.Base.Theme.Light.Translucent.AfternoonTea" parent="Lib.Base.Theme.Light.Translucent">
+        <item name="colorPrimaryDark">@color/saraba_primary_dark</item>
+        <item name="colorPrimary">@color/saraba_primary</item>
+        <item name="android:colorBackground">@color/saraba_background</item>
+        <item name="colorAccent">@color/saraba_accent</item>
+        <item name="actionModeBackground">?attr/colorPrimary</item>
+        <item name="colorControlActivated">?attr/colorAccent</item>
+        <item name="materialCardViewStyle">@style/CardView.Light.AfternoonTea</item>
+    </style>
+
+    <style name="Lib.Base.Theme.Light.Translucent.Amber" parent="Lib.Base.Theme.Light.Inverse.Translucent">
+        <item name="colorPrimaryDark">@color/amber_700</item>
+        <item name="colorPrimary">@color/amber_500</item>
+        <item name="colorAccent">@color/deep_orange_A200</item>
+    </style>
+
+    <style name="Lib.Base.Theme.Light.Translucent.Green" parent="Lib.Base.Theme.Light.Inverse.Translucent">
+        <item name="colorPrimaryDark">@color/green_700</item>
+        <item name="colorPrimary">@color/green_500</item>
+        <item name="colorAccent">@color/deep_orange_A200</item>
+    </style>
+
+    <style name="Lib.Base.Theme.Light.Translucent.LightBlue" parent="Lib.Base.Theme.Light.Inverse.Translucent">
+        <item name="colorPrimaryDark">@color/light_blue_700</item>
+        <item name="colorPrimary">@color/light_blue_500</item>
+        <item name="colorAccent">@color/pink_A200</item>
+    </style>
+
+    <style name="Lib.Base.Theme.Light.Translucent.Purple" parent="Lib.Base.Theme.Light.Inverse.Translucent">
+        <item name="colorPrimaryDark">@color/purple_700</item>
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorAccent">@color/pink_A200</item>
+    </style>
+
+    <style name="Lib.Base.Theme.Dark.Translucent.NightMode" parent="Lib.Base.Theme.Dark.Translucent">
+        <item name="colorAccent">@color/dark_cyan</item>
+        <item name="android:textColorPrimary">@color/white_69p</item>
+        <item name="android:textColorLink">@color/teal_200_70p</item>
+    </style>
+
+    <style name="Lib.Base.Theme.Dark.Translucent.NightMode.Amoled" parent="Lib.Base.Theme.Dark.Translucent">
+        <item name="android:colorBackground">@android:color/black</item>
+        <item name="colorPrimaryDark">@android:color/black</item>
+        <item name="colorPrimary">@android:color/black</item>
+        <item name="materialCardViewStyle">@style/CardView.Dark.NightMode.Amoled</item>
+        <item name="cardViewContainerBackground">@android:color/black</item>
+    </style>
+
+    <!-- Use for app theme override -->
+    <style name="Lib.Base.Theme.Light.Translucent" parent="Lib.Base.V.Theme.Light.Translucent" />
+
+    <style name="Lib.Base.Theme.Light.Inverse.Translucent" parent="Lib.Base.V.Theme.Light.Inverse.Translucent" />
+
+    <style name="Lib.Base.Theme.Dark.Translucent" parent="Lib.Base.V.Theme.Dark.Translucent" />
+
+    <!-- Use for other version (v19, v21 etc.) override -->
+    <style name="Lib.Base.V.Theme.Light.Translucent" parent="Lib.Origin.Theme.Light.Translucent" />
+
+    <style name="Lib.Base.V.Theme.Light.Inverse.Translucent" parent="Lib.Origin.Theme.Light.Inverse.Translucent" />
+
+    <style name="Lib.Base.V.Theme.Dark.Translucent" parent="Lib.Origin.Theme.Dark.Translucent" />
+
+    <style name="Lib.Origin.Theme.Light.Translucent" parent="Lib.Origin.Theme.Light">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimations</item>
+    </style>
+
+    <style name="Lib.Origin.Theme.Light.Inverse.Translucent" parent="Lib.Origin.Theme.Light.Inverse">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimations</item>
+    </style>
+
+    <style name="Lib.Origin.Theme.Dark.Translucent" parent="Lib.Origin.Theme.Dark">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimations</item>
+    </style>
+
+    <style name="Lib.Theme.Gallery" parent="Lib.Base.Theme.Gallery" />
+
+    <!-- Use for app theme override -->
+    <style name="Lib.Base.Theme.Gallery" parent="Lib.Base.V.Theme.Gallery" />
+
+    <!-- Use for other version (v19, v21 etc.) override -->
+    <style name="Lib.Base.V.Theme.Gallery" parent="Lib.Origin.Theme.Gallery" />
+
+    <style name="Lib.Origin.Theme.Gallery" parent="Theme.Design.NoActionBar">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="iconClose">@drawable/ic_close_white_24dp</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+</resources>

@@ -1,0 +1,22 @@
+<resources>
+    <string name="snackbar_action_retry">重试</string>
+    <string name="navigation_drawer_open">打开导航抽屉</string>
+    <string name="navigation_drawer_close">关闭导航抽屉</string>
+    <string name="dialog_button_text_jump">跳转</string>
+    <string name="menu_page_jump">跳至特定页数</string>
+
+    <string name="pref_backup_backup">备份</string>
+    <string name="pref_backup_restore">还原</string>
+    <string name="pref_backup">备份</string>
+    <string name="pref_backup_summary">设置备份和还原</string>
+
+    <string name="message_permission_denied">权限不足</string>
+    <string name="message_backup_success">备份成功</string>
+    <string name="message_io_exception">读写错误</string>
+    <string name="message_no_setting_data">没有有效的设置数据</string>
+    <string name="message_restore_success">还原成功</string>
+
+    <string name="message_operation_canceled">操作被取消</string>
+    <string name="message_unknown_error">发生了一个未知的错误</string>
+    <string name="footer_hint">我是有底线的</string>
+</resources>

@@ -26,7 +26,7 @@ android {
     defaultConfig {
         applicationId 'me.ykrank.s1next'
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 72
         versionName '2.4.4.1'
         vectorDrawables.useSupportLibrary = true
@@ -137,12 +137,11 @@ greendao {
 //http://stackoverflow.com/questions/28683327/how-to-check-if-gradle-dependency-has-new-version
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    playImplementation fileTree(include: ['*.jar'], dir: 'libs/flavors/play')
-    normalImplementation fileTree(include: ['*.jar'], dir: 'libs/flavors/normal')
 
-    normalImplementation "com.github.ykrank.AndroidTools:library:1.4.2.4:normal@aar"
-    playImplementation "com.github.ykrank.AndroidTools:library:1.4.2.4:play@aar"
-    implementation 'com.github.ykrank.AndroidTools:JKeyboardPanelSwitch:v1.2.0'
+//    normalImplementation project(path: ':library', configuration: 'normal')
+//    playImplementation project(path: ':library', configuration: 'play')
+    implementation project(path: ':library')
+    implementation project(path: ':JKeyboardPanelSwitch')
 
     // Library start
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

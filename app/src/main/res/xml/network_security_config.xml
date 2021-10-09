@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- 匹配子域名 example.com -->
+        <domain includeSubdomains="true">aliyuncs.com</domain>
+    </domain-config>
+</network-security-config>

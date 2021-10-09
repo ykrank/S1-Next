@@ -1,0 +1,35 @@
+<resources>
+       
+    <string name="snackbar_action_retry">重試</string>
+        
+    <string name="navigation_drawer_open">打開導航抽屜</string>
+        
+    <string name="navigation_drawer_close">關閉導航抽屜</string>
+        
+    <string name="dialog_button_text_jump">跳轉</string>
+        
+    <string name="menu_page_jump">跳至特定頁數</string>
+
+    <string name="pref_backup_backup">備份</string>
+        
+    <string name="pref_backup_restore">還原</string>
+        
+    <string name="pref_backup">備份</string>
+        
+    <string name="pref_backup_summary">設置備份和還原</string>
+
+    <string name="message_permission_denied">權限不足</string>
+        
+    <string name="message_backup_success">備份成功</string>
+        
+    <string name="message_io_exception">讀寫錯誤</string>
+        
+    <string name="message_no_setting_data">沒有有效的設置數據</string>
+        
+    <string name="message_restore_success">還原成功</string>
+
+    <string name="message_operation_canceled">操作被取消</string>
+
+    <string name="message_unknown_error">發生了一個未知的錯誤</string>
+    <string name="footer_hint">我是有底線的</string>
+</resources>

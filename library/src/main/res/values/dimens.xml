@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="app_icon_size">48dp</dimen>
+
+    <dimen name="activity_horizontal_padding">16dp</dimen>
+    <dimen name="activity_vertical_padding">16dp</dimen>
+
+    <dimen name="minimum_touch_target_size">48dp</dimen>
+
+    <dimen name="single_line_height">48dp</dimen>
+    <dimen name="avatar_size">40dp</dimen>
+    <dimen name="avatar_size_small">24dp</dimen>
+    <dimen name="avatar_size_home">96dp</dimen>
+    <dimen name="single_line_height_with_avatar">56dp</dimen>
+    <dimen name="two_line_height">72dp</dimen>
+
+    <dimen name="item_padding_small">8dp</dimen>
+    <dimen name="item_padding_micro">4dp</dimen>
+    <dimen name="item_padding">16dp</dimen>
+    <dimen name="list_view_padding">0dp</dimen>
+
+    <dimen name="dialog_padding">24dp</dimen>
+    <dimen name="dialog_padding_bottom">16dp</dimen>
+    <dimen name="dialog_divider_padding">8dp</dimen>
+
+    <item name="drawer_header_aspect_ratio" type="fraction">178%</item>
+    <dimen name="drawer_avatar_margin_top">@dimen/item_padding</dimen>
+    <dimen name="drawer_avatar_size">64dp</dimen>
+    <dimen name="drawer_avatar_border_width">3dp</dimen>
+    <dimen name="drawer_subtitle_height">56dp</dimen>
+
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- According to the material design guidelines, subtitle should have 8dp top margin.
+    But the font itself still has a little extra padding if we set `android:includeFontPadding`
+    to false, so we adjust this dimension to 4.5dp. -->
+    <dimen name="subtitle_margin_top">4.5dp</dimen>
+
+    <!--Before L, CardView adds padding to its content and draws shadows to that area.
+    This padding amount is equal to maxCardElevation + (1 - cos45) * cornerRadius on the
+    sides and maxCardElevation * 1.5 + (1 - cos45) * cornerRadius on top and bottom.-->
+
+    <!-- 8dp (CardView margin) - ((2 + (1 - cos45) * 2))dp ≈ 5.05dp -->
+    <dimen name="card_view_horizontal_margin">5.05dp</dimen>
+    <!-- 4dp (half of CardView margin) - (2 * 1.5 + (1 - cos45) * 2)dp ≈ 0.05dp -->
+    <dimen name="card_view_vertical_margin">0.05dp</dimen>
+    <!-- 8dp (CardView margin) - (2 * 1.5 + (1 - cos45) * 2)dp - 0.05dp (CardView vertical margin) = 4dp -->
+    <dimen name="recycler_view_vertical_padding_for_card_view">4dp</dimen>
+
+    <!-- 36dp (emoticon keyboard header) + 160dp (48dp * 3 three lines of emoticons
+    + 8dp * 2 top/bottom padding of emoticon grid) -->
+    <dimen name="emoticon_keyboard_height">208dp</dimen>
+    <dimen name="emoticon_keyboard_tab_layout_height">36dp</dimen>
+    <dimen name="emoticon_keyboard_tab_layout_elevation">1dp</dimen>
+    <dimen name="emoticon_padding">8dp</dimen>
+    <dimen name="control_keyboard_height">96dp</dimen>
+
+    <dimen name="post_tools_content_height">240dp</dimen>
+    <dimen name="post_tools_tab_layout_height">48dp</dimen>
+    <dimen name="post_tools_tab_layout_elevation">2dp</dimen>
+
+    <dimen name="photo_view_crop_width">280dp</dimen>
+    <dimen name="photo_view_crop_stroke_width">1dp</dimen>
+
+    <dimen name="dense_text_size_subheader">17sp</dimen>
+    <dimen name="dense_text_size_body_1">15sp</dimen>
+    <dimen name="dense_text_size_body_2">15sp</dimen>
+    <dimen name="dense_text_size_small">15sp</dimen>
+    <dimen name="dialog_switch_padding">8dp</dimen>
+
+    <dimen name="text_line_spacing_extra">3sp</dimen>
+
+    <dimen name="spinner_padding">4dp</dimen>
+
+    <dimen name="text_size_body_1">@dimen/abc_text_size_body_1_material</dimen>
+    <dimen name="text_size_body_2">@dimen/abc_text_size_body_2_material</dimen>
+    <dimen name="text_size_button">@dimen/abc_text_size_button_material</dimen>
+    <dimen name="text_size_caption">@dimen/abc_text_size_caption_material</dimen>
+    <dimen name="text_size_display_1">@dimen/abc_text_size_display_1_material</dimen>
+    <dimen name="text_size_display_2">@dimen/abc_text_size_display_2_material</dimen>
+    <dimen name="text_size_display_3">@dimen/abc_text_size_display_3_material</dimen>
+    <dimen name="text_size_display_4">@dimen/abc_text_size_display_4_material</dimen>
+    <dimen name="text_size_headline">@dimen/abc_text_size_headline_material</dimen>
+    <dimen name="text_size_large">@dimen/abc_text_size_large_material</dimen>
+    <dimen name="text_size_medium">@dimen/abc_text_size_medium_material</dimen>
+    <dimen name="text_size_menu">@dimen/abc_text_size_menu_material</dimen>
+    <dimen name="text_size_small">@dimen/abc_text_size_small_material</dimen>
+    <dimen name="text_size_subhead">@dimen/abc_text_size_subhead_material</dimen>
+    <dimen name="text_size_subtitle">@dimen/abc_text_size_subtitle_material_toolbar</dimen>
+    <dimen name="text_size_title">@dimen/abc_text_size_title_material</dimen>
+    <dimen name="text_size_title_toolbar">@dimen/abc_text_size_title_material_toolbar</dimen>
+
+    <dimen name="text_size_caption_small">10sp</dimen>
+
+    <!-- Z-axis elevations -->
+    <dimen name="z_app_bar">4dp</dimen>
+    <dimen name="z_card">2dp</dimen>
+    <dimen name="z_fab">6dp</dimen>
+    <dimen name="touch_raise">6dp</dimen>
+    <dimen name="touched_app_bar">8dp</dimen>
+    <dimen name="z_fab_over_touchable_app_bar">9dp</dimen>
+    <dimen name="z_drawer">16dp</dimen>
+    <dimen name="z_dialog">24dp</dimen>
+
+    <!-- standard metrics -->
+    <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_micro">4dp</dimen>
+    <dimen name="spacing_mill">2dp</dimen>
+    <dimen name="spacing_big">16dp</dimen>
+    <dimen name="spacing_large">32dp</dimen>
+    <dimen name="spacing_xlarge">48dp</dimen>
+    <dimen name="spacing_huge">64dp</dimen>
+    <dimen name="zero">0dp</dimen>
+
+    <dimen name="quicksidebar_width">24dp</dimen>
+    <dimen name="quicksidebar_top">-64dp</dimen>
+    <dimen name="quicksidebar_tip_size">72dp</dimen>
+
+    <dimen name="text_size_thread_list_title">16sp</dimen>
+    <dimen name="text_size_thread_list_title_hint">14sp</dimen>
+    
+    <dimen name="textview_background_padding">8dp</dimen>
+</resources>

@@ -1,5 +1,2 @@
 include ':app'
-// include 'lib'
-// include 'lib_keyboard'
-// project(':lib').projectDir= new File(rootDir, '../AndroidTools/library')
-// project(':lib_keyboard').projectDir= new File(rootDir, '../AndroidTools/JKeyboardPanelSwitch')
+include ':library', ':JKeyboardPanelSwitch'

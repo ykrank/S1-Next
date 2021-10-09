@@ -1,0 +1,23 @@
+<resources>
+    <string name="snackbar_action_retry">Retry</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="dialog_button_text_jump">Jump</string>
+    <string name="menu_page_jump">Jump to page</string>
+
+    <!-- backup -->
+    <string name="pref_backup_backup">Backup</string>
+    <string name="pref_backup_restore">Restore</string>
+    <string name="pref_backup">Backup</string>
+    <string name="pref_backup_summary"><![CDATA[Backup & restore]]></string>
+
+    <string name="message_backup_success">Backup success</string>
+    <string name="message_restore_success">Restore success</string>
+    <string name="message_permission_denied">Permission denied</string>
+    <string name="message_no_setting_data">No setting data</string>
+    <string name="message_io_exception">Io exception</string>
+
+    <string name="message_operation_canceled">Operation canceled</string>
+    <string name="message_unknown_error">Unknown error occurred</string>
+    <string name="footer_hint">This is footer</string>
+</resources>

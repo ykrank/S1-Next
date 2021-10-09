@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="toolbarTheme" format="reference" />
+    <attr name="cardViewContainerBackground" format="color|reference" />
+    <attr name="toolbarTitleTextStyle" format="reference" />
+
+    <attr name="drawerTextColor" format="color" />
+    <attr name="fabBackgroundTint" format="color|reference" />
+
+    <attr name="iconClose" format="reference" />
+    <attr name="iconAdd" format="reference" />
+
+    <attr name="iconTintColor" format="color" />
+    <attr name="iconTintColorLight" format="color" />
+    <attr name="iconMenuPageJump" format="reference" />
+    <attr name="iconMenuPersonAdd" format="reference" />
+    <attr name="iconMenuEmoticon" format="reference" />
+    <attr name="iconMenuKeyboard" format="reference" />
+    <attr name="iconMenuSend" format="reference" />
+
+    <attr name="divisionBackground" format="color|reference" />
+
+    <attr name="textShadowColor" format="color" />
+
+    <attr name="colorTranslucent" format="color|reference" />
+
+    <attr name="titlePopWindowBackground" format="reference" />
+    <attr name="titlePopWindowTextColor" format="reference" />
+
+    <attr name="divideLineColor" format="color" />
+    <attr name="textColorError" format="color" />
+    <attr name="textColorRight" format="color" />
+    <attr name="textColorHint" format="color" />
+
+    <attr name="errorBackground" format="color|reference" />
+</resources>
