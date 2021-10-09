@@ -3,7 +3,7 @@ apply plugin: 'com.android.library'
 group='com.github.ykrank.AndroidTools'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion rootProject.ext.compileSdkVersion
 	buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {

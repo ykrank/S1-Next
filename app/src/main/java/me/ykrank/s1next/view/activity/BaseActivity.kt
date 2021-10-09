@@ -107,17 +107,17 @@ abstract class BaseActivity : LibBaseActivity() {
         super.onCreate(savedInstanceState)
 
         mRxBus.get()
-                .filter { o -> o is ThemeChangeEvent || o is FontSizeChangeEvent }
-                .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
-                .subscribe { o ->
-                    window.setWindowAnimations(R.style.Animation_Recreate)
-                    recreate()
-                }
+            .filter { o -> o is ThemeChangeEvent || o is FontSizeChangeEvent }
+            .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
+            .subscribe { o ->
+                window.setWindowAnimations(R.style.Animation_Recreate)
+                recreate()
+            }
         mRxBus.get(NoticeRefreshEvent::class.java)
-                .ofType(NoticeRefreshEvent::class.java)
-                .observeOn(AndroidSchedulers.mainThread())
-                .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
-                .subscribe { event -> refreshNoticeMenuItem(event.isNewPm, event.isNewNotice) }
+            .ofType(NoticeRefreshEvent::class.java)
+            .observeOn(AndroidSchedulers.mainThread())
+            .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
+            .subscribe { event -> refreshNoticeMenuItem(event.isNewPm, event.isNewNotice) }
     }
 
     override fun setTitle(title: CharSequence?) {
@@ -193,8 +193,10 @@ abstract class BaseActivity : LibBaseActivity() {
                 return true
             }
             R.id.menu_thread_go -> {
-                ThreadGoDialogFragment().show(supportFragmentManager,
-                        ThreadGoDialogFragment.TAG)
+                ThreadGoDialogFragment().show(
+                    supportFragmentManager,
+                    ThreadGoDialogFragment.TAG
+                )
 
                 return true
             }
@@ -234,8 +236,9 @@ abstract class BaseActivity : LibBaseActivity() {
                 // We can't use #showShortText(String) because #onActivityResult(int, int, Intent)
                 // is always invoked when current app is running in the foreground (so we are
                 // unable to show a Toast if our app is running in the background).
-                data?.let {
-                    showShortSnackbar(it.getStringExtra(EXTRA_MESSAGE))
+                val msg = data?.getStringExtra(EXTRA_MESSAGE)
+                if (msg != null) {
+                    showShortSnackbar(msg)
                 }
             }
         }
@@ -280,10 +283,10 @@ abstract class BaseActivity : LibBaseActivity() {
 
     fun replaceFragmentWithBackStack(fragment: androidx.fragment.app.Fragment, tag: String) {
         supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, fragment, tag)
-                .setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .addToBackStack(null)
-                .commit()
+            .replace(R.id.frame_layout, fragment, tag)
+            .setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            .addToBackStack(null)
+            .commit()
     }
 
     companion object {

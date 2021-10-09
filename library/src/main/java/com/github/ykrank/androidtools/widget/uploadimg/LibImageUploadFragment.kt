@@ -41,11 +41,19 @@ open class LibImageUploadFragment : LibImagePickerFragment() {
 
         adapter = ImageUploadAdapter(this, imageClickListener)
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 2, androidx.recyclerview.widget.RecyclerView.VERTICAL, false)
+        binding.recyclerView.layoutManager = androidx.recyclerview.widget.GridLayoutManager(
+            context,
+            2,
+            androidx.recyclerview.widget.RecyclerView.VERTICAL,
+            false
+        )
 
         if (savedInstanceState != null) {
             images.clear()
-            images.addAll(savedInstanceState.getParcelableArrayList(Extras_Upload_Images))
+            val list = savedInstanceState.getParcelableArrayList<ModelImageUpload>(Extras_Upload_Images)
+            if (list != null) {
+                images.addAll(list)
+            }
             images.forEach {
                 //初始化下载状态
                 if (it.state != ModelImageUpload.STATE_DONE) {
@@ -76,20 +84,21 @@ open class LibImageUploadFragment : LibImagePickerFragment() {
 
     override fun afterPickImage(medias: List<LocalMedia>) {
         medias.map { ModelImageUpload(it) }
-                .apply {
-                    //仅添加不同路径的图片
-                    val pathSet = hashSetOf<String>()
-                    images.forEach { pathSet.add(it.path) }
-                    this.forEach {
-                        if (!pathSet.contains(it.path)) {
-                            images.add(it)
-                            pathSet.add(it.path)
-                        }
+            .apply {
+                //仅添加不同路径的图片
+                val pathSet = hashSetOf<String>()
+                images.forEach { it.path?.apply { pathSet.add(this) } }
+                this.forEach {
+                    val path = it.path
+                    if (path != null && !pathSet.contains(path)) {
+                        images.add(it)
+                        pathSet.add(path)
                     }
-
-                    refreshDataSet()
-                    uploadPickedImage()
                 }
+
+                refreshDataSet()
+                uploadPickedImage()
+            }
     }
 
     open fun provideImageUploadManager(): ImageUploadManager {
@@ -98,35 +107,35 @@ open class LibImageUploadFragment : LibImagePickerFragment() {
 
     private fun uploadPickedImage() {
         Observable.fromIterable(images)
-                .filter { it.state == ModelImageUpload.STATE_INIT }
-                .flatMapSingle { model ->
-                    model.state = ModelImageUpload.STATE_UPLOADING
-                    imageUploadManager.uploadImage(File(model.path))
-                            .map { Pair(model, it) }
+            .filter { it.state == ModelImageUpload.STATE_INIT }
+            .flatMapSingle { model ->
+                model.state = ModelImageUpload.STATE_UPLOADING
+                imageUploadManager.uploadImage(File(model.path!!))
+                    .map { Pair(model, it) }
+            }
+            .subscribeOn(uploadScheduler)
+            .observeOn(AndroidSchedulers.mainThread())
+            .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
+            .subscribe({
+                L.d(it.second.toString())
+                if (it.second.success) {
+                    it.first.state = ModelImageUpload.STATE_DONE
+                    it.first.url = it.second.url
+                    it.first.deleteUrl = it.second.deleteUrl
+                } else {
+                    it.first.state = ModelImageUpload.STATE_ERROR
+                    context?.toast(it.second.msg)
+                    L.report(ImageUploadError("Upload image error: ${it.first}, ${it.second}"))
                 }
-                .subscribeOn(uploadScheduler)
-                .observeOn(AndroidSchedulers.mainThread())
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
-                .subscribe({
-                    L.d(it.second.toString())
-                    if (it.second.success) {
-                        it.first.state = ModelImageUpload.STATE_DONE
-                        it.first.url = it.second.url
-                        it.first.deleteUrl = it.second.deleteUrl
+                adapter.dataSet.indexOf(it.first).also { index ->
+                    if (index >= 0) {
+                        adapter.notifyItemChanged(index)
                     } else {
-                        it.first.state = ModelImageUpload.STATE_ERROR
-                        context?.toast(it.second.msg)
-                        L.report(ImageUploadError("Upload image error: ${it.first}, ${it.second}"))
+                        //If image removed from list, remove it from server
+                        delPickedImage(it.first)
                     }
-                    adapter.dataSet.indexOf(it.first).also { index ->
-                        if (index >= 0) {
-                            adapter.notifyItemChanged(index)
-                        } else {
-                            //If image removed from list, remove it from server
-                            delPickedImage(it.first)
-                        }
-                    }
-                }, L::report)
+                }
+            }, L::report)
 
     }
 
@@ -138,19 +147,19 @@ open class LibImageUploadFragment : LibImagePickerFragment() {
                 removeUploadedImage(model)
             } else {
                 imageUploadManager.delUploadedImage(deleteUrl)
-                        .compose(RxJavaUtil.iOSingleTransformer())
-                        .doAfterTerminate {
-                            RxJavaUtil.workInMainThread {
-                                removeUploadedImage(model)
-                            }
+                    .compose(RxJavaUtil.iOSingleTransformer())
+                    .doAfterTerminate {
+                        RxJavaUtil.workInMainThread {
+                            removeUploadedImage(model)
                         }
-                        .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
-                        .subscribe({
-                            context?.toast(it.msg)
-                            if (!it.success) {
-                                L.report(ImageUploadError("Delete image error: $model, $it"))
-                            }
-                        }, L::report)
+                    }
+                    .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
+                    .subscribe({
+                        context?.toast(it.msg)
+                        if (!it.success) {
+                            L.report(ImageUploadError("Delete image error: $model, $it"))
+                        }
+                    }, L::report)
             }
         }
     }

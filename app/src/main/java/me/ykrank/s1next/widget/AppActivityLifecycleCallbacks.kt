@@ -8,7 +8,8 @@ import me.ykrank.s1next.data.Wifi
 import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask
 import javax.inject.Inject
 
-class AppActivityLifecycleCallbacks(context: Context, private val noticeCheckTask: NoticeCheckTask) : WifiActivityLifecycleCallbacks(context) {
+class AppActivityLifecycleCallbacks(private val noticeCheckTask: NoticeCheckTask) :
+    WifiActivityLifecycleCallbacks() {
 
     @Inject
     lateinit var wifi: Wifi

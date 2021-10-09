@@ -54,7 +54,7 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
             val progress = intent.getParcelableExtra<ReadProgress>(ARG_READ_PROGRESS)
             val authorId = intent.getStringExtra(ARG_AUTHOR_ID)
             if (thread == null) {//通过链接打开
-                fragment = PostListFragment.newInstance(intent.getParcelableExtra(ARG_THREAD_LINK))
+                fragment = PostListFragment.newInstance(intent.getParcelableExtra(ARG_THREAD_LINK)!!)
             } else if (!authorId.isNullOrEmpty()) { //指定用户
                 fragment = PostListFragment.newInstance(thread, authorId)
             } else if (progress != null) {//有进度信息

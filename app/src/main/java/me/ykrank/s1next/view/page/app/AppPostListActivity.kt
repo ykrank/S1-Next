@@ -28,7 +28,7 @@ class AppPostListActivity : BaseActivity(), AppPostListPagerFragment.PagerCallba
 
         disableDrawerIndicator()
 
-        threadId = intent.getStringExtra(ARG_THREAD_ID)
+        threadId = intent.getStringExtra(ARG_THREAD_ID)!!
 
         if (savedInstanceState == null) {
             val fragment: androidx.fragment.app.Fragment

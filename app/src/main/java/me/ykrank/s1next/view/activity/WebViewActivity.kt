@@ -20,7 +20,7 @@ class WebViewActivity : BaseActivity() {
         setContentView(R.layout.activity_base_without_drawer)
 
         if (savedInstanceState == null) {
-            val fragment = WebViewFragment.getInstance(intent.getStringExtra(ARG_URL),
+            val fragment = WebViewFragment.getInstance(intent.getStringExtra(ARG_URL)!!,
                     intent.getBooleanExtra(ARG_ENABLE_JS, false),
                     intent.getBooleanExtra(ARG_PC_AGENT, false))
             supportFragmentManager.beginTransaction()

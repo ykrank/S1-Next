@@ -25,7 +25,7 @@ class NewRateActivity : BaseActivity() {
         val fragmentManager = supportFragmentManager
         val fragment = fragmentManager.findFragmentByTag(NewRateFragment.TAG)
         if (fragment == null) {
-            mFragment = NewRateFragment.newInstance(threadId, postID)
+            mFragment = NewRateFragment.newInstance(threadId!!, postID!!)
             fragmentManager.beginTransaction().add(R.id.frame_layout, mFragment,
                     NewRateFragment.TAG).commit()
         } else {

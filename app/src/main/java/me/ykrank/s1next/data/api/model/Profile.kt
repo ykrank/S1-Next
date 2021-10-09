@@ -68,10 +68,10 @@ class Profile : Account {
                 //<h2 class="mbn">
                 val nameEle = baseElement.child(0)
                 profile.homeUsername = nameEle.textNodes()[0]?.text()?.trim()
-                profile.homeUid = nameEle.selectFirst("span").text().trim().let {
+                profile.homeUid = nameEle.selectFirst("span")!!.text().trim().let {
                     it.substring(6, it.length - 1)
                 }
-                profile.signHtml = baseElement.child(2)?.selectFirst("table")?.html()
+                profile.signHtml = baseElement.child(2).selectFirst("table")?.html()
                 val countEle = baseElement.child(3).child(0)
                 profile.friends = countEle.child(1).text().trim().substring(4).toInt()
                 profile.replies = countEle.child(3).text().trim().substring(4).toInt()
@@ -84,13 +84,13 @@ class Profile : Account {
                             profile.manager = ele.select("a").mapNotNull { it.text() }
                         }
                         "活跃概况" -> {
-                            profile.groupTitle = ele.child(1).selectFirst("span").text()
+                            profile.groupTitle = ele.child(1).selectFirst("span")?.text()
                             //<ul id="pbbs" class="pf_l">
                             val pbbsEle = profileDiv.getElementById("pbbs")
-                            pbbsEle.children().forEach {
+                            pbbsEle?.children()?.forEach {
                                 when (it.child(0).text().trim()) {
-                                    "在线时间" -> profile.onlineHour = it.textNodes()[0].text().trim().let {
-                                        it.substring(0, it.length - 3)
+                                    "在线时间" -> profile.onlineHour = it.textNodes()[0].text().trim().let { it1 ->
+                                        it1.substring(0, it1.length - 3)
                                     }.toInt()
                                     "注册时间" -> profile.regDate = it.textNodes()[0].text().trim().let {
                                         df.parse(it).time / 1000
@@ -111,9 +111,9 @@ class Profile : Account {
                 }
                 //统计信息
                 val postElement = profileDiv.getElementById("psts")
-                val postUlElement = postElement.selectFirst("ul.pf_l")
+                val postUlElement = postElement?.selectFirst("ul.pf_l")
                 val stats = mutableListOf<Pair<String, String>>()
-                postUlElement.children().forEach {
+                postUlElement?.children()?.forEach {
                     val title = it.child(0).text().trim()
                     val content = it.textNodes()[0].text().trim()
                     if (!title.isEmpty()) {

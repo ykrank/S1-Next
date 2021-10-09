@@ -37,7 +37,7 @@ class ReplyActivity : BaseActivity() {
         val fragmentManager = supportFragmentManager
         val fragment = fragmentManager.findFragmentByTag(ReplyFragment.TAG)
         if (fragment == null) {
-            mReplyFragment = ReplyFragment.newInstance(threadId,
+            mReplyFragment = ReplyFragment.newInstance(threadId!!,
                     quotePostId)
             fragmentManager.beginTransaction().add(R.id.frame_layout, mReplyFragment,
                     ReplyFragment.TAG).commit()

@@ -19,22 +19,25 @@ internal class ModelImageUploadAdd : StableIdModel {
     }
 }
 
-class ModelImageUpload(val media: LocalMedia) : DiffSameItem, Parcelable, StableIdModel {
+class ModelImageUpload(val media: LocalMedia?) : DiffSameItem, Parcelable, StableIdModel {
 
     var url: String? = null
     var deleteUrl: String? = null
 
     var state: Int = STATE_INIT
 
-    val path: String
-        get() = if (media.realPath?.endsWith(".gif") == true || !media.isCompressed) {
+    val path: String?
+        get() = if (media == null) {
+            null
+        } else if (media.realPath?.endsWith(".gif") == true || !media.isCompressed) {
             media.realPath
         } else {
             media.compressPath
         }
 
     constructor(parcel: Parcel) : this(
-            parcel.readParcelable<LocalMedia>(LocalMedia::class.java.classLoader)) {
+        parcel.readParcelable<LocalMedia>(LocalMedia::class.java.classLoader)
+    ) {
         url = parcel.readString()
         deleteUrl = parcel.readString()
         state = parcel.readInt()
@@ -49,7 +52,7 @@ class ModelImageUpload(val media: LocalMedia) : DiffSameItem, Parcelable, Stable
 
         other as ModelImageUpload
 
-        if (media.path != other.media.path) return false
+        if (media?.path != other.media?.path) return false
 
         return true
     }

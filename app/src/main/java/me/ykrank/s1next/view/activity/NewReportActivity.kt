@@ -26,7 +26,7 @@ class NewReportActivity : BaseActivity() {
         val fragmentManager = supportFragmentManager
         val fragment = fragmentManager.findFragmentByTag(NewReportFragment.TAG)
         if (fragment == null) {
-            mFragment = NewReportFragment.newInstance(threadId, postID, pageNum)
+            mFragment = NewReportFragment.newInstance(threadId!!, postID!!, pageNum)
             fragmentManager.beginTransaction().add(R.id.frame_layout, mFragment,
                     NewReportFragment.TAG).commit()
         } else {

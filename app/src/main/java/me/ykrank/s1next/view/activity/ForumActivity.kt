@@ -9,6 +9,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NavUtils
 import androidx.core.app.TaskStackBuilder
 import androidx.databinding.DataBindingUtil
+import com.github.ykrank.androidautodispose.AndroidRxDispose
+import com.github.ykrank.androidlifecycle.event.ActivityEvent
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.google.common.base.Optional
@@ -58,7 +60,7 @@ class ForumActivity : BaseActivity(), ToolbarDropDownInterface.Callback, Adapter
 
             fragment = ForumFragment()
             fragmentManager.beginTransaction().add(R.id.frame_layout, fragment, ForumFragment.TAG)
-                    .commit()
+                .commit()
         } else {
             mSelectedPosition = savedInstanceState.getInt(STATE_SPINNER_SELECTED_POSITION)
             fragment = fragmentManager.findFragmentByTag(ForumFragment.TAG) as ForumFragment
@@ -70,21 +72,18 @@ class ForumActivity : BaseActivity(), ToolbarDropDownInterface.Callback, Adapter
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-        if (fragment == null) {
-            fragment = supportFragmentManager
-                    .findFragmentByTag(ForumFragment.TAG) as ForumFragment
-        }
         fragment.startSwipeRefresh()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RequestCode.REQUEST_CODE_LOGIN) {
             if (resultCode == Activity.RESULT_OK) {
-                data?.let {
-                    showShortSnackbar(data.getStringExtra(BaseActivity.Companion.EXTRA_MESSAGE))
-                    if (fragment != null) {
-                        fragment.forceSwipeRefresh()
-                    }
+                val msg = data?.getStringExtra(EXTRA_MESSAGE)
+                if (msg != null) {
+                    showShortSnackbar(msg)
+                }
+                if (data != null) {
+                    fragment.forceSwipeRefresh()
                 }
             }
         }
@@ -95,7 +94,7 @@ class ForumActivity : BaseActivity(), ToolbarDropDownInterface.Callback, Adapter
     public override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState?.putInt(STATE_SPINNER_SELECTED_POSITION, mSelectedPosition)
+        outState.putInt(STATE_SPINNER_SELECTED_POSITION, mSelectedPosition)
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
@@ -111,8 +110,10 @@ class ForumActivity : BaseActivity(), ToolbarDropDownInterface.Callback, Adapter
             setTitle("")
 
             // add Spinner to Toolbar
-            binding = DataBindingUtil.inflate<ToolbarSpinnerBinding>(layoutInflater,
-                    R.layout.toolbar_spinner, toolbar.get(), true)
+            binding = DataBindingUtil.inflate<ToolbarSpinnerBinding>(
+                layoutInflater,
+                R.layout.toolbar_spinner, toolbar.get(), true
+            )
             binding.spinner.onItemSelectedListener = this
             // let spinner's parent to handle clicking event in order
             // to increase spinner's clicking area.
@@ -135,14 +136,15 @@ class ForumActivity : BaseActivity(), ToolbarDropDownInterface.Callback, Adapter
 
     private fun restoreFromInterrupt() {
         Single.just(0)
-                .map { Optional.fromNullable(mReadPrefManager.lastReadProgress) }
-                .compose(RxJavaUtil.iOSingleTransformer())
-                .doFinally { mReadPrefManager.saveLastReadProgress(null) }
-                .subscribe({ readProgress ->
-                    if (readProgress.isPresent()) {
-                        PostListActivity.start(this@ForumActivity, readProgress.get())
-                    }
-                }, { L.report(it) })
+            .map { Optional.fromNullable(mReadPrefManager.lastReadProgress) }
+            .compose(RxJavaUtil.iOSingleTransformer())
+            .doFinally { mReadPrefManager.saveLastReadProgress(null) }
+            .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
+            .subscribe({ readProgress ->
+                if (readProgress.isPresent()) {
+                    PostListActivity.start(this@ForumActivity, readProgress.get())
+                }
+            }, { L.report(it) })
     }
 
     companion object {
@@ -162,8 +164,8 @@ class ForumActivity : BaseActivity(), ToolbarDropDownInterface.Callback, Adapter
                 // create a new task when navigating up with
                 // a synthesized back stack
                 TaskStackBuilder.create(activity)
-                        .addNextIntentWithParentStack(intent)
-                        .startActivities()
+                    .addNextIntentWithParentStack(intent)
+                    .startActivities()
             } else {
                 // back to ForumActivity (main Activity)
                 NavUtils.navigateUpTo(activity, intent)

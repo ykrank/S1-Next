@@ -38,8 +38,13 @@ class WebBlackListInfo {
 
                 val pageElement = document.selectFirst(".pg>label")
                 if (pageElement != null) {
-                    info.page = pageElement.selectFirst("input").attr("value").toInt()
-                    info.max = pageElement.selectFirst("span").text().replace(" ", "").let { it.substring(1, it.length - 1) }.trim().toInt()
+                    info.page = pageElement.selectFirst("input")?.attr("value")?.toInt() ?: 1
+                    info.max = pageElement.selectFirst("span")?.text()?.replace(" ", "")?.let {
+                        it.substring(
+                            1, it
+                                .length - 1
+                        )
+                    }?.trim()?.toInt() ?: 1
                 }
 
             } catch (e: Exception) {

@@ -28,7 +28,7 @@ class EditPostActivity : BaseActivity() {
         val fragmentManager = supportFragmentManager
         val fragment = fragmentManager.findFragmentByTag(EditPostFragment.TAG)
         if (fragment == null) {
-            mFragment = EditPostFragment.newInstance(mThread, mPost)
+            mFragment = EditPostFragment.newInstance(mThread!!, mPost!!)
             fragmentManager.beginTransaction().add(R.id.frame_layout, mFragment,
                     EditPostFragment.TAG).commit()
         } else {

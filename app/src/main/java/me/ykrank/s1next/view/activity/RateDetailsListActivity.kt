@@ -18,7 +18,7 @@ class RateDetailsListActivity : BaseActivity() {
         setContentView(R.layout.activity_base_without_drawer_and_scrolling_effect)
 
         if (savedInstanceState == null) {
-            val fragment = RateDetailsListFragment.instance(intent.getParcelableArrayListExtra(ARG_RATES))
+            val fragment = RateDetailsListFragment.instance(intent.getParcelableArrayListExtra(ARG_RATES)!!)
             supportFragmentManager.beginTransaction().add(R.id.frame_layout, fragment,
                     RateDetailsListFragment.TAG).commit()
         }

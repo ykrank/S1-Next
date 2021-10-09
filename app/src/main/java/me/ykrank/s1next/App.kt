@@ -51,9 +51,9 @@ class App : MultiDexApplication() {
 
     override fun attachBaseContext(base: Context) {
         mPreAppComponent = DaggerPreAppComponent.builder()
-                .preAppModule(PreAppModule(this))
-                .prefModule(PrefModule(base))
-                .build()
+            .preAppModule(PreAppModule(this))
+            .prefModule(PrefModule(base))
+            .build()
         mGeneralPreferencesManager = mPreAppComponent.generalPreferencesManager
         super.attachBaseContext(ResourceUtil.setScaledDensity(base, mGeneralPreferencesManager.fontScale))
     }
@@ -63,14 +63,18 @@ class App : MultiDexApplication() {
 
         // enable StrictMode when debug
         if (BuildConfig.DEBUG && Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
+            StrictMode.setThreadPolicy(
+                StrictMode.ThreadPolicy.Builder()
                     .detectAll()
                     .penaltyLog()
-                    .build())
-            StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
+                    .build()
+            )
+            StrictMode.setVmPolicy(
+                StrictMode.VmPolicy.Builder()
                     .detectAll()
                     .penaltyLog()
-                    .build())
+                    .build()
+            )
         }
 
         mPreAppComponent.dataTrackAgent.init(this)
@@ -90,13 +94,13 @@ class App : MultiDexApplication() {
         BuglyUtils.init(this)
 
         mAppComponent = DaggerAppComponent.builder()
-                .preAppComponent(mPreAppComponent)
-                .buildTypeModule(BuildTypeModule(this))
-                .appModule(AppModule())
-                .dbModule(DbModule())
-                .build()
+            .preAppComponent(mPreAppComponent)
+            .buildTypeModule(BuildTypeModule(this))
+            .appModule(AppModule())
+            .dbModule(DbModule())
+            .build()
 
-        mAppActivityLifecycleCallbacks = AppActivityLifecycleCallbacks(this, mAppComponent.noticeCheckTask)
+        mAppActivityLifecycleCallbacks = AppActivityLifecycleCallbacks(mAppComponent.noticeCheckTask)
         registerActivityLifecycleCallbacks(mAppActivityLifecycleCallbacks)
 
         UiGlobalData.init(object : UiDataProvider {

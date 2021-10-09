@@ -156,12 +156,12 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
                 val document = Jsoup.parse(oReply)
                 val oReplyElements = document.select("div.reply_wrap")
 
-                oReplyElements?.forEach({
+                oReplyElements.forEach {
                     it.clearAttributes()
                     it.tagName("blockquote")
-                })
+                }
                 //get the closest parent element
-                return oReplyElements.parents().first().html()
+                return oReplyElements.parents().first()!!.html()
             } catch (e: Exception) {
                 L.report(e)
             }

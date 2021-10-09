@@ -7,7 +7,7 @@ import android.os.Bundle
 import androidx.annotation.CallSuper
 
 
-open abstract class WifiActivityLifecycleCallbacks(val context: Context) : Application.ActivityLifecycleCallbacks {
+open abstract class WifiActivityLifecycleCallbacks() : Application.ActivityLifecycleCallbacks {
 
     private var mWifiBroadcastReceiver: WifiBroadcastReceiver? = null
     /**
@@ -37,7 +37,7 @@ open abstract class WifiActivityLifecycleCallbacks(val context: Context) : Appli
     override fun onActivityResumed(activity: Activity) {
         if (activity is WifiBroadcastReceiver.NeedMonitorWifi) {
             if (mNeedMonitorWifiActivityCount == 0) {
-                check()
+                check(activity)
                 mWifiBroadcastReceiver?.registerIfNeeded()
             }
             mNeedMonitorWifiActivityCount++
@@ -49,7 +49,7 @@ open abstract class WifiActivityLifecycleCallbacks(val context: Context) : Appli
         if (activity is WifiBroadcastReceiver.NeedMonitorWifi) {
             mNeedMonitorWifiActivityCount--
             if (mNeedMonitorWifiActivityCount == 0) {
-                check()
+                check(activity)
                 mWifiBroadcastReceiver?.unregisterIfNeeded()
             }
         }
@@ -60,16 +60,16 @@ open abstract class WifiActivityLifecycleCallbacks(val context: Context) : Appli
         mVisibleCount--
     }
 
-    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle?) {}
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
 
     @CallSuper
     override fun onActivityDestroyed(activity: Activity) {
         mExistCount--
     }
 
-    private fun check() {
+    private fun check(activity: Activity) {
         if (mWifiBroadcastReceiver == null) {
-            mWifiBroadcastReceiver = WifiBroadcastReceiver(context.applicationContext, wifiStateChangedCallback)
+            mWifiBroadcastReceiver = WifiBroadcastReceiver(activity.applicationContext, wifiStateChangedCallback)
         }
     }
 }

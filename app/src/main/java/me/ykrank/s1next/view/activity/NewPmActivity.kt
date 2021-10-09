@@ -32,7 +32,7 @@ class NewPmActivity : BaseActivity() {
         val fragmentManager = supportFragmentManager
         val fragment = fragmentManager.findFragmentByTag(NewPmFragment.TAG)
         if (fragment == null) {
-            newPmFragment = NewPmFragment.newInstance(toUid)
+            newPmFragment = NewPmFragment.newInstance(toUid!!)
             fragmentManager.beginTransaction().add(R.id.frame_layout, newPmFragment,
                     NewPmFragment.TAG).commit()
         } else {
