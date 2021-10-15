@@ -40,7 +40,7 @@ class AlipayDialogFragment : BaseDialogFragment() {
                     if (AlipayDonate.hasInstalledAlipayClient(activity)) {
                         AlipayDonate.startAlipay(activity)
                     } else {
-                        activity.toast("需要安装支付宝")
+                        activity.toast("请打开支付宝")
                     }
                 }
                 .setNegativeButton(android.R.string.cancel, null)

@@ -11,14 +11,15 @@ import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.RxBus
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.github.ykrank.androidtools.widget.track.event.ThemeChangeTrackEvent
-import com.tencent.bugly.beta.Beta
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
 import me.ykrank.s1next.App
+import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.data.pref.ThemeManager
 import me.ykrank.s1next.util.AppDeviceUtil
+import me.ykrank.s1next.util.BuglyUtils
 import me.ykrank.s1next.view.activity.SettingsActivity
 import me.ykrank.s1next.view.event.FontSizeChangeEvent
 import me.ykrank.s1next.view.event.ThemeChangeEvent
@@ -54,12 +55,17 @@ class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefere
         findPreference(getString(R.string.pref_key_post_read)).onPreferenceClickListener = this
         findPreference(getString(R.string.pref_key_backup)).onPreferenceClickListener = this
         findPreference(getString(R.string.pref_key_network)).onPreferenceClickListener = this
-        findPreference(getString(R.string.pref_key_check_update)).onPreferenceClickListener = this
+
+        if (BuglyUtils.isPlay()) {
+            findPreference(getString(R.string.pref_key_check_update)).isVisible = false
+        } else {
+            findPreference(getString(R.string.pref_key_check_update)).onPreferenceClickListener = this
+        }
 
         Single.fromCallable { HtmlCompat.fromHtml(AppDeviceUtil.getSignature(activity), FROM_HTML_MODE_LEGACY) }
-                .compose(RxJavaUtil.computationSingleTransformer())
-                .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
-                .subscribe(Consumer { findPreference(getString(R.string.pref_key_signature)).summary = it })
+            .compose(RxJavaUtil.computationSingleTransformer())
+            .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
+            .subscribe(Consumer { findPreference(getString(R.string.pref_key_signature)).summary = it })
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
@@ -73,8 +79,10 @@ class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefere
         } else if (key == getString(R.string.pref_key_font_size)) {
             L.l("Setting")
             // change scaling factor for fonts
-            ResourceUtil.setScaledDensity(activity,
-                    mGeneralPreferencesManager.fontScale)
+            ResourceUtil.setScaledDensity(
+                activity,
+                mGeneralPreferencesManager.fontScale
+            )
             mRxBus.post(FontSizeChangeEvent())
         }
     }
@@ -103,7 +111,7 @@ class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefere
                 return true
             }
             getString(R.string.pref_key_check_update) -> {
-                Beta.checkUpgrade(true, false)
+                BuglyUtils.checkUpdate()
                 return true
             }
             else -> return false

@@ -142,7 +142,6 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/avatar"
-                android:layerType="hardware"
                 app:reply="@{postViewModel.post}"
                 tools:text="主贴" />
 
