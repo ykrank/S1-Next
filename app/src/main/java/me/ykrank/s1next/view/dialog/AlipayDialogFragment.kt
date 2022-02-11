@@ -10,6 +10,7 @@ import com.github.ykrank.androidtools.util.ClipboardUtil
 import com.github.ykrank.androidtools.widget.AlipayDonate
 import me.ykrank.s1next.R
 import me.ykrank.s1next.databinding.DialogAlipayBinding
+import me.ykrank.s1next.util.BuglyUtils
 
 /**
  * A dialog lets the user enter blacklist remark.
@@ -18,8 +19,10 @@ class AlipayDialogFragment : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val activity = activity as Activity
-        val binding = DataBindingUtil.inflate<DialogAlipayBinding>(activity.layoutInflater,
-                R.layout.dialog_alipay, null, false)
+        val binding = DataBindingUtil.inflate<DialogAlipayBinding>(
+            activity.layoutInflater,
+            R.layout.dialog_alipay, null, false
+        )
 
         val title = arguments?.getString(ARG_TITLE)
         val msg = arguments?.getString(ARG_MESSAGE)
@@ -33,18 +36,20 @@ class AlipayDialogFragment : BaseDialogFragment() {
         binding.root.setOnClickListener { clickListener.invoke() }
 
         val alertDialog = AlertDialog.Builder(activity)
-                .setTitle(title)
-                .setView(binding.root)
-                .setPositiveButton(R.string.dialog_button_text_confirm) { dialog, which ->
-                    clickListener.invoke()
-                    if (AlipayDonate.hasInstalledAlipayClient(activity)) {
-                        AlipayDonate.startAlipay(activity)
-                    } else {
-                        activity.toast("请打开支付宝")
+            .setTitle(title)
+            .setView(binding.root)
+            .setPositiveButton(R.string.dialog_button_text_confirm) { dialog, which ->
+                clickListener.invoke()
+                if (AlipayDonate.hasInstalledAlipayClient(activity)) {
+                    AlipayDonate.startAlipay(activity)
+                } else {
+                    if (!BuglyUtils.isPlay()) {
+                        activity.toast("或许需要手动打开支付宝首页搜索")
                     }
                 }
-                .setNegativeButton(android.R.string.cancel, null)
-                .create()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .create()
         return alertDialog
     }
 

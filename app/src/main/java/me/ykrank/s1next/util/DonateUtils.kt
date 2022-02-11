@@ -16,7 +16,7 @@ object DonateUtils {
                 return
             }
         }
-        if (BuildConfig.FLAVOR != "play") {
+        if (!BuglyUtils.isPlay()) {
             //For GooglePlay privacy-security
             mFragmentActivity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://QR.ALIPAY.COM/FKX01763C5SCSCCJIB6UE8")))
         } else {
