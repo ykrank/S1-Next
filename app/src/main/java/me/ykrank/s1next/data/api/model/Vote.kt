@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.JsonNode
+import org.jsoup.nodes.TextNode
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 import java.text.DecimalFormat
@@ -107,12 +108,15 @@ class Vote : PaperParcelable {
 
     @PaperParcel
     @JsonIgnoreProperties(ignoreUnknown = true)
-    class VoteOption : PaperParcelable {
+    class VoteOption @JsonCreator constructor(
+        @JsonProperty("polloption") option: String?,
+    ) : PaperParcelable {
         @JsonProperty("color")
         var color: String? = null
         @JsonProperty("percent")
         var percent: Float = 0.toFloat()
-        @JsonProperty("polloption")
+
+        @JsonIgnore
         var option: String? = null
         @JsonProperty("polloptionid")
         var optionId: Int = 0
@@ -121,6 +125,10 @@ class Vote : PaperParcelable {
         val percentStr: String
             @JsonIgnore
             get() = DecimalFormat("0.00").format(percent)
+
+        init {
+            this.option = option?.let { TextNode.createFromEncoded(it).text() }
+        }
 
         @ColorInt
         fun getColorInt(): Int {

@@ -96,11 +96,11 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
         Singles.zip(appService.getPollInfo(mUser.appSecureToken, tid), appService.getPollOptions(mUser.appSecureToken, tid))
                 .compose(ApiFlatTransformer.apiPairErrorTransformer())
                 .compose(RxJavaUtil.iOSingleTransformer())
+                .map { (a,b)-> a.data to b.data }
                 .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
-                .subscribe({
-                    val appVote = it.first.data
+                .subscribe({ (appVote, voteOptions)->
                     binding.model?.appVote?.set(appVote)
-                    it.second.data?.let {
+                    voteOptions?.let {
                         data.forEachIndexed { index, vm ->
                             vm.option.mergeWithAppVoteOption(it[index], appVote?.voters
                                     ?: mVote.voteCount)
