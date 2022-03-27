@@ -179,6 +179,7 @@ public class KPSwitchPanelLayoutHandler implements IPanelConflictLayout {
     @Override
     public void handleHide() {
         this.mIsHide = true;
+        panelLayout.forceLayout();
     }
 
     /**
