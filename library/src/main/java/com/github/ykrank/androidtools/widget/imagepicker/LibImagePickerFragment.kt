@@ -3,7 +3,7 @@ package com.github.ykrank.androidtools.widget.imagepicker
 import android.app.Activity
 import android.content.Intent
 import com.github.ykrank.androidtools.ui.LibBaseFragment
-import com.luck.picture.lib.PictureSelector
+import com.luck.picture.lib.basic.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.entity.LocalMedia
 
@@ -19,7 +19,7 @@ abstract class LibImagePickerFragment : LibBaseFragment() {
         when (requestCode) {
             pickImageRequestCode -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    afterPickImage(PictureSelector.obtainMultipleResult(data))
+                    afterPickImage(PictureSelector.obtainSelectorList(data))
                 }
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
@@ -27,7 +27,7 @@ abstract class LibImagePickerFragment : LibBaseFragment() {
     }
 
     override fun onDestroy() {
-        ImagePicker.clearCache(context!!)
+        ImagePicker.clearCache(requireContext())
         super.onDestroy()
     }
 

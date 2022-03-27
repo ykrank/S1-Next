@@ -25,7 +25,7 @@ android {
 
     defaultConfig {
         applicationId 'me.ykrank.s1next'
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 76
         versionName '2.5.2'
