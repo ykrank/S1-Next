@@ -35,12 +35,14 @@
         <item
             android:id="@+id/menu_donate"
             android:icon="@drawable/ic_menu_donate_black_24dp"
-            android:title="@string/donate" />
+            android:title="@string/donate"
+            android:visible="false" />
 
         <item
             android:id="@+id/menu_red_envelopes"
             android:icon="@drawable/ic_menu_red_envelopes_black_24dp"
-            android:title="@string/red_envelopes" />
+            android:title="@string/red_envelopes"
+            android:visible="false" />
 
         <item
             android:id="@+id/menu_help"

@@ -1,9 +1,7 @@
 package me.ykrank.s1next.view.internal
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -21,7 +19,6 @@ import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.github.ykrank.androidtools.widget.track.event.ThemeChangeTrackEvent
 import com.google.android.material.navigation.NavigationView
 import me.ykrank.s1next.App
-import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.pref.DataPreferencesManager
@@ -41,18 +38,26 @@ import javax.inject.Inject
 /**
  * Implements the concrete UI logic for [DrawerLayoutDelegate].
  */
-class DrawerLayoutDelegateConcrete(val activity: androidx.fragment.app.FragmentActivity, drawerLayout: DrawerLayout, navigationView: NavigationView)
-    : DrawerLayoutDelegate(activity, drawerLayout, navigationView), NavigationView.OnNavigationItemSelectedListener {
+class DrawerLayoutDelegateConcrete(
+    val activity: androidx.fragment.app.FragmentActivity,
+    drawerLayout: DrawerLayout,
+    navigationView: NavigationView
+) : DrawerLayoutDelegate(activity, drawerLayout, navigationView), NavigationView.OnNavigationItemSelectedListener {
 
     private val mUser: User
+
     @Inject
     internal lateinit var mUserViewModel: UserViewModel
+
     @Inject
     internal lateinit var trackAgent: DataTrackAgent
+
     @Inject
     internal lateinit var mThemeManager: ThemeManager
+
     @Inject
     internal lateinit var mDataPreferencesManager: DataPreferencesManager
+
     @Inject
     internal lateinit var mAutoSignTask: AutoSignTask
 
@@ -71,6 +76,7 @@ class DrawerLayoutDelegateConcrete(val activity: androidx.fragment.app.FragmentA
 
         navigationView.setNavigationItemSelectedListener(this)
         setupNavDrawerItemChecked(navigationView)
+        setupNavDrawerItemVisible(navigationView)
     }
 
     @SuppressLint("RestrictedApi")
@@ -88,7 +94,7 @@ class DrawerLayoutDelegateConcrete(val activity: androidx.fragment.app.FragmentA
 
                 val marginLayoutParams = binding.drawerUserAvatar.layoutParams as ViewGroup.MarginLayoutParams
                 marginLayoutParams.topMargin = insetsTop + v.context.resources
-                        .getDimensionPixelSize(R.dimen.drawer_avatar_margin_top)
+                    .getDimensionPixelSize(R.dimen.drawer_avatar_margin_top)
 
                 // see https://github.com/android/platform_frameworks_support/blob/master/v4/api21/android/support/v4/widget/DrawerLayoutCompatApi21.java#L86
                 // add DrawerLayout's default View.OnApplyWindowInsetsListener implementation
@@ -122,10 +128,10 @@ class DrawerLayoutDelegateConcrete(val activity: androidx.fragment.app.FragmentA
         binding.drawerAutoSign.setOnClickListener {
             if (!mUser.isSigned) {
                 mAutoSignTask.autoSign().compose(RxJavaUtil.iOSingleTransformer())
-                        .subscribe({ d ->
-                            mUser.isSigned = d.signed
-                            App.get().toast(d.msg, Toast.LENGTH_SHORT)
-                        }, { L.report(it) })
+                    .subscribe({ d ->
+                        mUser.isSigned = d.signed
+                        App.get().toast(d.msg, Toast.LENGTH_SHORT)
+                    }, { L.report(it) })
             }
         }
     }
@@ -194,6 +200,14 @@ class DrawerLayoutDelegateConcrete(val activity: androidx.fragment.app.FragmentA
         }
     }
 
+    private fun setupNavDrawerItemVisible(navigationView: NavigationView) {
+        val menu = navigationView.menu
+        if (AlipayDonate.hasInstalledAlipayClient(mFragmentActivity)) {
+            menu.findItem(R.id.menu_donate)?.isVisible = true
+            menu.findItem(R.id.menu_red_envelopes)?.isVisible = true
+        }
+    }
+
     private fun onHomeMenuSelected() {
         if (mFragmentActivity is ForumActivity) {
             return
@@ -259,7 +273,10 @@ class DrawerLayoutDelegateConcrete(val activity: androidx.fragment.app.FragmentA
     }
 
     private fun onRedEnvelopedMenuSelected() {
-        AlipayDialogFragment.newInstance(mFragmentActivity.getString(R.string.red_envelopes_copy_label), mFragmentActivity.getString(R.string.red_envelopes_text))
-                .show(mFragmentActivity.supportFragmentManager, AlipayDialogFragment.TAG)
+        AlipayDialogFragment.newInstance(
+            mFragmentActivity.getString(R.string.red_envelopes_copy_label),
+            mFragmentActivity.getString(R.string.red_envelopes_text)
+        )
+            .show(mFragmentActivity.supportFragmentManager, AlipayDialogFragment.TAG)
     }
 }
