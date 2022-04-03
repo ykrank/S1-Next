@@ -12,9 +12,7 @@ import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.imagepicker.LibImagePickerFragment
-import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.tools.PictureFileUtils
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.internal.schedulers.ExecutorScheduler

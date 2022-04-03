@@ -1,9 +1,8 @@
 package me.ykrank.s1next.view.fragment
-
+import  com.github.ykrank.androidtools.widget.imagepicker.ImagePicker;
 import android.os.Bundle
 import android.view.View
 import com.github.ykrank.androidtools.widget.RxBus
-import com.github.ykrank.androidtools.widget.imagepicker.ImagePicker
 import com.github.ykrank.androidtools.widget.uploadimg.ImageUploadManager
 import com.github.ykrank.androidtools.widget.uploadimg.LibImageUploadFragment
 import com.github.ykrank.androidtools.widget.uploadimg.ModelImageUpload
