@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'org.greenrobot.greendao'
+apply plugin: 'com.github.ben-manes.versions'
 
 
 Properties properties = new Properties()
@@ -21,7 +22,6 @@ if(httpDnsSecret == null){
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId 'me.ykrank.s1next'
@@ -145,12 +145,12 @@ dependencies {
 
     implementation 'com.tencent.bugly:nativecrashreport:3.9.2'
 
-    implementation 'com.google.dagger:dagger:2.39.1'
-    kapt 'com.google.dagger:dagger-compiler:2.39.1'
+    implementation 'com.google.dagger:dagger:2.44.2'
+    kapt 'com.google.dagger:dagger-compiler:2.44.2'
 
     implementation 'androidx.transition:transition:1.4.1'
 
-    implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.9.2'
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:5.0.0-alpha.11'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
@@ -159,26 +159,26 @@ dependencies {
     implementation "com.github.VictorAlbertos.RxCache:runtime:1.8.3-2.x"
     implementation 'com.github.VictorAlbertos.Jolyglot:jackson:0.0.6'
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.13.0"
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.1'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.14.1'
 
     implementation 'nz.bradcampbell:paperparcel:2.0.8'
     implementation 'nz.bradcampbell:paperparcel-kotlin:2.0.8' // Optional
     implementation "nz.bradcampbell:paperparcel-api:2.0.8"
     kapt 'nz.bradcampbell:paperparcel-compiler:2.0.8'
 
-    kapt 'com.github.bumptech.glide:compiler:4.13.2'
+    kapt 'com.github.bumptech.glide:compiler:4.14.2'
 
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'org.greenrobot:greendao:3.3.0'
     implementation 'com.bigkoo:quicksidebar:1.0.3'
 
 //  flipper
-    releaseImplementation 'com.facebook.flipper:flipper-noop:0.114.0'
-    alphaImplementation 'com.facebook.flipper:flipper-noop:0.114.0'
-    debugImplementation 'com.facebook.flipper:flipper:0.114.0'
-    debugImplementation 'com.facebook.soloader:soloader:0.10.1'
-    debugImplementation 'com.facebook.flipper:flipper-network-plugin:0.114.0'
+    releaseImplementation 'com.facebook.flipper:flipper-noop:0.177.0'
+    alphaImplementation 'com.facebook.flipper:flipper-noop:0.177.0'
+    debugImplementation 'com.facebook.flipper:flipper:0.177.0'
+    debugImplementation 'com.facebook.soloader:soloader:0.10.5'
+    debugImplementation 'com.facebook.flipper:flipper-network-plugin:0.177.0'
 
     implementation 'com.liulishuo.okdownload:okdownload:1.0.7'
     implementation 'com.liulishuo.okdownload:okhttp:1.0.7'

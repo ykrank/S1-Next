@@ -11,7 +11,6 @@ import okhttp3.Interceptor;
 import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.internal.Util;
 
 /**
  * Created by ykrank on 2017/3/6.
@@ -38,7 +37,7 @@ public class OkHttpNoAvatarInterceptor implements Interceptor {
                     .protocol(Protocol.HTTP_1_1)
                     .code(504)
                     .message("Empty avatar image")
-                    .body(Util.EMPTY_RESPONSE)
+//                    .body(Util.EMPTY_RESPONSE)
                     .sentRequestAtMillis(-1L)
                     .receivedResponseAtMillis(System.currentTimeMillis())
                     .build();

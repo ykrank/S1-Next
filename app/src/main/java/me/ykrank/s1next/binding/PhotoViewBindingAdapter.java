@@ -36,9 +36,9 @@ public final class PhotoViewBindingAdapter {
 
         RequestOptions requestOptions = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
-                .transform(new GlMaxTextureSizeBitmapTransformation())
+                .optionalTransform(new GlMaxTextureSizeBitmapTransformation())
                 .error(R.mipmap.error_symbol)
-                .fitCenter()
+                .optionalFitCenter()
                 .priority(Priority.HIGH);
 
         RequestBuilder<Drawable> thumbnailRequest;

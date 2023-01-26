@@ -94,7 +94,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
                 .downsample(MultiDownSampleStrategy(GlMaxTextureSizeDownSampleStrategy(),
                         FitOutWidthDownSampleStrategy(),
                         SizeDownSampleStrategy(MaxImageSize)))
-                .transform(FitOutWidthBitmapTransformation())
+                .optionalTransform(FitOutWidthBitmapTransformation())
     }
 
 

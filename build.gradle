@@ -2,7 +2,7 @@
 apply plugin: "com.github.ben-manes.versions"
 
 buildscript {
-    ext.kotlin_version = '1.5.31'
+    ext.kotlin_version = '1.6.21'
     repositories {
         gradlePluginPortal()
         google()
@@ -21,7 +21,7 @@ buildscript {
 
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
-        classpath "com.github.ben-manes:gradle-versions-plugin:0.39.0"
+        classpath "com.github.ben-manes:gradle-versions-plugin:0.44.0"
     }
 
 }
@@ -42,7 +42,6 @@ task clean(type: Delete) {
 }
 
 ext {
-    buildToolsVersion = '30.0.1'
     compileSdkVersion = 31
     targetSdkVersion = 30
 }

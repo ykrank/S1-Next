@@ -6,7 +6,6 @@ group = 'com.github.ykrank.AndroidTools'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         minSdkVersion 21
@@ -58,19 +57,19 @@ dependencies {
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //For jackson
     api "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.1'
 
-    api "com.google.android.material:material:1.5.0-alpha02"
+    api "com.google.android.material:material:1.6.0"
     api "androidx.cardview:cardview:1.0.0"
     api "androidx.percentlayout:percentlayout:1.0.0"
     api "androidx.legacy:legacy-preference-v14:1.0.0"
     api "androidx.legacy:legacy-support-v4:1.0.0"
-    api "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
-    api 'androidx.constraintlayout:constraintlayout:2.1.1'
+    api "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+    api 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     api 'androidx.multidex:multidex:2.0.1'
 
-    debugApi 'com.squareup.leakcanary:leakcanary-android:2.7'
+    debugApi 'com.squareup.leakcanary:leakcanary-android:2.10'
     releaseApi 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
     api 'org.apache.commons:commons-lang3:3.12.0'
     api 'com.google.guava:guava:31.0.1-android'
@@ -79,16 +78,16 @@ dependencies {
     api 'io.reactivex.rxjava2:rxandroid:2.1.1'
     api 'io.reactivex.rxjava2:rxkotlin:2.4.0'
 
-    api 'com.github.bumptech.glide:glide:4.13.2'
-    api 'com.github.bumptech.glide:okhttp3-integration:4.13.2'
+    api 'com.github.bumptech.glide:glide:4.14.2'
+    api 'com.github.bumptech.glide:okhttp3-integration:4.14.2'
     api 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
 
     api 'com.shizhefei:LargeImageView:1.1.0'
     api 'com.github.ykrank:androidautodispose:0.4.0'
     api 'com.hannesdorfmann:adapterdelegates3:3.1.0'
 
-    playApi 'com.tencent.bugly:crashreport:3.4.4'
-    normalApi 'com.tencent.bugly:crashreport_upgrade:1.5.23'
+    playApi 'com.tencent.bugly:crashreport:4.1.9'
+    normalApi 'com.tencent.bugly:crashreport_upgrade:1.6.1'
 
     api 'com.orhanobut:logger:2.2.0'
 
@@ -97,10 +96,10 @@ dependencies {
 
     //PictureSelector
     api 'io.github.lucksiege:pictureselector:v3.0.8'
-    api 'io.github.lucksiege:compress:v3.0.8'
+    api 'io.github.lucksiege:compress:v3.10.7'
 
     //PictureUpload
-    api 'org.jsoup:jsoup:1.14.3'
+    api 'org.jsoup:jsoup:1.15.3'
     api 'com.squareup.retrofit2:retrofit:2.9.0'
     api 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
     api 'com.squareup.retrofit2:converter-jackson:2.9.0'
