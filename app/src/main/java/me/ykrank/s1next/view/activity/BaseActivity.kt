@@ -104,6 +104,7 @@ abstract class BaseActivity : LibBaseActivity() {
             }
         }
 
+
         super.onCreate(savedInstanceState)
 
         mRxBus.get()
@@ -223,7 +224,8 @@ abstract class BaseActivity : LibBaseActivity() {
         super.onConfigurationChanged(newConfig)
 
         drawerLayoutDelegate?.onConfigurationChanged(newConfig)
-
+        mThemeManager.invalidateTheme()
+        mRxBus.post(ThemeChangeEvent())
     }
 
     /**

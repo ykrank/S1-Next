@@ -72,7 +72,7 @@ class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefere
         if (!isAdded) {
             return
         }
-        if (key == getString(R.string.pref_key_theme)) {
+        if (key == getString(R.string.pref_key_theme) || key == getString(R.string.pref_key_dark_theme)) {
             trackAgent.post(ThemeChangeTrackEvent(false))
             mThemeManager.invalidateTheme()
             mRxBus.post(ThemeChangeEvent())

@@ -1,6 +1,7 @@
 package me.ykrank.s1next.data.pref;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
@@ -49,7 +50,14 @@ public final class ThemeManager {
 
         @Override
         public Theme get() {
-            Theme theme = Theme.VALUES.get(mGeneralPreferencesProvider.getThemeIndex());
+            Theme theme;
+
+            int currentNightMode = mContext.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+                theme = Theme.VALUES.get(mGeneralPreferencesProvider.getDarkThemeIndex());
+            } else {
+                theme = Theme.VALUES.get(mGeneralPreferencesProvider.getThemeIndex());
+            }
             invalidateAccentColor(theme);
 
             return theme;

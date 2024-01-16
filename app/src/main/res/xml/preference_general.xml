@@ -20,6 +20,17 @@
             app:iconSpaceReserved="false" />
 
         <ListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="@string/pref_dark_theme_default_value"
+            android:entries="@array/pref_dark_theme_entries"
+            android:entryValues="@array/pref_dark_theme_entry_values"
+            android:key="@string/pref_key_dark_theme"
+            android:summary="%s"
+            android:title="@string/pref_dark_theme"
+            app:iconSpaceReserved="false" />
+
+        <ListPreference
             android:defaultValue="@string/pref_font_size_default_value"
             android:entries="@array/pref_font_size_entries"
             android:entryValues="@array/pref_font_size_entry_values"

@@ -35,6 +35,32 @@
         <item>8</item>
     </string-array>
 
+    <!-- settings -->
+    <string-array name="pref_dark_theme_entries">
+        <item>@string/pref_theme_entries_0</item>
+        <item>@string/pref_theme_entries_1</item>
+        <item>@string/pref_theme_entries_2</item>
+        <item>@string/pref_theme_entries_3</item>
+        <item>@string/pref_theme_entries_4</item>
+        <item>@string/pref_theme_entries_5</item>
+        <item>@string/pref_theme_entries_6</item>
+        <item>@string/pref_theme_entries_7</item>
+        <item>@string/pref_theme_entries_8</item>
+    </string-array>
+
+    <string-array name="pref_dark_theme_entry_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+
+
     <string-array name="pref_font_size_entries">
         <item>@string/pref_font_size_entries_1</item>
         <item>@string/pref_font_size_entries_2</item>

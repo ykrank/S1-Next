@@ -2,6 +2,7 @@
 <resources>
     <string name="pref_general">常规</string>
     <string name="pref_theme">主题</string>
+    <string name="pref_dark_theme">深色主题</string>
     <string name="pref_font_size">字体大小</string>
     <string name="pref_signature">尾巴</string>
     <string name="pref_advanced">高级</string>
