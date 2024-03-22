@@ -15,6 +15,9 @@ class GeneralPreferencesImpl(context: Context, sharedPreferences: SharedPreferen
     override var themeIndex: Int by PreferenceDelegates.int(
             R.string.pref_key_theme, R.string.pref_theme_default_value)
 
+    override var darkThemeIndex: Int by PreferenceDelegates.int(
+        R.string.pref_key_dark_theme, R.string.pref_dark_theme_default_value)
+
     override val fontScale: Float
         get() = getPrefString(R.string.pref_key_font_size, R.string.pref_font_size_default_value)?.toFloat()?:1.0f
 
@@ -33,6 +36,7 @@ class GeneralPreferencesImpl(context: Context, sharedPreferences: SharedPreferen
 
 interface GeneralPreferences {
     var themeIndex: Int
+    var darkThemeIndex: Int
     val fontScale: Float
     val isSignatureEnabled: Boolean
     var isPostSelectable: Boolean

@@ -59,18 +59,21 @@
         <activity
             android:name=".view.activity.LoginActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:label="@string/activity_label_login"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
             android:name=".view.page.app.AppLoginActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:label="@string/action_app_login"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
             android:name=".view.activity.ForumActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -82,37 +85,44 @@
         <activity
             android:name=".view.activity.SettingsActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:label="@string/settings" />
 
         <activity
             android:name=".view.activity.HelpActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:label="@string/help"
             android:process=":webView" />
 
         <activity
             android:name=".view.activity.FavouriteListActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".view.activity.ThreadListActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".view.page.post.PostListActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".view.page.app.AppPostListActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".view.page.post.PostListGatewayActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:theme="@style/Theme.Translucent.Light">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -174,37 +184,44 @@
 
         <activity
             android:name=".view.activity.ReplyActivity"
-            android:colorMode="wideColorGamut" />
+            android:colorMode="wideColorGamut"
+            android:configChanges="uiMode" />
 
         <activity
             android:name=".view.activity.NewThreadActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:label="@string/title_new_thread" />
 
         <activity
             android:name=".view.page.edit.EditPostActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:label="@string/title_edit_post" />
 
         <activity
             android:name=".view.activity.GalleryActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:theme="@style/Theme.Gallery" />
 
         <activity
             android:name=".view.activity.PmActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:label="@string/pms"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".view.activity.NewPmActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:label="@string/title_new_pm" />
 
         <activity
             android:name=".view.activity.SearchActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -214,12 +231,14 @@
         <activity
             android:name=".view.activity.NoteActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:label="@string/title_note"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".view.activity.UserHomeActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:label=""
             android:theme="@style/Theme.Translucent.AfternoonTea"
             android:windowSoftInputMode="adjustPan" />
@@ -227,52 +246,62 @@
         <activity
             android:name=".view.activity.FriendListActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:label="@string/title_friends"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".view.activity.UserThreadActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".view.activity.UserReplyActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".view.activity.NewRateActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".view.activity.NewReportActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".view.activity.HistoryActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:label="@string/title_history"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".view.activity.DarkRoomActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".view.activity.OpenSourceLicensesActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:label="@string/open_source_licenses" />
 
         <activity
             android:name=".view.activity.OpenSourceLicenseDetailActivity"
-            android:colorMode="wideColorGamut" />
+            android:colorMode="wideColorGamut"
+            android:configChanges="uiMode" />
 
         <activity
             android:name=".view.activity.WebViewActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:windowSoftInputMode="adjustPan" />
 
         <!-- FilePicker -->
@@ -290,6 +319,7 @@
         <activity
             android:name="com.nononsenseapps.filepicker.FilePickerActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:label="@string/app_name"
             android:theme="@style/FilePickerTheme">
             <intent-filter>
@@ -301,11 +331,13 @@
         <activity
             android:name=".view.activity.RateDetailsListActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:label="@string/rate" />
 
         <activity
             android:name="com.facebook.flipper.android.diagnostics.FlipperDiagnosticActivity"
             android:colorMode="wideColorGamut"
+            android:configChanges="uiMode"
             android:exported="true" />
     </application>
 

@@ -100,6 +100,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         trackAgent.post(ViewThreadTrackEvent(mThreadTitle, mThreadId, hashMapOf(
                 Pair("Type", type.toString()),
                 Pair("Theme", mGeneralPreferencesManager.themeIndex.toString()),
+                Pair("Dark Theme", mGeneralPreferencesManager.darkThemeIndex.toString()),
                 Pair("FontScale", mGeneralPreferencesManager.fontScale.toString()),
                 Pair("SignatureEnabled", mGeneralPreferencesManager.isSignatureEnabled.toString()),
                 Pair("PostSelectable", mGeneralPreferencesManager.isPostSelectable.toString()),
