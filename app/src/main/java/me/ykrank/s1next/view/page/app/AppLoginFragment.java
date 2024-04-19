@@ -65,15 +65,13 @@ public final class AppLoginFragment extends BaseFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_account_new:
-                IntentUtil.startViewIntentExcludeOurApp(getContext(), Uri.parse(
-                        Api.URL_BROWSER_REGISTER));
+        if (item.getItemId() == R.id.menu_account_new) {
+            IntentUtil.startViewIntentExcludeOurApp(getContext(), Uri.parse(
+                    Api.URL_BROWSER_REGISTER));
 
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void prepareLogin() {

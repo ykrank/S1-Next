@@ -37,13 +37,11 @@ public final class FavouriteViewModel {
         return v -> {
             PopupMenu popup = new PopupMenu(v.getContext(), v);
             popup.setOnMenuItemClickListener((MenuItem menuitem) -> {
-                switch (menuitem.getItemId()) {
-                    case R.id.menu_popup_remove_favourite:
-                        rxBus.post(new FavoriteRemoveEvent(favourite.get().getFavId()));
-                        return true;
-                    default:
-                        return false;
+                if (menuitem.getItemId() == R.id.menu_popup_remove_favourite) {
+                    rxBus.post(new FavoriteRemoveEvent(favourite.get().getFavId()));
+                    return true;
                 }
+                return false;
             });
             popup.inflate(R.menu.popup_favorites);
             popup.show();

@@ -65,10 +65,15 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
 
     @Inject
     internal lateinit var trackAgent: DataTrackAgent
+
     @Inject
     internal lateinit var mDownloadPrefManager: DownloadPreferencesManager
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -111,34 +116,51 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_download -> {
-                if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                            REQUEST_CODE_WRITE_EXTERNAL_STORAGE)
+                if (ActivityCompat.checkSelfPermission(
+                        context!!,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    )
+                    != PackageManager.PERMISSION_GRANTED
+                ) {
+                    requestPermissions(
+                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                        REQUEST_CODE_WRITE_EXTERNAL_STORAGE
+                    )
                     return true
                 }
                 downloadImage()
                 return true
             }
+
             R.id.menu_large_image_mode -> {
                 switchLargeImage(!item.isChecked)
                 return true
             }
+
             R.id.menu_browser -> {
                 IntentUtil.startViewIntentExcludeOurApp(context, Uri.parse(mImageUrl))
                 return true
             }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         if (requestCode == REQUEST_CODE_WRITE_EXTERNAL_STORAGE) {
             if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 try {
                     downloadImage()
                 } catch (e: SecurityException) {
-                    Toast.makeText(context, R.string.message_permission_denied, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        com.github.ykrank.androidtools.R.string.message_permission_denied,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         } else {
@@ -148,9 +170,9 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
 
     private fun preload() {
         preloadTarget = Glide.with(App.get())
-                .load(mImageUrl)
-                .priority(Priority.HIGH)
-                .preload()
+            .load(mImageUrl)
+            .priority(Priority.HIGH)
+            .preload()
     }
 
     private fun switchLargeImage(large: Boolean) {
@@ -172,11 +194,13 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
     @RequiresPermission(value = Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private fun downloadImage() {
         var builder: RequestBuilder<File> = Glide.with(this)
-                .download(ForcePassUrl(mImageUrl))
+            .download(ForcePassUrl(mImageUrl))
         //avatar signature
         if (Api.isAvatarUrl(mImageUrl)) {
-            builder = builder.apply(RequestOptions()
-                    .signature(mDownloadPrefManager.avatarCacheInvalidationIntervalSignature))
+            builder = builder.apply(
+                RequestOptions()
+                    .signature(mDownloadPrefManager.avatarCacheInvalidationIntervalSignature)
+            )
         }
         builder.into(object : SimpleTarget<File>() {
             override fun onResourceReady(resource: File, transition: Transition<in File>?) {
@@ -214,11 +238,13 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
                     FileUtil.copyFile(resource, file)
                     file
                 }, { f ->
-                    Snackbar.make(binding.root, R.string.download_success, Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, R.string.download_success, Snackbar.LENGTH_SHORT)
+                        .show()
                     context?.let { FileUtil.notifyImageInMediaStore(it, f) }
                 }) { e ->
                     L.report(e)
-                    Toast.makeText(context, R.string.download_unknown_error, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.download_unknown_error, Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         })
@@ -229,11 +255,21 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
         downloadId = mImageUrl?.let { String(it.toCharArray()) }
         downloadId?.also {
             ProgressManager.addListener(it, object : ProgressListener {
-                override fun onProgress(task: DownloadTask, currentOffset: Long, totalLength: Long) {
-                    binding.progress = ProgressItem(totalLength, currentOffset, totalLength == currentOffset)
+                override fun onProgress(
+                    task: DownloadTask,
+                    currentOffset: Long,
+                    totalLength: Long
+                ) {
+                    binding.progress =
+                        ProgressItem(totalLength, currentOffset, totalLength == currentOffset)
                 }
 
-                override fun taskEnd(task: DownloadTask, cause: EndCause, realCause: java.lang.Exception?, model: Listener1Assist.Listener1Model) {
+                override fun taskEnd(
+                    task: DownloadTask,
+                    cause: EndCause,
+                    realCause: java.lang.Exception?,
+                    model: Listener1Assist.Listener1Model
+                ) {
                     binding.progress = ProgressItem(model.totalLength, model.totalLength, true)
                     if (realCause != null) {
                         L.report(realCause)

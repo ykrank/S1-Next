@@ -111,7 +111,7 @@ abstract class BaseActivity : LibBaseActivity() {
             .filter { o -> o is ThemeChangeEvent || o is FontSizeChangeEvent }
             .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
             .subscribe { o ->
-                window.setWindowAnimations(R.style.Animation_Recreate)
+                window.setWindowAnimations(com.github.ykrank.androidtools.R.style.Animation_Recreate)
                 recreate()
             }
         mRxBus.get(NoticeRefreshEvent::class.java)

@@ -40,7 +40,7 @@ fun Spanned.replaceQuoteSpans(context: Context): Spanned {
         val flags = getSpanFlags(quoteSpan)
         spannableString.removeSpan(quoteSpan)
         spannableString.setSpan(QuoteSpan(
-                ResourceUtil.getAttrColorInt(context, R.attr.colorPrimaryDark),
+                ResourceUtil.getAttrColorInt(context, androidx.appcompat.R.attr.colorPrimaryDark),
                 10f,
                 15f),
                 start,

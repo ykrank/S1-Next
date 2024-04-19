@@ -21,6 +21,7 @@ if(httpDnsSecret == null){
 }
 
 android {
+    namespace 'me.ykrank.s1next'
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
@@ -45,8 +46,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
     buildFeatures {
         dataBinding true
+        buildConfig true
     }
     dexOptions {
         preDexLibraries = Boolean.valueOf(System.getProperty('pre-dex-libraries', 'true'))
@@ -145,8 +150,8 @@ dependencies {
 
     implementation 'com.tencent.bugly:nativecrashreport:3.9.2'
 
-    implementation 'com.google.dagger:dagger:2.44.2'
-    kapt 'com.google.dagger:dagger-compiler:2.44.2'
+    implementation 'com.google.dagger:dagger:2.51.1'
+    kapt 'com.google.dagger:dagger-compiler:2.51.1'
 
     implementation 'androidx.transition:transition:1.4.1'
 

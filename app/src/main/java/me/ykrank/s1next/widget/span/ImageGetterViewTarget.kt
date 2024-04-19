@@ -50,7 +50,7 @@ internal class ImageGetterViewTarget constructor(
         setDrawable(resource, 10)
         if (resource is Animatable) {
             val callback = textView.getTag(
-                R.id.tag_drawable_callback
+                com.github.ykrank.androidtools.R.id.tag_drawable_callback
             ) as Drawable.Callback?
             // note: not sure whether callback would be null sometimes
             // when this Drawable' host view is detached from View

@@ -127,7 +127,7 @@ public final class ThemeManager {
     private void invalidateAccentColor(Theme theme) {
         // get current theme's accent color
         TypedArray typedArray = mContext.obtainStyledAttributes(theme.style,
-                new int[]{R.attr.colorAccent});
+                new int[]{androidx.appcompat.R.attr.colorAccent});
         mColorAccent = typedArray.getColor(0, -1);
         typedArray.recycle();
         Preconditions.checkState(mColorAccent != -1);

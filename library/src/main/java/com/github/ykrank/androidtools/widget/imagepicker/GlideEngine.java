@@ -104,7 +104,7 @@ public class GlideEngine implements ImageEngine {
                 .override(180, 180)
                 .sizeMultiplier(0.5f)
                 .transform(new CenterCrop(), new RoundedCorners(8))
-                .placeholder(R.drawable.ps_image_placeholder)
+                .placeholder(com.luck.picture.lib.R.drawable.ps_image_placeholder)
                 .into(imageView);
     }
 
@@ -125,7 +125,7 @@ public class GlideEngine implements ImageEngine {
                 .load(url)
                 .override(200, 200)
                 .centerCrop()
-                .placeholder(R.drawable.ps_image_placeholder)
+                .placeholder(com.luck.picture.lib.R.drawable.ps_image_placeholder)
                 .into(imageView);
     }
 

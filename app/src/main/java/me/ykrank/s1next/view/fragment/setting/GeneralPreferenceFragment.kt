@@ -68,7 +68,7 @@ class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefere
             .subscribe(Consumer { findPreference(getString(R.string.pref_key_signature)).summary = it })
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (!isAdded) {
             return
         }

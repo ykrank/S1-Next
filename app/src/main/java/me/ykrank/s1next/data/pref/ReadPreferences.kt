@@ -64,7 +64,7 @@ interface ReadPreferences {
 }
 
 class ReadPreferencesManager(private val mPreferencesProvider: ReadPreferences) {
-    private val mLastReadProgressSupplier = Supplier<ReadProgress> { mPreferencesProvider.lastReadProgress }
+    private val mLastReadProgressSupplier = Supplier<ReadProgress?> { mPreferencesProvider.lastReadProgress }
 
     @Volatile
     private var mLastReadProgressMemorized = Suppliers.memoize(mLastReadProgressSupplier)

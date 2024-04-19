@@ -32,8 +32,7 @@ class DownloadPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefer
         findPreference(getString(R.string.pref_key_clear_image_cache)).onPreferenceClickListener = this
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
     }
 
     override fun onPreferenceClick(preference: Preference): Boolean {

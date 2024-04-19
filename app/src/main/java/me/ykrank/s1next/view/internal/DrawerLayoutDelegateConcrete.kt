@@ -94,7 +94,7 @@ class DrawerLayoutDelegateConcrete(
 
                 val marginLayoutParams = binding.drawerUserAvatar.layoutParams as ViewGroup.MarginLayoutParams
                 marginLayoutParams.topMargin = insetsTop + v.context.resources
-                    .getDimensionPixelSize(R.dimen.drawer_avatar_margin_top)
+                    .getDimensionPixelSize(com.github.ykrank.androidtools.R.dimen.drawer_avatar_margin_top)
 
                 // see https://github.com/android/platform_frameworks_support/blob/master/v4/api21/android/support/v4/widget/DrawerLayoutCompatApi21.java#L86
                 // add DrawerLayout's default View.OnApplyWindowInsetsListener implementation

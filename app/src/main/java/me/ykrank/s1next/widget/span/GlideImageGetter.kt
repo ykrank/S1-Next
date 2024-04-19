@@ -107,7 +107,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
         // save Drawable.Callback in TextView
         // and get back when finish fetching image
         // see https://github.com/goofyz/testGlide/pull/1 for more details
-        mTextView.setTag(R.id.tag_drawable_callback, this)
+        mTextView.setTag(com.github.ykrank.androidtools.R.id.tag_drawable_callback, this)
         // add this listener in order to clean any pending images loading
         // and set drawable callback tag to null when detached from window
         mTextView.addOnAttachStateChangeListener(this)
@@ -305,7 +305,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
         @MainThread
         operator fun get(textView: TextView): GlideImageGetter {
 
-            val obj = textView.getTag(R.id.tag_drawable_callback)
+            val obj = textView.getTag(com.github.ykrank.androidtools.R.id.tag_drawable_callback)
             if (obj == null) {
                 return GlideImageGetter(textView)
             } else {

@@ -62,7 +62,7 @@ public final class ImageViewBindingAdapter {
                 .getDownloadPreferencesManager();
         if (user.isLogged()) {
             RequestManager requestManager = Glide.with(bezelImageView);
-            bezelImageView.setTag(R.id.tag_drawable_info, null);
+            bezelImageView.setTag(com.github.ykrank.androidtools.R.id.tag_drawable_info, null);
             AvatarUrlsCache.clearUserAvatarCache(user.getUid());
             // setup user's avatar
             requestManager
@@ -78,13 +78,13 @@ public final class ImageViewBindingAdapter {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                             //You can't start or clear loads in RequestListener or Target callbacks.
-                            bezelImageView.setTag(R.id.tag_drawable_info, null);
+                            bezelImageView.setTag(com.github.ykrank.androidtools.R.id.tag_drawable_info, null);
                             return false;
                         }
 
                         @Override
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            bezelImageView.setTag(R.id.tag_drawable_info, new ImageInfo(((AvatarUrl) model).toStringUrl(), resource.getIntrinsicWidth(), resource.getIntrinsicHeight()));
+                            bezelImageView.setTag(com.github.ykrank.androidtools.R.id.tag_drawable_info, new ImageInfo(((AvatarUrl) model).toStringUrl(), resource.getIntrinsicWidth(), resource.getIntrinsicHeight()));
                             return false;
                         }
                     })
@@ -132,7 +132,7 @@ public final class ImageViewBindingAdapter {
     }
 
     private static void loadPlaceHolderAvatar(ImageView imageView) {
-        imageView.setTag(R.id.tag_drawable_info, null);
+        imageView.setTag(com.github.ykrank.androidtools.R.id.tag_drawable_info, null);
         Glide.with(imageView)
                 .load(R.drawable.ic_drawer_avatar_placeholder)
                 .apply(RequestOptions.circleCropTransform())
@@ -227,7 +227,7 @@ public final class ImageViewBindingAdapter {
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                         AvatarUrl avatarUrl = (AvatarUrl) model;
                         L.l("Load avatar:" + avatarUrl.toStringUrl());
-                        imageView.setTag(R.id.tag_drawable_info, new ImageInfo(avatarUrl.toStringUrl(), resource.getIntrinsicWidth(), resource.getIntrinsicHeight()));
+                        imageView.setTag(com.github.ykrank.androidtools.R.id.tag_drawable_info, new ImageInfo(avatarUrl.toStringUrl(), resource.getIntrinsicWidth(), resource.getIntrinsicHeight()));
                         return false;
                     }
                 });

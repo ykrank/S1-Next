@@ -25,6 +25,7 @@ import java.security.NoSuchAlgorithmException;
  */
 @WorkerThread
 public class EditorDiskCache {
+    private static final int APP_VERSION = 1;
     private static final int MEMORY_CACHE_MAX_NUMBER = 4;
     private static final String DISK_CACHE_DIRECTORY = "editor_disk_cache";
     private static final long DISK_CACHE_MAX_SIZE = 100 * 1000; // 100KB
@@ -44,7 +45,7 @@ public class EditorDiskCache {
         File file = new File(cachePathName
                 + File.separator + DISK_CACHE_DIRECTORY);
         try {
-            diskLruCache = DiskLruCache.open(file, BuildConfig.VERSION_CODE, 1,
+            diskLruCache = DiskLruCache.open(file, APP_VERSION, 1,
                     DISK_CACHE_MAX_SIZE);
         } catch (IOException e) {
             throw new RuntimeException("Failed to open the cache in " + file + ".", e);

@@ -39,7 +39,7 @@ object ErrorUtil : ErrorParser {
         }
         if (msg == null) {
             L.report(throwable)
-            return context.getString(R.string.message_unknown_error)
+            return context.getString(com.github.ykrank.androidtools.R.string.message_unknown_error)
         }
         return msg
     }

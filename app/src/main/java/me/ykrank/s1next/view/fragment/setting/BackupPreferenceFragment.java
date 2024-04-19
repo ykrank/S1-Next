@@ -3,9 +3,12 @@ package me.ykrank.s1next.view.fragment.setting;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.annotation.MainThread;
 import androidx.annotation.StringRes;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.preference.Preference;
 
 import com.github.ykrank.androidtools.util.LooperUtil;
@@ -79,22 +82,22 @@ public final class BackupPreferenceFragment extends BasePreferenceFragment
         @StringRes int message;
         switch (result) {
             case BackupDelegate.SUCCESS:
-                message = R.string.message_backup_success;
+                message = com.github.ykrank.androidtools.R.string.message_backup_success;
                 break;
             case BackupDelegate.NO_DATA:
-                message = R.string.message_no_setting_data;
+                message = com.github.ykrank.androidtools.R.string.message_no_setting_data;
                 break;
             case BackupDelegate.PERMISSION_DENY:
-                message = R.string.message_permission_denied;
+                message = com.github.ykrank.androidtools.R.string.message_permission_denied;
                 break;
             case BackupDelegate.IO_EXCEPTION:
-                message = R.string.message_io_exception;
+                message = com.github.ykrank.androidtools.R.string.message_io_exception;
                 break;
             case BackupDelegate.CANCELED:
-                message = R.string.message_operation_canceled;
+                message = com.github.ykrank.androidtools.R.string.message_operation_canceled;
                 break;
             default:
-                message = R.string.message_unknown_error;
+                message = com.github.ykrank.androidtools.R.string.message_unknown_error;
         }
         Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT).show();
     }
@@ -108,22 +111,22 @@ public final class BackupPreferenceFragment extends BasePreferenceFragment
         @StringRes int message;
         switch (result) {
             case BackupDelegate.SUCCESS:
-                message = R.string.message_restore_success;
+                message = com.github.ykrank.androidtools.R.string.message_restore_success;
                 break;
             case BackupDelegate.NO_DATA:
-                message = R.string.message_no_setting_data;
+                message = com.github.ykrank.androidtools.R.string.message_no_setting_data;
                 break;
             case BackupDelegate.PERMISSION_DENY:
-                message = R.string.message_permission_denied;
+                message = com.github.ykrank.androidtools.R.string.message_permission_denied;
                 break;
             case BackupDelegate.IO_EXCEPTION:
-                message = R.string.message_io_exception;
+                message = com.github.ykrank.androidtools.R.string.message_io_exception;
                 break;
             case BackupDelegate.CANCELED:
-                message = R.string.message_operation_canceled;
+                message = com.github.ykrank.androidtools.R.string.message_operation_canceled;
                 break;
             default:
-                message = R.string.message_unknown_error;
+                message = com.github.ykrank.androidtools.R.string.message_unknown_error;
         }
         Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT).show();
     }

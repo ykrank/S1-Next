@@ -94,11 +94,11 @@ object ApiFlatTransformer {
                 }
             }
         } else {
-            try {
-                return func.invoke(authenticityToken)
+            return try {
+                func.invoke(authenticityToken)
             } catch (e: Exception) {
                 L.report(e)
-                return Single.error<T>(e)
+                Single.error<T>(e)
             }
 
         }
@@ -111,12 +111,6 @@ object ApiFlatTransformer {
     }
 
     private fun <T> createData(t: T): Single<T> {
-        return Single.create<T> { emitter ->
-            try {
-                emitter.onSuccess(t)
-            } catch (e: Exception) {
-                emitter.onError(e)
-            }
-        }
+        return Single.just(t)
     }
 }

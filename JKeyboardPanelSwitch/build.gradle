@@ -1,8 +1,9 @@
 apply plugin: 'com.android.library'
 
-group='com.github.ykrank.AndroidTools'
+group='cn.dreamtobe.kpswitch'
 
 android {
+    namespace 'cn.dreamtobe.kpswitch'
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
@@ -16,6 +17,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 

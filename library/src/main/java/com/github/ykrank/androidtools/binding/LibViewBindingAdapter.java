@@ -2,7 +2,9 @@ package com.github.ykrank.androidtools.binding;
 
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+
 import androidx.databinding.BindingAdapter;
+
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -10,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -17,6 +20,7 @@ import androidx.core.view.TintableBackgroundView;
 import androidx.core.view.ViewCompat;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import androidx.cardview.widget.CardView;
+
 import android.view.TouchDelegate;
 import android.view.View;
 import android.widget.Toast;
@@ -47,11 +51,11 @@ public final class LibViewBindingAdapter {
 
     @BindingAdapter("cardTintColor")
     public static void setCardBackgroundTint(CardView view, @ColorInt Integer oldTintColor, @ColorInt Integer tintColor) {
-        if (Objects.equal(oldTintColor, tintColor)){
+        if (Objects.equal(oldTintColor, tintColor)) {
             return;
         }
         if (tintColor == null || tintColor == Integer.MIN_VALUE) {
-            TypedArray ta = view.getContext().obtainStyledAttributes(ResourceUtil.getResourceId(view.getContext(), R.attr.materialCardViewStyle), new int[]{R.attr.cardBackgroundColor});
+            TypedArray ta = view.getContext().obtainStyledAttributes(ResourceUtil.getResourceId(view.getContext(), com.google.android.material.R.attr.materialCardViewStyle), new int[]{com.google.android.material.R.attr.cardBackgroundColor});
             tintColor = ta.getColor(0, Color.TRANSPARENT);
         }
         view.setCardBackgroundColor(tintColor);

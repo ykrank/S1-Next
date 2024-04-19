@@ -70,7 +70,7 @@ class AppPostAdapterDelegate(activity: Activity, private val quotePid: String?) 
         }
         val quote = post.pid == quotePid?.toInt()
         if (quote) {
-            binding.container.setBackgroundResource(R.drawable.shape_stroke_corners_wide)
+            binding.container.setBackgroundResource(com.github.ykrank.androidtools.R.drawable.shape_stroke_corners_wide)
         } else {
             binding.container.setBackgroundColor(Color.TRANSPARENT)
         }

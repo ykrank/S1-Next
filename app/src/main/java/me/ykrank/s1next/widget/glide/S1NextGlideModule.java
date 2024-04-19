@@ -40,7 +40,7 @@ public final class S1NextGlideModule extends AppGlideModule {
                 context, App.Companion.getPreAppComponent().getDownloadPreferencesManager()
                 .getTotalImageCacheSize()));
 
-        ViewTarget.setTagId(R.id.tag_glide);
+        ViewTarget.setTagId(com.github.ykrank.androidtools.R.id.tag_glide);
         builder.setLogLevel(Log.ERROR);
 
         RequestOptions requestOptions = new RequestOptions();

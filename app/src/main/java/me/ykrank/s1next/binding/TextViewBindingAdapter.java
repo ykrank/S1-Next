@@ -108,7 +108,7 @@ public final class TextViewBindingAdapter {
     @BindingAdapter({"themeManager", "forumId", "thread", "user"})
     public static void setThread(TextView textView, ThemeManager themeManager, String forumId, Thread thread, User user) {
         SpannableStringBuilder builder = new SpannableStringBuilder(thread.getTitle());
-        TextAppearanceSpan hintSpan = new TextAppearanceSpan(textView.getContext(), R.style.TextAppearance_ThreadList_Title_Hint);
+        TextAppearanceSpan hintSpan = new TextAppearanceSpan(textView.getContext(), com.github.ykrank.androidtools.R.style.TextAppearance_ThreadList_Title_Hint);
         if (thread.getPermission() != 0) {
             Spannable permSpan = new SpannableString(String.format("[%s%s]", textView.getContext().getString(R.string.thread_permission_hint),
                     thread.getPermission()));

@@ -53,8 +53,8 @@ public class StartAnimatable extends Transition {
 
     public StartAnimatable(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.StartAnimatable);
-        Drawable drawable = a.getDrawable(R.styleable.StartAnimatable_android_src);
+        TypedArray a = context.obtainStyledAttributes(attrs, com.github.ykrank.androidtools.R.styleable.StartAnimatable);
+        Drawable drawable = a.getDrawable(com.github.ykrank.androidtools.R.styleable.StartAnimatable_android_src);
         a.recycle();
         if (drawable instanceof Animatable) {
             animatable = (Animatable) drawable;

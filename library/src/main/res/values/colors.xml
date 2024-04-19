@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="ripple_material_dark">#33ffffff</color>
+
     <color name="dark_cyan">#5a8e89</color>
     <color name="teal_200_70p">#b380cbc4</color>
     <color name="white_69p">#b1ffffff</color>

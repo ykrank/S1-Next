@@ -43,7 +43,7 @@ class ToolbarDelegate(private val mAppCompatActivity: AppCompatActivity, val too
      */
     fun setupNavCrossIcon() {
         toolbar.setNavigationIcon(ResourceUtil.getResourceId(mAppCompatActivity.theme,
-                R.attr.iconClose))
+            com.github.ykrank.androidtools.R.attr.iconClose))
     }
 
     /**

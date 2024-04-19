@@ -2,8 +2,10 @@ package me.ykrank.s1next.view.adapter;
 
 import android.app.Activity;
 import android.content.res.Resources;
+
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,8 +30,8 @@ public final class EmoticonPagerAdapter extends PagerAdapter {
         this.mActivity = activity;
 
         Resources resources = activity.getResources();
-        mEmoticonWidth = resources.getDimension(R.dimen.minimum_touch_target_size);
-        mEmoticonGridPadding = resources.getDimensionPixelSize(R.dimen.emoticon_padding);
+        mEmoticonWidth = resources.getDimension(com.github.ykrank.androidtools.R.dimen.minimum_touch_target_size);
+        mEmoticonGridPadding = resources.getDimensionPixelSize(com.github.ykrank.androidtools.R.dimen.emoticon_padding);
 
         mEmoticonFactory = new EmoticonFactory(activity);
         mEmoticonTypeTitles = mEmoticonFactory.getEmotionTypeTitles();

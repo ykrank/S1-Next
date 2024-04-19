@@ -22,9 +22,9 @@ class ReadPreferenceFragment : BasePreferenceFragment() {
         addPreferencesFromResource(R.xml.preference_read)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key == getString(R.string.pref_key_thread_padding)) {
-            val threadPadding = sharedPreferences.getString(key, null)?.toIntOrNull()
+            val threadPadding = sharedPreferences?.getString(key, null)?.toIntOrNull()
             if (threadPadding == null || threadPadding <= 0) {
                 activity?.toast(R.string.format_error)
             }

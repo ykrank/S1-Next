@@ -178,18 +178,6 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun compatBackIcon() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            val drawable = StateListDrawable()
-
-            val colorPrimaryDark = ResourceUtil.getAttrColorInt(this, R.attr.colorPrimaryDark)
-            val colorPrimary = ResourceUtil.getAttrColorInt(this, R.attr.colorPrimary)
-
-            drawable.addState(intArrayOf(android.R.attr.state_pressed), ColorDrawable(colorPrimaryDark))
-            drawable.addState(intArrayOf(-android.R.attr.state_pressed), ColorDrawable(colorPrimary))
-
-
-            ViewCompat.setBackground(appBar.searchback, drawable)
-        }
     }
 
     private fun setupSearchView() {
