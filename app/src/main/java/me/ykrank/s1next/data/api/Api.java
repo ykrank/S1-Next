@@ -28,7 +28,7 @@ public final class Api {
 
     public static final String API_VERSION_DEFAULT = "1";
     public static final int THREADS_PER_PAGE = 50;
-    public static final int POSTS_PER_PAGE = 30;
+    public static final int POSTS_PER_PAGE = 40;
 
     /**
      * emoticon init rect size

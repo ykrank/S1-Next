@@ -27,6 +27,7 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
+import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.app.AppApiUtil
 import me.ykrank.s1next.data.api.app.AppService
 import me.ykrank.s1next.data.api.app.model.AppDataWrapper
@@ -287,7 +288,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(), On
             if (i >= 10 && i % 2 == 0) {
                 continue
             }
-            val letter = (i + 1 + 30 * (page - 1)).toString()
+            val letter = (i + 1 + Api.POSTS_PER_PAGE * (page - 1)).toString()
             customLetters.add(letter)
             letters.put(letter, i)
         }
