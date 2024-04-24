@@ -22,7 +22,7 @@ import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.ThreadLink
-import me.ykrank.s1next.data.db.ReadProgressDbWrapper
+import me.ykrank.s1next.data.db.biz.ReadProgressBiz
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 import me.ykrank.s1next.data.pref.ReadPreferencesManager
 import me.ykrank.s1next.view.activity.BaseActivity
@@ -169,7 +169,7 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
                 return OnceClickUtil.onceClickObservable(view, 1000)
                         .observeOn(Schedulers.io())
                         .map {
-                            Optional.fromNullable(ReadProgressDbWrapper.getInstance().getWithThreadId(thread.get().id?.toInt()
+                            Optional.fromNullable(ReadProgressBiz.instance.getWithThreadId(thread.get().id?.toInt()
                                     ?: 0))
                         }
                         .observeOn(AndroidSchedulers.mainThread())

@@ -69,6 +69,6 @@ class BlackWordBiz(private val manager: AppDatabaseManager) {
     companion object {
 
         val instance: BlackWordBiz
-            get() = App.appComponent.blackWordDbWrapper
+            get() = App.appComponent.blackWordBiz
     }
 }

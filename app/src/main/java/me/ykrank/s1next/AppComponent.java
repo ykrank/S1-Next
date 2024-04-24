@@ -14,8 +14,9 @@ import me.ykrank.s1next.data.db.biz.BlackListBiz;
 import me.ykrank.s1next.data.db.biz.BlackWordBiz;
 import me.ykrank.s1next.data.db.DbModule;
 import me.ykrank.s1next.data.db.biz.HistoryBiz;
-import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
+import me.ykrank.s1next.data.db.biz.ReadProgressBiz;
 import me.ykrank.s1next.data.db.ThreadDbWrapper;
+import me.ykrank.s1next.data.db.biz.ReadProgressBiz;
 import me.ykrank.s1next.task.AutoSignTask;
 import me.ykrank.s1next.view.activity.BaseActivity;
 import me.ykrank.s1next.view.activity.ForumActivity;
@@ -133,7 +134,7 @@ public interface AppComponent {
 
     BlackWordBiz getBlackWordBiz();
 
-    ReadProgressDbWrapper getReadProgressDbWrapper();
+    ReadProgressBiz getReadProgressBiz();
 
     ThreadDbWrapper getThreadDbWrapper();
 

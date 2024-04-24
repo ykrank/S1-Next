@@ -182,7 +182,7 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
 
     companion object {
         fun getInstance(): BlackListBiz {
-            return appComponent.getBlackListDbWrapper()
+            return appComponent.blackListBiz
         }
     }
 }

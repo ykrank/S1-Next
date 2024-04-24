@@ -8,6 +8,7 @@ import me.ykrank.s1next.AppLife;
 import me.ykrank.s1next.data.db.biz.BlackListBiz;
 import me.ykrank.s1next.data.db.biz.BlackWordBiz;
 import me.ykrank.s1next.data.db.biz.HistoryBiz;
+import me.ykrank.s1next.data.db.biz.ReadProgressBiz;
 
 @Module
 public class DbModule {
@@ -32,8 +33,8 @@ public class DbModule {
 
     @Provides
     @AppLife
-    ReadProgressDbWrapper provideReadProgressDbWrapper(AppDatabaseManager manager) {
-        return new ReadProgressDbWrapper(appDaoSessionManager);
+    ReadProgressBiz provideReadProgressDbWrapper(AppDatabaseManager manager) {
+        return new ReadProgressBiz(manager);
     }
 
     @Provides

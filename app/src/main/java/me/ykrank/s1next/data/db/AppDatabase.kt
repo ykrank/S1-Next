@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import me.ykrank.s1next.data.db.dao.BlackListDao
 import me.ykrank.s1next.data.db.dao.BlackWordDao
 import me.ykrank.s1next.data.db.dao.HistoryDao
+import me.ykrank.s1next.data.db.dao.ReadProgressDao
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 
 @Database(
@@ -18,4 +19,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun blackWord(): BlackWordDao
 
     abstract fun history(): HistoryDao
+
+    abstract fun readProgress(): ReadProgressDao
 }

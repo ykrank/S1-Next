@@ -57,7 +57,7 @@ class HistoryBiz(private val manager: AppDatabaseManager) {
         const val MAX_SIZE = 100
 
         val instance: HistoryBiz
-            get() = App.appComponent.blackWordDbWrapper
+            get() = App.appComponent.historyBiz
     }
 
 }

@@ -41,7 +41,7 @@ import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.collection.Posts
 import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.RatePostsWrapper
-import me.ykrank.s1next.data.db.ReadProgressDbWrapper
+import me.ykrank.s1next.data.db.biz.ReadProgressBiz
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.databinding.FragmentBaseWithQuickSideBarBinding
@@ -227,7 +227,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         if (readProgress != null) {
             Single.fromCallable {
                 LooperUtil.enforceOnWorkThread()
-                val dbWrapper = ReadProgressDbWrapper.getInstance()
+                val dbWrapper = ReadProgressBiz.instance
                 dbWrapper.saveReadProgress(readProgress)
                 true
             }.compose(RxJavaUtil.iOSingleTransformer<Boolean>())
@@ -579,7 +579,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
 
         internal fun saveReadProgressBack(readProgress: ReadProgress) {
             java.lang.Thread {
-                val dbWrapper = ReadProgressDbWrapper.getInstance()
+                val dbWrapper = ReadProgressBiz.instance
                 dbWrapper.saveReadProgress(readProgress)
             }.start()
         }

@@ -26,7 +26,7 @@ import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.ThreadLink
 import me.ykrank.s1next.data.api.model.collection.Posts
 import me.ykrank.s1next.data.db.biz.HistoryBiz
-import me.ykrank.s1next.data.db.ReadProgressDbWrapper
+import me.ykrank.s1next.data.db.biz.ReadProgressBiz
 import me.ykrank.s1next.data.db.ThreadDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.DbThread
 import me.ykrank.s1next.data.db.dbmodel.History
@@ -405,7 +405,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     internal fun loadReadProgress() {
         Single.just(mThreadId)
                 .flatMap {
-                    val dbWrapper = ReadProgressDbWrapper.getInstance()
+                    val dbWrapper = ReadProgressBiz.instance
                     val progress: ReadProgress? = dbWrapper.getWithThreadId(Integer.valueOf(it))
                     if (progress == null) Single.never<ReadProgress>() else Single.just(progress)
                 }

@@ -25,13 +25,13 @@ interface HistoryDao {
     fun deleteNotTopRecords(): Int
 
     @Insert
-    fun insert(blackWord: History)
+    fun insert(history: History)
 
     @Delete
-    fun delete(blackWord: List<History>)
+    fun delete(history: List<History>)
 
     @Update
-    fun update(blackWord: History)
+    fun update(history: History)
 
     @Query("SELECT COUNT(*) FROM History")
     fun getCount(): Int
