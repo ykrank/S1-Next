@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 import com.github.ykrank.androidtools.util.L
-import me.ykrank.s1next.data.db.BlackListDbWrapper
+import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
@@ -46,7 +46,7 @@ class AppPostsWrapper() : AppListWrapper<AppPost>() {
          */
         fun filterPost(post: AppPost): AppPost? {
             var nPost: AppPost? = post
-            val blackListWrapper = BlackListDbWrapper.getInstance()
+            val blackListWrapper = BlackListBiz.getInstance()
             val blackList = blackListWrapper.getMergedBlackList(post.authorId, post.author)
             if (blackList == null || blackList.post == BlackList.NORMAL) {
                 if (post.hide) {
@@ -136,7 +136,7 @@ class AppPost() : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         val quoteName = findBlockQuoteName(reply)
         if (quoteName != null) {
             reply = replaceQuoteBr(reply)
-            val blackList = BlackListDbWrapper.getInstance().getMergedBlackList(-1, quoteName)
+            val blackList = BlackListBiz.getInstance().getMergedBlackList(-1, quoteName)
             if (blackList != null && blackList.post != BlackList.NORMAL) {
                 return replaceBlockQuoteContent(reply, blackList.remark)
             }

@@ -15,7 +15,8 @@ import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import io.reactivex.Single
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.db.BlackListDbWrapper
+import me.ykrank.s1next.data.db.biz.BlackListBiz
+import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.databinding.FragmentBlacklistBinding
 import me.ykrank.s1next.view.activity.DarkRoomActivity
@@ -81,7 +82,7 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
                             blackLists.add(mListViewAdapter.getItem(checklist.keyAt(i)))
                         }
                     }
-                    BlackListDbWrapper.getInstance().delBlackLists(blackLists)
+                    BlackListBiz.getInstance().delBlackLists(blackLists)
                     load()
                     return true
                 }
@@ -108,7 +109,7 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
     }
 
     internal val sourceObservable: Single<Cursor>
-        get() = BlackListDbWrapper.getInstance().blackListCursor
+        get() = Single.just(BlackListBiz.getInstance().blackListCursor)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = DataBindingUtil.inflate<FragmentBlacklistBinding>(inflater,
@@ -202,7 +203,7 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
             if (resultCode == Activity.RESULT_OK) {
                 val blackList = data?.getParcelableExtra<BlackList>(BlacklistDialogFragment.BLACKLIST_TAG)
                 if (blackList != null) {
-                    BlackListDbWrapper.getInstance().saveBlackList(blackList)
+                    BlackListBiz.getInstance().saveBlackList(blackList)
                     load()
                 }
             }

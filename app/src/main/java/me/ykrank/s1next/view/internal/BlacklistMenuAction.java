@@ -7,7 +7,7 @@ import com.github.ykrank.androidtools.util.RxJavaUtil;
 import com.github.ykrank.androidtools.widget.RxBus;
 
 import me.ykrank.s1next.App;
-import me.ykrank.s1next.data.db.BlackListDbWrapper;
+import me.ykrank.s1next.data.db.biz.BlackListBiz;
 import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment;
 import me.ykrank.s1next.view.event.BlackListChangeEvent;
 import me.ykrank.s1next.widget.track.event.BlackListTrackEvent;
@@ -28,7 +28,7 @@ public class BlacklistMenuAction {
     @MainThread
     public static void removeBlacklist(RxBus rxBus, int uid, String name) {
         App.Companion.get().getTrackAgent().post(new BlackListTrackEvent(false, String.valueOf(uid), name));
-        RxJavaUtil.workWithUiThread(() -> BlackListDbWrapper.getInstance().delDefaultBlackList(uid, name),
+        RxJavaUtil.workWithUiThread(() -> BlackListBiz.getInstance().delDefaultBlackList(uid, name),
                 () -> rxBus.post(new BlackListChangeEvent(uid, name, null, false)));
     }
 }

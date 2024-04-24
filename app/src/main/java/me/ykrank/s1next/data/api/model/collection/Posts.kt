@@ -7,7 +7,7 @@ import me.ykrank.s1next.data.api.model.Account
 import me.ykrank.s1next.data.api.model.Post
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.Vote
-import me.ykrank.s1next.data.db.BlackListDbWrapper
+import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.BlackWordDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.data.db.dbmodel.BlackWord
@@ -192,7 +192,7 @@ class Posts : Account {
         @WorkerThread
         fun filterPost(post: Post, clone: Boolean = false, blackWords: List<BlackWord>? = null): Post? {
             var nPost: Post = post
-            val blackListWrapper = BlackListDbWrapper.getInstance()
+            val blackListWrapper = BlackListBiz.getInstance()
             val blackList = blackListWrapper.getMergedBlackList(post.authorId?.toIntOrNull()
                     ?: -1, post.authorName)
             if (blackList == null || blackList.post == BlackList.NORMAL) {

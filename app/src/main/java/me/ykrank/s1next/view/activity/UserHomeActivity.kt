@@ -28,7 +28,7 @@ import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.model.Profile
-import me.ykrank.s1next.data.db.BlackListDbWrapper
+import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.databinding.ActivityHomeBinding
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.event.BlackListChangeEvent
@@ -152,7 +152,7 @@ class UserHomeActivity : BaseActivity() {
                 .ofType(BlackListChangeEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, ActivityEvent.PAUSE))
                 .subscribe { blackListEvent ->
-                    val dbWrapper = BlackListDbWrapper.getInstance()
+                    val dbWrapper = BlackListBiz.getInstance()
                     if (blackListEvent.isAdd) {
                         Single.just(true)
                                 .doOnSuccess { b ->
@@ -212,7 +212,7 @@ class UserHomeActivity : BaseActivity() {
         if (blacklistMenu == null) {
             return
         }
-        val wrapper = BlackListDbWrapper.getInstance()
+        val wrapper = BlackListBiz.getInstance()
         Single.just(Optional.fromNullable(wrapper.getMergedBlackList(uid?.toInt() ?: 0, name)))
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))

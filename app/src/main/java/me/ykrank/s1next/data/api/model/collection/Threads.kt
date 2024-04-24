@@ -12,7 +12,7 @@ import me.ykrank.s1next.data.api.model.Account
 import me.ykrank.s1next.data.api.model.Forum
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.ThreadType
-import me.ykrank.s1next.data.db.BlackListDbWrapper
+import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.ThreadDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import java.util.*
@@ -88,7 +88,7 @@ class Threads : Account {
         fun getFilterThread(oThread: Thread, copyed: Boolean = false): Thread? {
             LooperUtil.enforceOnWorkThread()
             var nThread: Thread = oThread
-            val blackListWrapper = BlackListDbWrapper.getInstance()
+            val blackListWrapper = BlackListBiz.getInstance()
             when (blackListWrapper.getForumFlag(oThread.authorId, oThread.author)) {
                 BlackList.DEL_FORUM -> return null
                 BlackList.HIDE_FORUM -> if (!oThread.isHide) {

@@ -10,7 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.db.BlackListDbWrapper
+import me.ykrank.s1next.data.db.biz.BlackListBiz
+import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.databinding.ItemBlacklistBinding
 import me.ykrank.s1next.viewmodel.BlackListViewModel
@@ -28,11 +29,11 @@ class BlackListCursorListViewAdapter(activity: Activity) : androidx.cursoradapte
 
     override fun bindView(view: View, context: Context, cursor: Cursor) {
         val binding = DataBindingUtil.findBinding<ItemBlacklistBinding>(view)
-        binding?.blackListViewModel?.blacklist?.set(BlackListDbWrapper.getInstance().fromBlackListCursor(cursor))
+        binding?.blackListViewModel?.blacklist?.set(BlackListBiz.getInstance().fromBlackListCursor(cursor))
     }
 
     override fun getItem(position: Int): BlackList {
         val cursor = super.getItem(position) as Cursor
-        return BlackListDbWrapper.getInstance().fromBlackListCursor(cursor)
+        return BlackListBiz.getInstance().fromBlackListCursor(cursor)
     }
 }

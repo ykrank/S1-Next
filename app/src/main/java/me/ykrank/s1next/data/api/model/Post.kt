@@ -15,7 +15,7 @@ import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.MathUtil
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.api.Api
-import me.ykrank.s1next.data.db.BlackListDbWrapper
+import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.util.JsonUtil
 import org.jsoup.Jsoup
@@ -183,7 +183,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         if (quoteName != null) {
             reply = replaceQuoteBr(reply)
             reply = replaceTextColor(reply)
-            val blackList = BlackListDbWrapper.getInstance().getMergedBlackList(-1, quoteName)
+            val blackList = BlackListBiz.getInstance().getMergedBlackList(-1, quoteName)
             if (blackList != null && blackList.post != BlackList.NORMAL) {
                 return replaceBlockQuoteContent(reply, blackList.remark)
             }

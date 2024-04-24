@@ -16,7 +16,7 @@ import me.ykrank.s1next.App
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.model.WebBlackListInfo
-import me.ykrank.s1next.data.db.BlackListDbWrapper
+import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.databinding.DialogLoadBlacklistFromWebBinding
 import me.ykrank.s1next.util.ErrorUtil

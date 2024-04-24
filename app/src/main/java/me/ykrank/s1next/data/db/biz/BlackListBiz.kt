@@ -2,9 +2,10 @@ package me.ykrank.s1next.data.db.biz
 
 import android.database.Cursor
 import android.text.TextUtils
-import io.reactivex.Single
+import me.ykrank.s1next.App.Companion.appComponent
 import me.ykrank.s1next.data.db.AppDatabase
 import me.ykrank.s1next.data.db.AppDatabaseManager
+import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.dao.BlackListDao
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 
@@ -18,12 +19,12 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         return blackListDao.loadLimit(limit, offset)
     }
 
-    val blackListCursor: Single<Cursor>
-        get() = Single.just(blackListDao.queryBuilder())
-            .map<Cursor>(Function<T, Cursor> { builder: T -> builder.buildCursor().query() })
+    val blackListCursor: Cursor
+        get() = blackListDao.loadCursor()
 
     fun fromBlackListCursor(cursor: Cursor): BlackList {
-        return blackListDao.readEntity(cursor, 0)
+        // TODO: 从Cursor中读取
+        return BlackList()
     }
 
     /**
@@ -32,13 +33,11 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
      * @param id
      * @return
      */
-    fun getBlackListWithAuthorId(id: Int): BlackList? {
+    private fun getBlackListWithAuthorId(id: Int): BlackList? {
         if (id <= 0) {
             return null
         }
-        val results: List<BlackList> = blackListDao.queryBuilder()
-            .where(Properties.AuthorId.eq(id))
-            .list()
+        val results: MutableList<BlackList> = blackListDao.getByAuthorId(id).toMutableList()
         if (results.isEmpty()) {
             return null
         }
@@ -52,8 +51,8 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         if (result == null) {
             result = results.removeAt(0)
         }
-        if (!results.isEmpty()) {
-            blackListDao.deleteInTx(results)
+        if (results.isNotEmpty()) {
+            blackListDao.delete(results)
         }
         return result
     }
@@ -64,13 +63,11 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
      * @param name
      * @return
      */
-    fun getBlackListWithAuthorName(name: String?): BlackList? {
-        if (TextUtils.isEmpty(name)) {
+    private fun getBlackListWithAuthorName(name: String?): BlackList? {
+        if (name.isNullOrEmpty()) {
             return null
         }
-        val results: List<BlackList> = blackListDao.queryBuilder()
-            .where(Properties.Author.eq(name))
-            .list()
+        val results: MutableList<BlackList> = blackListDao.getByAuthor(name).toMutableList()
         if (results.isEmpty()) {
             return null
         }
@@ -84,8 +81,8 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         if (result == null) {
             result = results.removeAt(0)
         }
-        if (!results.isEmpty()) {
-            blackListDao.deleteInTx(results)
+        if (results.isNotEmpty()) {
+            blackListDao.delete(results)
         }
         return result
     }
@@ -96,16 +93,15 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
      * @param name
      * @return
      */
-    fun getMergedBlackList(id: Int, name: String): BlackList? {
+    fun getMergedBlackList(id: Int, name: String?): BlackList? {
         if (id <= 0) {
             return getBlackListWithAuthorName(name)
         }
-        if (TextUtils.isEmpty(name)) {
+        if (name.isNullOrEmpty()) {
             return getBlackListWithAuthorId(id)
         }
-        val results: List<BlackList> = blackListDao.queryBuilder()
-            .whereOr(Properties.AuthorId.eq(id), Properties.Author.eq(name))
-            .list()
+        val results: MutableList<BlackList> =
+            blackListDao.getByAuthorAndId(id, name).toMutableList()
         if (results.isEmpty()) {
             return null
         }
@@ -122,21 +118,21 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
             result = results.removeAt(0)
             result.authorId = id
             result.author = name
-            blackListDao.update(result)
+            blackListDao.update(listOf(result))
         }
-        if (!results.isEmpty()) {
-            blackListDao.deleteInTx(results)
+        if (results.isNotEmpty()) {
+            blackListDao.delete(results)
         }
         return result
     }
 
-    @ForumFLag
+    @BlackList.ForumFLag
     fun getForumFlag(id: Int, name: String): Int {
         val oBlackList: BlackList? = getMergedBlackList(id, name)
         return if (oBlackList != null) oBlackList.forum else BlackList.NORMAL
     }
 
-    @PostFLag
+    @BlackList.PostFLag
     fun getPostFlag(id: Int, name: String): Int {
         val oBlackList: BlackList? = getMergedBlackList(id, name)
         return if (oBlackList != null) oBlackList.post else BlackList.NORMAL
@@ -148,22 +144,22 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         }
         val oBlackList: BlackList? = getMergedBlackList(blackList.authorId, blackList.author)
         if (oBlackList == null) {
-            blackListDao.insert(blackList)
+            blackListDao.insert(listOf(blackList))
         } else {
             oBlackList.mergeFrom(blackList)
-            blackListDao.update(oBlackList)
+            blackListDao.update(listOf(oBlackList))
         }
     }
 
     fun delBlackList(blackList: BlackList) {
         val oBlackList: BlackList? = getMergedBlackList(blackList.authorId, blackList.author)
         if (oBlackList != null) {
-            blackListDao.delete(oBlackList)
+            blackListDao.delete(listOf(oBlackList))
         }
     }
 
-    fun delBlackLists(blackLists: List<BlackList?>?) {
-        blackListDao.deleteInTx(blackLists)
+    fun delBlackLists(blackLists: List<BlackList>) {
+        blackListDao.delete(blackLists)
     }
 
     fun saveDefaultBlackList(authorid: Int, author: String, remark: String) {
@@ -182,5 +178,11 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         blackList.authorId = authorid
         blackList.author = author
         delBlackList(blackList)
+    }
+
+    companion object {
+        fun getInstance(): BlackListBiz {
+            return appComponent.getBlackListDbWrapper()
+        }
     }
 }

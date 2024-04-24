@@ -6,7 +6,6 @@ import dagger.Module;
 import dagger.Provides;
 import me.ykrank.s1next.AppLife;
 import me.ykrank.s1next.data.db.biz.BlackListBiz;
-import me.ykrank.s1next.data.db.dao.BlackListDao;
 
 @Module
 public class DbModule {
@@ -19,7 +18,7 @@ public class DbModule {
 
     @Provides
     @AppLife
-    BlackListBiz provideBlackListDbWrapper(AppDatabaseManager manager) {
+    BlackListBiz provideBlackListBiz(AppDatabaseManager manager) {
         return new BlackListBiz(manager);
     }
 
