@@ -27,7 +27,7 @@ import me.ykrank.s1next.data.api.model.ThreadLink
 import me.ykrank.s1next.data.api.model.collection.Posts
 import me.ykrank.s1next.data.db.biz.HistoryBiz
 import me.ykrank.s1next.data.db.biz.ReadProgressBiz
-import me.ykrank.s1next.data.db.ThreadDbWrapper
+import me.ykrank.s1next.data.db.biz.ThreadBiz
 import me.ykrank.s1next.data.db.dbmodel.DbThread
 import me.ykrank.s1next.data.db.dbmodel.History
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
@@ -155,7 +155,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                 .subscribe({
                     LooperUtil.enforceOnWorkThread()
                     val dbThread = DbThread(Integer.valueOf(mThreadId), it)
-                    ThreadDbWrapper.getInstance().saveThread(dbThread)
+                    ThreadBiz.instance.saveThread(dbThread)
                 }, { L.report(it) })
     }
 

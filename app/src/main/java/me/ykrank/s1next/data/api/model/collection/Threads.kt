@@ -13,7 +13,7 @@ import me.ykrank.s1next.data.api.model.Forum
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.ThreadType
 import me.ykrank.s1next.data.db.biz.BlackListBiz
-import me.ykrank.s1next.data.db.ThreadDbWrapper
+import me.ykrank.s1next.data.db.biz.ThreadBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import java.util.*
 
@@ -111,7 +111,7 @@ class Threads : Account {
                 }
             }
 
-            val dbThread = ThreadDbWrapper.getInstance().getWithThreadId(nThread.id?.toInt()
+            val dbThread = ThreadBiz.instance.getWithThreadId(nThread.id?.toInt()
                     ?: 0)
             if (dbThread != null) {
                 nThread.lastReplyCount = dbThread.lastCountWhenView

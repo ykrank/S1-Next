@@ -9,6 +9,7 @@ import me.ykrank.s1next.data.db.biz.BlackListBiz;
 import me.ykrank.s1next.data.db.biz.BlackWordBiz;
 import me.ykrank.s1next.data.db.biz.HistoryBiz;
 import me.ykrank.s1next.data.db.biz.ReadProgressBiz;
+import me.ykrank.s1next.data.db.biz.ThreadBiz;
 
 @Module
 public class DbModule {
@@ -39,8 +40,8 @@ public class DbModule {
 
     @Provides
     @AppLife
-    ThreadDbWrapper provideThreadDbWrapperr(AppDatabaseManager manager) {
-        return new ThreadDbWrapper(appDaoSessionManager);
+    ThreadBiz provideThreadBiz(AppDatabaseManager manager) {
+        return new ThreadBiz(manager);
     }
 
     @Provides
