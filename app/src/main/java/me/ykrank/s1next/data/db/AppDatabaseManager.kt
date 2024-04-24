@@ -11,11 +11,14 @@ interface AppDatabaseManager {
 }
 
 class AppDatabaseManagerImpl(applicationContext: Context) : AppDatabaseManager {
-    // TODO: 数据库操作禁止在主线程
+
     val builder = Room.databaseBuilder(
         applicationContext,
         AppDatabase::class.java, BuildConfig.DB_NAME,
-    ).allowMainThreadQueries()
+    )   // 数据库升级版本7是在2.1.0-5（2018/12），因此之前旧版本直接破坏性重建可以接受
+        .fallbackToDestructiveMigrationFrom(1, 2, 3, 4, 5, 6)
+        // TODO: 数据库操作禁止在主线程
+        .allowMainThreadQueries()
 
     @Volatile
     var database: AppDatabase? = null
