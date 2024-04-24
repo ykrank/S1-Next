@@ -14,7 +14,7 @@ import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import io.reactivex.Single
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.db.BlackWordDbWrapper
+import me.ykrank.s1next.data.db.biz.BlackWordBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackWord
 import me.ykrank.s1next.databinding.FragmentBlackWordBinding
 import me.ykrank.s1next.view.activity.DarkRoomActivity

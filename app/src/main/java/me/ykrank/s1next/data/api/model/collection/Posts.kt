@@ -8,7 +8,7 @@ import me.ykrank.s1next.data.api.model.Post
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.Vote
 import me.ykrank.s1next.data.db.biz.BlackListBiz
-import me.ykrank.s1next.data.db.BlackWordDbWrapper
+import me.ykrank.s1next.data.db.biz.BlackWordBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.data.db.dbmodel.BlackWord
 import org.apache.commons.lang3.StringUtils

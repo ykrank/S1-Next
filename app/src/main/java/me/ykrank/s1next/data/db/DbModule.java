@@ -6,6 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 import me.ykrank.s1next.AppLife;
 import me.ykrank.s1next.data.db.biz.BlackListBiz;
+import me.ykrank.s1next.data.db.biz.BlackWordBiz;
 
 @Module
 public class DbModule {
@@ -24,8 +25,8 @@ public class DbModule {
 
     @Provides
     @AppLife
-    BlackWordDbWrapper provideBlackWordWDbWrapper(AppDatabaseManager manager) {
-        return new BlackWordDbWrapper(appDaoSessionManager);
+    BlackWordBiz provideBlackWordBiz(AppDatabaseManager manager) {
+        return new BlackWordBiz(manager);
     }
 
     @Provides

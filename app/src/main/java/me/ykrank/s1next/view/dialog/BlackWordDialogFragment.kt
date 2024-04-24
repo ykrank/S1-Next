@@ -15,7 +15,7 @@ import android.view.WindowManager
 import com.github.ykrank.androidtools.util.ResourceUtil
 import com.github.ykrank.androidtools.util.ViewUtil
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.db.BlackWordDbWrapper
+import me.ykrank.s1next.data.db.biz.BlackWordBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackWord
 import me.ykrank.s1next.databinding.DialogBlackWordBinding
 import me.ykrank.s1next.view.internal.RequestCode

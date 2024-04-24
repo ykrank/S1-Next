@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.db.BlackWordDbWrapper
+import me.ykrank.s1next.data.db.biz.BlackWordBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackWord
 import me.ykrank.s1next.databinding.ItemBlackwordBinding
 import me.ykrank.s1next.viewmodel.BlackWordViewModel

@@ -10,7 +10,7 @@ import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.data.api.app.AppService;
 import me.ykrank.s1next.data.db.biz.BlackListBiz;
-import me.ykrank.s1next.data.db.BlackWordDbWrapper;
+import me.ykrank.s1next.data.db.biz.BlackWordBiz;
 import me.ykrank.s1next.data.db.DbModule;
 import me.ykrank.s1next.data.db.HistoryDbWrapper;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
