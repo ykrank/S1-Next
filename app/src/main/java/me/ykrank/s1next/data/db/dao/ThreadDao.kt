@@ -20,7 +20,7 @@ interface ThreadDao {
     fun insert(thread: DbThread)
 
     @Delete
-    fun delete(thread: DbThread?)
+    fun delete(thread: DbThread)
 
     @Update
     fun update(thread: DbThread)

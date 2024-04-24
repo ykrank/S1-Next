@@ -27,11 +27,11 @@ class BlackWordCursorListViewAdapter(activity: Activity) : androidx.cursoradapte
 
     override fun bindView(view: View, context: Context, cursor: Cursor) {
         val binding = DataBindingUtil.findBinding<ItemBlackwordBinding>(view)
-        binding?.model?.blackword?.set(BlackWordBiz.getInstance().fromBlackWordCursor(cursor))
+        binding?.model?.blackword?.set(BlackWordBiz.instance.fromBlackWordCursor(cursor))
     }
 
     override fun getItem(position: Int): BlackWord {
         val cursor = super.getItem(position) as Cursor
-        return BlackWordBiz.getInstance().fromBlackWordCursor(cursor)
+        return BlackWordBiz.instance.fromBlackWordCursor(cursor)
     }
 }

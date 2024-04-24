@@ -16,7 +16,6 @@ import com.github.ykrank.androidtools.util.RxJavaUtil
 import io.reactivex.Single
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.db.biz.BlackListBiz
-import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.databinding.FragmentBlacklistBinding
 import me.ykrank.s1next.view.activity.DarkRoomActivity
@@ -36,7 +35,12 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
 
     private val mActionModeCallback = object : AbsListView.MultiChoiceModeListener {
 
-        override fun onItemCheckedStateChanged(mode: android.view.ActionMode, position: Int, id: Long, checked: Boolean) {
+        override fun onItemCheckedStateChanged(
+            mode: android.view.ActionMode,
+            position: Int,
+            id: Long,
+            checked: Boolean
+        ) {
 
         }
 
@@ -62,6 +66,7 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
                     add()
                     return true
                 }
+
                 R.id.menu_edit -> {
                     var blackList: BlackList? = null
                     for (i in 0 until checklist.size()) {
@@ -71,10 +76,17 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
                         }
                     }
                     val dialogFragment1 = BlacklistDialogFragment.newInstance(blackList)
-                    dialogFragment1.setTargetFragment(this@BlackListSettingFragment, RequestCode.REQUEST_CODE_BLACKLIST)
-                    dialogFragment1.show(fragmentManager!!, BlackListSettingFragment::class.java.name)
+                    dialogFragment1.setTargetFragment(
+                        this@BlackListSettingFragment,
+                        RequestCode.REQUEST_CODE_BLACKLIST
+                    )
+                    dialogFragment1.show(
+                        fragmentManager!!,
+                        BlackListSettingFragment::class.java.name
+                    )
                     return true
                 }
+
                 R.id.menu_delete -> {
                     val blackLists = ArrayList<BlackList>()
                     for (i in 0 until checklist.size()) {
@@ -86,18 +98,21 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
                     load()
                     return true
                 }
+
                 R.id.menu_all -> {
                     for (i in 0 until mListView.count) {
                         mListView.setItemChecked(i, true)
                     }
                     return true
                 }
+
                 R.id.menu_clear -> {
                     for (i in 0 until mListView.count) {
                         mListView.setItemChecked(i, false)
                     }
                     return true
                 }
+
                 else -> return false
             }
         }
@@ -109,11 +124,17 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
     }
 
     internal val sourceObservable: Single<Cursor>
-        get() = Single.just(BlackListBiz.getInstance().blackListCursor)
+        get() = Single.fromCallable { BlackListBiz.getInstance().blackListCursor }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding = DataBindingUtil.inflate<FragmentBlacklistBinding>(inflater,
-                R.layout.fragment_blacklist, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val binding = DataBindingUtil.inflate<FragmentBlacklistBinding>(
+            inflater,
+            R.layout.fragment_blacklist, container, false
+        )
         mListView = binding.listview
         return binding.root
     }
@@ -144,22 +165,26 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
                 add()
                 return true
             }
+
             R.id.menu_refresh -> {
                 load()
                 return true
             }
+
             R.id.menu_dark_room -> {
                 activity?.let {
                     DarkRoomActivity.start(it)
                 }
                 return true
             }
+
             R.id.menu_black_word -> {
                 activity?.let {
                     SettingsActivity.startBlackWordSettingsActivity(it)
                 }
                 return true
             }
+
             R.id.menu_load_from_web -> {
                 childFragmentManager.apply {
                     if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(this, mUser)) {
@@ -169,6 +194,7 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
                 }
                 return true
             }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -182,10 +208,10 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
      */
     private fun load() {
         sourceObservable
-                .compose(RxJavaUtil.iOSingleTransformer())
-                .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
-                .subscribe({ mListViewAdapter.changeCursor(it) },
-                        { throwable -> L.e("S1next", throwable) })
+            .compose(RxJavaUtil.iOSingleTransformer())
+            .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
+            .subscribe({ mListViewAdapter.changeCursor(it) },
+                { throwable -> L.e("S1next", throwable) })
     }
 
     override fun onPause() {
@@ -201,7 +227,8 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RequestCode.REQUEST_CODE_BLACKLIST) {
             if (resultCode == Activity.RESULT_OK) {
-                val blackList = data?.getParcelableExtra<BlackList>(BlacklistDialogFragment.BLACKLIST_TAG)
+                val blackList =
+                    data?.getParcelableExtra<BlackList>(BlacklistDialogFragment.BLACKLIST_TAG)
                 if (blackList != null) {
                     BlackListBiz.getInstance().saveBlackList(blackList)
                     load()
@@ -213,7 +240,10 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
 
     private fun add() {
         val dialogFragment = BlacklistDialogFragment.newInstance(null)
-        dialogFragment.setTargetFragment(this@BlackListSettingFragment, RequestCode.REQUEST_CODE_BLACKLIST)
+        dialogFragment.setTargetFragment(
+            this@BlackListSettingFragment,
+            RequestCode.REQUEST_CODE_BLACKLIST
+        )
         dialogFragment.show(fragmentManager!!, BlackListSettingFragment::class.java.name)
     }
 

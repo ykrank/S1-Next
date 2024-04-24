@@ -28,7 +28,7 @@ public class BlacklistMenuAction {
     @MainThread
     public static void removeBlacklist(RxBus rxBus, int uid, String name) {
         App.Companion.get().getTrackAgent().post(new BlackListTrackEvent(false, String.valueOf(uid), name));
-        RxJavaUtil.workWithUiThread(() -> BlackListBiz.getInstance().delDefaultBlackList(uid, name),
+        RxJavaUtil.workWithUiThread(() -> BlackListBiz.Companion.getInstance().delDefaultBlackList(uid, name),
                 () -> rxBus.post(new BlackListChangeEvent(uid, name, null, false)));
     }
 }

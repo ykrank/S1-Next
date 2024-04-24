@@ -148,10 +148,6 @@ class BlackWord : Parcelable {
         timestamp = blackWord.timestamp
     }
 
-    fun getUpload(): Boolean {
-        return isUpload
-    }
-
     @IntDef(NORMAL, HIDE, DEL)
     annotation class BlackWordFLag
     companion object {

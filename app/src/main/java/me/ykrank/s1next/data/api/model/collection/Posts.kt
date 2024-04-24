@@ -217,7 +217,7 @@ class Posts : Account {
             val reply = nPost.reply
             if (reply != null && nPost.hide == Post.Hide_Normal) {
                 val mBlackWords = blackWords
-                        ?: BlackWordBiz.getInstance().getAllNotNormalBlackWord()
+                        ?: BlackWordBiz.instance.getAllNotNormalBlackWord()
                 mBlackWords.forEach {
                     val word = it.word
                     if (!word.isNullOrEmpty() && it.stat != BlackWord.NORMAL) {

@@ -20,7 +20,7 @@ interface BlackWordDao {
     @Query("SELECT * FROM BlackWord WHERE Stat != ${BlackWord.NORMAL}")
     fun loadNotNormal(): List<BlackWord>
 
-    @Query("SELECT * FROM BlackWord WHERE Word == word LIMIT 1")
+    @Query("SELECT * FROM BlackWord WHERE Word == :word LIMIT 1")
     fun getByWord(word: String): BlackWord?
 
     @Insert

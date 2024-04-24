@@ -77,7 +77,7 @@ class BlackList : Parcelable {
     @ColumnInfo(name = "Upload")
     var isUpload = false
 
-    protected constructor(`in`: Parcel) {
+    constructor(`in`: Parcel) {
         val hasId = `in`.readByte().toInt() == 1
         if (hasId) {
             id = `in`.readLong()
@@ -218,14 +218,6 @@ class BlackList : Parcelable {
         result = 31 * result + (timestamp xor (timestamp ushr 32)).toInt()
         result = 31 * result + if (isUpload) 1 else 0
         return result
-    }
-
-    fun getUpload(): Boolean {
-        return isUpload
-    }
-
-    fun setId(id: Long) {
-        this.id = id
     }
 
     @IntDef(NORMAL, HIDE_POST, DEL_POST)

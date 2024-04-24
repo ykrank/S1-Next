@@ -22,7 +22,7 @@ interface ReadProgressDao {
     fun insert(readProgress: ReadProgress)
 
     @Delete
-    fun delete(readProgress: ReadProgress?)
+    fun delete(readProgress: ReadProgress)
 
     @Update
     fun update(readProgress: ReadProgress)

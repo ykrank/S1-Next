@@ -31,7 +31,12 @@ class BlackWordSettingFragment : BaseFragment() {
 
     private val mActionModeCallback = object : AbsListView.MultiChoiceModeListener {
 
-        override fun onItemCheckedStateChanged(mode: android.view.ActionMode, position: Int, id: Long, checked: Boolean) {
+        override fun onItemCheckedStateChanged(
+            mode: android.view.ActionMode,
+            position: Int,
+            id: Long,
+            checked: Boolean
+        ) {
 
         }
 
@@ -57,6 +62,7 @@ class BlackWordSettingFragment : BaseFragment() {
                     add()
                     return true
                 }
+
                 R.id.menu_edit -> {
                     var blackWord: BlackWord? = null
                     for (i in 0 until checklist.size()) {
@@ -66,10 +72,17 @@ class BlackWordSettingFragment : BaseFragment() {
                         }
                     }
                     val dialogFragment1 = BlackWordDialogFragment.newInstance(blackWord)
-                    dialogFragment1.setTargetFragment(this@BlackWordSettingFragment, RequestCode.REQUEST_CODE_BLACKLIST)
-                    dialogFragment1.show(fragmentManager!!, BlackWordSettingFragment::class.java.name)
+                    dialogFragment1.setTargetFragment(
+                        this@BlackWordSettingFragment,
+                        RequestCode.REQUEST_CODE_BLACKLIST
+                    )
+                    dialogFragment1.show(
+                        fragmentManager!!,
+                        BlackWordSettingFragment::class.java.name
+                    )
                     return true
                 }
+
                 R.id.menu_delete -> {
                     val blackWords = ArrayList<BlackWord>()
                     for (i in 0 until checklist.size()) {
@@ -77,22 +90,25 @@ class BlackWordSettingFragment : BaseFragment() {
                             blackWords.add(mListViewAdapter.getItem(checklist.keyAt(i)))
                         }
                     }
-                    BlackWordBiz.getInstance().delBlackWords(blackWords)
+                    BlackWordBiz.instance.delBlackWords(blackWords)
                     load()
                     return true
                 }
+
                 R.id.menu_all -> {
                     for (i in 0 until mListView.count) {
                         mListView.setItemChecked(i, true)
                     }
                     return true
                 }
+
                 R.id.menu_clear -> {
                     for (i in 0 until mListView.count) {
                         mListView.setItemChecked(i, false)
                     }
                     return true
                 }
+
                 else -> return false
             }
         }
@@ -104,11 +120,17 @@ class BlackWordSettingFragment : BaseFragment() {
     }
 
     internal val sourceObservable: Single<Cursor>
-        get() = BlackWordBiz.getInstance().blackWordCursor
+        get() = Single.fromCallable { BlackWordBiz.instance.blackWordCursor }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding = DataBindingUtil.inflate<FragmentBlackWordBinding>(inflater,
-                R.layout.fragment_black_word, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val binding = DataBindingUtil.inflate<FragmentBlackWordBinding>(
+            inflater,
+            R.layout.fragment_black_word, container, false
+        )
         mListView = binding.listview
         return binding.root
     }
@@ -139,16 +161,19 @@ class BlackWordSettingFragment : BaseFragment() {
                 add()
                 return true
             }
+
             R.id.menu_refresh -> {
                 load()
                 return true
             }
+
             R.id.menu_dark_room -> {
                 activity?.let {
                     DarkRoomActivity.start(it)
                 }
                 return true
             }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -158,10 +183,10 @@ class BlackWordSettingFragment : BaseFragment() {
      */
     private fun load() {
         sourceObservable
-                .compose(RxJavaUtil.iOSingleTransformer())
-                .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
-                .subscribe({ mListViewAdapter.changeCursor(it) },
-                        { throwable -> L.e("S1next", throwable) })
+            .compose(RxJavaUtil.iOSingleTransformer())
+            .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
+            .subscribe({ mListViewAdapter.changeCursor(it) },
+                { throwable -> L.e("S1next", throwable) })
     }
 
     override fun onPause() {
@@ -177,9 +202,10 @@ class BlackWordSettingFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RequestCode.REQUEST_CODE_BLACKLIST) {
             if (resultCode == Activity.RESULT_OK) {
-                val blackWord = data?.getParcelableExtra<BlackWord>(BlackWordDialogFragment.TAG_BLACK_WORD)
+                val blackWord =
+                    data?.getParcelableExtra<BlackWord>(BlackWordDialogFragment.TAG_BLACK_WORD)
                 if (blackWord != null) {
-                    BlackWordBiz.getInstance().saveBlackWord(blackWord)
+                    BlackWordBiz.instance.saveBlackWord(blackWord)
                     load()
                 }
             }
@@ -189,7 +215,10 @@ class BlackWordSettingFragment : BaseFragment() {
 
     private fun add() {
         val dialogFragment = BlackWordDialogFragment.newInstance(null)
-        dialogFragment.setTargetFragment(this@BlackWordSettingFragment, RequestCode.REQUEST_CODE_BLACKLIST)
+        dialogFragment.setTargetFragment(
+            this@BlackWordSettingFragment,
+            RequestCode.REQUEST_CODE_BLACKLIST
+        )
         dialogFragment.show(fragmentManager!!, BlackWordSettingFragment::class.java.name)
     }
 

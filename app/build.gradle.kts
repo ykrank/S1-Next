@@ -116,6 +116,10 @@ android {
     }
 }
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 val alphaImplementation by configurations
 dependencies {
     implementation(fileTree("libs") { include("*.jar", "*.aar") })

@@ -127,15 +127,15 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
     }
 
     @BlackList.ForumFLag
-    fun getForumFlag(id: Int, name: String): Int {
+    fun getForumFlag(id: Int, name: String?): Int {
         val oBlackList: BlackList? = getMergedBlackList(id, name)
-        return if (oBlackList != null) oBlackList.forum else BlackList.NORMAL
+        return oBlackList?.forum ?: BlackList.NORMAL
     }
 
     @BlackList.PostFLag
     fun getPostFlag(id: Int, name: String): Int {
         val oBlackList: BlackList? = getMergedBlackList(id, name)
-        return if (oBlackList != null) oBlackList.post else BlackList.NORMAL
+        return oBlackList?.post ?: BlackList.NORMAL
     }
 
     fun saveBlackList(blackList: BlackList) {
@@ -162,7 +162,7 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         blackListDao.delete(blackLists)
     }
 
-    fun saveDefaultBlackList(authorid: Int, author: String, remark: String) {
+    fun saveDefaultBlackList(authorid: Int, author: String?, remark: String?) {
         val blackList = BlackList()
         blackList.authorId = authorid
         blackList.author = author
@@ -173,7 +173,7 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         saveBlackList(blackList)
     }
 
-    fun delDefaultBlackList(authorid: Int, author: String) {
+    fun delDefaultBlackList(authorid: Int, author: String?) {
         val blackList = BlackList()
         blackList.authorId = authorid
         blackList.author = author

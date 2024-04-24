@@ -105,10 +105,6 @@ class DbThread : Parcelable {
         timestamp = oDbThread.timestamp
     }
 
-    fun setId(id: Long) {
-        this.id = id
-    }
-
     companion object {
         @JvmField
         val CREATOR: Parcelable.Creator<DbThread?> = object : Parcelable.Creator<DbThread?> {

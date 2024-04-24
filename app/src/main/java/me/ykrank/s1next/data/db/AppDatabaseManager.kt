@@ -11,10 +11,11 @@ interface AppDatabaseManager {
 }
 
 class AppDatabaseManagerImpl(applicationContext: Context) : AppDatabaseManager {
+    // TODO: 数据库操作禁止在主线程
     val builder = Room.databaseBuilder(
         applicationContext,
-        AppDatabase::class.java, BuildConfig.DB_NAME
-    )
+        AppDatabase::class.java, BuildConfig.DB_NAME,
+    ).allowMainThreadQueries()
 
     @Volatile
     var database: AppDatabase? = null

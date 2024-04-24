@@ -1,6 +1,7 @@
 package me.ykrank.s1next.view.fragment;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -12,6 +13,8 @@ import android.view.ViewGroup;
 
 import com.github.ykrank.androidtools.util.L;
 import com.github.ykrank.androidtools.util.RxJavaUtil;
+
+import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
@@ -71,7 +74,7 @@ public final class HistoryListFragment extends BaseFragment {
     }
 
     private void load() {
-        Single.just(historyBiz.getHistoryListCursor())
+        Single.fromCallable((Callable<Cursor>) () -> historyBiz.getHistoryListCursor())
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .subscribe(mRecyclerAdapter::changeCursor,
                         throwable -> L.e("S1next", throwable));

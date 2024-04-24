@@ -117,7 +117,7 @@
         
     <string name="menu_version_info">版本信息</string>
         
-    <string name="version">版本 %1$s %2$s</string>
+    <string name="version">版本 %1$s-%2$s</string>
         
     <string name="blacklist_add_time">添加時間</string>
         
