@@ -1,0 +1,154 @@
+[versions]
+adapterdelegates3 = "3.1.0"
+adapterRxjava2 = "2.9.0"
+alicloudAndroidHttpdns = "2.3.5"
+androidautodispose = "0.4.0"
+cardview = "1.0.0"
+commonsLang3 = "3.12.0"
+databinding_compiler = "3.1.4"
+compress = "v3.10.7"
+constraintlayout = "2.1.4"
+converterScalars = "2.9.0"
+bugly_crashreport = "4.1.9"
+bugly_crashreport_upgrade = "1.6.1"
+bugly_nativecrashreport = "3.9.2"
+dagger = "2.51.1"
+filepicker = "4.2.1"
+flipperNoop = "0.177.0"
+glide = "4.14.2"
+guava = "31.0.1-android"
+jackson = "2.14.1"
+jolyglot_jackson = "0.0.6"
+jsoup = "1.15.3"
+leakcanaryAndroid = "2.10"
+leakcanaryAndroidNoOp = "1.6.3"
+legacyPreferenceV14 = "1.0.0"
+legacySupportV4 = "1.0.0"
+lifecycleLivedataKtx = "2.5.1"
+logger = "2.2.0"
+material = "1.6.0"
+multidex = "2.0.1"
+okdownload = "1.0.7"
+okhttp = "5.0.0-alpha.2"
+okhttp3Integration = "4.14.2"
+okhttpUrlconnection = "5.0.0-alpha.11"
+okhttpVersion = "1.0.7"
+paperparcel = "2.0.8"
+paperparcelApi = "2.0.8"
+paperparcelCompiler = "2.0.8"
+paperparcelKotlin = "2.0.8"
+percentlayout = "1.0.0"
+photoview = "2.3.0"
+pictureselector = "v3.0.8"
+quicksidebar = "1.0.3"
+retrofit = "2.9.0"
+rxcache_runtime = "1.8.3-2.x"
+rxandroid = "2.1.1"
+rxjava = "2.2.21"
+rxkotlin = "2.4.0"
+soloader = "0.10.5"
+gradle = "8.3.2"
+gradleVersionsPlugin = "0.51.0"
+kotlin = "1.9.21"
+kotlinKsp = "1.9.21-1.0.15"
+coreKtx = "1.10.1"
+junit = "4.13.2"
+junitVersion = "1.1.5"
+espressoCore = "3.5.1"
+lifecycleRuntimeKtx = "2.6.1"
+activityCompose = "1.7.0"
+composeBom = "2023.08.00"
+room = "2.6.1"
+sqlite = "1.0.7"
+transition = "1.4.1"
+largeimageview = "1.1.0"
+compileSdk = "34"
+targetSdk = "34"
+agp = "8.3.2"
+
+
+[libraries]
+adapterdelegates3 = { module = "com.hannesdorfmann:adapterdelegates3", version.ref = "adapterdelegates3" }
+alicloud-android-httpdns = { module = "com.aliyun.ams:alicloud-android-httpdns", version.ref = "alicloudAndroidHttpdns" }
+androidautodispose = { module = "com.github.ykrank:androidautodispose", version.ref = "androidautodispose" }
+androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-legacy-preference-v14 = { module = "androidx.legacy:legacy-preference-v14", version.ref = "legacyPreferenceV14" }
+androidx-legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", version.ref = "legacySupportV4" }
+androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
+androidx-multidex = { module = "androidx.multidex:multidex", version.ref = "multidex" }
+androidx-percentlayout = { module = "androidx.percentlayout:percentlayout", version.ref = "percentlayout" }
+androidx-transition = { module = "androidx.transition:transition", version.ref = "transition" }
+commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commonsLang3" }
+bugly-nativecrashreport = { module = "com.tencent.bugly:nativecrashreport", version.ref = "bugly_nativecrashreport" }
+bugly-crashreport = { module = "com.tencent.bugly:crashreport", version.ref = "bugly_crashreport" }
+bugly-crashreport_upgrade = { module = "com.tencent.bugly:crashreport_upgrade", version.ref = "bugly_crashreport_upgrade" }
+databinding-compiler = { module = "com.android.databinding:compiler", version.ref = "databinding_compiler" }
+flipper = { module = "com.facebook.flipper:flipper", version.ref = "flipperNoop" }
+flipper-network-plugin = { module = "com.facebook.flipper:flipper-network-plugin", version.ref = "flipperNoop" }
+flipper-noop = { module = "com.facebook.flipper:flipper-noop", version.ref = "flipperNoop" }
+glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+compress = { module = "io.github.lucksiege:compress", version.ref = "compress" }
+dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
+dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+filepicker = { module = "com.nononsenseapps:filepicker", version.ref = "filepicker" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+glide-okhttp3-integration = { module = "com.github.bumptech.glide:okhttp3-integration", version.ref = "okhttp3Integration" }
+gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jolyglot-jackson = { module = "com.github.VictorAlbertos.Jolyglot:jackson", version.ref = "jolyglot_jackson" }
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
+leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroid" }
+leakcanary-android-no-op = { module = "com.squareup.leakcanary:leakcanary-android-no-op", version.ref = "leakcanaryAndroidNoOp" }
+logger = { module = "com.orhanobut:logger", version.ref = "logger" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+okdownload = { module = "com.liulishuo.okdownload:okdownload", version.ref = "okdownload" }
+okdownload-okhttp = { module = "com.liulishuo.okdownload:okhttp", version.ref = "okhttpVersion" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+okhttp-urlconnection = { module = "com.squareup.okhttp3:okhttp-urlconnection", version.ref = "okhttpUrlconnection" }
+paperparcel = { module = "nz.bradcampbell:paperparcel", version.ref = "paperparcel" }
+paperparcel-api = { module = "nz.bradcampbell:paperparcel-api", version.ref = "paperparcelApi" }
+paperparcel-compiler = { module = "nz.bradcampbell:paperparcel-compiler", version.ref = "paperparcelCompiler" }
+paperparcel-kotlin = { module = "nz.bradcampbell:paperparcel-kotlin", version.ref = "paperparcelKotlin" }
+photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoview" }
+pictureselector = { module = "io.github.lucksiege:pictureselector", version.ref = "pictureselector" }
+quicksidebar = { module = "com.bigkoo:quicksidebar", version.ref = "quicksidebar" }
+retrofit2 = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit2-adapter-rxjava2 = { module = "com.squareup.retrofit2:adapter-rxjava2", version.ref = "adapterRxjava2" }
+retrofit2-converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "converterScalars" }
+retrofit2-converter-jackson = { module = "com.squareup.retrofit2:converter-jackson", version.ref = "adapterRxjava2" }
+rxcache-runtime = { module = "com.github.VictorAlbertos.RxCache:runtime", version.ref = "rxcache_runtime" }
+rxandroid = { module = "io.reactivex.rxjava2:rxandroid", version.ref = "rxandroid" }
+rxjava = { module = "io.reactivex.rxjava2:rxjava", version.ref = "rxjava" }
+rxkotlin = { module = "io.reactivex.rxjava2:rxkotlin", version.ref = "rxkotlin" }
+soloader = { module = "com.facebook.soloader:soloader", version.ref = "soloader" }
+sqlite = { module = "com.liulishuo.okdownload:sqlite", version.ref = "sqlite" }
+largeimageview = { module = "com.shizhefei:LargeImageView", version.ref = "largeimageview" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+gradleVersionsPlugin = { id = "com.github.ben-manes.versions", version.ref = "gradleVersionsPlugin" }
+jetbrainsKotlinKpt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+androidKsp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }

@@ -75,6 +75,7 @@
             android:colorMode="wideColorGamut"
             android:configChanges="uiMode"
             android:launchMode="singleTop"
+            android:exported="true"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -123,6 +124,7 @@
             android:name=".view.page.post.PostListGatewayActivity"
             android:colorMode="wideColorGamut"
             android:configChanges="uiMode"
+            android:exported="true"
             android:theme="@style/Theme.Translucent.Light">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -222,6 +224,7 @@
             android:name=".view.activity.SearchActivity"
             android:colorMode="wideColorGamut"
             android:configChanges="uiMode"
+            android:exported="false"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -320,7 +323,7 @@
             android:name="com.nononsenseapps.filepicker.FilePickerActivity"
             android:colorMode="wideColorGamut"
             android:configChanges="uiMode"
-            android:label="@string/app_name"
+            android:exported="false"
             android:theme="@style/FilePickerTheme">
             <intent-filter>
                 <action android:name="android.intent.action.GET_CONTENT" />
