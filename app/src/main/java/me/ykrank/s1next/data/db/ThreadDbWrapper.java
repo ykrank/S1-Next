@@ -35,7 +35,7 @@ public class ThreadDbWrapper {
     }
 
     public void saveThread(@NonNull DbThread dbThread) {
-        DbThread oDbThread = getWithThreadId(dbThread.getThreadId());
+        DbThread oDbThread = getWithThreadId(dbThread.threadId);
         if (oDbThread == null) {
             getThreadDao().insert(dbThread);
         } else {

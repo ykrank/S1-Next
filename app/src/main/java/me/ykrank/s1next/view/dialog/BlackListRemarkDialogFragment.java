@@ -17,7 +17,7 @@ import javax.inject.Inject;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.data.db.BlackListDbWrapper;
+import me.ykrank.s1next.data.db.biz.BlackListBiz;
 import me.ykrank.s1next.databinding.DialogBlacklistRemarkBinding;
 import me.ykrank.s1next.view.event.BlackListChangeEvent;
 import me.ykrank.s1next.widget.track.event.BlackListTrackEvent;
@@ -34,6 +34,9 @@ public final class BlackListRemarkDialogFragment extends BaseDialogFragment {
 
     @Inject
     RxBus rxBus;
+
+    @Inject
+    BlackListBiz blackListDb;
 
     public static BlackListRemarkDialogFragment newInstance(int authorId, String authorName) {
         BlackListRemarkDialogFragment fragment = new BlackListRemarkDialogFragment();
@@ -62,7 +65,7 @@ public final class BlackListRemarkDialogFragment extends BaseDialogFragment {
                     String authorName = getArguments().getString(ARG_AUTHOR_NAME);
                     String remark = binding.blacklistRemark.getText().toString();
                     getTrackAgent().post(new BlackListTrackEvent(true, String.valueOf(authorId), authorName));
-                    RxJavaUtil.workWithUiThread(() -> BlackListDbWrapper.getInstance().saveDefaultBlackList(authorId, authorName, remark),
+                    RxJavaUtil.workWithUiThread(() -> blackListDb.saveDefaultBlackList(authorId, authorName, remark),
                             () -> rxBus.post(new BlackListChangeEvent(authorId, authorName, remark, true)));
                 })
                 .setNegativeButton(android.R.string.cancel, null)

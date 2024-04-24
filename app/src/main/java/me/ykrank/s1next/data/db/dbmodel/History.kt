@@ -1,88 +1,61 @@
-package me.ykrank.s1next.data.db.dbmodel;
+package me.ykrank.s1next.data.db.dbmodel
 
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Index;
-import org.greenrobot.greendao.annotation.Keep;
-import org.greenrobot.greendao.annotation.Property;
+import androidx.annotation.Keep
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
+
 
 /**
  * Post read history
  */
-@Entity(nameInDb = "History")
-public class History {
-    @Id(autoincrement = true)
-    private Long id;
+@Entity(
+    tableName = "History",
+    indices = [
+        Index(value = ["ThreadId"], name = "IDX_History_ThreadId", unique = true),
+    ]
+)
+class History {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "_id")
+    var id: Long? = null
+
     /**
      * 帖子ID
      */
-    @Property(nameInDb = "ThreadId")
-    @Index(unique = true)
-    private int threadId;
-    @Property(nameInDb = "Title")
-    private String title;
+    @ColumnInfo(name = "ThreadId")
+    var threadId = 0
+
+    @ColumnInfo(name = "Title")
+    var title: String? = null
+
     /**
      * 更新时间
      */
-    @Property(nameInDb = "Timestamp")
-    private long timestamp;
+    @ColumnInfo(name = "Timestamp")
+    var timestamp: Long = 0
 
-    @Generated(hash = 1091300362)
-    public History(Long id, int threadId, String title, long timestamp) {
-        this.id = id;
-        this.threadId = threadId;
-        this.title = title;
-        this.timestamp = timestamp;
+    constructor(id: Long?, threadId: Int, title: String?, timestamp: Long) {
+        this.id = id
+        this.threadId = threadId
+        this.title = title
+        this.timestamp = timestamp
     }
 
     @Keep
-    public History(int threadId, String title) {
-        this.threadId = threadId;
-        this.title = title;
-        this.timestamp = System.currentTimeMillis();
+    constructor(threadId: Int, title: String?) {
+        this.threadId = threadId
+        this.title = title
+        timestamp = System.currentTimeMillis()
     }
 
-    @Generated(hash = 869423138)
-    public History() {
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getThreadId() {
-        return this.threadId;
-    }
-
-    public void setThreadId(int threadId) {
-        this.threadId = threadId;
-    }
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public long getTimestamp() {
-        return this.timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
+    constructor()
 
     @Keep
-    public void copyFrom(History history) {
-        this.threadId = history.getThreadId();
-        this.title = history.getTitle();
-        this.timestamp = history.getTimestamp();
+    fun copyFrom(history: History) {
+        threadId = history.threadId
+        title = history.title
+        timestamp = history.timestamp
     }
 }

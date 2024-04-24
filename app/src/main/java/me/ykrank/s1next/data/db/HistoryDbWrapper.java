@@ -62,10 +62,10 @@ public class HistoryDbWrapper {
      * add new history
      */
     public void addNewHistory(History history) {
-        History oldHistory = getHistoryDao().queryBuilder().where(HistoryDao.Properties.ThreadId.eq(history.getThreadId())).unique();
+        History oldHistory = getHistoryDao().queryBuilder().where(HistoryDao.Properties.ThreadId.eq(history.threadId)).unique();
         if (oldHistory != null) {
             //have same threadId history
-            history.setId(oldHistory.getId());
+            history.id = oldHistory.id;
             getHistoryDao().update(history);
         } else {
             //the last history

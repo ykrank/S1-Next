@@ -19,7 +19,7 @@ import javax.inject.Inject;
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.BuildConfig;
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.data.db.AppDaoSessionManager;
+import me.ykrank.s1next.data.db.AppDatabaseManager;
 
 /**
  * An Activity includes download settings that allow users
@@ -35,7 +35,7 @@ public final class BackupPreferenceFragment extends BasePreferenceFragment
     private BackupDelegate backupAgent;
 
     @Inject
-    AppDaoSessionManager appDaoSessionManager;
+    AppDatabaseManager databaseManager;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
@@ -58,7 +58,7 @@ public final class BackupPreferenceFragment extends BasePreferenceFragment
             backupAgent.backup(this);
             return true;
         } else if (key.equals(getString(R.string.pref_key_backup_restore))) {
-            appDaoSessionManager.closeDb();
+            databaseManager.close();
             backupAgent.restore(this);
             return true;
         }
@@ -106,7 +106,7 @@ public final class BackupPreferenceFragment extends BasePreferenceFragment
     @MainThread
     private void afterRestore(@BackupDelegate.BackupResult int result) {
         LooperUtil.enforceOnMainThread();
-        appDaoSessionManager.invalidateDaoSession();
+        databaseManager.getOrBuildDb();
 
         @StringRes int message;
         switch (result) {

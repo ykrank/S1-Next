@@ -35,7 +35,7 @@ public class ReadProgressDbWrapper {
     }
 
     public void saveReadProgress(@NonNull ReadProgress readProgress) {
-        ReadProgress oReadProgress = getWithThreadId(readProgress.getThreadId());
+        ReadProgress oReadProgress = getWithThreadId(readProgress.threadId);
         if (oReadProgress == null) {
             getReadProgressDao().insert(readProgress);
         } else {

@@ -1,157 +1,124 @@
-package me.ykrank.s1next.data.db.dbmodel;
+package me.ykrank.s1next.data.db.dbmodel
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import androidx.annotation.Nullable;
-
-import com.google.common.base.Objects;
-
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Index;
-import org.greenrobot.greendao.annotation.Property;
+import android.os.Parcel
+import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
+import com.google.common.base.Objects
 
 /**
  * Created by ykrank on 2017/1/23.
  * 帖子相关信息数据库
  */
-@Entity(nameInDb = "DbThread")
-public class DbThread implements Parcelable {
-    @Id(autoincrement = true)
-    @Nullable
-    private Long id;
+@Entity(
+    tableName = "DbThread",
+    indices = [
+        Index(value = ["ThreadId"], name = "IDX_DbThread_ThreadId", unique = true),
+    ]
+)
+class DbThread : Parcelable {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "_id")
+    var id: Long? = null
+
     /**
      * 帖子ID
      */
-    @Property(nameInDb = "ThreadId")
-    @Index(unique = true)
-    private int threadId;
+    @ColumnInfo(name = "ThreadId")
+    var threadId = 0
+
     /**
      * 最后一次访问时的回复数
      */
-    @Property(nameInDb = "LastCountWhenView")
-    private int lastCountWhenView;
+    @ColumnInfo(name = "LastCountWhenView")
+    var lastCountWhenView = 0
+
     /**
      * 更新时间
      */
-    @Property(nameInDb = "Timestamp")
-    private long timestamp;
+    @ColumnInfo(name = "Timestamp")
+    var timestamp: Long
 
-    @Generated(hash = 1044313799)
-    public DbThread(Long id, int threadId, int lastCountWhenView, long timestamp) {
-        this.id = id;
-        this.threadId = threadId;
-        this.lastCountWhenView = lastCountWhenView;
-        this.timestamp = timestamp;
+    constructor(id: Long?, threadId: Int, lastCountWhenView: Int, timestamp: Long) {
+        this.id = id
+        this.threadId = threadId
+        this.lastCountWhenView = lastCountWhenView
+        this.timestamp = timestamp
     }
 
-    public DbThread(int threadId, int lastCountWhenView) {
-        this.threadId = threadId;
-        this.lastCountWhenView = lastCountWhenView;
-        this.timestamp = System.currentTimeMillis();
+    constructor(threadId: Int, lastCountWhenView: Int) {
+        this.threadId = threadId
+        this.lastCountWhenView = lastCountWhenView
+        timestamp = System.currentTimeMillis()
     }
 
-    public DbThread() {
-        this.timestamp = System.currentTimeMillis();
+    constructor() {
+        timestamp = System.currentTimeMillis()
     }
 
-    protected DbThread(Parcel in) {
-        boolean hasId = in.readByte() == 1;
+    protected constructor(`in`: Parcel) {
+        val hasId = `in`.readByte().toInt() == 1
         if (hasId) {
-            id = in.readLong();
+            id = `in`.readLong()
         }
-        threadId = in.readInt();
-        lastCountWhenView = in.readInt();
-        timestamp = in.readLong();
+        threadId = `in`.readInt()
+        lastCountWhenView = `in`.readInt()
+        timestamp = `in`.readLong()
     }
 
-    public static final Creator<DbThread> CREATOR = new Creator<DbThread>() {
-        @Override
-        public DbThread createFromParcel(Parcel in) {
-            return new DbThread(in);
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        id.apply {
+            if (this == null) {
+                dest.writeByte(0.toByte())
+            } else {
+                dest.writeByte(1.toByte())
+                dest.writeLong(this)
+            }
         }
-
-        @Override
-        public DbThread[] newArray(int size) {
-            return new DbThread[size];
-        }
-    };
-
-    @Nullable
-    public Long getId() {
-        return id;
+        dest.writeInt(threadId)
+        dest.writeInt(lastCountWhenView)
+        dest.writeLong(timestamp)
     }
 
-    public void setId(@Nullable Long id) {
-        this.id = id;
-    }
-
-    public int getThreadId() {
-        return threadId;
-    }
-
-    public void setThreadId(int threadId) {
-        this.threadId = threadId;
-    }
-
-    public int getLastCountWhenView() {
-        return lastCountWhenView;
-    }
-
-    public void setLastCountWhenView(int lastCountWhenView) {
-        this.lastCountWhenView = lastCountWhenView;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        if (id == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeLong(id);
-        }
-        dest.writeInt(threadId);
-        dest.writeInt(lastCountWhenView);
-        dest.writeLong(timestamp);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DbThread dbThread = (DbThread) o;
-        return lastCountWhenView == dbThread.lastCountWhenView &&
-                timestamp == dbThread.timestamp &&
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || javaClass != other.javaClass) return false
+        val dbThread = other as DbThread
+        return lastCountWhenView == dbThread.lastCountWhenView && timestamp == dbThread.timestamp &&
                 Objects.equal(id, dbThread.id) &&
-                Objects.equal(threadId, dbThread.threadId);
+                Objects.equal(threadId, dbThread.threadId)
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id, threadId, lastCountWhenView, timestamp);
+    override fun hashCode(): Int {
+        return Objects.hashCode(id, threadId, lastCountWhenView, timestamp)
     }
 
-    public void copyFrom(DbThread oDbThread) {
-        this.threadId = oDbThread.threadId;
-        this.lastCountWhenView = oDbThread.lastCountWhenView;
-        this.timestamp = oDbThread.timestamp;
+    fun copyFrom(oDbThread: DbThread) {
+        threadId = oDbThread.threadId
+        lastCountWhenView = oDbThread.lastCountWhenView
+        timestamp = oDbThread.timestamp
     }
 
-    public void setId(long id) {
-        this.id = id;
+    fun setId(id: Long) {
+        this.id = id
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<DbThread?> = object : Parcelable.Creator<DbThread?> {
+            override fun createFromParcel(`in`: Parcel): DbThread {
+                return DbThread(`in`)
+            }
+
+            override fun newArray(size: Int): Array<DbThread?> {
+                return arrayOfNulls(size)
+            }
+        }
     }
 }

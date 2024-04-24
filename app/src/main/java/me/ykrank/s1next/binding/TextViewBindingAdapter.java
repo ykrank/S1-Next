@@ -292,7 +292,7 @@ public final class TextViewBindingAdapter {
         if (history == null) {
             textView.setText(null);
         } else {
-            textView.setText(history.getTitle());
+            textView.setText(history.title);
         }
     }
 }
