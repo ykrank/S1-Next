@@ -47,7 +47,7 @@ class BlackWordDialogFragment : BaseDialogFragment() {
 
         //Check could add
         if (mBlackWord == null) {
-            if (BlackWordDbWrapper.instance.count() >= 10) {
+            if (BlackWordBiz.getInstance().count() >= 10) {
                 return AlertDialog.Builder(activity)
                     .setTitle(R.string.title_black_word_add)
                     .setMessage(R.string.error_word_out_of_bound)
@@ -115,7 +115,7 @@ class BlackWordDialogFragment : BaseDialogFragment() {
             }
 
             btnVerify.setOnClickListener {
-                val wordBlackWord = BlackWordDbWrapper.instance.getBlackWord(etWord.text.toString())
+                val wordBlackWord = BlackWordBiz.getInstance().getBlackWord(etWord.text.toString())
                 if (wordBlackWord == null || (mBlackWord != null && wordBlackWord.id == mBlackWord.id)) {
                     positionButton.isEnabled = true
                     inputWord.helperText = "验证完成"

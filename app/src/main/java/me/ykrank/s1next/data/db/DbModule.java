@@ -7,6 +7,7 @@ import dagger.Provides;
 import me.ykrank.s1next.AppLife;
 import me.ykrank.s1next.data.db.biz.BlackListBiz;
 import me.ykrank.s1next.data.db.biz.BlackWordBiz;
+import me.ykrank.s1next.data.db.biz.HistoryBiz;
 
 @Module
 public class DbModule {
@@ -43,7 +44,7 @@ public class DbModule {
 
     @Provides
     @AppLife
-    HistoryDbWrapper provideHistoryDbWrapper(AppDatabaseManager manager) {
-        return new HistoryDbWrapper(appDaoSessionManager);
+    HistoryBiz provideHistoryBiz(AppDatabaseManager manager) {
+        return new HistoryBiz(manager);
     }
 }

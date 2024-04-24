@@ -25,7 +25,7 @@ import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.ThreadLink
 import me.ykrank.s1next.data.api.model.collection.Posts
-import me.ykrank.s1next.data.db.HistoryDbWrapper
+import me.ykrank.s1next.data.db.biz.HistoryBiz
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper
 import me.ykrank.s1next.data.db.ThreadDbWrapper
 import me.ykrank.s1next.data.db.dbmodel.DbThread
@@ -69,7 +69,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     internal lateinit var mDownloadPrefManager: DownloadPreferencesManager
 
     @Inject
-    internal lateinit var historyDbWrapper: HistoryDbWrapper
+    internal lateinit var historyBiz: HistoryBiz
 
     private lateinit var mThreadId: String
     private var mThreadTitle: String? = null
@@ -478,7 +478,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     private fun saveHistory() {
         val threadId = mThreadId.toInt()
         if (threadId > 0 && !TextUtils.isEmpty(mThreadTitle)) {
-            historyDbWrapper.addNewHistory(History(threadId, mThreadTitle))
+            historyBiz.addNewHistory(History(threadId, mThreadTitle))
         }
     }
 

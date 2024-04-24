@@ -9,10 +9,11 @@ import me.ykrank.s1next.data.api.ApiCacheProvider;
 import me.ykrank.s1next.data.api.S1Service;
 import me.ykrank.s1next.data.api.UserValidator;
 import me.ykrank.s1next.data.api.app.AppService;
+import me.ykrank.s1next.data.db.AppDatabaseManager;
 import me.ykrank.s1next.data.db.biz.BlackListBiz;
 import me.ykrank.s1next.data.db.biz.BlackWordBiz;
 import me.ykrank.s1next.data.db.DbModule;
-import me.ykrank.s1next.data.db.HistoryDbWrapper;
+import me.ykrank.s1next.data.db.biz.HistoryBiz;
 import me.ykrank.s1next.data.db.ReadProgressDbWrapper;
 import me.ykrank.s1next.data.db.ThreadDbWrapper;
 import me.ykrank.s1next.task.AutoSignTask;
@@ -126,17 +127,17 @@ public interface AppComponent {
     ImageDownloadManager getImageDownloadManager();
 
     //region DataBase
-    AppDaoSessionManager getAppDaoSessionManager();
+    AppDatabaseManager getAppDatabaseManager();
 
-    BlackListDbWrapper getBlackListDbWrapper();
+    BlackListBiz getBlackListBiz();
 
-    BlackWordDbWrapper getBlackWordDbWrapper();
+    BlackWordBiz getBlackWordBiz();
 
     ReadProgressDbWrapper getReadProgressDbWrapper();
 
     ThreadDbWrapper getThreadDbWrapper();
 
-    HistoryDbWrapper getHistoryDbWrapper();
+    HistoryBiz getHistoryBiz();
     //endregion
 
     void inject(BaseFragment baseFragment);

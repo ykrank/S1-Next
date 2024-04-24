@@ -32,7 +32,7 @@ class LoadBlackListFromWebDialogFragment : BaseDialogFragment() {
     @Inject
     lateinit var mUser: User
     @Inject
-    lateinit var blackListDbWrapper: BlackListDbWrapper
+    lateinit var blackListBiz: BlackListBiz
 
     private lateinit var binding: DialogLoadBlacklistFromWebBinding
 
@@ -67,7 +67,7 @@ class LoadBlackListFromWebDialogFragment : BaseDialogFragment() {
                 .map { WebBlackListInfo.fromHtml(it) }
                 .map {
                     it.users.forEach { pair ->
-                        blackListDbWrapper.saveBlackList(BlackList(pair.first, pair.second, BlackList.HIDE_POST, BlackList.HIDE_FORUM))
+                        blackListBiz.saveBlackList(BlackList(pair.first, pair.second, BlackList.HIDE_POST, BlackList.HIDE_FORUM))
                     }
                     it
                 }

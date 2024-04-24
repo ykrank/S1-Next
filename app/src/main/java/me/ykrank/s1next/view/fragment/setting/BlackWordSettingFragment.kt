@@ -77,7 +77,7 @@ class BlackWordSettingFragment : BaseFragment() {
                             blackWords.add(mListViewAdapter.getItem(checklist.keyAt(i)))
                         }
                     }
-                    BlackWordDbWrapper.instance.delBlackWords(blackWords)
+                    BlackWordBiz.getInstance().delBlackWords(blackWords)
                     load()
                     return true
                 }
@@ -104,7 +104,7 @@ class BlackWordSettingFragment : BaseFragment() {
     }
 
     internal val sourceObservable: Single<Cursor>
-        get() = BlackWordDbWrapper.instance.blackWordCursor
+        get() = BlackWordBiz.getInstance().blackWordCursor
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = DataBindingUtil.inflate<FragmentBlackWordBinding>(inflater,
@@ -179,7 +179,7 @@ class BlackWordSettingFragment : BaseFragment() {
             if (resultCode == Activity.RESULT_OK) {
                 val blackWord = data?.getParcelableExtra<BlackWord>(BlackWordDialogFragment.TAG_BLACK_WORD)
                 if (blackWord != null) {
-                    BlackWordDbWrapper.instance.saveBlackWord(blackWord)
+                    BlackWordBiz.getInstance().saveBlackWord(blackWord)
                     load()
                 }
             }

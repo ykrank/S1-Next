@@ -9,9 +9,8 @@ import me.ykrank.s1next.data.db.dbmodel.BlackWord
 
 /**
  * 对黑名单数据库的操作包装
- * Created by AdminYkrank on 2016/2/23.
  */
-class BlackWordBiz internal constructor(private val manager: AppDatabaseManager) {
+class BlackWordBiz(private val manager: AppDatabaseManager) {
 
     private val blackWordDao: BlackWordDao
         get() = session.blackWord()

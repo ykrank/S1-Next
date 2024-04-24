@@ -169,7 +169,7 @@ class Posts : Account {
         fun filterPostList(oPosts: List<Post>?): List<Post> {
             val posts = ArrayList<Post>()
             if (oPosts != null) {
-                val blackWords = BlackWordDbWrapper.instance.getAllNotNormalBlackWord()
+                val blackWords = BlackWordBiz.instance.getAllNotNormalBlackWord()
                 for (post in oPosts) {
                     val fPost = filterPost(post, false, blackWords)
                     if (fPost != null) {
@@ -217,7 +217,7 @@ class Posts : Account {
             val reply = nPost.reply
             if (reply != null && nPost.hide == Post.Hide_Normal) {
                 val mBlackWords = blackWords
-                        ?: BlackWordDbWrapper.instance.getAllNotNormalBlackWord()
+                        ?: BlackWordBiz.getInstance().getAllNotNormalBlackWord()
                 mBlackWords.forEach {
                     val word = it.word
                     if (!word.isNullOrEmpty() && it.stat != BlackWord.NORMAL) {

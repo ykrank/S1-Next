@@ -2,8 +2,10 @@ package me.ykrank.s1next.view.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +15,9 @@ import com.github.ykrank.androidtools.util.RxJavaUtil;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
 import me.ykrank.s1next.App;
-import me.ykrank.s1next.data.db.HistoryDbWrapper;
+import me.ykrank.s1next.data.db.biz.HistoryBiz;
 import me.ykrank.s1next.databinding.FragmentBaseBinding;
 import me.ykrank.s1next.view.adapter.HistoryCursorRecyclerViewAdapter;
 
@@ -27,7 +30,7 @@ public final class HistoryListFragment extends BaseFragment {
     private HistoryCursorRecyclerViewAdapter mRecyclerAdapter;
 
     @Inject
-    HistoryDbWrapper historyDbWrapper;
+    HistoryBiz historyBiz;
 
     private FragmentBaseBinding binding;
 
@@ -68,7 +71,7 @@ public final class HistoryListFragment extends BaseFragment {
     }
 
     private void load() {
-        historyDbWrapper.getHistoryListCursor()
+        Single.just(historyBiz.getHistoryListCursor())
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .subscribe(mRecyclerAdapter::changeCursor,
                         throwable -> L.e("S1next", throwable));

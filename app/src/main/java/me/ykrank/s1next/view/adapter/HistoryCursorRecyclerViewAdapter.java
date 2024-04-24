@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder;
 
-import me.ykrank.s1next.data.db.HistoryDbWrapper;
+import me.ykrank.s1next.data.db.biz.HistoryBiz;
 import me.ykrank.s1next.databinding.ItemHistoryBinding;
 import me.ykrank.s1next.viewmodel.HistoryViewModel;
 
@@ -31,6 +31,6 @@ public final class HistoryCursorRecyclerViewAdapter extends CursorRecyclerViewAd
     @Override
     public void onBindViewHolder(SimpleRecycleViewHolder<ItemHistoryBinding> viewHolder, Cursor cursor) {
         ItemHistoryBinding binding = viewHolder.getBinding();
-        binding.getModel().history.set(HistoryDbWrapper.getInstance().fromCursor(cursor));
+        binding.getModel().history.set(HistoryBiz.Companion.getInstance().fromCursor(cursor));
     }
 }
