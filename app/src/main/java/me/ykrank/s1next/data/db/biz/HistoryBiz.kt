@@ -29,10 +29,14 @@ class HistoryBiz(private val manager: AppDatabaseManager) {
     }
 
     fun fromCursor(cursor: Cursor): History {
-        // TODO: 从Cursor中读取
-        return History()
+        return History(
+            id = cursor.getLong(cursor.getColumnIndexOrThrow("_id")),
+            threadId = cursor.getInt(cursor.getColumnIndexOrThrow("ThreadId")),
+            title = cursor.getString(cursor.getColumnIndexOrThrow("Title")),
+            timestamp = cursor.getLong(cursor.getColumnIndexOrThrow("Timestamp")),
+        )
     }
-    
+
     /**
      * add new history
      */
@@ -51,6 +55,7 @@ class HistoryBiz(private val manager: AppDatabaseManager) {
 
     companion object {
         private const val TAG = "HistoryBiz"
+
         /**
          * max history count
          */

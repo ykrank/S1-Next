@@ -23,8 +23,16 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         get() = blackListDao.loadCursor()
 
     fun fromBlackListCursor(cursor: Cursor): BlackList {
-        // TODO: 从Cursor中读取
-        return BlackList()
+        return BlackList(
+            id = cursor.getLong(cursor.getColumnIndexOrThrow("_id")),
+            authorId = cursor.getInt(cursor.getColumnIndexOrThrow("AuthorId")),
+            author = cursor.getString(cursor.getColumnIndexOrThrow("Author")),
+            post = cursor.getInt(cursor.getColumnIndexOrThrow("Post")),
+            forum = cursor.getInt(cursor.getColumnIndexOrThrow("Forum")),
+            remark = cursor.getString(cursor.getColumnIndexOrThrow("Remark")),
+            timestamp = cursor.getLong(cursor.getColumnIndexOrThrow("Timestamp")),
+            upload = cursor.getLong(cursor.getColumnIndexOrThrow("Upload")) > 0,
+        )
     }
 
     /**

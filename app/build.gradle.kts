@@ -128,6 +128,7 @@ dependencies {
     implementation(project(":JKeyboardPanelSwitch"))
 
     kapt(libs.databinding.compiler)
+    implementation(libs.paging)
 
     implementation(libs.bugly.nativecrashreport)
 
@@ -175,4 +176,5 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.paging)
 }

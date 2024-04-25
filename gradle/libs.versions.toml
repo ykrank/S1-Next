@@ -58,6 +58,7 @@ espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.7.0"
 composeBom = "2023.08.00"
+paging = "3.2.1"
 room = "2.6.1"
 sqlite = "1.0.7"
 transition = "1.4.1"
@@ -126,6 +127,7 @@ okdownload = { module = "com.liulishuo.okdownload:okdownload", version.ref = "ok
 okdownload-okhttp = { module = "com.liulishuo.okdownload:okhttp", version.ref = "okhttpVersion" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 okhttp-urlconnection = { module = "com.squareup.okhttp3:okhttp-urlconnection", version.ref = "okhttpUrlconnection" }
+paging = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
 paperparcel = { module = "nz.bradcampbell:paperparcel", version.ref = "paperparcel" }
 paperparcel-api = { module = "nz.bradcampbell:paperparcel-api", version.ref = "paperparcelApi" }
 paperparcel-compiler = { module = "nz.bradcampbell:paperparcel-compiler", version.ref = "paperparcelCompiler" }

@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.fragment.setting
+package me.ykrank.s1next.view.setting.fragment
 
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -14,13 +14,12 @@ import com.github.ykrank.androidtools.widget.track.event.ThemeChangeTrackEvent
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
 import me.ykrank.s1next.App
-import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.data.pref.ThemeManager
 import me.ykrank.s1next.util.AppDeviceUtil
 import me.ykrank.s1next.util.BuglyUtils
-import me.ykrank.s1next.view.activity.SettingsActivity
+import me.ykrank.s1next.view.setting.SettingsActivity
 import me.ykrank.s1next.view.event.FontSizeChangeEvent
 import me.ykrank.s1next.view.event.ThemeChangeEvent
 import me.ykrank.s1next.widget.span.HtmlCompat

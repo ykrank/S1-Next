@@ -30,8 +30,13 @@ class BlackWordBiz(private val manager: AppDatabaseManager) {
     }
 
     fun fromBlackWordCursor(cursor: Cursor): BlackWord {
-        // TODO: 从Cursor中读取
-        return BlackWord()
+        return BlackWord(
+            id = cursor.getLong(cursor.getColumnIndexOrThrow("_id")),
+            word = cursor.getString(cursor.getColumnIndexOrThrow("Word")),
+            stat = cursor.getInt(cursor.getColumnIndexOrThrow("Stat")),
+            timestamp = cursor.getLong(cursor.getColumnIndexOrThrow("Timestamp")),
+            upload = cursor.getLong(cursor.getColumnIndexOrThrow("Upload")) > 0,
+        )
     }
 
     fun count(): Int {

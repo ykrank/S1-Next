@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.fragment.setting
+package me.ykrank.s1next.view.setting.fragment
 
 import android.content.SharedPreferences
 import android.os.Bundle

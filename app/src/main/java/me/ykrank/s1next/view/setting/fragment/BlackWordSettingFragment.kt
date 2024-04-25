@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.fragment.setting
+package me.ykrank.s1next.view.setting.fragment
 
 import android.app.Activity
 import android.content.Intent

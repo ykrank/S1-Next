@@ -84,7 +84,7 @@
         </activity>
 
         <activity
-            android:name=".view.activity.SettingsActivity"
+            android:name=".view.setting.SettingsActivity"
             android:colorMode="wideColorGamut"
             android:configChanges="uiMode"
             android:label="@string/settings" />
