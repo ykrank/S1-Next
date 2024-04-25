@@ -17,15 +17,15 @@ class EmoticonFactory(context: Context) {
     private val mEmoticons: SparseArray<List<Emoticon>> = SparseArray()
 
     private val animalEmoticonList: List<Emoticon> by lazy {
-        createEmotionList(28, "animal2017", "a")
+        createEmotionList(30, "animal2017", "a")
     }
 
     private val bundamEmoticonList: List<Emoticon> by lazy {
-        createEmotionList(36, "bundam2017", "b")
+        createEmotionList(37, "bundam2017", "b")
     }
 
     private val cartonEmoticonList: List<Emoticon> by lazy {
-        createEmotionList(348, "carton2017", "c")
+        createEmotionList(430, "carton2017", "c")
     }
 
     private val deviceEmoticonList: List<Emoticon> by lazy {
@@ -33,7 +33,7 @@ class EmoticonFactory(context: Context) {
     }
 
     private val faceEmoticonList: List<Emoticon> by lazy {
-        createEmotionList(257, "face2017", "f")
+        createEmotionList(275, "face2017", "f")
     }
 
     private val gooseEmoticonList: List<Emoticon> by lazy {
@@ -43,13 +43,13 @@ class EmoticonFactory(context: Context) {
     fun getEmoticonsByIndex(index: Int): List<Emoticon> {
         var emoticons: List<Emoticon>? = mEmoticons.get(index)
         if (emoticons == null) {
-            when (index) {
-                0 -> emoticons = faceEmoticonList
-                1 -> emoticons = cartonEmoticonList
-                2 -> emoticons = animalEmoticonList
-                3 -> emoticons = deviceEmoticonList
-                4 -> emoticons = gooseEmoticonList
-                5 -> emoticons = bundamEmoticonList
+            emoticons = when (index) {
+                0 -> faceEmoticonList
+                1 -> cartonEmoticonList
+                2 -> animalEmoticonList
+                3 -> deviceEmoticonList
+                4 -> gooseEmoticonList
+                5 -> bundamEmoticonList
                 else -> throw IllegalStateException("Unknown emoticon index: $index.")
             }
         }
