@@ -41,7 +41,7 @@ class AlipayDialogFragment : BaseDialogFragment() {
             .setPositiveButton(R.string.dialog_button_text_confirm) { dialog, which ->
                 clickListener.invoke()
                 if (AlipayDonate.hasInstalledAlipayClient(activity)) {
-                    AlipayDonate.startAlipay(activity)
+                    AlipayDonate.openAlipaySearch(activity, msg?:"")
                 } else {
                     if (!BuglyUtils.isPlay()) {
                         activity.toast("或许需要手动打开支付宝首页搜索")

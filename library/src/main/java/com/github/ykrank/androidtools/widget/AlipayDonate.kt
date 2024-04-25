@@ -1,33 +1,31 @@
-package com.github.ykrank.androidtools.widget;
+package com.github.ykrank.androidtools.widget
 
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
-import android.service.quicksettings.TileService;
-
-import java.net.URISyntaxException;
+import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import android.service.quicksettings.TileService
+import java.net.URISyntaxException
 
 /**
  * fork from https://github.com/didikee/AndroidDonate
- * <p>
+ *
+ *
  * Created by didikee on 2017/7/21.
  * 使用支付宝捐赠
  */
-
-public class AlipayDonate {
+object AlipayDonate {
     // 支付宝包名
-    private static final String ALIPAY_PACKAGE_NAME = "com.eg.android.AlipayGphone";
+    private const val ALIPAY_PACKAGE_NAME = "com.eg.android.AlipayGphone"
 
     // 旧版支付宝二维码通用 Intent Scheme Url 格式
-    private static final String INTENT_URL_FORMAT = "intent://platformapi/startapp?saId=10000007&" +
+    private const val INTENT_URL_FORMAT = "intent://platformapi/startapp?saId=10000007&" +
             "clientVersion=3.7.0.0718&qrcode=https%3A%2F%2Fqr.alipay.com%2F{payCode}%3F_s" +
             "%3Dweb-other&_t=1472443966571#Intent;" +
-            "scheme=alipayqr;package=com.eg.android.AlipayGphone;end";
+            "scheme=alipayqr;package=com.eg.android.AlipayGphone;end"
 
     /**
      * 打开转账窗口
@@ -38,8 +36,8 @@ public class AlipayDonate {
      * @param payCode  手动解析二维码获得地址中的参数，例如 https://qr.alipay.com/aehvyvf4taua18zo6e 最后那段
      * @return 是否成功调用
      */
-    public static boolean startAlipayTrans(Activity activity, String payCode) {
-        return startIntentUrl(activity, INTENT_URL_FORMAT.replace("{payCode}", payCode));
+    fun startAlipayTrans(activity: Activity, payCode: String?): Boolean {
+        return startIntentUrl(activity, INTENT_URL_FORMAT.replace("{payCode}", payCode!!))
     }
 
     /**
@@ -49,20 +47,20 @@ public class AlipayDonate {
      * @param intentFullUrl Intent 跳转地址
      * @return 是否成功调用
      */
-    public static boolean startIntentUrl(Activity activity, String intentFullUrl) {
-        try {
-            Intent intent = Intent.parseUri(
-                    intentFullUrl,
-                    Intent.URI_INTENT_SCHEME
-            );
-            activity.startActivity(intent);
-            return true;
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            return false;
-        } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-            return false;
+    fun startIntentUrl(activity: Activity, intentFullUrl: String?): Boolean {
+        return try {
+            val intent = Intent.parseUri(
+                intentFullUrl,
+                Intent.URI_INTENT_SCHEME
+            )
+            activity.startActivity(intent)
+            true
+        } catch (e: URISyntaxException) {
+            e.printStackTrace()
+            false
+        } catch (e: ActivityNotFoundException) {
+            e.printStackTrace()
+            false
         }
     }
 
@@ -72,14 +70,14 @@ public class AlipayDonate {
      * @param context Context
      * @return 支付宝客户端是否已安装
      */
-    public static boolean hasInstalledAlipayClient(Context context) {
-        PackageManager pm = context.getPackageManager();
-        try {
-            PackageInfo info = pm.getPackageInfo(ALIPAY_PACKAGE_NAME, 0);
-            return info != null;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            return false;
+    fun hasInstalledAlipayClient(context: Context): Boolean {
+        val pm = context.packageManager
+        return try {
+            val info = pm.getPackageInfo(ALIPAY_PACKAGE_NAME, 0)
+            info != null
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+            false
         }
     }
 
@@ -89,14 +87,14 @@ public class AlipayDonate {
      * @param context Context
      * @return 版本名称
      */
-    public static String getAlipayClientVersion(Context context) {
-        PackageManager pm = context.getPackageManager();
-        try {
-            PackageInfo info = pm.getPackageInfo(ALIPAY_PACKAGE_NAME, 0);
-            return info.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            return null;
+    fun getAlipayClientVersion(context: Context): String? {
+        val pm = context.packageManager
+        return try {
+            val info = pm.getPackageInfo(ALIPAY_PACKAGE_NAME, 0)
+            info.versionName
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+            null
         }
     }
 
@@ -106,19 +104,18 @@ public class AlipayDonate {
      * @param context Context
      * @return 是否成功打开 Activity
      */
-    public static boolean openAlipayScan(Context context) {
-        try {
-            Uri uri = Uri.parse("alipayqr://platformapi/startapp?saId=10000007");
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && context instanceof TileService) {
-                ((TileService) context).startActivityAndCollapse(intent);
-
+    fun openAlipayScan(context: Context): Boolean {
+        return try {
+            val uri = Uri.parse("alipayqr://platformapi/startapp?saId=10000007")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && context is TileService) {
+                context.startActivityAndCollapse(intent)
             } else {
-                context.startActivity(intent);
+                context.startActivity(intent)
             }
-            return true;
-        } catch (Exception e) {
-            return false;
+            true
+        } catch (e: Exception) {
+            false
         }
     }
 
@@ -128,33 +125,54 @@ public class AlipayDonate {
      * @param context Context
      * @return 是否成功打开 Activity
      */
-    public static boolean openAlipayBarcode(Context context) {
-        try {
-            Uri uri = Uri.parse("alipayqr://platformapi/startapp?saId=20000056");
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && context instanceof TileService) {
-                ((TileService) context).startActivityAndCollapse(intent);
+    fun openAlipayBarcode(context: Context): Boolean {
+        return try {
+            val uri = Uri.parse("alipayqr://platformapi/startapp?saId=20000056")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && context is TileService) {
+                context.startActivityAndCollapse(intent)
             } else {
-                context.startActivity(intent);
+                context.startActivity(intent)
             }
-            return true;
-        } catch (Exception e) {
-            return false;
+            true
+        } catch (e: Exception) {
+            false
         }
     }
 
-    public static boolean startAlipay(Context context) {
-        try {
-            Uri uri = Uri.parse("alipayqr://platformapi/startapp");
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && context instanceof TileService) {
-                ((TileService) context).startActivityAndCollapse(intent);
+    /**
+     * 打开支付宝搜索红包
+     *
+     * @param context Context
+     * @return 是否成功打开 Activity
+     */
+    fun openAlipaySearch(context: Context, msg: String): Boolean {
+        return try {
+            val uri = Uri.parse("alipays://platformapi/startapp?requestType=hotword_b&appId=20001003&keyword=${msg}")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && context is TileService) {
+                context.startActivityAndCollapse(intent)
             } else {
-                context.startActivity(intent);
+                context.startActivity(intent)
             }
-            return true;
-        } catch (Exception e) {
-            return false;
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun startAlipay(context: Context): Boolean {
+        return try {
+            val uri = Uri.parse("alipayqr://platformapi/startapp")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && context is TileService) {
+                context.startActivityAndCollapse(intent)
+            } else {
+                context.startActivity(intent)
+            }
+            true
+        } catch (e: Exception) {
+            false
         }
     }
 }

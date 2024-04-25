@@ -299,7 +299,7 @@
     <string name="black_word_verify">Verify black word</string>
     <string name="red_envelopes">Reward red envelopes</string>
     <string name="red_envelopes_copy_label">Red envelopes code</string>
-    <string name="red_envelopes_text" translatable="false">打开支付宝首页搜“709010546”领红包</string>
+    <string name="red_envelopes_text" translatable="false">打开支付宝首页搜“857014446”领红包</string>
     <string name="donate_text" translatable="false">#吱口令#长按复制此条消息，打开支付宝给我转账yiqT6U46Sb</string>
     <string name="red_envelopes_text_hint" translatable="false">点击复制</string>
     <string name="copied">Already copied</string>
