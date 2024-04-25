@@ -67,12 +67,6 @@
             android:title="@string/pref_avatar_resolution"
             app:iconSpaceReserved="false" />
 
-        <SwitchPreference
-            android:defaultValue="@bool/pref_avatar_gif_enable_default_value"
-            android:key="@string/pref_key_avatar_gif_enable"
-            android:title="@string/pref_avatar_gif"
-            app:iconSpaceReserved="false" />
-
         <ListPreference
             android:defaultValue="@string/pref_avatar_cache_invalidation_interval_default_value"
             android:entries="@array/pref_avatar_cache_invalidation_interval_entries"

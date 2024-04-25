@@ -3,7 +3,6 @@
 
     <bool name="pref_signature_default_value">true</bool>
     <bool name="pref_net_cache_default_value">true</bool>
-    <bool name="pref_avatar_gif_enable_default_value">true</bool>
     <bool name="pref_read_progress_save_auto_default_value">true</bool>
     <bool name="pref_read_progress_load_auto_default_value">true</bool>
     <bool name="pref_volume_key_paging_default_value">true</bool>

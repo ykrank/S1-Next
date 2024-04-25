@@ -29,7 +29,6 @@
         
     <string name="pref_avatar_resolution">清晰度</string>
 
-    <string name="pref_avatar_gif">GIF頭像</string>
         
     <string name="pref_avatar_cache_invalidation_interval">緩存失效間隔</string>
         

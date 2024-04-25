@@ -1,35 +1,38 @@
-package me.ykrank.s1next.data.api.model;
+package me.ykrank.s1next.data.api.model
 
-import android.util.Pair;
+import android.util.Pair
+import com.google.common.base.Objects
 
-import com.google.common.base.Objects;
+/**
+ * @param imagePath 图片路径，不包含文件类型后缀
+ */
+class Emoticon(val imagePath: String, val entity: String) {
 
-public final class Emoticon {
+    /**
+     * 文件类型，png/gif
+     */
+    var imageType: String? = null
 
-    private final Pair<String, String> pair;
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
 
-    public Emoticon(String imagePath, String entity) {
-        pair = Pair.create(imagePath, entity);
+        other as Emoticon
+
+        if (imagePath != other.imagePath) return false
+        if (entity != other.entity) return false
+
+        return true
     }
 
-    public String getImagePath() {
-        return pair.first;
+    override fun hashCode(): Int {
+        var result = imagePath.hashCode()
+        result = 31 * result + entity.hashCode()
+        return result
     }
 
-    public String getEntity() {
-        return pair.second;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Emoticon emoticon = (Emoticon) o;
-        return Objects.equal(pair, emoticon.pair);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(pair);
+    companion object {
+        const val TYPE_PNG = "png"
+        const val TYPE_GIF = "gif"
     }
 }
