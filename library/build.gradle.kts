@@ -15,15 +15,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-    }
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
+
+        consumerProguardFile("proguard-rules.pro")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -84,8 +77,7 @@ dependencies {
     api(libs.androidautodispose)
     api(libs.adapterdelegates3)
 
-    playApi(libs.bugly.crashreport)
-    normalApi(libs.bugly.crashreport.upgrade)
+    api(libs.bugly.crashreport)
 
     api(libs.logger)
 

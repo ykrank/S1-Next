@@ -5,8 +5,6 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.github.ykrank.androidtools.util.RxJavaUtil;
-import com.tencent.bugly.Bugly;
-import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import me.ykrank.s1next.BuildConfig;
@@ -28,12 +26,12 @@ public class BuglyUtils {
             CrashReport.UserStrategy userStrategy = new CrashReport.UserStrategy(appContext);
             userStrategy.setAppVersion(BuildConfig.VERSION_NAME + "-" + BuildConfig.VERSION_CODE);
 
-            Beta.enableHotfix = false;
-            Bugly.init(appContext, ErrorUtil.BUGLY_APP_ID, BuildConfig.DEBUG, userStrategy);
+            CrashReport.initCrashReport(appContext, ErrorUtil.BUGLY_APP_ID, BuildConfig.DEBUG, userStrategy);
+            CrashReport.setIsDevelopmentDevice(appContext, BuildConfig.DEBUG);
         });
     }
 
     public static void checkUpdate() {
-        Beta.checkUpgrade(true, false);
+
     }
 }

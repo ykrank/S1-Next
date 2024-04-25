@@ -24,7 +24,7 @@ android {
         applicationId = "me.ykrank.s1next"
         minSdk = 23
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 78
+        versionCode = 79
         versionName = "3.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

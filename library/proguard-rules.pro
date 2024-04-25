@@ -16,8 +16,8 @@
 #   public *;
 #}
 
-# 将.class信息中的类名重新定义为"Proguard"字符串
--renamesourcefileattribute Proguard
+# 将.class信息中的类名重新定义为"SourceFile"字符串
+-renamesourcefileattribute SourceFile
 # 并保留源文件名为"Proguard"字符串，而非原始的类名 并保留行号 // blog from sodino.com
 -keepattributes SourceFile,LineNumberTable
 
@@ -115,25 +115,6 @@
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
 
-# GreenDao
--keepattributes *Annotation*
--keepclassmembers class ** {
-    @org.greenrobot.eventbus.Subscribe <methods>;
-}
--keep enum org.greenrobot.eventbus.ThreadMode { *; }
--keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
-    public static java.lang.String TABLENAME;
-}
-# Only required if you use rxjava2
--dontwarn rx.**
-# Only required if you do not use sqlcipher
--dontwarn net.sqlcipher.database.**
--dontwarn org.greenrobot.greendao.database.DatabaseOpenHelper$EncryptedHelper
-
-# Only required if you use AsyncExecutor
--keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
-    <init>(java.lang.Throwable);
-}
 
 #jsoup
 -keeppackagenames org.jsoup.nodes
@@ -168,3 +149,6 @@
 -dontwarn com.yalantis.ucrop**
 -keep class com.yalantis.ucrop** { *; }
 -keep interface com.yalantis.ucrop** { *; }
+
+-dontwarn com.bun.miitmdid.interfaces.IIdentifierListener
+-dontwarn edu.umd.cs.findbugs.annotations.SuppressFBWarnings
