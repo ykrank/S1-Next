@@ -3,7 +3,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate">
+    tools:context="me.ykrank.s1next.view.page.post.adapter.PostAdapterDelegate">
 
     <data>
 
@@ -11,7 +11,7 @@
 
         <variable
             name="postViewModel"
-            type="me.ykrank.s1next.viewmodel.PostViewModel" />
+            type="me.ykrank.s1next.view.page.post.viewmodel.PostViewModel" />
 
         <variable
             name="quickSidebarEnable"
@@ -41,7 +41,7 @@
                 android:layout_marginRight="@dimen/spacing_micro"
                 android:contentDescription="@string/avatar_content_desc"
                 android:onClick="@{postViewModel::onAvatarClick}"
-                android:onLongClick="@{postViewModel::onLongClick}"
+                android:onLongClick="@{postViewModel::onAvatarLongClick}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:uid="@{postViewModel.post.authorId}"

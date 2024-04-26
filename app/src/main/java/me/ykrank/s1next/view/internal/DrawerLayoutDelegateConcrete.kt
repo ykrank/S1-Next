@@ -32,7 +32,7 @@ import me.ykrank.s1next.view.dialog.AlipayDialogFragment
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment
 import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment
-import me.ykrank.s1next.view.setting.SettingsActivity
+import me.ykrank.s1next.view.page.setting.SettingsActivity
 import me.ykrank.s1next.viewmodel.UserViewModel
 import javax.inject.Inject
 

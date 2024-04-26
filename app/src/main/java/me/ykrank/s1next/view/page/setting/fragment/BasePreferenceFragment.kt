@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.setting.fragment
+package me.ykrank.s1next.view.page.setting.fragment
 
 import com.github.ykrank.androidtools.ui.LibBasePreferenceFragment
 

@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.setting.blacklist
+package me.ykrank.s1next.view.page.setting.blacklist
 
 import android.app.Activity
 import android.content.Context

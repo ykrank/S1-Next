@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:persistent="false"
-    tools:context=".view.setting.fragment.GeneralPreferenceFragment">
+    tools:context=".view.page.setting.fragment.GeneralPreferenceFragment">
 
     <Preference
         android:key="@string/pref_key_backup_backup"

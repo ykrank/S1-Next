@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.setting.blacklist
+package me.ykrank.s1next.view.page.setting.blacklist
 
 import android.app.Activity
 import android.content.DialogInterface
@@ -19,8 +19,7 @@ import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.databinding.FragmentBlacklistBinding
 import me.ykrank.s1next.view.activity.DarkRoomActivity
-import me.ykrank.s1next.view.setting.SettingsActivity
-import me.ykrank.s1next.view.dialog.BlacklistDialogFragment
+import me.ykrank.s1next.view.page.setting.SettingsActivity
 import me.ykrank.s1next.view.dialog.LoadBlackListFromWebDialogFragment
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.fragment.BaseFragment

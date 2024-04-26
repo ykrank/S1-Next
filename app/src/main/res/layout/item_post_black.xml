@@ -11,32 +11,36 @@
 
         <variable
             name="postViewModel"
-            type="me.ykrank.s1next.viewmodel.AppPostViewModel" />
+            type="me.ykrank.s1next.view.page.post.viewmodel.PostBlackViewModel" />
+
+        <variable
+            name="quickSidebarEnable"
+            type="boolean" />
     </data>
 
+    <!-- Now MaterialCardView error in 4.+ -->
     <androidx.cardview.widget.CardView
         style="?attr/materialCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/card_view_vertical_margin"
-        android:layout_marginBottom="@dimen/card_view_vertical_margin"
         app:cardCornerRadius="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/item_padding">
+            android:padding="@dimen/item_padding_micro"
+            android:paddingStart="@dimen/item_padding_micro"
+            android:paddingEnd="@dimen/item_padding"
+            app:marginEnd="@{quickSidebarEnable?(int)@dimen/spacing_normal:0}">
 
             <ImageView
                 android:id="@+id/avatar"
-                android:layout_width="@dimen/avatar_size"
-                android:layout_height="@dimen/avatar_size"
-                android:layout_marginEnd="@dimen/item_padding"
-                android:layout_marginRight="@dimen/item_padding"
+                android:layout_width="@dimen/avatar_size_small"
+                android:layout_height="@dimen/avatar_size_small"
+                android:layout_marginStart="@dimen/spacing_micro"
                 android:contentDescription="@string/avatar_content_desc"
                 android:onClick="@{postViewModel::onAvatarClick}"
-                android:onLongClick="@{postViewModel::onLongClick}"
+                android:onLongClick="@{postViewModel::onAvatarLongClick}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:uid="@{postViewModel.post.authorId}"
@@ -46,28 +50,35 @@
                 android:id="@+id/author_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/item_padding"
-                android:layout_marginLeft="@dimen/item_padding"
-                android:includeFontPadding="false"
+                android:layout_marginStart="@dimen/item_padding_small"
                 android:lines="1"
-                android:text="@{postViewModel.post.author}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:text="@{postViewModel.post.authorName}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                app:layout_constraintBottom_toBottomOf="@id/avatar"
                 app:layout_constraintLeft_toRightOf="@id/avatar"
                 app:layout_constraintTop_toTopOf="@id/avatar"
                 tools:text="name" />
 
             <TextView
-                android:id="@+id/tv_datetime"
+                android:id="@+id/original_poster_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/subtitle_margin_top"
+                android:layout_marginStart="@dimen/spacing_micro"
+                android:layout_marginLeft="@dimen/spacing_micro"
+                android:gravity="center"
                 android:includeFontPadding="false"
                 android:lines="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                app:layout_constraintLeft_toLeftOf="@id/author_name"
-                app:layout_constraintTop_toBottomOf="@id/author_name"
-                app:relativeDateTime="@{postViewModel.post.dateline*1000}"
-                tools:text="2017-5-17" />
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:text="@string/original_poster"
+                android:textColor="?attr/colorAccent"
+                android:textSize="@dimen/text_size_caption"
+                android:visibility="@{postViewModel.post.isOpPost?View.VISIBLE:View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@id/author_name"
+                app:layout_constraintLeft_toRightOf="@id/author_name"
+                app:layout_constraintTop_toTopOf="@id/author_name"
+                tools:text="楼"
+                tools:visibility="visible" />
 
             <!-- enable `textIsSelectable` in order to add click effect -->
             <!-- see https://code.google.com/p/android/issues/detail?id=13895 -->
@@ -77,13 +88,14 @@
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:maxLines="1"
-                android:onClick="@{postViewModel::showFloorActionMenu}"
+                android:onClick="@{postViewModel::onFloorClick}"
                 android:text="@{postViewModel.floor}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="?attr/colorAccent"
                 android:textStyle="bold"
                 android:typeface="serif"
                 app:increaseClickingArea="@{@dimen/minimum_touch_target_size}"
+                app:layout_constraintBottom_toBottomOf="@id/avatar"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/avatar"
                 tools:text="#28" />
@@ -92,29 +104,15 @@
             <!-- use custom movement method to provides selection and click -->
             <com.github.ykrank.androidtools.widget.uglyfix.FixTextView
                 android:id="@+id/tv_reply"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/item_padding"
-                android:lineSpacingExtra="@dimen/text_line_spacing_extra"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/avatar"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                app:layout_constraintLeft_toRightOf="@id/original_poster_tag"
+                app:layout_constraintRight_toLeftOf="@id/tv_floor"
+                app:layout_constraintTop_toTopOf="@id/author_name"
                 app:reply="@{postViewModel.post}"
                 tools:text="主贴" />
 
-            <TextView
-                android:id="@+id/tv_show_trade"
-                style="?attr/buttonBarPositiveButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:onClick="@{postViewModel::onTradeHtmlClick}"
-                android:text="@string/click_to_trade_html"
-                android:visibility="@{postViewModel.post.trade?View.VISIBLE:View.GONE}"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_reply" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

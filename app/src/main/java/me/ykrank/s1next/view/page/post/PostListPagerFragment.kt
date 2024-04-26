@@ -46,7 +46,7 @@ import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.databinding.FragmentBaseWithQuickSideBarBinding
 import me.ykrank.s1next.util.JsonUtil
-import me.ykrank.s1next.view.adapter.PostListRecyclerViewAdapter
+import me.ykrank.s1next.view.page.post.adapter.PostListRecyclerViewAdapter
 import me.ykrank.s1next.view.event.BlackListChangeEvent
 import me.ykrank.s1next.view.event.PostSelectableChangeEvent
 import me.ykrank.s1next.view.event.QuickSidebarEnableChangeEvent
@@ -123,7 +123,11 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
         mRecyclerView = recyclerView
         mLayoutManager = StartSnapLinearLayoutManager(activity!!)
         mRecyclerView.layoutManager = mLayoutManager
-        mRecyclerAdapter = PostListRecyclerViewAdapter(this, context!!)
+        mRecyclerAdapter =
+            PostListRecyclerViewAdapter(
+                this,
+                context!!
+            )
         mRecyclerView.adapter = mRecyclerAdapter
 
         // add pull up to refresh to RecyclerView

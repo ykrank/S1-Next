@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.setting;
+package me.ykrank.s1next.view.page.setting;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,13 +8,13 @@ import com.github.ykrank.androidtools.util.L;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.view.activity.BaseActivity;
-import me.ykrank.s1next.view.setting.fragment.BackupPreferenceFragment;
-import me.ykrank.s1next.view.setting.blacklist.BlackListSettingFragment;
-import me.ykrank.s1next.view.setting.fragment.BlackWordSettingFragment;
-import me.ykrank.s1next.view.setting.fragment.DownloadPreferenceFragment;
-import me.ykrank.s1next.view.setting.fragment.GeneralPreferenceFragment;
-import me.ykrank.s1next.view.setting.fragment.NetworkPreferenceFragment;
-import me.ykrank.s1next.view.setting.fragment.ReadPreferenceFragment;
+import me.ykrank.s1next.view.page.setting.fragment.BackupPreferenceFragment;
+import me.ykrank.s1next.view.page.setting.blacklist.BlackListSettingFragment;
+import me.ykrank.s1next.view.page.setting.fragment.BlackWordSettingFragment;
+import me.ykrank.s1next.view.page.setting.fragment.DownloadPreferenceFragment;
+import me.ykrank.s1next.view.page.setting.fragment.GeneralPreferenceFragment;
+import me.ykrank.s1next.view.page.setting.fragment.NetworkPreferenceFragment;
+import me.ykrank.s1next.view.page.setting.fragment.ReadPreferenceFragment;
 
 /**
  * An Activity includes settings that allow users

@@ -1,14 +1,14 @@
-package me.ykrank.s1next.view.adapter.delegate
+package me.ykrank.s1next.view.page.post.adapter
 
 import android.content.Context
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.AndroidLifeCycle
 import com.github.ykrank.androidlifecycle.event.ViewEvent
-import com.github.ykrank.androidtools.ui.adapter.simple.BindViewHolderCallback
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
 import com.github.ykrank.androidtools.util.L
@@ -26,13 +26,14 @@ import me.ykrank.s1next.databinding.ItemPostBinding
 import me.ykrank.s1next.databinding.ItemRateDetailBinding
 import me.ykrank.s1next.view.activity.RateDetailsListActivity
 import me.ykrank.s1next.view.activity.UserHomeActivity
-import me.ykrank.s1next.viewmodel.PostViewModel
+import me.ykrank.s1next.view.adapter.delegate.BaseAdapterDelegate
+import me.ykrank.s1next.view.page.post.viewmodel.PostViewModel
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 import me.ykrank.s1next.widget.span.FixedSpannableFactory
 import me.ykrank.s1next.widget.span.PostMovementMethod
 import javax.inject.Inject
 
-class PostAdapterDelegate(private val fragment: androidx.fragment.app.Fragment, context: Context) :
+class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
     BaseAdapterDelegate<Post, SimpleRecycleViewHolder<ItemPostBinding>>(context, Post::class.java) {
 
     @Inject
@@ -62,7 +63,8 @@ class PostAdapterDelegate(private val fragment: androidx.fragment.app.Fragment, 
     }
 
     override fun isForViewType(items: MutableList<Any>, position: Int): Boolean {
-        return super.isForViewType(items, position)
+        val item = items[position]
+        return item is Post && item.hide == Post.HIDE_NO
     }
 
     public override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
@@ -81,7 +83,7 @@ class PostAdapterDelegate(private val fragment: androidx.fragment.app.Fragment, 
         val selectable = mGeneralPreferencesManager.isPostSelectable
         setTextSelectable(binding, selectable)
 
-        return SimpleRecycleViewHolder<ItemPostBinding>(binding)
+        return SimpleRecycleViewHolder(binding)
     }
 
     override fun onBindViewHolderData(
@@ -139,7 +141,7 @@ class PostAdapterDelegate(private val fragment: androidx.fragment.app.Fragment, 
                     context,
                     R.layout.item_rate_detail,
                     true,
-                    BindViewHolderCallback { position, binding ->
+                    { position, binding ->
                         val bind = binding as ItemRateDetailBinding?
                         bind?.model?.apply {
                             val uid = this.uid

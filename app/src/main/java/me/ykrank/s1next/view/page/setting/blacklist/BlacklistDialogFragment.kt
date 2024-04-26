@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.dialog
+package me.ykrank.s1next.view.page.setting.blacklist
 
 import android.app.Activity
 import android.app.Dialog
@@ -13,6 +13,7 @@ import androidx.annotation.IdRes
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.databinding.DialogBlacklistBinding
+import me.ykrank.s1next.view.dialog.BaseDialogFragment
 import me.ykrank.s1next.view.internal.RequestCode
 import me.ykrank.s1next.viewmodel.BlackListViewModel
 

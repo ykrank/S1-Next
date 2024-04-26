@@ -30,7 +30,7 @@ import me.ykrank.s1next.view.adapter.delegate.ForumAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmGroupsAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmLeftAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmRightAdapterDelegate;
-import me.ykrank.s1next.view.adapter.delegate.PostAdapterDelegate;
+import me.ykrank.s1next.view.page.post.adapter.PostAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate;
 import me.ykrank.s1next.view.dialog.AppLoginDialogFragment;
 import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment;
@@ -62,11 +62,12 @@ import me.ykrank.s1next.view.fragment.ThreadListFragment;
 import me.ykrank.s1next.view.fragment.ThreadListPagerFragment;
 import me.ykrank.s1next.view.fragment.WebLoginFragment;
 import me.ykrank.s1next.view.fragment.WebViewFragment;
-import me.ykrank.s1next.view.setting.fragment.BackupPreferenceFragment;
-import me.ykrank.s1next.view.setting.fragment.DownloadPreferenceFragment;
-import me.ykrank.s1next.view.setting.fragment.GeneralPreferenceFragment;
-import me.ykrank.s1next.view.setting.fragment.NetworkPreferenceFragment;
-import me.ykrank.s1next.view.setting.fragment.ReadPreferenceFragment;
+import me.ykrank.s1next.view.page.post.adapter.PostBlackAdapterDelegate;
+import me.ykrank.s1next.view.page.setting.fragment.BackupPreferenceFragment;
+import me.ykrank.s1next.view.page.setting.fragment.DownloadPreferenceFragment;
+import me.ykrank.s1next.view.page.setting.fragment.GeneralPreferenceFragment;
+import me.ykrank.s1next.view.page.setting.fragment.NetworkPreferenceFragment;
+import me.ykrank.s1next.view.page.setting.fragment.ReadPreferenceFragment;
 import me.ykrank.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import me.ykrank.s1next.view.page.app.AppPostListFragment;
 import me.ykrank.s1next.view.page.app.AppPostListPagerFragment;
@@ -174,6 +175,7 @@ public interface AppComponent {
 
     void inject(PostListFragment postListFragment);
 
+
     void inject(BasePostFragment fragment);
 
     void inject(BaseActivity activity);
@@ -185,6 +187,8 @@ public interface AppComponent {
     void inject(ForumActivity activity);
 
     void inject(PostAdapterDelegate delegate);
+
+    void inject(PostBlackAdapterDelegate delegate);
 
     void inject(DownloadPreferenceFragment fragment);
 

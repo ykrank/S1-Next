@@ -1,4 +1,4 @@
-package me.ykrank.s1next.viewmodel
+package me.ykrank.s1next.view.page.post.viewmodel
 
 import android.view.MenuItem
 import android.view.View
@@ -58,7 +58,7 @@ class PostViewModel(private val rxBus: RxBus, private val user: User) {
         }
     }
 
-    fun onLongClick(v: View): Boolean {
+    fun onAvatarLongClick(v: View): Boolean {
         //长按显示抹布菜单
         val popup = PopupMenu(v.context, v)
         val postData = post.get()
@@ -89,7 +89,7 @@ class PostViewModel(private val rxBus: RxBus, private val user: User) {
             }
         }
         popup.inflate(R.menu.popup_blacklist)
-        if (postData?.hide == Post.Hide_User) {
+        if (postData?.hide == Post.HIDE_USER) {
             popup.menu.findItem(R.id.menu_popup_blacklist).setTitle(R.string.menu_blacklist_remove)
         }
         popup.show()

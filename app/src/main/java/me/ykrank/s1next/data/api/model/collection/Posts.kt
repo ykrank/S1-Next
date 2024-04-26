@@ -197,26 +197,26 @@ class Posts : Account {
                     ?: -1, post.authorName)
             if (blackList == null || blackList.post == BlackList.NORMAL) {
                 // 不在黑名单中
-                if (post.hide == Post.Hide_User) {
+                if (post.hide == Post.HIDE_USER) {
                     if (clone) {
                         newPost = post.clone()
                     }
-                    newPost.hide = Post.Hide_No
+                    newPost.hide = Post.HIDE_NO
                 }
             } else if (blackList.post == BlackList.DEL_POST) {
                 return null
             } else if (blackList.post == BlackList.HIDE_POST) {
-                if (post.hide != Post.Hide_User) {
+                if (post.hide != Post.HIDE_USER) {
                     if (clone) {
                         newPost = post.clone()
                     }
-                    newPost.hide = Post.Hide_User
+                    newPost.hide = Post.HIDE_USER
                 }
                 newPost.remark = blackList.remark
             }
 
             val reply = newPost.reply
-            if (reply != null && newPost.hide == Post.Hide_No) {
+            if (reply != null && newPost.hide == Post.HIDE_NO) {
                 val mBlackWords = blackWords
                         ?: BlackWordBiz.instance.getAllNotNormalBlackWord()
                 mBlackWords.forEach {
@@ -230,7 +230,7 @@ class Posts : Account {
                                 if (clone && newPost === post) {
                                     newPost = post.clone()
                                 }
-                                newPost.hide = Post.Hide_Word
+                                newPost.hide = Post.HIDE_WORD
                                 return@forEach
                             }
                         }

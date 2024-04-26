@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:persistent="false"
-    tools:context=".view.setting.fragment.DownloadPreferenceFragment">
+    tools:context=".view.page.setting.fragment.DownloadPreferenceFragment">
 
     <ListPreference
         android:defaultValue="@string/pref_image_total_cache_size_default_value"

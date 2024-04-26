@@ -2,7 +2,7 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.setting.blacklist.BlackListCursorListViewAdapter">
+    tools:context=".view.page.setting.blacklist.BlackListCursorListViewAdapter">
 
     <data>
 

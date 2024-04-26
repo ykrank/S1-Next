@@ -202,10 +202,10 @@ public final class TextViewBindingAdapter {
             textView.setText("");
             return;
         }
-        if (post.getHide() != Post.Hide_No) {
+        if (post.getHide() != Post.HIDE_NO) {
             textView.setText("");
             String textHide;
-            if (post.getHide() == Post.Hide_User) {
+            if (post.getHide() == Post.HIDE_USER) {
                 textHide = textView.getContext().getString(R.string.user_in_blacklist);
             } else {
                 textHide = textView.getContext().getString(R.string.word_in_black_word);

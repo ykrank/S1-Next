@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:persistent="false"
-    tools:context=".view.setting.fragment.NetworkPreferenceFragment">
+    tools:context=".view.page.setting.fragment.NetworkPreferenceFragment">
 
     <SwitchPreference
         android:defaultValue="@bool/pref_key_force_base_url_enabled_default_value"

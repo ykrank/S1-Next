@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.setting.blacklist
+package me.ykrank.s1next.view.page.setting.blacklist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.setting.fragment
+package me.ykrank.s1next.view.page.setting.fragment
 
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -19,7 +19,7 @@ import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.data.pref.ThemeManager
 import me.ykrank.s1next.util.AppDeviceUtil
 import me.ykrank.s1next.util.BuglyUtils
-import me.ykrank.s1next.view.setting.SettingsActivity
+import me.ykrank.s1next.view.page.setting.SettingsActivity
 import me.ykrank.s1next.view.event.FontSizeChangeEvent
 import me.ykrank.s1next.view.event.ThemeChangeEvent
 import me.ykrank.s1next.widget.span.HtmlCompat

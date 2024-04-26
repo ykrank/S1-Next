@@ -51,7 +51,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
      */
     @JsonIgnore
     @HideFLag
-    var hide: Int = Hide_No
+    var hide: Int = HIDE_NO
     @JsonIgnore
     var remark: String? = null
     @JsonIgnore
@@ -421,13 +421,13 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         }
     }
 
-    @IntDef(Hide_No, Hide_User, Hide_Word)
+    @IntDef(HIDE_NO, HIDE_USER, HIDE_WORD)
     annotation class HideFLag
 
     companion object {
-        const val Hide_No = 0
-        const val Hide_User = 1
-        const val Hide_Word = 2
+        const val HIDE_NO = 0
+        const val HIDE_USER = 1
+        const val HIDE_WORD = 2
 
         private val TAG = Post::class.java.simpleName
         private val COLOR_NAME_MAP: androidx.collection.SimpleArrayMap<String, String> = androidx.collection.SimpleArrayMap()
