@@ -2,7 +2,7 @@ package me.ykrank.s1next.data.api.model
 
 import android.graphics.Color
 import androidx.annotation.IntDef
-import androidx.collection.SimpleArrayMap
+import androidx.annotation.WorkerThread
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
@@ -51,7 +51,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
      */
     @JsonIgnore
     @HideFLag
-    var hide: Int = Hide_Normal
+    var hide: Int = Hide_No
     @JsonIgnore
     var remark: String? = null
     @JsonIgnore
@@ -122,6 +122,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         return MathUtil.divide(count?.toInt() ?: 1, Api.POSTS_PER_PAGE)
     }
 
+    @WorkerThread
     private fun filterReply(value: String?): String? {
         if (value.isNullOrEmpty()) {
             return value
@@ -420,11 +421,11 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         }
     }
 
-    @IntDef(Hide_Normal, Hide_User, Hide_Word)
+    @IntDef(Hide_No, Hide_User, Hide_Word)
     annotation class HideFLag
 
     companion object {
-        const val Hide_Normal = 0
+        const val Hide_No = 0
         const val Hide_User = 1
         const val Hide_Word = 2
 

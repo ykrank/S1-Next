@@ -202,7 +202,7 @@ public final class TextViewBindingAdapter {
             textView.setText("");
             return;
         }
-        if (post.getHide() != Post.Hide_Normal) {
+        if (post.getHide() != Post.Hide_No) {
             textView.setText("");
             String textHide;
             if (post.getHide() == Post.Hide_User) {

@@ -15,7 +15,7 @@ bugly_nativecrashreport = "3.9.2"
 dagger = "2.51.1"
 filepicker = "4.2.1"
 flipperNoop = "0.177.0"
-glide = "4.14.2"
+glide = "4.16.0"
 guava = "31.0.1-android"
 jackson = "2.14.1"
 jolyglot_jackson = "0.0.6"
@@ -64,7 +64,7 @@ sqlite = "1.0.7"
 transition = "1.4.1"
 largeimageview = "1.1.0"
 compileSdk = "34"
-targetSdk = "34"
+targetSdk = "30"
 agp = "8.3.2"
 
 
@@ -89,7 +89,8 @@ databinding-compiler = { module = "com.android.databinding:compiler", version.re
 flipper = { module = "com.facebook.flipper:flipper", version.ref = "flipperNoop" }
 flipper-network-plugin = { module = "com.facebook.flipper:flipper-network-plugin", version.ref = "flipperNoop" }
 flipper-noop = { module = "com.facebook.flipper:flipper-noop", version.ref = "flipperNoop" }
-glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+glide-kapt = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+glide-ksp = { module = "com.github.bumptech.glide:ksp", version.ref = "glide" }
 compress = { module = "io.github.lucksiege:compress", version.ref = "compress" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }

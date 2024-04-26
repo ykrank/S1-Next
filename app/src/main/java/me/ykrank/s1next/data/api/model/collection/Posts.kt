@@ -191,31 +191,32 @@ class Posts : Account {
          */
         @WorkerThread
         fun filterPost(post: Post, clone: Boolean = false, blackWords: List<BlackWord>? = null): Post? {
-            var nPost: Post = post
+            var newPost: Post = post
             val blackListWrapper = BlackListBiz.getInstance()
             val blackList = blackListWrapper.getMergedBlackList(post.authorId?.toIntOrNull()
                     ?: -1, post.authorName)
             if (blackList == null || blackList.post == BlackList.NORMAL) {
+                // 不在黑名单中
                 if (post.hide == Post.Hide_User) {
                     if (clone) {
-                        nPost = post.clone()
+                        newPost = post.clone()
                     }
-                    nPost.hide = Post.Hide_Normal
+                    newPost.hide = Post.Hide_No
                 }
             } else if (blackList.post == BlackList.DEL_POST) {
                 return null
             } else if (blackList.post == BlackList.HIDE_POST) {
                 if (post.hide != Post.Hide_User) {
                     if (clone) {
-                        nPost = post.clone()
+                        newPost = post.clone()
                     }
-                    nPost.hide = Post.Hide_User
+                    newPost.hide = Post.Hide_User
                 }
-                nPost.remark = blackList.remark
+                newPost.remark = blackList.remark
             }
 
-            val reply = nPost.reply
-            if (reply != null && nPost.hide == Post.Hide_Normal) {
+            val reply = newPost.reply
+            if (reply != null && newPost.hide == Post.Hide_No) {
                 val mBlackWords = blackWords
                         ?: BlackWordBiz.instance.getAllNotNormalBlackWord()
                 mBlackWords.forEach {
@@ -226,10 +227,10 @@ class Posts : Account {
                                 return null
                             } else if (it.stat == BlackWord.HIDE) {
                                 //Only clone if not cloned before
-                                if (clone && nPost === post) {
-                                    nPost = post.clone()
+                                if (clone && newPost === post) {
+                                    newPost = post.clone()
                                 }
-                                nPost.hide = Post.Hide_Word
+                                newPost.hide = Post.Hide_Word
                                 return@forEach
                             }
                         }
@@ -237,7 +238,7 @@ class Posts : Account {
                 }
             }
 
-            return nPost
+            return newPost
         }
     }
 

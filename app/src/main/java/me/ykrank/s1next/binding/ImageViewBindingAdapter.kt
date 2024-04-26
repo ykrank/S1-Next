@@ -49,7 +49,7 @@ object ImageViewBindingAdapter {
                 .listener(object : RequestListener<Drawable?> {
                     override fun onLoadFailed(
                         e: GlideException?,
-                        model: Any,
+                        model: Any?,
                         target: Target<Drawable?>,
                         isFirstResource: Boolean
                     ): Boolean {
@@ -62,7 +62,7 @@ object ImageViewBindingAdapter {
                     }
 
                     override fun onResourceReady(
-                        resource: Drawable?,
+                        resource: Drawable,
                         model: Any,
                         target: Target<Drawable?>,
                         dataSource: DataSource,
@@ -110,7 +110,7 @@ object ImageViewBindingAdapter {
                 .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(
                         e: GlideException?,
-                        model: Any,
+                        model: Any?,
                         target: Target<Drawable>,
                         isFirstResource: Boolean
                     ): Boolean {
@@ -268,26 +268,27 @@ object ImageViewBindingAdapter {
             .listener(object : RequestListener<Drawable?> {
                 override fun onLoadFailed(
                     e: GlideException?,
-                    model: Any,
+                    model: Any?,
                     target: Target<Drawable?>,
                     isFirstResource: Boolean
                 ): Boolean {
-                    if (urls.size > 0) {
-                        urls.removeAt(0)
-                        imageView.post {
-                            preloadRoundAvatar(
-                                imageView,
-                                downloadPreferencesManager,
-                                urls
-                            )
-                        }
-                        return true
+                    if (urls.size == 0) {
+                        return false
                     }
-                    return false
+
+                    urls.removeAt(0)
+                    imageView.post {
+                        preloadRoundAvatar(
+                            imageView,
+                            downloadPreferencesManager,
+                            urls
+                        )
+                    }
+                    return true
                 }
 
                 override fun onResourceReady(
-                    resource: Drawable?,
+                    resource: Drawable,
                     model: Any,
                     target: Target<Drawable?>,
                     dataSource: DataSource,
@@ -320,10 +321,14 @@ object ImageViewBindingAdapter {
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,
-                    model: Any,
+                    model: Any?,
                     target: Target<Drawable>,
                     isFirstResource: Boolean
                 ): Boolean {
+                    if (urls.size == 0) {
+                        return false
+                    }
+
                     urls.removeAt(0)
                     imageView.post {
                         loadRoundAvatar(

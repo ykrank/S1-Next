@@ -41,16 +41,16 @@ class AvatarStreamFetcher(private val client: Call.Factory, private val url: Ava
             callback.onDataReady(null)
             return
         }
-        val url_string = url.toStringUrl()
+        val urlString = url.toStringUrl()
         //whether cached error url
-        val avatarKey = OriginalKey.obtainAvatarKey(mDownloadPreferencesManager, url_string)
+        val avatarKey = OriginalKey.obtainAvatarKey(mDownloadPreferencesManager, urlString)
         if (avatarUrlsCache.has(avatarKey)) {
             // already have cached this not success avatar url
             callback.onDataReady(null)
             return
         }
 
-        val requestBuilder = Request.Builder().url(url_string)
+        val requestBuilder = Request.Builder().url(urlString)
 
         for ((key, value) in url.headers) {
             requestBuilder.addHeader(key, value)

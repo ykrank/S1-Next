@@ -190,7 +190,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
                     .load(Uri.parse(EmoticonFactory.ASSET_PATH_EMOTICON + emoticonName))
                     .apply(emoticonAssetRequestOptions)
                     .listener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Drawable>, isFirstResource: Boolean): Boolean {
+                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>, isFirstResource: Boolean): Boolean {
                             L.leaveMsg("Exception in emoticon uri:$model")
                             trackAgent.post(EmoticonNotFoundTrackEvent(model.toString()))
 

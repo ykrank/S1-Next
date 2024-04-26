@@ -4,8 +4,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.gradleVersionsPlugin)
-    kotlin("kapt")
     alias(libs.plugins.androidKsp)
+    kotlin("kapt")
 }
 
 val properties = gradleLocalProperties(rootDir, providers)
@@ -154,7 +154,7 @@ dependencies {
     implementation(libs.paperparcel.api)
     kapt(libs.paperparcel.compiler)
 
-    ksp(libs.glide.compiler)
+    ksp(libs.glide.ksp)
 
     implementation(libs.photoview)
     implementation(libs.quicksidebar)
