@@ -34,9 +34,8 @@ class PostViewModel(private val rxBus: RxBus, private val user: User) {
     private val postFloor: CharSequence?
         get() {
             val p = post.get() ?: return null
-            return "#${p.count}"
+            return "#${p.number}"
         }
-
 
     init {
         post.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
@@ -130,7 +129,7 @@ class PostViewModel(private val rxBus: RxBus, private val user: User) {
 
     fun onReplyClick(v: View) {
         val postId = post.get()?.id?.toString()
-        val count = post.get()?.count
+        val count = post.get()?.number
         if (postId != null && count != null) {
             rxBus.post(QuoteEvent(postId, count))
         }

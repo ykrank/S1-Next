@@ -39,7 +39,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
     @JsonIgnore
     var isFirst: Boolean = false
     @JsonProperty("number")
-    var count: String? = null
+    var number: String? = null
     @JsonProperty("dbdateline")
     var dateTime: Long = 0
     @JsonProperty("groupid")
@@ -119,7 +119,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
     }
 
     fun getPage(): Int {
-        return MathUtil.divide(count?.toInt() ?: 1, Api.POSTS_PER_PAGE)
+        return MathUtil.divide(number?.toInt() ?: 1, Api.POSTS_PER_PAGE)
     }
 
     @WorkerThread
@@ -349,7 +349,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         if (authorId != other.authorId) return false
         if (reply != other.reply) return false
         if (isFirst != other.isFirst) return false
-        if (count != other.count) return false
+        if (number != other.number) return false
         if (dateTime != other.dateTime) return false
         if (groupId != other.groupId) return false
         if (attachmentMap != other.attachmentMap) return false
@@ -371,7 +371,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         result = 31 * result + (authorId?.hashCode() ?: 0)
         result = 31 * result + (reply?.hashCode() ?: 0)
         result = 31 * result + isFirst.hashCode()
-        result = 31 * result + (count?.hashCode() ?: 0)
+        result = 31 * result + (number?.hashCode() ?: 0)
         result = 31 * result + dateTime.hashCode()
         result = 31 * result + groupId
         result = 31 * result + attachmentMap.hashCode()

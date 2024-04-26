@@ -64,7 +64,8 @@ import javax.inject.Inject
  *
  * Activity or Fragment containing this must implement [PagerCallback].
  */
-class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickSideBarTouchListener {
+class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
+    OnQuickSideBarTouchListener {
 
     @Inject
     internal lateinit var mRxBus: RxBus
@@ -126,14 +127,19 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         mRecyclerView.adapter = mRecyclerAdapter
 
         // add pull up to refresh to RecyclerView
-        mRecyclerView.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+        mRecyclerView.addOnScrollListener(object :
+            androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
 
-            override fun onScrollStateChanged(recyclerView: androidx.recyclerview.widget.RecyclerView, newState: Int) {
+            override fun onScrollStateChanged(
+                recyclerView: androidx.recyclerview.widget.RecyclerView,
+                newState: Int
+            ) {
                 if (!isPullUpToRefresh
-                        && mPageNum == mPagerCallback?.getTotalPages()
-                        && !isLoading
-                        && mRecyclerAdapter.itemCount != 0
-                        && !mRecyclerView.canScrollVertically(1)) {
+                    && mPageNum == mPagerCallback?.getTotalPages()
+                    && !isLoading
+                    && mRecyclerAdapter.itemCount != 0
+                    && !mRecyclerView.canScrollVertically(1)
+                ) {
                     startPullToRefresh()
                 }
             }
@@ -142,19 +148,19 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         quickSideBarView.setOnQuickSideBarTouchListener(this)
 
         mRxBus.get()
-                .ofType(PostSelectableChangeEvent::class.java)
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
-                .subscribe({ mRecyclerAdapter.notifyDataSetChanged() }, { super.onError(it) })
+            .ofType(PostSelectableChangeEvent::class.java)
+            .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
+            .subscribe({ mRecyclerAdapter.notifyDataSetChanged() }, { super.onError(it) })
 
         mRxBus.get()
-                .ofType(QuickSidebarEnableChangeEvent::class.java)
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
-                .subscribe({ invalidateQuickSidebarVisible() }, { super.onError(it) })
+            .ofType(QuickSidebarEnableChangeEvent::class.java)
+            .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
+            .subscribe({ invalidateQuickSidebarVisible() }, { super.onError(it) })
 
         mRxBus.get()
-                .ofType(BlackListChangeEvent::class.java)
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
-                .subscribe { startBlackListRefresh() }
+            .ofType(BlackListChangeEvent::class.java)
+            .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
+            .subscribe { startBlackListRefresh() }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -168,8 +174,16 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         super.onDestroy()
     }
 
-    override fun getLoadingViewModelBindingDelegateImpl(inflater: LayoutInflater, container: ViewGroup?): LoadingViewModelBindingDelegate {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_base_with_quick_side_bar, container, false)
+    override fun getLoadingViewModelBindingDelegateImpl(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): LoadingViewModelBindingDelegate {
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_base_with_quick_side_bar,
+            container,
+            false
+        )
         binding.quickSidebarEnable = false
         quickSideBarView = binding.quickSideBarView
         quickSideBarTipsView = binding.quickSideBarViewTips
@@ -231,11 +245,11 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                 dbWrapper.saveReadProgress(readProgress)
                 true
             }.compose(RxJavaUtil.iOSingleTransformer<Boolean>())
-                    .to(AndroidRxDispose.withSingle<Boolean>(this, FragmentEvent.DESTROY))
-                    .subscribe({ b ->
-                        LooperUtil.enforceOnMainThread()
-                        showShortText(R.string.save_read_progress_success)
-                    }, { L.report(it) })
+                .to(AndroidRxDispose.withSingle<Boolean>(this, FragmentEvent.DESTROY))
+                .subscribe({ b ->
+                    LooperUtil.enforceOnMainThread()
+                    showShortText(R.string.save_read_progress_success)
+                }, { L.report(it) })
         }
     }
 
@@ -245,8 +259,10 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                 return null
             }
             val itemPosition = findNowItemPosition()
-            return ReadProgress(mThreadId?.toInt()
-                    ?: 0, mPageNum, itemPosition.first!!, itemPosition.second!!)
+            return ReadProgress(
+                mThreadId?.toInt()
+                    ?: 0, mPageNum, itemPosition.first!!, itemPosition.second!!
+            )
         }
 
     /**
@@ -274,61 +290,61 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         val source: Single<PostsWrapper> = if (mDownloadPrefManager.netCacheEnable) {
             //If last page, force refresh cache
             apiCacheObservable(isForceLoading || mPageNum >= mPagerCallback?.getTotalPages() ?: 0)
-                    .flatMap { reply ->
-                        //                        L.d("Source:$mPageNum," + java.lang.Thread.currentThread().toString())
-                        val wrapper = objectMapper.readValue(reply.data, PostsWrapper::class.java)
-                        //If load cache and this page size < POSTS_PER_PAGE, it's the last page, then force refresh
-                        if (reply.source != Source.CLOUD && wrapper.data.postList.size < Api.POSTS_PER_PAGE) {
-                            return@flatMap apiCacheObservable(true)
-                                    .map { it.data }
-                                    .compose(JsonUtil.jsonSingleTransformer(PostsWrapper::class.java))
-                        }
-                        Single.just(wrapper)
+                .flatMap { reply ->
+                    //                        L.d("Source:$mPageNum," + java.lang.Thread.currentThread().toString())
+                    val wrapper = objectMapper.readValue(reply.data, PostsWrapper::class.java)
+                    //If load cache and this page size < POSTS_PER_PAGE, it's the last page, then force refresh
+                    if (reply.source != Source.CLOUD && wrapper.data.postList.size < Api.POSTS_PER_PAGE) {
+                        return@flatMap apiCacheObservable(true)
+                            .map { it.data }
+                            .compose(JsonUtil.jsonSingleTransformer(PostsWrapper::class.java))
                     }
+                    Single.just(wrapper)
+                }
         } else {
             apiObservable().compose(JsonUtil.jsonSingleTransformer(PostsWrapper::class.java))
         }
 
         val rateSource: Single<RatePostsWrapper> = if (mDownloadPrefManager.netCacheEnable) {
             rateApiCacheObservable(isForceLoading || mPageNum >= mPagerCallback?.getTotalPages() ?: 0)
-                    .flatMap { reply ->
-                        //                        L.d("RateSource:$mPageNum," + java.lang.Thread.currentThread().toString())
-                        val wrapper = objectMapper.readValue(reply.data, RatePostsWrapper::class.java)
-                        if (reply.source != Source.CLOUD && wrapper.data.postList?.size ?: 0 < Api.POSTS_PER_PAGE) {
-                            return@flatMap rateApiCacheObservable(true)
-                                    .map { it.data }
-                                    .compose(JsonUtil.jsonSingleTransformer(RatePostsWrapper::class.java))
-                        }
-                        Single.just(wrapper)
+                .flatMap { reply ->
+                    //                        L.d("RateSource:$mPageNum," + java.lang.Thread.currentThread().toString())
+                    val wrapper = objectMapper.readValue(reply.data, RatePostsWrapper::class.java)
+                    if (reply.source != Source.CLOUD && wrapper.data.postList?.size ?: 0 < Api.POSTS_PER_PAGE) {
+                        return@flatMap rateApiCacheObservable(true)
+                            .map { it.data }
+                            .compose(JsonUtil.jsonSingleTransformer(RatePostsWrapper::class.java))
                     }
+                    Single.just(wrapper)
+                }
         } else {
             rateApiObservable().compose(JsonUtil.jsonSingleTransformer(RatePostsWrapper::class.java))
         }
 
         return source.subscribeOn(Schedulers.io())
-                .zipWith(rateSource.subscribeOn(Schedulers.io()))
-                .flatMap { pair ->
-                    val o = pair.first
-                    //Set comment init info(if it has comment)
-                    pair.second.data?.commentCountMap?.apply {
-                        o.data?.initCommentCount(this)
-                    }
-                    if (o.data != null) {
-                        val postList = o.data.postList
-                        if (postList.isNotEmpty()) {
-                            val post = postList[0]
-                            if (post.isTrade) {
-                                post.extraHtml = ""
-                                return@flatMap mS1Service.getTradePostInfo(mThreadId, post.id + 1)
-                                        .map { html ->
-                                            post.extraHtml = ApiUtil.replaceAjaxHeader(html)
-                                            return@map o
-                                        }
-                            }
+            .zipWith(rateSource.subscribeOn(Schedulers.io()))
+            .flatMap { pair ->
+                val o = pair.first
+                //Set comment init info(if it has comment)
+                pair.second.data?.commentCountMap?.apply {
+                    o.data?.initCommentCount(this)
+                }
+                if (o.data != null) {
+                    val postList = o.data.postList
+                    if (postList.isNotEmpty()) {
+                        val post = postList[0]
+                        if (post.isTrade) {
+                            post.extraHtml = ""
+                            return@flatMap mS1Service.getTradePostInfo(mThreadId, post.id + 1)
+                                .map { html ->
+                                    post.extraHtml = ApiUtil.replaceAjaxHeader(html)
+                                    return@map o
+                                }
                         }
                     }
-                    Single.just(o)
                 }
+                Single.just(o)
+            }
     }
 
     private fun apiObservable(): Single<String> {
@@ -336,9 +352,11 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
     }
 
     private fun apiCacheObservable(evict: Boolean): Single<Reply<String>> {
-        return apiCacheProvider.getPostsWrapper(apiObservable(),
-                DynamicKeyGroup("$mThreadId,$mPageNum,$mAuthorId", mUser.key),
-                EvictDynamicKeyGroup(evict))
+        return apiCacheProvider.getPostsWrapper(
+            apiObservable(),
+            DynamicKeyGroup("$mThreadId,$mPageNum,$mAuthorId", mUser.key),
+            EvictDynamicKeyGroup(evict)
+        )
     }
 
     private fun rateApiObservable(): Single<String> {
@@ -346,9 +364,11 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
     }
 
     private fun rateApiCacheObservable(evict: Boolean): Single<Reply<String>> {
-        return apiCacheProvider.getPostsWrapperNew(rateApiObservable(),
-                DynamicKeyGroup("$mThreadId,$mPageNum,$mAuthorId", mUser.key),
-                EvictDynamicKeyGroup(evict))
+        return apiCacheProvider.getPostsWrapperNew(
+            rateApiObservable(),
+            DynamicKeyGroup("$mThreadId,$mPageNum,$mAuthorId", mUser.key),
+            EvictDynamicKeyGroup(evict)
+        )
     }
 
     override fun onNext(data: PostsWrapper) {
@@ -361,7 +381,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         }
 
         // if user has logged out, has no permission to access this thread or this thread is invalid
-        if (postList == null || postList.isEmpty()) {
+        if (postList.isNullOrEmpty()) {
             if (pullUpToRefresh) {
                 // mRecyclerAdapter.getItemCount() = 0
                 // when configuration changes (like orientation changes)
@@ -373,8 +393,10 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             val threadId = mThreadId ?: posts.postListInfo?.id
             if (threadId != null) {
                 if (isAdded && userVisibleHint) {
-                    Snackbar.make(binding.root, data.result?.message
-                            ?: "加载失败", Snackbar.LENGTH_INDEFINITE).setAction(R.string.click_to_cast_dark_magic, View.OnClickListener {
+                    Snackbar.make(
+                        binding.root, data.result?.message
+                            ?: "加载失败", Snackbar.LENGTH_INDEFINITE
+                    ).setAction(R.string.click_to_cast_dark_magic, View.OnClickListener {
                         AppPostListActivity.start(context!!, threadId, mPageNum, null)
                     }).show()
                 }
@@ -383,7 +405,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             }
         } else {
             super.onNext(data)
-            initQuickSidebar(mPageNum, postList.size)
+            initQuickSidebar(mPageNum, postList)
 
             //Set old rates to data
             postList.forEach {
@@ -409,7 +431,10 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
                 } else if (pullUpToRefresh) {
 
                 } else if (readProgress != null && scrollState?.state == PagerScrollState.BEFORE_SCROLL_POSITION) {
-                    mLayoutManager.scrollToPositionWithOffset(readProgress!!.position, readProgress!!.offset)
+                    mLayoutManager.scrollToPositionWithOffset(
+                        readProgress!!.position,
+                        readProgress!!.offset
+                    )
                     readProgress = null
                     scrollState!!.state = PagerScrollState.FREE
                 } else {
@@ -442,9 +467,9 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             RxJavaUtil.disposeIfNotNull(refreshAfterBlacklistChangeDisposable)
             val dataSet = mRecyclerAdapter.dataSet
             refreshAfterBlacklistChangeDisposable = Single.just(dataSet)
-                    .map { filterPostAfterBlacklistChanged(it) }
-                    .compose(RxJavaUtil.iOSingleTransformer())
-                    .subscribe({ mRecyclerAdapter.diffNewDataSet(it, false) }, { L.report(it) })
+                .map { filterPostAfterBlacklistChanged(it) }
+                .compose(RxJavaUtil.iOSingleTransformer())
+                .subscribe({ mRecyclerAdapter.diffNewDataSet(it, false) }, { L.report(it) })
         } else if (isPullUpToRefresh) {
             mRecyclerAdapter.hideFooterProgress()
         }
@@ -471,42 +496,46 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         }
         rateStamp = time
 
-        Observable.fromIterable(posts.filter { it.rates?.size == 0 && rateMap[it.id] == null }.distinctBy { it.id })
-                .flatMap {
-                    val pid = it.id
-                    mS1Service.getRates(mThreadId, pid.toString())
-                            .map { s -> Pair(pid, Rate.fromHtml(s)) }
-                            .toObservable()
+        Observable.fromIterable(posts.filter { it.rates?.size == 0 && rateMap[it.id] == null }
+            .distinctBy { it.id })
+            .flatMap {
+                val pid = it.id
+                mS1Service.getRates(mThreadId, pid.toString())
+                    .map { s -> Pair(pid, Rate.fromHtml(s)) }
+                    .toObservable()
+            }
+            .compose(RxJavaUtil.iOTransformer())
+            .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
+            .subscribe({
+                val pid = it.first
+                val rates = it.second
+                if (pid != null && rates?.isNotEmpty() == true) {
+                    rateMap[pid] = rates
+                    mRecyclerAdapter.dataSet.filterIsInstance(Post::class.java)
+                        .forEachIndexed { index, post ->
+                            if (post.id == pid) {
+                                post.rates = rates
+                                mRecyclerAdapter.notifyItemChanged(index)
+                            }
+                        }
                 }
-                .compose(RxJavaUtil.iOTransformer())
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
-                .subscribe({
-                    val pid = it.first
-                    val rates = it.second
-                    if (pid != null && rates?.isNotEmpty() == true) {
-                        rateMap[pid] = rates
-                        mRecyclerAdapter.dataSet.filterIsInstance(Post::class.java)
-                                .forEachIndexed { index, post ->
-                                    if (post.id == pid) {
-                                        post.rates = rates
-                                        mRecyclerAdapter.notifyItemChanged(index)
-                                    }
-                                }
-                    }
-                }, L::report)
+            }, L::report)
     }
 
-    private fun initQuickSidebar(page: Int, postSize: Int) {
+    private fun initQuickSidebar(page: Int, posts: List<Post>) {
         invalidateQuickSidebarVisible()
         val customLetters = ArrayList<String>()
-        for (i in 0 until postSize) {
-            //1-10, then interval 2
+        var i = 0
+        posts.forEach {
             if (i >= 10 && i % 2 == 0) {
-                continue
+                // noop
+            } else {
+                it.number?.apply {
+                    customLetters.add(this)
+                    letters[this] = i
+                }
             }
-            val letter = (i + 1 + Api.POSTS_PER_PAGE * (page - 1)).toString()
-            customLetters.add(letter)
-            letters[letter] = i
+            i++
         }
         quickSideBarView.letters = customLetters
     }
@@ -552,7 +581,12 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             return newInstance(threadId, pageNum, null, null, null, null)
         }
 
-        fun newInstance(threadId: String, pageNum: Int, progress: ReadProgress, scrollState: PagerScrollState): PostListPagerFragment {
+        fun newInstance(
+            threadId: String,
+            pageNum: Int,
+            progress: ReadProgress,
+            scrollState: PagerScrollState
+        ): PostListPagerFragment {
             return newInstance(threadId, pageNum, null, null, progress, scrollState)
         }
 
@@ -560,8 +594,10 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
             return newInstance(threadId, pageNum, null, postId, null, null)
         }
 
-        fun newInstance(threadId: String, pageNum: Int, authorId: String?,
-                        postId: String?, progress: ReadProgress?, scrollState: PagerScrollState?): PostListPagerFragment {
+        fun newInstance(
+            threadId: String, pageNum: Int, authorId: String?,
+            postId: String?, progress: ReadProgress?, scrollState: PagerScrollState?
+        ): PostListPagerFragment {
             val fragment = PostListPagerFragment()
             val bundle = Bundle()
             bundle.putString(ARG_THREAD_ID, threadId)
@@ -587,7 +623,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(), OnQuickS
         private fun filterPostAfterBlacklistChanged(dataSet: List<Any>): List<Any> {
             LooperUtil.enforceOnWorkThread()
             return dataSet.filterIsInstance<Post>()
-                    .mapNotNull { Posts.filterPost(it, true) }
+                .mapNotNull { Posts.filterPost(it, true) }
         }
     }
 }

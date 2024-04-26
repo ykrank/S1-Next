@@ -76,23 +76,72 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switch_forum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/dialog_switch_padding"
-                android:text="@string/blacklist_hide_forum"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                app:checked="@{blackListViewModel.blacklist.isForumHide()}" />
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switch_post"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/dialog_switch_padding"
-                android:text="@string/blacklist_hide_post"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                app:checked="@{blackListViewModel.blacklist.isPostHide()}" />
+            <RadioGroup
+                android:id="@+id/radio_group_forum"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="@dimen/dialog_switch_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/item_padding"
+                    android:text="@string/blacklist_forum_flag"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radio_forum_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/blacklist_flag_normal" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radio_forum_hide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/blacklist_flag_hide" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radio_forum_del"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/blacklist_flag_del" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/radio_group_post"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="@dimen/dialog_switch_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/item_padding"
+                    android:text="@string/blacklist_post_flag"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radio_post_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/blacklist_flag_normal" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radio_post_hide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/blacklist_flag_hide" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radio_post_del"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/blacklist_flag_del" />
+            </RadioGroup>
 
         </LinearLayout>
     </ScrollView>

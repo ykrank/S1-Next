@@ -104,7 +104,7 @@ class PostAdapterDelegate(private val fragment: androidx.fragment.app.Fragment, 
             it.pageNum.set(pageNum)
             it.post.set(post)
 
-            if ("1" == post.count) {
+            if ("1" == post.number) {
                 it.vote.set(voteInfo)
             } else {
                 it.vote.set(null)
