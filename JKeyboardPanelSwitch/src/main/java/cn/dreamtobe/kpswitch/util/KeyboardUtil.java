@@ -394,20 +394,6 @@ public class KeyboardUtil {
                     throw new IllegalStateException("Could not getSystemService WindowManager of contentView:" + contentView);
                 }
 
-                if (!isTranslucentStatus
-                        && phoneDisplayHeight == actionBarOverlayLayoutHeight
-                        // 实测在Android 12上, 无论键盘显隐, 这两个值都会相等..., 故忽略该判断
-                        && Build.VERSION.SDK_INT < 32) {
-                    // no space to settle down the status bar, switch to fullscreen,
-                    // only in the case of paused and opened the fullscreen page.
-                    Log.w(TAG, String.format("skip the keyboard status calculate, the current"
-                                    + " activity is paused. and phone-display-height %d,"
-                                    + " root-height+actionbar-height %d", phoneDisplayHeight,
-                            actionBarOverlayLayoutHeight));
-                    return;
-
-                }
-
                 if (maxOverlayLayoutHeight == 0) {
                     // non-used.
                     isKeyboardShowing = lastKeyboardShowing;
