@@ -89,7 +89,7 @@ object ImageViewBindingAdapter {
             return
         }
         val downloadPreferencesManager = preAppComponent
-            .getDownloadPreferencesManager()
+            .downloadPreferencesManager
         if (user.isLogged) {
             val requestManager = Glide.with(bezelImageView)
             bezelImageView.setTag(R.id.tag_drawable_info, null)
@@ -159,7 +159,7 @@ object ImageViewBindingAdapter {
             return
         }
         val downloadPreferencesManager = preAppComponent
-            .getDownloadPreferencesManager()
+            .downloadPreferencesManager
         loadAvatar(
             bezelImageView,
             null,

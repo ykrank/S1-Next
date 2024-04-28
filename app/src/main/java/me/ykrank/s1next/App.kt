@@ -1,5 +1,6 @@
 package me.ykrank.s1next
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
@@ -143,6 +144,7 @@ class App : MultiDexApplication() {
     companion object {
         val LOG_TAG = "S1NextLog"
 
+        @SuppressLint("StaticFieldLeak")
         private lateinit var sApp: App
 
         fun get(): App {

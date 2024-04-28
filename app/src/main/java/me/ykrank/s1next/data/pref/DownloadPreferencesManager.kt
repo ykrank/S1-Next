@@ -11,7 +11,7 @@ import me.ykrank.s1next.data.Wifi
  */
 class DownloadPreferencesManager(private val mPreferencesProvider: DownloadPreferences, private val mWifi: Wifi) {
 
-    val totalImageCacheSize: Int
+    val totalImageCacheSize: Long
         get() = TotalDownloadCacheSize.getByte(mPreferencesProvider.totalImageCacheSizeIndex)
 
     val totalDataCacheSize: Int
@@ -59,8 +59,8 @@ class DownloadPreferencesManager(private val mPreferencesProvider: DownloadPrefe
 
         private val SIZE = intArrayOf(LOW, NORMAL, HIGH)
 
-        fun getByte(index: Int): Int {
-            return SIZE[index] * 1000 * 1000
+        fun getByte(index: Int): Long {
+            return SIZE[index] * 1000L * 1000
         }
 
         fun getMByte(index: Int): Int {

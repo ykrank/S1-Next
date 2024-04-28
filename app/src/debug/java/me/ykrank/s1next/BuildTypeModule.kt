@@ -1,46 +1,42 @@
-package me.ykrank.s1next;
+package me.ykrank.s1next
 
-import android.content.Context;
-
-import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor;
-
-import dagger.Module;
-import dagger.Provides;
-import me.ykrank.s1next.widget.net.AppData;
-import me.ykrank.s1next.widget.net.Data;
-import me.ykrank.s1next.widget.net.Image;
-import okhttp3.OkHttpClient;
+import android.content.Context
+import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
+import dagger.Module
+import dagger.Provides
+import me.ykrank.s1next.PreApp.networkFlipperPlugin
+import me.ykrank.s1next.data.NetModule
+import me.ykrank.s1next.widget.net.AppData
+import me.ykrank.s1next.widget.net.Data
+import me.ykrank.s1next.widget.net.Image
+import okhttp3.OkHttpClient
 
 /**
  * Provides instances of the objects according to build type when we need to inject.
  */
 @Module
-public final class BuildTypeModule {
-
-    public BuildTypeModule(Context context) {
-    }
-
+class BuildTypeModule(context: Context) {
     @Data
     @Provides
     @AppLife
-    OkHttpClient providerDataOkHttpClient(@Data OkHttpClient.Builder builder) {
-        builder.addInterceptor(new FlipperOkhttpInterceptor(PreApp.INSTANCE.getNetworkFlipperPlugin()));
-        return builder.build();
+    fun providerDataOkHttpClient(@Data builder: OkHttpClient.Builder): OkHttpClient {
+        builder.addInterceptor(FlipperOkhttpInterceptor(networkFlipperPlugin))
+        return builder.build()
     }
 
     @Image
     @Provides
     @AppLife
-    OkHttpClient providerImageOkHttpClient(@Image OkHttpClient.Builder builder) {
-        builder.addInterceptor(new FlipperOkhttpInterceptor(PreApp.INSTANCE.getNetworkFlipperPlugin()));
-        return builder.build();
+    fun providerImageOkHttpClient(@Image builder: OkHttpClient.Builder): OkHttpClient {
+        builder.addInterceptor(FlipperOkhttpInterceptor(networkFlipperPlugin))
+        return builder.build()
     }
 
     @AppData
     @Provides
     @AppLife
-    OkHttpClient providerAppdataOkHttpClient(@AppData OkHttpClient.Builder builder) {
-        builder.addInterceptor(new FlipperOkhttpInterceptor(PreApp.INSTANCE.getNetworkFlipperPlugin()));
-        return builder.build();
+    fun providerAppdataOkHttpClient(@AppData builder: OkHttpClient.Builder): OkHttpClient {
+        builder.addInterceptor(FlipperOkhttpInterceptor(networkFlipperPlugin))
+        return builder.build()
     }
 }
