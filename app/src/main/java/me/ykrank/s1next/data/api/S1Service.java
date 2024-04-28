@@ -48,7 +48,7 @@ public interface S1Service {
 
     @FormUrlEncoded
     @POST(ApiMember.URL_LOGIN)
-    Single<AccountResultWrapper> login(@Field("username") String username, @Field("password") String password);
+    Single<AccountResultWrapper> login(@Field("username") String username, @Field("password") String password, @Field("questionid") Integer questionId, @Field("answer") String answer);
 
     @GET(ApiForum.URL_AUTHENTICITY_TOKEN_HELPER)
     Single<AccountResultWrapper> refreshAuthenticityToken();

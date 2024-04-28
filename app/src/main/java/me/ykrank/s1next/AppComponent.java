@@ -30,13 +30,14 @@ import me.ykrank.s1next.view.adapter.delegate.ForumAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmGroupsAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmLeftAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.PmRightAdapterDelegate;
+import me.ykrank.s1next.view.page.login.BaseLoginDialogFragment;
 import me.ykrank.s1next.view.page.post.adapter.PostAdapterDelegate;
 import me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate;
-import me.ykrank.s1next.view.dialog.AppLoginDialogFragment;
+import me.ykrank.s1next.view.page.login.AppLoginDialogFragment;
 import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment;
 import me.ykrank.s1next.view.dialog.DiscardEditPromptDialogFragment;
 import me.ykrank.s1next.view.dialog.LoadBlackListFromWebDialogFragment;
-import me.ykrank.s1next.view.dialog.LoginDialogFragment;
+import me.ykrank.s1next.view.page.login.LoginDialogFragment;
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment;
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
 import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment;
@@ -143,8 +144,6 @@ public interface AppComponent {
 
     void inject(BaseFragment baseFragment);
 
-    void inject(LoginDialogFragment fragment);
-
     void inject(LogoutDialogFragment fragment);
 
     void inject(WebLoginFragment fragment);
@@ -237,7 +236,6 @@ public interface AppComponent {
     void inject(NoteFragment fragment);
 
     void inject(AppLoginDialogFragment fragment);
-
     void inject(LoginPromptDialogFragment fragment);
 
     void inject(AppPostAdapterDelegate appPostAdapterDelegate);

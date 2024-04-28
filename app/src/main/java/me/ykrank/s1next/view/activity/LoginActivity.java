@@ -6,11 +6,11 @@ import android.os.Bundle;
 import androidx.fragment.app.FragmentTransaction;
 
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.view.fragment.LoginFragment;
+import me.ykrank.s1next.view.page.login.LoginFragment;
 import me.ykrank.s1next.view.fragment.WebLoginFragment;
 import me.ykrank.s1next.view.internal.RequestCode;
 
-public final class LoginActivity extends BaseActivity implements LoginFragment.LoginFragmentCallback {
+public final class LoginActivity extends BaseActivity {
 
     public static void startLoginActivityForResultMessage(Activity activity) {
         Intent intent = new Intent(activity, LoginActivity.class);
@@ -28,7 +28,6 @@ public final class LoginActivity extends BaseActivity implements LoginFragment.L
         }
     }
 
-    @Override
     public void loginInWeb() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout, WebLoginFragment.Companion.getInstance(), WebLoginFragment.Companion.getTAG())
