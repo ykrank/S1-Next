@@ -14,7 +14,7 @@ import com.google.common.base.Optional
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.ThreadLink
 import me.ykrank.s1next.databinding.DialogThreadGoBinding
-import me.ykrank.s1next.view.page.post.PostListActivity
+import me.ykrank.s1next.view.page.post.postlist.PostListActivity
 
 /**
  * A dialog lets the user enter thread link/ID to go to that thread.

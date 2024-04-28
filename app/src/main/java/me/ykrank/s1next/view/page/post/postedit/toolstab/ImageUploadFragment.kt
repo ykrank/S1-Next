@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.fragment
+package me.ykrank.s1next.view.page.post.postedit.toolstab
 import  com.github.ykrank.androidtools.widget.imagepicker.ImagePicker;
 import android.os.Bundle
 import android.view.View

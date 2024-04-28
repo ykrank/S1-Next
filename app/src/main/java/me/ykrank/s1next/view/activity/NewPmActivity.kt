@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import me.ykrank.s1next.R
-import me.ykrank.s1next.view.fragment.NewPmFragment
+import me.ykrank.s1next.view.page.post.postedit.NewPmFragment
 
 /**
  * An Activity which used to send a reply.

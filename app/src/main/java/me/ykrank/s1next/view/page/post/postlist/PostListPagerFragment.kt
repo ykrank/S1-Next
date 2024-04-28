@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.page.post
+package me.ykrank.s1next.view.page.post.postlist
 
 import android.os.Bundle
 import android.os.SystemClock
@@ -54,7 +54,7 @@ import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateQuickSidebarImpl
 import me.ykrank.s1next.view.internal.PagerScrollState
 import me.ykrank.s1next.view.page.app.AppPostListActivity
-import me.ykrank.s1next.view.page.post.PostListPagerFragment.PagerCallback
+import me.ykrank.s1next.view.page.post.postlist.PostListPagerFragment.PagerCallback
 import java.util.*
 import javax.inject.Inject
 

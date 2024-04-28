@@ -14,7 +14,7 @@ import com.github.ykrank.androidtools.util.L;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.ykrank.s1next.view.page.post.PostListGatewayActivity;
+import me.ykrank.s1next.view.page.post.postlist.PostListGatewayActivity;
 
 /**
  * <xmp>

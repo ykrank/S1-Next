@@ -20,12 +20,13 @@ import me.ykrank.s1next.databinding.FragmentEditPostBinding
 import me.ykrank.s1next.view.adapter.SimpleSpinnerAdapter
 import me.ykrank.s1next.view.dialog.requestdialog.EditPostRequestDialogFragment
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
+import me.ykrank.s1next.view.page.post.postedit.BasePostEditFragment
 import javax.inject.Inject
 
 /**
  * A Fragment shows [EditText] to let the user enter reply.
  */
-class EditPostFragment : BasePostFragment() {
+class EditPostFragment : BasePostEditFragment() {
 
     @Inject
     internal lateinit var mS1Service: S1Service

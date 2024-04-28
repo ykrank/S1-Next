@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.fragment
+package me.ykrank.s1next.view.page.post.postedit
 
 import android.os.Bundle
 import android.text.Editable
@@ -29,13 +29,17 @@ import me.ykrank.s1next.databinding.FragmentPostBinding
 import me.ykrank.s1next.view.event.EmoticonClickEvent
 import me.ykrank.s1next.view.event.PostAddImageEvent
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
-import me.ykrank.s1next.view.page.post.PostToolsExtrasFragment
+import me.ykrank.s1next.view.fragment.BaseFragment
+import me.ykrank.s1next.view.page.post.postedit.toolstab.emoticon.EmotionFragment
+import me.ykrank.s1next.view.page.post.postedit.toolstab.ImageUploadFragment
+import me.ykrank.s1next.view.page.post.postedit.toolstab.PostToolsExtrasFragment
 import javax.inject.Inject
 
 /**
  * Created by ykrank on 2016/7/31 0031.
  */
-abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostToolsExtrasContextProvider {
+abstract class BasePostEditFragment : BaseFragment(),
+    PostToolsExtrasFragment.PostToolsExtrasContextProvider {
     protected lateinit var mFragmentPostBinding: FragmentPostBinding
     protected lateinit var mReplyView: EditText
     protected lateinit var mImePanelView: KPSwitchPanelFrameLayout
@@ -259,15 +263,15 @@ abstract class BasePostFragment : BaseFragment(), PostToolsExtrasFragment.PostTo
 
         //Add all tools fragment to childFragmentManager if first init, or it had add
         if (toolsFirstInit) {
-            childFragmentManager.beginTransaction()?.also { t ->
+            childFragmentManager.beginTransaction().also { t ->
                 toolsFragments.forEach {
                     t.add(R.id.fragment_post_tools, it.second, it.first)
                     t.hide(it.second)
                 }
-            }?.commit()
+            }.commit()
         }
 
-        KeyboardUtil.attach(activity, mImePanelView, { if (it) isToolsKeyboardShowing = false })
+        KeyboardUtil.attach(activity, mImePanelView) { if (it) isToolsKeyboardShowing = false }
         KPSwitchConflictUtil.attach(mImePanelView, mReplyView)
     }
 

@@ -1,11 +1,12 @@
-package me.ykrank.s1next.view.fragment
+package me.ykrank.s1next.view.page.post.postedit.toolstab.emoticon
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import me.ykrank.s1next.databinding.FragmentEmotionBinding
-import me.ykrank.s1next.view.adapter.EmoticonPagerAdapter
+import me.ykrank.s1next.view.fragment.BaseFragment
+import me.ykrank.s1next.view.page.post.postedit.toolstab.emoticon.adapter.EmoticonPagerAdapter
 
 class EmotionFragment : BaseFragment() {
 
@@ -30,7 +31,10 @@ class EmotionFragment : BaseFragment() {
 
     private fun setupEmoticonPager() {
         val viewPager = binding.emoticonKeyboardPager
-        viewPager.adapter = EmoticonPagerAdapter(activity)
+        viewPager.adapter =
+            EmoticonPagerAdapter(
+                activity
+            )
 
         val tabLayout = binding.emoticonKeyboardTabLayout
         tabLayout.setupWithViewPager(viewPager)

@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.adapter;
+package me.ykrank.s1next.view.page.post.postedit.toolstab.emoticon.adapter;
 
 import android.app.Activity;
 import android.content.res.Resources;
@@ -13,7 +13,6 @@ import com.github.ykrank.androidtools.widget.GridAutofitLayoutManager;
 
 import java.util.List;
 
-import me.ykrank.s1next.R;
 import me.ykrank.s1next.widget.EmoticonFactory;
 
 public final class EmoticonPagerAdapter extends PagerAdapter {

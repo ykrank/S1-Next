@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.page.post
+package me.ykrank.s1next.view.page.post.postedit.toolstab
 
 import android.os.Bundle
 import android.view.LayoutInflater

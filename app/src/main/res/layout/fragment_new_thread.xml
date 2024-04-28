@@ -2,7 +2,7 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="me.ykrank.s1next.view.fragment.NewThreadFragment">
+    tools:context="me.ykrank.s1next.view.page.post.postedit.NewThreadFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

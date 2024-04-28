@@ -14,7 +14,7 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.data.api.model.Favourite;
 import me.ykrank.s1next.data.api.model.Thread;
 import me.ykrank.s1next.view.event.FavoriteRemoveEvent;
-import me.ykrank.s1next.view.page.post.PostListActivity;
+import me.ykrank.s1next.view.page.post.postlist.PostListActivity;
 
 
 public final class FavouriteViewModel {

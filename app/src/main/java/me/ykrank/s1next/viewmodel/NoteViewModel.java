@@ -7,7 +7,7 @@ import android.view.View;
 import androidx.databinding.ObservableField;
 
 import me.ykrank.s1next.data.api.model.Note;
-import me.ykrank.s1next.view.page.post.PostListGatewayActivity;
+import me.ykrank.s1next.view.page.post.postlist.PostListGatewayActivity;
 
 
 public final class NoteViewModel {

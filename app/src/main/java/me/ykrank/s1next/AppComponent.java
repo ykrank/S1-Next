@@ -42,7 +42,7 @@ import me.ykrank.s1next.view.dialog.LogoutDialogFragment;
 import me.ykrank.s1next.view.dialog.ThemeChangeDialogFragment;
 import me.ykrank.s1next.view.dialog.VoteDialogFragment;
 import me.ykrank.s1next.view.fragment.BaseFragment;
-import me.ykrank.s1next.view.fragment.BasePostFragment;
+import me.ykrank.s1next.view.page.post.postedit.BasePostEditFragment;
 import me.ykrank.s1next.view.fragment.BaseViewPagerFragment;
 import me.ykrank.s1next.view.fragment.DarkRoomFragment;
 import me.ykrank.s1next.view.fragment.EditPostFragment;
@@ -50,14 +50,14 @@ import me.ykrank.s1next.view.fragment.FavouriteListFragment;
 import me.ykrank.s1next.view.fragment.ForumFragment;
 import me.ykrank.s1next.view.fragment.GalleryFragment;
 import me.ykrank.s1next.view.fragment.HistoryListFragment;
-import me.ykrank.s1next.view.fragment.ImageUploadFragment;
+import me.ykrank.s1next.view.page.post.postedit.toolstab.ImageUploadFragment;
 import me.ykrank.s1next.view.fragment.NewRateFragment;
 import me.ykrank.s1next.view.fragment.NewReportFragment;
-import me.ykrank.s1next.view.fragment.NewThreadFragment;
+import me.ykrank.s1next.view.page.post.postedit.NewThreadFragment;
 import me.ykrank.s1next.view.fragment.NoteFragment;
 import me.ykrank.s1next.view.fragment.PmFragment;
 import me.ykrank.s1next.view.fragment.PmGroupsFragment;
-import me.ykrank.s1next.view.fragment.ReplyFragment;
+import me.ykrank.s1next.view.page.post.postedit.ReplyFragment;
 import me.ykrank.s1next.view.fragment.ThreadListFragment;
 import me.ykrank.s1next.view.fragment.ThreadListPagerFragment;
 import me.ykrank.s1next.view.fragment.WebLoginFragment;
@@ -71,10 +71,10 @@ import me.ykrank.s1next.view.page.setting.fragment.ReadPreferenceFragment;
 import me.ykrank.s1next.view.internal.DrawerLayoutDelegateConcrete;
 import me.ykrank.s1next.view.page.app.AppPostListFragment;
 import me.ykrank.s1next.view.page.app.AppPostListPagerFragment;
-import me.ykrank.s1next.view.page.post.PostListActivity;
-import me.ykrank.s1next.view.page.post.PostListFragment;
-import me.ykrank.s1next.view.page.post.PostListGatewayActivity;
-import me.ykrank.s1next.view.page.post.PostListPagerFragment;
+import me.ykrank.s1next.view.page.post.postlist.PostListActivity;
+import me.ykrank.s1next.view.page.post.postlist.PostListFragment;
+import me.ykrank.s1next.view.page.post.postlist.PostListGatewayActivity;
+import me.ykrank.s1next.view.page.post.postlist.PostListPagerFragment;
 import me.ykrank.s1next.viewmodel.UserViewModel;
 import me.ykrank.s1next.widget.AppActivityLifecycleCallbacks;
 import me.ykrank.s1next.widget.download.ImageDownloadManager;
@@ -176,7 +176,7 @@ public interface AppComponent {
     void inject(PostListFragment postListFragment);
 
 
-    void inject(BasePostFragment fragment);
+    void inject(BasePostEditFragment fragment);
 
     void inject(BaseActivity activity);
 

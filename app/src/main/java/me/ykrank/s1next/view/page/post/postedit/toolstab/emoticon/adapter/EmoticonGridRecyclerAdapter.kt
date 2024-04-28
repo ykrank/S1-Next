@@ -1,8 +1,7 @@
-package me.ykrank.s1next.view.adapter
+package me.ykrank.s1next.view.page.post.postedit.toolstab.emoticon.adapter
 
 import android.app.Activity
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 

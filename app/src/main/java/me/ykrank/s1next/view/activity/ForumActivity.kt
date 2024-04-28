@@ -22,7 +22,7 @@ import me.ykrank.s1next.databinding.ToolbarSpinnerBinding
 import me.ykrank.s1next.view.fragment.ForumFragment
 import me.ykrank.s1next.view.internal.RequestCode
 import me.ykrank.s1next.view.internal.ToolbarDropDownInterface
-import me.ykrank.s1next.view.page.post.PostListActivity
+import me.ykrank.s1next.view.page.post.postlist.PostListActivity
 import me.ykrank.s1next.viewmodel.DropDownItemListViewModel
 import javax.inject.Inject
 

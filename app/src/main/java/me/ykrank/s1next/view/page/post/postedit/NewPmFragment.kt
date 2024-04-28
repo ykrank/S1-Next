@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.fragment
+package me.ykrank.s1next.view.page.post.postedit
 
 import android.os.Bundle
 import android.view.View
@@ -9,7 +9,7 @@ import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
 /**
  * A Fragment shows [EditText] to let the user pm.
  */
-class NewPmFragment : BasePostFragment() {
+class NewPmFragment : BasePostEditFragment() {
     override var cacheKey: String? = null
         private set
 

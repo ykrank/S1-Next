@@ -161,7 +161,6 @@ public class KeyboardUtil {
      * @param lis      the listener to listen in: keyboard is showing or not.
      * @see #saveKeyboardHeight(Context, int)
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public static ViewTreeObserver.OnGlobalLayoutListener attach(final Activity activity,
                                                                  IPanelHeightTarget target,
             /* Nullable */
@@ -174,14 +173,9 @@ public class KeyboardUtil {
         // get the screen height.
         final Display display = activity.getWindowManager().getDefaultDisplay();
         final int screenHeight;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            final Point screenSize = new Point();
-            display.getSize(screenSize);
-            screenHeight = screenSize.y;
-        } else {
-            //noinspection deprecation
-            screenHeight = display.getHeight();
-        }
+        final Point screenSize = new Point();
+        display.getSize(screenSize);
+        screenHeight = screenSize.y;
 
         ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener = new KeyboardStatusListener(
                 isFullScreen,
@@ -210,15 +204,9 @@ public class KeyboardUtil {
      * @param activity same activity used in {@link #attach} method
      * @param l        ViewTreeObserver.OnGlobalLayoutListener returned by {@link #attach} method
      */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public static void detach(Activity activity, ViewTreeObserver.OnGlobalLayoutListener l) {
         ViewGroup contentView = activity.findViewById(android.R.id.content);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            contentView.getViewTreeObserver().removeOnGlobalLayoutListener(l);
-        } else {
-            //noinspection deprecation
-            contentView.getViewTreeObserver().removeGlobalOnLayoutListener(l);
-        }
+        contentView.getViewTreeObserver().removeOnGlobalLayoutListener(l);
     }
 
     private static class KeyboardStatusListener implements ViewTreeObserver.OnGlobalLayoutListener {
@@ -251,7 +239,6 @@ public class KeyboardUtil {
             this.screenHeight = screenHeight;
         }
 
-        @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
         @Override
         public void onGlobalLayout() {
             final View userRootView = contentView.getChildAt(0);

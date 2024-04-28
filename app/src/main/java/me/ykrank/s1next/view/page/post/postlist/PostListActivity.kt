@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.page.post
+package me.ykrank.s1next.view.page.post.postlist
 
 import android.app.Activity
 import android.content.Context
@@ -54,17 +54,22 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
             val progress = intent.getParcelableExtra<ReadProgress>(ARG_READ_PROGRESS)
             val authorId = intent.getStringExtra(ARG_AUTHOR_ID)
             if (thread == null) {//通过链接打开
-                fragment = PostListFragment.newInstance(intent.getParcelableExtra(ARG_THREAD_LINK)!!)
+                fragment =
+                    PostListFragment.newInstance(intent.getParcelableExtra(ARG_THREAD_LINK)!!)
             } else if (!authorId.isNullOrEmpty()) { //指定用户
                 fragment = PostListFragment.newInstance(thread, authorId)
             } else if (progress != null) {//有进度信息
                 fragment = PostListFragment.newInstance(thread, progress)
             } else {//没有进度信息
-                fragment = PostListFragment.newInstance(thread, intent.getBooleanExtra(
-                        ARG_SHOULD_GO_TO_LAST_PAGE, false))
+                fragment = PostListFragment.newInstance(
+                    thread, intent.getBooleanExtra(
+                        ARG_SHOULD_GO_TO_LAST_PAGE, false
+                    )
+                )
             }
             supportFragmentManager.beginTransaction().add(R.id.frame_layout, fragment!!,
-                    PostListFragment.TAG).commit()
+                PostListFragment.TAG
+            ).commit()
         }
     }
 

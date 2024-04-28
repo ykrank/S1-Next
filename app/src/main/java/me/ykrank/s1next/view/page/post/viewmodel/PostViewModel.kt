@@ -20,7 +20,7 @@ import me.ykrank.s1next.view.activity.WebViewActivity
 import me.ykrank.s1next.view.event.*
 import me.ykrank.s1next.view.internal.BlacklistMenuAction
 import me.ykrank.s1next.view.page.app.AppPostListActivity
-import me.ykrank.s1next.view.page.post.PostListActivity
+import me.ykrank.s1next.view.page.post.postlist.PostListActivity
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 
 class PostViewModel(private val rxBus: RxBus, private val user: User) {

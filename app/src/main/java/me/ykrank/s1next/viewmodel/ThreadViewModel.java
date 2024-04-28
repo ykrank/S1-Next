@@ -8,7 +8,7 @@ import com.google.common.base.Supplier;
 
 import io.reactivex.functions.Consumer;
 import me.ykrank.s1next.data.api.model.Thread;
-import me.ykrank.s1next.view.page.post.PostListActivity;
+import me.ykrank.s1next.view.page.post.postlist.PostListActivity;
 
 public final class ThreadViewModel {
 

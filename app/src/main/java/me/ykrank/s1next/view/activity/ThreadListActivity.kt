@@ -27,7 +27,7 @@ import me.ykrank.s1next.view.adapter.SubForumArrayAdapter
 import me.ykrank.s1next.view.event.ThreadTypeChangeEvent
 import me.ykrank.s1next.view.fragment.ThreadListFragment
 import me.ykrank.s1next.view.fragment.ThreadListPagerFragment
-import me.ykrank.s1next.view.page.post.PostListActivity
+import me.ykrank.s1next.view.page.post.postlist.PostListActivity
 import me.ykrank.s1next.widget.track.event.RandomImageTrackEvent
 import me.ykrank.s1next.widget.track.event.ViewForumTrackEvent
 import javax.inject.Inject

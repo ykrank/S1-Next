@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.page.post
+package me.ykrank.s1next.view.page.post.postlist
 
 import android.content.Context
 import android.content.Intent

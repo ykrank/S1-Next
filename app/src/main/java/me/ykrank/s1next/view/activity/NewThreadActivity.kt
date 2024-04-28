@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import me.ykrank.s1next.R
-import me.ykrank.s1next.view.fragment.NewThreadFragment
+import me.ykrank.s1next.view.page.post.postedit.NewThreadFragment
 
 /**
  * An Activity to new a thread.

@@ -3,7 +3,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="me.ykrank.s1next.view.adapter.EmoticonGridRecyclerAdapter">
+    tools:context="me.ykrank.s1next.view.page.post.postedit.toolstab.emoticon.adapter.EmoticonGridRecyclerAdapter">
 
     <data>
 

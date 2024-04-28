@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.fragment
+package me.ykrank.s1next.view.page.post.postedit
 
 import androidx.databinding.DataBindingUtil
 import android.os.Bundle
@@ -29,7 +29,7 @@ import javax.inject.Inject
 /**
  * A Fragment shows [EditText] to let the user edit thread.
  */
-class NewThreadFragment : BasePostFragment() {
+class NewThreadFragment : BasePostEditFragment() {
     @Inject
     internal lateinit var mS1Service: S1Service
     @Inject

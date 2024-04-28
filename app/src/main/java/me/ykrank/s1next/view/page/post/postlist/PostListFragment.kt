@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.page.post
+package me.ykrank.s1next.view.page.post.postlist
 
 import android.app.Activity
 import android.content.Intent
@@ -501,7 +501,14 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                     && scrollState.state == PagerScrollState.BEFORE_SCROLL_POSITION) {
                 return PostListPagerFragment.newInstance(mThreadId, i + 1, progress, scrollState)
             } else {
-                return PostListPagerFragment.newInstance(mThreadId, i + 1, authorId, null, null, null)
+                return PostListPagerFragment.newInstance(
+                    mThreadId,
+                    i + 1,
+                    authorId,
+                    null,
+                    null,
+                    null
+                )
             }
         }
     }

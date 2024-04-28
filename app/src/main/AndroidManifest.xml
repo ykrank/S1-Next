@@ -109,7 +109,7 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".view.page.post.PostListActivity"
+            android:name=".view.page.post.postlist.PostListActivity"
             android:colorMode="wideColorGamut"
             android:configChanges="uiMode"
             android:windowSoftInputMode="adjustPan" />
@@ -121,7 +121,7 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".view.page.post.PostListGatewayActivity"
+            android:name=".view.page.post.postlist.PostListGatewayActivity"
             android:colorMode="wideColorGamut"
             android:configChanges="uiMode"
             android:exported="true"
