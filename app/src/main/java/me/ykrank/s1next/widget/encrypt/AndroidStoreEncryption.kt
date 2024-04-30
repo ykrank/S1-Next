@@ -1,4 +1,4 @@
-package me.ykrank.s1next.util
+package me.ykrank.s1next.widget.encrypt
 
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
@@ -10,10 +10,10 @@ import javax.crypto.KeyGenerator
 import javax.crypto.spec.GCMParameterSpec
 
 
-class AndroidStoreEncryption(private val keyAlias: String) {
+class AndroidStoreEncryption(private val keyAlias: String) : Encryption {
 
     @Throws(Exception::class)
-    fun encryptText(text: String): String {
+    override fun encryptText(text: String): String {
         val keyStore = KeyStore.getInstance(ANDROID_KEYSTORE)
         keyStore.load(null)
         if (!keyStore.containsAlias(keyAlias)) {
@@ -52,7 +52,7 @@ class AndroidStoreEncryption(private val keyAlias: String) {
     }
 
     @Throws(Exception::class)
-    fun decryptText(encryptedText: String): String {
+    override fun decryptText(encryptedText: String): String {
         val keyStore = KeyStore.getInstance(ANDROID_KEYSTORE)
         keyStore.load(null)
         val key = keyStore.getKey(keyAlias, null)

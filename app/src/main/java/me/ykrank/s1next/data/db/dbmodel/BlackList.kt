@@ -123,12 +123,12 @@ class BlackList : Parcelable {
         if (bList.authorId > 0) {
             authorId = bList.authorId
         }
-        if (!TextUtils.isEmpty(bList.author)) {
+        if (!bList.author.isNullOrEmpty()) {
             author = bList.author
         }
         post = bList.post
         forum = bList.forum
-        if (!TextUtils.isEmpty(bList.remark)) {
+        if (!bList.remark.isNullOrEmpty()) {
             remark = bList.remark
         }
         timestamp = bList.timestamp

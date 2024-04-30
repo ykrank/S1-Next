@@ -13,6 +13,7 @@ import me.ykrank.s1next.data.db.DbModule
 import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.biz.BlackWordBiz
 import me.ykrank.s1next.data.db.biz.HistoryBiz
+import me.ykrank.s1next.data.db.biz.LoginUserBiz
 import me.ykrank.s1next.data.db.biz.ReadProgressBiz
 import me.ykrank.s1next.data.db.biz.ThreadBiz
 import me.ykrank.s1next.task.AutoSignTask
@@ -122,6 +123,7 @@ interface AppComponent {
     val readProgressBiz: ReadProgressBiz
     val threadBiz: ThreadBiz
     val historyBiz: HistoryBiz
+    val loginUserBiz: LoginUserBiz
 
     //endregion
     fun inject(baseFragment: BaseFragment)

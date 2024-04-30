@@ -38,12 +38,17 @@ abstract class BaseLoginDialogFragment<T> : ProgressDialogFragment<T>() {
     override fun onNext(data: T) {
         val result = parseData(data)
         if (result.isSuccess) {
-            showShortTextAndFinishCurrentActivity(result.message)
-            mRxBus?.post(AppLoginEvent())
+            onSuccess(data, result)
         } else {
             showToastText(result.message)
         }
     }
+
+    open fun onSuccess(data: T, result: Result) {
+        showShortTextAndFinishCurrentActivity(result.message)
+        mRxBus?.post(AppLoginEvent())
+    }
+
 
     abstract fun parseData(data: T): Result
 

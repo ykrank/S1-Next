@@ -12,7 +12,7 @@ class LoginFragment : BaseLoginFragment() {
         answer: String?
     ) {
         LoginDialogFragment.newInstance(username, password, questionId, answer).show(
-            fragmentManager!!,
+            parentFragmentManager,
             AppLoginDialogFragment.TAG
         )
     }
