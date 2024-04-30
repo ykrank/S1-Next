@@ -63,6 +63,12 @@ class LoginUserBiz(private val manager: AppDatabaseManager, private val encrypti
         }
     }
 
+    fun getUserByUid(uid: Int): RealLoginUser? {
+        return loginUserDao.getByUid(uid)?.let {
+            decryptUser(it)
+        }
+    }
+
     fun saveUser(loginUser: RealLoginUser) {
         val encryptLoginUser = encryptUser(loginUser)
         val oldUser = loginUserDao.getByUid(loginUser.uid)

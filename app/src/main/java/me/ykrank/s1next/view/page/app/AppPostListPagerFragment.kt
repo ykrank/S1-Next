@@ -34,6 +34,7 @@ import me.ykrank.s1next.data.api.app.model.AppDataWrapper
 import me.ykrank.s1next.data.api.app.model.AppPost
 import me.ykrank.s1next.data.api.app.model.AppPostsWrapper
 import me.ykrank.s1next.data.api.app.model.AppThread
+import me.ykrank.s1next.data.db.biz.LoginUserBiz
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.databinding.FragmentBaseWithQuickSideBarBinding
 import me.ykrank.s1next.util.JsonUtil
@@ -42,6 +43,7 @@ import me.ykrank.s1next.view.event.*
 import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateQuickSidebarImpl
 import me.ykrank.s1next.view.page.app.AppPostListPagerFragment.PagerCallback
+import me.ykrank.s1next.view.page.login.AppLoginDialogFragment
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -67,6 +69,9 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
     @Inject
     internal lateinit var appService: AppService
 
+    @Inject
+    internal lateinit var loginUserBiz: LoginUserBiz
+
     private var mThreadId: String? = null
     private var mPageNum: Int = 0
     private var mQuotePid: String? = null
@@ -89,16 +94,16 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
         App.appComponent.inject(this)
         super.onViewCreated(view, savedInstanceState)
 
-        val bundle = arguments!!
+        val bundle = requireArguments()
         mThreadId = bundle.getString(ARG_THREAD_ID)
         mPageNum = bundle.getInt(ARG_PAGE_NUM)
         mQuotePid = bundle.getString(ARG_QUOTE_POST_ID)
         leavePageMsg("AppPostListPagerFragment##ThreadId:$mThreadId,PageNum:$mPageNum")
 
         mRecyclerView = recyclerView
-        mLayoutManager = StartSnapLinearLayoutManager(activity!!)
+        mLayoutManager = StartSnapLinearLayoutManager(requireActivity())
         mRecyclerView.layoutManager = mLayoutManager
-        mRecyclerAdapter = AppPostListRecyclerViewAdapter(activity!!, mQuotePid)
+        mRecyclerAdapter = AppPostListRecyclerViewAdapter(requireActivity(), mQuotePid)
         mRecyclerView.adapter = mRecyclerAdapter
 
         quickSideBarView.setOnQuickSideBarTouchListener(this)
@@ -268,6 +273,8 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
     override fun onError(throwable: Throwable) {
         //TODO 2018-08-23 If log session invalid, log out and show log in dialog.
         if (AppApiUtil.appLoginIfNeed(mRxBus, throwable)) {
+            // 自动登录
+            autoLogin()
             return
         }
 
@@ -285,6 +292,30 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
         }
 
         super.onError(throwable)
+    }
+
+    private fun autoLogin() {
+        Single.fromCallable {
+            loginUserBiz.getUserByUid(mUser.uid?.toIntOrNull() ?: 0)
+        }.compose(RxJavaUtil.iOSingleTransformer())
+            .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
+            .subscribe({
+                if (it != null) {
+                    val name = it.name
+                    val password = it.password
+                    if (name != null && password != null) {
+                        AppLoginDialogFragment.newInstance(
+                            name,
+                            password,
+                            it.questionId?.toIntOrNull(),
+                            it.answer
+                        ).show(
+                            parentFragmentManager,
+                            AppLoginDialogFragment.TAG
+                        )
+                    }
+                }
+            }, { L.e(it) })
     }
 
     internal fun invalidateQuickSidebarVisible(): Boolean {
