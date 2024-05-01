@@ -1,5 +1,6 @@
 package me.ykrank.s1next.view.page.login
 
+import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
@@ -11,17 +12,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import com.github.ykrank.androidtools.util.ViewUtil
+import me.ykrank.s1next.App.Companion.appComponent
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
+import me.ykrank.s1next.data.db.biz.LoginUserBiz
 import me.ykrank.s1next.databinding.FragmentAppLoginBinding
 import me.ykrank.s1next.util.IntentUtil
 import me.ykrank.s1next.view.fragment.BaseFragment
+import javax.inject.Inject
 
 /**
  * A Fragment offers login via username and password.
  */
 abstract class BaseLoginFragment : BaseFragment() {
+
+    @Inject
+    lateinit var mLoginUserBiz: LoginUserBiz
+
     private var mUsernameView: EditText? = null
     private var mPasswordView: EditText? = null
     private var mLoginButton: Button? = null
@@ -31,11 +40,14 @@ abstract class BaseLoginFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        appComponent.inject(this)
         val binding = FragmentAppLoginBinding.inflate(inflater, container, false)
         this.binding = binding
         mUsernameView = binding.username
         mPasswordView = binding.password
         mLoginButton = binding.login
+
+        initView()
         return binding.root
     }
 
@@ -64,6 +76,36 @@ abstract class BaseLoginFragment : BaseFragment() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun initView() {
+        val usersView = binding?.users ?: return
+        // TODO 使用协程切到异步线程
+        val users = mLoginUserBiz.getDecryptUserList()
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle(R.string.choose_user)
+            .setSingleChoiceItems(
+                users.mapNotNull { it.name }.toTypedArray(),
+                -1,
+            ) { dialog: DialogInterface?, which: Int ->
+                val user = users[which]
+                if (user.invalid) {
+                    showShortText(R.string.choose_user_invalid)
+                } else {
+                    dialog?.dismiss()
+
+                    binding?.apply {
+                        username.setText(user.name)
+                        password.setText(user.password)
+                        questionSpinner.setSelection(user.questionId?.toIntOrNull() ?: 0)
+                        answer.setText(user.answer)
+                    }
+                }
+            }
+            .create()
+        usersView.setOnClickListener {
+            dialog.show()
+        }
     }
 
     private fun prepareLogin() {

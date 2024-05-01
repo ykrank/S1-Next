@@ -432,4 +432,6 @@
     <string name="credit_permission">積分權限</string>
     <string name="pref_thread_padding">主貼間距</string>
     <string name="format_error">格式錯誤</string>
+    <string name="choose_user">選擇用戶</string>
+    <string name="choose_user_invalid">用戶無效，請選擇其他用戶</string>
 </resources>

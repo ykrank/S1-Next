@@ -26,6 +26,7 @@ import me.ykrank.s1next.data.db.dbmodel.ReadProgress
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 7, to = 8),
+        AutoMigration(from = 8, to = 9),
     ],
 )
 abstract class AppDatabase : RoomDatabase() {

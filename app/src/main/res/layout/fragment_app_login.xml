@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.ykrank.s1next.view.page.login.LoginFragment">
 
@@ -14,21 +15,37 @@
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_padding"
-        android:paddingEnd="@dimen/activity_horizontal_padding"
-        android:paddingLeft="@dimen/activity_horizontal_padding"
-        android:paddingRight="@dimen/activity_horizontal_padding"
         android:paddingStart="@dimen/activity_horizontal_padding"
-        android:paddingTop="@dimen/activity_vertical_padding">
+        android:paddingLeft="@dimen/activity_horizontal_padding"
+        android:paddingTop="@dimen/activity_vertical_padding"
+        android:paddingEnd="@dimen/activity_horizontal_padding"
+        android:paddingRight="@dimen/activity_horizontal_padding"
+        android:paddingBottom="@dimen/activity_vertical_padding">
 
-        <EditText
-            android:id="@+id/username"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/prompt_username"
-            android:inputType="text"
-            android:lines="1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/prompt_username"
+                android:inputType="text"
+                android:lines="1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+            <ImageView
+                android:id="@+id/users"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/item_padding_micro"
+                android:src="@drawable/baseline_assignment_ind_24"
+                app:tint="?attr/iconTintColor" />
+        </LinearLayout>
+
 
         <EditText
             android:id="@+id/password"

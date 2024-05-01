@@ -60,6 +60,8 @@
     <string name="activity_label_login" translatable="false">@string/action_login</string>
     <string name="prompt_username">Username/UID/Email</string>
     <string name="prompt_password">Password</string>
+    <string name="choose_user">Choose User</string>
+    <string name="choose_user_invalid">User is invalid, please choose other user</string>
 
     <string name="error_field_required">Can\'t leave this empty</string>
 

@@ -32,4 +32,9 @@ class RealLoginUser {
     var answer: String? = null
     var loginTime: Long = 0
     var timestamp: Long = 0
+
+    val invalid: Boolean
+        get() {
+            return password.isNullOrEmpty()
+        }
 }

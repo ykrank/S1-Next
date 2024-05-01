@@ -59,6 +59,7 @@ import me.ykrank.s1next.view.internal.DrawerLayoutDelegateConcrete
 import me.ykrank.s1next.view.page.app.AppPostListFragment
 import me.ykrank.s1next.view.page.app.AppPostListPagerFragment
 import me.ykrank.s1next.view.page.login.AppLoginDialogFragment
+import me.ykrank.s1next.view.page.login.BaseLoginFragment
 import me.ykrank.s1next.view.page.post.adapter.PostAdapterDelegate
 import me.ykrank.s1next.view.page.post.adapter.PostBlackAdapterDelegate
 import me.ykrank.s1next.view.page.post.postedit.BasePostEditFragment
@@ -188,4 +189,5 @@ interface AppComponent {
     fun inject(fragment: ThreadListFragment)
     fun inject(multiThreadHttpStreamFetcher: MultiThreadHttpStreamFetcher)
     fun inject(fragment: AppPostListFragment)
+    fun inject(fragment: BaseLoginFragment)
 }

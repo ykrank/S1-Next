@@ -112,7 +112,7 @@
 
         <item name="iconClose">@drawable/ic_close_black_24dp</item>
         <item name="iconAdd">@drawable/ic_add_black_24dp</item>
-        <item name="iconTintColor">@color/black_100p</item>
+        <item name="iconTintColor">@color/black_80p</item>
         <item name="iconTintColorLight">@color/black_30p</item>
 
         <item name="iconMenuPageJump">@drawable/selector_menu_swap_horiz_black</item>
@@ -138,8 +138,6 @@
         <item name="fabBackgroundTint">?attr/colorPrimary</item>
         <item name="iconClose">@drawable/ic_close_white_24dp</item>
         <item name="iconAdd">@drawable/ic_add_white_24dp</item>
-        <item name="iconTintColor">@color/white_100p</item>
-        <item name="iconTintColorLight">@color/grey_400</item>
         <item name="iconMenuPageJump">@drawable/selector_menu_swap_horiz_white</item>
         <item name="android:actionBarStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
     </style>
@@ -165,7 +163,7 @@
         <item name="iconClose">@drawable/ic_close_white_24dp</item>
         <item name="iconAdd">@drawable/ic_add_white_24dp</item>
         <item name="iconMenuPageJump">@drawable/selector_menu_swap_horiz_white</item>
-        <item name="iconTintColor">@color/white_100p</item>
+        <item name="iconTintColor">@color/white_80p</item>
         <item name="iconTintColorLight">@color/grey_400</item>
 
         <item name="divisionBackground">@color/grey_600</item>

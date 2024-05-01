@@ -241,4 +241,6 @@
     <string name="credit_permission">积分权限</string>
     <string name="pref_thread_padding">主帖间距</string>
     <string name="format_error">格式错误</string>
+    <string name="choose_user">选择用户</string>
+    <string name="choose_user_invalid">用户无效，请选择其他用户</string>
 </resources>
