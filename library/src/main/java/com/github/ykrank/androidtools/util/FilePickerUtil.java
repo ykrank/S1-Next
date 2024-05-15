@@ -20,12 +20,16 @@ import java.util.List;
  */
 public class FilePickerUtil {
 
+    public static File getDownloadDir(){
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+    }
+
     public static Intent dirPickIntent(Context context) {
         Intent i = new Intent(context, FilePickerActivity.class);
         i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, true);
+        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
         i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_DIR);
-        i.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath());
+        i.putExtra(FilePickerActivity.EXTRA_START_PATH, getDownloadDir().getPath());
 
         return i;
     }
@@ -35,7 +39,7 @@ public class FilePickerUtil {
         i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
         i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
         i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
-        i.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath());
+        i.putExtra(FilePickerActivity.EXTRA_START_PATH, getDownloadDir().getPath());
         return i;
     }
 

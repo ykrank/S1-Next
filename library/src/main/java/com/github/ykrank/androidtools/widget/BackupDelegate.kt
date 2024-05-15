@@ -9,7 +9,12 @@ import androidx.annotation.StringRes
 import androidx.annotation.WorkerThread
 import com.github.ykrank.androidtools.R
 import com.github.ykrank.androidtools.extension.toast
-import com.github.ykrank.androidtools.util.*
+import com.github.ykrank.androidtools.util.FilePickerUtil
+import com.github.ykrank.androidtools.util.FileUtil
+import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.LooperUtil
+import com.github.ykrank.androidtools.util.RxJavaUtil
+import com.github.ykrank.androidtools.util.SQLiteUtil
 import java.io.File
 import java.io.IOException
 
@@ -76,20 +81,21 @@ class BackupDelegate(private val mContext: Context, private val backupFileName: 
     private fun doBackup(destDir: File): Int {
         LooperUtil.enforceOnWorkThread()
         try {
-            var dirPath = destDir.path
-            if (destDir.isDirectory) {
-                if (!dirPath.endsWith("/")) {
-                    dirPath += "/"
-                }
-                val dbFile = mContext.getDatabasePath(dbName)
-                val destFile = File(dirPath + backupFileName)
-                if (!destFile.exists()) {
-                    destFile.createNewFile()
-                }
-                FileUtil.copyFile(dbFile, destFile)
-                return SUCCESS
-            } else
-                return IO_EXCEPTION
+            val dbFile = mContext.getDatabasePath(dbName)
+            if (!dbFile.exists()) {
+                return NO_DATA
+            }
+
+            val downloadDir = FilePickerUtil.getDownloadDir()
+            if (!downloadDir.exists()) {
+                downloadDir.mkdirs()
+            }
+            val destFile = File(downloadDir, backupFileName)
+            if (!destFile.exists()) {
+                destFile.createNewFile()
+            }
+            FileUtil.copyFile(dbFile, destFile)
+            return SUCCESS
         } catch (e: IOException) {
             L.e("BackupError:", e)
             return if (e.message?.contains("Permission denied") == true) {
