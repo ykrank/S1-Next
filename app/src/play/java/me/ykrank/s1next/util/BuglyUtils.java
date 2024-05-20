@@ -23,7 +23,7 @@ public class BuglyUtils {
         final Context appContext = context.getApplicationContext();
         RxJavaUtil.workInRxIoThread(() -> {
             CrashReport.UserStrategy userStrategy = new CrashReport.UserStrategy(appContext);
-            userStrategy.setAppVersion(BuildConfig.VERSION_NAME + "-" + BuildConfig.VERSION_CODE);
+            userStrategy.setAppVersion(AppDeviceUtil.getAppFullVersionName());
             CrashReport.initCrashReport(appContext, ErrorUtil.BUGLY_APP_ID, BuildConfig.DEBUG, userStrategy);
             CrashReport.setIsDevelopmentDevice(appContext, BuildConfig.DEBUG);
         });

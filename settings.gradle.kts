@@ -26,7 +26,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "My Application"
+rootProject.name = "S1-Next"
 include(":app")
 include(":library")
 include(":JKeyboardPanelSwitch")

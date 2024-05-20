@@ -29,7 +29,7 @@ class ReplyFragment : BasePostEditFragment() {
     override fun onMenuSendClick(): Boolean {
         val stringBuilder = StringBuilder(mReplyView.text)
         if (mGeneralPreferencesManager.isSignatureEnabled) {
-            stringBuilder.append("\n\n").append(AppDeviceUtil.getPostSignature(context))
+            stringBuilder.append("\n\n").append(AppDeviceUtil.getPostSignature(requireContext()))
         }
 
         ReplyRequestDialogFragment.newInstance(mThreadId, mQuotePostId,
