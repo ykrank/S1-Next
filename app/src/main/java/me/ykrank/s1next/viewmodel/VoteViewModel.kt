@@ -42,8 +42,11 @@ class VoteViewModel(private val vote: Vote, private val action: VoteVmAction?) {
     val isMultiple: Boolean
         get() = vote.isMultiple
 
-    fun clickViewAllVoter(appVote: AppVote): View.OnClickListener {
+    fun clickViewAllVoter(appVote: AppVote?): View.OnClickListener {
         return View.OnClickListener { v: View ->
+            if (appVote == null) {
+                return@OnClickListener
+            }
             start(
                 v.context,
                 Api.URL_VIEW_VOTE + "&tid=" + appVote.tid,
