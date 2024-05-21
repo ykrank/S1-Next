@@ -148,13 +148,11 @@ class AvatarUrlsCache {
             val avatarUrlsCache = appComponent.avatarUrlsCache
 
             //clear avatar img error cache
-            val smallAvatarUrl = Api.getAvatarSmallUrl(uid)
-            val mediumAvatarUrl = Api.getAvatarMediumUrl(uid)
-            val bigAvatarUrl = Api.getAvatarBigUrl(uid)
+            val avatarUrls = Api.getAvatarUrls(uid, includeBig = true, includeMid = true)
             val manager = preAppComponent.downloadPreferencesManager
-            avatarUrlsCache.remove(OriginalKey.obtainAvatarKey(manager, smallAvatarUrl))
-            avatarUrlsCache.remove(OriginalKey.obtainAvatarKey(manager, mediumAvatarUrl))
-            avatarUrlsCache.remove(OriginalKey.obtainAvatarKey(manager, bigAvatarUrl))
+            avatarUrls?.forEach {
+                avatarUrlsCache.remove(OriginalKey.obtainAvatarKey(manager, it))
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 package me.ykrank.s1next.binding
 
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.text.TextUtils
@@ -20,7 +19,6 @@ import com.bumptech.glide.request.target.Target
 import com.github.ykrank.androidtools.R
 import com.github.ykrank.androidtools.util.ContextUtils
 import com.github.ykrank.androidtools.util.L
-import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.glide.model.ImageInfo
 import me.ykrank.s1next.App.Companion.preAppComponent
 import me.ykrank.s1next.data.User
@@ -29,7 +27,6 @@ import me.ykrank.s1next.data.api.model.Emoticon
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 import me.ykrank.s1next.widget.glide.model.AvatarUrl
-import java.util.LinkedList
 
 object ImageViewBindingAdapter {
     @JvmStatic
@@ -223,23 +220,14 @@ object ImageViewBindingAdapter {
         imageView: ImageView, downloadPreferencesManager: DownloadPreferencesManager,
         uid: String?, isBig: Boolean, preLoad: Boolean, thumbUrl: String?
     ) {
-        val smallAvatarUrl = Api.getAvatarSmallUrl(uid)
-        val mediumAvatarUrl = Api.getAvatarMediumUrl(uid)
-        val urls: MutableList<String?> = LinkedList()
-        if (isBig) {
-            //Load big avatar, then load medium and small avatar if failed
-            val bigAvatarUrl = Api.getAvatarBigUrl(uid)
-            urls.add(bigAvatarUrl)
-            urls.add(mediumAvatarUrl)
-        } else if (downloadPreferencesManager.isHighResolutionAvatarsDownload) {
-            //if load high resolution, then load medium avatar a high priority
-            urls.add(mediumAvatarUrl)
-        }
-        urls.add(smallAvatarUrl)
+        val urls = Api.getAvatarUrls(
+            uid,
+            includeBig = isBig,
+            includeMid = downloadPreferencesManager.isHighResolutionAvatarsDownload
+        )
         if (preLoad) {
             if (isBig) { //show thumb
-                val thumbUrls: MutableList<String?> = ArrayList()
-                thumbUrls.add(thumbUrl)
+                val thumbUrls: MutableList<String?> = mutableListOf(thumbUrl)
                 loadRoundAvatar(imageView, downloadPreferencesManager, thumbUrls, null, true)
             }
             preloadRoundAvatar(imageView, downloadPreferencesManager, urls)
@@ -250,13 +238,17 @@ object ImageViewBindingAdapter {
 
     private fun preloadRoundAvatar(
         imageView: ImageView, downloadPreferencesManager: DownloadPreferencesManager,
-        urls: MutableList<String?>?
+        urls: List<String>?
     ) {
-        if (urls.isNullOrEmpty() || TextUtils.isEmpty(urls[0])) {
+        if (urls.isNullOrEmpty()) {
+            return
+        }
+        val firstUrl = urls[0]
+        if (firstUrl.isEmpty()) {
             return
         }
         val listener = Glide.with(imageView)
-            .load(AvatarUrl(urls[0]))
+            .load(AvatarUrl(firstUrl))
             .apply(
                 RequestOptions()
                     .circleCrop()
@@ -272,16 +264,11 @@ object ImageViewBindingAdapter {
                     target: Target<Drawable?>,
                     isFirstResource: Boolean
                 ): Boolean {
-                    if (urls.size == 0) {
-                        return false
-                    }
-
-                    urls.removeAt(0)
                     imageView.post {
                         preloadRoundAvatar(
                             imageView,
                             downloadPreferencesManager,
-                            urls
+                            urls.drop(1)
                         )
                     }
                     return true
@@ -302,9 +289,14 @@ object ImageViewBindingAdapter {
 
     private fun loadRoundAvatar(
         imageView: ImageView, downloadPreferencesManager: DownloadPreferencesManager,
-        urls: MutableList<String?>?, thumbUrl: String?, fade: Boolean
+        urls: List<String?>?, thumbUrl: String?, fade: Boolean
     ) {
-        if (urls.isNullOrEmpty() || TextUtils.isEmpty(urls[0])) {
+        if (urls.isNullOrEmpty()) {
+            loadPlaceHolderAvatar(imageView)
+            return
+        }
+        val firstUrl = urls[0]
+        if (firstUrl.isNullOrEmpty()) {
             loadPlaceHolderAvatar(imageView)
             return
         }
@@ -325,16 +317,11 @@ object ImageViewBindingAdapter {
                     target: Target<Drawable>,
                     isFirstResource: Boolean
                 ): Boolean {
-                    if (urls.size == 0) {
-                        return false
-                    }
-
-                    urls.removeAt(0)
                     imageView.post {
                         loadRoundAvatar(
                             imageView,
                             downloadPreferencesManager,
-                            urls,
+                            urls.drop(1),
                             thumbUrl,
                             fade
                         )

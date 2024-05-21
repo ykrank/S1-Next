@@ -1,79 +1,63 @@
-package me.ykrank.s1next.viewmodel;
+package me.ykrank.s1next.viewmodel
 
+import android.view.View
+import androidx.databinding.ObservableField
+import me.ykrank.s1next.data.api.Api
+import me.ykrank.s1next.data.api.app.model.AppVote
+import me.ykrank.s1next.data.api.model.Vote
+import me.ykrank.s1next.view.activity.WebViewActivity.Companion.start
 
-import androidx.databinding.ObservableField;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import android.view.View;
-
-import me.ykrank.s1next.data.api.Api;
-import me.ykrank.s1next.data.api.app.model.AppVote;
-import me.ykrank.s1next.data.api.model.Vote;
-import me.ykrank.s1next.view.activity.WebViewActivity;
-
-public final class VoteViewModel {
-    @NonNull
-    private final Vote vote;
-    @Nullable
-    private final VoteVmAction action;
-    public final ObservableField<AppVote> appVote = new ObservableField<>();
-
-    public VoteViewModel(@NonNull Vote vote, @Nullable VoteVmAction action) {
-        this.vote = vote;
-        this.action = action;
-    }
-
-    public String getVoteSummary(AppVote appVote) {
+class VoteViewModel(private val vote: Vote, private val action: VoteVmAction?) {
+    @JvmField
+    val appVote = ObservableField<AppVote>()
+    fun getVoteSummary(appVote: AppVote?): String {
         if (appVote == null) {
-            return "加载数据中...";
+            return "加载数据中..."
         }
-        StringBuilder builder = new StringBuilder();
-        if (appVote.isMultiple()) {
-            builder.append("多选投票: ( 最多可选 ").append(appVote.getMaxChoices()).append(" 项 ) , ");
+        val builder = StringBuilder()
+        if (appVote.isMultiple) {
+            builder.append("多选投票: ( 最多可选 ").append(appVote.maxChoices).append(" 项 ) , ")
         } else {
-            builder.append("单选投票, ");
+            builder.append("单选投票, ")
         }
-        if (!appVote.isVisible()) {
-            builder.append("投票后结果可见, ");
+        if (!appVote.isVisible) {
+            builder.append("投票后结果可见, ")
         }
-        if (appVote.isOvert()) {
-            builder.append("公开投票, ");
+        if (appVote.isOvert) {
+            builder.append("公开投票, ")
         }
-        builder.append(" 共有 ").append(appVote.getVoters()).append(" 人参与投票。");
-        if (appVote.isVoted()) {
-            builder.append(" 你已投票。");
+        builder.append(" 共有 ").append(appVote.voters).append(" 人参与投票。")
+        if (appVote.isVoted) {
+            builder.append(" 你已投票。")
         }
-
-        return builder.toString();
+        return builder.toString()
     }
 
-    public boolean isVoteable(AppVote appVote) {
-        return appVote != null && vote.isAllow() && !appVote.isVoted();
+    fun isVoteable(appVote: AppVote?): Boolean {
+        return appVote != null && vote.isAllow && !appVote.isVoted
     }
 
-    public boolean isVoteable() {
-        return isVoteable(appVote.get());
+    val isVoteable: Boolean
+        get() = isVoteable(appVote.get())
+    val isMultiple: Boolean
+        get() = vote.isMultiple
+
+    fun clickViewAllVoter(appVote: AppVote): View.OnClickListener {
+        return View.OnClickListener { v: View ->
+            start(
+                v.context,
+                Api.URL_VIEW_VOTE + "&tid=" + appVote.tid,
+                true,
+                true
+            )
+        }
     }
 
-    public boolean isMultiple() {
-        return vote.isMultiple();
+    fun clickVote(): View.OnClickListener {
+        return View.OnClickListener { v: View? -> action?.onClickVote(v) }
     }
 
-    public View.OnClickListener clickViewAllVoter(AppVote appVote) {
-        return v -> {
-            WebViewActivity.Companion.start(v.getContext(), Api.URL_VIEW_VOTE + "&tid=" + appVote.getTid(), true, true);
-        };
-    }
-
-    public View.OnClickListener clickVote() {
-        return v -> {
-            if (action != null){
-                action.onClickVote(v);
-            }
-        };
-    }
-
-    public interface VoteVmAction {
-        void onClickVote(View view);
+    interface VoteVmAction {
+        fun onClickVote(view: View?)
     }
 }
