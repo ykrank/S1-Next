@@ -44,6 +44,17 @@ public class GlideEngine implements ImageEngine {
                 .into(imageView);
     }
 
+    @Override
+    public void loadImage(Context context, ImageView imageView, String url, int maxWidth, int maxHeight) {
+        if (!ActivityCompatHelper.assertValidRequest(context)) {
+            return;
+        }
+        Glide.with(context)
+                .load(url)
+                .override(maxWidth, maxHeight)
+                .into(imageView);
+    }
+
     /**
      * 加载指定url并返回bitmap
      *
@@ -53,7 +64,6 @@ public class GlideEngine implements ImageEngine {
      * @param maxHeight 资源最大加载尺寸
      * @param call      回调接口
      */
-    @Override
     public void loadImageBitmap(@NonNull Context context, @NonNull String url, int maxWidth, int maxHeight, OnCallbackListener<Bitmap> call) {
         if (!ActivityCompatHelper.assertValidRequest(context)) {
             return;
