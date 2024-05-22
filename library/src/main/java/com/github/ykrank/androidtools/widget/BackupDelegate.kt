@@ -1,84 +1,97 @@
 package com.github.ykrank.androidtools.widget
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Fragment
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.provider.DocumentsContract
 import androidx.annotation.IntDef
 import androidx.annotation.StringRes
 import androidx.annotation.WorkerThread
+import androidx.documentfile.provider.DocumentFile
 import com.github.ykrank.androidtools.R
 import com.github.ykrank.androidtools.extension.toast
-import com.github.ykrank.androidtools.util.FilePickerUtil
-import com.github.ykrank.androidtools.util.FileUtil
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.LooperUtil
 import com.github.ykrank.androidtools.util.RxJavaUtil
-import com.github.ykrank.androidtools.util.SQLiteUtil
 import java.io.File
 import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 
 
 /**
  * Created by AdminYkrank on 2016/4/21.
  * 设置数据库进行备份的代理
  */
-class BackupDelegate(private val mContext: Context, private val backupFileName: String, private val dbName: String,
-                     private val afterBackup: AfterBackup = DefaultAfterBackup(mContext),
-                     private val afterRestore: AfterRestore = DefaultAfterRestore(mContext)) {
+class BackupDelegate(
+    private val mContext: Context,
+    private val backupFileName: String,
+    private val dbName: String,
+    private val afterBackup: AfterBackup = DefaultAfterBackup(mContext),
+    private val afterRestore: AfterRestore = DefaultAfterRestore(mContext)
+) {
 
     fun backup(fragment: Fragment) {
-        val intent = FilePickerUtil.dirPickIntent(mContext)
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
         fragment.startActivityForResult(intent, BACKUP_FILE_CODE)
     }
 
     fun restore(fragment: Fragment) {
-        val intent = FilePickerUtil.filePickIntent(mContext)
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "*/*"
+        }
         fragment.startActivityForResult(intent, RESTORE_FILE_CODE)
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
-        if (data == null){
+        if (data == null) {
             return false
         }
         if (requestCode == BACKUP_FILE_CODE) {
-            FilePickerUtil.onFilePickResult(resultCode, data, object : FilePickerUtil.OnFilePickCallback {
-                override fun success(file: File) {
-                    RxJavaUtil.workWithUiResult({ doBackup(file) }, afterBackup::accept, this::error)
+            if (resultCode == Activity.RESULT_OK) {
+                val folder = data.data ?: return false
+
+                val contentResolver = mContext.contentResolver
+                val takeFlags: Int =
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                contentResolver.takePersistableUriPermission(folder, takeFlags)
+
+                val uri = if (DocumentFile.fromTreeUri(mContext, folder)
+                        ?.findFile(backupFileName) != null
+                ) {
+                    DocumentFile.fromTreeUri(mContext, folder)?.findFile(backupFileName)?.uri
+                        ?: return false
+                } else {
+                    DocumentFile.fromTreeUri(mContext, folder)
+                        ?.createFile("application/octet-stream", backupFileName)?.uri
+                        ?: return false
                 }
 
-                override fun cancel() {
-                    afterBackup.accept(CANCELED)
-                }
-
-                override fun error(e: Throwable) {
-                    L.e("BackupSetting:", e)
-                }
-            })
-            return true
+                RxJavaUtil.workWithUiResult({ doBackup(uri) }, afterBackup::accept, this::error)
+                return true
+            }
         } else if (requestCode == RESTORE_FILE_CODE) {
-            FilePickerUtil.onFilePickResult(resultCode, data, object : FilePickerUtil.OnFilePickCallback {
-                override fun success(file: File) {
-                    RxJavaUtil.workWithUiResult({ doRestore(file) }, afterRestore::accept, this::error)
-                }
-
-                override fun cancel() {
-                    afterRestore.accept(CANCELED)
-                }
-
-                override fun error(e: Throwable) {
-                    L.e("RestoreSetting:", e)
-                }
-            })
-            return true
-        } else {
-            return false
+            if (resultCode == Activity.RESULT_OK) {
+                val uri = data.data ?: return false
+                RxJavaUtil.workWithUiResult({ doRestore(uri) }, afterRestore::accept, this::error)
+                return true
+            }
         }
+        return false
+    }
+
+    private fun error(throwable: Throwable?) {
+        L.e(throwable)
+        afterBackup.accept(UNKNOWN_EXCEPTION)
     }
 
     @WorkerThread
     @BackupResult
-    private fun doBackup(destDir: File): Int {
+    private fun doBackup(destUri: Uri): Int {
         LooperUtil.enforceOnWorkThread()
         try {
             val dbFile = mContext.getDatabasePath(dbName)
@@ -86,54 +99,49 @@ class BackupDelegate(private val mContext: Context, private val backupFileName: 
                 return NO_DATA
             }
 
-            val downloadDir = FilePickerUtil.getDownloadDir()
-            if (!downloadDir.exists()) {
-                downloadDir.mkdirs()
-            }
-            val destFile = File(downloadDir, backupFileName)
-            if (!destFile.exists()) {
-                destFile.createNewFile()
-            }
-            FileUtil.copyFile(dbFile, destFile)
+            val contentResolver = mContext.contentResolver
+
+            contentResolver.openOutputStream(destUri)?.use { outputStream ->
+                copyFile(dbFile, outputStream)
+            } ?: return IO_EXCEPTION
+
             return SUCCESS
         } catch (e: IOException) {
             L.e("BackupError:", e)
             return if (e.message?.contains("Permission denied") == true) {
                 PERMISSION_DENY
-            } else
-                IO_EXCEPTION
+            } else IO_EXCEPTION
         } catch (e: Exception) {
             L.e("BackupError:", e)
             return UNKNOWN_EXCEPTION
         }
-
     }
 
     @WorkerThread
     @BackupResult
-    private fun doRestore(srcFile: File): Int {
+    private fun doRestore(srcUri: Uri): Int {
         LooperUtil.enforceOnWorkThread()
         try {
-            val filePath = srcFile.path
-            if (srcFile.isFile) {
-                if (SQLiteUtil.isValidSQLite(filePath)) {
-                    val dbFile = mContext.getDatabasePath(dbName)
-                    FileUtil.copyFile(srcFile, dbFile)
-                    return SUCCESS
-                }
-            }
-            return NO_DATA
+            val contentResolver = mContext.contentResolver
+            contentResolver.takePersistableUriPermission(
+                srcUri, Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
+
+            contentResolver.openInputStream(srcUri)?.use { inputStream ->
+                val dbFile = mContext.getDatabasePath(dbName)
+                copyFile(inputStream, dbFile)
+            } ?: return IO_EXCEPTION
+
+            return SUCCESS
         } catch (e: IOException) {
             L.e("RestoreError:", e)
             return if (e.message?.contains("Permission denied") == true) {
                 PERMISSION_DENY
-            } else
-                IO_EXCEPTION
+            } else IO_EXCEPTION
         } catch (e: Exception) {
             L.e("RestoreError:", e)
             return UNKNOWN_EXCEPTION
         }
-
     }
 
     @IntDef(SUCCESS, CANCELED, NO_DATA, PERMISSION_DENY, IO_EXCEPTION, UNKNOWN_EXCEPTION)
@@ -151,15 +159,14 @@ class BackupDelegate(private val mContext: Context, private val backupFileName: 
 
         @SuppressLint("SwitchIntDef")
         override fun accept(result: Int?) {
-            @StringRes val message: Int =
-                    when (result) {
-                        BackupDelegate.SUCCESS -> R.string.message_backup_success
-                        BackupDelegate.NO_DATA -> R.string.message_no_setting_data
-                        BackupDelegate.PERMISSION_DENY -> R.string.message_permission_denied
-                        BackupDelegate.IO_EXCEPTION -> R.string.message_io_exception
-                        BackupDelegate.CANCELED -> R.string.message_operation_canceled
-                        else -> R.string.message_unknown_error
-                    }
+            @StringRes val message: Int = when (result) {
+                BackupDelegate.SUCCESS -> R.string.message_backup_success
+                BackupDelegate.NO_DATA -> R.string.message_no_setting_data
+                BackupDelegate.PERMISSION_DENY -> R.string.message_permission_denied
+                BackupDelegate.IO_EXCEPTION -> R.string.message_io_exception
+                BackupDelegate.CANCELED -> R.string.message_operation_canceled
+                else -> R.string.message_unknown_error
+            }
             invokeMsg(message)
         }
 
@@ -167,21 +174,19 @@ class BackupDelegate(private val mContext: Context, private val backupFileName: 
             context.toast(message)
         }
     }
-
 
     open class DefaultAfterRestore(val context: Context) : AfterRestore {
 
         @SuppressLint("SwitchIntDef")
         override fun accept(result: Int?) {
-            @StringRes val message: Int =
-                    when (result) {
-                        BackupDelegate.SUCCESS -> R.string.message_restore_success
-                        BackupDelegate.NO_DATA -> R.string.message_no_setting_data
-                        BackupDelegate.PERMISSION_DENY -> R.string.message_permission_denied
-                        BackupDelegate.IO_EXCEPTION -> R.string.message_io_exception
-                        BackupDelegate.CANCELED -> R.string.message_operation_canceled
-                        else -> R.string.message_unknown_error
-                    }
+            @StringRes val message: Int = when (result) {
+                BackupDelegate.SUCCESS -> R.string.message_restore_success
+                BackupDelegate.NO_DATA -> R.string.message_no_setting_data
+                BackupDelegate.PERMISSION_DENY -> R.string.message_permission_denied
+                BackupDelegate.IO_EXCEPTION -> R.string.message_io_exception
+                BackupDelegate.CANCELED -> R.string.message_operation_canceled
+                else -> R.string.message_unknown_error
+            }
             invokeMsg(message)
         }
 
@@ -189,7 +194,6 @@ class BackupDelegate(private val mContext: Context, private val backupFileName: 
             context.toast(message)
         }
     }
-
 
     companion object {
         const val SUCCESS = 0
@@ -199,7 +203,23 @@ class BackupDelegate(private val mContext: Context, private val backupFileName: 
         const val CANCELED = 4
         const val UNKNOWN_EXCEPTION = 99
 
-        private val BACKUP_FILE_CODE = 11
-        private val RESTORE_FILE_CODE = 12
+        private const val BACKUP_FILE_CODE = 11
+        private const val RESTORE_FILE_CODE = 12
+    }
+
+    private fun copyFile(source: File, sink: OutputStream) {
+        source.inputStream().use { input ->
+            sink.use { output ->
+                input.copyTo(output)
+            }
+        }
+    }
+
+    private fun copyFile(source: InputStream, sink: File) {
+        source.use { input ->
+            sink.outputStream().use { output ->
+                input.copyTo(output)
+            }
+        }
     }
 }
