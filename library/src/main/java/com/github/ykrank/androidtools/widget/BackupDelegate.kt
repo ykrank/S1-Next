@@ -57,24 +57,6 @@ class BackupDelegate(
         }
         if (requestCode == BACKUP_FILE_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-
-//                val folder = data.data ?: return false
-//
-//                val contentResolver = mContext.contentResolver
-//                val takeFlags: Int =
-//                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-//                contentResolver.takePersistableUriPermission(folder, takeFlags)
-//
-//                val uri = if (DocumentFile.fromTreeUri(mContext, folder)
-//                        ?.findFile(backupFileName) != null
-//                ) {
-//                    DocumentFile.fromTreeUri(mContext, folder)?.findFile(backupFileName)?.uri
-//                        ?: return false
-//                } else {
-//                    DocumentFile.fromTreeUri(mContext, folder)
-//                        ?.createFile("application/octet-stream", backupFileName)?.uri
-//                        ?: return false
-//                }
                 val uri = data.data ?: return false
                 RxJavaUtil.workWithUiResult({ doBackup(uri) }, afterBackup::accept, this::error)
                 return true
@@ -165,11 +147,11 @@ class BackupDelegate(
         @SuppressLint("SwitchIntDef")
         override fun accept(result: Int?) {
             @StringRes val message: Int = when (result) {
-                BackupDelegate.SUCCESS -> R.string.message_backup_success
-                BackupDelegate.NO_DATA -> R.string.message_no_setting_data
-                BackupDelegate.PERMISSION_DENY -> R.string.message_permission_denied
-                BackupDelegate.IO_EXCEPTION -> R.string.message_io_exception
-                BackupDelegate.CANCELED -> R.string.message_operation_canceled
+                SUCCESS -> R.string.message_backup_success
+                NO_DATA -> R.string.message_no_setting_data
+                PERMISSION_DENY -> R.string.message_permission_denied
+                IO_EXCEPTION -> R.string.message_io_exception
+                CANCELED -> R.string.message_operation_canceled
                 else -> R.string.message_unknown_error
             }
             invokeMsg(message)
@@ -185,11 +167,11 @@ class BackupDelegate(
         @SuppressLint("SwitchIntDef")
         override fun accept(result: Int?) {
             @StringRes val message: Int = when (result) {
-                BackupDelegate.SUCCESS -> R.string.message_restore_success
-                BackupDelegate.NO_DATA -> R.string.message_no_setting_data
-                BackupDelegate.PERMISSION_DENY -> R.string.message_permission_denied
-                BackupDelegate.IO_EXCEPTION -> R.string.message_io_exception
-                BackupDelegate.CANCELED -> R.string.message_operation_canceled
+                SUCCESS -> R.string.message_restore_success
+                NO_DATA -> R.string.message_no_setting_data
+                PERMISSION_DENY -> R.string.message_permission_denied
+                IO_EXCEPTION -> R.string.message_io_exception
+                CANCELED -> R.string.message_operation_canceled
                 else -> R.string.message_unknown_error
             }
             invokeMsg(message)
