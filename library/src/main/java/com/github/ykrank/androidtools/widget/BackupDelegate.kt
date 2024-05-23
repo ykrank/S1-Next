@@ -35,7 +35,11 @@ class BackupDelegate(
 ) {
 
     fun backup(fragment: Fragment) {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            setType("*/*")
+            putExtra(Intent.EXTRA_TITLE, backupFileName)
+
+        }
         fragment.startActivityForResult(intent, BACKUP_FILE_CODE)
     }
 
@@ -53,24 +57,25 @@ class BackupDelegate(
         }
         if (requestCode == BACKUP_FILE_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                val folder = data.data ?: return false
 
-                val contentResolver = mContext.contentResolver
-                val takeFlags: Int =
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                contentResolver.takePersistableUriPermission(folder, takeFlags)
-
-                val uri = if (DocumentFile.fromTreeUri(mContext, folder)
-                        ?.findFile(backupFileName) != null
-                ) {
-                    DocumentFile.fromTreeUri(mContext, folder)?.findFile(backupFileName)?.uri
-                        ?: return false
-                } else {
-                    DocumentFile.fromTreeUri(mContext, folder)
-                        ?.createFile("application/octet-stream", backupFileName)?.uri
-                        ?: return false
-                }
-
+//                val folder = data.data ?: return false
+//
+//                val contentResolver = mContext.contentResolver
+//                val takeFlags: Int =
+//                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+//                contentResolver.takePersistableUriPermission(folder, takeFlags)
+//
+//                val uri = if (DocumentFile.fromTreeUri(mContext, folder)
+//                        ?.findFile(backupFileName) != null
+//                ) {
+//                    DocumentFile.fromTreeUri(mContext, folder)?.findFile(backupFileName)?.uri
+//                        ?: return false
+//                } else {
+//                    DocumentFile.fromTreeUri(mContext, folder)
+//                        ?.createFile("application/octet-stream", backupFileName)?.uri
+//                        ?: return false
+//                }
+                val uri = data.data ?: return false
                 RxJavaUtil.workWithUiResult({ doBackup(uri) }, afterBackup::accept, this::error)
                 return true
             }
