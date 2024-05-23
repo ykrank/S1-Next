@@ -6,11 +6,9 @@ import android.app.Fragment
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.provider.DocumentsContract
 import androidx.annotation.IntDef
 import androidx.annotation.StringRes
 import androidx.annotation.WorkerThread
-import androidx.documentfile.provider.DocumentFile
 import com.github.ykrank.androidtools.R
 import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.util.L
@@ -38,7 +36,6 @@ class BackupDelegate(
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
             setType("*/*")
             putExtra(Intent.EXTRA_TITLE, backupFileName)
-
         }
         fragment.startActivityForResult(intent, BACKUP_FILE_CODE)
     }
@@ -71,9 +68,8 @@ class BackupDelegate(
         return false
     }
 
-    private fun error(throwable: Throwable?) {
-        L.e(throwable)
-        afterBackup.accept(UNKNOWN_EXCEPTION)
+    private fun error(e: Throwable) {
+        L.e("RestoreSetting:", e)
     }
 
     @WorkerThread
@@ -87,7 +83,6 @@ class BackupDelegate(
             }
 
             val contentResolver = mContext.contentResolver
-
             contentResolver.openOutputStream(destUri)?.use { outputStream ->
                 copyFile(dbFile, outputStream)
             } ?: return IO_EXCEPTION
@@ -210,3 +205,4 @@ class BackupDelegate(
         }
     }
 }
+
