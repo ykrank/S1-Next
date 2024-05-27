@@ -11,18 +11,27 @@ class DarkRoomWrapper {
 
     @JsonIgnore
     var darkRooms: List<DarkRoom> = listOf()
-    @JsonProperty("message")
+
+    @JsonIgnore
     var message: DarkRoomMessage? = null
+
     @JsonIgnore
     var last: Boolean = false
 
     constructor()
 
     @JsonCreator
-    constructor(@JsonProperty("data") d: JsonNode?) {
-        if (d != null) {
+    constructor(@JsonProperty("data") data: JsonNode?, @JsonProperty("message") message: String?) {
+        if (message != null) {
+            val msgList = message.split("|")
+            this.message = DarkRoomMessage().apply {
+                dataExist = msgList.getOrNull(0)
+                cid = msgList.getOrNull(1)
+            }
+        }
+        if (data != null) {
             val rooms = mutableListOf<DarkRoom>()
-            d.elements().forEach {
+            data.elements().forEach {
                 rooms.add(JsonUtil.readJsonNode(App.preAppComponent.jsonMapper, it, DarkRoom::class.java))
             }
             darkRooms = rooms
