@@ -1,7 +1,6 @@
 package me.ykrank.s1next.view.fragment
 
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import io.reactivex.Single
 import me.ykrank.s1next.data.api.model.HomeThread
@@ -26,7 +25,7 @@ class UserThreadFragment : BaseLoadMoreRecycleViewFragment<HomeThreadWebWrapper>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        uid = arguments!!.getString(ARG_UID)
+        uid = requireArguments().getString(ARG_UID)
         leavePageMsg("UserThreadFragment")
 
         val recyclerView = recyclerView
@@ -57,7 +56,7 @@ class UserThreadFragment : BaseLoadMoreRecycleViewFragment<HomeThreadWebWrapper>
 
     override fun onNext(data: HomeThreadWebWrapper) {
         super.onNext(data)
-        mRecyclerAdapter!!.diffNewDataSet(data.threads, false)
+        mRecyclerAdapter.diffNewDataSet(data.threads, false)
         if (data.isMore) {
             setTotalPages(pageNum + 1)
         } else {

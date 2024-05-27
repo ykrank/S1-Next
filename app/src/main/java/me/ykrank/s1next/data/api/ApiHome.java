@@ -29,10 +29,10 @@ public class ApiHome {
     static final String URL_FRIENDS = Api.BASE_API_PREFIX + "friend";
 
     //Threads
-    static final String URL_THREADS = Api.BASE_URL + "home.php?mod=space&do=thread&from=space&type=thread";
+    static final String URL_THREADS = Api.BASE_URL + "home.php?mod=space&do=thread&from=space&type=thread&view=me";
 
     //Replies
-    static final String URL_REPLIES = Api.BASE_URL + "home.php?mod=space&do=thread&from=space&type=reply";
+    static final String URL_REPLIES = Api.BASE_URL + "home.php?mod=space&do=thread&from=space&type=reply&view=me";
 
     //Rate
     static final String URL_RATE_PRE = Api.BASE_URL + "forum.php?mod=misc&action=rate&infloat=yes&handlekey=rate&inajax=1&ajaxtarget=fwin_content_rate";
