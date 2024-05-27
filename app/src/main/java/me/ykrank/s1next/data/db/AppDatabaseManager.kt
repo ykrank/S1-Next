@@ -2,6 +2,7 @@ package me.ykrank.s1next.data.db
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.RoomDatabase
 import me.ykrank.s1next.BuildConfig
 
 interface AppDatabaseManager {
@@ -19,6 +20,8 @@ class AppDatabaseManagerImpl(applicationContext: Context) : AppDatabaseManager {
         .fallbackToDestructiveMigrationFrom(1, 2, 3, 4, 5, 6)
         // TODO: 数据库操作禁止在主线程
         .allowMainThreadQueries()
+        // TRUNCATE模式，可以方便备份
+        .setJournalMode(RoomDatabase.JournalMode.TRUNCATE)
 
     @Volatile
     var database: AppDatabase? = null
