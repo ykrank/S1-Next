@@ -5,20 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import androidx.annotation.CallSuper
-import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.CallSuper
+import androidx.appcompat.widget.Toolbar
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ActivityEvent
-import com.google.common.base.Optional
 import com.github.ykrank.androidtools.ui.LibBaseActivity
 import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate
 import com.github.ykrank.androidtools.ui.internal.DrawerLayoutDelegate
@@ -26,6 +20,9 @@ import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.ResourceUtil
 import com.github.ykrank.androidtools.widget.RxBus
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
+import com.google.common.base.Optional
 import io.reactivex.android.schedulers.AndroidSchedulers
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -136,13 +133,13 @@ abstract class BaseActivity : LibBaseActivity() {
     }
 
     @CallSuper
-    override fun setContentView(view: View) {
+    override fun setContentView(view: View?) {
         super.setContentView(view)
         setupToolbar()
     }
 
     @CallSuper
-    override fun setContentView(view: View, params: ViewGroup.LayoutParams) {
+    override fun setContentView(view: View?, params: ViewGroup.LayoutParams?) {
         super.setContentView(view, params)
         setupToolbar()
     }

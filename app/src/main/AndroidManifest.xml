@@ -10,8 +10,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- save backup file -->
     <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="29" />
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- self update -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -268,30 +267,6 @@
             android:colorMode="wideColorGamut"
             android:configChanges="uiMode"
             android:windowSoftInputMode="adjustPan" />
-
-        <!-- FilePicker -->
-
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/nnf_provider_paths" />
-        </provider>
-
-        <activity
-            android:name="com.nononsenseapps.filepicker.FilePickerActivity"
-            android:colorMode="wideColorGamut"
-            android:configChanges="uiMode"
-            android:exported="false"
-            android:theme="@style/FilePickerTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.GET_CONTENT" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
         <activity
             android:name=".view.activity.RateDetailsListActivity"

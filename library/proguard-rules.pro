@@ -143,12 +143,5 @@
     static void checkParameterIsNotNull(java.lang.Object, java.lang.String);
 }
 
-#PictureSelector 2.0
--keep class com.luck.picture.lib.** { *; }
-
--dontwarn com.yalantis.ucrop**
--keep class com.yalantis.ucrop** { *; }
--keep interface com.yalantis.ucrop** { *; }
-
 -dontwarn com.bun.miitmdid.interfaces.IIdentifierListener
 -dontwarn edu.umd.cs.findbugs.annotations.SuppressFBWarnings

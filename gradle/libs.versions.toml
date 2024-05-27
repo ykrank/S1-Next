@@ -3,17 +3,16 @@ adapterdelegates3 = "3.1.0"
 adapterRxjava2 = "2.9.0"
 alicloudAndroidHttpdns = "2.3.5"
 androidautodispose = "0.4.0"
+activity = "1.9.0"
 cardview = "1.0.0"
 commonsLang3 = "3.12.0"
 databinding_compiler = "3.1.4"
-compress = "v3.10.7"
 constraintlayout = "2.1.4"
 converterScalars = "2.9.0"
 bugly_crashreport = "4.1.9.3"
 bugly_crashreport_upgrade = "1.6.1"
 bugly_nativecrashreport = "3.9.2"
 dagger = "2.51.1"
-filepicker = "4.2.1"
 flipperNoop = "0.177.0"
 glide = "4.16.0"
 guava = "31.0.1-android"
@@ -24,9 +23,9 @@ leakcanaryAndroid = "2.10"
 leakcanaryAndroidNoOp = "1.6.3"
 legacyPreferenceV14 = "1.0.0"
 legacySupportV4 = "1.0.0"
-lifecycleLivedataKtx = "2.7.0"
+lifecycleLivedataKtx = "2.8.0"
 logger = "2.2.0"
-material = "1.11.0"
+material = "1.12.0"
 multidex = "2.0.1"
 okdownload = "1.0.7"
 okhttp = "5.0.0-alpha.14"
@@ -39,7 +38,6 @@ paperparcelCompiler = "2.0.8"
 paperparcelKotlin = "2.0.8"
 percentlayout = "1.0.0"
 photoview = "2.3.0"
-pictureselector = "v3.0.8"
 quicksidebar = "1.0.3"
 retrofit = "2.11.0"
 rxcache_runtime = "1.8.3-2.x"
@@ -51,17 +49,17 @@ gradle = "8.3.2"
 gradleVersionsPlugin = "0.51.0"
 kotlin = "1.9.21"
 kotlinKsp = "1.9.21-1.0.15"
-coreKtx = "1.13.0"
+coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.7.0"
+lifecycleRuntimeKtx = "2.8.0"
 activityCompose = "1.9.0"
-composeBom = "2024.04.01"
-paging = "3.2.1"
+composeBom = "2024.05.00"
+paging = "3.3.0"
 room = "2.6.1"
 sqlite = "1.0.7"
-transition = "1.4.1"
+transition = "1.5.0"
 largeimageview = "1.1.0"
 compileSdk = "34"
 targetSdk = "34"
@@ -72,6 +70,8 @@ agp = "8.3.2"
 adapterdelegates3 = { module = "com.hannesdorfmann:adapterdelegates3", version.ref = "adapterdelegates3" }
 alicloud-android-httpdns = { module = "com.aliyun.ams:alicloud-android-httpdns", version.ref = "alicloudAndroidHttpdns" }
 androidautodispose = { module = "com.github.ykrank:androidautodispose", version.ref = "androidautodispose" }
+androidx-activity = { module = "androidx.activity:activity", version.ref = "activity" }
+androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity" }
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -91,10 +91,8 @@ flipper-network-plugin = { module = "com.facebook.flipper:flipper-network-plugin
 flipper-noop = { module = "com.facebook.flipper:flipper-noop", version.ref = "flipperNoop" }
 glide-kapt = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 glide-ksp = { module = "com.github.bumptech.glide:ksp", version.ref = "glide" }
-compress = { module = "io.github.lucksiege:compress", version.ref = "compress" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
-filepicker = { module = "com.nononsenseapps:filepicker", version.ref = "filepicker" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glide-okhttp3-integration = { module = "com.github.bumptech.glide:okhttp3-integration", version.ref = "okhttp3Integration" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
@@ -134,7 +132,6 @@ paperparcel-api = { module = "nz.bradcampbell:paperparcel-api", version.ref = "p
 paperparcel-compiler = { module = "nz.bradcampbell:paperparcel-compiler", version.ref = "paperparcelCompiler" }
 paperparcel-kotlin = { module = "nz.bradcampbell:paperparcel-kotlin", version.ref = "paperparcelKotlin" }
 photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoview" }
-pictureselector = { module = "io.github.lucksiege:pictureselector", version.ref = "pictureselector" }
 quicksidebar = { module = "com.bigkoo:quicksidebar", version.ref = "quicksidebar" }
 retrofit2 = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit2-adapter-rxjava2 = { module = "com.squareup.retrofit2:adapter-rxjava2", version.ref = "adapterRxjava2" }

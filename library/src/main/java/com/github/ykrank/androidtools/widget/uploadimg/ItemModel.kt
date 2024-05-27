@@ -1,10 +1,12 @@
 package com.github.ykrank.androidtools.widget.uploadimg
 
+import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.core.net.toUri
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
-import com.luck.picture.lib.entity.LocalMedia
+import com.github.ykrank.androidtools.widget.imagepicker.LocalMedia
 
 internal class ModelImageUploadAdd : StableIdModel {
 
@@ -26,13 +28,13 @@ class ModelImageUpload(val media: LocalMedia?) : DiffSameItem, Parcelable, Stabl
 
     var state: Int = STATE_INIT
 
-    val path: String?
+    val localUri: Uri?
         get() = if (media == null) {
             null
-        } else if (media.realPath?.endsWith(".gif") == true || !media.isCompressed) {
-            media.realPath
+        } else if (!media.isCompressed) {
+            media.uri
         } else {
-            media.compressPath
+            media.compressPath?.toUri()
         }
 
     constructor(parcel: Parcel) : this(
@@ -44,7 +46,7 @@ class ModelImageUpload(val media: LocalMedia?) : DiffSameItem, Parcelable, Stabl
     }
 
     override val stableId: Long
-        get() = path.hashCode().toLong()
+        get() = localUri.hashCode().toLong()
 
     override fun isSameItem(other: Any?): Boolean {
         if (this === other) return true
@@ -52,7 +54,7 @@ class ModelImageUpload(val media: LocalMedia?) : DiffSameItem, Parcelable, Stabl
 
         other as ModelImageUpload
 
-        if (media?.path != other.media?.path) return false
+        if (media?.uri != other.media?.uri) return false
 
         return true
     }

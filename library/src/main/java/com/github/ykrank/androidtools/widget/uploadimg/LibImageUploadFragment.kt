@@ -1,5 +1,6 @@
 package com.github.ykrank.androidtools.widget.uploadimg
 
+import android.content.res.AssetFileDescriptor
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +13,12 @@ import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.imagepicker.LibImagePickerFragment
-import com.luck.picture.lib.entity.LocalMedia
+import com.github.ykrank.androidtools.widget.imagepicker.LocalMedia
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.internal.schedulers.ExecutorScheduler
-import java.io.File
+import java.io.FileDescriptor
 import java.util.concurrent.LinkedBlockingDeque
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
@@ -84,10 +86,10 @@ open class LibImageUploadFragment : LibImagePickerFragment() {
         medias.map { ModelImageUpload(it) }
             .apply {
                 //仅添加不同路径的图片
-                val pathSet = hashSetOf<String>()
-                images.forEach { it.path?.apply { pathSet.add(this) } }
+                val pathSet = hashSetOf<String?>()
+                images.forEach { it.localUri?.apply { pathSet.add(this.path) } }
                 this.forEach {
-                    val path = it.path
+                    val path = it.localUri?.path
                     if (path != null && !pathSet.contains(path)) {
                         images.add(it)
                         pathSet.add(path)
@@ -104,33 +106,50 @@ open class LibImageUploadFragment : LibImagePickerFragment() {
     }
 
     private fun uploadPickedImage() {
+        val assetFileDescriptors = mutableListOf<AssetFileDescriptor>()
         Observable.fromIterable(images)
             .filter { it.state == ModelImageUpload.STATE_INIT }
             .flatMapSingle { model ->
                 model.state = ModelImageUpload.STATE_UPLOADING
-                imageUploadManager.uploadImage(File(model.path!!))
-                    .map { Pair(model, it) }
+                val fileDescriptor: FileDescriptor? = model.localUri?.let {
+                    val assetFileDescriptor =
+                        requireContext().contentResolver.openAssetFileDescriptor(it, "r")?.apply {
+                            assetFileDescriptors.add(this)
+                        }
+                    assetFileDescriptor?.fileDescriptor
+                }
+                if (fileDescriptor == null) {
+                    Single.just(PickedAndUploadImage(model, null, null))
+                } else {
+                    imageUploadManager.uploadImage(fileDescriptor)
+                        .map { PickedAndUploadImage(model, it, fileDescriptor) }
+                }
+            }
+            .doOnDispose {
+                assetFileDescriptors.forEach {
+                    it.close()
+                }
             }
             .subscribeOn(uploadScheduler)
             .observeOn(AndroidSchedulers.mainThread())
             .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
             .subscribe({
-                L.d(it.second.toString())
-                if (it.second.success) {
-                    it.first.state = ModelImageUpload.STATE_DONE
-                    it.first.url = it.second.url
-                    it.first.deleteUrl = it.second.deleteUrl
+                L.d(it.upload.toString())
+                if (it.upload?.success == true) {
+                    it.model.state = ModelImageUpload.STATE_DONE
+                    it.model.url = it.upload.url
+                    it.model.deleteUrl = it.upload.deleteUrl
                 } else {
-                    it.first.state = ModelImageUpload.STATE_ERROR
-                    context?.toast(it.second.msg)
-                    L.report(ImageUploadError("Upload image error: ${it.first}, ${it.second}"))
+                    it.model.state = ModelImageUpload.STATE_ERROR
+                    context?.toast(it.upload?.msg)
+                    L.report(ImageUploadError("Upload image error: ${it.model}, ${it.upload}"))
                 }
-                adapter.dataSet.indexOf(it.first).also { index ->
+                adapter.dataSet.indexOf(it.model).also { index ->
                     if (index >= 0) {
                         adapter.notifyItemChanged(index)
                     } else {
                         //If image removed from list, remove it from server
-                        delPickedImage(it.first)
+                        delPickedImage(it.model)
                     }
                 }
             }, L::report)
@@ -173,6 +192,11 @@ open class LibImageUploadFragment : LibImagePickerFragment() {
         }
     }
 
+    private data class PickedAndUploadImage(
+        val model: ModelImageUpload,
+        val upload: ImageUpload?,
+        val fileDescriptor: FileDescriptor?
+    )
     companion object {
         val TAG = LibImageUploadFragment::class.java.name
 

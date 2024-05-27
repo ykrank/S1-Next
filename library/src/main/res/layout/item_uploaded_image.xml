@@ -28,7 +28,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:url="@{model.state == ModelImageUpload.STATE_DONE?model.url:model.path}" />
+            app:url="@{model.state == ModelImageUpload.STATE_DONE?model.url:model.localUri.toString()}" />
 
         <ProgressBar
             android:layout_width="0dp"

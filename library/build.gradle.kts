@@ -52,6 +52,7 @@ dependencies {
 
     implementation(libs.jackson.kotlin)
     api(libs.material)
+    api(libs.androidx.activity.ktx)
     api(libs.androidx.cardview)
     api(libs.androidx.percentlayout)
     api(libs.androidx.legacy.preference.v14)
@@ -81,13 +82,6 @@ dependencies {
 
     api(libs.logger)
 
-    //FilePicker
-    api(libs.filepicker)
-
-    //PictureSelector
-    api(libs.pictureselector)
-    api(libs.compress)
-
     //PictureUpload
     api(libs.jsoup)
     api(libs.retrofit2)
@@ -96,4 +90,9 @@ dependencies {
     api(libs.retrofit2.converter.scalars)
 
     api(libs.largeimageview)
+
+    implementation(libs.paperparcel)
+    implementation(libs.paperparcel.kotlin) // Optional
+    implementation(libs.paperparcel.api)
+    kapt(libs.paperparcel.compiler)
 }

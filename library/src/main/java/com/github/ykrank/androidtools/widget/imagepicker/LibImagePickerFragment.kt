@@ -1,33 +1,25 @@
 package com.github.ykrank.androidtools.widget.imagepicker
 
-import android.app.Activity
-import android.content.Intent
+import android.os.Bundle
 import com.github.ykrank.androidtools.ui.LibBaseFragment
-import com.luck.picture.lib.basic.PictureSelector
-import com.luck.picture.lib.config.PictureConfig
-import com.luck.picture.lib.entity.LocalMedia
 
 
 abstract class LibImagePickerFragment : LibBaseFragment() {
-    protected val pickImageRequestCode = PictureConfig.CHOOSE_REQUEST
 
-    open fun startPickImage() {
-        ImagePicker.pickImage(this, pickImageRequestCode, 5, true)
-    }
+    private val imagePicker = ImagePicker()
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (requestCode) {
-            pickImageRequestCode -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    afterPickImage(PictureSelector.obtainSelectorList(data))
-                }
-            }
-            else -> super.onActivityResult(requestCode, resultCode, data)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        imagePicker.initPicker(this, 5) { uris ->
+            afterPickImage(uris.map { LocalMedia(it) })
         }
     }
 
+    open fun startPickImage() {
+        imagePicker.pickImage()
+    }
     override fun onDestroy() {
-        ImagePicker.clearCache(requireContext())
+        imagePicker.destroy()
         super.onDestroy()
     }
 

@@ -3,17 +3,25 @@ package com.github.ykrank.androidtools.widget.uploadimg
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.github.ykrank.androidtools.util.L
 import io.reactivex.Single
+import okhttp3.ExperimentalOkHttpApi
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.jsoup.Jsoup
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.jackson.JacksonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.Part
+import retrofit2.http.Url
 import java.io.File
+import java.io.FileDescriptor
 import java.util.concurrent.TimeUnit
 
 class SmmsImageUploadManager(_okHttpClient: OkHttpClient? = null) : ImageUploadManager {
@@ -43,6 +51,13 @@ class SmmsImageUploadManager(_okHttpClient: OkHttpClient? = null) : ImageUploadM
     override fun uploadImage(imageFile: File): Single<ImageUpload> {
         val requestFile = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
         val body = MultipartBody.Part.createFormData("smfile", imageFile.name, requestFile)
+        return uploadApiService.postSmmsImage(body).map { it.toCommon() }
+    }
+
+    @OptIn(ExperimentalOkHttpApi::class)
+    override fun uploadImage(imageFile: FileDescriptor): Single<ImageUpload> {
+        val requestFile = imageFile.toRequestBody("image/*".toMediaTypeOrNull())
+        val body = MultipartBody.Part.createFormData("smfile", "image.jpg", requestFile)
         return uploadApiService.postSmmsImage(body).map { it.toCommon() }
     }
 

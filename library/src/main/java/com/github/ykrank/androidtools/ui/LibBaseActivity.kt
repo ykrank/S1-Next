@@ -1,21 +1,21 @@
 package com.github.ykrank.androidtools.ui
 
 import android.os.Bundle
-import androidx.annotation.CallSuper
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.google.common.base.Optional
+import androidx.annotation.CallSuper
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate
 import com.github.ykrank.androidtools.ui.internal.DrawerLayoutDelegate
 import com.github.ykrank.androidtools.ui.internal.DrawerLayoutOp
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.track.event.page.ActivityEndEvent
 import com.github.ykrank.androidtools.widget.track.event.page.ActivityStartEvent
+import com.google.android.material.snackbar.Snackbar
+import com.google.common.base.Optional
 import java.lang.ref.WeakReference
 
 /**
@@ -35,13 +35,13 @@ abstract class LibBaseActivity : AppCompatActivity(), CoordinatorLayoutAnchorDel
     }
 
     @CallSuper
-    override fun setContentView(view: View) {
+    override fun setContentView(view: View?) {
         super.setContentView(view)
         setupCoordinatorLayoutAnchorDelegate()
     }
 
     @CallSuper
-    override fun setContentView(view: View, params: ViewGroup.LayoutParams) {
+    override fun setContentView(view: View?, params: ViewGroup.LayoutParams?) {
         super.setContentView(view, params)
         setupCoordinatorLayoutAnchorDelegate()
     }

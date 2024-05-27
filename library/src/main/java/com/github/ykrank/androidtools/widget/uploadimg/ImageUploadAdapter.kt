@@ -7,10 +7,10 @@ import com.github.ykrank.androidtools.databinding.ItemUploadedImageBinding
 import com.github.ykrank.androidtools.ui.adapter.LibBaseRecyclerViewAdapter
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleAdapterDelegate
 
-class ImageUploadAdapter(fragment: LibImageUploadFragment, imageClickListener: ((View, ModelImageUpload) -> Unit)? = null) : LibBaseRecyclerViewAdapter(fragment.context!!) {
+class ImageUploadAdapter(fragment: LibImageUploadFragment, imageClickListener: ((View, ModelImageUpload) -> Unit)? = null) : LibBaseRecyclerViewAdapter(fragment.requireContext()) {
 
     init {
-        val context = fragment.context!!
+        val context = fragment.requireContext()
         addAdapterDelegate(SimpleAdapterDelegate(context, R.layout.item_uploaded_image, ModelImageUpload::class.java,
                 createViewHolderCallback = {
                     val binding = it as ItemUploadedImageBinding

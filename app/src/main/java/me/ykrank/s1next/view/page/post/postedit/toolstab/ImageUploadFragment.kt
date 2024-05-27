@@ -1,12 +1,10 @@
 package me.ykrank.s1next.view.page.post.postedit.toolstab
-import  com.github.ykrank.androidtools.widget.imagepicker.ImagePicker;
 import android.os.Bundle
 import android.view.View
 import com.github.ykrank.androidtools.widget.RxBus
 import com.github.ykrank.androidtools.widget.uploadimg.ImageUploadManager
 import com.github.ykrank.androidtools.widget.uploadimg.LibImageUploadFragment
 import com.github.ykrank.androidtools.widget.uploadimg.ModelImageUpload
-import com.luck.picture.lib.config.PictureConfig
 import me.ykrank.s1next.App
 import me.ykrank.s1next.view.event.PostAddImageEvent
 import me.ykrank.s1next.widget.net.Image
@@ -30,10 +28,6 @@ class ImageUploadFragment : LibImageUploadFragment() {
 
     override val imageClickListener: ((View, ModelImageUpload) -> Unit)? =
             { view, model -> model.url?.also { mRxBus.post(PostAddImageEvent(it)) } }
-
-    override fun startPickImage() {
-        ImagePicker.pickImage(this, PictureConfig.CHOOSE_REQUEST, 5, false)
-    }
 
     override fun provideImageUploadManager(): ImageUploadManager {
         return RIPImageUploadManager(_okHttpClient = mOkHttpClient)
