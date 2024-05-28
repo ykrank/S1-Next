@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <domain-config cleartextTrafficPermitted="true">
-        <!-- 匹配子域名 example.com -->
-        <domain includeSubdomains="true">saraba1st.com</domain>
-        <domain includeSubdomains="true">sda1.dev</domain>
-    </domain-config>
+    <base-config cleartextTrafficPermitted="false">
+
+    </base-config>
 </network-security-config>

@@ -28,7 +28,11 @@ import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ViewEvent
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.LooperUtil
-import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.*
+import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.FitOutWidthDownSampleStrategy
+import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.GlMaxTextureSizeDownSampleStrategy
+import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.MultiDownSampleStrategy
+import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.SizeDownSampleStrategy
+import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.SizeMultiplierDownSampleStrategy
 import com.github.ykrank.androidtools.widget.glide.transformations.FitOutWidthBitmapTransformation
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.uber.autodispose.SingleScoper
@@ -39,7 +43,8 @@ import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.widget.EmoticonFactory
 import me.ykrank.s1next.widget.track.event.EmoticonNotFoundTrackEvent
-import java.util.*
+import java.util.TreeSet
+import java.util.WeakHashMap
 
 /**
  * Implements [android.text.Html.ImageGetter]
@@ -162,8 +167,8 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
      * but display emoticons at any time.
      */
     @AnyThread
-    override fun getDrawable(url: String?): Drawable? {
-        var url = url
+    override fun getDrawable(source: String?): Drawable? {
+        var url = source
         if (TextUtils.isEmpty(url)) {
             return null
         }
@@ -175,8 +180,9 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
         if (emoticonName == null && !URLUtil.isNetworkUrl(url)) {
             url = Api.BASE_URL + url
         }
-        if(url?.startsWith("https://") == true){
-            url = url.replaceFirst("https://", "http://")
+        // 图片兜底，http链接替换为https
+        if(url?.startsWith("http://") == true){
+            url = url.replaceFirst("http://", "https://")
         }
         if (emoticonName != null) {
             //Scale
