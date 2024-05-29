@@ -23,9 +23,6 @@ class DownloadPreferencesManager(private val mPreferencesProvider: DownloadPrefe
     val isAvatarsDownload: Boolean
         get() = DownloadStrategyInternal.isDownload(mPreferencesProvider.avatarsDownloadStrategyIndex, mWifi.isWifiEnabled)
 
-    val isHighResolutionAvatarsDownload: Boolean
-        get() = AvatarResolutionStrategy.isHigherResolutionDownload(mPreferencesProvider.avatarResolutionStrategyIndex, mWifi.isWifiEnabled)
-
     val avatarCacheInvalidationIntervalSignature: Key
         get() = AvatarCacheInvalidationInterval.getSignature(mPreferencesProvider.avatarCacheInvalidationInterval)
 

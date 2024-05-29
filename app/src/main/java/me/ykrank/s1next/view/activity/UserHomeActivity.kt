@@ -2,26 +2,26 @@ package me.ykrank.s1next.view.activity
 
 import android.app.Activity
 import android.content.Intent
-import androidx.databinding.DataBindingUtil
 import android.os.Build
 import android.os.Bundle
-import androidx.annotation.MainThread
-import com.google.android.material.appbar.AppBarLayout
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityOptionsCompat
-import androidx.fragment.app.FragmentActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import android.transition.Transition
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.MainThread
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
+import androidx.databinding.DataBindingUtil
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ActivityEvent
-import com.google.common.base.Optional
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
-import com.github.ykrank.androidtools.util.*
+import com.github.ykrank.androidtools.util.AnimUtils
+import com.github.ykrank.androidtools.util.ContextUtils
+import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.AppBarOffsetChangedListener
 import com.github.ykrank.androidtools.widget.glide.model.ImageInfo
+import com.google.android.material.appbar.AppBarLayout
+import com.google.common.base.Optional
 import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -67,8 +67,6 @@ class UserHomeActivity : BaseActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         binding.downloadPreferencesManager = mDownloadPreferencesManager
-        binding.big = true
-        binding.preLoad = true
         binding.thumb = thumbImageInfo?.url
         val profile = Profile()
         profile.homeUid = uid
@@ -161,6 +159,7 @@ class UserHomeActivity : BaseActivity() {
                                             blackListEvent.remark)
                                 }
                                 .compose(RxJavaUtil.iOSingleTransformer())
+                            .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
                                 .subscribe({ this.afterBlackListChange(it) }, { L.report(it) })
                     } else {
                         Single.just(false)
@@ -169,6 +168,7 @@ class UserHomeActivity : BaseActivity() {
                                             blackListEvent.authorPostName)
                                 }
                                 .compose(RxJavaUtil.iOSingleTransformer())
+                            .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
                                 .subscribe({ this.afterBlackListChange(it) }, { L.report(it) })
                     }
                 }
@@ -180,18 +180,7 @@ class UserHomeActivity : BaseActivity() {
     }
 
     private fun setupImage() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.sharedElementEnterTransition.addListener(object : TransitionUtils.TransitionListenerAdapter() {
-                override fun onTransitionEnd(transition: Transition) {
-                    super.onTransitionEnd(transition)
-                    binding.big = true
-                    binding.preLoad = false
-                }
-            })
-        } else {
-            binding.big = true
-            binding.preLoad = false
-        }
+
     }
 
     private fun loadData() {

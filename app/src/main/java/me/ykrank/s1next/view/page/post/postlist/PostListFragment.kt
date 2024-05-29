@@ -89,7 +89,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         super.onViewCreated(view, savedInstanceState)
         App.appComponent.inject(this)
 
-        val bundle = arguments!!
+        val bundle = requireArguments()
         val type = bundle.getInt(ARG_TYPE)
         val thread: Thread = bundle.getParcelable(ARG_THREAD)!!
         val authorId = bundle.getString(ARG_AUTHOR_ID)
@@ -111,7 +111,6 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                 Pair("TotalDataCacheSize", mDownloadPrefManager.totalDataCacheSize.toString()),
                 Pair("NetCacheEnable", mDownloadPrefManager.netCacheEnable.toString()),
                 Pair("AvatarsDownload", mDownloadPrefManager.isAvatarsDownload.toString()),
-                Pair("HighResolutionAvatarsDownload", mDownloadPrefManager.isHighResolutionAvatarsDownload.toString()),
                 Pair("ImagesDownload", mDownloadPrefManager.isImagesDownload.toString())
         )))
         leavePageMsg("PostListFragment##ThreadTitle:$mThreadTitle,ThreadId:$mThreadId,Type:$type")
@@ -187,8 +186,8 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                 .ofType(VotePostEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe {
-                    if (!LoginPromptDialogFragment.showAppLoginPromptDialogIfNeeded(fragmentManager!!, mUser)) {
-                        VoteDialogFragment.newInstance(it.threadId, it.vote).show(fragmentManager!!, VoteDialogFragment.TAG)
+                    if (!LoginPromptDialogFragment.showAppLoginPromptDialogIfNeeded(childFragmentManager, mUser)) {
+                        VoteDialogFragment.newInstance(it.threadId, it.vote).show(childFragmentManager, VoteDialogFragment.TAG)
                     }
                 }
         mRxBus.get()
@@ -255,15 +254,15 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         when (item.itemId) {
             R.id.menu_thread_attachment -> {
                 ThreadAttachmentDialogFragment.newInstance(mThreadAttachment).show(
-                        activity!!.supportFragmentManager,
+                        requireActivity().supportFragmentManager,
                         ThreadAttachmentDialogFragment.TAG)
 
                 return true
             }
             R.id.menu_favourites_add -> {
-                if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(fragmentManager!!, mUser)) {
+                if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(childFragmentManager, mUser)) {
                     ThreadFavouritesAddDialogFragment.newInstance(mThreadId, mThreadTitle).show(
-                            activity!!.supportFragmentManager,
+                            requireActivity().supportFragmentManager,
                             ThreadFavouritesAddDialogFragment.TAG)
                 }
 
@@ -319,7 +318,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                             mGeneralPreferencesManager.isPostSelectable = item.isChecked
                             mRxBus.post(PostSelectableChangeEvent())
                         }
-                        .show(fragmentManager!!, null)
+                        .show(childFragmentManager, null)
                 return true
             }
             R.id.menu_quick_side_bar_enable -> {

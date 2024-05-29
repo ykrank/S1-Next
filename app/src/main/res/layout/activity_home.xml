@@ -18,16 +18,8 @@
             type="boolean" />
 
         <variable
-            name="preLoad"
-            type="boolean" />
-
-        <variable
             name="thumb"
             type="String" />
-
-        <variable
-            name="big"
-            type="boolean" />
 
         <variable
             name="downloadPreferencesManager"
@@ -78,9 +70,7 @@
                         android:contentDescription="@string/avatar_content_desc"
                         android:transitionName="@string/transition_avatar"
                         android:visibility="@{downloadPreferencesManager.isAvatarsDownload ? View.VISIBLE : View.GONE}"
-                        app:big="@{big}"
                         app:downloadPreferencesManager="@{downloadPreferencesManager}"
-                        app:preLoad="@{preLoad}"
                         app:thumb="@{thumb}"
                         app:uid="@{data.homeUid}"
                         tools:src="@drawable/ic_avatar_placeholder" />

@@ -59,15 +59,6 @@
             app:iconSpaceReserved="false" />
 
         <ListPreference
-            android:defaultValue="@string/pref_avatar_resolution_strategy_default_value"
-            android:entries="@array/pref_avatar_resolution_strategy_entries"
-            android:entryValues="@array/pref_avatar_resolution_strategy_entry_values"
-            android:key="@string/pref_key_avatar_resolution_strategy"
-            android:summary="%s"
-            android:title="@string/pref_avatar_resolution"
-            app:iconSpaceReserved="false" />
-
-        <ListPreference
             android:defaultValue="@string/pref_avatar_cache_invalidation_interval_default_value"
             android:entries="@array/pref_avatar_cache_invalidation_interval_entries"
             android:entryValues="@array/pref_avatar_cache_invalidation_interval_entry_values"

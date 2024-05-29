@@ -21,8 +21,7 @@ import com.github.ykrank.androidtools.widget.glide.viewtarget.DrawableViewBackgr
 import com.github.ykrank.androidtools.widget.glide.viewtarget.ViewBackgroundTarget
 import io.reactivex.functions.Consumer
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.api.Api.getAvatarMediumUrl
-import me.ykrank.s1next.data.api.Api.getAvatarSmallUrl
+import me.ykrank.s1next.data.api.Api.getAvatarBigUrl
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 
 /**
@@ -64,15 +63,9 @@ object ViewBindingAdapter {
             return
         }
         if (!TextUtils.equals(oldBlurUid, newBlurUid)) {
-            val oldAvatarUrl: String?
-            val newAvatarUrl: String?
-            if (newManager.isHighResolutionAvatarsDownload) {
-                oldAvatarUrl = getAvatarMediumUrl(oldBlurUid)
-                newAvatarUrl = getAvatarMediumUrl(newBlurUid)
-            } else {
-                oldAvatarUrl = getAvatarSmallUrl(oldBlurUid)
-                newAvatarUrl = getAvatarSmallUrl(newBlurUid)
-            }
+            val oldAvatarUrl: String? = getAvatarBigUrl(oldBlurUid)
+            val newAvatarUrl: String? = getAvatarBigUrl(newBlurUid)
+
             setBlurBackground(view, oldManager, oldAvatarUrl, newManager, newAvatarUrl)
         }
     }

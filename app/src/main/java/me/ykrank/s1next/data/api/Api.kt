@@ -34,8 +34,6 @@ object Api {
      * Opens the browser via [android.content.Intent].
      */
     val URL_BROWSER_REGISTER = prepend("member.php?mod=register")
-    private const val URL_USER_AVATAR_SMALL = "${BASE_AVATAR_URL}%s_avatar_small.jpg"
-    private const val URL_USER_AVATAR_MEDIUM = "${BASE_AVATAR_URL}%s_avatar_middle.jpg"
     private const val URL_USER_AVATAR_BIG = "${BASE_AVATAR_URL}%s_avatar_big.jpg"
     private val URL_BROWSER_FAVOURITES = prepend("home.php?mod=space&do=favorite")
     private val URL_BROWSER_THREAD_LIST = prepend("forum-%s-%d.html")
@@ -63,33 +61,8 @@ object Api {
         return parseUserId(userId)?.reduce { acc, s -> "$acc/$s" }
     }
 
-    fun getAvatarUrls(userId: String?, includeBig: Boolean = true, includeMid: Boolean = true): List<String>? {
-        return getUserAvatarPath(userId)?.let {
-            val big = String.format(URL_USER_AVATAR_BIG, it)
-            val mid = String.format(URL_USER_AVATAR_MEDIUM, it)
-            val small = String.format(URL_USER_AVATAR_SMALL, it)
-            val list = mutableListOf<String>()
-            if (includeBig) {
-                list.add(big)
-                list.add(mid)
-            } else if (includeMid) {
-                list.add(mid)
-            }
-            list.add(small)
-            return@let list
-        }
-    }
-
-    fun getAvatarSmallUrl(userId: String?): String? {
-        return getUserAvatarPath(userId)?.let {
-            return@let String.format(URL_USER_AVATAR_SMALL, it)
-        }
-    }
-
-    fun getAvatarMediumUrl(userId: String?): String? {
-        return getUserAvatarPath(userId)?.let {
-            return@let String.format(URL_USER_AVATAR_MEDIUM, it)
-        }
+    fun getAvatarUrls(userId: String?): List<String> {
+        return listOfNotNull(getAvatarBigUrl(userId))
     }
 
     fun getAvatarBigUrl(userId: String?): String? {

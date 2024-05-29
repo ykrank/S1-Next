@@ -92,8 +92,7 @@ object ImageViewBindingAdapter {
             bezelImageView.setTag(R.id.tag_drawable_info, null)
             AvatarUrlsCache.clearUserAvatarCache(user.uid)
             // setup user's avatar
-            requestManager
-                .load(AvatarUrl(Api.getAvatarMediumUrl(user.uid)))
+            requestManager.load(AvatarUrl(Api.getAvatarBigUrl(user.uid)))
                 .apply(
                     RequestOptions()
                         .circleCrop()
@@ -161,39 +160,26 @@ object ImageViewBindingAdapter {
             bezelImageView,
             null,
             null,
-            false,
-            false,
             null,
             downloadPreferencesManager,
             newUid,
-            false,
-            false,
             null
         )
     }
 
     @JvmStatic
-    @BindingAdapter("downloadPreferencesManager", "uid", "big", "preLoad", "thumb")
+    @BindingAdapter("downloadPreferencesManager", "uid", "thumb")
     fun loadAvatar(
         bezelImageView: ImageView,
         oldManager: DownloadPreferencesManager?,
         oldUid: String?,
-        oldBig: Boolean,
-        oldPreLoad: Boolean,
         oldThumbUrl: String?,
         newManager: DownloadPreferencesManager,
         newUid: String?,
-        newBig: Boolean,
-        newPreLoad: Boolean,
         newThumbUrl: String?
     ) {
-        if (oldManager == newManager && TextUtils.equals(
-                oldUid,
-                newUid
-            ) && oldBig == newBig && oldPreLoad == newPreLoad && TextUtils.equals(
-                oldThumbUrl,
-                newThumbUrl
-            )
+        if (oldManager == newManager && oldUid == newUid &&
+            oldThumbUrl == newThumbUrl
         ) {
             return
         }
@@ -204,7 +190,7 @@ object ImageViewBindingAdapter {
         if (TextUtils.isEmpty(newUid)) {
             loadPlaceHolderAvatar(bezelImageView)
         } else {
-            loadRoundAvatar(bezelImageView, newManager, newUid, newBig, newPreLoad, newThumbUrl)
+            loadRoundAvatar(bezelImageView, newManager, newUid, newThumbUrl)
         }
     }
 
@@ -218,22 +204,10 @@ object ImageViewBindingAdapter {
 
     private fun loadRoundAvatar(
         imageView: ImageView, downloadPreferencesManager: DownloadPreferencesManager,
-        uid: String?, isBig: Boolean, preLoad: Boolean, thumbUrl: String?
+        uid: String?, thumbUrl: String?
     ) {
-        val urls = Api.getAvatarUrls(
-            uid,
-            includeBig = isBig,
-            includeMid = downloadPreferencesManager.isHighResolutionAvatarsDownload
-        )
-        if (preLoad) {
-            if (isBig) { //show thumb
-                val thumbUrls: MutableList<String?> = mutableListOf(thumbUrl)
-                loadRoundAvatar(imageView, downloadPreferencesManager, thumbUrls, null, true)
-            }
-            preloadRoundAvatar(imageView, downloadPreferencesManager, urls)
-        } else {
-            loadRoundAvatar(imageView, downloadPreferencesManager, urls, thumbUrl, isBig)
-        }
+        val urls = Api.getAvatarUrls(uid)
+        loadRoundAvatar(imageView, downloadPreferencesManager, urls, thumbUrl, false, 0)
     }
 
     private fun preloadRoundAvatar(
@@ -289,20 +263,18 @@ object ImageViewBindingAdapter {
 
     private fun loadRoundAvatar(
         imageView: ImageView, downloadPreferencesManager: DownloadPreferencesManager,
-        urls: List<String?>?, thumbUrl: String?, fade: Boolean
+        urls: List<String?>?, thumbUrl: String?, fade: Boolean, loadIndex: Int,
     ) {
-        if (urls.isNullOrEmpty()) {
-            loadPlaceHolderAvatar(imageView)
-            return
-        }
-        val firstUrl = urls[0]
-        if (firstUrl.isNullOrEmpty()) {
-            loadPlaceHolderAvatar(imageView)
+        val url = urls?.getOrNull(loadIndex)
+        if (url.isNullOrEmpty()) {
+            if (loadIndex == 0) {
+                loadPlaceHolderAvatar(imageView)
+            }
             return
         }
         val requestManager = Glide.with(imageView)
         var listener = createBuilder(requestManager, downloadPreferencesManager)
-            .load(AvatarUrl(urls[0]))
+            .load(AvatarUrl(url))
             .apply(
                 RequestOptions()
                     .circleCrop()
@@ -321,9 +293,10 @@ object ImageViewBindingAdapter {
                         loadRoundAvatar(
                             imageView,
                             downloadPreferencesManager,
-                            urls.drop(1),
+                            urls,
                             thumbUrl,
-                            fade
+                            fade,
+                            loadIndex + 1,
                         )
                     }
                     return true
@@ -349,7 +322,12 @@ object ImageViewBindingAdapter {
                     return false
                 }
             })
-        listener = if (!TextUtils.isEmpty(thumbUrl)) {
+        listener = if (thumbUrl.isNullOrEmpty() || thumbUrl == url) {
+            listener.thumbnail(
+                requestManager.load(me.ykrank.s1next.R.drawable.ic_drawer_avatar_placeholder)
+                    .apply(RequestOptions.circleCropTransform())
+            )
+        } else {
             listener.thumbnail(
                 createBuilder(requestManager, downloadPreferencesManager)
                     .load(AvatarUrl(thumbUrl))
@@ -359,11 +337,6 @@ object ImageViewBindingAdapter {
                             .signature(downloadPreferencesManager.avatarCacheInvalidationIntervalSignature)
                             .diskCacheStrategy(DiskCacheStrategy.DATA)
                     )
-            )
-        } else {
-            listener.thumbnail(
-                requestManager.load(me.ykrank.s1next.R.drawable.ic_drawer_avatar_placeholder)
-                    .apply(RequestOptions.circleCropTransform())
             )
         }
         if (fade) {
