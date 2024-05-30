@@ -13,6 +13,15 @@ object AppDeviceUtil {
         return BuildConfig.VERSION_NAME
     }
 
+    @JvmStatic
+    fun getAppDownloadUrl(): String {
+        return if (BuildConfig.BUILD_TYPE == "alpha") {
+            "https://www.pgyer.com/xfPejhuq"
+        } else {
+            "https://www.pgyer.com/xfPejhuq"
+        }
+    }
+
     /**
      * Gets the string signature which is used for reply (show in setting).
      */
@@ -20,6 +29,7 @@ object AppDeviceUtil {
         return context.getString(
             R.string.signature,
             deviceNameWithVersion,
+            getAppDownloadUrl(),
             getAppFullVersionName()
         )
     }
@@ -31,6 +41,7 @@ object AppDeviceUtil {
         return context.getString(
             R.string.signature_in_reply,
             deviceNameWithVersion,
+            getAppDownloadUrl(),
             getAppFullVersionName()
         )
     }
