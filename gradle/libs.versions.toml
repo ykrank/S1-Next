@@ -1,36 +1,46 @@
+[plugins]
+
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+gradleVersionsPlugin = { id = "com.github.ben-manes.versions", version.ref = "gradleVersionsPlugin" }
+jetbrainsKotlinKapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+androidKsp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }
+
 [versions]
+
 adapterdelegates3 = "3.1.0"
-adapterRxjava2 = "2.9.0"
-alicloudAndroidHttpdns = "2.3.5"
+adapterRxjava2 = "2.11.0"
+alicloudAndroidHttpdns = "2.4.0"
 androidautodispose = "0.4.0"
 cardview = "1.0.0"
-commonsLang3 = "3.12.0"
+commonsLang3 = "3.14.0"
 databinding_compiler = "3.1.4"
-compress = "v3.10.7"
+compress = "v3.11.3"
 constraintlayout = "2.1.4"
-converterScalars = "2.9.0"
+converterScalars = "2.11.0"
 bugly_crashreport = "4.1.9.3"
 bugly_crashreport_upgrade = "1.6.1"
 bugly_nativecrashreport = "3.9.2"
 dagger = "2.51.1"
 filepicker = "4.2.1"
-flipperNoop = "0.177.0"
+flipperNoop = "0.250.0"
 glide = "4.16.0"
-guava = "31.0.1-android"
-jackson = "2.14.1"
+guava = "33.2.0-android"
+jackson = "2.17.1"
 jolyglot_jackson = "0.0.6"
-jsoup = "1.15.3"
-leakcanaryAndroid = "2.10"
+jsoup = "1.17.2"
+leakcanaryAndroid = "2.14"
 leakcanaryAndroidNoOp = "1.6.3"
 legacyPreferenceV14 = "1.0.0"
 legacySupportV4 = "1.0.0"
-lifecycleLivedataKtx = "2.7.0"
+lifecycleLivedataKtx = "2.8.1"
 logger = "2.2.0"
-material = "1.11.0"
+material = "1.12.0"
 multidex = "2.0.1"
 okdownload = "1.0.7"
 okhttp = "5.0.0-alpha.14"
-okhttp3Integration = "4.14.2"
+okhttp3Integration = "4.16.0"
 okhttpUrlconnection = "5.0.0-alpha.14"
 okhttpVersion = "1.0.7"
 paperparcel = "2.0.8"
@@ -39,36 +49,33 @@ paperparcelCompiler = "2.0.8"
 paperparcelKotlin = "2.0.8"
 percentlayout = "1.0.0"
 photoview = "2.3.0"
-pictureselector = "v3.0.8"
+pictureselector = "v3.11.3"
 quicksidebar = "1.0.3"
 retrofit = "2.11.0"
 rxcache_runtime = "1.8.3-2.x"
 rxandroid = "2.1.1"
 rxjava = "2.2.21"
 rxkotlin = "2.4.0"
-soloader = "0.10.5"
-gradle = "8.3.2"
+soloader = "0.11.0"
 gradleVersionsPlugin = "0.51.0"
-kotlin = "1.9.21"
-kotlinKsp = "1.9.21-1.0.15"
-coreKtx = "1.13.0"
+kotlin = "2.0.0"
+kotlinKsp = "2.0.0-1.0.21"
+coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.7.0"
-activityCompose = "1.9.0"
-composeBom = "2024.04.01"
-paging = "3.2.1"
+lifecycleRuntimeKtx = "2.8.1"
+paging = "3.3.0"
 room = "2.6.1"
 sqlite = "1.0.7"
-transition = "1.4.1"
+transition = "1.5.0"
 largeimageview = "1.1.0"
 compileSdk = "34"
 targetSdk = "30"
-agp = "8.3.2"
-
+agp = "8.4.1"
 
 [libraries]
+
 adapterdelegates3 = { module = "com.hannesdorfmann:adapterdelegates3", version.ref = "adapterdelegates3" }
 alicloud-android-httpdns = { module = "com.aliyun.ams:alicloud-android-httpdns", version.ref = "alicloudAndroidHttpdns" }
 androidautodispose = { module = "com.github.ykrank:androidautodispose", version.ref = "androidautodispose" }
@@ -97,7 +104,6 @@ dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = 
 filepicker = { module = "com.nononsenseapps:filepicker", version.ref = "filepicker" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glide-okhttp3-integration = { module = "com.github.bumptech.glide:okhttp3-integration", version.ref = "okhttp3Integration" }
-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
@@ -107,14 +113,6 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
-androidx-ui = { group = "androidx.compose.ui", name = "ui" }
-androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
@@ -147,11 +145,3 @@ rxkotlin = { module = "io.reactivex.rxjava2:rxkotlin", version.ref = "rxkotlin" 
 soloader = { module = "com.facebook.soloader:soloader", version.ref = "soloader" }
 sqlite = { module = "com.liulishuo.okdownload:sqlite", version.ref = "sqlite" }
 largeimageview = { module = "com.shizhefei:LargeImageView", version.ref = "largeimageview" }
-
-[plugins]
-androidApplication = { id = "com.android.application", version.ref = "agp" }
-androidLibrary = { id = "com.android.library", version.ref = "agp" }
-jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-gradleVersionsPlugin = { id = "com.github.ben-manes.versions", version.ref = "gradleVersionsPlugin" }
-jetbrainsKotlinKpt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-androidKsp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }

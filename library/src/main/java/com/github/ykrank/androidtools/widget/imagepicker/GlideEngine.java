@@ -5,24 +5,22 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.github.ykrank.androidtools.R;
 import com.luck.picture.lib.engine.ImageEngine;
 import com.luck.picture.lib.interfaces.OnCallbackListener;
 import com.luck.picture.lib.utils.ActivityCompatHelper;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 /**
  * @author：luck
  * @date：2019-11-13 17:02
  * @describe：Glide加载引擎
- *
  * @see <a href="https://github.com/LuckSiege/PictureSelector/blob/3b8f1024f14daaf1a6abe96dc98684371195acb1/app/src/main/java/com/luck/pictureselector/GlideEngine.java">demo</a>
  */
 public class GlideEngine implements ImageEngine {
@@ -44,6 +42,17 @@ public class GlideEngine implements ImageEngine {
                 .into(imageView);
     }
 
+    @Override
+    public void loadImage(Context context, ImageView imageView, String url, int maxWidth, int maxHeight) {
+        if (!ActivityCompatHelper.assertValidRequest(context)) {
+            return;
+        }
+        Glide.with(context)
+                .load(url)
+                .override(maxWidth, maxHeight)
+                .into(imageView);
+    }
+
     /**
      * 加载指定url并返回bitmap
      *
@@ -53,7 +62,6 @@ public class GlideEngine implements ImageEngine {
      * @param maxHeight 资源最大加载尺寸
      * @param call      回调接口
      */
-    @Override
     public void loadImageBitmap(@NonNull Context context, @NonNull String url, int maxWidth, int maxHeight, OnCallbackListener<Bitmap> call) {
         if (!ActivityCompatHelper.assertValidRequest(context)) {
             return;
