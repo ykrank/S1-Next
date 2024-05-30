@@ -92,5 +92,6 @@
         android:key="@string/pref_key_check_update"
         android:persistent="false"
         android:title="@string/pref_check_update"
+        android:summary="@string/pref_check_update_summary"
         app:iconSpaceReserved="false" />
 </PreferenceScreen>

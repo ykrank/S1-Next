@@ -28,8 +28,4 @@ public class BuglyUtils {
             CrashReport.setIsDevelopmentDevice(appContext, BuildConfig.DEBUG);
         });
     }
-
-    public static void checkUpdate() {
-
-    }
 }

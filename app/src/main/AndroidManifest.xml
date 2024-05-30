@@ -6,10 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- to update image loader policy -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- only need IMEI to verify user -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- self update -->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <queries>

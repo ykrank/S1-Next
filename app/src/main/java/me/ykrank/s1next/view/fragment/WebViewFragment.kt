@@ -1,8 +1,6 @@
 package me.ykrank.s1next.view.fragment
 
 import android.annotation.SuppressLint
-import androidx.databinding.DataBindingUtil
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +10,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
+import androidx.databinding.DataBindingUtil
 import com.github.ykrank.androidtools.util.WebViewUtils
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -44,7 +43,7 @@ class WebViewFragment : BaseFragment(), BackPressDelegate {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val bundle = arguments!!
+        val bundle = requireArguments()
         url = bundle.getString(ARG_URL)!!
         enableJs = bundle.getBoolean(ARG_ENABLE_JS)
         pcAgent = bundle.getBoolean(ARG_PC_AGENT)
@@ -101,20 +100,14 @@ class WebViewFragment : BaseFragment(), BackPressDelegate {
         webSettings.javaScriptEnabled = enableJs
         webSettings.cacheMode = WebSettings.LOAD_DEFAULT
         webSettings.setSupportZoom(true)  //支持缩放
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
-        } else {
-            webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
-        }
+        webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
         webSettings.javaScriptCanOpenWindowsAutomatically = true //支持通过JS打开新窗口
         if (pcAgent) {
             webSettings.userAgentString = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:51.0) Gecko/20100101 Firefox/51.0"
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //Since Lollipop (API 21), WebView blocks all mixed content by default.
-            //But login page need load mixed content
-            webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
-        }
+        //Since Lollipop (API 21), WebView blocks all mixed content by default.
+        //But login page need load mixed content
+        webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
     }
 
     private fun initWebViewClient() {
@@ -128,7 +121,7 @@ class WebViewFragment : BaseFragment(), BackPressDelegate {
 
         binding.webView.webChromeClient = ProgressWebChromeClient(binding.progressBar)
 
-        WebViewUtils.syncWebViewCookies(context!!, mCookieManager.cookieStore)
+        WebViewUtils.syncWebViewCookies(requireContext(), mCookieManager.cookieStore)
     }
 
     companion object {

@@ -15,6 +15,7 @@
 
     <string name="pref_advanced">Advanced</string>
     <string name="pref_check_update">Check update</string>
+    <string name="pref_check_update_summary">Password: eo</string>
     <string name="pref_downloads">Downloads</string>
     <string name="pref_downloads_summary">Data &amp; Avatar &amp; Image</string>
     <string name="pref_blacklists">Blacklist</string>

@@ -18,10 +18,11 @@ import me.ykrank.s1next.R
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.data.pref.ThemeManager
 import me.ykrank.s1next.util.AppDeviceUtil
+import me.ykrank.s1next.util.AppUpdate
 import me.ykrank.s1next.util.BuglyUtils
-import me.ykrank.s1next.view.page.setting.SettingsActivity
 import me.ykrank.s1next.view.event.FontSizeChangeEvent
 import me.ykrank.s1next.view.event.ThemeChangeEvent
+import me.ykrank.s1next.view.page.setting.SettingsActivity
 import me.ykrank.s1next.widget.span.HtmlCompat
 import me.ykrank.s1next.widget.span.HtmlCompat.FROM_HTML_MODE_LEGACY
 import javax.inject.Inject
@@ -110,7 +111,7 @@ class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefere
                 return true
             }
             getString(R.string.pref_key_check_update) -> {
-                BuglyUtils.checkUpdate()
+                AppUpdate.checkUpdate(preference.context)
                 return true
             }
             else -> return false
