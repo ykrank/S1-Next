@@ -1,9 +1,7 @@
 package com.github.ykrank.androidtools.widget.glide.transformations.internal;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RSRuntimeException;
@@ -32,8 +30,10 @@ import android.renderscript.ScriptIntrinsicBlur;
 
 public class RSBlur {
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    public static Bitmap blur(Context context, Bitmap bitmap, int radius) throws RSRuntimeException {
+    /**
+     * Android 31后，RenderScript开始废弃
+     */
+    public static void blur(Context context, Bitmap bitmap, int radius) throws RSRuntimeException {
         RenderScript rs = null;
         Allocation input = null;
         Allocation output = null;
@@ -64,7 +64,5 @@ public class RSBlur {
                 blur.destroy();
             }
         }
-
-        return bitmap;
     }
 }

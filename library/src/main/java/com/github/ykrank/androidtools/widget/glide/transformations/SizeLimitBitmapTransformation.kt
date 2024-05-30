@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import java.security.MessageDigest
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * A [com.bumptech.glide.load.Transformation] for transforming [Bitmap]'s
@@ -17,10 +19,10 @@ class SizeLimitBitmapTransformation(private val mSize: Int) : BitmapTransformati
     override fun transform(pool: BitmapPool, toTransform: Bitmap, outWidth: Int, outHeight: Int): Bitmap {
         val resWidth = toTransform.width
         val resHeight = toTransform.height
-        if (mSize >= Math.max(resWidth, resHeight)) {
+        if (mSize >= max(resWidth, resHeight)) {
             return toTransform
         }
-        val mSizeMultiplier = Math.min(mSize.toFloat() / resWidth, mSize.toFloat() / resHeight)
+        val mSizeMultiplier = min(mSize.toFloat() / resWidth, mSize.toFloat() / resHeight)
         return TransformationUtil.sizeMultiplier(pool, toTransform, mSizeMultiplier)
     }
 

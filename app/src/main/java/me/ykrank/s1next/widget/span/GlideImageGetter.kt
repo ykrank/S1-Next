@@ -21,6 +21,7 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
@@ -32,7 +33,6 @@ import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.FitOutWidt
 import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.GlMaxTextureSizeDownSampleStrategy
 import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.MultiDownSampleStrategy
 import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.SizeDownSampleStrategy
-import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.SizeMultiplierDownSampleStrategy
 import com.github.ykrank.androidtools.widget.glide.transformations.FitOutWidthBitmapTransformation
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.uber.autodispose.SingleScoper
@@ -81,7 +81,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
                 //Do not cache asset
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 //Original size because gif could not downSample
-                .downsample(SizeMultiplierDownSampleStrategy(1.0f))
+                .downsample(DownsampleStrategy.NONE)
     }
     private val emoticonRequestOptions by lazy {
         RequestOptions()
@@ -89,7 +89,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
                 //Only cache data before decode, because we change drawable bounds
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 //Original size because gif could not downSample
-                .downsample(SizeMultiplierDownSampleStrategy(1.0f))
+                .downsample(DownsampleStrategy.NONE)
     }
     private val glideRequestOptions by lazy {
         RequestOptions()

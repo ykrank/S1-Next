@@ -1,8 +1,12 @@
 package com.github.ykrank.androidtools.widget.glide.transformations
 
-import android.annotation.TargetApi
-import android.opengl.*
-import android.os.Build
+import android.opengl.EGL14
+import android.opengl.EGLConfig
+import android.opengl.EGLContext
+import android.opengl.EGLDisplay
+import android.opengl.EGLSurface
+import android.opengl.GLES10
+import android.opengl.GLES20
 import com.github.ykrank.androidtools.util.L
 import javax.microedition.khronos.opengles.GL10
 
@@ -28,7 +32,6 @@ internal class GlMaxTextureCalculator {
      * and http://stackoverflow.com/q/26985858
      */
     private val gl20MaxTextureSize: Int
-        @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
         get() {
             var eglDisplay: EGLDisplay? = null
             var eglContext: EGLContext? = null
@@ -95,18 +98,14 @@ internal class GlMaxTextureCalculator {
         }
 
     init {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            glMaxTextureSize = gl20MaxTextureSize
-        } else {
-            glMaxTextureSize = gl10MaxTextureSize
-        }
+        glMaxTextureSize = gl20MaxTextureSize
         if (glMaxTextureSize <= 0) {
             glMaxTextureSize = GL_TEXTURE_SIZE_MINIMUM
         }
     }
 
     companion object {
-        private val GL_TEXTURE_SIZE_MINIMUM = 2048
+        private const val GL_TEXTURE_SIZE_MINIMUM = 2048
 
         val instance: GlMaxTextureCalculator by lazy {
             GlMaxTextureCalculator()

@@ -2,6 +2,7 @@ package com.github.ykrank.androidtools.widget.glide.downsamplestrategy
 
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.github.ykrank.androidtools.widget.glide.transformations.GlMaxTextureCalculator
+import kotlin.math.min
 
 /**
  * A DownsampleStrategy for Downsample Bitmap]'s size not to exceed the OpenGl texture size limit.
@@ -10,7 +11,7 @@ import com.github.ykrank.androidtools.widget.glide.transformations.GlMaxTextureC
 class GlMaxTextureSizeDownSampleStrategy : DownsampleStrategy() {
     override fun getScaleFactor(sourceWidth: Int, sourceHeight: Int, requestedWidth: Int, requestedHeight: Int): Float {
         val maxTextureSize: Float = GlMaxTextureCalculator.instance.glMaxTextureSize.toFloat()
-        val sizeMultiplier: Float = Math.min(maxTextureSize / sourceWidth, maxTextureSize / sourceHeight)
+        val sizeMultiplier: Float = min(maxTextureSize / sourceWidth, maxTextureSize / sourceHeight)
         return if (sizeMultiplier < 1) sizeMultiplier else 1.0F
     }
 

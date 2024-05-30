@@ -1,6 +1,7 @@
 package com.github.ykrank.androidtools.widget.glide.downsamplestrategy
 
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
+import kotlin.math.min
 
 /**
  * A DownsampleStrategy for Downsample Bitmap]'s size with target size.Scale type use CENTER_INSIDE
@@ -9,7 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
  */
 class SizeDownSampleStrategy(val size: Int) : DownsampleStrategy() {
     override fun getScaleFactor(sourceWidth: Int, sourceHeight: Int, requestedWidth: Int, requestedHeight: Int): Float {
-        return Math.min(size.toFloat() / sourceWidth, size.toFloat() / sourceHeight)
+        return min(size.toFloat() / sourceWidth, size.toFloat() / sourceHeight)
     }
 
     override fun getSampleSizeRounding(sourceWidth: Int, sourceHeight: Int, requestedWidth: Int, requestedHeight: Int): SampleSizeRounding {
