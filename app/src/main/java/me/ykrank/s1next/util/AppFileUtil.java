@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -64,6 +65,15 @@ public class AppFileUtil {
         }
 
         return file;
+    }
+
+    /**
+     * create a random file name
+     */
+    @NonNull
+    public static String createRandomFileName(@NonNull String suffix) {
+        String name = BuildConfig.APPLICATION_ID.replace(".", "_") + System.currentTimeMillis();
+        return name + suffix;
     }
 
     /**

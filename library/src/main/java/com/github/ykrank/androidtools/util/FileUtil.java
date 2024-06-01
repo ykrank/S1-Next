@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -15,6 +16,7 @@ import com.bumptech.glide.load.engine.bitmap_recycle.ArrayPool;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -93,8 +95,37 @@ public class FileUtil {
         }
     }
 
+    public static void copyFile(@NonNull File source, @NonNull OutputStream outputStream) throws IOException {
+        BufferedSource bufferedSource = null;
+        BufferedSink bufferedSink = null;
+        try {
+            bufferedSource = Okio.buffer(Okio.source(source));
+            bufferedSink = Okio.buffer(Okio.sink(outputStream));
+            bufferedSink.writeAll(bufferedSource);
+        } finally {
+            if (bufferedSink != null) {
+                try {
+                    bufferedSink.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (bufferedSource != null) {
+                try {
+                    bufferedSource.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     public static void notifyImageInMediaStore(@NonNull Context context, @NonNull File file) {
-        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file.getAbsolutePath())));
+        notifyImageInMediaStore(context, Uri.parse("file://" + file.getAbsolutePath()));
+    }
+
+    public static void notifyImageInMediaStore(@NonNull Context context, @NonNull Uri uri) {
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
     }
 
     @NonNull
