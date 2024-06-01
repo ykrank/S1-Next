@@ -117,6 +117,9 @@ android {
             manifestPlaceholders["APP_CHANNEL"] = "normal"
         }
     }
+    androidResources {
+        generateLocaleConfig = true
+    }
 }
 
 ksp {
