@@ -1,16 +1,20 @@
 package me.ykrank.s1next.view.fragment
 
-import android.Manifest
-import android.content.pm.PackageManager
+import android.app.Activity
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.annotation.RequiresPermission
-import androidx.core.app.ActivityCompat
+import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.RequestBuilder
@@ -63,6 +67,28 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
     private var largeModeMenu: MenuItem? = null
     private var large = false
 
+    private var resourceFile: File? = null
+
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            if (resourceFile == null) return@registerForActivityResult
+            val uri = result.data?.data ?: return@registerForActivityResult
+            RxJavaUtil.workWithUiResult({
+                FileUtil.copyFile(resourceFile!!, requireContext().contentResolver.openOutputStream(uri)!!)
+                return@workWithUiResult uri
+            }, { f ->
+                Snackbar.make(binding.root, R.string.download_success, Snackbar.LENGTH_SHORT)
+                        .show()
+                context?.let { FileUtil.notifyImageInMediaStore(it, f) }
+            }) { e ->
+                L.report(e)
+                Toast.makeText(context, R.string.download_unknown_error, Toast.LENGTH_SHORT)
+                        .show()
+            }
+        }
+    }
+
+
     @Inject
     internal lateinit var trackAgent: DataTrackAgent
 
@@ -70,9 +96,9 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
     internal lateinit var mDownloadPrefManager: DownloadPreferencesManager
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
@@ -116,18 +142,6 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_download -> {
-                if (ActivityCompat.checkSelfPermission(
-                        context!!,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    )
-                    != PackageManager.PERMISSION_GRANTED
-                ) {
-                    requestPermissions(
-                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                        REQUEST_CODE_WRITE_EXTERNAL_STORAGE
-                    )
-                    return true
-                }
                 downloadImage()
                 return true
             }
@@ -146,33 +160,11 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == REQUEST_CODE_WRITE_EXTERNAL_STORAGE) {
-            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                try {
-                    downloadImage()
-                } catch (e: SecurityException) {
-                    Toast.makeText(
-                        context,
-                        com.github.ykrank.androidtools.R.string.message_permission_denied,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        }
-    }
-
     private fun preload() {
         preloadTarget = Glide.with(App.get())
-            .load(mImageUrl)
-            .priority(Priority.HIGH)
-            .preload()
+                .load(mImageUrl)
+                .priority(Priority.HIGH)
+                .preload()
     }
 
     private fun switchLargeImage(large: Boolean) {
@@ -191,28 +183,27 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
         }
     }
 
-    @RequiresPermission(value = Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private fun downloadImage() {
+        resourceFile = null
         var builder: RequestBuilder<File> = Glide.with(this)
-            .download(ForcePassUrl(mImageUrl))
+                .download(ForcePassUrl(mImageUrl))
         //avatar signature
         if (Api.isAvatarUrl(mImageUrl)) {
             builder = builder.apply(
-                RequestOptions()
-                    .signature(mDownloadPrefManager.avatarCacheInvalidationIntervalSignature)
+                    RequestOptions()
+                            .signature(mDownloadPrefManager.avatarCacheInvalidationIntervalSignature)
             )
         }
         builder.into(object : SimpleTarget<File>() {
             override fun onResourceReady(resource: File, transition: Transition<in File>?) {
-                RxJavaUtil.workWithUiResult({
+                resourceFile = resource
+                try {
                     val context = context ?: throw IllegalStateException("Context is null")
                     var name: String? = null
-                    val file: File
-                    val downloadDir = FileUtil.getDownloadDirectory(context)
                     val url = mImageUrl?.toHttpUrlOrNull()
                     if (url != null) {
                         val segments = url.encodedPathSegments
-                        if (segments.size > 0) {
+                        if (segments.isNotEmpty()) {
                             name = segments[segments.size - 1]
                         }
                         //sometime url is php
@@ -231,21 +222,19 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
                         if (!name!!.endsWith(imageType)) {
                             name += imageType
                         }
-                        file = File(downloadDir, name)
                     } else {
-                        file = AppFileUtil.newFileInDirectory(downloadDir, imageType)
+                        name = AppFileUtil.createRandomFileName(imageType)
                     }
-                    FileUtil.copyFile(resource, file)
-                    file
-                }, { f ->
-                    Snackbar.make(binding.root, R.string.download_success, Snackbar.LENGTH_SHORT)
-                        .show()
-                    context?.let { FileUtil.notifyImageInMediaStore(it, f) }
-                }) { e ->
+                    val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                        setType("*/*")
+                        putExtra(Intent.EXTRA_TITLE, name)
+                    }
+                    resultLauncher.launch(intent)
+                } catch (e: Exception) {
                     L.report(e)
-                    Toast.makeText(context, R.string.download_unknown_error, Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(context, R.string.download_unknown_error, Toast.LENGTH_SHORT).show()
                 }
+
             }
         })
     }
@@ -256,19 +245,19 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
         downloadId?.also {
             ProgressManager.addListener(it, object : ProgressListener {
                 override fun onProgress(
-                    task: DownloadTask,
-                    currentOffset: Long,
-                    totalLength: Long
+                        task: DownloadTask,
+                        currentOffset: Long,
+                        totalLength: Long
                 ) {
                     binding.progress =
-                        ProgressItem(totalLength, currentOffset, totalLength == currentOffset)
+                            ProgressItem(totalLength, currentOffset, totalLength == currentOffset)
                 }
 
                 override fun taskEnd(
-                    task: DownloadTask,
-                    cause: EndCause,
-                    realCause: java.lang.Exception?,
-                    model: Listener1Assist.Listener1Model
+                        task: DownloadTask,
+                        cause: EndCause,
+                        realCause: java.lang.Exception?,
+                        model: Listener1Assist.Listener1Model
                 ) {
                     binding.progress = ProgressItem(model.totalLength, model.totalLength, true)
                     if (realCause != null) {
@@ -289,11 +278,8 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
     companion object {
         val TAG: String = GalleryFragment::class.java.name
 
-        private val REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 0
-
         private const val ARG_IMAGE_URL = "image_url"
         private const val ARG_IMAGE_THUMB_URL = "image_thumb_url"
-
         fun instance(imageUrl: String, thumbUrl: String? = null): GalleryFragment {
             val fragment = GalleryFragment()
             val bundle = Bundle()
