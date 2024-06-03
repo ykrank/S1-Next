@@ -3,7 +3,6 @@ package com.github.ykrank.androidtools.util;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,44 +30,6 @@ import okio.Okio;
 public class FileUtil {
 
     static DecimalFormat df = new DecimalFormat("0.00");
-
-    /**
-     * get system download directory
-     */
-    @NonNull
-    public static File getDownloadDirectory(@NonNull Context context) {
-        String throwable = null;
-        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-
-        if (file != null) {
-            if (file.exists()) {
-                if (file.isDirectory()) {
-                    return file;
-                }
-            } else if (file.mkdirs()) {
-                return file;
-            }
-        }
-
-        file = context.getFilesDir();
-        if (file == null) {
-            throwable = "Failed to get local storage directory";
-        } else if (file.exists()) {
-            if (!file.isDirectory()) {
-                throwable = file.getAbsolutePath() + " already exists and is not a directory";
-            }
-        } else {
-            if (!file.mkdirs()) {
-                throwable = "Unable to create directory: " + file.getAbsolutePath();
-            }
-        }
-
-        if (throwable != null) {
-            throw new IllegalStateException(throwable);
-        }
-
-        return file;
-    }
 
     public static void copyFile(@NonNull File source, @NonNull File sink) throws IOException {
         BufferedSource bufferedSource = null;

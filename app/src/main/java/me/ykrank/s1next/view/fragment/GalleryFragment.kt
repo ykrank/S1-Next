@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -19,7 +18,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.github.chrisbanes.photoview.PhotoView
@@ -71,10 +70,12 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
 
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            if (resourceFile == null) return@registerForActivityResult
+            val resourceFile = this.resourceFile ?: return@registerForActivityResult
             val uri = result.data?.data ?: return@registerForActivityResult
             RxJavaUtil.workWithUiResult({
-                FileUtil.copyFile(resourceFile!!, requireContext().contentResolver.openOutputStream(uri)!!)
+                FileUtil.copyFile(resourceFile,
+                    requireContext().contentResolver.openOutputStream(uri)!!
+                )
                 return@workWithUiResult uri
             }, { f ->
                 Snackbar.make(binding.root, R.string.download_success, Snackbar.LENGTH_SHORT)
@@ -194,7 +195,7 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
                             .signature(mDownloadPrefManager.avatarCacheInvalidationIntervalSignature)
             )
         }
-        builder.into(object : SimpleTarget<File>() {
+        builder.into(object : CustomTarget<File>() {
             override fun onResourceReady(resource: File, transition: Transition<in File>?) {
                 resourceFile = resource
                 try {
@@ -218,8 +219,8 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
                         imageType = ".jpg"
                     }
 
-                    if (!TextUtils.isEmpty(name)) {
-                        if (!name!!.endsWith(imageType)) {
+                    if (!name.isNullOrEmpty()) {
+                        if (!name.endsWith(imageType)) {
                             name += imageType
                         }
                     } else {
@@ -235,6 +236,10 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
                     Toast.makeText(context, R.string.download_unknown_error, Toast.LENGTH_SHORT).show()
                 }
 
+            }
+
+            override fun onLoadCleared(placeholder: Drawable?) {
+                
             }
         })
     }
