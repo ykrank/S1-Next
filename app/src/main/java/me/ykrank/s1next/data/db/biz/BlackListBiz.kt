@@ -2,10 +2,10 @@ package me.ykrank.s1next.data.db.biz
 
 import android.database.Cursor
 import android.text.TextUtils
+import androidx.collection.LruCache
 import me.ykrank.s1next.App.Companion.appComponent
 import me.ykrank.s1next.data.db.AppDatabase
 import me.ykrank.s1next.data.db.AppDatabaseManager
-import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.dao.BlackListDao
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 
@@ -15,9 +15,8 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
     private val session: AppDatabase
         get() = manager.getOrBuildDb()
 
-    fun getAllBlackList(limit: Int, offset: Int): List<BlackList> {
-        return blackListDao.loadLimit(limit, offset)
-    }
+    private val idCache: LruCache<Int, BlackList> = LruCache(3000)
+    private val nameCache: LruCache<String, BlackList> = LruCache(3000)
 
     val blackListCursor: Cursor
         get() = blackListDao.loadCursor()
@@ -35,21 +34,71 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         )
     }
 
+    private fun readIdCache(id: Int): Pair<Boolean, BlackList?> {
+        val cache = idCache.get(id)
+        if (cache != null) {
+            if (cache === BlackList.EMPTY_BLACKLIST) {
+                return Pair(true, null)
+            }
+            return Pair(true, cache)
+        }
+        return Pair(false, null)
+    }
+
+    private fun readNameCache(name: String): Pair<Boolean, BlackList?> {
+        val cache = nameCache.get(name)
+        if (cache != null) {
+            if (cache === BlackList.EMPTY_BLACKLIST) {
+                return Pair(true, null)
+            }
+            return Pair(true, cache)
+        }
+        return Pair(false, null)
+    }
+
+    private fun refreshCache(blackList: BlackList, del: Boolean = false) {
+        if (blackList.authorId > 0) {
+            if (del) {
+                idCache.put(blackList.authorId, BlackList.EMPTY_BLACKLIST)
+            } else {
+                idCache.put(blackList.authorId, blackList)
+            }
+        }
+        blackList.author?.apply {
+            if (del) {
+                nameCache.put(this, BlackList.EMPTY_BLACKLIST)
+            } else {
+                nameCache.put(this, blackList)
+            }
+        }
+    }
+
+
     /**
      * 根据用户id查找记录。有效的只保留一条
      *
      * @param id
      * @return
      */
-    private fun getBlackListWithAuthorId(id: Int): BlackList? {
+    private fun getBlackListWithAuthorId(id: Int, enableCache: Boolean = false): BlackList? {
         if (id <= 0) {
             return null
         }
+        if (enableCache) {
+            val cachePair = readIdCache(id)
+            if (cachePair.first) {
+                return cachePair.second
+            }
+        }
+
         val results: MutableList<BlackList> = blackListDao.getByAuthorId(id).toMutableList()
         if (results.isEmpty()) {
+            idCache.put(id, BlackList.EMPTY_BLACKLIST)
             return null
         }
+        // 清理相同记录
         var result: BlackList? = null
+        // 优先保留同时有id和name的记录
         for (i in results.indices) {
             if (!TextUtils.isEmpty(results[i].author)) {
                 result = results.removeAt(i)
@@ -62,6 +111,8 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         if (results.isNotEmpty()) {
             blackListDao.delete(results)
         }
+
+        refreshCache(result)
         return result
     }
 
@@ -71,15 +122,27 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
      * @param name
      * @return
      */
-    private fun getBlackListWithAuthorName(name: String?): BlackList? {
+    private fun getBlackListWithAuthorName(
+        name: String?,
+        enableCache: Boolean = false
+    ): BlackList? {
         if (name.isNullOrEmpty()) {
             return null
         }
+        if (enableCache) {
+            val cachePair = readNameCache(name)
+            if (cachePair.first) {
+                return cachePair.second
+            }
+        }
         val results: MutableList<BlackList> = blackListDao.getByAuthor(name).toMutableList()
         if (results.isEmpty()) {
+            nameCache.put(name, BlackList.EMPTY_BLACKLIST)
             return null
         }
+        // 清理相同记录
         var result: BlackList? = null
+        // 优先保留同时有id和name的记录
         for (i in results.indices) {
             if (results[i].authorId > 0) {
                 result = results.removeAt(i)
@@ -92,6 +155,8 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         if (results.isNotEmpty()) {
             blackListDao.delete(results)
         }
+
+        refreshCache(result)
         return result
     }
 
@@ -101,48 +166,25 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
      * @param name
      * @return
      */
-    fun getMergedBlackList(id: Int, name: String?): BlackList? {
-        if (id <= 0) {
-            return getBlackListWithAuthorName(name)
+    fun getMergedBlackList(id: Int, name: String?, enableCache: Boolean = false): BlackList? {
+        if (id > 0) {
+            return getBlackListWithAuthorId(id, enableCache)
         }
-        if (name.isNullOrEmpty()) {
-            return getBlackListWithAuthorId(id)
+        if (!name.isNullOrEmpty()) {
+            return getBlackListWithAuthorName(name, enableCache)
         }
-        val results: MutableList<BlackList> =
-            blackListDao.getByAuthorAndId(id, name).toMutableList()
-        if (results.isEmpty()) {
-            return null
-        }
-        var result: BlackList? = null
-        var tempResult: BlackList
-        for (i in results.indices) {
-            tempResult = results[i]
-            if (tempResult.authorId == id && TextUtils.equals(tempResult.author, name)) {
-                result = results.removeAt(i)
-                break
-            }
-        }
-        if (result == null) {
-            result = results.removeAt(0)
-            result.authorId = id
-            result.author = name
-            blackListDao.update(listOf(result))
-        }
-        if (results.isNotEmpty()) {
-            blackListDao.delete(results)
-        }
-        return result
+        return null
     }
 
     @BlackList.ForumFLag
-    fun getForumFlag(id: Int, name: String?): Int {
-        val oBlackList: BlackList? = getMergedBlackList(id, name)
+    fun getForumFlag(id: Int, name: String?, enableCache: Boolean = false): Int {
+        val oBlackList: BlackList? = getMergedBlackList(id, name, enableCache)
         return oBlackList?.forum ?: BlackList.NORMAL
     }
 
     @BlackList.PostFLag
-    fun getPostFlag(id: Int, name: String): Int {
-        val oBlackList: BlackList? = getMergedBlackList(id, name)
+    fun getPostFlag(id: Int, name: String, enableCache: Boolean = false): Int {
+        val oBlackList: BlackList? = getMergedBlackList(id, name, enableCache)
         return oBlackList?.post ?: BlackList.NORMAL
     }
 
@@ -157,6 +199,7 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
             oBlackList.mergeFrom(blackList)
             blackListDao.update(listOf(oBlackList))
         }
+        refreshCache(blackList)
     }
 
     fun delBlackList(blackList: BlackList) {
@@ -164,9 +207,13 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         if (oBlackList != null) {
             blackListDao.delete(listOf(oBlackList))
         }
+        refreshCache(blackList, del = true)
     }
 
     fun delBlackLists(blackLists: List<BlackList>) {
+        blackLists.forEach {
+            refreshCache(it, del = true)
+        }
         blackListDao.delete(blackLists)
     }
 

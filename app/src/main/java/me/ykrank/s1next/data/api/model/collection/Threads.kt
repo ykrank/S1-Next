@@ -1,6 +1,5 @@
 package me.ykrank.s1next.data.api.model.collection
 
-import androidx.collection.ArrayMap
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
@@ -15,7 +14,6 @@ import me.ykrank.s1next.data.api.model.ThreadType
 import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.biz.ThreadBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackList
-import java.util.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Threads : Account {
@@ -89,7 +87,7 @@ class Threads : Account {
             LooperUtil.enforceOnWorkThread()
             var nThread: Thread = oThread
             val blackListWrapper = BlackListBiz.getInstance()
-            when (blackListWrapper.getForumFlag(oThread.authorId, oThread.author)) {
+            when (blackListWrapper.getForumFlag(oThread.authorId, oThread.author, enableCache = true)) {
                 BlackList.DEL_FORUM -> return null
                 BlackList.HIDE_FORUM -> if (!oThread.isHide) {
                     if (copyed) {

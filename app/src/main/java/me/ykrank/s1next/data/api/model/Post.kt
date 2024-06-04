@@ -184,7 +184,8 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         if (quoteName != null) {
             reply = replaceQuoteBr(reply)
             reply = replaceTextColor(reply)
-            val blackList = BlackListBiz.getInstance().getMergedBlackList(-1, quoteName)
+            val blackList =
+                BlackListBiz.getInstance().getMergedBlackList(-1, quoteName, enableCache = true)
             if (blackList != null && blackList.post != BlackList.NORMAL) {
                 return replaceBlockQuoteContent(reply, blackList.remark)
             }

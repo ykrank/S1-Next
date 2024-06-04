@@ -1,7 +1,12 @@
 package me.ykrank.s1next.data.api.model.collection
 
 import androidx.annotation.WorkerThread
-import com.fasterxml.jackson.annotation.*
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonGetter
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonSetter
 import com.github.ykrank.androidtools.util.StringUtil
 import me.ykrank.s1next.data.api.model.Account
 import me.ykrank.s1next.data.api.model.Post
@@ -14,7 +19,6 @@ import me.ykrank.s1next.data.db.dbmodel.BlackWord
 import org.apache.commons.lang3.StringUtils
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
-import java.util.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Posts : Account {
@@ -194,7 +198,7 @@ class Posts : Account {
             var newPost: Post = post
             val blackListWrapper = BlackListBiz.getInstance()
             val blackList = blackListWrapper.getMergedBlackList(post.authorId?.toIntOrNull()
-                    ?: -1, post.authorName)
+                    ?: -1, post.authorName, enableCache = true)
             if (blackList == null || blackList.post == BlackList.NORMAL) {
                 // 不在黑名单中
                 if (post.hide == Post.HIDE_USER) {

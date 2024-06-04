@@ -12,6 +12,8 @@ import me.ykrank.s1next.data.db.dbmodel.BlackWord
  */
 class BlackWordBiz(private val manager: AppDatabaseManager) {
 
+    private var cache: List<BlackWord>? = null
+
     private val blackWordDao: BlackWordDao
         get() = session.blackWord()
 
@@ -21,12 +23,14 @@ class BlackWordBiz(private val manager: AppDatabaseManager) {
     val blackWordCursor: Cursor
         get() = blackWordDao.loadCursor()
 
-    fun getAllBlackWord(limit: Int, offset: Int): List<BlackWord> {
-        return blackWordDao.loadLimit(limit, offset)
-    }
-
     fun getAllNotNormalBlackWord(): List<BlackWord> {
-        return blackWordDao.loadNotNormal()
+        val tCache = cache
+        if (tCache != null) {
+            return tCache
+        }
+        return blackWordDao.loadNotNormal().apply {
+            cache = this
+        }
     }
 
     fun fromBlackWordCursor(cursor: Cursor): BlackWord {
@@ -48,6 +52,7 @@ class BlackWordBiz(private val manager: AppDatabaseManager) {
     }
 
     fun saveBlackWord(blackWord: BlackWord) {
+        cache = null
         if (blackWord.id == null) {
             blackWordDao.insert(blackWord)
         } else {
@@ -56,10 +61,12 @@ class BlackWordBiz(private val manager: AppDatabaseManager) {
     }
 
     fun delBlackWord(blackWord: BlackWord) {
+        cache = null
         blackWordDao.delete(listOf(blackWord))
     }
 
     fun delBlackWords(blackWords: List<BlackWord>) {
+        cache = null
         blackWordDao.delete(blackWords)
     }
 

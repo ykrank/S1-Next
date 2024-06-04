@@ -2,7 +2,6 @@ package me.ykrank.s1next.data.db.dbmodel
 
 import android.os.Parcel
 import android.os.Parcelable
-import android.text.TextUtils
 import androidx.annotation.IntDef
 import androidx.annotation.StringRes
 import androidx.room.ColumnInfo
@@ -242,5 +241,6 @@ class BlackList : Parcelable {
         const val HIDE_FORUM = 3
         const val DEL_FORUM = 4
         const val timeFormat = "yyyy-MM-dd HH:mm"
+        val EMPTY_BLACKLIST = BlackList()
     }
 }

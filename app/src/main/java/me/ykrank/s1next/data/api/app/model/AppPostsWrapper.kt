@@ -47,7 +47,7 @@ class AppPostsWrapper() : AppListWrapper<AppPost>() {
         fun filterPost(post: AppPost): AppPost? {
             var nPost: AppPost? = post
             val blackListWrapper = BlackListBiz.getInstance()
-            val blackList = blackListWrapper.getMergedBlackList(post.authorId, post.author)
+            val blackList = blackListWrapper.getMergedBlackList(post.authorId, post.author, enableCache = true)
             if (blackList == null || blackList.post == BlackList.NORMAL) {
                 if (post.hide) {
                     nPost = post.clone()
@@ -136,7 +136,7 @@ class AppPost() : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         val quoteName = findBlockQuoteName(reply)
         if (quoteName != null) {
             reply = replaceQuoteBr(reply)
-            val blackList = BlackListBiz.getInstance().getMergedBlackList(-1, quoteName)
+            val blackList = BlackListBiz.getInstance().getMergedBlackList(-1, quoteName, enableCache = true)
             if (blackList != null && blackList.post != BlackList.NORMAL) {
                 return replaceBlockQuoteContent(reply, blackList.remark)
             }
