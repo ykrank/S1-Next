@@ -60,7 +60,7 @@ transition = "1.5.0"
 largeimageview = "1.1.0"
 compileSdk = "34"
 targetSdk = "34"
-agp = "8.4.1"
+agp = "8.3.2"
 
 [libraries]
 adapterdelegates3 = { module = "com.hannesdorfmann:adapterdelegates3", version.ref = "adapterdelegates3" }

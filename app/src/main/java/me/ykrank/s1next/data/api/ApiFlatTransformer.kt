@@ -85,12 +85,13 @@ object ApiFlatTransformer {
                 val account = it.data
                 // return the AccountResultWrapper if we cannot get the authenticity token
                 // (if account has expired or network error)
-                if (account.authenticityToken.isNullOrEmpty()) {
+                val newToken = account.authenticityToken
+                if (newToken.isNullOrEmpty()) {
                     return@flatMap Single.error<T>(ApiException.AuthenticityTokenException("获取登录信息错误",
-                            ApiException("AccountResultWrapper:" + it)))
+                            ApiException("AccountResultWrapper:$it")))
                 } else {
                     mUserValidator.validate(account)
-                    return@flatMap func.invoke(account.authenticityToken)
+                    return@flatMap func.invoke(newToken)
                 }
             }
         } else {

@@ -125,6 +125,9 @@ public interface S1Service {
     @GET(ApiHome.URL_MY_NOTE_LIST)
     Single<BaseDataWrapper<Notes>> getMyNotes(@Query("page") int page);
 
+    @GET(ApiHome.URL_MY_NOTE_LIST_SYSTEM)
+    Single<String> getMyNotesSystem(@Query("page") int page);
+
     @GET(ApiHome.URL_PROFILE)
     Single<BaseDataWrapper<Profile>> getProfile(@Query("uid") String uid);
 

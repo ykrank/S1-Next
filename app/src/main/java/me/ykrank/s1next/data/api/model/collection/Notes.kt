@@ -1,85 +1,33 @@
-package me.ykrank.s1next.data.api.model.collection;
+package me.ykrank.s1next.data.api.model.collection
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
-
-import java.util.List;
-
-import me.ykrank.s1next.data.api.model.Account;
-import me.ykrank.s1next.data.api.model.Note;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+import me.ykrank.s1next.data.api.model.Note
 
 /**
  * Created by ykrank on 2017/1/5.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Notes extends Account {
-    @JsonProperty("count")
-    private int count;
+class Notes : BaseAccountCollection<Note>() {
+
     @JsonProperty("groupid")
-    private int groupId;
-    @JsonProperty("page")
-    private int page;
-    @JsonProperty("perpage")
-    private int perPage;
-    @JsonProperty("list")
-    private List<Note> noteList;
+    var groupId = 0
 
-    public int getCount() {
-        return count;
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Notes) return false
+        if (!super.equals(other)) return false
+
+        if (groupId != other.groupId) return false
+
+        return true
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+        result = 31 * result + groupId
+        return result
     }
 
-    public int getGroupId() {
-        return groupId;
-    }
 
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
-    }
-
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public int getPerPage() {
-        return perPage;
-    }
-
-    public void setPerPage(int perPage) {
-        this.perPage = perPage;
-    }
-
-    public List<Note> getNoteList() {
-        return noteList;
-    }
-
-    public void setNoteList(List<Note> noteList) {
-        this.noteList = noteList;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Notes)) return false;
-        if (!super.equals(o)) return false;
-        Notes notes = (Notes) o;
-        return count == notes.count &&
-                groupId == notes.groupId &&
-                page == notes.page &&
-                perPage == notes.perPage &&
-                Objects.equal(noteList, notes.noteList);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(super.hashCode(), count, groupId, page, perPage, noteList);
-    }
 }

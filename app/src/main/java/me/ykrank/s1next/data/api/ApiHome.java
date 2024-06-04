@@ -20,6 +20,7 @@ public class ApiHome {
 
     //Notes
     static final String URL_MY_NOTE_LIST = Api.BASE_API_PREFIX + "mynotelist&view=mypost&type=post&version=3";
+    static final String URL_MY_NOTE_LIST_SYSTEM = Api.BASE_API_PREFIX + "mynotelist&view=system&type=post&version=3";
 
     //Profile
     static final String URL_PROFILE = Api.BASE_API_PREFIX + "profile";

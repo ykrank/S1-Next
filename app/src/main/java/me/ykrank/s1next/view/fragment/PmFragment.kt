@@ -10,13 +10,11 @@ import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
-import me.ykrank.s1next.data.api.model.Pm
 import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper
 import me.ykrank.s1next.view.activity.NewPmActivity
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter
 import me.ykrank.s1next.view.adapter.PmRecyclerViewAdapter
 import org.apache.commons.lang3.RandomUtils
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -75,7 +73,7 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item?.itemId) {
+        when (item.itemId) {
             R.id.menu_new_pm -> {
                 NewPmActivity.startNewPmActivityForResultMessage(activity!!, toUid!!, toUsername!!)
                 return true
@@ -92,9 +90,9 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
     override fun onNext(data: PmsWrapper) {
         super.onNext(data)
         val pms = data.data
-        pms.pmList?.let {
+        pms.list?.let {
             // update total page
-            val totalPage = MathUtil.divide(pms.total, pms.pmPerPage)
+            val totalPage = MathUtil.divide(pms.count, pms.perPage)
 
             mRecyclerAdapter.diffNewDataSet(it, false)
 
@@ -108,11 +106,11 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
 
     override fun appendNewData(oldData: PmsWrapper?, newData: PmsWrapper): PmsWrapper {
         if (oldData != null) {
-            val oldPmGroups = oldData.data.pmList
-            var newPmGroups: MutableList<Pm>? = newData.data.pmList
+            val oldPmGroups = oldData.data.list
+            var newPmGroups = newData.data.list?.toMutableList()
             if (newPmGroups == null) {
                 newPmGroups = ArrayList()
-                newData.data.pmList = newPmGroups
+                newData.data.list = newPmGroups
             }
             if (oldPmGroups != null) {
                 newPmGroups.addAll(0, oldPmGroups)

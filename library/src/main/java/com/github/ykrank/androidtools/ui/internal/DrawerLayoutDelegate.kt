@@ -1,28 +1,32 @@
 package com.github.ykrank.androidtools.ui.internal
 
 import android.content.res.Configuration
-import androidx.annotation.CallSuper
-import com.google.android.material.navigation.NavigationView
-import androidx.fragment.app.FragmentActivity
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.CallSuper
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.FragmentActivity
 import com.github.ykrank.androidtools.R
+import com.google.android.material.navigation.NavigationView
 
 
 /**
  * This class represents a delegate which you can use to add
  * [DrawerLayout] to [FragmentActivity].
  */
-abstract class DrawerLayoutDelegate constructor(protected val mFragmentActivity: androidx.fragment.app.FragmentActivity, private val mDrawerLayout: androidx.drawerlayout.widget.DrawerLayout, private val mNavigationView: NavigationView) {
+abstract class DrawerLayoutDelegate constructor(
+    protected val mFragmentActivity: FragmentActivity,
+    private val mDrawerLayout: DrawerLayout,
+    private val mNavigationView: NavigationView
+) {
     private lateinit var mDrawerToggle: ActionBarDrawerToggle
 
     private var mDrawerIndicatorEnabled = true
 
     /**
-     * @see android.support.v7.app.AppCompatActivity.onPostCreate
+     * @see [FragmentActivity.onPostCreate]
      */
     @CallSuper
     fun onPostCreate() {
@@ -33,7 +37,7 @@ abstract class DrawerLayoutDelegate constructor(protected val mFragmentActivity:
     }
 
     /**
-     * @see android.support.v7.app.AppCompatActivity.onOptionsItemSelected
+     * @see [FragmentActivity.onOptionsItemSelected]
      */
     @CallSuper
     fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -43,7 +47,7 @@ abstract class DrawerLayoutDelegate constructor(protected val mFragmentActivity:
     }
 
     /**
-     * @see android.support.v7.app.AppCompatActivity.onConfigurationChanged
+     * @see [FragmentActivity.onConfigurationChanged]
      */
     @CallSuper
     fun onConfigurationChanged(newConfig: Configuration) {
@@ -111,5 +115,5 @@ abstract class DrawerLayoutDelegate constructor(protected val mFragmentActivity:
         mDrawerLayout.openDrawer(GravityCompat.START)
     }
 
-    protected abstract fun setupNavDrawerItem(drawerLayout: androidx.drawerlayout.widget.DrawerLayout, navigationView: NavigationView)
+    protected abstract fun setupNavDrawerItem(drawerLayout: DrawerLayout, navigationView: NavigationView)
 }

@@ -2,7 +2,6 @@ package me.ykrank.s1next.view.internal
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
@@ -10,6 +9,8 @@ import android.view.WindowInsets
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import com.github.ykrank.androidautodispose.AndroidRxDispose
+import com.github.ykrank.androidlifecycle.event.ActivityEvent
 import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.ui.internal.DrawerLayoutDelegate
 import com.github.ykrank.androidtools.util.L
@@ -27,7 +28,14 @@ import me.ykrank.s1next.databinding.ActionViewNoticeCountBinding
 import me.ykrank.s1next.databinding.NavigationViewHeaderBinding
 import me.ykrank.s1next.task.AutoSignTask
 import me.ykrank.s1next.util.DonateUtils
-import me.ykrank.s1next.view.activity.*
+import me.ykrank.s1next.view.activity.FavouriteListActivity
+import me.ykrank.s1next.view.activity.ForumActivity
+import me.ykrank.s1next.view.activity.HelpActivity
+import me.ykrank.s1next.view.activity.HistoryActivity
+import me.ykrank.s1next.view.activity.LoginActivity
+import me.ykrank.s1next.view.activity.NoteActivity
+import me.ykrank.s1next.view.activity.PmActivity
+import me.ykrank.s1next.view.activity.UserHomeActivity
 import me.ykrank.s1next.view.dialog.AlipayDialogFragment
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.dialog.LogoutDialogFragment
@@ -86,22 +94,20 @@ class DrawerLayoutDelegateConcrete(
         binding.userViewModel = mUserViewModel
 
         // let status bar display over drawer if API >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // let DrawerLayout draw the insets area for the status bar
-            mFragmentActivity.window.statusBarColor = Color.TRANSPARENT
-            // add status bar height to drawer's header
-            drawerLayout.setOnApplyWindowInsetsListener { v, insets ->
-                val insetsTop = insets.systemWindowInsetTop
+        // let DrawerLayout draw the insets area for the status bar
+        mFragmentActivity.window.statusBarColor = Color.TRANSPARENT
+        // add status bar height to drawer's header
+        drawerLayout.setOnApplyWindowInsetsListener { v, insets ->
+            val insetsTop = insets.systemWindowInsetTop
 
-                val marginLayoutParams = binding.drawerUserAvatar.layoutParams as ViewGroup.MarginLayoutParams
-                marginLayoutParams.topMargin = insetsTop + v.context.resources
-                    .getDimensionPixelSize(com.github.ykrank.androidtools.R.dimen.drawer_avatar_margin_top)
+            val marginLayoutParams = binding.drawerUserAvatar.layoutParams as ViewGroup.MarginLayoutParams
+            marginLayoutParams.topMargin = insetsTop + v.context.resources
+                .getDimensionPixelSize(com.github.ykrank.androidtools.R.dimen.drawer_avatar_margin_top)
 
-                // see https://github.com/android/platform_frameworks_support/blob/master/v4/api21/android/support/v4/widget/DrawerLayoutCompatApi21.java#L86
-                // add DrawerLayout's default View.OnApplyWindowInsetsListener implementation
-                (v as DrawerLayout).setChildInsets(WindowInsets(insets), insetsTop > 0)
-                insets.consumeSystemWindowInsets()
-            }
+            // see https://github.com/android/platform_frameworks_support/blob/master/v4/api21/android/support/v4/widget/DrawerLayoutCompatApi21.java#L86
+            // add DrawerLayout's default View.OnApplyWindowInsetsListener implementation
+            (v as DrawerLayout).setChildInsets(WindowInsets(insets), insetsTop > 0)
+            insets.consumeSystemWindowInsets()
         }
 
 
@@ -129,6 +135,7 @@ class DrawerLayoutDelegateConcrete(
         binding.drawerAutoSign.setOnClickListener {
             if (!mUser.isSigned) {
                 mAutoSignTask.autoSign().compose(RxJavaUtil.iOSingleTransformer())
+                    .to(AndroidRxDispose.withSingle(activity, ActivityEvent.DESTROY))
                     .subscribe({ d ->
                         mUser.isSigned = d.signed
                         App.get().toast(d.msg, Toast.LENGTH_SHORT)
@@ -138,8 +145,8 @@ class DrawerLayoutDelegateConcrete(
     }
 
     private fun setupNavDrawerNotice(navigationView: NavigationView) {
-        pmNoticeBinding = ActionViewNoticeCountBinding.inflate(LayoutInflater.from(mFragmentActivity))!!
-        noteNoticeBinding = ActionViewNoticeCountBinding.inflate(LayoutInflater.from(mFragmentActivity))!!
+        pmNoticeBinding = ActionViewNoticeCountBinding.inflate(LayoutInflater.from(mFragmentActivity))
+        noteNoticeBinding = ActionViewNoticeCountBinding.inflate(LayoutInflater.from(mFragmentActivity))
         navigationView.menu.findItem(R.id.menu_pms).actionView = pmNoticeBinding.root
         navigationView.menu.findItem(R.id.menu_note).actionView = noteNoticeBinding.root
         refreshNoticeMenuItem()

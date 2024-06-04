@@ -1,7 +1,8 @@
 package me.ykrank.s1next.data.api.model.wrapper;
 
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.ykrank.androidtools.util.LooperUtil;
@@ -24,7 +25,7 @@ public class PmsWrapper extends BaseDataWrapper<Pms> {
     @NonNull
     public PmsWrapper setMsgToUsername(User me, String toUsername) {
         LooperUtil.enforceOnWorkThread();
-        List<Pm> pmList = getData().getPmList();
+        List<Pm> pmList = getData().getList();
         if (pmList == null || pmList.isEmpty()) {
             return this;
         }

@@ -14,7 +14,6 @@ import com.github.ykrank.androidtools.widget.RxBus
 import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.api.Api
-import me.ykrank.s1next.data.api.model.Note
 import me.ykrank.s1next.data.api.model.collection.Notes
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper
 import me.ykrank.s1next.databinding.FragmentNoteBinding
@@ -22,7 +21,6 @@ import me.ykrank.s1next.view.activity.WebViewActivity
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter
 import me.ykrank.s1next.view.adapter.NoteRecyclerViewAdapter
 import me.ykrank.s1next.view.event.NoticeRefreshEvent
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -61,11 +59,11 @@ class NoteFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<Notes>>() {
 
     override fun appendNewData(oldData: BaseDataWrapper<Notes>?, newData: BaseDataWrapper<Notes>): BaseDataWrapper<Notes> {
         if (oldData != null) {
-            val oldNotes = oldData.data.noteList
-            var newNotes: MutableList<Note>? = newData.data.noteList
+            val oldNotes = oldData.data.list
+            var newNotes = newData.data.list?.toMutableList()
             if (newNotes == null) {
                 newNotes = ArrayList()
-                newData.data.noteList = newNotes
+                newData.data.list = newNotes
             }
             if (oldNotes != null) {
                 newNotes.addAll(0, oldNotes)
@@ -81,8 +79,9 @@ class NoteFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<Notes>>() {
     override fun onNext(data: BaseDataWrapper<Notes>) {
         super.onNext(data)
         val notes = data.data
-        if (notes != null && notes.noteList != null) {
-            mRecyclerAdapter.diffNewDataSet(notes.noteList, false)
+        val noteList = notes?.list
+        if (notes != null && noteList != null) {
+            mRecyclerAdapter.diffNewDataSet(noteList, false)
             //update total page
             setTotalPages(MathUtil.divide(notes.count, notes.perPage))
         }

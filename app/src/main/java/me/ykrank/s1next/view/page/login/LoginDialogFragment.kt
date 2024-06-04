@@ -52,7 +52,7 @@ class LoginDialogFragment : BaseLoginDialogFragment<AccountResultWrapper>() {
             val time = System.currentTimeMillis()
             val user = RealLoginUser(
                 id = null,
-                uid = data.data.uid.toInt(),
+                uid = data.data.uid?.toInt() ?: 0,
                 name = data.data.username,
                 password = password,
                 questionId = questionId?.toString(),

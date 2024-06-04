@@ -1,12 +1,12 @@
 package me.ykrank.s1next.view.internal
 
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.util.ClipboardUtil
 import com.github.ykrank.androidtools.util.ResourceUtil
@@ -63,6 +63,8 @@ class ToolbarDelegate(private val mAppCompatActivity: AppCompatActivity, val too
         }
         return false
     }
+
+
 
     private fun onLongClick(anchor: View, title: String): Boolean {
         val binding = PopWindowTitleBinding.inflate(LayoutInflater.from(anchor.context))

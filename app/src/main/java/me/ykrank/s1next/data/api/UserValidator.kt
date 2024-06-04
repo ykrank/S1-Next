@@ -1,32 +1,18 @@
-package me.ykrank.s1next.data.api;
+package me.ykrank.s1next.data.api
 
-import androidx.annotation.Nullable;
-import android.text.TextUtils;
+import android.text.TextUtils
+import com.github.ykrank.androidtools.util.L
+import com.google.common.base.Objects
+import me.ykrank.s1next.App.Companion.get
+import me.ykrank.s1next.data.User
+import me.ykrank.s1next.data.api.app.model.AppLoginResult
+import me.ykrank.s1next.data.api.app.model.AppUserInfo
+import me.ykrank.s1next.data.api.model.Account
+import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper
+import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper
+import me.ykrank.s1next.task.AutoSignTask
 
-import com.google.common.base.Objects;
-import com.github.ykrank.androidtools.util.L;
-
-import me.ykrank.s1next.App;
-import me.ykrank.s1next.data.User;
-import me.ykrank.s1next.data.api.app.model.AppLoginResult;
-import me.ykrank.s1next.data.api.app.model.AppUserInfo;
-import me.ykrank.s1next.data.api.model.Account;
-import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
-import me.ykrank.s1next.task.AutoSignTask;
-
-public final class UserValidator {
-
-    private static final String INVALID_UID = "0";
-
-    private final User mUser;
-    private final AutoSignTask mAutoSignTask;
-
-    public UserValidator(User user, AutoSignTask autoSignTask) {
-        this.mUser = user;
-        this.mAutoSignTask = autoSignTask;
-    }
-
+class UserValidator(private val mUser: User, private val mAutoSignTask: AutoSignTask) {
     /**
      * Intercepts the data in order to check whether current user's login status
      * has changed and update user's status if needed.
@@ -34,55 +20,50 @@ public final class UserValidator {
      * @param d   The data we want to intercept.
      * @param <D> The data type.
      * @return Original data.
-     */
-    public <D> D validateIntercept(D d) {
-        Account account = null;
-        if (d instanceof BaseDataWrapper) {
-            account = ((BaseDataWrapper) d).getData();
-        } else if (d instanceof BaseResultWrapper) {
-            account = ((BaseResultWrapper) d).getData();
+    </D> */
+    fun <D> validateIntercept(d: D): D {
+        var account: Account? = null
+        if (d is BaseDataWrapper<*>) {
+            account = (d as BaseDataWrapper<*>).data
+        } else if (d is BaseResultWrapper<*>) {
+            account = (d as BaseResultWrapper<*>).data
         }
-
-        if (account != null) {
-            validate(account);
-        }
-
-        return d;
+        account?.let { validate(it) }
+        return d
     }
 
     /**
-     * Checks current user's login status and updates {@link User}'s in our app.
+     * Checks current user's login status and updates [User]'s in our app.
      */
-    public void validate(Account account) {
-        final boolean logged = mUser.isLogged();
-        String uid = account.getUid();
-        if (INVALID_UID.equals(uid) || TextUtils.isEmpty(uid)) {
+    fun validate(account: Account) {
+        val logged = mUser.isLogged
+        val uid = account.uid
+        if (INVALID_UID == uid || TextUtils.isEmpty(uid)) {
             if (logged) {
                 // if account has expired
-                mUser.setUid(null);
-                mUser.setName(null);
-                mUser.setLogged(false);
-                mUser.setSigned(false);
+                mUser.uid = null
+                mUser.name = null
+                mUser.isLogged = false
+                mUser.isSigned = false
             }
         } else {
             if (!logged) {
                 // if account has logged
-                mUser.setUid(uid);
-                mUser.setName(account.getUsername());
-                mUser.setLogged(true);
-                mUser.setSigned(false);
+                mUser.uid = uid
+                mUser.name = account.username
+                mUser.isLogged = true
+                mUser.isSigned = false
             }
         }
-        mUser.setPermission(account.getPermission());
-        mUser.setAuthenticityToken(account.getAuthenticityToken());
-
-        if (mUser.isLogged()) {
-            L.setUser(mUser.getUid(), mUser.getName());
-            if (mAutoSignTask.getLastCheck() == 0) {
-                mAutoSignTask.silentCheck();
+        mUser.permission = account.permission
+        mUser.authenticityToken = account.authenticityToken
+        if (mUser.isLogged) {
+            L.setUser(mUser.uid, mUser.name)
+            if (mAutoSignTask.lastCheck == 0L) {
+                mAutoSignTask.silentCheck()
             }
         }
-        App.Companion.get().getTrackAgent().setUser(mUser);
+        get().trackAgent.setUser(mUser)
     }
 
     /**
@@ -90,31 +71,34 @@ public final class UserValidator {
      *
      * @return whether app signed
      */
-    public boolean validateAppUserInfo(@Nullable AppUserInfo appUserInfo) {
+    fun validateAppUserInfo(appUserInfo: AppUserInfo?): Boolean {
         if (appUserInfo == null) {
-            return false;
+            return false
         }
-        if (!Objects.equal(appUserInfo.isSigned(), mUser.isSigned())) {
-            mUser.setSigned(appUserInfo.isSigned());
-            return true;
+        if (!Objects.equal(appUserInfo.isSigned, mUser.isSigned)) {
+            mUser.isSigned = appUserInfo.isSigned
+            return true
         }
-        return false;
+        return false
     }
 
     /**
-     * Checks current user's app login info and updates {@link User}'s in our app
+     * Checks current user's app login info and updates [User]'s in our app
      *
      * @return whether app login info valid
      */
-    public boolean validateAppLoginInfo(@Nullable AppLoginResult loginResult) {
+    fun validateAppLoginInfo(loginResult: AppLoginResult?): Boolean {
         if (loginResult == null) {
-            return false;
+            return false
         }
+        if (mUser.isLogged && TextUtils.equals(mUser.uid, loginResult.uid)) {
+            mUser.appSecureToken = loginResult.secureToken
+            return true
+        }
+        return false
+    }
 
-        if (mUser.isLogged() && TextUtils.equals(mUser.getUid(), loginResult.getUid())) {
-            mUser.setAppSecureToken(loginResult.getSecureToken());
-            return true;
-        }
-        return false;
+    companion object {
+        private const val INVALID_UID = "0"
     }
 }

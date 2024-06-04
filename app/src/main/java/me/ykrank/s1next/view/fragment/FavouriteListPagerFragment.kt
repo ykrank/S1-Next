@@ -1,7 +1,6 @@
 package me.ykrank.s1next.view.fragment
 
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import com.github.ykrank.androidtools.ui.internal.PagerCallback
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
@@ -53,16 +52,17 @@ class FavouriteListPagerFragment : BaseRecyclerViewFragment<BaseResultWrapper<Fa
 
     override fun onNext(data: BaseResultWrapper<Favourites>) {
         val favourites = data.data
-        if (favourites.favouriteList == null) {
+        val favouriteList = favourites.list
+        if (favouriteList == null) {
             consumeResult(data.result)
         } else {
             super.onNext(data)
 
-            mRecyclerAdapter.diffNewDataSet(favourites.favouriteList, true)
+            mRecyclerAdapter.diffNewDataSet(favouriteList, true)
 
             // update total page
-            mPagerCallback?.setTotalPages(MathUtil.divide(favourites.total,
-                    favourites.favouritesPerPage))
+            mPagerCallback?.setTotalPages(MathUtil.divide(favourites.count,
+                    favourites.perPage))
         }
     }
 
