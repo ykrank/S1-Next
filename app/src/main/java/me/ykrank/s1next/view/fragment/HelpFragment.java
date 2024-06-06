@@ -43,7 +43,7 @@ public final class HelpFragment extends Fragment {
      * https://developer.android.com/distribute/tools/promote/linking.html#OpeningDetails
      */
     private static final String ANDROID_APP_MARKET_LINK = "market://details?id=%s";
-    private static final String ANDROID_WEB_SITE_MARKET_LINK = "http://play.google.com/store/apps/details?id=%s";
+    private static final String ANDROID_WEB_SITE_MARKET_LINK = "https://play.google.com/store/apps/details?id=%s";
     private FragmentWebviewBinding mFragmentHelpBinding;
     private WebView mWebView;
 

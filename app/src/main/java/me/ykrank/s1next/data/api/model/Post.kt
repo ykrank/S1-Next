@@ -398,7 +398,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         @JsonCreator
         constructor(@JsonProperty("url") urlPrefix: String?,
                     @JsonProperty("attachment") urlSuffix: String?) {
-            url = if (urlPrefix != null && urlSuffix != null) urlPrefix + urlSuffix else "http://img.saraba1st.com/forum/error"
+            url = if (urlPrefix != null && urlSuffix != null) urlPrefix + urlSuffix else "https://img.saraba1st.com/forum/error"
         }
 
         override fun equals(other: Any?): Boolean {

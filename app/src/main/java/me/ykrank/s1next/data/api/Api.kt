@@ -16,7 +16,7 @@ object Api {
         "bbs.saraba1st.com", "www.saraba1st.com", "stage1st.com", "www.stage1st.com"
     )
     var SUPPORT_HTTPS = true
-    private const val RANDOM_IMAGE_URL = "http://ac.stage3rd.com/S1_ACG_randpic.asp"
+    private const val RANDOM_IMAGE_URL = "https://ac.stage3rd.com/S1_ACG_randpic.asp"
     const val BASE_API_PREFIX = "index.php?module="
     const val API_VERSION_DEFAULT = "1"
     const val THREADS_PER_PAGE = 50
