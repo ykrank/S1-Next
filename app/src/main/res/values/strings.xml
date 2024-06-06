@@ -102,8 +102,8 @@
     <string name="reply_activity_quote_title_prefix" translatable="false">"引用#%1$s - "</string>
     <string name="prompt_reply">Write something…</string>
     <string name="prompt_title">Write title…</string>
-    <string name="signature">— from %1$s of &lt;a href=\"%2$s\">S1 Next Goose&lt;/a> v%3$s</string>
-    <string name="signature_in_reply">— from %1$s of [url=%2$s]S1 Next Goose[/url] v%3$s</string>
+    <string name="signature">— from &lt;a href=\"%1$s\">S1 Next Goose&lt;/a> v%2$s</string>
+    <string name="signature_in_reply">— from [url=%1$s]S1 Next Goose[/url] v%2$s</string>
     <string name="dialog_progress_message_reply">Replying…</string>
     <string name="dialog_message_reply_discard_prompt">Do you want to discard this replies?</string>
     <string name="dialog_message_text_discard">Discard</string>

@@ -100,8 +100,8 @@
         
     <string name="prompt_reply">寫點內容吧…</string>
         
-    <string name="signature">—— 來自 %1$s上的 &lt;a href=\"%2$s\">S1Next-鵝版&lt;/a> v%3$s</string>
-    <string name="signature_in_reply">—— 來自 %1$s上的 [url=%2$s]S1Next-鵝版[/url] v%3$s</string>
+    <string name="signature">—— 來自 &lt;a href=\"%1$s\">鵝球&lt;/a> v%2$s</string>
+    <string name="signature_in_reply">—— 來自 [url=%1$s]鵝球[/url] v%2$s</string>
         
     <string name="dialog_progress_message_reply">回復中…</string>
         
