@@ -180,10 +180,6 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
         if (emoticonName == null && !URLUtil.isNetworkUrl(url)) {
             url = Api.BASE_URL + url
         }
-        // 图片兜底，http链接替换为https
-        if(url?.startsWith("http://") == true){
-            url = url.replaceFirst("http://", "https://")
-        }
         if (emoticonName != null) {
             //Scale
             urlDrawable = UrlDrawable(url, density)
