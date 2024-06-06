@@ -36,6 +36,7 @@ public class SarabaSpan implements PostMovementMethod.URLSpanClick {
 
     static {
         HOST_FILTERS.add(new Pair<>("bbs.saraba1st.com", ".*"));
+        HOST_FILTERS.add(new Pair<>("www.saraba1st.com", ".*"));
     }
 
     // 对Saraba链接进行独立处理，调用Saraba客户端
