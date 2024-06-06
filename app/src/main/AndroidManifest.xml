@@ -87,8 +87,7 @@
             android:name=".view.activity.HelpActivity"
             android:colorMode="wideColorGamut"
             android:configChanges="uiMode"
-            android:label="@string/help"
-            android:process=":webView" />
+            android:label="@string/help" />
 
         <activity
             android:name=".view.activity.FavouriteListActivity"

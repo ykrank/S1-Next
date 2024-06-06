@@ -46,7 +46,6 @@ import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.databinding.FragmentBaseWithQuickSideBarBinding
 import me.ykrank.s1next.util.JsonUtil
-import me.ykrank.s1next.view.page.post.adapter.PostListRecyclerViewAdapter
 import me.ykrank.s1next.view.event.BlackListChangeEvent
 import me.ykrank.s1next.view.event.PostSelectableChangeEvent
 import me.ykrank.s1next.view.event.QuickSidebarEnableChangeEvent
@@ -54,6 +53,7 @@ import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateQuickSidebarImpl
 import me.ykrank.s1next.view.internal.PagerScrollState
 import me.ykrank.s1next.view.page.app.AppPostListActivity
+import me.ykrank.s1next.view.page.post.adapter.PostListRecyclerViewAdapter
 import me.ykrank.s1next.view.page.post.postlist.PostListPagerFragment.PagerCallback
 import java.util.*
 import javax.inject.Inject
@@ -293,7 +293,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
         //If enable cache, load cache
         val source: Single<PostsWrapper> = if (mDownloadPrefManager.netCacheEnable) {
             //If last page, force refresh cache
-            apiCacheObservable(isForceLoading || mPageNum >= mPagerCallback?.getTotalPages() ?: 0)
+            apiCacheObservable(isForceLoading || mPageNum >= (mPagerCallback?.getTotalPages() ?: 0))
                 .flatMap { reply ->
                     //                        L.d("Source:$mPageNum," + java.lang.Thread.currentThread().toString())
                     val wrapper = objectMapper.readValue(reply.data, PostsWrapper::class.java)
@@ -310,11 +310,15 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
         }
 
         val rateSource: Single<RatePostsWrapper> = if (mDownloadPrefManager.netCacheEnable) {
-            rateApiCacheObservable(isForceLoading || mPageNum >= mPagerCallback?.getTotalPages() ?: 0)
+            rateApiCacheObservable(
+                isForceLoading || mPageNum >= (mPagerCallback?.getTotalPages() ?: 0)
+            )
                 .flatMap { reply ->
                     //                        L.d("RateSource:$mPageNum," + java.lang.Thread.currentThread().toString())
                     val wrapper = objectMapper.readValue(reply.data, RatePostsWrapper::class.java)
-                    if (reply.source != Source.CLOUD && wrapper.data.postList?.size ?: 0 < Api.POSTS_PER_PAGE) {
+                    if (reply.source != Source.CLOUD &&
+                        (wrapper.data.postList?.size ?: 0) < Api.POSTS_PER_PAGE
+                    ) {
                         return@flatMap rateApiCacheObservable(true)
                             .map { it.data }
                             .compose(JsonUtil.jsonSingleTransformer(RatePostsWrapper::class.java))

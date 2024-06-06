@@ -209,7 +209,7 @@ public class PostMovementMethod extends ArrowKeyMovementMethod {
             try {
                 context.startActivity(intent);
             } catch (ActivityNotFoundException e) {
-                L.e("URLSpan", "Activity was not found for intent, " + intent.toString());
+                L.e("URLSpan", "Activity was not found for intent, " + intent);
             }
         }
     }

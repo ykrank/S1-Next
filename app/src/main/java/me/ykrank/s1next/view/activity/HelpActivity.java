@@ -3,11 +3,12 @@ package me.ykrank.s1next.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.webkit.WebView;
+
 import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import android.view.MenuItem;
-import android.webkit.WebView;
 
 import me.ykrank.s1next.App;
 import me.ykrank.s1next.R;
@@ -17,7 +18,6 @@ import me.ykrank.s1next.widget.track.event.ViewHelpTrackEvent;
 
 /**
  * An Activity shows a help page.
- * 为了防止WebView内存泄露,应该在新进程中打开
  */
 public final class HelpActivity extends AppCompatActivity {
     private static final String ARG_STYLE = "style";

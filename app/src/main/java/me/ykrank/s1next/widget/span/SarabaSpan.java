@@ -14,6 +14,7 @@ import com.github.ykrank.androidtools.util.L;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.ykrank.s1next.App;
 import me.ykrank.s1next.view.page.post.postlist.PostListGatewayActivity;
 
 /**
@@ -56,22 +57,22 @@ public class SarabaSpan implements PostMovementMethod.URLSpanClick {
         }
     }
 
+    private static boolean matchSarabaInfo(Context context, Uri uri){
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        try {
+            PackageManager pm = context.getPackageManager();
+            ActivityInfo ai = intent.resolveActivityInfo(pm, PackageManager.MATCH_DEFAULT_ONLY);
+            return ai != null;
+        } catch (Throwable e) {
+            L.d("url is not match s1");
+        }
+        return false;
+    }
+
     @Override
     public boolean isMatch(Uri uri) {
         if ("http".equalsIgnoreCase(uri.getScheme()) || "https".equalsIgnoreCase(uri.getScheme())) {
-            String path = uri.getEncodedPath();
-            if (path == null) {
-                path = "/";
-            }
-            for (Pair<String, String> filter : HOST_FILTERS) {
-                String host = filter.first;
-                String pathPattern = filter.second;
-
-                if (host.equalsIgnoreCase(uri.getHost())
-                        && path.matches(pathPattern)) {
-                    return true;
-                }
-            }
+            return matchSarabaInfo(App.Companion.get(), uri);
         }
         return false;
     }
