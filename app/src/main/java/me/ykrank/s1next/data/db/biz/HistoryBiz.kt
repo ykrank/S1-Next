@@ -2,14 +2,9 @@ package me.ykrank.s1next.data.db.biz
 
 import android.database.Cursor
 import com.github.ykrank.androidtools.util.L
-import io.reactivex.Single
-import io.reactivex.functions.Function
 import me.ykrank.s1next.App
-import me.ykrank.s1next.App.Companion.appComponent
 import me.ykrank.s1next.data.db.AppDatabase
 import me.ykrank.s1next.data.db.AppDatabaseManager
-import me.ykrank.s1next.data.db.biz.HistoryBiz
-import me.ykrank.s1next.data.db.dao.BlackWordDao
 import me.ykrank.s1next.data.db.dao.HistoryDao
 import me.ykrank.s1next.data.db.dbmodel.History
 
@@ -59,7 +54,7 @@ class HistoryBiz(private val manager: AppDatabaseManager) {
         /**
          * max history count
          */
-        const val MAX_SIZE = 100
+        const val MAX_SIZE = 300
 
         val instance: HistoryBiz
             get() = App.appComponent.historyBiz

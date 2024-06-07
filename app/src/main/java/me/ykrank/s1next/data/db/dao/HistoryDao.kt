@@ -21,7 +21,7 @@ interface HistoryDao {
     @Query("SELECT * FROM History WHERE ThreadId == :threadId LIMIT 1")
     fun getByThreadId(threadId: Int): History?
 
-    @Query("DELETE FROM History WHERE _id NOT IN ( SELECT _id FROM History ORDER BY Timestamp ASC LIMIT ${HistoryBiz.MAX_SIZE})")
+    @Query("DELETE FROM History WHERE _id NOT IN ( SELECT _id FROM History ORDER BY Timestamp DESC LIMIT ${HistoryBiz.MAX_SIZE})")
     fun deleteNotTopRecords(): Int
 
     @Insert
