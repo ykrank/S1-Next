@@ -9,14 +9,14 @@ plugins {
 }
 
 val properties = gradleLocalProperties(rootDir, providers)
-val _storeFile = properties.getProperty("storeFile")
-val _storePassword = properties.getProperty("storePassword")
-val _keyAlias = properties.getProperty("keyAlias")
-val _keyPassword = properties.getProperty("keyPassword")
+val mStoreFile: String? = properties.getProperty("storeFile")
+val mStorePassword: String? = properties.getProperty("storePassword")
+val mKeyAlias: String? = properties.getProperty("keyAlias")
+val mKeyPassword: String? = properties.getProperty("keyPassword")
 val httpDnsId = properties.getProperty("httpDnsId") ?: "\"\""
 val httpDnsSecret = properties.getProperty("httpDnsSecret") ?: "\"\""
 
-val appVersionCode = 83
+val appVersionCode = 84
 val appVersionName = "3.0.0"
 
 android {
@@ -36,12 +36,12 @@ android {
         }
     }
     signingConfigs {
-        if (_storeFile != null && !_storeFile.isEmpty()) {
+        if (!mStoreFile.isNullOrEmpty()) {
             create("release") {
-                keyAlias = _keyAlias
-                keyPassword = _keyPassword
-                storeFile = file(_storeFile)
-                storePassword = _storePassword
+                keyAlias = mKeyAlias
+                keyPassword = mKeyPassword
+                storeFile = file(mStoreFile)
+                storePassword = mStorePassword
             }
         }
     }
