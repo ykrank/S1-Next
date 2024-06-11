@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.fragment.app.FragmentActivity
 import com.github.ykrank.androidtools.widget.AlipayDonate
-import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.R
 import me.ykrank.s1next.view.dialog.AlipayDialogFragment
 
@@ -16,7 +15,7 @@ object DonateUtils {
                 return
             }
         }
-        if (!BuglyUtils.isPlay()) {
+        if (!BuglyUtils.isPlay) {
             //For GooglePlay privacy-security
             mFragmentActivity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://QR.ALIPAY.COM/FKX01763C5SCSCCJIB6UE8")))
         } else {

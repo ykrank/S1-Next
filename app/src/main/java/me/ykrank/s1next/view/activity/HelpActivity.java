@@ -73,15 +73,6 @@ public final class HelpActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * 为了防止内存泄露，退出时直接退出进程
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        System.exit(0);
-    }
-
     private void setupToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {

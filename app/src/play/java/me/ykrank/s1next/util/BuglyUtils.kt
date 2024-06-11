@@ -12,7 +12,7 @@ import me.ykrank.s1next.util.AppDeviceUtil.getAppFullVersionName
  */
 object BuglyUtils {
     val isPlay: Boolean
-        get() = false
+        get() = true
 
     fun init(context: Context) {
         val appContext = context.applicationContext

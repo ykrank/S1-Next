@@ -6,7 +6,7 @@
 
     <data>
         <import type="me.ykrank.s1next.data.db.AppDatabase"/>
-        <import type="me.ykrank.s1next.BuildConfig" />
+        <import type="me.ykrank.s1next.util.AppDeviceUtil" />
     </data>
 
     <RelativeLayout
@@ -47,7 +47,7 @@
             android:layout_below="@id/app_name"
             android:layout_marginTop="@dimen/subtitle_margin_top"
             android:includeFontPadding="false"
-            android:text="@{@string/version(BuildConfig.VERSION_NAME, AppDatabase.getVersion())}"
+            android:text="@{@string/version(AppDeviceUtil.getVersionName(), AppDatabase.getVersion())}"
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
         <TextView

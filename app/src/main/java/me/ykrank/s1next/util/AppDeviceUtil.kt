@@ -2,20 +2,30 @@ package me.ykrank.s1next.util
 
 import android.content.Context
 import android.os.Build
-import me.ykrank.s1next.BuildConfig
+import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import org.apache.commons.lang3.StringUtils
 
 object AppDeviceUtil {
 
-    @JvmStatic
-    fun getAppFullVersionName(): String {
-        return BuildConfig.VERSION_NAME
+    val packageInfo by lazy {
+        App.get().packageManager.getPackageInfo(packageName, 0)
     }
 
+    val packageName
+        get() = App.get().packageName
+
     @JvmStatic
+    fun getVersionName(): String {
+        return packageInfo.versionName
+    }
+
+    fun getAppFullVersionName(): String {
+        return getVersionName()
+    }
+
     fun getAppDownloadUrl(): String {
-        return if (BuildConfig.BUILD_TYPE == "alpha") {
+        return if (packageName.contains("alpha")) {
             "https://www.pgyer.com/xfPejhuq"
         } else {
             "https://www.pgyer.com/xfPejhuq"

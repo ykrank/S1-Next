@@ -2,9 +2,9 @@ package me.ykrank.s1next.view.dialog
 
 import android.app.Activity
 import android.app.Dialog
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
 import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.util.ClipboardUtil
 import com.github.ykrank.androidtools.widget.AlipayDonate
@@ -43,7 +43,7 @@ class AlipayDialogFragment : BaseDialogFragment() {
                 if (AlipayDonate.hasInstalledAlipayClient(activity)) {
                     AlipayDonate.openAlipaySearch(activity, msg?:"")
                 } else {
-                    if (!BuglyUtils.isPlay()) {
+                    if (!BuglyUtils.isPlay) {
                         activity.toast("或许需要手动打开支付宝首页搜索")
                     }
                 }

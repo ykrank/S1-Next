@@ -56,7 +56,7 @@ class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefere
         findPreference(getString(R.string.pref_key_backup)).onPreferenceClickListener = this
         findPreference(getString(R.string.pref_key_network)).onPreferenceClickListener = this
 
-        if (BuglyUtils.isPlay()) {
+        if (BuglyUtils.isPlay) {
             findPreference(getString(R.string.pref_key_check_update)).isVisible = false
         } else {
             findPreference(getString(R.string.pref_key_check_update)).onPreferenceClickListener = this
