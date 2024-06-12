@@ -9,7 +9,10 @@ import me.ykrank.s1next.data.Wifi
 /**
  * A manager manage the download preferences that are associated with settings.
  */
-class DownloadPreferencesManager(private val mPreferencesProvider: DownloadPreferences, private val mWifi: Wifi) {
+class DownloadPreferencesManager(
+    private val mPreferencesProvider: DownloadPreferences,
+    private val mWifi: Wifi
+) {
 
     val totalImageCacheSize: Long
         get() = TotalDownloadCacheSize.getByte(mPreferencesProvider.totalImageCacheSizeIndex)
@@ -17,11 +20,20 @@ class DownloadPreferencesManager(private val mPreferencesProvider: DownloadPrefe
     val totalDataCacheSize: Int
         get() = TotalDownloadCacheSize.getMByte(mPreferencesProvider.totalDataCacheSizeIndex)
 
+    var downloadPath: String?
+        get() = mPreferencesProvider.downloadPath
+        set(path) {
+            mPreferencesProvider.downloadPath = path
+        }
+
     val netCacheEnable: Boolean
         get() = mPreferencesProvider.netCacheEnable
 
     val isAvatarsDownload: Boolean
-        get() = DownloadStrategyInternal.isDownload(mPreferencesProvider.avatarsDownloadStrategyIndex, mWifi.isWifiEnabled)
+        get() = DownloadStrategyInternal.isDownload(
+            mPreferencesProvider.avatarsDownloadStrategyIndex,
+            mWifi.isWifiEnabled
+        )
 
     val avatarCacheInvalidationIntervalSignature: Key
         get() = AvatarCacheInvalidationInterval.getSignature(mPreferencesProvider.avatarCacheInvalidationInterval)
@@ -30,7 +42,10 @@ class DownloadPreferencesManager(private val mPreferencesProvider: DownloadPrefe
      * Checks whether we need to download images.
      */
     val isImagesDownload: Boolean
-        get() = DownloadStrategyInternal.isDownload(mPreferencesProvider.imagesDownloadStrategyIndex, mWifi.isWifiEnabled)
+        get() = DownloadStrategyInternal.isDownload(
+            mPreferencesProvider.imagesDownloadStrategyIndex,
+            mWifi.isWifiEnabled
+        )
 
     val multiThreadDownload: Boolean
         get() = mPreferencesProvider.multiThreadDownload
@@ -88,7 +103,10 @@ class DownloadPreferencesManager(private val mPreferencesProvider: DownloadPrefe
         @Retention(AnnotationRetention.SOURCE)
         internal annotation class AvatarStrategy
 
-        fun isHigherResolutionDownload(@AvatarStrategy avatarResolutionStrategy: Int, hasWifi: Boolean): Boolean {
+        fun isHigherResolutionDownload(
+            @AvatarStrategy avatarResolutionStrategy: Int,
+            hasWifi: Boolean
+        ): Boolean {
             return avatarResolutionStrategy == HIGH_WIFI && hasWifi || avatarResolutionStrategy == HIGH
         }
     }

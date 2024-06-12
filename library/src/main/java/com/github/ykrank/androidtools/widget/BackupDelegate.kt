@@ -2,13 +2,13 @@ package com.github.ykrank.androidtools.widget
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Fragment
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.annotation.IntDef
 import androidx.annotation.StringRes
 import androidx.annotation.WorkerThread
+import androidx.fragment.app.Fragment
 import com.github.ykrank.androidtools.R
 import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.util.L
@@ -34,7 +34,7 @@ class BackupDelegate(
 
     fun backup(fragment: Fragment) {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-            setType("*/*")
+            type = "*/*"
             putExtra(Intent.EXTRA_TITLE, backupFileName)
         }
         fragment.startActivityForResult(intent, BACKUP_FILE_CODE)

@@ -24,6 +24,12 @@
         app:dependency="@string/pref_key_net_cache_enable"
         app:iconSpaceReserved="false" />
 
+    <Preference
+        android:key="@string/pref_key_data_download_path"
+        android:persistent="false"
+        android:title="@string/pref_data_download_path"
+        app:iconSpaceReserved="false" />
+
     <SwitchPreference
         android:defaultValue="@bool/pref_net_cache_default_value"
         android:key="@string/pref_key_net_cache_enable"

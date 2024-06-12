@@ -3,7 +3,7 @@ package com.github.ykrank.androidtools.ui
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.annotation.CallSuper
-import androidx.preference.PreferenceFragment
+import androidx.preference.PreferenceFragmentCompat
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.track.event.page.LocalFragmentEndEvent
 import com.github.ykrank.androidtools.widget.track.event.page.LocalFragmentStartEvent
@@ -12,7 +12,7 @@ import com.github.ykrank.androidtools.widget.track.event.page.LocalFragmentStart
  * A helper class for registering/unregistering
  * [android.content.SharedPreferences.OnSharedPreferenceChangeListener].
  */
-abstract class LibBasePreferenceFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
+abstract class LibBasePreferenceFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,14 +24,14 @@ abstract class LibBasePreferenceFragment : PreferenceFragment(), SharedPreferenc
     override fun onStart() {
         super.onStart()
 
-        preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        preferenceScreen.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
     }
 
     @CallSuper
     override fun onStop() {
         super.onStop()
 
-        preferenceScreen.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        preferenceScreen.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     @CallSuper

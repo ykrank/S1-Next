@@ -12,6 +12,7 @@
     <string name="pref_blacklists_summary">塞抹布</string>
     <string name="pref_image_total_cache_size">图片总缓存大小</string>
     <string name="pref_data_total_cache_size">网络数据总缓存大小</string>
+    <string name="pref_data_download_path">设置下载路径</string>
     <string name="pref_avatar">头像</string>
     <string name="pref_avatar_resolution">清晰度</string>
     <string name="pref_avatar_cache_invalidation_interval">缓存失效间隔</string>

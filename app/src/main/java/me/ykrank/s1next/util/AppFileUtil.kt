@@ -1,21 +1,33 @@
 package me.ykrank.s1next.util;
 
-import androidx.annotation.NonNull;
-
-import me.ykrank.s1next.BuildConfig;
+import androidx.documentfile.provider.DocumentFile
+import me.ykrank.s1next.BuildConfig
 
 /**
  * Created by ykrank on 2017/6/6.
  */
 
-public class AppFileUtil {
+object AppFileUtil {
 
     /**
      * create a random file name
      */
-    @NonNull
-    public static String createRandomFileName(@NonNull String suffix) {
-        String name = BuildConfig.APPLICATION_ID.replace(".", "_") + System.currentTimeMillis();
+    fun createRandomFileName(suffix: String): String {
+        val name = BuildConfig.APPLICATION_ID.replace(".", "_") + "_" + System.currentTimeMillis();
         return name + suffix;
+    }
+
+    fun getDownloadPath(
+        fragmentManager: androidx.fragment.app.FragmentManager,
+        callback: ((DocumentFile) -> Unit)?,
+        focusResetPath: Boolean = false
+    ) {
+        var fragment = fragmentManager.findFragmentByTag(SAFFragment.TAG)
+        if (fragment == null || fragment !is SAFFragment) {
+            fragment = SAFFragment()
+            fragmentManager.beginTransaction().add(fragment, SAFFragment.TAG)
+                .commitNowAllowingStateLoss()
+        }
+        fragment.getDownloadPath(callback, focusResetPath);
     }
 }
