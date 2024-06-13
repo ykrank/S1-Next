@@ -29,15 +29,13 @@ open class SarabaSpan : URLSpanClick {
             if (path == null) {
                 path = "/"
             }
+            val host = uri.host ?: ""
             for (filter in HOST_FILTERS) {
                 val hostFilter = filter.key
                 val pathPattern = filter.value
-                var host = uri.host ?: ""
-                if (host.startsWith("www.")) {
-                    host = host.replaceFirst("www.", "")
-                }
-                if (hostFilter.equals(host, ignoreCase = true)
-                    && path.matches(pathPattern.toRegex())
+
+                if ((host == hostFilter || host.endsWith(".${hostFilter}"))
+                    && path.matches(pathPattern)
                 ) {
                     return true
                 }
@@ -54,11 +52,11 @@ open class SarabaSpan : URLSpanClick {
         /**
          * intent-filter.从AndroidManifest中提取
          */
-        private val HOST_FILTERS: Map<String, String> by lazy {
+        private val HOST_FILTERS: Map<String, Regex> by lazy {
             buildMap {
-                put("saraba1st.com", ".*")
-                put("stage1.cc", ".*")
-                put("stage1st.com", ".*")
+                put("saraba1st.com", ".*".toRegex())
+                put("stage1.cc", ".*".toRegex())
+                put("stage1st.com", ".*".toRegex())
             }
         }
 

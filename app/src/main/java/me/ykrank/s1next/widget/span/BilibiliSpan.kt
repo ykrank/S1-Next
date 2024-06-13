@@ -35,13 +35,14 @@ class BilibiliSpan : URLSpanClick {
             if (path == null) {
                 path = "/"
             }
+            var host = uri.host ?: ""
+            if (host.startsWith("www.")) {
+                host = host.replaceFirst("www.", "")
+            }
             for (filter in HOST_FILTERS) {
                 val hostFilter = filter.key
                 val pathPattern = filter.value
-                var host = uri.host ?: ""
-                if (host.startsWith("www.")) {
-                    host = host.replaceFirst("www.", "")
-                }
+
                 if (hostFilter.equals(host, ignoreCase = true)
                     && path.matches(pathPattern.toRegex())
                 ) {
