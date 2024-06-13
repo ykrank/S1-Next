@@ -13,6 +13,7 @@ import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.MathUtil
+import com.github.ykrank.androidtools.util.StringUtil
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.db.biz.BlackListBiz
@@ -132,7 +133,13 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
             this.banned = true
         }
 
-        var tReply: String = value!!
+        var tReply: String = value
+
+        // 替换手动unicode，比如 &#x4E0D;
+        if (tReply.startsWith("&amp;#x") && tReply.endsWith(";")) {
+            tReply = StringUtil.uniDecode(tReply.replace("&amp;#x", "\\u").replace(";", ""))
+        }
+
         tReply = replaceNewQuoteToOld(tReply)
         tReply = hideBlackListQuote(tReply)
 

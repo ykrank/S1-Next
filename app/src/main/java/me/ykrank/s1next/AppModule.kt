@@ -21,7 +21,7 @@ import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager
 import me.ykrank.s1next.task.AutoSignTask
 import me.ykrank.s1next.viewmodel.UserViewModel
-import me.ykrank.s1next.widget.RawJsonConverterFactory.Companion.create
+import me.ykrank.s1next.widget.RawJsonConverterFactory
 import me.ykrank.s1next.widget.download.ImageDownloadManager
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 import me.ykrank.s1next.widget.glide.OkHttpNoAvatarInterceptor
@@ -122,7 +122,7 @@ class AppModule {
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(Api.BASE_API_URL)
-            .addConverterFactory(create())
+            .addConverterFactory(RawJsonConverterFactory.create())
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(JacksonConverterFactory.create(mapper))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

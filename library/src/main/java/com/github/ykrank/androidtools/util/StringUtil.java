@@ -82,7 +82,7 @@ public final class StringUtil {
                     for (int j = 0; j < 4; j++) {
                         char ch = Character.toLowerCase(chars[i + 2 + j]);
                         if ('0' <= ch && ch <= '9' || 'a' <= ch && ch <= 'f') {
-                            cc |= (Character.digit(ch, 16) << (3 - j) * 4);
+                            cc |= (char) (Character.digit(ch, 16) << (3 - j) * 4);
                         } else {
                             cc = 0;
                             break;
