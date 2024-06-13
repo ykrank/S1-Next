@@ -13,10 +13,14 @@ class ForumSearchResult : StableIdModel, SearchResult() {
     var content: String? = null
     private var _htmlContent: Spanned? = null
     val htmlContent: Spanned?
-        get() = if (_htmlContent != null || content == null)
-            _htmlContent
-        else
-            HtmlCompat.fromHtml(content, HtmlCompat.FROM_HTML_MODE_COMPACT_EXCLUDE_BLOCKQUOTE)
+        get() {
+            if (_htmlContent == null && content != null)
+                _htmlContent = HtmlCompat.fromHtml(
+                    content,
+                    HtmlCompat.FROM_HTML_MODE_COMPACT_EXCLUDE_BLOCKQUOTE
+                )
+            return _htmlContent
+        }
 
     override fun equals(o: Any?): Boolean {
         if (this === o) return true
