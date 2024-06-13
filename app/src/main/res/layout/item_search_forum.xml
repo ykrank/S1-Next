@@ -31,7 +31,7 @@
             android:lineSpacingExtra="@dimen/text_line_spacing_extra"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textIsSelectable="true"
-            app:imgHtml="@{model.content}"
+            android:text="@{model.htmlContent}"
             app:movementMethod="@{SearchMovementMethod.instance}"
             tools:text="ABC\nkhk"/>
 
