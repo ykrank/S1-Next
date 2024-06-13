@@ -1,7 +1,5 @@
 package me.ykrank.s1next.view.fragment
 
-import android.app.Activity
-import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
@@ -13,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.RequestBuilder
@@ -45,7 +42,6 @@ import me.ykrank.s1next.widget.download.ProgressListener
 import me.ykrank.s1next.widget.download.ProgressManager
 import me.ykrank.s1next.widget.track.event.LargeImageTrackEvent
 import me.ykrank.s1next.widget.track.event.ViewImageTrackEvent
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import java.io.File
 import javax.inject.Inject
 
@@ -66,30 +62,6 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
     private var largeModeMenu: MenuItem? = null
     private var large = false
 
-    private var resourceFile: File? = null
-
-    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val resourceFile = this.resourceFile ?: return@registerForActivityResult
-            val uri = result.data?.data ?: return@registerForActivityResult
-            RxJavaUtil.workWithUiResult({
-                FileUtil.copyFile(resourceFile,
-                    requireContext().contentResolver.openOutputStream(uri)!!
-                )
-                return@workWithUiResult uri
-            }, { f ->
-                Snackbar.make(binding.root, R.string.download_success, Snackbar.LENGTH_SHORT)
-                        .show()
-                context?.let { FileUtil.notifyImageInMediaStore(it, f) }
-            }) { e ->
-                L.report(e)
-                Toast.makeText(context, R.string.download_unknown_error, Toast.LENGTH_SHORT)
-                        .show()
-            }
-        }
-    }
-
-
     @Inject
     internal lateinit var trackAgent: DataTrackAgent
 
@@ -97,9 +69,9 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
     internal lateinit var mDownloadPrefManager: DownloadPreferencesManager
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
@@ -163,9 +135,9 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
 
     private fun preload() {
         preloadTarget = Glide.with(App.get())
-                .load(mImageUrl)
-                .priority(Priority.HIGH)
-                .preload()
+            .load(mImageUrl)
+            .priority(Priority.HIGH)
+            .preload()
     }
 
     private fun switchLargeImage(large: Boolean) {
@@ -185,61 +157,60 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun downloadImage() {
-        resourceFile = null
         var builder: RequestBuilder<File> = Glide.with(this)
-                .download(ForcePassUrl(mImageUrl))
+            .download(ForcePassUrl(mImageUrl))
         //avatar signature
         if (Api.isAvatarUrl(mImageUrl)) {
             builder = builder.apply(
-                    RequestOptions()
-                            .signature(mDownloadPrefManager.avatarCacheInvalidationIntervalSignature)
+                RequestOptions()
+                    .signature(mDownloadPrefManager.avatarCacheInvalidationIntervalSignature)
             )
         }
         builder.into(object : CustomTarget<File>() {
             override fun onResourceReady(resource: File, transition: Transition<in File>?) {
-                resourceFile = resource
                 try {
                     val context = context ?: throw IllegalStateException("Context is null")
-                    var name: String? = null
-                    val url = mImageUrl?.toHttpUrlOrNull()
-                    if (url != null) {
-                        val segments = url.encodedPathSegments
-                        if (segments.isNotEmpty()) {
-                            name = segments[segments.size - 1]
-                        }
-                        //sometime url is php
-                        if (name != null && name.endsWith(".php")) {
-                            name = null
-                        }
-                    }
-
                     val type = FileUtil.getImageType(context, resource)
                     var imageType = FileUtil.getImageTypeSuffix(type)
                     if (imageType == null) {
                         imageType = ".jpg"
                     }
-
-                    if (!name.isNullOrEmpty()) {
-                        if (!name.endsWith(imageType)) {
-                            name += imageType
+                    val name: String = AppFileUtil.createRandomFileName(imageType)
+                    AppFileUtil.getDownloadPath(parentFragmentManager, { uri ->
+                        val file = uri.createFile("image/${imageType}", name)
+                        RxJavaUtil.workWithUiResult({
+                            FileUtil.copyFile(
+                                resource,
+                                requireContext().contentResolver.openOutputStream(file?.uri!!)!!
+                            )
+                            return@workWithUiResult file.uri
+                        }, { f ->
+                            Snackbar.make(
+                                binding.root,
+                                R.string.download_success,
+                                Snackbar.LENGTH_SHORT
+                            )
+                                .show()
+                            context.let { FileUtil.notifyImageInMediaStore(it, f) }
+                        }) { e ->
+                            L.report(e)
+                            Toast.makeText(
+                                context,
+                                R.string.download_unknown_error,
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-                    } else {
-                        name = AppFileUtil.createRandomFileName(imageType)
-                    }
-                    val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-                        setType("*/*")
-                        putExtra(Intent.EXTRA_TITLE, name)
-                    }
-                    resultLauncher.launch(intent)
+                    })
                 } catch (e: Exception) {
                     L.report(e)
-                    Toast.makeText(context, R.string.download_unknown_error, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.download_unknown_error, Toast.LENGTH_SHORT)
+                        .show()
                 }
 
             }
 
             override fun onLoadCleared(placeholder: Drawable?) {
-                
+
             }
         })
     }
@@ -250,19 +221,19 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
         downloadId?.also {
             ProgressManager.addListener(it, object : ProgressListener {
                 override fun onProgress(
-                        task: DownloadTask,
-                        currentOffset: Long,
-                        totalLength: Long
+                    task: DownloadTask,
+                    currentOffset: Long,
+                    totalLength: Long
                 ) {
                     binding.progress =
-                            ProgressItem(totalLength, currentOffset, totalLength == currentOffset)
+                        ProgressItem(totalLength, currentOffset, totalLength == currentOffset)
                 }
 
                 override fun taskEnd(
-                        task: DownloadTask,
-                        cause: EndCause,
-                        realCause: java.lang.Exception?,
-                        model: Listener1Assist.Listener1Model
+                    task: DownloadTask,
+                    cause: EndCause,
+                    realCause: java.lang.Exception?,
+                    model: Listener1Assist.Listener1Model
                 ) {
                     binding.progress = ProgressItem(model.totalLength, model.totalLength, true)
                     if (realCause != null) {

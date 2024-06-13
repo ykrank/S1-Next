@@ -17,6 +17,7 @@ import me.ykrank.s1next.data.db.biz.LoginUserBiz
 import me.ykrank.s1next.data.db.biz.ReadProgressBiz
 import me.ykrank.s1next.data.db.biz.ThreadBiz
 import me.ykrank.s1next.task.AutoSignTask
+import me.ykrank.s1next.util.SAFFragment
 import me.ykrank.s1next.view.activity.BaseActivity
 import me.ykrank.s1next.view.activity.ForumActivity
 import me.ykrank.s1next.view.activity.GalleryActivity
@@ -190,4 +191,6 @@ interface AppComponent {
     fun inject(multiThreadHttpStreamFetcher: MultiThreadHttpStreamFetcher)
     fun inject(fragment: AppPostListFragment)
     fun inject(fragment: BaseLoginFragment)
+    fun inject(fragment: SAFFragment)
+
 }

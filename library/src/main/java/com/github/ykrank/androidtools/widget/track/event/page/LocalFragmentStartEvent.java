@@ -1,6 +1,7 @@
 package com.github.ykrank.androidtools.widget.track.event.page;
 
-import android.app.Fragment;
+
+import androidx.fragment.app.Fragment;
 
 import com.github.ykrank.androidtools.widget.track.event.TrackEvent;
 

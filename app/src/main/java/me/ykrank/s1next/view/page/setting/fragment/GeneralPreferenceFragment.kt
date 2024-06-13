@@ -50,22 +50,22 @@ class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefere
         App.appComponent.inject(this)
         addPreferencesFromResource(R.xml.preference_general)
 
-        findPreference(getString(R.string.pref_key_downloads)).onPreferenceClickListener = this
-        findPreference(getString(R.string.pref_key_blacklists)).onPreferenceClickListener = this
-        findPreference(getString(R.string.pref_key_post_read)).onPreferenceClickListener = this
-        findPreference(getString(R.string.pref_key_backup)).onPreferenceClickListener = this
-        findPreference(getString(R.string.pref_key_network)).onPreferenceClickListener = this
+        findPreference<Preference>(getString(R.string.pref_key_downloads))?.onPreferenceClickListener = this
+        findPreference<Preference>(getString(R.string.pref_key_blacklists))?.onPreferenceClickListener = this
+        findPreference<Preference>(getString(R.string.pref_key_post_read))?.onPreferenceClickListener = this
+        findPreference<Preference>(getString(R.string.pref_key_backup))?.onPreferenceClickListener = this
+        findPreference<Preference>(getString(R.string.pref_key_network))?.onPreferenceClickListener = this
 
         if (BuglyUtils.isPlay) {
-            findPreference(getString(R.string.pref_key_check_update)).isVisible = false
+            findPreference<Preference>(getString(R.string.pref_key_check_update))?.isVisible = false
         } else {
-            findPreference(getString(R.string.pref_key_check_update)).onPreferenceClickListener = this
+            findPreference<Preference>(getString(R.string.pref_key_check_update))?.onPreferenceClickListener = this
         }
 
-        Single.fromCallable { HtmlCompat.fromHtml(AppDeviceUtil.getSignature(activity), FROM_HTML_MODE_LEGACY) }
+        Single.fromCallable { HtmlCompat.fromHtml(AppDeviceUtil.getSignature(requireContext()), FROM_HTML_MODE_LEGACY) }
             .compose(RxJavaUtil.computationSingleTransformer())
             .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
-            .subscribe(Consumer { findPreference(getString(R.string.pref_key_signature)).summary = it })
+            .subscribe(Consumer { findPreference<Preference>(getString(R.string.pref_key_signature))?.summary = it })
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {

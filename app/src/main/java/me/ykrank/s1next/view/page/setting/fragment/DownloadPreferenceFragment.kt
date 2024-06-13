@@ -11,6 +11,7 @@ import io.reactivex.disposables.Disposable
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
+import me.ykrank.s1next.util.AppFileUtil
 import javax.inject.Inject
 
 /**
@@ -29,7 +30,11 @@ class DownloadPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefer
         App.appComponent.inject(this)
         addPreferencesFromResource(R.xml.preference_download)
 
-        findPreference(getString(R.string.pref_key_clear_image_cache)).onPreferenceClickListener = this
+        findPreference<Preference>(getString(R.string.pref_key_data_download_path))?.onPreferenceClickListener =
+            this
+
+        findPreference<Preference>(getString(R.string.pref_key_clear_image_cache))?.onPreferenceClickListener =
+            this
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
@@ -56,6 +61,10 @@ class DownloadPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefer
                 activity?.toast(R.string.clear_image_cache_error)
             }
 
+            return true
+        }
+        if (key == getString(R.string.pref_key_data_download_path)) {
+            AppFileUtil.getDownloadPath(parentFragmentManager , null, true)
             return true
         }
         return false

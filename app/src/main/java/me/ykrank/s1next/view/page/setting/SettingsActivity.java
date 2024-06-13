@@ -8,8 +8,8 @@ import com.github.ykrank.androidtools.util.L;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.view.activity.BaseActivity;
-import me.ykrank.s1next.view.page.setting.fragment.BackupPreferenceFragment;
 import me.ykrank.s1next.view.page.setting.blacklist.BlackListSettingFragment;
+import me.ykrank.s1next.view.page.setting.fragment.BackupPreferenceFragment;
 import me.ykrank.s1next.view.page.setting.fragment.BlackWordSettingFragment;
 import me.ykrank.s1next.view.page.setting.fragment.DownloadPreferenceFragment;
 import me.ykrank.s1next.view.page.setting.fragment.GeneralPreferenceFragment;
@@ -82,7 +82,7 @@ public final class SettingsActivity extends BaseActivity {
             switch (getIntent().getIntExtra(ARG_SHOW_SETTINGS, EXTRA_SHOW_SETTING_DEFAULT)) {
                 case EXTRA_SHOW_SETTING_DOWNLOAD:
                     setTitle(R.string.pref_downloads);
-                    getFragmentManager().beginTransaction().replace(R.id.frame_layout,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,
                             new DownloadPreferenceFragment()).commit();
                     break;
                 case EXTRA_SHOW_SETTING_BLACKLIST:
@@ -92,17 +92,17 @@ public final class SettingsActivity extends BaseActivity {
                     break;
                 case EXTRA_SHOW_SETTING_READ_PROGRESS:
                     setTitle(R.string.pref_post_read);
-                    getFragmentManager().beginTransaction().replace(R.id.frame_layout,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,
                             new ReadPreferenceFragment()).commit();
                     break;
                 case EXTRA_SHOW_SETTING_BACKUP:
                     setTitle(R.string.pref_backup);
-                    getFragmentManager().beginTransaction().replace(R.id.frame_layout,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,
                             new BackupPreferenceFragment()).commit();
                     break;
                 case EXTRA_SHOW_SETTING_NETWORK:
                     setTitle(R.string.pref_network);
-                    getFragmentManager().beginTransaction().replace(R.id.frame_layout,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,
                             new NetworkPreferenceFragment()).commit();
                     break;
                 case EXTRA_SHOW_SETTING_BLACK_WORD:
@@ -111,7 +111,7 @@ public final class SettingsActivity extends BaseActivity {
                             BlackWordSettingFragment.Companion.newInstance(), BlackWordSettingFragment.Companion.getTAG()).commit();
                     break;
                 default:
-                    getFragmentManager().beginTransaction().replace(R.id.frame_layout,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,
                             new GeneralPreferenceFragment()).commit();
                     break;
             }
