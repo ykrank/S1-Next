@@ -22,7 +22,7 @@
     <string name="pref_black_words">Black word</string>
     <string name="pref_blacklists_summary">Manage</string>
     <string name="pref_image_total_cache_size">Total image cache size</string>
-    <string name="pref_image_total_cache_size_default_value" translatable="false">1</string>
+    <string name="pref_image_total_cache_size_default_value" translatable="false">2</string>
     <string name="pref_data_total_cache_size">Total network data cache size</string>
     <string name="pref_data_download_path">Set download Path</string>
     <string name="pref_data_total_cache_size_default_value" translatable="false">1</string>
