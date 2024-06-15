@@ -34,6 +34,8 @@ class LoadBlackListFromWebDialogFragment : BaseDialogFragment() {
     @Inject
     lateinit var blackListBiz: BlackListBiz
 
+   private var callBack:(()->Unit)? = null
+
     private lateinit var binding: DialogLoadBlacklistFromWebBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,6 +92,7 @@ class LoadBlackListFromWebDialogFragment : BaseDialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
+        callBack?.invoke()
         val parentFragment = parentFragment
         if (parentFragment is DialogInterface.OnDismissListener) {
             (parentFragment as DialogInterface.OnDismissListener).onDismiss(dialog)
@@ -99,9 +102,9 @@ class LoadBlackListFromWebDialogFragment : BaseDialogFragment() {
     companion object {
         val TAG: String = LoadBlackListFromWebDialogFragment::class.java.name
 
-        fun newInstance(): LoadBlackListFromWebDialogFragment {
+        fun newInstance(callBack:(()->Unit)?= null): LoadBlackListFromWebDialogFragment {
             val fragment = LoadBlackListFromWebDialogFragment()
-
+            fragment.callBack = callBack
             return fragment
         }
     }

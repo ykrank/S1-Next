@@ -66,19 +66,19 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
                 }
 
                 R.id.menu_edit -> {
-                    var blackList: BlackList? = null
+                    val blackList = ArrayList<BlackList>()
                     for (i in 0 until checklist.size()) {
                         if (checklist.valueAt(i)) {
-                            blackList = mListViewAdapter.getItem(checklist.keyAt(i))
-                            break
+                            blackList.add(mListViewAdapter.getItem(checklist.keyAt(i)))
                         }
                     }
-                    val dialogFragment1 = BlacklistDialogFragment.newInstance(blackList)
-                    dialogFragment1.setTargetFragment(
-                        this@BlackListSettingFragment,
-                        RequestCode.REQUEST_CODE_BLACKLIST
-                    )
-                    dialogFragment1.show(
+                    val dialogFragment = BlacklistDialogFragment.newInstance(blackList) {
+                        if (it.size > 0) {
+                            BlackListBiz.getInstance().saveBlackList(it)
+                            load()
+                        }
+                    }
+                    dialogFragment.show(
                         fragmentManager!!,
                         BlackListSettingFragment::class.java.name
                     )
@@ -186,7 +186,7 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
             R.id.menu_load_from_web -> {
                 childFragmentManager.apply {
                     if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(this, mUser)) {
-                        val dialogFragment = LoadBlackListFromWebDialogFragment.newInstance()
+                        val dialogFragment = LoadBlackListFromWebDialogFragment.newInstance { load() }
                         dialogFragment.show(this, LoadBlackListFromWebDialogFragment.TAG)
                     }
                 }
@@ -237,11 +237,12 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
     }
 
     private fun add() {
-        val dialogFragment = BlacklistDialogFragment.newInstance(null)
-        dialogFragment.setTargetFragment(
-            this@BlackListSettingFragment,
-            RequestCode.REQUEST_CODE_BLACKLIST
-        )
+        val dialogFragment = BlacklistDialogFragment.newInstance(ArrayList()) { blackList ->
+            if (blackList.size > 0) {
+                BlackListBiz.getInstance().saveBlackList(blackList)
+                load()
+            }
+        }
         dialogFragment.show(fragmentManager!!, BlackListSettingFragment::class.java.name)
     }
 

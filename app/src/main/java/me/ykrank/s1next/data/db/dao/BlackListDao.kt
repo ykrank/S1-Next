@@ -4,6 +4,7 @@ import android.database.Cursor
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import me.ykrank.s1next.data.User
@@ -27,7 +28,7 @@ interface BlackListDao {
     @Query("SELECT * FROM BlackList WHERE Author = :author AND AuthorId = :authorId")
     fun getByAuthorAndId(authorId: Int, author: String): List<BlackList>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(blackList: List<BlackList>)
 
     @Delete

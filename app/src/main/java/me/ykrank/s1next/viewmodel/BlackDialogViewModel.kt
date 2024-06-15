@@ -1,16 +1,37 @@
-package me.ykrank.s1next.viewmodel;
+package me.ykrank.s1next.viewmodel
 
 import android.view.View
 import android.widget.TextView
-import androidx.databinding.ObservableField
+import androidx.databinding.ObservableArrayList
 import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegateBaseImpl
 import com.google.android.material.R
 import com.google.android.material.snackbar.Snackbar
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 
+/**
+ * Created by Cintory on 2024/6/14 18:54
+ * Email：Cintory@gmail.com
+ */
+class BlackDialogViewModel {
+    val blacklist: ObservableArrayList<BlackList> = ObservableArrayList()
 
-class BlackListViewModel {
-    val blacklist: ObservableField<BlackList> = ObservableField()
+    val blackIdList: String
+        get() {
+            var idList = ""
+            blacklist.forEach {
+                idList += "${it.authorId} "
+            }
+            return idList
+        }
+
+    val blackIdName: String
+        get() {
+            var nameList = ""
+            blacklist.forEach {
+                nameList += "${it.author} "
+            }
+            return nameList
+        }
 
     fun clickSnackbar(): View.OnClickListener {
         return View.OnClickListener { v: View ->
