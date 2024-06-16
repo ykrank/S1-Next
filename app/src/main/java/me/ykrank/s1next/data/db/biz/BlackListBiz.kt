@@ -202,6 +202,13 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         refreshCache(blackList)
     }
 
+    fun saveBlackList(blackList: ArrayList<BlackList>) {
+        blackList.forEach{
+            refreshCache(it)
+        }
+        blackListDao.insert(blackList)
+    }
+
     fun delBlackList(blackList: BlackList) {
         val oBlackList: BlackList? = getMergedBlackList(blackList.authorId, blackList.author)
         if (oBlackList != null) {

@@ -10,8 +10,8 @@
         <import type="android.text.TextUtils" />
 
         <variable
-            name="blackListViewModel"
-            type="me.ykrank.s1next.viewmodel.BlackListViewModel" />
+            name="blackDialogViewModel"
+            type="me.ykrank.s1next.viewmodel.BlackDialogViewModel" />
     </data>
 
     <ScrollView
@@ -48,9 +48,10 @@
                     android:imeActionId="@integer/ime_action_id"
                     android:imeActionLabel="@string/dialog_button_text_go"
                     android:inputType="number"
-                    android:text="@{String.valueOf(blackListViewModel.blacklist.authorId)}"
+                    android:text="@{blackDialogViewModel.blackIdList}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    app:editable="@{blackListViewModel.blacklist.authorId == 0}" />
+                    app:editable="@{blackDialogViewModel.blacklist.size() == 0}"
+                    />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,9 +71,9 @@
                     android:imeActionId="@integer/ime_action_id"
                     android:imeActionLabel="@string/dialog_button_text_go"
                     android:inputType="text"
-                    android:text="@{blackListViewModel.blacklist.author}"
+                    android:text="@{blackDialogViewModel.blackIdName}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    app:editable="@{TextUtils.isEmpty(blackListViewModel.blacklist.author)}" />
+                    app:editable="@{blackDialogViewModel.blacklist.size() == 0}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
