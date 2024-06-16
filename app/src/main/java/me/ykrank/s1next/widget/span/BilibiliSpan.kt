@@ -113,20 +113,30 @@ class BilibiliSpan : URLSpanClick {
 
         // 对Bilibili链接进行独立处理，调用Bilibili客户端
         private fun goBilibili(context: Context, uri: Uri) {
+            // B站新版入口和旧版并不相同，这里适配两种情况
+            var intent =
+                findBiliHandlerIntent(context, uri, "tv.danmaku.bili.ui.intent.IntentHandlerActivity")
+            if (intent == null) {
+                intent =
+                    findBiliHandlerIntent(context, uri, "tv.danmaku.bili.ui.IntentHandlerActivity")
+            }
+            val resultIntent = intent ?: Intent(Intent.ACTION_VIEW, uri)
+            context.startActivity(resultIntent)
+        }
+
+        private fun findBiliHandlerIntent(context: Context, uri: Uri, className: String): Intent? {
             val intent = Intent(Intent.ACTION_VIEW, uri)
-            intent.setClassName("tv.danmaku.bili", "tv.danmaku.bili.ui.IntentHandlerActivity")
+            intent.setClassName("tv.danmaku.bili", className)
             try {
                 val pm = context.packageManager
                 val ai = intent.resolveActivityInfo(pm, PackageManager.MATCH_DEFAULT_ONLY)
-                if (ai == null) {
-                    context.startActivity(Intent(Intent.ACTION_VIEW, uri))
-                } else {
-                    context.startActivity(intent)
+                if (ai != null) {
+                    return intent
                 }
             } catch (e: Throwable) {
                 L.report("BilibiliURLSpan startActivity error for intent, $intent", e)
-                context.startActivity(Intent(Intent.ACTION_VIEW, uri))
             }
+            return null
         }
     }
 }
