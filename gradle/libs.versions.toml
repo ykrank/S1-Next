@@ -77,7 +77,6 @@ androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-lived
 androidx-multidex = { module = "androidx.multidex:multidex", version.ref = "multidex" }
 androidx-percentlayout = { module = "androidx.percentlayout:percentlayout", version.ref = "percentlayout" }
 androidx-transition = { module = "androidx.transition:transition", version.ref = "transition" }
-commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commonsLang3" }
 bugly-nativecrashreport = { module = "com.tencent.bugly:nativecrashreport", version.ref = "bugly_nativecrashreport" }
 bugly-crashreport = { module = "com.tencent.bugly:crashreport", version.ref = "bugly_crashreport" }
 bugly-crashreport_upgrade = { module = "com.tencent.bugly:crashreport_upgrade", version.ref = "bugly_crashreport_upgrade" }

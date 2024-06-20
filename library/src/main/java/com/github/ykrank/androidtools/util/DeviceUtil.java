@@ -2,8 +2,6 @@ package com.github.ykrank.androidtools.util;
 
 import android.os.Build;
 
-import org.apache.commons.lang3.StringUtils;
-
 public final class DeviceUtil {
 
     private DeviceUtil() {

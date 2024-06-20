@@ -1,37 +1,39 @@
-package com.github.ykrank.androidtools.widget;
+package com.github.ykrank.androidtools.widget
 
-import android.text.InputFilter;
-import android.text.Spanned;
-
-import org.apache.commons.lang3.Range;
-import org.apache.commons.lang3.StringUtils;
+import android.text.InputFilter
+import android.text.Spanned
+import android.util.Range
 
 /**
  * Constrains input from entering a value which is out of the range.
- * <p>
+ *
+ *
  * Forked from http://stackoverflow.com/q/14212518
  */
-public final class RangeInputFilter implements InputFilter {
+class RangeInputFilter(lower: Int, upper: Int) : InputFilter {
+    private val mRange: Range<Int>
 
-    private final Range<Integer> mRange;
-
-    public RangeInputFilter(int lower, int upper) {
-        this.mRange = Range.between(lower, upper);
+    init {
+        mRange = Range.create(lower, upper)
     }
 
-    @Override
-    public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-        String value = dest.subSequence(0, dstart).toString()
+    override fun filter(
+        source: CharSequence,
+        start: Int,
+        end: Int,
+        dest: Spanned,
+        dstart: Int,
+        dend: Int
+    ): CharSequence? {
+        val value = (dest.subSequence(0, dstart).toString()
                 + source.subSequence(start, end)
-                + dest.subSequence(dend, dest.length());
+                + dest.subSequence(dend, dest.length))
         try {
-            if (mRange.contains(Integer.valueOf(value))) {
-                return null;
+            if (mRange.contains(value.toInt())) {
+                return null
             }
-        } catch (NumberFormatException ignored) {
-
+        } catch (ignored: NumberFormatException) {
         }
-
-        return StringUtils.EMPTY;
+        return ""
     }
 }

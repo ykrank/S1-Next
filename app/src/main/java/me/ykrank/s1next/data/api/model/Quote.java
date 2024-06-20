@@ -5,10 +5,10 @@ import android.text.TextUtils;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import me.ykrank.s1next.util.HtmlUtils;
 
 public final class Quote {
 
@@ -45,7 +45,7 @@ public final class Quote {
             matcher.usePattern(pattern);
             if (matcher.find()) {
                 // unescape ampersand (&amp;)
-                quote.quoteMessage = StringEscapeUtils.unescapeXml(matcher.group(1));
+                quote.quoteMessage = HtmlUtils.INSTANCE.unescapeHtml(matcher.group(1));
             }
         }
 

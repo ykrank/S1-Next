@@ -110,7 +110,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
         App.appComponent.inject(this)
         super.onViewCreated(view, savedInstanceState)
 
-        val bundle = arguments!!
+        val bundle = requireArguments()
         mThreadId = bundle.getString(ARG_THREAD_ID)
         mPageNum = bundle.getInt(ARG_PAGE_NUM)
         mAuthorId = bundle.getString(ARG_AUTHOR_ID)
@@ -121,12 +121,12 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
         leavePageMsg("PostListPagerFragment##ThreadId:$mThreadId,PageNum:$mPageNum")
 
         mRecyclerView = recyclerView
-        mLayoutManager = StartSnapLinearLayoutManager(activity!!)
+        mLayoutManager = StartSnapLinearLayoutManager(requireActivity())
         mRecyclerView.layoutManager = mLayoutManager
         mRecyclerAdapter =
             PostListRecyclerViewAdapter(
                 this,
-                context!!
+                requireContext()
             )
         mRecyclerView.adapter = mRecyclerAdapter
 
@@ -405,7 +405,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
                         binding.root, data.result?.message
                             ?: "加载失败", Snackbar.LENGTH_INDEFINITE
                     ).setAction(R.string.click_to_cast_dark_magic, View.OnClickListener {
-                        AppPostListActivity.start(context!!, threadId, mPageNum, null)
+                        AppPostListActivity.start(requireContext(), threadId, mPageNum, null)
                     }).show()
                 }
             } else {
@@ -448,7 +448,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
                 } else {
                     val quotePostId = arguments?.getString(ARG_QUOTE_POST_ID)
                     if (!TextUtils.isEmpty(quotePostId)) {
-                        for (i in 0 until postList.size) {
+                        for (i in postList.indices) {
                             if (quotePostId?.toInt() == postList[i].id) {
                                 // scroll to post post
                                 mLayoutManager.scrollToPositionWithOffset(i, 0)

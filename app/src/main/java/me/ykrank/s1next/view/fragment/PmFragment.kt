@@ -14,7 +14,6 @@ import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper
 import me.ykrank.s1next.view.activity.NewPmActivity
 import me.ykrank.s1next.view.adapter.BaseRecyclerViewAdapter
 import me.ykrank.s1next.view.adapter.PmRecyclerViewAdapter
-import org.apache.commons.lang3.RandomUtils
 import javax.inject.Inject
 
 /**
@@ -37,7 +36,7 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
             //Random to force valid retained data
-            dataId = RandomUtils.nextLong().toString()
+            dataId = (Math.random() * Long.MAX_VALUE).toLong().toString()
         } else {
             dataId = savedInstanceState.getString(ARG_DATA_ID)
         }
@@ -47,8 +46,8 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
         super.onViewCreated(view, savedInstanceState)
         App.appComponent.inject(this)
 
-        toUid = arguments!!.getString(ARG_TO_UID)
-        toUsername = arguments!!.getString(ARG_TO_USERNAME)
+        toUid = requireArguments().getString(ARG_TO_UID)
+        toUsername = requireArguments().getString(ARG_TO_USERNAME)
         leavePageMsg("PmFragment##toUid:$toUid,toUsername$toUsername")
         if (toUid.isNullOrEmpty() || toUsername.isNullOrEmpty()) {
             showShortSnackbar(R.string.message_api_error)
@@ -75,7 +74,11 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_new_pm -> {
-                NewPmActivity.startNewPmActivityForResultMessage(activity!!, toUid!!, toUsername!!)
+                NewPmActivity.startNewPmActivityForResultMessage(
+                    requireActivity(),
+                    toUid!!,
+                    toUsername!!
+                )
                 return true
             }
         }

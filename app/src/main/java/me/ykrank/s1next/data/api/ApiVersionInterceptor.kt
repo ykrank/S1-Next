@@ -5,7 +5,6 @@ import okhttp3.Interceptor
 import okhttp3.Interceptor.Chain
 import okhttp3.Request
 import okhttp3.Response
-import org.apache.commons.lang3.ArrayUtils
 import java.io.IOException
 
 /**
@@ -17,10 +16,8 @@ class ApiVersionInterceptor : Interceptor {
     override fun intercept(chain: Chain): Response {
         var request: Request = chain.request()
         var url = request.url
-        if (ArrayUtils.contains(
-                Api.HOST_LIST,
-                url.host
-            ) && TextUtils.isEmpty(url.queryParameter("version"))
+        if (Api.HOST_LIST.contains(url.host) &&
+            TextUtils.isEmpty(url.queryParameter("version"))
         ) {
             url = url.newBuilder().addQueryParameter("version", Api.API_VERSION_DEFAULT).build()
             request = request.newBuilder().url(url).build()

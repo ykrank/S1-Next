@@ -4,7 +4,6 @@ import com.github.ykrank.androidtools.widget.hostcheck.MultiHostInterceptor
 import me.ykrank.s1next.data.api.Api
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import org.apache.commons.lang3.ArrayUtils
 
 /**
  * Self-adaption multi host
@@ -26,7 +25,7 @@ class AppMultiHostInterceptor : MultiHostInterceptor<AppHostUrl> {
                 return originHttpUrl
             }
             // s1 site
-            if (ArrayUtils.contains(Api.HOST_LIST, originHttpUrl.host)) {
+            if (Api.HOST_LIST.contains(originHttpUrl.host)) {
                 val originUrl = originHttpUrl.toString()
                 val originReplacedUrl = Api.parseBaseUrl(originHttpUrl)
                 return originUrl.replace(originReplacedUrl, baseUrl).toHttpUrlOrNull() ?: originHttpUrl

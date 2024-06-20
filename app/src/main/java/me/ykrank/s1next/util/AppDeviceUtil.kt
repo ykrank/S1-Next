@@ -2,9 +2,9 @@ package me.ykrank.s1next.util
 
 import android.content.Context
 import android.os.Build
+import com.github.ykrank.androidtools.util.StringUtils
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
-import org.apache.commons.lang3.StringUtils
 
 object AppDeviceUtil {
 

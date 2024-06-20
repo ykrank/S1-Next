@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.TextUtils
 import me.ykrank.s1next.R
 import me.ykrank.s1next.view.page.post.postedit.ReplyFragment
-import org.apache.commons.lang3.StringUtils
 
 /**
  * An Activity which used to send a reply.
@@ -31,8 +30,7 @@ class ReplyActivity : BaseActivity() {
         else
             getString(R.string.reply_activity_quote_title_prefix,
                     intent.getStringExtra(ARG_QUOTE_POST_COUNT))
-        title = titlePrefix + StringUtils.defaultString(intent.getStringExtra(ARG_THREAD_TITLE),
-                StringUtils.EMPTY)
+        title = "$titlePrefix${intent.getStringExtra(ARG_THREAD_TITLE)}"
 
         val fragmentManager = supportFragmentManager
         val fragment = fragmentManager.findFragmentByTag(ReplyFragment.TAG)

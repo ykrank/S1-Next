@@ -1,6 +1,6 @@
 package me.ykrank.s1next.widget
 
-import com.github.ykrank.androidtools.util.StringUtil
+import com.github.ykrank.androidtools.util.StringUtils
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -28,7 +28,7 @@ class RawJsonConverterFactory private constructor() : Converter.Factory() {
         override fun convert(value: ResponseBody): String {
             var str = value.string()
             //decode like `\ u` unicode response string
-            str = StringUtil.uniDecode(str)
+            str = StringUtils.uniDecode(str)
             //replace like `A:,` with `A:null,`
             str = str.replace(":,", ":null,")
             return str

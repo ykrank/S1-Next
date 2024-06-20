@@ -3,7 +3,7 @@ package me.ykrank.s1next.data.api.model
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
-import org.apache.commons.lang3.StringEscapeUtils
+import me.ykrank.s1next.util.HtmlUtils
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Favourite : StableIdModel {
@@ -18,7 +18,7 @@ class Favourite : StableIdModel {
     // unescape some basic XML entities
     var title: String? = null
         set(title) {
-            field = StringEscapeUtils.unescapeXml(title)
+            field = HtmlUtils.unescapeHtml(title)
         }
 
     override val stableId: Long

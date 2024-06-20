@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonSetter
-import com.github.ykrank.androidtools.util.StringUtil
+import com.github.ykrank.androidtools.util.StringUtils
 import me.ykrank.s1next.data.api.model.Account
 import me.ykrank.s1next.data.api.model.Post
 import me.ykrank.s1next.data.api.model.Thread
@@ -16,7 +16,6 @@ import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.biz.BlackWordBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.data.db.dbmodel.BlackWord
-import org.apache.commons.lang3.StringUtils
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 
@@ -49,7 +48,7 @@ class Posts : Account {
     constructor(@JsonProperty("special_trade") trade: Map<Int, Any>?,
                 @JsonProperty("postlist") postList: List<Post>?) {
         this.postList = filterPostList(postList)
-        if (trade != null && postList != null && postList.isNotEmpty()) {
+        if (trade != null && !postList.isNullOrEmpty()) {
             val post = postList[0]
             if (trade.containsKey(post.id + 1)) {
                 post.isTrade = true
@@ -136,7 +135,7 @@ class Posts : Account {
                         @JsonProperty("value") value: String?,
                         @JsonProperty("unit") unit: String?) {
                 this.label = label
-                this.value = StringUtil.unescapeNonBreakingSpace(value) + StringUtils.defaultString(unit)
+                this.value = StringUtils.unescapeNonBreakingSpace(value) + (unit ?: "")
             }
 
             override fun equals(other: Any?): Boolean {

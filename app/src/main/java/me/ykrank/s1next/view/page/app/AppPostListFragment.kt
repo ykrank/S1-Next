@@ -14,7 +14,7 @@ import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate
 import com.github.ykrank.androidtools.util.ClipboardUtil
-import com.github.ykrank.androidtools.util.StringUtil
+import com.github.ykrank.androidtools.util.StringUtils
 import com.github.ykrank.androidtools.widget.RxBus
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -163,7 +163,7 @@ class AppPostListFragment : BaseViewPagerFragment(), AppPostListPagerFragment.Pa
                 if (TextUtils.isEmpty(mThreadTitle)) {
                     value = url
                 } else {
-                    value = StringUtil.concatWithTwoSpaces(mThreadTitle, url)
+                    value = StringUtils.concatWithTwoSpaces(mThreadTitle, url)
                 }
 
                 val intent = Intent(Intent.ACTION_SEND)

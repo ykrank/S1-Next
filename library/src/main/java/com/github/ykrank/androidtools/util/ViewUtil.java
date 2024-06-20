@@ -1,15 +1,16 @@
 package com.github.ykrank.androidtools.util;
 
 import android.annotation.SuppressLint;
-import androidx.annotation.ColorInt;
-import androidx.core.view.ViewCompat;
-import androidx.appcompat.widget.Toolbar;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
 
 import com.github.ykrank.androidtools.R;
 
@@ -28,9 +29,9 @@ public final class ViewUtil {
     @SuppressLint("SetTextI18n")
     public static void concatWithTwoSpacesForRtlSupport(TextView textView, CharSequence text) {
         if (ResourceUtil.isRTL(textView.getResources())) {
-            textView.setText(text + StringUtil.TWO_SPACES + textView.getText());
+            textView.setText(text + StringUtils.TWO_SPACES + textView.getText());
         } else {
-            textView.append(StringUtil.TWO_SPACES + text);
+            textView.append(StringUtils.TWO_SPACES + text);
         }
     }
 
@@ -44,11 +45,11 @@ public final class ViewUtil {
     @SuppressLint("SetTextI18n")
     public static void concatWithTwoSpacesForRtlSupport(TextView textView, CharSequence text, @ColorInt int textColor) {
         if (ResourceUtil.isRTL(textView.getResources())) {
-            textView.setText(text + StringUtil.TWO_SPACES + textView.getText());
+            textView.setText(text + StringUtils.TWO_SPACES + textView.getText());
             ViewUtil.setForegroundColor(textView, textColor, 0, text.length());
         } else {
             int start = textView.length();
-            textView.append(StringUtil.TWO_SPACES + text);
+            textView.append(StringUtils.TWO_SPACES + text);
             ViewUtil.setForegroundColor(textView, textColor, start, textView.length());
         }
     }

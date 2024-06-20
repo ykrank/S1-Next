@@ -1,14 +1,14 @@
 package me.ykrank.s1next.view.fragment
 
 import android.content.Context
-import androidx.annotation.CallSuper
-import androidx.viewpager.widget.ViewPager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.annotation.CallSuper
+import androidx.viewpager.widget.ViewPager
 import com.github.ykrank.androidtools.ui.LibBaseViewPagerFragment
 import com.github.ykrank.androidtools.util.ResourceUtil
-import com.github.ykrank.androidtools.util.StringUtil
+import com.github.ykrank.androidtools.util.StringUtils
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -52,9 +52,9 @@ abstract class BaseViewPagerFragment : LibBaseViewPagerFragment() {
 
         val titleWithPosition: String
         if (ResourceUtil.isRTL(resources)) {
-            titleWithPosition = StringUtil.concatWithTwoSpaces(position + 1, titleWithoutPosition)
+            titleWithPosition = StringUtils.concatWithTwoSpaces(position + 1, titleWithoutPosition)
         } else {
-            titleWithPosition = StringUtil.concatWithTwoSpaces(titleWithoutPosition, position + 1)
+            titleWithPosition = StringUtils.concatWithTwoSpaces(titleWithoutPosition, position + 1)
         }
         activity?.title = titleWithPosition
     }

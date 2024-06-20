@@ -3,11 +3,11 @@ package me.ykrank.s1next.data.api.model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.google.common.base.Objects
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
+import com.google.common.base.Objects
 import me.ykrank.s1next.data.db.dbmodel.History
-import org.apache.commons.lang3.StringEscapeUtils
+import me.ykrank.s1next.util.HtmlUtils
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 
@@ -23,8 +23,7 @@ class Thread : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
     @JsonProperty("subject")
     var title: String? = null
         set(value) {
-            // unescape some basic XML entities
-            field = StringEscapeUtils.unescapeXml(value)
+            field = HtmlUtils.unescapeHtml(value)
         }
 
     /**

@@ -1,102 +1,112 @@
-package com.github.ykrank.androidtools.util;
+package com.github.ykrank.androidtools.util
 
-import androidx.annotation.Nullable;
-
-import org.apache.commons.lang3.StringUtils;
-
-public final class StringUtil {
-
-    static final String TWO_SPACES = "  ";
-
-    private static final String NON_BREAKING_SPACE_ENTITY_NAME = "&nbsp;";
-
-    private StringUtil() {
-    }
+object StringUtils {
+    const val SPACE = " "
+    const val TWO_SPACES = "  "
+    private const val NON_BREAKING_SPACE_ENTITY_NAME = "&nbsp;"
 
     /**
-     * Concatenates {@code first} and {@code second} with {@link #TWO_SPACES}.
-     * <p>
+     * Concatenates `first` and `second` with [.TWO_SPACES].
+     *
+     *
      * <pre>
      * StringUtil.concatWithTwoSpaces("a", 1) = "a  1"
-     * </pre>
+    </pre> *
      *
      * @return A new string which is the concatenation of this string, two spaces
      * and the specified string.
      */
-    public static String concatWithTwoSpaces(CharSequence first, int last) {
-        return concatWithTwoSpaces(first, String.valueOf(last));
+    fun concatWithTwoSpaces(first: CharSequence?, last: Int): String {
+        return concatWithTwoSpaces(first, last.toString())
     }
 
     /**
      * <pre>
      * StringUtil.concatWithTwoSpaces(1, "a") = "1  a"
-     * </pre>
+    </pre> *
      *
-     * @see #concatWithTwoSpaces(CharSequence, int)
+     * @see .concatWithTwoSpaces
      */
-    public static String concatWithTwoSpaces(int first, CharSequence last) {
-        return concatWithTwoSpaces(String.valueOf(first), last);
+    fun concatWithTwoSpaces(first: Int, last: CharSequence): String {
+        return concatWithTwoSpaces(first.toString(), last)
     }
 
     /**
      * <pre>
      * StringUtil.concatWithTwoSpaces("a", "b") = "a  b"
-     * </pre>
+    </pre> *
      *
-     * @see #concatWithTwoSpaces(CharSequence, int)
+     * @see .concatWithTwoSpaces
      */
-    public static String concatWithTwoSpaces(@Nullable CharSequence first, CharSequence last) {
-        if (first == null) {
-            return last.toString();
-        }
-        return first + TWO_SPACES + last;
+    fun concatWithTwoSpaces(first: CharSequence?, last: CharSequence): String {
+        return if (first == null) {
+            last.toString()
+        } else first.toString() + TWO_SPACES + last
     }
 
     /**
-     * Replaces all occurrences of the {@link #NON_BREAKING_SPACE_ENTITY_NAME}
+     * Replaces all occurrences of the [.NON_BREAKING_SPACE_ENTITY_NAME]
      * within the space.
      *
      * @param text The text to search and replace in.
      * @return The text with any replacements processed.
      */
-    public static String unescapeNonBreakingSpace(String text) {
-        return StringUtils.replace(text, NON_BREAKING_SPACE_ENTITY_NAME,
-                StringUtils.SPACE);
+    fun unescapeNonBreakingSpace(text: String?): String {
+        return text?.replace(NON_BREAKING_SPACE_ENTITY_NAME, SPACE) ?: ""
     }
 
     /**
      * decode like \u8652
      */
-    public static String uniDecode(String s) {
-        StringBuilder sb = new StringBuilder(s.length());
-        char[] chars = s.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            char c = chars[i];
+    fun uniDecode(s: String): String {
+        val sb = StringBuilder(s.length)
+        val chars = s.toCharArray()
+        var i = 0
+        while (i < chars.size) {
+            val c = chars[i]
             if (c == '\\') {
-                if (chars[i + 1] == '\\') {
-                    i++;
-                    sb.append("\\\\");
-                    continue;
-                } else if (chars[i + 1] == 'u') {
-                    char cc = 0;
-                    for (int j = 0; j < 4; j++) {
-                        char ch = Character.toLowerCase(chars[i + 2 + j]);
-                        if ('0' <= ch && ch <= '9' || 'a' <= ch && ch <= 'f') {
-                            cc |= (char) (Character.digit(ch, 16) << (3 - j) * 4);
+                if (i + 1 < chars.size && chars[i + 1] == '\\') {
+                    sb.append("\\\\")
+                    i += 2
+                    continue
+                } else if (i + 5 < chars.size && chars[i + 1] == 'u') {
+                    var cc: Char = 0.toChar()
+                    for (j in 2..5) {
+                        val ch = chars[i + j].lowercaseChar()
+                        if (ch in '0'..'9' || ch in 'a'..'f') {
+                            cc = (cc.code shl 4 or Character.digit(ch, 16)).toChar()
                         } else {
-                            cc = 0;
-                            break;
+                            cc = 0.toChar()
+                            break
                         }
                     }
-                    if (cc > 0) {
-                        i += 5;
-                        sb.append(cc);
-                        continue;
+                    if (cc > 0.toChar()) {
+                        sb.append(cc)
+                        i += 6
+                        continue
                     }
                 }
             }
-            sb.append(c);
+            sb.append(c)
+            i++
         }
-        return sb.toString();
+        return sb.toString()
+    }
+
+    /**
+     *   StringUtils.abbreviate(null, *)      = null
+     *   StringUtils.abbreviate("", 4)        = ""
+     *   StringUtils.abbreviate("abcdefg", 6) = "abc..."
+     *   StringUtils.abbreviate("abcdefg", 7) = "abcdefg"
+     *   StringUtils.abbreviate("abcdefg", 8) = "abcdefg"
+     *   StringUtils.abbreviate("abcdefg", 4) = "a..."
+     *   StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
+     */
+    fun abbreviate(str: String?, maxWidth: Int, suffix: String = "..."): String {
+        if (str == null) return ""
+        if (str.length <= maxWidth) {
+            return str
+        }
+        return "${str.substring(0, (maxWidth - suffix.length))}$suffix"
     }
 }

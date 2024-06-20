@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-
 import java.util.List;
+
+import me.ykrank.s1next.util.HtmlUtils;
 
 @SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -23,8 +23,7 @@ public final class ForumCategoryByIds {
     }
 
     public void setName(String name) {
-        // unescape some basic XML entities
-        this.name = StringEscapeUtils.unescapeXml(name);
+        this.name = HtmlUtils.INSTANCE.unescapeHtml(name);
     }
 
     public List<Integer> getForumIds() {

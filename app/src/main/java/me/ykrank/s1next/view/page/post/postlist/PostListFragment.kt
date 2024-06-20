@@ -282,7 +282,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                 if (TextUtils.isEmpty(mThreadTitle)) {
                     value = url
                 } else {
-                    value = StringUtil.concatWithTwoSpaces(mThreadTitle, url)
+                    value = StringUtils.concatWithTwoSpaces(mThreadTitle, url)
                 }
 
                 val intent = Intent(Intent.ACTION_SEND)

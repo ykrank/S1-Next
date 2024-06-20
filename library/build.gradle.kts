@@ -64,7 +64,6 @@ dependencies {
 
     debugApi(libs.leakcanary.android)
     releaseApi(libs.leakcanary.android.no.op)
-    api(libs.commons.lang3)
     api(libs.guava)
 
     api(libs.rxjava)
