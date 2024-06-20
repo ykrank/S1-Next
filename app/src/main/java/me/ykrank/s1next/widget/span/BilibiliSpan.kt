@@ -9,6 +9,7 @@ import android.text.SpannableStringBuilder
 import android.text.style.ClickableSpan
 import android.view.View
 import com.github.ykrank.androidtools.util.L
+import me.ykrank.s1next.util.IntentUtil
 import me.ykrank.s1next.widget.span.PostMovementMethod.URLSpanClick
 
 /**
@@ -35,16 +36,13 @@ class BilibiliSpan : URLSpanClick {
             if (path == null) {
                 path = "/"
             }
-            var host = uri.host ?: ""
-            if (host.startsWith("www.")) {
-                host = host.replaceFirst("www.", "")
-            }
+            val host = uri.host ?: ""
             for (filter in HOST_FILTERS) {
                 val hostFilter = filter.key
                 val pathPattern = filter.value
 
-                if (hostFilter.equals(host, ignoreCase = true)
-                    && path.matches(pathPattern.toRegex())
+                if (IntentUtil.matchMainHost(host, hostFilter) &&
+                    IntentUtil.matchPath(path, pathPattern)
                 ) {
                     return true
                 }
@@ -69,16 +67,22 @@ class BilibiliSpan : URLSpanClick {
         /**
          * intent-filter.从官方APP AndroidManifest中提取
          */
-        private val HOST_FILTERS: Map<String, String> by lazy {
+        private val HOST_FILTERS: Map<String, Regex> by lazy {
             buildMap {
-                put("bilibili.com", ".*")
-                put("bilibili.tv", ".*")
-                put("bilibili.cn", ".*")
-                put("bangumi.bilibili.com", ".*")
+                put("bilibili.com", IntentUtil.REGEX_MATCH_ALL_PATH)
+                put("bilibili.tv", IntentUtil.REGEX_MATCH_ALL_PATH)
+                put("bilibili.cn", IntentUtil.REGEX_MATCH_ALL_PATH)
 
-                put("bilibili.kankanews.com", "/video/av.*")
-                put("bilibili.smgbb.cn", "/video/av.*")
-                put("m.acg.tv", "/video/av.*")
+                put("bilibili.kankanews.com", "/video/.*".toRegex())
+                put("bilibili.smgbb.cn", "/video/.*".toRegex())
+
+                put("m.acg.tv", "/video/.*".toRegex())
+                put("b23.tv", IntentUtil.REGEX_MATCH_ALL_PATH)
+                put("bili2233.cn", IntentUtil.REGEX_MATCH_ALL_PATH)
+                put("bili23.cn", IntentUtil.REGEX_MATCH_ALL_PATH)
+                put("bili33.cn", IntentUtil.REGEX_MATCH_ALL_PATH)
+                put("bili22.cn", IntentUtil.REGEX_MATCH_ALL_PATH)
+                put("bilibili.cn", IntentUtil.REGEX_MATCH_ALL_PATH)
             }
         }
 

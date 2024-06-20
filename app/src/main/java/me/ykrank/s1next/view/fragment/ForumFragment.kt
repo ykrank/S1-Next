@@ -3,7 +3,6 @@ package me.ykrank.s1next.view.fragment
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -63,17 +62,19 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item?.itemId) {
+        return when (item.itemId) {
             R.id.menu_browser -> {
-                IntentUtil.startViewIntentExcludeOurApp(context, Uri.parse(Api.BASE_URL))
-                return true
+                IntentUtil.startViewIntentExcludeOurApp(requireContext(), Uri.parse(Api.BASE_URL))
+                true
             }
+
             R.id.app_bar_search -> {
-                val activity = activity!!
+                val activity = requireActivity()
                 SearchActivity.start(activity, activity.findViewById(R.id.app_bar_search))
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

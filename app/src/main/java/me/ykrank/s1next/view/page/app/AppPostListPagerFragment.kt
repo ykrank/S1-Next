@@ -27,7 +27,6 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.app.AppApiUtil
 import me.ykrank.s1next.data.api.app.AppService
 import me.ykrank.s1next.data.api.app.model.AppDataWrapper
@@ -39,14 +38,16 @@ import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.databinding.FragmentBaseWithQuickSideBarBinding
 import me.ykrank.s1next.util.JsonUtil
 import me.ykrank.s1next.view.adapter.AppPostListRecyclerViewAdapter
-import me.ykrank.s1next.view.event.*
+import me.ykrank.s1next.view.event.AppLoginEvent
+import me.ykrank.s1next.view.event.BlackListChangeEvent
+import me.ykrank.s1next.view.event.LoginEvent
+import me.ykrank.s1next.view.event.PostSelectableChangeEvent
+import me.ykrank.s1next.view.event.QuickSidebarEnableChangeEvent
 import me.ykrank.s1next.view.fragment.BaseRecyclerViewFragment
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateQuickSidebarImpl
 import me.ykrank.s1next.view.page.app.AppPostListPagerFragment.PagerCallback
 import me.ykrank.s1next.view.page.login.AppLoginDialogFragment
-import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 /**
  * A Fragment representing one of the pages of posts.

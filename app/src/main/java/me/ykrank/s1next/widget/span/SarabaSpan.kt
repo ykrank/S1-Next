@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.view.View
 import com.github.ykrank.androidtools.util.L
+import me.ykrank.s1next.util.IntentUtil
 import me.ykrank.s1next.view.page.post.postlist.PostListGatewayActivity
 import me.ykrank.s1next.widget.span.PostMovementMethod.URLSpanClick
 
@@ -34,8 +35,8 @@ open class SarabaSpan : URLSpanClick {
                 val hostFilter = filter.key
                 val pathPattern = filter.value
 
-                if ((host == hostFilter || host.endsWith(".${hostFilter}"))
-                    && path.matches(pathPattern)
+                if (IntentUtil.matchMainHost(host, hostFilter) &&
+                    IntentUtil.matchPath(path, pathPattern)
                 ) {
                     return true
                 }
@@ -54,9 +55,9 @@ open class SarabaSpan : URLSpanClick {
          */
         private val HOST_FILTERS: Map<String, Regex> by lazy {
             buildMap {
-                put("saraba1st.com", ".*".toRegex())
-                put("stage1.cc", ".*".toRegex())
-                put("stage1st.com", ".*".toRegex())
+                put("saraba1st.com", IntentUtil.REGEX_MATCH_ALL_PATH)
+                put("stage1.cc", IntentUtil.REGEX_MATCH_ALL_PATH)
+                put("stage1st.com", IntentUtil.REGEX_MATCH_ALL_PATH)
             }
         }
 

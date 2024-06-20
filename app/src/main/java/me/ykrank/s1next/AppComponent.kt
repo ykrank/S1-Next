@@ -17,7 +17,6 @@ import me.ykrank.s1next.data.db.biz.LoginUserBiz
 import me.ykrank.s1next.data.db.biz.ReadProgressBiz
 import me.ykrank.s1next.data.db.biz.ThreadBiz
 import me.ykrank.s1next.task.AutoSignTask
-import me.ykrank.s1next.util.SAFFragment
 import me.ykrank.s1next.view.activity.BaseActivity
 import me.ykrank.s1next.view.activity.ForumActivity
 import me.ykrank.s1next.view.activity.GalleryActivity
@@ -85,6 +84,7 @@ import me.ykrank.s1next.widget.glide.MultiThreadHttpStreamFetcher
 import me.ykrank.s1next.widget.hostcheck.AppHostUrl
 import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask
 import me.ykrank.s1next.widget.net.Image
+import me.ykrank.s1next.widget.saf.SAFFragment
 import okhttp3.Dns
 import okhttp3.OkHttpClient
 

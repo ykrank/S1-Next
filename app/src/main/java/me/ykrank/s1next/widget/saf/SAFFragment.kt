@@ -1,6 +1,5 @@
-package me.ykrank.s1next.util
+package me.ykrank.s1next.widget.saf
 
-import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
@@ -11,17 +10,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import com.github.ykrank.androidtools.extension.toast
-import com.github.ykrank.androidtools.ui.LibBaseFragment
-import com.github.ykrank.androidtools.ui.internal.DataRetainedFragment
 import com.github.ykrank.androidtools.util.L
-import com.github.ykrank.androidtools.util.RxJavaUtil
 import me.ykrank.s1next.App
-import me.ykrank.s1next.R
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
-import me.ykrank.s1next.view.fragment.BaseFragment
-import me.ykrank.s1next.view.internal.ToolbarDropDownInterface.Callback
 import javax.inject.Inject
 
 
