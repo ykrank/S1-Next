@@ -1,12 +1,12 @@
 package me.ykrank.s1next.view.page.post.postedit
 
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Spinner
+import androidx.databinding.DataBindingUtil
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.ykrank.androidautodispose.AndroidRxDispose
@@ -65,13 +65,13 @@ class NewThreadFragment : BasePostEditFragment() {
         if (typeSpinner.visibility == View.VISIBLE) {
             val selectType = typeSpinner.selectedItem as ThreadType?
             if (selectType == null) {
-                showShortSnackbar(R.string.error_not_init)
+                showSnackbar(R.string.error_not_init)
                 return true
             }
             typeId = selectType.typeId
             //未选择类别
             if (typeId == null || "0" == typeId.trim { it <= ' ' }) {
-                showShortSnackbar(R.string.error_no_type_id)
+                showSnackbar(R.string.error_no_type_id)
                 return true
             }
         }
@@ -79,7 +79,7 @@ class NewThreadFragment : BasePostEditFragment() {
         val title = titleEditText.text.toString()
         val message = mReplyView.text.toString()
         if (!isTitleValid(title) || !isMessageValid(message)) {
-            showShortSnackbar(R.string.error_no_title_or_message)
+            showSnackbar(R.string.error_no_title_or_message)
             return true
         }
 

@@ -80,7 +80,7 @@ class ForumActivity : BaseActivity(), ToolbarDropDownInterface.Callback, Adapter
             if (resultCode == Activity.RESULT_OK) {
                 val msg = data?.getStringExtra(EXTRA_MESSAGE)
                 if (msg != null) {
-                    showShortSnackbar(msg)
+                    showSnackbar(msg)
                 }
                 if (data != null) {
                     fragment.forceSwipeRefresh()

@@ -69,7 +69,7 @@ abstract class BaseLoginFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_account_new) {
             IntentUtil.startViewIntentExcludeOurApp(
-                context, Uri.parse(
+                requireContext(), Uri.parse(
                     Api.URL_BROWSER_REGISTER
                 )
             )

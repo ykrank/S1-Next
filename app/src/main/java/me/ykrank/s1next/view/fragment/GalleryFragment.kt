@@ -125,7 +125,7 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
             }
 
             R.id.menu_browser -> {
-                IntentUtil.startViewIntentExcludeOurApp(context, Uri.parse(mImageUrl))
+                IntentUtil.startViewIntentExcludeOurApp(requireContext(), Uri.parse(mImageUrl))
                 return true
             }
 

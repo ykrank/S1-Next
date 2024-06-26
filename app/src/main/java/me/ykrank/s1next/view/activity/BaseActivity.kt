@@ -237,7 +237,7 @@ abstract class BaseActivity : LibBaseActivity() {
                 // unable to show a Toast if our app is running in the background).
                 val msg = data?.getStringExtra(EXTRA_MESSAGE)
                 if (msg != null) {
-                    showShortSnackbar(msg)
+                    showSnackbar(msg)
                 }
             }
         }

@@ -2,7 +2,11 @@ package me.ykrank.s1next.view.fragment
 
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import com.github.ykrank.androidtools.ui.LibBaseLoadMoreRecycleViewFragment
 import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
@@ -118,7 +122,7 @@ abstract class BaseLoadMoreRecycleViewFragment<D> : LibBaseLoadMoreRecycleViewFr
         if (isAdded && userVisibleHint) {
             if (result != null) {
                 val message = result.message
-                if (!TextUtils.isEmpty(message)) {
+                if (!message.isNullOrEmpty()) {
                     showRetrySnackbar(message)
                 }
             } else {

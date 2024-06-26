@@ -1,62 +1,36 @@
-package me.ykrank.s1next.data.api.model.wrapper;
+package me.ykrank.s1next.data.api.model.wrapper
 
-import androidx.annotation.Nullable;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
-
-import me.ykrank.s1next.data.api.model.Account;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.google.common.base.Objects
+import me.ykrank.s1next.data.api.model.Account
 
 /**
  * Created by ykrank on 2017/2/3.
  */
-@SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public abstract class OriginWrapper<T extends Account> {
+abstract class OriginWrapper<T : Account> {
     @JsonProperty("Variables")
-    private T data;
+    lateinit var data: T
 
-    @Nullable
     @JsonProperty("error")
-    private String error;
+    var error: String? = null
 
-    public T getData() {
-        return data;
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is OriginWrapper<*>) return false
+        return Objects.equal(data, other.data) &&
+                Objects.equal(error, other.error)
     }
 
-    public void setData(T data) {
-        this.data = data;
+    override fun hashCode(): Int {
+        return Objects.hashCode(data, error)
     }
 
-    @Nullable
-    public String getError() {
-        return error;
-    }
-
-    public void setError(@Nullable String error) {
-        this.error = error;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof OriginWrapper)) return false;
-        OriginWrapper<?> that = (OriginWrapper<?>) o;
-        return Objects.equal(data, that.data) &&
-                Objects.equal(error, that.error);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(data, error);
-    }
-
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "OriginWrapper{" +
                 "data=" + data +
                 ", error='" + error + '\'' +
-                '}';
+                '}'
     }
 }

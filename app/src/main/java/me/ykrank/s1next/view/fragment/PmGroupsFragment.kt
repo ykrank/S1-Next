@@ -46,7 +46,7 @@ class PmGroupsFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<PmGroup
     override fun onNext(data: BaseDataWrapper<PmGroups>) {
         super.onNext(data)
         val pmGroups = data.data
-        val pmGroupList = pmGroups.list
+        val pmGroupList = pmGroups?.list
         if (pmGroupList != null) {
             mRecyclerAdapter.diffNewDataSet(pmGroupList, false)
             // update total page
@@ -54,17 +54,17 @@ class PmGroupsFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<PmGroup
         }
 
         if (pageNum == 1) {
-            mRxBus.post(NoticeRefreshEvent::class.java, NoticeRefreshEvent(data.data.hasNew(), null))
+            mRxBus.post(NoticeRefreshEvent::class.java, NoticeRefreshEvent(data.data?.hasNew(), null))
         }
     }
 
     override fun appendNewData(oldData: BaseDataWrapper<PmGroups>?, newData: BaseDataWrapper<PmGroups>): BaseDataWrapper<PmGroups> {
         if (oldData != null) {
-            val oldPmGroups = oldData.data.list
-            var newPmGroups = newData.data.list?.toMutableList()
+            val oldPmGroups = oldData.data?.list
+            var newPmGroups = newData.data?.list?.toMutableList()
             if (newPmGroups == null) {
                 newPmGroups = ArrayList()
-                newData.data.list = newPmGroups
+                newData.data?.list = newPmGroups
             }
             if (oldPmGroups != null) {
                 newPmGroups.addAll(0, oldPmGroups)

@@ -2,16 +2,17 @@ package me.ykrank.s1next.view.fragment
 
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.FragmentManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.fragment.app.FragmentManager
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.ui.LibBaseViewPagerFragment
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.RxBus
+import com.google.android.material.snackbar.Snackbar
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
@@ -54,7 +55,7 @@ class FavouriteListFragment : BaseViewPagerFragment() {
                             .compose(RxJavaUtil.iOSingleTransformer())
                             .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY_VIEW))
                             .subscribe({ wrapper ->
-                                showShortSnackbar(wrapper.result.message)
+                                showSnackbar(wrapper.result.message)
                                 loadViewPager()
                             }, { this.onError(it) })
                 }
@@ -68,13 +69,13 @@ class FavouriteListFragment : BaseViewPagerFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_browser -> {
-                IntentUtil.startViewIntentExcludeOurApp(context, Uri.parse(
+                IntentUtil.startViewIntentExcludeOurApp(requireContext(), Uri.parse(
                         Api.getFavouritesListUrlForBrowser(currentPage + 1)))
 
                 return true
             }
             R.id.menu_favourites_remove -> {
-                showLongSnackbar(R.string.how_to_remove_favourites)
+                showSnackbar(R.string.how_to_remove_favourites, Snackbar.LENGTH_LONG)
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

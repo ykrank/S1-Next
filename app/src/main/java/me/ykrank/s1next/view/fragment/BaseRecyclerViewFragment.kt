@@ -129,7 +129,7 @@ abstract class BaseRecyclerViewFragment<D> : LibBaseRecyclerViewFragment<D>() {
         if (isAdded && userVisibleHint) {
             if (result != null) {
                 val message = result.message
-                if (!TextUtils.isEmpty(message)) {
+                if (!message.isNullOrEmpty()) {
                     showRetrySnackbar(message)
                 }
             } else {

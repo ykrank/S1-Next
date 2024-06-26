@@ -4,7 +4,12 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import androidx.annotation.CallSuper
 import androidx.annotation.UiThread
@@ -30,9 +35,9 @@ import me.ykrank.s1next.view.event.EmoticonClickEvent
 import me.ykrank.s1next.view.event.PostAddImageEvent
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
 import me.ykrank.s1next.view.fragment.BaseFragment
-import me.ykrank.s1next.view.page.post.postedit.toolstab.emoticon.EmotionFragment
 import me.ykrank.s1next.view.page.post.postedit.toolstab.ImageUploadFragment
 import me.ykrank.s1next.view.page.post.postedit.toolstab.PostToolsExtrasFragment
+import me.ykrank.s1next.view.page.post.postedit.toolstab.emoticon.EmotionFragment
 import javax.inject.Inject
 
 /**
@@ -192,11 +197,11 @@ abstract class BasePostEditFragment : BaseFragment(),
                 for (image in selectImages) {
                     val url = image.url
                     if (url.isNullOrEmpty()) {
-                        showShortSnackbar("请先等待图片上传完成")
+                        showSnackbar("请先等待图片上传完成")
                         return false
                     }
                     if (!addImages.contains(url)) {
-                        showShortSnackbar("点击上传完成的图片，才能插入到帖子中")
+                        showSnackbar("点击上传完成的图片，才能插入到帖子中")
                         return false
                     }
                 }

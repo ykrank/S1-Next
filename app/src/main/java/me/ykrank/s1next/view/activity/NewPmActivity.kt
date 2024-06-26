@@ -24,7 +24,7 @@ class NewPmActivity : BaseActivity() {
         val toUid = intent.getStringExtra(ARG_TO_UID)
         val toUsername = intent.getStringExtra(ARG_TO_USERNAME)
         if (TextUtils.isEmpty(toUid)) {
-            showShortSnackbar(R.string.message_api_error)
+            showSnackbar(R.string.message_api_error)
             return
         }
         title = getString(R.string.title_new_pm) + "-" + toUsername

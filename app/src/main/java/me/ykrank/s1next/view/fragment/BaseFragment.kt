@@ -2,11 +2,11 @@ package me.ykrank.s1next.view.fragment
 
 import android.app.Activity
 import android.os.Bundle
-import androidx.annotation.CallSuper
-import com.google.android.material.snackbar.Snackbar
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.CallSuper
 import com.github.ykrank.androidtools.ui.LibBaseFragment
+import com.google.android.material.snackbar.Snackbar
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.UserValidator
@@ -34,7 +34,7 @@ abstract class BaseFragment : LibBaseFragment() {
 
     protected fun showShortSnackbar(throwable: Throwable) {
         val context = context ?: return
-        showShortSnackbar(ErrorUtil.parse(context, throwable))
+        showSnackbar(ErrorUtil.parse(context, throwable))
     }
 
     /**

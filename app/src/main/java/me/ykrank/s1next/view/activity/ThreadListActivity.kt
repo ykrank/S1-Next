@@ -130,7 +130,7 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
     override fun onResume() {
         super.onResume()
         if (refreshBlackList) {
-            showShortSnackbar(R.string.blacklist_refresh_warn)
+            showSnackbar(R.string.blacklist_refresh_warn)
             refreshBlackList = false
         }
     }

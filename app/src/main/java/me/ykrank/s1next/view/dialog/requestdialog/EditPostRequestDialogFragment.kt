@@ -4,20 +4,21 @@ import android.os.Bundle
 import io.reactivex.Single
 import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.R
+import me.ykrank.s1next.data.api.model.AjaxResult
 import me.ykrank.s1next.data.api.model.Post
 import me.ykrank.s1next.data.api.model.Thread
 
 /**
  * A dialog requests to reply to post.
  */
-class EditPostRequestDialogFragment : BaseRequestDialogFragment<String>() {
+class EditPostRequestDialogFragment : BaseRequestDialogFragment<AjaxResult>() {
 
     override fun getProgressMessage(): CharSequence? {
         return getText(R.string.dialog_progress_message_reply)
     }
 
-    override fun getSourceObservable(): Single<String> {
-        val bundle = arguments!!
+    override fun getSourceObservable(): Single<AjaxResult> {
+        val bundle = requireArguments()
         val mThread = bundle.getParcelable<Thread>(ARG_THREAD)
         val mPost = bundle.getParcelable<Post>(ARG_POST)
         val title = bundle.getString(ARG_TITLE)
@@ -26,21 +27,30 @@ class EditPostRequestDialogFragment : BaseRequestDialogFragment<String>() {
         val message = bundle.getString(ARG_MESSAGE)
 
         if (mPost == null || mThread == null) {
-            return Single.error<String>(NullPointerException())
+            return Single.error(NullPointerException())
         }
 
         val saveAsDraft = if (BuildConfig.DEBUG && mPost.isFirst) 1 else null
         return flatMappedWithAuthenticityToken { token ->
             mS1Service.editPost(mThread.fid!!.toInt(), mThread.id!!.toInt(), mPost.id, token, System.currentTimeMillis(),
-                    typeId, title, message, 1, 1, saveAsDraft, readPerm)
+                typeId,
+                title,
+                message,
+                1,
+                1,
+                saveAsDraft,
+                readPerm
+            ).map {
+                AjaxResult.fromAjaxString(it)
+            }
         }
     }
 
-    override fun onNext(data: String) {
-        if (data.contains("succeedhandle_")) {
+    override fun onNext(data: AjaxResult) {
+        if (data.success) {
             onRequestSuccess(getString(R.string.edit_post_succeed))
         } else {
-            onRequestError(data)
+            onRequestError(data.msg)
         }
     }
 

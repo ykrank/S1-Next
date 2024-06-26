@@ -16,8 +16,10 @@ class LoginDialogFragment : BaseLoginDialogFragment<AccountResultWrapper>() {
     override fun getSourceObservable(): Single<AccountResultWrapper> {
         return mS1Service.login(username, password, questionId, answer).map { resultWrapper ->
             // the authenticity token is not fresh after login
-            resultWrapper.data.authenticityToken = null
-            mUserValidator.validate(resultWrapper.data)
+            resultWrapper.data?.apply {
+                authenticityToken = null
+                mUserValidator.validate(this)
+            }
             resultWrapper
         }
     }
@@ -52,8 +54,8 @@ class LoginDialogFragment : BaseLoginDialogFragment<AccountResultWrapper>() {
             val time = System.currentTimeMillis()
             val user = RealLoginUser(
                 id = null,
-                uid = data.data.uid?.toInt() ?: 0,
-                name = data.data.username,
+                uid = data.data?.uid?.toInt() ?: 0,
+                name = data.data?.username,
                 password = password,
                 questionId = questionId?.toString(),
                 answer = answer,

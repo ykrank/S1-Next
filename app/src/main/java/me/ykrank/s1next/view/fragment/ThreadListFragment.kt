@@ -6,7 +6,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import com.github.ykrank.androidtools.ui.LibBaseViewPagerFragment
 import com.github.ykrank.androidtools.util.MathUtil
 import com.github.ykrank.androidtools.widget.RxBus
 import me.ykrank.s1next.App
@@ -16,7 +15,6 @@ import me.ykrank.s1next.data.api.model.Forum
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.util.IntentUtil
 import me.ykrank.s1next.view.event.PostDisableStickyChangeEvent
-import me.ykrank.s1next.view.event.QuickSidebarEnableChangeEvent
 import javax.inject.Inject
 
 /**
@@ -60,7 +58,7 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_browser -> {
-                IntentUtil.startViewIntentExcludeOurApp(context, Uri.parse(
+                IntentUtil.startViewIntentExcludeOurApp(requireContext(), Uri.parse(
                         Api.getThreadListUrlForBrowser(mForumId, currentPage + 1)))
 
                 return true

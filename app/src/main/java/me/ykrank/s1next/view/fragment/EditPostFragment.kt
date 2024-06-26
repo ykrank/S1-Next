@@ -63,13 +63,13 @@ class EditPostFragment : BasePostEditFragment() {
         if (binding.spinnerType.visibility == View.VISIBLE) {
             val selectType = binding.spinnerType.selectedItem as ThreadType?
             if (selectType == null) {
-                showShortSnackbar(R.string.error_not_init)
+                showSnackbar(R.string.error_not_init)
                 return true
             }
             typeId = selectType.typeId
             //未选择类别
             if (typeId == null || "0" == typeId.trim()) {
-                showShortSnackbar(R.string.error_no_type_id)
+                showSnackbar(R.string.error_no_type_id)
                 return true
             }
         }
@@ -81,12 +81,12 @@ class EditPostFragment : BasePostEditFragment() {
         val title = binding.title.text?.toString()
         val message = mReplyView.text?.toString()
         if (!isTitleValid(title) || !isMessageValid(message)) {
-            showShortSnackbar(R.string.error_no_title_or_message)
+            showSnackbar(R.string.error_no_title_or_message)
             return true
         }
 
         EditPostRequestDialogFragment.newInstance(mThread, mPost, typeId, readPerm, title!!, message!!)
-                .show(fragmentManager!!, EditPostRequestDialogFragment.TAG)
+                .show(parentFragmentManager, EditPostRequestDialogFragment.TAG)
 
         return true
     }
@@ -141,7 +141,7 @@ class EditPostFragment : BasePostEditFragment() {
         } else {
             binding.spinnerType.visibility = View.VISIBLE
         }
-        val spinnerAdapter = SimpleSpinnerAdapter(context!!, types) { it?.typeName.toString() }
+        val spinnerAdapter = SimpleSpinnerAdapter(requireContext(), types) { it?.typeName.toString() }
         binding.spinnerType.adapter = spinnerAdapter
     }
 
@@ -152,7 +152,7 @@ class EditPostFragment : BasePostEditFragment() {
         } else {
             binding.spinnerPerm.visibility = View.VISIBLE
         }
-        val spinnerAdapter = SimpleSpinnerAdapter(context!!, types) { it.toString() }
+        val spinnerAdapter = SimpleSpinnerAdapter(requireContext(), types) { it.toString() }
         binding.spinnerPerm.adapter = spinnerAdapter
     }
 

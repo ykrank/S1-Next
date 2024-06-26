@@ -1,7 +1,12 @@
 package com.github.ykrank.androidtools.ui
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager.widget.ViewPager
@@ -91,7 +96,7 @@ abstract class LibBaseViewPagerFragment : LibBaseFragment(), PagerCallback,
         GlobalData.provider.errorParser?.let {
             val context = context
             if (context != null)
-                showShortSnackbar(it.parse(context, throwable))
+                showSnackbar(it.parse(context, throwable))
         }
     }
 

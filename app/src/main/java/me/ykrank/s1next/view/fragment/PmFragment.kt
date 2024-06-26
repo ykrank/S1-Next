@@ -50,7 +50,7 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
         toUsername = requireArguments().getString(ARG_TO_USERNAME)
         leavePageMsg("PmFragment##toUid:$toUid,toUsername$toUsername")
         if (toUid.isNullOrEmpty() || toUsername.isNullOrEmpty()) {
-            showShortSnackbar(R.string.message_api_error)
+            showSnackbar(R.string.message_api_error)
             return
         }
         activity?.title = toUsername
@@ -93,7 +93,7 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
     override fun onNext(data: PmsWrapper) {
         super.onNext(data)
         val pms = data.data
-        pms.list?.let {
+        pms?.list?.let {
             // update total page
             val totalPage = MathUtil.divide(pms.count, pms.perPage)
 
@@ -109,11 +109,11 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
 
     override fun appendNewData(oldData: PmsWrapper?, newData: PmsWrapper): PmsWrapper {
         if (oldData != null) {
-            val oldPmGroups = oldData.data.list
-            var newPmGroups = newData.data.list?.toMutableList()
+            val oldPmGroups = oldData.data?.list
+            var newPmGroups = newData.data?.list?.toMutableList()
             if (newPmGroups == null) {
                 newPmGroups = ArrayList()
-                newData.data.list = newPmGroups
+                newData.data?.list = newPmGroups
             }
             if (oldPmGroups != null) {
                 newPmGroups.addAll(0, oldPmGroups)

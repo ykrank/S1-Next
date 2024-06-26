@@ -87,7 +87,7 @@ object IntentUtil {
         }
         if (targetIntentList.isEmpty()) {
             if (context is CoordinatorLayoutAnchorDelegate) {
-                (context as CoordinatorLayoutAnchorDelegate).showShortSnackbar(
+                (context as CoordinatorLayoutAnchorDelegate).showSnackbar(
                     R.string.message_chooser_no_applications
                 )
             } else {

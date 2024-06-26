@@ -65,7 +65,7 @@ class AppPostListFragment : BaseViewPagerFragment(), AppPostListPagerFragment.Pa
         super.onViewCreated(view, savedInstanceState)
         App.appComponent.inject(this)
 
-        val bundle = arguments!!
+        val bundle = requireArguments()
         val type = bundle.getInt(ARG_TYPE)
         mThreadId = bundle.getString(ARG_THREAD_ID) as String
 
@@ -111,8 +111,8 @@ class AppPostListFragment : BaseViewPagerFragment(), AppPostListPagerFragment.Pa
                 .ofType(VotePostEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe {
-                    if (!LoginPromptDialogFragment.showAppLoginPromptDialogIfNeeded(fragmentManager!!, mUser)) {
-                        VoteDialogFragment.newInstance(it.threadId, it.vote).show(fragmentManager!!, VoteDialogFragment.TAG)
+                    if (!LoginPromptDialogFragment.showAppLoginPromptDialogIfNeeded(childFragmentManager, mUser)) {
+                        VoteDialogFragment.newInstance(it.threadId, it.vote).show(childFragmentManager, VoteDialogFragment.TAG)
                     }
                 }
         mRxBus.get()
@@ -141,9 +141,9 @@ class AppPostListFragment : BaseViewPagerFragment(), AppPostListPagerFragment.Pa
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_favourites_add -> {
-                if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(fragmentManager!!, mUser)) {
+                if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(childFragmentManager, mUser)) {
                     ThreadFavouritesAddDialogFragment.newInstance(mThreadId, mThreadTitle).show(
-                            activity!!.supportFragmentManager,
+                            requireActivity().supportFragmentManager,
                             ThreadFavouritesAddDialogFragment.TAG)
                 }
 
@@ -152,7 +152,7 @@ class AppPostListFragment : BaseViewPagerFragment(), AppPostListPagerFragment.Pa
             R.id.menu_link -> {
                 ClipboardUtil.copyText(context, "Url of $mThreadTitle", Api.getPostListUrlForBrowser(mThreadId,
                         currentPage))
-                (activity as CoordinatorLayoutAnchorDelegate).showShortSnackbar(
+                (activity as CoordinatorLayoutAnchorDelegate).showSnackbar(
                         R.string.message_thread_link_copy)
 
                 return true
@@ -175,7 +175,7 @@ class AppPostListFragment : BaseViewPagerFragment(), AppPostListPagerFragment.Pa
                 return true
             }
             R.id.menu_browser -> {
-                IntentUtil.startViewIntentExcludeOurApp(context, Uri.parse(
+                IntentUtil.startViewIntentExcludeOurApp(requireContext(), Uri.parse(
                         Api.getPostListUrlForBrowser(mThreadId, currentPage + 1)))
 
                 return true
@@ -189,7 +189,7 @@ class AppPostListFragment : BaseViewPagerFragment(), AppPostListPagerFragment.Pa
                             mGeneralPreferencesManager.isPostSelectable = item.isChecked
                             mRxBus.post(PostSelectableChangeEvent())
                         }
-                        .show(fragmentManager!!, null)
+                        .show(childFragmentManager, null)
                 return true
             }
             R.id.menu_quick_side_bar_enable -> {
@@ -206,7 +206,7 @@ class AppPostListFragment : BaseViewPagerFragment(), AppPostListPagerFragment.Pa
         if (requestCode == RequestCode.REQUEST_CODE_EDIT_POST) {
             if (resultCode == Activity.RESULT_OK) {
                 val msg = data?.getStringExtra(BaseActivity.EXTRA_MESSAGE)
-                showShortSnackbar(msg)
+                showSnackbar(msg)
                 val fragment = curPostPageFragment
                 fragment?.startSwipeRefresh()
             }

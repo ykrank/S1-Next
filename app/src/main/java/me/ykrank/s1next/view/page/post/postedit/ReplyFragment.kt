@@ -19,7 +19,7 @@ class ReplyFragment : BasePostEditFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val bundle = arguments!!
+        val bundle = requireArguments()
         mThreadId = bundle.getString(ARG_THREAD_ID)
         mQuotePostId = bundle.getString(ARG_QUOTE_POST_ID)
         cacheKey = String.format(CACHE_KEY_PREFIX, mThreadId, mQuotePostId)
@@ -33,7 +33,7 @@ class ReplyFragment : BasePostEditFragment() {
         }
 
         ReplyRequestDialogFragment.newInstance(mThreadId, mQuotePostId,
-                stringBuilder.toString()).show(fragmentManager!!,
+                stringBuilder.toString()).show(childFragmentManager,
                 ReplyRequestDialogFragment.TAG)
 
         return true

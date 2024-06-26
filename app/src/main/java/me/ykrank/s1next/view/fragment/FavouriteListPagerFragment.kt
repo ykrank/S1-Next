@@ -52,7 +52,7 @@ class FavouriteListPagerFragment : BaseRecyclerViewFragment<BaseResultWrapper<Fa
 
     override fun onNext(data: BaseResultWrapper<Favourites>) {
         val favourites = data.data
-        val favouriteList = favourites.list
+        val favouriteList = favourites?.list
         if (favouriteList == null) {
             consumeResult(data.result)
         } else {

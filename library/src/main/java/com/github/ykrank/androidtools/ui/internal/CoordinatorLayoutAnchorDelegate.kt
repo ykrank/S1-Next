@@ -1,12 +1,12 @@
 package com.github.ykrank.androidtools.ui.internal
 
+import android.view.View
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import android.view.View
-import android.widget.Toast
 import com.google.common.base.Optional
 
 /**
@@ -35,7 +35,10 @@ interface CoordinatorLayoutAnchorDelegate {
      * @param resId The resource id of the string resource to show for [Snackbar].
      * @return The displayed `Optional.of(snackbar)`.
      */
-    fun showShortSnackbar(@StringRes resId: Int): Optional<Snackbar>
+    fun showSnackbar(
+        @StringRes resId: Int,
+        duration: Int = Snackbar.LENGTH_SHORT
+    ): Optional<Snackbar>
 
     /**
      * Show a short [Snackbar].
@@ -43,15 +46,10 @@ interface CoordinatorLayoutAnchorDelegate {
      * @param text text The text to show.
      * @return The displayed `Optional.of(snackbar)`.
      */
-    fun showShortSnackbar(text: CharSequence): Optional<Snackbar>
-
-    /**
-     * Show a long [Snackbar].
-     *
-     * @param resId The resource id of the string resource to show for [Snackbar].
-     * @return The displayed `Optional.of(snackbar)`.
-     */
-    fun showLongSnackbar(@StringRes resId: Int): Optional<Snackbar>
+    fun showSnackbar(
+        text: CharSequence,
+        duration: Int = Snackbar.LENGTH_SHORT
+    ): Optional<Snackbar>
 
     /**
      * Show a [Snackbar] if current [android.app.Activity] is visible.

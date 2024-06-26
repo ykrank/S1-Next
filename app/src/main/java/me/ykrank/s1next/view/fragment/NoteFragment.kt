@@ -53,17 +53,17 @@ class NoteFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<Notes>>() {
     override fun getLoadingViewModelBindingDelegateImpl(inflater: LayoutInflater, container: ViewGroup?): LoadingViewModelBindingDelegate {
         val binding = FragmentNoteBinding.inflate(inflater, container, false)
 
-        binding.tvHint.setOnClickListener { WebViewActivity.start(context!!, Api.URL_VIEW_NOTE, enableJS = true, pcAgent = true) }
+        binding.tvHint.setOnClickListener { WebViewActivity.start(requireContext(), Api.URL_VIEW_NOTE, enableJS = true, pcAgent = true) }
         return LoadingViewModelBindingDelegateNoteImpl(binding)
     }
 
     override fun appendNewData(oldData: BaseDataWrapper<Notes>?, newData: BaseDataWrapper<Notes>): BaseDataWrapper<Notes> {
         if (oldData != null) {
-            val oldNotes = oldData.data.list
-            var newNotes = newData.data.list?.toMutableList()
+            val oldNotes = oldData.data?.list
+            var newNotes = newData.data?.list?.toMutableList()
             if (newNotes == null) {
                 newNotes = ArrayList()
-                newData.data.list = newNotes
+                newData.data?.list = newNotes
             }
             if (oldNotes != null) {
                 newNotes.addAll(0, oldNotes)

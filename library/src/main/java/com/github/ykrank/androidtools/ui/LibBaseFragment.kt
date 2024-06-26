@@ -93,20 +93,16 @@ abstract class LibBaseFragment : Fragment() {
         }
     }
 
-    protected fun showShortSnackbar(text: CharSequence?) {
-        text?.let { mCoordinatorLayoutAnchorDelegate?.showShortSnackbar(it) }
+    protected fun showSnackbar(text: CharSequence?, duration: Int = Snackbar.LENGTH_SHORT) {
+        text?.let { mCoordinatorLayoutAnchorDelegate?.showSnackbar(it) }
     }
 
-    protected fun showShortSnackbar(@StringRes resId: Int) {
-        mCoordinatorLayoutAnchorDelegate?.showShortSnackbar(resId)
+    protected fun showSnackbar(@StringRes resId: Int, duration: Int = Snackbar.LENGTH_SHORT) {
+        mCoordinatorLayoutAnchorDelegate?.showSnackbar(resId)
     }
 
     protected fun showShortText(@StringRes resId: Int) {
         mCoordinatorLayoutAnchorDelegate?.showToastText(getString(resId))
-    }
-
-    protected fun showLongSnackbar(@StringRes resId: Int) {
-        mCoordinatorLayoutAnchorDelegate?.showLongSnackbar(resId)
     }
 
     protected fun dismissRetrySnackbarIfExist() {

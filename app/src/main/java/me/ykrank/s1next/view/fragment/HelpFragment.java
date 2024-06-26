@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate;
 import com.github.ykrank.androidtools.util.L;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -116,8 +117,8 @@ public final class HelpFragment extends Fragment {
                     startActivity(intent);
                 } catch (ActivityNotFoundException e) {
                     // show Snackbar if user hasn't installed any Android marketplaces or browsers
-                    ((CoordinatorLayoutAnchorDelegate) getActivity()).showShortSnackbar(
-                            R.string.message_chooser_no_applications);
+                    ((CoordinatorLayoutAnchorDelegate) getActivity()).showSnackbar(
+                            R.string.message_chooser_no_applications, Snackbar.LENGTH_SHORT);
                 }
             }
 

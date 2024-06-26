@@ -85,7 +85,7 @@ object ApiFlatTransformer {
                 val account = it.data
                 // return the AccountResultWrapper if we cannot get the authenticity token
                 // (if account has expired or network error)
-                val newToken = account.authenticityToken
+                val newToken = account?.authenticityToken
                 if (newToken.isNullOrEmpty()) {
                     return@flatMap Single.error<T>(ApiException.AuthenticityTokenException("获取登录信息错误",
                             ApiException("AccountResultWrapper:$it")))

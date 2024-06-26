@@ -14,8 +14,8 @@ class ThreadFavouritesAddRequestDialogFragment : ProgressDialogFragment<AccountR
 
     override fun getSourceObservable(): Single<AccountResultWrapper> {
         return flatMappedWithAuthenticityToken { s ->
-            mS1Service.addThreadFavorite(s, arguments!!.getString(ARG_THREAD_ID),
-                    arguments!!.getString(ARG_REMARK))
+            mS1Service.addThreadFavorite(s, requireArguments().getString(ARG_THREAD_ID),
+                    requireArguments().getString(ARG_REMARK))
         }
     }
 

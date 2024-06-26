@@ -1,11 +1,15 @@
 package me.ykrank.s1next.view.fragment
 
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.text.TextUtils
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
+import androidx.databinding.DataBindingUtil
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.ui.adapter.simple.BindViewHolderCallback
@@ -130,11 +134,11 @@ class NewRateFragment : BaseFragment() {
     private fun postRate() {
         val ratePreInfo = ratePreInfo
         if (ratePreInfo == null) {
-            showShortSnackbar(R.string.error_not_init)
+            showSnackbar(R.string.error_not_init)
             return
         }
         if (!isScoreValid) {
-            showShortSnackbar(R.string.invalid_score)
+            showSnackbar(R.string.invalid_score)
             return
         }
         RateRequestDialogFragment.newInstance(ratePreInfo, score, reason).show(fragmentManager!!,

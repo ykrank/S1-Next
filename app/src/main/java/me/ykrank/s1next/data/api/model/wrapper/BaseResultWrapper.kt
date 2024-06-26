@@ -1,45 +1,29 @@
-package me.ykrank.s1next.data.api.model.wrapper;
+package me.ykrank.s1next.data.api.model.wrapper
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.google.common.base.Objects
+import me.ykrank.s1next.data.api.model.Account
+import me.ykrank.s1next.data.api.model.Result
 
-import me.ykrank.s1next.data.api.model.Account;
-import me.ykrank.s1next.data.api.model.Result;
-
-@SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BaseResultWrapper<T extends Account> extends OriginWrapper<T> {
-    
+open class BaseResultWrapper<T : Account> : OriginWrapper<T>() {
     @JsonProperty("Message")
-    private Result result;
-
-    public Result getResult() {
-        return result;
+    var result: Result = Result.EMPTY
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is BaseResultWrapper<*>) return false
+        if (!super.equals(other)) return false
+        return Objects.equal(result, other.result)
     }
 
-    public void setResult(Result result) {
-        this.result = result;
+    override fun hashCode(): Int {
+        return Objects.hashCode(super.hashCode(), result)
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BaseResultWrapper)) return false;
-        if (!super.equals(o)) return false;
-        BaseResultWrapper<?> that = (BaseResultWrapper<?>) o;
-        return Objects.equal(result, that.result);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(super.hashCode(), result);
-    }
-
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "BaseResultWrapper{" +
                 "result=" + result +
-                '}';
+                '}'
     }
 }

@@ -1,16 +1,12 @@
 package com.github.ykrank.androidtools.ui.internal
 
-import androidx.annotation.StringRes
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.google.android.material.snackbar.Snackbar
 import android.view.View
-import android.widget.Toast
-import com.google.common.base.Optional
-import com.github.ykrank.androidtools.ui.UiGlobalData
-import android.R
-import android.R.id
 import android.widget.TextView
-
+import android.widget.Toast
+import androidx.annotation.StringRes
+import com.github.ykrank.androidtools.ui.UiGlobalData
+import com.google.android.material.snackbar.Snackbar
+import com.google.common.base.Optional
 
 
 abstract class CoordinatorLayoutAnchorDelegateBaseImpl(private val mCoordinatorLayout: androidx.coordinatorlayout.widget.CoordinatorLayout) : CoordinatorLayoutAnchorDelegate {
@@ -19,7 +15,7 @@ abstract class CoordinatorLayoutAnchorDelegateBaseImpl(private val mCoordinatorL
 
     override fun showToastText(text: CharSequence, length: Int): Optional<Snackbar> {
         if (actLifeCallback?.isAppVisible == true) {
-            return showShortSnackbar(text)
+            return showSnackbar(text)
         } else {
             Toast.makeText(mCoordinatorLayout.context.applicationContext, text,
                     Toast.LENGTH_SHORT).show()
@@ -27,20 +23,18 @@ abstract class CoordinatorLayoutAnchorDelegateBaseImpl(private val mCoordinatorL
         }
     }
 
-    override fun showShortSnackbar(@StringRes resId: Int): Optional<Snackbar> {
-        return showShortSnackbar(mCoordinatorLayout.resources.getText(resId))
+    override fun showSnackbar(
+        @StringRes resId: Int,
+        duration: Int
+    ): Optional<Snackbar> {
+        return showSnackbar(mCoordinatorLayout.resources.getText(resId), duration)
     }
 
-    override fun showShortSnackbar(text: CharSequence): Optional<Snackbar> {
-        val snackbar = Snackbar.make(mCoordinatorLayout, text, Snackbar.LENGTH_SHORT)
-        val textView = snackbar.view.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
-        textView.maxLines = SNACK_BAR_MAX_LINE
-        snackbar.show()
-        return Optional.of(snackbar)
-    }
-
-    override fun showLongSnackbar(@StringRes resId: Int): Optional<Snackbar> {
-        val snackbar = Snackbar.make(mCoordinatorLayout, resId, Snackbar.LENGTH_LONG)
+    override fun showSnackbar(
+        text: CharSequence,
+        duration: Int
+    ): Optional<Snackbar> {
+        val snackbar = Snackbar.make(mCoordinatorLayout, text, duration)
         val textView = snackbar.view.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
         textView.maxLines = SNACK_BAR_MAX_LINE
         snackbar.show()

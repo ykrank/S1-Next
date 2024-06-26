@@ -4,38 +4,38 @@ import android.os.Bundle
 import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
+import me.ykrank.s1next.data.api.model.AjaxResult
 import me.ykrank.s1next.data.api.model.RatePreInfo
-import me.ykrank.s1next.data.api.model.RateResult
 import me.ykrank.s1next.view.dialog.ProgressDialogFragment
 import me.ykrank.s1next.widget.track.event.NewRateTrackEvent
 
 /**
  * A dialog requests to reply to post.
  */
-class RateRequestDialogFragment : ProgressDialogFragment<RateResult>() {
+class RateRequestDialogFragment : ProgressDialogFragment<AjaxResult>() {
 
     override fun getProgressMessage(): CharSequence? {
         return getText(R.string.dialog_progress_message_reply)
     }
 
-    override fun getSourceObservable(): Single<RateResult> {
-        val bundle = arguments!!
+    override fun getSourceObservable(): Single<AjaxResult> {
+        val bundle = requireArguments()
         val ratePreInfo = bundle.getParcelable<RatePreInfo>(ARG_RATE_PRE_INFO)
         val score = bundle.getString(ARG_SCORE)
         val reason = bundle.getString(ARG_REASON)
         if (ratePreInfo == null) {
-            return Single.error<RateResult>(IllegalStateException("RatePreInfo is null"))
+            return Single.error<AjaxResult>(IllegalStateException("RatePreInfo is null"))
         }
         return mS1Service.rate(ratePreInfo.formHash, ratePreInfo.tid, ratePreInfo.pid,
                 ratePreInfo.refer, ratePreInfo.handleKey, score, reason)
-                .map<RateResult>({ RateResult.fromHtml(it) })
+            .map { AjaxResult.fromAjaxString(it) }
     }
 
-    override fun onNext(data: RateResult) {
-        if (data.isSuccess) {
+    override fun onNext(data: AjaxResult) {
+        if (data.success) {
             showShortTextAndFinishCurrentActivity(getString(R.string.rate_success))
         } else {
-            showToastText(data.errorMsg)
+            showToastText(data.msg)
         }
     }
 
@@ -46,8 +46,6 @@ class RateRequestDialogFragment : ProgressDialogFragment<RateResult>() {
         private const val ARG_RATE_PRE_INFO = "rate_pre_info"
         private const val ARG_SCORE = "score"
         private const val ARG_REASON = "reason"
-
-        private val STATUS_REPLY_SUCCESS = "post_reply_succeed"
 
         fun newInstance(ratePreInfo: RatePreInfo, score: String, reason: String): RateRequestDialogFragment {
             App.get().trackAgent.post(NewRateTrackEvent(ratePreInfo.tid, ratePreInfo.pid, score, reason))

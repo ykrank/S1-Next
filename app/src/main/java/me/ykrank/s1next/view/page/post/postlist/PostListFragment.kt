@@ -271,7 +271,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
             R.id.menu_link -> {
                 ClipboardUtil.copyText(context, "Url of $mThreadTitle", Api.getPostListUrlForBrowser(mThreadId,
                         currentPage))
-                (activity as CoordinatorLayoutAnchorDelegate).showShortSnackbar(
+                (activity as CoordinatorLayoutAnchorDelegate).showSnackbar(
                         R.string.message_thread_link_copy)
 
                 return true
@@ -294,7 +294,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                 return true
             }
             R.id.menu_browser -> {
-                IntentUtil.startViewIntentExcludeOurApp(context, Uri.parse(
+                IntentUtil.startViewIntentExcludeOurApp(requireContext(), Uri.parse(
                         Api.getPostListUrlForBrowser(mThreadId, currentPage + 1)))
 
                 return true
@@ -335,7 +335,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
         if (requestCode == RequestCode.REQUEST_CODE_EDIT_POST) {
             if (resultCode == Activity.RESULT_OK) {
                 val msg = data?.getStringExtra(BaseActivity.EXTRA_MESSAGE)
-                showShortSnackbar(msg)
+                showSnackbar(msg)
                 val fragment = curPostPageFragment
                 fragment?.startSwipeRefresh()
             }

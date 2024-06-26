@@ -26,7 +26,7 @@ object ErrorUtil : ErrorParser {
         var msg: String? = null
         var root: Throwable? = throwable
 
-        while (msg == null && root != null) {
+        while (root != null) {
             msg = parseNetError(context, root)
             if (msg != null) {
                 break

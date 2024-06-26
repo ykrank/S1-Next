@@ -1,56 +1,42 @@
-package me.ykrank.s1next.data.api.model;
+package me.ykrank.s1next.data.api.model
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.google.common.base.Objects
+import me.ykrank.s1next.data.api.DiscuzMessageFormatter
 
-import me.ykrank.s1next.data.api.DiscuzMessageFormatter;
-
-@SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Result {
-
+class Result {
+    @JvmField
     @JsonProperty("messageval")
-    private String status;
+    var status: String? = null
 
     @JsonProperty("messagestr")
-    private String message;
+    var messageStr: String? = null
 
-    public String getStatus() {
-        return status;
-    }
+    val message: String?
+        get() = DiscuzMessageFormatter.addFullStopIfNeeded(messageStr)
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = DiscuzMessageFormatter.addFullStopIfNeeded(message);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Result result = (Result) o;
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || javaClass != other.javaClass) return false
+        val result = other as Result
         return Objects.equal(status, result.status) &&
-                Objects.equal(message, result.message);
+                Objects.equal(messageStr, result.messageStr)
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(status, message);
+    override fun hashCode(): Int {
+        return Objects.hashCode(status, messageStr)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "Result{" +
                 "status='" + status + '\'' +
-                ", message='" + message + '\'' +
-                '}';
+                ", message='" + messageStr + '\'' +
+                '}'
+    }
+
+    companion object {
+        val EMPTY = Result()
     }
 }
