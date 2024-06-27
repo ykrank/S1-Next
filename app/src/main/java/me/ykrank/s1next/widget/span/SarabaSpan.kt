@@ -1,11 +1,8 @@
 package me.ykrank.s1next.widget.span
 
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.view.View
-import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.util.IntentUtil
 import me.ykrank.s1next.view.page.post.postlist.PostListGatewayActivity
 import me.ykrank.s1next.widget.span.PostMovementMethod.URLSpanClick
@@ -61,23 +58,10 @@ open class SarabaSpan : URLSpanClick {
             }
         }
 
-        // 对Saraba链接进行独立处理，调用Saraba客户端
+        // 对Saraba链接进行独立处理，直接打开界面
         @JvmStatic
-        protected fun goSaraba(context: Context, uri: Uri?) {
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            intent.setClass(context, PostListGatewayActivity::class.java)
-            try {
-                val pm = context.packageManager
-                val ai = intent.resolveActivityInfo(pm, PackageManager.MATCH_DEFAULT_ONLY)
-                if (ai == null) {
-                    context.startActivity(Intent(Intent.ACTION_VIEW, uri))
-                } else {
-                    context.startActivity(intent)
-                }
-            } catch (e: Throwable) {
-                L.report("SarabaURLSpan startActivity error for intent, $intent", e)
-                context.startActivity(Intent(Intent.ACTION_VIEW, uri))
-            }
+        protected fun goSaraba(context: Context, uri: Uri) {
+            PostListGatewayActivity.start(context, uri)
         }
     }
 }
