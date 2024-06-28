@@ -6,5 +6,6 @@
     <color name="dark_emoticon_keyboard_background">#263238</color>
 
     <color name="foreground_material_light">#ad5151</color>
+    <color name="ic_launcher_bg">#202225</color>
 
 </resources>
