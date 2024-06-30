@@ -16,7 +16,8 @@ class Result {
     val message: String?
         get() = DiscuzMessageFormatter.addFullStopIfNeeded(messageStr)
 
-
+    val defaultSuccess
+        get() = status?.endsWith("_succeed") == true || status?.endsWith("_success") == true
 
     override fun toString(): String {
         return "Result{" +

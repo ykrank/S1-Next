@@ -38,7 +38,7 @@ class NewThreadRequestDialogFragment : BaseRequestDialogFragment<AccountResultWr
 
     protected override fun onNext(data: AccountResultWrapper) {
         val result = data.result
-        if (result.status == STATUS_NEW_THREAD_SUCCESS) {
+        if (result.defaultSuccess) {
             onRequestSuccess(result.message)
         } else {
             onRequestError(result.message)

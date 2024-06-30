@@ -14,17 +14,20 @@ class ThreadFavouritesAddRequestDialogFragment : ProgressDialogFragment<AccountR
 
     override fun getSourceObservable(): Single<AccountResultWrapper> {
         return flatMappedWithAuthenticityToken { s ->
-            mS1Service.addThreadFavorite(s, requireArguments().getString(ARG_THREAD_ID),
-                    requireArguments().getString(ARG_REMARK))
+            mS1Service.addThreadFavorite(
+                s, requireArguments().getString(ARG_THREAD_ID),
+                requireArguments().getString(ARG_REMARK)
+            )
         }
     }
 
     override fun onNext(data: AccountResultWrapper) {
         val fm = fragmentManager ?: return
         val result = data.result
-        if (result.status == STATUS_ADD_TO_FAVOURITES_SUCCESS || result.status == STATUS_ADD_TO_FAVOURITES_REPEAT) {
+        if (result.defaultSuccess || result.status?.endsWith(STATUS_ADD_TO_FAVOURITES_REPEAT) == true) {
             (fm.findFragmentByTag(
-                    ThreadFavouritesAddDialogFragment.TAG) as ThreadFavouritesAddDialogFragment?)?.dismissAllowingStateLoss()
+                ThreadFavouritesAddDialogFragment.TAG
+            ) as ThreadFavouritesAddDialogFragment?)?.dismissAllowingStateLoss()
         }
 
         showToastText(result.message)
@@ -44,7 +47,11 @@ class ThreadFavouritesAddRequestDialogFragment : ProgressDialogFragment<AccountR
         private val STATUS_ADD_TO_FAVOURITES_SUCCESS = "favorite_do_success"
         private val STATUS_ADD_TO_FAVOURITES_REPEAT = "favorite_repeat"
 
-        fun newInstance(threadId: String, remark: String, threadTitle: String?): ThreadFavouritesAddRequestDialogFragment {
+        fun newInstance(
+            threadId: String,
+            remark: String,
+            threadTitle: String?
+        ): ThreadFavouritesAddRequestDialogFragment {
             App.get().trackAgent.post(AddFavoriteTrackEvent(threadId, threadTitle))
 
             val fragment = ThreadFavouritesAddRequestDialogFragment()

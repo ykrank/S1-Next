@@ -26,7 +26,7 @@ class LoginDialogFragment : BaseLoginDialogFragment<AccountResultWrapper>() {
 
     override fun parseData(data: AccountResultWrapper): Result {
         val result = data.result
-        return if (result.status == STATUS_AUTH_SUCCESS || result.status == STATUS_AUTH_SUCCESS_ALREADY) {
+        return if (result.status?.endsWith(STATUS_AUTH_SUCCESS) == true || result.defaultSuccess) {
             Result(true, result.message)
         } else {
             Result(false, result.message)

@@ -26,7 +26,7 @@ class PmRequestDialogFragment : BaseRequestDialogFragment<AccountResultWrapper>(
 
     override fun onNext(data: AccountResultWrapper) {
         val result = data.result
-        if (result.status == STATUS_PM_SUCCESS) {
+        if (result.defaultSuccess) {
             onRequestSuccess(result.message)
         } else {
             onRequestError(result.message)
