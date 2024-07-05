@@ -6,6 +6,7 @@ import me.ykrank.s1next.data.db.AppDatabaseManager
 import me.ykrank.s1next.data.db.dbmodel.LoginUser
 import me.ykrank.s1next.data.db.exmodel.RealLoginUser
 import me.ykrank.s1next.widget.encrypt.Encryption
+import java.security.GeneralSecurityException
 
 class LoginUserBiz(private val manager: AppDatabaseManager, private val encryption: Encryption) {
 
@@ -28,25 +29,18 @@ class LoginUserBiz(private val manager: AppDatabaseManager, private val encrypti
         )
     }
 
+    @Throws(GeneralSecurityException::class)
     fun decryptUser(user: LoginUser): RealLoginUser {
         return RealLoginUser(
             id = user.id,
             uid = user.uid,
             name = user.name,
             password = user.encryptPassword?.let {
-                try {
-                    return@let encryption.decryptText(it)
-                } catch (e: Exception) {
-                    return@let null
-                }
+                encryption.decryptText(it)
             },
             questionId = user.questionId,
             answer = user.encryptAnswer?.let {
-                try {
-                    return@let encryption.decryptText(it)
-                } catch (e: Exception) {
-                    return@let null
-                }
+                encryption.decryptText(it)
             },
             loginTime = user.loginTime,
             timestamp = user.timestamp,
@@ -58,14 +52,22 @@ class LoginUserBiz(private val manager: AppDatabaseManager, private val encrypti
     }
 
     fun getDecryptUserList(): List<RealLoginUser> {
-        return loginUserDao.loadAll().map {
-            decryptUser(it)
+        return loginUserDao.loadAll().mapNotNull {
+            try {
+                decryptUser(it)
+            } catch (e: Exception) {
+                null
+            }
         }
     }
 
     fun getUserByUid(uid: Int): RealLoginUser? {
         return loginUserDao.getByUid(uid)?.let {
-            decryptUser(it)
+            try {
+                decryptUser(it)
+            } catch (e: Exception) {
+                null
+            }
         }
     }
 

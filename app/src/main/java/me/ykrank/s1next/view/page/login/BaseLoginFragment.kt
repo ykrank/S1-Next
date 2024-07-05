@@ -91,6 +91,7 @@ abstract class BaseLoginFragment : BaseFragment() {
                 val user = users[which]
                 if (user.invalid) {
                     showShortText(R.string.choose_user_invalid)
+                    dialog?.dismiss()
                 } else {
                     dialog?.dismiss()
 
