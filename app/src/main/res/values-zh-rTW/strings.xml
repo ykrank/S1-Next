@@ -83,7 +83,7 @@
         
     <string name="prompt_remark">備註</string>
         
-    <string name="dialog_message_invalid_or_unsupported_link">無效的、或者是並不支持的鏈接。 </string>
+    <string name="dialog_message_invalid_or_unsupported_link">無效的鏈接。 </string>
         
     <string name="dialog_button_text_use_a_different_app">使用其他應用</string>
         

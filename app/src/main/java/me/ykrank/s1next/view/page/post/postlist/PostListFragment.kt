@@ -558,8 +558,8 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
             bundle.putParcelable(ARG_THREAD, thread)
             bundle.putInt(ARG_JUMP_PAGE, threadLink.jumpPage)
             val quotePostId = threadLink.quotePostId
-            if (quotePostId.isPresent) {
-                bundle.putString(ARG_QUOTE_POST_ID, quotePostId.get())
+            if (quotePostId != null) {
+                bundle.putString(ARG_QUOTE_POST_ID, quotePostId)
             }
             fragment.arguments = bundle
 

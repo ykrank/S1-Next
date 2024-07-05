@@ -3,7 +3,9 @@ package me.ykrank.s1next.view.page.post.postlist
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import androidx.fragment.app.FragmentActivity
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.ThreadLink
@@ -19,7 +21,7 @@ import javax.inject.Inject
  *
  * This Activity is only used for Intent filter.
  */
-class PostListGatewayActivity : androidx.fragment.app.FragmentActivity() {
+class PostListGatewayActivity : FragmentActivity() {
 
     @Inject
     lateinit var mThemeManager: ThemeManager
@@ -34,15 +36,21 @@ class PostListGatewayActivity : androidx.fragment.app.FragmentActivity() {
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
-            val uri = intent.data
-            val threadLink = ThreadLink.parse(uri.toString())
-            if (threadLink.isPresent) {
-                val threadLinkInstance = threadLink.get()
-                if (threadLinkInstance.quotePostId.isPresent) {
-                    QuotePostPageParserDialogFragment.newInstance(threadLinkInstance).show(
+            var threadLink = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.extras?.getParcelable(ARG_THREAD_LINK, ThreadLink::class.java)
+            } else {
+                intent.extras?.getParcelable(ARG_THREAD_LINK)
+            }
+            if (threadLink == null) {
+                val uri = intent.data
+                threadLink = ThreadLink.parse(uri.toString())
+            }
+            if (threadLink != null) {
+                if (!threadLink.quotePostId.isNullOrEmpty()) {
+                    QuotePostPageParserDialogFragment.newInstance(threadLink).show(
                             supportFragmentManager, QuotePostPageParserDialogFragment.TAG)
                 } else {
-                    PostListActivity.start(this, threadLinkInstance)
+                    PostListActivity.start(this, threadLink)
                     finish()
                 }
             } else {
@@ -54,10 +62,16 @@ class PostListGatewayActivity : androidx.fragment.app.FragmentActivity() {
     }
 
     companion object {
-
+        private const val ARG_THREAD_LINK = "thread_link"
         fun start(context: Context, uri: Uri) {
             val intent = Intent(context, PostListGatewayActivity::class.java)
             intent.data = uri
+            context.startActivity(intent)
+        }
+
+        fun start(context: Context, threadLink: ThreadLink) {
+            val intent = Intent(context, PostListGatewayActivity::class.java)
+            intent.putExtra(ARG_THREAD_LINK, threadLink)
             context.startActivity(intent)
         }
     }

@@ -10,7 +10,6 @@ import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.github.ykrank.androidtools.util.ViewUtil
-import com.google.common.base.Optional
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.ThreadLink
 import me.ykrank.s1next.databinding.DialogThreadGoBinding
@@ -21,10 +20,10 @@ import me.ykrank.s1next.view.page.post.postlist.PostListActivity
  */
 class ThreadGoDialogFragment : BaseDialogFragment() {
 
-    private var mThreadLink: Optional<ThreadLink> = Optional.absent()
+    private var mThreadLink: ThreadLink? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val activity = activity!!
+        val activity = requireActivity()
         val binding = DataBindingUtil.inflate<DialogThreadGoBinding>(activity.layoutInflater,
                 R.layout.dialog_thread_go, null, false)
         val threadLinkOrIdWrapperView = binding.threadLinkOrIdWrapper
@@ -34,10 +33,8 @@ class ThreadGoDialogFragment : BaseDialogFragment() {
                 .setTitle(R.string.menu_thread_go)
                 .setView(binding.root)
                 .setPositiveButton(R.string.dialog_button_text_go) { dialog, which ->
-                    run {
-                        if (mThreadLink.isPresent) {
-                            PostListActivity.start(activity, mThreadLink.get(), false)
-                        }
+                    mThreadLink?.run {
+                        PostListActivity.start(activity, this, false)
                     }
                 }
                 .setNegativeButton(android.R.string.cancel, null)
@@ -68,7 +65,7 @@ class ThreadGoDialogFragment : BaseDialogFragment() {
                     val threadLinkOrId = s.toString()
                     if (!TextUtils.isEmpty(threadLinkOrId)) {
                         mThreadLink = ThreadLink.parse2(threadLinkOrId)
-                        if (mThreadLink.isPresent) {
+                        if (mThreadLink != null) {
                             threadLinkOrIdWrapperView.error = null
                             positionButton.isEnabled = true
                         } else {

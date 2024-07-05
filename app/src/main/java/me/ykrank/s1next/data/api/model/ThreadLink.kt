@@ -1,195 +1,132 @@
-package me.ykrank.s1next.data.api.model;
+package me.ykrank.s1next.data.api.model
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import androidx.annotation.NonNull;
+import paperparcel.PaperParcel
+import paperparcel.PaperParcelable
 
-import com.google.common.base.Objects;
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
+@PaperParcel
+class ThreadLink(
+    val threadId: String,
+    val jumpPage: Int,
+    val quotePostId: String?
+) : PaperParcelable {
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+    private constructor(builder: Builder) : this(
+        builder.threadId,
+        builder.jumpPage,
+        builder.quotePostId
+    )
 
-public final class ThreadLink implements Parcelable {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
 
-    public static final Parcelable.Creator<ThreadLink> CREATOR = new Parcelable.Creator<ThreadLink>() {
+        other as ThreadLink
 
-        @Override
-        public ThreadLink createFromParcel(Parcel source) {
-            return new ThreadLink(source);
+        if (threadId != other.threadId) return false
+        if (jumpPage != other.jumpPage) return false
+        if (quotePostId != other.quotePostId) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = threadId.hashCode()
+        result = 31 * result + jumpPage
+        result = 31 * result + quotePostId.hashCode()
+        return result
+    }
+
+    class Builder(val threadId: String) {
+        var jumpPage = 1
+        var quotePostId: String? = null
+
+        fun jumpPage(jumpPage: Int): Builder {
+            this.jumpPage = jumpPage
+            return this
         }
 
-        @Override
-        public ThreadLink[] newArray(int size) {
-            return new ThreadLink[size];
+        fun quotePostId(quotePostId: String?): Builder {
+            this.quotePostId = quotePostId
+            return this
         }
-    };
 
-    private final String threadId;
-    private final int jumpPage;
-    private final Optional<String> quotePostId;
-
-    private ThreadLink(Builder builder) {
-        this.threadId = builder.threadId;
-        this.jumpPage = builder.jumpPage;
-        if (builder.quotePostId == null) {
-            this.quotePostId = Optional.absent();
-        } else {
-            this.quotePostId = Optional.of(builder.quotePostId);
+        fun build(): ThreadLink {
+            return ThreadLink(this)
         }
     }
 
-    private ThreadLink(Parcel source) {
-        threadId = source.readString();
-        jumpPage = source.readInt();
-        quotePostId = Optional.fromNullable(source.readString());
-    }
+    companion object {
+        @JvmField
+        val CREATOR = PaperParcelThreadLink.CREATOR
 
-    /**
-     * Parses thread link in order to get the meta info for this thread.
-     *
-     * @param url The thread link.
-     * @return The {@code Optional.of(threadLink)} if we parse this thread
-     * link/ID successfully, otherwise the {@code Optional.absent()}.
-     */
-    public static Optional<ThreadLink> parse(String url) {
-        // example: http://bbs.saraba1st.com/2b/forum.php?mod=redirect&goto=findpost&pid=27217893&ptid=1074030
-        Pattern pattern = Pattern.compile("ptid=(\\d+)");
-        Matcher matcher = pattern.matcher(url);
-        if (matcher.find()) {
-            Builder builder = new Builder(matcher.group(1));
-
-            matcher.usePattern(Pattern.compile("pid=(\\d+)"));
-            if (matcher.find()) {
-                builder.quotePostId(matcher.group(1));
+        /**
+         * Parses thread link in order to get the meta info for this thread.
+         *
+         * @param url The thread link.
+         * @return The `Optional.of(threadLink)` if we parse this thread
+         * link/ID successfully, otherwise the `Optional.absent()`.
+         */
+        @JvmStatic
+        fun parse(url: String): ThreadLink? {
+            // example: http://bbs.saraba1st.com/2b/forum.php?mod=redirect&goto=findpost&pid=27217893&ptid=1074030
+            val ptid = "ptid=(\\d+)".toRegex().find(url)?.groupValues?.getOrNull(1)
+            if (!ptid.isNullOrEmpty()) {
+                val builder = Builder(ptid)
+                val pid = "pid=(\\d+)".toRegex().find(url)?.groupValues?.getOrNull(1)
+                builder.quotePostId(pid)
+                return builder.build()
             }
 
-            return Optional.of(builder.build());
-        }
-
-        // example: http://bbs.saraba1st.com/2b/thread-1074030-1-1.html
-        matcher.usePattern(Pattern.compile("thread-(\\d+)-(\\d+)"));
-        if (matcher.find()) {
-            return Optional.of(new Builder(matcher.group(1))
-                    .jumpPage(Integer.parseInt(matcher.group(2)))
-                    .build());
-        }
-
-        // example:
-        // http://bbs.saraba1st.com/2b/forum.php?mod=viewthread&tid=1074030
-        // or http://bbs.saraba1st.com/2b/archiver/tid-1074030.html
-        matcher.usePattern(Pattern.compile("tid(=|-)(\\d+)"));
-        if (matcher.find()) {
-            Builder builder = new Builder(matcher.group(2));
-
-            // example: http://bbs.saraba1st.com/2b/forum.php?mod=viewthread&tid=1074030&page=7
-            // or http://bbs.saraba1st.com/2b/archiver/tid-1074030.html?page=7
-            matcher.usePattern(Pattern.compile("page=(\\d+)"));
-            if (matcher.find()) {
-                builder.jumpPage(Integer.parseInt(matcher.group(1)));
+            // example: http://bbs.saraba1st.com/2b/thread-1074030-1-1.html
+            var groupValues = "thread-(\\d+)-(\\d+)".toRegex().find(url)?.groupValues
+            if (groupValues != null && groupValues.size > 2) {
+                return Builder(groupValues[1])
+                    .jumpPage(groupValues[2].toIntOrNull() ?: 1)
+                    .build()
             }
 
-            return Optional.of(builder.build());
+            // example:
+            // http://bbs.saraba1st.com/2b/forum.php?mod=viewthread&tid=1074030
+            // or http://bbs.saraba1st.com/2b/archiver/tid-1074030.html
+            groupValues = "tid([=\\-])(\\d+)".toRegex().find(url)?.groupValues
+            if (groupValues != null && groupValues.size > 2) {
+                val builder = Builder(groupValues[2])
+
+                // example: http://bbs.saraba1st.com/2b/forum.php?mod=viewthread&tid=1074030&page=7
+                // or http://bbs.saraba1st.com/2b/archiver/tid-1074030.html?page=7
+                val page =
+                    "page=(\\d+)".toRegex().find(url)?.groupValues?.getOrNull(1)?.toIntOrNull()
+                if (page != null) {
+                    builder.jumpPage(page)
+                }
+                return builder.build()
+            }
+            return null
         }
 
-        return Optional.absent();
-    }
+        /**
+         * Parses thread link/ID in order to get the meta info for this thread.
+         *
+         * @param threadLinkOrId The thread link/ID.
+         * @return The `Optional.of(threadLink)` if we parse this thread
+         * link/ID successfully, otherwise the `Optional.absent()`.
+         */
+        fun parse2(threadLinkOrId: String): ThreadLink? {
+            // example: 1074030-1
+            var groupValues = "^(\\d+)-(\\d+)$".toRegex().find(threadLinkOrId)?.groupValues
+            if (groupValues != null && groupValues.size > 2) {
+                val builder = Builder(groupValues[1])
+                    .jumpPage(groupValues[2].toIntOrNull() ?: 1)
+                return builder.build()
+            }
 
-    /**
-     * Parses thread link/ID in order to get the meta info for this thread.
-     *
-     * @param threadLinkOrId The thread link/ID.
-     * @return The {@code Optional.of(threadLink)} if we parse this thread
-     * link/ID successfully, otherwise the {@code Optional.absent()}.
-     */
-    public static Optional<ThreadLink> parse2(String threadLinkOrId) {
-        // example: 1074030-1
-        Pattern pattern = Pattern.compile("^(\\d+)-(\\d+)$");
-        Matcher matcher = pattern.matcher(threadLinkOrId);
-        if (matcher.find()) {
-            Builder builder = new Builder(matcher.group(1))
-                    .jumpPage(Integer.parseInt(matcher.group(2)));
-
-            return Optional.of(builder.build());
-        }
-
-        // example: 1074030
-        matcher.usePattern(Pattern.compile("^(\\d+)$"));
-        if (matcher.find()) {
-            Builder builder = new Builder(matcher.group(1));
-            return Optional.of(builder.build());
-        }
-
-        return parse(threadLinkOrId);
-    }
-
-    public Optional<String> getQuotePostId() {
-        return quotePostId;
-    }
-
-    public String getThreadId() {
-        return threadId;
-    }
-
-    public int getJumpPage() {
-        return jumpPage;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ThreadLink that = (ThreadLink) o;
-        return Objects.equal(jumpPage, that.jumpPage) &&
-                Objects.equal(threadId, that.threadId) &&
-                Objects.equal(quotePostId, that.quotePostId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(threadId, jumpPage, quotePostId);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(threadId);
-        dest.writeInt(jumpPage);
-        if (quotePostId.isPresent()) {
-            dest.writeString(quotePostId.get());
-        } else {
-            dest.writeString(null);
-
-        }
-    }
-
-    public static final class Builder {
-
-        private final String threadId;
-        private int jumpPage = 1;
-        private String quotePostId;
-
-        public Builder(@NonNull String threadId) {
-            this.threadId = Preconditions.checkNotNull(threadId);
-        }
-
-        public Builder jumpPage(int jumpPage) {
-            this.jumpPage = jumpPage;
-            return this;
-        }
-
-        public Builder quotePostId(String quotePostId) {
-            this.quotePostId = quotePostId;
-            return this;
-        }
-
-        public ThreadLink build() {
-            return new ThreadLink(this);
+            // example: 1074030
+            groupValues = "^(\\d+)$".toRegex().find(threadLinkOrId)?.groupValues
+            if (groupValues != null && groupValues.size > 1) {
+                val builder = Builder(groupValues[1])
+                return builder.build()
+            }
+            return parse(threadLinkOrId)
         }
     }
 }
