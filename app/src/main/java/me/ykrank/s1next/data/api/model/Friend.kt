@@ -2,7 +2,6 @@ package me.ykrank.s1next.data.api.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.google.common.base.Objects
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 
@@ -19,9 +18,15 @@ class Friend : DiffSameItem, StableIdModel {
     override val stableId: Long
         get() = uid?.toLongOrNull() ?: 0
 
-    override fun isSameItem(o: Any): Boolean {
-        if (this === o) return true
-        return if (o !is Friend) false else Objects.equal(uid, o.uid)
+    override fun isSameItem(other: Any): Boolean {
+        if (this === other) return true
+        if (javaClass != other.javaClass) return false
+
+        other as Friend
+
+        if (uid != other.uid) return false
+
+        return true
     }
 
     override fun equals(other: Any?): Boolean {

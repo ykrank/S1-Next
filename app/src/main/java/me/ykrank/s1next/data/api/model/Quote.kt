@@ -1,79 +1,43 @@
-package me.ykrank.s1next.data.api.model;
+package me.ykrank.s1next.data.api.model
 
-import android.text.TextUtils;
+import me.ykrank.s1next.util.HtmlUtils
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import me.ykrank.s1next.util.HtmlUtils;
-
-public final class Quote {
+data class Quote(
 
     /**
      * The quoted user identification which was encoded in server.
      * Without this we can't notify the user.
      */
-    private String encodedUserId;
-
+    var encodedUserId: String,
     /**
      * The processed quoted content which has some HTML tags and
      * its origin redirect hyperlink.
      */
-    private String quoteMessage;
+    var quoteMessage: String
+) {
 
-    private Quote() {
-    }
-
-    /**
-     * Extracts {@link Quote} from XML string.
-     */
-    public static Quote fromXmlString(String xmlString) {
-        // example: <input type="hidden" name="noticeauthor" value="d755gUR1jP9eeoTPkiOyz3FxvLzpFLJsSFvJA8uAfBg" />
-        Pattern pattern = Pattern.compile("name=\"noticeauthor\"\\svalue=\"(\\p{ASCII}+)\"\\s/>");
-        Matcher matcher = pattern.matcher(xmlString);
-
-        Quote quote = new Quote();
-        if (matcher.find()) {
-            quote.encodedUserId = matcher.group(1);
-
-            // example: <input type="hidden" name="noticetrimstr" value="[post][size=2][url=forum.php?mod=redirect&amp;goto=findpost&amp;pid=1&amp;ptid=1][color=#999999]VVV 发表于 2014-12-13 10:11[/color][/url][/size]
-            pattern = Pattern.compile("name=\"noticetrimstr\"\\svalue=\"(.+?)\"\\s/>",
-                    Pattern.DOTALL);
-            matcher.usePattern(pattern);
-            if (matcher.find()) {
+    companion object {
+        /**
+         * Extracts [Quote] from XML string.
+         */
+        fun fromXmlString(xmlString: String?): Quote? {
+            if (xmlString.isNullOrEmpty()) return null
+            // example: <input type="hidden" name="noticeauthor" value="d755gUR1jP9eeoTPkiOyz3FxvLzpFLJsSFvJA8uAfBg" />
+            val encodedUserId = "name=\"noticeauthor\"\\svalue=\"(\\p{ASCII}+)\"\\s/>".toRegex()
+                .find(xmlString)?.groupValues?.getOrNull(1)
+            if (encodedUserId != null) {
+                // example: <input type="hidden" name="noticetrimstr" value="[post][size=2][url=forum.php?mod=redirect&amp;goto=findpost&amp;pid=1&amp;ptid=1][color=#999999]VVV 发表于 2014-12-13 10:11[/color][/url][/size]
+                val quoteMessageStr =
+                    "name=\"noticetrimstr\"\\svalue=\"(.+?)\"\\s/>".toRegex(RegexOption.DOT_MATCHES_ALL)
+                        .find(xmlString)?.groupValues?.getOrNull(1)
                 // unescape ampersand (&amp;)
-                quote.quoteMessage = HtmlUtils.INSTANCE.unescapeHtml(matcher.group(1));
+                val quoteMessage = HtmlUtils.unescapeHtml(quoteMessageStr)
+                if (quoteMessage != null) {
+                    return Quote(encodedUserId, quoteMessage)
+                }
+
             }
+            return null
         }
-
-        Preconditions.checkState(!TextUtils.isEmpty(quote.getEncodedUserId())
-                && !TextUtils.isEmpty(quote.getQuoteMessage()), "Cannot get the post information.");
-
-        return quote;
-    }
-
-    public String getEncodedUserId() {
-        return encodedUserId;
-    }
-
-    public String getQuoteMessage() {
-        return quoteMessage;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Quote quote = (Quote) o;
-        return Objects.equal(encodedUserId, quote.encodedUserId) &&
-                Objects.equal(quoteMessage, quote.quoteMessage);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(encodedUserId, quoteMessage);
     }
 }

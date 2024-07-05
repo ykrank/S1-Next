@@ -28,6 +28,7 @@ class ReplyRequestDialogFragment : BaseRequestDialogFragment<AccountResultWrappe
         } else {
             mS1Service.getQuoteInfo(threadId, quotePostId).flatMap { s: String? ->
                 val quote = Quote.fromXmlString(s)
+                    ?: throw IllegalStateException("Cannot get the post information.")
                 flatMappedWithAuthenticityToken { token: String? ->
                     mS1Service.replyQuote(
                         token, threadId, reply, quote.encodedUserId,

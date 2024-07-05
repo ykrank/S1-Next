@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
-import com.google.common.base.Objects
 import me.ykrank.s1next.data.db.dbmodel.History
 import me.ykrank.s1next.util.HtmlUtils
 import paperparcel.PaperParcel
@@ -76,40 +75,60 @@ class Thread : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
     override val stableId: Long
         get() = id?.toLongOrNull() ?: 0
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
-        val thread = o as Thread?
-        return permission == thread!!.permission &&
-                authorId == thread.authorId &&
-                displayOrder == thread.displayOrder &&
-                isHide == thread.isHide &&
-                lastReplyCount == thread.lastReplyCount &&
-                Objects.equal(id, thread.id) &&
-                Objects.equal(title, thread.title) &&
-                Objects.equal(replies, thread.replies) &&
-                Objects.equal(author, thread.author) &&
-                Objects.equal(typeId, thread.typeId) &&
-                Objects.equal(fid, thread.fid) &&
-                Objects.equal(typeName, thread.typeName)
-    }
-
-    override fun hashCode(): Int {
-        return Objects.hashCode(id, title, replies, permission, author, authorId, displayOrder, typeId, fid, typeName, isHide, lastReplyCount)
-    }
-
     public override fun clone(): Any {
         return super.clone() as Thread
     }
 
-    override fun isSameItem(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
-        val thread = o as Thread?
-        return Objects.equal(id, thread!!.id) &&
-                Objects.equal(title, thread.title) &&
-                Objects.equal(author, thread.author) &&
-                Objects.equal(authorId, thread.authorId)
+    override fun isSameItem(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Thread
+
+        if (id != other.id) return false
+        if (title != other.title) return false
+        if (author != other.author) return false
+        if (authorId != other.authorId) return false
+
+        return true
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Thread
+
+        if (id != other.id) return false
+        if (title != other.title) return false
+        if (replies != other.replies) return false
+        if (permission != other.permission) return false
+        if (author != other.author) return false
+        if (authorId != other.authorId) return false
+        if (displayOrder != other.displayOrder) return false
+        if (typeId != other.typeId) return false
+        if (fid != other.fid) return false
+        if (typeName != other.typeName) return false
+        if (isHide != other.isHide) return false
+        if (lastReplyCount != other.lastReplyCount) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id?.hashCode() ?: 0
+        result = 31 * result + (title?.hashCode() ?: 0)
+        result = 31 * result + (replies?.hashCode() ?: 0)
+        result = 31 * result + permission
+        result = 31 * result + (author?.hashCode() ?: 0)
+        result = 31 * result + authorId
+        result = 31 * result + displayOrder
+        result = 31 * result + (typeId?.hashCode() ?: 0)
+        result = 31 * result + (fid?.hashCode() ?: 0)
+        result = 31 * result + (typeName?.hashCode() ?: 0)
+        result = 31 * result + isHide.hashCode()
+        result = 31 * result + lastReplyCount
+        return result
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

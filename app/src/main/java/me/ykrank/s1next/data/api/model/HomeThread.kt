@@ -1,6 +1,5 @@
 package me.ykrank.s1next.data.api.model
 
-import com.google.common.base.Objects
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 import com.github.ykrank.androidtools.util.L
@@ -22,22 +21,6 @@ class HomeThread : DiffSameItem, HomeReplyWebWrapper.HomeReplyItem, StableIdMode
     //eg thread-1220112-1-1.html
     var url: String? = null
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o !is HomeThread) return false
-        val thread = o as HomeThread?
-        return Objects.equal(title, thread!!.title) &&
-                Objects.equal(forum, thread.forum) &&
-                Objects.equal(view, thread.view) &&
-                Objects.equal(reply, thread.reply) &&
-                Objects.equal(lastReplier, thread.lastReplier) &&
-                Objects.equal(lastReplyDate, thread.lastReplyDate) &&
-                Objects.equal(url, thread.url)
-    }
-
-    override fun hashCode(): Int {
-        return Objects.hashCode(title, forum, view, reply, lastReplier, lastReplyDate, url)
-    }
 
     override fun toString(): String {
         return "HomeThread{" +
@@ -51,9 +34,43 @@ class HomeThread : DiffSameItem, HomeReplyWebWrapper.HomeReplyItem, StableIdMode
                 '}'.toString()
     }
 
-    override fun isSameItem(o: Any): Boolean {
-        if (this === o) return true
-        return if (o !is HomeThread) false else Objects.equal(url, o.url)
+    override fun isSameItem(other: Any): Boolean {
+        if (this === other) return true
+        if (javaClass != other.javaClass) return false
+
+        other as HomeThread
+
+        if (url != other.url) return false
+
+        return true
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as HomeThread
+
+        if (title != other.title) return false
+        if (forum != other.forum) return false
+        if (view != other.view) return false
+        if (reply != other.reply) return false
+        if (lastReplier != other.lastReplier) return false
+        if (lastReplyDate != other.lastReplyDate) return false
+        if (url != other.url) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = title?.hashCode() ?: 0
+        result = 31 * result + (forum?.hashCode() ?: 0)
+        result = 31 * result + (view?.hashCode() ?: 0)
+        result = 31 * result + (reply?.hashCode() ?: 0)
+        result = 31 * result + (lastReplier?.hashCode() ?: 0)
+        result = 31 * result + (lastReplyDate?.hashCode() ?: 0)
+        result = 31 * result + (url?.hashCode() ?: 0)
+        return result
     }
 
     companion object {

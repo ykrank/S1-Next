@@ -50,8 +50,8 @@ public final class ForumGroups extends Account {
         for (ForumCategoryByIds forumCategoryByIds : forumGroupByIdsList) {
             this.forumGroupNameList.add(forumCategoryByIds.getName());
 
-            List<Forum> oneCategoryForumList = new ArrayList<>(forumCategoryByIds.getForumIds().size());
-            for (Integer id : forumCategoryByIds.getForumIds()) {
+            List<Forum> oneCategoryForumList = new ArrayList<>(forumCategoryByIds.forumIds.size());
+            for (Integer id : forumCategoryByIds.forumIds) {
                 oneCategoryForumList.add(forumSparseArray.get(id));
             }
             forumGroupList.add(oneCategoryForumList);

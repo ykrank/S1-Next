@@ -2,7 +2,6 @@ package me.ykrank.s1next.data.api
 
 import android.text.TextUtils
 import com.github.ykrank.androidtools.util.L
-import com.google.common.base.Objects
 import me.ykrank.s1next.App.Companion.get
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.app.model.AppLoginResult
@@ -75,7 +74,7 @@ class UserValidator(private val mUser: User, private val mAutoSignTask: AutoSign
         if (appUserInfo == null) {
             return false
         }
-        if (!Objects.equal(appUserInfo.isSigned, mUser.isSigned)) {
+        if (appUserInfo.isSigned != mUser.isSigned) {
             mUser.isSigned = appUserInfo.isSigned
             return true
         }

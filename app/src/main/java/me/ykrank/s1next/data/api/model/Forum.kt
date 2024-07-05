@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
-import com.google.common.base.Objects
 import me.ykrank.s1next.util.HtmlUtils
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
@@ -33,25 +32,16 @@ class Forum : PaperParcelable, DiffSameItem, StableIdModel {
     override val stableId: Long
         get() = id?.toLongOrNull() ?: 0
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
-        val forum = o as Forum?
-        return Objects.equal(threads, forum!!.threads) &&
-                Objects.equal(todayPosts, forum.todayPosts) &&
-                Objects.equal(id, forum.id) &&
-                Objects.equal(name, forum.name)
-    }
+    override fun isSameItem(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
 
-    override fun hashCode(): Int {
-        return Objects.hashCode(id, name, threads, todayPosts)
-    }
+        other as Forum
 
-    override fun isSameItem(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
-        val forum = o as Forum?
-        return Objects.equal(id, forum!!.id) && Objects.equal(name, forum.name)
+        if (id != other.id) return false
+        if (name != other.name) return false
+
+        return true
     }
 
     override fun toString(): String {
@@ -61,6 +51,28 @@ class Forum : PaperParcelable, DiffSameItem, StableIdModel {
                 ", threads=" + threads +
                 ", todayPosts=" + todayPosts +
                 '}'.toString()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Forum
+
+        if (id != other.id) return false
+        if (name != other.name) return false
+        if (threads != other.threads) return false
+        if (todayPosts != other.todayPosts) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id?.hashCode() ?: 0
+        result = 31 * result + (name?.hashCode() ?: 0)
+        result = 31 * result + threads
+        result = 31 * result + todayPosts
+        return result
     }
 
     companion object {

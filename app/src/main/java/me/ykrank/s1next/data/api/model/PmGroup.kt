@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.google.common.base.Objects
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 
@@ -50,30 +49,48 @@ class PmGroup : Cloneable, DiffSameItem, StableIdModel {
     override val stableId: Long
         get() = plId?.toLongOrNull() ?: 0
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
-        val pmGroup = o as PmGroup?
-        return Objects.equal(authorId, pmGroup!!.authorId) &&
-                Objects.equal(plId, pmGroup.plId) &&
-                Objects.equal(isNew, pmGroup.isNew) &&
-                Objects.equal(lastAuthorid, pmGroup.lastAuthorid) &&
-                Objects.equal(lastAuthor, pmGroup.lastAuthor) &&
-                Objects.equal(lastSummary, pmGroup.lastSummary) &&
-                Objects.equal(lastDateline, pmGroup.lastDateline) &&
-                Objects.equal(pmNum, pmGroup.pmNum) &&
-                Objects.equal(toUid, pmGroup.toUid) &&
-                Objects.equal(toUsername, pmGroup.toUsername)
+
+    override fun isSameItem(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as PmGroup
+        if (plId != other.plId) return false
+
+        return true
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as PmGroup
+
+        if (authorId != other.authorId) return false
+        if (plId != other.plId) return false
+        if (isNew != other.isNew) return false
+        if (lastAuthorid != other.lastAuthorid) return false
+        if (lastAuthor != other.lastAuthor) return false
+        if (lastSummary != other.lastSummary) return false
+        if (lastDateline != other.lastDateline) return false
+        if (pmNum != other.pmNum) return false
+        if (toUid != other.toUid) return false
+        if (toUsername != other.toUsername) return false
+
+        return true
     }
 
     override fun hashCode(): Int {
-        return Objects.hashCode(authorId, plId, isNew, lastAuthorid, lastAuthor, lastSummary, lastDateline, pmNum, toUid, toUsername)
-    }
-
-    override fun isSameItem(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
-        val pmGroup = o as PmGroup?
-        return Objects.equal(plId, pmGroup!!.plId)
+        var result = authorId?.hashCode() ?: 0
+        result = 31 * result + (plId?.hashCode() ?: 0)
+        result = 31 * result + isNew.hashCode()
+        result = 31 * result + (lastAuthorid?.hashCode() ?: 0)
+        result = 31 * result + (lastAuthor?.hashCode() ?: 0)
+        result = 31 * result + (lastSummary?.hashCode() ?: 0)
+        result = 31 * result + lastDateline.hashCode()
+        result = 31 * result + (pmNum?.hashCode() ?: 0)
+        result = 31 * result + (toUid?.hashCode() ?: 0)
+        result = 31 * result + (toUsername?.hashCode() ?: 0)
+        return result
     }
 }

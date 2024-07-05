@@ -1,50 +1,37 @@
-package me.ykrank.s1next.data.api.model;
+package me.ykrank.s1next.data.api.model
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+import me.ykrank.s1next.util.HtmlUtils.unescapeHtml
 
-import java.util.List;
-
-import me.ykrank.s1next.util.HtmlUtils;
-
-@SuppressWarnings("UnusedDeclaration")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class ForumCategoryByIds {
-
+class ForumCategoryByIds {
     @JsonProperty("name")
-    private String name;
+    var name: String? = null
+        set(name) {
+            field = unescapeHtml(name)
+        }
 
+    @JvmField
     @JsonProperty("forums")
-    private List<Integer> forumIds;
+    var forumIds: List<Int>? = null
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
 
-    public String getName() {
-        return name;
+        other as ForumCategoryByIds
+
+        if (name != other.name) return false
+        if (forumIds != other.forumIds) return false
+
+        return true
     }
 
-    public void setName(String name) {
-        this.name = HtmlUtils.INSTANCE.unescapeHtml(name);
+    override fun hashCode(): Int {
+        var result = name?.hashCode() ?: 0
+        result = 31 * result + (forumIds?.hashCode() ?: 0)
+        return result
     }
 
-    public List<Integer> getForumIds() {
-        return forumIds;
-    }
 
-    public void setForumIds(List<Integer> forumIDs) {
-        this.forumIds = forumIDs;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ForumCategoryByIds that = (ForumCategoryByIds) o;
-        return Objects.equal(name, that.name) &&
-                Objects.equal(forumIds, that.forumIds);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(name, forumIds);
-    }
 }

@@ -1,7 +1,10 @@
 package me.ykrank.s1next.data.api.model
 
-import com.fasterxml.jackson.annotation.*
-import com.google.common.base.Objects
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonSetter
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 import paperparcel.PaperParcel
@@ -61,9 +64,14 @@ class Note : PaperParcelable, DiffSameItem, StableIdModel {
         isNew = aNew > 0
     }
 
-    override fun isSameItem(o: Any): Boolean {
-        if (this === o) return true
-        return if (o !is Note) false else Objects.equal(id, o.id)
+    override fun isSameItem(other: Any): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Note
+
+        if (id != other.id) return false
+        return true
     }
 
     override fun equals(other: Any?): Boolean {

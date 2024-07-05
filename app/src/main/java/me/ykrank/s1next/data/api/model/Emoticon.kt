@@ -1,8 +1,5 @@
 package me.ykrank.s1next.data.api.model
 
-import android.util.Pair
-import com.google.common.base.Objects
-
 /**
  * @param imagePath 图片路径，不包含文件类型后缀
  */

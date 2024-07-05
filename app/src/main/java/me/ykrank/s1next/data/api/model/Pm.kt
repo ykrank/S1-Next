@@ -3,7 +3,6 @@ package me.ykrank.s1next.data.api.model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.google.common.base.Objects
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 
@@ -34,32 +33,54 @@ class Pm : Cloneable, DiffSameItem, StableIdModel {
     override val stableId: Long
         get() = pmId?.toLongOrNull() ?: 0
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
-        val pm = o as Pm?
-        return Objects.equal(plId, pm!!.plId) &&
-                Objects.equal(pmId, pm.pmId) &&
-                Objects.equal(pmType, pm.pmType) &&
-                Objects.equal(authorId, pm.authorId) &&
-                Objects.equal(author, pm.author) &&
-                Objects.equal(subject, pm.subject) &&
-                Objects.equal(message, pm.message) &&
-                Objects.equal(dateline, pm.dateline) &&
-                Objects.equal(msgFromId, pm.msgFromId) &&
-                Objects.equal(msgFrom, pm.msgFrom) &&
-                Objects.equal(msgToId, pm.msgToId) &&
-                Objects.equal(msgTo, pm.msgTo)
+
+    override fun isSameItem(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Pm
+
+        if (plId != other.plId) return false
+        if (pmId != other.pmId) return false
+
+        return true
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Pm
+
+        if (plId != other.plId) return false
+        if (pmId != other.pmId) return false
+        if (pmType != other.pmType) return false
+        if (authorId != other.authorId) return false
+        if (author != other.author) return false
+        if (subject != other.subject) return false
+        if (message != other.message) return false
+        if (dateline != other.dateline) return false
+        if (msgFromId != other.msgFromId) return false
+        if (msgFrom != other.msgFrom) return false
+        if (msgToId != other.msgToId) return false
+        if (msgTo != other.msgTo) return false
+
+        return true
     }
 
     override fun hashCode(): Int {
-        return Objects.hashCode(plId, pmId, pmType, authorId, author, subject, message, dateline, msgFromId, msgFrom, msgToId, msgTo)
-    }
-
-    override fun isSameItem(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
-        val pm = o as Pm?
-        return Objects.equal(plId, pm!!.plId) && Objects.equal(pmId, pm.pmId)
+        var result = plId?.hashCode() ?: 0
+        result = 31 * result + (pmId?.hashCode() ?: 0)
+        result = 31 * result + (pmType?.hashCode() ?: 0)
+        result = 31 * result + (authorId?.hashCode() ?: 0)
+        result = 31 * result + (author?.hashCode() ?: 0)
+        result = 31 * result + (subject?.hashCode() ?: 0)
+        result = 31 * result + (message?.hashCode() ?: 0)
+        result = 31 * result + dateline.hashCode()
+        result = 31 * result + (msgFromId?.hashCode() ?: 0)
+        result = 31 * result + (msgFrom?.hashCode() ?: 0)
+        result = 31 * result + (msgToId?.hashCode() ?: 0)
+        result = 31 * result + (msgTo?.hashCode() ?: 0)
+        return result
     }
 }

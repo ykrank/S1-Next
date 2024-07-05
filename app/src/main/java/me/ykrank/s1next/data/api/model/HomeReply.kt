@@ -1,6 +1,5 @@
 package me.ykrank.s1next.data.api.model
 
-import com.google.common.base.Objects
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 import com.github.ykrank.androidtools.util.L
@@ -17,16 +16,7 @@ class HomeReply : DiffSameItem, HomeReplyWebWrapper.HomeReplyItem, StableIdModel
     //eg forum.php?mod=redirect&goto=findpost&ptid=1220112&pid=34645514
     var url: String? = null
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
-        val homeReply = o as HomeReply?
-        return Objects.equal(reply, homeReply!!.reply) && Objects.equal(url, homeReply.url)
-    }
 
-    override fun hashCode(): Int {
-        return Objects.hashCode(reply, url)
-    }
 
     override fun toString(): String {
         return "HomeReply{" +
@@ -35,9 +25,33 @@ class HomeReply : DiffSameItem, HomeReplyWebWrapper.HomeReplyItem, StableIdModel
                 '}'.toString()
     }
 
-    override fun isSameItem(o: Any): Boolean {
-        if (this === o) return true
-        return if (o !is HomeReply) false else Objects.equal(url, o.url)
+    override fun isSameItem(other: Any): Boolean {
+        if (this === other) return true
+        if (javaClass != other.javaClass) return false
+
+        other as HomeReply
+
+        if (url != other.url) return false
+
+        return true
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as HomeReply
+
+        if (reply != other.reply) return false
+        if (url != other.url) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = reply?.hashCode() ?: 0
+        result = 31 * result + (url?.hashCode() ?: 0)
+        return result
     }
 
     companion object {
