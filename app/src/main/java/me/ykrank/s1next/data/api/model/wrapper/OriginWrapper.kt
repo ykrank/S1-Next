@@ -11,7 +11,7 @@ import me.ykrank.s1next.data.api.model.Account
 @JsonIgnoreProperties(ignoreUnknown = true)
 abstract class OriginWrapper<T : Account> {
     @JsonProperty("Variables")
-    lateinit var data: T
+    var data: T? = null
 
     @JsonProperty("error")
     var error: String? = null
