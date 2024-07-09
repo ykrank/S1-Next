@@ -3,6 +3,7 @@ package me.ykrank.s1next.widget.net
 import android.content.Context
 import com.alibaba.sdk.android.httpdns.HttpDns
 import com.alibaba.sdk.android.httpdns.HttpDnsService
+import com.alibaba.sdk.android.httpdns.RequestIpType
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.hostcheck.BaseDns
 import com.github.ykrank.androidtools.widget.hostcheck.BaseHostUrl
@@ -14,14 +15,20 @@ import java.net.UnknownHostException
 
 class AppDns(context: Context, baseHostUrl: BaseHostUrl) : BaseDns(baseHostUrl) {
 
-    private val httpDns: HttpDnsService? = if (BuildConfig.HTTP_DNS_ID.isNullOrEmpty() ||
-            BuildConfig.HTTP_DNS_SECRET.isNullOrEmpty()) null
+    private val httpDns: HttpDnsService? = if (BuildConfig.HTTP_DNS_ID.isEmpty() ||
+        BuildConfig.HTTP_DNS_SECRET.isEmpty()
+    ) null
     else HttpDns.getService(context, BuildConfig.HTTP_DNS_ID, BuildConfig.HTTP_DNS_SECRET)//httpdns 解析服务
 
-    private var hostIp: String? = null
+    private val hosts = listOf(
+        "img.saraba1st.com",
+        "p.sda1.dev",
+    ) + Api.HOST_LIST
+
+    private var hostIpMap: MutableMap<String, List<InetAddress>> = mutableMapOf()
 
     override fun lookup(hostname: String): List<InetAddress> {
-        if (Api.BASE_HOST == hostname) {
+        if (hosts.contains(hostname)) {
             var exception: Exception? = null
             var address: List<InetAddress>? = null
             try {
@@ -31,15 +38,21 @@ class AppDns(context: Context, baseHostUrl: BaseHostUrl) : BaseDns(baseHostUrl) 
             }
 
             if (address.isNullOrEmpty()) {
+                var hostIp = hostIpMap[hostname]
                 if (hostIp == null) {
-                    hostIp = httpDns?.getIpByHostAsync(hostname)
-                    if (hostIp != null) {
+                    val httpDnsResult =
+                        httpDns?.getHttpDnsResultForHostSync(hostname, RequestIpType.auto)
+                    hostIp = ((httpDnsResult?.ips ?: arrayOf()) + (httpDnsResult?.ipv6s
+                        ?: arrayOf())).flatMap {
+                        InetAddress.getAllByName(it).toList()
+                    }
+                    if (hostIp.isNotEmpty()) {
+                        hostIpMap[hostname] = hostIp
                         L.d("HttpDns ip: $hostIp")
                     }
                 }
-                val ip = hostIp
-                if (ip != null) {
-                    return InetAddress.getAllByName(ip).toList()
+                if (hostIp.isNotEmpty()) {
+                    return hostIp
                 } else {
                     if (exception == null) {
                         throw UnknownHostException("Broken system behaviour for dns lookup of $hostname and http dns")

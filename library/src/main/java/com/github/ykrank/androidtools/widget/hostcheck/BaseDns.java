@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 
+import com.github.ykrank.androidtools.util.L;
 import com.github.ykrank.androidtools.util.LooperUtil;
 
 import java.net.InetAddress;
@@ -33,12 +34,12 @@ public class BaseDns implements Dns {
     public List<InetAddress> lookup(@NonNull String hostname) throws UnknownHostException {
         try {
             checkInetAddress();
-            if (inetAddressList != null && inetAddressList.size() > 0 && baseHostUrl.getBaseHttpUrl() != null
+            if (inetAddressList != null && !inetAddressList.isEmpty() && baseHostUrl.getBaseHttpUrl() != null
                     && TextUtils.equals(baseHostUrl.getBaseHttpUrl().host(), hostname)) {
                 return inetAddressList;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            L.print(e);
         }
         return SYSTEM.lookup(hostname);
     }
@@ -67,7 +68,7 @@ public class BaseDns implements Dns {
                 try {
                     inetAddressList.add(InetAddress.getByName(hostIp.trim()));
                 } catch (UnknownHostException e) {
-                    e.printStackTrace();
+                    L.print(e);
                 }
             }
         }
