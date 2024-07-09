@@ -71,7 +71,7 @@ public class L {
 
     public static void print(Throwable e) {
         if (showLog() && e != null) {
-            e.printStackTrace();
+            Log.i(TAG, "", e);
         }
     }
 
@@ -126,7 +126,7 @@ public class L {
     public static void e(String tag, @NonNull String msg, Throwable tr) {
         BuglyLog.e(TAG + tag, msg, tr);
         if (tr != null) {
-            tr.printStackTrace();
+            Log.e(TAG + tag, msg, tr);
         }
         if (showLog() && tr != null) {
             CrashReport.postCatchedException(tr);
@@ -139,7 +139,7 @@ public class L {
 
     public static void report(Throwable tr, int severity) {
         if (showLog()) {
-            tr.printStackTrace();
+            print(tr);
         }
 
         ErrorParser errorParser = GlobalData.provider.getErrorParser();

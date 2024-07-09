@@ -11,7 +11,7 @@ object AppApiUtil {
 
     fun appLoginIfNeed(rxBus: RxBus, throwable: Throwable): Boolean {
         if (throwable is ApiException.AppServerException) {
-            if (throwable.code == 503) {
+            if (throwable.message?.contains("重新登录")==true) {
                 rxBus.post(AppNotLoginEvent())
                 return true
             }

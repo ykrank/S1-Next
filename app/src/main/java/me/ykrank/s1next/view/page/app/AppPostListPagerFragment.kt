@@ -34,6 +34,7 @@ import me.ykrank.s1next.data.api.app.model.AppPost
 import me.ykrank.s1next.data.api.app.model.AppPostsWrapper
 import me.ykrank.s1next.data.api.app.model.AppThread
 import me.ykrank.s1next.data.db.biz.LoginUserBiz
+import me.ykrank.s1next.data.db.exmodel.RealLoginUser
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.databinding.FragmentBaseWithQuickSideBarBinding
 import me.ykrank.s1next.util.JsonUtil
@@ -272,7 +273,6 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
     }
 
     override fun onError(throwable: Throwable) {
-        //TODO 2018-08-23 If log session invalid, log out and show log in dialog.
         if (AppApiUtil.appLoginIfNeed(mRxBus, throwable)) {
             // 自动登录
             autoLogin()
@@ -297,11 +297,11 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
 
     private fun autoLogin() {
         Single.fromCallable {
-            loginUserBiz.getUserByUid(mUser.uid?.toIntOrNull() ?: 0)
+            loginUserBiz.getUserByUid(mUser.uid?.toIntOrNull() ?: 0)?: RealLoginUser.EMPTY
         }.compose(RxJavaUtil.iOSingleTransformer())
             .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
             .subscribe({
-                if (it != null) {
+                if (it != null && it != RealLoginUser.EMPTY) {
                     val name = it.name
                     val password = it.password
                     if (name != null && password != null) {
@@ -315,6 +315,8 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
                             AppLoginDialogFragment.TAG
                         )
                     }
+                } else {
+                    AppLoginActivity.startLoginActivityForResultMessage(requireActivity())
                 }
             }, { L.e(it) })
     }
