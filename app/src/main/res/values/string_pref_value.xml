@@ -33,7 +33,7 @@
     <string name="pref_avatar_cache_invalidation_interval">Cache invalidation interval</string>
     <string name="pref_avatar_cache_invalidation_interval_default_value" translatable="false">1</string>
     <string name="pref_image">Image</string>
-    <string name="pref_download_images_strategy_default_value" translatable="false">1</string>
+    <string name="pref_download_images_strategy_default_value" translatable="false">2</string>
     <string name="pref_post_max_image_show_default_value" translatable="false">10</string>
     <string name="pref_clear_image_cache">Clear image cache</string>
 
