@@ -22,7 +22,6 @@ jsoup = "1.17.2"
 leakcanaryAndroid = "2.14"
 leakcanaryAndroidNoOp = "1.6.3"
 preference = "1.2.1"
-legacySupportV4 = "1.0.0"
 lifecycleLivedataKtx = "2.8.1"
 logger = "2.2.0"
 material = "1.12.0"
@@ -72,7 +71,6 @@ androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "card
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-preference = { module = "androidx.preference:preference-ktx", version.ref = "preference" }
-androidx-legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", version.ref = "legacySupportV4" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 androidx-multidex = { module = "androidx.multidex:multidex", version.ref = "multidex" }
 androidx-percentlayout = { module = "androidx.percentlayout:percentlayout", version.ref = "percentlayout" }

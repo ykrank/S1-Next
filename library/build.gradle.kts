@@ -56,7 +56,6 @@ dependencies {
     api(libs.androidx.cardview)
     api(libs.androidx.percentlayout)
     api(libs.androidx.preference)
-    api(libs.androidx.legacy.support.v4)
     api(libs.androidx.lifecycle.livedata.ktx)
     api(libs.androidx.constraintlayout)
 
