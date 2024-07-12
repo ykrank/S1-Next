@@ -298,7 +298,9 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
                     //                        L.d("Source:$mPageNum," + java.lang.Thread.currentThread().toString())
                     val wrapper = objectMapper.readValue(reply.data, PostsWrapper::class.java)
                     //If load cache and this page size < POSTS_PER_PAGE, it's the last page, then force refresh
-                    if (reply.source != Source.CLOUD && wrapper.data.postList.size < Api.POSTS_PER_PAGE) {
+                    if (reply.source != Source.CLOUD && (wrapper.data?.postList?.size
+                            ?: 0) < Api.POSTS_PER_PAGE
+                    ) {
                         return@flatMap apiCacheObservable(true)
                             .map { it.data }
                             .compose(JsonUtil.jsonSingleTransformer(PostsWrapper::class.java))
@@ -316,8 +318,8 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
                 .flatMap { reply ->
                     //                        L.d("RateSource:$mPageNum," + java.lang.Thread.currentThread().toString())
                     val wrapper = objectMapper.readValue(reply.data, RatePostsWrapper::class.java)
-                    if (reply.source != Source.CLOUD &&
-                        (wrapper.data.postList?.size ?: 0) < Api.POSTS_PER_PAGE
+                    if (reply.source != Source.CLOUD && (wrapper.data?.postList?.size
+                            ?: 0) < Api.POSTS_PER_PAGE
                     ) {
                         return@flatMap rateApiCacheObservable(true)
                             .map { it.data }
@@ -337,20 +339,20 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
                 pair.second.data?.commentCountMap?.apply {
                     o.data?.initCommentCount(this)
                 }
-                if (o.data != null) {
-                    val postList = o.data.postList
-                    if (postList.isNotEmpty()) {
-                        val post = postList[0]
-                        if (post.isTrade) {
-                            post.extraHtml = ""
-                            return@flatMap mS1Service.getTradePostInfo(mThreadId, post.id + 1)
-                                .map { html ->
-                                    post.extraHtml = ApiUtil.replaceAjaxHeader(html)
-                                    return@map o
-                                }
-                        }
+
+                val postList = o.data?.postList
+                if (!postList.isNullOrEmpty()) {
+                    val post = postList[0]
+                    if (post.isTrade) {
+                        post.extraHtml = ""
+                        return@flatMap mS1Service.getTradePostInfo(mThreadId, post.id + 1)
+                            .map { html ->
+                                post.extraHtml = ApiUtil.replaceAjaxHeader(html)
+                                return@map o
+                            }
                     }
                 }
+
                 Single.just(o)
             }
     }
@@ -398,11 +400,11 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
                 }
             }
 
-            val threadId = mThreadId ?: posts.postListInfo?.id
+            val threadId = mThreadId ?: posts?.postListInfo?.id
             if (threadId != null) {
                 if (isAdded && userVisibleHint) {
                     Snackbar.make(
-                        binding.root, data.result?.message
+                        binding.root, data.result.message
                             ?: "加载失败", Snackbar.LENGTH_INDEFINITE
                     ).setAction(R.string.click_to_cast_dark_magic, View.OnClickListener {
                         AppPostListActivity.start(requireContext(), threadId, mPageNum, null)
@@ -426,7 +428,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
             loadRates(postList)
 
             //Thread info must not null, or exception
-            val postListInfo = posts.postListInfo as Thread
+            val postListInfo = posts?.postListInfo as Thread
             mRecyclerAdapter.setThreadInfo(postListInfo, mPageNum)
 
             posts.vote?.let {

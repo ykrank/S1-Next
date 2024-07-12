@@ -55,7 +55,7 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val bundle = arguments!!
+        val bundle = requireArguments()
         mForumId = bundle.getString(ARG_FORUM_ID)
         mTypeId = bundle.getString(ARG_TYPE_ID)
         mPageNum = bundle.getInt(ARG_PAGE_NUM)
@@ -110,7 +110,8 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
         var result = source.compose(JsonUtil.jsonSingleTransformer(ThreadsWrapper::class.java))
         if (mGeneralPreferencesManager.isPostDisableSticky) {
             result = result.map { threadsWrapper ->
-                threadsWrapper.data.threadList = threadsWrapper.data.threadList.filter { it.displayOrder == 0 }
+                threadsWrapper.data?.threadList =
+                    threadsWrapper.data?.threadList?.filter { it.displayOrder == 0 } ?: listOf()
                 threadsWrapper
             }
         }
@@ -119,7 +120,7 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
 
     override fun onNext(data: ThreadsWrapper) {
         val threads = data.data
-        if (threads.threadList.isEmpty()) {
+        if (threads == null || threads.threadList.isEmpty()) {
             consumeResult(data.result)
         } else {
             super.onNext(data)
@@ -129,7 +130,7 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
             // update total page
             mPagerCallback?.setTotalPageByThreads(threads.threadListInfo?.threads ?: 0)
 
-            if (!threads.subForumList.isEmpty()) {
+            if (threads.subForumList.isNotEmpty()) {
                 mSubForumsCallback?.setupSubForums(threads.subForumList)
             }
         }

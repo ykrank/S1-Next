@@ -62,6 +62,8 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
     private var largeModeMenu: MenuItem? = null
     private var large = false
 
+    private var mProgressListener: ProgressListener? = null
+
     @Inject
     internal lateinit var trackAgent: DataTrackAgent
 
@@ -72,7 +74,7 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -99,8 +101,8 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater?.inflate(R.menu.fragment_gallery, menu)
-        largeModeMenu = menu?.findItem(R.id.menu_large_image_mode)
+        inflater.inflate(R.menu.fragment_gallery, menu)
+        largeModeMenu = menu.findItem(R.id.menu_large_image_mode)
         largeModeMenu?.isChecked = large
         val largeModeMenu = largeModeMenu?.actionView
         if (largeModeMenu != null) {
@@ -218,34 +220,43 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
     private fun addProgressListener() {
         //Avoid leak memory
         downloadId = mImageUrl?.let { String(it.toCharArray()) }
-        downloadId?.also {
-            ProgressManager.addListener(it, object : ProgressListener {
-                override fun onProgress(
-                    task: DownloadTask,
-                    currentOffset: Long,
-                    totalLength: Long
-                ) {
-                    binding.progress =
-                        ProgressItem(totalLength, currentOffset, totalLength == currentOffset)
-                }
+        val progressListener = object : ProgressListener {
+            override fun onProgress(
+                task: DownloadTask,
+                currentOffset: Long,
+                totalLength: Long
+            ) {
+                binding.progress =
+                    ProgressItem(totalLength, currentOffset, totalLength == currentOffset)
+            }
 
-                override fun taskEnd(
-                    task: DownloadTask,
-                    cause: EndCause,
-                    realCause: java.lang.Exception?,
-                    model: Listener1Assist.Listener1Model
-                ) {
-                    binding.progress = ProgressItem(model.totalLength, model.totalLength, true)
-                    if (realCause != null) {
-                        L.report(realCause)
-                    }
+            override fun taskEnd(
+                task: DownloadTask,
+                cause: EndCause,
+                realCause: java.lang.Exception?,
+                model: Listener1Assist.Listener1Model
+            ) {
+                binding.progress = ProgressItem(model.totalLength, model.totalLength, true)
+                if (realCause != null) {
+                    L.report(realCause)
                 }
-
-            })
+            }
         }
+        downloadId?.also {
+            mProgressListener?.apply {
+                ProgressManager.removeListener(it, this)
+            }
+            ProgressManager.addListener(it, progressListener)
+        }
+        mProgressListener = progressListener
     }
 
     override fun onDestroy() {
+        downloadId?.also {
+            mProgressListener?.apply {
+                ProgressManager.removeListener(it, this)
+            }
+        }
         downloadId = null
         Glide.with(App.get()).clear(preloadTarget)
         super.onDestroy()
