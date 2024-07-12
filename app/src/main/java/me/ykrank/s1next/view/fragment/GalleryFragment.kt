@@ -26,9 +26,6 @@ import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.glide.model.ForcePassUrl
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.google.android.material.snackbar.Snackbar
-import com.liulishuo.okdownload.DownloadTask
-import com.liulishuo.okdownload.core.cause.EndCause
-import com.liulishuo.okdownload.core.listener.assist.Listener1Assist
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
@@ -38,6 +35,9 @@ import me.ykrank.s1next.databinding.MenuGalleryLargeImageSwitchBinding
 import me.ykrank.s1next.util.AppFileUtil
 import me.ykrank.s1next.util.IntentUtil
 import me.ykrank.s1next.viewmodel.ImageViewModel
+import me.ykrank.s1next.widget.download.DownloadTask
+import me.ykrank.s1next.widget.download.EndCause
+import me.ykrank.s1next.widget.download.ListenerModel
 import me.ykrank.s1next.widget.download.ProgressListener
 import me.ykrank.s1next.widget.download.ProgressManager
 import me.ykrank.s1next.widget.track.event.LargeImageTrackEvent
@@ -234,7 +234,7 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
                 task: DownloadTask,
                 cause: EndCause,
                 realCause: java.lang.Exception?,
-                model: Listener1Assist.Listener1Model
+                model: ListenerModel
             ) {
                 binding.progress = ProgressItem(model.totalLength, model.totalLength, true)
                 if (realCause != null) {

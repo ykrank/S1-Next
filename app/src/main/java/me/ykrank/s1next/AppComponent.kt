@@ -77,10 +77,9 @@ import me.ykrank.s1next.view.page.setting.fragment.NetworkPreferenceFragment
 import me.ykrank.s1next.view.page.setting.fragment.ReadPreferenceFragment
 import me.ykrank.s1next.viewmodel.UserViewModel
 import me.ykrank.s1next.widget.AppActivityLifecycleCallbacks
-import me.ykrank.s1next.widget.download.ImageDownloadManager
+import me.ykrank.s1next.widget.glide.AppHttpStreamFetcher
 import me.ykrank.s1next.widget.glide.AvatarStreamFetcher
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache
-import me.ykrank.s1next.widget.glide.MultiThreadHttpStreamFetcher
 import me.ykrank.s1next.widget.hostcheck.AppHostUrl
 import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask
 import me.ykrank.s1next.widget.net.Image
@@ -115,7 +114,6 @@ interface AppComponent {
 
     val avatarUrlsCache: AvatarUrlsCache
     val autoSignTask: AutoSignTask
-    val imageDownloadManager: ImageDownloadManager
 
     //region DataBase
     val appDatabaseManager: AppDatabaseManager
@@ -188,7 +186,7 @@ interface AppComponent {
     fun inject(fragment: DarkRoomFragment)
     fun inject(fragment: LoadBlackListFromWebDialogFragment)
     fun inject(fragment: ThreadListFragment)
-    fun inject(multiThreadHttpStreamFetcher: MultiThreadHttpStreamFetcher)
+    fun inject(appHttpStreamFetcher: AppHttpStreamFetcher)
     fun inject(fragment: AppPostListFragment)
     fun inject(fragment: BaseLoginFragment)
     fun inject(fragment: SAFFragment)

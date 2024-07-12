@@ -47,9 +47,6 @@ class DownloadPreferencesManager(
             mWifi.isWifiEnabled
         )
 
-    val multiThreadDownload: Boolean
-        get() = mPreferencesProvider.multiThreadDownload
-
     val postMaxImageShow: Int
         get() = mPreferencesProvider.postMaxImageShow
 

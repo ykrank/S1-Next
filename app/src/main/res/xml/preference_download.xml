@@ -36,13 +36,6 @@
         android:title="@string/pref_net_cache_enable"
         app:iconSpaceReserved="false" />
 
-    <!--    <SwitchPreference-->
-    <!--        android:defaultValue="@bool/pref_key_multi_download_default_value"-->
-    <!--        android:enabled="false"-->
-    <!--        android:key="@string/pref_key_multi_download"-->
-    <!--        android:title="@string/pref_multi_download"-->
-    <!--        app:iconSpaceReserved="false" />-->
-
     <EditTextPreference
         android:defaultValue="@string/pref_post_max_image_show_default_value"
         android:key="@string/pref_key_post_max_image_show"

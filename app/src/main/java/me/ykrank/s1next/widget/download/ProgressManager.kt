@@ -1,8 +1,5 @@
 package me.ykrank.s1next.widget.download
 
-import com.liulishuo.okdownload.DownloadTask
-import com.liulishuo.okdownload.core.cause.EndCause
-import com.liulishuo.okdownload.core.listener.assist.Listener1Assist
 import java.util.LinkedList
 
 object ProgressManager {
@@ -35,7 +32,7 @@ object ProgressManager {
     }
 
     @Synchronized
-    fun notifyTaskEnd(task: DownloadTask, cause: EndCause, realCause: java.lang.Exception?, model: Listener1Assist.Listener1Model) {
+    fun notifyTaskEnd(task: DownloadTask, cause: EndCause, realCause: java.lang.Exception?, model: ListenerModel) {
         val progressListeners = mListeners[task.url]
         if (progressListeners != null) {
             for (listener in progressListeners) {
@@ -48,5 +45,5 @@ object ProgressManager {
 interface ProgressListener {
     fun onProgress(task: DownloadTask, currentOffset: Long, totalLength: Long)
 
-    fun taskEnd(task: DownloadTask, cause: EndCause, realCause: java.lang.Exception?, model: Listener1Assist.Listener1Model)
+    fun taskEnd(task: DownloadTask, cause: EndCause, realCause: java.lang.Exception?, model: ListenerModel)
 }

@@ -1,7 +1,5 @@
 package me.ykrank.s1next.widget.glide;
 
-import androidx.annotation.Nullable;
-
 import com.bumptech.glide.integration.okhttp3.OkHttpStreamFetcher;
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
 import com.bumptech.glide.load.Options;
@@ -16,10 +14,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
 
-import javax.inject.Inject;
-
-import me.ykrank.s1next.App;
-import me.ykrank.s1next.data.pref.DownloadPreferencesManager;
 import me.ykrank.s1next.widget.glide.model.AvatarUrl;
 import okhttp3.OkHttpClient;
 
@@ -50,7 +44,7 @@ final public class AppHttpUrlLoader implements ModelLoader<GlideUrl, InputStream
         if (model instanceof AvatarUrl) {
             return new AvatarStreamFetcher(mOkHttpClient, (AvatarUrl) model);
         } else if (model instanceof ForcePassUrl) {
-            return new MultiThreadHttpStreamFetcher(mOkHttpClient, model);
+            return new OkHttpStreamFetcher(mOkHttpClient, model);
         }
         return new AppHttpStreamFetcher(mOkHttpClient, model);
     }

@@ -22,7 +22,6 @@ import me.ykrank.s1next.data.pref.NetworkPreferencesManager
 import me.ykrank.s1next.task.AutoSignTask
 import me.ykrank.s1next.viewmodel.UserViewModel
 import me.ykrank.s1next.widget.RawJsonConverterFactory
-import me.ykrank.s1next.widget.download.ImageDownloadManager
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 import me.ykrank.s1next.widget.glide.OkHttpNoAvatarInterceptor
 import me.ykrank.s1next.widget.hostcheck.AppHostUrl
@@ -195,11 +194,5 @@ class AppModule {
     @AppLife
     fun provideAvatarUrlsCache(): AvatarUrlsCache {
         return AvatarUrlsCache()
-    }
-
-    @Provides
-    @AppLife
-    fun provideImageDownloadManager(@Image okHttpClientBuilder: OkHttpClient.Builder): ImageDownloadManager {
-        return ImageDownloadManager(okHttpClientBuilder)
     }
 }
