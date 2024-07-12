@@ -1,49 +1,39 @@
 package me.ykrank.s1next.widget.download
 
-import java.util.LinkedList
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CopyOnWriteArrayList
 
-object ProgressManager {
-    private val mListeners = HashMap<String, MutableList<ProgressListener>>()
+class ProgressManager {
+    private val mListeners = ConcurrentHashMap<String, CopyOnWriteArrayList<ProgressListener>>()
 
-    @Synchronized
     fun addListener(url: String, listener: ProgressListener) {
         var progressListeners = mListeners[url]
         if (progressListeners == null) {
-            progressListeners = LinkedList()
-            mListeners[url] = progressListeners
+            synchronized(mListeners) {
+                progressListeners = mListeners[url]
+                if (progressListeners == null) {
+                    val listeners = CopyOnWriteArrayList<ProgressListener>()
+                    progressListeners = listeners
+                    mListeners[url] = listeners
+                }
+            }
         }
 
-        progressListeners.add(listener)
+        progressListeners?.add(listener)
     }
 
-    @Synchronized
     fun removeListener(url: String, listener: ProgressListener) {
         mListeners[url]?.remove(listener)
     }
 
-    @Synchronized
-    fun notifyProgress(task: DownloadTask, currentOffset: Long, totalLength: Long) {
+    fun notifyProgress(task: DownloadTask, progress: DownloadProgressModel) {
         val progressListeners = mListeners[task.url]
-        if (progressListeners != null) {
-            for (listener in progressListeners) {
-                listener.onProgress(task, currentOffset, totalLength)
-            }
-        }
-    }
-
-    @Synchronized
-    fun notifyTaskEnd(task: DownloadTask, cause: EndCause, realCause: java.lang.Exception?, model: ListenerModel) {
-        val progressListeners = mListeners[task.url]
-        if (progressListeners != null) {
-            for (listener in progressListeners) {
-                listener.taskEnd(task, cause, realCause, model)
-            }
+        progressListeners?.forEach {
+            it.onProgress(task, progress)
         }
     }
 }
 
 interface ProgressListener {
-    fun onProgress(task: DownloadTask, currentOffset: Long, totalLength: Long)
-
-    fun taskEnd(task: DownloadTask, cause: EndCause, realCause: java.lang.Exception?, model: ListenerModel)
+    fun onProgress(task: DownloadTask, progress: DownloadProgressModel)
 }

@@ -1,10 +1,8 @@
 package me.ykrank.s1next
 
 import android.content.Context
-import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
 import dagger.Module
 import dagger.Provides
-import me.ykrank.s1next.PreApp.networkFlipperPlugin
 import me.ykrank.s1next.widget.net.AppData
 import me.ykrank.s1next.widget.net.Data
 import me.ykrank.s1next.widget.net.Image
@@ -20,7 +18,6 @@ class BuildTypeModule(context: Context) {
     @Provides
     @AppLife
     fun providerDataOkHttpClient(@Data builder: OkHttpClient.Builder): OkHttpClient {
-        builder.addInterceptor(FlipperOkhttpInterceptor(networkFlipperPlugin))
         return builder.build()
     }
 
@@ -28,7 +25,6 @@ class BuildTypeModule(context: Context) {
     @Provides
     @AppLife
     fun providerImageOkHttpClient(@Image builder: OkHttpClient.Builder): OkHttpClient {
-        builder.addInterceptor(FlipperOkhttpInterceptor(networkFlipperPlugin))
         return builder.build()
     }
 
@@ -36,7 +32,6 @@ class BuildTypeModule(context: Context) {
     @Provides
     @AppLife
     fun providerProgressOkHttpClient(@Progress builder: OkHttpClient.Builder): OkHttpClient {
-        builder.addInterceptor(FlipperOkhttpInterceptor(networkFlipperPlugin))
         return builder.build()
     }
 
@@ -44,7 +39,6 @@ class BuildTypeModule(context: Context) {
     @Provides
     @AppLife
     fun providerAppdataOkHttpClient(@AppData builder: OkHttpClient.Builder): OkHttpClient {
-        builder.addInterceptor(FlipperOkhttpInterceptor(networkFlipperPlugin))
         return builder.build()
     }
 }

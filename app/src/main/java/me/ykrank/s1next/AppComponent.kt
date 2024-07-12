@@ -83,6 +83,7 @@ import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 import me.ykrank.s1next.widget.hostcheck.AppHostUrl
 import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask
 import me.ykrank.s1next.widget.net.Image
+import me.ykrank.s1next.widget.net.Progress
 import me.ykrank.s1next.widget.saf.SAFFragment
 import okhttp3.Dns
 import okhttp3.OkHttpClient
@@ -103,6 +104,8 @@ interface AppComponent {
 
     @get:Image
     val imageOkHttpClient: OkHttpClient
+    @get:Progress
+    val progressOkHttpClient: OkHttpClient
     val s1Service: S1Service
     val appService: AppService
     val apiCacheProvider: ApiCacheProvider

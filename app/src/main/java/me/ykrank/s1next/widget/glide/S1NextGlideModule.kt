@@ -63,7 +63,8 @@ class S1NextGlideModule : AppGlideModule() {
         super.registerComponents(context, glide, registry)
         registry.replace(
             GlideUrl::class.java, InputStream::class.java, AppHttpUrlLoader.Factory(
-                appComponent.imageOkHttpClient
+                appComponent.imageOkHttpClient,
+                appComponent.progressOkHttpClient,
             )
         )
     }

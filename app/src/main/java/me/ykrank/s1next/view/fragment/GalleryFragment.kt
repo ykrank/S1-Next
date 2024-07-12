@@ -35,9 +35,8 @@ import me.ykrank.s1next.databinding.MenuGalleryLargeImageSwitchBinding
 import me.ykrank.s1next.util.AppFileUtil
 import me.ykrank.s1next.util.IntentUtil
 import me.ykrank.s1next.viewmodel.ImageViewModel
+import me.ykrank.s1next.widget.download.DownloadProgressModel
 import me.ykrank.s1next.widget.download.DownloadTask
-import me.ykrank.s1next.widget.download.EndCause
-import me.ykrank.s1next.widget.download.ListenerModel
 import me.ykrank.s1next.widget.download.ProgressListener
 import me.ykrank.s1next.widget.download.ProgressManager
 import me.ykrank.s1next.widget.track.event.LargeImageTrackEvent
@@ -69,6 +68,9 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
 
     @Inject
     internal lateinit var mDownloadPrefManager: DownloadPreferencesManager
+
+    @Inject
+    internal lateinit var mProgressManager: ProgressManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -221,32 +223,17 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
         //Avoid leak memory
         downloadId = mImageUrl?.let { String(it.toCharArray()) }
         val progressListener = object : ProgressListener {
-            override fun onProgress(
-                task: DownloadTask,
-                currentOffset: Long,
-                totalLength: Long
-            ) {
-                binding.progress =
-                    ProgressItem(totalLength, currentOffset, totalLength == currentOffset)
-            }
 
-            override fun taskEnd(
-                task: DownloadTask,
-                cause: EndCause,
-                realCause: java.lang.Exception?,
-                model: ListenerModel
-            ) {
-                binding.progress = ProgressItem(model.totalLength, model.totalLength, true)
-                if (realCause != null) {
-                    L.report(realCause)
-                }
+            override fun onProgress(task: DownloadTask, progress: DownloadProgressModel) {
+                binding.progress =
+                    ProgressItem(progress.totalLength, progress.currentOffset, progress.done)
             }
         }
         downloadId?.also {
             mProgressListener?.apply {
-                ProgressManager.removeListener(it, this)
+                mProgressManager.removeListener(it, this)
             }
-            ProgressManager.addListener(it, progressListener)
+            mProgressManager.addListener(it, progressListener)
         }
         mProgressListener = progressListener
     }
@@ -254,7 +241,7 @@ class GalleryFragment : androidx.fragment.app.Fragment() {
     override fun onDestroy() {
         downloadId?.also {
             mProgressListener?.apply {
-                ProgressManager.removeListener(it, this)
+                mProgressManager.removeListener(it, this)
             }
         }
         downloadId = null

@@ -22,6 +22,8 @@ import me.ykrank.s1next.data.pref.NetworkPreferencesManager
 import me.ykrank.s1next.task.AutoSignTask
 import me.ykrank.s1next.viewmodel.UserViewModel
 import me.ykrank.s1next.widget.RawJsonConverterFactory
+import me.ykrank.s1next.widget.download.DownloadProgressInterceptor
+import me.ykrank.s1next.widget.download.ProgressManager
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 import me.ykrank.s1next.widget.glide.OkHttpNoAvatarInterceptor
 import me.ykrank.s1next.widget.hostcheck.AppHostUrl
@@ -31,6 +33,7 @@ import me.ykrank.s1next.widget.net.AppData
 import me.ykrank.s1next.widget.net.AppDns
 import me.ykrank.s1next.widget.net.Data
 import me.ykrank.s1next.widget.net.Image
+import me.ykrank.s1next.widget.net.Progress
 import okhttp3.CookieJar
 import okhttp3.Dns
 import okhttp3.OkHttpClient
@@ -115,6 +118,28 @@ class AppModule {
         return builder
     }
 
+    @Progress
+    @Provides
+    @AppLife
+    fun providerProgressOkHttpClientBuilder(
+        cookieJar: CookieJar,
+        baseHostUrl: AppHostUrl,
+        dns: Dns,
+        progressManager: ProgressManager,
+    ): OkHttpClient.Builder {
+        val builder = OkHttpClient.Builder()
+        builder.dns(dns)
+        builder.connectTimeout(17, TimeUnit.SECONDS)
+        builder.writeTimeout(17, TimeUnit.SECONDS)
+        builder.readTimeout(77, TimeUnit.SECONDS)
+        builder.retryOnConnectionFailure(true)
+        builder.cookieJar(cookieJar)
+        builder.addNetworkInterceptor(OkHttpNoAvatarInterceptor())
+        builder.addNetworkInterceptor(DownloadProgressInterceptor(progressManager))
+        builder.addInterceptor(AppMultiHostInterceptor(baseHostUrl))
+        return builder
+    }
+
     @Provides
     @AppLife
     fun providerRetrofit(@Data okHttpClient: OkHttpClient, mapper: ObjectMapper): S1Service {
@@ -194,5 +219,11 @@ class AppModule {
     @AppLife
     fun provideAvatarUrlsCache(): AvatarUrlsCache {
         return AvatarUrlsCache()
+    }
+
+    @Provides
+    @AppLife
+    fun provideProgressManager(): ProgressManager {
+        return ProgressManager()
     }
 }
