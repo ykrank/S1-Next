@@ -6,6 +6,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
+import androidx.lifecycle.LifecycleOwner
 import com.github.ykrank.androidtools.util.ContextUtils
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.RxBus
@@ -17,7 +18,7 @@ import me.ykrank.s1next.view.activity.UserHomeActivity
 import me.ykrank.s1next.view.internal.BlacklistMenuAction
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 
-class PostBlackViewModel(private val rxBus: RxBus) {
+class PostBlackViewModel(val lifecycleOwner: LifecycleOwner, private val rxBus: RxBus) {
 
     val post = ObservableField<Post>()
     val thread = ObservableField<Thread>()

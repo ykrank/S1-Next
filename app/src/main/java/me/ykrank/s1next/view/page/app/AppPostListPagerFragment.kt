@@ -105,7 +105,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
         mRecyclerView = recyclerView
         mLayoutManager = StartSnapLinearLayoutManager(requireActivity())
         mRecyclerView.layoutManager = mLayoutManager
-        mRecyclerAdapter = AppPostListRecyclerViewAdapter(requireActivity(), mQuotePid)
+        mRecyclerAdapter = AppPostListRecyclerViewAdapter(requireActivity(),viewLifecycleOwner, mQuotePid)
         mRecyclerView.adapter = mRecyclerAdapter
 
         quickSideBarView.setOnQuickSideBarTouchListener(this)

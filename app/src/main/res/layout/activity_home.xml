@@ -22,6 +22,10 @@
             type="String" />
 
         <variable
+            name="lifecycleOwner"
+            type="androidx.lifecycle.LifecycleOwner" />
+
+        <variable
             name="downloadPreferencesManager"
             type="me.ykrank.s1next.data.pref.DownloadPreferencesManager" />
     </data>
@@ -271,6 +275,7 @@
                             android:layout_marginRight="@dimen/spacing_big"
                             android:layout_marginBottom="@dimen/spacing_normal"
                             android:textIsSelectable="true"
+                            app:lifecycleOwner="@{lifecycleOwner}"
                             app:html="@{data.signHtml}"
                             tools:text="S1Next-Goose-0.7.2
 项目：https://github.com/ykrank/S1-Next

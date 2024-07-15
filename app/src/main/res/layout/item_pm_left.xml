@@ -60,6 +60,7 @@
             android:lineSpacingExtra="@dimen/text_line_spacing_extra"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textIsSelectable="true"
+            app:lifecycleOwner="@{pmViewModel.lifecycleOwner}"
             app:imgHtml="@{pmViewModel.pm.message}"
             app:layout_constraintLeft_toRightOf="@+id/avatar"
             app:layout_constraintRight_toRightOf="parent"

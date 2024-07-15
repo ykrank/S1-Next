@@ -1,16 +1,14 @@
-package me.ykrank.s1next.view.adapter;
+package me.ykrank.s1next.view.adapter
 
-import android.app.Activity;
+import android.app.Activity
+import androidx.lifecycle.LifecycleOwner
+import me.ykrank.s1next.view.adapter.delegate.PmLeftAdapterDelegate
+import me.ykrank.s1next.view.adapter.delegate.PmRightAdapterDelegate
 
-import me.ykrank.s1next.view.adapter.delegate.PmLeftAdapterDelegate;
-import me.ykrank.s1next.view.adapter.delegate.PmRightAdapterDelegate;
-
-public final class PmRecyclerViewAdapter extends BaseRecyclerViewAdapter {
-
-    public PmRecyclerViewAdapter(Activity activity) {
-        super(activity);
-
-        addAdapterDelegate(new PmLeftAdapterDelegate(activity));
-        addAdapterDelegate(new PmRightAdapterDelegate(activity));
+class PmRecyclerViewAdapter(activity: Activity, lifecycleOwner: LifecycleOwner) :
+    BaseRecyclerViewAdapter(activity) {
+    init {
+        addAdapterDelegate(PmLeftAdapterDelegate(activity, lifecycleOwner))
+        addAdapterDelegate(PmRightAdapterDelegate(activity, lifecycleOwner))
     }
 }

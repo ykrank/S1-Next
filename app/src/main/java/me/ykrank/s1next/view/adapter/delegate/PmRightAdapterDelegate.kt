@@ -1,10 +1,10 @@
 package me.ykrank.s1next.view.adapter.delegate
 
 import android.content.Context
-import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
 import android.text.TextUtils
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -14,7 +14,7 @@ import me.ykrank.s1next.databinding.ItemPmRightBinding
 import me.ykrank.s1next.viewmodel.PmViewModel
 import javax.inject.Inject
 
-class PmRightAdapterDelegate(context: Context) : BaseAdapterDelegate<Pm, SimpleRecycleViewHolder<ItemPmRightBinding>>(context, Pm::class.java) {
+class PmRightAdapterDelegate(context: Context, private val lifecycleOwner: LifecycleOwner) : BaseAdapterDelegate<Pm, SimpleRecycleViewHolder<ItemPmRightBinding>>(context, Pm::class.java) {
 
     @Inject
     internal lateinit var user: User
@@ -33,7 +33,7 @@ class PmRightAdapterDelegate(context: Context) : BaseAdapterDelegate<Pm, SimpleR
     public override fun onCreateViewHolder(parent: ViewGroup): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         val binding = DataBindingUtil.inflate<ItemPmRightBinding>(mLayoutInflater,
                 R.layout.item_pm_right, parent, false)
-        binding.pmViewModel = PmViewModel()
+        binding.pmViewModel = PmViewModel(lifecycleOwner)
         return SimpleRecycleViewHolder<ItemPmRightBinding>(binding)
     }
 

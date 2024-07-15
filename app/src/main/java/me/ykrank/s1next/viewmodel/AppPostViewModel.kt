@@ -1,11 +1,11 @@
 package me.ykrank.s1next.viewmodel
 
-import androidx.databinding.Observable
-import androidx.databinding.ObservableField
-import androidx.fragment.app.FragmentActivity
-import androidx.appcompat.widget.PopupMenu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.widget.PopupMenu
+import androidx.databinding.Observable
+import androidx.databinding.ObservableField
+import androidx.lifecycle.LifecycleOwner
 import com.github.ykrank.androidtools.util.ContextUtils
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.RxBus
@@ -22,7 +22,11 @@ import me.ykrank.s1next.view.event.RateEvent
 import me.ykrank.s1next.view.internal.BlacklistMenuAction
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 
-class AppPostViewModel(private val rxBus: RxBus, private val user: User) {
+class AppPostViewModel(
+    val lifecycleOwner: LifecycleOwner,
+    private val rxBus: RxBus,
+    private val user: User
+) {
 
     val post = ObservableField<AppPost>()
     val thread = ObservableField<AppThread>()

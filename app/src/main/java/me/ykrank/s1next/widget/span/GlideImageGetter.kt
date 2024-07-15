@@ -151,7 +151,7 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
     }
 
     @MainThread
-    private fun invalidate() {
+    fun invalidate() {
         LooperUtil.enforceOnMainThread()
         serial += 1
         for (anim in animateTargetHashMap.keys) {
@@ -308,12 +308,10 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
         operator fun get(textView: TextView): GlideImageGetter {
 
             val obj = textView.getTag(com.github.ykrank.androidtools.R.id.tag_drawable_callback)
-            if (obj == null) {
-                return GlideImageGetter(textView)
+            return if (obj == null) {
+                GlideImageGetter(textView)
             } else {
-                val glideImageGetter = obj as GlideImageGetter
-                glideImageGetter.invalidate()
-                return glideImageGetter
+                obj as GlideImageGetter
             }
         }
     }

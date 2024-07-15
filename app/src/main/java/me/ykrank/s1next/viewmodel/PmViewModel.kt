@@ -1,14 +1,13 @@
 package me.ykrank.s1next.viewmodel
 
-import androidx.databinding.ObservableField
-import androidx.fragment.app.FragmentActivity
 import android.view.View
-
+import androidx.databinding.ObservableField
+import androidx.lifecycle.LifecycleOwner
 import me.ykrank.s1next.data.api.model.Pm
 import me.ykrank.s1next.view.activity.UserHomeActivity
 
 
-class PmViewModel {
+class PmViewModel(val lifecycleOwner: LifecycleOwner) {
 
     val pm = ObservableField<Pm>()
 

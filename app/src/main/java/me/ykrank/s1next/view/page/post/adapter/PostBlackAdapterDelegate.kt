@@ -4,19 +4,12 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.AndroidLifeCycle
-import com.github.ykrank.androidlifecycle.event.ViewEvent
-import com.github.ykrank.androidtools.ui.adapter.simple.BindViewHolderCallback
-import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
-import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.RxBus
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.model.Post
 import me.ykrank.s1next.data.api.model.Thread
@@ -68,7 +61,7 @@ class PostBlackAdapterDelegate(private val fragment: Fragment, context: Context)
             mLayoutInflater,
             R.layout.item_post_black, parent, false
         )
-        binding.postViewModel = PostBlackViewModel(mRxBus)
+        binding.postViewModel = PostBlackViewModel(fragment.viewLifecycleOwner, mRxBus)
 
         binding.tvReply.setSpannableFactory(FixedSpannableFactory())
 

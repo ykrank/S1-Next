@@ -110,6 +110,7 @@
                 app:layout_constraintLeft_toRightOf="@id/original_poster_tag"
                 app:layout_constraintRight_toLeftOf="@id/tv_floor"
                 app:layout_constraintTop_toTopOf="@id/author_name"
+                app:lifecycleOwner="@{postViewModel.lifecycleOwner}"
                 app:reply="@{postViewModel.post}"
                 tools:text="主贴" />
 

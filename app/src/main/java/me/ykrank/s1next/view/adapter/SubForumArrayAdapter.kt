@@ -1,71 +1,64 @@
-package me.ykrank.s1next.view.adapter;
+package me.ykrank.s1next.view.adapter
 
-import android.app.Activity;
-import androidx.annotation.LayoutRes;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import android.app.Activity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.TextView
+import androidx.annotation.LayoutRes
+import me.ykrank.s1next.App.Companion.appComponent
+import me.ykrank.s1next.binding.TextViewBindingAdapter
+import me.ykrank.s1next.data.api.model.Forum
+import me.ykrank.s1next.data.pref.ThemeManager
+import javax.inject.Inject
 
-import java.util.List;
+class SubForumArrayAdapter(activity: Activity, @LayoutRes resource: Int, objects: List<Forum>) :
+    ArrayAdapter<Forum?>(activity, resource, objects) {
 
-import javax.inject.Inject;
-
-import me.ykrank.s1next.App;
-import me.ykrank.s1next.binding.TextViewBindingAdapter;
-import me.ykrank.s1next.data.api.model.Forum;
-import me.ykrank.s1next.data.pref.ThemeManager;
-
-public final class SubForumArrayAdapter extends ArrayAdapter<Forum> {
     @Inject
-    ThemeManager themeManager;
+    lateinit var themeManager: ThemeManager
+    private val mLayoutInflater: LayoutInflater
 
-    private final LayoutInflater mLayoutInflater;
     @LayoutRes
-    private final int mResource;
+    private val mResource: Int
+    private val mGentleAccentColor: Int
 
-    private final int mGentleAccentColor;
-
-    public SubForumArrayAdapter(Activity activity, @LayoutRes int resource, List<Forum> objects) {
-        super(activity, resource, objects);
-        App.Companion.getAppComponent().inject(this);
-
-        mLayoutInflater = activity.getLayoutInflater();
-        this.mResource = resource;
-        mGentleAccentColor = themeManager.getGentleAccentColor();
+    init {
+        appComponent.inject(this)
+        mLayoutInflater = activity.layoutInflater
+        mResource = resource
+        mGentleAccentColor = themeManager.gentleAccentColor
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        var convertView = convertView
+        val viewHolder: ViewHolder
         if (convertView == null) {
-            convertView = mLayoutInflater.inflate(mResource, parent, false);
-
-            viewHolder = new ViewHolder();
-            viewHolder.textView = (TextView) convertView;
-            convertView.setTag(viewHolder);
+            convertView = mLayoutInflater.inflate(mResource, parent, false)
+            viewHolder = ViewHolder(convertView as TextView)
+            convertView.setTag(viewHolder)
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder = convertView.tag as ViewHolder
         }
-
-        TextViewBindingAdapter.setForum(viewHolder.textView, getItem(position), mGentleAccentColor);
-
-        return convertView;
+        getItem(position)?.apply {
+            TextViewBindingAdapter.setForum(
+                viewHolder.textView,
+                this,
+                mGentleAccentColor
+            )
+        }
+        return convertView
     }
 
-    @Override
-    public boolean hasStableIds() {
-        return true;
+    override fun hasStableIds(): Boolean {
+        return true
     }
 
-    @Override
-    public long getItemId(int position) {
-        return Long.parseLong(getItem(position).getId());
+    override fun getItemId(position: Int): Long {
+        return getItem(position)?.id?.toLong() ?: 0
     }
 
-    private static final class ViewHolder {
-
-        private TextView textView;
+    private class ViewHolder(val textView: TextView) {
     }
 }

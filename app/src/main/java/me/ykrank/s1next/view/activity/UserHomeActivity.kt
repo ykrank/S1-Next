@@ -68,6 +68,7 @@ class UserHomeActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         binding.downloadPreferencesManager = mDownloadPreferencesManager
         binding.thumb = thumbImageInfo?.url
+        binding.lifecycleOwner = this
         val profile = Profile()
         profile.homeUid = uid
         profile.homeUsername = name

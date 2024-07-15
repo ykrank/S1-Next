@@ -72,7 +72,7 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
             mLayoutInflater,
             R.layout.item_post, parent, false
         )
-        binding.postViewModel = PostViewModel(mRxBus, mUser)
+        binding.postViewModel = PostViewModel(fragment.viewLifecycleOwner, mRxBus, mUser)
 
         binding.tvReply.setSpannableFactory(FixedSpannableFactory())
 

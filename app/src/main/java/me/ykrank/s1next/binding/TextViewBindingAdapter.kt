@@ -1,298 +1,346 @@
-package me.ykrank.s1next.binding;
+package me.ykrank.s1next.binding
 
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.os.Build;
-import android.text.Html;
-import android.text.Layout;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.text.format.DateUtils;
-import android.text.style.TextAppearanceSpan;
-import android.view.TouchDelegate;
-import android.view.View;
-import android.widget.TextView;
+import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.text.LineBreaker
+import android.os.Build
+import android.text.Html
+import android.text.Layout
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.TextUtils
+import android.text.format.DateUtils
+import android.text.style.TextAppearanceSpan
+import android.view.TouchDelegate
+import android.view.View
+import android.widget.TextView
+import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import com.github.ykrank.androidtools.util.ResourceUtil
+import com.github.ykrank.androidtools.util.ViewUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import me.ykrank.s1next.R
+import me.ykrank.s1next.data.User
+import me.ykrank.s1next.data.api.app.model.AppPost
+import me.ykrank.s1next.data.api.model.Forum
+import me.ykrank.s1next.data.api.model.HomeThread
+import me.ykrank.s1next.data.api.model.PmGroup
+import me.ykrank.s1next.data.api.model.Post
+import me.ykrank.s1next.data.api.model.Thread
+import me.ykrank.s1next.data.db.dbmodel.History
+import me.ykrank.s1next.data.pref.ThemeManager
+import me.ykrank.s1next.widget.span.GlideImageGetter
+import me.ykrank.s1next.widget.span.HtmlCompat
+import me.ykrank.s1next.widget.span.TagHandler
+import me.ykrank.s1next.widget.span.replaceQuoteSpans
+import okio.buffer
+import okio.source
+import java.io.IOException
+import java.nio.charset.Charset
 
-import androidx.annotation.Nullable;
-import androidx.databinding.BindingAdapter;
+object TextViewBindingAdapter {
+    private const val defaultTextColor = 0
 
-import com.github.ykrank.androidautodispose.AndroidRxDispose;
-import com.github.ykrank.androidlifecycle.event.ViewEvent;
-import com.github.ykrank.androidtools.util.L;
-import com.github.ykrank.androidtools.util.ResourceUtil;
-import com.github.ykrank.androidtools.util.RxJavaUtil;
-import com.github.ykrank.androidtools.util.ViewUtil;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-
-import io.reactivex.Single;
-import me.ykrank.s1next.R;
-import me.ykrank.s1next.data.User;
-import me.ykrank.s1next.data.api.app.model.AppPost;
-import me.ykrank.s1next.data.api.model.Forum;
-import me.ykrank.s1next.data.api.model.HomeThread;
-import me.ykrank.s1next.data.api.model.PmGroup;
-import me.ykrank.s1next.data.api.model.Post;
-import me.ykrank.s1next.data.api.model.Thread;
-import me.ykrank.s1next.data.db.dbmodel.History;
-import me.ykrank.s1next.data.pref.ThemeManager;
-import me.ykrank.s1next.widget.span.GlideImageGetter;
-import me.ykrank.s1next.widget.span.HtmlCompat;
-import me.ykrank.s1next.widget.span.QuoteSpanKt;
-import me.ykrank.s1next.widget.span.TagHandler;
-import okio.BufferedSource;
-import okio.Okio;
-import okio.Source;
-
-public final class TextViewBindingAdapter {
-    private static int defaultTextColor;
-
-    private TextViewBindingAdapter() {
-    }
-
+    @JvmStatic
     @BindingAdapter("increaseClickingArea")
-    public static void increaseClickingArea(TextView textView, float size) {
+    fun increaseClickingArea(textView: TextView, size: Float) {
         // fork from http://stackoverflow.com/a/1343796
-        View parent = (View) textView.getParent();
+        val parent = textView.parent as View
         // post in the parent's message queue to make sure the parent
         // lays out its children before we call View#getHitRect()
-        parent.post(() -> {
-            final int halfSize = (int) (size / 2 + 0.5);
-            Rect rect = new Rect();
-            textView.getHitRect(rect);
-            rect.top -= halfSize;
-            rect.right += halfSize;
-            rect.bottom += halfSize;
-            rect.left -= halfSize;
+        parent.post {
+            val halfSize = (size / 2 + 0.5).toInt()
+            val rect = Rect()
+            textView.getHitRect(rect)
+            rect.top -= halfSize
+            rect.right += halfSize
+            rect.bottom += halfSize
+            rect.left -= halfSize
             // use TouchDelegate to increase count's clicking area
-            parent.setTouchDelegate(new TouchDelegate(rect, textView));
-        });
+            parent.touchDelegate = TouchDelegate(rect, textView)
+        }
     }
 
+    @JvmStatic
     @BindingAdapter("underlineText")
-    public static void setUnderlineText(TextView textView, String text) {
-        textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        textView.getPaint().setAntiAlias(true);
-        textView.setText(text);
+    fun setUnderlineText(textView: TextView, text: String?) {
+        textView.paintFlags = textView.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        textView.paint.isAntiAlias = true
+        textView.text = text
     }
 
+    @JvmStatic
     @BindingAdapter("textPath")
-    public static void loadTextAsset(TextView textView, String textPath) {
+    fun loadTextAsset(textView: TextView, textPath: String?) {
         try {
-            InputStream inputStream = textView.getContext().getAssets().open(textPath);
-            Source source = Okio.source(inputStream);
-            BufferedSource bufferedSource = Okio.buffer(source);
-            textView.setText(bufferedSource.readString(Charset.forName("utf-8")));
-        } catch (IOException e) {
-            throw new IllegalStateException("Can't find license.", e);
+            if (textPath.isNullOrEmpty()) {
+                return
+            }
+            val inputStream = textView.context.assets.open(textPath)
+            val source = inputStream.source()
+            val bufferedSource = source.buffer()
+            textView.text = bufferedSource.readString(Charset.forName("utf-8"))
+        } catch (e: IOException) {
+            throw IllegalStateException("Can't find license.", e)
         }
     }
 
-    @BindingAdapter({"forum", "gentleAccentColor"})
-    public static void setForum(TextView textView, Forum forum, int gentleAccentColor) {
-        textView.setText(forum.getName());
+    @JvmStatic
+    @BindingAdapter("forum", "gentleAccentColor")
+    fun setForum(textView: TextView, forum: Forum, gentleAccentColor: Int) {
+        textView.text = forum.name
         // add today's posts count to each forum
-        if (forum.getTodayPosts() != 0) {
-            ViewUtil.concatWithTwoSpacesForRtlSupport(textView, String.valueOf(forum.getTodayPosts()),
-                    gentleAccentColor);
+        if (forum.todayPosts != 0) {
+            ViewUtil.concatWithTwoSpacesForRtlSupport(
+                textView, forum.todayPosts.toString(), gentleAccentColor
+            )
         }
     }
 
-    @BindingAdapter({"themeManager", "forumId", "thread", "user"})
-    public static void setThread(TextView textView, ThemeManager themeManager, String forumId, Thread thread, User user) {
-        SpannableStringBuilder builder = new SpannableStringBuilder(thread.getTitle());
-        TextAppearanceSpan hintSpan = new TextAppearanceSpan(textView.getContext(), com.github.ykrank.androidtools.R.style.TextAppearance_ThreadList_Title_Hint);
-        if (thread.getPermission() != 0) {
-            Spannable permSpan = new SpannableString(String.format("[%s%s]", textView.getContext().getString(R.string.thread_permission_hint),
-                    thread.getPermission()));
-            permSpan.setSpan(hintSpan, 0, permSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    @JvmStatic
+    @BindingAdapter("themeManager", "forumId", "thread", "user")
+    fun setThread(
+        textView: TextView, themeManager: ThemeManager, forumId: String, thread: Thread, user: User
+    ) {
+        val builder = SpannableStringBuilder(thread.title)
+        val hintSpan = TextAppearanceSpan(
+            textView.context,
+            com.github.ykrank.androidtools.R.style.TextAppearance_ThreadList_Title_Hint
+        )
+        if (thread.permission != 0) {
+            val permSpan: Spannable = SpannableString(
+                String.format(
+                    "[%s%s]",
+                    textView.context.getString(R.string.thread_permission_hint),
+                    thread.permission
+                )
+            )
+            permSpan.setSpan(hintSpan, 0, permSpan.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             // add thread's permission hint
-            builder.append(permSpan);
+            builder.append(permSpan)
         }
-
-        if (thread.isHide()) {
-            Spannable blacklistSpan = new SpannableString(String.format("[%s]", textView.getContext().getString(R.string.user_in_blacklist)));
-            blacklistSpan.setSpan(hintSpan, 0, blacklistSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (thread.isHide) {
+            val blacklistSpan: Spannable = SpannableString(
+                String.format(
+                    "[%s]", textView.context.getString(R.string.user_in_blacklist)
+                )
+            )
+            blacklistSpan.setSpan(
+                hintSpan, 0, blacklistSpan.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
             // add thread's blacklist hint
-            builder.append(blacklistSpan);
-            textView.setTextColor(Color.GRAY);
+            builder.append(blacklistSpan)
+            textView.setTextColor(Color.GRAY)
         } else {
-            textView.setTextColor(ResourceUtil.getTextColorPrimary(textView.getContext()));
+            textView.setTextColor(ResourceUtil.getTextColorPrimary(textView.context))
         }
         // disable TextView if user has no permission to access this thread
-        boolean hasPermission = user.getPermission() >= thread.getPermission();
-        textView.setEnabled(hasPermission);
+        val hasPermission = user.permission >= thread.permission
+        textView.setEnabled(hasPermission)
 
         //add typename
-        if (!TextUtils.isEmpty(thread.getTypeName())) {
-            Spannable typeSpan = new SpannableString(String.format("[%s] ", thread.getTypeName()));
-            typeSpan.setSpan(hintSpan, 0, typeSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            builder.insert(0, typeSpan);
-        } else if (("0".equals(thread.getTypeId()) || "344".equals(thread.getTypeId())) && "75".equals(forumId) && thread.getDisplayOrder() == 0) {
+        if (!TextUtils.isEmpty(thread.typeName)) {
+            val typeSpan: Spannable = SpannableString(String.format("[%s] ", thread.typeName))
+            typeSpan.setSpan(hintSpan, 0, typeSpan.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            builder.insert(0, typeSpan)
+        } else if (("0" == thread.typeId || "344" == thread.typeId) && "75" == forumId && thread.displayOrder == 0) {
             //add 泥潭
-            Spannable typeSpan = new SpannableString("[泥潭] ");
-            typeSpan.setSpan(hintSpan, 0, typeSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            builder.insert(0, typeSpan);
+            val typeSpan: Spannable = SpannableString("[泥潭] ")
+            typeSpan.setSpan(hintSpan, 0, typeSpan.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            builder.insert(0, typeSpan)
         }
-
-        textView.setText(builder);
+        textView.text = builder
 
         // add thread's replies count to each thread
-        String repliesStr = thread.getReplies();
-        if (thread.getReliesCount() > 0 && thread.getLastReplyCount() > 0) {
-            int addReplies = thread.getReliesCount() - thread.getLastReplyCount();
-            if (addReplies >= 0) {
-                repliesStr += " (+" + addReplies + ")";
+        var repliesStr = thread.replies
+        if (thread.reliesCount > 0 && thread.lastReplyCount > 0) {
+            val addReplies = thread.reliesCount - thread.lastReplyCount
+            repliesStr += if (addReplies >= 0) {
+                " (+$addReplies)"
             } else {
                 //Because cache need invalid
-                repliesStr += " (-)";
+                " (-)"
             }
         }
-        ViewUtil.concatWithTwoSpacesForRtlSupport(textView, repliesStr,
-                hasPermission ? themeManager.getGentleAccentColor()
-                        : themeManager.getHintOrDisabledGentleAccentColor());
+        ViewUtil.concatWithTwoSpacesForRtlSupport(
+            textView,
+            repliesStr,
+            if (hasPermission) themeManager.gentleAccentColor else themeManager.hintOrDisabledGentleAccentColor
+        )
     }
 
+    @JvmStatic
     @BindingAdapter("relativeDateTime")
-    public static void setRelativeDateTime(TextView textView, long datetime) {
-        textView.setText(DateUtils.getRelativeDateTimeString(textView.getContext(), datetime,
-                DateUtils.MINUTE_IN_MILLIS, DateUtils.DAY_IN_MILLIS, 0));
+    fun setRelativeDateTime(textView: TextView, datetime: Long) {
+        textView.text = DateUtils.getRelativeDateTimeString(
+            textView.context, datetime, DateUtils.MINUTE_IN_MILLIS, DateUtils.DAY_IN_MILLIS, 0
+        )
     }
 
-    @BindingAdapter({"reply"})
-    public static void setReply(TextView textView, AppPost oPost, AppPost post) {
-        if (oPost == post) {
-            return;
+    @JvmStatic
+    @BindingAdapter("lifecycleOwner", "reply")
+    fun setReply(
+        textView: TextView,
+        oLifecycleOwner: LifecycleOwner?,
+        oPost: AppPost?,
+        lifecycleOwner: LifecycleOwner,
+        post: AppPost?
+    ) {
+        if (oPost === post) {
+            return
         }
         if (post == null) {
-            textView.setText("");
-            return;
+            textView.text = ""
+            return
         }
-        if (post.getHide()) {
-            textView.setText("");
-            String text = "[" + textView.getContext().getString(R.string.user_in_blacklist) + "]";
-            if (!TextUtils.isEmpty(post.getRemark())) {
-                text += "-[" + post.getRemark() + "]";
+        if (post.hide) {
+            textView.text = ""
+            var text = "[" + textView.context.getString(R.string.user_in_blacklist) + "]"
+            if (!TextUtils.isEmpty(post.remark)) {
+                text += "-[" + post.remark + "]"
             }
             // add reply's blacklist hint
-            ViewUtil.concatWithTwoSpacesForRtlSupport(textView, text);
-            return;
+            ViewUtil.concatWithTwoSpacesForRtlSupport(textView, text)
+            return
         }
-
-        String oMsg = null;
+        var oMsg: String? = null
         if (oPost != null) {
-            oMsg = oPost.getMessage();
+            oMsg = oPost.message
         }
-        setHtmlWithImage(textView, oMsg, post.getMessage());
+        setHtmlWithImage(textView, oLifecycleOwner, oMsg, lifecycleOwner, post.message)
     }
 
-    @BindingAdapter({"reply"})
-    public static void setReply(TextView textView, Post oPost, Post post) {
-        if (oPost == post) {
-            return;
+    @JvmStatic
+    @BindingAdapter("lifecycleOwner", "reply")
+    fun setReply(
+        textView: TextView,
+        oLifecycleOwner: LifecycleOwner?,
+        oPost: Post?,
+        lifecycleOwner: LifecycleOwner,
+        post: Post?
+    ) {
+        if (oPost === post) {
+            return
         }
         if (post == null) {
-            textView.setText("");
-            return;
+            textView.text = ""
+            return
         }
-        if (post.getHide() != Post.HIDE_NO) {
-            textView.setText("");
-            String textHide;
-            if (post.getHide() == Post.HIDE_USER) {
-                textHide = textView.getContext().getString(R.string.user_in_blacklist);
+        if (post.hide != Post.HIDE_NO) {
+            textView.text = ""
+            val textHide: String = if (post.hide == Post.HIDE_USER) {
+                textView.context.getString(R.string.user_in_blacklist)
             } else {
-                textHide = textView.getContext().getString(R.string.word_in_black_word);
+                textView.context.getString(R.string.word_in_black_word)
             }
-            String text = "[" + textHide + "]";
-            if (!TextUtils.isEmpty(post.getRemark())) {
-                text += "-[" + post.getRemark() + "]";
+            var text = "[$textHide]"
+            if (!TextUtils.isEmpty(post.remark)) {
+                text += "-[" + post.remark + "]"
             }
             // add reply's blacklist hint
-            ViewUtil.concatWithTwoSpacesForRtlSupport(textView, text);
-            return;
+            ViewUtil.concatWithTwoSpacesForRtlSupport(textView, text)
+            return
         }
-        String oReply = null;
-        if (post.isTrade()) {
+        var oReply: String? = null
+        if (post.isTrade) {
             if (oPost != null) {
-                oReply = oPost.getExtraHtml();
+                oReply = oPost.extraHtml
             }
-            setHtmlWithImage(textView, oReply, post.getExtraHtml());
+            setHtmlWithImage(textView, oLifecycleOwner, oReply, lifecycleOwner, post.extraHtml)
         } else {
             if (oPost != null) {
-                oReply = oPost.getReply();
+                oReply = oPost.reply
             }
-            setHtmlWithImage(textView, oReply, post.getReply());
+            setHtmlWithImage(textView, oLifecycleOwner, oReply, lifecycleOwner, post.reply)
         }
     }
 
-    @BindingAdapter({"imgHtml"})
-    public static void setHtmlWithImage(TextView textView, @Nullable String oHtml, @Nullable String html) {
+    @JvmStatic
+    @SuppressLint("WrongConstant")
+    @BindingAdapter("lifecycleOwner", "imgHtml")
+    fun setHtmlWithImage(
+        textView: TextView,
+        oLifecycleOwner: LifecycleOwner?,
+        oHtml: String?,
+        lifecycleOwner: LifecycleOwner,
+        html: String?
+    ) {
         if (TextUtils.equals(oHtml, html)) {
-            return;
+            return
         }
         if (TextUtils.isEmpty(html)) {
-            textView.setText(null);
+            textView.text = null
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                textView.setBreakStrategy(Layout.BREAK_STRATEGY_SIMPLE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                textView.setBreakStrategy(LineBreaker.BREAK_STRATEGY_SIMPLE)
+            } else {
+                textView.setBreakStrategy(Layout.BREAK_STRATEGY_SIMPLE)
             }
-            // use GlideImageGetter to show images in TextView
-            //noinspection deprecation
-            Single.just(GlideImageGetter.Companion.get(textView))
-                    .map(f -> QuoteSpanKt.replaceQuoteSpans(HtmlCompat.fromHtml(html, f, new TagHandler(textView)), textView.getContext()))
-                    .compose(RxJavaUtil.computationSingleTransformer())
-                    .to(AndroidRxDispose.withSingle(textView, ViewEvent.DESTROY))
-                    .subscribe(textView::setText, L::report);
+            lifecycleOwner.lifecycleScope.launch {
+                val glideImageGetter = GlideImageGetter[textView]
+                val span = withContext(Dispatchers.Default) {
+                    HtmlCompat.fromHtml(html, glideImageGetter, TagHandler(textView))
+                        .replaceQuoteSpans(textView.context)
+                }
+                textView.text = span
+            }
         }
     }
 
-    @BindingAdapter({"html"})
-    public static void setHtml(TextView textView, @Nullable String html) {
+    @JvmStatic
+    @BindingAdapter("lifecycleOwner", "html")
+    fun setHtml(textView: TextView, lifecycleOwner: LifecycleOwner, html: String?) {
         if (TextUtils.isEmpty(html)) {
-            textView.setText(null);
+            textView.text = null
         } else {
-            //noinspection deprecation
-            Single.fromCallable(() -> QuoteSpanKt.replaceQuoteSpans(HtmlCompat.fromHtml(html), textView.getContext()))
-                    .compose(RxJavaUtil.computationSingleTransformer())
-                    .to(AndroidRxDispose.withSingle(textView, ViewEvent.DESTROY))
-                    .subscribe(textView::setText, L::report);
+            lifecycleOwner.lifecycleScope.launch {
+                val span = withContext(Dispatchers.Default) {
+                    HtmlCompat.fromHtml(html).replaceQuoteSpans(textView.context)
+                }
+                textView.text = span
+            }
         }
     }
 
-    @SuppressWarnings("deprecation")
-    @BindingAdapter({"pmAuthorNameDesc", "user"})
-    public static void setPmAuthorNameDesc(TextView textView, PmGroup pmGroup, User user) {
-        Context context = textView.getContext();
-        if (TextUtils.equals(pmGroup.getLastAuthorid(), user.getUid())) {
-            textView.setText(Html.fromHtml(context.getString(R.string.pm_desc_to_other, pmGroup.getToUsername())));
+    @JvmStatic
+    @Suppress("deprecation")
+    @BindingAdapter("pmAuthorNameDesc", "user")
+    fun setPmAuthorNameDesc(textView: TextView, pmGroup: PmGroup, user: User) {
+        val context = textView.context
+        if (TextUtils.equals(pmGroup.lastAuthorid, user.uid)) {
+            textView.text =
+                Html.fromHtml(context.getString(R.string.pm_desc_to_other, pmGroup.toUsername))
         } else {
-            textView.setText(Html.fromHtml(context.getString(R.string.pm_desc_to_me, pmGroup.getToUsername())));
+            textView.text =
+                Html.fromHtml(context.getString(R.string.pm_desc_to_me, pmGroup.toUsername))
         }
     }
 
-    @BindingAdapter({"homeThread"})
-    public static void setHomeThread(TextView textView, @Nullable HomeThread thread) {
+    @JvmStatic
+    @BindingAdapter("homeThread")
+    fun setHomeThread(textView: TextView, thread: HomeThread?) {
         if (thread == null) {
-            textView.setText(null);
+            textView.text = null
         } else {
-            textView.setText(thread.getTitle());
-            ViewUtil.concatWithTwoSpacesForRtlSupport(textView, thread.getForum(), Color.GRAY);
+            textView.text = thread.title
+            ViewUtil.concatWithTwoSpacesForRtlSupport(textView, thread.forum, Color.GRAY)
         }
     }
 
-    @BindingAdapter({"history"})
-    public static void setHomeThread(TextView textView, @Nullable History history) {
+    @JvmStatic
+    @BindingAdapter("history")
+    fun setHomeThread(textView: TextView, history: History?) {
         if (history == null) {
-            textView.setText(null);
+            textView.text = null
         } else {
-            textView.setText(history.getTitle());
+            textView.text = history.title
         }
     }
 }

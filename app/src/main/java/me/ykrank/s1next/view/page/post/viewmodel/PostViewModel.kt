@@ -6,6 +6,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
+import androidx.lifecycle.LifecycleOwner
 import com.github.ykrank.androidtools.util.ContextUtils
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.RxBus
@@ -17,13 +18,21 @@ import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.Vote
 import me.ykrank.s1next.view.activity.UserHomeActivity
 import me.ykrank.s1next.view.activity.WebViewActivity
-import me.ykrank.s1next.view.event.*
+import me.ykrank.s1next.view.event.EditPostEvent
+import me.ykrank.s1next.view.event.QuoteEvent
+import me.ykrank.s1next.view.event.RateEvent
+import me.ykrank.s1next.view.event.ReportEvent
+import me.ykrank.s1next.view.event.VotePostEvent
 import me.ykrank.s1next.view.internal.BlacklistMenuAction
 import me.ykrank.s1next.view.page.app.AppPostListActivity
 import me.ykrank.s1next.view.page.post.postlist.PostListActivity
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 
-class PostViewModel(private val rxBus: RxBus, private val user: User) {
+class PostViewModel(
+    val lifecycleOwner: LifecycleOwner,
+    private val rxBus: RxBus,
+    private val user: User
+) {
 
     val post = ObservableField<Post>()
     val thread = ObservableField<Thread>()
