@@ -76,9 +76,9 @@
     </string-array>
 
     <string-array name="pref_image_total_cache_size_entries" translatable="false">
-        <item>32MB</item>
-        <item>64MB</item>
         <item>128MB</item>
+        <item>256MB</item>
+        <item>512MB</item>
     </string-array>
 
     <string-array name="pref_image_total_cache_size_entry_values" translatable="false">

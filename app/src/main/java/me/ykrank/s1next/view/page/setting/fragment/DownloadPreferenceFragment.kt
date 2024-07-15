@@ -2,12 +2,16 @@ package me.ykrank.s1next.view.page.setting.fragment
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import com.bumptech.glide.Glide
 import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
@@ -43,28 +47,18 @@ class DownloadPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefer
     override fun onPreferenceClick(preference: Preference): Boolean {
         val key = preference.key ?: return false
         if (key == getString(R.string.pref_key_clear_image_cache)) {
-            try {
-                RxJavaUtil.disposeIfNotNull(disposable)
+            lifecycleScope.launch(L.report) {
                 Glide.get(App.get()).clearMemory()
-                disposable = RxJavaUtil.workWithUiThread({
+                withContext(Dispatchers.IO) {
                     Glide.get(App.get()).clearDiskCache()
-                }, {
-                    activity?.toast(R.string.clear_image_cache_success)
-                }, {
-                    L.report(it)
-                    RxJavaUtil.workInMainThread {
-                        activity?.toast(R.string.clear_image_cache_error)
-                    }
-                })
-            } catch (e: Exception) {
-                L.report(e)
-                activity?.toast(R.string.clear_image_cache_error)
+                }
+                activity?.toast(R.string.clear_image_cache_success)
             }
 
             return true
         }
         if (key == getString(R.string.pref_key_data_download_path)) {
-            AppFileUtil.getDownloadPath(parentFragmentManager , null, true)
+            AppFileUtil.getDownloadPath(parentFragmentManager, null, true)
             return true
         }
         return false

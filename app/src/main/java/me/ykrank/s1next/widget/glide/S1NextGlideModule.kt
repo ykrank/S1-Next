@@ -34,7 +34,6 @@ class S1NextGlideModule : AppGlideModule() {
                 context, preAppComponent.downloadPreferencesManager.totalImageCacheSize
             )
         )
-        ViewTarget.setTagId(R.id.tag_glide)
         builder.setLogLevel(Log.ERROR)
         var requestOptions = RequestOptions()
 
