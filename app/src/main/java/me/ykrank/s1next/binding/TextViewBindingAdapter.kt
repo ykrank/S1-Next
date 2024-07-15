@@ -284,7 +284,7 @@ object TextViewBindingAdapter {
                 textView.setBreakStrategy(Layout.BREAK_STRATEGY_SIMPLE)
             }
             lifecycleOwner.lifecycleScope.launch {
-                val glideImageGetter = GlideImageGetter[textView]
+                val glideImageGetter = GlideImageGetter[textView, lifecycleOwner]
                 val span = withContext(Dispatchers.Default) {
                     HtmlCompat.fromHtml(html, glideImageGetter, TagHandler(textView))
                         .replaceQuoteSpans(textView.context)

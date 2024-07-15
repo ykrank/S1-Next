@@ -15,6 +15,8 @@ import android.widget.TextView
 import androidx.annotation.AnyThread
 import androidx.annotation.MainThread
 import androidx.core.view.ViewCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.RequestManager
@@ -25,8 +27,6 @@ import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-import com.github.ykrank.androidautodispose.AndroidRxDispose
-import com.github.ykrank.androidlifecycle.event.ViewEvent
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.LooperUtil
 import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.FitOutWidthDownSampleStrategy
@@ -35,9 +35,7 @@ import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.MultiDownS
 import com.github.ykrank.androidtools.widget.glide.downsamplestrategy.SizeDownSampleStrategy
 import com.github.ykrank.androidtools.widget.glide.transformations.FitOutWidthBitmapTransformation
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
-import com.uber.autodispose.SingleScoper
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
@@ -58,9 +56,11 @@ import java.util.WeakHashMap
  * Forked from https://github.com/goofyz/testGlide/pull/1
  * See https://github.com/bumptech/glide/issues/550
  */
-class GlideImageGetter protected constructor(private val mTextView: TextView) : Html.ImageGetter, View.OnAttachStateChangeListener, Drawable.Callback {
+class GlideImageGetter protected constructor(
+    private val lifecycleOwner: LifecycleOwner,
+    private val mTextView: TextView
+) : Html.ImageGetter, View.OnAttachStateChangeListener, Drawable.Callback {
     private val requestManager: RequestManager
-    private val imageGetterScoper: SingleScoper<RequestBuilder<Drawable>>
     private val trackAgent: DataTrackAgent
     private val handler: Handler
     private var lastValidateSpanTime = 0L
@@ -106,7 +106,6 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
     init {
         LooperUtil.enforceOnMainThread()
         this.requestManager = Glide.with(mTextView)
-        this.imageGetterScoper = AndroidRxDispose.withSingle(mTextView, ViewEvent.DESTROY)
         this.trackAgent = App.preAppComponent.dataTrackAgent
 
         // save Drawable.Callback in TextView
@@ -228,25 +227,22 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
 
     private fun startImageGetterViewTarget(glideRequestBuilder: RequestBuilder<Drawable>,
                                            imageGetterViewTarget: ImageGetterViewTarget, emoticon: Boolean) {
-        Single.just(glideRequestBuilder)
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .to(imageGetterScoper)
-                .subscribe({ builder ->
-                    if (emoticon) {
-                        imageGetterViewTarget.mDrawable.let {
-                            it.setKeepScaleRatio(true)
+        lifecycleOwner.lifecycleScope.launch(L.report) {
+            if (emoticon) {
+                imageGetterViewTarget.mDrawable.let {
+                    it.setKeepScaleRatio(true)
 //                            it.setWidthTargetSize(emoticonSize)
 //                            it.setHeightTargetSize(emoticonSize)
-                        }
-                    } else {
-                        //Big image scale to fit width
-                        imageGetterViewTarget.mDrawable.setTriggerSize(TriggerSize)
-                        if (mTextView.width > 0) {
-                            imageGetterViewTarget.mDrawable.setWidthTargetSize(mTextView.width)
-                        }
-                    }
-                    builder.into(imageGetterViewTarget)
-                }, { L.report(it) })
+                }
+            } else {
+                //Big image scale to fit width
+                imageGetterViewTarget.mDrawable.setTriggerSize(TriggerSize)
+                if (mTextView.width > 0) {
+                    imageGetterViewTarget.mDrawable.setWidthTargetSize(mTextView.width)
+                }
+            }
+            glideRequestBuilder.into(imageGetterViewTarget)
+        }
     }
 
     fun sendSpanChangedMsg(imageSpan: ImageSpan, priority: Int) {
@@ -305,11 +301,10 @@ class GlideImageGetter protected constructor(private val mTextView: TextView) : 
         const val SpanInvalidateColdTime = 100
 
         @MainThread
-        operator fun get(textView: TextView): GlideImageGetter {
-
+        operator fun get(textView: TextView, lifecycleOwner: LifecycleOwner): GlideImageGetter {
             val obj = textView.getTag(com.github.ykrank.androidtools.R.id.tag_drawable_callback)
             return if (obj == null) {
-                GlideImageGetter(textView)
+                GlideImageGetter(lifecycleOwner, textView)
             } else {
                 obj as GlideImageGetter
             }

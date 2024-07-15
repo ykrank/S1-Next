@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.github.ykrank.androidlifecycle.AndroidLifeCycle
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
 import com.github.ykrank.androidtools.widget.RxBus
 import me.ykrank.s1next.App
@@ -64,9 +63,6 @@ class PostBlackAdapterDelegate(private val fragment: Fragment, context: Context)
         binding.postViewModel = PostBlackViewModel(fragment.viewLifecycleOwner, mRxBus)
 
         binding.tvReply.setSpannableFactory(FixedSpannableFactory())
-
-        //Bind textview lifecycle to fragment
-        AndroidLifeCycle.bindFragment(binding.tvReply, fragment)
 
         //If setTextIsSelectable, then should reset movement
         val selectable = mGeneralPreferencesManager.isPostSelectable

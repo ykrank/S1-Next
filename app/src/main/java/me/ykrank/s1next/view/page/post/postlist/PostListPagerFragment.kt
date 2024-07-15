@@ -509,7 +509,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
         }
         rateStamp = time
 
-        lifecycleScope.launch(L.print) {
+        lifecycleScope.launch(L.report) {
             posts.filter { it.rates?.size == 0 && rateMap[it.id] == null }
                 .distinctBy { it.id }
                 .asFlow()

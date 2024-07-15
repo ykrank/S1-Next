@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.ykrank.androidlifecycle.AndroidLifeCycle
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
 import com.github.ykrank.androidtools.util.L
@@ -76,9 +75,6 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
 
         binding.tvReply.setSpannableFactory(FixedSpannableFactory())
 
-        //Bind textview lifecycle to fragment
-        AndroidLifeCycle.bindFragment(binding.tvReply, fragment)
-
         //If setTextIsSelectable, then should reset movement
         val selectable = mGeneralPreferencesManager.isPostSelectable
         setTextSelectable(binding, selectable)
@@ -119,7 +115,7 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
             if (rates?.isNotEmpty() == true) {
                 RateDetailsListActivity.start(context, ArrayList(rates))
             } else {
-                fragment.lifecycleScope.launch(L.print) {
+                fragment.lifecycleScope.launch(L.report) {
                     val resultStr = mS1Service.getRates(threadInfo?.id, post.id.toString())
                     val newRates = Rate.fromHtml(resultStr)
                     post.rates = newRates

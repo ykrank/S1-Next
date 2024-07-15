@@ -26,6 +26,10 @@ object L {
         print(e)
     }
 
+    val report = CoroutineExceptionHandler { _, e ->
+        report(e)
+    }
+
     fun init(context: Context) {
         TAG = GlobalData.provider.logTag
         val formatStrategy: FormatStrategy = PrettyFormatStrategy.newBuilder()
