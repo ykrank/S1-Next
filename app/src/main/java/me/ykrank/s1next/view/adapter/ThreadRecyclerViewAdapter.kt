@@ -1,15 +1,17 @@
-package me.ykrank.s1next.view.adapter;
+package me.ykrank.s1next.view.adapter
 
-import android.app.Activity;
+import android.app.Activity
+import androidx.lifecycle.LifecycleOwner
+import me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate
 
-import me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate;
-
-public final class ThreadRecyclerViewAdapter extends BaseRecyclerViewAdapter {
-
-    public ThreadRecyclerViewAdapter(Activity activity, String forumId) {
-        super(activity);
-
-        addAdapterDelegate(new ThreadAdapterDelegate(activity, forumId));
+class ThreadRecyclerViewAdapter(
+    activity: Activity,
+    lifecycleOwner: LifecycleOwner,
+    forumId: String?
+) : BaseRecyclerViewAdapter(
+    activity
+) {
+    init {
+        addAdapterDelegate(ThreadAdapterDelegate(activity, lifecycleOwner, forumId))
     }
-
 }

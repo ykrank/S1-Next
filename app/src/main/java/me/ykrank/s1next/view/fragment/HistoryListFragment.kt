@@ -1,82 +1,74 @@
-package me.ykrank.s1next.view.fragment;
+package me.ykrank.s1next.view.fragment
 
-import android.app.Activity;
-import android.database.Cursor;
-import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.github.ykrank.androidtools.util.L;
-import com.github.ykrank.androidtools.util.RxJavaUtil;
-
-import java.util.concurrent.Callable;
-
-import javax.inject.Inject;
-
-import io.reactivex.Single;
-import me.ykrank.s1next.App;
-import me.ykrank.s1next.data.db.biz.HistoryBiz;
-import me.ykrank.s1next.databinding.FragmentBaseBinding;
-import me.ykrank.s1next.view.adapter.HistoryCursorRecyclerViewAdapter;
+import android.app.Activity
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import me.ykrank.s1next.App.Companion.appComponent
+import me.ykrank.s1next.data.db.biz.HistoryBiz
+import me.ykrank.s1next.databinding.FragmentBaseBinding
+import me.ykrank.s1next.view.adapter.HistoryCursorRecyclerViewAdapter
+import javax.inject.Inject
 
 /**
  * Fragment show post view history list
  */
-public final class HistoryListFragment extends BaseFragment {
-    public static final String TAG = HistoryListFragment.class.getName();
-
-    private HistoryCursorRecyclerViewAdapter mRecyclerAdapter;
+class HistoryListFragment : BaseFragment() {
+    private var mRecyclerAdapter: HistoryCursorRecyclerViewAdapter? = null
 
     @Inject
-    HistoryBiz historyBiz;
-
-    private FragmentBaseBinding binding;
-
-    public static HistoryListFragment newInstance() {
-        HistoryListFragment fragment = new HistoryListFragment();
-        return fragment;
+    lateinit var historyBiz: HistoryBiz
+    private lateinit var binding: FragmentBaseBinding
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentBaseBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentBaseBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        appComponent.inject(this)
+        super.onViewCreated(view, savedInstanceState)
+        leavePageMsg("HistoryListFragment")
+        val activity: Activity = requireActivity()
+        binding.recyclerView.setLayoutManager(LinearLayoutManager(activity))
+        mRecyclerAdapter = HistoryCursorRecyclerViewAdapter(activity, viewLifecycleOwner)
+        binding.recyclerView.setAdapter(mRecyclerAdapter)
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        App.Companion.getAppComponent().inject(this);
-        super.onViewCreated(view, savedInstanceState);
-        leavePageMsg("HistoryListFragment");
-
-        Activity activity = getActivity();
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        mRecyclerAdapter = new HistoryCursorRecyclerViewAdapter(activity);
-        binding.recyclerView.setAdapter(mRecyclerAdapter);
+    override fun onPause() {
+        mRecyclerAdapter?.changeCursor(null)
+        super.onPause()
     }
 
-    @Override
-    public void onPause() {
-        mRecyclerAdapter.changeCursor(null);
-        super.onPause();
+    override fun onResume() {
+        super.onResume()
+        load()
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        load();
+    private fun load() {
+        lifecycleScope.launch {
+            val cursor = withContext(Dispatchers.IO) {
+                historyBiz.getHistoryListCursor()
+            }
+            mRecyclerAdapter?.changeCursor(cursor)
+        }
     }
 
-    private void load() {
-        Single.fromCallable((Callable<Cursor>) () -> historyBiz.getHistoryListCursor())
-                .compose(RxJavaUtil.iOSingleTransformer())
-                .subscribe(mRecyclerAdapter::changeCursor,
-                        throwable -> L.e("S1next", throwable));
+    companion object {
+        val TAG = HistoryListFragment::class.java.getName()
+
+        @JvmStatic
+        fun newInstance(): HistoryListFragment {
+            return HistoryListFragment()
+        }
     }
 }

@@ -37,7 +37,7 @@ class FavouriteListPagerFragment : BaseRecyclerViewFragment<BaseResultWrapper<Fa
 
         val recyclerView = recyclerView
         recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-        mRecyclerAdapter = FavouriteRecyclerViewAdapter(activity)
+        mRecyclerAdapter = FavouriteRecyclerViewAdapter(requireActivity(), viewLifecycleOwner)
         recyclerView.adapter = mRecyclerAdapter
     }
 

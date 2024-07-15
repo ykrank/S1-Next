@@ -3,6 +3,7 @@ package me.ykrank.s1next.view.fragment
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
@@ -62,9 +63,9 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
         leavePageMsg("ThreadListPagerFragment##ForumId:$mForumId, TypeId:$mTypeId, PageNum:$mPageNum")
 
         val recyclerView = recyclerView
-        val activity = activity
-        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
-        mRecyclerAdapter = ThreadRecyclerViewAdapter(activity, mForumId)
+        val activity = requireActivity()
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        mRecyclerAdapter = ThreadRecyclerViewAdapter(activity, viewLifecycleOwner, mForumId)
         recyclerView.adapter = mRecyclerAdapter
     }
 

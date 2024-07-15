@@ -8,16 +8,13 @@ import android.provider.Browser
 import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
-import com.github.ykrank.androidautodispose.AndroidRxDispose
-import com.github.ykrank.androidlifecycle.event.ViewEvent
-import com.github.ykrank.androidtools.util.L
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidtools.util.OnceClickUtil
 import com.github.ykrank.androidtools.widget.net.WifiBroadcastReceiver
-import com.google.common.base.Optional
-import com.google.common.base.Supplier
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.Thread
@@ -168,33 +165,37 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
          * @param thread 帖子信息 的 提供者
          * @return
          */
-        fun bindClickStartForView(view: View, thread: Supplier<Thread>): Disposable {
-            val preferencesManager = App.preAppComponent.readProgressPreferencesManager
-            if (preferencesManager.isLoadAuto) {
-                return OnceClickUtil.onceClickObservable(view, 1000)
-                        .observeOn(Schedulers.io())
-                        .map {
-                            Optional.fromNullable(ReadProgressBiz.instance.getWithThreadId(thread.get().id?.toInt()
-                                    ?: 0))
+        fun bindClickStartForView(
+            view: View,
+            lifecycleOwner: LifecycleOwner,
+            threadProvider: () -> Thread?
+        ) {
+            OnceClickUtil.setClickLister(view, {
+                val preferencesManager = App.preAppComponent.readProgressPreferencesManager
+                if (preferencesManager.isLoadAuto) {
+                    lifecycleOwner.lifecycleScope.launch {
+                        val thread = threadProvider()
+                        val readProgress = withContext(Dispatchers.IO) {
+                            ReadProgressBiz.instance.getWithThreadId(
+                                thread?.id?.toInt() ?: 0
+                            )
                         }
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .to(AndroidRxDispose.withObservable(view, ViewEvent.DESTROY))
-                        .subscribe({ progress ->
-                            val context = view.context
-                            val intent = Intent(context, PostListActivity::class.java)
-                            intent.putExtra(ARG_THREAD, thread.get())
-                            intent.putExtra(ARG_READ_PROGRESS, progress.orNull())
-                            if (context is Activity) {
-                                context.startActivityForResult(intent, RESULT_BLACKLIST)
-                            } else {
-                                context.startActivity(intent)
-                            }
-                        }, { L.report(it) })
-            } else {
-                return OnceClickUtil.setOnceClickLister(view) {
-                    start(it.context, thread.get(), false)
+                        val context = view.context
+                        val intent = Intent(context, PostListActivity::class.java)
+                        intent.putExtra(ARG_THREAD, thread)
+                        intent.putExtra(ARG_READ_PROGRESS, readProgress)
+                        if (context is Activity) {
+                            context.startActivityForResult(intent, RESULT_BLACKLIST)
+                        } else {
+                            context.startActivity(intent)
+                        }
+                    }
+                } else {
+                    threadProvider()?.apply {
+                        start(it.context, this, false)
+                    }
                 }
-            }
+            }, 1000)
         }
     }
 

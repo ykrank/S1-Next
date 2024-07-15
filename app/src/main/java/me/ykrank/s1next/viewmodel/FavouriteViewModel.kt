@@ -1,51 +1,49 @@
-package me.ykrank.s1next.viewmodel;
+package me.ykrank.s1next.viewmodel
 
-import android.view.MenuItem;
-import android.view.View;
+import android.view.MenuItem
+import android.view.View
+import android.view.View.OnLongClickListener
+import androidx.appcompat.widget.PopupMenu
+import androidx.databinding.ObservableField
+import androidx.lifecycle.LifecycleOwner
+import com.github.ykrank.androidtools.widget.RxBus
+import me.ykrank.s1next.R
+import me.ykrank.s1next.data.api.model.Favourite
+import me.ykrank.s1next.data.api.model.Thread
+import me.ykrank.s1next.view.event.FavoriteRemoveEvent
+import me.ykrank.s1next.view.page.post.postlist.PostListActivity.Companion.bindClickStartForView
 
-import androidx.appcompat.widget.PopupMenu;
-import androidx.databinding.ObservableField;
+class FavouriteViewModel(private val lifecycleOwner: LifecycleOwner) {
+    val favourite = ObservableField<Favourite>()
 
-import com.github.ykrank.androidtools.widget.RxBus;
-import com.google.common.base.Supplier;
-
-import io.reactivex.functions.Consumer;
-import me.ykrank.s1next.R;
-import me.ykrank.s1next.data.api.model.Favourite;
-import me.ykrank.s1next.data.api.model.Thread;
-import me.ykrank.s1next.view.event.FavoriteRemoveEvent;
-import me.ykrank.s1next.view.page.post.postlist.PostListActivity;
-
-
-public final class FavouriteViewModel {
-
-    public final ObservableField<Favourite> favourite = new ObservableField<>();
-
-    private final Supplier<Thread> threadSupplier = () -> {
-        Thread thread = new Thread();
-        Favourite favourite = this.favourite.get();
-        thread.setId(favourite.getId());
-        thread.setTitle(favourite.getTitle());
-        return thread;
-    };
-
-    public Consumer<View> onBind() {
-        return v -> PostListActivity.Companion.bindClickStartForView(v, threadSupplier);
+    fun onBind(): Function1<View, Any> {
+        return { v: View ->
+            bindClickStartForView(
+                v, lifecycleOwner
+            ) {
+                favourite.get()?.let {
+                    val thread = Thread()
+                    thread.id = it.id
+                    thread.title = it.title
+                    thread
+                }
+            }
+        }
     }
 
-    public View.OnLongClickListener removeFromFavourites(final RxBus rxBus) {
-        return v -> {
-            PopupMenu popup = new PopupMenu(v.getContext(), v);
-            popup.setOnMenuItemClickListener((MenuItem menuitem) -> {
-                if (menuitem.getItemId() == R.id.menu_popup_remove_favourite) {
-                    rxBus.post(new FavoriteRemoveEvent(favourite.get().getFavId()));
-                    return true;
+    fun removeFromFavourites(rxBus: RxBus): OnLongClickListener {
+        return OnLongClickListener { v: View ->
+            val popup = PopupMenu(v.context, v)
+            popup.setOnMenuItemClickListener { menuitem: MenuItem ->
+                if (menuitem.itemId == R.id.menu_popup_remove_favourite) {
+                    rxBus.post(FavoriteRemoveEvent(favourite.get()!!.favId))
+                    return@setOnMenuItemClickListener true
                 }
-                return false;
-            });
-            popup.inflate(R.menu.popup_favorites);
-            popup.show();
-            return true;
-        };
+                false
+            }
+            popup.inflate(R.menu.popup_favorites)
+            popup.show()
+            true
+        }
     }
 }

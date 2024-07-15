@@ -3,6 +3,8 @@ package me.ykrank.s1next.view.adapter.delegate
 import android.content.Context
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.RecyclerView
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -14,7 +16,11 @@ import me.ykrank.s1next.viewmodel.ThreadViewModel
 import me.ykrank.s1next.viewmodel.UserViewModel
 import javax.inject.Inject
 
-class ThreadAdapterDelegate(context: Context, private val forumId: String) :
+class ThreadAdapterDelegate(
+    context: Context,
+    private val lifecycleOwner: LifecycleOwner,
+    private val forumId: String?
+) :
         BaseAdapterDelegate<Thread, SimpleRecycleViewHolder<ItemThreadBinding>>(context, Thread::class.java) {
 
     @Inject
@@ -30,7 +36,7 @@ class ThreadAdapterDelegate(context: Context, private val forumId: String) :
         App.appComponent.inject(this)
     }
 
-    public override fun onCreateViewHolder(parent: ViewGroup): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+    public override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         val binding = DataBindingUtil.inflate<ItemThreadBinding>(mLayoutInflater, R.layout.item_thread,
                 parent, false)
         // we do not use view model for ThemeManager
@@ -38,7 +44,7 @@ class ThreadAdapterDelegate(context: Context, private val forumId: String) :
         binding.userViewModel = mUserViewModel
         binding.themeManager = mThemeManager
         binding.forumId = forumId
-        binding.model = ThreadViewModel()
+        binding.model = ThreadViewModel(lifecycleOwner)
 
         val threadPadding = mReadPreferencesManager.threadPadding
         if (threadPadding != null && threadPadding > 0) {
@@ -46,7 +52,7 @@ class ThreadAdapterDelegate(context: Context, private val forumId: String) :
             binding.tvThread.setPadding(binding.tvThread.paddingLeft, paddingPx, binding.tvThread.paddingLeft, paddingPx)
         }
 
-        return SimpleRecycleViewHolder<ItemThreadBinding>(binding)
+        return SimpleRecycleViewHolder(binding)
     }
 
     override fun onBindViewHolderData(t: Thread, position: Int, holder: SimpleRecycleViewHolder<ItemThreadBinding>, payloads: List<Any>) {

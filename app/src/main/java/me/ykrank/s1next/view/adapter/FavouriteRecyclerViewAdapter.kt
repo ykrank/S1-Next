@@ -1,14 +1,16 @@
-package me.ykrank.s1next.view.adapter;
+package me.ykrank.s1next.view.adapter
 
-import android.app.Activity;
+import android.app.Activity
+import androidx.lifecycle.LifecycleOwner
+import me.ykrank.s1next.view.adapter.delegate.FavouriteAdapterDelegate
 
-import me.ykrank.s1next.view.adapter.delegate.FavouriteAdapterDelegate;
-
-public final class FavouriteRecyclerViewAdapter extends BaseRecyclerViewAdapter {
-
-    public FavouriteRecyclerViewAdapter(Activity activity) {
-        super(activity);
-
-        addAdapterDelegate(new FavouriteAdapterDelegate(activity));
+class FavouriteRecyclerViewAdapter(
+    activity: Activity,
+    private val lifecycleOwner: LifecycleOwner,
+) : BaseRecyclerViewAdapter(
+    activity
+) {
+    init {
+        addAdapterDelegate(FavouriteAdapterDelegate(activity, lifecycleOwner))
     }
 }

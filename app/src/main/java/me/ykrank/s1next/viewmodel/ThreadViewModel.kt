@@ -1,30 +1,31 @@
-package me.ykrank.s1next.viewmodel;
+package me.ykrank.s1next.viewmodel
 
-import android.view.View;
+import android.view.View
+import android.view.View.OnLongClickListener
+import androidx.databinding.ObservableField
+import androidx.lifecycle.LifecycleOwner
+import me.ykrank.s1next.data.api.model.Thread
+import me.ykrank.s1next.view.page.post.postlist.PostListActivity.Companion.bindClickStartForView
+import me.ykrank.s1next.view.page.post.postlist.PostListActivity.Companion.start
 
-import androidx.databinding.ObservableField;
-
-import com.google.common.base.Supplier;
-
-import io.reactivex.functions.Consumer;
-import me.ykrank.s1next.data.api.model.Thread;
-import me.ykrank.s1next.view.page.post.postlist.PostListActivity;
-
-public final class ThreadViewModel {
-
-    public final ObservableField<Thread> thread = new ObservableField<>();
-
-    private final Supplier<Thread> threadSupplier = thread::get;
-
-    public Consumer<View> onBind() {
-        return v -> PostListActivity.Companion.bindClickStartForView(v, threadSupplier);
+class ThreadViewModel(private val lifecycleOwner: LifecycleOwner) {
+    val thread = ObservableField<Thread>()
+    fun onBind(): Function1<View, Any> {
+        return { v: View ->
+            bindClickStartForView(
+                v, lifecycleOwner
+            ) {
+                thread.get()
+            }
+        }
     }
 
-    public View.OnLongClickListener goToThisThreadLastPage() {
-        return v -> {
-            PostListActivity.Companion.start(v.getContext(), thread.get(), true);
-            return true;
-        };
+    fun goToThisThreadLastPage(): OnLongClickListener {
+        return OnLongClickListener { v: View ->
+            thread.get()?.apply {
+                start(v.context, this, true)
+            }
+            true
+        }
     }
-
 }

@@ -19,7 +19,6 @@ import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.glide.transformations.BlurTransformation
 import com.github.ykrank.androidtools.widget.glide.viewtarget.DrawableViewBackgroundTarget
 import com.github.ykrank.androidtools.widget.glide.viewtarget.ViewBackgroundTarget
-import io.reactivex.functions.Consumer
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api.getAvatarBigUrl
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
@@ -44,9 +43,9 @@ object ViewBindingAdapter {
      */
     @JvmStatic
     @BindingAdapter("bindEvent")
-    fun setOnViewBind(view: View?, onViewBind: Consumer<View?>) {
+    fun setOnViewBind(view: View, onViewBind: Function1<View, Any>) {
         try {
-            onViewBind.accept(view)
+            onViewBind(view)
         } catch (e: Exception) {
             L.report(e)
         }

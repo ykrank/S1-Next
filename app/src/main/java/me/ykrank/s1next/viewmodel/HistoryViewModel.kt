@@ -1,23 +1,24 @@
-package me.ykrank.s1next.viewmodel;
+package me.ykrank.s1next.viewmodel
 
-import android.view.View;
+import android.view.View
+import androidx.databinding.ObservableField
+import androidx.lifecycle.LifecycleOwner
+import me.ykrank.s1next.data.api.model.Thread
+import me.ykrank.s1next.data.db.dbmodel.History
+import me.ykrank.s1next.view.page.post.postlist.PostListActivity.Companion.bindClickStartForView
 
-import androidx.databinding.ObservableField;
+class HistoryViewModel(private val lifecycleOwner: LifecycleOwner) {
+    val history = ObservableField<History>()
 
-import com.google.common.base.Supplier;
-
-import io.reactivex.functions.Consumer;
-import me.ykrank.s1next.data.api.model.Thread;
-import me.ykrank.s1next.data.db.dbmodel.History;
-import me.ykrank.s1next.view.page.post.postlist.PostListActivity;
-
-public final class HistoryViewModel {
-
-    public final ObservableField<History> history = new ObservableField<>();
-
-    private final Supplier<Thread> threadSupplier = () -> new Thread(history.get());
-
-    public Consumer<View> onBind() {
-        return v -> PostListActivity.Companion.bindClickStartForView(v, threadSupplier);
+    fun onBind(): Function1<View, Any> {
+        return { v: View ->
+            bindClickStartForView(
+                v, lifecycleOwner
+            ) {
+                history.get()?.let {
+                    Thread(it)
+                }
+            }
+        }
     }
 }
