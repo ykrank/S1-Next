@@ -6,7 +6,6 @@ import dagger.Provides
 import me.ykrank.s1next.widget.net.AppData
 import me.ykrank.s1next.widget.net.Data
 import me.ykrank.s1next.widget.net.Image
-import me.ykrank.s1next.widget.net.Progress
 import okhttp3.OkHttpClient
 
 /**

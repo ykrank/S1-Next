@@ -172,10 +172,6 @@ dependencies {
     debugImplementation(libs.soloader)
     debugImplementation(libs.flipper.network.plugin)
 
-    implementation(libs.okdownload)
-    implementation(libs.okdownload.okhttp)
-    implementation(libs.sqlite)
-
     implementation(libs.alicloud.android.httpdns)
 
     //room

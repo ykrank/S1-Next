@@ -52,7 +52,6 @@ espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.8.1"
 paging = "3.3.0"
 room = "2.6.1"
-sqlite = "1.0.7"
 transition = "1.5.0"
 largeimageview = "1.1.0"
 compileSdk = "34"
@@ -120,7 +119,6 @@ rxandroid = { module = "io.reactivex.rxjava2:rxandroid", version.ref = "rxandroi
 rxjava = { module = "io.reactivex.rxjava2:rxjava", version.ref = "rxjava" }
 rxkotlin = { module = "io.reactivex.rxjava2:rxkotlin", version.ref = "rxkotlin" }
 soloader = { module = "com.facebook.soloader:soloader", version.ref = "soloader" }
-sqlite = { module = "com.liulishuo.okdownload:sqlite", version.ref = "sqlite" }
 largeimageview = { module = "com.shizhefei:LargeImageView", version.ref = "largeimageview" }
 
 [plugins]
