@@ -9,11 +9,17 @@ import androidx.annotation.IntDef
 import androidx.annotation.StringRes
 import androidx.annotation.WorkerThread
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidtools.R
 import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.LooperUtil
 import com.github.ykrank.androidtools.util.RxJavaUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -26,6 +32,7 @@ import java.io.OutputStream
  */
 class BackupDelegate(
     private val mContext: Context,
+    private val lifecycleOwner: LifecycleOwner,
     private val backupFileName: String,
     private val dbName: String,
     private val afterBackup: AfterBackup = DefaultAfterBackup(mContext),
@@ -55,13 +62,32 @@ class BackupDelegate(
         if (requestCode == BACKUP_FILE_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 val uri = data.data ?: return false
-                RxJavaUtil.workWithUiResult({ doBackup(uri) }, afterBackup::accept, this::error)
+
+                lifecycleOwner.lifecycleScope.launch {
+                    val result = async(Dispatchers.IO) {
+                        doBackup(uri)
+                    }
+                    try {
+                        afterBackup.accept(result.await())
+                    } catch (e: Exception) {
+                        error(e)
+                    }
+                }
                 return true
             }
         } else if (requestCode == RESTORE_FILE_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 val uri = data.data ?: return false
-                RxJavaUtil.workWithUiResult({ doRestore(uri) }, afterRestore::accept, this::error)
+                lifecycleOwner.lifecycleScope.launch {
+                    val result = async(Dispatchers.IO) {
+                        doRestore(uri)
+                    }
+                    try {
+                        afterRestore.accept(result.await())
+                    } catch (e: Exception) {
+                        error(e)
+                    }
+                }
                 return true
             }
         }
@@ -130,11 +156,11 @@ class BackupDelegate(
     annotation class BackupResult
 
     interface AfterBackup {
-        fun accept(@BackupResult integer: Int?)
+        fun accept(@BackupResult result: Int?)
     }
 
     interface AfterRestore {
-        fun accept(@BackupResult integer: Int?)
+        fun accept(@BackupResult result: Int?)
     }
 
     open class DefaultAfterBackup(val context: Context) : AfterBackup {

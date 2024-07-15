@@ -31,23 +31,6 @@ public final class RxJavaUtil {
     }
 
     /**
-     * 快速发送工作线程和有返回值的UI回调
-     *
-     * @param workAction 工作线程
-     * @param uiAction   主线程
-     * @param error      错误回调
-     * @param <R>        返回值的类型
-     * @return 订单
-     */
-    public static <R> Disposable workWithUiResult(Supplier<R> workAction, Consumer<R> uiAction, Consumer<Throwable> error) {
-        return Single.just(NULL)
-                .map(o -> workAction.get())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(uiAction, error);
-    }
-
-    /**
      * wrap nullable source in Single flatMap
      *
      * @param source

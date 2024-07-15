@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.RequestBuilder
@@ -27,6 +28,10 @@ import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.glide.model.ForcePassUrl
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
@@ -183,27 +188,33 @@ class GalleryFragment : Fragment() {
                     val name: String = AppFileUtil.createRandomFileName(imageType)
                     AppFileUtil.getDownloadPath(parentFragmentManager, { uri ->
                         val file = uri.createFile("image/${imageType}", name)
-                        RxJavaUtil.workWithUiResult({
-                            FileUtil.copyFile(
-                                resource,
-                                requireContext().contentResolver.openOutputStream(file?.uri!!)!!
-                            )
-                            return@workWithUiResult file.uri
-                        }, { f ->
-                            Snackbar.make(
-                                binding.root,
-                                R.string.download_success,
-                                Snackbar.LENGTH_SHORT
-                            )
-                                .show()
-                            context.let { FileUtil.notifyImageInMediaStore(it, f) }
-                        }) { e ->
-                            L.report(e)
-                            Toast.makeText(
-                                context,
-                                R.string.download_unknown_error,
-                                Toast.LENGTH_SHORT
-                            ).show()
+                        file?.uri?.also { fileUri ->
+                            lifecycleScope.launch(L.report) {
+                                val copyTask = async(Dispatchers.IO) {
+                                    FileUtil.copyFile(
+                                        resource,
+                                        requireContext().contentResolver.openOutputStream(
+                                            fileUri
+                                        )!!
+                                    )
+                                }
+                                try {
+                                    copyTask.await()
+                                    Snackbar.make(
+                                        binding.root,
+                                        R.string.download_success,
+                                        Snackbar.LENGTH_SHORT
+                                    ).show()
+                                    context.let { FileUtil.notifyImageInMediaStore(it, fileUri) }
+                                } catch (e: Exception) {
+                                    L.e(e)
+                                    Toast.makeText(
+                                        context,
+                                        R.string.download_unknown_error,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
                         }
                     })
                 } catch (e: Exception) {
