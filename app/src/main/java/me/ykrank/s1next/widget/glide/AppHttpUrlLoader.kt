@@ -20,7 +20,6 @@ import java.io.InputStream
  */
 class AppHttpUrlLoader private constructor(
     private val mOkHttpClient: OkHttpClient,
-    private val mProgressOkHttpClient: OkHttpClient
 ) :
     ModelLoader<GlideUrl, InputStream> {
     override fun buildLoadData(
@@ -48,7 +47,7 @@ class AppHttpUrlLoader private constructor(
         if (model is AvatarUrl) {
             return AvatarStreamFetcher(mOkHttpClient, model)
         } else if (model is ForcePassUrl) {
-            return OkHttpStreamFetcher(mProgressOkHttpClient, model)
+            return OkHttpStreamFetcher(mOkHttpClient, model)
         }
         return AppHttpStreamFetcher(mOkHttpClient, model)
     }
@@ -58,11 +57,10 @@ class AppHttpUrlLoader private constructor(
      */
     class Factory(
         private val mOkHttpClient: OkHttpClient,
-        private val mProgressOkHttpClient: OkHttpClient
     ) :
         ModelLoaderFactory<GlideUrl, InputStream> {
         override fun build(multiFactory: MultiModelLoaderFactory): ModelLoader<GlideUrl, InputStream> {
-            return AppHttpUrlLoader(mOkHttpClient, mProgressOkHttpClient)
+            return AppHttpUrlLoader(mOkHttpClient)
         }
 
         override fun teardown() {

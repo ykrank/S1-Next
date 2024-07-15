@@ -33,7 +33,6 @@ import me.ykrank.s1next.widget.net.AppData
 import me.ykrank.s1next.widget.net.AppDns
 import me.ykrank.s1next.widget.net.Data
 import me.ykrank.s1next.widget.net.Image
-import me.ykrank.s1next.widget.net.Progress
 import okhttp3.CookieJar
 import okhttp3.Dns
 import okhttp3.OkHttpClient
@@ -102,26 +101,6 @@ class AppModule {
     @Provides
     @AppLife
     fun providerImageOkHttpClientBuilder(
-        cookieJar: CookieJar,
-        baseHostUrl: AppHostUrl,
-        dns: Dns
-    ): OkHttpClient.Builder {
-        val builder = OkHttpClient.Builder()
-        builder.dns(dns)
-        builder.connectTimeout(17, TimeUnit.SECONDS)
-        builder.writeTimeout(17, TimeUnit.SECONDS)
-        builder.readTimeout(77, TimeUnit.SECONDS)
-        builder.retryOnConnectionFailure(true)
-        builder.cookieJar(cookieJar)
-        builder.addNetworkInterceptor(OkHttpNoAvatarInterceptor())
-        builder.addInterceptor(AppMultiHostInterceptor(baseHostUrl))
-        return builder
-    }
-
-    @Progress
-    @Provides
-    @AppLife
-    fun providerProgressOkHttpClientBuilder(
         cookieJar: CookieJar,
         baseHostUrl: AppHostUrl,
         dns: Dns,

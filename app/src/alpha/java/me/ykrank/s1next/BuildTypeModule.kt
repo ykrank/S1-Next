@@ -28,13 +28,6 @@ class BuildTypeModule(context: Context) {
         return builder.build()
     }
 
-    @Progress
-    @Provides
-    @AppLife
-    fun providerProgressOkHttpClient(@Progress builder: OkHttpClient.Builder): OkHttpClient {
-        return builder.build()
-    }
-
     @AppData
     @Provides
     @AppLife
