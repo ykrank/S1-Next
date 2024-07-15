@@ -11,6 +11,7 @@ import androidx.annotation.MainThread
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ActivityEvent
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
@@ -135,7 +136,7 @@ class UserHomeActivity : BaseActivity() {
             }
             R.id.menu_blacklist -> {
                 if (isInBlacklist) {
-                    BlacklistMenuAction.removeBlacklist(mRxBus, uid?.toInt() ?: 0, name)
+                    BlacklistMenuAction.removeBlacklist(this, mRxBus, uid?.toInt() ?: 0, name)
                 } else {
                     BlacklistMenuAction.addBlacklist(this, uid?.toInt() ?: 0, name)
                 }

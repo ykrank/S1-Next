@@ -1,31 +1,41 @@
-package com.github.ykrank.androidtools.util;
+package com.github.ykrank.androidtools.util
 
-import android.os.Looper;
+import android.os.Handler
+import android.os.Looper
 
-import com.google.common.base.Preconditions;
-
-public final class LooperUtil {
-
-    private LooperUtil() {
-    }
+object LooperUtil {
+    private val handler = Handler(Looper.getMainLooper())
 
     /**
      * Enforces the method caller on main thread.
      */
-    public static void enforceOnMainThread() {
-        Preconditions.checkState(isOnMainThread(),
-                "Must be called on the main thread.");
+    @JvmStatic
+    fun enforceOnMainThread() {
+        if (!isOnMainThread) {
+            throw IllegalArgumentException("You must call this method on a main thread")
+        }
     }
 
-    public static void enforceOnWorkThread() {
-        Preconditions.checkState(!isOnMainThread(),
-                "Must be called on the work thread.");
+    @JvmStatic
+    fun enforceOnWorkThread() {
+        if (isOnMainThread) {
+            throw IllegalArgumentException("You must call this method on a background thread")
+        }
     }
 
-    /**
-     * Returns {@code true} if called on the main thread, {@code false} otherwise.
-     */
-    public static boolean isOnMainThread() {
-        return Looper.myLooper() == Looper.getMainLooper();
+    val isOnMainThread: Boolean
+        /**
+         * Returns `true` if called on the main thread, `false` otherwise.
+         */
+        get() = Looper.myLooper() == Looper.getMainLooper()
+
+    fun workInMainThread(action: () -> Unit) {
+        handler.post(action)
+    }
+
+    fun <T> workInMainThread(data: T, action: (d: T) -> Unit) {
+        handler.post {
+            action(data)
+        }
     }
 }

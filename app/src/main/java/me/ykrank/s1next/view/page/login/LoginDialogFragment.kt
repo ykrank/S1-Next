@@ -3,6 +3,10 @@ package me.ykrank.s1next.view.page.login
 import android.os.Bundle
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import io.reactivex.Single
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper
 import me.ykrank.s1next.data.db.exmodel.RealLoginUser
@@ -49,8 +53,9 @@ class LoginDialogFragment : BaseLoginDialogFragment<AccountResultWrapper>() {
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun saveLoginUser2Db(data: AccountResultWrapper) {
-        RxJavaUtil.workInRxIoThread {
+        GlobalScope.launch(Dispatchers.IO) {
             val time = System.currentTimeMillis()
             val user = RealLoginUser(
                 id = null,

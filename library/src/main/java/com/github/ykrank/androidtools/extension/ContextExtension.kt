@@ -10,10 +10,10 @@ import com.github.ykrank.androidtools.util.RxJavaUtil
  */
 fun Context.toast(message: CharSequence?, duration: Int = Toast.LENGTH_SHORT) {
     if (message != null) {
-        if (LooperUtil.isOnMainThread()) {
+        if (LooperUtil.isOnMainThread) {
             Toast.makeText(this, message, duration).show()
         } else {
-            RxJavaUtil.workInMainThread {
+            LooperUtil.workInMainThread {
                 Toast.makeText(this, message, duration).show()
             }
         }

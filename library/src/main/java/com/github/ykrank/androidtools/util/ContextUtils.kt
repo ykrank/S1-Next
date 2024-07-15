@@ -1,54 +1,56 @@
-package com.github.ykrank.androidtools.util;
+package com.github.ykrank.androidtools.util
+
+import android.app.Activity
+import android.app.Application
+import android.content.Context
+import android.content.ContextWrapper
+import android.os.Build
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import com.github.ykrank.androidtools.util.LooperUtil.isOnMainThread
 
 
-import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
-import android.content.ContextWrapper;
-import android.os.Build;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-
-public final class ContextUtils {
-
-    public static boolean isActivityDestroyedForGlide(Context context) {
-        if (context instanceof Activity) {
-            return isActivityDestroyedForGlide((Activity) context);
+object ContextUtils {
+    fun isActivityDestroyedForGlide(context: Context?): Boolean {
+        if (context is Activity) {
+            return isActivityDestroyedForGlide(
+                context
+            )
         }
-        if (context instanceof ContextWrapper) {
-            return isActivityDestroyedForGlide(((ContextWrapper) context).getBaseContext());
+        if (context is ContextWrapper) {
+            return isActivityDestroyedForGlide(
+                context.baseContext
+            )
         }
-        return false;
+        return false
     }
 
-    public static boolean isActivityDestroyedForGlide(Activity activity) {
+    fun isActivityDestroyedForGlide(activity: Activity): Boolean {
         //in device from 4.2
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return activity.isDestroyed();
+            return activity.isDestroyed
         }
         //in device before 4.2
-        if (activity instanceof FragmentActivity) {
-            FragmentManager fm = ((FragmentActivity) activity).getSupportFragmentManager();
-            return fm == null || fm.isDestroyed();
+        if (activity is FragmentActivity) {
+            val fm = activity.supportFragmentManager
+            return fm == null || fm.isDestroyed
         }
-        return false;
+        return false
     }
 
     /**
-     * get base context (FragmentActivity, Activity, ApplicationContext) ContextWrapper <br>
-     * fork from {@link com.bumptech.glide.manager.RequestManagerRetriever#get(Context)}
+     * get base context (FragmentActivity, Activity, ApplicationContext) ContextWrapper <br></br>
+     * fork from [com.bumptech.glide.manager.RequestManagerRetriever.get]
      */
-    public static Context getBaseContext(@NonNull Context context) {
-        if (LooperUtil.isOnMainThread() && !(context instanceof Application)) {
-            if (context instanceof Activity) {
-                return context;
-            } else if (context instanceof ContextWrapper) {
-                return getBaseContext(((ContextWrapper) context).getBaseContext());
+    fun getBaseContext(context: Context): Context {
+        if (isOnMainThread && context !is Application) {
+            if (context is Activity) {
+                return context
+            } else if (context is ContextWrapper) {
+                return getBaseContext(context.baseContext)
             }
         }
-        return context.getApplicationContext();
+        return context.applicationContext
     }
 
     /**
@@ -57,15 +59,15 @@ public final class ContextUtils {
      *
      * @return The local class name.
      */
-    public static String getLocalClassName(Fragment fragment) {
-        final String pkg = fragment.getContext().getPackageName();
-        final String cls = fragment.getClass().getName();
-        int packageLen = pkg.length();
-        if (!cls.startsWith(pkg) || cls.length() <= packageLen
-                || cls.charAt(packageLen) != '.') {
-            return cls;
+    @JvmStatic
+    fun getLocalClassName(fragment: Fragment): String {
+        val pkg = fragment.context?.packageName ?: ""
+        val cls = fragment.javaClass.name
+        val packageLen = pkg.length
+        if (!cls.startsWith(pkg) || cls.length <= packageLen || cls[packageLen] != '.') {
+            return cls
         }
-        return cls.substring(packageLen + 1);
+        return cls.substring(packageLen + 1)
     }
 
     /**
@@ -74,14 +76,13 @@ public final class ContextUtils {
      *
      * @return The local class name.
      */
-    public static String getLocalClassName(android.app.Fragment fragment) {
-        final String pkg = fragment.getActivity().getPackageName();
-        final String cls = fragment.getClass().getName();
-        int packageLen = pkg.length();
-        if (!cls.startsWith(pkg) || cls.length() <= packageLen
-                || cls.charAt(packageLen) != '.') {
-            return cls;
+    fun getLocalClassName(fragment: android.app.Fragment): String {
+        val pkg = fragment.activity.packageName
+        val cls = fragment.javaClass.name
+        val packageLen = pkg.length
+        if (!cls.startsWith(pkg) || cls.length <= packageLen || cls[packageLen] != '.') {
+            return cls
         }
-        return cls.substring(packageLen + 1);
+        return cls.substring(packageLen + 1)
     }
 }

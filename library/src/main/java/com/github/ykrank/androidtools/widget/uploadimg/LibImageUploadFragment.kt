@@ -11,6 +11,7 @@ import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.databinding.FragmentUploadedImageBinding
 import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.LooperUtil
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.imagepicker.LibImagePickerFragment
 import com.github.ykrank.androidtools.widget.imagepicker.LocalMedia
@@ -166,7 +167,7 @@ open class LibImageUploadFragment : LibImagePickerFragment() {
                 imageUploadManager.delUploadedImage(deleteUrl)
                     .compose(RxJavaUtil.iOSingleTransformer())
                     .doAfterTerminate {
-                        RxJavaUtil.workInMainThread {
+                        LooperUtil.workInMainThread {
                             removeUploadedImage(model)
                         }
                     }

@@ -52,7 +52,12 @@ class AppPostViewModel(
             //Clear avatar false cache
             AvatarUrlsCache.clearUserAvatarCache("" + it.authorId)
             //个人主页
-            UserHomeActivity.start(v.context as androidx.fragment.app.FragmentActivity, "" + it.authorId, it.author, v)
+            UserHomeActivity.start(
+                v.context as androidx.fragment.app.FragmentActivity,
+                "" + it.authorId,
+                it.author,
+                v
+            )
         }
     }
 
@@ -64,19 +69,23 @@ class AppPostViewModel(
             when (menuitem.itemId) {
                 R.id.menu_popup_blacklist -> {
                     if (menuitem.title == v.context.getString(R.string.menu_blacklist_remove)) {
-                        BlacklistMenuAction.removeBlacklist(rxBus, postData?.authorId
-                                ?: 0, postData?.author)
+                        BlacklistMenuAction.removeBlacklist(
+                            lifecycleOwner, rxBus, postData?.authorId ?: 0, postData?.author
+                        )
                     } else {
                         val context = ContextUtils.getBaseContext(v.context)
                         if (context is androidx.fragment.app.FragmentActivity) {
-                            BlacklistMenuAction.addBlacklist(context,
-                                    postData?.authorId ?: 0, postData?.author)
+                            BlacklistMenuAction.addBlacklist(
+                                context,
+                                postData?.authorId ?: 0, postData?.author
+                            )
                         } else {
                             L.report(IllegalStateException("抹布时头像Context不为FragmentActivity$context"))
                         }
                     }
                     return@setOnMenuItemClickListener true
                 }
+
                 else -> return@setOnMenuItemClickListener false
             }
         }
@@ -97,14 +106,17 @@ class AppPostViewModel(
                     onReplyClick(v)
                     return@setOnMenuItemClickListener true
                 }
+
                 R.id.menu_popup_rate -> {
                     onRateClick(v)
                     return@setOnMenuItemClickListener true
                 }
+
                 R.id.menu_popup_edit -> {
                     onEditClick(v)
                     return@setOnMenuItemClickListener true
                 }
+
                 else -> return@setOnMenuItemClickListener false
             }
         }
@@ -137,7 +149,12 @@ class AppPostViewModel(
 
     fun onTradeHtmlClick(v: View) {
         post.get()?.let {
-            val url = String.format("%sforum.php?mod=viewthread&do=tradeinfo&tid=%s&pid=%s", Api.BASE_URL, it.tid, it.pid + 1)
+            val url = String.format(
+                "%sforum.php?mod=viewthread&do=tradeinfo&tid=%s&pid=%s",
+                Api.BASE_URL,
+                it.tid,
+                it.pid + 1
+            )
             WebViewActivity.start(v.context, url, true, true)
         }
     }

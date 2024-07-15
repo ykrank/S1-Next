@@ -79,7 +79,7 @@ class PostBlackViewModel(val lifecycleOwner: LifecycleOwner, private val rxBus: 
                         val authorName = postData.authorName
                         if (authorName != null) {
                             if (menuitem.title == v.context.getString(R.string.menu_blacklist_remove)) {
-                                BlacklistMenuAction.removeBlacklist(rxBus, authorIdInt, authorName)
+                                BlacklistMenuAction.removeBlacklist(lifecycleOwner, rxBus, authorIdInt, authorName)
                             } else {
                                 val context = ContextUtils.getBaseContext(v.context)
                                 if (context is androidx.fragment.app.FragmentActivity) {
