@@ -1,17 +1,32 @@
 package com.github.ykrank.androidtools.widget.track
 
 import android.content.Context
+import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
 import android.text.TextUtils
 import com.github.ykrank.androidtools.data.TrackUser
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.track.event.TrackEvent
-import com.github.ykrank.androidtools.widget.track.event.page.*
+import com.github.ykrank.androidtools.widget.track.event.page.ActivityEndEvent
+import com.github.ykrank.androidtools.widget.track.event.page.ActivityStartEvent
+import com.github.ykrank.androidtools.widget.track.event.page.FragmentEndEvent
+import com.github.ykrank.androidtools.widget.track.event.page.FragmentStartEvent
+import com.github.ykrank.androidtools.widget.track.event.page.LocalFragmentEndEvent
+import com.github.ykrank.androidtools.widget.track.event.page.LocalFragmentStartEvent
+import com.github.ykrank.androidtools.widget.track.event.page.PageEndEvent
+import com.github.ykrank.androidtools.widget.track.event.page.PageStartEvent
 import com.github.ykrank.androidtools.widget.track.talkingdata.TalkingDataAgent
 import com.github.ykrank.androidtools.widget.track.trackhandler.DefaultTrackHandler
 import com.github.ykrank.androidtools.widget.track.trackhandler.TrackHandler
-import com.github.ykrank.androidtools.widget.track.trackhandler.page.*
+import com.github.ykrank.androidtools.widget.track.trackhandler.page.ActivityEndTrackHandler
+import com.github.ykrank.androidtools.widget.track.trackhandler.page.ActivityStartTrackHandler
+import com.github.ykrank.androidtools.widget.track.trackhandler.page.FragmentEndTrackHandler
+import com.github.ykrank.androidtools.widget.track.trackhandler.page.FragmentStartTrackHandler
+import com.github.ykrank.androidtools.widget.track.trackhandler.page.LocalFragmentEndTrackHandler
+import com.github.ykrank.androidtools.widget.track.trackhandler.page.LocalFragmentStartTrackHandler
+import com.github.ykrank.androidtools.widget.track.trackhandler.page.PageEndTrackHandler
+import com.github.ykrank.androidtools.widget.track.trackhandler.page.PageStartTrackHandler
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -22,6 +37,7 @@ class DataTrackAgent {
 
     private val mThread = HandlerThread(THREAD_NAME)
     private var looper: Looper? = null
+    private var mHandler: Handler? = null
     private val handlerMapper = ConcurrentHashMap<Class<out TrackEvent>, TrackHandler<out TrackEvent>>()
     private var defaultHandler: TrackHandler<TrackEvent>? = null
     private var mUser: TrackUser? = null
@@ -31,6 +47,7 @@ class DataTrackAgent {
         agent = TalkingDataAgent()
         mThread.start()
         looper = mThread.looper
+        mHandler = Handler(mThread.looper)
 
         agent.init(context.applicationContext)
         setDefaultHandler(DefaultTrackHandler(context.applicationContext, agent))
@@ -63,14 +80,19 @@ class DataTrackAgent {
 
     @SuppressWarnings("unchecked")
     fun post(event: TrackEvent) {
+        val threadHandler = mHandler
+        if (threadHandler == null) {
+            L.report(IllegalStateException("TrackEvent no threadHandler:$event"))
+            return
+        }
         val handler = handlerMapper[event.eventType]
         if (handler != null) {
             handler as TrackHandler<TrackEvent>
-            handler.track(looper, event)
+            handler.track(threadHandler, event)
         } else if (defaultHandler != null) {
-            defaultHandler?.track(looper, event)
+            defaultHandler?.track(threadHandler, event)
         } else {
-            L.report(IllegalStateException("TrackEvent not handler:" + event))
+            L.report(IllegalStateException("TrackEvent not handler:$event"))
         }
     }
 

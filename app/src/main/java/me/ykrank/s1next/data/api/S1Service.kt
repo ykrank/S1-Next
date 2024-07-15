@@ -1,179 +1,262 @@
-package me.ykrank.s1next.data.api;
+package me.ykrank.s1next.data.api
 
-import java.util.List;
-import java.util.Map;
+import io.reactivex.Single
+import me.ykrank.s1next.data.api.model.Profile
+import me.ykrank.s1next.data.api.model.collection.Favourites
+import me.ykrank.s1next.data.api.model.collection.Friends
+import me.ykrank.s1next.data.api.model.collection.Notes
+import me.ykrank.s1next.data.api.model.collection.PmGroups
+import me.ykrank.s1next.data.api.model.darkroom.DarkRoomWrapper
+import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper
+import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper
+import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper
+import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper
+import retrofit2.Response
+import retrofit2.http.Field
+import retrofit2.http.FieldMap
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.POST
+import retrofit2.http.Query
 
-import io.reactivex.Single;
-import me.ykrank.s1next.data.api.model.Profile;
-import me.ykrank.s1next.data.api.model.collection.Favourites;
-import me.ykrank.s1next.data.api.model.collection.Friends;
-import me.ykrank.s1next.data.api.model.collection.Notes;
-import me.ykrank.s1next.data.api.model.collection.PmGroups;
-import me.ykrank.s1next.data.api.model.darkroom.DarkRoomWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper;
-import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper;
-import retrofit2.Response;
-import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
-
-public interface S1Service {
-
-    @GET(ApiForum.URL_FORUM)
-    Single<String> getForumGroupsWrapper();
+interface S1Service {
+    @get:GET(ApiForum.URL_FORUM)
+    val forumGroupsWrapper: Single<String>
 
     @GET(ApiHome.URL_FAVOURITES)
-    Single<BaseResultWrapper<Favourites>> getFavouritesWrapper(@Query("page") int page);
+    fun getFavouritesWrapper(@Query("page") page: Int): Single<BaseResultWrapper<Favourites>>
 
     @GET(ApiForum.URL_THREAD_LIST)
-    Single<String> getThreadsWrapper(@Query("fid") String forumId, @Query("typeid") String typeId, @Query("page") int page);
+    fun getThreadsWrapper(
+        @Query("fid") forumId: String?,
+        @Query("typeid") typeId: String?,
+        @Query("page") page: Int
+    ): Single<String>
 
     @GET(ApiForum.URL_POST_LIST)
-    Single<String> getPostsWrapper(@Query("tid") String threadId, @Query("page") int page, @Query("authorid") String authorId);
+    fun getPostsWrapper(
+        @Query("tid") threadId: String?,
+        @Query("page") page: Int,
+        @Query("authorid") authorId: String?
+    ): Single<String>
 
     @GET(ApiForum.URL_POST_LIST_NEW)
-    Single<String> getPostsWrapperNew(@Query("tid") String threadId, @Query("page") int page, @Query("authorid") String authorId);
+    fun getPostsWrapperNew(
+        @Query("tid") threadId: String?,
+        @Query("page") page: Int,
+        @Query("authorid") authorId: String?
+    ): Single<String>
 
     @GET(ApiForum.URL_TRADE_POST_INFO)
-    Single<String> getTradePostInfo(@Query("tid") String threadId, @Query("pid") int pid);
+    fun getTradePostInfo(@Query("tid") threadId: String?, @Query("pid") pid: Int): Single<String>
 
     @GET(ApiForum.URL_QUOTE_POST_REDIRECT)
-    Single<Response<Void>> getQuotePostResponseBody(@Query("ptid") String threadId, @Query("pid") String quotePostId);
+    fun getQuotePostResponseBody(
+        @Query("ptid") threadId: String?,
+        @Query("pid") quotePostId: String?
+    ): Single<Response<Void>>
 
     @FormUrlEncoded
     @POST(ApiMember.URL_LOGIN)
-    Single<AccountResultWrapper> login(@Field("username") String username, @Field("password") String password, @Field("questionid") Integer questionId, @Field("answer") String answer);
+    fun login(
+        @Field("username") username: String?,
+        @Field("password") password: String?,
+        @Field("questionid") questionId: Int?,
+        @Field("answer") answer: String?
+    ): Single<AccountResultWrapper>
 
     @GET(ApiForum.URL_AUTHENTICITY_TOKEN_HELPER)
-    Single<AccountResultWrapper> refreshAuthenticityToken();
+    fun refreshAuthenticityToken(): Single<AccountResultWrapper>
 
     //region Favourites
     @FormUrlEncoded
     @POST(ApiHome.URL_THREAD_FAVOURITES_ADD)
-    Single<AccountResultWrapper> addThreadFavorite(@Field("formhash") String authenticityToken, @Field("id") String threadId, @Field("description") String remark);
+    fun addThreadFavorite(
+        @Field("formhash") authenticityToken: String?,
+        @Field("id") threadId: String?,
+        @Field("description") remark: String?
+    ): Single<AccountResultWrapper>
 
     @FormUrlEncoded
     @POST(ApiHome.URL_THREAD_FAVOURITES_REMOVE)
-    Single<AccountResultWrapper> removeThreadFavorite(@Field("formhash") String authenticityToken, @Field("favid") String favId);
-    //endregion
+    fun removeThreadFavorite(
+        @Field("formhash") authenticityToken: String?,
+        @Field("favid") favId: String?
+    ): Single<AccountResultWrapper>
 
+    //endregion
     //region Reply
     @FormUrlEncoded
     @POST(ApiForum.URL_REPLY)
-    Single<AccountResultWrapper> reply(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("message") String reply);
+    fun reply(
+        @Field("formhash") authenticityToken: String?,
+        @Field("tid") threadId: String?,
+        @Field("message") reply: String?
+    ): Single<AccountResultWrapper>
 
     @GET(ApiForum.URL_QUOTE_HELPER)
-    Single<String> getQuoteInfo(@Query("tid") String threadId, @Query("repquote") String quotePostId);
+    fun getQuoteInfo(
+        @Query("tid") threadId: String?,
+        @Query("repquote") quotePostId: String?
+    ): Single<String>
 
     @FormUrlEncoded
     @POST(ApiForum.URL_REPLY)
-    Single<AccountResultWrapper> replyQuote(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("message") String reply,
-                                            @Field("noticeauthor") String encodedUserId, @Field("noticetrimstr") String quoteMessage, @Field("noticeauthormsg") String replyNotification);
-    //endregion
+    fun replyQuote(
+        @Field("formhash") authenticityToken: String?,
+        @Field("tid") threadId: String?,
+        @Field("message") reply: String?,
+        @Field("noticeauthor") encodedUserId: String?,
+        @Field("noticetrimstr") quoteMessage: String?,
+        @Field("noticeauthormsg") replyNotification: String?
+    ): Single<AccountResultWrapper>
 
+    //endregion
     //region PM
     @GET(ApiHome.URL_PM_LIST)
-    Single<BaseDataWrapper<PmGroups>> getPmGroups(@Query("page") int page);
+    fun getPmGroups(@Query("page") page: Int): Single<BaseDataWrapper<PmGroups>>
 
     @GET(ApiHome.URL_PM_VIEW_LIST)
-    Single<PmsWrapper> getPmList(@Query("touid") String toUid, @Query("page") int page);
+    fun getPmList(@Query("touid") toUid: String?, @Query("page") page: Int): Single<PmsWrapper>
 
     @FormUrlEncoded
     @POST(ApiHome.URL_PM_POST)
-    Single<AccountResultWrapper> postPm(@Field("formhash") String authenticityToken, @Field("touid") String toUid, @Field("message") String msg);
-    //endregion
+    fun postPm(
+        @Field("formhash") authenticityToken: String?,
+        @Field("touid") toUid: String?,
+        @Field("message") msg: String?
+    ): Single<AccountResultWrapper>
 
+    //endregion
     //region New thread
     @GET(ApiForum.URL_NEW_THREAD_HELPER)
-    Single<String> getNewThreadInfo(@Query("fid") int fid);
+    fun getNewThreadInfo(@Query("fid") fid: Int): Single<String>
 
     @FormUrlEncoded
     @POST(ApiForum.URL_NEW_THREAD)
-    Single<AccountResultWrapper> newThread(@Query("fid") int fid, @Field("formhash") String authenticityToken, @Field("posttime") long postTime,
-                                           @Field("typeid") String typeId, @Field("subject") String subject, @Field("message") String message,
-                                           @Field("allownoticeauthor") int allowNoticeAuthor, @Field("usesig") int useSign,
-                                           @Field("save") Integer saveAsDraft);
-    //endregion
+    fun newThread(
+        @Query("fid") fid: Int,
+        @Field("formhash") authenticityToken: String?,
+        @Field("posttime") postTime: Long,
+        @Field("typeid") typeId: String?,
+        @Field("subject") subject: String?,
+        @Field("message") message: String?,
+        @Field("allownoticeauthor") allowNoticeAuthor: Int,
+        @Field("usesig") useSign: Int,
+        @Field("save") saveAsDraft: Int?
+    ): Single<AccountResultWrapper>
 
+    //endregion
     @GET(ApiForum.URL_EDIT_POST_HELPER)
-    Single<String> getEditPostInfo(@Query("fid") int fid, @Query("tid") int tid, @Query("pid") int pid);
+    fun getEditPostInfo(
+        @Query("fid") fid: Int,
+        @Query("tid") tid: Int,
+        @Query("pid") pid: Int
+    ): Single<String>
 
     @FormUrlEncoded
     @POST(ApiForum.URL_EDIT_POST)
-    Single<String> editPost(@Field("fid") int fid, @Field("tid") int tid, @Field("pid") int pid,
-                            @Field("formhash") String authenticityToken, @Field("posttime") long postTime,
-                            @Field("typeid") String typeId, @Field("subject") String subject,
-                            @Field("message") String message, @Field("allownoticeauthor") int allowNoticeAuthor,
-                            @Field("usesig") int useSign, @Field("save") Integer saveAsDraft,
-                            @Field("readperm") String readPerm);
+    fun editPost(
+        @Field("fid") fid: Int, @Field("tid") tid: Int, @Field("pid") pid: Int,
+        @Field("formhash") authenticityToken: String?, @Field("posttime") postTime: Long,
+        @Field("typeid") typeId: String?, @Field("subject") subject: String?,
+        @Field("message") message: String?, @Field("allownoticeauthor") allowNoticeAuthor: Int,
+        @Field("usesig") useSign: Int, @Field("save") saveAsDraft: Int?,
+        @Field("readperm") readPerm: String?
+    ): Single<String>
 
     @FormUrlEncoded
     @POST(ApiForum.URL_SEARCH_FORUM)
-    Single<String> searchForum(@Field("formhash") String authenticityToken, @Field("srchtxt") String text);
+    fun searchForum(
+        @Field("formhash") authenticityToken: String?,
+        @Field("srchtxt") text: String?
+    ): Single<String>
 
     @FormUrlEncoded
     @POST(ApiForum.URL_SEARCH_USER)
-    Single<String> searchUser(@Field("formhash") String authenticityToken, @Field("srchtxt") String text);
+    fun searchUser(
+        @Field("formhash") authenticityToken: String?,
+        @Field("srchtxt") text: String?
+    ): Single<String>
 
     //region User home
     @GET(ApiHome.URL_MY_NOTE_LIST)
-    Single<BaseDataWrapper<Notes>> getMyNotes(@Query("page") int page);
+    fun getMyNotes(@Query("page") page: Int): Single<BaseDataWrapper<Notes>>
 
     @GET(ApiHome.URL_MY_NOTE_LIST_SYSTEM)
-    Single<String> getMyNotesSystem(@Query("page") int page);
+    fun getMyNotesSystem(@Query("page") page: Int): Single<String>
 
     @GET(ApiHome.URL_PROFILE)
-    Single<BaseDataWrapper<Profile>> getProfile(@Query("uid") String uid);
+    fun getProfile(@Query("uid") uid: String?): Single<BaseDataWrapper<Profile>>
 
     @GET(ApiHome.URL_PROFILE_WEB)
-    Single<String> getProfileWeb(@Header("Referer") String referer, @Query("uid") String uid);
+    fun getProfileWeb(
+        @Header("Referer") referer: String?,
+        @Query("uid") uid: String?
+    ): Single<String>
 
     @GET(ApiHome.URL_FRIENDS)
-    Single<BaseDataWrapper<Friends>> getFriends(@Query("uid") String uid);
+    fun getFriends(@Query("uid") uid: String?): Single<BaseDataWrapper<Friends>>
 
     @GET(ApiHome.URL_THREADS)
-    Single<String> getHomeThreads(@Query("uid") String uid, @Query("page") int page);
+    fun getHomeThreads(@Query("uid") uid: String?, @Query("page") page: Int): Single<String>
 
     @GET(ApiHome.URL_REPLIES)
-    Single<String> getHomeReplies(@Query("uid") String uid, @Query("page") int page);
+    fun getHomeReplies(@Query("uid") uid: String?, @Query("page") page: Int): Single<String>
 
     //endregion
-
     @GET(ApiHome.URL_RATE_PRE)
-    Single<String> getRatePreInfo(@Query("tid") String threadId, @Query("pid") String postId, @Query("t") long timestamp);
+    fun getRatePreInfo(
+        @Query("tid") threadId: String?,
+        @Query("pid") postId: String?,
+        @Query("t") timestamp: Long
+    ): Single<String>
 
     @FormUrlEncoded
     @POST(ApiHome.URL_RATE)
-    Single<String> rate(@Field("formhash") String authenticityToken, @Field("tid") String threadId, @Field("pid") String postId
-            , @Field("referer") String refer, @Field("handlekey") String handleKey, @Field("score1") String score, @Field("reason") String reason);
+    fun rate(
+        @Field("formhash") authenticityToken: String?,
+        @Field("tid") threadId: String?,
+        @Field("pid") postId: String?,
+        @Field("referer") refer: String?,
+        @Field("handlekey") handleKey: String?,
+        @Field("score1") score: String?,
+        @Field("reason") reason: String?
+    ): Single<String>
 
     @GET(ApiHome.URL_REPORT_PRE)
-    Single<String> getReportPreInfo(@Query("tid") String threadId, @Query("rid") String postId, @Query("t") long timestamp);
+    fun getReportPreInfo(
+        @Query("tid") threadId: String?,
+        @Query("rid") postId: String?,
+        @Query("t") timestamp: Long
+    ): Single<String>
 
     @FormUrlEncoded
     @POST(ApiHome.URL_REPORT)
-    Single<String> report(@FieldMap Map<String, String> fields, @Field("report_select") String report, @Field("message") String msg);
+    suspend fun report(
+        @FieldMap fields: Map<String, String>,
+        @Field("report_select") report: String?,
+        @Field("message") msg: String?
+    ): String
 
     @GET(ApiMember.URL_AUTO_SIGN)
-    Single<String> autoSign(@Query("formhash") String authenticityToken);
+    fun autoSign(@Query("formhash") authenticityToken: String?): Single<String>
 
     @FormUrlEncoded
     @POST(ApiForum.URL_VOTE)
-    Single<String> vote(@Query("tid") String threadId, @Field("formhash") String authenticityToken
-            , @Field("pollanswers[]") List<Integer> answers);
+    fun vote(
+        @Query("tid") threadId: String?,
+        @Field("formhash") authenticityToken: String?,
+        @Field("pollanswers[]") answers: List<Int>
+    ): Single<String>
 
     @GET(ApiForum.URL_RATE_LIST)
-    Single<String> getRates(@Query("tid") String threadId, @Query("pid") String postId);
+    suspend fun getRates(@Query("tid") threadId: String?, @Query("pid") postId: String?): String
 
     @GET(Api.URL_DARK_ROOM)
-    Single<DarkRoomWrapper> getDarkRoom(@Query("cid") String cid);
+    fun getDarkRoom(@Query("cid") cid: String?): Single<DarkRoomWrapper>
 
     @GET(Api.URL_WEB_BLACK_LIST)
-    Single<String> getWebBlackList(@Query("uid") String uid, @Query("page") int page);
+    fun getWebBlackList(@Query("uid") uid: String?, @Query("page") page: Int): Single<String>
 }

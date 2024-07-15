@@ -1,32 +1,18 @@
-package com.github.ykrank.androidtools.widget.track.trackhandler;
+package com.github.ykrank.androidtools.widget.track.trackhandler
 
-import android.os.Looper;
-import androidx.annotation.NonNull;
-import androidx.annotation.WorkerThread;
-
-import com.github.ykrank.androidtools.util.L;
-import com.github.ykrank.androidtools.widget.track.TrackAgent;
-
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import android.os.Handler
+import androidx.annotation.WorkerThread
+import com.github.ykrank.androidtools.widget.track.TrackAgent
 
 /**
  * Created by ykrank on 2016/12/27.
  */
-
-public abstract class TrackHandlerImp<T> implements TrackHandler<T> {
-    protected TrackAgent agent;
-
-    TrackHandlerImp(@NonNull TrackAgent agent) {
-        this.agent = agent;
-    }
-
-    @Override
-    public final void track(Looper looper, T event) {
-        Single.just(event)
-                .map(this::trackEvent)
-                .subscribeOn(AndroidSchedulers.from(looper))
-                .subscribe(b -> L.d("track:" + b), L::report);
+abstract class TrackHandlerImp<T> internal constructor(protected var agent: TrackAgent) :
+    TrackHandler<T> {
+    override fun track(handler: Handler, eventType: T) {
+        handler.post {
+            trackEvent(eventType)
+        }
     }
 
     /**
@@ -36,5 +22,5 @@ public abstract class TrackHandlerImp<T> implements TrackHandler<T> {
      * @return does action success
      */
     @WorkerThread
-    public abstract boolean trackEvent(T event);
+    abstract fun trackEvent(event: T?): Boolean
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.util.Pair
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.bigkoo.quicksidebar.QuickSideBarView
 import com.bigkoo.quicksidebar.listener.OnQuickSideBarTouchListener
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -22,7 +23,6 @@ import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.RxBus
 import com.github.ykrank.androidtools.widget.recycleview.StartSnapLinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.zipWith
@@ -31,6 +31,9 @@ import io.rx_cache2.DynamicKeyGroup
 import io.rx_cache2.EvictDynamicKeyGroup
 import io.rx_cache2.Reply
 import io.rx_cache2.Source
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
@@ -506,30 +509,29 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
         }
         rateStamp = time
 
-        Observable.fromIterable(posts.filter { it.rates?.size == 0 && rateMap[it.id] == null }
-            .distinctBy { it.id })
-            .flatMap {
-                val pid = it.id
-                mS1Service.getRates(mThreadId, pid.toString())
-                    .map { s -> Pair(pid, Rate.fromHtml(s)) }
-                    .toObservable()
-            }
-            .compose(RxJavaUtil.iOTransformer())
-            .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
-            .subscribe({
-                val pid = it.first
-                val rates = it.second
-                if (pid != null && rates?.isNotEmpty() == true) {
-                    rateMap[pid] = rates
-                    mRecyclerAdapter.dataSet.filterIsInstance(Post::class.java)
-                        .forEachIndexed { index, post ->
-                            if (post.id == pid) {
-                                post.rates = rates
-                                mRecyclerAdapter.notifyItemChanged(index)
+        lifecycleScope.launch(L.print) {
+            posts.filter { it.rates?.size == 0 && rateMap[it.id] == null }
+                .distinctBy { it.id }
+                .asFlow()
+                .map {
+                    val pid = it.id
+                    val rates = mS1Service.getRates(mThreadId, pid.toString())
+                    Pair(pid, Rate.fromHtml(rates))
+                }.collect {
+                    val pid = it.first
+                    val rates = it.second
+                    if (pid != null && rates?.isNotEmpty() == true) {
+                        rateMap[pid] = rates
+                        mRecyclerAdapter.dataSet.filterIsInstance(Post::class.java)
+                            .forEachIndexed { index, post ->
+                                if (post.id == pid) {
+                                    post.rates = rates
+                                    mRecyclerAdapter.notifyItemChanged(index)
+                                }
                             }
-                        }
+                    }
                 }
-            }, L::report)
+        }
     }
 
     private fun initQuickSidebar(page: Int, posts: List<Post>) {

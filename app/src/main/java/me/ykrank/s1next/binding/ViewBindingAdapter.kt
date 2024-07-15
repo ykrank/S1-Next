@@ -15,7 +15,6 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.github.ykrank.androidtools.util.L
-import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.glide.transformations.BlurTransformation
 import com.github.ykrank.androidtools.widget.glide.viewtarget.DrawableViewBackgroundTarget
 import com.github.ykrank.androidtools.widget.glide.viewtarget.ViewBackgroundTarget
@@ -107,7 +106,7 @@ object ViewBindingAdapter {
                         target: Target<Bitmap>,
                         isFirstResource: Boolean
                     ): Boolean {
-                        RxJavaUtil.workInMainThreadWithView(view) {
+                        view.post {
                             setBlurBackground(
                                 view,
                                 oldManager,

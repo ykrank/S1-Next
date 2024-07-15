@@ -1,169 +1,152 @@
-package com.github.ykrank.androidtools.widget;
+package com.github.ykrank.androidtools.widget
 
-import androidx.annotation.Nullable;
-import androidx.annotation.WorkerThread;
-import android.text.TextUtils;
-import android.util.LruCache;
-
-import com.bumptech.glide.disklrucache.DiskLruCache;
-import com.bumptech.glide.load.Key;
-import com.bumptech.glide.signature.ObjectKey;
-import com.bumptech.glide.util.Util;
-import com.github.ykrank.androidtools.BuildConfig;
-import com.github.ykrank.androidtools.util.L;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import android.util.LruCache
+import androidx.annotation.WorkerThread
+import com.bumptech.glide.disklrucache.DiskLruCache
+import com.bumptech.glide.load.Key
+import com.bumptech.glide.signature.ObjectKey
+import com.bumptech.glide.util.Util
+import com.github.ykrank.androidtools.util.L.report
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStreamWriter
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 /**
  * use to cache document in editing
  */
 @WorkerThread
-public class EditorDiskCache {
-    private static final int APP_VERSION = 1;
-    private static final int MEMORY_CACHE_MAX_NUMBER = 4;
-    private static final String DISK_CACHE_DIRECTORY = "editor_disk_cache";
-    private static final long DISK_CACHE_MAX_SIZE = 100 * 1000; // 100KB
-
-    private static final Object DISK_CACHE_LOCK = new Object();
-
+class EditorDiskCache(cachePathName: String) {
     /**
      * We use both disk cache and memory cache.
      */
-    private final DiskLruCache diskLruCache;
-    private final LruCache<String, String> lruCache;
-    private final KeyGenerator keyGenerator;
+    private lateinit var diskLruCache: DiskLruCache
+    private val lruCache: LruCache<String, String?> = LruCache(MEMORY_CACHE_MAX_NUMBER)
+    private val keyGenerator: KeyGenerator
 
-    public EditorDiskCache(String cachePathName) {
-        lruCache = new LruCache<>(MEMORY_CACHE_MAX_NUMBER);
-
-        File file = new File(cachePathName
-                + File.separator + DISK_CACHE_DIRECTORY);
-        try {
-            diskLruCache = DiskLruCache.open(file, APP_VERSION, 1,
-                    DISK_CACHE_MAX_SIZE);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to open the cache in " + file + ".", e);
+    init {
+        val file = File(
+            cachePathName
+                    + File.separator + DISK_CACHE_DIRECTORY
+        )
+        diskLruCache = try {
+            DiskLruCache.open(
+                file, APP_VERSION, 1,
+                DISK_CACHE_MAX_SIZE
+            )
+        } catch (e: IOException) {
+            throw RuntimeException("Failed to open the cache in $file.", e)
         }
-
-        keyGenerator = new KeyGenerator();
+        keyGenerator = KeyGenerator()
     }
 
-    @Nullable
-    public String get(@Nullable String key) {
-        if (TextUtils.isEmpty(key)) {
-            return null;
+    operator fun get(key: String?): String? {
+        if (key.isNullOrEmpty()) {
+            return null
         }
-        String encodedKey = keyGenerator.getKey(key);
-
-        String result;
-        result = lruCache.get(encodedKey);
+        val encodedKey = keyGenerator.getKey(key)
+        var result: String?
+        result = lruCache[encodedKey]
         if (result == null) {
             try {
-                synchronized (DISK_CACHE_LOCK) {
-                    DiskLruCache.Value value = diskLruCache.get(encodedKey);
+                synchronized(DISK_CACHE_LOCK) {
+                    val value = diskLruCache[encodedKey]
                     if (value != null) {
-                        result = value.getString(0);
+                        result = value.getString(0)
                     }
                 }
-            } catch (IOException ignore) {
-                result = null;
+            } catch (ignore: IOException) {
+                result = null
             }
         }
-
-        return result;
+        return result
     }
 
     /**
      * if value is empty, then remove cache
      */
-    public void put(@Nullable String key, @Nullable String value) {
-        if (TextUtils.isEmpty(key)) {
-            return;
+    fun put(key: String?, value: String?) {
+        if (key.isNullOrEmpty()) {
+            return
         }
-
-        if (TextUtils.isEmpty(value)) {
-            remove(key);
-            return;
+        if (value.isNullOrEmpty()) {
+            remove(key)
+            return
         }
-
-        String encodedKey = keyGenerator.getKey(key);
-
-        lruCache.put(encodedKey, value);
+        val encodedKey = keyGenerator.getKey(key)
+        lruCache.put(encodedKey, value)
         try {
-            synchronized (DISK_CACHE_LOCK) {
-                DiskLruCache.Editor editor = diskLruCache.edit(encodedKey);
+            synchronized(DISK_CACHE_LOCK) {
+                val editor = diskLruCache.edit(encodedKey)
                 // Editor will be null if there are two concurrent puts. In the worst case we will just silently fail.
                 if (editor != null) {
-                    BufferedWriter writer = null;
+                    var writer: BufferedWriter? = null
                     try {
-                        File file = editor.getFile(0);
-                        writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
-                        writer.write(value);
-                        editor.commit();
+                        val file = editor.getFile(0)
+                        writer = BufferedWriter(OutputStreamWriter(FileOutputStream(file), "UTF-8"))
+                        writer.write(value)
+                        editor.commit()
                     } finally {
-                        editor.abortUnlessCommitted();
+                        editor.abortUnlessCommitted()
                         if (writer != null) {
                             try {
-                                writer.close();
-                            } catch (IOException e) {
-                                L.report(e);
+                                writer.close()
+                            } catch (e: IOException) {
+                                report(e)
                             }
                         }
                     }
                 }
             }
-        } catch (IOException ignore) {
-
+        } catch (ignore: IOException) {
         }
     }
 
-    public void remove(String key) {
-        if (TextUtils.isEmpty(key)) {
-            return;
+    fun remove(key: String?) {
+        if (key.isNullOrEmpty()) {
+            return
         }
-        String encodedKey = keyGenerator.getKey(key);
-
-        lruCache.remove(encodedKey);
+        val encodedKey = keyGenerator.getKey(key)
+        lruCache.remove(encodedKey)
         try {
-            synchronized (DISK_CACHE_LOCK) {
-                diskLruCache.remove(encodedKey);
-            }
-        } catch (IOException ignore) {
-
+            synchronized(DISK_CACHE_LOCK) { diskLruCache.remove(encodedKey) }
+        } catch (ignore: IOException) {
         }
     }
 
-    private static final class KeyGenerator {
-
-        private static final int KEYS_MEMORY_CACHE_MAX_NUMBER = 1000;
-
-        private final LruCache<String, String> lruCache = new LruCache<>(KEYS_MEMORY_CACHE_MAX_NUMBER);
-
-        public String getKey(String value) {
-            String safeKey;
-            synchronized (lruCache) {
-                safeKey = lruCache.get(value);
-            }
+    private class KeyGenerator {
+        private val lruCache = LruCache<String?, String?>(KEYS_MEMORY_CACHE_MAX_NUMBER)
+        fun getKey(value: String): String? {
+            var safeKey: String?
+            synchronized(lruCache) { safeKey = lruCache[value] }
             if (safeKey == null) {
                 try {
-                    Key key = new ObjectKey(value);
-                    MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-                    key.updateDiskCacheKey(messageDigest);
-                    safeKey = Util.sha256BytesToHex(messageDigest.digest());
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
+                    val key: Key = ObjectKey(value)
+                    val messageDigest = MessageDigest.getInstance("SHA-256")
+                    key.updateDiskCacheKey(messageDigest)
+                    safeKey = Util.sha256BytesToHex(messageDigest.digest())
+                } catch (e: NoSuchAlgorithmException) {
+                    e.printStackTrace()
                 }
-                synchronized (lruCache) {
-                    lruCache.put(value, safeKey);
-                }
+                synchronized(lruCache) { lruCache.put(value, safeKey) }
             }
-            return safeKey;
+            return safeKey
         }
+
+        companion object {
+            private const val KEYS_MEMORY_CACHE_MAX_NUMBER = 1000
+        }
+    }
+
+    companion object {
+        private const val APP_VERSION = 1
+        private const val MEMORY_CACHE_MAX_NUMBER = 4
+        private const val DISK_CACHE_DIRECTORY = "editor_disk_cache"
+        private const val DISK_CACHE_MAX_SIZE = (100 * 1000 // 100KB
+                ).toLong()
+        private val DISK_CACHE_LOCK = Any()
     }
 }

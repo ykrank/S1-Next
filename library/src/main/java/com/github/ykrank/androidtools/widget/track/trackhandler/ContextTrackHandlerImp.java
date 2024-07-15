@@ -1,10 +1,13 @@
 package com.github.ykrank.androidtools.widget.track.trackhandler;
 
-import android.os.Looper;
+import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 
 import com.github.ykrank.androidtools.widget.track.TrackAgent;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Created by ykrank on 2016/12/27.
@@ -18,7 +21,7 @@ public abstract class ContextTrackHandlerImp<T> implements TrackHandler<T> {
     }
 
     @Override
-    public final void track(Looper looper, T event) {
+    public final void track(@NotNull Handler handler, T event) {
         trackEvent(event);
     }
 

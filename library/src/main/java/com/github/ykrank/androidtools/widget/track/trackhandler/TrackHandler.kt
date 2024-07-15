@@ -1,12 +1,10 @@
-package com.github.ykrank.androidtools.widget.track.trackhandler;
+package com.github.ykrank.androidtools.widget.track.trackhandler
 
-import android.os.Looper;
+import android.os.Handler
 
 /**
  * Created by ykrank on 2016/12/27.
  */
-
-public interface TrackHandler<T> {
-
-    void track(Looper looper, T eventType);
+interface TrackHandler<T> {
+    fun track(handler: Handler, eventType: T)
 }

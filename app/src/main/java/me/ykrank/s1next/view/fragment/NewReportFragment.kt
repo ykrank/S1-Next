@@ -10,11 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.databinding.ProgressBarMenuBinding
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
+import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.ApiException
@@ -121,28 +123,26 @@ class NewReportFragment : BaseFragment() {
 
         sendMenu?.actionView = menuProgressBinding?.root
         sendMenu?.isEnabled = false
-        s1Service.report(preInfo.fields, reason, msg)
-            .map {
-                AjaxResult.fromAjaxString(it)
-            }
-                .compose(RxJavaUtil.iOSingleTransformer())
-                .doAfterTerminate {
-                    sendMenu?.actionView = sendMenuView
-                    sendMenu?.isEnabled = true
+
+        lifecycleScope.launch {
+            try {
+                val resultStr = s1Service.report(preInfo.fields, reason, msg)
+                val result = AjaxResult.fromAjaxString(resultStr)
+                val respMsg = result.msg
+                if (result.success || respMsg.contains("举报成功")) {
+                    showShortTextAndFinishCurrentActivity("举报成功")
+                } else {
+                    L.report(ApiException.ApiServerException(respMsg))
+                    showSnackbar(respMsg)
                 }
-                .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
-                .subscribe({
-                    val respMsg = it.msg
-                    if (it.success || respMsg.contains("举报成功")) {
-                        showShortTextAndFinishCurrentActivity("举报成功")
-                    } else {
-                        L.report(ApiException.ApiServerException(respMsg))
-                        showSnackbar(respMsg)
-                    }
-                }, {
-                    L.report(it)
-                    showShortSnackbar(it)
-                })
+            } catch (e: Exception) {
+                L.report(e)
+                showShortSnackbar(e)
+            } finally {
+                sendMenu?.actionView = sendMenuView
+                sendMenu?.isEnabled = true
+            }
+        }
     }
 
     companion object {

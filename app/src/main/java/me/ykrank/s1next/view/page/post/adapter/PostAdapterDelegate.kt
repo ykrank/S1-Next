@@ -4,15 +4,15 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.AndroidLifeCycle
-import com.github.ykrank.androidlifecycle.event.ViewEvent
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.RxBus
+import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
@@ -119,20 +119,19 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
             if (rates?.isNotEmpty() == true) {
                 RateDetailsListActivity.start(context, ArrayList(rates))
             } else {
-                mS1Service.getRates(threadInfo?.id, post.id.toString())
-                    .to(AndroidRxDispose.withSingle(holder.itemView, ViewEvent.DESTROY))
-                    .subscribe({
-                        val rates = Rate.fromHtml(it)
-                        post.rates = rates
-                        val adapter = binding.recycleViewRates.adapter as SimpleRecycleViewAdapter?
-                        if (adapter != null) {
-                            if (rates.size > 10) {
-                                adapter.diffNewDataSet(rates.subList(0, 10), true)
-                            } else {
-                                adapter.diffNewDataSet(rates, true)
-                            }
+                fragment.lifecycleScope.launch(L.print) {
+                    val resultStr = mS1Service.getRates(threadInfo?.id, post.id.toString())
+                    val newRates = Rate.fromHtml(resultStr)
+                    post.rates = newRates
+                    val adapter = binding.recycleViewRates.adapter as SimpleRecycleViewAdapter?
+                    if (adapter != null) {
+                        if (newRates.size > 10) {
+                            adapter.diffNewDataSet(newRates.subList(0, 10), true)
+                        } else {
+                            adapter.diffNewDataSet(newRates, true)
                         }
-                    }, L::report)
+                    }
+                }
             }
         }
         if (rates?.isNotEmpty() == true) {
