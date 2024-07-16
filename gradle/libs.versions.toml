@@ -1,14 +1,11 @@
 [versions]
 adapterdelegates3 = "3.1.0"
-adapterRxjava2 = "2.11.0"
 alicloudAndroidHttpdns = "2.4.0"
 androidautodispose = "0.4.0"
 activity = "1.9.0"
 cardview = "1.0.0"
-commonsLang3 = "3.14.0"
 databinding_compiler = "3.1.4"
 constraintlayout = "2.1.4"
-converterScalars = "2.11.0"
 bugly_crashreport = "4.1.9.3"
 bugly_crashreport_upgrade = "1.6.1"
 bugly_nativecrashreport = "3.9.2"
@@ -16,13 +13,15 @@ dagger = "2.51.1"
 flipperNoop = "0.250.0"
 glide = "4.16.0"
 guava = "33.2.0-android"
+# https://github.com/FasterXML/jackson-databind/issues/3702
+# jackson 2.14 does not work on Android API < 26
 jackson = "2.17.1"
 jolyglot_jackson = "0.0.6"
 jsoup = "1.17.2"
 leakcanaryAndroid = "2.14"
 leakcanaryAndroidNoOp = "1.6.3"
 preference = "1.2.1"
-lifecycleLivedataKtx = "2.8.1"
+lifecycleLivedataKtx = "2.8.3"
 logger = "2.2.0"
 material = "1.12.0"
 multidex = "2.0.1"
@@ -47,9 +46,9 @@ kotlin = "2.0.0"
 kotlinKsp = "2.0.0-1.0.21"
 coreKtx = "1.13.1"
 junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.8.1"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+lifecycleRuntimeKtx = "2.8.3"
 paging = "3.3.0"
 room = "2.6.1"
 transition = "1.5.0"
@@ -111,9 +110,9 @@ paperparcel-kotlin = { module = "nz.bradcampbell:paperparcel-kotlin", version.re
 photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoview" }
 quicksidebar = { module = "com.bigkoo:quicksidebar", version.ref = "quicksidebar" }
 retrofit2 = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
-retrofit2-adapter-rxjava2 = { module = "com.squareup.retrofit2:adapter-rxjava2", version.ref = "adapterRxjava2" }
-retrofit2-converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "converterScalars" }
-retrofit2-converter-jackson = { module = "com.squareup.retrofit2:converter-jackson", version.ref = "adapterRxjava2" }
+retrofit2-adapter-rxjava2 = { module = "com.squareup.retrofit2:adapter-rxjava2", version.ref = "retrofit" }
+retrofit2-converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit" }
+retrofit2-converter-jackson = { module = "com.squareup.retrofit2:converter-jackson", version.ref = "retrofit" }
 rxcache-runtime = { module = "com.github.VictorAlbertos.RxCache:runtime", version.ref = "rxcache_runtime" }
 rxandroid = { module = "io.reactivex.rxjava2:rxandroid", version.ref = "rxandroid" }
 rxjava = { module = "io.reactivex.rxjava2:rxjava", version.ref = "rxjava" }

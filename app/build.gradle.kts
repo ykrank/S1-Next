@@ -25,7 +25,7 @@ android {
 
     defaultConfig {
         applicationId = "me.ykrank.s1next"
-        minSdk = 23
+        minSdk = 26
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = appVersionCode
         versionName = "${appVersionName}.${appVersionCode}"
