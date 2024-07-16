@@ -30,6 +30,14 @@ object LooperUtil {
         get() = Looper.myLooper() == Looper.getMainLooper()
 
     fun workInMainThread(action: () -> Unit) {
+        if (isOnMainThread) {
+            action()
+        } else {
+            handler.post(action)
+        }
+    }
+
+    fun postToMainThread(action: () -> Unit) {
         handler.post(action)
     }
 

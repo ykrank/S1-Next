@@ -227,21 +227,23 @@ class GlideImageGetter protected constructor(
 
     private fun startImageGetterViewTarget(glideRequestBuilder: RequestBuilder<Drawable>,
                                            imageGetterViewTarget: ImageGetterViewTarget, emoticon: Boolean) {
-        lifecycleOwner.lifecycleScope.launch(L.report) {
-            if (emoticon) {
-                imageGetterViewTarget.mDrawable.let {
-                    it.setKeepScaleRatio(true)
+        LooperUtil.postToMainThread {
+            lifecycleOwner.lifecycleScope.launch(L.report) {
+                if (emoticon) {
+                    imageGetterViewTarget.mDrawable.let {
+                        it.setKeepScaleRatio(true)
 //                            it.setWidthTargetSize(emoticonSize)
 //                            it.setHeightTargetSize(emoticonSize)
+                    }
+                } else {
+                    //Big image scale to fit width
+                    imageGetterViewTarget.mDrawable.setTriggerSize(TriggerSize)
+                    if (mTextView.width > 0) {
+                        imageGetterViewTarget.mDrawable.setWidthTargetSize(mTextView.width)
+                    }
                 }
-            } else {
-                //Big image scale to fit width
-                imageGetterViewTarget.mDrawable.setTriggerSize(TriggerSize)
-                if (mTextView.width > 0) {
-                    imageGetterViewTarget.mDrawable.setWidthTargetSize(mTextView.width)
-                }
+                glideRequestBuilder.into(imageGetterViewTarget)
             }
-            glideRequestBuilder.into(imageGetterViewTarget)
         }
     }
 
