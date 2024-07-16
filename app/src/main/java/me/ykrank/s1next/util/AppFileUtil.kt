@@ -1,6 +1,7 @@
 package me.ykrank.s1next.util;
 
 import androidx.documentfile.provider.DocumentFile
+import androidx.fragment.app.FragmentManager
 import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.widget.saf.SAFFragment
 
@@ -19,7 +20,7 @@ object AppFileUtil {
     }
 
     fun getDownloadPath(
-        fragmentManager: androidx.fragment.app.FragmentManager,
+        fragmentManager: FragmentManager,
         callback: ((DocumentFile) -> Unit)?,
         focusResetPath: Boolean = false
     ) {

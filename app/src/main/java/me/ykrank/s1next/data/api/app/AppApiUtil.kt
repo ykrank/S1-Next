@@ -11,7 +11,8 @@ object AppApiUtil {
 
     fun appLoginIfNeed(rxBus: RxBus, throwable: Throwable): Boolean {
         if (throwable is ApiException.AppServerException) {
-            if (throwable.message?.contains("重新登录")==true) {
+            val message = throwable.message ?: ""
+            if (message.contains("重新登录") || message.startsWith("请先登录")) {
                 rxBus.post(AppNotLoginEvent())
                 return true
             }
