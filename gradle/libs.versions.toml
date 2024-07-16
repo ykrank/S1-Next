@@ -16,7 +16,6 @@ guava = "33.2.0-android"
 # https://github.com/FasterXML/jackson-databind/issues/3702
 # jackson 2.14 does not work on Android API < 26
 jackson = "2.17.1"
-jolyglot_jackson = "0.0.6"
 jsoup = "1.17.2"
 leakcanaryAndroid = "2.14"
 leakcanaryAndroidNoOp = "1.6.3"
@@ -36,7 +35,6 @@ percentlayout = "1.0.0"
 photoview = "2.3.0"
 quicksidebar = "1.0.3"
 retrofit = "2.11.0"
-rxcache_runtime = "1.8.3-2.x"
 rxandroid = "2.1.1"
 rxjava = "2.2.21"
 rxkotlin = "2.4.0"
@@ -86,7 +84,6 @@ glide-okhttp3-integration = { module = "com.github.bumptech.glide:okhttp3-integr
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
-jolyglot-jackson = { module = "com.github.VictorAlbertos.Jolyglot:jackson", version.ref = "jolyglot_jackson" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -113,7 +110,6 @@ retrofit2 = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofi
 retrofit2-adapter-rxjava2 = { module = "com.squareup.retrofit2:adapter-rxjava2", version.ref = "retrofit" }
 retrofit2-converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit" }
 retrofit2-converter-jackson = { module = "com.squareup.retrofit2:converter-jackson", version.ref = "retrofit" }
-rxcache-runtime = { module = "com.github.VictorAlbertos.RxCache:runtime", version.ref = "rxcache_runtime" }
 rxandroid = { module = "io.reactivex.rxjava2:rxandroid", version.ref = "rxandroid" }
 rxjava = { module = "io.reactivex.rxjava2:rxjava", version.ref = "rxjava" }
 rxkotlin = { module = "io.reactivex.rxjava2:rxkotlin", version.ref = "rxkotlin" }

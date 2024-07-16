@@ -1,48 +1,41 @@
 package me.ykrank.s1next.data.api.empty
 
 import io.reactivex.Single
-import io.rx_cache2.DynamicKey
-import io.rx_cache2.DynamicKeyGroup
-import io.rx_cache2.EvictDynamicKey
-import io.rx_cache2.EvictDynamicKeyGroup
-import io.rx_cache2.Reply
-import io.rx_cache2.Source
 import me.ykrank.s1next.data.api.ApiCacheProvider
+import me.ykrank.s1next.data.cache.CacheParam
+import me.ykrank.s1next.data.cache.Resource
+import me.ykrank.s1next.data.cache.Source
 
 class EmptyApiCacheProvider : ApiCacheProvider {
     override fun getForumGroupsWrapper(
         oWrapper: Single<String>,
-        user: DynamicKey?,
-        evictDynamicKey: EvictDynamicKey?
+        param: CacheParam?
     ): Single<String> {
         return oWrapper
     }
 
     override fun getThreadsWrapper(
         oWrapper: Single<String>,
-        user: DynamicKeyGroup?,
-        evictDynamicKey: EvictDynamicKeyGroup?
+        param: CacheParam?
     ): Single<String> {
         return oWrapper
     }
 
     override fun getPostsWrapper(
         oWrapper: Single<String>,
-        page: DynamicKeyGroup?,
-        evictDynamicKey: EvictDynamicKeyGroup?
-    ): Single<Reply<String>> {
+        param: CacheParam?
+    ): Single<Resource<String>> {
         return oWrapper.map {
-            Reply(it, Source.CLOUD, false)
+            Resource.Success(Source.CLOUD, it)
         }
     }
 
     override fun getPostsWrapperNew(
         oWrapper: Single<String>,
-        page: DynamicKeyGroup?,
-        evictDynamicKey: EvictDynamicKeyGroup?
-    ): Single<Reply<String>> {
+        param: CacheParam?
+    ): Single<Resource<String>> {
         return oWrapper.map {
-            Reply(it, Source.CLOUD, false)
+            Resource.Success(Source.CLOUD, it)
         }
     }
 }

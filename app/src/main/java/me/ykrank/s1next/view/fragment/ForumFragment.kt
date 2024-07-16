@@ -9,13 +9,12 @@ import android.view.MenuItem
 import android.view.View
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
 import io.reactivex.Single
-import io.rx_cache2.DynamicKey
-import io.rx_cache2.EvictDynamicKey
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.model.collection.ForumGroups
 import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper
+import me.ykrank.s1next.data.cache.CacheParam
 import me.ykrank.s1next.util.IntentUtil
 import me.ykrank.s1next.util.JsonUtil
 import me.ykrank.s1next.view.activity.SearchActivity
@@ -80,7 +79,10 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
 
     override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<ForumGroupsWrapper> {
         val source: Single<String> = if (mDownloadPrefManager.netCacheEnable) {
-            apiCacheProvider.getForumGroupsWrapper(mS1Service.forumGroupsWrapper, DynamicKey(mUser.key), EvictDynamicKey(isForceLoading))
+            apiCacheProvider.getForumGroupsWrapper(
+                mS1Service.forumGroupsWrapper,
+                CacheParam(isForceLoading)
+            )
         } else {
             mS1Service.forumGroupsWrapper
         }

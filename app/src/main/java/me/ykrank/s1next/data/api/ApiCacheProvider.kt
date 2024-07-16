@@ -1,36 +1,31 @@
-package me.ykrank.s1next.data.api;
+package me.ykrank.s1next.data.api
 
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Single;
-import io.rx_cache2.DynamicKey;
-import io.rx_cache2.DynamicKeyGroup;
-import io.rx_cache2.EvictDynamicKey;
-import io.rx_cache2.EvictDynamicKeyGroup;
-import io.rx_cache2.LifeCache;
-import io.rx_cache2.ProviderKey;
-import io.rx_cache2.Reply;
+import io.reactivex.Single
+import me.ykrank.s1next.data.cache.CacheParam
+import me.ykrank.s1next.data.cache.Resource
 
 /**
  * RxCache provide cache for retrofit
  * Created by ykrank on 2017/4/22.
  */
-public interface ApiCacheProvider {
+interface ApiCacheProvider {
+    fun getForumGroupsWrapper(
+        oWrapper: Single<String>,
+        param: CacheParam? = null
+    ): Single<String>
 
-    @ProviderKey("forum_groups_wrapper")
-    @LifeCache(duration = 5, timeUnit = TimeUnit.MINUTES)
-    Single<String> getForumGroupsWrapper(Single<String> oWrapper, DynamicKey user, EvictDynamicKey evictDynamicKey);
+    fun getThreadsWrapper(
+        oWrapper: Single<String>,
+        param: CacheParam? = null
+    ): Single<String>
 
-    @ProviderKey("threads_wrapper")
-    @LifeCache(duration = 5, timeUnit = TimeUnit.MINUTES)
-    Single<String> getThreadsWrapper(Single<String> oWrapper, DynamicKeyGroup user, EvictDynamicKeyGroup evictDynamicKey);
+    fun getPostsWrapper(
+        oWrapper: Single<String>,
+        param: CacheParam? = null
+    ): Single<Resource<String>>
 
-
-    @ProviderKey("posts_wrapper")
-    @LifeCache(duration = 30, timeUnit = TimeUnit.MINUTES)
-    Single<Reply<String>> getPostsWrapper(Single<String> oWrapper, DynamicKeyGroup page, EvictDynamicKeyGroup evictDynamicKey);
-
-    @ProviderKey("posts_wrapper_new")
-    @LifeCache(duration = 30, timeUnit = TimeUnit.MINUTES)
-    Single<Reply<String>> getPostsWrapperNew(Single<String> oWrapper, DynamicKeyGroup page, EvictDynamicKeyGroup evictDynamicKey);
+    fun getPostsWrapperNew(
+        oWrapper: Single<String>,
+        param: CacheParam? = null
+    ): Single<Resource<String>>
 }

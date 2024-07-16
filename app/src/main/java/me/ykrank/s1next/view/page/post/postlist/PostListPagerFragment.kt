@@ -27,10 +27,6 @@ import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.zipWith
 import io.reactivex.schedulers.Schedulers
-import io.rx_cache2.DynamicKeyGroup
-import io.rx_cache2.EvictDynamicKeyGroup
-import io.rx_cache2.Reply
-import io.rx_cache2.Source
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -44,6 +40,9 @@ import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.collection.Posts
 import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.RatePostsWrapper
+import me.ykrank.s1next.data.cache.CacheParam
+import me.ykrank.s1next.data.cache.Resource
+import me.ykrank.s1next.data.cache.Source
 import me.ykrank.s1next.data.db.biz.ReadProgressBiz
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
@@ -305,7 +304,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
                             ?: 0) < Api.POSTS_PER_PAGE
                     ) {
                         return@flatMap apiCacheObservable(true)
-                            .map { it.data }
+                            .map { it.data!! }
                             .compose(JsonUtil.jsonSingleTransformer(PostsWrapper::class.java))
                     }
                     Single.just(wrapper)
@@ -325,7 +324,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
                             ?: 0) < Api.POSTS_PER_PAGE
                     ) {
                         return@flatMap rateApiCacheObservable(true)
-                            .map { it.data }
+                            .map { it.data!! }
                             .compose(JsonUtil.jsonSingleTransformer(RatePostsWrapper::class.java))
                     }
                     Single.just(wrapper)
@@ -364,11 +363,10 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
         return mS1Service.getPostsWrapper(mThreadId, mPageNum, mAuthorId)
     }
 
-    private fun apiCacheObservable(evict: Boolean): Single<Reply<String>> {
+    private fun apiCacheObservable(evict: Boolean): Single<Resource<String>> {
         return apiCacheProvider.getPostsWrapper(
             apiObservable(),
-            DynamicKeyGroup("$mThreadId,$mPageNum,$mAuthorId", mUser.key),
-            EvictDynamicKeyGroup(evict)
+            CacheParam(evict, listOf(mThreadId, mPageNum, mAuthorId))
         )
     }
 
@@ -376,11 +374,10 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
         return mS1Service.getPostsWrapperNew(mThreadId, mPageNum, mAuthorId)
     }
 
-    private fun rateApiCacheObservable(evict: Boolean): Single<Reply<String>> {
+    private fun rateApiCacheObservable(evict: Boolean): Single<Resource<String>> {
         return apiCacheProvider.getPostsWrapperNew(
             rateApiObservable(),
-            DynamicKeyGroup("$mThreadId,$mPageNum,$mAuthorId", mUser.key),
-            EvictDynamicKeyGroup(evict)
+            CacheParam(evict, listOf(mThreadId, mPageNum, mAuthorId))
         )
     }
 

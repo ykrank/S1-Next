@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.github.ykrank.androidtools.util.ErrorParser
 import com.github.ykrank.androidtools.util.L
 import io.reactivex.exceptions.CompositeException
-import io.rx_cache2.RxCacheException
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.ApiException
 import okhttp3.internal.http2.StreamResetException
@@ -71,11 +70,11 @@ object ErrorUtil : ErrorParser {
                 if (throwable.exceptions.size == 1) {
                     return parseNetError(context, throwable.exceptions[0])
                 }
-                for (ex in throwable.exceptions) {
-                    if (ex is RxCacheException) {
-                        return context.getString(R.string.message_network_error)
-                    }
-                }
+//                for (ex in throwable.exceptions) {
+//                    if (ex is RxCacheException) {
+//                        return context.getString(R.string.message_network_error)
+//                    }
+//                }
                 for (ex in throwable.exceptions) {
                     val exMsg = parseNetError(context, ex)
                     if (exMsg != null) {

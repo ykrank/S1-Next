@@ -9,11 +9,10 @@ import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
 import com.github.ykrank.androidtools.widget.RxBus
 import io.reactivex.Single
-import io.rx_cache2.DynamicKeyGroup
-import io.rx_cache2.EvictDynamicKeyGroup
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.api.model.Forum
 import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper
+import me.ykrank.s1next.data.cache.CacheParam
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.util.JsonUtil
 import me.ykrank.s1next.view.adapter.ThreadRecyclerViewAdapter
@@ -104,7 +103,8 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
     override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<ThreadsWrapper> {
         val source: Single<String> = if (mDownloadPrefManager.netCacheEnable) {
             apiCacheProvider.getThreadsWrapper(mS1Service.getThreadsWrapper(mForumId, mTypeId, mPageNum),
-                    DynamicKeyGroup("$mForumId,$mTypeId,$mPageNum", mUser.key), EvictDynamicKeyGroup(isForceLoading))
+                CacheParam(isForceLoading, listOf(mForumId, mTypeId, mPageNum))
+            )
         } else {
             mS1Service.getThreadsWrapper(mForumId, mTypeId, mPageNum)
         }

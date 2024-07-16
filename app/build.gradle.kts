@@ -149,9 +149,6 @@ dependencies {
     implementation(libs.retrofit2.converter.jackson)
     implementation(libs.retrofit2.converter.scalars)
 
-    implementation(libs.rxcache.runtime)
-    implementation(libs.jolyglot.jackson)
-
     implementation(libs.jackson.kotlin)
     implementation(libs.jackson.databind)
 
