@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.data.CacheParam
-import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
+import com.github.ykrank.androidtools.data.Resource
 import com.github.ykrank.androidtools.widget.RxBus
-import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.api.model.Forum
 import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
-import me.ykrank.s1next.util.JsonUtil
 import me.ykrank.s1next.view.adapter.ThreadRecyclerViewAdapter
 import me.ykrank.s1next.view.event.PostDisableStickyChangeEvent
 import me.ykrank.s1next.view.event.ThreadTypeChangeEvent
@@ -100,20 +100,19 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
         super.onDetach()
     }
 
-    override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<ThreadsWrapper> {
-        val source: Single<String> =
-            apiCacheProvider.getThreadsWrapper(mS1Service.getThreadsWrapper(mForumId, mTypeId, mPageNum),
-                CacheParam(isForceLoading, listOf(mForumId, mTypeId, mPageNum))
-            )
-        var result = source.compose(JsonUtil.jsonSingleTransformer(ThreadsWrapper::class.java))
+    override suspend fun getSource(loading: Int): Flow<Resource<ThreadsWrapper>>? {
+        val source = apiCacheProvider.getThreadsWrapper(
+            mForumId, mTypeId, mPageNum,
+            CacheParam(isForceLoading, listOf(mForumId, mTypeId, mPageNum))
+        )
         if (mGeneralPreferencesManager.isPostDisableSticky) {
-            result = result.map { threadsWrapper ->
-                threadsWrapper.data?.threadList =
-                    threadsWrapper.data?.threadList?.filter { it.displayOrder == 0 } ?: listOf()
-                threadsWrapper
+            return source.map {
+                it.data?.data?.threadList =
+                    it.data?.data?.threadList?.filter { it.displayOrder == 0 } ?: listOf()
+                it
             }
         }
-        return result
+        return source
     }
 
     override fun onNext(data: ThreadsWrapper) {

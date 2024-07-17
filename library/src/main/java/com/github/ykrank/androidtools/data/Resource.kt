@@ -12,8 +12,15 @@ Resource<T>(
 ) {
     class Success<T>(source: Source, data: T) : Resource<T>(source, data)
 
-    class Loading<T>(source: Source, data: T? = null) : Resource<T>(source, data)
-
     class Error<T>(source: Source, throwable: Throwable, data: T? = null) :
         Resource<T>(source, data, throwable)
+
+    companion object {
+        fun <T> fromResult(source: Source, result: Result<T>): Resource<T> {
+            if (result.isSuccess) {
+                return Success(source, result.getOrThrow())
+            }
+            return Error(source, result.exceptionOrNull()!!, result.getOrNull())
+        }
+    }
 }

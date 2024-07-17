@@ -9,22 +9,19 @@ import kotlinx.coroutines.flow.flowOf
 import me.ykrank.s1next.data.api.ApiCacheProvider
 import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper
+import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 
 class EmptyApiCacheProvider(
     private val downloadPerf: DownloadPreferencesManager,
     private val s1Service: S1Service
 ) : ApiCacheProvider {
-    override fun getForumGroupsWrapper(
-        oWrapper: Single<String>,
-        param: CacheParam?
-    ): Single<String> {
-        return oWrapper
-    }
 
     override suspend fun getForumGroupsWrapper(param: CacheParam?): Flow<Resource<ForumGroupsWrapper>> {
-        val wrapper = s1Service.getForumGroupsWrapper()
-        return flowOf(Resource.Success(Source.CLOUD, wrapper))
+        val wrapper = runCatching {
+            s1Service.getForumGroupsWrapper()
+        }
+        return flowOf(Resource.fromResult(Source.CLOUD, wrapper))
     }
 
     override fun getThreadsWrapper(
@@ -32,6 +29,16 @@ class EmptyApiCacheProvider(
         param: CacheParam?
     ): Single<String> {
         return oWrapper
+    }
+
+    override suspend fun getThreadsWrapper(
+        forumId: String?,
+        typeId: String?,
+        page: Int,
+        param: CacheParam?
+    ): Flow<Resource<ThreadsWrapper>> {
+        val wrapper = runCatching { s1Service.getThreadsWrapper(forumId, typeId, page) }
+        return flowOf(Resource.fromResult(Source.CLOUD, wrapper))
     }
 
     override fun getPostsWrapper(

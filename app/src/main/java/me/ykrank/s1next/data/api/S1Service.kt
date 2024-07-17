@@ -12,6 +12,7 @@ import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper
 import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper
+import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FieldMap
@@ -22,9 +23,6 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface S1Service {
-    @get:GET(ApiForum.URL_FORUM)
-    val forumGroupsWrapper: Single<String>
-
     @GET(ApiForum.URL_FORUM)
     suspend fun getForumGroupsWrapper(): ForumGroupsWrapper
 
@@ -32,11 +30,11 @@ interface S1Service {
     fun getFavouritesWrapper(@Query("page") page: Int): Single<BaseResultWrapper<Favourites>>
 
     @GET(ApiForum.URL_THREAD_LIST)
-    fun getThreadsWrapper(
+    suspend fun getThreadsWrapper(
         @Query("fid") forumId: String?,
         @Query("typeid") typeId: String?,
         @Query("page") page: Int
-    ): Single<String>
+    ): ThreadsWrapper
 
     @GET(ApiForum.URL_POST_LIST)
     fun getPostsWrapper(
