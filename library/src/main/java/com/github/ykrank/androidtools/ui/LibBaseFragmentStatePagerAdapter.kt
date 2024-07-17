@@ -26,8 +26,6 @@ abstract class LibBaseFragmentStatePagerAdapter<T : LibBaseFragment>(fm: Fragmen
 
     @CallSuper
     override fun destroyItem(container: ViewGroup, position: Int, fragment: T?) {
-        fragment?.destroyRetainedFragment()
-
         super.destroyItem(container, position, fragment)
     }
 }

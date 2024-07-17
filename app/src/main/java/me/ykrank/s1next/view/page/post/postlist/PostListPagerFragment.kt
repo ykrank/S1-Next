@@ -15,6 +15,9 @@ import com.bigkoo.quicksidebar.listener.OnQuickSideBarTouchListener
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
+import com.github.ykrank.androidtools.data.CacheParam
+import com.github.ykrank.androidtools.data.Resource
+import com.github.ykrank.androidtools.data.Source
 import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
 import com.github.ykrank.androidtools.util.L
@@ -40,9 +43,6 @@ import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.collection.Posts
 import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.RatePostsWrapper
-import me.ykrank.s1next.data.cache.CacheParam
-import me.ykrank.s1next.data.cache.Resource
-import me.ykrank.s1next.data.cache.Source
 import me.ykrank.s1next.data.db.biz.ReadProgressBiz
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
@@ -183,7 +183,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
     override fun getLoadingViewModelBindingDelegateImpl(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): LoadingViewModelBindingDelegate {
+    ): LoadingViewModelBindingDelegate<PostsWrapper> {
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_base_with_quick_side_bar,
@@ -293,7 +293,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
 
     override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<PostsWrapper> {
         //If enable cache, load cache
-        val source: Single<PostsWrapper> = if (mDownloadPrefManager.netCacheEnable) {
+        val source: Single<PostsWrapper> =
             //If last page, force refresh cache
             apiCacheObservable(isForceLoading || mPageNum >= (mPagerCallback?.getTotalPages() ?: 0))
                 .flatMap { reply ->
@@ -309,11 +309,8 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
                     }
                     Single.just(wrapper)
                 }
-        } else {
-            apiObservable().compose(JsonUtil.jsonSingleTransformer(PostsWrapper::class.java))
-        }
 
-        val rateSource: Single<RatePostsWrapper> = if (mDownloadPrefManager.netCacheEnable) {
+        val rateSource: Single<RatePostsWrapper> =
             rateApiCacheObservable(
                 isForceLoading || mPageNum >= (mPagerCallback?.getTotalPages() ?: 0)
             )
@@ -329,9 +326,6 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
                     }
                     Single.just(wrapper)
                 }
-        } else {
-            rateApiObservable().compose(JsonUtil.jsonSingleTransformer(RatePostsWrapper::class.java))
-        }
 
         return source.subscribeOn(Schedulers.io())
             .zipWith(rateSource.subscribeOn(Schedulers.io()))

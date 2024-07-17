@@ -1,31 +1,25 @@
-package com.github.ykrank.androidtools.ui.internal;
+package com.github.ykrank.androidtools.ui.internal
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
-
-import com.github.ykrank.androidtools.ui.adapter.LibBaseRecyclerViewAdapter;
-import com.github.ykrank.androidtools.ui.vm.LoadingViewModel;
-
+import android.view.View
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
 
 /**
  * This class represents a delegate which you can bind
- * {@link LoadingViewModel} to different {@link androidx.databinding.ViewDataBinding}s
+ * [LoadingViewModel] to different [androidx.databinding.ViewDataBinding]s
  * in implementation.
  */
-public interface LoadingViewModelBindingDelegate {
-
-    View getRootView();
-
-    SwipeRefreshLayout getSwipeRefreshLayout();
+interface LoadingViewModelBindingDelegate<D> {
+    val rootView: View
+    val swipeRefreshLayout: SwipeRefreshLayout
 
     /**
-     * This {@link RecyclerView} should always set a
-     * {@link LibBaseRecyclerViewAdapter}
+     * This [RecyclerView] should always set a
+     * [LibBaseRecyclerViewAdapter]
      * implementation, otherwise we can not use
-     * {@link LibBaseRecyclerViewAdapter#setHasProgress(boolean)}.
+     * [LibBaseRecyclerViewAdapter.setHasProgress].
      */
-    RecyclerView getRecyclerView();
-
-    void setLoadingViewModel(LoadingViewModel loadingViewModel);
+    val recyclerView: RecyclerView
+    fun setLoadingViewModel(loadingViewModel: LoadingViewModel<D>)
 }

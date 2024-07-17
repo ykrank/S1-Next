@@ -1,62 +1,50 @@
-package com.github.ykrank.androidtools.ui.vm;
+package com.github.ykrank.androidtools.ui.vm
 
-import androidx.databinding.BaseObservable;
-import android.os.Parcel;
-import androidx.annotation.IntDef;
+import android.os.Parcel
+import androidx.annotation.IntDef
+import androidx.databinding.ObservableInt
+import androidx.lifecycle.ViewModel
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+class LoadingViewModel<D> : ViewModel {
 
-public final class LoadingViewModel extends BaseObservable {
-    public static final int LOADING_FINISH = 0;
-
-    /**
-     * We show circular indeterminate {@link android.widget.ProgressBar}
-     * for the first time.
-     */
-    public static final int LOADING_FIRST_TIME = 1;
-
-    public static final int LOADING_SWIPE_REFRESH = 2;
-
-    public static final int LOADING_PULL_UP_TO_REFRESH = 3;
-    private int loading;
-
-    public LoadingViewModel() {
-    }
-
-    private LoadingViewModel(Parcel source) {
-        loading = source.readInt();
-    }
+    private val loadingObservable = ObservableInt(LOADING_FIRST_TIME)
 
     @LoadingDef
-    public int getLoading() {
-        return loading;
+    var loading: Int
+        get() {
+            return loadingObservable.get()
+        }
+        set(value) {
+            loadingObservable.set(value)
+            loadingObservable.notifyChange()
+        }
+
+    var data: D? = null
+
+    constructor()
+    private constructor(source: Parcel) {
+        loading = source.readInt()
     }
 
-    public void setLoading(@LoadingDef int loading) {
-        this.loading = loading;
-        notifyChange();
-    }
+    val isSwipeRefresh: Boolean
+        get() = loading == LOADING_SWIPE_REFRESH
+    val isSwipeRefreshLayoutEnabled: Boolean
+        get() = loading != LOADING_FIRST_TIME && loading != LOADING_PULL_UP_TO_REFRESH
+    val isLoadingFirstTime: Boolean
+        get() = loading == LOADING_FIRST_TIME
 
-    public boolean isSwipeRefresh() {
-        return loading == LOADING_SWIPE_REFRESH;
-    }
+    @Retention(AnnotationRetention.SOURCE)
+    @IntDef(value = [LOADING_FINISH, LOADING_FIRST_TIME, LOADING_SWIPE_REFRESH, LOADING_PULL_UP_TO_REFRESH])
+    annotation class LoadingDef
+    companion object {
+        const val LOADING_FINISH = 0
 
-    public boolean isSwipeRefreshLayoutEnabled() {
-        return loading != LOADING_FIRST_TIME && loading != LOADING_PULL_UP_TO_REFRESH;
-    }
-
-    public Boolean isLoadingFirstTime() {
-        return loading == LOADING_FIRST_TIME;
-    }
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({
-            LOADING_FINISH,
-            LOADING_FIRST_TIME,
-            LOADING_SWIPE_REFRESH,
-            LOADING_PULL_UP_TO_REFRESH
-    })
-    public @interface LoadingDef {
+        /**
+         * We show circular indeterminate [android.widget.ProgressBar]
+         * for the first time.
+         */
+        const val LOADING_FIRST_TIME = 1
+        const val LOADING_SWIPE_REFRESH = 2
+        const val LOADING_PULL_UP_TO_REFRESH = 3
     }
 }

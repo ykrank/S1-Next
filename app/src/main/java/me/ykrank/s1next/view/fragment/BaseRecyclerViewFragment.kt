@@ -6,10 +6,13 @@ import android.view.*
 import androidx.annotation.CallSuper
 import androidx.databinding.DataBindingUtil
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.github.ykrank.androidtools.data.Resource
 import com.github.ykrank.androidtools.ui.LibBaseRecyclerViewFragment
 import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
 import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
@@ -19,7 +22,6 @@ import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.UserValidator
 import me.ykrank.s1next.data.api.app.model.AppResult
 import me.ykrank.s1next.data.api.model.Result
-import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.databinding.FragmentBaseBinding
 import me.ykrank.s1next.databinding.FragmentBaseCardViewContainerBinding
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateBaseCardViewContainerImpl
@@ -40,7 +42,6 @@ abstract class BaseRecyclerViewFragment<D> : LibBaseRecyclerViewFragment<D>() {
     internal lateinit var mUserValidator: UserValidator
     internal lateinit var mS1Service: S1Service
     internal lateinit var apiCacheProvider: ApiCacheProvider
-    internal lateinit var mDownloadPrefManager: DownloadPreferencesManager
     internal lateinit var mUser: User
 
     @CallSuper
@@ -49,7 +50,6 @@ abstract class BaseRecyclerViewFragment<D> : LibBaseRecyclerViewFragment<D>() {
         mUserValidator = App.appComponent.userValidator
         mS1Service = App.appComponent.s1Service
         apiCacheProvider = App.appComponent.apiCacheProvider
-        mDownloadPrefManager = App.preAppComponent.downloadPreferencesManager
         mUser = App.appComponent.user
 
         setHasOptionsMenu(true)
@@ -84,7 +84,7 @@ abstract class BaseRecyclerViewFragment<D> : LibBaseRecyclerViewFragment<D>() {
      * run when [.onCreateView]
      */
     override fun getLoadingViewModelBindingDelegateImpl(inflater: LayoutInflater,
-                                                        container: ViewGroup?): LoadingViewModelBindingDelegate {
+                                                        container: ViewGroup?): LoadingViewModelBindingDelegate<D> {
         if (isCardViewContainer) {
             val binding = DataBindingUtil.inflate<FragmentBaseCardViewContainerBinding>(inflater,
                     R.layout.fragment_base_card_view_container, container, false)
@@ -96,11 +96,29 @@ abstract class BaseRecyclerViewFragment<D> : LibBaseRecyclerViewFragment<D>() {
         }
     }
 
-    protected abstract fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<D>
+    protected open fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<D>? {
+        return null
+    }
 
-    override fun getLibSourceObservable(loading: Int): Single<D> =
+    override fun getLibSourceObservable(loading: Int): Single<D>? =
             getSourceObservable(loading)
-                    .compose(ApiFlatTransformer.apiErrorTransformer())
+                ?.compose(ApiFlatTransformer.apiErrorTransformer())
+
+    protected open suspend fun getSource(@LoadingViewModel.LoadingDef loading: Int): Flow<Resource<D>>? {
+        return null
+    }
+
+    override suspend fun getLibSource(loading: Int): Flow<Resource<D>>? {
+        return getSource(loading)?.map {
+            val error = it.data?.let {
+                ApiFlatTransformer.getApiResultError(it)
+            }
+            if (error != null) {
+                return@map Resource.Error(it.source, error, it.data)
+            }
+            it
+        }
+    }
 
     /**
      * Called when a data was emitted from [.getSourceObservable].

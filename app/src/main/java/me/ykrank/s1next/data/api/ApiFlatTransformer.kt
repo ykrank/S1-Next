@@ -50,7 +50,7 @@ object ApiFlatTransformer {
     }
 
 
-    private fun getApiResultError(it: Any?): ApiException? {
+    fun getApiResultError(it: Any?): ApiException? {
         when (it) {
             is OriginWrapper<*> -> {
                 if (!it.error.isNullOrEmpty()) {

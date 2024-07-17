@@ -1,40 +1,22 @@
-package me.ykrank.s1next.view.internal;
+package me.ykrank.s1next.view.internal
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
+import android.view.View
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
+import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
+import me.ykrank.s1next.databinding.FragmentBaseBinding
 
-import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate;
-import com.github.ykrank.androidtools.ui.vm.LoadingViewModel;
+class LoadingViewModelBindingDelegateBaseImpl<D>(private val binding: FragmentBaseBinding) :
+    LoadingViewModelBindingDelegate<D> {
+    override val rootView: View
+        get() = binding.root
+    override val swipeRefreshLayout: SwipeRefreshLayout
+        get() = binding.swipeRefreshLayout
+    override val recyclerView: RecyclerView
+        get() = binding.recyclerView
 
-import me.ykrank.s1next.databinding.FragmentBaseBinding;
-
-public final class LoadingViewModelBindingDelegateBaseImpl
-        implements LoadingViewModelBindingDelegate {
-
-    private final FragmentBaseBinding binding;
-
-    public LoadingViewModelBindingDelegateBaseImpl(FragmentBaseBinding binding) {
-        this.binding = binding;
-    }
-
-    @Override
-    public View getRootView() {
-        return binding.getRoot();
-    }
-
-    @Override
-    public SwipeRefreshLayout getSwipeRefreshLayout() {
-        return binding.swipeRefreshLayout;
-    }
-
-    @Override
-    public RecyclerView getRecyclerView() {
-        return binding.recyclerView;
-    }
-
-    @Override
-    public void setLoadingViewModel(LoadingViewModel loadingViewModel) {
-        binding.setLoadingViewModel(loadingViewModel);
+    override fun setLoadingViewModel(loadingViewModel: LoadingViewModel<D>) {
+        binding.setLoadingViewModel(loadingViewModel)
     }
 }

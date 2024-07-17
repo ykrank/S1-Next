@@ -1,8 +1,10 @@
 package me.ykrank.s1next.data.api
 
+import com.github.ykrank.androidtools.data.CacheParam
+import com.github.ykrank.androidtools.data.Resource
 import io.reactivex.Single
-import me.ykrank.s1next.data.cache.CacheParam
-import me.ykrank.s1next.data.cache.Resource
+import kotlinx.coroutines.flow.Flow
+import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper
 
 /**
  * RxCache provide cache for retrofit
@@ -13,6 +15,10 @@ interface ApiCacheProvider {
         oWrapper: Single<String>,
         param: CacheParam? = null
     ): Single<String>
+
+    suspend fun getForumGroupsWrapper(
+        param: CacheParam? = null
+    ): Flow<Resource<ForumGroupsWrapper>>
 
     fun getThreadsWrapper(
         oWrapper: Single<String>,

@@ -27,19 +27,11 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
     private var toUid: String? = null
     private var toUsername: String? = null
 
-    override var dataId: String? = null
-
     override val recyclerViewAdapter: BaseRecyclerViewAdapter
         get() = mRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) {
-            //Random to force valid retained data
-            dataId = (Math.random() * Long.MAX_VALUE).toLong().toString()
-        } else {
-            dataId = savedInstanceState.getString(ARG_DATA_ID)
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,11 +51,6 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
         recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         mRecyclerAdapter = PmRecyclerViewAdapter(requireActivity(), viewLifecycleOwner)
         recyclerView.adapter = mRecyclerAdapter
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(ARG_DATA_ID, dataId)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -127,7 +114,6 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
         val TAG = PmFragment::class.java.name
         private const val ARG_TO_UID = "to_uid"
         private const val ARG_TO_USERNAME = "to_user_name"
-        private const val ARG_DATA_ID = "data_id"
 
         fun newInstance(toUid: String, toUsername: String): PmFragment {
             val fragment = PmFragment()

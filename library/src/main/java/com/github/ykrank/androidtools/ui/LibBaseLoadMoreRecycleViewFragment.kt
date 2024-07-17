@@ -1,9 +1,8 @@
 package com.github.ykrank.androidtools.ui
 
 import android.os.Bundle
-import androidx.annotation.CallSuper
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import androidx.annotation.CallSuper
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.ui.adapter.LibBaseRecyclerViewAdapter
@@ -69,7 +68,7 @@ abstract class LibBaseLoadMoreRecycleViewFragment<D> : LibBaseRecyclerViewFragme
         // when we start to loadViewPager new data
         mCoordinatorLayoutAnchorDelegate?.dismissSnackbarIfExist()
         getLibPageSourceObservable(pageNum)
-                .map { d -> appendNewData(retainedFragment.data, d) }
+                .map { d -> appendNewData(mLoadingViewModel.data, d) }
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .doAfterTerminate({ this.finallyDo() })
                 .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))

@@ -79,7 +79,7 @@ abstract class BaseLoadMoreRecycleViewFragment<D> : LibBaseLoadMoreRecycleViewFr
      * run when [.onCreateView]
      */
     override fun getLoadingViewModelBindingDelegateImpl(inflater: LayoutInflater,
-                                                        container: ViewGroup?): LoadingViewModelBindingDelegate {
+                                                        container: ViewGroup?): LoadingViewModelBindingDelegate<D> {
         if (isCardViewContainer) {
             val binding = FragmentBaseCardViewContainerBinding.inflate(inflater, container, false)
             return LoadingViewModelBindingDelegateBaseCardViewContainerImpl(binding)

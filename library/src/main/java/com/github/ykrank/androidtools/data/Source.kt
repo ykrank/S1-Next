@@ -1,4 +1,4 @@
-package me.ykrank.s1next.data.cache
+package com.github.ykrank.androidtools.data
 
 /**
  * Created by yuanke on 7/16/24

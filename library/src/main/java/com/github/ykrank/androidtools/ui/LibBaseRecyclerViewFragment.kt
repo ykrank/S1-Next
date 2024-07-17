@@ -2,16 +2,17 @@ package com.github.ykrank.androidtools.ui
 
 import android.os.Bundle
 import android.os.SystemClock
-import androidx.annotation.CallSuper
-import androidx.annotation.MainThread
-import androidx.annotation.StringRes
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.CallSuper
+import androidx.annotation.MainThread
+import androidx.annotation.StringRes
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.ykrank.androidtools.GlobalData
-import com.github.ykrank.androidtools.ui.internal.DataRetainedFragment
+import com.github.ykrank.androidtools.data.Resource
 import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
 import com.github.ykrank.androidtools.util.L
@@ -19,38 +20,33 @@ import com.github.ykrank.androidtools.util.RxJavaUtil
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 /**
  * A base Fragment includes [SwipeRefreshLayout] to refresh when recycleview_loading data.
  * Also wraps [retrofit2.Retrofit] to loadViewPager data asynchronously.
  *
  *
- * We must call [.destroyRetainedFragment]) if used in [android.support.v4.view.ViewPager]
+ * We must call [.destroyRetainedFragment]) if used in [androidx.viewpager.widget.ViewPager]
  * otherwise leads memory leak.
  *
  * @param <D> The data we want to loadViewPager.
 </D> */
 abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
 
-    private lateinit var mLoadingViewModelBindingDelegate: LoadingViewModelBindingDelegate
-    private var mLoadingViewModel: LoadingViewModel = LoadingViewModel()
-
-    /**
-     * We use retained Fragment to retain data when configuration changes.
-     */
-    protected lateinit var retainedFragment: DataRetainedFragment<D>
-        private set
+    private lateinit var mLoadingViewModelBindingDelegate: LoadingViewModelBindingDelegate<D>
+    val mLoadingViewModel: LoadingViewModel<D> by viewModels()
 
     private var mDisposable: Disposable? = null
+    private var mLoadJob: Job? = null
     private var lastPullRefreshTime: Long = 0
     private var init = false
-
-    /**
-     * the id of DataRetainedFragment's data
-     *
-     * @return id
-     */
-    open val dataId: String? = null
 
     /**
      * whether use ?attr/cardViewContainerBackground to this fragment. if override [.getLoadingViewModelBindingDelegateImpl]
@@ -98,53 +94,13 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mLoadingViewModelBindingDelegate.swipeRefreshLayout.setOnRefreshListener(
-                { this.startSwipeRefresh() })
-    }
+        mLoadingViewModelBindingDelegate.swipeRefreshLayout.setOnRefreshListener { this.startSwipeRefresh() }
 
-    @CallSuper
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        // because we can't retain Fragments that are nested in other Fragments
-        // so we need to confirm this Fragment has unique tag in order to compose
-        // a new unique tag for its retained Fragment.
-        // Without this, we couldn't get its retained Fragment back.
-        assert(tag != null) { "Must add a tag to $this." }
-        val dataRetainedFragmentTag = DataRetainedFragment.TAG + "_" + tag
-        val fragmentManager = fragmentManager ?: return
-        val fragment = fragmentManager.findFragmentByTag(dataRetainedFragmentTag)
-        if (fragment == null) {
-            retainedFragment = DataRetainedFragment()
-            fragmentManager.beginTransaction().add(retainedFragment, dataRetainedFragmentTag)
-                    .commitAllowingStateLoss()
-
-            // start to loadViewPager data because we start this Fragment the first time
-            mLoadingViewModel.loading = LoadingViewModel.LOADING_FIRST_TIME
-        } else {
-            retainedFragment = fragment as DataRetainedFragment<D>
-
-            // get data back from retained Fragment when configuration changes
-            if (retainedFragment.data != null) {
-                if (dataId == retainedFragment.id) {
-                    val loading = mLoadingViewModel.loading
-                    onNext(retainedFragment.data)
-                    mLoadingViewModel.loading = loading
-                } else {
-                    //data id changed, so it's invalid
-                    mLoadingViewModel.loading = LoadingViewModel.LOADING_FIRST_TIME
-                }
-            } else {
-                if (!retainedFragment.stale) {
-                    // start to loadViewPager data because the retained Fragment was killed by system
-                    // and we have no data to loadViewPager
-                    mLoadingViewModel.loading = LoadingViewModel.LOADING_FIRST_TIME
-                }
-            }
+        mLoadingViewModel.data?.apply {
+            onNext(this)
         }
 
         mLoadingViewModelBindingDelegate.setLoadingViewModel(mLoadingViewModel)
-
         if (!isLazyLoad() || mUserVisibleHint) {
             init = true
             load(mLoadingViewModel.loading)
@@ -154,7 +110,7 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
     override fun onDestroy() {
         //remove OnRefreshListener
         mLoadingViewModelBindingDelegate.swipeRefreshLayout.setOnRefreshListener(null)
-        RxJavaUtil.disposeIfNotNull(mDisposable)
+        mDisposable?.dispose()
 
         super.onDestroy()
     }
@@ -162,8 +118,6 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
     @CallSuper
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-
-        outState.putInt(STATE_LOADING_VIEW_MODEL, mLoadingViewModel.loading)
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -183,7 +137,7 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
      * run when [.onCreateView]
      */
     open abstract fun getLoadingViewModelBindingDelegateImpl(inflater: LayoutInflater,
-                                                             container: ViewGroup?): LoadingViewModelBindingDelegate
+                                                             container: ViewGroup?): LoadingViewModelBindingDelegate<D>
 
     /**
      * Whether load when visible in viewpager.
@@ -246,11 +200,35 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
         // dismiss Snackbar in order to let user see the ProgressBar
         // when we start to loadViewPager new data
         mCoordinatorLayoutAnchorDelegate?.dismissSnackbarIfExist()
-        RxJavaUtil.disposeIfNotNull(mDisposable)
-        mDisposable = getLibSourceObservable(loading)
+
+        mDisposable?.dispose()
+        mLoadJob?.cancel()
+
+        val rxjavaSource = getLibSourceObservable(loading)
+        if (rxjavaSource != null) {
+            mDisposable = rxjavaSource
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .doAfterTerminate { this.finallyDo() }
                 .subscribe({ this.onNext(it) }, { this.onError(it) })
+        } else {
+            mLoadJob = lifecycleScope.launch(L.report) {
+                getLibSource(loading)
+                    ?.onEach {
+                        if (it is Resource.Success) {
+                            it.data?.apply {
+                                onNext(this)
+                            }
+                        } else if (it is Resource.Error) {
+                            it.error?.apply {
+                                onError(this)
+                            }
+                        }
+                    }
+                    ?.onCompletion { finallyDo() }
+                    ?.catch { onError(it) }
+                    ?.collect()
+            }
+        }
     }
 
     /**
@@ -272,7 +250,24 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
      * @return The data source [Observable].
      * @param loading
      */
-    protected abstract fun getLibSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<D>
+    protected open fun getLibSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<D>? {
+        return null
+    }
+
+    /**
+     * Subclass should implement this in order to provider its
+     * data source.
+     *
+     *
+     * The data source often comes from network
+     * or database.
+     *
+     * @return The data source.
+     * @param loading
+     */
+    protected open suspend fun getLibSource(@LoadingViewModel.LoadingDef loading: Int): Flow<Resource<D>>? {
+        return null
+    }
 
     /**
      * Called when a data was emitted from [.getSourceObservable].
@@ -283,7 +278,7 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
      */
     @CallSuper
     protected open fun onNext(data: D) {
-        retainedFragment.data = data
+        mLoadingViewModel.data = data
     }
 
     /**
@@ -311,8 +306,6 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
     @CallSuper
     protected open fun finallyDo() {
         mLoadingViewModel.loading = LoadingViewModel.LOADING_FINISH
-        retainedFragment.stale = true
-        retainedFragment.id = dataId
     }
 
     fun showRetrySnackbar(text: CharSequence) {
@@ -326,21 +319,7 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
         showRetrySnackbar(getString(textResId))
     }
 
-    /**
-     * We must call this if used in [android.support.v4.view.ViewPager]
-     * otherwise leads memory leak.
-     */
-    override fun destroyRetainedFragment() {
-        fragmentManager?.let { it.beginTransaction().remove(retainedFragment).commitNowAllowingStateLoss() }
-    }
-
     companion object {
-
-        /**
-         * The serialization (saved instance state) Bundle key representing
-         * current recycleview_loading state.
-         */
-        private val STATE_LOADING_VIEW_MODEL = "loading_view_model"
         private val PULL_REFRESH_COLD_TIME: Long = 1000
     }
 }

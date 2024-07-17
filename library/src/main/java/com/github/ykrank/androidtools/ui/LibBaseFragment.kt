@@ -74,14 +74,6 @@ abstract class LibBaseFragment : Fragment() {
         }
     }
 
-    /**
-     * We must call this if used in [android.support.v4.view.ViewPager]
-     * otherwise leads memory leak.
-     */
-    open fun destroyRetainedFragment() {
-
-    }
-
     fun showRetrySnackbar(text: CharSequence, onClickListener: View.OnClickListener) {
         mCoordinatorLayoutAnchorDelegate?.let {
             val snackbar = it.showLongSnackbarIfVisible(

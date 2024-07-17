@@ -7,16 +7,15 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
-import io.reactivex.Single
+import com.github.ykrank.androidtools.data.CacheParam
+import com.github.ykrank.androidtools.data.Resource
+import kotlinx.coroutines.flow.Flow
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.model.collection.ForumGroups
 import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper
-import me.ykrank.s1next.data.cache.CacheParam
 import me.ykrank.s1next.util.IntentUtil
-import me.ykrank.s1next.util.JsonUtil
 import me.ykrank.s1next.view.activity.SearchActivity
 import me.ykrank.s1next.view.adapter.ForumRecyclerViewAdapter
 import me.ykrank.s1next.view.internal.ToolbarDropDownInterface
@@ -77,16 +76,8 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
         }
     }
 
-    override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<ForumGroupsWrapper> {
-        val source: Single<String> = if (mDownloadPrefManager.netCacheEnable) {
-            apiCacheProvider.getForumGroupsWrapper(
-                mS1Service.forumGroupsWrapper,
-                CacheParam(isForceLoading)
-            )
-        } else {
-            mS1Service.forumGroupsWrapper
-        }
-        return source.compose(JsonUtil.jsonSingleTransformer(ForumGroupsWrapper::class.java))
+    override suspend fun getSource(loading: Int): Flow<Resource<ForumGroupsWrapper>> {
+        return apiCacheProvider.getForumGroupsWrapper(CacheParam(isForceLoading))
     }
 
     override fun onNext(data: ForumGroupsWrapper) {

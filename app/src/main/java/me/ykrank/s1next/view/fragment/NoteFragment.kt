@@ -50,7 +50,10 @@ class NoteFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<Notes>>() {
         recyclerView.adapter = mRecyclerAdapter
     }
 
-    override fun getLoadingViewModelBindingDelegateImpl(inflater: LayoutInflater, container: ViewGroup?): LoadingViewModelBindingDelegate {
+    override fun getLoadingViewModelBindingDelegateImpl(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): LoadingViewModelBindingDelegateNoteImpl {
         val binding = FragmentNoteBinding.inflate(inflater, container, false)
 
         binding.tvHint.setOnClickListener { WebViewActivity.start(requireContext(), Api.URL_VIEW_NOTE, enableJS = true, pcAgent = true) }
@@ -101,20 +104,17 @@ class NoteFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<Notes>>() {
 }
 
 class LoadingViewModelBindingDelegateNoteImpl(
-        private val binding: FragmentNoteBinding) : LoadingViewModelBindingDelegate {
-    override fun getRootView(): View {
-        return binding.root
-    }
+    private val binding: FragmentNoteBinding
+) : LoadingViewModelBindingDelegate<BaseDataWrapper<Notes>> {
 
-    override fun getSwipeRefreshLayout(): SwipeRefreshLayout {
-        return binding.swipeRefreshLayout
-    }
+    override val rootView: View
+        get() = binding.root
+    override val swipeRefreshLayout: SwipeRefreshLayout
+        get() = binding.swipeRefreshLayout
+    override val recyclerView: RecyclerView
+        get() = binding.recyclerView
 
-    override fun getRecyclerView(): RecyclerView {
-        return binding.recyclerView
-    }
-
-    override fun setLoadingViewModel(loadingViewModel: LoadingViewModel) {
+    override fun setLoadingViewModel(loadingViewModel: LoadingViewModel<BaseDataWrapper<Notes>>) {
         binding.loadingViewModel = loadingViewModel
     }
 }

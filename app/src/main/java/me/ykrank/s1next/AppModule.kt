@@ -150,9 +150,10 @@ class AppModule {
     @AppLife
     fun providerApiCacheProvider(
         context: Context,
-        downloadPreferencesManager: DownloadPreferencesManager
+        downloadPreferencesManager: DownloadPreferencesManager,
+        s1Service: S1Service,
     ): ApiCacheProvider {
-        return EmptyApiCacheProvider()
+        return EmptyApiCacheProvider(downloadPreferencesManager, s1Service)
     }
 
     @Provides

@@ -10,6 +10,7 @@ import me.ykrank.s1next.data.api.model.darkroom.DarkRoomWrapper
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper
+import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper
 import retrofit2.Response
 import retrofit2.http.Field
@@ -23,6 +24,9 @@ import retrofit2.http.Query
 interface S1Service {
     @get:GET(ApiForum.URL_FORUM)
     val forumGroupsWrapper: Single<String>
+
+    @GET(ApiForum.URL_FORUM)
+    suspend fun getForumGroupsWrapper(): ForumGroupsWrapper
 
     @GET(ApiHome.URL_FAVOURITES)
     fun getFavouritesWrapper(@Query("page") page: Int): Single<BaseResultWrapper<Favourites>>
