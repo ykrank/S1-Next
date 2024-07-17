@@ -10,7 +10,7 @@ import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
  * [LoadingViewModel] to different [androidx.databinding.ViewDataBinding]s
  * in implementation.
  */
-interface LoadingViewModelBindingDelegate<D> {
+interface LoadingViewModelBindingDelegate {
     val rootView: View
     val swipeRefreshLayout: SwipeRefreshLayout
 
@@ -21,5 +21,5 @@ interface LoadingViewModelBindingDelegate<D> {
      * [LibBaseRecyclerViewAdapter.setHasProgress].
      */
     val recyclerView: RecyclerView
-    fun setLoadingViewModel(loadingViewModel: LoadingViewModel<D>)
+    fun setLoadingViewModel(loadingViewModel: LoadingViewModel)
 }

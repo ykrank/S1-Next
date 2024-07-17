@@ -2,24 +2,16 @@ package com.github.ykrank.androidtools.ui.vm
 
 import android.os.Parcel
 import androidx.annotation.IntDef
-import androidx.databinding.ObservableInt
-import androidx.lifecycle.ViewModel
+import androidx.databinding.BaseObservable
 
-class LoadingViewModel<D> : ViewModel {
-
-    private val loadingObservable = ObservableInt(LOADING_FIRST_TIME)
-
+class LoadingViewModel : BaseObservable {
     @LoadingDef
-    var loading: Int
-        get() {
-            return loadingObservable.get()
-        }
+    var loading: Int = LOADING_FIRST_TIME
         set(value) {
-            loadingObservable.set(value)
-            loadingObservable.notifyChange()
+            field = value
+            notifyChange()
         }
 
-    var data: D? = null
 
     constructor()
     private constructor(source: Parcel) {

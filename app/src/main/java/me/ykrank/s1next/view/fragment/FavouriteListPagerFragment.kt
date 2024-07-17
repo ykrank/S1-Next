@@ -27,13 +27,13 @@ class FavouriteListPagerFragment : BaseRecyclerViewFragment<BaseResultWrapper<Fa
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mPagerCallback = parentFragment as PagerCallback
+
+        mPageNum = arguments?.getInt(ARG_PAGE_NUM) ?: 0
+        leavePageMsg("FavouriteListPagerFragment##mPageNum$mPageNum")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        mPageNum = arguments?.getInt(ARG_PAGE_NUM) ?: 0
-        leavePageMsg("FavouriteListPagerFragment##mPageNum$mPageNum")
 
         val recyclerView = recyclerView
         recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)

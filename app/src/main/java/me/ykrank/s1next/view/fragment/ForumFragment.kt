@@ -31,6 +31,13 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
 
     private var inForceRefresh = false
 
+    override fun onAttach(context: Context) {
+        App.appComponent.inject(this)
+        super.onAttach(context)
+
+        mToolbarCallback = context as ToolbarDropDownInterface.Callback?
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         leavePageMsg("ForumFragment")
@@ -39,13 +46,6 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
         recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         mRecyclerAdapter = ForumRecyclerViewAdapter(activity)
         recyclerView.adapter = mRecyclerAdapter
-    }
-
-    override fun onAttach(context: Context) {
-        App.appComponent.inject(this)
-        super.onAttach(context)
-
-        mToolbarCallback = context as ToolbarDropDownInterface.Callback?
     }
 
     override fun onDetach() {

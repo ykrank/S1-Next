@@ -52,21 +52,6 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
         mSubForumsCallback = context as SubForumsCallback?
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val bundle = requireArguments()
-        mForumId = bundle.getString(ARG_FORUM_ID)
-        mTypeId = bundle.getString(ARG_TYPE_ID)
-        mPageNum = bundle.getInt(ARG_PAGE_NUM)
-        leavePageMsg("ThreadListPagerFragment##ForumId:$mForumId, TypeId:$mTypeId, PageNum:$mPageNum")
-
-        val recyclerView = recyclerView
-        val activity = requireActivity()
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        mRecyclerAdapter = ThreadRecyclerViewAdapter(activity, viewLifecycleOwner, mForumId)
-        recyclerView.adapter = mRecyclerAdapter
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,20 +59,36 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
 
         App.appComponent.inject(this)
         mRxBus.get()
-                .ofType(ThreadTypeChangeEvent::class.java)
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
-                .subscribe {
-                    if (mTypeId != it.typeId) {
-                        mTypeId = it.typeId
-                        startSwipeRefresh()
-                    }
-                }
-        mRxBus.get()
-                .ofType(PostDisableStickyChangeEvent::class.java)
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
-                .subscribe {
+            .ofType(ThreadTypeChangeEvent::class.java)
+            .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
+            .subscribe {
+                if (mTypeId != it.typeId) {
+                    mTypeId = it.typeId
                     startSwipeRefresh()
                 }
+            }
+        mRxBus.get()
+            .ofType(PostDisableStickyChangeEvent::class.java)
+            .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
+            .subscribe {
+                startSwipeRefresh()
+            }
+
+        val bundle = requireArguments()
+        mForumId = bundle.getString(ARG_FORUM_ID)
+        mTypeId = bundle.getString(ARG_TYPE_ID)
+        mPageNum = bundle.getInt(ARG_PAGE_NUM)
+        leavePageMsg("ThreadListPagerFragment##ForumId:$mForumId, TypeId:$mTypeId, PageNum:$mPageNum")
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val recyclerView = recyclerView
+        val activity = requireActivity()
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        mRecyclerAdapter = ThreadRecyclerViewAdapter(activity, viewLifecycleOwner, mForumId)
+        recyclerView.adapter = mRecyclerAdapter
     }
 
     override fun onDestroy() {

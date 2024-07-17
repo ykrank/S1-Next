@@ -7,8 +7,8 @@ import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegat
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
 import me.ykrank.s1next.databinding.FragmentBaseBinding
 
-class LoadingViewModelBindingDelegateBaseImpl<D>(private val binding: FragmentBaseBinding) :
-    LoadingViewModelBindingDelegate<D> {
+class LoadingViewModelBindingDelegateBaseImpl(private val binding: FragmentBaseBinding) :
+    LoadingViewModelBindingDelegate {
     override val rootView: View
         get() = binding.root
     override val swipeRefreshLayout: SwipeRefreshLayout
@@ -16,7 +16,7 @@ class LoadingViewModelBindingDelegateBaseImpl<D>(private val binding: FragmentBa
     override val recyclerView: RecyclerView
         get() = binding.recyclerView
 
-    override fun setLoadingViewModel(loadingViewModel: LoadingViewModel<D>) {
+    override fun setLoadingViewModel(loadingViewModel: LoadingViewModel) {
         binding.setLoadingViewModel(loadingViewModel)
     }
 }

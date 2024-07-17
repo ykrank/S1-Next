@@ -10,9 +10,7 @@ import me.ykrank.s1next.data.api.model.darkroom.DarkRoomWrapper
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper
 import me.ykrank.s1next.data.api.model.wrapper.BaseDataWrapper
 import me.ykrank.s1next.data.api.model.wrapper.BaseResultWrapper
-import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.PmsWrapper
-import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FieldMap
@@ -24,7 +22,7 @@ import retrofit2.http.Query
 
 interface S1Service {
     @GET(ApiForum.URL_FORUM)
-    suspend fun getForumGroupsWrapper(): ForumGroupsWrapper
+    suspend fun getForumGroupsWrapper(): String
 
     @GET(ApiHome.URL_FAVOURITES)
     fun getFavouritesWrapper(@Query("page") page: Int): Single<BaseResultWrapper<Favourites>>
@@ -34,7 +32,7 @@ interface S1Service {
         @Query("fid") forumId: String?,
         @Query("typeid") typeId: String?,
         @Query("page") page: Int
-    ): ThreadsWrapper
+    ): String
 
     @GET(ApiForum.URL_POST_LIST)
     fun getPostsWrapper(

@@ -1,5 +1,6 @@
 package me.ykrank.s1next.view.page.post.postlist
 
+import android.content.Context
 import android.os.Bundle
 import android.os.SystemClock
 import android.text.TextUtils
@@ -108,9 +109,14 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
     private val rateMap = hashMapOf<Int, List<Rate>>()
     private var rateStamp: Long = 0
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
         App.appComponent.inject(this)
-        super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mPagerCallback = parentFragment as PagerCallback
 
         val bundle = requireArguments()
         mThreadId = bundle.getString(ARG_THREAD_ID)
@@ -121,6 +127,10 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
             scrollState = bundle.getParcelable(ARG_PAGER_SCROLL_STATE)
         }
         leavePageMsg("PostListPagerFragment##ThreadId:$mThreadId,PageNum:$mPageNum")
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         mRecyclerView = recyclerView
         mLayoutManager = StartSnapLinearLayoutManager(requireActivity())
@@ -169,11 +179,6 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
             .subscribe { startBlackListRefresh() }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mPagerCallback = parentFragment as PagerCallback
-    }
-
     override fun onDestroy() {
         RxJavaUtil.disposeIfNotNull(refreshAfterBlacklistChangeDisposable)
         mPagerCallback = null
@@ -183,7 +188,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
     override fun getLoadingViewModelBindingDelegateImpl(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): LoadingViewModelBindingDelegate<PostsWrapper> {
+    ): LoadingViewModelBindingDelegate {
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_base_with_quick_side_bar,

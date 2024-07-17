@@ -2,8 +2,6 @@ package me.ykrank.s1next.view.fragment
 
 import android.graphics.Rect
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.github.ykrank.androidtools.extension.dp2px
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
@@ -11,7 +9,6 @@ import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
 import io.reactivex.Single
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.Rate
-import java.util.*
 
 /**
  * Created by ykrank on 2017/1/16.
@@ -22,8 +19,8 @@ class RateDetailsListFragment : BaseRecyclerViewFragment<List<Rate>>() {
     private lateinit var rates: List<Rate>
     private lateinit var mRecyclerAdapter: SimpleRecycleViewAdapter
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         val argRates = arguments?.getParcelableArrayList<Rate>(ARG_RATES)
         if (argRates != null) {
@@ -31,6 +28,9 @@ class RateDetailsListFragment : BaseRecyclerViewFragment<List<Rate>>() {
         } else {
             rates = listOf()
         }
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val recyclerView = recyclerView
         val activity = activity

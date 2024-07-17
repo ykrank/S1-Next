@@ -105,7 +105,7 @@ class NoteFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<Notes>>() {
 
 class LoadingViewModelBindingDelegateNoteImpl(
     private val binding: FragmentNoteBinding
-) : LoadingViewModelBindingDelegate<BaseDataWrapper<Notes>> {
+) : LoadingViewModelBindingDelegate {
 
     override val rootView: View
         get() = binding.root
@@ -114,7 +114,7 @@ class LoadingViewModelBindingDelegateNoteImpl(
     override val recyclerView: RecyclerView
         get() = binding.recyclerView
 
-    override fun setLoadingViewModel(loadingViewModel: LoadingViewModel<BaseDataWrapper<Notes>>) {
+    override fun setLoadingViewModel(loadingViewModel: LoadingViewModel) {
         binding.loadingViewModel = loadingViewModel
     }
 }

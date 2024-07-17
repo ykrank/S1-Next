@@ -11,6 +11,7 @@ import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
+import me.ykrank.s1next.util.toJson
 
 class EmptyApiCacheProvider(
     private val downloadPerf: DownloadPreferencesManager,
@@ -19,7 +20,7 @@ class EmptyApiCacheProvider(
 
     override suspend fun getForumGroupsWrapper(param: CacheParam?): Flow<Resource<ForumGroupsWrapper>> {
         val wrapper = runCatching {
-            s1Service.getForumGroupsWrapper()
+            s1Service.getForumGroupsWrapper().toJson(ForumGroupsWrapper::class.java)
         }
         return flowOf(Resource.fromResult(Source.CLOUD, wrapper))
     }
@@ -37,7 +38,9 @@ class EmptyApiCacheProvider(
         page: Int,
         param: CacheParam?
     ): Flow<Resource<ThreadsWrapper>> {
-        val wrapper = runCatching { s1Service.getThreadsWrapper(forumId, typeId, page) }
+        val wrapper = runCatching {
+            s1Service.getThreadsWrapper(forumId, typeId, page).toJson(ThreadsWrapper::class.java)
+        }
         return flowOf(Resource.fromResult(Source.CLOUD, wrapper))
     }
 

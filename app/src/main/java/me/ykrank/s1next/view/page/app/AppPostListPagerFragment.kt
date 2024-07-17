@@ -156,7 +156,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
     override fun getLoadingViewModelBindingDelegateImpl(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): LoadingViewModelBindingDelegate<AppPostsWrapper> {
+    ): LoadingViewModelBindingDelegate {
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_base_with_quick_side_bar,

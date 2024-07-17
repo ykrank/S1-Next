@@ -33,17 +33,19 @@ class Threads : Account {
     constructor() {}
 
     @JsonCreator
-    constructor(@JsonProperty("threadtypes") typesNode: JsonNode,
+    constructor(@JsonProperty("threadtypes") typesNode: JsonNode?,
                 @JsonProperty("forum_threadlist") threadList: List<Thread>?) {
         val threadTypes = ArrayList<ThreadType>()
         try {
             val typeMap = androidx.collection.ArrayMap<String, String>()
-            val fields = typesNode.get("types").fields()
-            while (fields.hasNext()) {
-                val entry = fields.next()
-                val type = ThreadType(entry.key, entry.value.asText())
-                threadTypes.add(type)
-                typeMap[type.typeId] = type.typeName
+            val fields = typesNode?.get("types")?.fields()
+            if (fields != null) {
+                while (fields.hasNext()) {
+                    val entry = fields.next()
+                    val type = ThreadType(entry.key, entry.value.asText())
+                    threadTypes.add(type)
+                    typeMap[type.typeId] = type.typeName
+                }
             }
             if (threadList != null) {
                 for (thread in threadList) {

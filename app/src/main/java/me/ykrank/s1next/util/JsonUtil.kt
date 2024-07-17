@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JavaType
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.reactivex.SingleTransformer
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import me.ykrank.s1next.App
 
 object JsonUtil {
@@ -23,5 +25,11 @@ object JsonUtil {
 
     fun <T> readJsonNode(mapper: ObjectMapper, jsonNode: JsonNode, javaType: TypeReference<T>): T {
         return mapper.readValue(mapper.treeAsTokens(jsonNode), javaType)
+    }
+}
+
+suspend fun <T> String.toJson(cls: Class<T>): T {
+    return withContext(Dispatchers.IO) {
+        App.preAppComponent.jsonMapper.readValue(this@toJson, cls)
     }
 }

@@ -84,7 +84,8 @@ abstract class BaseRecyclerViewFragment<D> : LibBaseRecyclerViewFragment<D>() {
      * run when [.onCreateView]
      */
     override fun getLoadingViewModelBindingDelegateImpl(inflater: LayoutInflater,
-                                                        container: ViewGroup?): LoadingViewModelBindingDelegate<D> {
+                                                        container: ViewGroup?
+    ): LoadingViewModelBindingDelegate {
         if (isCardViewContainer) {
             val binding = DataBindingUtil.inflate<FragmentBaseCardViewContainerBinding>(inflater,
                     R.layout.fragment_base_card_view_container, container, false)

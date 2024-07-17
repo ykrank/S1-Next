@@ -68,7 +68,7 @@ abstract class LibBaseLoadMoreRecycleViewFragment<D> : LibBaseRecyclerViewFragme
         // when we start to loadViewPager new data
         mCoordinatorLayoutAnchorDelegate?.dismissSnackbarIfExist()
         getLibPageSourceObservable(pageNum)
-                .map { d -> appendNewData(mLoadingViewModel.data, d) }
+                .map { d -> appendNewData(mBaseRecycleViewModel.data, d) }
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .doAfterTerminate({ this.finallyDo() })
                 .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))

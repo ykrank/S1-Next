@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.ykrank.androidtools.GlobalData
 import com.github.ykrank.androidtools.data.Resource
 import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
+import com.github.ykrank.androidtools.ui.vm.BaseRecycleViewModel
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
@@ -40,8 +41,11 @@ import kotlinx.coroutines.launch
 </D> */
 abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
 
-    private lateinit var mLoadingViewModelBindingDelegate: LoadingViewModelBindingDelegate<D>
-    val mLoadingViewModel: LoadingViewModel<D> by viewModels()
+    private lateinit var mLoadingViewModelBindingDelegate: LoadingViewModelBindingDelegate
+    val mBaseRecycleViewModel: BaseRecycleViewModel<D> by viewModels()
+    val mLoadingViewModel by lazy {
+        mBaseRecycleViewModel.loading
+    }
 
     private var mDisposable: Disposable? = null
     private var mLoadJob: Job? = null
@@ -96,7 +100,7 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         mLoadingViewModelBindingDelegate.swipeRefreshLayout.setOnRefreshListener { this.startSwipeRefresh() }
 
-        mLoadingViewModel.data?.apply {
+        mBaseRecycleViewModel.data?.apply {
             onNext(this)
         }
 
@@ -105,6 +109,10 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
             init = true
             load(mLoadingViewModel.loading)
         }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onDestroy() {
@@ -137,7 +145,8 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
      * run when [.onCreateView]
      */
     open abstract fun getLoadingViewModelBindingDelegateImpl(inflater: LayoutInflater,
-                                                             container: ViewGroup?): LoadingViewModelBindingDelegate<D>
+                                                             container: ViewGroup?
+    ): LoadingViewModelBindingDelegate
 
     /**
      * Whether load when visible in viewpager.
@@ -278,7 +287,7 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
      */
     @CallSuper
     protected open fun onNext(data: D) {
-        mLoadingViewModel.data = data
+        mBaseRecycleViewModel.data = data
     }
 
     /**
