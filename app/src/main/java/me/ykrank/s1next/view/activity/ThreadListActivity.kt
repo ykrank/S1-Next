@@ -1,6 +1,5 @@
 package me.ykrank.s1next.view.activity
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -24,10 +23,10 @@ import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.model.Forum
 import me.ykrank.s1next.data.api.model.ThreadType
 import me.ykrank.s1next.view.adapter.SubForumArrayAdapter
+import me.ykrank.s1next.view.event.BlackListChangeEvent
 import me.ykrank.s1next.view.event.ThreadTypeChangeEvent
 import me.ykrank.s1next.view.fragment.ThreadListFragment
 import me.ykrank.s1next.view.fragment.ThreadListPagerFragment
-import me.ykrank.s1next.view.page.post.postlist.PostListActivity
 import me.ykrank.s1next.widget.track.event.RandomImageTrackEvent
 import me.ykrank.s1next.widget.track.event.ViewForumTrackEvent
 import javax.inject.Inject
@@ -82,6 +81,11 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
             fragment = supportFragmentManager.findFragmentByTag(ThreadListFragment.TAG) as ThreadListFragment?
         }
 
+        mRxBus.get()
+            .ofType(BlackListChangeEvent::class.java)
+            .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
+            .subscribe { event -> refreshBlackList = true }
+
         init()
     }
 
@@ -135,16 +139,6 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == PostListActivity.RESULT_BLACKLIST) {
-            if (resultCode == Activity.RESULT_OK) {
-                refreshBlackList = true
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
-        }
-    }
-
     override fun onPause() {
         refreshBlackList = false
         super.onPause()
@@ -159,7 +153,7 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
             mListPopupWindow?.setAdapter(mSubForumArrayAdapter)
             mListPopupWindow?.setOnItemClickListener { parent, view, position, id ->
                 // we use the same activity (ThreadListActivity) for sub forum
-                ThreadListActivity.startThreadListActivity(this, mSubForumArrayAdapter?.getItem(
+                startThreadListActivity(this, mSubForumArrayAdapter?.getItem(
                         position))
 
                 mListPopupWindow?.dismiss()

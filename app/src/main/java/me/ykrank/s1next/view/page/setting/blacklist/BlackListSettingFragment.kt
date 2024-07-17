@@ -1,14 +1,17 @@
 package me.ykrank.s1next.view.page.setting.blacklist
 
-import android.app.Activity
 import android.content.DialogInterface
-import android.content.Intent
 import android.database.Cursor
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.ListView
+import androidx.databinding.DataBindingUtil
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.util.L
@@ -19,12 +22,10 @@ import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.databinding.FragmentBlacklistBinding
 import me.ykrank.s1next.view.activity.DarkRoomActivity
-import me.ykrank.s1next.view.page.setting.SettingsActivity
 import me.ykrank.s1next.view.dialog.LoadBlackListFromWebDialogFragment
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.fragment.BaseFragment
-import me.ykrank.s1next.view.internal.RequestCode
-import java.util.*
+import me.ykrank.s1next.view.page.setting.SettingsActivity
 
 class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListener {
 
@@ -79,8 +80,8 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
                         }
                     }
                     dialogFragment.show(
-                        fragmentManager!!,
-                        BlackListSettingFragment::class.java.name
+                        parentFragmentManager,
+                        BlacklistDialogFragment::class.java.name
                     )
                     return true
                 }
@@ -140,14 +141,10 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mListViewAdapter = BlackListCursorListViewAdapter(activity!!)
+        mListViewAdapter = BlackListCursorListViewAdapter(requireActivity())
         mListView.adapter = mListViewAdapter
         mListView.choiceMode = AbsListView.CHOICE_MODE_MULTIPLE_MODAL
         mListView.setMultiChoiceModeListener(mActionModeCallback)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
 
         setHasOptionsMenu(true)
     }
@@ -222,20 +219,6 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
         load()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == RequestCode.REQUEST_CODE_BLACKLIST) {
-            if (resultCode == Activity.RESULT_OK) {
-                val blackList =
-                    data?.getParcelableExtra<BlackList>(BlacklistDialogFragment.BLACKLIST_TAG)
-                if (blackList != null) {
-                    BlackListBiz.getInstance().saveBlackList(blackList)
-                    load()
-                }
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
     private fun add() {
         val dialogFragment = BlacklistDialogFragment.newInstance(ArrayList()) { blackList ->
             if (blackList.size > 0) {
@@ -243,7 +226,7 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
                 load()
             }
         }
-        dialogFragment.show(fragmentManager!!, BlackListSettingFragment::class.java.name)
+        dialogFragment.show(parentFragmentManager, BlackListSettingFragment::class.java.name)
     }
 
     companion object {

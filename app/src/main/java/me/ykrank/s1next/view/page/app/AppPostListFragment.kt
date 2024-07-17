@@ -1,6 +1,5 @@
 package me.ykrank.s1next.view.page.app
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -23,7 +22,6 @@ import me.ykrank.s1next.data.api.app.model.AppThread
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.util.IntentUtil
-import me.ykrank.s1next.view.activity.BaseActivity
 import me.ykrank.s1next.view.activity.NewRateActivity
 import me.ykrank.s1next.view.activity.NewReportActivity
 import me.ykrank.s1next.view.activity.ReplyActivity
@@ -34,7 +32,6 @@ import me.ykrank.s1next.view.dialog.VoteDialogFragment
 import me.ykrank.s1next.view.event.*
 import me.ykrank.s1next.view.fragment.BaseViewPagerFragment
 import me.ykrank.s1next.view.internal.PagerScrollState
-import me.ykrank.s1next.view.internal.RequestCode
 import me.ykrank.s1next.view.page.edit.EditPostActivity
 import javax.inject.Inject
 
@@ -105,7 +102,7 @@ class AppPostListFragment : BaseViewPagerFragment(), AppPostListPagerFragment.Pa
                 .subscribe {
                     val thread = it.thread
                     val post = it.post
-                    EditPostActivity.startActivityForResultMessage(this, RequestCode.REQUEST_CODE_EDIT_POST, thread, post)
+                    EditPostActivity.startActivity(this, thread, post)
                 }
         mRxBus.get()
                 .ofType(VotePostEvent::class.java)
@@ -115,10 +112,6 @@ class AppPostListFragment : BaseViewPagerFragment(), AppPostListPagerFragment.Pa
                         VoteDialogFragment.newInstance(it.threadId, it.vote).show(childFragmentManager, VoteDialogFragment.TAG)
                     }
                 }
-        mRxBus.get()
-                .ofType(BlackListChangeEvent::class.java)
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
-                .subscribe { activity?.setResult(Activity.RESULT_OK) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -199,19 +192,6 @@ class AppPostListFragment : BaseViewPagerFragment(), AppPostListPagerFragment.Pa
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == RequestCode.REQUEST_CODE_EDIT_POST) {
-            if (resultCode == Activity.RESULT_OK) {
-                val msg = data?.getStringExtra(BaseActivity.EXTRA_MESSAGE)
-                showSnackbar(msg)
-                val fragment = curPostPageFragment
-                fragment?.startSwipeRefresh()
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
         }
     }
 

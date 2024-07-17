@@ -2,6 +2,7 @@ package me.ykrank.s1next.view.page.edit
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.Post
 import me.ykrank.s1next.data.api.model.Thread
@@ -52,7 +53,19 @@ class EditPostActivity : BaseActivity() {
         private const val ARG_THREAD = "thread"
         private const val ARG_POST = "post"
 
-        fun startActivityForResultMessage(fragment: androidx.fragment.app.Fragment, requestCode: Int, thread: Thread, post: Post) {
+        fun startActivity(fragment: Fragment, thread: Thread, post: Post) {
+            val intent = Intent(fragment.context, EditPostActivity::class.java)
+            intent.putExtra(ARG_THREAD, thread)
+            intent.putExtra(ARG_POST, post)
+            fragment.startActivity(intent)
+        }
+
+        fun startActivityForResult(
+            fragment: Fragment,
+            requestCode: Int,
+            thread: Thread,
+            post: Post
+        ) {
             val intent = Intent(fragment.context, EditPostActivity::class.java)
             intent.putExtra(ARG_THREAD, thread)
             intent.putExtra(ARG_POST, post)

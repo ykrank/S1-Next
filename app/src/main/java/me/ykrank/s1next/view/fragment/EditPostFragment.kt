@@ -1,5 +1,7 @@
 package me.ykrank.s1next.view.fragment
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,12 +39,17 @@ class EditPostFragment : BasePostEditFragment() {
 
     private lateinit var binding: FragmentEditPostBinding
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        App.appComponent.inject(this)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentEditPostBinding.inflate(inflater, container, false)
         initCreateView(binding.layoutPost)
 
-        mThread = arguments!!.getParcelable(ARG_THREAD)!!
-        mPost = arguments!!.getParcelable(ARG_POST)!!
+        mThread = requireArguments().getParcelable(ARG_THREAD)!!
+        mPost = requireArguments().getParcelable(ARG_POST)!!
 
         isHost = mPost.isFirst
         binding.host = isHost
@@ -51,10 +58,9 @@ class EditPostFragment : BasePostEditFragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        App.appComponent.inject(this)
         init()
     }
 
@@ -135,7 +141,7 @@ class EditPostFragment : BasePostEditFragment() {
     }
 
     private fun setSpinnerType(types: List<ThreadType>?) {
-        if (types == null || types.isEmpty()) {
+        if (types.isNullOrEmpty()) {
             binding.spinnerType.visibility = View.GONE
             return
         } else {
@@ -146,7 +152,7 @@ class EditPostFragment : BasePostEditFragment() {
     }
 
     private fun setSpinnerPerm(types: List<String>?) {
-        if (types == null || types.isEmpty()) {
+        if (types.isNullOrEmpty()) {
             binding.spinnerPerm.visibility = View.GONE
             return
         } else {
@@ -158,6 +164,10 @@ class EditPostFragment : BasePostEditFragment() {
 
     override fun isRequestDialogAccept(event: RequestDialogSuccessEvent): Boolean {
         return event.dialogFragment is EditPostRequestDialogFragment
+    }
+
+    override fun onRequestDialogSuccess() {
+        activity?.setResult(Activity.RESULT_OK)
     }
 
     companion object {

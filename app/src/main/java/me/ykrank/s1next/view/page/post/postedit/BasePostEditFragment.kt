@@ -234,6 +234,10 @@ abstract class BasePostEditFragment : BaseFragment(),
                 .subscribe({ mReplyView.setText(it) }, L::report)
     }
 
+    open fun onRequestDialogSuccess() {
+
+    }
+
     private fun bindRequestDialog() {
         if (requestDialogDisposable == null) {
             requestDialogDisposable = mRxBus.get()
@@ -244,6 +248,7 @@ abstract class BasePostEditFragment : BaseFragment(),
                         post = true
                         editorDiskCache.remove(cacheKey)
                         showShortTextAndFinishCurrentActivity(it.msg)
+                        onRequestDialogSuccess()
                     }, L::report)
         }
     }

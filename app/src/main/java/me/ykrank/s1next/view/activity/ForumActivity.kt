@@ -19,8 +19,8 @@ import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.pref.ReadPreferencesManager
 import me.ykrank.s1next.databinding.ToolbarSpinnerBinding
+import me.ykrank.s1next.view.event.LoginEvent
 import me.ykrank.s1next.view.fragment.ForumFragment
-import me.ykrank.s1next.view.internal.RequestCode
 import me.ykrank.s1next.view.internal.ToolbarDropDownInterface
 import me.ykrank.s1next.view.page.post.postlist.PostListActivity
 import me.ykrank.s1next.viewmodel.DropDownItemListViewModel
@@ -67,28 +67,19 @@ class ForumActivity : BaseActivity(), ToolbarDropDownInterface.Callback, Adapter
         }
 
         onItemSelectedListener = fragment
+
+        mRxBus.get()
+            .ofType(LoginEvent::class.java)
+            .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
+            .subscribe {
+                fragment.forceSwipeRefresh()
+            }
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
         fragment.startSwipeRefresh()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == RequestCode.REQUEST_CODE_LOGIN) {
-            if (resultCode == Activity.RESULT_OK) {
-                val msg = data?.getStringExtra(EXTRA_MESSAGE)
-                if (msg != null) {
-                    showSnackbar(msg)
-                }
-                if (data != null) {
-                    fragment.forceSwipeRefresh()
-                }
-            }
-        }
-
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     public override fun onSaveInstanceState(outState: Bundle) {

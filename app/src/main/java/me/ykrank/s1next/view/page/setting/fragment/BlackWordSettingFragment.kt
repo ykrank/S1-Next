@@ -1,13 +1,16 @@
 package me.ykrank.s1next.view.page.setting.fragment
 
-import android.app.Activity
-import android.content.Intent
 import android.database.Cursor
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.ListView
+import androidx.databinding.DataBindingUtil
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.util.L
@@ -22,7 +25,6 @@ import me.ykrank.s1next.view.adapter.BlackWordCursorListViewAdapter
 import me.ykrank.s1next.view.dialog.BlackWordDialogFragment
 import me.ykrank.s1next.view.fragment.BaseFragment
 import me.ykrank.s1next.view.internal.RequestCode
-import java.util.*
 
 class BlackWordSettingFragment : BaseFragment() {
 
@@ -72,12 +74,14 @@ class BlackWordSettingFragment : BaseFragment() {
                         }
                     }
                     val dialogFragment1 = BlackWordDialogFragment.newInstance(blackWord)
-                    dialogFragment1.setTargetFragment(
-                        this@BlackWordSettingFragment,
-                        RequestCode.REQUEST_CODE_BLACKLIST
-                    )
+                    parentFragmentManager.setFragmentResultListener(
+                        RequestCode.REQUEST_KEY_BLACKLIST,
+                        this@BlackWordSettingFragment
+                    ) { _, _ ->
+                        setHasOptionsMenu(true)
+                    }
                     dialogFragment1.show(
-                        fragmentManager!!,
+                        parentFragmentManager,
                         BlackWordSettingFragment::class.java.name
                     )
                     return true
@@ -138,16 +142,10 @@ class BlackWordSettingFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mListViewAdapter = BlackWordCursorListViewAdapter(activity!!)
+        mListViewAdapter = BlackWordCursorListViewAdapter(requireActivity())
         mListView.adapter = mListViewAdapter
         mListView.choiceMode = AbsListView.CHOICE_MODE_MULTIPLE_MODAL
         mListView.setMultiChoiceModeListener(mActionModeCallback)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -199,27 +197,20 @@ class BlackWordSettingFragment : BaseFragment() {
         load()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == RequestCode.REQUEST_CODE_BLACKLIST) {
-            if (resultCode == Activity.RESULT_OK) {
-                val blackWord =
-                    data?.getParcelableExtra<BlackWord>(BlackWordDialogFragment.TAG_BLACK_WORD)
-                if (blackWord != null) {
-                    BlackWordBiz.instance.saveBlackWord(blackWord)
-                    load()
-                }
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
     private fun add() {
         val dialogFragment = BlackWordDialogFragment.newInstance(null)
-        dialogFragment.setTargetFragment(
-            this@BlackWordSettingFragment,
-            RequestCode.REQUEST_CODE_BLACKLIST
-        )
-        dialogFragment.show(fragmentManager!!, BlackWordSettingFragment::class.java.name)
+        parentFragmentManager.setFragmentResultListener(
+            RequestCode.REQUEST_KEY_BLACKLIST,
+            this
+        ) { _, result ->
+            val blackWord: BlackWord? =
+                result.getParcelable(BlackWordDialogFragment.TAG_BLACK_WORD)
+            if (blackWord != null) {
+                BlackWordBiz.instance.saveBlackWord(blackWord)
+                load()
+            }
+        }
+        dialogFragment.show(parentFragmentManager, BlackWordSettingFragment::class.java.name)
     }
 
     companion object {

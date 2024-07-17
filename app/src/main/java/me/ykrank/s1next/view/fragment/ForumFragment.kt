@@ -104,7 +104,10 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
         }
         if (inForceRefresh) {
             inForceRefresh = false
-            recyclerView.smoothScrollToPosition(0)
+
+            recyclerView.post {
+                recyclerView.smoothScrollToPosition(0)
+            }
         }
     }
 

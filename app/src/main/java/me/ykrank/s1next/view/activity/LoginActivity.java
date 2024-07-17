@@ -3,18 +3,18 @@ package me.ykrank.s1next.view.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.fragment.app.FragmentTransaction;
 
 import me.ykrank.s1next.R;
-import me.ykrank.s1next.view.page.login.LoginFragment;
 import me.ykrank.s1next.view.fragment.WebLoginFragment;
-import me.ykrank.s1next.view.internal.RequestCode;
+import me.ykrank.s1next.view.page.login.LoginFragment;
 
 public final class LoginActivity extends BaseActivity {
 
     public static void startLoginActivityForResultMessage(Activity activity) {
         Intent intent = new Intent(activity, LoginActivity.class);
-        activity.startActivityForResult(intent, RequestCode.REQUEST_CODE_LOGIN);
+        activity.startActivity(intent);
     }
 
     @Override

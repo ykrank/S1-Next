@@ -180,7 +180,12 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                 .subscribe {
                     val thread = it.thread
                     val post = it.post
-                    EditPostActivity.startActivityForResultMessage(this, RequestCode.REQUEST_CODE_EDIT_POST, thread, post)
+                    EditPostActivity.startActivityForResult(
+                        this,
+                        RequestCode.REQUEST_CODE_EDIT_POST,
+                        thread,
+                        post
+                    )
                 }
         mRxBus.get()
                 .ofType(VotePostEvent::class.java)
@@ -190,10 +195,6 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                         VoteDialogFragment.newInstance(it.threadId, it.vote).show(childFragmentManager, VoteDialogFragment.TAG)
                     }
                 }
-        mRxBus.get()
-                .ofType(BlackListChangeEvent::class.java)
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
-                .subscribe { activity?.setResult(Activity.RESULT_OK) }
     }
 
     override fun onPause() {

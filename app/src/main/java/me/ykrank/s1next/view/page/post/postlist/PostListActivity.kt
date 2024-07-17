@@ -100,8 +100,6 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
     }
 
     companion object {
-        const val RESULT_BLACKLIST = 11
-
         private const val ARG_THREAD = "thread"
         private const val ARG_SHOULD_GO_TO_LAST_PAGE = "should_go_to_last_page"
         private const val ARG_AUTHOR_ID = "author_id"
@@ -116,10 +114,7 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
             intent.putExtra(ARG_THREAD, thread)
             intent.putExtra(ARG_SHOULD_GO_TO_LAST_PAGE, shouldGoToLastPage)
 
-            if (context is Activity)
-                context.startActivityForResult(intent, RESULT_BLACKLIST)
-            else
-                context.startActivity(intent)
+            context.startActivity(intent)
         }
 
         fun start(context: Context, thread: Thread, authorId: String) {
@@ -127,10 +122,7 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
             intent.putExtra(ARG_THREAD, thread)
             intent.putExtra(ARG_AUTHOR_ID, authorId)
 
-            if (context is Activity)
-                context.startActivityForResult(intent, RESULT_BLACKLIST)
-            else
-                context.startActivity(intent)
+            context.startActivity(intent)
         }
 
         fun start(activity: Activity, threadLink: ThreadLink) {
@@ -184,11 +176,7 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
                         val intent = Intent(context, PostListActivity::class.java)
                         intent.putExtra(ARG_THREAD, thread)
                         intent.putExtra(ARG_READ_PROGRESS, readProgress)
-                        if (context is Activity) {
-                            context.startActivityForResult(intent, RESULT_BLACKLIST)
-                        } else {
-                            context.startActivity(intent)
-                        }
+                        context.startActivity(intent)
                     }
                 } else {
                     threadProvider()?.apply {

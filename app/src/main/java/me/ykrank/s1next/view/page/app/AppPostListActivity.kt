@@ -1,6 +1,5 @@
 package me.ykrank.s1next.view.page.app
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -66,8 +65,6 @@ class AppPostListActivity : BaseActivity(), AppPostListPagerFragment.PagerCallba
     override var threadInfo: AppThread? = null
 
     companion object {
-        private const val RESULT_BLACKLIST = 11
-
         private const val ARG_THREAD_ID = "thread_id"
         private const val ARG_PAGE_NUM = "page_num"
         private const val ARG_QUOTE_POST_ID = "quote_post_id"
@@ -80,10 +77,7 @@ class AppPostListActivity : BaseActivity(), AppPostListPagerFragment.PagerCallba
             }
             intent.putExtra(ARG_PAGE_NUM, pageNum)
 
-            if (context is Activity)
-                context.startActivityForResult(intent, RESULT_BLACKLIST)
-            else
-                context.startActivity(intent)
+            context.startActivity(intent)
         }
     }
 

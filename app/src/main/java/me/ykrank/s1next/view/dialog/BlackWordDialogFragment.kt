@@ -1,17 +1,16 @@
 package me.ykrank.s1next.view.dialog
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.DialogInterface
-import android.content.Intent
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AlertDialog
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.WindowManager
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.setFragmentResult
 import com.github.ykrank.androidtools.util.ResourceUtil
 import com.github.ykrank.androidtools.util.ViewUtil
 import me.ykrank.s1next.R
@@ -27,7 +26,7 @@ import me.ykrank.s1next.viewmodel.BlackWordViewModel
 class BlackWordDialogFragment : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val activity = activity!!
+        val activity = requireActivity()
         val colorRight = ContextCompat.getColorStateList(
             activity,
             ResourceUtil.getResourceId(
@@ -93,13 +92,9 @@ class BlackWordDialogFragment : BaseDialogFragment() {
                 val blackWord: BlackWord = mBlackWord ?: BlackWord(word, statSelect)
                 blackWord.word = word
                 blackWord.stat = statSelect
-                val intent = Intent()
-                intent.putExtra(TAG_BLACK_WORD, blackWord)
-                targetFragment!!.onActivityResult(
-                    RequestCode.REQUEST_CODE_BLACKLIST,
-                    Activity.RESULT_OK,
-                    intent
-                )
+                val bundle = Bundle()
+                bundle.putParcelable(TAG_BLACK_WORD, blackWord)
+                setFragmentResult(RequestCode.REQUEST_KEY_BLACKLIST, bundle)
             }
             .setNegativeButton(android.R.string.cancel, null)
             .create()

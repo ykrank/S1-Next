@@ -6,14 +6,13 @@ import android.os.Bundle;
 
 import me.ykrank.s1next.R;
 import me.ykrank.s1next.view.activity.BaseActivity;
-import me.ykrank.s1next.view.internal.RequestCode;
 import me.ykrank.s1next.view.page.login.AppLoginFragment;
 
 public final class AppLoginActivity extends BaseActivity {
 
     public static void startLoginActivityForResultMessage(Activity activity) {
         Intent intent = new Intent(activity, AppLoginActivity.class);
-        activity.startActivityForResult(intent, RequestCode.REQUEST_CODE_LOGIN);
+        activity.startActivity(intent);
     }
 
     @Override
