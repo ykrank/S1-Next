@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -113,6 +114,9 @@ class LoadingViewModelBindingDelegateNoteImpl(
         get() = binding.swipeRefreshLayout
     override val recyclerView: RecyclerView
         get() = binding.recyclerView
+
+    override val hintView: TextView
+        get() = binding.tvHint
 
     override fun setLoadingViewModel(loadingViewModel: LoadingViewModel) {
         binding.loadingViewModel = loadingViewModel

@@ -17,14 +17,30 @@
             type="boolean" />
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:textColor="@color/blue_500"
+            android:textSize="11sp"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/data_load_from_cache"
+            tools:visibility="visible"/>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_hint"
             app:colorSchemeColors="@{@intArray/swipe_refresh_layout_color_scheme}"
             app:enabled="@{loadingViewModel.swipeRefreshLayoutEnabled}"
             app:refreshing="@{loadingViewModel.swipeRefresh}">
@@ -46,7 +62,9 @@
             android:id="@+id/quickSideBarView"
             android:layout_width="@dimen/quicksidebar_width"
             android:layout_height="match_parent"
-            android:layout_gravity="end"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:sidebarTextColor="?android:attr/textColorPrimary"
             app:sidebarTextSize="8sp"
             app:sidebarTextSizeChoose="11sp"
@@ -58,15 +76,18 @@
             android:id="@+id/quickSideBarViewTips"
             android:layout_width="@dimen/quicksidebar_tip_size"
             android:layout_height="@dimen/quicksidebar_tip_size"
-            android:layout_gravity="center"
             android:background="?attr/colorTranslucent"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display3"
             android:textColor="?android:attr/textColorSecondaryInverse"
             android:textStyle="normal|bold"
             android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="3000"
             tools:visibility="visible" />
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -1,6 +1,7 @@
 package com.github.ykrank.androidtools.ui.internal
 
 import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
@@ -21,5 +22,7 @@ interface LoadingViewModelBindingDelegate {
      * [LibBaseRecyclerViewAdapter.setHasProgress].
      */
     val recyclerView: RecyclerView
+
+    val hintView: TextView
     fun setLoadingViewModel(loadingViewModel: LoadingViewModel)
 }

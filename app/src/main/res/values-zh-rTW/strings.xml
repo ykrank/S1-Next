@@ -434,4 +434,5 @@
     <string name="format_error">格式錯誤</string>
     <string name="choose_user">選擇用戶</string>
     <string name="choose_user_invalid">用戶無效，請選擇其他用戶</string>
+    <string name="data_load_from_cache">數據來自緩存</string>
 </resources>

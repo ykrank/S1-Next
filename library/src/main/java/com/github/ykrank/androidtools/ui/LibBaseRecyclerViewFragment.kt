@@ -5,11 +5,13 @@ import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.annotation.MainThread
 import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.ykrank.androidtools.GlobalData
 import com.github.ykrank.androidtools.data.Resource
@@ -85,9 +87,12 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
             return lastTime > PULL_REFRESH_COLD_TIME
         }
 
-    protected val recyclerView: androidx.recyclerview.widget.RecyclerView
+    protected val recyclerView: RecyclerView
         get() = mLoadingViewModelBindingDelegate.recyclerView
 
+
+    protected val hintView: TextView
+        get() = mLoadingViewModelBindingDelegate.hintView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mLoadingViewModelBindingDelegate = getLoadingViewModelBindingDelegateImpl(inflater,
@@ -109,10 +114,6 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
             init = true
             load(mLoadingViewModel.loading)
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onDestroy() {
@@ -224,6 +225,7 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
                 getLibSource(loading)
                     ?.onEach {
                         if (it is Resource.Success) {
+                            onSuccess(it)
                             it.data?.apply {
                                 onNext(this)
                             }
@@ -288,6 +290,11 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
     @CallSuper
     protected open fun onNext(data: D) {
         mBaseRecycleViewModel.data = data
+    }
+
+    @CallSuper
+    protected open fun onSuccess(data: Resource.Success<D>) {
+
     }
 
     /**

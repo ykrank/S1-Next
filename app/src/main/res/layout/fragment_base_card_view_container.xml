@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -10,25 +11,45 @@
             type="com.github.ykrank.androidtools.ui.vm.LoadingViewModel" />
     </data>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:colorSchemeColors="@{@intArray/swipe_refresh_layout_color_scheme}"
-        app:enabled="@{loadingViewModel.swipeRefreshLayoutEnabled}"
-        app:refreshing="@{loadingViewModel.swipeRefresh}">
+        android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:textColor="@color/blue_500"
+            android:textSize="11sp"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/data_load_from_cache"
+            tools:visibility="visible"/>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="@dimen/recycler_view_vertical_padding_for_card_view"
-            android:paddingTop="@dimen/recycler_view_vertical_padding_for_card_view"
-            android:background="?attr/cardViewContainerBackground"
-            android:scrollbars="vertical"
-            app:loadingFirstTime="@{loadingViewModel.loadingFirstTime}" />
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_hint"
+            app:colorSchemeColors="@{@intArray/swipe_refresh_layout_color_scheme}"
+            app:enabled="@{loadingViewModel.swipeRefreshLayoutEnabled}"
+            app:refreshing="@{loadingViewModel.swipeRefresh}">
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/recycler_view_vertical_padding_for_card_view"
+                android:paddingTop="@dimen/recycler_view_vertical_padding_for_card_view"
+                android:background="?attr/cardViewContainerBackground"
+                android:scrollbars="vertical"
+                app:loadingFirstTime="@{loadingViewModel.loadingFirstTime}" />
 
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
