@@ -1,6 +1,5 @@
 package me.ykrank.s1next.data.api.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
@@ -49,15 +48,15 @@ class Thread : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
     @JsonProperty("fid")
     var fid: String? = null
 
-    @JsonIgnore
+    @JsonProperty("_typeName")
     var typeName: String? = null
 
-    @JsonIgnore
+    @JsonProperty("_isHide")
     var isHide = false
     /**
      * reply count when last view
      */
-    @JsonIgnore
+    @JsonProperty("_lastReplyCount")
     var lastReplyCount: Int = 0
 
     val reliesCount: Int

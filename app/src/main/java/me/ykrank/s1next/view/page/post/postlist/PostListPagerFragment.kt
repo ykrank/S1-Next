@@ -18,9 +18,7 @@ import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.data.CacheParam
 import com.github.ykrank.androidtools.data.Resource
-import com.github.ykrank.androidtools.data.Source
 import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
-import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.LooperUtil
 import com.github.ykrank.androidtools.util.RxJavaUtil
@@ -29,26 +27,21 @@ import com.github.ykrank.androidtools.widget.recycleview.StartSnapLinearLayoutMa
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
-import io.reactivex.rxkotlin.zipWith
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.api.Api
-import me.ykrank.s1next.data.api.ApiUtil
 import me.ykrank.s1next.data.api.model.Post
 import me.ykrank.s1next.data.api.model.Rate
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.collection.Posts
 import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper
-import me.ykrank.s1next.data.api.model.wrapper.RatePostsWrapper
 import me.ykrank.s1next.data.db.biz.ReadProgressBiz
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.databinding.FragmentBaseWithQuickSideBarBinding
-import me.ykrank.s1next.util.JsonUtil
 import me.ykrank.s1next.view.event.BlackListChangeEvent
 import me.ykrank.s1next.view.event.PostSelectableChangeEvent
 import me.ykrank.s1next.view.event.QuickSidebarEnableChangeEvent
@@ -296,87 +289,10 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
         return Pair(itemPosition, offset)
     }
 
-    override fun getSourceObservable(@LoadingViewModel.LoadingDef loading: Int): Single<PostsWrapper> {
-        //If enable cache, load cache
-        val source: Single<PostsWrapper> =
-            //If last page, force refresh cache
-            apiCacheObservable(isForceLoading || mPageNum >= (mPagerCallback?.getTotalPages() ?: 0))
-                .flatMap { reply ->
-                    //                        L.d("Source:$mPageNum," + java.lang.Thread.currentThread().toString())
-                    val wrapper = objectMapper.readValue(reply.data, PostsWrapper::class.java)
-                    //If load cache and this page size < POSTS_PER_PAGE, it's the last page, then force refresh
-                    if (reply.source != Source.CLOUD && (wrapper.data?.postList?.size
-                            ?: 0) < Api.POSTS_PER_PAGE
-                    ) {
-                        return@flatMap apiCacheObservable(true)
-                            .map { it.data!! }
-                            .compose(JsonUtil.jsonSingleTransformer(PostsWrapper::class.java))
-                    }
-                    Single.just(wrapper)
-                }
-
-        val rateSource: Single<RatePostsWrapper> =
-            rateApiCacheObservable(
-                isForceLoading || mPageNum >= (mPagerCallback?.getTotalPages() ?: 0)
-            )
-                .flatMap { reply ->
-                    //                        L.d("RateSource:$mPageNum," + java.lang.Thread.currentThread().toString())
-                    val wrapper = objectMapper.readValue(reply.data, RatePostsWrapper::class.java)
-                    if (reply.source != Source.CLOUD && (wrapper.data?.postList?.size
-                            ?: 0) < Api.POSTS_PER_PAGE
-                    ) {
-                        return@flatMap rateApiCacheObservable(true)
-                            .map { it.data!! }
-                            .compose(JsonUtil.jsonSingleTransformer(RatePostsWrapper::class.java))
-                    }
-                    Single.just(wrapper)
-                }
-
-        return source.subscribeOn(Schedulers.io())
-            .zipWith(rateSource.subscribeOn(Schedulers.io()))
-            .flatMap { pair ->
-                val o = pair.first
-                //Set comment init info(if it has comment)
-                pair.second.data?.commentCountMap?.apply {
-                    o.data?.initCommentCount(this)
-                }
-
-                val postList = o.data?.postList
-                if (!postList.isNullOrEmpty()) {
-                    val post = postList[0]
-                    if (post.isTrade) {
-                        post.extraHtml = ""
-                        return@flatMap mS1Service.getTradePostInfo(mThreadId, post.id + 1)
-                            .map { html ->
-                                post.extraHtml = ApiUtil.replaceAjaxHeader(html)
-                                return@map o
-                            }
-                    }
-                }
-
-                Single.just(o)
-            }
-    }
-
-    private fun apiObservable(): Single<String> {
-        return mS1Service.getPostsWrapper(mThreadId, mPageNum, mAuthorId)
-    }
-
-    private fun apiCacheObservable(evict: Boolean): Single<Resource<String>> {
+    override suspend fun getSource(loading: Int): Flow<Resource<PostsWrapper>>? {
         return apiCacheProvider.getPostsWrapper(
-            apiObservable(),
-            CacheParam(evict, listOf(mThreadId, mPageNum, mAuthorId))
-        )
-    }
-
-    private fun rateApiObservable(): Single<String> {
-        return mS1Service.getPostsWrapperNew(mThreadId, mPageNum, mAuthorId)
-    }
-
-    private fun rateApiCacheObservable(evict: Boolean): Single<Resource<String>> {
-        return apiCacheProvider.getPostsWrapperNew(
-            rateApiObservable(),
-            CacheParam(evict, listOf(mThreadId, mPageNum, mAuthorId))
+            mThreadId, mAuthorId, mPageNum,
+            CacheParam(isForceLoading, listOf(mThreadId, mPageNum, mAuthorId))
         )
     }
 

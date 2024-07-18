@@ -18,12 +18,12 @@ import me.ykrank.s1next.data.db.dbmodel.BlackList
 class Threads @JsonCreator constructor(
     @JsonProperty("threadtypes") typesNode: JsonNode?,
     @JsonProperty("forum_threadlist") threadList: List<Thread>?,
-    @JsonProperty("forum")
-    var threadListInfo: Thread.ThreadListInfo? = null,
-    @JsonProperty("sublist")
-    val subForumList: List<Forum> = listOf(),
 ) : Account() {
+    @JsonProperty("forum")
+    val threadListInfo: Thread.ThreadListInfo? = null
 
+    @JsonProperty("sublist")
+    val subForumList: List<Forum> = listOf()
 
     @JsonProperty("_threadList")
     val threadList: MutableList<Thread>

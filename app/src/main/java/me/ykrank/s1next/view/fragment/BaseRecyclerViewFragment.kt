@@ -7,7 +7,6 @@ import androidx.annotation.CallSuper
 import androidx.databinding.DataBindingUtil
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.ykrank.androidtools.data.Resource
-import com.github.ykrank.androidtools.data.Source
 import com.github.ykrank.androidtools.ui.LibBaseRecyclerViewFragment
 import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
@@ -137,15 +136,11 @@ abstract class BaseRecyclerViewFragment<D> : LibBaseRecyclerViewFragment<D>() {
 
     override fun onSuccess(data: Resource.Success<D>) {
         super.onSuccess(data)
-        when (data.source) {
-            Source.CLOUD -> {
-                hintView.visibility = View.GONE
-            }
-
-            Source.PERSISTENCE, Source.MEMORY -> {
-                hintView.visibility = View.VISIBLE
-                hintView.text = getString(R.string.data_load_from_cache)
-            }
+        if (data.source.isCache()) {
+            hintView.visibility = View.VISIBLE
+            hintView.text = getString(R.string.data_load_from_cache)
+        } else {
+            hintView.visibility = View.GONE
         }
     }
 

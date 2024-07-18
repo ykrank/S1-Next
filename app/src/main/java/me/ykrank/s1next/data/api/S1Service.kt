@@ -34,22 +34,23 @@ interface S1Service {
         @Query("page") page: Int
     ): String
 
+
     @GET(ApiForum.URL_POST_LIST)
-    fun getPostsWrapper(
+    suspend fun getPostsWrapper(
         @Query("tid") threadId: String?,
         @Query("page") page: Int,
         @Query("authorid") authorId: String?
-    ): Single<String>
+    ): String
 
     @GET(ApiForum.URL_POST_LIST_NEW)
-    fun getPostsWrapperNew(
+    suspend fun getPostsWrapperNew(
         @Query("tid") threadId: String?,
         @Query("page") page: Int,
         @Query("authorid") authorId: String?
-    ): Single<String>
+    ): String
 
     @GET(ApiForum.URL_TRADE_POST_INFO)
-    fun getTradePostInfo(@Query("tid") threadId: String?, @Query("pid") pid: Int): Single<String>
+    suspend fun getTradePostInfo(@Query("tid") threadId: String?, @Query("pid") pid: Int): String
 
     @GET(ApiForum.URL_QUOTE_POST_REDIRECT)
     fun getQuotePostResponseBody(

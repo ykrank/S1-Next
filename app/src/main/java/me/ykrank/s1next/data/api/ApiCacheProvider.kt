@@ -5,6 +5,7 @@ import com.github.ykrank.androidtools.data.Resource
 import io.reactivex.Single
 import kotlinx.coroutines.flow.Flow
 import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper
+import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper
 
 /**
@@ -22,6 +23,13 @@ interface ApiCacheProvider {
         page: Int,
         param: CacheParam? = null
     ): Flow<Resource<ThreadsWrapper>>
+
+    suspend fun getPostsWrapper(
+        threadId: String?,
+        authorId: String?,
+        page: Int,
+        param: CacheParam? = null
+    ): Flow<Resource<PostsWrapper>>
 
     fun getPostsWrapper(
         oWrapper: Single<String>,

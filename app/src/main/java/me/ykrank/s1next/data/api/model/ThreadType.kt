@@ -1,20 +1,24 @@
 package me.ykrank.s1next.data.api.model
 
 import android.text.TextUtils
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.LooperUtil
 import me.ykrank.s1next.data.api.model.wrapper.HtmlDataWrapper
 import org.jsoup.Jsoup
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
-import java.util.*
 
 /**
  * Created by ykrank on 2016/7/31 0031.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 @PaperParcel
 class ThreadType : PaperParcelable {
+    @JsonProperty("typeId")
     var typeId: String? = null
+    @JsonProperty("typeName")
     var typeName: String? = null
 
     constructor()
