@@ -207,6 +207,15 @@ class EmptyApiCacheProvider(
             val data = runCatching {
                 api().let {
                     val data = it.toJson(cls)
+                    if (getValidator != null && !getValidator(data)) {
+                        // 无效的数据降级到缓存
+                        if (cacheFallbackEnable && !cacheFirst) {
+                            parseCache()?.apply {
+                                fallbackSuccess = true
+                                emit(Resource.Success<T>(Source.PERSISTENCE, this))
+                            }
+                        }
+                    }
                     if (setValidator == null || setValidator(data)) {
                         // 有效的数据更新到缓存
 //                        cacheBiz.saveTextZip(key, it, maxSize = downloadPerf.totalDataCacheSize)
@@ -215,20 +224,12 @@ class EmptyApiCacheProvider(
                             jsonMapper.writeValueAsString(data),
                             maxSize = downloadPerf.totalDataCacheSize
                         )
-                    } else {
-                        // 无效的数据降级到缓存
-                        if (cacheFallbackEnable) {
-                            parseCache()?.apply {
-                                fallbackSuccess = true
-                                emit(Resource.Success<T>(Source.PERSISTENCE, this))
-                            }
-                        }
                     }
                     data
                 }
             }.onFailure {
                 // 失败的请求降级到缓存
-                if (cacheFallbackEnable) {
+                if (cacheFallbackEnable && !cacheFirst) {
                     parseCache()?.apply {
                         fallbackSuccess = true
                         emit(Resource.Success<T>(Source.PERSISTENCE, this))

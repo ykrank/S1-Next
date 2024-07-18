@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonGetter
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonSetter
 import com.github.ykrank.androidtools.util.StringUtils
 import me.ykrank.s1next.data.api.model.Account
 import me.ykrank.s1next.data.api.model.Post
@@ -20,11 +19,14 @@ import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Posts : Account {
+class Posts @JsonCreator constructor(
+    @JsonProperty("special_trade") trade: Map<Int, Any>?,
+    @JsonProperty("postlist") postList: List<Post>?
+) : Account() {
 
-    @JsonIgnore
+    @JsonProperty("thread")
     var postListInfo: Thread? = null
-        @JsonSetter("thread") set(p) {
+        set(p) {
             this.postList.forEach {
                 if (p?.author == it.authorName) {
                     it.isOpPost = true
@@ -36,17 +38,13 @@ class Posts : Account {
     @JsonProperty("threadsortshow")
     var threadAttachment: ThreadAttachment? = null
 
-    @JsonIgnore
-    var postList: List<Post> = listOf()
+    @JsonProperty("_postList")
+    val postList: List<Post>
 
     @JsonProperty("special_poll")
     val vote: Vote? = null
 
-    constructor() {}
-
-    @JsonCreator
-    constructor(@JsonProperty("special_trade") trade: Map<Int, Any>?,
-                @JsonProperty("postlist") postList: List<Post>?) {
+    init {
         this.postList = filterPostList(postList)
         if (trade != null && !postList.isNullOrEmpty()) {
             val post = postList[0]
