@@ -56,14 +56,15 @@ class SAFFragment : Fragment() {
 
     fun getDownloadPath(callback: ((DocumentFile) -> Unit)?, focusResetPath: Boolean = false) {
         getDictionaryCallback = callback
-        if (focusResetPath) {
+        val downloadPath = mDownloadPreferencesManager.downloadPath
+        if (focusResetPath || downloadPath.isNullOrEmpty()) {
             setDownloadPath()
             return
         }
         try {
             val documentFile = DocumentFile.fromTreeUri(
                 requireContext(),
-                Uri.parse(mDownloadPreferencesManager.downloadPath)
+                Uri.parse(downloadPath)
             )
             if (documentFile != null) {
                 callback?.invoke(documentFile)

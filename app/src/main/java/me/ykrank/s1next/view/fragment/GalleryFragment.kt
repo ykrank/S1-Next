@@ -24,12 +24,11 @@ import com.github.chrisbanes.photoview.PhotoView
 import com.github.ykrank.androidtools.ui.adapter.delegate.item.ProgressItem
 import com.github.ykrank.androidtools.util.FileUtil
 import com.github.ykrank.androidtools.util.L
-import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.glide.model.ForcePassUrl
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ykrank.s1next.App
@@ -189,24 +188,8 @@ class GalleryFragment : Fragment() {
                     AppFileUtil.getDownloadPath(parentFragmentManager, { uri ->
                         val file = uri.createFile("image/${imageType}", name)
                         file?.uri?.also { fileUri ->
-                            lifecycleScope.launch(L.report) {
-                                val copyTask = async(Dispatchers.IO) {
-                                    FileUtil.copyFile(
-                                        resource,
-                                        requireContext().contentResolver.openOutputStream(
-                                            fileUri
-                                        )!!
-                                    )
-                                }
-                                try {
-                                    copyTask.await()
-                                    Snackbar.make(
-                                        binding.root,
-                                        R.string.download_success,
-                                        Snackbar.LENGTH_SHORT
-                                    ).show()
-                                    context.let { FileUtil.notifyImageInMediaStore(it, fileUri) }
-                                } catch (e: Exception) {
+                            lifecycleScope.launch(
+                                CoroutineExceptionHandler { _, e ->
                                     L.e(e)
                                     Toast.makeText(
                                         context,
@@ -214,6 +197,21 @@ class GalleryFragment : Fragment() {
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
+                            ) {
+                                withContext(Dispatchers.IO) {
+                                    FileUtil.copyFile(
+                                        resource,
+                                        requireContext().contentResolver.openOutputStream(
+                                            fileUri
+                                        )!!
+                                    )
+                                }
+                                Snackbar.make(
+                                    binding.root,
+                                    R.string.download_success,
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                                context.let { FileUtil.notifyImageInMediaStore(it, fileUri) }
                             }
                         }
                     })

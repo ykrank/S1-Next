@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.service.quicksettings.TileService
+import com.github.ykrank.androidtools.util.L
 import java.net.URISyntaxException
 
 /**
@@ -26,6 +27,8 @@ object AlipayDonate {
             "clientVersion=3.7.0.0718&qrcode=https%3A%2F%2Fqr.alipay.com%2F{payCode}%3F_s" +
             "%3Dweb-other&_t=1472443966571#Intent;" +
             "scheme=alipayqr;package=com.eg.android.AlipayGphone;end"
+
+    private var hasInstalledAlipayClient: Boolean? = null
 
     /**
      * 打开转账窗口
@@ -48,6 +51,9 @@ object AlipayDonate {
      * @return 是否成功调用
      */
     fun startIntentUrl(activity: Activity, intentFullUrl: String?): Boolean {
+        if (!hasInstalledAlipayClient(activity)) {
+            return false
+        }
         return try {
             val intent = Intent.parseUri(
                 intentFullUrl,
@@ -56,10 +62,10 @@ object AlipayDonate {
             activity.startActivity(intent)
             true
         } catch (e: URISyntaxException) {
-            e.printStackTrace()
+            L.print(e)
             false
         } catch (e: ActivityNotFoundException) {
-            e.printStackTrace()
+            L.print(e)
             false
         }
     }
@@ -71,14 +77,18 @@ object AlipayDonate {
      * @return 支付宝客户端是否已安装
      */
     fun hasInstalledAlipayClient(context: Context): Boolean {
-        val pm = context.packageManager
-        return try {
-            val info = pm.getPackageInfo(ALIPAY_PACKAGE_NAME, 0)
-            info != null
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-            false
+        val result = hasInstalledAlipayClient ?: run {
+            val pm = context.packageManager
+            try {
+                val info = pm.getPackageInfo(ALIPAY_PACKAGE_NAME, 0)
+                info != null
+            } catch (e: PackageManager.NameNotFoundException) {
+                L.print(e)
+                false
+            }
         }
+        hasInstalledAlipayClient = result
+        return result
     }
 
     /**
@@ -88,12 +98,15 @@ object AlipayDonate {
      * @return 版本名称
      */
     fun getAlipayClientVersion(context: Context): String? {
+        if (!hasInstalledAlipayClient(context)) {
+            return null
+        }
         val pm = context.packageManager
         return try {
             val info = pm.getPackageInfo(ALIPAY_PACKAGE_NAME, 0)
             info.versionName
         } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
+            L.print(e)
             null
         }
     }
