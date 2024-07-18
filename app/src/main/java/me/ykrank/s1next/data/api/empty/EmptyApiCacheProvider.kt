@@ -9,7 +9,6 @@ import io.reactivex.Single
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.ApiCacheProvider
@@ -35,23 +34,15 @@ class EmptyApiCacheProvider(
         })
     }
 
-    override fun getThreadsWrapper(
-        oWrapper: Single<String>,
-        param: CacheParam?
-    ): Single<String> {
-        return oWrapper
-    }
-
     override suspend fun getThreadsWrapper(
         forumId: String?,
         typeId: String?,
         page: Int,
         param: CacheParam?
     ): Flow<Resource<ThreadsWrapper>> {
-        val wrapper = runCatching {
-            s1Service.getThreadsWrapper(forumId, typeId, page).toJson(ThreadsWrapper::class.java)
-        }
-        return flowOf(Resource.fromResult(Source.CLOUD, wrapper))
+        return getFlow(CacheType.Threads, param, ThreadsWrapper::class.java, api = {
+            s1Service.getThreadsWrapper(forumId, typeId, page)
+        })
     }
 
     override fun getPostsWrapper(
@@ -166,6 +157,7 @@ class EmptyApiCacheProvider(
     }
 
     enum class CacheType(val type: String) {
-        ForumGroups("forum_groups")
+        ForumGroups("forum_groups"),
+        Threads("threads"),
     }
 }

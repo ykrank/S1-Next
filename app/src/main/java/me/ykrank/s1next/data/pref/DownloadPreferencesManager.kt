@@ -78,9 +78,9 @@ class DownloadPreferencesManager(
     }
 
     private object TotalDataCacheSize {
-        private val LOW = 1000
-        private val NORMAL = 2000
-        private val HIGH = 3000
+        private val LOW = 2000
+        private val NORMAL = 4000
+        private val HIGH = 6000
 
         private val SIZE = intArrayOf(LOW, NORMAL, HIGH)
 

@@ -16,11 +16,6 @@ interface ApiCacheProvider {
         param: CacheParam? = null
     ): Flow<Resource<ForumGroupsWrapper>>
 
-    fun getThreadsWrapper(
-        oWrapper: Single<String>,
-        param: CacheParam? = null
-    ): Single<String>
-
     suspend fun getThreadsWrapper(
         forumId: String?,
         typeId: String?,
