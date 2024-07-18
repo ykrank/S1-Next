@@ -108,8 +108,11 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
         )
         if (mGeneralPreferencesManager.isPostDisableSticky) {
             return source.map {
-                it.data?.data?.threadList =
-                    it.data?.data?.threadList?.filter { it.displayOrder == 0 } ?: listOf()
+                it.data?.data?.threadList?.apply {
+                    val list = filter { it.displayOrder == 0 }
+                    clear()
+                    addAll(list)
+                }
                 it
             }
         }

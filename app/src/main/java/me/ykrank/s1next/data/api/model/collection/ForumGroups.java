@@ -3,7 +3,6 @@ package me.ykrank.s1next.data.api.model.collection;
 import android.util.SparseArray;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
@@ -19,13 +18,13 @@ import me.ykrank.s1next.data.api.model.ForumCategoryByIds;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class ForumGroups extends Account {
 
-    @JsonIgnore
+    @JsonProperty("_forumList")
     private final List<Forum> forumList;
 
-    @JsonIgnore
+    @JsonProperty("_forumGroupNameList")
     private final List<String> forumGroupNameList;
 
-    @JsonIgnore
+    @JsonProperty("_forumGroupList")
     private final List<List<Forum>> forumGroupList;
 
     /**

@@ -1,7 +1,6 @@
 package me.ykrank.s1next.data.api.model.collection
 
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.JsonNode
@@ -16,25 +15,23 @@ import me.ykrank.s1next.data.db.biz.ThreadBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Threads : Account {
-
+class Threads @JsonCreator constructor(
+    @JsonProperty("threadtypes") typesNode: JsonNode?,
+    @JsonProperty("forum_threadlist") threadList: List<Thread>?,
     @JsonProperty("forum")
-    var threadListInfo: Thread.ThreadListInfo? = null
-
-    @JsonIgnore
-    var threadList: List<Thread> = listOf()
-
+    var threadListInfo: Thread.ThreadListInfo? = null,
     @JsonProperty("sublist")
-    var subForumList: List<Forum> = listOf()
+    val subForumList: List<Forum> = listOf(),
+) : Account() {
 
-    @JsonIgnore
-    var threadTypes: ArrayList<ThreadType>? = null
 
-    constructor() {}
+    @JsonProperty("_threadList")
+    val threadList: MutableList<Thread>
 
-    @JsonCreator
-    constructor(@JsonProperty("threadtypes") typesNode: JsonNode?,
-                @JsonProperty("forum_threadlist") threadList: List<Thread>?) {
+    @JsonProperty("_threadTypes")
+    val threadTypes: ArrayList<ThreadType>?
+
+    init {
         val threadTypes = ArrayList<ThreadType>()
         try {
             val typeMap = androidx.collection.ArrayMap<String, String>()
@@ -55,7 +52,6 @@ class Threads : Account {
         } catch (e: Exception) {
             L.report(e)
         }
-
         this.threadTypes = threadTypes
         this.threadList = getFilterThreadList(threadList)
     }
@@ -65,7 +61,7 @@ class Threads : Account {
         /**
          * @see .getFilterThread
          */
-        fun getFilterThreadList(oThreads: List<Thread>?): List<Thread> {
+        fun getFilterThreadList(oThreads: List<Thread>?): MutableList<Thread> {
             val threads = ArrayList<Thread>()
             if (oThreads != null) {
                 for (thread in oThreads) {
