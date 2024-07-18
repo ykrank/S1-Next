@@ -3,6 +3,7 @@ package me.ykrank.s1next.data.db.dbmodel
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import me.ykrank.s1next.data.db.biz.CacheBiz
 
 /**
  * Created by yuanke on 7/17/24
@@ -22,6 +23,9 @@ class Cache {
      */
     @ColumnInfo(name = "key", index = true)
     var key: String = ""
+
+    @ColumnInfo(name = "group", defaultValue = CacheBiz.DEFAULT_GROUP)
+    var group: String = CacheBiz.DEFAULT_GROUP
 
     @ColumnInfo(name = "title")
     var title: String? = null
@@ -54,5 +58,4 @@ class Cache {
         this.text = text
         this.timestamp = timestamp
     }
-
 }

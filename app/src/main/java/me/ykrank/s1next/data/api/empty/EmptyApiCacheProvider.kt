@@ -137,7 +137,7 @@ class EmptyApiCacheProvider(
                     val data = it.toJson(cls)
                     if (validator == null || validator(data)) {
                         // 有效的数据更新到缓存
-                        cacheBiz.saveTextZip(key, it)
+                        cacheBiz.saveTextZip(key, it, maxSize = downloadPerf.totalDataCacheSize)
                     } else {
                         // 无效的数据降级到缓存
                         if (cacheFallbackEnable) {

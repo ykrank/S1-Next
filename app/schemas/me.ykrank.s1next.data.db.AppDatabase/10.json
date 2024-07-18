@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 10,
-    "identityHash": "75d864d2c727d04fbeb18429058f1700",
+    "identityHash": "bd270da8c336ca1d87926ca1740b0f2c",
     "entities": [
       {
         "tableName": "BlackList",
@@ -359,7 +359,7 @@
       },
       {
         "tableName": "Cache",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `key` TEXT NOT NULL, `title` TEXT, `zip` BLOB, `text` TEXT, `timestamp` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `key` TEXT NOT NULL, `group` TEXT NOT NULL DEFAULT 'default', `title` TEXT, `zip` BLOB, `text` TEXT, `timestamp` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -372,6 +372,13 @@
             "columnName": "key",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "group",
+            "columnName": "group",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "'default'"
           },
           {
             "fieldPath": "title",
@@ -421,7 +428,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '75d864d2c727d04fbeb18429058f1700')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bd270da8c336ca1d87926ca1740b0f2c')"
     ]
   }
 }

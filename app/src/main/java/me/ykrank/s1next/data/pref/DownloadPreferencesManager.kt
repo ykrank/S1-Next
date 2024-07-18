@@ -18,7 +18,7 @@ class DownloadPreferencesManager(
         get() = TotalDownloadCacheSize.getByte(mPreferencesProvider.totalImageCacheSizeIndex)
 
     val totalDataCacheSize: Int
-        get() = TotalDownloadCacheSize.getMByte(mPreferencesProvider.totalDataCacheSizeIndex)
+        get() = TotalDataCacheSize.getSize(mPreferencesProvider.totalDataCacheSizeIndex)
 
     var downloadPath: String?
         get() = mPreferencesProvider.downloadPath
@@ -74,6 +74,18 @@ class DownloadPreferencesManager(
 
         fun getMByte(index: Int): Int {
             return if (index < 0 || index >= SIZE.size) SIZE[0] else SIZE[index]
+        }
+    }
+
+    private object TotalDataCacheSize {
+        private val LOW = 1000
+        private val NORMAL = 2000
+        private val HIGH = 3000
+
+        private val SIZE = intArrayOf(LOW, NORMAL, HIGH)
+
+        fun getSize(index: Int): Int {
+            return SIZE[index]
         }
     }
 

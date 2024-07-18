@@ -17,8 +17,8 @@ interface CacheDao {
     @Query("SELECT * FROM Cache WHERE `key` == :key LIMIT 1")
     fun getByKey(key: String): Cache?
 
-    @Query("DELETE FROM Cache WHERE _id NOT IN ( SELECT _id FROM Cache ORDER BY Timestamp DESC LIMIT :maxSize)")
-    fun deleteNotTopRecords(maxSize: Int): Int
+    @Query("DELETE FROM Cache WHERE `group` == :group AND _id NOT IN ( SELECT _id FROM Cache WHERE `group` == :group ORDER BY Timestamp DESC LIMIT :maxSize)")
+    fun deleteNotTopRecords(group: String, maxSize: Int): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(cache: Cache)
