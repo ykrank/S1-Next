@@ -155,8 +155,15 @@ class AppModule {
         s1Service: S1Service,
         cacheBiz: CacheBiz,
         user: User,
+        jsonMapper: ObjectMapper,
     ): ApiCacheProvider {
-        return EmptyApiCacheProvider(downloadPreferencesManager, s1Service, cacheBiz, user)
+        return EmptyApiCacheProvider(
+            downloadPreferencesManager,
+            s1Service,
+            cacheBiz,
+            user,
+            jsonMapper
+        )
     }
 
     @Provides

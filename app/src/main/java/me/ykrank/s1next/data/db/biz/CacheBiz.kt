@@ -23,13 +23,16 @@ class CacheBiz(private val manager: AppDatabaseManager) {
         val cache = Cache().apply {
             this.key = key
             this.blob = zipBlob
+            this.timestamp = System.currentTimeMillis()
         }
         cacheDao.insert(cache)
     }
 
-    fun getTextZipByKey(key: String): String? {
-        return cacheDao.getByKey(key)?.blob?.let {
-            ZipUtils.decompressGzipToString(it)
+    fun getTextZipByKey(key: String): Cache? {
+        return cacheDao.getByKey(key)?.apply {
+            this.text = this.blob?.let {
+                ZipUtils.decompressGzipToString(it)
+            }
         }
     }
 }

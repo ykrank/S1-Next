@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.JavaType
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import io.reactivex.SingleTransformer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -28,7 +29,13 @@ object JsonUtil {
     }
 }
 
-suspend fun <T> String.toJson(cls: Class<T>): T {
+suspend inline fun <reified T> String.toJson(): T {
+    return withContext(Dispatchers.IO) {
+        App.preAppComponent.jsonMapper.readValue(this@toJson)
+    }
+}
+
+suspend inline fun <T> String.toJson(cls: Class<T>): T {
     return withContext(Dispatchers.IO) {
         App.preAppComponent.jsonMapper.readValue(this@toJson, cls)
     }
