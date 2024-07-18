@@ -6,22 +6,36 @@ import com.github.ykrank.androidtools.data.Source
 import io.reactivex.Single
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.ApiCacheProvider
 import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper
+import me.ykrank.s1next.data.db.biz.CacheBiz
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.util.toJson
 
 class EmptyApiCacheProvider(
     private val downloadPerf: DownloadPreferencesManager,
-    private val s1Service: S1Service
+    private val s1Service: S1Service,
+    private val cacheBiz: CacheBiz,
+    private val user: User
 ) : ApiCacheProvider {
 
     override suspend fun getForumGroupsWrapper(param: CacheParam?): Flow<Resource<ForumGroupsWrapper>> {
         val wrapper = runCatching {
             s1Service.getForumGroupsWrapper().toJson(ForumGroupsWrapper::class.java)
         }
+        val key = "u${user.uid}#forum_groups"
+
+//        flow<Resource<ForumGroupsWrapper>> {
+//            withContext(Dispatchers.IO) {
+//                async {
+//                    cacheBiz.getTextZipByKey(key)
+//                }
+//
+//            }
+//        }
         return flowOf(Resource.fromResult(Source.CLOUD, wrapper))
     }
 

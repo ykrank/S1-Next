@@ -6,6 +6,7 @@ import dagger.Provides
 import me.ykrank.s1next.AppLife
 import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.biz.BlackWordBiz
+import me.ykrank.s1next.data.db.biz.CacheBiz
 import me.ykrank.s1next.data.db.biz.HistoryBiz
 import me.ykrank.s1next.data.db.biz.LoginUserBiz
 import me.ykrank.s1next.data.db.biz.ReadProgressBiz
@@ -55,6 +56,12 @@ class DbModule {
     @AppLife
     fun provideLoginUserBiz(manager: AppDatabaseManager, encryption: Encryption): LoginUserBiz {
         return LoginUserBiz(manager, encryption)
+    }
+
+    @Provides
+    @AppLife
+    fun provideCacheBiz(manager: AppDatabaseManager, encryption: Encryption): CacheBiz {
+        return CacheBiz(manager)
     }
 
     @Provides

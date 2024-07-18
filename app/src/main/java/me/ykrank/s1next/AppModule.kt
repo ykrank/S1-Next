@@ -16,6 +16,7 @@ import me.ykrank.s1next.data.api.app.AppApi
 import me.ykrank.s1next.data.api.app.AppService
 import me.ykrank.s1next.data.api.app.AppTokenInterceptor
 import me.ykrank.s1next.data.api.empty.EmptyApiCacheProvider
+import me.ykrank.s1next.data.db.biz.CacheBiz
 import me.ykrank.s1next.data.pref.AppDataPreferencesManager
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager
@@ -152,8 +153,10 @@ class AppModule {
         context: Context,
         downloadPreferencesManager: DownloadPreferencesManager,
         s1Service: S1Service,
+        cacheBiz: CacheBiz,
+        user: User,
     ): ApiCacheProvider {
-        return EmptyApiCacheProvider(downloadPreferencesManager, s1Service)
+        return EmptyApiCacheProvider(downloadPreferencesManager, s1Service, cacheBiz, user)
     }
 
     @Provides

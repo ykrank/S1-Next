@@ -1,0 +1,427 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 10,
+    "identityHash": "75d864d2c727d04fbeb18429058f1700",
+    "entities": [
+      {
+        "tableName": "BlackList",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `AuthorId` INTEGER NOT NULL, `Author` TEXT, `Post` INTEGER NOT NULL, `Forum` INTEGER NOT NULL, `Remark` TEXT, `Timestamp` INTEGER NOT NULL, `Upload` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "authorId",
+            "columnName": "AuthorId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "author",
+            "columnName": "Author",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "post",
+            "columnName": "Post",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "forum",
+            "columnName": "Forum",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "remark",
+            "columnName": "Remark",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "Timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isUpload",
+            "columnName": "Upload",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "IDX_BlackList_AuthorId",
+            "unique": false,
+            "columnNames": [
+              "AuthorId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `IDX_BlackList_AuthorId` ON `${TABLE_NAME}` (`AuthorId`)"
+          },
+          {
+            "name": "IDX_BlackList_Author",
+            "unique": false,
+            "columnNames": [
+              "Author"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `IDX_BlackList_Author` ON `${TABLE_NAME}` (`Author`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "BlackWord",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `Word` TEXT, `Stat` INTEGER NOT NULL, `Timestamp` INTEGER NOT NULL, `Upload` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "word",
+            "columnName": "Word",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "stat",
+            "columnName": "Stat",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "Timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isUpload",
+            "columnName": "Upload",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "IDX_BlackWord_Word",
+            "unique": true,
+            "columnNames": [
+              "Word"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `IDX_BlackWord_Word` ON `${TABLE_NAME}` (`Word`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "DbThread",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `ThreadId` INTEGER NOT NULL, `LastCountWhenView` INTEGER NOT NULL, `Timestamp` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "threadId",
+            "columnName": "ThreadId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastCountWhenView",
+            "columnName": "LastCountWhenView",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "Timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "IDX_DbThread_ThreadId",
+            "unique": true,
+            "columnNames": [
+              "ThreadId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `IDX_DbThread_ThreadId` ON `${TABLE_NAME}` (`ThreadId`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "History",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `ThreadId` INTEGER NOT NULL, `Title` TEXT, `Timestamp` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "threadId",
+            "columnName": "ThreadId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "Title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "Timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "IDX_History_ThreadId",
+            "unique": true,
+            "columnNames": [
+              "ThreadId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `IDX_History_ThreadId` ON `${TABLE_NAME}` (`ThreadId`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "ReadProgress",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `ThreadId` INTEGER NOT NULL, `Page` INTEGER NOT NULL, `Position` INTEGER NOT NULL, `Offset` INTEGER NOT NULL, `Timestamp` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "threadId",
+            "columnName": "ThreadId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "page",
+            "columnName": "Page",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "position",
+            "columnName": "Position",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "offset",
+            "columnName": "Offset",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "Timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "IDX_ReadProgress_ThreadId",
+            "unique": true,
+            "columnNames": [
+              "ThreadId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `IDX_ReadProgress_ThreadId` ON `${TABLE_NAME}` (`ThreadId`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "LoginUser",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `Uid` INTEGER NOT NULL, `Name` TEXT, `EncryptPassword` TEXT, `QuestionId` TEXT, `EncryptAnswer` TEXT, `LoginTime` INTEGER NOT NULL, `Timestamp` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "uid",
+            "columnName": "Uid",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "Name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptPassword",
+            "columnName": "EncryptPassword",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "questionId",
+            "columnName": "QuestionId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptAnswer",
+            "columnName": "EncryptAnswer",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "loginTime",
+            "columnName": "LoginTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "Timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Cache",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `key` TEXT NOT NULL, `title` TEXT, `zip` BLOB, `text` TEXT, `timestamp` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "key",
+            "columnName": "key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "blob",
+            "columnName": "zip",
+            "affinity": "BLOB",
+            "notNull": false
+          },
+          {
+            "fieldPath": "text",
+            "columnName": "text",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_Cache_key",
+            "unique": false,
+            "columnNames": [
+              "key"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Cache_key` ON `${TABLE_NAME}` (`key`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '75d864d2c727d04fbeb18429058f1700')"
+    ]
+  }
+}

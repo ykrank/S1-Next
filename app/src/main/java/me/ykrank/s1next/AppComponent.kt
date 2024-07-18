@@ -12,6 +12,7 @@ import me.ykrank.s1next.data.db.AppDatabaseManager
 import me.ykrank.s1next.data.db.DbModule
 import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.biz.BlackWordBiz
+import me.ykrank.s1next.data.db.biz.CacheBiz
 import me.ykrank.s1next.data.db.biz.HistoryBiz
 import me.ykrank.s1next.data.db.biz.LoginUserBiz
 import me.ykrank.s1next.data.db.biz.ReadProgressBiz
@@ -124,6 +125,7 @@ interface AppComponent {
     val threadBiz: ThreadBiz
     val historyBiz: HistoryBiz
     val loginUserBiz: LoginUserBiz
+    val cacheBiz: CacheBiz
 
     //endregion
     fun inject(baseFragment: BaseFragment)
