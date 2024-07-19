@@ -12,15 +12,20 @@ import paperparcel.PaperParcelable
  */
 @PaperParcel
 @JsonIgnoreProperties(ignoreUnknown = true)
-class PostAttachment @JsonCreator constructor(
-    @JsonProperty("url") val urlPrefix: String? = null,
-    @JsonProperty("attachment") val urlSuffix: String?
-) : PaperParcelable {
+class PostAttachment : PaperParcelable {
 
     @JsonProperty("_img")
-    var imageUrl: String
+    val imageUrl: String
 
-    init {
+    constructor(imageUrl: String) {
+        this.imageUrl = imageUrl
+    }
+
+    @JsonCreator
+    constructor(
+        @JsonProperty("url") urlPrefix: String? = null,
+        @JsonProperty("attachment") urlSuffix: String?
+    ) {
         imageUrl =
             if (urlPrefix != null && urlSuffix != null) urlPrefix + urlSuffix else "https://img.saraba1st.com/forum/error"
     }
