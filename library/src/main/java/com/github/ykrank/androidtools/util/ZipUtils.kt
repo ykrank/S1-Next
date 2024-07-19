@@ -35,11 +35,15 @@ object ZipUtils {
     }
 
     fun compressStringByGzip(str: String): ByteArray {
+        return compressByGzip(str.toByteArray(Charsets.UTF_8))
+    }
+
+    fun compressByGzip(str: ByteArray): ByteArray {
         if (str.isEmpty()) return ByteArray(0)
 
         val baos = ByteArrayOutputStream()
         val gzip = GZIPOutputStream(baos)
-        gzip.write(str.toByteArray(Charsets.UTF_8))
+        gzip.write(str)
         gzip.close()
         return baos.toByteArray()
     }

@@ -85,7 +85,7 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
 
         mForumGroups = data.data
         // host activity would call #onToolbarDropDownItemSelected(int) after
-        mToolbarCallback?.setupToolbarDropDown(mForumGroups?.forumGroupNameList)
+        mToolbarCallback?.setupToolbarDropDown(mForumGroups?.forumGroupNameList ?: emptyList())
     }
 
     /**
@@ -99,7 +99,9 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
             } else {
                 // the first position is "全部"
                 // so position - 1 to correspond its group
-                mRecyclerAdapter.refreshDataSet(it.forumGroupList[position - 1], true)
+                mRecyclerAdapter.refreshDataSet(
+                    it.forumGroupList.getOrNull(position - 1) ?: emptyList(), true
+                )
             }
         }
         if (inForceRefresh) {

@@ -19,18 +19,18 @@ class CacheBiz(private val manager: AppDatabaseManager) {
     private val session: AppDatabase
         get() = manager.getOrBuildDb()
 
-    fun saveTextZip(
+    fun saveZip(
         key: String,
-        content: String,
+        content: ByteArray,
         group: String = DEFAULT_GROUP,
         maxSize: Int = DEFAULT_MAX_SIZE
     ) {
         val start = System.currentTimeMillis()
-        val gzipBlob = ZipUtils.compressStringByGzip(content)
+        val gzipBlob = ZipUtils.compressByGzip(content)
         val gzipTime = System.currentTimeMillis() - start
         L.i(
             TAG,
-            "saveTextZip: $group $key s${content.length}->${gzipBlob.size} t${gzipTime}, max:${maxSize}"
+            "saveTextZip: $group $key s${content.size}->${gzipBlob.size} t${gzipTime}, max:${maxSize}"
         )
         val cache = Cache().apply {
             this.key = key
@@ -39,6 +39,14 @@ class CacheBiz(private val manager: AppDatabaseManager) {
         }
         cacheDao.insert(cache)
         cacheDao.deleteNotTopRecords(group, maxSize)
+    }
+    fun saveTextZip(
+        key: String,
+        content: String,
+        group: String = DEFAULT_GROUP,
+        maxSize: Int = DEFAULT_MAX_SIZE
+    ) {
+        saveZip(key, content.toByteArray(Charsets.UTF_8), group, maxSize)
     }
 
     fun getTextZipByKey(key: String): Cache? {

@@ -4,7 +4,6 @@ import android.graphics.Color
 import androidx.annotation.IntDef
 import androidx.annotation.WorkerThread
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.type.TypeReference
@@ -35,9 +34,11 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
     var authorName: String? = null
     @JsonProperty("authorid")
     var authorId: String? = null
-    @JsonIgnore
+
+    @JsonProperty("_reply")
     var reply: String? = null
-    @JsonIgnore
+
+    @JsonProperty("_isFirst")
     var isFirst: Boolean = false
     @JsonProperty("number")
     var number: String? = null
@@ -45,33 +46,39 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
     var dateTime: Long = 0
     @JsonProperty("groupid")
     var groupId: Int = 0
-    @JsonIgnore
-    var attachmentMap: Map<Int, Attachment> = mapOf()
+
+    @JsonProperty("_attachment")
+    var attachmentMap: Map<Int, PostAttachment> = mapOf()
     /**
      * is in blacklist
      */
-    @JsonIgnore
+    @JsonProperty("_hide")
     @HideFLag
     var hide: Int = HIDE_NO
-    @JsonIgnore
+
+    @JsonProperty("_remark")
     var remark: String? = null
-    @JsonIgnore
+
+    @JsonProperty("_isTrade")
     var isTrade: Boolean = false
-    @JsonIgnore
+
+    @JsonProperty("_isVote")
     var isVote: Boolean = false
-    @JsonIgnore
+
+    @JsonProperty("_extraHtml")
     var extraHtml: String? = null
-    @JsonIgnore
+
+    @JsonProperty("_banned")
     var banned: Boolean = false
     /**
      * Null if no rates, empty if not init.
      */
-    @JsonIgnore
+    @JsonProperty("_rates")
     var rates: List<Rate>? = null
     /**
      * whether the author of this post is Original Poster
      */
-    @JsonIgnore
+    @JsonProperty("_isOp")
     var isOpPost: Boolean = false
 
     constructor()
@@ -84,7 +91,10 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         this.reply = filterReply(reply)
         if (attachments != null && attachments.isObject) {
             this.attachmentMap = App.preAppComponent.jsonMapper.let {
-                JsonUtil.readJsonNode(it, attachments, object : TypeReference<Map<Int, Attachment>>() {})
+                JsonUtil.readJsonNode(
+                    it,
+                    attachments,
+                    object : TypeReference<Map<Int, PostAttachment>>() {})
             }
             this.reply = processAttachment()
         }
@@ -328,7 +338,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         var tReply: String = reply ?: return null
 
         for ((key, attachment) in attachmentMap) {
-            val imgTag = "\n<img src=\"" + attachment.url + "\" />"
+            val imgTag = "\n<img src=\"" + attachment.imageUrl + "\" />"
             val replyCopy = tReply
             // get the original string if there is nothing to replace
             tReply = tReply.replace("[attach]$key[/attach]", imgTag)
@@ -388,41 +398,6 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         result = 31 * result + (rates?.hashCode() ?: 0)
         result = 31 * result + isOpPost.hashCode()
         return result
-    }
-
-    @PaperParcel
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    class Attachment : PaperParcelable {
-        @JsonIgnore
-        var url: String? = null
-
-        constructor()
-
-        @JsonCreator
-        constructor(@JsonProperty("url") urlPrefix: String?,
-                    @JsonProperty("attachment") urlSuffix: String?) {
-            url = if (urlPrefix != null && urlSuffix != null) urlPrefix + urlSuffix else "https://img.saraba1st.com/forum/error"
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other?.javaClass != javaClass) return false
-
-            other as Attachment
-
-            if (url != other.url) return false
-
-            return true
-        }
-
-        override fun hashCode(): Int {
-            return url?.hashCode() ?: 0
-        }
-
-        companion object {
-            @JvmField
-            val CREATOR = PaperParcelPost_Attachment.CREATOR
-        }
     }
 
     @IntDef(HIDE_NO, HIDE_USER, HIDE_WORD)

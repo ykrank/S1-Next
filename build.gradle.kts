@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.androidLibrary) apply false
-    alias(libs.plugins.jetbrainsKotlinAndroid) apply false
+    alias(libs.plugins.kotlinAndroid) apply false
     alias(libs.plugins.gradleVersionsPlugin) apply false
 }
 

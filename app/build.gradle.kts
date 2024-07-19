@@ -2,10 +2,11 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
     alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.gradleVersionsPlugin)
     alias(libs.plugins.androidKsp)
     kotlin("kapt")
+    id("kotlin-parcelize")
 }
 
 val properties = gradleLocalProperties(rootDir, providers)

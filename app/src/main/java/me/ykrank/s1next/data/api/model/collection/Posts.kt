@@ -21,7 +21,7 @@ import paperparcel.PaperParcelable
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Posts @JsonCreator constructor(
     @JsonProperty("special_trade") trade: Map<Int, Any>?,
-    @JsonProperty("postlist") postList: List<Post>?
+    @JsonProperty("postlist") rawPostList: List<Post>?
 ) : Account() {
 
     @JsonProperty("thread")
@@ -45,9 +45,9 @@ class Posts @JsonCreator constructor(
     val vote: Vote? = null
 
     init {
-        this.postList = filterPostList(postList)
-        if (trade != null && !postList.isNullOrEmpty()) {
-            val post = postList[0]
+        this.postList = filterPostList(rawPostList)
+        if (trade != null && !rawPostList.isNullOrEmpty()) {
+            val post = rawPostList[0]
             if (trade.containsKey(post.id + 1)) {
                 post.isTrade = true
             }

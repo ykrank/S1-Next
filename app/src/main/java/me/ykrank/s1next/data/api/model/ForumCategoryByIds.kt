@@ -5,16 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import me.ykrank.s1next.util.HtmlUtils.unescapeHtml
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class ForumCategoryByIds {
+class ForumCategoryByIds(
+    @JsonProperty("forums")
+    var forumIds: List<Int>
+) {
     @JsonProperty("name")
     var name: String? = null
         set(name) {
             field = unescapeHtml(name)
         }
 
-    @JvmField
-    @JsonProperty("forums")
-    var forumIds: List<Int>? = null
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

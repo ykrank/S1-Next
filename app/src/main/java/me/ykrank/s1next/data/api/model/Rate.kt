@@ -1,6 +1,8 @@
 package me.ykrank.s1next.data.api.model
 
 import androidx.recyclerview.widget.RecyclerView
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.data.api.ApiUtil
@@ -8,17 +10,23 @@ import org.jsoup.Jsoup
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 @PaperParcel
+@JsonIgnoreProperties(ignoreUnknown = true)
 class Rate : PaperParcelable, StableIdModel {
+    @JsonProperty("uid")
     var uid: String? = null
+    @JsonProperty("uname")
     var uname: String? = null
+    @JsonProperty("content")
     var content: String? = null
+    @JsonProperty("score")
     var score: Int? = null
+    @JsonProperty("time")
     var time: Long? = null
 
-    val symbolScore: String get() = if (score ?: 0 < 0) "$score" else "+$score"
+    val symbolScore: String get() = if ((score ?: 0) < 0) "$score" else "+$score"
 
     override val stableId: Long
         get() = uid?.toLongOrNull() ?: RecyclerView.NO_ID

@@ -2,7 +2,6 @@ package me.ykrank.s1next.data.api
 
 import com.github.ykrank.androidtools.data.CacheParam
 import com.github.ykrank.androidtools.data.Resource
-import io.reactivex.Single
 import kotlinx.coroutines.flow.Flow
 import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper
@@ -30,14 +29,4 @@ interface ApiCacheProvider {
         page: Int,
         param: CacheParam? = null
     ): Flow<Resource<PostsWrapper>>
-
-    fun getPostsWrapper(
-        oWrapper: Single<String>,
-        param: CacheParam? = null
-    ): Single<Resource<String>>
-
-    fun getPostsWrapperNew(
-        oWrapper: Single<String>,
-        param: CacheParam? = null
-    ): Single<Resource<String>>
 }

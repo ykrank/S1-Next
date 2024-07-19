@@ -1,5 +1,6 @@
 package me.ykrank.s1next.data.api.model.collection
 
+import android.util.ArrayMap
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -29,30 +30,30 @@ class Threads @JsonCreator constructor(
     val threadList: MutableList<Thread>
 
     @JsonProperty("_threadTypes")
-    val threadTypes: ArrayList<ThreadType>?
+    val threadTypes: MutableList<ThreadType> = mutableListOf()
 
     init {
-        val threadTypes = ArrayList<ThreadType>()
         try {
-            val typeMap = androidx.collection.ArrayMap<String, String>()
-            val fields = typesNode?.get("types")?.fields()
-            if (fields != null) {
-                while (fields.hasNext()) {
-                    val entry = fields.next()
-                    val type = ThreadType(entry.key, entry.value.asText())
-                    threadTypes.add(type)
-                    typeMap[type.typeId] = type.typeName
+            if (typesNode != null) {
+                val typeMap = ArrayMap<String, String>()
+                val fields = typesNode.get("types")?.fields()
+                if (fields != null) {
+                    while (fields.hasNext()) {
+                        val entry = fields.next()
+                        val type = ThreadType(entry.key, entry.value.asText())
+                        threadTypes.add(type)
+                        typeMap[type.typeId] = type.typeName
+                    }
                 }
-            }
-            if (threadList != null) {
-                for (thread in threadList) {
-                    thread.typeName = typeMap[thread.typeId]
+                if (threadList != null) {
+                    for (thread in threadList) {
+                        thread.typeName = typeMap[thread.typeId]
+                    }
                 }
             }
         } catch (e: Exception) {
             L.report(e)
         }
-        this.threadTypes = threadTypes
         this.threadList = getFilterThreadList(threadList)
     }
 

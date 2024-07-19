@@ -1,16 +1,11 @@
-package me.ykrank.s1next.view.internal;
+package me.ykrank.s1next.view.internal
 
-import java.util.List;
-
-public interface ToolbarDropDownInterface {
-
+interface ToolbarDropDownInterface {
     interface OnItemSelectedListener {
-
-        void onToolbarDropDownItemSelected(int position);
+        fun onToolbarDropDownItemSelected(position: Int)
     }
 
     interface Callback {
-
-        void setupToolbarDropDown(List<? extends CharSequence> dropDownItemList);
+        fun setupToolbarDropDown(dropDownItemList: List<CharSequence>)
     }
 }

@@ -5,7 +5,7 @@ import com.github.ykrank.androidtools.data.CacheParam
 import com.github.ykrank.androidtools.data.CacheStrategy
 import com.github.ykrank.androidtools.data.Resource
 import com.github.ykrank.androidtools.data.Source
-import io.reactivex.Single
+import com.github.ykrank.androidtools.util.L
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -121,24 +121,6 @@ class S1ApiCacheProvider(
         }
     }
 
-    override fun getPostsWrapper(
-        oWrapper: Single<String>,
-        param: CacheParam?
-    ): Single<Resource<String>> {
-        return oWrapper.map {
-            Resource.Success(Source.CLOUD, it)
-        }
-    }
-
-    override fun getPostsWrapperNew(
-        oWrapper: Single<String>,
-        param: CacheParam?
-    ): Single<Resource<String>> {
-        return oWrapper.map {
-            Resource.Success(Source.CLOUD, it)
-        }
-    }
-
     private fun getKey(type: CacheType, param: CacheParam?): String {
         return "u${user.uid ?: 0}#${type.type}#${param?.keys?.joinToString(",") ?: ""}"
     }
@@ -162,14 +144,16 @@ class S1ApiCacheProvider(
             }
 
             fun parseCache(): T? {
-                val json = cacheData?.text
-                if (!json.isNullOrEmpty()) {
-                    val data = jsonMapper.readValue(json, cls)
-                    if (data != null &&
-                        (getValidator == null || getValidator(data))
-                    ) {
-                        return data
+                runCatching {
+                    val json = cacheData?.text
+                    if (!json.isNullOrEmpty()) {
+                        val data = jsonMapper.readValue(json, cls)
+                        if (data != null && (getValidator == null || getValidator(data))) {
+                            return data
+                        }
                     }
+                }.onFailure {
+                    L.report(it)
                 }
                 return null
             }
@@ -177,14 +161,12 @@ class S1ApiCacheProvider(
             // 优先拉取缓存
             val cacheFirst = downloadPerf.netCacheEnable && !cacheStrategy.strategy.ignoreCache
             if (cacheFirst) {
-                runCatching {
-                    val expired =
+                val expired =
                         System.currentTimeMillis() - (cacheData?.timestamp
                             ?: 0) > cacheStrategy.strategy.expired.inWholeMilliseconds
-                    if (!expired) {
-                        parseCache()?.apply {
-                            emit(Resource.Success<T>(Source.PERSISTENCE, this))
-                        }
+                if (!expired) {
+                    parseCache()?.apply {
+                        emit(Resource.Success<T>(Source.PERSISTENCE, this))
                     }
                 }
             }
