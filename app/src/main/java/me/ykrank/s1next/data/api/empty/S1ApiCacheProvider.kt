@@ -27,7 +27,7 @@ import me.ykrank.s1next.data.db.dbmodel.Cache
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.util.toJson
 
-class EmptyApiCacheProvider(
+class S1ApiCacheProvider(
     private val downloadPerf: DownloadPreferencesManager,
     private val s1Service: S1Service,
     private val cacheBiz: CacheBiz,

@@ -111,20 +111,34 @@ abstract class LibBaseActivity : AppCompatActivity(), CoordinatorLayoutAnchorDel
         return saveSnackbarWeakReference(mCoordinatorLayoutAnchorDelegate?.showToastText(text))
     }
 
-    override fun showSnackbar(@StringRes resId: Int, duration: Int): Optional<Snackbar> {
+    override fun showSnackbar(
+        @StringRes resId: Int,
+        duration: Int,
+        @StringRes actionResId: Int?,
+        onActionClickListener: View.OnClickListener?,
+    ): Optional<Snackbar> {
         return saveSnackbarWeakReference(
             mCoordinatorLayoutAnchorDelegate?.showSnackbar(
                 resId,
-                duration
+                duration,
+                actionResId,
+                onActionClickListener
             )
         )
     }
 
-    override fun showSnackbar(text: CharSequence, duration: Int): Optional<Snackbar> {
+    override fun showSnackbar(
+        text: CharSequence,
+        duration: Int,
+        @StringRes actionResId: Int?,
+        onActionClickListener: View.OnClickListener?,
+    ): Optional<Snackbar> {
         return saveSnackbarWeakReference(
             mCoordinatorLayoutAnchorDelegate?.showSnackbar(
                 text,
-                duration
+                duration,
+                actionResId,
+                onActionClickListener
             )
         )
     }

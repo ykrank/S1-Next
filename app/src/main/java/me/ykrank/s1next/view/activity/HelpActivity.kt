@@ -1,82 +1,81 @@
-package me.ykrank.s1next.view.activity;
+package me.ykrank.s1next.view.activity
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.webkit.WebView;
-
-import androidx.annotation.StyleRes;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import me.ykrank.s1next.App;
-import me.ykrank.s1next.R;
-import me.ykrank.s1next.view.fragment.HelpFragment;
-import me.ykrank.s1next.view.internal.ToolbarDelegate;
-import me.ykrank.s1next.widget.track.event.ViewHelpTrackEvent;
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
+import androidx.annotation.StyleRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import me.ykrank.s1next.App.Companion.get
+import me.ykrank.s1next.R
+import me.ykrank.s1next.view.fragment.HelpFragment
+import me.ykrank.s1next.view.internal.ToolbarDelegate
+import me.ykrank.s1next.widget.track.event.ViewHelpTrackEvent
 
 /**
  * An Activity shows a help page.
  */
-public final class HelpActivity extends AppCompatActivity {
-    private static final String ARG_STYLE = "style";
-    private ToolbarDelegate mToolbarDelegate;
-
-    private HelpFragment mHelpFragment;
-
-    public static void startHelpActivity(Context context, @StyleRes int styleId) {
-        App.Companion.get().getTrackAgent().post(new ViewHelpTrackEvent());
-        Intent intent = new Intent(context, HelpActivity.class);
-        intent.putExtra(ARG_STYLE, styleId);
-        context.startActivity(intent);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        int styleId = getIntent().getIntExtra(ARG_STYLE, -1);
+class HelpActivity : AppCompatActivity() {
+    private var mToolbarDelegate: ToolbarDelegate? = null
+    private var mHelpFragment: HelpFragment? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        val styleId = intent.getIntExtra(ARG_STYLE, -1)
         if (styleId != -1) {
-            setTheme(styleId);
+            setTheme(styleId)
         }
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base_without_drawer_and_scrolling_effect);
-        setupToolbar();
-
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_base_without_drawer_and_scrolling_effect)
+        setupToolbar()
         if (savedInstanceState == null) {
-            mHelpFragment = HelpFragment.getInstance();
-            getSupportFragmentManager().beginTransaction().add(R.id.frame_layout, mHelpFragment,
-                    HelpFragment.TAG).commit();
+            val instance = HelpFragment.instance
+            mHelpFragment = instance
+            supportFragmentManager.beginTransaction().add(
+                R.id.frame_layout, instance,
+                HelpFragment.TAG
+            ).commit()
         } else {
-            mHelpFragment = (HelpFragment) getSupportFragmentManager().findFragmentByTag(
-                    HelpFragment.TAG);
+            mHelpFragment = supportFragmentManager.findFragmentByTag(
+                HelpFragment.TAG
+            ) as HelpFragment?
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        WebView webView = mHelpFragment.getWebView();
-        if (webView.canGoBack()) {
-            webView.goBack();
+    override fun onBackPressed() {
+        val webView = mHelpFragment?.webView
+        if (webView?.canGoBack() == true) {
+            webView.goBack()
         } else {
-            super.onBackPressed();
+            super.onBackPressed()
         }
     }
 
-    private void setupToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    private fun setupToolbar() {
+        val toolbar = findViewById<View>(R.id.toolbar) as Toolbar?
         if (toolbar != null) {
-            mToolbarDelegate = new ToolbarDelegate(this, toolbar);
+            mToolbarDelegate = ToolbarDelegate(this, toolbar)
+        }
+    }
+
+    companion object {
+        private const val ARG_STYLE = "style"
+        fun startHelpActivity(context: Context, @StyleRes styleId: Int) {
+            get().trackAgent.post(ViewHelpTrackEvent())
+            val intent = Intent(context, HelpActivity::class.java)
+            intent.putExtra(ARG_STYLE, styleId)
+            context.startActivity(intent)
         }
     }
 }

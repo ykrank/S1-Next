@@ -1,149 +1,142 @@
-package me.ykrank.s1next.view.fragment;
+package me.ykrank.s1next.view.fragment
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
-import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate;
-import com.github.ykrank.androidtools.util.L;
-import com.google.android.material.snackbar.Snackbar;
-
-import org.jetbrains.annotations.NotNull;
-
-import me.ykrank.s1next.R;
-import me.ykrank.s1next.databinding.FragmentWebviewBinding;
-import me.ykrank.s1next.view.activity.OpenSourceLicensesActivity;
-import me.ykrank.s1next.view.dialog.VersionInfoDialogFragment;
-import me.ykrank.s1next.viewmodel.WebPageViewModel;
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate
+import com.github.ykrank.androidtools.util.L.leaveMsg
+import com.google.android.material.snackbar.Snackbar
+import me.ykrank.s1next.R
+import me.ykrank.s1next.databinding.FragmentWebviewBinding
+import me.ykrank.s1next.view.activity.OpenSourceLicensesActivity
+import me.ykrank.s1next.view.dialog.VersionInfoDialogFragment
+import me.ykrank.s1next.viewmodel.WebPageViewModel
 
 /**
  * A Fragment represents a help page.
- * <p>
+ *
+ *
  * Also some related controls are provided in overflow menu:
  * 1.Link our app to Android marketplaces or Google Play website.
  * 2.See open sources licenses information.
  * 3.See version number.
  */
-public final class HelpFragment extends Fragment {
+class HelpFragment : Fragment() {
+    private lateinit var mFragmentHelpBinding: FragmentWebviewBinding
+    var webView: WebView? = null
+        private set
 
-    public static final String TAG = HelpFragment.class.getName();
-    private static final String HELP_PAGE_URL = "file:///android_asset/help/HELP.html";
-    /**
-     * https://developer.android.com/distribute/tools/promote/linking.html#OpeningDetails
-     */
-    private static final String ANDROID_APP_MARKET_LINK = "market://details?id=%s";
-    private static final String ANDROID_WEB_SITE_MARKET_LINK = "https://play.google.com/store/apps/details?id=%s";
-    private FragmentWebviewBinding mFragmentHelpBinding;
-    private WebView mWebView;
-
-    public static HelpFragment getInstance() {
-        return new HelpFragment();
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        mFragmentHelpBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_webview, container,
+            false
+        )
+        webView = mFragmentHelpBinding.webView
+        return mFragmentHelpBinding.root
     }
 
-    @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mFragmentHelpBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_webview, container,
-                false);
-        mWebView = mFragmentHelpBinding.webView;
-        return mFragmentHelpBinding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        L.leaveMsg("HelpFragment");
-
-        WebPageViewModel viewModel = new WebPageViewModel();
-        mFragmentHelpBinding.setWebPageViewModel(viewModel);
-        mWebView.setWebViewClient(new WebViewClient() {
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                viewModel.setFinishedLoading(true);
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        leaveMsg("HelpFragment")
+        val viewModel = WebPageViewModel()
+        mFragmentHelpBinding.setWebPageViewModel(viewModel)
+        webView?.setWebViewClient(object : WebViewClient() {
+            override fun onPageFinished(view: WebView, url: String) {
+                viewModel.setFinishedLoading(true)
             }
-        });
+        })
 
         // restore the state of WebView when configuration changes
         // see http://www.devahead.com/blog/2012/01/preserving-the-state-of-an-android-webview-on-screen-orientation-change/
         if (savedInstanceState == null) {
-            mWebView.loadUrl(HELP_PAGE_URL);
+            webView?.loadUrl(HELP_PAGE_URL)
         } else {
-            mWebView.restoreState(savedInstanceState);
+            webView?.restoreState(savedInstanceState)
             // if we haven't finished loading before
-            if (mWebView.getUrl() == null) {
-                mWebView.loadUrl(HELP_PAGE_URL);
+            if (webView?.getUrl() == null) {
+                webView?.loadUrl(HELP_PAGE_URL)
             }
         }
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        setHasOptionsMenu(true);
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.activity_help, menu);
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.activity_help, menu)
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val itemId = item.itemId
         if (itemId == R.id.menu_view_in_google_play_store) {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            String packageName = getContext().getPackageName();
-            intent.setData(Uri.parse(String.format(ANDROID_APP_MARKET_LINK, packageName)));
+            val intent = Intent(Intent.ACTION_VIEW)
+            val packageName = requireContext().packageName
+            intent.setData(Uri.parse(String.format(ANDROID_APP_MARKET_LINK, packageName)))
             try {
                 // link our app in Android marketplaces
-                startActivity(intent);
-            } catch (ActivityNotFoundException exception) {
-                intent.setData(Uri.parse(String.format(ANDROID_WEB_SITE_MARKET_LINK, packageName)));
+                startActivity(intent)
+            } catch (exception: ActivityNotFoundException) {
+                intent.setData(Uri.parse(String.format(ANDROID_WEB_SITE_MARKET_LINK, packageName)))
                 try {
                     // link our app in Google Play website if user hasn't installed any Android marketplaces
-                    startActivity(intent);
-                } catch (ActivityNotFoundException e) {
+                    startActivity(intent)
+                } catch (e: ActivityNotFoundException) {
                     // show Snackbar if user hasn't installed any Android marketplaces or browsers
-                    ((CoordinatorLayoutAnchorDelegate) getActivity()).showSnackbar(
-                            R.string.message_chooser_no_applications, Snackbar.LENGTH_SHORT);
+                    (activity as CoordinatorLayoutAnchorDelegate?)?.showSnackbar(
+                        R.string.message_chooser_no_applications, Snackbar.LENGTH_SHORT
+                    )
                 }
             }
-
-            return true;
+            return true
         } else if (itemId == R.id.menu_open_source_licenses) {
-            OpenSourceLicensesActivity.startOpenSourceLicensesActivity(getContext());
-
-            return true;
+            OpenSourceLicensesActivity.startOpenSourceLicensesActivity(context)
+            return true
         } else if (itemId == R.id.menu_version_info) {
-            new VersionInfoDialogFragment().show(getFragmentManager(),
-                    VersionInfoDialogFragment.TAG);
-
-            return true;
+            VersionInfoDialogFragment().show(
+                parentFragmentManager,
+                VersionInfoDialogFragment.TAG
+            )
+            return true
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item)
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        mWebView.saveState(outState);
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        webView?.saveState(outState)
     }
 
-    public WebView getWebView() {
-        return mWebView;
+    companion object {
+        @JvmField
+        val TAG = HelpFragment::class.java.getName()
+        private const val HELP_PAGE_URL = "file:///android_asset/help/HELP.html"
+
+        /**
+         * https://developer.android.com/distribute/tools/promote/linking.html#OpeningDetails
+         */
+        private const val ANDROID_APP_MARKET_LINK = "market://details?id=%s"
+        private const val ANDROID_WEB_SITE_MARKET_LINK =
+            "https://play.google.com/store/apps/details?id=%s"
+
+        @JvmStatic
+        val instance: HelpFragment
+            get() = HelpFragment()
     }
 }

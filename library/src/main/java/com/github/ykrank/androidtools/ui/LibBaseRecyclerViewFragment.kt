@@ -225,7 +225,7 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
                 getLibSource(loading)
                     ?.onEach {
                         if (it is Resource.Success) {
-                            onSuccess(it)
+                            onNextSuccess(it)
                             it.data?.apply {
                                 onNext(this)
                             }
@@ -247,7 +247,7 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
      */
     @MainThread
     protected open fun onLoad(@LoadingViewModel.LoadingDef loading: Int) {
-
+        dismissRetrySnackbarIfExist()
     }
 
     /**
@@ -293,7 +293,7 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
     }
 
     @CallSuper
-    protected open fun onSuccess(data: Resource.Success<D>) {
+    protected open fun onNextSuccess(resource: Resource.Success<D>) {
 
     }
 

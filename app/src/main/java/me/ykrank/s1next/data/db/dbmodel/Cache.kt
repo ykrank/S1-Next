@@ -2,6 +2,7 @@ package me.ykrank.s1next.data.db.dbmodel
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import me.ykrank.s1next.data.db.biz.CacheBiz
 
@@ -11,6 +12,9 @@ import me.ykrank.s1next.data.db.biz.CacheBiz
  */
 @Entity(
     tableName = "Cache",
+    indices = [
+        Index(value = ["key"], name = "IDX_Cache_Key", unique = true),
+    ]
 )
 class Cache {
 
@@ -21,7 +25,7 @@ class Cache {
     /**
      * 唯一key
      */
-    @ColumnInfo(name = "key", index = true)
+    @ColumnInfo(name = "key")
     var key: String = ""
 
     @ColumnInfo(name = "group", defaultValue = CacheBiz.DEFAULT_GROUP)

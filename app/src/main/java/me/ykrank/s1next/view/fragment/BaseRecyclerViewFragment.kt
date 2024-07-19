@@ -134,9 +134,9 @@ abstract class BaseRecyclerViewFragment<D> : LibBaseRecyclerViewFragment<D>() {
         mUserValidator.validateIntercept(data)
     }
 
-    override fun onSuccess(data: Resource.Success<D>) {
-        super.onSuccess(data)
-        if (data.source.isCache()) {
+    override fun onNextSuccess(resource: Resource.Success<D>) {
+        super.onNextSuccess(resource)
+        if (resource.source.isCache()) {
             hintView.visibility = View.VISIBLE
             hintView.text = getString(R.string.data_load_from_cache)
         } else {

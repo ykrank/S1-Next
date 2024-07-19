@@ -37,7 +37,9 @@ interface CoordinatorLayoutAnchorDelegate {
      */
     fun showSnackbar(
         @StringRes resId: Int,
-        duration: Int = Snackbar.LENGTH_SHORT
+        duration: Int = Snackbar.LENGTH_SHORT,
+        @StringRes actionResId: Int? = null,
+        onActionClickListener: View.OnClickListener? = null,
     ): Optional<Snackbar>
 
     /**
@@ -48,7 +50,9 @@ interface CoordinatorLayoutAnchorDelegate {
      */
     fun showSnackbar(
         text: CharSequence,
-        duration: Int = Snackbar.LENGTH_SHORT
+        duration: Int = Snackbar.LENGTH_SHORT,
+        @StringRes actionResId: Int? = null,
+        onActionClickListener: View.OnClickListener? = null,
     ): Optional<Snackbar>
 
     /**

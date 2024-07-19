@@ -85,12 +85,34 @@ abstract class LibBaseFragment : Fragment() {
         }
     }
 
-    protected fun showSnackbar(text: CharSequence?, duration: Int = Snackbar.LENGTH_SHORT) {
-        text?.let { mCoordinatorLayoutAnchorDelegate?.showSnackbar(it) }
+    protected fun showSnackbar(
+        text: CharSequence?,
+        duration: Int = Snackbar.LENGTH_SHORT,
+        @StringRes actionResId: Int? = null,
+        onActionClickListener: View.OnClickListener? = null,
+    ) {
+        text?.let {
+            mCoordinatorLayoutAnchorDelegate?.showSnackbar(
+                it,
+                duration,
+                actionResId,
+                onActionClickListener
+            )
+        }
     }
 
-    protected fun showSnackbar(@StringRes resId: Int, duration: Int = Snackbar.LENGTH_SHORT) {
-        mCoordinatorLayoutAnchorDelegate?.showSnackbar(resId)
+    protected fun showSnackbar(
+        @StringRes resId: Int,
+        duration: Int = Snackbar.LENGTH_SHORT,
+        @StringRes actionResId: Int? = null,
+        onActionClickListener: View.OnClickListener? = null,
+    ) {
+        mCoordinatorLayoutAnchorDelegate?.showSnackbar(
+            resId,
+            duration,
+            actionResId,
+            onActionClickListener
+        )
     }
 
     protected fun showShortText(@StringRes resId: Int) {

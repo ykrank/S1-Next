@@ -4,12 +4,14 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.github.ykrank.androidtools.ui.UiGlobalData
 import com.google.android.material.snackbar.Snackbar
 import com.google.common.base.Optional
 
 
-abstract class CoordinatorLayoutAnchorDelegateBaseImpl(private val mCoordinatorLayout: androidx.coordinatorlayout.widget.CoordinatorLayout) : CoordinatorLayoutAnchorDelegate {
+abstract class CoordinatorLayoutAnchorDelegateBaseImpl(private val mCoordinatorLayout: CoordinatorLayout) :
+    CoordinatorLayoutAnchorDelegate {
 
     private val actLifeCallback = UiGlobalData.provider?.actLifeCallback
 
@@ -25,16 +27,28 @@ abstract class CoordinatorLayoutAnchorDelegateBaseImpl(private val mCoordinatorL
 
     override fun showSnackbar(
         @StringRes resId: Int,
-        duration: Int
+        duration: Int,
+        @StringRes actionResId: Int?,
+        onActionClickListener: View.OnClickListener?,
     ): Optional<Snackbar> {
-        return showSnackbar(mCoordinatorLayout.resources.getText(resId), duration)
+        return showSnackbar(
+            mCoordinatorLayout.resources.getText(resId),
+            duration,
+            actionResId,
+            onActionClickListener
+        )
     }
 
     override fun showSnackbar(
         text: CharSequence,
-        duration: Int
+        duration: Int,
+        @StringRes actionResId: Int?,
+        onActionClickListener: View.OnClickListener?,
     ): Optional<Snackbar> {
         val snackbar = Snackbar.make(mCoordinatorLayout, text, duration)
+        if (actionResId != null && onActionClickListener != null) {
+            snackbar.setAction(actionResId, onActionClickListener)
+        }
         val textView = snackbar.view.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
         textView.maxLines = SNACK_BAR_MAX_LINE
         snackbar.show()

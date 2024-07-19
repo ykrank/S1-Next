@@ -296,11 +296,13 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
         )
     }
 
-    override fun onNext(data: PostsWrapper) {
+    override fun onNextSuccess(resource: Resource.Success<PostsWrapper>) {
+        super.onNextSuccess(resource)
+        val data = resource.data
         val pullUpToRefresh = isPullUpToRefresh
         var postList: List<Post>? = null
 
-        val posts = data.data
+        val posts = data?.data
         if (posts != null) {
             postList = posts.postList
         }
@@ -315,21 +317,29 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
                 }
             }
 
-            val threadId = mThreadId ?: posts?.postListInfo?.id
-            if (threadId != null) {
-                if (isAdded && userVisibleHint) {
-                    Snackbar.make(
-                        binding.root, data.result.message
-                            ?: "加载失败", Snackbar.LENGTH_INDEFINITE
-                    ).setAction(R.string.click_to_cast_dark_magic, View.OnClickListener {
-                        AppPostListActivity.start(requireContext(), threadId, mPageNum, null)
-                    }).show()
+            if (resource.source.isCloud()) {
+                val threadId = mThreadId ?: posts?.postListInfo?.id
+                if (threadId != null) {
+                    if (isAdded && userVisibleHint) {
+                        showSnackbar(
+                            data?.result?.message
+                                ?: getString(R.string.message_load_error),
+                            Snackbar.LENGTH_INDEFINITE,
+                            R.string.click_to_cast_dark_magic, View.OnClickListener {
+                                AppPostListActivity.start(
+                                    requireContext(),
+                                    threadId,
+                                    mPageNum,
+                                    null
+                                )
+                            }
+                        )
+                    }
+                } else {
+                    consumeResult(data?.result)
                 }
-            } else {
-                consumeResult(data.result)
             }
         } else {
-            super.onNext(data)
             initQuickSidebar(mPageNum, postList)
 
             //Set old rates to data

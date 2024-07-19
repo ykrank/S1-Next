@@ -308,6 +308,7 @@
     <string name="red_envelopes_text_hint" translatable="false">点击复制</string>
     <string name="copied">Already copied</string>
     <string name="manage_forum">Manage forum</string>
+    <string name="message_load_error">Load Error</string>
 
     <!---->
 </resources>
