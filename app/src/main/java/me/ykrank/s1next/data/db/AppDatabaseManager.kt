@@ -4,8 +4,11 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import me.ykrank.s1next.BuildConfig
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
 interface AppDatabaseManager {
+    val executors: Executor
     fun getOrBuildDb(): AppDatabase
 
     fun close()
@@ -25,6 +28,8 @@ class AppDatabaseManagerImpl(applicationContext: Context) : AppDatabaseManager {
 
     @Volatile
     var database: AppDatabase? = null
+
+    override val executors: Executor = Executors.newSingleThreadExecutor()
 
     override fun getOrBuildDb(): AppDatabase {
         return database ?: synchronized(this) {

@@ -7,13 +7,13 @@ import com.github.ykrank.androidtools.data.Resource
 import com.github.ykrank.androidtools.data.Source
 import com.github.ykrank.androidtools.util.L
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
+import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.ApiCacheProvider
 import me.ykrank.s1next.data.api.ApiUtil
@@ -62,63 +62,83 @@ class S1ApiCacheProvider(
         page: Int,
         param: CacheParam?
     ): Flow<Resource<PostsWrapper>> {
-        val ratePostTask = coroutineScope {
-            async(Dispatchers.IO) {
-                runCatching {
+        val loadTime = LoadTime()
+        val ratePostFlow = flow {
+            val rates = runCatching {
+                loadTime.run("get_posts_new") {
                     s1Service.getPostsWrapperNew(threadId, page, authorId).let {
                         jsonMapper.readValue(it, RatePostsWrapper::class.java)
                     }
+                    }
                 }
-            }
-        }
-        return getFlow(CacheType.Posts, param, PostsWrapper::class.java, api = {
-            s1Service.getPostsWrapper(threadId, page, authorId)
-        }, setValidator = {
-            // 需要后处理才能更新缓存
-            false
-        }).map {
-            if (it.source.isCloud()) {
-                withContext(Dispatchers.IO) {
-                    var hasError = false
-                    val postWrapper = it.data
-                    val ratePostWrapper = ratePostTask.await().apply {
-                        if (this.isFailure) {
-                            hasError = true
+            emit(rates)
+        }.flowOn(Dispatchers.IO)
+        return getFlow(
+                CacheType.Posts,
+                param,
+                PostsWrapper::class.java,
+                loadTime = loadTime,
+                printTime = false,
+                api = {
+                    s1Service.getPostsWrapper(threadId, page, authorId)
+                }, setValidator = {
+                    // 需要后处理才能更新缓存
+                    false
+                })
+            .combine(ratePostFlow) { it, ratePostWrapper ->
+                if (it.source.isCloud()) {
+                    withContext(Dispatchers.IO) {
+                        var hasError = false
+                        val postWrapper = it.data
+                        ratePostWrapper.apply {
+                            if (this.isFailure) {
+                                hasError = true
+                            }
                         }
-                    }
 
-                    //Set comment init info(if it has comment)
-                    ratePostWrapper.getOrNull()?.data?.commentCountMap?.apply {
-                        postWrapper?.data?.initCommentCount(this)
-                    }
+                        //Set comment init info(if it has comment)
+                        ratePostWrapper.getOrNull()?.data?.commentCountMap?.apply {
+                            postWrapper?.data?.initCommentCount(this)
+                        }
 
-                    val postList = postWrapper?.data?.postList
-                    if (!postList.isNullOrEmpty()) {
-                        val post = postList[0]
-                        if (post.isTrade) {
-                            post.extraHtml = ""
-                            runCatching {
-                                s1Service.getTradePostInfo(threadId, post.id + 1).apply {
-                                    post.extraHtml = ApiUtil.replaceAjaxHeader(this)
+                        val postList = postWrapper?.data?.postList
+                        if (!postList.isNullOrEmpty()) {
+                            val post = postList[0]
+                            if (post.isTrade) {
+                                post.extraHtml = ""
+                                runCatching {
+                                    loadTime.run("get_post_trade_info") {
+                                        s1Service.getTradePostInfo(threadId, post.id + 1)
+                                    }.apply {
+                                        post.extraHtml = ApiUtil.replaceAjaxHeader(this)
+                                    }
+                                }.apply {
+                                    if (this.isFailure) {
+                                        hasError = true
+                                    }
                                 }
-                            }.apply {
-                                if (this.isFailure) {
-                                    hasError = true
+                            }
+                        }
+                        if (!hasError && postWrapper != null) {
+                            withContext(Dispatchers.Default) {
+                                loadTime.run(TIME_SAVE_CACHE) {
+                                    cacheBiz.saveTextZipAsync(
+                                        getKey(CacheType.Posts, param),
+                                        jsonMapper.writeValueAsString(postWrapper),
+                                        maxSize = downloadPerf.totalDataCacheSize
+                                    )
                                 }
                             }
                         }
                     }
-                    if (!hasError && postWrapper != null) {
-                        cacheBiz.saveTextZip(
-                            getKey(CacheType.Posts, param),
-                            jsonMapper.writeValueAsString(postWrapper),
-                            maxSize = downloadPerf.totalDataCacheSize
-                        )
+                }
+                it
+            }.onEach {
+                    if (BuildConfig.DEBUG) {
+                        loadTime.addPoint(TIME_LOAD_END)
+                        L.i(TAG, "posts:$threadId ${jsonMapper.writeValueAsString(loadTime.times)}")
                     }
                 }
-            }
-            it
-        }
     }
 
     private fun getKey(type: CacheType, param: CacheParam?): String {
@@ -135,19 +155,25 @@ class S1ApiCacheProvider(
         api: suspend () -> String,
         getValidator: ((data: T) -> Boolean)? = null,
         setValidator: ((data: T) -> Boolean)? = null,
+        loadTime: LoadTime = LoadTime(),
+        printTime: Boolean = BuildConfig.DEBUG,
     ): Flow<Resource<T>> {
         val key = getKey(type, param)
         val cacheStrategy = param?.strategy ?: CacheStrategy.NET_FIRST
         return flow {
             val cacheData: Cache? by lazy {
-                cacheBiz.getTextZipByKey(key)
+                loadTime.run(TIME_LOAD_CACHE) {
+                    cacheBiz.getTextZipByKey(key)
+                }
             }
 
             fun parseCache(): T? {
                 runCatching {
                     val json = cacheData?.text
                     if (!json.isNullOrEmpty()) {
-                        val data = jsonMapper.readValue(json, cls)
+                        val data = loadTime.run(TIME_PARSE_CACHE) {
+                            jsonMapper.readValue(json, cls)
+                        }
                         if (data != null && (getValidator == null || getValidator(data))) {
                             return data
                         }
@@ -158,6 +184,13 @@ class S1ApiCacheProvider(
                 return null
             }
 
+            fun printTimeWhenEmit(name: String) {
+                loadTime.addPoint(name)
+                if (printTime) {
+                    L.i(TAG, "$key ${jsonMapper.writeValueAsString(loadTime.times)}")
+                }
+            }
+
             // 优先拉取缓存
             val cacheFirst = downloadPerf.netCacheEnable && !cacheStrategy.strategy.ignoreCache
             if (cacheFirst) {
@@ -166,6 +199,7 @@ class S1ApiCacheProvider(
                             ?: 0) > cacheStrategy.strategy.expired.inWholeMilliseconds
                 if (!expired) {
                     parseCache()?.apply {
+                        printTimeWhenEmit(TIME_EMIT_CACHE)
                         emit(Resource.Success<T>(Source.PERSISTENCE, this))
                     }
                 }
@@ -187,41 +221,49 @@ class S1ApiCacheProvider(
 
             var fallbackSuccess = false
             val data = runCatching {
-                api().let {
-                    val data = it.toJson(cls)
-                    if (getValidator != null && !getValidator(data)) {
-                        // 无效的数据降级到缓存
-                        if (cacheFallbackEnable && !cacheFirst) {
-                            parseCache()?.apply {
-                                fallbackSuccess = true
-                                emit(Resource.Success<T>(Source.PERSISTENCE, this))
+                loadTime.run(TIME_NET) { api() }
+                    .let {
+                        val data = loadTime.run(TIME_PARSE_NET) {
+                            it.toJson(cls)
+                        }
+                        if (getValidator != null && !getValidator(data)) {
+                            // 无效的数据降级到缓存
+                            if (cacheFallbackEnable && !cacheFirst) {
+                                parseCache()?.apply {
+                                    fallbackSuccess = true
+                                    printTimeWhenEmit(TIME_EMIT_CACHE)
+                                    emit(Resource.Success<T>(Source.PERSISTENCE, this))
+                                }
                             }
                         }
-                    }
-                    if (setValidator == null || setValidator(data)) {
-                        // 有效的数据更新到缓存
-//                        cacheBiz.saveTextZip(key, it, maxSize = downloadPerf.totalDataCacheSize)
-                        cacheBiz.saveTextZip(
-                            key,
-                            jsonMapper.writeValueAsString(data),
-                            maxSize = downloadPerf.totalDataCacheSize
-                        )
-                    }
-                    data
+                        if (setValidator == null || setValidator(data)) {
+                            // 有效的数据更新到缓存
+                            withContext(Dispatchers.Default) {
+                                loadTime.run(TIME_SAVE_CACHE) {
+                                    cacheBiz.saveTextZipAsync(
+                                        key,
+                                        jsonMapper.writeValueAsString(data),
+                                        maxSize = downloadPerf.totalDataCacheSize
+                                    )
+                                }
+                            }
+                        }
+                        data
                 }
             }.onFailure {
                 // 失败的请求降级到缓存
                 if (cacheFallbackEnable && !cacheFirst) {
                     parseCache()?.apply {
                         fallbackSuccess = true
+                        printTimeWhenEmit(TIME_EMIT_CACHE)
                         emit(Resource.Success<T>(Source.PERSISTENCE, this))
                     }
                 }
             }
             if (!fallbackSuccess) {
+                printTimeWhenEmit(TIME_EMIT_NET)
                 emit(Resource.fromResult(Source.CLOUD, data))
             }
-
         }.flowOn(Dispatchers.IO)
     }
 
@@ -229,5 +271,50 @@ class S1ApiCacheProvider(
         ForumGroups("forum_groups"),
         Threads("threads"),
         Posts("posts"),
+    }
+
+    class LoadTime() {
+        private val start = System.currentTimeMillis()
+        private val timeMap = mutableMapOf<String, Long>()
+
+        val times: Map<String, Long>
+            get() = timeMap.mapValues {
+                it.value - start
+            }
+
+        fun addPoint(name: String) {
+            timeMap[name] = System.currentTimeMillis()
+        }
+
+        fun start(name: String) {
+            timeMap[name + "_start"] = System.currentTimeMillis()
+        }
+
+        fun end(name: String) {
+            timeMap[name + "_end"] = System.currentTimeMillis()
+        }
+
+        inline fun <T> run(name: String, block: () -> T): T {
+            start(name)
+            return try {
+                block()
+            } catch (e: Throwable) {
+                throw e
+            } finally {
+                end(name)
+            }
+        }
+    }
+
+    companion object {
+        const val TAG = "S1ApiCache"
+        const val TIME_LOAD_END = "load_end"
+        const val TIME_LOAD_CACHE = "load_cache"
+        const val TIME_SAVE_CACHE = "save_cache"
+        const val TIME_PARSE_CACHE = "parse_cache"
+        const val TIME_NET = "NET"
+        const val TIME_PARSE_NET = "parse_net"
+        const val TIME_EMIT_CACHE = "emit_cache"
+        const val TIME_EMIT_NET = "emit_net"
     }
 }

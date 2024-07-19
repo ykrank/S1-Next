@@ -49,6 +49,17 @@ class CacheBiz(private val manager: AppDatabaseManager) {
         saveZip(key, content.toByteArray(Charsets.UTF_8), group, maxSize)
     }
 
+    fun saveTextZipAsync(
+        key: String,
+        content: String,
+        group: String = DEFAULT_GROUP,
+        maxSize: Int = DEFAULT_MAX_SIZE
+    ) {
+        manager.executors.execute {
+            saveTextZip(key, content, group, maxSize)
+        }
+    }
+
     fun getTextZipByKey(key: String): Cache? {
         return cacheDao.getByKey(key)?.apply {
             this.text = this.blob?.let {
