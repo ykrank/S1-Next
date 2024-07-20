@@ -4,14 +4,13 @@ import androidx.annotation.MainThread
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.RxBus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.db.biz.BlackListBiz
-import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment
+import me.ykrank.s1next.view.page.setting.blacklist.BlackListRemarkDialogFragment
 import me.ykrank.s1next.view.event.BlackListChangeEvent
 import me.ykrank.s1next.widget.track.event.BlackListTrackEvent
 

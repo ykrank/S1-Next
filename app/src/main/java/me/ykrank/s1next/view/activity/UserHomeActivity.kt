@@ -24,6 +24,8 @@ import com.github.ykrank.androidtools.widget.glide.model.ImageInfo
 import com.google.android.material.appbar.AppBarLayout
 import com.google.common.base.Optional
 import io.reactivex.Single
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
@@ -76,16 +78,28 @@ class UserHomeActivity : BaseActivity() {
         binding.data = profile
 
         binding.appBar.addOnOffsetChangedListener(object : AppBarOffsetChangedListener() {
-            override fun onStateChanged(appBarLayout: AppBarLayout, oldVerticalOffset: Int, verticalOffset: Int) {
+            override fun onStateChanged(
+                appBarLayout: AppBarLayout,
+                oldVerticalOffset: Int,
+                verticalOffset: Int
+            ) {
                 val maxScroll = appBarLayout.totalScrollRange
                 val oldPercentage = Math.abs(oldVerticalOffset).toFloat() / maxScroll.toFloat()
                 val percentage = Math.abs(verticalOffset).toFloat() / maxScroll.toFloat()
                 if (oldPercentage < PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR && percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
                     //Move up
-                    AnimUtils.startAlphaAnimation(binding.toolbarTitle, TITLE_ANIMATIONS_DURATION.toLong(), View.VISIBLE)
+                    AnimUtils.startAlphaAnimation(
+                        binding.toolbarTitle,
+                        TITLE_ANIMATIONS_DURATION.toLong(),
+                        View.VISIBLE
+                    )
                 } else if (oldPercentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR && percentage < PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
                     //Move down
-                    AnimUtils.startAlphaAnimation(binding.toolbarTitle, TITLE_ANIMATIONS_DURATION.toLong(), View.INVISIBLE)
+                    AnimUtils.startAlphaAnimation(
+                        binding.toolbarTitle,
+                        TITLE_ANIMATIONS_DURATION.toLong(),
+                        View.INVISIBLE
+                    )
                 }
             }
         })
@@ -97,8 +111,10 @@ class UserHomeActivity : BaseActivity() {
 
         binding.ivNewPm.setOnClickListener { v ->
             binding.data?.let {
-                NewPmActivity.startNewPmActivityForResultMessage(this,
-                        it.homeUid, it.homeUsername)
+                NewPmActivity.startNewPmActivityForResultMessage(
+                    this,
+                    it.homeUid, it.homeUsername
+                )
             }
         }
 
@@ -134,6 +150,7 @@ class UserHomeActivity : BaseActivity() {
                 onBackPressed()
                 return true
             }
+
             R.id.menu_blacklist -> {
                 if (isInBlacklist) {
                     BlacklistMenuAction.removeBlacklist(this, mRxBus, uid?.toInt() ?: 0, name)
@@ -142,6 +159,7 @@ class UserHomeActivity : BaseActivity() {
                 }
                 return true
             }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -149,31 +167,24 @@ class UserHomeActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         mRxBus.get()
-                .ofType(BlackListChangeEvent::class.java)
-                .to(AndroidRxDispose.withObservable(this, ActivityEvent.PAUSE))
-                .subscribe { blackListEvent ->
-                    val dbWrapper = BlackListBiz.getInstance()
+            .ofType(BlackListChangeEvent::class.java)
+            .to(AndroidRxDispose.withObservable(this, ActivityEvent.PAUSE))
+            .subscribe { blackListEvent ->
+                val dbWrapper = BlackListBiz.getInstance()
+                lifecycleScope.launch(Dispatchers.IO) {
                     if (blackListEvent.isAdd) {
-                        Single.just(true)
-                                .doOnSuccess { b ->
-                                    dbWrapper.saveDefaultBlackList(
-                                            blackListEvent.authorPostId, blackListEvent.authorPostName,
-                                            blackListEvent.remark)
-                                }
-                                .compose(RxJavaUtil.iOSingleTransformer())
-                            .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
-                                .subscribe({ this.afterBlackListChange(it) }, { L.report(it) })
+                        dbWrapper.saveDefaultBlackList(
+                            blackListEvent.authorPostId, blackListEvent.authorPostName,
+                            blackListEvent.remark
+                        )
                     } else {
-                        Single.just(false)
-                                .doOnSuccess { b ->
-                                    dbWrapper.delDefaultBlackList(blackListEvent.authorPostId,
-                                            blackListEvent.authorPostName)
-                                }
-                                .compose(RxJavaUtil.iOSingleTransformer())
-                            .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
-                                .subscribe({ this.afterBlackListChange(it) }, { L.report(it) })
+                        dbWrapper.delDefaultBlackList(
+                            blackListEvent.authorPostId,
+                            blackListEvent.authorPostName
+                        )
                     }
                 }
+            }
     }
 
     private fun afterBlackListChange(isAdd: Boolean) {
@@ -187,14 +198,17 @@ class UserHomeActivity : BaseActivity() {
 
     private fun loadData() {
         binding.data?.let { profile ->
-            s1Service.getProfileWeb("https://bbs.saraba1st.com/2b/space-uid-${profile.homeUid}.html", profile.homeUid)
-                    .map { Profile.fromHtml(it) }
-                    .compose(RxJavaUtil.iOSingleTransformer())
-                    .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
-                    .subscribe({
-                        binding.data = it
-                        adapter.swapDataSet(it.stats)
-                    }, L::e)
+            s1Service.getProfileWeb(
+                "https://bbs.saraba1st.com/2b/space-uid-${profile.homeUid}.html",
+                profile.homeUid
+            )
+                .map { Profile.fromHtml(it) }
+                .compose(RxJavaUtil.iOSingleTransformer())
+                .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
+                .subscribe({
+                    binding.data = it
+                    adapter.swapDataSet(it.stats)
+                }, L::e)
         }
     }
 
@@ -205,17 +219,17 @@ class UserHomeActivity : BaseActivity() {
         }
         val wrapper = BlackListBiz.getInstance()
         Single.just(Optional.fromNullable(wrapper.getMergedBlackList(uid?.toInt() ?: 0, name)))
-                .compose(RxJavaUtil.iOSingleTransformer())
-                .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
-                .subscribe({ blackListOptional ->
-                    if (blackListOptional.isPresent) {
-                        isInBlacklist = true
-                        blacklistMenu?.setTitle(R.string.menu_blacklist_remove)
-                    } else {
-                        isInBlacklist = false
-                        blacklistMenu?.setTitle(R.string.menu_blacklist_add)
-                    }
-                }, { L.report(it) })
+            .compose(RxJavaUtil.iOSingleTransformer())
+            .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
+            .subscribe({ blackListOptional ->
+                if (blackListOptional.isPresent) {
+                    isInBlacklist = true
+                    blacklistMenu?.setTitle(R.string.menu_blacklist_remove)
+                } else {
+                    isInBlacklist = false
+                    blacklistMenu?.setTitle(R.string.menu_blacklist_add)
+                }
+            }, { L.report(it) })
     }
 
     companion object {
@@ -227,8 +241,16 @@ class UserHomeActivity : BaseActivity() {
         private const val ARG_USERNAME = "username"
         private const val ARG_IMAGE_INFO = "image_info"
 
-        fun start(activity: androidx.fragment.app.FragmentActivity, uid: String, userName: String?) {
-            if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(activity.supportFragmentManager, App.appComponent.user)) {
+        fun start(
+            activity: androidx.fragment.app.FragmentActivity,
+            uid: String,
+            userName: String?
+        ) {
+            if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(
+                    activity.supportFragmentManager,
+                    App.appComponent.user
+                )
+            ) {
                 return
             }
 
@@ -238,13 +260,22 @@ class UserHomeActivity : BaseActivity() {
             activity.startActivity(intent)
         }
 
-        fun start(activity: androidx.fragment.app.FragmentActivity, uid: String, userName: String?, avatarView: View) {
+        fun start(
+            activity: androidx.fragment.app.FragmentActivity,
+            uid: String,
+            userName: String?,
+            avatarView: View
+        ) {
             //@see http://stackoverflow.com/questions/31381385/nullpointerexception-drawable-setbounds-probably-due-to-fragment-transitions#answer-31383033
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
                 start(activity, uid, userName)
                 return
             }
-            if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(activity.supportFragmentManager, App.appComponent.user)) {
+            if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(
+                    activity.supportFragmentManager,
+                    App.appComponent.user
+                )
+            ) {
                 return
             }
 
@@ -255,7 +286,8 @@ class UserHomeActivity : BaseActivity() {
                 L.report(IllegalStateException("UserHomeActivity start error: context not instance of activity"))
                 return
             }
-            val imageInfo = avatarView.getTag(com.github.ykrank.androidtools.R.id.tag_drawable_info) as ImageInfo?
+            val imageInfo =
+                avatarView.getTag(com.github.ykrank.androidtools.R.id.tag_drawable_info) as ImageInfo?
             val intent = Intent(baseContext, UserHomeActivity::class.java)
             intent.putExtra(ARG_UID, uid)
             intent.putExtra(ARG_USERNAME, userName)
@@ -263,7 +295,8 @@ class UserHomeActivity : BaseActivity() {
                 intent.putExtra(ARG_IMAGE_INFO, imageInfo)
             }
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    baseContext, avatarView, baseContext.getString(R.string.transition_avatar))
+                baseContext, avatarView, baseContext.getString(R.string.transition_avatar)
+            )
             ActivityCompat.startActivity(baseContext, intent, options.toBundle())
         }
     }

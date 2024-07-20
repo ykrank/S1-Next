@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.dialog
+package me.ykrank.s1next.view.page.setting.blacklist
 
 import android.app.Dialog
 import android.content.DialogInterface
@@ -11,12 +11,17 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidtools.util.ResourceUtil
 import com.github.ykrank.androidtools.util.ViewUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.db.biz.BlackWordBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackWord
 import me.ykrank.s1next.databinding.DialogBlackWordBinding
+import me.ykrank.s1next.view.dialog.BaseDialogFragment
 import me.ykrank.s1next.view.internal.RequestCode
 import me.ykrank.s1next.viewmodel.BlackWordViewModel
 
@@ -44,26 +49,30 @@ class BlackWordDialogFragment : BaseDialogFragment() {
 
         val mBlackWord = arguments?.get(TAG_BLACK_WORD) as BlackWord?
 
-        //Check could add
-        if (mBlackWord == null) {
-            if (BlackWordBiz.instance.count() >= 10) {
-                return AlertDialog.Builder(activity)
-                    .setTitle(R.string.title_black_word_add)
-                    .setMessage(R.string.error_word_out_of_bound)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .create()
-            }
-        }
-
         val binding = DataBindingUtil.inflate<DialogBlackWordBinding>(
             activity.layoutInflater,
             R.layout.dialog_black_word, null, false
         )
+        val model = BlackWordViewModel()
+
+        //Check could add
+        if (mBlackWord == null) {
+            model.loading.set(true)
+            lifecycleScope.launch {
+                val count = withContext(Dispatchers.IO){
+                    BlackWordBiz.instance.count()
+                }
+                model.loading.set(false)
+                if (count >= 10) {
+                    model.message.set(getString(R.string.error_word_out_of_bound))
+                }
+            }
+        }
+
         val inputWord = binding.inputWord
         val etWord = binding.etWord
         val btnVerify = binding.btnVerify
 
-        val model = BlackWordViewModel()
         if (mBlackWord != null)
             model.blackword.set(mBlackWord)
         binding.model = model
@@ -110,14 +119,18 @@ class BlackWordDialogFragment : BaseDialogFragment() {
             }
 
             btnVerify.setOnClickListener {
-                val wordBlackWord = BlackWordBiz.instance.getBlackWord(etWord.text.toString())
-                if (wordBlackWord == null || (mBlackWord != null && wordBlackWord.id == mBlackWord.id)) {
-                    positionButton.isEnabled = true
-                    inputWord.helperText = "验证完成"
-                    inputWord.setHelperTextColor(colorRight)
-                } else {
-                    positionButton.isEnabled = false
-                    inputWord.error = resources.getText(R.string.error_duplicate_word)
+                lifecycleScope.launch {
+                    val wordBlackWord = withContext(Dispatchers.IO){
+                        BlackWordBiz.instance.getBlackWord(etWord.text.toString())
+                    }
+                    if (wordBlackWord == null || (mBlackWord != null && wordBlackWord.id == mBlackWord.id)) {
+                        positionButton.isEnabled = true
+                        inputWord.helperText = "验证完成"
+                        inputWord.setHelperTextColor(colorRight)
+                    } else {
+                        positionButton.isEnabled = false
+                        inputWord.error = resources.getText(R.string.error_duplicate_word)
+                    }
                 }
             }
             etWord.addTextChangedListener(object : TextWatcher {

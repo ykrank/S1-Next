@@ -12,11 +12,15 @@ import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.ListView
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import io.reactivex.Single
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackList
@@ -62,7 +66,7 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
             val checklist = mListView.checkedItemPositions
             when (item.itemId) {
                 R.id.menu_add -> {
-                    add()
+                    showDialog(arrayListOf())
                     return true
                 }
 
@@ -73,16 +77,7 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
                             blackList.add(mListViewAdapter.getItem(checklist.keyAt(i)))
                         }
                     }
-                    val dialogFragment = BlacklistDialogFragment.newInstance(blackList) {
-                        if (it.size > 0) {
-                            BlackListBiz.getInstance().saveBlackList(it)
-                            load()
-                        }
-                    }
-                    dialogFragment.show(
-                        parentFragmentManager,
-                        BlacklistDialogFragment::class.java.name
-                    )
+                    showDialog(blackList)
                     return true
                 }
 
@@ -93,8 +88,13 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
                             blackLists.add(mListViewAdapter.getItem(checklist.keyAt(i)))
                         }
                     }
-                    BlackListBiz.getInstance().delBlackLists(blackLists)
-                    load()
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.IO){
+                            BlackListBiz.getInstance().delBlackLists(blackLists)
+                        }
+                        load()
+                    }
+
                     return true
                 }
 
@@ -157,7 +157,7 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_add -> {
-                add()
+                showDialog(arrayListOf())
                 return true
             }
 
@@ -183,7 +183,8 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
             R.id.menu_load_from_web -> {
                 childFragmentManager.apply {
                     if (!LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(this, mUser)) {
-                        val dialogFragment = LoadBlackListFromWebDialogFragment.newInstance { load() }
+                        val dialogFragment =
+                            LoadBlackListFromWebDialogFragment.newInstance { load() }
                         dialogFragment.show(this, LoadBlackListFromWebDialogFragment.TAG)
                     }
                 }
@@ -219,14 +220,18 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
         load()
     }
 
-    private fun add() {
-        val dialogFragment = BlacklistDialogFragment.newInstance(ArrayList()) { blackList ->
-            if (blackList.size > 0) {
-                BlackListBiz.getInstance().saveBlackList(blackList)
-                load()
+    private fun showDialog(blackList: ArrayList<BlackList>) {
+        val dialogFragment = BlacklistDialogFragment.newInstance(blackList) {
+            if (it.size > 0) {
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        BlackListBiz.getInstance().saveBlackList(it)
+                    }
+                    load()
+                }
             }
         }
-        dialogFragment.show(parentFragmentManager, BlackListSettingFragment::class.java.name)
+        dialogFragment.show(parentFragmentManager, BlacklistDialogFragment::class.java.name)
     }
 
     companion object {

@@ -10,7 +10,7 @@ import me.ykrank.s1next.R;
 import me.ykrank.s1next.view.activity.BaseActivity;
 import me.ykrank.s1next.view.page.setting.blacklist.BlackListSettingFragment;
 import me.ykrank.s1next.view.page.setting.fragment.BackupPreferenceFragment;
-import me.ykrank.s1next.view.page.setting.fragment.BlackWordSettingFragment;
+import me.ykrank.s1next.view.page.setting.blacklist.BlackWordSettingFragment;
 import me.ykrank.s1next.view.page.setting.fragment.DownloadPreferenceFragment;
 import me.ykrank.s1next.view.page.setting.fragment.GeneralPreferenceFragment;
 import me.ykrank.s1next.view.page.setting.fragment.NetworkPreferenceFragment;

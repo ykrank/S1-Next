@@ -15,7 +15,7 @@ import me.ykrank.s1next.databinding.ItemBlackwordBinding
 import me.ykrank.s1next.viewmodel.BlackWordViewModel
 
 
-class BlackWordCursorListViewAdapter(activity: Activity) : androidx.cursoradapter.widget.CursorAdapter(activity, null, true) {
+class BlackWordCursorListViewAdapter(activity: Activity) : CursorAdapter(activity, null, true) {
     private val mLayoutInflater: LayoutInflater = activity.layoutInflater
 
     override fun newView(context: Context, cursor: Cursor, parent: ViewGroup): View {

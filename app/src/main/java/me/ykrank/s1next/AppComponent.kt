@@ -32,7 +32,7 @@ import me.ykrank.s1next.view.adapter.delegate.PmGroupsAdapterDelegate
 import me.ykrank.s1next.view.adapter.delegate.PmLeftAdapterDelegate
 import me.ykrank.s1next.view.adapter.delegate.PmRightAdapterDelegate
 import me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate
-import me.ykrank.s1next.view.dialog.BlackListRemarkDialogFragment
+import me.ykrank.s1next.view.page.setting.blacklist.BlackListRemarkDialogFragment
 import me.ykrank.s1next.view.dialog.DiscardEditPromptDialogFragment
 import me.ykrank.s1next.view.dialog.LoadBlackListFromWebDialogFragment
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment

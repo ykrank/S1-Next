@@ -118,7 +118,7 @@ class AppPost() : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         if (message.isNullOrBlank()) {
             this.message = message
         } else {
-            var msg = hideBlackListQuote(message!!)
+            var msg = hideBlackListQuote(message)
             msg = replaceBilibiliTag(msg)
             this.message = msg
         }

@@ -1,4 +1,4 @@
-package me.ykrank.s1next.view.dialog
+package me.ykrank.s1next.view.page.setting.blacklist
 
 import android.app.Activity
 import android.app.Dialog
@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidtools.util.L
-import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.util.ViewUtil
 import com.github.ykrank.androidtools.widget.RxBus
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +18,7 @@ import me.ykrank.s1next.App.Companion.appComponent
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.databinding.DialogBlacklistRemarkBinding
+import me.ykrank.s1next.view.dialog.BaseDialogFragment
 import me.ykrank.s1next.view.event.BlackListChangeEvent
 import me.ykrank.s1next.widget.track.event.BlackListTrackEvent
 import javax.inject.Inject
@@ -83,7 +83,6 @@ class BlackListRemarkDialogFragment : BaseDialogFragment() {
         private const val ARG_AUTHOR_ID = "arg_author_id"
         private const val ARG_AUTHOR_NAME = "arg_author_name"
 
-        @JvmStatic
         fun newInstance(authorId: Int, authorName: String?): BlackListRemarkDialogFragment {
             val fragment = BlackListRemarkDialogFragment()
             val bundle = Bundle()
