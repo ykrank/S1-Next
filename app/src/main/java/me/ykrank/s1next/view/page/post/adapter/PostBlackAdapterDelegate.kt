@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.S1Service
@@ -28,7 +28,7 @@ class PostBlackAdapterDelegate(private val fragment: Fragment, context: Context)
     ) {
 
     @Inject
-    internal lateinit var mRxBus: RxBus
+    internal lateinit var mEventBus: EventBus
 
     @Inject
     internal lateinit var mS1Service: S1Service
@@ -60,7 +60,7 @@ class PostBlackAdapterDelegate(private val fragment: Fragment, context: Context)
             mLayoutInflater,
             R.layout.item_post_black, parent, false
         )
-        binding.postViewModel = PostBlackViewModel(fragment.viewLifecycleOwner, mRxBus)
+        binding.postViewModel = PostBlackViewModel(fragment.viewLifecycleOwner, mEventBus)
 
         binding.tvReply.setSpannableFactory(FixedSpannableFactory())
 

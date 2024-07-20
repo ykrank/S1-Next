@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import com.github.ykrank.androidtools.util.ContextUtils
 import com.github.ykrank.androidtools.util.L
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.Post
 import me.ykrank.s1next.data.api.model.Thread
@@ -19,7 +19,7 @@ import me.ykrank.s1next.view.activity.UserHomeActivity
 import me.ykrank.s1next.view.internal.BlacklistMenuAction
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 
-class PostBlackViewModel(val lifecycleOwner: LifecycleOwner, private val rxBus: RxBus) {
+class PostBlackViewModel(val lifecycleOwner: LifecycleOwner, private val eventBus: EventBus) {
 
     val post = ObservableField<Post>()
     val thread = ObservableField<Thread>()
@@ -80,7 +80,7 @@ class PostBlackViewModel(val lifecycleOwner: LifecycleOwner, private val rxBus: 
                         val authorName = postData.authorName
                         if (authorName != null) {
                             if (menuitem.title == v.context.getString(R.string.menu_blacklist_remove)) {
-                                BlacklistMenuAction.removeBlacklist(lifecycleOwner, rxBus, authorIdInt, authorName)
+                                BlacklistMenuAction.removeBlacklist(lifecycleOwner, eventBus, authorIdInt, authorName)
                             } else {
                                 val context = ContextUtils.getBaseContext(v.context)
                                 if (context is androidx.fragment.app.FragmentActivity) {

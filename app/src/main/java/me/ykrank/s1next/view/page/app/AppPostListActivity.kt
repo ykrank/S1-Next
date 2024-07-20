@@ -48,7 +48,7 @@ class AppPostListActivity : BaseActivity(), AppPostListPagerFragment.PagerCallba
 
     override fun onResume() {
         super.onResume()
-        mRxBus.get()
+        mEventBus.get()
                 .ofType(AppNotLoginEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, ActivityEvent.PAUSE))
                 .subscribe {

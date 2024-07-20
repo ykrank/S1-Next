@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
 import com.github.ykrank.androidtools.util.L
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -37,7 +37,7 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
     BaseAdapterDelegate<Post, SimpleRecycleViewHolder<ItemPostBinding>>(context, Post::class.java) {
 
     @Inject
-    internal lateinit var mRxBus: RxBus
+    internal lateinit var mEventBus: EventBus
 
     @Inject
     internal lateinit var mUser: User
@@ -72,7 +72,7 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
             mLayoutInflater,
             R.layout.item_post, parent, false
         )
-        binding.postViewModel = PostViewModel(fragment.viewLifecycleOwner, mRxBus, mUser)
+        binding.postViewModel = PostViewModel(fragment.viewLifecycleOwner, mEventBus, mUser)
 
         binding.tvReply.setSpannableFactory(FixedSpannableFactory())
 

@@ -8,7 +8,7 @@ import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.ResourceUtil
 import com.github.ykrank.androidtools.util.RxJavaUtil
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.github.ykrank.androidtools.widget.track.event.ThemeChangeTrackEvent
 import io.reactivex.Single
@@ -35,7 +35,7 @@ import javax.inject.Inject
 class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPreferenceClickListener {
 
     @Inject
-    internal lateinit var mRxBus: RxBus
+    internal lateinit var mEventBus: EventBus
 
     @Inject
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
@@ -75,7 +75,7 @@ class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefere
         if (key == getString(R.string.pref_key_theme) || key == getString(R.string.pref_key_dark_theme)) {
             trackAgent.post(ThemeChangeTrackEvent(false))
             mThemeManager.invalidateTheme()
-            mRxBus.post(ThemeChangeEvent())
+            mEventBus.post(ThemeChangeEvent())
         } else if (key == getString(R.string.pref_key_font_size)) {
             L.l("Setting")
             // change scaling factor for fonts
@@ -83,7 +83,7 @@ class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefere
                 activity,
                 mGeneralPreferencesManager.fontScale
             )
-            mRxBus.post(FontSizeChangeEvent())
+            mEventBus.post(FontSizeChangeEvent())
         }
     }
 

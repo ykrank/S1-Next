@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.Favourite
@@ -24,7 +24,7 @@ class FavouriteAdapterDelegate(
     ) {
 
     @Inject
-    lateinit var mRxBus: RxBus
+    lateinit var mEventBus: EventBus
 
     init {
         App.appComponent.inject(this)
@@ -34,7 +34,7 @@ class FavouriteAdapterDelegate(
         val binding = DataBindingUtil.inflate<ItemFavouriteBinding>(mLayoutInflater,
                 R.layout.item_favourite, parent, false)
         binding.model = FavouriteViewModel(lifecycleOwner)
-        binding.rxBus = mRxBus
+        binding.rxBus = mEventBus
         return SimpleRecycleViewHolder(binding)
     }
 

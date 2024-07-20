@@ -36,7 +36,7 @@ class HtmlDataWrapper {
 
         fun notifyData(data: HtmlDataWrapper) {
             if (data.notice != null) {
-                App.preAppComponent.rxBus.post(NoticeRefreshEvent::class.java, NoticeRefreshEvent(null, (data.notice?:0) > 0))
+                App.preAppComponent.eventBus.post(NoticeRefreshEvent::class.java, NoticeRefreshEvent(null, (data.notice?:0) > 0))
             }
         }
 

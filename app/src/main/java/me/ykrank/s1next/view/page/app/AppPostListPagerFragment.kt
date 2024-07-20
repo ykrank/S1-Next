@@ -20,7 +20,7 @@ import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.LooperUtil
 import com.github.ykrank.androidtools.util.MathUtil
 import com.github.ykrank.androidtools.util.RxJavaUtil
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import com.github.ykrank.androidtools.widget.recycleview.StartSnapLinearLayoutManager
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
@@ -64,7 +64,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
     OnQuickSideBarTouchListener {
 
     @Inject
-    internal lateinit var mRxBus: RxBus
+    internal lateinit var mEventBus: EventBus
 
     @Inject
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
@@ -115,22 +115,22 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
 
         quickSideBarView.setOnQuickSideBarTouchListener(this)
 
-        mRxBus.get()
+        mEventBus.get()
             .ofType(PostSelectableChangeEvent::class.java)
             .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
             .subscribe({ mRecyclerAdapter.notifyDataSetChanged() }, { super.onError(it) })
 
-        mRxBus.get()
+        mEventBus.get()
             .ofType(QuickSidebarEnableChangeEvent::class.java)
             .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
             .subscribe({ invalidateQuickSidebarVisible() }, { super.onError(it) })
 
-        mRxBus.get()
+        mEventBus.get()
             .filter { it is AppLoginEvent || it is LoginEvent }
             .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
             .subscribe { startSwipeRefresh() }
 
-        mRxBus.get()
+        mEventBus.get()
             .ofType(BlackListChangeEvent::class.java)
             .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
             .subscribe { startBlackListRefresh() }
@@ -278,7 +278,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
     }
 
     override fun onError(throwable: Throwable) {
-        if (AppApiUtil.appLoginIfNeed(mRxBus, throwable)) {
+        if (AppApiUtil.appLoginIfNeed(mEventBus, throwable)) {
             // 自动登录
             autoLogin()
             return

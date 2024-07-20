@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import com.github.ykrank.androidtools.util.WebViewUtils.clearWebViewCookies
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import me.ykrank.s1next.App.Companion.appComponent
 import me.ykrank.s1next.App.Companion.get
 import me.ykrank.s1next.R
@@ -30,7 +30,7 @@ class LogoutDialogFragment : BaseDialogFragment() {
     lateinit var mUser: UserViewModel
 
     @Inject
-    lateinit var mRxBus: RxBus
+    lateinit var mEventBus: EventBus
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         appComponent.inject(this)
@@ -49,7 +49,7 @@ class LogoutDialogFragment : BaseDialogFragment() {
         clearWebViewCookies(get())
         mUser.user.appSecureToken = null
         mUser.user.isLogged = false
-        mRxBus.post(LoginEvent())
+        mEventBus.post(LoginEvent())
     }
 
     companion object {

@@ -102,7 +102,7 @@ class UserHomeActivity : BaseActivity() {
 
             R.id.menu_blacklist -> {
                 if (isInBlacklist) {
-                    BlacklistMenuAction.removeBlacklist(this, mRxBus, uid?.toInt() ?: 0, name)
+                    BlacklistMenuAction.removeBlacklist(this, mEventBus, uid?.toInt() ?: 0, name)
                 } else {
                     BlacklistMenuAction.addBlacklist(this, uid?.toInt() ?: 0, name)
                 }
@@ -115,7 +115,7 @@ class UserHomeActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        mRxBus.get()
+        mEventBus.get()
             .ofType(BlackListChangeEvent::class.java)
             .to(AndroidRxDispose.withObservable(this, ActivityEvent.PAUSE))
             .subscribe { blackListEvent ->

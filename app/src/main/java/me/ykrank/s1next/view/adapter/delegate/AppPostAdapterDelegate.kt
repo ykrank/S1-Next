@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
@@ -29,7 +29,7 @@ class AppPostAdapterDelegate(
 ) {
 
     @Inject
-    internal lateinit var mRxBus: RxBus
+    internal lateinit var mEventBus: EventBus
     @Inject
     internal lateinit var mUser: User
     @Inject
@@ -54,7 +54,7 @@ class AppPostAdapterDelegate(
     public override fun onCreateViewHolder(parent: ViewGroup): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         val binding = DataBindingUtil.inflate<ItemAppPostBinding>(mLayoutInflater,
                 R.layout.item_app_post, parent, false)
-        binding.postViewModel = AppPostViewModel(lifecycleOwner, mRxBus, mUser)
+        binding.postViewModel = AppPostViewModel(lifecycleOwner, mEventBus, mUser)
 
         //If setTextIsSelectable, then should reset movement
         val selectable = mGeneralPreferencesManager.isPostSelectable

@@ -15,7 +15,7 @@
 
         <variable
             name="rxBus"
-            type="com.github.ykrank.androidtools.widget.RxBus" />
+            type="com.github.ykrank.androidtools.widget.EventBus" />
 
         <variable
             name="requestManager"

@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import com.github.ykrank.androidtools.util.ContextUtils
 import com.github.ykrank.androidtools.util.L
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.Api
@@ -25,7 +25,7 @@ import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 
 class AppPostViewModel(
     val lifecycleOwner: LifecycleOwner,
-    private val rxBus: RxBus,
+    private val eventBus: EventBus,
     private val user: User
 ) {
 
@@ -71,7 +71,7 @@ class AppPostViewModel(
                 R.id.menu_popup_blacklist -> {
                     if (menuitem.title == v.context.getString(R.string.menu_blacklist_remove)) {
                         BlacklistMenuAction.removeBlacklist(
-                            lifecycleOwner, rxBus, postData?.authorId ?: 0, postData?.author
+                            lifecycleOwner, eventBus, postData?.authorId ?: 0, postData?.author
                         )
                     } else {
                         val context = ContextUtils.getBaseContext(v.context)
@@ -130,13 +130,13 @@ class AppPostViewModel(
 
     fun onReplyClick(v: View) {
         post.get()?.let {
-            rxBus.post(QuoteEvent(it.pid.toString(), it.position.toString()))
+            eventBus.post(QuoteEvent(it.pid.toString(), it.position.toString()))
         }
     }
 
     fun onRateClick(v: View) {
         post.get()?.let {
-            rxBus.post(RateEvent(it.tid.toString(), it.pid.toString()))
+            eventBus.post(RateEvent(it.tid.toString(), it.pid.toString()))
         }
     }
 
@@ -144,7 +144,7 @@ class AppPostViewModel(
         val p = post.get()
         val t = thread.get()
         if (p != null && t != null) {
-            rxBus.post(EditAppPostEvent(p, t))
+            eventBus.post(EditAppPostEvent(p, t))
         }
     }
 

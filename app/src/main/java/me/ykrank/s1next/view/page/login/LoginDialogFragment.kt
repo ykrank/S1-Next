@@ -1,7 +1,6 @@
 package me.ykrank.s1next.view.page.login
 
 import android.os.Bundle
-import com.github.ykrank.androidtools.util.RxJavaUtil
 import io.reactivex.Single
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +10,6 @@ import me.ykrank.s1next.App
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper
 import me.ykrank.s1next.data.db.exmodel.RealLoginUser
 import me.ykrank.s1next.view.dialog.ProgressDialogFragment
-import me.ykrank.s1next.view.event.AppLoginEvent
 import me.ykrank.s1next.view.event.LoginEvent
 
 /**
@@ -54,7 +52,7 @@ class LoginDialogFragment : BaseLoginDialogFragment<AccountResultWrapper>() {
             )
         }
 
-        mRxBus?.post(LoginEvent())
+        mEventBus?.post(LoginEvent())
     }
 
     @OptIn(DelicateCoroutinesApi::class)

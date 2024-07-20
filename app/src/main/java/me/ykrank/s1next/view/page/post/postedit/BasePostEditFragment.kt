@@ -22,7 +22,7 @@ import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.EditorDiskCache
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import com.github.ykrank.androidtools.widget.uploadimg.ModelImageUpload
 import com.google.android.material.tabs.TabLayout
 import io.reactivex.Single
@@ -54,7 +54,7 @@ abstract class BasePostEditFragment : BaseFragment(),
      */
     protected var mMenuSend: MenuItem? = null
     @Inject
-    internal lateinit var mRxBus: RxBus
+    internal lateinit var mEventBus: EventBus
     @Inject
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
     @Inject
@@ -141,14 +141,14 @@ abstract class BasePostEditFragment : BaseFragment(),
     override fun onResume() {
         super.onResume()
 
-        mRxBus.get()
+        mEventBus.get()
                 .ofType(EmoticonClickEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe { event ->
                     mReplyView.text.replace(mReplyView.selectionStart,
                             mReplyView.selectionEnd, event.emoticonEntity)
                 }
-        mRxBus.get()
+        mEventBus.get()
                 .ofType(PostAddImageEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
                 .subscribe { event ->
@@ -240,7 +240,7 @@ abstract class BasePostEditFragment : BaseFragment(),
 
     private fun bindRequestDialog() {
         if (requestDialogDisposable == null) {
-            requestDialogDisposable = mRxBus.get()
+            requestDialogDisposable = mEventBus.get()
                     .filter { it is RequestDialogSuccessEvent && isRequestDialogAccept(it) }
                     .map { it as RequestDialogSuccessEvent }
                     .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))

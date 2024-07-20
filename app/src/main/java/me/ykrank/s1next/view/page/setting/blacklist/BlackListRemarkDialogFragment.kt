@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.ViewUtil
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -28,7 +28,7 @@ import javax.inject.Inject
  */
 class BlackListRemarkDialogFragment : BaseDialogFragment() {
     @Inject
-    lateinit var rxBus: RxBus
+    lateinit var eventBus: EventBus
 
     @Inject
     lateinit var blackListDb: BlackListBiz
@@ -60,7 +60,7 @@ class BlackListRemarkDialogFragment : BaseDialogFragment() {
                     withContext(Dispatchers.IO) {
                         blackListDb.saveDefaultBlackList(authorId, authorName, remark)
                     }
-                    rxBus.post(BlackListChangeEvent(authorId, authorName, remark, true))
+                    eventBus.post(BlackListChangeEvent(authorId, authorName, remark, true))
                 }
             }
             .setNegativeButton(android.R.string.cancel, null)

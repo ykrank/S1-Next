@@ -3,7 +3,7 @@ package me.ykrank.s1next
 import android.content.Context
 import android.content.SharedPreferences
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import dagger.Component
 import me.ykrank.s1next.data.Wifi
@@ -30,7 +30,7 @@ interface PreAppComponent {
     val jsonMapper: ObjectMapper
     val cookieManager: CookieManager
     val cookieJar: CookieJar
-    val rxBus: RxBus
+    val eventBus: EventBus
     val dataTrackAgent: DataTrackAgent
 
     //region SharedPreferences

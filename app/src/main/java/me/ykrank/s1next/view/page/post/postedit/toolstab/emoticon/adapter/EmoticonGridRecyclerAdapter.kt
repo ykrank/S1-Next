@@ -7,7 +7,7 @@ import android.view.ViewGroup
 
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -20,7 +20,7 @@ class EmoticonGridRecyclerAdapter(activity: Activity, private val mEmoticons: Li
     private val mLayoutInflater: LayoutInflater = activity.layoutInflater
     private val mEmoticonRequestBuilder: RequestManager = Glide.with(activity)
 
-    private val mRxBus: RxBus = App.preAppComponent.rxBus
+    private val mEventBus: EventBus = App.preAppComponent.eventBus
 
     init {
         setHasStableIds(true)
@@ -29,7 +29,7 @@ class EmoticonGridRecyclerAdapter(activity: Activity, private val mEmoticons: Li
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder {
         val binding = DataBindingUtil.inflate<ItemEmoticonBinding>(mLayoutInflater,
                 R.layout.item_emoticon, parent, false)
-        binding.rxBus = mRxBus
+        binding.rxBus = mEventBus
         binding.requestManager = mEmoticonRequestBuilder
         binding.emoticonViewModel = EmoticonViewModel()
 

@@ -6,7 +6,7 @@ import android.view.View.OnLongClickListener
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LifecycleOwner
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.Favourite
 import me.ykrank.s1next.data.api.model.Thread
@@ -31,12 +31,12 @@ class FavouriteViewModel(private val lifecycleOwner: LifecycleOwner) {
         }
     }
 
-    fun removeFromFavourites(rxBus: RxBus): OnLongClickListener {
+    fun removeFromFavourites(eventBus: EventBus): OnLongClickListener {
         return OnLongClickListener { v: View ->
             val popup = PopupMenu(v.context, v)
             popup.setOnMenuItemClickListener { menuitem: MenuItem ->
                 if (menuitem.itemId == R.id.menu_popup_remove_favourite) {
-                    rxBus.post(FavoriteRemoveEvent(favourite.get()!!.favId))
+                    eventBus.post(FavoriteRemoveEvent(favourite.get()!!.favId))
                     return@setOnMenuItemClickListener true
                 }
                 false

@@ -2,10 +2,9 @@ package me.ykrank.s1next.view.adapter.delegate
 
 import android.content.Context
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
@@ -17,7 +16,7 @@ import javax.inject.Inject
 class PmGroupsAdapterDelegate(context: Context) : BaseAdapterDelegate<PmGroup, SimpleRecycleViewHolder<ItemPmGroupBinding>>(context, PmGroup::class.java) {
 
     @Inject
-    lateinit var mRxBus: RxBus
+    lateinit var mEventBus: EventBus
 
     @Inject
     lateinit var mUser: User
@@ -30,7 +29,7 @@ class PmGroupsAdapterDelegate(context: Context) : BaseAdapterDelegate<PmGroup, S
         val binding = DataBindingUtil.inflate<ItemPmGroupBinding>(mLayoutInflater,
                 R.layout.item_pm_group, parent, false)
         binding.model = PmGroupViewModel()
-        binding.rxBus = mRxBus
+        binding.rxBus = mEventBus
         binding.user = mUser
         return SimpleRecycleViewHolder<ItemPmGroupBinding>(binding)
     }

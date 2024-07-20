@@ -11,7 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
 import com.github.ykrank.androidtools.util.MathUtil
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.api.Api
@@ -32,7 +32,7 @@ class NoteFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<Notes>>() {
     private lateinit var mRecyclerAdapter: NoteRecyclerViewAdapter
 
     @Inject
-    internal lateinit var mRxBus: RxBus
+    internal lateinit var mEventBus: EventBus
 
     override val isCardViewContainer: Boolean
         get() = true
@@ -91,7 +91,7 @@ class NoteFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<Notes>>() {
         }
 
         if (pageNum == 1) {
-            mRxBus.post(NoticeRefreshEvent::class.java, NoticeRefreshEvent(null, false))
+            mEventBus.post(NoticeRefreshEvent::class.java, NoticeRefreshEvent(null, false))
         }
     }
 

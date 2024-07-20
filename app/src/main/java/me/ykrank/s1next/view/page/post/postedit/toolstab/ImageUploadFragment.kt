@@ -1,7 +1,7 @@
 package me.ykrank.s1next.view.page.post.postedit.toolstab
 import android.os.Bundle
 import android.view.View
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import com.github.ykrank.androidtools.widget.uploadimg.ImageUploadManager
 import com.github.ykrank.androidtools.widget.uploadimg.LibImageUploadFragment
 import com.github.ykrank.androidtools.widget.uploadimg.ModelImageUpload
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class ImageUploadFragment : LibImageUploadFragment() {
 
     @Inject
-    internal lateinit var mRxBus: RxBus
+    internal lateinit var mEventBus: EventBus
 
     @Inject
     @Image
@@ -27,7 +27,7 @@ class ImageUploadFragment : LibImageUploadFragment() {
     }
 
     override val imageClickListener: ((View, ModelImageUpload) -> Unit)? =
-            { view, model -> model.url?.also { mRxBus.post(PostAddImageEvent(it)) } }
+            { view, model -> model.url?.also { mEventBus.post(PostAddImageEvent(it)) } }
 
     override fun provideImageUploadManager(): ImageUploadManager {
         return RIPImageUploadManager(_okHttpClient = mOkHttpClient)

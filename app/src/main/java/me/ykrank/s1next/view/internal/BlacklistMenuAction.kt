@@ -4,7 +4,7 @@ import androidx.annotation.MainThread
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,13 +26,13 @@ object BlacklistMenuAction {
     }
 
     @MainThread
-    fun removeBlacklist(lifecycleOwner: LifecycleOwner, rxBus: RxBus, uid: Int, name: String?) {
+    fun removeBlacklist(lifecycleOwner: LifecycleOwner, eventBus: EventBus, uid: Int, name: String?) {
         App.get().trackAgent.post(BlackListTrackEvent(false, uid.toString(), name))
         lifecycleOwner.lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 BlackListBiz.getInstance().delDefaultBlackList(uid, name)
             }
-            rxBus.post(BlackListChangeEvent(uid, name, null, false))
+            eventBus.post(BlackListChangeEvent(uid, name, null, false))
         }
     }
 }

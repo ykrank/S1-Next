@@ -4,7 +4,7 @@ import android.content.Context
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.ykrank.androidtools.widget.PersistentHttpCookieStore
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import dagger.Module
 import dagger.Provides
@@ -55,8 +55,8 @@ class PreAppModule(private val mApp: App) {
 
     @Provides
     @Singleton
-    fun providerRxBus(): RxBus {
-        return RxBus()
+    fun providerRxBus(): EventBus {
+        return EventBus()
     }
 
     @Provides

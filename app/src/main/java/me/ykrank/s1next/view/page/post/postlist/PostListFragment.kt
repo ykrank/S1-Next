@@ -17,7 +17,7 @@ import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.extension.throttleFirst
 import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate
 import com.github.ykrank.androidtools.util.*
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import io.reactivex.Single
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
@@ -64,7 +64,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     View.OnClickListener {
 
     @Inject
-    internal lateinit var mRxBus: RxBus
+    internal lateinit var mEventBus: EventBus
 
     @Inject
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
@@ -191,7 +191,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     override fun onResume() {
         super.onResume()
 
-        mRxBus.get()
+        mEventBus.get()
             .ofType(QuoteEvent::class.java)
             .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
             .subscribe { quoteEvent ->
@@ -200,16 +200,16 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                     quoteEvent.quotePostCount
                 )
             }
-        mRxBus.get()
+        mEventBus.get()
             .ofType(RateEvent::class.java)
             .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
             .subscribe { event -> startRateActivity(event.threadId, event.postId) }
-        mRxBus.get()
+        mEventBus.get()
             .ofType(ReportEvent::class.java)
             .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
             .subscribe { event -> startReportActivity(event.threadId, event.postId, event.pageNum) }
 
-        mRxBus.get()
+        mEventBus.get()
             .ofType(EditPostEvent::class.java)
             .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
             .subscribe {
@@ -222,7 +222,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                     post
                 )
             }
-        mRxBus.get()
+        mEventBus.get()
             .ofType(VotePostEvent::class.java)
             .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
             .subscribe {
@@ -378,7 +378,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                         //reload all data
                         item.isChecked = !item.isChecked
                         mGeneralPreferencesManager.isPostSelectable = item.isChecked
-                        mRxBus.post(PostSelectableChangeEvent())
+                        mEventBus.post(PostSelectableChangeEvent())
                     }
                     .show(childFragmentManager, null)
                 return true
@@ -387,7 +387,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
             R.id.menu_quick_side_bar_enable -> {
                 item.isChecked = !item.isChecked
                 mGeneralPreferencesManager.isQuickSideBarEnable = item.isChecked
-                mRxBus.post(QuickSidebarEnableChangeEvent())
+                mEventBus.post(QuickSidebarEnableChangeEvent())
                 return true
             }
 

@@ -7,7 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import com.github.ykrank.androidtools.util.MathUtil
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
@@ -28,7 +28,7 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
     private lateinit var mForumId: String
 
     @Inject
-    internal lateinit var mRxBus: RxBus
+    internal lateinit var mEventBus: EventBus
     @Inject
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
 
@@ -66,7 +66,7 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
             R.id.menu_post_disable_sticky -> {
                 item.isChecked = !item.isChecked
                 mGeneralPreferencesManager.isPostDisableSticky = item.isChecked
-                mRxBus.post(PostDisableStickyChangeEvent())
+                mEventBus.post(PostDisableStickyChangeEvent())
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

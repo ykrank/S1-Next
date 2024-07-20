@@ -18,7 +18,7 @@ import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegat
 import com.github.ykrank.androidtools.ui.internal.DrawerLayoutDelegate
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.ResourceUtil
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -50,7 +50,7 @@ import javax.inject.Inject
 abstract class BaseActivity : LibBaseActivity() {
 
     @Inject
-    internal lateinit var mRxBus: RxBus
+    internal lateinit var mEventBus: EventBus
 
     @Inject
     internal lateinit var mUser: User
@@ -104,14 +104,14 @@ abstract class BaseActivity : LibBaseActivity() {
 
         super.onCreate(savedInstanceState)
 
-        mRxBus.get()
+        mEventBus.get()
             .filter { o -> o is ThemeChangeEvent || o is FontSizeChangeEvent }
             .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
             .subscribe { o ->
                 window.setWindowAnimations(com.github.ykrank.androidtools.R.style.Animation_Recreate)
                 recreate()
             }
-        mRxBus.get(NoticeRefreshEvent::class.java)
+        mEventBus.get(NoticeRefreshEvent::class.java)
             .ofType(NoticeRefreshEvent::class.java)
             .observeOn(AndroidSchedulers.mainThread())
             .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
@@ -222,7 +222,7 @@ abstract class BaseActivity : LibBaseActivity() {
 
         drawerLayoutDelegate?.onConfigurationChanged(newConfig)
         mThemeManager.invalidateTheme()
-        mRxBus.post(ThemeChangeEvent())
+        mEventBus.post(ThemeChangeEvent())
     }
 
     /**

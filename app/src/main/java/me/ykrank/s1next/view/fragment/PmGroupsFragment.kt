@@ -3,7 +3,7 @@ package me.ykrank.s1next.view.fragment
 import android.os.Bundle
 import android.view.View
 import com.github.ykrank.androidtools.util.MathUtil
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -19,7 +19,7 @@ class PmGroupsFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<PmGroup
     private lateinit var mRecyclerAdapter: PmGroupsRecyclerViewAdapter
 
     @Inject
-    internal lateinit var mRxBus: RxBus
+    internal lateinit var mEventBus: EventBus
 
     override val recyclerViewAdapter: BaseRecyclerViewAdapter
         get() = mRecyclerAdapter
@@ -54,7 +54,7 @@ class PmGroupsFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<PmGroup
         }
 
         if (pageNum == 1) {
-            mRxBus.post(NoticeRefreshEvent::class.java, NoticeRefreshEvent(data.data?.hasNew(), null))
+            mEventBus.post(NoticeRefreshEvent::class.java, NoticeRefreshEvent(data.data?.hasNew(), null))
         }
     }
 

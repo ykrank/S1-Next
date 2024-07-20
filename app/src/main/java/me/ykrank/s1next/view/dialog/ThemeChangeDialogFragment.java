@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.appcompat.app.AlertDialog;
 
-import com.github.ykrank.androidtools.widget.RxBus;
+import com.github.ykrank.androidtools.widget.EventBus;
 
 import javax.inject.Inject;
 
@@ -23,7 +23,7 @@ public final class ThemeChangeDialogFragment extends BaseDialogFragment {
     private static final String TAG = ThemeChangeDialogFragment.class.getName();
 
     @Inject
-    RxBus mRxBus;
+    EventBus mEventBus;
 
     @Inject
     ThemeManager mThemeManager;
@@ -45,7 +45,7 @@ public final class ThemeChangeDialogFragment extends BaseDialogFragment {
                     if (which != checkedItem) {
                         mThemeManager.applyTheme(which);
                         mThemeManager.setThemeByIndex(which);
-                        mRxBus.post(new ThemeChangeEvent());
+                        mEventBus.post(new ThemeChangeEvent());
                     }
                     dismiss();
                 })

@@ -1,7 +1,7 @@
 package me.ykrank.s1next.view.dialog.requestdialog
 
 import android.os.Bundle
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import me.ykrank.s1next.App
 import me.ykrank.s1next.view.dialog.ProgressDialogFragment
 import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
@@ -12,15 +12,15 @@ import me.ykrank.s1next.view.event.RequestDialogSuccessEvent
  */
 abstract class BaseRequestDialogFragment<D> : ProgressDialogFragment<D>() {
 
-    protected lateinit var rxBus: RxBus
+    protected lateinit var eventBus: EventBus
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        rxBus = App.preAppComponent.rxBus
+        eventBus = App.preAppComponent.eventBus
     }
 
     protected fun onRequestSuccess(msg: String?) {
-        rxBus.post(RequestDialogSuccessEvent(this, msg))
+        eventBus.post(RequestDialogSuccessEvent(this, msg))
     }
 
     protected fun onRequestError(msg: String?) {

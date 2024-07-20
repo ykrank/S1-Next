@@ -3,7 +3,7 @@ package me.ykrank.s1next
 import android.content.Context
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.ykrank.androidtools.widget.EditorDiskCache
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import dagger.Module
 import dagger.Provides
 import me.ykrank.s1next.data.User
@@ -192,8 +192,8 @@ class AppModule {
 
     @Provides
     @AppLife
-    fun provideNoticeCheckTask(rxBus: RxBus, s1Service: S1Service, user: User): NoticeCheckTask {
-        return NoticeCheckTask(rxBus, s1Service, user)
+    fun provideNoticeCheckTask(eventBus: EventBus, s1Service: S1Service, user: User): NoticeCheckTask {
+        return NoticeCheckTask(eventBus, s1Service, user)
     }
 
     @Provides

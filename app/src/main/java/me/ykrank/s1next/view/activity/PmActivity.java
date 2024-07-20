@@ -41,7 +41,7 @@ public class PmActivity extends BaseActivity {
                     .commit();
         }
 
-        mRxBus.get()
+        mEventBus.get()
                 .ofType(PmGroupClickEvent.class)
                 .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
                 .subscribe(event -> {

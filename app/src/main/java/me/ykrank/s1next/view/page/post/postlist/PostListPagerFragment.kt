@@ -22,7 +22,7 @@ import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegat
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.LooperUtil
 import com.github.ykrank.androidtools.util.RxJavaUtil
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import com.github.ykrank.androidtools.widget.recycleview.StartSnapLinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.Single
@@ -66,7 +66,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
     OnQuickSideBarTouchListener {
 
     @Inject
-    internal lateinit var mRxBus: RxBus
+    internal lateinit var mEventBus: EventBus
 
     @Inject
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
@@ -158,17 +158,17 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
 
         quickSideBarView.setOnQuickSideBarTouchListener(this)
 
-        mRxBus.get()
+        mEventBus.get()
             .ofType(PostSelectableChangeEvent::class.java)
             .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
             .subscribe({ mRecyclerAdapter.notifyDataSetChanged() }, { super.onError(it) })
 
-        mRxBus.get()
+        mEventBus.get()
             .ofType(QuickSidebarEnableChangeEvent::class.java)
             .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
             .subscribe({ invalidateQuickSidebarVisible() }, { super.onError(it) })
 
-        mRxBus.get()
+        mEventBus.get()
             .ofType(BlackListChangeEvent::class.java)
             .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
             .subscribe { startBlackListRefresh() }

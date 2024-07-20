@@ -11,7 +11,7 @@ import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.ui.LibBaseViewPagerFragment
 import com.github.ykrank.androidtools.util.RxJavaUtil
-import com.github.ykrank.androidtools.widget.RxBus
+import com.github.ykrank.androidtools.widget.EventBus
 import com.google.android.material.snackbar.Snackbar
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -28,7 +28,7 @@ import javax.inject.Inject
  */
 class FavouriteListFragment : BaseViewPagerFragment() {
     @Inject
-    internal lateinit var mRxBus: RxBus
+    internal lateinit var mEventBus: EventBus
     @Inject
     internal lateinit var s1Service: S1Service
 
@@ -45,7 +45,7 @@ class FavouriteListFragment : BaseViewPagerFragment() {
 
         mTitle = getText(R.string.favourites)
 
-        mRxBus.get()
+        mEventBus.get()
                 .ofType(FavoriteRemoveEvent::class.java)
                 .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
                 .subscribe { event ->

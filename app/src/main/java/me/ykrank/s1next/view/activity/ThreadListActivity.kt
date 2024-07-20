@@ -81,7 +81,7 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
             fragment = supportFragmentManager.findFragmentByTag(ThreadListFragment.TAG) as ThreadListFragment?
         }
 
-        mRxBus.get()
+        mEventBus.get()
             .ofType(BlackListChangeEvent::class.java)
             .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
             .subscribe { event -> refreshBlackList = true }
@@ -242,7 +242,7 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 val type = tab?.tag as ThreadType?
                 fragment?.changeTypeId(type?.typeId)
-                mRxBus.post(ThreadTypeChangeEvent(type?.typeId ?: "0"))
+                mEventBus.post(ThreadTypeChangeEvent(type?.typeId ?: "0"))
             }
 
         })
