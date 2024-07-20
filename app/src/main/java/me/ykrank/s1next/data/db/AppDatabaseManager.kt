@@ -8,13 +8,16 @@ import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 interface AppDatabaseManager {
-    val executors: Executor
     fun getOrBuildDb(): AppDatabase
 
     fun close()
+
+    fun runAsync(runnable: Runnable)
 }
 
 class AppDatabaseManagerImpl(applicationContext: Context) : AppDatabaseManager {
+
+    private val executors: Executor = Executors.newSingleThreadExecutor()
 
     val builder = Room.databaseBuilder(
         applicationContext,
@@ -33,7 +36,6 @@ class AppDatabaseManagerImpl(applicationContext: Context) : AppDatabaseManager {
     @Volatile
     var database: AppDatabase? = null
 
-    override val executors: Executor = Executors.newSingleThreadExecutor()
 
     override fun getOrBuildDb(): AppDatabase {
         return database ?: synchronized(this) {
@@ -46,4 +48,7 @@ class AppDatabaseManagerImpl(applicationContext: Context) : AppDatabaseManager {
         database = null
     }
 
+    override fun runAsync(runnable: Runnable) {
+        executors.execute(runnable)
+    }
 }

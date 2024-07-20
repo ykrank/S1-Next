@@ -50,3 +50,5 @@ freeline.py
 freeline/
 freeline_project_description.json
 /app/play/release/app-play-release.aab
+/library/libs/normal/._*.jar
+/library/libs/play/._*.jar

@@ -2,6 +2,7 @@ package me.ykrank.s1next.data.db.biz
 
 import android.database.Cursor
 import android.text.TextUtils
+import androidx.annotation.WorkerThread
 import androidx.collection.LruCache
 import me.ykrank.s1next.App.Companion.appComponent
 import me.ykrank.s1next.data.db.AppDatabase
@@ -19,6 +20,7 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
     private val nameCache: LruCache<String, BlackList> = LruCache(3000)
 
     val blackListCursor: Cursor
+        @WorkerThread
         get() = blackListDao.loadCursor()
 
     fun fromBlackListCursor(cursor: Cursor): BlackList {
@@ -174,6 +176,7 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
      * @param name
      * @return
      */
+    @WorkerThread
     fun getMergedBlackList(id: Int, name: String?, enableCache: Boolean = false): BlackList? {
         if (id > 0) {
             return getBlackListWithAuthorId(id, enableCache)
@@ -196,6 +199,7 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         return oBlackList?.post ?: BlackList.NORMAL
     }
 
+    @WorkerThread
     fun saveBlackList(blackList: BlackList) {
         if (blackList.authorId <= 0 && TextUtils.isEmpty(blackList.author)) {
             return
@@ -210,6 +214,7 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         refreshCache(blackList)
     }
 
+    @WorkerThread
     fun saveBlackList(blackList: ArrayList<BlackList>) {
         blackList.forEach {
             refreshCache(it)
@@ -225,6 +230,7 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         refreshCache(blackList, del = true)
     }
 
+    @WorkerThread
     fun delBlackLists(blackLists: List<BlackList>) {
         blackLists.forEach {
             refreshCache(it, del = true)
@@ -232,6 +238,7 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         blackListDao.delete(blackLists)
     }
 
+    @WorkerThread
     fun saveDefaultBlackList(authorid: Int, author: String?, remark: String?) {
         val blackList = BlackList()
         blackList.authorId = authorid
@@ -243,6 +250,7 @@ class BlackListBiz(private val manager: AppDatabaseManager) {
         saveBlackList(blackList)
     }
 
+    @WorkerThread
     fun delDefaultBlackList(authorid: Int, author: String?) {
         val blackList = BlackList()
         blackList.authorId = authorid

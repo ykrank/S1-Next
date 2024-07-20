@@ -13,7 +13,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidtools.util.ViewUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ykrank.s1next.App.Companion.appComponent
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
@@ -80,32 +84,35 @@ abstract class BaseLoginFragment : BaseFragment() {
 
     private fun initView() {
         val usersView = binding?.users ?: return
-        // TODO 使用协程切到异步线程
-        val users = mLoginUserBiz.getDecryptUserList()
-        val dialog = AlertDialog.Builder(requireContext())
-            .setTitle(R.string.choose_user)
-            .setSingleChoiceItems(
-                users.mapNotNull { it.name }.toTypedArray(),
-                -1,
-            ) { dialog: DialogInterface?, which: Int ->
-                val user = users[which]
-                if (user.invalid) {
-                    showShortText(R.string.choose_user_invalid)
-                    dialog?.dismiss()
-                } else {
-                    dialog?.dismiss()
+        lifecycleScope.launch {
+            val users = withContext(Dispatchers.IO) {
+                mLoginUserBiz.getDecryptUserList()
+            }
+            val dialog = AlertDialog.Builder(requireContext())
+                .setTitle(R.string.choose_user)
+                .setSingleChoiceItems(
+                    users.mapNotNull { it.name }.toTypedArray(),
+                    -1,
+                ) { dialog: DialogInterface?, which: Int ->
+                    val user = users[which]
+                    if (user.invalid) {
+                        showShortText(R.string.choose_user_invalid)
+                        dialog?.dismiss()
+                    } else {
+                        dialog?.dismiss()
 
-                    binding?.apply {
-                        username.setText(user.name)
-                        password.setText(user.password)
-                        questionSpinner.setSelection(user.questionId?.toIntOrNull() ?: 0)
-                        answer.setText(user.answer)
+                        binding?.apply {
+                            username.setText(user.name)
+                            password.setText(user.password)
+                            questionSpinner.setSelection(user.questionId?.toIntOrNull() ?: 0)
+                            answer.setText(user.answer)
+                        }
                     }
                 }
+                .create()
+            usersView.setOnClickListener {
+                dialog.show()
             }
-            .create()
-        usersView.setOnClickListener {
-            dialog.show()
         }
     }
 

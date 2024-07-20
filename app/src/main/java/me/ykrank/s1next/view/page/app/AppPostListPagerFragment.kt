@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.bigkoo.quicksidebar.QuickSideBarView
 import com.bigkoo.quicksidebar.listener.OnQuickSideBarTouchListener
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -25,6 +26,9 @@ import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.app.AppApiUtil
@@ -105,7 +109,8 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
         mRecyclerView = recyclerView
         mLayoutManager = StartSnapLinearLayoutManager(requireActivity())
         mRecyclerView.layoutManager = mLayoutManager
-        mRecyclerAdapter = AppPostListRecyclerViewAdapter(requireActivity(),viewLifecycleOwner, mQuotePid)
+        mRecyclerAdapter =
+            AppPostListRecyclerViewAdapter(requireActivity(), viewLifecycleOwner, mQuotePid)
         mRecyclerView.adapter = mRecyclerAdapter
 
         quickSideBarView.setOnQuickSideBarTouchListener(this)
@@ -296,29 +301,28 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
     }
 
     private fun autoLogin() {
-        Single.fromCallable {
-            loginUserBiz.getUserByUid(mUser.uid?.toIntOrNull() ?: 0)?: RealLoginUser.EMPTY
-        }.compose(RxJavaUtil.iOSingleTransformer())
-            .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
-            .subscribe({
-                if (it != null && it != RealLoginUser.EMPTY) {
-                    val name = it.name
-                    val password = it.password
-                    if (name != null && password != null) {
-                        AppLoginDialogFragment.newInstance(
-                            name,
-                            password,
-                            it.questionId?.toIntOrNull(),
-                            it.answer
-                        ).show(
-                            parentFragmentManager,
-                            AppLoginDialogFragment.TAG
-                        )
-                    }
-                } else {
-                    AppLoginActivity.startLoginActivityForResultMessage(requireActivity())
+        lifecycleScope.launch {
+            val it = withContext(Dispatchers.IO) {
+                loginUserBiz.getUserByUid(mUser.uid?.toIntOrNull() ?: 0)
+            }
+            if (it != null && it != RealLoginUser.EMPTY) {
+                val name = it.name
+                val password = it.password
+                if (name != null && password != null) {
+                    AppLoginDialogFragment.newInstance(
+                        name,
+                        password,
+                        it.questionId?.toIntOrNull(),
+                        it.answer
+                    ).show(
+                        parentFragmentManager,
+                        AppLoginDialogFragment.TAG
+                    )
                 }
-            }, { L.e(it) })
+            } else {
+                AppLoginActivity.startLoginActivityForResultMessage(requireActivity())
+            }
+        }
     }
 
     internal fun invalidateQuickSidebarVisible(): Boolean {

@@ -1,5 +1,6 @@
 package me.ykrank.s1next.data.db.biz
 
+import androidx.annotation.WorkerThread
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.db.AppDatabase
 import me.ykrank.s1next.data.db.AppDatabaseManager
@@ -16,7 +17,8 @@ class LoginUserBiz(private val manager: AppDatabaseManager, private val encrypti
     private val session: AppDatabase
         get() = manager.getOrBuildDb()
 
-    fun encryptUser(user: RealLoginUser): LoginUser {
+    @WorkerThread
+    private fun encryptUser(user: RealLoginUser): LoginUser {
         return LoginUser(
             id = user.id,
             uid = user.uid,
@@ -29,8 +31,9 @@ class LoginUserBiz(private val manager: AppDatabaseManager, private val encrypti
         )
     }
 
+    @WorkerThread
     @Throws(GeneralSecurityException::class)
-    fun decryptUser(user: LoginUser): RealLoginUser {
+    private fun decryptUser(user: LoginUser): RealLoginUser {
         return RealLoginUser(
             id = user.id,
             uid = user.uid,
@@ -47,10 +50,12 @@ class LoginUserBiz(private val manager: AppDatabaseManager, private val encrypti
         )
     }
 
+    @WorkerThread
     fun getEncryptUserList(): List<LoginUser> {
         return loginUserDao.loadAll()
     }
 
+    @WorkerThread
     fun getDecryptUserList(): List<RealLoginUser> {
         return loginUserDao.loadAll().mapNotNull {
             try {
@@ -61,6 +66,7 @@ class LoginUserBiz(private val manager: AppDatabaseManager, private val encrypti
         }
     }
 
+    @WorkerThread
     fun getUserByUid(uid: Int): RealLoginUser? {
         return loginUserDao.getByUid(uid)?.let {
             try {
@@ -71,6 +77,7 @@ class LoginUserBiz(private val manager: AppDatabaseManager, private val encrypti
         }
     }
 
+    @WorkerThread
     fun saveUser(loginUser: RealLoginUser) {
         val encryptLoginUser = encryptUser(loginUser)
         val oldUser = loginUserDao.getByUid(loginUser.uid)

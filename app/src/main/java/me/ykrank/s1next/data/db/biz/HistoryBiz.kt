@@ -1,6 +1,7 @@
 package me.ykrank.s1next.data.db.biz
 
 import android.database.Cursor
+import androidx.annotation.WorkerThread
 import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.db.AppDatabase
@@ -19,6 +20,7 @@ class HistoryBiz(private val manager: AppDatabaseManager) {
     /**
      * limit [.MAX_SIZE] order by timestamp desc
      */
+    @WorkerThread
     fun getHistoryListCursor(): Cursor {
         return historyDao.loadCursor(MAX_SIZE)
     }
@@ -35,6 +37,7 @@ class HistoryBiz(private val manager: AppDatabaseManager) {
     /**
      * add new history
      */
+    @WorkerThread
     fun addNewHistory(history: History) {
         val oldHistory: History? = historyDao.getByThreadId(history.threadId)
         if (oldHistory != null) {

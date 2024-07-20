@@ -27,10 +27,12 @@ import com.github.ykrank.androidtools.widget.recycleview.StartSnapLinearLayoutMa
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.Post
@@ -243,17 +245,13 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
     internal fun saveReadProgress() {
         val readProgress = curReadProgress
         if (readProgress != null) {
-            Single.fromCallable {
-                LooperUtil.enforceOnWorkThread()
-                val dbWrapper = ReadProgressBiz.instance
-                dbWrapper.saveReadProgress(readProgress)
-                true
-            }.compose(RxJavaUtil.iOSingleTransformer<Boolean>())
-                .to(AndroidRxDispose.withSingle<Boolean>(this, FragmentEvent.DESTROY))
-                .subscribe({ b ->
-                    LooperUtil.enforceOnMainThread()
-                    showShortText(R.string.save_read_progress_success)
-                }, { L.report(it) })
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    val dbWrapper = ReadProgressBiz.instance
+                    dbWrapper.saveReadProgress(readProgress)
+                }
+                showShortText(R.string.save_read_progress_success)
+            }
         }
     }
 
@@ -548,10 +546,8 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
         }
 
         internal fun saveReadProgressBack(readProgress: ReadProgress) {
-            java.lang.Thread {
-                val dbWrapper = ReadProgressBiz.instance
-                dbWrapper.saveReadProgress(readProgress)
-            }.start()
+            val dbWrapper = ReadProgressBiz.instance
+            dbWrapper.saveReadProgressAsync(readProgress)
         }
 
         private fun filterPostAfterBlacklistChanged(dataSet: List<Any>): List<Any> {

@@ -1,6 +1,7 @@
 package me.ykrank.s1next.data.db.biz
 
 import android.database.Cursor
+import androidx.annotation.WorkerThread
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.db.AppDatabase
 import me.ykrank.s1next.data.db.AppDatabaseManager
@@ -21,8 +22,10 @@ class BlackWordBiz(private val manager: AppDatabaseManager) {
         get() = manager.getOrBuildDb()
 
     val blackWordCursor: Cursor
+        @WorkerThread
         get() = blackWordDao.loadCursor()
 
+    @WorkerThread
     fun getAllNotNormalBlackWord(): List<BlackWord> {
         val tCache = cache
         if (tCache != null) {
@@ -43,14 +46,17 @@ class BlackWordBiz(private val manager: AppDatabaseManager) {
         )
     }
 
+    @WorkerThread
     fun count(): Int {
         return blackWordDao.getCount()
     }
 
+    @WorkerThread
     fun getBlackWord(word: String): BlackWord? {
         return blackWordDao.getByWord(word)
     }
 
+    @WorkerThread
     fun saveBlackWord(blackWord: BlackWord) {
         cache = null
         if (blackWord.id == null) {
@@ -60,16 +66,19 @@ class BlackWordBiz(private val manager: AppDatabaseManager) {
         }
     }
 
+    @WorkerThread
     fun delBlackWord(blackWord: BlackWord) {
         cache = null
         blackWordDao.delete(listOf(blackWord))
     }
 
+    @WorkerThread
     fun delBlackWords(blackWords: List<BlackWord>) {
         cache = null
         blackWordDao.delete(blackWords)
     }
 
+    @WorkerThread
     fun saveDefaultBlackWord(word: String) {
         val blackWord = BlackWord()
         blackWord.word = word
