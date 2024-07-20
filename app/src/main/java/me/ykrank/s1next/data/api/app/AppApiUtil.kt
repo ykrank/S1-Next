@@ -13,7 +13,7 @@ object AppApiUtil {
         if (throwable is ApiException.AppServerException) {
             val message = throwable.message ?: ""
             if (message.contains("重新登录") || message.startsWith("请先登录")) {
-                eventBus.post(AppNotLoginEvent())
+                eventBus.postDefault(AppNotLoginEvent())
                 return true
             }
         }

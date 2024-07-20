@@ -27,7 +27,7 @@ class ImageUploadFragment : LibImageUploadFragment() {
     }
 
     override val imageClickListener: ((View, ModelImageUpload) -> Unit)? =
-            { view, model -> model.url?.also { mEventBus.post(PostAddImageEvent(it)) } }
+            { view, model -> model.url?.also { mEventBus.postDefault(PostAddImageEvent(it)) } }
 
     override fun provideImageUploadManager(): ImageUploadManager {
         return RIPImageUploadManager(_okHttpClient = mOkHttpClient)

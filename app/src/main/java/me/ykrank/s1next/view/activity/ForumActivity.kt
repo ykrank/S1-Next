@@ -67,13 +67,6 @@ class ForumActivity : BaseActivity(), ToolbarDropDownInterface.Callback, Adapter
         }
 
         onItemSelectedListener = fragment
-
-        mEventBus.get()
-            .ofType(LoginEvent::class.java)
-            .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
-            .subscribe {
-                fragment.forceSwipeRefresh()
-            }
     }
 
     override fun onNewIntent(intent: Intent) {

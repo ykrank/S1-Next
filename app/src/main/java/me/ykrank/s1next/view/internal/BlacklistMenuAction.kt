@@ -32,7 +32,7 @@ object BlacklistMenuAction {
             withContext(Dispatchers.IO) {
                 BlackListBiz.getInstance().delDefaultBlackList(uid, name)
             }
-            eventBus.post(BlackListChangeEvent(uid, name, null, false))
+            eventBus.postDefault(BlackListChangeEvent(uid, name, null, false))
         }
     }
 }

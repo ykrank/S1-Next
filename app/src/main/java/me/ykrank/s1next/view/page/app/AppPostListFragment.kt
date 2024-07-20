@@ -180,7 +180,7 @@ class AppPostListFragment : BaseViewPagerFragment(), AppPostListPagerFragment.Pa
                             //reload all data
                             item.isChecked = !item.isChecked
                             mGeneralPreferencesManager.isPostSelectable = item.isChecked
-                            mEventBus.post(PostSelectableChangeEvent())
+                            mEventBus.postDefault(PostSelectableChangeEvent())
                         }
                         .show(childFragmentManager, null)
                 return true
@@ -188,7 +188,7 @@ class AppPostListFragment : BaseViewPagerFragment(), AppPostListPagerFragment.Pa
             R.id.menu_quick_side_bar_enable -> {
                 item.isChecked = !item.isChecked
                 mGeneralPreferencesManager.isQuickSideBarEnable = item.isChecked
-                mEventBus.post(QuickSidebarEnableChangeEvent())
+                mEventBus.postDefault(QuickSidebarEnableChangeEvent())
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

@@ -7,9 +7,15 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidtools.data.CacheParam
 import com.github.ykrank.androidtools.data.Resource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
@@ -18,12 +24,14 @@ import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper
 import me.ykrank.s1next.util.IntentUtil
 import me.ykrank.s1next.view.activity.SearchActivity
 import me.ykrank.s1next.view.adapter.ForumRecyclerViewAdapter
+import me.ykrank.s1next.view.event.LoginEvent
 import me.ykrank.s1next.view.internal.ToolbarDropDownInterface
 
 /**
  * A Fragment represents forum list.
  */
-class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDropDownInterface.OnItemSelectedListener {
+class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(),
+    ToolbarDropDownInterface.OnItemSelectedListener {
     private lateinit var mRecyclerAdapter: ForumRecyclerViewAdapter
     private var mForumGroups: ForumGroups? = null
 
@@ -46,6 +54,14 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
         recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         mRecyclerAdapter = ForumRecyclerViewAdapter(activity)
         recyclerView.adapter = mRecyclerAdapter
+
+        lifecycleScope.launch {
+            mEventBus.getDefaultFlow()
+                .filterIsInstance(LoginEvent::class)
+                .collect {
+                    forceSwipeRefresh()
+                }
+        }
     }
 
     override fun onDetach() {
@@ -113,7 +129,7 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(), ToolbarDro
         }
     }
 
-    fun forceSwipeRefresh() {
+    private fun forceSwipeRefresh() {
         inForceRefresh = true
         startSwipeRefresh()
     }

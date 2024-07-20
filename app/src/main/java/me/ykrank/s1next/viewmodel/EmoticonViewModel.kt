@@ -16,7 +16,7 @@ class EmoticonViewModel {
         return View.OnClickListener { view ->
             emoticon.get()?.let {
                 // notify ReplyFragment that emoticon had been clicked
-                eventBus.post(EmoticonClickEvent(it.entity))
+                eventBus.postDefault(EmoticonClickEvent(it.entity))
             }
         }
     }

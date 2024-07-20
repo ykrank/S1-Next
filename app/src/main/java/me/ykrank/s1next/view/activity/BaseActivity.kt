@@ -222,7 +222,7 @@ abstract class BaseActivity : LibBaseActivity() {
 
         drawerLayoutDelegate?.onConfigurationChanged(newConfig)
         mThemeManager.invalidateTheme()
-        mEventBus.post(ThemeChangeEvent())
+        mEventBus.postDefault(ThemeChangeEvent())
     }
 
     /**

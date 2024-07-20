@@ -10,6 +10,7 @@ import com.github.ykrank.androidtools.data.Resource
 import com.github.ykrank.androidtools.ui.LibBaseRecyclerViewFragment
 import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
+import com.github.ykrank.androidtools.widget.EventBus
 import io.reactivex.Single
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -26,6 +27,7 @@ import me.ykrank.s1next.databinding.FragmentBaseBinding
 import me.ykrank.s1next.databinding.FragmentBaseCardViewContainerBinding
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateBaseCardViewContainerImpl
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateBaseImpl
+import javax.inject.Inject
 
 /**
  * A base Fragment includes [SwipeRefreshLayout] to refresh when loading data.
@@ -43,6 +45,7 @@ abstract class BaseRecyclerViewFragment<D> : LibBaseRecyclerViewFragment<D>() {
     internal lateinit var mS1Service: S1Service
     internal lateinit var apiCacheProvider: ApiCacheProvider
     internal lateinit var mUser: User
+    internal lateinit var mEventBus: EventBus
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +54,7 @@ abstract class BaseRecyclerViewFragment<D> : LibBaseRecyclerViewFragment<D>() {
         mS1Service = App.appComponent.s1Service
         apiCacheProvider = App.appComponent.apiCacheProvider
         mUser = App.appComponent.user
+        mEventBus = App.preAppComponent.eventBus
 
         setHasOptionsMenu(true)
     }

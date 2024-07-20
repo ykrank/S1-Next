@@ -60,7 +60,7 @@ class BlackListRemarkDialogFragment : BaseDialogFragment() {
                     withContext(Dispatchers.IO) {
                         blackListDb.saveDefaultBlackList(authorId, authorName, remark)
                     }
-                    eventBus.post(BlackListChangeEvent(authorId, authorName, remark, true))
+                    eventBus.postDefault(BlackListChangeEvent(authorId, authorName, remark, true))
                 }
             }
             .setNegativeButton(android.R.string.cancel, null)

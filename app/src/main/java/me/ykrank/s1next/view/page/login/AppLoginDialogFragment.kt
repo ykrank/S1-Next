@@ -42,7 +42,7 @@ class AppLoginDialogFragment : BaseLoginDialogFragment<AppDataWrapper<AppLoginRe
 
     override fun onSuccess(data: AppDataWrapper<AppLoginResult>, result: Result) {
         super.onSuccess(data, result)
-        mEventBus?.post(AppLoginEvent())
+        mEventBus?.postDefault(AppLoginEvent())
     }
 
     companion object {

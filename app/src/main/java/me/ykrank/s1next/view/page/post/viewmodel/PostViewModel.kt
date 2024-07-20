@@ -141,7 +141,7 @@ class PostViewModel(
         val postId = post.get()?.id?.toString()
         val count = post.get()?.number
         if (postId != null && count != null) {
-            eventBus.post(QuoteEvent(postId, count))
+            eventBus.postDefault(QuoteEvent(postId, count))
         }
     }
 
@@ -149,7 +149,7 @@ class PostViewModel(
         val tid = thread.get()?.id
         val pid = post.get()?.id?.toString()
         if (tid != null && pid != null) {
-            eventBus.post(RateEvent(tid, pid))
+            eventBus.postDefault(RateEvent(tid, pid))
         }
     }
 
@@ -157,7 +157,7 @@ class PostViewModel(
         val tid = thread.get()?.id
         val pid = post.get()?.id?.toString()
         if (tid != null && pid != null) {
-            eventBus.post(ReportEvent(tid, pid, pageNum.get()))
+            eventBus.postDefault(ReportEvent(tid, pid, pageNum.get()))
         }
     }
 
@@ -165,7 +165,7 @@ class PostViewModel(
         val p = post.get()
         val t = thread.get()
         if (p != null && t != null) {
-            eventBus.post(EditPostEvent(p, t))
+            eventBus.postDefault(EditPostEvent(p, t))
         }
     }
 
@@ -182,7 +182,7 @@ class PostViewModel(
         val tid = thread.get()?.id
         val vo = vote.get()
         if (tid != null && vo != null) {
-            eventBus.post(VotePostEvent(tid, vo))
+            eventBus.postDefault(VotePostEvent(tid, vo))
         }
     }
 

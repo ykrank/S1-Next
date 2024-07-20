@@ -52,7 +52,7 @@ class LoginDialogFragment : BaseLoginDialogFragment<AccountResultWrapper>() {
             )
         }
 
-        mEventBus?.post(LoginEvent())
+        mEventBus?.postDefault(LoginEvent())
     }
 
     @OptIn(DelicateCoroutinesApi::class)

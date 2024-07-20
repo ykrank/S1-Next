@@ -75,7 +75,7 @@ class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefere
         if (key == getString(R.string.pref_key_theme) || key == getString(R.string.pref_key_dark_theme)) {
             trackAgent.post(ThemeChangeTrackEvent(false))
             mThemeManager.invalidateTheme()
-            mEventBus.post(ThemeChangeEvent())
+            mEventBus.postDefault(ThemeChangeEvent())
         } else if (key == getString(R.string.pref_key_font_size)) {
             L.l("Setting")
             // change scaling factor for fonts
@@ -83,7 +83,7 @@ class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefere
                 activity,
                 mGeneralPreferencesManager.fontScale
             )
-            mEventBus.post(FontSizeChangeEvent())
+            mEventBus.postDefault(FontSizeChangeEvent())
         }
     }
 

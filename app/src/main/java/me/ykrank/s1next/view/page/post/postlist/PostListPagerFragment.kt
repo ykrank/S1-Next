@@ -66,9 +66,6 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
     OnQuickSideBarTouchListener {
 
     @Inject
-    internal lateinit var mEventBus: EventBus
-
-    @Inject
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
 
     @Inject

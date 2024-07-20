@@ -130,13 +130,13 @@ class AppPostViewModel(
 
     fun onReplyClick(v: View) {
         post.get()?.let {
-            eventBus.post(QuoteEvent(it.pid.toString(), it.position.toString()))
+            eventBus.postDefault(QuoteEvent(it.pid.toString(), it.position.toString()))
         }
     }
 
     fun onRateClick(v: View) {
         post.get()?.let {
-            eventBus.post(RateEvent(it.tid.toString(), it.pid.toString()))
+            eventBus.postDefault(RateEvent(it.tid.toString(), it.pid.toString()))
         }
     }
 
@@ -144,7 +144,7 @@ class AppPostViewModel(
         val p = post.get()
         val t = thread.get()
         if (p != null && t != null) {
-            eventBus.post(EditAppPostEvent(p, t))
+            eventBus.postDefault(EditAppPostEvent(p, t))
         }
     }
 

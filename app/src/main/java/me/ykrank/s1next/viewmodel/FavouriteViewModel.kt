@@ -36,7 +36,7 @@ class FavouriteViewModel(private val lifecycleOwner: LifecycleOwner) {
             val popup = PopupMenu(v.context, v)
             popup.setOnMenuItemClickListener { menuitem: MenuItem ->
                 if (menuitem.itemId == R.id.menu_popup_remove_favourite) {
-                    eventBus.post(FavoriteRemoveEvent(favourite.get()!!.favId))
+                    eventBus.postDefault(FavoriteRemoveEvent(favourite.get()!!.favId))
                     return@setOnMenuItemClickListener true
                 }
                 false

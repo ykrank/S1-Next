@@ -49,7 +49,7 @@ class LogoutDialogFragment : BaseDialogFragment() {
         clearWebViewCookies(get())
         mUser.user.appSecureToken = null
         mUser.user.isLogged = false
-        mEventBus.post(LoginEvent())
+        mEventBus.postDefault(LoginEvent())
     }
 
     companion object {

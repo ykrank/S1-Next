@@ -20,7 +20,7 @@ abstract class BaseRequestDialogFragment<D> : ProgressDialogFragment<D>() {
     }
 
     protected fun onRequestSuccess(msg: String?) {
-        eventBus.post(RequestDialogSuccessEvent(this, msg))
+        eventBus.postDefault(RequestDialogSuccessEvent(this, msg))
     }
 
     protected fun onRequestError(msg: String?) {

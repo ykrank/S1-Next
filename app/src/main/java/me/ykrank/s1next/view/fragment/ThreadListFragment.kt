@@ -66,7 +66,7 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
             R.id.menu_post_disable_sticky -> {
                 item.isChecked = !item.isChecked
                 mGeneralPreferencesManager.isPostDisableSticky = item.isChecked
-                mEventBus.post(PostDisableStickyChangeEvent())
+                mEventBus.postDefault(PostDisableStickyChangeEvent())
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

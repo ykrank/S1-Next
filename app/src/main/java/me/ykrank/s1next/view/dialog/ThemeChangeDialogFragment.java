@@ -45,7 +45,7 @@ public final class ThemeChangeDialogFragment extends BaseDialogFragment {
                     if (which != checkedItem) {
                         mThemeManager.applyTheme(which);
                         mThemeManager.setThemeByIndex(which);
-                        mEventBus.post(new ThemeChangeEvent());
+                        mEventBus.postDefault(new ThemeChangeEvent());
                     }
                     dismiss();
                 })

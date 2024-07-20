@@ -242,7 +242,7 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 val type = tab?.tag as ThreadType?
                 fragment?.changeTypeId(type?.typeId)
-                mEventBus.post(ThreadTypeChangeEvent(type?.typeId ?: "0"))
+                mEventBus.postDefault(ThreadTypeChangeEvent(type?.typeId ?: "0"))
             }
 
         })

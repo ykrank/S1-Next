@@ -32,9 +32,6 @@ import javax.inject.Inject
 class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
 
     @Inject
-    internal lateinit var mEventBus: EventBus
-
-    @Inject
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
 
     private var mForumId: String? = null
