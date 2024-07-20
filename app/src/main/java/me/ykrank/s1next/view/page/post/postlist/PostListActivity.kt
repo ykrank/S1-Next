@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import com.github.ykrank.androidtools.util.AudioManagerUtils
 import com.github.ykrank.androidtools.util.OnceClickUtil
 import com.github.ykrank.androidtools.widget.net.WifiBroadcastReceiver
 import kotlinx.coroutines.Dispatchers
@@ -64,19 +65,21 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
                     )
                 )
             }
-            supportFragmentManager.beginTransaction().add(R.id.frame_layout, fragment!!,
+            supportFragmentManager.beginTransaction().add(
+                R.id.frame_layout, fragment!!,
                 PostListFragment.TAG
             ).commit()
         }
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (mReadPreferences.volumeKeyPaging) {
+        if (mReadPreferences.volumeKeyPaging && !AudioManagerUtils.isMusicOrVideoPlay(this)) {
             when (keyCode) {
                 KeyEvent.KEYCODE_VOLUME_UP -> {
                     fragment?.moveToNext(-1)
                     return true
                 }
+
                 KeyEvent.KEYCODE_VOLUME_DOWN -> {
                     fragment?.moveToNext(1)
                     return true
@@ -95,6 +98,7 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
                 }
                 return super.onOptionsItemSelected(item)
             }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }
