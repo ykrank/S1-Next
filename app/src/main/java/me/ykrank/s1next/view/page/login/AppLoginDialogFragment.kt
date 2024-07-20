@@ -41,6 +41,11 @@ class AppLoginDialogFragment : BaseLoginDialogFragment<AppDataWrapper<AppLoginRe
         }
     }
 
+    override fun onSuccess(data: AppDataWrapper<AppLoginResult>, result: Result) {
+        super.onSuccess(data, result)
+        mRxBus?.post(AppLoginEvent())
+    }
+
     companion object {
 
         val TAG: String = AppLoginDialogFragment::class.java.name

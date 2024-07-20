@@ -11,6 +11,8 @@ import me.ykrank.s1next.App
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper
 import me.ykrank.s1next.data.db.exmodel.RealLoginUser
 import me.ykrank.s1next.view.dialog.ProgressDialogFragment
+import me.ykrank.s1next.view.event.AppLoginEvent
+import me.ykrank.s1next.view.event.LoginEvent
 
 /**
  * A [ProgressDialogFragment] posts a request to login to server.
@@ -51,6 +53,8 @@ class LoginDialogFragment : BaseLoginDialogFragment<AccountResultWrapper>() {
                 AppLoginDialogFragment.TAG
             )
         }
+
+        mRxBus?.post(LoginEvent())
     }
 
     @OptIn(DelicateCoroutinesApi::class)

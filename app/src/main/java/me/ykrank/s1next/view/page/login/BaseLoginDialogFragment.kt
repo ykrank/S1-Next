@@ -46,7 +46,6 @@ abstract class BaseLoginDialogFragment<T> : ProgressDialogFragment<T>() {
 
     open fun onSuccess(data: T, result: Result) {
         showShortTextAndFinishCurrentActivity(result.message)
-        mRxBus?.post(AppLoginEvent())
     }
 
 
