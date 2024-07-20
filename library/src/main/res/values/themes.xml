@@ -24,6 +24,8 @@
     <style name="Lib.V.Theme.Light.AfternoonTea" parent="Lib.Base.Theme.Light.AfternoonTea" />
 
     <style name="Lib.Base.Theme.Light.AfternoonTea" parent="Lib.Base.Theme.Light">
+        <item name="android:windowLightStatusBar">false</item>
+
         <item name="colorPrimaryDark">@color/saraba_primary_dark</item>
         <item name="colorPrimary">@color/saraba_primary</item>
         <item name="android:colorBackground">@color/saraba_background</item>
@@ -96,8 +98,10 @@
 
         <item name="android:colorBackground">@color/light_background</item>
         <item name="android:windowBackground">?android:attr/colorBackground</item>
+        <item name="android:navigationBarColor">?android:attr/colorPrimaryDark</item>
+        <item name="android:windowLightStatusBar">true</item>
 
-        <item name="colorPrimaryDark">@color/light_status_bar</item>
+        <item name="colorPrimaryDark">@color/light_status_bar_v23</item>
         <item name="colorPrimary">@color/light_app_bar</item>
         <item name="colorAccent">@color/light_blue_500</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
@@ -140,12 +144,16 @@
         <item name="iconAdd">@drawable/ic_add_white_24dp</item>
         <item name="iconMenuPageJump">@drawable/selector_menu_swap_horiz_white</item>
         <item name="android:actionBarStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="android:navigationBarColor">?android:attr/colorPrimaryDark</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="Lib.Origin.Theme.Dark" parent="Theme.Design.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
         <item name="android:colorBackground">@color/dark_background</item>
         <item name="android:windowBackground">?android:attr/colorBackground</item>
+        <item name="android:navigationBarColor">?android:attr/colorPrimaryDark</item>
+        <item name="android:windowLightStatusBar">false</item>
 
         <item name="colorPrimaryDark">@color/dark_status_bar</item>
         <item name="colorPrimary">@color/dark_app_bar</item>
@@ -180,4 +188,5 @@
         <item name="textColorRight">@color/right</item>
         <item name="textColorHint">@color/grey_600</item>
     </style>
+
 </resources>

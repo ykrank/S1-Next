@@ -6,7 +6,7 @@
 
     <stroke
         android:width="4dp"
-        android:color="@color/light_blue_A700"
+        android:color="?attr/colorAccent"
         android:dashGap="4dp"
         android:dashWidth="4.0dp" />
 

@@ -37,15 +37,8 @@
     to false, so we adjust this dimension to 4.5dp. -->
     <dimen name="subtitle_margin_top">4.5dp</dimen>
 
-    <!--Before L, CardView adds padding to its content and draws shadows to that area.
-    This padding amount is equal to maxCardElevation + (1 - cos45) * cornerRadius on the
-    sides and maxCardElevation * 1.5 + (1 - cos45) * cornerRadius on top and bottom.-->
-
-    <!-- 8dp (CardView margin) - ((2 + (1 - cos45) * 2))dp ≈ 5.05dp -->
-    <dimen name="card_view_horizontal_margin">5.05dp</dimen>
-    <!-- 4dp (half of CardView margin) - (2 * 1.5 + (1 - cos45) * 2)dp ≈ 0.05dp -->
-    <dimen name="card_view_vertical_margin">0.05dp</dimen>
-    <!-- 8dp (CardView margin) - (2 * 1.5 + (1 - cos45) * 2)dp - 0.05dp (CardView vertical margin) = 4dp -->
+    <dimen name="card_view_horizontal_margin">8dp</dimen>
+    <dimen name="card_view_vertical_margin">4dp</dimen>
     <dimen name="recycler_view_vertical_padding_for_card_view">4dp</dimen>
 
     <!-- 36dp (emoticon keyboard header) + 160dp (48dp * 3 three lines of emoticons

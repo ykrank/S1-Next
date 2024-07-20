@@ -75,11 +75,21 @@
     <style name="Lib.Base.Theme.Dark.Translucent" parent="Lib.Base.V.Theme.Dark.Translucent" />
 
     <!-- Use for other version (v19, v21 etc.) override -->
-    <style name="Lib.Base.V.Theme.Light.Translucent" parent="Lib.Origin.Theme.Light.Translucent" />
+    <style name="Lib.Base.V.Theme.Light.Translucent" parent="Lib.Origin.Theme.Light.Translucent">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowContentTransitions">true</item>
+    </style>
 
-    <style name="Lib.Base.V.Theme.Light.Inverse.Translucent" parent="Lib.Origin.Theme.Light.Inverse.Translucent" />
+    <style name="Lib.Base.V.Theme.Light.Inverse.Translucent" parent="Lib.Origin.Theme.Light.Inverse.Translucent">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowContentTransitions">true</item>
+    </style>
 
-    <style name="Lib.Base.V.Theme.Dark.Translucent" parent="Lib.Origin.Theme.Dark.Translucent" />
+    <style name="Lib.Base.V.Theme.Dark.Translucent" parent="Lib.Origin.Theme.Dark.Translucent">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowContentTransitions">true</item>
+    </style>
+
 
     <style name="Lib.Origin.Theme.Light.Translucent" parent="Lib.Origin.Theme.Light">
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -108,7 +118,11 @@
     <style name="Lib.Base.Theme.Gallery" parent="Lib.Base.V.Theme.Gallery" />
 
     <!-- Use for other version (v19, v21 etc.) override -->
-    <style name="Lib.Base.V.Theme.Gallery" parent="Lib.Origin.Theme.Gallery" />
+    <style name="Lib.Base.V.Theme.Gallery" parent="Lib.Origin.Theme.Gallery">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowEnterTransition">@android:transition/fade</item>
+    </style>
 
     <style name="Lib.Origin.Theme.Gallery" parent="Theme.Design.NoActionBar">
         <item name="android:windowBackground">@android:color/black</item>
