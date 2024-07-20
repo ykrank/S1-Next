@@ -9,17 +9,28 @@ import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.search.ForumSearchResult
 import me.ykrank.s1next.databinding.ItemSearchForumBinding
 
-class SearchForumAdapterDelegate(context: Context) : BaseAdapterDelegate<ForumSearchResult, SimpleRecycleViewHolder<ItemSearchForumBinding>>(context, ForumSearchResult::class.java) {
+class SearchForumAdapterDelegate(context: Context) :
+    BaseAdapterDelegate<ForumSearchResult, SimpleRecycleViewHolder<ItemSearchForumBinding>>(
+        context,
+        ForumSearchResult::class.java
+    ) {
 
-    public override fun onCreateViewHolder(parent: ViewGroup): androidx.recyclerview.widget.RecyclerView.ViewHolder {
-        val binding = DataBindingUtil.inflate<ItemSearchForumBinding>(mLayoutInflater,
-                R.layout.item_search_forum, parent, false)
+    public override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+        val binding = DataBindingUtil.inflate<ItemSearchForumBinding>(
+            mLayoutInflater,
+            R.layout.item_search_forum, parent, false
+        )
 
         return SimpleRecycleViewHolder(binding)
     }
 
-    override fun onBindViewHolderData(forumSearchResult: ForumSearchResult, position: Int, holder: SimpleRecycleViewHolder<ItemSearchForumBinding>, payloads: List<Any>) {
+    override fun onBindViewHolderData(
+        t: ForumSearchResult,
+        position: Int,
+        holder: SimpleRecycleViewHolder<ItemSearchForumBinding>,
+        payloads: List<Any>
+    ) {
         val binding = holder.binding
-        binding.model = forumSearchResult
+        binding.model = t
     }
 }

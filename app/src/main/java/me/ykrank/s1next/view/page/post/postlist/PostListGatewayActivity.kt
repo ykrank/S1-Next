@@ -8,7 +8,7 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.api.model.ThreadLink
+import me.ykrank.s1next.data.api.model.link.ThreadLink
 import me.ykrank.s1next.data.pref.ThemeManager
 import me.ykrank.s1next.view.dialog.QuotePostPageParserDialogFragment
 import me.ykrank.s1next.view.dialog.ThreadLinkInvalidPromptDialogFragment

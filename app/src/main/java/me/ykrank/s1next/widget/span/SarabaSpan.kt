@@ -4,8 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.view.View
-import me.ykrank.s1next.data.api.model.ThreadLink
+import androidx.fragment.app.FragmentActivity
+import me.ykrank.s1next.data.api.model.link.ThreadLink
+import me.ykrank.s1next.data.api.model.link.UserLink
 import me.ykrank.s1next.util.IntentUtil
+import me.ykrank.s1next.view.activity.UserHomeActivity
 import me.ykrank.s1next.view.page.post.postlist.PostListGatewayActivity
 import me.ykrank.s1next.widget.span.PostMovementMethod.URLSpanClick
 
@@ -62,13 +65,42 @@ open class SarabaSpan : URLSpanClick {
 
         // 对Saraba链接进行独立处理，直接打开界面
         @JvmStatic
-        protected fun goSaraba(context: Context, uri: Uri) {
-            val threadLink = ThreadLink.parse(uri.toString())
+        protected fun goSaraba(
+            context: Context,
+            uri: Uri,
+        ) {
+            val url = uri.toString()
+            val threadLink = ThreadLink.parse(url)
             if (threadLink != null) {
                 PostListGatewayActivity.start(context, threadLink)
-            } else {
-                context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+                return
             }
+            val userLink = UserLink.parse(url)
+            if (userLink != null) {
+                UserHomeActivity.start(context as FragmentActivity, userLink.uid, null)
+                return
+            }
+
+            context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+        }
+
+        @JvmStatic
+        protected fun goSaraba(
+            context: Context,
+            uri: Uri,
+            threadLink: ThreadLink? = null,
+            userLink: UserLink? = null
+        ) {
+            if (threadLink != null) {
+                PostListGatewayActivity.start(context, threadLink)
+                return
+            }
+            if (userLink != null) {
+                UserHomeActivity.start(context as FragmentActivity, userLink.uid, null)
+                return
+            }
+
+            goSaraba(context, uri)
         }
     }
 }

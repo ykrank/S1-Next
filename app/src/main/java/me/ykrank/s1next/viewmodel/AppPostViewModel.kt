@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import com.github.ykrank.androidtools.util.ContextUtils
 import com.github.ykrank.androidtools.util.L
@@ -53,7 +54,7 @@ class AppPostViewModel(
             AvatarUrlsCache.clearUserAvatarCache("" + it.authorId)
             //个人主页
             UserHomeActivity.start(
-                v.context as androidx.fragment.app.FragmentActivity,
+                v.context as FragmentActivity,
                 "" + it.authorId,
                 it.author,
                 v

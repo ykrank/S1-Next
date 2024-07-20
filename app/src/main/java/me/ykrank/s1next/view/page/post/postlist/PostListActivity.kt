@@ -19,7 +19,7 @@ import kotlinx.coroutines.withContext
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.Thread
-import me.ykrank.s1next.data.api.model.ThreadLink
+import me.ykrank.s1next.data.api.model.link.ThreadLink
 import me.ykrank.s1next.data.db.biz.ReadProgressBiz
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 import me.ykrank.s1next.data.pref.ReadPreferencesManager

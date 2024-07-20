@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.data.api.ApiUtil
+import me.ykrank.s1next.data.api.model.link.UserLink
 import org.jsoup.Jsoup
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
@@ -17,12 +18,16 @@ import java.util.Locale
 class Rate : PaperParcelable, StableIdModel {
     @JsonProperty("uid")
     var uid: String? = null
+
     @JsonProperty("uname")
     var uname: String? = null
+
     @JsonProperty("content")
     var content: String? = null
+
     @JsonProperty("score")
     var score: Int? = null
+
     @JsonProperty("time")
     var time: Long? = null
 
@@ -76,10 +81,8 @@ class Rate : PaperParcelable, StableIdModel {
                         it.substring(3, it.length - 1).replace("+", "").trim()
                     }?.toInt()
                     it.child(1).child(0).also {
-                        UserLink.parse(it.attr("href")).apply {
-                            if (isPresent) {
-                                rate.uid = get().uid
-                            }
+                        UserLink.parse(it.attr("href"))?.apply {
+                            rate.uid = this.uid
                         }
                         rate.uname = it.text()
                     }

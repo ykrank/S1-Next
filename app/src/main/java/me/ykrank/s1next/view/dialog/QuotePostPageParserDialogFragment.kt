@@ -6,7 +6,7 @@ import com.github.ykrank.androidtools.extension.toast
 import io.reactivex.Single
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.api.model.ThreadLink
+import me.ykrank.s1next.data.api.model.link.ThreadLink
 import me.ykrank.s1next.util.ErrorUtil
 import me.ykrank.s1next.view.page.post.postlist.PostListActivity
 

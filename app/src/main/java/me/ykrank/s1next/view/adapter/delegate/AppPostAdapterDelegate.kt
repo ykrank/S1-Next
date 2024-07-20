@@ -47,7 +47,7 @@ class AppPostAdapterDelegate(
         binding.tvReply.setTextIsSelectable(selectable)
         binding.authorName.movementMethod = LinkMovementMethod.getInstance()
         binding.tvFloor.movementMethod = LinkMovementMethod.getInstance()
-        binding.tvReply.movementMethod = PostMovementMethod.getInstance()
+        binding.tvReply.movementMethod = PostMovementMethod.instance
         binding.tvFloor.isLongClickable = false
     }
 
@@ -87,7 +87,7 @@ class AppPostAdapterDelegate(
     // https://code.google.com/p/android/issues/detail?id=208169
     override fun onViewAttachedToWindow(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
-        if (mGeneralPreferencesManager!!.isPostSelectable) {
+        if (mGeneralPreferencesManager.isPostSelectable) {
             val binding = (holder as SimpleRecycleViewHolder<ItemAppPostBinding>).binding
             binding.authorName.isEnabled = false
             binding.tvFloor.isEnabled = false

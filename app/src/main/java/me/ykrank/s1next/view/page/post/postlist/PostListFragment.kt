@@ -19,12 +19,9 @@ import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegat
 import com.github.ykrank.androidtools.util.*
 import com.github.ykrank.androidtools.widget.RxBus
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,7 +29,7 @@ import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.model.Thread
-import me.ykrank.s1next.data.api.model.ThreadLink
+import me.ykrank.s1next.data.api.model.link.ThreadLink
 import me.ykrank.s1next.data.api.model.collection.Posts
 import me.ykrank.s1next.data.db.biz.HistoryBiz
 import me.ykrank.s1next.data.db.biz.ReadProgressBiz

@@ -65,7 +65,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/avatar"
             app:layout_constraintTop_toBottomOf="@+id/tv_time"
-            app:movementMethod="@{PostMovementMethod.instance}"
+            app:movementMethod="@{PostMovementMethod.getInstance()}"
             tools:text="content" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

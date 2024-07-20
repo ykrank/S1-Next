@@ -1,41 +1,36 @@
-package me.ykrank.s1next.widget.span;
+package me.ykrank.s1next.widget.span
 
-import android.net.Uri;
-import android.text.method.MovementMethod;
-import android.view.View;
-
-import me.ykrank.s1next.data.api.Api;
+import android.net.Uri
+import android.text.method.MovementMethod
+import android.view.View
+import me.ykrank.s1next.data.api.Api
 
 /**
  * A movement method that provides selection and clicking on links,
- * also invokes {@link ImageClickableResizeSpan}'s clicking event.
+ * also invokes [ImageClickableResizeSpan]'s clicking event.
  */
-public final class SearchMovementMethod extends PostMovementMethod {
-    private static SearchMovementMethod sInstance;
+object SearchMovementMethod {
 
-    protected SearchMovementMethod() {
-        super(new DefaultSearchURLSpanClick());
-    }
-
-    public static MovementMethod getInstance() {
-        if (sInstance == null) {
-            sInstance = new SearchMovementMethod();
-            sInstance.addURLSpanClick(new SarabaInsideThreadSpan());
-            sInstance.addURLSpanClick(new SarabaSpan());
-            sInstance.addURLSpanClick(new BilibiliSpan());
+    @JvmStatic
+    val instance: MovementMethod by lazy {
+        PostMovementMethod().apply {
+            addURLSpanClick(SarabaSpan())
+            addURLSpanClick(BilibiliSpan())
+            addURLSpanClick(SarabaInsideThreadSpan())
+            addURLSpanClick(DefaultSearchURLSpanClick())
         }
-
-        return sInstance;
     }
 
-    public static class DefaultSearchURLSpanClick extends DefaultURLSpanClick {
-
-        @Override
-        public void onClick(Uri uri, View v) {
-            if (uri.getScheme() == null) {
-                uri = Uri.parse(Api.BASE_URL + uri.toString());
+    class DefaultSearchURLSpanClick : PostMovementMethod.DefaultURLSpanClick() {
+        override fun onClick(uri: Uri, view: View) {
+            val realUri = uri.let {
+                if (uri.scheme == null && uri.host == null) {
+                    Uri.parse(Api.BASE_URL + uri.toString())
+                } else {
+                    uri
+                }
             }
-            super.onClick(uri, v);
+            super.onClick(realUri, view)
         }
     }
 }

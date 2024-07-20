@@ -1,40 +1,20 @@
-package me.ykrank.s1next.data.api.model
+package me.ykrank.s1next.data.api.model.link
 
-import paperparcel.PaperParcel
-import paperparcel.PaperParcelable
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
-@PaperParcel
-class ThreadLink(
+@Parcelize
+data class ThreadLink(
     val threadId: String,
     val jumpPage: Int,
     val quotePostId: String?
-) : PaperParcelable {
+) : Parcelable {
 
     private constructor(builder: Builder) : this(
         builder.threadId,
         builder.jumpPage,
         builder.quotePostId
     )
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as ThreadLink
-
-        if (threadId != other.threadId) return false
-        if (jumpPage != other.jumpPage) return false
-        if (quotePostId != other.quotePostId) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = threadId.hashCode()
-        result = 31 * result + jumpPage
-        result = 31 * result + quotePostId.hashCode()
-        return result
-    }
 
     class Builder(val threadId: String) {
         var jumpPage = 1
@@ -56,9 +36,6 @@ class ThreadLink(
     }
 
     companion object {
-        @JvmField
-        val CREATOR = PaperParcelThreadLink.CREATOR
-
         /**
          * Parses thread link in order to get the meta info for this thread.
          *

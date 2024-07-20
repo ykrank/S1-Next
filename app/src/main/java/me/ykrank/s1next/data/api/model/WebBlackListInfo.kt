@@ -2,6 +2,7 @@ package me.ykrank.s1next.data.api.model
 
 import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.data.api.ApiUtil
+import me.ykrank.s1next.data.api.model.link.UserLink
 import me.ykrank.s1next.data.api.model.wrapper.HtmlDataWrapper
 import org.jsoup.Jsoup
 
@@ -29,7 +30,7 @@ class WebBlackListInfo {
                 info.users = elements.mapNotNull {
                     val userElement = it.selectFirst("h4>a")
                     return@mapNotNull userElement?.let { ue ->
-                        val userLink = UserLink.parse(ue.attr("href")).orNull()
+                        val userLink = UserLink.parse(ue.attr("href"))
                         return@let userLink?.let { ul ->
                             Pair(ul.uid.toInt(), ue.text())
                         }

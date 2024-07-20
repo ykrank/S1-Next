@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -58,7 +59,7 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
         binding.authorName.setTextIsSelectable(selectable)
 
         binding.tvReply.setTextIsSelectable(selectable)
-        binding.tvReply.movementMethod = PostMovementMethod.getInstance()
+        binding.tvReply.movementMethod = PostMovementMethod.instance
     }
 
     override fun isForViewType(items: MutableList<Any>, position: Int): Boolean {
@@ -147,7 +148,7 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
                                     AvatarUrlsCache.clearUserAvatarCache(uid)
                                     //个人主页
                                     UserHomeActivity.start(
-                                        it.context as androidx.fragment.app.FragmentActivity,
+                                        it.context as FragmentActivity,
                                         uid,
                                         uname,
                                         it

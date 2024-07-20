@@ -11,7 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.github.ykrank.androidtools.util.ViewUtil
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.api.model.ThreadLink
+import me.ykrank.s1next.data.api.model.link.ThreadLink
 import me.ykrank.s1next.databinding.DialogThreadGoBinding
 import me.ykrank.s1next.view.page.post.postlist.PostListActivity
 

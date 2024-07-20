@@ -73,7 +73,7 @@
 
     <style name="WindowAnimations">
         <item name="android:windowEnterAnimation">@null</item>
-        <item name="android:windowExitAnimation">@anim/fade_out_rapidly</item>
+        <item name="android:windowExitAnimation">@anim/fade_out_quick</item>
     </style>
 
     <style name="CustomToolbarTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">

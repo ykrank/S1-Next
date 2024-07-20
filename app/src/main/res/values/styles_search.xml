@@ -3,7 +3,7 @@
 
     <style name="SearchWindowAnimations">
         <item name="android:windowEnterAnimation">@null</item>
-        <item name="android:windowExitAnimation">@anim/fade_out_rapidly</item>
+        <item name="android:windowExitAnimation">@anim/fade_out_quick</item>
     </style>
 
     <style name="SearchViewTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">

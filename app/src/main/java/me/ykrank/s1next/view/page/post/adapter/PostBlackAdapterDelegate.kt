@@ -47,7 +47,7 @@ class PostBlackAdapterDelegate(private val fragment: Fragment, context: Context)
         binding.authorName.setTextIsSelectable(selectable)
 
         binding.tvReply.setTextIsSelectable(selectable)
-        binding.tvReply.movementMethod = PostMovementMethod.getInstance()
+        binding.tvReply.movementMethod = PostMovementMethod.instance
     }
 
     override fun isForViewType(items: MutableList<Any>, position: Int): Boolean {

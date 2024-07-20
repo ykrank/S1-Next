@@ -32,7 +32,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textIsSelectable="true"
             android:text="@{model.htmlContent}"
-            app:movementMethod="@{SearchMovementMethod.instance}"
+            app:movementMethod="@{SearchMovementMethod.getInstance()}"
             tools:text="ABC\nkhk"/>
 
     </androidx.cardview.widget.CardView>

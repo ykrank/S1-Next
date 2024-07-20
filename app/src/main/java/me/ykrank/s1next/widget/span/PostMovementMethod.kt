@@ -1,216 +1,207 @@
-package me.ykrank.s1next.widget.span;
+package me.ykrank.s1next.widget.span
 
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.provider.Browser;
-import android.text.Layout;
-import android.text.Selection;
-import android.text.Spannable;
-import android.text.method.ArrowKeyMovementMethod;
-import android.text.method.MovementMethod;
-import android.text.style.ClickableSpan;
-import android.text.style.URLSpan;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-
-import com.github.ykrank.androidtools.util.L;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import me.ykrank.s1next.R;
-import me.ykrank.s1next.util.IntentUtil;
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
+import android.provider.Browser
+import android.text.Selection
+import android.text.Spannable
+import android.text.method.ArrowKeyMovementMethod
+import android.text.method.MovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.URLSpan
+import android.view.MotionEvent
+import android.view.View
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import com.github.ykrank.androidtools.util.L.e
+import com.github.ykrank.androidtools.util.L.report
+import me.ykrank.s1next.R
+import me.ykrank.s1next.util.IntentUtil.putCustomTabsExtra
 
 /**
  * A movement method that provides selection and clicking on links,
- * also invokes {@link ImageClickableResizeSpan}'s clicking event.
+ * also invokes [ImageClickableResizeSpan]'s clicking event.
  */
-public class PostMovementMethod extends ArrowKeyMovementMethod {
-
-    private static PostMovementMethod sInstance;
-
-    private List<URLSpanClick> urlSpanClicks = new ArrayList<>();
-
-    private URLSpanClick defaultURLSpanClick;
-
-    protected PostMovementMethod() {
-        this(new DefaultURLSpanClick());
-    }
-
-    protected PostMovementMethod(@NonNull URLSpanClick defaultURLSpanClick) {
-        this.defaultURLSpanClick = defaultURLSpanClick;
-    }
-
-    public static MovementMethod getInstance() {
-        if (sInstance == null) {
-            sInstance = new PostMovementMethod();
-            sInstance.addURLSpanClick(new SarabaSpan());
-            sInstance.addURLSpanClick(new BilibiliSpan());
-        }
-
-        return sInstance;
-    }
-
-    private static boolean isSelecting(Spannable buffer) {
-        return Selection.getSelectionStart(buffer) != -1 && Selection.getSelectionEnd(buffer) != -1;
-    }
+open class PostMovementMethod(private val defaultURLSpanClick: URLSpanClick = DefaultURLSpanClick()) :
+    ArrowKeyMovementMethod() {
+    private val urlSpanClicks: MutableList<URLSpanClick> = ArrayList()
 
     /**
-     * @see android.text.method.LinkMovementMethod#onTouchEvent(TextView, Spannable, MotionEvent)
+     * @see android.text.method.LinkMovementMethod.onTouchEvent
      */
-    @Override
-    public boolean onTouchEvent(@NonNull TextView widget, @NonNull Spannable buffer, @NonNull MotionEvent event) {
-        int action = event.getAction();
+    override fun onTouchEvent(widget: TextView, buffer: Spannable, event: MotionEvent): Boolean {
+        val action = event.action
 
         if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_DOWN) {
-            int x = (int) event.getX();
-            int y = (int) event.getY();
+            var x = event.x.toInt()
+            var y = event.y.toInt()
 
-            x -= widget.getTotalPaddingLeft();
-            y -= widget.getTotalPaddingTop();
+            x -= widget.totalPaddingLeft
+            y -= widget.totalPaddingTop
 
-            x += widget.getScrollX();
-            y += widget.getScrollY();
+            x += widget.scrollX
+            y += widget.scrollY
 
-            Layout layout = widget.getLayout();
-            int line = layout.getLineForVertical(y);
-            int off = layout.getOffsetForHorizontal(line, x);
+            val layout = widget.layout
+            val line = layout.getLineForVertical(y)
+            val off = layout.getOffsetForHorizontal(line, x.toFloat())
 
-            ClickableSpan[] link = buffer.getSpans(off, off, ClickableSpan.class);
+            val link = buffer.getSpans(off, off, ClickableSpan::class.java)
 
-            if (link.length != 0) {
+            if (link.size != 0) {
                 if (action == MotionEvent.ACTION_UP) {
-                    ImageClickableResizeSpan[] imageClickableSpans = buffer.getSpans(off, off,
-                            ImageClickableResizeSpan.class);
-                    if (imageClickableSpans.length != 0) {
-                        Context context = widget.getContext();
-                        AlertDialog dialog = new AlertDialog.Builder(context)
-                                .setItems(new CharSequence[]{context.getString(R.string.show_image), context.getString(R.string.go_url)}, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch (which) {
-                                            case 0:
-                                                showImage(widget, buffer, line, off, imageClickableSpans);
-                                                break;
-                                            case 1:
-                                                goUrl(widget, link);
-                                                break;
-                                        }
-                                    }
-                                }).create();
-                        dialog.show();
+                    val imageClickableSpans = buffer.getSpans(
+                        off, off,
+                        ImageClickableResizeSpan::class.java
+                    )
+                    if (imageClickableSpans.size != 0) {
+                        val context = widget.context
+                        val dialog = AlertDialog.Builder(context)
+                            .setItems(
+                                arrayOf<CharSequence>(
+                                    context.getString(R.string.show_image),
+                                    context.getString(R.string.go_url)
+                                )
+                            ) { dialog, which ->
+                                when (which) {
+                                    0 -> showImage(widget, buffer, line, off, imageClickableSpans)
+                                    1 -> goUrl(widget, link)
+                                }
+                            }.create()
+                        dialog.show()
                     } else {
-                        goUrl(widget, link);
+                        goUrl(widget, link)
                     }
                 } else {
                     //http://stackoverflow.com/questions/15836306/can-a-textview-be-selectable-and-contain-links
                     //error: Error when selecting text from Textview (java.lang.IndexOutOfBoundsException: setSpan (-1 ... -1) starts before 0)
                     if (!isSelecting(buffer)) {
-                        Selection.setSelection(buffer,
-                                buffer.getSpanStart(link[0]),
-                                buffer.getSpanEnd(link[0]));
+                        Selection.setSelection(
+                            buffer,
+                            buffer.getSpanStart(link[0]),
+                            buffer.getSpanEnd(link[0])
+                        )
                     }
                 }
-                return true;
+                return true
             }
 
             // invoke ImageClickableResizeSpan's clicking event
-            ImageClickableResizeSpan[] imageClickableSpans = buffer.getSpans(off, off,
-                    ImageClickableResizeSpan.class);
-            if (imageClickableSpans.length != 0) {
+            val imageClickableSpans = buffer.getSpans(
+                off, off,
+                ImageClickableResizeSpan::class.java
+            )
+            if (imageClickableSpans.size != 0) {
                 if (action == MotionEvent.ACTION_UP) {
-                    showImage(widget, buffer, line, off, imageClickableSpans);
+                    showImage(widget, buffer, line, off, imageClickableSpans)
                 } else {
                     if (!isSelecting(buffer)) {
-                        Selection.setSelection(buffer,
-                                buffer.getSpanStart(imageClickableSpans[0]),
-                                buffer.getSpanEnd(imageClickableSpans[0]));
+                        Selection.setSelection(
+                            buffer,
+                            buffer.getSpanStart(imageClickableSpans[0]),
+                            buffer.getSpanEnd(imageClickableSpans[0])
+                        )
                     }
                 }
-                return true;
+                return true
             }
         }
 
-        return super.onTouchEvent(widget, buffer, event);
+        return super.onTouchEvent(widget, buffer, event)
     }
 
-    private void showImage(@NonNull TextView widget, @NonNull Spannable buffer, int line, int off,
-                           @NonNull ImageClickableResizeSpan[] imageClickableSpans) {
-        if (imageClickableSpans.length > 1) {
+    private fun showImage(
+        widget: TextView, buffer: Spannable, line: Int, off: Int,
+        imageClickableSpans: Array<ImageClickableResizeSpan>
+    ) {
+        if (imageClickableSpans.size > 1) {
             //if use getSpans(off, off , sometime click mid in two span will cause error
-            ImageClickableResizeSpan[] spans = buffer.getSpans(off, off + 1,
-                    ImageClickableResizeSpan.class);
-            if (spans.length == 1) {
-                spans[0].onClick(widget);
-                return;
+            val spans = buffer.getSpans(
+                off, off + 1,
+                ImageClickableResizeSpan::class.java
+            )
+            if (spans.size == 1) {
+                spans[0].onClick(widget)
+                return
             }
-            L.report(new IllegalStateException("ImageClickableResizeSpan length warn; \n" +
-                    "length" + imageClickableSpans.length + ",line:" + line + ",off:" + off
-                    + ",newLength:" + spans.length));
+            report(
+                IllegalStateException(
+                    """
+    ImageClickableResizeSpan length warn; 
+    length${imageClickableSpans.size},line:$line,off:$off,newLength:${spans.size}
+    """.trimIndent()
+                )
+            )
         }
-        imageClickableSpans[0].onClick(widget);
-        return;
+        imageClickableSpans[0].onClick(widget)
+        return
     }
 
-    private void goUrl(@NonNull TextView widget, ClickableSpan[] link) {
-        ClickableSpan clickableSpan = link[0];
-        if (clickableSpan instanceof URLSpan) {
-            Uri uri = Uri.parse(((URLSpan) clickableSpan).getURL());
-            for (URLSpanClick click : urlSpanClicks) {
+    private fun goUrl(widget: TextView, link: Array<ClickableSpan>) {
+        val clickableSpan = link[0]
+        if (clickableSpan is URLSpan) {
+            val uri = Uri.parse(clickableSpan.url)
+            for (click in urlSpanClicks) {
                 if (click.isMatch(uri)) {
-                    click.onClick(uri, widget);
-                    return;
+                    click.onClick(uri, widget)
+                    return
                 }
             }
-            defaultURLSpanClick.onClick(uri, widget);
+            defaultURLSpanClick.onClick(uri, widget)
         } else {
-            clickableSpan.onClick(widget);
+            clickableSpan.onClick(widget)
         }
-        return;
+        return
     }
 
-    public void addURLSpanClick(URLSpanClick click) {
+    fun addURLSpanClick(click: URLSpanClick) {
         if (!urlSpanClicks.contains(click)) {
-            urlSpanClicks.add(click);
+            urlSpanClicks.add(click)
         }
     }
 
-    public interface URLSpanClick {
+    interface URLSpanClick {
         /**
          * whether uri use this click listener
          */
-        boolean isMatch(Uri uri);
+        fun isMatch(uri: Uri): Boolean
 
-        void onClick(Uri uri, View view);
+        fun onClick(uri: Uri, view: View)
     }
 
-    public static class DefaultURLSpanClick implements URLSpanClick {
-
-        @Override
-        public boolean isMatch(Uri uri) {
-            return true;
+    open class DefaultURLSpanClick : URLSpanClick {
+        override fun isMatch(uri: Uri): Boolean {
+            return true
         }
 
-        @Override
-        public void onClick(Uri uri, View v) {
+        override fun onClick(uri: Uri, view: View) {
             // support Custom Tabs for URLSpan
             // see URLSpan#onClick(View)
-            Context context = v.getContext();
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
-            IntentUtil.putCustomTabsExtra(intent);
+            val context = view.context
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.packageName)
+            putCustomTabsExtra(intent)
             try {
-                context.startActivity(intent);
-            } catch (ActivityNotFoundException e) {
-                L.e("URLSpan", "Activity was not found for intent, " + intent);
+                context.startActivity(intent)
+            } catch (e: ActivityNotFoundException) {
+                e("URLSpan", "Activity was not found for intent, $intent")
             }
+        }
+    }
+
+    companion object {
+
+        @JvmStatic
+        val instance by lazy {
+            PostMovementMethod().apply {
+                addURLSpanClick(SarabaSpan())
+                addURLSpanClick(BilibiliSpan())
+            }
+        }
+
+        private fun isSelecting(buffer: Spannable): Boolean {
+            return Selection.getSelectionStart(buffer) != -1 && Selection.getSelectionEnd(buffer) != -1
         }
     }
 }
