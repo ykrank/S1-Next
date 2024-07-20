@@ -16,7 +16,7 @@ import me.ykrank.s1next.data.api.app.AppApi
 import me.ykrank.s1next.data.api.app.AppService
 import me.ykrank.s1next.data.api.app.AppTokenInterceptor
 import me.ykrank.s1next.data.api.empty.S1ApiCacheProvider
-import me.ykrank.s1next.data.db.biz.CacheBiz
+import me.ykrank.s1next.data.cache.CacheBiz
 import me.ykrank.s1next.data.pref.AppDataPreferencesManager
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager

@@ -1,10 +1,10 @@
-package me.ykrank.s1next.data.db.dbmodel
+package me.ykrank.s1next.data.cache
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import me.ykrank.s1next.data.db.biz.CacheBiz
+import me.ykrank.s1next.data.cache.CacheBiz
 
 /**
  * Created by yuanke on 7/17/24

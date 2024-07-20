@@ -81,7 +81,7 @@ public final class SettingsActivity extends BaseActivity {
         if (savedInstanceState == null) {
             switch (getIntent().getIntExtra(ARG_SHOW_SETTINGS, EXTRA_SHOW_SETTING_DEFAULT)) {
                 case EXTRA_SHOW_SETTING_DOWNLOAD:
-                    setTitle(R.string.pref_downloads);
+                    setTitle(R.string.pref_downloads_and_cache);
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,
                             new DownloadPreferenceFragment()).commit();
                     break;

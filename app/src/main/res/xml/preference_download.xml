@@ -54,7 +54,7 @@
             android:entryValues="@array/pref_download_avatars_strategy_entry_values"
             android:key="@string/pref_key_download_avatars_strategy"
             android:summary="%s"
-            android:title="@string/pref_downloads"
+            android:title="@string/pref_downloads_and_cache"
             app:iconSpaceReserved="false" />
 
         <ListPreference
@@ -79,7 +79,7 @@
             android:entryValues="@array/pref_download_images_strategy_entry_values"
             android:key="@string/pref_key_download_images_strategy"
             android:summary="%s"
-            android:title="@string/pref_downloads"
+            android:title="@string/pref_downloads_and_cache"
             app:iconSpaceReserved="false" />
 
         <Preference

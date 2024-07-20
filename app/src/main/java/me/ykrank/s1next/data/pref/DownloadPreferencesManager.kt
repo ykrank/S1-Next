@@ -10,45 +10,45 @@ import me.ykrank.s1next.data.Wifi
  * A manager manage the download preferences that are associated with settings.
  */
 class DownloadPreferencesManager(
-    private val mPreferencesProvider: DownloadPreferences,
+    val downloadPreferences: DownloadPreferences,
     private val mWifi: Wifi
 ) {
 
     val totalImageCacheSize: Long
-        get() = TotalDownloadCacheSize.getByte(mPreferencesProvider.totalImageCacheSizeIndex)
+        get() = TotalDownloadCacheSize.getByte(downloadPreferences.totalImageCacheSizeIndex)
 
     val totalDataCacheSize: Int
-        get() = TotalDataCacheSize.getSize(mPreferencesProvider.totalDataCacheSizeIndex)
+        get() =  downloadPreferences.totalDataCacheSize
 
     var downloadPath: String?
-        get() = mPreferencesProvider.downloadPath
+        get() = downloadPreferences.downloadPath
         set(path) {
-            mPreferencesProvider.downloadPath = path
+            downloadPreferences.downloadPath = path
         }
 
     val netCacheEnable: Boolean
-        get() = mPreferencesProvider.netCacheEnable
+        get() = downloadPreferences.netCacheEnable
 
     val isAvatarsDownload: Boolean
         get() = DownloadStrategyInternal.isDownload(
-            mPreferencesProvider.avatarsDownloadStrategyIndex,
+            downloadPreferences.avatarsDownloadStrategyIndex,
             mWifi.isWifiEnabled
         )
 
     val avatarCacheInvalidationIntervalSignature: Key
-        get() = AvatarCacheInvalidationInterval.getSignature(mPreferencesProvider.avatarCacheInvalidationInterval)
+        get() = AvatarCacheInvalidationInterval.getSignature(downloadPreferences.avatarCacheInvalidationInterval)
 
     /**
      * Checks whether we need to download images.
      */
     val isImagesDownload: Boolean
         get() = DownloadStrategyInternal.isDownload(
-            mPreferencesProvider.imagesDownloadStrategyIndex,
+            downloadPreferences.imagesDownloadStrategyIndex,
             mWifi.isWifiEnabled
         )
 
     val postMaxImageShow: Int
-        get() = mPreferencesProvider.postMaxImageShow
+        get() = downloadPreferences.postMaxImageShow
 
     /**
      * Checks whether we need to monitor the Wi-Fi status.
@@ -56,8 +56,8 @@ class DownloadPreferencesManager(
      * download avatars or images.
      */
     fun needMonitorWifi(): Boolean {
-        val avatarDownloadStrategy = mPreferencesProvider.avatarsDownloadStrategyIndex
-        val imageDownloadStrategy = mPreferencesProvider.imagesDownloadStrategyIndex
+        val avatarDownloadStrategy = downloadPreferences.avatarsDownloadStrategyIndex
+        val imageDownloadStrategy = downloadPreferences.imagesDownloadStrategyIndex
         return avatarDownloadStrategy == DownloadStrategyInternal.WIFI || imageDownloadStrategy == DownloadStrategyInternal.WIFI
     }
 
@@ -74,18 +74,6 @@ class DownloadPreferencesManager(
 
         fun getMByte(index: Int): Int {
             return if (index < 0 || index >= SIZE.size) SIZE[0] else SIZE[index]
-        }
-    }
-
-    private object TotalDataCacheSize {
-        private val LOW = 2000
-        private val NORMAL = 4000
-        private val HIGH = 6000
-
-        private val SIZE = intArrayOf(LOW, NORMAL, HIGH)
-
-        fun getSize(index: Int): Int {
-            return SIZE[index]
         }
     }
 

@@ -13,7 +13,7 @@
         
     <string name="pref_advanced">高級</string>
         
-    <string name="pref_downloads">下載</string>
+    <string name="pref_downloads_and_cache">下載 &amp; 快取</string>
         
     <string name="pref_downloads_summary">數據 &amp; 頭像 &amp; 圖片</string>
         

@@ -1,24 +1,30 @@
-package me.ykrank.s1next.data.db.biz
+package me.ykrank.s1next.data.cache
 
 import androidx.annotation.WorkerThread
+import com.github.ykrank.androidtools.util.FileUtil
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.ZipUtils
-import me.ykrank.s1next.data.db.AppDatabase
-import me.ykrank.s1next.data.db.AppDatabaseManager
-import me.ykrank.s1next.data.db.dao.CacheDao
-import me.ykrank.s1next.data.db.dbmodel.Cache
+import me.ykrank.s1next.App
 
 /**
  * Created by yuanke on 7/17/24
  * @author yuanke.ykrank@bytedance.com
  */
-class CacheBiz(private val manager: AppDatabaseManager) {
+class CacheBiz(private val manager: CacheDatabaseManager) {
 
     private val cacheDao: CacheDao
         get() = session.cache()
 
-    private val session: AppDatabase
+    private val session: CacheDatabase
         get() = manager.getOrBuildDb()
+
+    val count
+        @WorkerThread
+        get() = cacheDao.getCount()
+
+    val size
+        @WorkerThread
+        get() = App.get().getDatabasePath(CacheDatabase.DB_NAME).length()
 
     @WorkerThread
     fun saveZip(

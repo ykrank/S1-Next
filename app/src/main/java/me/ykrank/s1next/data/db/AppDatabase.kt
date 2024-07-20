@@ -6,21 +6,21 @@ import androidx.room.RoomDatabase
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.db.dao.BlackListDao
 import me.ykrank.s1next.data.db.dao.BlackWordDao
-import me.ykrank.s1next.data.db.dao.CacheDao
+import me.ykrank.s1next.data.cache.CacheDao
 import me.ykrank.s1next.data.db.dao.HistoryDao
 import me.ykrank.s1next.data.db.dao.LoginUserDao
 import me.ykrank.s1next.data.db.dao.ReadProgressDao
 import me.ykrank.s1next.data.db.dao.ThreadDao
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.data.db.dbmodel.BlackWord
-import me.ykrank.s1next.data.db.dbmodel.Cache
+import me.ykrank.s1next.data.cache.Cache
 import me.ykrank.s1next.data.db.dbmodel.DbThread
 import me.ykrank.s1next.data.db.dbmodel.History
 import me.ykrank.s1next.data.db.dbmodel.LoginUser
 import me.ykrank.s1next.data.db.dbmodel.ReadProgress
 
 @Database(
-    version = 10,
+    version = 9,
     entities = [
         BlackList::class,
         BlackWord::class,
@@ -28,13 +28,11 @@ import me.ykrank.s1next.data.db.dbmodel.ReadProgress
         History::class,
         ReadProgress::class,
         LoginUser::class,
-        Cache::class,
     ],
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 7, to = 8),
         AutoMigration(from = 8, to = 9),
-        AutoMigration(from = 9, to = 10),
     ],
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -49,14 +47,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun thread(): ThreadDao
 
     abstract fun loginUser(): LoginUserDao
-
-    abstract fun cache(): CacheDao
-
-    companion object {
-        @JvmStatic
-        fun getVersion(): Int {
-            return App.appComponent.appDatabaseManager.getOrBuildDb().openHelper.readableDatabase.version
-        }
-    }
 }
 

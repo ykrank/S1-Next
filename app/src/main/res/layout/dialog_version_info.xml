@@ -5,19 +5,23 @@
     tools:context="me.ykrank.s1next.view.dialog.VersionInfoDialogFragment">
 
     <data>
-        <import type="me.ykrank.s1next.data.db.AppDatabase"/>
+
         <import type="me.ykrank.s1next.util.AppDeviceUtil" />
+
+        <variable
+            name="dbVersion"
+            type="String" />
     </data>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/dialog_padding_bottom"
-        android:paddingEnd="@dimen/dialog_padding"
-        android:paddingLeft="@dimen/dialog_padding"
-        android:paddingRight="@dimen/dialog_padding"
         android:paddingStart="@dimen/dialog_padding"
-        android:paddingTop="@dimen/dialog_padding">
+        android:paddingLeft="@dimen/dialog_padding"
+        android:paddingTop="@dimen/dialog_padding"
+        android:paddingEnd="@dimen/dialog_padding"
+        android:paddingRight="@dimen/dialog_padding"
+        android:paddingBottom="@dimen/dialog_padding_bottom">
 
         <ImageView
             android:id="@+id/launcher_icon"
@@ -42,20 +46,20 @@
             android:id="@+id/version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/app_name"
-            android:layout_alignStart="@id/app_name"
             android:layout_below="@id/app_name"
+            android:layout_alignStart="@id/app_name"
+            android:layout_alignLeft="@id/app_name"
             android:layout_marginTop="@dimen/subtitle_margin_top"
             android:includeFontPadding="false"
-            android:text="@{@string/version(AppDeviceUtil.getVersionName(), AppDatabase.getVersion())}"
+            android:text="@{@string/version(AppDeviceUtil.getVersionName(), dbVersion)}"
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/version"
-            android:layout_alignStart="@id/version"
             android:layout_below="@id/version"
+            android:layout_alignStart="@id/version"
+            android:layout_alignLeft="@id/version"
             android:layout_marginTop="@dimen/item_padding"
             android:text="@string/copyright"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"

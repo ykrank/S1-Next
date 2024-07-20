@@ -4,9 +4,11 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import me.ykrank.s1next.AppLife
+import me.ykrank.s1next.data.cache.CacheDatabaseManager
+import me.ykrank.s1next.data.cache.CacheDatabaseManagerImpl
 import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.biz.BlackWordBiz
-import me.ykrank.s1next.data.db.biz.CacheBiz
+import me.ykrank.s1next.data.cache.CacheBiz
 import me.ykrank.s1next.data.db.biz.HistoryBiz
 import me.ykrank.s1next.data.db.biz.LoginUserBiz
 import me.ykrank.s1next.data.db.biz.ReadProgressBiz
@@ -18,7 +20,7 @@ import me.ykrank.s1next.widget.encrypt.Encryption
 class DbModule {
     @Provides
     @AppLife
-    fun provideAppDaoSessionManager(context: Context): AppDatabaseManager {
+    fun provideAppDatabaseManager(context: Context): AppDatabaseManager {
         return AppDatabaseManagerImpl(context)
     }
 
@@ -58,15 +60,25 @@ class DbModule {
         return LoginUserBiz(manager, encryption)
     }
 
-    @Provides
-    @AppLife
-    fun provideCacheBiz(manager: AppDatabaseManager, encryption: Encryption): CacheBiz {
-        return CacheBiz(manager)
-    }
 
     @Provides
     @AppLife
     fun provideDbEncryption(): Encryption {
         return AndroidStoreEncryption("s1next_db")
+    }
+
+    @Provides
+    @AppLife
+    fun provideCacheDatabaseManager(
+        context: Context,
+        appManager: AppDatabaseManager
+    ): CacheDatabaseManager {
+        return CacheDatabaseManagerImpl(context, appManager)
+    }
+
+    @Provides
+    @AppLife
+    fun provideCacheBiz(manager: CacheDatabaseManager, encryption: Encryption): CacheBiz {
+        return CacheBiz(manager)
     }
 }

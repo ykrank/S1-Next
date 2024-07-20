@@ -13,6 +13,9 @@ interface AppDatabaseManager {
     fun close()
 
     fun runAsync(runnable: Runnable)
+
+    val version
+        get() = getOrBuildDb().openHelper.readableDatabase.version
 }
 
 class AppDatabaseManagerImpl(applicationContext: Context) : AppDatabaseManager {

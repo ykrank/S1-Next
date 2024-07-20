@@ -1,29 +1,30 @@
-package me.ykrank.s1next.view.dialog;
+package me.ykrank.s1next.view.dialog
 
-import android.app.Dialog;
-import androidx.databinding.DataBindingUtil;
-import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-
-import me.ykrank.s1next.R;
-import me.ykrank.s1next.databinding.DialogVersionInfoBinding;
+import android.app.Dialog
+import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
+import me.ykrank.s1next.App
+import me.ykrank.s1next.R
+import me.ykrank.s1next.databinding.DialogVersionInfoBinding
 
 /**
  * A dialog shows version info.
  */
-public final class VersionInfoDialogFragment extends BaseDialogFragment {
+class VersionInfoDialogFragment : BaseDialogFragment() {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val binding = DataBindingUtil.inflate<DialogVersionInfoBinding>(
+            requireActivity().layoutInflater,
+            R.layout.dialog_version_info, null, false
+        )
 
-    public static final String TAG = VersionInfoDialogFragment.class.getName();
+        binding.dbVersion = App.appComponent.appDatabaseManager.version.toString()
+        return AlertDialog.Builder(requireContext())
+            .setView(binding.root)
+            .create()
+    }
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        DialogVersionInfoBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(),
-                R.layout.dialog_version_info, null, false);
-
-        return new AlertDialog.Builder(getContext())
-                .setView(binding.getRoot())
-                .create();
+    companion object {
+        val TAG: String = VersionInfoDialogFragment::class.java.name
     }
 }

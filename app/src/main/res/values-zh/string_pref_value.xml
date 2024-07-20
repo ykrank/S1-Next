@@ -6,7 +6,7 @@
     <string name="pref_font_size">字体大小</string>
     <string name="pref_signature">尾巴</string>
     <string name="pref_advanced">高级</string>
-    <string name="pref_downloads">下载</string>
+    <string name="pref_downloads_and_cache">下载 &amp; 缓存</string>
     <string name="pref_downloads_summary">数据 &amp; 头像 &amp; 图片</string>
     <string name="pref_blacklists">黑名单</string>
     <string name="pref_blacklists_summary">塞抹布</string>

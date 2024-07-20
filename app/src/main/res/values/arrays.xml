@@ -88,9 +88,9 @@
     </string-array>
 
     <string-array name="pref_data_total_cache_size_entries" translatable="false">
-        <item>2000</item>
-        <item>4000</item>
+        <item>3000</item>
         <item>6000</item>
+        <item>10000</item>
     </string-array>
 
     <string-array name="pref_data_total_cache_size_entry_values" translatable="false">

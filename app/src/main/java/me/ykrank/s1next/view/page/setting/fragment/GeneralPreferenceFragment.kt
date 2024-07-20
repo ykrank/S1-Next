@@ -2,6 +2,7 @@ package me.ykrank.s1next.view.page.setting.fragment
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
@@ -13,6 +14,9 @@ import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.github.ykrank.androidtools.widget.track.event.ThemeChangeTrackEvent
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
@@ -62,10 +66,12 @@ class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefere
             findPreference<Preference>(getString(R.string.pref_key_check_update))?.onPreferenceClickListener = this
         }
 
-        Single.fromCallable { HtmlCompat.fromHtml(AppDeviceUtil.getSignature(requireContext()), FROM_HTML_MODE_LEGACY) }
-            .compose(RxJavaUtil.computationSingleTransformer())
-            .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
-            .subscribe(Consumer { findPreference<Preference>(getString(R.string.pref_key_signature))?.summary = it })
+        lifecycleScope.launch {
+            val html = withContext(Dispatchers.Default){
+                HtmlCompat.fromHtml(AppDeviceUtil.getSignature(requireContext()), FROM_HTML_MODE_LEGACY)
+            }
+            findPreference<Preference>(getString(R.string.pref_key_signature))?.summary = html
+        }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {

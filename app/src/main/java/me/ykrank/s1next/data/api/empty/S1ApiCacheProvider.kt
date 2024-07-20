@@ -22,8 +22,8 @@ import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.RatePostsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper
-import me.ykrank.s1next.data.db.biz.CacheBiz
-import me.ykrank.s1next.data.db.dbmodel.Cache
+import me.ykrank.s1next.data.cache.CacheBiz
+import me.ykrank.s1next.data.cache.Cache
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.util.toJson
 
