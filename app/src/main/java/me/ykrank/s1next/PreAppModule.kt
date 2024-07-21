@@ -3,8 +3,8 @@ package me.ykrank.s1next
 import android.content.Context
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.github.ykrank.androidtools.widget.PersistentHttpCookieStore
 import com.github.ykrank.androidtools.widget.EventBus
+import com.github.ykrank.androidtools.widget.PersistentHttpCookieStore
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import dagger.Module
 import dagger.Provides
@@ -39,6 +39,7 @@ class PreAppModule(private val mApp: App) {
             .configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true)
             .configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
             .configure(JsonParser.Feature.IGNORE_UNDEFINED, true)
+            .configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, BuildConfig.DEBUG)
     }
 
     @Provides

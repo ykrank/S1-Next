@@ -1,4 +1,4 @@
-package me.ykrank.s1next.data.cache
+package me.ykrank.s1next.data.db.dbmodel
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

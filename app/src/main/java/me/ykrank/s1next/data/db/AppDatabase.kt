@@ -3,17 +3,14 @@ package me.ykrank.s1next.data.db
 import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import me.ykrank.s1next.App
 import me.ykrank.s1next.data.db.dao.BlackListDao
 import me.ykrank.s1next.data.db.dao.BlackWordDao
-import me.ykrank.s1next.data.cache.CacheDao
 import me.ykrank.s1next.data.db.dao.HistoryDao
 import me.ykrank.s1next.data.db.dao.LoginUserDao
 import me.ykrank.s1next.data.db.dao.ReadProgressDao
 import me.ykrank.s1next.data.db.dao.ThreadDao
 import me.ykrank.s1next.data.db.dbmodel.BlackList
 import me.ykrank.s1next.data.db.dbmodel.BlackWord
-import me.ykrank.s1next.data.cache.Cache
 import me.ykrank.s1next.data.db.dbmodel.DbThread
 import me.ykrank.s1next.data.db.dbmodel.History
 import me.ykrank.s1next.data.db.dbmodel.LoginUser

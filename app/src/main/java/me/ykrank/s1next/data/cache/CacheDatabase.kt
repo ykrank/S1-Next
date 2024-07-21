@@ -2,7 +2,7 @@ package me.ykrank.s1next.data.cache
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import me.ykrank.s1next.App
+import me.ykrank.s1next.data.db.dbmodel.Cache
 
 @Database(
     version = 1,

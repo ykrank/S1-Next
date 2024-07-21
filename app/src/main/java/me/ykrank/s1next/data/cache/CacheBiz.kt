@@ -2,10 +2,10 @@ package me.ykrank.s1next.data.cache
 
 import androidx.annotation.WorkerThread
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.github.ykrank.androidtools.util.FileUtil
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.ZipUtils
 import me.ykrank.s1next.App
+import me.ykrank.s1next.data.db.dbmodel.Cache
 
 /**
  * Created by yuanke on 7/17/24

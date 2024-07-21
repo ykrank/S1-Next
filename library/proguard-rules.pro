@@ -49,6 +49,8 @@
 -keepclassmembers public final enum org.codehaus.jackson.annotate.JsonAutoDetect$Visibility {
     public static final org.codehaus.jackson.annotate.JsonAutoDetect$Visibility *;
 }
+-keep public class * extends com.fasterxml.jackson.databind.JsonDeserializer
+-keep public class * extends com.fasterxml.jackson.databind.JsonSerializer
 
 # Okio
 # https://github.com/square/okio/issues/144
@@ -74,10 +76,6 @@
   public *;
 }
 
-# Gradle Retrolambda Plugin
-# https://github.com/evant/gradle-retrolambda#user-content-proguard
--dontwarn java.lang.invoke.*
-
 # Retrofit
 # Platform calls Class.forName on types which do not exist on Android to determine platform.
 -dontnote retrofit2.Platform
@@ -98,13 +96,6 @@
    long producerIndex;
    long consumerIndex;
 }
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode producerNode;
-}
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode consumerNode;
-}
-
 
 #jsoup
 -keeppackagenames org.jsoup.nodes

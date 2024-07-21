@@ -14,8 +14,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.data.User
-import me.ykrank.s1next.data.cache.Cache
 import me.ykrank.s1next.data.cache.CacheBiz
+import me.ykrank.s1next.data.db.dbmodel.Cache
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.util.toJson
 import java.io.Serializable
@@ -126,9 +126,11 @@ class ApiCacheFlow(
                                 }
                             }
                         }
-                        if (setValidator == null || setValidator(data)) {
+                        if (downloadPerf.netCacheEnable &&
+                            (setValidator == null || setValidator(data))
+                        ) {
                             // 有效的数据更新到缓存
-                            withContext(Dispatchers.Default) {
+                            withContext(Dispatchers.Default + L.report) {
                                 loadTime.run(ApiCacheConstants.Time.TIME_SAVE_CACHE) {
                                     cacheBiz.saveZipAsync(
                                         key,
