@@ -128,9 +128,9 @@ class ApiCacheFlow(
                             // 有效的数据更新到缓存
                             withContext(Dispatchers.Default) {
                                 loadTime.run(ApiCacheConstants.Time.TIME_SAVE_CACHE) {
-                                    cacheBiz.saveTextZipAsync(
+                                    cacheBiz.saveZipAsync(
                                         key,
-                                        jsonMapper.writeValueAsString(data),
+                                        data,
                                         maxSize = downloadPerf.totalDataCacheSize
                                     )
                                 }

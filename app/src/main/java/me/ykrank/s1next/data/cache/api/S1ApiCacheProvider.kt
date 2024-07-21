@@ -105,12 +105,12 @@ class S1ApiCacheProvider(
         }.flowOn(Dispatchers.IO)
 
         fun saveCache(postWrapper: PostsWrapper) {
-            cacheBiz.saveTextZipAsync(
+            cacheBiz.saveZipAsync(
                 apiCacheFlow.getKey(
                     ApiCacheConstants.CacheType.Posts,
                     param
                 ),
-                jsonMapper.writeValueAsString(postWrapper),
+                postWrapper,
                 maxSize = downloadPerf.totalDataCacheSize
             )
         }

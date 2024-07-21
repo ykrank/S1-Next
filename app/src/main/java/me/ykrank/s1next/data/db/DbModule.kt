@@ -1,6 +1,7 @@
 package me.ykrank.s1next.data.db
 
 import android.content.Context
+import com.fasterxml.jackson.databind.ObjectMapper
 import dagger.Module
 import dagger.Provides
 import me.ykrank.s1next.AppLife
@@ -78,7 +79,7 @@ class DbModule {
 
     @Provides
     @AppLife
-    fun provideCacheBiz(manager: CacheDatabaseManager, encryption: Encryption): CacheBiz {
-        return CacheBiz(manager)
+    fun provideCacheBiz(manager: CacheDatabaseManager, objectMapper: ObjectMapper): CacheBiz {
+        return CacheBiz(manager, objectMapper)
     }
 }

@@ -1,6 +1,7 @@
 package me.ykrank.s1next.data.cache
 
 import androidx.annotation.WorkerThread
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.ykrank.androidtools.util.FileUtil
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.ZipUtils
@@ -10,7 +11,7 @@ import me.ykrank.s1next.App
  * Created by yuanke on 7/17/24
  * @author yuanke.ykrank@bytedance.com
  */
-class CacheBiz(private val manager: CacheDatabaseManager) {
+class CacheBiz(private val manager: CacheDatabaseManager, private val objectMapper: ObjectMapper) {
 
     private val cacheDao: CacheDao
         get() = session.cache()
@@ -27,7 +28,7 @@ class CacheBiz(private val manager: CacheDatabaseManager) {
         get() = App.get().getDatabasePath(CacheDatabase.DB_NAME).length()
 
     @WorkerThread
-    fun saveZip(
+    private fun saveZip(
         key: String,
         content: ByteArray,
         group: String = DEFAULT_GROUP,
@@ -50,7 +51,7 @@ class CacheBiz(private val manager: CacheDatabaseManager) {
     }
 
     @WorkerThread
-    fun saveTextZip(
+    private fun saveTextZip(
         key: String,
         content: String,
         group: String = DEFAULT_GROUP,
@@ -67,6 +68,17 @@ class CacheBiz(private val manager: CacheDatabaseManager) {
     ) {
         manager.runAsync {
             saveTextZip(key, content, group, maxSize)
+        }
+    }
+
+    fun saveZipAsync(
+        key: String,
+        content: Any,
+        group: String = DEFAULT_GROUP,
+        maxSize: Int = DEFAULT_MAX_SIZE
+    ) {
+        manager.runAsync {
+            saveTextZip(key, objectMapper.writeValueAsString(content), group, maxSize)
         }
     }
 
