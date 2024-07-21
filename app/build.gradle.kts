@@ -17,8 +17,8 @@ val mKeyPassword: String? = properties.getProperty("keyPassword")
 val httpDnsId = properties.getProperty("httpDnsId") ?: "\"\""
 val httpDnsSecret = properties.getProperty("httpDnsSecret") ?: "\"\""
 
-val appVersionCode = 87
-val appVersionName = "3.0"
+val appVersionCode = 88
+val appVersionName = "3.1"
 
 android {
     namespace = "me.ykrank.s1next"
