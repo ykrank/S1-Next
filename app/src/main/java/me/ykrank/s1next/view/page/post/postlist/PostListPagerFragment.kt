@@ -98,9 +98,6 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
 
     private var refreshAfterBlacklistChangeDisposable: Disposable? = null
 
-    private val rateMap = hashMapOf<Int, List<Rate>>()
-    private var rateStamp: Long = 0
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         App.appComponent.inject(this)
@@ -284,11 +281,19 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
         return Pair(itemPosition, offset)
     }
 
-    override suspend fun getSource(loading: Int): Flow<Resource<PostsWrapper>>? {
+    override suspend fun getSource(loading: Int): Flow<Resource<PostsWrapper>> {
         return apiCacheProvider.getPostsWrapper(
             mThreadId, mAuthorId, mPageNum,
             CacheParam(isForceLoading, listOf(mThreadId, mPageNum, mAuthorId))
-        )
+        ) { pid, rates ->
+            mRecyclerAdapter.dataSet.filterIsInstance<Post>()
+                .forEachIndexed { index, post ->
+                    if (post.id == pid) {
+                        post.rates = rates
+                        mRecyclerAdapter.notifyItemChanged(index)
+                    }
+                }
+        }
     }
 
     override fun onNextSuccess(resource: Resource.Success<PostsWrapper>) {
@@ -336,16 +341,6 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
             }
         } else {
             initQuickSidebar(mPageNum, postList)
-
-            //Set old rates to data
-            postList.forEach {
-                val rates = rateMap[it.id]
-                if (rates != null) {
-                    it.rates = rates
-                }
-            }
-
-            loadRates(postList)
 
             //Thread info must not null, or exception
             val postListInfo = posts?.postListInfo as Thread
@@ -416,39 +411,6 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
             mRecyclerAdapter.notifyDataSetChanged()
         }
         return enable
-    }
-
-    private fun loadRates(posts: List<Post>) {
-        val time = SystemClock.elapsedRealtime()
-        if (time - rateStamp < 10_000) {
-            //Do not load too frequently
-            return
-        }
-        rateStamp = time
-
-        lifecycleScope.launch(L.report) {
-            posts.filter { it.rates?.size == 0 && rateMap[it.id] == null }
-                .distinctBy { it.id }
-                .asFlow()
-                .map {
-                    val pid = it.id
-                    val rates = mS1Service.getRates(mThreadId, pid.toString())
-                    Pair(pid, Rate.fromHtml(rates))
-                }.collect {
-                    val pid = it.first
-                    val rates = it.second
-                    if (pid != null && rates?.isNotEmpty() == true) {
-                        rateMap[pid] = rates
-                        mRecyclerAdapter.dataSet.filterIsInstance(Post::class.java)
-                            .forEachIndexed { index, post ->
-                                if (post.id == pid) {
-                                    post.rates = rates
-                                    mRecyclerAdapter.notifyItemChanged(index)
-                                }
-                            }
-                    }
-                }
-        }
     }
 
     private fun initQuickSidebar(page: Int, posts: List<Post>) {

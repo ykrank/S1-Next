@@ -12,7 +12,7 @@ import me.ykrank.s1next.data.api.model.ForumCategoryByIds
 @JsonIgnoreProperties(ignoreUnknown = true)
 class ForumGroups @JsonCreator constructor(
     @JsonProperty("catlist") forumGroupByIdsList: List<ForumCategoryByIds>?,
-    @JsonProperty("forumlist") rawForumList: List<Forum>?
+    @JsonProperty("forumlist") rawForumList: MutableList<Forum>?
 ) : Account() {
     @JsonProperty("_forumList")
     val forumList: List<Forum>
@@ -30,7 +30,7 @@ class ForumGroups @JsonCreator constructor(
     init {
         // sort forum list by today's post count in descending order
         if (rawForumList != null) {
-            rawForumList.sortedWith { lhs: Forum, rhs: Forum -> -(lhs.todayPosts - rhs.todayPosts) }
+            rawForumList.sortByDescending { it.todayPosts }
             val forumSparseArray = SparseArray<Forum>(rawForumList.size)
             for (forum in rawForumList) {
                 forumSparseArray.put(forum.id?.toInt() ?: 0, forum)

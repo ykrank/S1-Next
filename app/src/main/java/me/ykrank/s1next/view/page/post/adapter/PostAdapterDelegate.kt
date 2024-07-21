@@ -8,6 +8,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.ykrank.androidtools.data.CacheParam
+import com.github.ykrank.androidtools.data.CacheStrategy
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
 import com.github.ykrank.androidtools.util.L
@@ -16,6 +18,7 @@ import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
+import me.ykrank.s1next.data.api.ApiCacheProvider
 import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.model.Post
 import me.ykrank.s1next.data.api.model.Rate
@@ -43,7 +46,7 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
     internal lateinit var mUser: User
 
     @Inject
-    internal lateinit var mS1Service: S1Service
+    internal lateinit var mApiCache: ApiCacheProvider
 
     @Inject
     internal lateinit var mGeneralPreferencesManager: GeneralPreferencesManager
@@ -117,8 +120,8 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
                 RateDetailsListActivity.start(context, ArrayList(rates))
             } else {
                 fragment.lifecycleScope.launch(L.report) {
-                    val resultStr = mS1Service.getRates(threadInfo?.id, post.id.toString())
-                    val newRates = Rate.fromHtml(resultStr)
+                    val newRates =
+                        mApiCache.getPostRates(threadInfo?.id, post.id).data ?: emptyList()
                     post.rates = newRates
                     val adapter = binding.recycleViewRates.adapter as SimpleRecycleViewAdapter?
                     if (adapter != null) {

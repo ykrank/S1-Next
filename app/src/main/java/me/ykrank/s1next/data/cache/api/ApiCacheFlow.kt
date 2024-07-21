@@ -27,7 +27,7 @@ class ApiCacheFlow(
 ) {
 
     fun getKey(type: ApiCacheConstants.CacheType, param: CacheParam?): String {
-        return "u${user.uid ?: 0}#${type.type}#${param?.keys?.joinToString(",") ?: ""}"
+        return "u${user.uid ?: ""}#${type.type}#${param?.keys?.joinToString(",") ?: ""}"
     }
 
     /**

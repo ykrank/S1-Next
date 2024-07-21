@@ -5,6 +5,7 @@ object ApiCacheConstants {
         const val TIME_LOAD_END = "load_end"
         const val TIME_LOAD_CACHE = "load_cache"
         const val TIME_SAVE_CACHE = "save_cache"
+        const val TIME_UPDATE_CACHE = "update_cache"
         const val TIME_PARSE_CACHE = "parse_cache"
         const val TIME_NET = "NET"
         const val TIME_PARSE_NET = "parse_net"
