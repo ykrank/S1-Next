@@ -29,8 +29,8 @@ import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.model.Thread
-import me.ykrank.s1next.data.api.model.link.ThreadLink
 import me.ykrank.s1next.data.api.model.collection.Posts
+import me.ykrank.s1next.data.api.model.link.ThreadLink
 import me.ykrank.s1next.data.db.biz.HistoryBiz
 import me.ykrank.s1next.data.db.biz.ReadProgressBiz
 import me.ykrank.s1next.data.db.biz.ThreadBiz
@@ -51,6 +51,7 @@ import me.ykrank.s1next.view.fragment.BaseViewPagerFragment
 import me.ykrank.s1next.view.internal.PagerScrollState
 import me.ykrank.s1next.view.internal.RequestCode
 import me.ykrank.s1next.view.page.edit.EditPostActivity
+import me.ykrank.s1next.view.page.post.prefetch.ThreadPrefetchDialogFragment
 import me.ykrank.s1next.widget.track.event.ViewThreadTrackEvent
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -156,7 +157,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
             }
 
             // +1 for original post
-            val threadPage = MathUtil.divide(thread.reliesCount + 1, Api.POSTS_PER_PAGE)
+            val threadPage = thread.pageCount
             setTotalPages(Math.max(jumpPage, threadPage))
 
             if (jumpPage != 0) {
@@ -388,6 +389,12 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
                 item.isChecked = !item.isChecked
                 mGeneralPreferencesManager.isQuickSideBarEnable = item.isChecked
                 mEventBus.postDefault(QuickSidebarEnableChangeEvent())
+                return true
+            }
+
+            R.id.menu_prefetch_all_posts -> {
+                ThreadPrefetchDialogFragment.newInstance(mThreadId)
+                    .show(childFragmentManager, LoadBlackListFromWebDialogFragment.TAG)
                 return true
             }
 

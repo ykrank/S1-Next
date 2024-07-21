@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
+import com.github.ykrank.androidtools.util.MathUtil
+import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.db.dbmodel.History
 import me.ykrank.s1next.util.HtmlUtils
 import paperparcel.PaperParcel
@@ -62,6 +64,11 @@ class Thread : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
     val reliesCount: Int
         get() {
             return replies?.toIntOrNull() ?: 0
+        }
+
+    val pageCount: Int
+        get() {
+            return MathUtil.divide(reliesCount + 1, Api.POSTS_PER_PAGE)
         }
 
     constructor() {}

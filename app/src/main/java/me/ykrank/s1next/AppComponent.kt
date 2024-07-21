@@ -8,11 +8,11 @@ import me.ykrank.s1next.data.api.ApiCacheProvider
 import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.UserValidator
 import me.ykrank.s1next.data.api.app.AppService
+import me.ykrank.s1next.data.cache.CacheBiz
 import me.ykrank.s1next.data.db.AppDatabaseManager
 import me.ykrank.s1next.data.db.DbModule
 import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.biz.BlackWordBiz
-import me.ykrank.s1next.data.cache.CacheBiz
 import me.ykrank.s1next.data.db.biz.HistoryBiz
 import me.ykrank.s1next.data.db.biz.LoginUserBiz
 import me.ykrank.s1next.data.db.biz.ReadProgressBiz
@@ -32,7 +32,6 @@ import me.ykrank.s1next.view.adapter.delegate.PmGroupsAdapterDelegate
 import me.ykrank.s1next.view.adapter.delegate.PmLeftAdapterDelegate
 import me.ykrank.s1next.view.adapter.delegate.PmRightAdapterDelegate
 import me.ykrank.s1next.view.adapter.delegate.ThreadAdapterDelegate
-import me.ykrank.s1next.view.page.setting.blacklist.BlackListRemarkDialogFragment
 import me.ykrank.s1next.view.dialog.DiscardEditPromptDialogFragment
 import me.ykrank.s1next.view.dialog.LoadBlackListFromWebDialogFragment
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
@@ -71,6 +70,8 @@ import me.ykrank.s1next.view.page.post.postlist.PostListActivity
 import me.ykrank.s1next.view.page.post.postlist.PostListFragment
 import me.ykrank.s1next.view.page.post.postlist.PostListGatewayActivity
 import me.ykrank.s1next.view.page.post.postlist.PostListPagerFragment
+import me.ykrank.s1next.view.page.post.prefetch.ThreadPrefetchDialogFragment
+import me.ykrank.s1next.view.page.setting.blacklist.BlackListRemarkDialogFragment
 import me.ykrank.s1next.view.page.setting.fragment.BackupPreferenceFragment
 import me.ykrank.s1next.view.page.setting.fragment.DownloadPreferenceFragment
 import me.ykrank.s1next.view.page.setting.fragment.GeneralPreferenceFragment
@@ -192,5 +193,6 @@ interface AppComponent {
     fun inject(fragment: AppPostListFragment)
     fun inject(fragment: BaseLoginFragment)
     fun inject(fragment: SAFFragment)
+    fun inject(fragment: ThreadPrefetchDialogFragment)
 
 }

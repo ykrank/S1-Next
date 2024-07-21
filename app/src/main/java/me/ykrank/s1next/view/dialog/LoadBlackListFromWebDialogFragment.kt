@@ -1,26 +1,19 @@
 package me.ykrank.s1next.view.dialog
 
-import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.annotation.MainThread
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.Window
-import androidx.appcompat.app.AlertDialog
+import androidx.annotation.MainThread
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import me.ykrank.s1next.App
-import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.model.WebBlackListInfo
 import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.dbmodel.BlackList
-import me.ykrank.s1next.databinding.DialogLoadBlacklistFromWebBinding
 import me.ykrank.s1next.util.ErrorUtil
 import javax.inject.Inject
 
@@ -28,7 +21,7 @@ import javax.inject.Inject
 /**
  * A dialog lets user load website blacklist.
  */
-class LoadBlackListFromWebDialogFragment : BaseDialogFragment() {
+class LoadBlackListFromWebDialogFragment : BaseLoadProgressDialogFragment() {
     @Inject
     lateinit var s1Service: S1Service
 
@@ -40,49 +33,14 @@ class LoadBlackListFromWebDialogFragment : BaseDialogFragment() {
 
     private var callBack: (() -> Unit)? = null
 
-    private lateinit var binding: DialogLoadBlacklistFromWebBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DialogLoadBlacklistFromWebBinding.inflate(inflater, container, false)
-        isCancelable = false
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         loadNextPage()
-
-        binding.btnStop.setOnClickListener {
-            AlertDialog.Builder(requireContext())
-                .setTitle(R.string.stop_confirm)
-                .setPositiveButton(R.string.stop) { _: DialogInterface, _: Int ->
-                    dismiss()
-                }.setNegativeButton(android.R.string.cancel) { _: DialogInterface, _: Int ->
-                }
-                .show()
-        }
-
-        return binding.root
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
-
-        return dialog
-    }
-
-    override fun onStart() {
-        super.onStart()
-        dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
     }
 
     @MainThread

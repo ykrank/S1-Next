@@ -2,7 +2,6 @@ package me.ykrank.s1next.view.page.post.postlist
 
 import android.content.Context
 import android.os.Bundle
-import android.os.SystemClock
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -22,21 +21,17 @@ import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegat
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.LooperUtil
 import com.github.ykrank.androidtools.util.RxJavaUtil
-import com.github.ykrank.androidtools.widget.EventBus
 import com.github.ykrank.androidtools.widget.recycleview.StartSnapLinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.Post
-import me.ykrank.s1next.data.api.model.Rate
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.collection.Posts
 import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper
@@ -283,8 +278,8 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
 
     override suspend fun getSource(loading: Int): Flow<Resource<PostsWrapper>> {
         return apiCacheProvider.getPostsWrapper(
-            mThreadId, mAuthorId, mPageNum,
-            CacheParam(isForceLoading, listOf(mThreadId, mPageNum, mAuthorId))
+            mThreadId, mPageNum, mAuthorId,
+            CacheParam(isForceLoading)
         ) { pid, rates ->
             mRecyclerAdapter.dataSet.filterIsInstance<Post>()
                 .forEachIndexed { index, post ->

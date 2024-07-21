@@ -35,8 +35,8 @@ interface ApiCacheProvider {
      */
     suspend fun getPostsWrapper(
         threadId: String?,
-        authorId: String?,
         page: Int,
+        authorId: String? = null,
         param: CacheParam? = null,
         onRateUpdate: ((pid: Int, rate: List<Rate>) -> Unit)? = null,
     ): Flow<Resource<PostsWrapper>>
@@ -49,8 +49,4 @@ interface ApiCacheProvider {
         postId: Int,
     ): Resource<List<Rate>>
 
-    /**
-     * 预加载帖子
-     */
-    suspend fun prefetchThread(threadId: String?)
 }

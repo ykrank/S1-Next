@@ -18,6 +18,7 @@ import me.ykrank.s1next.data.cache.Cache
 import me.ykrank.s1next.data.cache.CacheBiz
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.util.toJson
+import java.io.Serializable
 
 class ApiCacheFlow(
     private val downloadPerf: DownloadPreferencesManager,
@@ -26,8 +27,8 @@ class ApiCacheFlow(
     private val jsonMapper: ObjectMapper,
 ) {
 
-    fun getKey(type: ApiCacheConstants.CacheType, param: CacheParam?): String {
-        return "u${user.uid ?: ""}#${type.type}#${param?.keys?.joinToString(",") ?: ""}"
+    fun getKey(type: ApiCacheConstants.CacheType, keys: List<Serializable?> = emptyList()): String {
+        return "u${user.uid ?: ""}#${type.type}#${keys.joinToString(",") ?: ""}"
     }
 
     /**
@@ -38,12 +39,13 @@ class ApiCacheFlow(
         param: CacheParam?,
         cls: Class<T>,
         api: suspend () -> String,
+        keys: List<Serializable?>,
         getValidator: ((data: T) -> Boolean)? = null,
         setValidator: ((data: T) -> Boolean)? = null,
         loadTime: LoadTime = LoadTime(),
         printTime: Boolean = BuildConfig.DEBUG,
     ): Flow<Resource<T>> {
-        val key = getKey(type, param)
+        val key = getKey(type, keys)
         val cacheStrategy = param?.strategy ?: CacheStrategy.NET_FIRST
         return flow {
             val cacheData: Cache? by lazy {

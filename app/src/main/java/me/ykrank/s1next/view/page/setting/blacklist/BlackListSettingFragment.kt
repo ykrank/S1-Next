@@ -1,7 +1,6 @@
 package me.ykrank.s1next.view.page.setting.blacklist
 
 import android.content.DialogInterface
-import android.database.Cursor
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -13,11 +12,7 @@ import android.widget.AbsListView
 import android.widget.ListView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import com.github.ykrank.androidautodispose.AndroidRxDispose
-import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.util.L
-import com.github.ykrank.androidtools.util.RxJavaUtil
-import io.reactivex.Single
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -89,7 +84,7 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
                         }
                     }
                     lifecycleScope.launch {
-                        withContext(Dispatchers.IO){
+                        withContext(Dispatchers.IO) {
                             BlackListBiz.getInstance().delBlackLists(blackLists)
                         }
                         load()
@@ -121,9 +116,6 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
 
         }
     }
-
-    internal val sourceObservable: Single<Cursor>
-        get() = Single.fromCallable { BlackListBiz.getInstance().blackListCursor }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -203,11 +195,13 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
      * Starts to load new data.
      */
     private fun load() {
-        sourceObservable
-            .compose(RxJavaUtil.iOSingleTransformer())
-            .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
-            .subscribe({ mListViewAdapter.changeCursor(it) },
-                { throwable -> L.e("S1next", throwable) })
+        lifecycleScope.launch(L.report) {
+            withContext(Dispatchers.IO) {
+                BlackListBiz.getInstance().blackListCursor
+            }.apply {
+                mListViewAdapter.changeCursor(this)
+            }
+        }
     }
 
     override fun onPause() {

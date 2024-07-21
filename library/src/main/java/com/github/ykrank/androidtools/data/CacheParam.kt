@@ -1,6 +1,5 @@
 package com.github.ykrank.androidtools.data
 
-import java.io.Serializable
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
@@ -11,13 +10,11 @@ import kotlin.time.toDuration
  */
 data class CacheParam(
     val strategy: CacheStrategy = CacheStrategy.NET_FIRST,
-    val keys: List<Serializable?> = emptyList()
 ) {
 
     constructor(
         ignoreCache: Boolean,
-        keys: List<Serializable?> = emptyList(),
-    ) : this(if (ignoreCache) CacheStrategy.NO_CACHE else CacheStrategy.NET_FIRST, keys)
+    ) : this(if (ignoreCache) CacheStrategy.NO_CACHE else CacheStrategy.NET_FIRST)
 }
 
 data class CacheStrategy(

@@ -238,6 +238,7 @@
     <string name="title_user_replies">%1$s\'s replies</string>
     <string name="last_replier">Last replier %1$s</string>
     <string name="menu_quick_side_bar_enable">QuickSidebar Enable</string>
+    <string name="menu_prefetch_all_posts">Prefetch all posts</string>
 
     <string name="rate">Rate</string>
     <string name="menu_report">Report</string>

@@ -21,7 +21,7 @@ object ErrorUtil : ErrorParser {
 
     private val TAG_LOG = ErrorUtil::class.java.simpleName
 
-    override fun parse(context: Context, throwable: Throwable): String {
+    override fun parse(context: Context, throwable: Throwable?): String {
         var msg: String? = null
         var root: Throwable? = throwable
 
@@ -30,7 +30,7 @@ object ErrorUtil : ErrorParser {
             if (msg != null) {
                 break
             }
-            val cause: Throwable? = throwable.cause
+            val cause: Throwable? = throwable?.cause
             if (cause == null || cause === root) {
                 break
             }
@@ -56,16 +56,19 @@ object ErrorUtil : ErrorParser {
                     L.report(throwable)
                 }
             }
+
             is IOException -> {
                 msg = context.getString(R.string.message_network_error)
                 L.e(throwable)
             }
+
             is HttpException -> {
                 msg = throwable.getLocalizedMessage()
                 if (msg.isNullOrEmpty()) {
                     msg = context.getString(R.string.message_server_connect_error)
                 }
             }
+
             is CompositeException -> {
                 if (throwable.exceptions.size == 1) {
                     return parseNetError(context, throwable.exceptions[0])
@@ -102,10 +105,11 @@ object ErrorUtil : ErrorParser {
                 val msg = throwable.message
                 if (msg != null) {
                     if (msg.contains("您需要绑定", false) ||
-                            msg.contains("您尚未登录", false) ||
-                            msg.contains("您需要升级所在的用户组", false) ||
-                            msg.contains("论坛维护中", false) ||
-                            msg.contains("抱歉", false)) {
+                        msg.contains("您尚未登录", false) ||
+                        msg.contains("您需要升级所在的用户组", false) ||
+                        msg.contains("论坛维护中", false) ||
+                        msg.contains("抱歉", false)
+                    ) {
                         return true
                     }
                     if (msg.trim() == "HTTP 503") return true

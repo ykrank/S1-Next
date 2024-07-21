@@ -1,20 +1,16 @@
 package me.ykrank.s1next.data.cache.api
 
 import androidx.collection.LruCache
-import androidx.core.util.Pair
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.ykrank.androidtools.data.CacheParam
-import com.github.ykrank.androidtools.data.CacheStrategy
 import com.github.ykrank.androidtools.data.Resource
 import com.github.ykrank.androidtools.data.Source
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.LoadTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flow
@@ -29,18 +25,14 @@ import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.ApiCacheProvider
 import me.ykrank.s1next.data.api.ApiUtil
 import me.ykrank.s1next.data.api.S1Service
-import me.ykrank.s1next.data.api.model.Post
 import me.ykrank.s1next.data.api.model.Rate
 import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.RatePostsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper
 import me.ykrank.s1next.data.cache.CacheBiz
-import me.ykrank.s1next.data.cache.Cache
 import me.ykrank.s1next.data.cache.model.BaseCache
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
-import me.ykrank.s1next.util.toJson
-import kotlin.math.min
 
 class S1ApiCacheProvider(
     private val downloadPerf: DownloadPreferencesManager,
@@ -63,7 +55,9 @@ class S1ApiCacheProvider(
             },
             setValidator = {
                 !it.data?.forumList.isNullOrEmpty()
-            })
+            },
+            keys = emptyList()
+        )
     }
 
     override suspend fun getThreadsWrapper(
@@ -81,17 +75,22 @@ class S1ApiCacheProvider(
             },
             setValidator = {
                 !it.data?.threadList.isNullOrEmpty()
-            })
+            },
+            keys = listOf(forumId, typeId, page)
+        )
     }
 
     @OptIn(FlowPreview::class)
     override suspend fun getPostsWrapper(
         threadId: String?,
-        authorId: String?,
         page: Int,
+        authorId: String?,
         param: CacheParam?,
         onRateUpdate: ((pid: Int, rate: List<Rate>) -> Unit)?,
     ): Flow<Resource<PostsWrapper>> {
+        val cacheKeys = listOf(threadId, page)
+        // 不过滤回帖人时才走缓存
+        val userCache = authorId.isNullOrEmpty()
         val loadTime = LoadTime()
         val ratePostFlow = flow {
             val rates = runCatching {
@@ -105,14 +104,16 @@ class S1ApiCacheProvider(
         }.flowOn(Dispatchers.IO)
 
         fun saveCache(postWrapper: PostsWrapper) {
-            cacheBiz.saveZipAsync(
-                apiCacheFlow.getKey(
-                    ApiCacheConstants.CacheType.Posts,
-                    param
-                ),
-                postWrapper,
-                maxSize = downloadPerf.totalDataCacheSize
-            )
+            if (userCache) {
+                cacheBiz.saveZipAsync(
+                    apiCacheFlow.getKey(
+                        ApiCacheConstants.CacheType.Posts,
+                        cacheKeys
+                    ),
+                    postWrapper,
+                    maxSize = downloadPerf.totalDataCacheSize
+                )
+            }
         }
 
         var netPostsWrapper: PostsWrapper? = null
@@ -124,10 +125,16 @@ class S1ApiCacheProvider(
             printTime = false,
             api = {
                 s1Service.getPostsWrapper(threadId, page, authorId)
-            }, setValidator = {
+            },
+            setValidator = {
                 // 需要后处理才能更新缓存
                 false
-            })
+            },
+            getValidator = {
+                userCache
+            },
+            keys = cacheKeys,
+        )
             .combine(ratePostFlow) { it, ratePostWrapper ->
                 if (it.source.isCloud()) {
                     withContext(Dispatchers.IO) {
@@ -162,7 +169,7 @@ class S1ApiCacheProvider(
                                 }
                             }
                         }
-                        if (!hasError && postWrapper != null) {
+                        if (!hasError && postWrapper != null && userCache) {
                             withContext(Dispatchers.Default) {
                                 loadTime.run(ApiCacheConstants.Time.TIME_SAVE_CACHE) {
                                     saveCache(postWrapper)
@@ -212,9 +219,11 @@ class S1ApiCacheProvider(
                                     pid
                                 }.debounce(CACHE_RATE_SAVE_DEBOUNCE)
                                 .collect {
-                                    withContext(Dispatchers.Default) {
-                                        loadTime.run(ApiCacheConstants.Time.TIME_UPDATE_CACHE + it) {
-                                            saveCache(postsWrapper)
+                                    if (userCache) {
+                                        withContext(Dispatchers.Default) {
+                                            loadTime.run(ApiCacheConstants.Time.TIME_UPDATE_CACHE + it) {
+                                                saveCache(postsWrapper)
+                                            }
                                         }
                                     }
                                 }
@@ -223,7 +232,10 @@ class S1ApiCacheProvider(
                 }
                 if (BuildConfig.DEBUG) {
                     loadTime.addPoint(ApiCacheConstants.Time.TIME_LOAD_END)
-                    L.i(TAG, "posts:$threadId ${jsonMapper.writeValueAsString(loadTime.times)}")
+                    L.i(
+                        TAG,
+                        "posts:$threadId#$page ${jsonMapper.writeValueAsString(loadTime.times)}"
+                    )
                 }
             }
     }
@@ -244,10 +256,6 @@ class S1ApiCacheProvider(
             }
         }
         return Resource.fromResult(Source.CLOUD, rate)
-    }
-
-    override suspend fun prefetchThread(threadId: String?) {
-        TODO("Not yet implemented")
     }
 
     companion object {

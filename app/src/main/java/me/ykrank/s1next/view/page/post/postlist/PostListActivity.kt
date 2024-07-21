@@ -39,6 +39,8 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
 
     var fragment: PostListFragment? = null
 
+    private var threadId: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.appComponent.inject(this)
@@ -51,9 +53,12 @@ class PostListActivity : BaseActivity(), WifiBroadcastReceiver.NeedMonitorWifi {
             val thread = intent.getParcelableExtra<Thread>(ARG_THREAD)
             val progress = intent.getParcelableExtra<ReadProgress>(ARG_READ_PROGRESS)
             val authorId = intent.getStringExtra(ARG_AUTHOR_ID)
+            threadId = thread?.id
             if (thread == null) {//通过链接打开
+                val threadLink: ThreadLink = intent.getParcelableExtra(ARG_THREAD_LINK)!!
+                threadId = threadLink.threadId
                 fragment =
-                    PostListFragment.newInstance(intent.getParcelableExtra(ARG_THREAD_LINK)!!)
+                    PostListFragment.newInstance(threadLink)
             } else if (!authorId.isNullOrEmpty()) { //指定用户
                 fragment = PostListFragment.newInstance(thread, authorId)
             } else if (progress != null) {//有进度信息

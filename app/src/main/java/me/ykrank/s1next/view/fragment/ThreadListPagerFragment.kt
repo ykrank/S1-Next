@@ -8,7 +8,6 @@ import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.data.CacheParam
 import com.github.ykrank.androidtools.data.Resource
-import com.github.ykrank.androidtools.widget.EventBus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import me.ykrank.s1next.App
@@ -101,7 +100,7 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
     override suspend fun getSource(loading: Int): Flow<Resource<ThreadsWrapper>>? {
         val source = apiCacheProvider.getThreadsWrapper(
             mForumId, mTypeId, mPageNum,
-            CacheParam(isForceLoading, listOf(mForumId, mTypeId, mPageNum))
+            CacheParam(isForceLoading)
         )
         if (mGeneralPreferencesManager.isPostDisableSticky) {
             return source.map {
