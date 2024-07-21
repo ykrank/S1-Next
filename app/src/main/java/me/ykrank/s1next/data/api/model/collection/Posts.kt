@@ -39,13 +39,12 @@ class Posts @JsonCreator constructor(
     var threadAttachment: ThreadAttachment? = null
 
     @JsonProperty("_postList")
-    val postList: List<Post>
+    val postList: List<Post> = filterPostList(rawPostList)
 
     @JsonProperty("special_poll")
     val vote: Vote? = null
 
     init {
-        this.postList = filterPostList(rawPostList)
         if (trade != null && !rawPostList.isNullOrEmpty()) {
             val post = rawPostList[0]
             if (trade.containsKey(post.id + 1)) {
