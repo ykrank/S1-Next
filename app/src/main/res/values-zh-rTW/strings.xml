@@ -434,6 +434,8 @@
     <string name="format_error">格式錯誤</string>
     <string name="choose_user">選擇用戶</string>
     <string name="choose_user_invalid">用戶無效，請選擇其他用戶</string>
+    <string name="stop_confirm">確認停止？</string>
     <string name="data_load_from_cache">數據來自緩存</string>
     <string name="message_load_error">加載失敗</string>
+    <string name="stop">停止</string>
 </resources>

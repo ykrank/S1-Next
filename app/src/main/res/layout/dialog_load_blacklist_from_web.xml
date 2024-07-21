@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.ykrank.s1next.view.dialog.ThreadGoDialogFragment">
 
@@ -15,19 +16,36 @@
             type="int" />
     </data>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingStart="@dimen/dialog_padding"
         android:paddingLeft="@dimen/dialog_padding"
-        android:paddingTop="@dimen/dialog_padding"
         android:paddingEnd="@dimen/dialog_padding"
         android:paddingRight="@dimen/dialog_padding"
         android:paddingBottom="@dimen/dialog_padding_bottom">
 
-        <include layout="@layout/progress_bar" />
+        <Button
+            android:id="@+id/btn_stop"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="48dp"
+            android:text="@string/stop"
+            android:textColor="@color/error"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/progress_circular"
+            layout="@layout/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_stop" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -38,15 +56,23 @@
             android:max="@{max}"
             android:minWidth="240dp"
             android:progress="@{progress}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/progress_circular"
             tools:max="100"
             tools:progress="20" />
 
         <TextView
-            tools:text="1/10"
-            android:text="@{progress+`/`+max}"
-            android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{progress+`/`+max}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/progress_bar"
+            tools:text="1/10" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

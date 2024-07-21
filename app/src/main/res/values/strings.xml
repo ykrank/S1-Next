@@ -38,6 +38,8 @@
 
     <string name="show_image">Show image</string>
     <string name="go_url">Go url</string>
+    <string name="stop">Stop</string>
+    <string name="stop_confirm">Sure stop?</string>
 
     <string name="data_load_from_cache">Data load from cache</string>
     <!-- menu -->

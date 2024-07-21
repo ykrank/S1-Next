@@ -244,5 +244,7 @@
     <string name="format_error">格式错误</string>
     <string name="choose_user">选择用户</string>
     <string name="choose_user_invalid">用户无效，请选择其他用户</string>
+    <string name="stop_confirm">确认停止？</string>
     <string name="data_load_from_cache">数据来自缓存</string>
+    <string name="stop">停止</string>
 </resources>
