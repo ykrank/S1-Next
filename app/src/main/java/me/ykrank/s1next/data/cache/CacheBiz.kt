@@ -71,6 +71,9 @@ class CacheBiz(private val manager: CacheDatabaseManager, private val objectMapp
         }
     }
 
+    /**
+     * 注意content必须是不可修改的，避免异步问题
+     */
     fun saveZipAsync(
         key: String,
         content: Any,

@@ -3,10 +3,8 @@ package me.ykrank.s1next.data.cache
 import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import me.ykrank.s1next.BuildConfig
+import com.github.ykrank.androidtools.util.L
 import me.ykrank.s1next.data.db.AppDatabaseManager
-import java.util.concurrent.Executor
-import java.util.concurrent.Executors
 
 interface CacheDatabaseManager {
     fun getOrBuildDb(): CacheDatabase
@@ -45,6 +43,13 @@ class CacheDatabaseManagerImpl(
     }
 
     override fun runAsync(runnable: Runnable) {
-        appDatabaseManager.runAsync(runnable)
+        try {
+            appDatabaseManager.runAsync(runnable)
+        } catch (e: Exception) {
+            L.report(e)
+            if (L.showLog) {
+                throw e
+            }
+        }
     }
 }
