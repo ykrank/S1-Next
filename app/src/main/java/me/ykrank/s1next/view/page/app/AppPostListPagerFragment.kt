@@ -20,7 +20,6 @@ import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.LooperUtil
 import com.github.ykrank.androidtools.util.MathUtil
 import com.github.ykrank.androidtools.util.RxJavaUtil
-import com.github.ykrank.androidtools.widget.EventBus
 import com.github.ykrank.androidtools.widget.recycleview.StartSnapLinearLayoutManager
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
@@ -93,16 +92,18 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
 
     private var refreshAfterBlacklistChangeDisposable: Disposable? = null
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        App.appComponent.inject(this)
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         val bundle = requireArguments()
         mThreadId = bundle.getString(ARG_THREAD_ID)
         mPageNum = bundle.getInt(ARG_PAGE_NUM)
         mQuotePid = bundle.getString(ARG_QUOTE_POST_ID)
         leavePageMsg("AppPostListPagerFragment##ThreadId:$mThreadId,PageNum:$mPageNum")
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
+        super.onViewCreated(view, savedInstanceState)
         mRecyclerView = recyclerView
         mLayoutManager = StartSnapLinearLayoutManager(requireActivity())
         mRecyclerView.layoutManager = mLayoutManager

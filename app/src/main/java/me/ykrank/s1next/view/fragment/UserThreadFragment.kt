@@ -23,10 +23,14 @@ class UserThreadFragment : BaseLoadMoreRecycleViewFragment<HomeThreadWebWrapper>
     override val recyclerViewAdapter: BaseRecyclerViewAdapter
         get() = mRecyclerAdapter
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         uid = requireArguments().getString(ARG_UID)
         leavePageMsg("UserThreadFragment")
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val recyclerView = recyclerView
         recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)

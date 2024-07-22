@@ -1,7 +1,6 @@
 package me.ykrank.s1next.view.fragment
 
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import io.reactivex.Single
 import me.ykrank.s1next.App
@@ -25,12 +24,14 @@ class DarkRoomFragment : BaseLoadMoreRecycleViewFragment<DarkRoomWrapper>() {
     override val recyclerViewAdapter: BaseRecyclerViewAdapter
         get() = mRecyclerAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        App.appComponent.inject(this)
+        leavePageMsg("DarkRoomFragment")
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        App.appComponent.inject(this)
-
-        leavePageMsg("DarkRoomFragment")
-
         val recyclerView = recyclerView
         recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         mRecyclerAdapter = DarkRoomRecyclerViewAdapter(activity)

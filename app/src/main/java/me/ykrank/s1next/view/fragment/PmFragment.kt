@@ -32,15 +32,15 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        toUid = requireArguments().getString(ARG_TO_UID)
+        toUsername = requireArguments().getString(ARG_TO_USERNAME)
+        leavePageMsg("PmFragment##toUid:$toUid,toUsername$toUsername")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         App.appComponent.inject(this)
 
-        toUid = requireArguments().getString(ARG_TO_UID)
-        toUsername = requireArguments().getString(ARG_TO_USERNAME)
-        leavePageMsg("PmFragment##toUid:$toUid,toUsername$toUsername")
         if (toUid.isNullOrEmpty() || toUsername.isNullOrEmpty()) {
             showSnackbar(R.string.message_api_error)
             return
