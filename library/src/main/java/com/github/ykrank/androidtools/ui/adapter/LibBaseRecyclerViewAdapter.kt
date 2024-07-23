@@ -3,8 +3,6 @@ package com.github.ykrank.androidtools.ui.adapter
 import android.content.Context
 import androidx.recyclerview.widget.DiffUtil
 import com.github.ykrank.androidtools.BuildConfig
-import com.google.common.base.Objects
-import com.google.common.base.Preconditions
 import com.github.ykrank.androidtools.ui.adapter.delegate.FooterAdapterDelegate
 import com.github.ykrank.androidtools.ui.adapter.delegate.FooterProgressAdapterDelegate
 import com.github.ykrank.androidtools.ui.adapter.delegate.ProgressAdapterDelegate
@@ -21,12 +19,15 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 abstract class LibBaseRecyclerViewAdapter : ListDelegationAdapter<MutableList<Any>> {
 
-    var updateDispose: Disposable? = null
+    var updateJob: Disposable? = null
 
     /**
      * Whether diffutil calculateDiffing
      */
-    private var differing: AtomicBoolean = AtomicBoolean(false)
+    private var mDiffering: AtomicBoolean = AtomicBoolean(false)
+
+    val differing
+        get() = mDiffering.get()
 
     constructor(context: Context) : this(context, true)
 
@@ -42,14 +43,14 @@ abstract class LibBaseRecyclerViewAdapter : ListDelegationAdapter<MutableList<An
     }
 
     protected fun addAdapterDelegate(adapterDelegate: AdapterDelegate<MutableList<Any>>) {
-        Preconditions.checkArgument(delegatesManager.getViewType(adapterDelegate) != VIEW_TYPE_PROGRESS)
+        assert(delegatesManager.getViewType(adapterDelegate) != VIEW_TYPE_PROGRESS)
         delegatesManager.addDelegate(adapterDelegate)
     }
 
     fun setHasProgress(hasProgress: Boolean) {
         if (hasProgress) {
             //If diffing, post a task to it
-            if (differing.get()) {
+            if (mDiffering.get()) {
                 diffNewDataSet(listOf(ProgressItem()), false)
             } else {
                 clear()
@@ -59,7 +60,7 @@ abstract class LibBaseRecyclerViewAdapter : ListDelegationAdapter<MutableList<An
         } else {
             // we do not need to clear list if we have already changed
             // data set or we have no ProgressItem to been cleared or differing
-            if (!differing.get() && items.size == 1 && items[0] is ProgressItem) {
+            if (!mDiffering.get() && items.size == 1 && items[0] is ProgressItem) {
                 clear()
                 notifyDataSetChanged()
             }
@@ -67,7 +68,7 @@ abstract class LibBaseRecyclerViewAdapter : ListDelegationAdapter<MutableList<An
     }
 
     fun showFooterProgress() {
-        if (differing.get()) {
+        if (mDiffering.get()) {
             return
         }
         addItem(FooterProgressItem())
@@ -75,7 +76,7 @@ abstract class LibBaseRecyclerViewAdapter : ListDelegationAdapter<MutableList<An
     }
 
     fun hideFooterProgress() {
-        if (differing.get()) {
+        if (mDiffering.get()) {
             return
         }
         val position = itemCount - 1
@@ -102,13 +103,13 @@ abstract class LibBaseRecyclerViewAdapter : ListDelegationAdapter<MutableList<An
             L.throwNewErrorIfDebug(IllegalArgumentException("must set new data set"))
             return
         }
-        RxJavaUtil.disposeIfNotNull(updateDispose)
+        RxJavaUtil.disposeIfNotNull(updateJob)
 
-        differing.set(true)
-        updateDispose = Single.just(BaseDiffCallback(items, newData))
+        mDiffering.set(true)
+        updateJob = Single.just(BaseDiffCallback(items, newData))
                 .map { DiffUtil.calculateDiff(it, detectMoves) }
                 .compose(RxJavaUtil.iOSingleTransformer())
-                .doFinally { differing.set(false) }
+            .doFinally { mDiffering.set(false) }
                 .subscribe({
                     items = newData.toMutableList()
                     it.dispatchUpdatesTo(this)
@@ -177,7 +178,7 @@ abstract class LibBaseRecyclerViewAdapter : ListDelegationAdapter<MutableList<An
      */
     private fun checkNotDiffering() {
         if (L.showLog()) {
-            check(!differing.get())
+            check(!mDiffering.get())
         }
     }
 
@@ -193,7 +194,7 @@ abstract class LibBaseRecyclerViewAdapter : ListDelegationAdapter<MutableList<An
         if (BuildConfig.DEBUG) {
             throw IllegalStateException("Item must implements StableIdModel if stable id")
         }
-        return Objects.hashCode(d).toLong()
+        return d.hashCode().toLong()
     }
 
     class BaseDiffCallback(var oldData: List<*>, var newData: List<*>) : DiffUtil.Callback() {

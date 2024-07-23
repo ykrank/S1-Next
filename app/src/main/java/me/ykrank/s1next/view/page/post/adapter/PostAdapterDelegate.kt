@@ -1,6 +1,7 @@
 package me.ykrank.s1next.view.page.post.adapter
 
 import android.content.Context
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -8,8 +9,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.ykrank.androidtools.data.CacheParam
-import com.github.ykrank.androidtools.data.CacheStrategy
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewHolder
 import com.github.ykrank.androidtools.util.L
@@ -19,9 +18,7 @@ import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.ApiCacheProvider
-import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.model.Post
-import me.ykrank.s1next.data.api.model.Rate
 import me.ykrank.s1next.data.api.model.Thread
 import me.ykrank.s1next.data.api.model.Vote
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
@@ -115,33 +112,40 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
 
         val rates = post.rates
         val context = binding.root.context
-        binding.tvRateViewAll.setOnClickListener {
-            if (rates?.isNotEmpty() == true) {
-                RateDetailsListActivity.start(context, ArrayList(rates))
-            } else {
-                fragment.lifecycleScope.launch(L.report) {
-                    val newRates =
-                        mApiCache.getPostRates(threadInfo?.id, post.id).data ?: emptyList()
-                    post.rates = newRates
-                    val adapter = binding.recycleViewRates.adapter as SimpleRecycleViewAdapter?
-                    if (adapter != null) {
-                        if (newRates.size > 10) {
-                            adapter.diffNewDataSet(newRates.subList(0, 10), true)
-                        } else {
-                            adapter.diffNewDataSet(newRates, true)
+
+        if (rates != null) {
+            binding.layoutRates.visibility = View.VISIBLE
+            binding.tvRateViewAll.setOnClickListener {
+                if (rates.isNotEmpty()) {
+                    RateDetailsListActivity.start(context, ArrayList(rates))
+                } else {
+                    fragment.lifecycleScope.launch(L.report) {
+                        val newRates =
+                            mApiCache.getPostRates(threadInfo?.id, post.id).data ?: emptyList()
+                        post.rates = newRates
+                        val adapter = binding.recycleViewRates.adapter as SimpleRecycleViewAdapter?
+                        if (adapter != null) {
+                            if (newRates.size > 10) {
+                                adapter.diffNewDataSet(newRates.subList(0, 10), true)
+                            } else {
+                                adapter.diffNewDataSet(newRates, true)
+                            }
                         }
                     }
                 }
             }
+        } else {
+            binding.layoutRates.visibility = View.GONE
         }
         if (rates?.isNotEmpty() == true) {
+            binding.recycleViewRates.visibility = View.VISIBLE
             if (binding.recycleViewRates.adapter == null) {
                 binding.recycleViewRates.adapter = SimpleRecycleViewAdapter(
                     context,
                     R.layout.item_rate_detail,
                     true,
-                    { position, binding ->
-                        val bind = binding as ItemRateDetailBinding?
+                    { _, rateBinding ->
+                        val bind = rateBinding as? ItemRateDetailBinding
                         bind?.model?.apply {
                             val uid = this.uid
                             val uname = this.uname
@@ -171,6 +175,8 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
             } else {
                 adapter.diffNewDataSet(rates, true)
             }
+        } else {
+            binding.recycleViewRates.visibility = View.GONE
         }
 
         binding.executePendingBindings()
