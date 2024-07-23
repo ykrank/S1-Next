@@ -1,10 +1,11 @@
-package me.ykrank.s1next.data.db.dbmodel
+package me.ykrank.s1next.data.cache
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import me.ykrank.s1next.data.cache.CacheBiz
+import me.ykrank.s1next.data.cache.model.CacheGroup
 
 /**
  * Created by yuanke on 7/17/24
@@ -28,8 +29,8 @@ class Cache {
     @ColumnInfo(name = "key")
     var key: String = ""
 
-    @ColumnInfo(name = "group", defaultValue = CacheBiz.DEFAULT_GROUP)
-    var group: String = CacheBiz.DEFAULT_GROUP
+    @ColumnInfo(name = "group", defaultValue = CacheGroup.GROUP_DEFAULT)
+    var group: String = CacheGroup.GROUP_DEFAULT
 
     @ColumnInfo(name = "title")
     var title: String? = null
@@ -46,20 +47,27 @@ class Cache {
     @ColumnInfo(name = "timestamp")
     var timestamp: Long = 0
 
+    /**
+     * 解码为string后的zip blob
+     */
+    @Ignore
+    var decodeZipString: String? = null
+
     constructor()
     constructor(
-        id: Long?,
         key: String,
-        title: String?,
-        blob: ByteArray?,
-        text: String?,
-        timestamp: Long
+        blob: ByteArray? = null,
+        title: String? = null,
+        text: String? = null,
+        group: String = CacheGroup.GROUP_DEFAULT,
+        decodeZipString: String? = null,
     ) {
-        this.id = id
         this.key = key
-        this.title = title
         this.blob = blob
+        this.title = title
         this.text = text
-        this.timestamp = timestamp
+        this.group = group
+        this.decodeZipString = decodeZipString
+        this.timestamp = System.currentTimeMillis()
     }
 }

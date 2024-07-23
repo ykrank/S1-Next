@@ -14,8 +14,9 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.data.User
+import me.ykrank.s1next.data.cache.Cache
 import me.ykrank.s1next.data.cache.CacheBiz
-import me.ykrank.s1next.data.db.dbmodel.Cache
+import me.ykrank.s1next.data.cache.model.CacheGroup
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.util.toJson
 import java.io.Serializable
@@ -40,6 +41,7 @@ class ApiCacheFlow(
         cls: Class<T>,
         api: suspend () -> String,
         keys: List<Serializable?>,
+        group: String = CacheGroup.GROUP_DEFAULT,
         getValidator: ((data: T) -> Boolean)? = null,
         setValidator: ((data: T) -> Boolean)? = null,
         loadTime: LoadTime = LoadTime(),
@@ -56,7 +58,7 @@ class ApiCacheFlow(
 
             fun parseCache(): T? {
                 runCatching {
-                    val json = cacheData?.text
+                    val json = cacheData?.decodeZipString
                     if (!json.isNullOrEmpty()) {
                         val data = loadTime.run(ApiCacheConstants.Time.TIME_PARSE_CACHE) {
                             jsonMapper.readValue(json, cls)
@@ -132,10 +134,11 @@ class ApiCacheFlow(
                             // 有效的数据更新到缓存
                             withContext(Dispatchers.Default + L.report) {
                                 loadTime.run(ApiCacheConstants.Time.TIME_SAVE_CACHE) {
-                                    cacheBiz.saveTextZipAsync(
+                                    cacheBiz.saveZipAsync(
                                         key,
                                         jsonMapper.writeValueAsString(data), // 这里不能在内部序列化，避免异步问题
-                                        maxSize = downloadPerf.totalDataCacheSize
+                                        maxSize = downloadPerf.totalDataCacheSize,
+                                        group = group
                                     )
                                 }
                             }

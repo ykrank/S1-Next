@@ -32,6 +32,7 @@ import me.ykrank.s1next.data.api.model.wrapper.RatePostsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper
 import me.ykrank.s1next.data.cache.CacheBiz
 import me.ykrank.s1next.data.cache.model.BaseCache
+import me.ykrank.s1next.data.cache.model.CacheGroup
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 
 class S1ApiCacheProvider(
@@ -88,6 +89,7 @@ class S1ApiCacheProvider(
         param: CacheParam?,
         onRateUpdate: ((pid: Int, rate: List<Rate>) -> Unit)?,
     ): Flow<Resource<PostsWrapper>> {
+        val group = CacheGroup.GROUP_THREAD
         val cacheKeys = listOf(threadId, page)
         // 不过滤回帖人时才走缓存
         val userCache = authorId.isNullOrEmpty()
@@ -111,7 +113,8 @@ class S1ApiCacheProvider(
                         cacheKeys
                     ),
                     postWrapper,
-                    maxSize = downloadPerf.totalDataCacheSize
+                    maxSize = downloadPerf.totalDataCacheSize,
+                    group = group
                 )
             }
         }
@@ -134,6 +137,7 @@ class S1ApiCacheProvider(
                 userCache
             },
             keys = cacheKeys,
+            group = group,
         )
             .combine(ratePostFlow) { it, ratePostWrapper ->
                 if (it.source.isCloud()) {

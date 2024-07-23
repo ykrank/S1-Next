@@ -13,6 +13,7 @@
 -keep public class me.ykrank.s1next.data.cache.** { *; }
 -keep public class me.ykrank.s1next.data.db.dbmodel.ReadProgress { *; }
 -keep public class me.ykrank.s1next.widget.uploadimg.model.** { *; }
-# GreenDao model
+# db model
 -keep public class me.ykrank.s1next.data.db.dbmodel.** { *; }
+-keep public class me.ykrank.s1next.data.cache.Cache { *; }
 
