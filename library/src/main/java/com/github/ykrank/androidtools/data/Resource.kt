@@ -1,8 +1,8 @@
 package com.github.ykrank.androidtools.data
 
 /**
- * Created by yuanke on 7/16/24
- * @author yuanke.ykrank@bytedance.com
+ * Created by ykrank on 7/16/24
+ * 
  */
 sealed class
 Resource<T>(

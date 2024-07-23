@@ -14,9 +14,9 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.data.User
-import me.ykrank.s1next.data.cache.Cache
-import me.ykrank.s1next.data.cache.CacheBiz
-import me.ykrank.s1next.data.cache.model.CacheGroup
+import me.ykrank.s1next.data.cache.CacheConstants
+import me.ykrank.s1next.data.cache.biz.CacheBiz
+import me.ykrank.s1next.data.cache.dbmodel.Cache
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.util.toJson
 import java.io.Serializable
@@ -41,11 +41,14 @@ class ApiCacheFlow(
         cls: Class<T>,
         api: suspend () -> String,
         keys: List<Serializable?>,
-        group: String = CacheGroup.GROUP_DEFAULT,
         getValidator: ((data: T) -> Boolean)? = null,
         setValidator: ((data: T) -> Boolean)? = null,
         loadTime: LoadTime = LoadTime(),
         printTime: Boolean = BuildConfig.DEBUG,
+        group: String = CacheConstants.CacheGroup.GROUP_DEFAULT,
+        group1: String? = null,
+        group2: String? = null,
+        group3: String? = null,
     ): Flow<Resource<T>> {
         val key = getKey(type, keys)
         val cacheStrategy = param?.strategy ?: CacheStrategy.NET_FIRST
@@ -138,7 +141,10 @@ class ApiCacheFlow(
                                         key,
                                         jsonMapper.writeValueAsString(data), // 这里不能在内部序列化，避免异步问题
                                         maxSize = downloadPerf.totalDataCacheSize,
-                                        group = group
+                                        group = group,
+                                        group1 = group1,
+                                        group2 = group2,
+                                        group3 = group3,
                                     )
                                 }
                             }

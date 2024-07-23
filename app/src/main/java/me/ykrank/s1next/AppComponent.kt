@@ -8,7 +8,7 @@ import me.ykrank.s1next.data.api.ApiCacheProvider
 import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.UserValidator
 import me.ykrank.s1next.data.api.app.AppService
-import me.ykrank.s1next.data.cache.CacheBiz
+import me.ykrank.s1next.data.cache.biz.CacheBiz
 import me.ykrank.s1next.data.db.AppDatabaseManager
 import me.ykrank.s1next.data.db.DbModule
 import me.ykrank.s1next.data.db.biz.BlackListBiz

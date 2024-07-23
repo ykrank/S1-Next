@@ -1,8 +1,7 @@
-package me.ykrank.s1next.data.cache.model
+package me.ykrank.s1next.data.cache.exmodel
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.google.common.base.Objects
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class NewThreadCacheModel(

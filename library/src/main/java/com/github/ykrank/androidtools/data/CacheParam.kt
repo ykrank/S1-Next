@@ -5,8 +5,8 @@ import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
 /**
- * Created by yuanke on 7/16/24
- * @author yuanke.ykrank@bytedance.com
+ * Created by ykrank on 7/16/24
+ * 
  */
 data class CacheParam(
     val strategy: CacheStrategy = CacheStrategy.NET_FIRST,

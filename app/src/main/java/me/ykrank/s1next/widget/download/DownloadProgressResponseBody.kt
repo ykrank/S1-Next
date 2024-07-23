@@ -10,8 +10,8 @@ import okio.buffer
 import java.io.IOException
 
 /**
- * Created by yuanke on 7/12/24
- * @author yuanke.ykrank@bytedance.com
+ * Created by ykrank on 7/12/24
+ * 
  */
 class DownloadProgressResponseBody(
     val progressManager: ProgressManager,

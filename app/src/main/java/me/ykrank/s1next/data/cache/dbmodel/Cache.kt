@@ -1,15 +1,15 @@
-package me.ykrank.s1next.data.cache
+package me.ykrank.s1next.data.cache.dbmodel
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import me.ykrank.s1next.data.cache.model.CacheGroup
+import me.ykrank.s1next.data.cache.CacheConstants
 
 /**
- * Created by yuanke on 7/17/24
- * @author yuanke.ykrank@bytedance.com
+ * Created by ykrank on 7/17/24
+ * 
  */
 @Entity(
     tableName = "Cache",
@@ -29,8 +29,17 @@ class Cache {
     @ColumnInfo(name = "key")
     var key: String = ""
 
-    @ColumnInfo(name = "group", defaultValue = CacheGroup.GROUP_DEFAULT)
-    var group: String = CacheGroup.GROUP_DEFAULT
+    @ColumnInfo(name = "group", defaultValue = CacheConstants.CacheGroup.GROUP_DEFAULT)
+    var group: String = CacheConstants.CacheGroup.GROUP_DEFAULT
+
+    @ColumnInfo(name = "group1")
+    var group1: String? = null
+
+    @ColumnInfo(name = "group2")
+    var group2: String? = null
+
+    @ColumnInfo(name = "group3")
+    var group3: String? = null
 
     @ColumnInfo(name = "title")
     var title: String? = null
@@ -59,7 +68,7 @@ class Cache {
         blob: ByteArray? = null,
         title: String? = null,
         text: String? = null,
-        group: String = CacheGroup.GROUP_DEFAULT,
+        group: String = CacheConstants.CacheGroup.GROUP_DEFAULT,
         decodeZipString: String? = null,
     ) {
         this.key = key

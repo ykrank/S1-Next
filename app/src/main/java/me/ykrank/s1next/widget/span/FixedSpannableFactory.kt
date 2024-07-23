@@ -3,7 +3,7 @@ package me.ykrank.s1next.widget.span
 import android.text.Spannable
 
 /**
- * Created by yuanke on 2021/10/9
+ * Created by ykrank on 2021/10/9
  * https://developer.android.google.cn/guide/topics/text/spans?hl=zh-cn#set-text-multiple
  */
 class FixedSpannableFactory : Spannable.Factory() {

@@ -1,15 +1,19 @@
-package me.ykrank.s1next.data.cache
+package me.ykrank.s1next.data.cache.biz
 
 import androidx.annotation.WorkerThread
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.ZipUtils
 import me.ykrank.s1next.App
-import me.ykrank.s1next.data.cache.model.CacheGroup
+import me.ykrank.s1next.data.cache.CacheConstants
+import me.ykrank.s1next.data.cache.CacheDatabase
+import me.ykrank.s1next.data.cache.CacheDatabaseManager
+import me.ykrank.s1next.data.cache.dao.CacheDao
+import me.ykrank.s1next.data.cache.dbmodel.Cache
 
 /**
- * Created by yuanke on 7/17/24
- * @author yuanke.ykrank@bytedance.com
+ * Created by ykrank on 7/17/24
+ * 
  */
 class CacheBiz(private val manager: CacheDatabaseManager, private val objectMapper: ObjectMapper) {
 
@@ -60,8 +64,11 @@ class CacheBiz(private val manager: CacheDatabaseManager, private val objectMapp
         key: String,
         content: Any,
         title: String? = null,
-        group: String = CacheGroup.GROUP_DEFAULT,
-        maxSize: Int = DEFAULT_MAX_SIZE
+        group: String = CacheConstants.CacheGroup.GROUP_DEFAULT,
+        maxSize: Int = DEFAULT_MAX_SIZE,
+        group1: String? = null,
+        group2: String? = null,
+        group3: String? = null,
     ) {
         manager.runAsync {
             saveZip(
@@ -74,7 +81,11 @@ class CacheBiz(private val manager: CacheDatabaseManager, private val objectMapp
                     } else {
                         objectMapper.writeValueAsString(content)
                     }
-                ), maxSize
+                ).apply {
+                    this.group1 = group1
+                    this.group2 = group2
+                    this.group3 = group3
+                }, maxSize
             )
         }
     }

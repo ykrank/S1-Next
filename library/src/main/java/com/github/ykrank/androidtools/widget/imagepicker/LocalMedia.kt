@@ -5,8 +5,8 @@ import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 
 /**
- * Created by yuanke on 5/27/24
- * @author yuanke.ykrank@bytedance.com
+ * Created by ykrank on 5/27/24
+ * 
  */
 @PaperParcel
 data class LocalMedia(

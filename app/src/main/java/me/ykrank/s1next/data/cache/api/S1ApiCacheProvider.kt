@@ -30,15 +30,16 @@ import me.ykrank.s1next.data.api.model.wrapper.ForumGroupsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.PostsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.RatePostsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper
-import me.ykrank.s1next.data.cache.CacheBiz
-import me.ykrank.s1next.data.cache.model.BaseCache
-import me.ykrank.s1next.data.cache.model.CacheGroup
+import me.ykrank.s1next.data.cache.biz.CacheBiz
+import me.ykrank.s1next.data.cache.biz.CacheGroupBiz
+import me.ykrank.s1next.data.cache.exmodel.BaseCache
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 
 class S1ApiCacheProvider(
     private val downloadPerf: DownloadPreferencesManager,
     private val s1Service: S1Service,
     private val cacheBiz: CacheBiz,
+    private val cacheGroupBiz: CacheGroupBiz,
     private val user: User,
     private val jsonMapper: ObjectMapper,
 ) : ApiCacheProvider {
@@ -89,7 +90,10 @@ class S1ApiCacheProvider(
         param: CacheParam?,
         onRateUpdate: ((pid: Int, rate: List<Rate>) -> Unit)?,
     ): Flow<Resource<PostsWrapper>> {
-        val group = CacheGroup.GROUP_THREAD
+        val cacheType = ApiCacheConstants.CacheType.Posts
+        val groupType = cacheType.type
+        val groupPage = page.toString()
+
         val cacheKeys = listOf(threadId, page)
         // 不过滤回帖人时才走缓存
         val userCache = authorId.isNullOrEmpty()
@@ -109,19 +113,25 @@ class S1ApiCacheProvider(
             if (userCache) {
                 cacheBiz.saveZipAsync(
                     apiCacheFlow.getKey(
-                        ApiCacheConstants.CacheType.Posts,
+                        cacheType,
                         cacheKeys
                     ),
                     postWrapper,
                     maxSize = downloadPerf.totalDataCacheSize,
-                    group = group
+                    group = groupType,
+                    group1 = threadId,
+                    group2 = groupPage,
                 )
+                // 保存title时不保存page
+                postWrapper.data?.postListInfo?.title?.apply {
+                    cacheGroupBiz.saveTitleAsync(this, groupType, threadId)
+                }
             }
         }
 
         var netPostsWrapper: PostsWrapper? = null
         return apiCacheFlow.getFlow(
-            ApiCacheConstants.CacheType.Posts,
+            cacheType,
             param,
             PostsWrapper::class.java,
             loadTime = loadTime,
@@ -137,7 +147,9 @@ class S1ApiCacheProvider(
                 userCache
             },
             keys = cacheKeys,
-            group = group,
+            group = groupType,
+            group1 = threadId,
+            group2 = groupPage,
         )
             .combine(ratePostFlow) { it, ratePostWrapper ->
                 if (it.source.isCloud()) {

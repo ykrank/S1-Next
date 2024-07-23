@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import me.ykrank.s1next.data.api.model.Account
 
 /**
- * Created by yuanke on 6/4/24
- * @author yuanke.ykrank@bytedance.com
+ * Created by ykrank on 6/4/24
+ * 
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 open class BaseAccountCollection<T> : Account() {

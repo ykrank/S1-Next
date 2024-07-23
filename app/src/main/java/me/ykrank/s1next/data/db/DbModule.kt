@@ -7,9 +7,10 @@ import dagger.Provides
 import me.ykrank.s1next.AppLife
 import me.ykrank.s1next.data.cache.CacheDatabaseManager
 import me.ykrank.s1next.data.cache.CacheDatabaseManagerImpl
+import me.ykrank.s1next.data.cache.biz.CacheBiz
+import me.ykrank.s1next.data.cache.biz.CacheGroupBiz
 import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.db.biz.BlackWordBiz
-import me.ykrank.s1next.data.cache.CacheBiz
 import me.ykrank.s1next.data.db.biz.HistoryBiz
 import me.ykrank.s1next.data.db.biz.LoginUserBiz
 import me.ykrank.s1next.data.db.biz.ReadProgressBiz
@@ -81,5 +82,11 @@ class DbModule {
     @AppLife
     fun provideCacheBiz(manager: CacheDatabaseManager, objectMapper: ObjectMapper): CacheBiz {
         return CacheBiz(manager, objectMapper)
+    }
+
+    @Provides
+    @AppLife
+    fun provideCacheGroupBiz(manager: CacheDatabaseManager): CacheGroupBiz {
+        return CacheGroupBiz(manager)
     }
 }

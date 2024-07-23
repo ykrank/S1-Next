@@ -15,5 +15,5 @@
 -keep public class me.ykrank.s1next.widget.uploadimg.model.** { *; }
 # db model
 -keep public class me.ykrank.s1next.data.db.dbmodel.** { *; }
--keep public class me.ykrank.s1next.data.cache.Cache { *; }
+-keep public class me.ykrank.s1next.data.cache.dbmodel.Cache { *; }
 

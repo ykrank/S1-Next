@@ -3,8 +3,8 @@ package com.github.ykrank.androidtools.ui.vm
 import androidx.lifecycle.ViewModel
 
 /**
- * Created by yuanke on 7/17/24
- * @author yuanke.ykrank@bytedance.com
+ * Created by ykrank on 7/17/24
+ * 
  */
 class BaseRecycleViewModel<D>: ViewModel() {
 

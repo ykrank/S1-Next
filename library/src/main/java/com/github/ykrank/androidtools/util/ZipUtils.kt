@@ -10,8 +10,8 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
 /**
- * Created by yuanke on 7/17/24
- * @author yuanke.ykrank@bytedance.com
+ * Created by ykrank on 7/17/24
+ * 
  */
 object ZipUtils {
 

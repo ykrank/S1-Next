@@ -15,8 +15,8 @@ import androidx.annotation.RequiresApi
 /**
  * 支持使用由 HardwareBuffer 支持的 HardwareRenderer 进行加速渲染
  *
- * Created by yuanke on 5/30/24
- * @author yuanke.ykrank@bytedance.com
+ * Created by ykrank on 5/30/24
+ * 
  */
 object HRBlur {
 

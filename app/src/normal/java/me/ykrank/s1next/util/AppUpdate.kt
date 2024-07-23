@@ -6,8 +6,8 @@ import android.net.Uri
 
 
 /**
- * Created by yuanke on 5/30/24
- * @author yuanke.ykrank@bytedance.com
+ * Created by ykrank on 5/30/24
+ * 
  */
 object AppUpdate {
 

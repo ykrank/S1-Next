@@ -7,8 +7,8 @@ import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 
 /**
- * Created by yuanke on 7/19/24
- * @author yuanke.ykrank@bytedance.com
+ * Created by ykrank on 7/19/24
+ * 
  */
 @PaperParcel
 @JsonIgnoreProperties(ignoreUnknown = true)

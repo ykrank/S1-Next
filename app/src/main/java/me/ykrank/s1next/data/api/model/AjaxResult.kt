@@ -1,8 +1,8 @@
 package me.ykrank.s1next.data.api.model
 
 /**
- * Created by yuanke on 6/26/24
- * @author yuanke.ykrank@bytedance.com
+ * Created by ykrank on 6/26/24
+ * 
  */
 data class AjaxResult(
     var success: Boolean,

@@ -3,8 +3,8 @@ package me.ykrank.s1next.util
 import org.jsoup.nodes.Entities
 
 /**
- * Created by yuanke on 6/20/24
- * @author yuanke.ykrank@bytedance.com
+ * Created by ykrank on 6/20/24
+ * 
  */
 object HtmlUtils {
 
