@@ -32,7 +32,7 @@ class ReadPreferenceFragment : BasePreferenceFragment() {
     }
 
     companion object {
-        val TAG = ReadPreferenceFragment::class.java.name
+        val TAG = ReadPreferenceFragment::class.java.simpleName
     }
 
 

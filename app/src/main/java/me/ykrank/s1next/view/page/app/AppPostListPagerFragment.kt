@@ -368,7 +368,7 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
     }
 
     companion object {
-        val TAG = AppPostListPagerFragment::class.java.name
+        val TAG = AppPostListPagerFragment::class.java.simpleName
 
         private const val ARG_THREAD_ID = "thread_id"
         private const val ARG_PAGE_NUM = "page_num"

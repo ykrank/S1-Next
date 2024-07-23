@@ -90,7 +90,7 @@ class QuotePostPageParserDialogFragment : ProgressDialogFragment<String>() {
 
     companion object {
 
-        val TAG = QuotePostPageParserDialogFragment::class.java.name
+        val TAG = QuotePostPageParserDialogFragment::class.java.simpleName
 
         private const val ARG_THREAD_LINK = "thread_link"
 

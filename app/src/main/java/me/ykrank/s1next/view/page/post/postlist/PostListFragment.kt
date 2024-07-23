@@ -583,7 +583,7 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
     }
 
     companion object {
-        val TAG = PostListFragment::class.java.name
+        val TAG = PostListFragment::class.java.simpleName
 
         const val Type_Thread = 0
         const val Type_Thread_Link = 1

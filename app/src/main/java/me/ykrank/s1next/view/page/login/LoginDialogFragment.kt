@@ -75,7 +75,7 @@ class LoginDialogFragment : BaseLoginDialogFragment<AccountResultWrapper>() {
 
     companion object {
 
-        val TAG = LoginDialogFragment::class.java.name
+        val TAG = LoginDialogFragment::class.java.simpleName
 
         /**
          * For desktop is "login_succeed".

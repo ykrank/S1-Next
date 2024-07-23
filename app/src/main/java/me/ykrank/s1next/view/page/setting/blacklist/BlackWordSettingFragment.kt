@@ -217,7 +217,7 @@ class BlackWordSettingFragment : BaseFragment() {
     }
 
     companion object {
-        val TAG = BlackWordSettingFragment::class.java.name
+        val TAG = BlackWordSettingFragment::class.java.simpleName
 
         fun newInstance(): BlackWordSettingFragment {
             return BlackWordSettingFragment()

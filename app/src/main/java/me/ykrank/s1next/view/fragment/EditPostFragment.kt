@@ -172,7 +172,7 @@ class EditPostFragment : BasePostEditFragment() {
 
     companion object {
 
-        val TAG: String = EditPostFragment::class.java.name
+        val TAG: String = EditPostFragment::class.java.simpleName
 
         private const val ARG_THREAD = "thread"
         private const val ARG_POST = "post"

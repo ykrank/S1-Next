@@ -11,10 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidtools.data.CacheParam
 import com.github.ykrank.androidtools.data.Resource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
@@ -135,6 +132,6 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(),
     }
 
     companion object {
-        val TAG = ForumFragment::class.java.name
+        val TAG = ForumFragment::class.java.simpleName
     }
 }

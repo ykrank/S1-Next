@@ -90,6 +90,6 @@ class ThreadGoDialogFragment : BaseDialogFragment() {
 
     companion object {
 
-        val TAG = ThreadGoDialogFragment::class.java.name
+        val TAG = ThreadGoDialogFragment::class.java.simpleName
     }
 }

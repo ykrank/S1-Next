@@ -1,24 +1,13 @@
 package me.ykrank.s1next.view.activity
 
-import android.app.Activity
 import android.app.SearchManager
 import android.app.SharedElementCallback
 import android.content.Context
 import android.content.Intent
-import androidx.databinding.DataBindingUtil
 import android.graphics.Point
 import android.graphics.Typeface
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.StateListDrawable
 import android.os.Build
 import android.os.Bundle
-import androidx.annotation.RequiresApi
-import androidx.transition.TransitionManager
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.view.ViewCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.text.InputType
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -32,10 +21,19 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ImageButton
 import android.widget.SearchView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.ViewCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
+import androidx.transition.TransitionManager
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ActivityEvent
-import com.github.ykrank.androidtools.util.*
+import com.github.ykrank.androidtools.util.ImeUtils
+import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.RxJavaUtil
+import com.github.ykrank.androidtools.util.TransitionUtils
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.ApiFlatTransformer
@@ -329,7 +327,7 @@ class SearchActivity : BaseActivity() {
     }
 
     companion object {
-        val TAG = BaseActivity::class.java.name
+        val TAG = BaseActivity::class.java.simpleName
 
         fun start(activity: FragmentActivity, searchIconView: View) {
             if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(

@@ -69,7 +69,7 @@ class UserReplyFragment : BaseLoadMoreRecycleViewFragment<HomeReplyWebWrapper>()
     }
 
     companion object {
-        val TAG = UserReplyFragment::class.java.name
+        val TAG = UserReplyFragment::class.java.simpleName
         private const val ARG_UID = "uid"
 
         fun newInstance(uid: String): UserReplyFragment {

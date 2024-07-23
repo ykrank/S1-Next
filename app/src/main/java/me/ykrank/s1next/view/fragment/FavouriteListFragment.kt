@@ -99,6 +99,6 @@ class FavouriteListFragment : BaseViewPagerFragment() {
 
     companion object {
 
-        val TAG = FavouriteListFragment::class.java.name
+        val TAG = FavouriteListFragment::class.java.simpleName
     }
 }

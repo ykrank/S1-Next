@@ -286,7 +286,7 @@ class AppPostListFragment : BaseViewPagerFragment(), AppPostListPagerFragment.Pa
     }
 
     companion object {
-        val TAG: String = AppPostListFragment::class.java.name
+        val TAG: String = AppPostListFragment::class.java.simpleName
 
         const val Type_Thread = 0
         const val Type_Thread_One_Author = 3

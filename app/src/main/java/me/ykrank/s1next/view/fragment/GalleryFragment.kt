@@ -260,7 +260,7 @@ class GalleryFragment : Fragment() {
     }
 
     companion object {
-        val TAG: String = GalleryFragment::class.java.name
+        val TAG: String = GalleryFragment::class.java.simpleName
 
         private const val ARG_IMAGE_URL = "image_url"
         private const val ARG_IMAGE_THUMB_URL = "image_thumb_url"

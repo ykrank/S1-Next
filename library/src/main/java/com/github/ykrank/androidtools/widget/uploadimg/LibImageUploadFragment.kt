@@ -199,7 +199,7 @@ open class LibImageUploadFragment : LibImagePickerFragment() {
         val fileDescriptor: FileDescriptor?
     )
     companion object {
-        val TAG = LibImageUploadFragment::class.java.name
+        val TAG = LibImageUploadFragment::class.java.simpleName
 
         val Extras_Upload_Images = "extras_upload_images"
 

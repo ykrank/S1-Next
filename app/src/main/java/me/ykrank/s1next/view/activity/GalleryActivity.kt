@@ -2,15 +2,10 @@ package me.ykrank.s1next.view.activity
 
 import android.content.Context
 import android.content.Intent
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.viewpager.widget.ViewPager
-import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
-import com.github.ykrank.androidtools.util.L
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.github.ykrank.androidtools.widget.track.event.page.ActivityEndEvent
 import com.github.ykrank.androidtools.widget.track.event.page.ActivityStartEvent
@@ -78,7 +73,7 @@ class GalleryActivity : AppCompatActivity() {
     }
 
     companion object {
-        val TAG: String = GalleryActivity::class.java.name
+        val TAG: String = GalleryActivity::class.java.simpleName
 
         private const val ARG_IMAGE_URL = "image_urls"
         private const val ARG_POSITION = "position"

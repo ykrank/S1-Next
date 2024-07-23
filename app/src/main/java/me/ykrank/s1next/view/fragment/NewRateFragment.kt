@@ -147,7 +147,7 @@ class NewRateFragment : BaseFragment() {
 
     companion object {
 
-        val TAG = NewRateFragment::class.java.name
+        val TAG = NewRateFragment::class.java.simpleName
 
         private val ARG_THREAD_ID = "thread_id"
         private val ARG_POST_ID = "post_id"

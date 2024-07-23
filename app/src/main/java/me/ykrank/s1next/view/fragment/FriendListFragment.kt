@@ -49,7 +49,7 @@ class FriendListFragment : BaseRecyclerViewFragment<BaseDataWrapper<Friends>>() 
     }
 
     companion object {
-        val TAG = FriendListFragment::class.java.name
+        val TAG = FriendListFragment::class.java.simpleName
         private val ARG_UID = "uid"
 
         fun newInstance(uid: String): FriendListFragment {

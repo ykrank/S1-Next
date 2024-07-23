@@ -39,7 +39,7 @@ class ThreadFavouritesAddRequestDialogFragment : ProgressDialogFragment<AccountR
 
     companion object {
 
-        val TAG = ThreadFavouritesAddRequestDialogFragment::class.java.name
+        val TAG = ThreadFavouritesAddRequestDialogFragment::class.java.simpleName
 
         private const val ARG_THREAD_ID = "thread_id"
         private const val ARG_REMARK = "remark"

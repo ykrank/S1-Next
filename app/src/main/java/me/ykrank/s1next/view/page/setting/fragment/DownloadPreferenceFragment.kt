@@ -17,7 +17,6 @@ import kotlinx.coroutines.withContext
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.cache.CacheBiz
-import me.ykrank.s1next.data.cache.CacheDatabaseManager
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.util.AppFileUtil
 import javax.inject.Inject
@@ -104,6 +103,6 @@ class DownloadPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefer
     }
 
     companion object {
-        val TAG: String = DownloadPreferenceFragment::class.java.name
+        val TAG: String = DownloadPreferenceFragment::class.java.simpleName
     }
 }

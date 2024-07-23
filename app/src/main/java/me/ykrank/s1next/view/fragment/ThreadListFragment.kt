@@ -103,7 +103,7 @@ class ThreadListFragment : BaseViewPagerFragment(), ThreadListPagerFragment.Page
 
     companion object {
 
-        val TAG = ThreadListFragment::class.java.name
+        val TAG = ThreadListFragment::class.java.simpleName
 
         private const val ARG_FORUM = "forum"
 

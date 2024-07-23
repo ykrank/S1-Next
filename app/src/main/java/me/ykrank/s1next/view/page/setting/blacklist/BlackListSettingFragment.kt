@@ -229,7 +229,7 @@ class BlackListSettingFragment : BaseFragment(), DialogInterface.OnDismissListen
     }
 
     companion object {
-        val TAG = BlackListSettingFragment::class.java.name
+        val TAG = BlackListSettingFragment::class.java.simpleName
 
         fun newInstance(): BlackListSettingFragment {
             return BlackListSettingFragment()

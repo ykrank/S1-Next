@@ -47,7 +47,7 @@ class AppLoginDialogFragment : BaseLoginDialogFragment<AppDataWrapper<AppLoginRe
 
     companion object {
 
-        val TAG: String = AppLoginDialogFragment::class.java.name
+        val TAG: String = AppLoginDialogFragment::class.java.simpleName
 
         fun newInstance(
             username: String,

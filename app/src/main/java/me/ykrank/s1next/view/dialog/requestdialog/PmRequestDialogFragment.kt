@@ -35,7 +35,7 @@ class PmRequestDialogFragment : BaseRequestDialogFragment<AccountResultWrapper>(
 
     companion object {
 
-        val TAG: String = PmRequestDialogFragment::class.java.name
+        val TAG: String = PmRequestDialogFragment::class.java.simpleName
 
         private const val ARG_TO_UID = "arg_to_uid"
         private const val ARG_MESSAGE = "message"

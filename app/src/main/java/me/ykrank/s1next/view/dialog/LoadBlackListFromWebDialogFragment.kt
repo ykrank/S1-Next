@@ -87,7 +87,7 @@ class LoadBlackListFromWebDialogFragment : BaseLoadProgressDialogFragment() {
     }
 
     companion object {
-        val TAG: String = LoadBlackListFromWebDialogFragment::class.java.name
+        val TAG: String = LoadBlackListFromWebDialogFragment::class.java.simpleName
 
         fun newInstance(callBack: (() -> Unit)? = null): LoadBlackListFromWebDialogFragment {
             val fragment = LoadBlackListFromWebDialogFragment()

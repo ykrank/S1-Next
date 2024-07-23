@@ -35,7 +35,7 @@ class NewPmFragment : BasePostEditFragment() {
 
     companion object {
 
-        val TAG: String = NewPmFragment::class.java.name
+        val TAG: String = NewPmFragment::class.java.simpleName
 
         private const val ARG_TO_UID = "arg_to_uid"
 

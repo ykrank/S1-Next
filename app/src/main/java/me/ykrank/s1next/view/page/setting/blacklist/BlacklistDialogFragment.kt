@@ -107,7 +107,7 @@ class BlacklistDialogFragment : BaseDialogFragment() {
     companion object {
 
         val BLACKLIST_TAG = "blacklist"
-        val TAG = BlacklistDialogFragment::class.java.name
+        val TAG = BlacklistDialogFragment::class.java.simpleName
 
         fun newInstance(
             blackList: ArrayList<BlackList>,

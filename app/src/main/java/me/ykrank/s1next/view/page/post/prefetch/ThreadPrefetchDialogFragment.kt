@@ -74,7 +74,7 @@ class ThreadPrefetchDialogFragment : BaseLoadProgressDialogFragment() {
     }
 
     companion object {
-        val TAG: String = ThreadPrefetchDialogFragment::class.java.name
+        val TAG: String = ThreadPrefetchDialogFragment::class.java.simpleName
         const val ARG_THREAD_ID = "thread_id"
 
         fun newInstance(threadId: String): ThreadPrefetchDialogFragment {

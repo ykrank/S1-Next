@@ -167,7 +167,7 @@ class NewThreadFragment : BasePostEditFragment() {
     }
 
     companion object {
-        val TAG: String = NewThreadFragment::class.java.name
+        val TAG: String = NewThreadFragment::class.java.simpleName
 
         private const val ARG_FORUM_ID = "forum_id"
 

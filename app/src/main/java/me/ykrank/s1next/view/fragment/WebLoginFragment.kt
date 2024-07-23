@@ -1,6 +1,5 @@
 package me.ykrank.s1next.view.fragment
 
-import androidx.databinding.DataBindingUtil
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +10,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
+import androidx.databinding.DataBindingUtil
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.WebViewUtils
 import me.ykrank.s1next.App
@@ -21,7 +21,7 @@ import me.ykrank.s1next.view.activity.ForumActivity
 import me.ykrank.s1next.viewmodel.WebPageViewModel
 import me.ykrank.s1next.widget.hostcheck.AppHostUrl
 import java.net.URI
-import java.util.*
+import java.util.Arrays
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -157,7 +157,7 @@ class WebLoginFragment : BaseFragment() {
 
     companion object {
 
-        val TAG = WebLoginFragment::class.java.name
+        val TAG = WebLoginFragment::class.java.simpleName
 
         private val LOGIN_PAGE_URL_SUFFIX = "forum-27-1.html"
 

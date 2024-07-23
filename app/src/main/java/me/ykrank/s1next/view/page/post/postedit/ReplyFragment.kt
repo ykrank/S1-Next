@@ -45,7 +45,7 @@ class ReplyFragment : BasePostEditFragment() {
 
     companion object {
 
-        val TAG: String = ReplyFragment::class.java.name
+        val TAG: String = ReplyFragment::class.java.simpleName
 
         private const val ARG_THREAD_ID = "thread_id"
         private const val ARG_QUOTE_POST_ID = "quote_post_id"

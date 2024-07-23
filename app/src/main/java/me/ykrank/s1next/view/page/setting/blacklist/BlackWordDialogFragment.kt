@@ -163,7 +163,7 @@ class BlackWordDialogFragment : BaseDialogFragment() {
     companion object {
 
         val TAG_BLACK_WORD = "black_word"
-        val TAG = BlackWordDialogFragment::class.java.name
+        val TAG = BlackWordDialogFragment::class.java.simpleName
 
         fun newInstance(blackWord: BlackWord?): BlackWordDialogFragment {
             val fragment = BlackWordDialogFragment()

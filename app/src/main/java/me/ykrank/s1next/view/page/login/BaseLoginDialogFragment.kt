@@ -53,7 +53,7 @@ abstract class BaseLoginDialogFragment<T> : ProgressDialogFragment<T>() {
 
     companion object {
 
-        val TAG: String = BaseLoginDialogFragment::class.java.name
+        val TAG: String = BaseLoginDialogFragment::class.java.simpleName
 
         private const val ARG_USERNAME = "username"
         private const val ARG_PASSWORD = "password"

@@ -56,6 +56,6 @@ open class BaseLoadProgressDialogFragment : BaseDialogFragment() {
     }
 
     companion object {
-        val TAG: String = BaseLoadProgressDialogFragment::class.java.name
+        val TAG: String = BaseLoadProgressDialogFragment::class.java.simpleName
     }
 }

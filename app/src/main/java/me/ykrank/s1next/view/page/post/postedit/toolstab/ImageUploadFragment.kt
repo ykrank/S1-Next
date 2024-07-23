@@ -34,7 +34,7 @@ class ImageUploadFragment : LibImageUploadFragment() {
     }
 
     companion object {
-        val TAG: String = ImageUploadFragment::class.java.name
+        val TAG: String = ImageUploadFragment::class.java.simpleName
 
         fun newInstance(): ImageUploadFragment {
             return ImageUploadFragment()

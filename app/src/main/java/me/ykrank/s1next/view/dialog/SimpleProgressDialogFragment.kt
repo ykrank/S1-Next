@@ -45,7 +45,7 @@ class SimpleProgressDialogFragment : DialogFragment() {
     }
 
     companion object {
-        val TAG: String = SimpleProgressDialogFragment::class.java.name
+        val TAG: String = SimpleProgressDialogFragment::class.java.simpleName
         private const val ARG_DIALOG_NOT_CANCELABLE_ON_TOUCH_OUTSIDE = "dialog_not_cancelable_on_touch_outside"
 
         private const val ARG_PROGRESS_MSG = "progress_msg"

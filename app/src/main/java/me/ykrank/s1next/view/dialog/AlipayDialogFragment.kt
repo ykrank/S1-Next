@@ -55,7 +55,7 @@ class AlipayDialogFragment : BaseDialogFragment() {
 
     companion object {
 
-        val TAG = AlipayDialogFragment::class.java.name
+        val TAG = AlipayDialogFragment::class.java.simpleName
 
         private const val ARG_TITLE = "title"
         private const val ARG_MESSAGE = "message"

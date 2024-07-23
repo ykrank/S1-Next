@@ -78,7 +78,7 @@ class BlackListRemarkDialogFragment : BaseDialogFragment() {
 
     companion object {
         @JvmField
-        val TAG: String = BlackListRemarkDialogFragment::class.java.name
+        val TAG: String = BlackListRemarkDialogFragment::class.java.simpleName
 
         private const val ARG_AUTHOR_ID = "arg_author_id"
         private const val ARG_AUTHOR_NAME = "arg_author_name"

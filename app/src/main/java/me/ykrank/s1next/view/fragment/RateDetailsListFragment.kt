@@ -56,7 +56,7 @@ class RateDetailsListFragment : BaseRecyclerViewFragment<List<Rate>>() {
     }
 
     companion object {
-        val TAG = RateDetailsListFragment::class.java.name
+        val TAG = RateDetailsListFragment::class.java.simpleName
         private const val ARG_RATES = "rates"
 
         fun instance(rates: ArrayList<Rate>): RateDetailsListFragment {

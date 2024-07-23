@@ -119,7 +119,7 @@ class BackupPreferenceFragment : BasePreferenceFragment(), Preference.OnPreferen
     }
 
     companion object {
-        val TAG: String = BackupPreferenceFragment::class.java.name
+        val TAG: String = BackupPreferenceFragment::class.java.simpleName
 
         const val BACKUP_FILE_NAME: String = "S1Next_v" + BuildConfig.VERSION_CODE + ".bak"
     }

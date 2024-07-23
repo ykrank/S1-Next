@@ -53,7 +53,7 @@ class LogoutDialogFragment : BaseDialogFragment() {
     }
 
     companion object {
-        private val TAG: String = LogoutDialogFragment::class.java.name
+        private val TAG: String = LogoutDialogFragment::class.java.simpleName
 
         /**
          * Show [LogoutDialogFragment] if user has logged in.

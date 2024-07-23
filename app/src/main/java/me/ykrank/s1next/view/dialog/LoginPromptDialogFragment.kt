@@ -31,7 +31,7 @@ class LoginPromptDialogFragment : BaseDialogFragment() {
 
     companion object {
 
-        private val TAG = LoginPromptDialogFragment::class.java.name
+        private val TAG = LoginPromptDialogFragment::class.java.simpleName
         private val APP_LOGIN = "app_login"
 
         /**

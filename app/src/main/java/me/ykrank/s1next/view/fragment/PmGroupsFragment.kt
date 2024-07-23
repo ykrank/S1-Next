@@ -75,7 +75,7 @@ class PmGroupsFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<PmGroup
 
     companion object {
 
-        val TAG = PmGroupsFragment::class.java.name
+        val TAG = PmGroupsFragment::class.java.simpleName
 
         fun newInstance(): PmGroupsFragment {
             return PmGroupsFragment()

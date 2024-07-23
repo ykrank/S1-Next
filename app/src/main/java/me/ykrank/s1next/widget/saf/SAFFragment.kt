@@ -86,6 +86,6 @@ class SAFFragment : Fragment() {
 
 
     companion object {
-        val TAG: String = SAFFragment::class.java.name
+        val TAG: String = SAFFragment::class.java.simpleName
     }
 }

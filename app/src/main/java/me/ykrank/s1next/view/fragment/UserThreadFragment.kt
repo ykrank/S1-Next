@@ -69,7 +69,7 @@ class UserThreadFragment : BaseLoadMoreRecycleViewFragment<HomeThreadWebWrapper>
     }
 
     companion object {
-        val TAG = UserThreadFragment::class.java.name
+        val TAG = UserThreadFragment::class.java.simpleName
         private const val ARG_UID = "uid"
 
         fun newInstance(uid: String): UserThreadFragment {

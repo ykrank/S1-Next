@@ -41,7 +41,7 @@ class RateRequestDialogFragment : ProgressDialogFragment<AjaxResult>() {
 
     companion object {
 
-        val TAG: String = RateRequestDialogFragment::class.java.name
+        val TAG: String = RateRequestDialogFragment::class.java.simpleName
 
         private const val ARG_RATE_PRE_INFO = "rate_pre_info"
         private const val ARG_SCORE = "score"

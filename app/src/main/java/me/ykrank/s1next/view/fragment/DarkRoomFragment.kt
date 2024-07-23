@@ -74,7 +74,7 @@ class DarkRoomFragment : BaseLoadMoreRecycleViewFragment<DarkRoomWrapper>() {
 
     companion object {
 
-        val TAG = DarkRoomFragment::class.java.name
+        val TAG = DarkRoomFragment::class.java.simpleName
 
         fun newInstance(): DarkRoomFragment {
             return DarkRoomFragment()

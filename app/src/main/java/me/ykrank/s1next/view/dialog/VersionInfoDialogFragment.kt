@@ -25,6 +25,6 @@ class VersionInfoDialogFragment : BaseDialogFragment() {
     }
 
     companion object {
-        val TAG: String = VersionInfoDialogFragment::class.java.name
+        val TAG: String = VersionInfoDialogFragment::class.java.simpleName
     }
 }

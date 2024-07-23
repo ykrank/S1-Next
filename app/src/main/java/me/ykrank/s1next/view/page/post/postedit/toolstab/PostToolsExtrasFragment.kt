@@ -12,7 +12,14 @@ import me.ykrank.s1next.R
 import me.ykrank.s1next.databinding.FragmentPostToolsExtrasBinding
 import me.ykrank.s1next.databinding.ItemPostToolsExtrasBinding
 import me.ykrank.s1next.view.fragment.BaseFragment
-import me.ykrank.s1next.view.page.post.internal.*
+import me.ykrank.s1next.view.page.post.internal.PostToolsExtraBold
+import me.ykrank.s1next.view.page.post.internal.PostToolsExtraCreditPermission
+import me.ykrank.s1next.view.page.post.internal.PostToolsExtraImg
+import me.ykrank.s1next.view.page.post.internal.PostToolsExtraItalic
+import me.ykrank.s1next.view.page.post.internal.PostToolsExtraLink
+import me.ykrank.s1next.view.page.post.internal.PostToolsExtraQuote
+import me.ykrank.s1next.view.page.post.internal.PostToolsExtraStrikethrough
+import me.ykrank.s1next.view.page.post.internal.PostToolsExtraUnderline
 
 class PostToolsExtrasFragment : BaseFragment() {
 
@@ -48,7 +55,7 @@ class PostToolsExtrasFragment : BaseFragment() {
     }
 
     companion object {
-        val TAG: String = PostToolsExtrasFragment::class.java.name
+        val TAG: String = PostToolsExtrasFragment::class.java.simpleName
 
         fun newInstance(): PostToolsExtrasFragment {
             return PostToolsExtrasFragment()

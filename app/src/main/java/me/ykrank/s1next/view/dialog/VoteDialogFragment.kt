@@ -2,7 +2,6 @@ package me.ykrank.s1next.view.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -150,7 +149,7 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
 
         const val ARG_VOTE = "vote"
         const val ARG_THREAD_ID = "thread_id"
-        val TAG: String = VoteDialogFragment::class.java.name
+        val TAG: String = VoteDialogFragment::class.java.simpleName
 
         fun newInstance(threadId: String, vote: Vote): VoteDialogFragment {
             val fragment = VoteDialogFragment()

@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import com.github.ykrank.androidtools.util.L
-import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.hostcheck.BaseDns
 import com.github.ykrank.androidtools.widget.hostcheck.BaseHostUrl
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +17,6 @@ import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager
 import me.ykrank.s1next.widget.hostcheck.AppHostUrl
-import java.net.InetAddress
 import javax.inject.Inject
 
 class NetworkPreferenceFragment : BasePreferenceFragment() {
@@ -84,6 +82,6 @@ class NetworkPreferenceFragment : BasePreferenceFragment() {
     }
 
     companion object {
-        val TAG: String = NetworkPreferenceFragment::class.java.name
+        val TAG: String = NetworkPreferenceFragment::class.java.simpleName
     }
 }

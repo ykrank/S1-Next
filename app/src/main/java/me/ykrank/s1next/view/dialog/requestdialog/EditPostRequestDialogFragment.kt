@@ -56,7 +56,7 @@ class EditPostRequestDialogFragment : BaseRequestDialogFragment<AjaxResult>() {
 
     companion object {
 
-        val TAG: String = EditPostRequestDialogFragment::class.java.name
+        val TAG: String = EditPostRequestDialogFragment::class.java.simpleName
 
         private const val ARG_THREAD = "thread"
         private const val ARG_POST = "post"

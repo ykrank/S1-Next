@@ -111,7 +111,7 @@ class PmFragment : BaseLoadMoreRecycleViewFragment<PmsWrapper>() {
 
     companion object {
 
-        val TAG = PmFragment::class.java.name
+        val TAG = PmFragment::class.java.simpleName
         private const val ARG_TO_UID = "to_uid"
         private const val ARG_TO_USERNAME = "to_user_name"
 

@@ -96,7 +96,7 @@ class NoteFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<Notes>>() {
     }
 
     companion object {
-        val TAG = NoteFragment::class.java.name
+        val TAG = NoteFragment::class.java.simpleName
 
         fun newInstance(): NoteFragment {
             return NoteFragment()

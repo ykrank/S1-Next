@@ -2,13 +2,11 @@ package me.ykrank.s1next.view.dialog
 
 import android.app.Dialog
 import android.content.DialogInterface
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import android.view.WindowManager
-
+import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
 import com.github.ykrank.androidtools.util.ViewUtil
-
 import me.ykrank.s1next.R
 import me.ykrank.s1next.databinding.DialogFavouritesAddBinding
 
@@ -49,7 +47,7 @@ class ThreadFavouritesAddDialogFragment : BaseDialogFragment() {
 
     companion object {
 
-        val TAG = ThreadFavouritesAddDialogFragment::class.java.name
+        val TAG = ThreadFavouritesAddDialogFragment::class.java.simpleName
 
         private const val ARG_THREAD_ID = "thread_id"
         private const val ARG_THREAD_TITLE = "thread_title"
