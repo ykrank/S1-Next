@@ -37,7 +37,7 @@ interface ApiCacheProvider {
         threadId: String?,
         page: Int,
         authorId: String? = null,
-        param: CacheParam? = null,
+        ignoreCache: Boolean = false,
         onRateUpdate: ((pid: Int, rate: List<Rate>) -> Unit)? = null,
     ): Flow<Resource<PostsWrapper>>
 

@@ -55,7 +55,7 @@ class S1ApiCacheProvider(
             api = {
                 s1Service.getForumGroupsWrapper()
             },
-            setValidator = {
+            validator = ApiCacheValidatorCache {
                 !it.data?.forumList.isNullOrEmpty()
             },
             keys = emptyList()
@@ -75,7 +75,7 @@ class S1ApiCacheProvider(
             api = {
                 s1Service.getThreadsWrapper(forumId, typeId, page)
             },
-            setValidator = {
+            validator = ApiCacheValidatorCache {
                 !it.data?.threadList.isNullOrEmpty()
             },
             keys = listOf(forumId, typeId, page)
@@ -87,16 +87,15 @@ class S1ApiCacheProvider(
         threadId: String?,
         page: Int,
         authorId: String?,
-        param: CacheParam?,
+        ignoreCache: Boolean,
         onRateUpdate: ((pid: Int, rate: List<Rate>) -> Unit)?,
     ): Flow<Resource<PostsWrapper>> {
         val cacheType = ApiCacheConstants.CacheType.Posts
-        val groupType = cacheType.type
         val groupPage = page.toString()
 
         val cacheKeys = listOf(threadId, page)
         // 不过滤回帖人时才走缓存
-        val userCache = authorId.isNullOrEmpty()
+        val cacheValid = authorId.isNullOrEmpty()
         val loadTime = LoadTime()
         val ratePostFlow = flow {
             val rates = runCatching {
@@ -110,44 +109,60 @@ class S1ApiCacheProvider(
         }.flowOn(Dispatchers.IO)
 
         fun saveCache(postWrapper: PostsWrapper) {
-            if (userCache) {
+            if (cacheValid) {
                 cacheBiz.saveZipAsync(
                     apiCacheFlow.getKey(
                         cacheType,
                         cacheKeys
                     ),
+                    user.uid?.toIntOrNull(),
                     postWrapper,
                     maxSize = downloadPerf.totalDataCacheSize,
-                    group = groupType,
+                    group = cacheType.type,
                     group1 = threadId,
                     group2 = groupPage,
                 )
                 // 保存title时不保存page
-                postWrapper.data?.postListInfo?.title?.apply {
-                    cacheGroupBiz.saveTitleAsync(this, groupType, threadId)
+                postWrapper.data?.postListInfo?.let { thread ->
+                    thread.title?.apply {
+                        cacheGroupBiz.saveTitleAsync(
+                            this,
+                            cacheType.type,
+                            threadId,
+                            extra = thread.reliesCount.toString()
+                        )
+                    }
                 }
             }
         }
 
         var netPostsWrapper: PostsWrapper? = null
+
+        val validator = object : ApiCacheValidator<PostsWrapper> {
+            override fun getCacheValid(cache: PostsWrapper): Boolean {
+                return cacheValid
+            }
+
+            override fun getNetValid(cache: PostsWrapper): Boolean {
+                return true
+            }
+
+            override fun setCacheValid(cache: PostsWrapper): Boolean {
+                // 需要后处理才能更新缓存
+                return false
+            }
+        }
         return apiCacheFlow.getFlow(
             cacheType,
-            param,
+            CacheParam(ignoreCache = ignoreCache || !cacheValid),
             PostsWrapper::class.java,
             loadTime = loadTime,
             printTime = false,
             api = {
                 s1Service.getPostsWrapper(threadId, page, authorId)
             },
-            setValidator = {
-                // 需要后处理才能更新缓存
-                false
-            },
-            getValidator = {
-                userCache
-            },
+            validator = validator,
             keys = cacheKeys,
-            group = groupType,
             group1 = threadId,
             group2 = groupPage,
         )
@@ -185,7 +200,7 @@ class S1ApiCacheProvider(
                                 }
                             }
                         }
-                        if (!hasError && postWrapper != null && userCache) {
+                        if (!hasError && postWrapper != null && cacheValid) {
                             withContext(Dispatchers.Default) {
                                 loadTime.run(ApiCacheConstants.Time.TIME_SAVE_CACHE) {
                                     saveCache(postWrapper)
@@ -235,7 +250,7 @@ class S1ApiCacheProvider(
                                     pid
                                 }.debounce(CACHE_RATE_SAVE_DEBOUNCE)
                                 .collect {
-                                    if (userCache) {
+                                    if (cacheValid) {
                                         withContext(Dispatchers.Default) {
                                             loadTime.run(ApiCacheConstants.Time.TIME_UPDATE_CACHE + it) {
                                                 saveCache(postsWrapper)

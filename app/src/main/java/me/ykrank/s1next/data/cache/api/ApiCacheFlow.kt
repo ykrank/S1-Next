@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.data.User
-import me.ykrank.s1next.data.cache.CacheConstants
 import me.ykrank.s1next.data.cache.biz.CacheBiz
 import me.ykrank.s1next.data.cache.dbmodel.Cache
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
@@ -41,11 +40,9 @@ class ApiCacheFlow(
         cls: Class<T>,
         api: suspend () -> String,
         keys: List<Serializable?>,
-        getValidator: ((data: T) -> Boolean)? = null,
-        setValidator: ((data: T) -> Boolean)? = null,
+        validator: ApiCacheValidator<T>? = null,
         loadTime: LoadTime = LoadTime(),
         printTime: Boolean = BuildConfig.DEBUG,
-        group: String = CacheConstants.CacheGroup.GROUP_DEFAULT,
         group1: String? = null,
         group2: String? = null,
         group3: String? = null,
@@ -66,7 +63,7 @@ class ApiCacheFlow(
                         val data = loadTime.run(ApiCacheConstants.Time.TIME_PARSE_CACHE) {
                             jsonMapper.readValue(json, cls)
                         }
-                        if (data != null && (getValidator == null || getValidator(data))) {
+                        if (data != null && (validator == null || validator.getCacheValid(data))) {
                             return data
                         }
                     }
@@ -121,7 +118,7 @@ class ApiCacheFlow(
                         val data = loadTime.run(ApiCacheConstants.Time.TIME_PARSE_NET) {
                             it.toJson(cls)
                         }
-                        if (getValidator != null && !getValidator(data)) {
+                        if (validator != null && !validator.getNetValid(data)) {
                             // 无效的数据降级到缓存
                             if (cacheFallbackEnable && !cacheFirst) {
                                 parseCache()?.apply {
@@ -132,16 +129,17 @@ class ApiCacheFlow(
                             }
                         }
                         if (downloadPerf.netCacheEnable &&
-                            (setValidator == null || setValidator(data))
+                            (validator == null || validator.setCacheValid(data))
                         ) {
                             // 有效的数据更新到缓存
                             withContext(Dispatchers.Default + L.report) {
                                 loadTime.run(ApiCacheConstants.Time.TIME_SAVE_CACHE) {
                                     cacheBiz.saveZipAsync(
                                         key,
+                                        user.uid?.toIntOrNull(),
                                         jsonMapper.writeValueAsString(data), // 这里不能在内部序列化，避免异步问题
                                         maxSize = downloadPerf.totalDataCacheSize,
-                                        group = group,
+                                        group = type.type,
                                         group1 = group1,
                                         group2 = group2,
                                         group3 = group3,

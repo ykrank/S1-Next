@@ -5,8 +5,5 @@ package me.ykrank.s1next.data.cache
  * 
  */
 object CacheConstants {
-
-    object CacheGroup {
-        const val GROUP_DEFAULT = "default"
-    }
+    const val GROUP_EMPTY = ""
 }

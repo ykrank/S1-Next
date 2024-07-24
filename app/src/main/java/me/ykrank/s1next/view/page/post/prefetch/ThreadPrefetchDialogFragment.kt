@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.MainThread
 import androidx.lifecycle.lifecycleScope
-import com.github.ykrank.androidtools.data.CacheParam
 import com.github.ykrank.androidtools.extension.toast
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.onCompletion
@@ -46,7 +45,7 @@ class ThreadPrefetchDialogFragment : BaseLoadProgressDialogFragment() {
             apiCache.getPostsWrapper(
                 threadId,
                 page,
-                param = CacheParam(true)
+                ignoreCache = true
             ).onCompletion {
                 val max = binding.max
                 if (max > 0) {

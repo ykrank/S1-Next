@@ -15,7 +15,6 @@ import com.bigkoo.quicksidebar.listener.OnQuickSideBarTouchListener
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
-import com.github.ykrank.androidtools.data.CacheParam
 import com.github.ykrank.androidtools.data.Resource
 import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
 import com.github.ykrank.androidtools.util.L
@@ -279,7 +278,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
     override suspend fun getSource(loading: Int): Flow<Resource<PostsWrapper>> {
         return apiCacheProvider.getPostsWrapper(
             mThreadId, mPageNum, mAuthorId,
-            CacheParam(isForceLoading)
+            ignoreCache = isForceLoading,
         ) { pid, rates ->
             mRecyclerAdapter.dataSet.filterIsInstance<Post>()
                 .forEachIndexed { index, post ->

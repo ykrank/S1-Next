@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "7ff30b3a8ab87f098be1ad62091cc729",
+    "identityHash": "a78114387ac21683283c4b747d7d5d01",
     "entities": [
       {
         "tableName": "Cache",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `key` TEXT NOT NULL, `group` TEXT NOT NULL DEFAULT 'default', `group1` TEXT, `group2` TEXT, `group3` TEXT, `title` TEXT, `zip` BLOB, `text` TEXT, `timestamp` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `key` TEXT NOT NULL, `uid` INTEGER, `group` TEXT NOT NULL DEFAULT '', `title` TEXT, `zip` BLOB, `text` TEXT, `group1` TEXT NOT NULL DEFAULT '', `group2` TEXT NOT NULL DEFAULT '', `group3` TEXT NOT NULL DEFAULT '', `timestamp` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -21,29 +21,17 @@
             "notNull": true
           },
           {
+            "fieldPath": "uid",
+            "columnName": "uid",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
             "fieldPath": "group",
             "columnName": "group",
             "affinity": "TEXT",
             "notNull": true,
-            "defaultValue": "'default'"
-          },
-          {
-            "fieldPath": "group1",
-            "columnName": "group1",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "group2",
-            "columnName": "group2",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "group3",
-            "columnName": "group3",
-            "affinity": "TEXT",
-            "notNull": false
+            "defaultValue": "''"
           },
           {
             "fieldPath": "title",
@@ -62,6 +50,27 @@
             "columnName": "text",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "group1",
+            "columnName": "group1",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "group2",
+            "columnName": "group2",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "group3",
+            "columnName": "group3",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "timestamp",
@@ -91,7 +100,7 @@
       },
       {
         "tableName": "CacheGroup",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `group` TEXT NOT NULL DEFAULT 'default', `group1` TEXT NOT NULL DEFAULT '', `group2` TEXT NOT NULL DEFAULT '', `group3` TEXT NOT NULL DEFAULT '', `title` TEXT DEFAULT '')",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `group` TEXT NOT NULL DEFAULT '', `title` TEXT DEFAULT '', `extra` TEXT, `group1` TEXT NOT NULL DEFAULT '', `group2` TEXT NOT NULL DEFAULT '', `group3` TEXT NOT NULL DEFAULT '', `extra1` TEXT, `extra2` TEXT, `timestamp` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -104,7 +113,20 @@
             "columnName": "group",
             "affinity": "TEXT",
             "notNull": true,
-            "defaultValue": "'default'"
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "extra",
+            "columnName": "extra",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "group1",
@@ -128,11 +150,22 @@
             "defaultValue": "''"
           },
           {
-            "fieldPath": "title",
-            "columnName": "title",
+            "fieldPath": "extra1",
+            "columnName": "extra1",
             "affinity": "TEXT",
-            "notNull": false,
-            "defaultValue": "''"
+            "notNull": false
+          },
+          {
+            "fieldPath": "extra2",
+            "columnName": "extra2",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -161,7 +194,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7ff30b3a8ab87f098be1ad62091cc729')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a78114387ac21683283c4b747d7d5d01')"
     ]
   }
 }

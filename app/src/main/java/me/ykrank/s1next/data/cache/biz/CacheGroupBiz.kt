@@ -20,20 +20,19 @@ class CacheGroupBiz(
         get() = manager.getOrBuildDb()
 
     private fun saveTitle(
-        title: String,
-        group: String,
-        group1: String? = null,
-        group2: String? = null,
-        group3: String? = null,
+        cacheGroup: CacheGroup
     ) {
-        val oldCacheGroup = cacheGroupDao.query(group, group1 ?: "", group2 ?: "", group3 ?: "")
+        val oldCacheGroup = cacheGroupDao.query(
+            cacheGroup.group,
+            cacheGroup.group1,
+            cacheGroup.group2,
+            cacheGroup.group3
+        )
         if (oldCacheGroup != null) {
-            oldCacheGroup.apply {
-                this.title = title
-            }
+            oldCacheGroup.copyFrom(cacheGroup)
             cacheGroupDao.update(oldCacheGroup)
         } else {
-            cacheGroupDao.insert(CacheGroup(title, group, group1, group2, group3))
+            cacheGroupDao.insert(cacheGroup)
         }
     }
 
@@ -43,9 +42,16 @@ class CacheGroupBiz(
         group1: String? = null,
         group2: String? = null,
         group3: String? = null,
+        extra: String? = null,
+        extra1: String? = null,
+        extra2: String? = null,
     ) {
         manager.runAsync {
-            saveTitle(title, group, group1, group2, group3)
+            saveTitle(CacheGroup(title, group, group1, group2, group3).apply {
+                this.extra = extra
+                this.extra1 = extra1
+                this.extra2 = extra2
+            })
         }
     }
 

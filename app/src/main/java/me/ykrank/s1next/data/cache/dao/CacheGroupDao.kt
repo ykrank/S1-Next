@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import me.ykrank.s1next.data.cache.CacheConstants
 import me.ykrank.s1next.data.cache.dbmodel.CacheGroup
 
 
@@ -22,8 +23,8 @@ interface CacheGroupDao {
     )
     fun query(
         group: String,
-        group1: String = "",
-        group2: String = "",
-        group3: String = "",
+        group1: String = CacheConstants.GROUP_EMPTY,
+        group2: String = CacheConstants.GROUP_EMPTY,
+        group3: String = CacheConstants.GROUP_EMPTY,
     ): CacheGroup?
 }

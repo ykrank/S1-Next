@@ -29,17 +29,11 @@ class Cache {
     @ColumnInfo(name = "key")
     var key: String = ""
 
-    @ColumnInfo(name = "group", defaultValue = CacheConstants.CacheGroup.GROUP_DEFAULT)
-    var group: String = CacheConstants.CacheGroup.GROUP_DEFAULT
+    @ColumnInfo(name = "uid")
+    var uid: Int? = null
 
-    @ColumnInfo(name = "group1")
-    var group1: String? = null
-
-    @ColumnInfo(name = "group2")
-    var group2: String? = null
-
-    @ColumnInfo(name = "group3")
-    var group3: String? = null
+    @ColumnInfo(name = "group", defaultValue = CacheConstants.GROUP_EMPTY)
+    var group: String = CacheConstants.GROUP_EMPTY
 
     @ColumnInfo(name = "title")
     var title: String? = null
@@ -49,6 +43,15 @@ class Cache {
 
     @ColumnInfo(name = "text")
     var text: String? = null
+
+    @ColumnInfo(name = "group1", defaultValue = CacheConstants.GROUP_EMPTY)
+    var group1: String = CacheConstants.GROUP_EMPTY
+
+    @ColumnInfo(name = "group2", defaultValue = CacheConstants.GROUP_EMPTY)
+    var group2: String = CacheConstants.GROUP_EMPTY
+
+    @ColumnInfo(name = "group3", defaultValue = CacheConstants.GROUP_EMPTY)
+    var group3: String = CacheConstants.GROUP_EMPTY
 
     /**
      * 更新时间
@@ -65,13 +68,15 @@ class Cache {
     constructor()
     constructor(
         key: String,
+        uid: Int?,
         blob: ByteArray? = null,
         title: String? = null,
         text: String? = null,
-        group: String = CacheConstants.CacheGroup.GROUP_DEFAULT,
+        group: String = CacheConstants.GROUP_EMPTY,
         decodeZipString: String? = null,
     ) {
         this.key = key
+        this.uid = uid
         this.blob = blob
         this.title = title
         this.text = text

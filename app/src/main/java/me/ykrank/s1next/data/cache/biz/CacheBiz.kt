@@ -62,9 +62,10 @@ class CacheBiz(private val manager: CacheDatabaseManager, private val objectMapp
      */
     fun saveZipAsync(
         key: String,
+        uid: Int?,
         content: Any,
         title: String? = null,
-        group: String = CacheConstants.CacheGroup.GROUP_DEFAULT,
+        group: String = CacheConstants.GROUP_EMPTY,
         maxSize: Int = DEFAULT_MAX_SIZE,
         group1: String? = null,
         group2: String? = null,
@@ -74,6 +75,7 @@ class CacheBiz(private val manager: CacheDatabaseManager, private val objectMapp
             saveZip(
                 Cache(
                     key,
+                    uid = uid,
                     title = title,
                     group = group,
                     decodeZipString = if (content is String) {
@@ -82,9 +84,15 @@ class CacheBiz(private val manager: CacheDatabaseManager, private val objectMapp
                         objectMapper.writeValueAsString(content)
                     }
                 ).apply {
-                    this.group1 = group1
-                    this.group2 = group2
-                    this.group3 = group3
+                    if (group1 != null) {
+                        this.group1 = group1
+                    }
+                    if (group2 != null) {
+                        this.group2 = group2
+                    }
+                    if (group3 != null) {
+                        this.group3 = group3
+                    }
                 }, maxSize
             )
         }
