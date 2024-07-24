@@ -6,6 +6,7 @@ import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import me.ykrank.s1next.data.cache.CacheConstants
+import me.ykrank.s1next.data.cache.exmodel.CacheGroupModel
 
 /**
  * Created by ykrank on 7/17/24
@@ -72,7 +73,7 @@ class Cache {
         blob: ByteArray? = null,
         title: String? = null,
         text: String? = null,
-        group: String = CacheConstants.GROUP_EMPTY,
+        groups: List<String> = emptyList(),
         decodeZipString: String? = null,
     ) {
         this.key = key
@@ -80,8 +81,12 @@ class Cache {
         this.blob = blob
         this.title = title
         this.text = text
-        this.group = group
         this.decodeZipString = decodeZipString
         this.timestamp = System.currentTimeMillis()
+        val groupModel = CacheGroupModel(groups)
+        this.group = groupModel.group
+        this.group1 = groupModel.group1
+        this.group2 = groupModel.group2
+        this.group3 = groupModel.group3
     }
 }

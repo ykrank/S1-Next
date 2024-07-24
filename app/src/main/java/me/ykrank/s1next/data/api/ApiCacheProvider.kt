@@ -24,7 +24,7 @@ interface ApiCacheProvider {
      * 板块详情/主题列表
      */
     suspend fun getThreadsWrapper(
-        forumId: String?,
+        forumId: String,
         typeId: String?,
         page: Int,
         param: CacheParam? = null
@@ -34,7 +34,7 @@ interface ApiCacheProvider {
      * 主题详情/帖子列表
      */
     suspend fun getPostsWrapper(
-        threadId: String?,
+        threadId: String,
         page: Int,
         authorId: String? = null,
         ignoreCache: Boolean = false,
@@ -45,7 +45,7 @@ interface ApiCacheProvider {
      * 评分
      */
     suspend fun getPostRates(
-        threadId: String?,
+        threadId: String,
         postId: Int,
     ): Resource<List<Rate>>
 

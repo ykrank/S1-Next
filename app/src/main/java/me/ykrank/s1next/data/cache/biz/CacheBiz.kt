@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.ZipUtils
 import me.ykrank.s1next.App
-import me.ykrank.s1next.data.cache.CacheConstants
 import me.ykrank.s1next.data.cache.CacheDatabase
 import me.ykrank.s1next.data.cache.CacheDatabaseManager
 import me.ykrank.s1next.data.cache.dao.CacheDao
 import me.ykrank.s1next.data.cache.dbmodel.Cache
+import me.ykrank.s1next.data.cache.exmodel.CacheGroupModel
 
 /**
  * Created by ykrank on 7/17/24
@@ -60,16 +60,13 @@ class CacheBiz(private val manager: CacheDatabaseManager, private val objectMapp
     /**
      * 注意content必须是不可修改的，避免异步问题
      */
-    fun saveZipAsync(
+    fun <T> saveZipAsync(
         key: String,
         uid: Int?,
-        content: Any,
+        content: T,
         title: String? = null,
-        group: String = CacheConstants.GROUP_EMPTY,
         maxSize: Int = DEFAULT_MAX_SIZE,
-        group1: String? = null,
-        group2: String? = null,
-        group3: String? = null,
+        groups: List<String>,
     ) {
         manager.runAsync {
             saveZip(
@@ -77,23 +74,13 @@ class CacheBiz(private val manager: CacheDatabaseManager, private val objectMapp
                     key,
                     uid = uid,
                     title = title,
-                    group = group,
+                    groups = groups,
                     decodeZipString = if (content is String) {
                         content
                     } else {
                         objectMapper.writeValueAsString(content)
                     }
-                ).apply {
-                    if (group1 != null) {
-                        this.group1 = group1
-                    }
-                    if (group2 != null) {
-                        this.group2 = group2
-                    }
-                    if (group3 != null) {
-                        this.group3 = group3
-                    }
-                }, maxSize
+                ), maxSize
             )
         }
     }
@@ -111,12 +98,11 @@ class CacheBiz(private val manager: CacheDatabaseManager, private val objectMapp
     }
 
     fun getTextZipNewest(
-        group: String,
-        group1: String = CacheConstants.GROUP_EMPTY,
-        group2: String = CacheConstants.GROUP_EMPTY,
-        group3: String = CacheConstants.GROUP_EMPTY,
+        groups: List<String>,
     ): Cache? {
-        return cacheDao.getNewestByGroup(group, group1, group2, group3)?.apply {
+        val group = CacheGroupModel(groups)
+        return cacheDao.getNewestByGroup(group.group, group.group1, group.group2, group.group3)
+            ?.apply {
             this.decodeZipString = this.blob?.let {
                 ZipUtils.decompressGzipToString(it)
             }

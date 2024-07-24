@@ -47,9 +47,9 @@ open class ApiCacheFlow<T>(
      */
     private val keys: List<Serializable?>,
     /**
-     * 对数据进行校验
+     * 对数据进行后处理
      */
-    private val validator: ApiCacheValidator<T>? = null,
+    private val interceptor: ApiCacheInterceptor<T> = ApiCacheInterceptorPass(),
     /**
      * 跟踪加载时间
      */
@@ -61,9 +61,7 @@ open class ApiCacheFlow<T>(
     /**
      * 作为额外group存在数据库
      */
-    private val group1: String? = null,
-    private val group2: String? = null,
-    private val group3: String? = null,
+    private val groupsExtra: List<String> = emptyList(),
 ) {
     private val key = getKey(type, keys)
 
@@ -98,8 +96,8 @@ open class ApiCacheFlow<T>(
                 val data = loadTime.run(ApiCacheConstants.Time.TIME_PARSE_CACHE) {
                     jsonMapper.readValue(json, cls)
                 }
-                if (data != null && (validator == null || validator.getCacheValid(data))) {
-                    return data
+                if (data != null) {
+                    return interceptor.interceptQueryCache(data)
                 }
             }
         }.onFailure {
@@ -172,7 +170,7 @@ open class ApiCacheFlow<T>(
                         val data = loadTime.run(ApiCacheConstants.Time.TIME_PARSE_NET) {
                             it.toJson(cls)
                         }
-                        if (validator != null && !validator.getNetValid(data)) {
+                        if (interceptor.shouldNetDataFallback(data)) {
                             // 无效的数据降级到缓存
                             if (!cacheFirst && cacheFallback) {
                                 getCacheResourceFallback()?.apply {
@@ -181,22 +179,20 @@ open class ApiCacheFlow<T>(
                                 }
                             }
                         }
-                        if (downloadPerf.netCacheEnable &&
-                            (validator == null || validator.setCacheValid(data))
-                        ) {
-                            // 有效的数据更新到缓存
-                            withContext(Dispatchers.Default + L.report) {
-                                loadTime.run(ApiCacheConstants.Time.TIME_SAVE_CACHE) {
-                                    cacheBiz.saveZipAsync(
-                                        key,
-                                        user.uid?.toIntOrNull(),
-                                        jsonMapper.writeValueAsString(data), // 这里不能在内部序列化，避免异步问题
-                                        maxSize = downloadPerf.totalDataCacheSize,
-                                        group = type.type,
-                                        group1 = group1,
-                                        group2 = group2,
-                                        group3 = group3,
-                                    )
+                        if (downloadPerf.netCacheEnable) {
+                            val postData = interceptor.interceptSaveCache(data)
+                            if (postData != null) {
+                                // 有效的数据更新到缓存
+                                withContext(Dispatchers.Default + L.report) {
+                                    loadTime.run(ApiCacheConstants.Time.TIME_SAVE_CACHE) {
+                                        cacheBiz.saveZipAsync(
+                                            key,
+                                            user.uid?.toIntOrNull(),
+                                            jsonMapper.writeValueAsString(postData), // 这里不能在内部序列化，避免异步问题
+                                            maxSize = downloadPerf.totalDataCacheSize,
+                                            groups = listOf(type.type) + groupsExtra,
+                                        )
+                                    }
                                 }
                             }
                         }

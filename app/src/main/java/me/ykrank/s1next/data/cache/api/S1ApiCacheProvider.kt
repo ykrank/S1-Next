@@ -57,14 +57,14 @@ class S1ApiCacheProvider(
             api = {
                 s1Service.getForumGroupsWrapper()
             },
-            validator = ApiCacheValidatorCache {
+            interceptor = ApiCacheValidatorCache {
                 !it.data?.forumList.isNullOrEmpty()
             },
             keys = emptyList()
         ) {
             override fun getCache(): Cache? {
                 if (!user.isLogged) {
-                    return cacheBiz.getTextZipNewest(cacheType.type)
+                    return cacheBiz.getTextZipNewest(listOf(cacheType.type))
                 }
                 return super.getCache()
             }
@@ -73,7 +73,7 @@ class S1ApiCacheProvider(
     }
 
     override suspend fun getThreadsWrapper(
-        forumId: String?,
+        forumId: String,
         typeId: String?,
         page: Int,
         param: CacheParam?
@@ -86,7 +86,7 @@ class S1ApiCacheProvider(
             api = {
                 s1Service.getThreadsWrapper(forumId, typeId, page)
             },
-            validator = ApiCacheValidatorCache {
+            interceptor = ApiCacheValidatorCache {
                 !it.data?.threadList.isNullOrEmpty()
             },
             keys = listOf(forumId, typeId, page)
@@ -96,7 +96,7 @@ class S1ApiCacheProvider(
 
     @OptIn(FlowPreview::class)
     override suspend fun getPostsWrapper(
-        threadId: String?,
+        threadId: String,
         page: Int,
         authorId: String?,
         ignoreCache: Boolean,
@@ -106,6 +106,10 @@ class S1ApiCacheProvider(
         val groupPage = page.toString()
 
         val cacheKeys = listOf(threadId, page)
+        val cacheExtraGroups = listOf(threadId, groupPage)
+        val cacheGroups = listOf(cacheType.type) + cacheExtraGroups
+        val groupGroups = listOf(cacheType.type, threadId)
+
         // 不过滤回帖人时才走缓存
         val cacheValid = authorId.isNullOrEmpty()
         val loadTime = LoadTime()
@@ -120,19 +124,27 @@ class S1ApiCacheProvider(
             emit(rates)
         }.flowOn(Dispatchers.IO)
         var netPostsWrapper: PostsWrapper? = null
-        val validator = object : ApiCacheValidator<PostsWrapper> {
-            override fun getCacheValid(cache: PostsWrapper): Boolean {
-                return cacheValid
+        val interceptor = object : ApiCacheInterceptor<PostsWrapper> {
+            override fun interceptQueryCache(cache: PostsWrapper): PostsWrapper {
+                // 从缓存获取时，将帖数更新为最新
+                val cacheGroup = cacheGroupBiz.query(groupGroups)
+                cacheGroup?.extra?.apply {
+                    if (this.isNotBlank()) {
+                        cache.data?.postListInfo?.replies = this
+                    }
+                }
+                return cache
             }
 
-            override fun getNetValid(cache: PostsWrapper): Boolean {
-                return true
-            }
-
-            override fun setCacheValid(cache: PostsWrapper): Boolean {
+            override fun interceptSaveCache(cache: PostsWrapper): PostsWrapper? {
                 // 需要后处理才能更新缓存
+                return null
+            }
+
+            override fun shouldNetDataFallback(data: PostsWrapper): Boolean {
                 return false
             }
+
         }
 
         val apiCacheFlow = ApiCacheFlow(
@@ -145,10 +157,9 @@ class S1ApiCacheProvider(
             api = {
                 s1Service.getPostsWrapper(threadId, page, authorId)
             },
-            validator = validator,
+            interceptor = interceptor,
             keys = cacheKeys,
-            group1 = threadId,
-            group2 = groupPage,
+            groupsExtra = cacheExtraGroups
         )
 
         fun saveCache(postWrapper: PostsWrapper) {
@@ -161,18 +172,15 @@ class S1ApiCacheProvider(
                     user.uid?.toIntOrNull(),
                     postWrapper,
                     maxSize = downloadPerf.totalDataCacheSize,
-                    group = cacheType.type,
-                    group1 = threadId,
-                    group2 = groupPage,
+                    groups = cacheGroups
                 )
                 // 保存title时不保存page
                 postWrapper.data?.postListInfo?.let { thread ->
                     thread.title?.apply {
                         cacheGroupBiz.saveTitleAsync(
                             this,
-                            cacheType.type,
-                            threadId,
-                            extra = thread.reliesCount.toString()
+                            groups = groupGroups,
+                            extras = listOf(thread.reliesCount.toString())
                         )
                     }
                 }
@@ -289,7 +297,7 @@ class S1ApiCacheProvider(
         return "u${user.uid ?: ""}#${threadId ?: ""}#$pid"
     }
 
-    override suspend fun getPostRates(threadId: String?, postId: Int): Resource<List<Rate>> {
+    override suspend fun getPostRates(threadId: String, postId: Int): Resource<List<Rate>> {
         val rate = runCatching {
             s1Service.getRates(threadId, postId.toString()).let {
                 Rate.fromHtml(it)

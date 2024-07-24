@@ -121,7 +121,7 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
                 } else {
                     fragment.lifecycleScope.launch(L.report) {
                         val newRates =
-                            mApiCache.getPostRates(threadInfo?.id, post.id).data ?: emptyList()
+                            mApiCache.getPostRates(threadInfo?.id?:"", post.id).data ?: emptyList()
                         post.rates = newRates
                         val adapter = binding.recycleViewRates.adapter as SimpleRecycleViewAdapter?
                         if (adapter != null) {
