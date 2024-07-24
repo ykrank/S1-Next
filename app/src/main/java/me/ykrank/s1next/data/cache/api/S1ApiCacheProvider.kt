@@ -78,18 +78,31 @@ class S1ApiCacheProvider(
         page: Int,
         param: CacheParam?
     ): Flow<Resource<ThreadsWrapper>> {
+        val isLogged = user.isLogged
+        val cacheType = ApiCacheConstants.CacheType.Threads
+        val cacheKeys = listOf(forumId, typeId, page)
+        val interceptor = object : ApiCacheValidatorCache<ThreadsWrapper>({
+            !it.data?.threadList.isNullOrEmpty()
+        }) {
+            override fun interceptSaveKey(key: String, data: ThreadsWrapper): String {
+                // 用户信息未初始化时，从结果中获取uid
+                if (!isLogged) {
+                    val uid = data.data?.uid ?: user.uid
+                    return ApiCacheFlow.getKey(uid, cacheType, cacheKeys)
+                }
+                return super.interceptSaveKey(key, data)
+            }
+        }
         val apiCacheFlow = ApiCacheFlow(
             downloadPerf, cacheBiz, user, jsonMapper,
-            ApiCacheConstants.CacheType.Threads,
+            cacheType,
             param,
             ThreadsWrapper::class.java,
             api = {
                 s1Service.getThreadsWrapper(forumId, typeId, page)
             },
-            interceptor = ApiCacheValidatorCache {
-                !it.data?.threadList.isNullOrEmpty()
-            },
-            keys = listOf(forumId, typeId, page)
+            interceptor = interceptor,
+            keys = cacheKeys
         )
         return apiCacheFlow.getFlow()
     }
@@ -102,6 +115,7 @@ class S1ApiCacheProvider(
         ignoreCache: Boolean,
         onRateUpdate: ((pid: Int, rate: List<Rate>) -> Unit)?,
     ): Flow<Resource<PostsWrapper>> {
+        val isLogged = user.isLogged
         val cacheType = ApiCacheConstants.CacheType.Posts
         val groupPage = page.toString()
 
@@ -139,6 +153,15 @@ class S1ApiCacheProvider(
             override fun interceptSaveCache(cache: PostsWrapper): PostsWrapper? {
                 // 需要后处理才能更新缓存
                 return null
+            }
+
+            override fun interceptSaveKey(key: String, data: PostsWrapper): String {
+                // 用户信息未初始化时，从结果中获取uid
+                if (!isLogged) {
+                    val uid = data.data?.uid ?: user.uid
+                    return ApiCacheFlow.getKey(uid, cacheType, cacheKeys)
+                }
+                return super.interceptSaveKey(key, data)
             }
 
             override fun shouldNetDataFallback(data: PostsWrapper): Boolean {

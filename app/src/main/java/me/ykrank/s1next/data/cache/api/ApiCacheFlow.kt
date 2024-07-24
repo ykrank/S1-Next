@@ -80,7 +80,7 @@ open class ApiCacheFlow<T>(
     }
 
     fun getKey(type: ApiCacheConstants.CacheType, keys: List<Serializable?> = emptyList()): String {
-        return Companion.getKey(user, type, keys)
+        return Companion.getKey(user.uid, type, keys)
     }
 
     @WorkerThread
@@ -186,7 +186,7 @@ open class ApiCacheFlow<T>(
                                 withContext(Dispatchers.Default + L.report) {
                                     loadTime.run(ApiCacheConstants.Time.TIME_SAVE_CACHE) {
                                         cacheBiz.saveZipAsync(
-                                            key,
+                                            interceptor.interceptSaveKey(key, postData),
                                             user.uid?.toIntOrNull(),
                                             jsonMapper.writeValueAsString(postData), // 这里不能在内部序列化，避免异步问题
                                             maxSize = downloadPerf.totalDataCacheSize,
@@ -216,11 +216,11 @@ open class ApiCacheFlow<T>(
 
     companion object {
         fun getKey(
-            user: User,
+            uid: String?,
             type: ApiCacheConstants.CacheType,
             keys: List<Serializable?> = emptyList()
         ): String {
-            return "u${user.uid ?: ""}#${type.type}#${keys.joinToString(",")}"
+            return "u${uid ?: ""}#${type.type}#${keys.joinToString(",")}"
         }
     }
 }

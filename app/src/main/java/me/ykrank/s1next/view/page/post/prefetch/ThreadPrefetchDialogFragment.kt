@@ -68,7 +68,7 @@ class ThreadPrefetchDialogFragment : BaseLoadProgressDialogFragment() {
         lifecycleScope.launch {
             val cache = withContext(Dispatchers.IO + L.report) {
                 val key = ApiCacheFlow.getKey(
-                    mUser,
+                    mUser.uid,
                     ApiCacheConstants.CacheType.Posts,
                     listOf(threadId, page)
                 )

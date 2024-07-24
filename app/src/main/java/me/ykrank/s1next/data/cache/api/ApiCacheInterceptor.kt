@@ -13,6 +13,9 @@ interface ApiCacheInterceptor<T> {
     @WorkerThread
     fun interceptSaveCache(cache: T): T?
 
+    @WorkerThread
+    fun interceptSaveKey(key: String, data: T): String = key
+
     /**
      * 网络数据如果无效，则降级到缓存
      */
@@ -58,7 +61,7 @@ open class ApiCacheValidatorCache<T>(val validator: (data: T) -> Boolean) : ApiC
 /**
  * 校验默认通过
  */
-class ApiCacheInterceptorPass<T> : ApiCacheInterceptor<T> {
+open class ApiCacheInterceptorPass<T> : ApiCacheInterceptor<T> {
     override fun interceptQueryCache(cache: T): T {
         return cache
     }
