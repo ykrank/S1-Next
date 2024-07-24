@@ -54,8 +54,8 @@
         android:checked="@bool/pref_quick_side_bar_enable_default_value"
         app:showAsAction="never" />
     <item
-        android:id="@+id/menu_prefetch_all_posts"
+        android:id="@+id/menu_prefetch_after_posts"
         android:orderInCategory="29"
-        android:title="@string/menu_prefetch_all_posts"
+        android:title="@string/menu_prefetch_after_posts"
         app:showAsAction="never" />
 </menu>

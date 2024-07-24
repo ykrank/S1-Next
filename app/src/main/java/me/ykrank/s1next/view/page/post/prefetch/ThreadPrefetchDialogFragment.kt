@@ -42,16 +42,18 @@ class ThreadPrefetchDialogFragment : BaseLoadProgressDialogFragment() {
     lateinit var jsonMapper: ObjectMapper
 
     private lateinit var threadId: String
+    private var pageStart: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
         threadId = requireArguments().getString(ARG_THREAD_ID)!!
+        pageStart = requireArguments().getInt(ARG_PAGE_START, 1)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadNextPage()
+        loadNextPage(pageStart)
     }
 
     private fun updateProgress(page: Int, max: Int) {
@@ -62,7 +64,7 @@ class ThreadPrefetchDialogFragment : BaseLoadProgressDialogFragment() {
     }
 
     @MainThread
-    private fun loadNextPage(page: Int = 1) {
+    private fun loadNextPage(page: Int) {
         lifecycleScope.launch {
             val cache = withContext(Dispatchers.IO + L.report) {
                 val key = ApiCacheFlow.getKey(
@@ -111,11 +113,13 @@ class ThreadPrefetchDialogFragment : BaseLoadProgressDialogFragment() {
     companion object {
         val TAG: String = ThreadPrefetchDialogFragment::class.java.simpleName
         const val ARG_THREAD_ID = "thread_id"
+        const val ARG_PAGE_START = "page_start"
 
-        fun newInstance(threadId: String): ThreadPrefetchDialogFragment {
+        fun newInstance(threadId: String, page: Int?): ThreadPrefetchDialogFragment {
             val fragment = ThreadPrefetchDialogFragment()
             fragment.arguments = Bundle().apply {
                 putString(ARG_THREAD_ID, threadId)
+                putInt(ARG_PAGE_START, page ?: 1)
             }
             return fragment
         }

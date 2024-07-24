@@ -438,5 +438,5 @@
     <string name="data_load_from_cache">數據來自緩存</string>
     <string name="message_load_error">加載失敗</string>
     <string name="stop">停止</string>
-    <string name="menu_prefetch_all_posts">預加載所有帖</string>
+    <string name="menu_prefetch_after_posts">預加載本頁之後</string>
 </resources>

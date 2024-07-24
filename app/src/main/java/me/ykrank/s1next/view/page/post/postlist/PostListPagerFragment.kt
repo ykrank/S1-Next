@@ -92,6 +92,9 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
 
     private var refreshAfterBlacklistChangeDisposable: Disposable? = null
 
+    val pageNum:Int
+        get() = mPageNum
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         App.appComponent.inject(this)
