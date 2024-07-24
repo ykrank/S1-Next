@@ -110,6 +110,19 @@ class CacheBiz(private val manager: CacheDatabaseManager, private val objectMapp
         }
     }
 
+    fun getTextZipNewest(
+        group: String,
+        group1: String = CacheConstants.GROUP_EMPTY,
+        group2: String = CacheConstants.GROUP_EMPTY,
+        group3: String = CacheConstants.GROUP_EMPTY,
+    ): Cache? {
+        return cacheDao.getNewestByGroup(group, group1, group2, group3)?.apply {
+            this.decodeZipString = this.blob?.let {
+                ZipUtils.decompressGzipToString(it)
+            }
+        }
+    }
+
     companion object {
         const val TAG = "CacheBiz"
         const val DEFAULT_MAX_SIZE = 1000

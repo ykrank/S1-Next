@@ -32,6 +32,7 @@ import me.ykrank.s1next.data.api.model.wrapper.RatePostsWrapper
 import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper
 import me.ykrank.s1next.data.cache.biz.CacheBiz
 import me.ykrank.s1next.data.cache.biz.CacheGroupBiz
+import me.ykrank.s1next.data.cache.dbmodel.Cache
 import me.ykrank.s1next.data.cache.exmodel.BaseCache
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 
@@ -43,13 +44,14 @@ class S1ApiCacheProvider(
     private val user: User,
     private val jsonMapper: ObjectMapper,
 ) : ApiCacheProvider {
-
-    private val apiCacheFlow = ApiCacheFlow(downloadPerf, cacheBiz, user, jsonMapper)
     private val ratesCache = LruCache<String, BaseCache<List<Rate>>>(256)
 
     override suspend fun getForumGroupsWrapper(param: CacheParam?): Flow<Resource<ForumGroupsWrapper>> {
-        return apiCacheFlow.getFlow(
-            ApiCacheConstants.CacheType.ForumGroups,
+        val cacheType = ApiCacheConstants.CacheType.ForumGroups
+        // user为空时，忽略user取最新缓存，兼容完全断网时重新打开app的情况
+        val apiCacheFlow = object : ApiCacheFlow<ForumGroupsWrapper>(
+            downloadPerf, cacheBiz, user, jsonMapper,
+            cacheType,
             param,
             ForumGroupsWrapper::class.java,
             api = {
@@ -59,7 +61,15 @@ class S1ApiCacheProvider(
                 !it.data?.forumList.isNullOrEmpty()
             },
             keys = emptyList()
-        )
+        ) {
+            override fun getCache(): Cache? {
+                if (!user.isLogged) {
+                    return cacheBiz.getTextZipNewest(cacheType.type)
+                }
+                return super.getCache()
+            }
+        }
+        return apiCacheFlow.getFlow()
     }
 
     override suspend fun getThreadsWrapper(
@@ -68,7 +78,8 @@ class S1ApiCacheProvider(
         page: Int,
         param: CacheParam?
     ): Flow<Resource<ThreadsWrapper>> {
-        return apiCacheFlow.getFlow(
+        val apiCacheFlow = ApiCacheFlow(
+            downloadPerf, cacheBiz, user, jsonMapper,
             ApiCacheConstants.CacheType.Threads,
             param,
             ThreadsWrapper::class.java,
@@ -80,6 +91,7 @@ class S1ApiCacheProvider(
             },
             keys = listOf(forumId, typeId, page)
         )
+        return apiCacheFlow.getFlow()
     }
 
     @OptIn(FlowPreview::class)
@@ -107,6 +119,37 @@ class S1ApiCacheProvider(
             }
             emit(rates)
         }.flowOn(Dispatchers.IO)
+        var netPostsWrapper: PostsWrapper? = null
+        val validator = object : ApiCacheValidator<PostsWrapper> {
+            override fun getCacheValid(cache: PostsWrapper): Boolean {
+                return cacheValid
+            }
+
+            override fun getNetValid(cache: PostsWrapper): Boolean {
+                return true
+            }
+
+            override fun setCacheValid(cache: PostsWrapper): Boolean {
+                // 需要后处理才能更新缓存
+                return false
+            }
+        }
+
+        val apiCacheFlow = ApiCacheFlow(
+            downloadPerf, cacheBiz, user, jsonMapper,
+            cacheType,
+            CacheParam(ignoreCache = ignoreCache || !cacheValid),
+            PostsWrapper::class.java,
+            loadTime = loadTime,
+            printTime = false,
+            api = {
+                s1Service.getPostsWrapper(threadId, page, authorId)
+            },
+            validator = validator,
+            keys = cacheKeys,
+            group1 = threadId,
+            group2 = groupPage,
+        )
 
         fun saveCache(postWrapper: PostsWrapper) {
             if (cacheValid) {
@@ -136,36 +179,7 @@ class S1ApiCacheProvider(
             }
         }
 
-        var netPostsWrapper: PostsWrapper? = null
-
-        val validator = object : ApiCacheValidator<PostsWrapper> {
-            override fun getCacheValid(cache: PostsWrapper): Boolean {
-                return cacheValid
-            }
-
-            override fun getNetValid(cache: PostsWrapper): Boolean {
-                return true
-            }
-
-            override fun setCacheValid(cache: PostsWrapper): Boolean {
-                // 需要后处理才能更新缓存
-                return false
-            }
-        }
-        return apiCacheFlow.getFlow(
-            cacheType,
-            CacheParam(ignoreCache = ignoreCache || !cacheValid),
-            PostsWrapper::class.java,
-            loadTime = loadTime,
-            printTime = false,
-            api = {
-                s1Service.getPostsWrapper(threadId, page, authorId)
-            },
-            validator = validator,
-            keys = cacheKeys,
-            group1 = threadId,
-            group2 = groupPage,
-        )
+        return apiCacheFlow.getFlow()
             .combine(ratePostFlow) { it, ratePostWrapper ->
                 if (it.source.isCloud()) {
                     withContext(Dispatchers.IO) {

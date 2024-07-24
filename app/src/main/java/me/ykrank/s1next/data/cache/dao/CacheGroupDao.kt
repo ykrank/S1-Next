@@ -18,8 +18,8 @@ interface CacheGroupDao {
     fun update(cacheGroup: CacheGroup)
 
     @Query(
-        "SELECT * FROM CACHEGROUP WHERE `group` == :group AND group1 == :group1 AND group2 == :group2 " +
-                "AND group3==:group3 LIMIT 1"
+        "SELECT * FROM CACHEGROUP WHERE `group` == :group AND group1 == :group1 AND group2 == :group2" +
+                " AND group3==:group3 LIMIT 1"
     )
     fun query(
         group: String,
