@@ -80,7 +80,7 @@ open class ApiCacheFlow<T>(
     }
 
     fun getKey(type: ApiCacheConstants.CacheType, keys: List<Serializable?> = emptyList()): String {
-        return "u${user.uid ?: ""}#${type.type}#${keys.joinToString(",")}"
+        return Companion.getKey(user, type, keys)
     }
 
     @WorkerThread
@@ -212,5 +212,15 @@ open class ApiCacheFlow<T>(
                 emit(Resource.fromResult<T>(Source.CLOUD, data))
             }
         }.flowOn(Dispatchers.IO)
+    }
+
+    companion object {
+        fun getKey(
+            user: User,
+            type: ApiCacheConstants.CacheType,
+            keys: List<Serializable?> = emptyList()
+        ): String {
+            return "u${user.uid ?: ""}#${type.type}#${keys.joinToString(",")}"
+        }
     }
 }
