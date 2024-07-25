@@ -47,8 +47,11 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
     @JsonProperty("groupid")
     var groupId: Int = 0
 
+    /**
+     * 只保留非图片附件，图片附件自动插入到帖子中
+     */
     @JsonProperty("_attachment")
-    var attachmentMap: Map<Int, PostAttachment> = mapOf()
+    var attachmentMap = mutableMapOf<Int, PostAttachment>()
     /**
      * is in blacklist
      */
@@ -88,16 +91,18 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
                 @JsonProperty("attachments") attachments: JsonNode?) {
         //if "attachments" is empty, it's array, but map if not empty
         this.isFirst = "1" == first
-        this.reply = filterReply(reply)
+        var tReply = filterReply(reply)
         if (attachments != null && attachments.isObject) {
-            this.attachmentMap = App.preAppComponent.jsonMapper.let {
+            val attachmentMap = App.preAppComponent.jsonMapper.let {
                 JsonUtil.readJsonNode(
                     it,
                     attachments,
                     object : TypeReference<Map<Int, PostAttachment>>() {})
             }
-            this.reply = processAttachment()
+            tReply = processAttachment(tReply, attachmentMap)
         }
+        tReply = prettifyReply(tReply)
+        this.reply = tReply
     }
 
     override val stableId: Long
@@ -158,6 +163,29 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         // Also maps some colors, see mapColors(String).
         tReply = mapColors(tReply).replace("<imgwidth=\"".toRegex(), "<img width=\"")
 
+        return tReply
+    }
+
+    private fun prettifyReply(value: String?): String? {
+        if (value.isNullOrEmpty()) {
+            return value
+        }
+        var tReply: String = value
+        while (true) {
+            if (tReply.endsWith("\r\n")) {
+                tReply = tReply.substring(0, tReply.length - 2)
+                continue
+            }
+            if (tReply.endsWith("\n")) {
+                tReply = tReply.substring(0, tReply.length - 1)
+                continue
+            }
+            if (tReply.endsWith("<br />")) {
+                tReply = tReply.substring(0, tReply.length - 6)
+                continue
+            }
+            break
+        }
         return tReply
     }
 
@@ -334,11 +362,17 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
      * Also concats the missing img tag from attachment.
      * See https://github.com/floating-cat/S1-Next/issues/7
      */
-    private fun processAttachment(): String? {
+    private fun processAttachment(reply: String?, attachments: Map<Int, PostAttachment>): String? {
         var tReply: String = reply ?: return null
 
-        for ((key, attachment) in attachmentMap) {
-            val imgTag = "\n<img src=\"" + attachment.imageUrl + "\" />"
+        for ((key, attachment) in attachments) {
+            if (!attachment.isImage) {
+                attachmentMap[key] = attachment
+                tReply = tReply
+                    .replace("[attach]$key[/attach]", "")
+                continue
+            }
+            val imgTag = "\n<img src=\"" + attachment.realUrl + "\" />"
             val replyCopy = tReply
             // get the original string if there is nothing to replace
             tReply = tReply.replace("[attach]$key[/attach]", imgTag)
