@@ -19,7 +19,7 @@ val httpDnsSecret = properties.getProperty("httpDnsSecret") ?: "\"\""
 
 val appVersionCode = 88
 val appVersionName = "3.1"
-val appVersionExtra = ".1"
+val appVersionExtra = ".2"
 
 android {
     namespace = "me.ykrank.s1next"
