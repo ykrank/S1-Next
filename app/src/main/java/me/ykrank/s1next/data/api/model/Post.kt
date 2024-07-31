@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.JsonNode
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
+import com.github.ykrank.androidtools.util.FileUtil
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.MathUtil
 import me.ykrank.s1next.App
@@ -366,20 +367,27 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         var tReply: String = reply ?: return null
 
         for ((key, attachment) in attachments) {
+            val replyCopy = tReply
+
+            val nTag: String
             if (!attachment.isImage) {
                 attachmentMap[key] = attachment
-                tReply = tReply
-                    .replace("[attach]$key[/attach]", "")
-                continue
+                nTag =
+                    "<attach href=${attachment.realUrl} name=${attachment.name}>${attachment.name}, ${
+                        FileUtil.getPrintSize(
+                            attachment.size
+                        )
+                    }</attach>"
+            } else {
+                nTag = "\n<img src=\"" + attachment.realUrl + "\" />"
             }
-            val imgTag = "\n<img src=\"" + attachment.realUrl + "\" />"
-            val replyCopy = tReply
             // get the original string if there is nothing to replace
-            tReply = tReply.replace("[attach]$key[/attach]", imgTag)
+            tReply = tReply.replace("[attach]$key[/attach]", nTag)
 
             if (replyCopy == tReply) {
                 // concat the missing img tag
-                tReply += imgTag
+                tReply += "<br />"
+                tReply += nTag
             }
         }
 

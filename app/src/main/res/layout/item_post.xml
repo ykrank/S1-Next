@@ -251,6 +251,8 @@
                     android:layout_marginRight="@dimen/spacing_micro"
                     android:layout_marginBottom="@dimen/spacing_micro"
                     android:visibility="gone"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_rate_detail"
                     tools:visibility="visible" />
             </LinearLayout>
 

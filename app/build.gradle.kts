@@ -146,6 +146,7 @@ dependencies {
     implementation(libs.androidx.transition)
 
     implementation(libs.okhttp.urlconnection)
+    implementation(libs.okhttp.coroutines)
     implementation(libs.retrofit2)
     implementation(libs.retrofit2.adapter.rxjava2)
     implementation(libs.retrofit2.converter.jackson)

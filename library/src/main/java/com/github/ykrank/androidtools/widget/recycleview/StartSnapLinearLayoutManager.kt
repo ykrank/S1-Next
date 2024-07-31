@@ -1,14 +1,14 @@
 package com.github.ykrank.androidtools.widget.recycleview
 
 import android.content.Context
+import android.util.AttributeSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
-import android.util.AttributeSet
 
 /**LinearLayoutManager only snap to start
  * Created by ykrank on 2017/6/4.
  */
-class StartSnapLinearLayoutManager : androidx.recyclerview.widget.LinearLayoutManager {
+class StartSnapLinearLayoutManager : LinearLayoutManager {
     val context: Context
 
     constructor(context: Context) : super(context) {
@@ -41,7 +41,7 @@ class StartSnapLinearLayoutManager : androidx.recyclerview.widget.LinearLayoutMa
     }
 }
 
-class StartSnapLinearSmoothScroller(context: Context?) : androidx.recyclerview.widget.LinearSmoothScroller(context) {
+class StartSnapLinearSmoothScroller(context: Context?) : LinearSmoothScroller(context) {
     var offset: Int = 0
 
     override fun getVerticalSnapPreference(): Int {

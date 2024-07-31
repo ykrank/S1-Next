@@ -1,10 +1,10 @@
 package me.ykrank.s1next.widget.span;
 
 import android.graphics.Color;
-import android.os.Build;
-import androidx.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by ykrank on 2016/12/30.
@@ -110,13 +110,8 @@ public class HtmlCompat {
     /**
      * {@linkplain Html#fromHtml(String, int, Html.ImageGetter, Html.TagHandler)}
      */
-    @SuppressWarnings("deprecation")
     public static Spanned fromHtml(String source, int flags, @Nullable Html.ImageGetter imageGetter,
                                    @Nullable Html.TagHandler tagHandler) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return Html.fromHtml(source, flags, imageGetter, new HtmlTagHandlerCompat(tagHandler, flags));
-        } else {
-            return Html.fromHtml(source, imageGetter, new HtmlTagHandlerCompat(tagHandler, flags));
-        }
+        return Html.fromHtml(source, flags, imageGetter, new HtmlTagHandlerCompat(tagHandler, flags));
     }
 }

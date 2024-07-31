@@ -1,99 +1,107 @@
-package me.ykrank.s1next.widget.span;
+package me.ykrank.s1next.widget.span
 
-import android.text.Editable;
-import android.text.Html;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ImageSpan;
-import android.widget.TextView;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.XMLReader;
-
-import java.util.ArrayList;
-
-import me.ykrank.s1next.R;
+import android.text.Editable
+import android.text.Html
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ImageSpan
+import android.widget.TextView
+import me.ykrank.s1next.R
+import org.xml.sax.XMLReader
 
 /**
- * Adds {@link android.view.View.OnClickListener}
- * to {@link android.text.style.ImageSpan} and
- * handles {@literal <strike>} tag.
+ * Adds [android.view.View.OnClickListener]
+ * to [android.text.style.ImageSpan] and
+ * handles &lt;strike&gt; tag.
  */
-public final class TagHandler implements Html.TagHandler {
-    private static final String TAG = TagHandler.class.getCanonicalName();
+class TagHandler(textView: TextView) : Html.TagHandler {
+    private val images = ArrayList<String>()
 
-    private ArrayList<String> images = new ArrayList<>();
-
-    public TagHandler(TextView textView){
-        textView.setTag(R.id.tag_text_view_span_images, images);
+    init {
+        textView.setTag(R.id.tag_text_view_span_images, images)
     }
 
-    /**
-     * See android.text.Html.HtmlToSpannedConverter#getLast(android.text.Spanned, java.lang.Class)
-     */
-    public static <T> T getLastSpan(Spanned text, Class<T> kind) {
-        T[] spans = text.getSpans(0, text.length(), kind);
-
-        if (spans.length == 0) {
-            return null;
-        } else {
-            return spans[spans.length - 1];
-        }
-    }
-
-    @Override
-    public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
-        if ("img".equalsIgnoreCase(tag)) {
-            handleImg(opening, output);
-        } else if ("acfun".equalsIgnoreCase(tag)) {
-            handleAcfun(opening, output, xmlReader);
-        } else if ("bilibili".equalsIgnoreCase(tag)) {
-            handleBilibili(opening, output, xmlReader);
+    override fun handleTag(opening: Boolean, tag: String, output: Editable, xmlReader: XMLReader) {
+        if ("img".equals(tag, ignoreCase = true)) {
+            handleImg(opening, output)
+        } else if ("acfun".equals(tag, ignoreCase = true)) {
+            handleAcfun(opening, output, xmlReader)
+        } else if ("bilibili".equals(tag, ignoreCase = true)) {
+            handleBilibili(opening, output, xmlReader)
+        } else if ("attach".equals(tag, ignoreCase = true)) {
+            handleAttachment(opening, output, xmlReader)
         }
     }
 
     /**
-     * Replaces {@link android.view.View.OnClickListener}
-     * with {@link ImageClickableResizeSpan}.
-     * <p>
+     * Replaces [android.view.View.OnClickListener]
+     * with [ImageClickableResizeSpan].
+     *
+     *
      * See android.text.Html.HtmlToSpannedConverter#startImg(android.text.SpannableStringBuilder, org.xml.sax.Attributes, android.text.Html.ImageGetter)
      */
-    private void handleImg(boolean opening, Editable output) {
+    private fun handleImg(opening: Boolean, output: Editable) {
         if (!opening) {
-            int end = output.length();
+            val end = output.length
 
             // \uFFFC: OBJECT REPLACEMENT CHARACTER
-            int len = "\uFFFC".length();
-            ImageSpan imageSpan = output.getSpans(end - len, end, ImageSpan.class)[0];
-
-            String url = imageSpan.getSource();
+            val len = "\uFFFC".length
+            val imageSpan = output.getSpans(end - len, end, ImageSpan::class.java)[0]
+            var url = imageSpan.source
             if (url == null) {
-                url = "";
+                url = ""
             }
             // replace \uFFFC with ImageSpan's source
             // in order to support url copyFrom when selected
-            output.replace(end - len, end, url);
-
-            output.removeSpan(imageSpan);
+            output.replace(end - len, end, url)
+            output.removeSpan(imageSpan)
             // make this ImageSpan clickable
-            output.setSpan(new ImageClickableResizeSpan(imageSpan.getDrawable(), url, images),
-                    end - len, output.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            output.setSpan(
+                ImageClickableResizeSpan(imageSpan.getDrawable(), url, images),
+                end - len, output.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
         }
     }
 
-    private void handleAcfun(boolean opening, Editable output, XMLReader xmlReader) {
+    private fun handleAcfun(opening: Boolean, output: Editable, xmlReader: XMLReader) {
         if (opening) {
-            Attributes attributes = HtmlTagHandlerCompat.processAttributes(xmlReader);
-            AcfunSpan.startAcfun((SpannableStringBuilder) output, attributes);
-        } else
-            AcfunSpan.endAcfun((SpannableStringBuilder) output);
+            val attributes = HtmlTagHandlerCompat.processAttributes(xmlReader)
+            AcfunSpan.startAcfun((output as SpannableStringBuilder), attributes)
+        } else {
+            AcfunSpan.endAcfun((output as SpannableStringBuilder))
+        }
     }
 
-    private void handleBilibili(boolean opening, Editable output, XMLReader xmlReader) {
+    private fun handleBilibili(opening: Boolean, output: Editable, xmlReader: XMLReader) {
         if (opening) {
-            BilibiliSpan.startBilibiliSpan((SpannableStringBuilder) output);
-        } else
-            BilibiliSpan.endBilibiliSpan((SpannableStringBuilder) output);
+            BilibiliSpan.startBilibiliSpan((output as SpannableStringBuilder))
+        } else {
+            BilibiliSpan.endBilibiliSpan((output as SpannableStringBuilder))
+        }
     }
 
+    private fun handleAttachment(opening: Boolean, output: Editable, xmlReader: XMLReader) {
+        if (opening) {
+            val attributes = HtmlTagHandlerCompat.processAttributes(xmlReader)
+            AttachmentSpan.startSpan((output as SpannableStringBuilder), attributes)
+        } else {
+            AttachmentSpan.endSpan(output as SpannableStringBuilder)
+        }
+    }
+
+    companion object {
+        private val TAG = TagHandler::class.java.getCanonicalName()
+
+        /**
+         * See android.text.Html.HtmlToSpannedConverter#getLast(android.text.Spanned, java.lang.Class)
+         */
+        fun <T> getLastSpan(text: Spanned, kind: Class<T>?): T? {
+            val spans = text.getSpans(0, text.length, kind)
+            return if (spans.isEmpty()) {
+                null
+            } else {
+                spans[spans.size - 1]
+            }
+        }
+    }
 }
