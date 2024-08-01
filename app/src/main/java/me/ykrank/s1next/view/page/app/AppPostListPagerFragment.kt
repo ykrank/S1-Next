@@ -6,10 +6,8 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import com.bigkoo.quicksidebar.QuickSideBarView
 import com.bigkoo.quicksidebar.listener.OnQuickSideBarTouchListener
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.ykrank.androidautodispose.AndroidRxDispose
@@ -81,11 +79,8 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
     private var blacklistChanged = false
 
     private lateinit var binding: FragmentBaseWithQuickSideBarBinding
-    private lateinit var mRecyclerView: androidx.recyclerview.widget.RecyclerView
     private lateinit var mRecyclerAdapter: AppPostListRecyclerViewAdapter
     private lateinit var mLayoutManager: StartSnapLinearLayoutManager
-    private lateinit var quickSideBarView: QuickSideBarView
-    private lateinit var quickSideBarTipsView: TextView
     private val letters = HashMap<String, Int>()
 
     private var mPagerCallback: PagerCallback? = null
@@ -99,19 +94,20 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
         mPageNum = bundle.getInt(ARG_PAGE_NUM)
         mQuotePid = bundle.getString(ARG_QUOTE_POST_ID)
         leavePageMsg("AppPostListPagerFragment##ThreadId:$mThreadId,PageNum:$mPageNum")
+
+        mLayoutManager = StartSnapLinearLayoutManager(requireActivity())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onViewCreated(view, savedInstanceState)
-        mRecyclerView = recyclerView
-        mLayoutManager = StartSnapLinearLayoutManager(requireActivity())
-        mRecyclerView.layoutManager = mLayoutManager
+
         mRecyclerAdapter =
             AppPostListRecyclerViewAdapter(requireActivity(), viewLifecycleOwner, mQuotePid)
-        mRecyclerView.adapter = mRecyclerAdapter
+        recyclerView.layoutManager = mLayoutManager
+        recyclerView.adapter = mRecyclerAdapter
 
-        quickSideBarView.setOnQuickSideBarTouchListener(this)
+        binding.quickSideBarView.setOnQuickSideBarTouchListener(this)
 
         mEventBus.get()
             .ofType(PostSelectableChangeEvent::class.java)
@@ -167,8 +163,6 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
             false
         )
         binding.quickSidebarEnable = false
-        quickSideBarView = binding.quickSideBarView
-        quickSideBarTipsView = binding.quickSideBarViewTips
         return LoadingViewModelBindingDelegateQuickSidebarImpl(binding)
     }
 
@@ -346,11 +340,11 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
             }
             i++
         }
-        quickSideBarView.letters = customLetters
+        binding.quickSideBarView.letters = customLetters
     }
 
     override fun onLetterChanged(letter: String, position: Int, y: Float) {
-        quickSideBarTipsView.text = letter
+        binding.quickSideBarViewTips.text = letter
         //有此key则获取位置并滚动到该位置
         if (letters.containsKey(letter)) {
             mLayoutManager.scrollToPositionWithOffset(letters[letter] ?: 0, 0)

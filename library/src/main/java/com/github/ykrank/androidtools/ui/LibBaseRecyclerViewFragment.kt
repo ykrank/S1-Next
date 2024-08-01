@@ -106,7 +106,9 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
         mLoadingViewModelBindingDelegate.swipeRefreshLayout.setOnRefreshListener { this.startSwipeRefresh() }
 
         mBaseRecycleViewModel.data?.apply {
-            onNext(this)
+            view.post {
+                onNext(this)
+            }
         }
 
         mLoadingViewModelBindingDelegate.setLoadingViewModel(mLoadingViewModel)

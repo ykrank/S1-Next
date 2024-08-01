@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.github.ykrank.androidtools.util.L
+import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.data.db.AppDatabaseManager
 
 interface CacheDatabaseManager {
@@ -47,7 +48,7 @@ class CacheDatabaseManagerImpl(
             appDatabaseManager.runAsync(runnable)
         } catch (e: Exception) {
             L.report(e)
-            if (L.showLog) {
+            if (BuildConfig.DEBUG) {
                 throw e
             }
         }

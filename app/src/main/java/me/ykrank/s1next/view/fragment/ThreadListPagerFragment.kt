@@ -37,7 +37,7 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
     private var mTypeId: String? = null
     private var mPageNum: Int = 0
 
-    private lateinit var mRecyclerAdapter: ThreadRecyclerViewAdapter
+    private var mRecyclerAdapter: ThreadRecyclerViewAdapter? = null
 
     private var mPagerCallback: PagerCallback? = null
     private var mSubForumsCallback: SubForumsCallback? = null
@@ -50,10 +50,16 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mPagerCallback = parentFragment as PagerCallback
-
         App.appComponent.inject(this)
+        super.onCreate(savedInstanceState)
+
+        mPagerCallback = parentFragment as PagerCallback
+        val bundle = requireArguments()
+        mForumId = bundle.getString(ARG_FORUM_ID)
+        mTypeId = bundle.getString(ARG_TYPE_ID)
+        mPageNum = bundle.getInt(ARG_PAGE_NUM)
+        leavePageMsg("ThreadListPagerFragment##ForumId:$mForumId, TypeId:$mTypeId, PageNum:$mPageNum")
+
         mEventBus.get()
             .ofType(ThreadTypeChangeEvent::class.java)
             .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
@@ -69,21 +75,15 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
             .subscribe {
                 startSwipeRefresh()
             }
-
-        val bundle = requireArguments()
-        mForumId = bundle.getString(ARG_FORUM_ID)
-        mTypeId = bundle.getString(ARG_TYPE_ID)
-        mPageNum = bundle.getInt(ARG_PAGE_NUM)
-        leavePageMsg("ThreadListPagerFragment##ForumId:$mForumId, TypeId:$mTypeId, PageNum:$mPageNum")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mRecyclerAdapter = ThreadRecyclerViewAdapter(requireActivity(), viewLifecycleOwner, mForumId)
         val recyclerView = recyclerView
         val activity = requireActivity()
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        mRecyclerAdapter = ThreadRecyclerViewAdapter(activity, viewLifecycleOwner, mForumId)
         recyclerView.adapter = mRecyclerAdapter
     }
 
@@ -122,7 +122,7 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
         } else {
             super.onNext(data)
 
-            mRecyclerAdapter.diffNewDataSet(threads.threadList, true)
+            mRecyclerAdapter?.diffNewDataSet(threads.threadList, true)
 
             // update total page
             mPagerCallback?.setTotalPageByThreads(threads.threadListInfo?.threads ?: 0)
