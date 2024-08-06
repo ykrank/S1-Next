@@ -49,7 +49,7 @@ object ErrorUtil : ErrorParser {
             is ApiException -> msg = throwable.getLocalizedMessage()
             is JsonProcessingException -> {
                 msg = context.getString(R.string.message_server_data_error)
-                val source = throwable.location?.sourceRef
+                val source = throwable.location?.contentReference()?.rawContent
                 if (source is String && source.trimStart().startsWith("<!DOCTYPE html")) {
                     L.print(throwable)
                 } else {

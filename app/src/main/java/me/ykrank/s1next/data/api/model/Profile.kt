@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.github.ykrank.androidtools.util.L
 import org.jsoup.Jsoup
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 /**
  * Created by ykrank on 2017/1/8.
@@ -87,22 +87,31 @@ class Profile : Account {
                             profile.groupTitle = ele.child(1).selectFirst("span")?.text()
                             //<ul id="pbbs" class="pf_l">
                             val pbbsEle = profileDiv.getElementById("pbbs")
-                            pbbsEle?.children()?.forEach {
-                                when (it.child(0).text().trim()) {
-                                    "在线时间" -> profile.onlineHour = it.textNodes()[0].text().trim().let { it1 ->
-                                        it1.substring(0, it1.length - 3)
+                            pbbsEle?.children()?.forEach { element ->
+                                when (element.child(0).text().trim()) {
+                                    "在线时间" -> profile.onlineHour =
+                                        element.textNodes()[0].text().trim().let {
+                                            it.substring(0, it.length - 3)
                                     }.toInt()
-                                    "注册时间" -> profile.regDate = it.textNodes()[0].text().trim().let {
-                                        df.parse(it).time / 1000
+
+                                    "注册时间" -> profile.regDate =
+                                        element.textNodes()[0].text().trim().let {
+                                            df.parse(it)?.time?.div(1000)
                                     }
-                                    "最后访问" -> profile.lastVisitDate = it.textNodes()[0].text().trim().let {
-                                        df.parse(it).time / 1000
+
+                                    "最后访问" -> profile.lastVisitDate =
+                                        element.textNodes()[0].text().trim().let {
+                                            df.parse(it)?.time?.div(1000)
                                     }
-                                    "上次活动时间" -> profile.lastActiveDate = it.textNodes()[0].text().trim().let {
-                                        df.parse(it).time / 1000
+
+                                    "上次活动时间" -> profile.lastActiveDate =
+                                        element.textNodes()[0].text().trim().let {
+                                            df.parse(it)?.time?.div(1000)
                                     }
-                                    "上次发表时间" -> profile.lastPostDate = it.textNodes()[0].text().trim().let {
-                                        df.parse(it).time / 1000
+
+                                    "上次发表时间" -> profile.lastPostDate =
+                                        element.textNodes()[0].text().trim().let {
+                                            df.parse(it)?.time?.div(1000)
                                     }
                                 }
                             }

@@ -28,7 +28,7 @@ object AppDeviceUtil {
         return if (packageName.contains("alpha")) {
             "https://www.pgyer.com/xfPejhuq"
         } else {
-            "https://www.pgyer.com/xfPejhuq"
+            "https://www.pgyer.com/GcUxKd4w"
         }
     }
 

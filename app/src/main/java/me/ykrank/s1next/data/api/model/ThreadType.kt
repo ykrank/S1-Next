@@ -61,6 +61,9 @@ class ThreadType : PaperParcelable {
         fun fromXmlString(html: String?): List<ThreadType> {
             LooperUtil.enforceOnWorkThread()
             val types = ArrayList<ThreadType>()
+            if (html.isNullOrEmpty()) {
+                return types
+            }
             try {
                 val document = Jsoup.parse(html)
                 HtmlDataWrapper.preAlertHtml(document)
@@ -73,7 +76,7 @@ class ThreadType : PaperParcelable {
                     types.add(ThreadType(typeId, typeName))
                 }
             } catch (e: Exception) {
-                L.leaveMsg("Source:" + html)
+                L.leaveMsg("Source:$html")
                 throw e
             }
 

@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.widget.Toast
-import androidx.core.app.BundleCompat
 import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate
 import me.ykrank.s1next.R
 
@@ -114,7 +113,7 @@ object IntentUtil {
     fun putCustomTabsExtra(intent: Intent) {
         // enable Custom Tabs if supported
         val bundle = Bundle()
-        BundleCompat.putBinder(bundle, EXTRA_CUSTOM_TABS_SESSION, null)
+        bundle.putBinder(EXTRA_CUSTOM_TABS_SESSION, null)
         intent.putExtras(bundle)
         intent.putExtra(EXTRA_ENABLE_URLBAR_HIDING, true)
     }
@@ -122,7 +121,7 @@ object IntentUtil {
     private fun putCustomTabsExtra(intentList: List<Intent>) {
         // enable Custom Tabs if supported
         val bundle = Bundle()
-        BundleCompat.putBinder(bundle, EXTRA_CUSTOM_TABS_SESSION, null)
+        bundle.putBinder(EXTRA_CUSTOM_TABS_SESSION, null)
         for (intent in intentList) {
             intent.putExtras(bundle)
             intent.putExtra(EXTRA_ENABLE_URLBAR_HIDING, true)
