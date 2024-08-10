@@ -56,7 +56,6 @@ class ReplyRequestDialogFragment : BaseRequestDialogFragment<AccountResultWrappe
         private const val ARG_THREAD_ID = "thread_id"
         private const val ARG_REPLY = "reply"
         private const val ARG_QUOTE_POST_ID = "quote_post_id"
-        private const val STATUS_REPLY_SUCCESS = "post_reply_succeed"
         fun newInstance(
             threadId: String?, quotePostId: String?,
             reply: String?

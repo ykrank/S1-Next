@@ -30,7 +30,7 @@ class LoginDialogFragment : BaseLoginDialogFragment<AccountResultWrapper>() {
 
     override fun parseData(data: AccountResultWrapper): Result {
         val result = data.result
-        return if (result.status?.endsWith(STATUS_AUTH_SUCCESS) == true || result.defaultSuccess) {
+        return if (result.defaultSuccess) {
             Result(true, result.message)
         } else {
             Result(false, result.message)
@@ -76,14 +76,6 @@ class LoginDialogFragment : BaseLoginDialogFragment<AccountResultWrapper>() {
     companion object {
 
         val TAG = LoginDialogFragment::class.java.simpleName
-
-        /**
-         * For desktop is "login_succeed".
-         * For mobile is "location_login_succeed_mobile".
-         * "login_succeed" when already has logged in.
-         */
-        private const val STATUS_AUTH_SUCCESS = "location_login_succeed_mobile"
-        private const val STATUS_AUTH_SUCCESS_ALREADY = "login_succeed"
 
 
         fun newInstance(

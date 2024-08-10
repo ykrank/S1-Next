@@ -52,7 +52,6 @@ class NewThreadRequestDialogFragment : BaseRequestDialogFragment<AccountResultWr
         private const val ARG_TITLE = "title"
         private const val ARG_MESSAGE = "message"
         private const val ARG_CACHE_KEY = "cache_key"
-        private const val STATUS_NEW_THREAD_SUCCESS = "post_newthread_succeed"
         fun newInstance(
             forumId: Int, typeId: String?, title: String?,
             message: String?, cacheKey: String?

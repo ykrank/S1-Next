@@ -44,7 +44,6 @@ class ThreadFavouritesAddRequestDialogFragment : ProgressDialogFragment<AccountR
         private const val ARG_THREAD_ID = "thread_id"
         private const val ARG_REMARK = "remark"
 
-        private val STATUS_ADD_TO_FAVOURITES_SUCCESS = "favorite_do_success"
         private val STATUS_ADD_TO_FAVOURITES_REPEAT = "favorite_repeat"
 
         fun newInstance(
