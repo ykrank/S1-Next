@@ -251,4 +251,12 @@ object PostFilter {
 
         return tReply
     }
+
+    /**
+     * 替换代码div中的随机id <div id="code_bpv">
+     */
+    fun replaceCodeDivId(reply: String):String{
+        return reply.replace("<div class=\"blockcode\"><div id=\"code_\\w{3}\">".toRegex(), "<div class=\"blockcode\"><div>")
+            .replace("<em onclick=\"copycode\\(getID\\('code_\\w{3}'\\)\\);\">复制代码</em></div>".toRegex(), "</div>")
+    }
 }

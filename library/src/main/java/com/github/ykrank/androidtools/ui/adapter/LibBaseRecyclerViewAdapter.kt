@@ -80,6 +80,9 @@ abstract class LibBaseRecyclerViewAdapter : ListDelegationAdapter<MutableList<An
             return
         }
         val position = itemCount - 1
+        if (position < 0) {
+            return
+        }
         val lastItem = getItem(position)
         if (lastItem is FooterProgressItem) {
             removeItem(position)

@@ -230,6 +230,7 @@ class S1ApiCacheProvider(
                         val postList = postWrapper?.data?.postList
                         if (!postList.isNullOrEmpty()) {
                             val post = postList[0]
+                            // 交易帖
                             if (post.isTrade) {
                                 post.extraHtml = ""
                                 runCatching {
@@ -242,6 +243,17 @@ class S1ApiCacheProvider(
                                     if (this.isFailure) {
                                         hasError = true
                                     }
+                                }
+                            }
+
+                            //从未过期的缓存中获取评分详情。
+                            postList.filter { it.rates?.size == 0 }.forEach {
+                                val cacheKey = getRateKey(threadId, it.id)
+                                val cache = ratesCache[cacheKey]
+
+                                if (cache != null && System.currentTimeMillis() - cache.time <= CACHE_RATE_MILLS) {
+                                    val rates = cache.data
+                                    it.rates = rates
                                 }
                             }
                         }
@@ -261,7 +273,7 @@ class S1ApiCacheProvider(
                 }
             }.onCompletion {
                 loadTime.addPoint("completion")
-                // 获取评分详情。优先从未过期的缓存中获取
+                // 获取评分详情。
                 val postsWrapper = netPostsWrapper
                 if (onRateUpdate != null && postsWrapper != null) {
                     val posts = postsWrapper.data?.postList
@@ -273,29 +285,27 @@ class S1ApiCacheProvider(
                                 .map {
                                     val pid = it.id
                                     val cacheKey = getRateKey(threadId, it.id)
-                                    val cache = ratesCache[cacheKey]
-                                    val rates =
-                                        if (cache != null && System.currentTimeMillis() - cache.time <= CACHE_RATE_MILLS) {
-                                            cache.data
-                                        } else {
-                                            val rateHtml = loadTime.run("get_rate_${it.id}") {
+                                    val rateHtml = loadTime.run("get_rate_${it.id}") {
                                                 s1Service.getRates(threadId, pid.toString())
                                             }
-                                            Rate.fromHtml(rateHtml).apply {
+                                    val rates = Rate.fromHtml(rateHtml).apply {
                                                 ratesCache.put(
                                                     cacheKey,
                                                     BaseCache(System.currentTimeMillis(), this)
                                                 )
                                             }
+                                    if (it.rates != rates) {
+                                        it.rates = rates
+                                        launch(Dispatchers.Main) {
+                                            onRateUpdate(pid, rates)
                                         }
-                                    it.rates = rates
-                                    launch(Dispatchers.Main) {
-                                        onRateUpdate(pid, rates)
+                                        pid
+                                    } else {
+                                        null
                                     }
-                                    pid
                                 }.debounce(CACHE_RATE_SAVE_DEBOUNCE)
                                 .collect {
-                                    if (cacheValid) {
+                                    if (cacheValid && it != null) {
                                         withContext(Dispatchers.Default) {
                                             loadTime.run(ApiCacheConstants.Time.TIME_UPDATE_CACHE + it) {
                                                 saveCache(postsWrapper)

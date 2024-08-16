@@ -132,6 +132,10 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         return true
     }
 
+    override fun isSameContent(other: Any?): Boolean {
+        return equals(other)
+    }
+
     fun getPage(): Int {
         return MathUtil.divide(number?.toInt() ?: 1, Api.POSTS_PER_PAGE)
     }
@@ -149,9 +153,9 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         // 替换手动unicode，比如 &#x4E0D;
         var tReply: String = HtmlUtils.unescapeHtml(value) ?: value
 
+        tReply = PostFilter.replaceCodeDivId(tReply)
         tReply = PostFilter.replaceNewQuoteToOld(tReply)
         tReply = PostFilter.hideBlackListQuote(tReply)
-
         tReply = PostFilter.replaceBilibiliTag(tReply)
 
         // Replaces "imgwidth" with "img width",
