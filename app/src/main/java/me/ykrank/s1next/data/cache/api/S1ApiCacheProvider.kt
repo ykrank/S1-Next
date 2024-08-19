@@ -137,7 +137,6 @@ class S1ApiCacheProvider(
             }
             emit(rates)
         }.flowOn(Dispatchers.IO)
-        var netPostsWrapper: PostsWrapper? = null
         val interceptor = object : ApiCacheInterceptor<PostsWrapper> {
             override fun interceptQueryCache(cache: PostsWrapper): PostsWrapper {
                 // 从缓存获取时，将帖数更新为最新
@@ -210,6 +209,9 @@ class S1ApiCacheProvider(
             }
         }
 
+        var netPostsWrapper: PostsWrapper? = null
+        // 评分缓存过期的回帖，先展示缓存，然后再刷新
+        val outdatedRatePostIds = mutableListOf<Int>()
         return apiCacheFlow.getFlow()
             .combine(ratePostFlow) { it, ratePostWrapper ->
                 if (it.source.isCloud()) {
@@ -246,14 +248,17 @@ class S1ApiCacheProvider(
                                 }
                             }
 
-                            //从未过期的缓存中获取评分详情。
+                            //从缓存中获取评分详情。
                             postList.filter { it.rates?.size == 0 }.forEach {
                                 val cacheKey = getRateKey(threadId, it.id)
                                 val cache = ratesCache[cacheKey]
 
-                                if (cache != null && System.currentTimeMillis() - cache.time <= CACHE_RATE_MILLS) {
+                                if (cache != null) {
                                     val rates = cache.data
                                     it.rates = rates
+                                    if (System.currentTimeMillis() - cache.time > CACHE_RATE_MILLS) {
+                                        outdatedRatePostIds.add(it.id)
+                                    }
                                 }
                             }
                         }
@@ -279,7 +284,7 @@ class S1ApiCacheProvider(
                     val posts = postsWrapper.data?.postList
                     if (posts != null) {
                         withContext(Dispatchers.IO) {
-                            posts.filter { it.rates?.size == 0 }
+                            posts.filter { it.rates?.size == 0 || outdatedRatePostIds.contains(it.id) }
                                 .distinctBy { it.id }
                                 .asFlow()
                                 .map {
@@ -294,6 +299,7 @@ class S1ApiCacheProvider(
                                                     BaseCache(System.currentTimeMillis(), this)
                                                 )
                                             }
+                                    // 最新数据和缓存不同时，才刷新
                                     if (it.rates != rates) {
                                         it.rates = rates
                                         launch(Dispatchers.Main) {
