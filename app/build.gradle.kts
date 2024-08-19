@@ -17,9 +17,9 @@ val mKeyPassword: String? = properties.getProperty("keyPassword")
 val httpDnsId = properties.getProperty("httpDnsId") ?: "\"\""
 val httpDnsSecret = properties.getProperty("httpDnsSecret") ?: "\"\""
 
-val appVersionCode = 88
+val appVersionCode = 89
 val appVersionName = "3.1"
-val appVersionSuffix = "3"
+val appVersionSuffix = ""
 
 android {
     namespace = "me.ykrank.s1next"
@@ -30,7 +30,7 @@ android {
         minSdk = 26
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = appVersionCode
-        versionName = "${appVersionName}.${appVersionCode}.${appVersionSuffix}"
+        versionName = "${appVersionName}.${appVersionCode}${appVersionSuffix}"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
