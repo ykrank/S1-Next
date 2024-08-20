@@ -133,34 +133,26 @@ object PostFilter {
     /**
      * 将B站链接添加自定义Tag
      * like "<bilibili>http://www.bilibili.com/video/av6706141/index_3.html</bilibili>"
-
-     * @param reply
      * *
      * @return
      */
-    fun replaceBilibiliTag(reply: String): String {
-        var reply = reply
-        val pattern = Pattern.compile("\\[thgame_biliplay.*?\\[/thgame_biliplay]")
-        val matcher = pattern.matcher(reply)
-        while (matcher.find()) {
+    fun replaceBilibiliTag(raw: String): String {
+        var reply = raw
+        val matchResult = "\\[thgame_biliplay.*?\\[/thgame_biliplay]".toRegex().findAll(reply)
+        matchResult.forEach {
             try {
-                val content = matcher.group(0)
-                if (content.isNullOrEmpty()){
-                    continue
+                val content = it.value
+                if (content.isEmpty()) {
+                    return@forEach
                 }
                 //find av number
-                val avPattern = Pattern.compile("\\{,=av\\}[0-9]+")
-                val avMatcher = avPattern.matcher(content)
-                if (!avMatcher.find()) {
-                    continue
-                }
-                val avNum = Integer.valueOf(avMatcher.group().substring(6))
+                val avMatcher = "\\{,=av\\}[0-9]+".toRegex().find(content) ?: return@forEach
+                val avNum = Integer.valueOf(avMatcher.value.substring(6))
                 //find page
                 var page = 1
-                val pagePattern = Pattern.compile("\\{,=page\\}[0-9]+")
-                val pageMatcher = pagePattern.matcher(content)
-                if (pageMatcher.find()) {
-                    page = Integer.valueOf(pageMatcher.group().substring(8))
+                val pageMatcher = "\\{,=page\\}[0-9]+".toRegex().find(content)
+                if (pageMatcher != null) {
+                    page = Integer.valueOf(pageMatcher.value.substring(8))
                 }
 
                 //like "<bilibili>http://www.bilibili.com/video/av6706141/index_3.html</bilibili>"
@@ -176,7 +168,14 @@ object PostFilter {
                 L.leaveMsg(reply)
                 L.report("replaceBilibiliTag error", e)
             }
+        }
+        return reply
+    }
 
+    fun replaceMedia(raw: String): String {
+        var reply = raw
+        "\\[media](.*?)\\[/media]".toRegex().findAll(reply).forEach {
+            reply = reply.replace(it.value, "<a href=${it.groupValues[1]}>${it.groupValues[1]}</a>")
         }
         return reply
     }

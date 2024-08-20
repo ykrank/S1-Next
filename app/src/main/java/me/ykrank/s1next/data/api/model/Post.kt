@@ -157,6 +157,7 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
         tReply = PostFilter.replaceNewQuoteToOld(tReply)
         tReply = PostFilter.hideBlackListQuote(tReply)
         tReply = PostFilter.replaceBilibiliTag(tReply)
+        tReply = PostFilter.replaceMedia(tReply)
 
         // Replaces "imgwidth" with "img width",
         // because some img tags in S1 aren't correct.
