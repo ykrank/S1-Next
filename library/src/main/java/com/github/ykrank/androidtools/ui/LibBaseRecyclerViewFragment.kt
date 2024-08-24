@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.ykrank.androidtools.GlobalData
 import com.github.ykrank.androidtools.data.Resource
+import com.github.ykrank.androidtools.data.Source
 import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
 import com.github.ykrank.androidtools.ui.vm.BaseRecycleViewModel
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
 import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.LooperUtil
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -105,16 +107,19 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         mLoadingViewModelBindingDelegate.swipeRefreshLayout.setOnRefreshListener { this.startSwipeRefresh() }
 
-        mBaseRecycleViewModel.data?.apply {
-            view.post {
-                onNext(this)
-            }
-        }
-
         mLoadingViewModelBindingDelegate.setLoadingViewModel(mLoadingViewModel)
-        if (!isLazyLoad() || mUserVisibleHint) {
+
+        val data = mBaseRecycleViewModel.data
+        if (data != null){
             init = true
-            load(mLoadingViewModel.loading)
+            LooperUtil.postToMainThread {
+                onNextSuccess(Resource.Success(Source.MEMORY, data))
+            }
+        } else {
+            if (!isLazyLoad() || mUserVisibleHint) {
+                init = true
+                load(mLoadingViewModel.loading)
+            }
         }
     }
 
@@ -135,7 +140,7 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
         super.setUserVisibleHint(isVisibleToUser)
         if (isVisibleToUser && isVisible) {
             //Create but only init or Init but should refresh when reVisible
-            if (!init || init && refreshWhenUserVisibleHint()) {
+            if (!init || refreshWhenUserVisibleHint()) {
                 init = true
                 startSwipeRefresh()
             }
@@ -228,9 +233,6 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
                     ?.onEach {
                         if (it is Resource.Success) {
                             onNextSuccess(it)
-                            it.data?.apply {
-                                onNext(this)
-                            }
                         } else if (it is Resource.Error) {
                             it.error?.apply {
                                 onError(this)
@@ -296,7 +298,9 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
 
     @CallSuper
     protected open fun onNextSuccess(resource: Resource.Success<D>) {
-
+        resource.data?.apply {
+            onNext(this)
+        }
     }
 
     /**

@@ -14,4 +14,8 @@ enum class Source {
     fun isCloud(): Boolean {
         return this == CLOUD
     }
+
+    fun isDisk():Boolean {
+        return this == PERSISTENCE
+    }
 }

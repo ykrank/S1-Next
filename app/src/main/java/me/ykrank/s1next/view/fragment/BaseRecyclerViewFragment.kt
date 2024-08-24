@@ -27,7 +27,6 @@ import me.ykrank.s1next.databinding.FragmentBaseBinding
 import me.ykrank.s1next.databinding.FragmentBaseCardViewContainerBinding
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateBaseCardViewContainerImpl
 import me.ykrank.s1next.view.internal.LoadingViewModelBindingDelegateBaseImpl
-import javax.inject.Inject
 
 /**
  * A base Fragment includes [SwipeRefreshLayout] to refresh when loading data.
@@ -140,7 +139,7 @@ abstract class BaseRecyclerViewFragment<D> : LibBaseRecyclerViewFragment<D>() {
 
     override fun onNextSuccess(resource: Resource.Success<D>) {
         super.onNextSuccess(resource)
-        if (resource.source.isCache()) {
+        if (resource.source.isDisk()) {
             hintView.visibility = View.VISIBLE
             hintView.text = getString(R.string.data_load_from_cache)
         } else {
