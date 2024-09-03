@@ -19,6 +19,7 @@ import me.ykrank.s1next.R
 import me.ykrank.s1next.data.cache.biz.CacheBiz
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.util.AppFileUtil
+import java.text.DecimalFormat
 import javax.inject.Inject
 
 /**
@@ -50,11 +51,14 @@ class DownloadPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefer
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        refreshImageCacheSize()
         refreshDataCacheSize()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key == getString(R.string.pref_key_data_total_cache_size)) {
+        if (key == getString(R.string.pref_key_image_total_cache_size)) {
+            refreshImageCacheSize()
+        } else if (key == getString(R.string.pref_key_data_total_cache_size)) {
             refreshDataCacheSize()
         }
     }
@@ -82,6 +86,30 @@ class DownloadPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefer
     override fun onDestroy() {
         RxJavaUtil.disposeIfNotNull(disposable)
         super.onDestroy()
+    }
+
+    private fun refreshImageCacheSize() {
+        val prefImageCacheSize =
+            findPreference<Preference>(getString(R.string.pref_key_image_total_cache_size))
+        if (prefImageCacheSize != null) {
+            lifecycleScope.launch(L.report) {
+                val maxSize = mDownloadPreferencesManager.totalImageCacheSize
+                val message = withContext(Dispatchers.IO) {
+                    val cacheDir = Glide.getPhotoCacheDir(requireContext())
+                    "${
+                        cacheDir?.let {
+                            FileUtil.getPrintSize(FileUtil.calculateTotalSize(it))
+                        }
+                    }/${
+                        FileUtil.getPrintSize(
+                            maxSize,
+                            DecimalFormat("0")
+                        )
+                    } ${(cacheDir?.list()?.size ?: 1) - 1}"
+                }
+                prefImageCacheSize.summary = message
+            }
+        }
     }
 
     private fun refreshDataCacheSize() {

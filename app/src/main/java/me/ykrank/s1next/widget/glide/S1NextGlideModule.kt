@@ -8,12 +8,11 @@ import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.Registry
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.ViewTarget
-import com.github.ykrank.androidtools.R
 import me.ykrank.s1next.App.Companion.appComponent
 import me.ykrank.s1next.App.Companion.preAppComponent
 import java.io.InputStream
@@ -39,6 +38,7 @@ class S1NextGlideModule : AppGlideModule() {
 
         //Change default RGB_565 to ARGB_8888, show image with transparent
         requestOptions = requestOptions.format(DecodeFormat.PREFER_ARGB_8888)
+        requestOptions = requestOptions.diskCacheStrategy(DiskCacheStrategy.DATA)
 
         //shared element transition crash in version O, fix in O MR1
         //https://muyangmin.github.io/glide-docs-cn/doc/hardwarebitmaps.html

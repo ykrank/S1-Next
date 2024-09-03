@@ -69,7 +69,7 @@ class DownloadPreferencesManager(
         private val SIZE = intArrayOf(LOW, NORMAL, HIGH)
 
         fun getByte(index: Int): Long {
-            return SIZE[index] * 1000L * 1000
+            return SIZE[index] * 1024L * 1024
         }
 
         fun getMByte(index: Int): Int {
