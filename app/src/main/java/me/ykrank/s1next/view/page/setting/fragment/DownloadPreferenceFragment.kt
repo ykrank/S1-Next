@@ -2,6 +2,9 @@ package me.ykrank.s1next.view.page.setting.fragment
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
@@ -15,10 +18,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ykrank.s1next.App
+import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.cache.biz.CacheBiz
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.util.AppFileUtil
+import me.ykrank.s1next.view.page.test.ImageCacheViewFragment
 import java.text.DecimalFormat
 import javax.inject.Inject
 
@@ -37,6 +42,14 @@ class DownloadPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefer
 
     private var disposable: Disposable? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (BuildConfig.DEBUG) {
+            setHasOptionsMenu(true)
+        }
+    }
+
     override fun onCreatePreferences(bundle: Bundle?, s: String?) {
         App.appComponent.inject(this)
         addPreferencesFromResource(R.xml.preference_download)
@@ -53,6 +66,25 @@ class DownloadPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefer
 
         refreshImageCacheSize()
         refreshDataCacheSize()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        if (BuildConfig.DEBUG) {
+            menu.add("缓存")
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (BuildConfig.DEBUG) {
+            if (item.title == "缓存") {
+                childFragmentManager.beginTransaction()
+                    .add(android.R.id.list_container, ImageCacheViewFragment(), ImageCacheViewFragment.TAG)
+                    .commit()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {

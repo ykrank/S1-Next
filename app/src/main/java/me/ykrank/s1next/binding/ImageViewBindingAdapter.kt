@@ -10,7 +10,6 @@ import com.bumptech.glide.Priority
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
@@ -226,7 +225,6 @@ object ImageViewBindingAdapter {
             .apply(
                 RequestOptions()
                     .circleCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .error(me.ykrank.s1next.R.drawable.ic_drawer_avatar_placeholder)
                     .signature(downloadPreferencesManager.avatarCacheInvalidationIntervalSignature)
                     .priority(Priority.LOW)
@@ -278,7 +276,6 @@ object ImageViewBindingAdapter {
             .apply(
                 RequestOptions()
                     .circleCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .signature(downloadPreferencesManager.avatarCacheInvalidationIntervalSignature)
                     .priority(Priority.HIGH)
             )
@@ -335,7 +332,6 @@ object ImageViewBindingAdapter {
                         RequestOptions()
                             .circleCrop()
                             .signature(downloadPreferencesManager.avatarCacheInvalidationIntervalSignature)
-                            .diskCacheStrategy(DiskCacheStrategy.DATA)
                     )
             )
         }
