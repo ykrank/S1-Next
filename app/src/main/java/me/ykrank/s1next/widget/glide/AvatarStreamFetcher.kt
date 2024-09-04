@@ -21,7 +21,10 @@ import javax.inject.Inject
  * Forked from [OkHttpStreamFetcher]
  */
 
-class AvatarStreamFetcher(private val client: Call.Factory, private val url: AvatarUrl) : DataFetcher<InputStream> {
+class AvatarStreamFetcher(
+    private val client: Call.Factory,
+    private val url: AvatarUrl,
+) : DataFetcher<InputStream> {
     private var stream: InputStream? = null
     private var responseBody: ResponseBody? = null
     @Volatile
@@ -37,14 +40,14 @@ class AvatarStreamFetcher(private val client: Call.Factory, private val url: Ava
     }
 
     override fun loadData(priority: Priority, callback: DataFetcher.DataCallback<in InputStream>) {
-        if (!mDownloadPreferencesManager.isAvatarsDownload) {
+        if (!mDownloadPreferencesManager.isAvatarsDownload && !url.forcePass) {
             callback.onDataReady(null)
             return
         }
         val urlString = url.toStringUrl()
         //whether cached error url
         val avatarKey = OriginalKey.obtainAvatarKey(mDownloadPreferencesManager, urlString)
-        if (avatarUrlsCache.has(avatarKey)) {
+        if (!url.forcePass && avatarUrlsCache.has(avatarKey)) {
             // already have cached this not success avatar url
             callback.onDataReady(null)
             return

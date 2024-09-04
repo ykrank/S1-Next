@@ -7,7 +7,6 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
-import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -26,6 +25,9 @@ import me.ykrank.s1next.data.api.model.Emoticon
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 import me.ykrank.s1next.widget.glide.model.AvatarUrl
+import me.ykrank.s1next.widget.image.ImageBiz
+import me.ykrank.s1next.widget.image.avatar
+import me.ykrank.s1next.widget.image.avatarUid
 
 object ImageViewBindingAdapter {
     @JvmStatic
@@ -86,17 +88,13 @@ object ImageViewBindingAdapter {
         }
         val downloadPreferencesManager = preAppComponent
             .downloadPreferencesManager
+        val imageBiz = ImageBiz(downloadPreferencesManager)
         if (user.isLogged) {
             val requestManager = Glide.with(bezelImageView)
             bezelImageView.setTag(R.id.tag_drawable_info, null)
             AvatarUrlsCache.clearUserAvatarCache(user.uid)
             // setup user's avatar
-            requestManager.load(AvatarUrl(Api.getAvatarBigUrl(user.uid)))
-                .apply(
-                    RequestOptions()
-                        .circleCrop()
-                        .signature(downloadPreferencesManager.avatarCacheInvalidationIntervalSignature)
-                )
+            requestManager.avatarUid(imageBiz, user.uid)
                 .error(
                     requestManager
                         .load(me.ykrank.s1next.R.drawable.ic_drawer_avatar_placeholder)
@@ -209,56 +207,6 @@ object ImageViewBindingAdapter {
         loadRoundAvatar(imageView, downloadPreferencesManager, urls, thumbUrl, false, 0)
     }
 
-    private fun preloadRoundAvatar(
-        imageView: ImageView, downloadPreferencesManager: DownloadPreferencesManager,
-        urls: List<String>?
-    ) {
-        if (urls.isNullOrEmpty()) {
-            return
-        }
-        val firstUrl = urls[0]
-        if (firstUrl.isEmpty()) {
-            return
-        }
-        val listener = Glide.with(imageView)
-            .load(AvatarUrl(firstUrl))
-            .apply(
-                RequestOptions()
-                    .circleCrop()
-                    .error(me.ykrank.s1next.R.drawable.ic_drawer_avatar_placeholder)
-                    .signature(downloadPreferencesManager.avatarCacheInvalidationIntervalSignature)
-                    .priority(Priority.LOW)
-            )
-            .listener(object : RequestListener<Drawable?> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable?>,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    imageView.post {
-                        preloadRoundAvatar(
-                            imageView,
-                            downloadPreferencesManager,
-                            urls.drop(1)
-                        )
-                    }
-                    return true
-                }
-
-                override fun onResourceReady(
-                    resource: Drawable,
-                    model: Any,
-                    target: Target<Drawable?>,
-                    dataSource: DataSource,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return false
-                }
-            })
-        listener.preload()
-    }
-
     private fun loadRoundAvatar(
         imageView: ImageView, downloadPreferencesManager: DownloadPreferencesManager,
         urls: List<String?>?, thumbUrl: String?, fade: Boolean, loadIndex: Int,
@@ -270,15 +218,10 @@ object ImageViewBindingAdapter {
             }
             return
         }
-        val requestManager = Glide.with(imageView)
-        var listener = createBuilder(requestManager, downloadPreferencesManager)
-            .load(AvatarUrl(url))
-            .apply(
-                RequestOptions()
-                    .circleCrop()
-                    .signature(downloadPreferencesManager.avatarCacheInvalidationIntervalSignature)
-                    .priority(Priority.HIGH)
-            )
+        val imageBiz = ImageBiz(downloadPreferencesManager)
+        var listener = Glide.with(imageView)
+            .avatar(imageBiz, url)
+            .priority(Priority.HIGH)
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,
@@ -321,30 +264,18 @@ object ImageViewBindingAdapter {
             })
         listener = if (thumbUrl.isNullOrEmpty() || thumbUrl == url) {
             listener.thumbnail(
-                requestManager.load(me.ykrank.s1next.R.drawable.ic_drawer_avatar_placeholder)
+                Glide.with(imageView).load(me.ykrank.s1next.R.drawable.ic_drawer_avatar_placeholder)
                     .apply(RequestOptions.circleCropTransform())
             )
         } else {
             listener.thumbnail(
-                createBuilder(requestManager, downloadPreferencesManager)
-                    .load(AvatarUrl(thumbUrl))
-                    .apply(
-                        RequestOptions()
-                            .circleCrop()
-                            .signature(downloadPreferencesManager.avatarCacheInvalidationIntervalSignature)
-                    )
+                Glide.with(imageView)
+                    .avatar(imageBiz, thumbUrl)
             )
         }
         if (fade) {
             listener = listener.transition(DrawableTransitionOptions.withCrossFade(300))
         }
         listener.into(imageView)
-    }
-
-    private fun createBuilder(
-        requestManager: RequestManager,
-        downloadPreferencesManager: DownloadPreferencesManager
-    ): RequestBuilder<Drawable> {
-        return requestManager.asDrawable() // 必须强转, 否则编译不通过...
     }
 }

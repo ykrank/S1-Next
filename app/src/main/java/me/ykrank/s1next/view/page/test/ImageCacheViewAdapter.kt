@@ -1,5 +1,6 @@
 package me.ykrank.s1next.view.page.test
 
+import android.icu.text.SimpleDateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.github.ykrank.androidtools.util.FileUtil
 import me.ykrank.s1next.R
 import java.io.File
+import java.util.Date
+import java.util.Locale
 
 /**
  * Created by ykrank on 9/3/24
@@ -31,12 +34,18 @@ class ImageCacheViewAdapter : RecyclerView.Adapter<ImageCacheViewVH>() {
     }
 
     override fun onBindViewHolder(holder: ImageCacheViewVH, position: Int) {
+        val file = list[position]
         Glide.with(holder.image)
-            .load(list[position])
+            .load(file)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(holder.image)
 
-        holder.size.text = FileUtil.getPrintSize(list[position].length())
+        holder.size.text = FileUtil.getPrintSize(file.length())
+        holder.time.text =
+            SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss",
+                Locale.getDefault()
+            ).format(Date(file.lastModified()))
     }
 
     fun updateData(list: List<File>) {
@@ -48,4 +57,5 @@ class ImageCacheViewAdapter : RecyclerView.Adapter<ImageCacheViewVH>() {
 class ImageCacheViewVH(itemView: View) : ViewHolder(itemView) {
     val image: ImageView = itemView.findViewById(R.id.image)
     val size: TextView = itemView.findViewById(R.id.size)
+    val time: TextView = itemView.findViewById(R.id.time)
 }

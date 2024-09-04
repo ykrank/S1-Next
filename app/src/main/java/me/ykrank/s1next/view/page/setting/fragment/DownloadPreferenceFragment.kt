@@ -78,9 +78,7 @@ class DownloadPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefer
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (BuildConfig.DEBUG) {
             if (item.title == "缓存") {
-                childFragmentManager.beginTransaction()
-                    .add(android.R.id.list_container, ImageCacheViewFragment(), ImageCacheViewFragment.TAG)
-                    .commit()
+                ImageCacheViewFragment.start(android.R.id.list_container, childFragmentManager)
                 return true
             }
         }

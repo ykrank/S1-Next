@@ -14,17 +14,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.bumptech.glide.Priority
 import com.bumptech.glide.RequestBuilder
-import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.github.chrisbanes.photoview.PhotoView
 import com.github.ykrank.androidtools.ui.adapter.delegate.item.ProgressItem
 import com.github.ykrank.androidtools.util.FileUtil
 import com.github.ykrank.androidtools.util.L
-import com.github.ykrank.androidtools.widget.glide.model.ForcePassUrl
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -33,7 +29,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
-import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.databinding.FragmentGalleryBinding
 import me.ykrank.s1next.databinding.MenuGalleryLargeImageSwitchBinding
@@ -44,6 +39,8 @@ import me.ykrank.s1next.widget.download.DownloadProgressModel
 import me.ykrank.s1next.widget.download.DownloadTask
 import me.ykrank.s1next.widget.download.ProgressListener
 import me.ykrank.s1next.widget.download.ProgressManager
+import me.ykrank.s1next.widget.image.ImageBiz
+import me.ykrank.s1next.widget.image.image
 import me.ykrank.s1next.widget.track.event.LargeImageTrackEvent
 import me.ykrank.s1next.widget.track.event.ViewImageTrackEvent
 import java.io.File
@@ -60,13 +57,16 @@ class GalleryFragment : Fragment() {
 
     private lateinit var mPhotoView: PhotoView
     private lateinit var binding: FragmentGalleryBinding
-    private var preloadTarget: Target<Drawable>? = null
 
     private var largeModeBinding: MenuGalleryLargeImageSwitchBinding? = null
     private var largeModeMenu: MenuItem? = null
     private var large = false
 
     private var mProgressListener: ProgressListener? = null
+
+    private val imageBiz by lazy {
+        ImageBiz(mDownloadPrefManager)
+    }
 
     @Inject
     internal lateinit var trackAgent: DataTrackAgent
@@ -143,9 +143,9 @@ class GalleryFragment : Fragment() {
     }
 
     private fun preload() {
-        preloadTarget = Glide.with(App.get())
-            .load(mImageUrl)
-            .priority(Priority.HIGH)
+        val url = mImageUrl ?: return
+        Glide.with(App.get())
+            .image(imageBiz, url, forcePass = true)
             .preload()
     }
 
@@ -166,15 +166,11 @@ class GalleryFragment : Fragment() {
     }
 
     private fun downloadImage() {
-        var builder: RequestBuilder<File> = Glide.with(this)
-            .download(ForcePassUrl(mImageUrl))
-        //avatar signature
-        if (Api.isAvatarUrl(mImageUrl)) {
-            builder = builder.apply(
-                RequestOptions()
-                    .signature(mDownloadPrefManager.avatarCacheInvalidationIntervalSignature)
-            )
-        }
+        val url = mImageUrl ?: ""
+        val builder: RequestBuilder<File> = Glide.with(this)
+            .downloadOnly()
+            .image(imageBiz, url, forcePass = true)
+
         builder.into(object : CustomTarget<File>() {
             override fun onResourceReady(resource: File, transition: Transition<in File>?) {
                 try {
@@ -255,7 +251,6 @@ class GalleryFragment : Fragment() {
             }
         }
         downloadId = null
-        Glide.with(App.get()).clear(preloadTarget)
         super.onDestroy()
     }
 

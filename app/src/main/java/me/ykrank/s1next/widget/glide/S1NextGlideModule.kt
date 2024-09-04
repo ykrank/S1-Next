@@ -47,10 +47,10 @@ class S1NextGlideModule : AppGlideModule() {
         }
         builder.setDefaultRequestOptions(requestOptions)
 
-//        int bitmapPoolSizeBytes = 1024 * 1024 * 0; // 0mb
-//        int memoryCacheSizeBytes = 1024 * 1024 * 0; // 0mb
-//        builder.setMemoryCache(new LruResourceCache(memoryCacheSizeBytes));
-//        builder.setBitmapPool(new LruBitmapPool(bitmapPoolSizeBytes));
+//        val bitmapPoolSizeBytes = 1024 * 1024 * 0L // 0mb
+//        val memoryCacheSizeBytes = 1024 * 1024 * 0L // 0mb
+//        builder.setMemoryCache(LruResourceCache(memoryCacheSizeBytes))
+//        builder.setBitmapPool(LruBitmapPool(bitmapPoolSizeBytes))
 
         //兼容了华为机型上，Register too many Broadcast Receivers 的问题
         if (NoConnectivityMonitorFactory.needDisableNetCheck()) {

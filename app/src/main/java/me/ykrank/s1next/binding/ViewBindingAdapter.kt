@@ -8,7 +8,6 @@ import android.view.ViewGroup.MarginLayoutParams
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
@@ -21,6 +20,8 @@ import com.github.ykrank.androidtools.widget.glide.viewtarget.ViewBackgroundTarg
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api.getAvatarBigUrl
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
+import me.ykrank.s1next.widget.image.ImageBiz
+import me.ykrank.s1next.widget.image.image
 
 /**
  * Created by AdminYkrank on 2016/4/17.
@@ -91,14 +92,9 @@ object ViewBindingAdapter {
         if (!TextUtils.equals(oldBlurUrl, newBlurUrl)) {
             Glide.with(view)
                 .asBitmap()
-                .load(newBlurUrl)
-                .apply(
-                    RequestOptions()
-                        .centerCrop()
-                        .signature(newManager.avatarCacheInvalidationIntervalSignature)
-                        .diskCacheStrategy(DiskCacheStrategy.DATA)
-                        .transform(blurTransformation)
-                )
+                .image(ImageBiz(newManager), newBlurUrl)
+                .centerCrop()
+                .transform(blurTransformation)
                 .listener(object : RequestListener<Bitmap> {
                     override fun onLoadFailed(
                         e: GlideException?,

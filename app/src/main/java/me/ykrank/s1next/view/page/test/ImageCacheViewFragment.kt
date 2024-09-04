@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
+import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -21,6 +24,13 @@ class ImageCacheViewFragment : Fragment() {
 
     private lateinit var binding: FragmentBaseBinding
     private var adapter = ImageCacheViewAdapter()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            parentFragmentManager.beginTransaction().hide(this@ImageCacheViewFragment).commit()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,5 +57,16 @@ class ImageCacheViewFragment : Fragment() {
 
     companion object {
         const val TAG = "ImageCacheViewFragment"
+
+        fun start(@IdRes containerViewId: Int, fragmentManager: FragmentManager) {
+            var fragment = fragmentManager.findFragmentByTag(TAG)
+            if (fragment == null || fragment !is ImageCacheViewFragment) {
+                fragment = ImageCacheViewFragment()
+                fragmentManager.beginTransaction().add(containerViewId, fragment, TAG)
+                    .commit()
+            } else {
+                fragmentManager.beginTransaction().show(fragment).commit()
+            }
+        }
     }
 }
