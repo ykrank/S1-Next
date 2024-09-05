@@ -2,10 +2,12 @@ package me.ykrank.s1next.view.activity
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.viewpager.widget.ViewPager
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.github.ykrank.androidtools.widget.track.event.page.ActivityEndEvent
 import com.github.ykrank.androidtools.widget.track.event.page.ActivityStartEvent
@@ -26,14 +28,14 @@ class GalleryActivity : AppCompatActivity() {
     @Inject
     internal lateinit var trackAgent: DataTrackAgent
 
-    private lateinit var imageUrls: ArrayList<String>
+    private lateinit var imageUrls: ArrayList<Uri>
     private var position: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView<ActivityGalleryBinding>(this, R.layout.activity_gallery)
-        imageUrls = intent.getStringArrayListExtra(ARG_IMAGE_URL) ?: arrayListOf()
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_gallery)
+        imageUrls = intent.getParcelableArrayListExtra(ARG_IMAGE_URL) ?: arrayListOf()
         position = intent.getIntExtra(ARG_POSITION, 0)
 
         val toolbarDelegate = ToolbarDelegate(this, binding.toolbar)
@@ -45,7 +47,7 @@ class GalleryActivity : AppCompatActivity() {
 
         binding.viewPager.adapter = GalleryViewPagerAdapter(supportFragmentManager, imageUrls)
         binding.viewPager.currentItem = position
-        binding.viewPager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener() {
+        binding.viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(pos: Int) {
                 binding.position = pos
             }
@@ -79,19 +81,30 @@ class GalleryActivity : AppCompatActivity() {
         private const val ARG_POSITION = "position"
 
         fun start(context: Context, imageUrls: ArrayList<String>, position: Int = 0) {
-            val intent = Intent(context, GalleryActivity::class.java)
-            intent.putStringArrayListExtra(ARG_IMAGE_URL, imageUrls)
-            intent.putExtra(ARG_POSITION, position)
-            context.startActivity(intent)
+            startUri(context, ArrayList(imageUrls.map { Uri.parse(it) }), position)
         }
 
         fun start(context: Context, imageUrl: String?) {
             imageUrl?.let { start(context, arrayListOf(imageUrl)) }
         }
+
+        fun startUri(context: Context, imageUrls: ArrayList<Uri>, position: Int = 0) {
+            val intent = Intent(context, GalleryActivity::class.java)
+            intent.putParcelableArrayListExtra(ARG_IMAGE_URL, imageUrls)
+            intent.putExtra(ARG_POSITION, position)
+            context.startActivity(intent)
+        }
+
+        fun startUri(context: Context, imageUrl: Uri) {
+            startUri(context, arrayListOf(imageUrl))
+        }
     }
 }
 
-class GalleryViewPagerAdapter(fm: androidx.fragment.app.FragmentManager, private val imageUrls: List<String>) : androidx.fragment.app.FragmentStatePagerAdapter(fm) {
+class GalleryViewPagerAdapter(
+    fm: androidx.fragment.app.FragmentManager,
+    private val imageUrls: List<Uri>
+) : androidx.fragment.app.FragmentStatePagerAdapter(fm) {
 
     override fun getItem(position: Int): androidx.fragment.app.Fragment {
         return GalleryFragment.instance(imageUrls[position])

@@ -28,7 +28,7 @@ class ImageCacheViewFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            parentFragmentManager.beginTransaction().hide(this@ImageCacheViewFragment).commit()
+            parentFragmentManager.beginTransaction().remove(this@ImageCacheViewFragment).commit()
         }
     }
 
@@ -49,7 +49,9 @@ class ImageCacheViewFragment : Fragment() {
 
         lifecycleScope.launch {
             val list = withContext(Dispatchers.IO) {
-                Glide.getPhotoCacheDir(requireContext())?.listFiles()?.toList() ?: emptyList<File>()
+                Glide.getPhotoCacheDir(requireContext())?.listFiles()?.toList()?.sortedBy {
+                    -it.lastModified()
+                } ?: emptyList<File>()
             }
             adapter.updateData(list)
         }

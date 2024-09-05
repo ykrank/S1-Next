@@ -23,7 +23,7 @@ import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.Api
 import me.ykrank.s1next.data.api.model.Emoticon
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
-import me.ykrank.s1next.widget.glide.AvatarUrlsCache
+import me.ykrank.s1next.widget.glide.AvatarFailUrlsCache
 import me.ykrank.s1next.widget.glide.model.AvatarUrl
 import me.ykrank.s1next.widget.image.ImageBiz
 import me.ykrank.s1next.widget.image.avatar
@@ -92,7 +92,7 @@ object ImageViewBindingAdapter {
         if (user.isLogged) {
             val requestManager = Glide.with(bezelImageView)
             bezelImageView.setTag(R.id.tag_drawable_info, null)
-            AvatarUrlsCache.clearUserAvatarCache(user.uid)
+            AvatarFailUrlsCache.clearUserAvatarCache(user.uid)
             // setup user's avatar
             requestManager.avatarUid(imageBiz, user.uid)
                 .error(

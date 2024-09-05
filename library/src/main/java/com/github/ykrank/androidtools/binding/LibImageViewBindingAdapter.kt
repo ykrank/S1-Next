@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.RippleDrawable
 import android.text.TextUtils
+import android.webkit.URLUtil
 import android.widget.ImageView
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
@@ -64,14 +65,26 @@ object LibImageViewBindingAdapter {
             return
         }
         val requestOptions = RequestOptions()
-            .diskCacheStrategy(DiskCacheStrategy.DATA)
+            .diskCacheStrategy(
+                if (URLUtil.isNetworkUrl(url)) {
+                    DiskCacheStrategy.DATA
+                } else {
+                    DiskCacheStrategy.NONE
+                }
+            )
             .downsample(GlMaxTextureSizeDownSampleStrategy())
             .error(error)
             .fitCenter()
             .priority(Priority.HIGH)
         val thumbnailRequest: RequestBuilder<Drawable> = if (!TextUtils.isEmpty(thumbUrl)) {
             val thumbRequestOptions = RequestOptions()
-                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .diskCacheStrategy(
+                    if (URLUtil.isNetworkUrl(thumbUrl)) {
+                        DiskCacheStrategy.DATA
+                    } else {
+                        DiskCacheStrategy.NONE
+                    }
+                )
             Glide.with(imageView)
                 .load(thumbUrl)
                 .apply(thumbRequestOptions)

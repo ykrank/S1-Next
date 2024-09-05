@@ -8,4 +8,10 @@
         android:orderInCategory="22"
         android:title="@string/menu_blacklist_add"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_refresh_avatar"
+        android:orderInCategory="23"
+        android:title="@string/menu_refresh_avatar"
+        android:visible="false"
+        app:showAsAction="never" />
 </menu>

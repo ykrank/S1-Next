@@ -26,7 +26,7 @@ import me.ykrank.s1next.viewmodel.UserViewModel
 import me.ykrank.s1next.widget.RawJsonConverterFactory
 import me.ykrank.s1next.widget.download.DownloadProgressInterceptor
 import me.ykrank.s1next.widget.download.ProgressManager
-import me.ykrank.s1next.widget.glide.AvatarUrlsCache
+import me.ykrank.s1next.widget.glide.AvatarFailUrlsCache
 import me.ykrank.s1next.widget.glide.OkHttpNoAvatarInterceptor
 import me.ykrank.s1next.widget.hostcheck.AppHostUrl
 import me.ykrank.s1next.widget.hostcheck.AppMultiHostInterceptor
@@ -210,8 +210,8 @@ class AppModule {
 
     @Provides
     @AppLife
-    fun provideAvatarUrlsCache(): AvatarUrlsCache {
-        return AvatarUrlsCache()
+    fun provideAvatarUrlsCache(): AvatarFailUrlsCache {
+        return AvatarFailUrlsCache()
     }
 
     @Provides

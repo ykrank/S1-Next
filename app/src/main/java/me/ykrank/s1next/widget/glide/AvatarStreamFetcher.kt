@@ -8,6 +8,7 @@ import com.bumptech.glide.util.ContentLengthInputStream
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.widget.glide.model.AvatarUrl
+import me.ykrank.s1next.widget.image.ImageBiz
 import okhttp3.*
 import okhttp3.internal.cache.CacheStrategy
 import java.io.IOException
@@ -33,7 +34,11 @@ class AvatarStreamFetcher(
     @Inject
     internal lateinit var mDownloadPreferencesManager: DownloadPreferencesManager
     @Inject
-    internal lateinit var avatarUrlsCache: AvatarUrlsCache
+    internal lateinit var avatarFailUrlsCache: AvatarFailUrlsCache
+
+    private val imageBiz by lazy {
+        ImageBiz(mDownloadPreferencesManager)
+    }
 
     init {
         App.appComponent.inject(this)
@@ -46,8 +51,8 @@ class AvatarStreamFetcher(
         }
         val urlString = url.toStringUrl()
         //whether cached error url
-        val avatarKey = OriginalKey.obtainAvatarKey(mDownloadPreferencesManager, urlString)
-        if (!url.forcePass && avatarUrlsCache.has(avatarKey)) {
+        val avatarKey = imageBiz.avatarCacheKey(urlString)
+        if (!url.forcePass && avatarFailUrlsCache.has(avatarKey)) {
             // already have cached this not success avatar url
             callback.onDataReady(null)
             return
@@ -64,7 +69,7 @@ class AvatarStreamFetcher(
         call?.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 if (avatarKey != null) {
-                    avatarUrlsCache.put(avatarKey)
+                    avatarFailUrlsCache.put(avatarKey)
                 }
                 callback.onLoadFailed(e)
             }
@@ -75,7 +80,7 @@ class AvatarStreamFetcher(
                 if (!response.isSuccessful) {
                     // if (this this a avatar URL) && (this URL is cacheable)
                     if (avatarKey != null && CacheStrategy.isCacheable(response, request)) {
-                        avatarUrlsCache.put(avatarKey)
+                        avatarFailUrlsCache.put(avatarKey)
                         callback.onDataReady(null)
                         return
                     }
@@ -83,8 +88,8 @@ class AvatarStreamFetcher(
                 } else {
                     // if download success, and (this this a avatar URL) && (this URL is cacheable)
                     // remove from cache list
-                    if (avatarKey != null && avatarUrlsCache.has(avatarKey)) {
-                        avatarUrlsCache.remove(avatarKey)
+                    if (avatarKey != null && avatarFailUrlsCache.has(avatarKey)) {
+                        avatarFailUrlsCache.remove(avatarKey)
                     }
                     responseBody?.let {
                         val contentLength = it.contentLength()

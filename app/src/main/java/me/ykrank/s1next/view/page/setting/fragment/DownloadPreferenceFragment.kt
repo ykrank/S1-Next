@@ -42,10 +42,15 @@ class DownloadPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefer
 
     private var disposable: Disposable? = null
 
+    @Suppress("KotlinConstantConditions")
+    private val showCacheView by lazy {
+        BuildConfig.DEBUG || BuildConfig.BUILD_TYPE == "alpha"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (BuildConfig.DEBUG) {
+        if (showCacheView) {
             setHasOptionsMenu(true)
         }
     }
@@ -70,14 +75,14 @@ class DownloadPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefer
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        if (BuildConfig.DEBUG) {
-            menu.add("缓存")
+        if (showCacheView) {
+            menu.add("查看图片缓存")
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (BuildConfig.DEBUG) {
-            if (item.title == "缓存") {
+        if (showCacheView) {
+            if (item.title == "查看图片缓存") {
                 ImageCacheViewFragment.start(android.R.id.list_container, childFragmentManager)
                 return true
             }

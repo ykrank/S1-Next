@@ -27,7 +27,7 @@ import me.ykrank.s1next.view.event.VotePostEvent
 import me.ykrank.s1next.view.internal.BlacklistMenuAction
 import me.ykrank.s1next.view.page.app.AppPostListActivity
 import me.ykrank.s1next.view.page.post.postlist.PostListActivity
-import me.ykrank.s1next.widget.glide.AvatarUrlsCache
+import me.ykrank.s1next.widget.glide.AvatarFailUrlsCache
 
 class PostViewModel(
     val lifecycleOwner: LifecycleOwner,
@@ -61,7 +61,7 @@ class PostViewModel(
             val authorName = it.authorName
             if (authorId != null && authorName != null) {
                 //Clear avatar false cache
-                AvatarUrlsCache.clearUserAvatarCache(authorId)
+                AvatarFailUrlsCache.clearUserAvatarCache(authorId)
                 //个人主页
                 UserHomeActivity.start(v.context as FragmentActivity, authorId, authorName, v)
             }

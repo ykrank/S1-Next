@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.github.ykrank.androidtools.util.FileUtil
 import me.ykrank.s1next.R
+import me.ykrank.s1next.view.activity.GalleryActivity
 import java.io.File
 import java.util.Date
 import java.util.Locale
@@ -46,6 +48,10 @@ class ImageCacheViewAdapter : RecyclerView.Adapter<ImageCacheViewVH>() {
                 "yyyy-MM-dd HH:mm:ss",
                 Locale.getDefault()
             ).format(Date(file.lastModified()))
+
+        holder.image.setOnClickListener {
+            GalleryActivity.startUri(it.context, file.toUri())
+        }
     }
 
     fun updateData(list: List<File>) {

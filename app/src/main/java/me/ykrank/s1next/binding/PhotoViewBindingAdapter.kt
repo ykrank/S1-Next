@@ -1,6 +1,7 @@
 package me.ykrank.s1next.binding
 
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -24,16 +25,16 @@ object PhotoViewBindingAdapter {
     @BindingAdapter("url", "thumbUrl", "manager")
     fun loadImage(
         photoView: PhotoView,
-        url: String?,
-        thumbUrl: String?,
-        manager: DownloadPreferencesManager?
+        url: Uri?,
+        thumbUrl: Uri?,
+        manager: DownloadPreferencesManager
     ) {
-        if (url.isNullOrEmpty()) {
+        if (url == null) {
             return
         }
         val imageBiz = ImageBiz(manager)
 
-        val thumbnailRequest: RequestBuilder<Drawable> = if (!thumbUrl.isNullOrEmpty()) {
+        val thumbnailRequest: RequestBuilder<Drawable> = if (thumbUrl != null) {
             Glide.with(photoView)
                 .image(imageBiz, thumbUrl)
         } else {

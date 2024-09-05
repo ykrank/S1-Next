@@ -10,6 +10,7 @@ import me.ykrank.s1next.App.Companion.get
 import me.ykrank.s1next.App.Companion.preAppComponent
 import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.data.api.Api
+import me.ykrank.s1next.widget.image.ImageBiz
 import java.io.File
 import java.io.IOException
 import java.security.MessageDigest
@@ -36,7 +37,7 @@ import java.security.NoSuchAlgorithmException
  *
  * @see AvatarStreamFetcher.loadData
  */
-class AvatarUrlsCache {
+class AvatarFailUrlsCache {
     /**
      * We use both disk cache and memory cache.
      */
@@ -145,13 +146,14 @@ class AvatarUrlsCache {
 
         @JvmStatic
         fun clearUserAvatarCache(uid: String?) {
-            val avatarUrlsCache = appComponent.avatarUrlsCache
+            val avatarUrlsCache = appComponent.avatarFailUrlsCache
 
             //clear avatar img error cache
             val avatarUrls = Api.getAvatarUrls(uid)
             val manager = preAppComponent.downloadPreferencesManager
+            val imageBiz = ImageBiz(manager)
             avatarUrls.forEach {
-                avatarUrlsCache.remove(OriginalKey.obtainAvatarKey(manager, it))
+                avatarUrlsCache.remove(imageBiz.avatarCacheKey(it))
             }
         }
     }

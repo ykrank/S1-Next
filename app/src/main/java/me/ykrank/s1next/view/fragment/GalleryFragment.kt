@@ -21,6 +21,7 @@ import com.github.chrisbanes.photoview.PhotoView
 import com.github.ykrank.androidtools.ui.adapter.delegate.item.ProgressItem
 import com.github.ykrank.androidtools.util.FileUtil
 import com.github.ykrank.androidtools.util.L
+import com.github.ykrank.androidtools.util.isNetwork
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -50,8 +51,8 @@ import javax.inject.Inject
  * Created by ykrank on 2017/6/16.
  */
 class GalleryFragment : Fragment() {
-    private var mImageUrl: String? = null
-    private var mImageThumbUrl: String? = null
+    private var mImageUrl: Uri? = null
+    private var mImageThumbUrl: Uri? = null
 
     private var downloadId: String? = null
 
@@ -88,12 +89,12 @@ class GalleryFragment : Fragment() {
 
         binding = FragmentGalleryBinding.inflate(inflater, container, false)
         mPhotoView = binding.photoView
-        mImageUrl = arguments?.getString(ARG_IMAGE_URL)
-        mImageThumbUrl = arguments?.getString(ARG_IMAGE_THUMB_URL)
+        mImageUrl = arguments?.getParcelable(ARG_IMAGE_URL)
+        mImageThumbUrl = arguments?.getParcelable(ARG_IMAGE_THUMB_URL)
 
         L.leaveMsg("GalleryFragment##url:$mImageUrl,thumb:$mImageThumbUrl")
 
-        trackAgent.post(ViewImageTrackEvent(mImageUrl, mImageThumbUrl != null))
+        trackAgent.post(ViewImageTrackEvent(mImageUrl?.toString(), mImageThumbUrl != null))
 
         preload()
 
@@ -134,7 +135,7 @@ class GalleryFragment : Fragment() {
             }
 
             R.id.menu_browser -> {
-                IntentUtil.startViewIntentExcludeOurApp(requireContext(), Uri.parse(mImageUrl))
+                IntentUtil.startViewIntentExcludeOurApp(requireContext(), mImageUrl)
                 return true
             }
 
@@ -143,10 +144,12 @@ class GalleryFragment : Fragment() {
     }
 
     private fun preload() {
-        val url = mImageUrl ?: return
-        Glide.with(App.get())
-            .image(imageBiz, url, forcePass = true)
-            .preload()
+        val uri = mImageUrl ?: return
+        if (uri.isNetwork()) {
+            Glide.with(App.get())
+                .image(imageBiz, uri.toString(), forcePass = true)
+                .preload()
+        }
     }
 
     private fun switchLargeImage(large: Boolean) {
@@ -160,16 +163,15 @@ class GalleryFragment : Fragment() {
         binding.large = large
         if (large) {
             mImageUrl?.let {
-                trackAgent.post(LargeImageTrackEvent(it, mImageThumbUrl))
+                trackAgent.post(LargeImageTrackEvent(it.toString(), mImageThumbUrl?.toString()))
             }
         }
     }
 
     private fun downloadImage() {
-        val url = mImageUrl ?: ""
         val builder: RequestBuilder<File> = Glide.with(this)
             .downloadOnly()
-            .image(imageBiz, url, forcePass = true)
+            .image(imageBiz, mImageUrl, forcePass = true)
 
         builder.into(object : CustomTarget<File>() {
             override fun onResourceReady(resource: File, transition: Transition<in File>?) {
@@ -227,7 +229,7 @@ class GalleryFragment : Fragment() {
 
     private fun addProgressListener() {
         //Avoid leak memory
-        downloadId = mImageUrl?.let { String(it.toCharArray()) }
+        downloadId = mImageUrl?.toString()?.let { String(it.toCharArray()) }
         val progressListener = object : ProgressListener {
 
             override fun onProgress(task: DownloadTask, progress: DownloadProgressModel) {
@@ -259,11 +261,11 @@ class GalleryFragment : Fragment() {
 
         private const val ARG_IMAGE_URL = "image_url"
         private const val ARG_IMAGE_THUMB_URL = "image_thumb_url"
-        fun instance(imageUrl: String, thumbUrl: String? = null): GalleryFragment {
+        fun instance(imageUrl: Uri, thumbUrl: Uri? = null): GalleryFragment {
             val fragment = GalleryFragment()
             val bundle = Bundle()
-            bundle.putString(ARG_IMAGE_URL, imageUrl)
-            bundle.putString(ARG_IMAGE_THUMB_URL, thumbUrl)
+            bundle.putParcelable(ARG_IMAGE_URL, imageUrl)
+            bundle.putParcelable(ARG_IMAGE_THUMB_URL, thumbUrl)
             fragment.arguments = bundle
             return fragment
         }

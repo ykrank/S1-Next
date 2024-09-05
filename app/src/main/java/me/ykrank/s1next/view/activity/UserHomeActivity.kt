@@ -35,6 +35,7 @@ import me.ykrank.s1next.databinding.ActivityHomeBinding
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.event.BlackListChangeEvent
 import me.ykrank.s1next.view.internal.BlacklistMenuAction
+import me.ykrank.s1next.widget.image.ImageBiz
 import me.ykrank.s1next.widget.track.event.ViewHomeTrackEvent
 import javax.inject.Inject
 
@@ -53,6 +54,10 @@ class UserHomeActivity : BaseActivity() {
     private var isInBlacklist: Boolean = false
     private var blacklistMenu: MenuItem? = null
     private lateinit var adapter: SimpleRecycleViewAdapter
+
+    private val imageBiz by lazy {
+        ImageBiz(mDownloadPreferencesManager)
+    }
 
     override val isTranslucent: Boolean
         get() = true
@@ -109,6 +114,11 @@ class UserHomeActivity : BaseActivity() {
                 return true
             }
 
+            R.id.menu_refresh_avatar -> {
+
+                return true
+            }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -146,6 +156,7 @@ class UserHomeActivity : BaseActivity() {
             window.setSharedElementReturnTransition(null)
             window.setSharedElementReenterTransition(null)
             binding.avatar.transitionName = null
+
             overrideActivityTransition(
                 OVERRIDE_TRANSITION_OPEN,
                 com.github.ykrank.androidtools.R.anim.slide_in_right_quick,

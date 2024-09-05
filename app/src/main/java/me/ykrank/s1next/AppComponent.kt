@@ -80,8 +80,8 @@ import me.ykrank.s1next.view.page.setting.fragment.ReadPreferenceFragment
 import me.ykrank.s1next.viewmodel.UserViewModel
 import me.ykrank.s1next.widget.AppActivityLifecycleCallbacks
 import me.ykrank.s1next.widget.glide.AppHttpStreamFetcher
+import me.ykrank.s1next.widget.glide.AvatarFailUrlsCache
 import me.ykrank.s1next.widget.glide.AvatarStreamFetcher
-import me.ykrank.s1next.widget.glide.AvatarUrlsCache
 import me.ykrank.s1next.widget.hostcheck.AppHostUrl
 import me.ykrank.s1next.widget.hostcheck.NoticeCheckTask
 import me.ykrank.s1next.widget.net.Image
@@ -114,7 +114,7 @@ interface AppComponent {
     val noticeCheckTask: NoticeCheckTask
     val editorDiskCache: EditorDiskCache
 
-    val avatarUrlsCache: AvatarUrlsCache
+    val avatarFailUrlsCache: AvatarFailUrlsCache
     val autoSignTask: AutoSignTask
 
     //region DataBase

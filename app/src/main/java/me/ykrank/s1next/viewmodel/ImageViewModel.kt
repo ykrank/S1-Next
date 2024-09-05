@@ -1,18 +1,5 @@
-package me.ykrank.s1next.viewmodel;
+package me.ykrank.s1next.viewmodel
 
-public final class ImageViewModel {
+import android.net.Uri
 
-    public final String url;
-
-    public final String thumbUrl;
-
-    public ImageViewModel(String url) {
-        this.url = url;
-        this.thumbUrl = null;
-    }
-
-    public ImageViewModel(String url, String thumbUrl) {
-        this.url = url;
-        this.thumbUrl = thumbUrl;
-    }
-}
+data class ImageViewModel(val url: Uri?, val thumbUrl: Uri?)
