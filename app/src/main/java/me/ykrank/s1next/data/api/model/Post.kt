@@ -150,8 +150,11 @@ class Post : PaperParcelable, Cloneable, DiffSameItem, StableIdModel {
             this.banned = true
         }
 
-        // 替换手动unicode，比如 &#x4E0D;
-        var tReply: String = HtmlUtils.unescapeHtml(value) ?: value
+        var tReply: String = value
+        if (tReply.contains("&amp;#x") || tReply.contains("&#x")) {
+            // 替换手动unicode，比如 &#x4E0D;
+            tReply = HtmlUtils.unescapeHtml(value) ?: value
+        }
 
         tReply = PostFilter.replaceCodeDivId(tReply)
         tReply = PostFilter.replaceNewQuoteToOld(tReply)
