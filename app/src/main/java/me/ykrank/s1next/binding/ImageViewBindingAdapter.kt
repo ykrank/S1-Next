@@ -86,12 +86,12 @@ object ImageViewBindingAdapter {
         if (ContextUtils.isActivityDestroyedForGlide(bezelImageView.context)) {
             return
         }
+        bezelImageView.setTag(R.id.tag_drawable_info, null)
         val downloadPreferencesManager = preAppComponent
             .downloadPreferencesManager
         val imageBiz = ImageBiz(downloadPreferencesManager)
         if (user.isLogged) {
             val requestManager = Glide.with(bezelImageView)
-            bezelImageView.setTag(R.id.tag_drawable_info, null)
             AvatarFailUrlsCache.clearUserAvatarCache(user.uid)
             // setup user's avatar
             requestManager.avatarUid(imageBiz, user.uid)
@@ -107,10 +107,6 @@ object ImageViewBindingAdapter {
                         target: Target<Drawable>,
                         isFirstResource: Boolean
                     ): Boolean {
-                        //You can't start or clear loads in RequestListener or Target callbacks.
-                        bezelImageView.post {
-                            bezelImageView.setTag(R.id.tag_drawable_info, null)
-                        }
                         return false
                     }
 
@@ -184,6 +180,7 @@ object ImageViewBindingAdapter {
         if (ContextUtils.isActivityDestroyedForGlide(bezelImageView.context)) {
             return
         }
+        bezelImageView.setTag(R.id.tag_drawable_info, null)
         if (TextUtils.isEmpty(newUid)) {
             loadPlaceHolderAvatar(bezelImageView)
         } else {
