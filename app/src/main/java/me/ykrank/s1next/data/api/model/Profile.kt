@@ -66,13 +66,15 @@ class Profile : Account {
                 //<div class="pbm mbm bbda cl">
                 val baseElement = profileDiv.child(0)
                 //<h2 class="mbn">
-                val nameEle = baseElement.child(0)
-                profile.homeUsername = nameEle.textNodes()[0]?.text()?.trim()
+                val nameEle = baseElement.selectFirst("h2.mbn")!!
+                profile.homeUsername = nameEle.textNodes()[0].text().trim()
                 profile.homeUid = nameEle.selectFirst("span")!!.text().trim().let {
                     it.substring(6, it.length - 1)
                 }
-                profile.signHtml = baseElement.child(2).selectFirst("table")?.html()
-                val countEle = baseElement.child(3).child(0)
+                // <ul></ul>
+                profile.signHtml = baseElement.select("ul")[1].selectFirst("table")?.html()
+                // <ul class="cl bbda pbm mbm">
+                val countEle = baseElement.selectFirst("ul.bbda")!!.child(0)
                 profile.friends = countEle.child(1).text().trim().substring(4).toInt()
                 profile.replies = countEle.child(3).text().trim().substring(4).toInt()
                 profile.threads = countEle.child(5).text().trim().substring(4).toInt()
