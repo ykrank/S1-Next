@@ -18,7 +18,7 @@ val httpDnsId = properties.getProperty("httpDnsId") ?: "\"\""
 val httpDnsSecret = properties.getProperty("httpDnsSecret") ?: "\"\""
 
 val appVersionCode = 91
-val appVersionName = "3.1"
+val appVersionName = "3.2"
 val appVersionSuffix = ""
 
 android {
