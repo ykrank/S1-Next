@@ -8,6 +8,7 @@ import io.reactivex.exceptions.CompositeException
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.ApiException
 import okhttp3.internal.http2.StreamResetException
+import org.jsoup.Jsoup
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.SocketException
@@ -63,7 +64,15 @@ object ErrorUtil : ErrorParser {
             }
 
             is HttpException -> {
-                msg = throwable.getLocalizedMessage()
+                val errorBody = throwable.response()?.errorBody()?.string()
+                if (errorBody != null) {
+                    msg = runCatching {
+                        Jsoup.parse(errorBody).selectFirst("div.info>li")?.text()
+                    }.getOrNull()
+                }
+                if (msg.isNullOrEmpty()) {
+                    msg = throwable.getLocalizedMessage()
+                }
                 if (msg.isNullOrEmpty()) {
                     msg = context.getString(R.string.message_server_connect_error)
                 }
