@@ -185,7 +185,7 @@ class S1ApiCacheProvider(
         )
 
         fun saveCache(postWrapper: PostsWrapper) {
-            if (cacheValid) {
+            if (cacheValid && ((postWrapper.data?.postList?.size ?: 0) > 0)) {
                 cacheBiz.saveZipAsync(
                     apiCacheFlow.getKey(
                         cacheType,
