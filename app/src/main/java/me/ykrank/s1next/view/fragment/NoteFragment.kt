@@ -67,11 +67,11 @@ class NoteFragment : BaseLoadMoreRecycleViewFragment<BaseDataWrapper<Notes>>() {
             var newNotes = newData.data?.list?.toMutableList()
             if (newNotes == null) {
                 newNotes = ArrayList()
-                newData.data?.list = newNotes
             }
             if (oldNotes != null) {
                 newNotes.addAll(0, oldNotes)
             }
+            newData.data?.list = newNotes
         }
         return newData
     }
