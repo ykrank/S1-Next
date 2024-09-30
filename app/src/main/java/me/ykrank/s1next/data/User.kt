@@ -42,4 +42,7 @@ open class User(private val appDataPref: AppDataPreferencesManager) : TrackUser 
             }
             return "anonymous"
         }
+
+    val isDebugUser: Boolean
+        get() = uid == "223963"
 }

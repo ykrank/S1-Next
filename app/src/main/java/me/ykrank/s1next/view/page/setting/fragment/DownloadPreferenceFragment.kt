@@ -20,6 +20,7 @@ import kotlinx.coroutines.withContext
 import me.ykrank.s1next.App
 import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.R
+import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.cache.biz.CacheBiz
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.util.AppFileUtil
@@ -40,11 +41,14 @@ class DownloadPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefer
     @Inject
     internal lateinit var mCacheBiz: CacheBiz
 
+    @Inject
+    internal lateinit var mUser: User
+
     private var disposable: Disposable? = null
 
     @Suppress("KotlinConstantConditions")
     private val showCacheView by lazy {
-        BuildConfig.DEBUG || BuildConfig.BUILD_TYPE == "alpha"
+        BuildConfig.DEBUG || BuildConfig.BUILD_TYPE == "alpha" || mUser.isDebugUser
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
