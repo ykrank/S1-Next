@@ -22,7 +22,8 @@ dependencyResolutionManagement {
             //一定要添加这个配置
             isAllowInsecureProtocol = true
         }
-        jcenter()
+        // 阿里jcenter镜像
+        maven("https://maven.aliyun.com/repository/jcenter")
     }
 }
 
