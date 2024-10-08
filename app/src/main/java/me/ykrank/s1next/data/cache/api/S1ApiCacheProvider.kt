@@ -107,6 +107,10 @@ class S1ApiCacheProvider(
         return apiCacheFlow.getFlow()
     }
 
+    private fun isPostsWrapperValid(postWrapper: PostsWrapper): Boolean {
+        return (postWrapper.data?.postList?.size ?: 0) > 0
+    }
+
     @OptIn(FlowPreview::class)
     override suspend fun getPostsWrapper(
         threadId: String,
@@ -164,7 +168,7 @@ class S1ApiCacheProvider(
             }
 
             override fun shouldNetDataFallback(data: PostsWrapper): Boolean {
-                return false
+                return !isPostsWrapperValid(data)
             }
 
         }
@@ -185,7 +189,7 @@ class S1ApiCacheProvider(
         )
 
         fun saveCache(postWrapper: PostsWrapper) {
-            if (cacheValid && ((postWrapper.data?.postList?.size ?: 0) > 0)) {
+            if (cacheValid && isPostsWrapperValid(postWrapper)) {
                 cacheBiz.saveZipAsync(
                     apiCacheFlow.getKey(
                         cacheType,
@@ -248,7 +252,7 @@ class S1ApiCacheProvider(
                                 }
                             }
 
-                            //从缓存中获取评分详情。
+                            //从内存缓存中获取评分详情。
                             postList.filter { it.rates?.size == 0 }.forEach {
                                 val cacheKey = getRateKey(threadId, it.id)
                                 val cache = ratesCache[cacheKey]

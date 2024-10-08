@@ -9,9 +9,11 @@ import com.github.ykrank.androidtools.data.Source
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.LoadTime
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.withContext
 import me.ykrank.s1next.BuildConfig
 import me.ykrank.s1next.data.User
@@ -20,6 +22,7 @@ import me.ykrank.s1next.data.cache.dbmodel.Cache
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.util.toJson
 import java.io.Serializable
+import kotlin.time.Duration
 
 open class ApiCacheFlow<T>(
     private val downloadPerf: DownloadPreferencesManager,
@@ -150,12 +153,40 @@ open class ApiCacheFlow<T>(
      */
     fun getFlow(): Flow<Resource<T>> {
         val cacheStrategy = param?.strategy ?: CacheStrategy.NET_FIRST
-        return flow {
-            // 优先拉取缓存
-            val cacheFirst = downloadPerf.netCacheEnable && !cacheStrategy.strategy.ignoreCache
-            val cacheFallback =
-                downloadPerf.netCacheEnable && !cacheStrategy.fallbackStrategy.ignoreCache
+        // 优先拉取缓存
+        val cacheFirst = downloadPerf.netCacheEnable && !cacheStrategy.strategy.ignoreCache
+        val cacheFallback =
+            downloadPerf.netCacheEnable && !cacheStrategy.fallbackStrategy.ignoreCache
+        val fallbackTimeout = if (downloadPerf.netCacheEnable) {
+            cacheStrategy.fallbackTimeout
+        } else {
+            Duration.INFINITE
+        }
 
+        var cacheResultReturned = false
+        var netResultReturned = false
+
+        // 降级到缓存
+        fun emitFallbackCache(): Resource.Success<T>? {
+            if (!cacheResultReturned && !netResultReturned && cacheFallback) {
+                return getCacheResourceFallback()?.apply {
+                    cacheResultReturned = true
+                }
+            }
+            return null
+        }
+
+        val timeoutFallbackTask = flow {
+            // 超时则先降级返回缓存
+            if (fallbackTimeout != Duration.INFINITE) {
+                delay(fallbackTimeout)
+                emitFallbackCache()?.apply {
+                    emit(this)
+                }
+            }
+        }
+
+        val normalTask = flow {
             if (cacheFirst) {
                 getCacheResource()?.apply {
                     emit(this)
@@ -163,7 +194,7 @@ open class ApiCacheFlow<T>(
             }
 
             // 拉取网络数据
-            var fallbackSuccess = false
+            var failFallbackReturned = false
             val data = runCatching {
                 loadTime.run(ApiCacheConstants.Time.TIME_NET) { api() }
                     .let {
@@ -172,11 +203,9 @@ open class ApiCacheFlow<T>(
                         }
                         if (interceptor.shouldNetDataFallback(data)) {
                             // 无效的数据降级到缓存
-                            if (!cacheFirst && cacheFallback) {
-                                getCacheResourceFallback()?.apply {
-                                    fallbackSuccess = true
-                                    emit(this)
-                                }
+                            emitFallbackCache()?.apply {
+                                failFallbackReturned = true
+                                emit(this)
                             }
                         }
                         if (downloadPerf.netCacheEnable) {
@@ -200,18 +229,19 @@ open class ApiCacheFlow<T>(
                     }
             }.onFailure {
                 // 失败的请求降级到缓存
-                if (!cacheFirst && cacheFallback) {
-                    getCacheResourceFallback()?.apply {
-                        fallbackSuccess = true
-                        emit(this)
-                    }
+                emitFallbackCache()?.apply {
+                    failFallbackReturned = true
+                    emit(this)
                 }
             }
-            if (!fallbackSuccess) {
+            if (!failFallbackReturned) {
                 printTimeWhenEmit(ApiCacheConstants.Time.TIME_EMIT_NET)
+                netResultReturned = true
                 emit(Resource.fromResult<T>(Source.CLOUD, data))
             }
-        }.flowOn(Dispatchers.IO)
+        }
+
+        return merge(timeoutFallbackTask, normalTask).flowOn(Dispatchers.IO)
     }
 
     companion object {

@@ -22,10 +22,12 @@ data class CacheStrategy(
     val strategy: CacheStrategyData,
     // 请求失败时的降级策略
     val fallbackStrategy: CacheStrategyData,
+    // 超时则先降级返回缓存
+    val fallbackTimeout: Duration = 3.toDuration(DurationUnit.SECONDS),
 ) {
     companion object {
-        val CACHE_FIRST = CacheStrategy(CacheStrategyData.ONE_DAY, CacheStrategyData.FALLBACK)
-        val NET_FIRST = CacheStrategy(CacheStrategyData.NO_CACHE, CacheStrategyData.FALLBACK)
+        val CACHE_FIRST = CacheStrategy(CacheStrategyData.ONE_DAY, CacheStrategyData.INFINITE)
+        val NET_FIRST = CacheStrategy(CacheStrategyData.NO_CACHE, CacheStrategyData.INFINITE)
         val NO_CACHE = CacheStrategy(CacheStrategyData.NO_CACHE, CacheStrategyData.NO_CACHE)
     }
 }
@@ -37,7 +39,7 @@ data class CacheStrategyData(
 
     companion object {
         val ONE_DAY = CacheStrategyData(1.toDuration(DurationUnit.DAYS))
-        val FALLBACK = CacheStrategyData(Duration.INFINITE)
+        val INFINITE = CacheStrategyData(Duration.INFINITE)
         val NO_CACHE = CacheStrategyData(Duration.ZERO, ignoreCache = true)
     }
 }
