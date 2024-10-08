@@ -1,5 +1,7 @@
 package me.ykrank.s1next.data.api
 
+import android.content.Context
+import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.util.L
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -9,6 +11,7 @@ import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.app.model.AppResult
 import me.ykrank.s1next.data.api.model.wrapper.AccountResultWrapper
 import me.ykrank.s1next.data.api.model.wrapper.OriginWrapper
+import me.ykrank.s1next.util.ErrorUtil
 
 /**
  * Created by ykrank on 2016/10/18.
@@ -114,4 +117,28 @@ object ApiFlatTransformer {
     private fun <T> createData(t: T): Single<T> {
         return Single.just(t)
     }
+}
+
+inline fun <T, R> T.runApiCatching(block: T.() -> R): Result<R> {
+    return try {
+        block().let {
+            val error = ApiFlatTransformer.getApiResultError(it)
+            if (error != null) {
+                Result.failure(error)
+            } else {
+                Result.success(it)
+            }
+        }
+    } catch (e: Throwable) {
+        Result.failure(e)
+    }
+}
+
+suspend inline fun <R> Result<R>.toastError(context: Context?, onSuccess: R.() -> Unit) {
+    if (isSuccess) {
+        onSuccess(getOrThrow())
+        return
+    }
+    if (context == null) return
+    context.toast(ErrorUtil.parse(context, exceptionOrNull()))
 }

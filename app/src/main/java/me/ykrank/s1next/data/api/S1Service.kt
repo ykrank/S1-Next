@@ -246,11 +246,11 @@ interface S1Service {
 
     @FormUrlEncoded
     @POST(ApiForum.URL_VOTE)
-    fun vote(
+    suspend fun vote(
         @Query("tid") threadId: String?,
         @Field("formhash") authenticityToken: String?,
         @Field("pollanswers[]") answers: List<Int>
-    ): Single<String>
+    ): String
 
     @GET(ApiForum.URL_RATE_LIST)
     suspend fun getRates(@Query("tid") threadId: String?, @Query("pid") postId: String?): String
@@ -259,5 +259,5 @@ interface S1Service {
     fun getDarkRoom(@Query("cid") cid: String?): Single<DarkRoomWrapper>
 
     @GET(Api.URL_WEB_BLACK_LIST)
-    fun getWebBlackList(@Query("uid") uid: String?, @Query("page") page: Int): Single<String>
+    suspend fun getWebBlackList(@Query("uid") uid: String?, @Query("page") page: Int): String
 }

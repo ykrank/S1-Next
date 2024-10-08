@@ -2,8 +2,10 @@ package me.ykrank.s1next.view.dialog
 
 import android.os.Build
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidtools.extension.toast
 import io.reactivex.Single
+import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.link.ThreadLink
@@ -63,13 +65,15 @@ class QuotePostPageParserDialogFragment : ProgressDialogFragment<String>() {
 
     override fun onError(throwable: Throwable) {
         val context = context ?: return
-        val errorMsg = ErrorUtil.parse(context, throwable)
-        if (isVisible) {
-            ThreadLinkInvalidPromptDialogFragment.newInstance(context, errorMsg)
-                .show(childFragmentManager, ThreadLinkInvalidPromptDialogFragment.TAG)
-            mShouldFinishActivity = false
-        } else {
-            App.get().toast(errorMsg)
+        lifecycleScope.launch {
+            val errorMsg = ErrorUtil.parse(context, throwable)
+            if (isVisible) {
+                ThreadLinkInvalidPromptDialogFragment.newInstance(context, errorMsg)
+                    .show(childFragmentManager, ThreadLinkInvalidPromptDialogFragment.TAG)
+                mShouldFinishActivity = false
+            } else {
+                App.get().toast(errorMsg)
+            }
         }
     }
 

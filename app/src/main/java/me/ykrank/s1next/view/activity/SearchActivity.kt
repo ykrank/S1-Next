@@ -27,6 +27,7 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ActivityEvent
@@ -34,6 +35,7 @@ import com.github.ykrank.androidtools.util.ImeUtils
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.util.TransitionUtils
+import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.ApiFlatTransformer
@@ -299,7 +301,9 @@ class SearchActivity : BaseActivity() {
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
                 .subscribe({ setResults(it.userSearchResults, it.errorMsg) }, {
-                    setResults(null, ErrorUtil.parse(this, it))
+                    lifecycleScope.launch {
+                        setResults(null, ErrorUtil.parse(this@SearchActivity, it))
+                    }
                 })
         } else {
             ApiFlatTransformer.flatMappedWithAuthenticityToken(
@@ -311,7 +315,9 @@ class SearchActivity : BaseActivity() {
                 .compose(RxJavaUtil.iOSingleTransformer())
                 .to(AndroidRxDispose.withSingle(this, ActivityEvent.DESTROY))
                 .subscribe({ setResults(it.forumSearchResults, null) }, {
-                    setResults(null, ErrorUtil.parse(this, it))
+                    lifecycleScope.launch {
+                        setResults(null, ErrorUtil.parse(this@SearchActivity, it))
+                    }
                 })
         }
     }

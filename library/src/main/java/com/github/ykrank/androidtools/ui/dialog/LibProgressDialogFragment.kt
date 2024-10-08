@@ -4,12 +4,14 @@ import android.app.Dialog
 import android.app.ProgressDialog
 import android.os.Bundle
 import androidx.annotation.CallSuper
+import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.GlobalData
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 
 /**
  * A dialog shows [ProgressDialog].
@@ -83,7 +85,10 @@ abstract class LibProgressDialogFragment<D> : LibBaseDialogFragment() {
         val context = context
         if (context != null) {
             GlobalData.provider.errorParser?.let {
-                showToastText(it.parse(context, throwable))
+                lifecycleScope.launch {
+                    val msg = it.parse(context, throwable)
+                    showToastText(msg)
+                }
             }
         }
     }

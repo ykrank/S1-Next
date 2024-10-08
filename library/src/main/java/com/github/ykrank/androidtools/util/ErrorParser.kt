@@ -10,7 +10,7 @@ interface ErrorParser {
     /**
      * 从错误中解析用户友好的提示
      */
-    fun parse(context: Context, throwable: Throwable?): String
+    suspend fun parse(context: Context, throwable: Throwable?): String
 
     /**
      * 是否忽略异常不上传

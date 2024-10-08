@@ -20,6 +20,8 @@ import com.github.ykrank.androidtools.util.ResourceUtil
 import com.github.ykrank.androidtools.widget.net.WifiActivityLifecycleCallbacks
 import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import io.reactivex.plugins.RxJavaPlugins
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import me.ykrank.s1next.data.db.DbModule
 import me.ykrank.s1next.data.pref.GeneralPreferencesManager
 import me.ykrank.s1next.data.pref.PrefModule
@@ -119,7 +121,9 @@ class App : MultiDexApplication() {
         //RxJava default error handler
         RxJavaPlugins.setErrorHandler {
             if (L.showLog()) {
-                toast(ErrorUtil.parse(this, it))
+                GlobalScope.launch {
+                    toast(ErrorUtil.parse(this@App, it))
+                }
             }
         }
 

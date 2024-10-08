@@ -6,23 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import com.github.ykrank.androidautodispose.AndroidRxDispose
-import com.github.ykrank.androidlifecycle.event.FragmentEvent
+import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidtools.extension.toast
 import com.github.ykrank.androidtools.ui.adapter.simple.BindViewHolderCallback
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
-import com.github.ykrank.androidtools.util.RxJavaUtil
-import io.reactivex.rxkotlin.Singles
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.zip
+import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
-import me.ykrank.s1next.data.api.ApiFlatTransformer
 import me.ykrank.s1next.data.api.S1Service
 import me.ykrank.s1next.data.api.app.AppService
 import me.ykrank.s1next.data.api.model.Vote
+import me.ykrank.s1next.data.api.runApiCatching
+import me.ykrank.s1next.data.api.toastError
 import me.ykrank.s1next.databinding.ItemVoteBinding
 import me.ykrank.s1next.databinding.LayoutVoteBinding
-import me.ykrank.s1next.util.ErrorUtil
 import me.ykrank.s1next.viewmodel.ItemVoteViewModel
 import me.ykrank.s1next.viewmodel.VoteViewModel
 import javax.inject.Inject
@@ -51,10 +51,14 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
-        tid = arguments!!.getString(ARG_THREAD_ID)!!
-        mVote = arguments!!.getParcelable(ARG_VOTE)!!
+        tid = requireArguments().getString(ARG_THREAD_ID)!!
+        mVote = requireArguments().getParcelable(ARG_VOTE)!!
 
-        adapter = SimpleRecycleViewAdapter(context!!, R.layout.item_vote, false, BindViewHolderCallback { position, itemBind ->
+        adapter = SimpleRecycleViewAdapter(
+            requireContext(),
+            R.layout.item_vote,
+            false,
+            BindViewHolderCallback { position, itemBind ->
             itemBind as ItemVoteBinding
             itemBind.radio.setOnClickListener { refreshSelectedItem(position, itemBind) }
             itemBind.checkBox.setOnClickListener { refreshSelectedItem(position, itemBind) }
@@ -92,24 +96,42 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
     }
 
     private fun loadData() {
-        Singles.zip(appService.getPollInfo(mUser.appSecureToken, tid), appService.getPollOptions(mUser.appSecureToken, tid))
-                .compose(ApiFlatTransformer.apiPairErrorTransformer())
-                .compose(RxJavaUtil.iOSingleTransformer())
-                .map { (a,b)-> a.data to b.data }
-                .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
-                .subscribe({ (appVote, voteOptions)->
-                    binding.model?.appVote?.set(appVote)
-                    voteOptions?.let {
-                        data.forEachIndexed { index, vm ->
-                            vm.option.mergeWithAppVoteOption(it[index], appVote?.voters
-                                    ?: mVote.voteCount)
+        lifecycleScope.launch {
+            flow {
+                emit(runApiCatching {
+                    appService.getPollInfo(
+                        mUser.appSecureToken,
+                        tid
+                    )
+                })
+            }.zip(
+                flow {
+                    emit(runApiCatching {
+                        appService.getPollOptions(
+                            mUser.appSecureToken,
+                            tid
+                        )
+                    })
+                }
+            ) { appVote, voteOptions -> appVote to voteOptions }
+                .collect { (appVoteResult, voteOptionsResult) ->
+                    appVoteResult.toastError(activity) {
+                        val appVote = this.data
+                        voteOptionsResult.toastError(activity) {
+                            binding.model?.appVote?.set(appVote)
+                            data?.let {
+                                this@VoteDialogFragment.data.forEachIndexed { index, vm ->
+                                    vm.option.mergeWithAppVoteOption(
+                                        it[index], appVote?.voters
+                                            ?: mVote.voteCount
+                                    )
+                                }
+                            }
+                            adapter.notifyDataSetChanged()
                         }
                     }
-                    adapter.notifyDataSetChanged()
-                }, {
-                    val activity = activity ?: return@subscribe
-                    activity.toast(ErrorUtil.parse(activity, it))
-                })
+                }
+        }
     }
 
     private fun refreshSelectedItem(position: Int, itemBind: ItemVoteBinding) {
@@ -132,17 +154,15 @@ class VoteDialogFragment : BaseDialogFragment(), VoteViewModel.VoteVmAction {
 
     override fun onClickVote(view: View?) {
         val selected = data.filter { it.selected.get() }.map { it.option.optionId }
-        s1Service.vote(tid, mUser.authenticityToken, selected)
-                .compose(ApiFlatTransformer.apiErrorTransformer())
-                .compose(RxJavaUtil.iOSingleTransformer())
-                .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY))
-                .subscribe({
-                    activity?.toast(R.string.vote_success)
-                    loadData()
-                }, {
-                    val activity = activity ?: return@subscribe
-                    activity.toast(ErrorUtil.parse(activity, it))
-                })
+        lifecycleScope.launch {
+            val voteRaw = runApiCatching {
+                s1Service.vote(tid, mUser.authenticityToken, selected)
+            }
+            voteRaw.toastError(activity) {
+                activity?.toast(R.string.vote_success)
+                loadData()
+            }
+        }
     }
 
     companion object {

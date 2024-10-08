@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.github.ykrank.androidtools.util.ErrorParser
 import com.github.ykrank.androidtools.util.L
 import io.reactivex.exceptions.CompositeException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.ApiException
 import okhttp3.internal.http2.StreamResetException
@@ -22,7 +24,7 @@ object ErrorUtil : ErrorParser {
 
     private val TAG_LOG = ErrorUtil::class.java.simpleName
 
-    override fun parse(context: Context, throwable: Throwable?): String {
+    override suspend fun parse(context: Context, throwable: Throwable?): String {
         var msg: String? = null
         var root: Throwable? = throwable
 
@@ -44,7 +46,7 @@ object ErrorUtil : ErrorParser {
         return msg
     }
 
-    private fun parseNetError(context: Context, throwable: Throwable): String? {
+    private suspend fun parseNetError(context: Context, throwable: Throwable): String? {
         var msg: String? = null
         when (throwable) {
             is ApiException -> msg = throwable.getLocalizedMessage()
@@ -64,11 +66,11 @@ object ErrorUtil : ErrorParser {
             }
 
             is HttpException -> {
-                val errorBody = throwable.response()?.errorBody()?.string()
-                if (errorBody != null) {
-                    msg = runCatching {
-                        Jsoup.parse(errorBody).selectFirst("div.info>li")?.text()
-                    }.getOrNull()
+                withContext(Dispatchers.IO + L.print) {
+                    val errorBody = throwable.response()?.errorBody()?.string()
+                    if (errorBody != null) {
+                        msg = Jsoup.parse(errorBody).selectFirst("div.info>li")?.text()
+                    }
                 }
                 if (msg.isNullOrEmpty()) {
                     msg = throwable.getLocalizedMessage()

@@ -9,12 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
 import com.github.ykrank.androidtools.GlobalData
 import com.github.ykrank.androidtools.R
 import com.github.ykrank.androidtools.ui.dialog.PageJumpDialogFragment
 import com.github.ykrank.androidtools.ui.internal.PagerCallback
 import com.github.ykrank.androidtools.widget.TagFragmentStatePagerAdapter
+import kotlinx.coroutines.launch
 
 /**
  * A base Fragment wraps [ViewPager] and provides related methods.
@@ -95,8 +97,12 @@ abstract class LibBaseViewPagerFragment : LibBaseFragment(), PagerCallback,
     protected open fun onError(throwable: Throwable) {
         GlobalData.provider.errorParser?.let {
             val context = context
-            if (context != null)
-                showSnackbar(it.parse(context, throwable))
+            if (context != null) {
+                lifecycleScope.launch {
+                    val msg = it.parse(context, throwable)
+                    showSnackbar(msg)
+                }
+            }
         }
     }
 

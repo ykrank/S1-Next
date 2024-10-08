@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.CallSuper
+import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidtools.ui.LibBaseFragment
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.User
 import me.ykrank.s1next.data.api.UserValidator
@@ -29,12 +31,16 @@ abstract class BaseFragment : LibBaseFragment() {
 
     fun showRetrySnackbar(throwable: Throwable, onClickListener: View.OnClickListener) {
         val context = context ?: return
-        showRetrySnackbar(ErrorUtil.parse(context, throwable), onClickListener)
+        lifecycleScope.launch {
+            showRetrySnackbar(ErrorUtil.parse(context, throwable), onClickListener)
+        }
     }
 
     protected fun showShortSnackbar(throwable: Throwable) {
         val context = context ?: return
-        showSnackbar(ErrorUtil.parse(context, throwable))
+        lifecycleScope.launch {
+            showSnackbar(ErrorUtil.parse(context, throwable))
+        }
     }
 
     /**

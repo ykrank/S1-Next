@@ -7,7 +7,7 @@ import com.github.ykrank.androidtools.R
  * Created by ykrank on 2017/11/5.
  */
 object DefaultErrorParser : ErrorParser {
-    override fun parse(context: Context, throwable: Throwable?): String {
+    override suspend fun parse(context: Context, throwable: Throwable?): String {
         return throwable?.localizedMessage ?: context.getString(R.string.message_unknown_error)
     }
 

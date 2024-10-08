@@ -315,8 +315,11 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
         L.print(throwable)
         GlobalData.provider.errorParser?.let {
             val context = context
-            if (context != null && isAdded && userVisibleHint) {
-                showRetrySnackbar(it.parse(context, throwable))
+            if (context != null) {
+                lifecycleScope.launch {
+                    val msg = it.parse(context, throwable)
+                    showRetrySnackbar(msg)
+                }
             }
         }
     }
