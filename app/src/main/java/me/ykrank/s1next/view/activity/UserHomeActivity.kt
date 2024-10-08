@@ -35,6 +35,7 @@ import me.ykrank.s1next.databinding.ActivityHomeBinding
 import me.ykrank.s1next.view.dialog.LoginPromptDialogFragment
 import me.ykrank.s1next.view.event.BlackListChangeEvent
 import me.ykrank.s1next.view.internal.BlacklistMenuAction
+import me.ykrank.s1next.widget.glide.AvatarFailUrlsCache
 import me.ykrank.s1next.widget.image.ImageBiz
 import me.ykrank.s1next.widget.track.event.ViewHomeTrackEvent
 import javax.inject.Inject
@@ -302,6 +303,8 @@ class UserHomeActivity : BaseActivity() {
             userName: String?,
             avatarView: View
         ) {
+            //Clear avatar false cache
+            AvatarFailUrlsCache.removeFailUserAvatarCache(uid)
             if (LoginPromptDialogFragment.showLoginPromptDialogIfNeeded(
                     activity.supportFragmentManager,
                     App.appComponent.user

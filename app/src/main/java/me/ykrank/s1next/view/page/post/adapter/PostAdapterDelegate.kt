@@ -28,7 +28,6 @@ import me.ykrank.s1next.view.activity.RateDetailsListActivity
 import me.ykrank.s1next.view.activity.UserHomeActivity
 import me.ykrank.s1next.view.adapter.delegate.BaseAdapterDelegate
 import me.ykrank.s1next.view.page.post.viewmodel.PostViewModel
-import me.ykrank.s1next.widget.glide.AvatarFailUrlsCache
 import me.ykrank.s1next.widget.span.FixedSpannableFactory
 import me.ykrank.s1next.widget.span.PostMovementMethod
 import javax.inject.Inject
@@ -151,8 +150,6 @@ class PostAdapterDelegate(private val fragment: Fragment, context: Context) :
                             val uname = this.uname
                             bind.avatar.setOnClickListener {
                                 if (uid != null && uname != null) {
-                                    //Clear avatar false cache
-                                    AvatarFailUrlsCache.clearUserAvatarCache(uid)
                                     //个人主页
                                     UserHomeActivity.start(
                                         it.context as FragmentActivity,

@@ -3,12 +3,17 @@ package me.ykrank.s1next.view.fragment
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.ykrank.androidtools.extension.dp2px
 import com.github.ykrank.androidtools.ui.adapter.simple.SimpleRecycleViewAdapter
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
 import io.reactivex.Single
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.model.Rate
+import me.ykrank.s1next.databinding.ItemRateDetailMultiBinding
+import me.ykrank.s1next.view.activity.UserHomeActivity
 
 /**
  * Created by ykrank on 2017/1/16.
@@ -34,13 +39,40 @@ class RateDetailsListFragment : BaseRecyclerViewFragment<List<Rate>>() {
 
         val recyclerView = recyclerView
         val activity = activity
-        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
-        mRecyclerAdapter = SimpleRecycleViewAdapter(activity!!, R.layout.item_rate_detail_multi, true)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        mRecyclerAdapter = SimpleRecycleViewAdapter(
+            activity!!,
+            R.layout.item_rate_detail_multi,
+            true,
+            { _, rateBinding ->
+                val bind = rateBinding as? ItemRateDetailMultiBinding
+                bind?.model?.apply {
+                    val uid = this.uid
+                    val uname = this.uname
+                    bind.avatar.setOnClickListener {
+                        if (uid != null && uname != null) {
+                            //个人主页
+                            UserHomeActivity.start(
+                                it.context as FragmentActivity,
+                                uid,
+                                uname,
+                                it
+                            )
+                        }
+                    }
+                }
+
+            })
         recyclerView.adapter = mRecyclerAdapter
-        recyclerView.addItemDecoration(object : androidx.recyclerview.widget.RecyclerView.ItemDecoration() {
+        recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             val d16 = 16.dp2px(context!!)
 
-            override fun getItemOffsets(outRect: Rect, view: View, parent: androidx.recyclerview.widget.RecyclerView, state: androidx.recyclerview.widget.RecyclerView.State) {
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
                 outRect.set(d16, 0, d16, 0)
             }
         })

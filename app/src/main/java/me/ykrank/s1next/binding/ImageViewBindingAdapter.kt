@@ -92,7 +92,7 @@ object ImageViewBindingAdapter {
         val imageBiz = ImageBiz(downloadPreferencesManager)
         if (user.isLogged) {
             val requestManager = Glide.with(bezelImageView)
-            AvatarFailUrlsCache.clearUserAvatarCache(user.uid)
+            AvatarFailUrlsCache.removeFailUserAvatarCache(user.uid)
             // setup user's avatar
             requestManager.avatarUid(imageBiz, user.uid)
                 .error(

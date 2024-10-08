@@ -68,9 +68,7 @@ class AvatarStreamFetcher(
         call = client.newCall(request)
         call?.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                if (avatarKey != null) {
-                    avatarFailUrlsCache.put(avatarKey)
-                }
+                avatarFailUrlsCache.put(avatarKey)
                 callback.onLoadFailed(e)
             }
 
@@ -79,7 +77,7 @@ class AvatarStreamFetcher(
                 responseBody = response.body
                 if (!response.isSuccessful) {
                     // if (this this a avatar URL) && (this URL is cacheable)
-                    if (avatarKey != null && CacheStrategy.isCacheable(response, request)) {
+                    if (CacheStrategy.isCacheable(response, request)) {
                         avatarFailUrlsCache.put(avatarKey)
                         callback.onDataReady(null)
                         return
@@ -88,7 +86,7 @@ class AvatarStreamFetcher(
                 } else {
                     // if download success, and (this this a avatar URL) && (this URL is cacheable)
                     // remove from cache list
-                    if (avatarKey != null && avatarFailUrlsCache.has(avatarKey)) {
+                    if (avatarFailUrlsCache.has(avatarKey)) {
                         avatarFailUrlsCache.remove(avatarKey)
                     }
                     responseBody?.let {

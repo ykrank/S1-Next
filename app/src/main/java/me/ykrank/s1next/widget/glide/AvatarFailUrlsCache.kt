@@ -107,10 +107,10 @@ class AvatarFailUrlsCache {
      * Forked from [com.bumptech.glide.load.engine.cache.SafeKeyGenerator].
      */
     private class KeyGenerator {
-        private val lruCache = LruCache<Key, String?>(AVATAR_URL_KEYS_MEMORY_CACHE_MAX_NUMBER)
+        private val keyLruCache = LruCache<Key, String?>(AVATAR_URL_KEYS_MEMORY_CACHE_MAX_NUMBER)
         fun getKey(key: Key): String? {
             var safeKey: String?
-            synchronized(lruCache) { safeKey = lruCache[key] }
+            synchronized(keyLruCache) { safeKey = keyLruCache[key] }
             if (safeKey == null) {
                 try {
                     val messageDigest = MessageDigest.getInstance("SHA-256")
@@ -119,7 +119,7 @@ class AvatarFailUrlsCache {
                 } catch (e: NoSuchAlgorithmException) {
                     e.printStackTrace()
                 }
-                synchronized(lruCache) { lruCache.put(key, safeKey) }
+                synchronized(keyLruCache) { keyLruCache.put(key, safeKey) }
             }
             return safeKey
         }
@@ -145,15 +145,15 @@ class AvatarFailUrlsCache {
         private val DISK_CACHE_LOCK = Any()
 
         @JvmStatic
-        fun clearUserAvatarCache(uid: String?) {
-            val avatarUrlsCache = appComponent.avatarFailUrlsCache
+        fun removeFailUserAvatarCache(uid: String?) {
+            val avatarFailUrlsCache = appComponent.avatarFailUrlsCache
 
             //clear avatar img error cache
             val avatarUrls = Api.getAvatarUrls(uid)
             val manager = preAppComponent.downloadPreferencesManager
             val imageBiz = ImageBiz(manager)
             avatarUrls.forEach {
-                avatarUrlsCache.remove(imageBiz.avatarCacheKey(it))
+                avatarFailUrlsCache.remove(imageBiz.avatarCacheKey(it))
             }
         }
     }
