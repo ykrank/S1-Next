@@ -77,6 +77,26 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_remark"
+                app:hintAnimationEnabled="true">
+
+                <!-- hint = "" is necessary -->
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/blacklist_remark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint=""
+                    android:imeActionId="@integer/ime_action_id"
+                    android:imeActionLabel="@string/dialog_button_text_go"
+                    android:inputType="text"
+                    android:text="@{blackDialogViewModel.blackRemark}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    app:editable="@{blackDialogViewModel.blacklist.size() &lt; 2}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <RadioGroup
                 android:id="@+id/radio_group_forum"

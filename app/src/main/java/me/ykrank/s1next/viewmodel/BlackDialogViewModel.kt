@@ -33,6 +33,15 @@ class BlackDialogViewModel {
             return nameList
         }
 
+    val blackRemark: String
+        get() {
+            var result = ""
+            blacklist.forEach {
+                result += "${it.remark} "
+            }
+            return result
+        }
+
     fun clickSnackbar(): View.OnClickListener {
         return View.OnClickListener { v: View ->
             val snackbar = Snackbar.make(

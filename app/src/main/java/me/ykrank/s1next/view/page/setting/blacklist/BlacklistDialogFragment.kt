@@ -46,18 +46,27 @@ class BlacklistDialogFragment : BaseDialogFragment() {
             .setPositiveButton(android.R.string.ok) { dialog, which ->
                 @BlackList.ForumFLag val forum = forumFlagFromRadioId()
                 @BlackList.PostFLag val post = postFlagFromRadioId()
+                val remark = binding.blacklistRemark.text.toString()
                 if (mBlacklist.size == 0) {
                     val authorIds = binding.blacklistId.text.toString().trim { it <= ' ' }
                     val authorId =
                         if (TextUtils.isEmpty(authorIds)) 0 else Integer.parseInt(authorIds)
                     val authorName = binding.blacklistName.text.toString()
-                    val blackList = BlackList(authorId, authorName, post, forum)
+                    val blackList = BlackList(authorId, authorName, post, forum).apply {
+                        this.remark = remark
+                    }
                     mBlacklist.add(blackList)
+                } else if (mBlacklist.size == 1) {
+                    mBlacklist.first().apply {
+                        this.remark = remark
+                    }
                 }
+
                 mBlacklist.forEach { blacklistItem ->
                     blacklistItem.post = post
                     blacklistItem.forum = forum
                 }
+
                 callBack?.invoke(mBlacklist)
             }
             .setNegativeButton(android.R.string.cancel, null)
