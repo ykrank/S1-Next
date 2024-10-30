@@ -5,11 +5,11 @@ import androidx.annotation.MainThread
 import com.github.ykrank.androidtools.util.LooperUtil.enforceOnMainThread
 import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
 
@@ -65,12 +65,7 @@ class EventBus {
     }
 
     @AnyThread
-    fun getDefaultFlow(): SharedFlow<Any> {
-        return getFlow(DEFAULT_TAG)
-    }
-
-    @AnyThread
-    fun getFlow(tag: Any): SharedFlow<Any> {
+    fun getFlow(tag: Any = DEFAULT_TAG): SharedFlow<Any> {
         val flow = eventFlow[tag]
             ?: synchronized(eventFlow) {
                 val flow1 = eventFlow[tag]
@@ -84,7 +79,12 @@ class EventBus {
         return flow
     }
 
+    @AnyThread
+    inline fun <reified T> getClsFlow(tag: Any = DEFAULT_TAG): Flow<T> {
+        return getFlow(tag).filterIsInstance()
+    }
+
     companion object {
-        private const val DEFAULT_TAG = "default_tag"
+        const val DEFAULT_TAG = "default_tag"
     }
 }

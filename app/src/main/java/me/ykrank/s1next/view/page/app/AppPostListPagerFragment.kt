@@ -10,8 +10,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.bigkoo.quicksidebar.listener.OnQuickSideBarTouchListener
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.github.ykrank.androidautodispose.AndroidRxDispose
-import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.ui.internal.LoadingViewModelBindingDelegate
 import com.github.ykrank.androidtools.ui.vm.LoadingViewModel
 import com.github.ykrank.androidtools.util.L
@@ -24,6 +22,8 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ykrank.s1next.App
@@ -109,26 +109,22 @@ class AppPostListPagerFragment : BaseRecyclerViewFragment<AppPostsWrapper>(),
 
         binding.quickSideBarView.setOnQuickSideBarTouchListener(this)
 
-        mEventBus.get()
-            .ofType(PostSelectableChangeEvent::class.java)
-            .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
-            .subscribe({ mRecyclerAdapter.notifyDataSetChanged() }, { super.onError(it) })
+        lifecycleScope.launch {
+            mEventBus.getClsFlow<PostSelectableChangeEvent>()
+                .catch { onError(it) }
+                .collect { mRecyclerAdapter.notifyDataSetChanged() }
 
-        mEventBus.get()
-            .ofType(QuickSidebarEnableChangeEvent::class.java)
-            .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
-            .subscribe({ invalidateQuickSidebarVisible() }, { super.onError(it) })
+            mEventBus.getClsFlow<QuickSidebarEnableChangeEvent>()
+                .catch { onError(it) }
+                .collect { invalidateQuickSidebarVisible() }
 
-        mEventBus.get()
-            .filter { it is AppLoginEvent || it is LoginEvent }
-            .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
-            .subscribe { startSwipeRefresh() }
+            mEventBus.getFlow()
+                .filter { it is AppLoginEvent || it is LoginEvent }
+                .collect { startSwipeRefresh() }
 
-        mEventBus.get()
-            .ofType(BlackListChangeEvent::class.java)
-            .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
-            .subscribe { startBlackListRefresh() }
-
+            mEventBus.getClsFlow<BlackListChangeEvent>()
+                .collect { startBlackListRefresh() }
+        }
     }
 
     override fun onAttach(context: Context) {

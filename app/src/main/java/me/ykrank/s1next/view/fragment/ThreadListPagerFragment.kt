@@ -3,13 +3,13 @@ package me.ykrank.s1next.view.fragment
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.ykrank.androidautodispose.AndroidRxDispose
-import com.github.ykrank.androidlifecycle.event.FragmentEvent
 import com.github.ykrank.androidtools.data.CacheParam
 import com.github.ykrank.androidtools.data.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.data.api.model.Forum
 import me.ykrank.s1next.data.api.model.wrapper.ThreadsWrapper
@@ -60,21 +60,20 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
         mPageNum = bundle.getInt(ARG_PAGE_NUM)
         leavePageMsg("ThreadListPagerFragment##ForumId:$mForumId, TypeId:$mTypeId, PageNum:$mPageNum")
 
-        mEventBus.get()
-            .ofType(ThreadTypeChangeEvent::class.java)
-            .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
-            .subscribe {
-                if (mTypeId != it.typeId) {
-                    mTypeId = it.typeId
+        lifecycleScope.launch {
+            mEventBus.getClsFlow<ThreadTypeChangeEvent>()
+                .collect {
+                    if (mTypeId != it.typeId) {
+                        mTypeId = it.typeId
+                        startSwipeRefresh()
+                    }
+                }
+            mEventBus.getClsFlow<PostDisableStickyChangeEvent>()
+                .collect {
                     startSwipeRefresh()
                 }
-            }
-        mEventBus.get()
-            .ofType(PostDisableStickyChangeEvent::class.java)
-            .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY))
-            .subscribe {
-                startSwipeRefresh()
-            }
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

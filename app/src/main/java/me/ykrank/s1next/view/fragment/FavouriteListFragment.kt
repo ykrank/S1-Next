@@ -7,12 +7,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.FragmentManager
-import com.github.ykrank.androidautodispose.AndroidRxDispose
-import com.github.ykrank.androidlifecycle.event.FragmentEvent
+import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidtools.ui.LibBaseViewPagerFragment
-import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.EventBus
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
@@ -45,20 +44,24 @@ class FavouriteListFragment : BaseViewPagerFragment() {
 
         mTitle = getText(R.string.favourites)
 
-        mEventBus.get()
-                .ofType(FavoriteRemoveEvent::class.java)
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.DESTROY_VIEW))
-                .subscribe { event ->
+        lifecycleScope.launch {
+            mEventBus.getClsFlow<FavoriteRemoveEvent>()
+                .collect { event ->
                     // reload when favorite remove
-                    ApiFlatTransformer.flatMappedWithAuthenticityToken(s1Service, mUserValidator, mUser
-                    ) { token -> s1Service.removeThreadFavorite(token, event.favId) }
-                            .compose(RxJavaUtil.iOSingleTransformer())
-                            .to(AndroidRxDispose.withSingle(this, FragmentEvent.DESTROY_VIEW))
-                            .subscribe({ wrapper ->
-                                showSnackbar(wrapper.result.message)
-                                loadViewPager()
-                            }, { this.onError(it) })
+                    val result = runCatching {
+                        ApiFlatTransformer.ensureAuthenticityToken(
+                            s1Service, mUserValidator, mUser
+                        ) { token -> s1Service.removeThreadFavorite(token, event.favId) }
+                    }
+
+                    result.fold({
+                        showSnackbar(it.result.message)
+                        loadViewPager()
+                    }, {
+                        onError(it)
+                    })
                 }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

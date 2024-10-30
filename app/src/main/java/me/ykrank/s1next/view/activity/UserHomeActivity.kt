@@ -86,6 +86,26 @@ class UserHomeActivity : BaseActivity() {
         initListener()
         setupImage()
         loadData()
+
+        lifecycleScope.launch {
+            mEventBus.getClsFlow<BlackListChangeEvent>()
+                .collect { blackListEvent ->
+                    val dbWrapper = BlackListBiz.getInstance()
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        if (blackListEvent.isAdd) {
+                            dbWrapper.saveDefaultBlackList(
+                                blackListEvent.authorPostId, blackListEvent.authorPostName,
+                                blackListEvent.remark
+                            )
+                        } else {
+                            dbWrapper.delDefaultBlackList(
+                                blackListEvent.authorPostId,
+                                blackListEvent.authorPostName
+                            )
+                        }
+                    }
+                }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -122,29 +142,6 @@ class UserHomeActivity : BaseActivity() {
 
             else -> return super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mEventBus.get()
-            .ofType(BlackListChangeEvent::class.java)
-            .to(AndroidRxDispose.withObservable(this, ActivityEvent.PAUSE))
-            .subscribe { blackListEvent ->
-                val dbWrapper = BlackListBiz.getInstance()
-                lifecycleScope.launch(Dispatchers.IO) {
-                    if (blackListEvent.isAdd) {
-                        dbWrapper.saveDefaultBlackList(
-                            blackListEvent.authorPostId, blackListEvent.authorPostName,
-                            blackListEvent.remark
-                        )
-                    } else {
-                        dbWrapper.delDefaultBlackList(
-                            blackListEvent.authorPostId,
-                            blackListEvent.authorPostName
-                        )
-                    }
-                }
-            }
     }
 
     private fun afterBlackListChange(isAdd: Boolean) {

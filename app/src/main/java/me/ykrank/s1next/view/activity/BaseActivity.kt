@@ -11,8 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.appcompat.widget.Toolbar
-import com.github.ykrank.androidautodispose.AndroidRxDispose
-import com.github.ykrank.androidlifecycle.event.ActivityEvent
+import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidtools.ui.LibBaseActivity
 import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate
 import com.github.ykrank.androidtools.ui.internal.DrawerLayoutDelegate
@@ -23,7 +22,8 @@ import com.github.ykrank.androidtools.widget.track.DataTrackAgent
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.common.base.Optional
-import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.User
@@ -104,18 +104,16 @@ abstract class BaseActivity : LibBaseActivity() {
 
         super.onCreate(savedInstanceState)
 
-        mEventBus.get()
-            .filter { o -> o is ThemeChangeEvent || o is FontSizeChangeEvent }
-            .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
-            .subscribe { o ->
-                window.setWindowAnimations(com.github.ykrank.androidtools.R.style.Animation_Recreate)
-                recreate()
-            }
-        mEventBus.get(NoticeRefreshEvent::class.java)
-            .ofType(NoticeRefreshEvent::class.java)
-            .observeOn(AndroidSchedulers.mainThread())
-            .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
-            .subscribe { event -> refreshNoticeMenuItem(event.isNewPm, event.isNewNotice) }
+        lifecycleScope.launch {
+            mEventBus.getFlow()
+                .filter { o -> o is ThemeChangeEvent || o is FontSizeChangeEvent }
+                .collect { o ->
+                    window.setWindowAnimations(com.github.ykrank.androidtools.R.style.Animation_Recreate)
+                    recreate()
+                }
+            mEventBus.getClsFlow<NoticeRefreshEvent>(NoticeRefreshEvent::class.java)
+                .collect { event -> refreshNoticeMenuItem(event.isNewPm, event.isNewNotice) }
+        }
     }
 
     override fun setTitle(title: CharSequence?) {

@@ -70,6 +70,34 @@ object ApiFlatTransformer {
     }
 
     /**
+     * 确认获取Token
+     */
+    suspend fun <T> ensureAuthenticityToken(
+        mS1Service: S1Service, mUserValidator: UserValidator, mUser: User,
+        provider: suspend (String) -> T
+    ): T {
+        val authenticityToken: String? = mUser.authenticityToken
+        if (authenticityToken.isNullOrEmpty()) {
+            val resultWrapper = mS1Service.refreshAuthenticityToken()
+            val account = resultWrapper.data
+            // return the AccountResultWrapper if we cannot get the authenticity token
+            // (if account has expired or network error)
+            val newToken = account?.authenticityToken
+            if (newToken.isNullOrEmpty()) {
+                throw ApiException.AuthenticityTokenException(
+                    "获取登录信息错误",
+                    ApiException("AccountResultWrapper:$resultWrapper")
+                )
+            } else {
+                mUserValidator.validate(account)
+                return provider(newToken)
+            }
+        } else {
+            return provider(authenticityToken)
+        }
+    }
+
+    /**
      * A helpers method provides authenticity token.
 
      * @param func A function that, when applied to the authenticity token, returns an
@@ -84,7 +112,7 @@ object ApiFlatTransformer {
             func: (String) -> Single<T>): Single<T> {
         val authenticityToken: String? = mUser.authenticityToken
         if (authenticityToken.isNullOrEmpty()) {
-            return mS1Service.refreshAuthenticityToken().flatMap<T> {
+            return mS1Service.refreshAuthenticityTokenRx().flatMap<T> {
                 val account = it.data
                 // return the AccountResultWrapper if we cannot get the authenticity token
                 // (if account has expired or network error)
@@ -135,10 +163,10 @@ inline fun <T, R> T.runApiCatching(block: T.() -> R): Result<R> {
 }
 
 suspend inline fun <R> Result<R>.toastError(context: Context?, onSuccess: R.() -> Unit) {
-    if (isSuccess) {
-        onSuccess(getOrThrow())
-        return
-    }
-    if (context == null) return
-    context.toast(ErrorUtil.parse(context, exceptionOrNull()))
+    fold({
+        onSuccess(it)
+    }, {
+        if (context == null) return
+        context.toast(ErrorUtil.parse(context, it))
+    })
 }

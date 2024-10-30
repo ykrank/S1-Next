@@ -10,12 +10,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SpinnerAdapter
 import androidx.appcompat.widget.ListPopupWindow
+import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidautodispose.AndroidRxDispose
 import com.github.ykrank.androidlifecycle.event.ActivityEvent
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.RxJavaUtil
 import com.github.ykrank.androidtools.widget.net.WifiBroadcastReceiver
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
@@ -81,10 +83,10 @@ class ThreadListActivity : BaseActivity(), ThreadListPagerFragment.SubForumsCall
             fragment = supportFragmentManager.findFragmentByTag(ThreadListFragment.TAG) as ThreadListFragment?
         }
 
-        mEventBus.get()
-            .ofType(BlackListChangeEvent::class.java)
-            .to(AndroidRxDispose.withObservable(this, ActivityEvent.DESTROY))
-            .subscribe { event -> refreshBlackList = true }
+        lifecycleScope.launch {
+            mEventBus.getClsFlow<BlackListChangeEvent>()
+                .collect { refreshBlackList = true }
+        }
 
         init()
     }

@@ -17,10 +17,11 @@ Resource<T>(
 
     companion object {
         fun <T> fromResult(source: Source, result: Result<T>): Resource<T> {
-            if (result.isSuccess) {
-                return Success(source, result.getOrThrow())
-            }
-            return Error(source, result.exceptionOrNull()!!, result.getOrNull())
+            return result.fold({
+                Success(source, it)
+            }, {
+                Error(source, it)
+            })
         }
     }
 }

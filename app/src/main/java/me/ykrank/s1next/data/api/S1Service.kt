@@ -68,7 +68,10 @@ interface S1Service {
     ): Single<AccountResultWrapper>
 
     @GET(ApiForum.URL_AUTHENTICITY_TOKEN_HELPER)
-    fun refreshAuthenticityToken(): Single<AccountResultWrapper>
+    suspend fun refreshAuthenticityToken(): AccountResultWrapper
+
+    @GET(ApiForum.URL_AUTHENTICITY_TOKEN_HELPER)
+    fun refreshAuthenticityTokenRx(): Single<AccountResultWrapper>
 
     //region Favourites
     @FormUrlEncoded
@@ -81,10 +84,10 @@ interface S1Service {
 
     @FormUrlEncoded
     @POST(ApiHome.URL_THREAD_FAVOURITES_REMOVE)
-    fun removeThreadFavorite(
+    suspend fun removeThreadFavorite(
         @Field("formhash") authenticityToken: String?,
         @Field("favid") favId: String?
-    ): Single<AccountResultWrapper>
+    ): AccountResultWrapper
 
     //endregion
     //region Reply

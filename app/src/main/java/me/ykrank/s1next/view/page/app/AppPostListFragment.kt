@@ -9,12 +9,12 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.FragmentManager
-import com.github.ykrank.androidautodispose.AndroidRxDispose
-import com.github.ykrank.androidlifecycle.event.FragmentEvent
+import androidx.lifecycle.lifecycleScope
 import com.github.ykrank.androidtools.ui.internal.CoordinatorLayoutAnchorDelegate
 import com.github.ykrank.androidtools.util.ClipboardUtil
 import com.github.ykrank.androidtools.util.StringUtils
 import com.github.ykrank.androidtools.widget.EventBus
+import kotlinx.coroutines.launch
 import me.ykrank.s1next.App
 import me.ykrank.s1next.R
 import me.ykrank.s1next.data.api.Api
@@ -78,40 +78,44 @@ class AppPostListFragment : BaseViewPagerFragment(), AppPostListPagerFragment.Pa
 
         (activity as CoordinatorLayoutAnchorDelegate).setupFloatingActionButton(
                 R.drawable.ic_insert_comment_black_24dp, this)
-    }
 
-    override fun onResume() {
-        super.onResume()
+        lifecycleScope.launch {
+            mEventBus.getClsFlow<QuoteEvent>()
+                .collect { quoteEvent ->
+                    startReplyActivity(
+                        quoteEvent.quotePostId,
+                        quoteEvent.quotePostCount
+                    )
+                }
+            mEventBus.getClsFlow<RateEvent>()
+                .collect { event -> startRateActivity(event.threadId, event.postId) }
+            mEventBus.getClsFlow<ReportEvent>()
+                .collect { event ->
+                    startReportActivity(
+                        event.threadId,
+                        event.postId,
+                        event.pageNum
+                    )
+                }
 
-        mEventBus.get()
-                .ofType(QuoteEvent::class.java)
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
-                .subscribe { quoteEvent -> startReplyActivity(quoteEvent.quotePostId, quoteEvent.quotePostCount) }
-        mEventBus.get()
-                .ofType(RateEvent::class.java)
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
-                .subscribe { event -> startRateActivity(event.threadId, event.postId) }
-        mEventBus.get()
-                .ofType(ReportEvent::class.java)
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
-                .subscribe { event -> startReportActivity(event.threadId, event.postId, event.pageNum) }
-
-        mEventBus.get()
-                .ofType(EditPostEvent::class.java)
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
-                .subscribe {
+            mEventBus.getClsFlow<EditPostEvent>()
+                .collect {
                     val thread = it.thread
                     val post = it.post
-                    EditPostActivity.startActivity(this, thread, post)
+                    EditPostActivity.startActivity(this@AppPostListFragment, thread, post)
                 }
-        mEventBus.get()
-                .ofType(VotePostEvent::class.java)
-                .to(AndroidRxDispose.withObservable(this, FragmentEvent.PAUSE))
-                .subscribe {
-                    if (!LoginPromptDialogFragment.showAppLoginPromptDialogIfNeeded(childFragmentManager, mUser)) {
-                        VoteDialogFragment.newInstance(it.threadId, it.vote).show(childFragmentManager, VoteDialogFragment.TAG)
+            mEventBus.getClsFlow<VotePostEvent>()
+                .collect {
+                    if (!LoginPromptDialogFragment.showAppLoginPromptDialogIfNeeded(
+                            childFragmentManager,
+                            mUser
+                        )
+                    ) {
+                        VoteDialogFragment.newInstance(it.threadId, it.vote)
+                            .show(childFragmentManager, VoteDialogFragment.TAG)
                     }
                 }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
