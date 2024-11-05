@@ -11,10 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -48,7 +46,6 @@ class S1ApiCacheProvider(
 
     override suspend fun getForumGroupsWrapper(param: CacheParam?): Flow<Resource<ForumGroupsWrapper>> {
         val cacheType = ApiCacheConstants.CacheType.ForumGroups
-        // user为空时，忽略user取最新缓存，兼容完全断网时重新打开app的情况
         val apiCacheFlow = object : ApiCacheFlow<ForumGroupsWrapper>(
             downloadPerf, cacheBiz, user, jsonMapper,
             cacheType,
@@ -63,6 +60,7 @@ class S1ApiCacheProvider(
             keys = emptyList()
         ) {
             override fun getCache(): Cache? {
+                // user为空时，忽略user取最新缓存，兼容完全断网时重新打开app的情况
                 if (!user.isLogged) {
                     return cacheBiz.getTextZipNewest(listOf(cacheType.type))
                 }
@@ -130,17 +128,10 @@ class S1ApiCacheProvider(
 
         // 不过滤回帖人时才走缓存
         val cacheValid = authorId.isNullOrEmpty()
+        val cacheParam = CacheParam(ignoreCache = ignoreCache || !cacheValid)
+
         val loadTime = LoadTime()
-        val ratePostFlow = flow {
-            val rates = runCatching {
-                loadTime.run("get_posts_new") {
-                    s1Service.getPostsWrapperNew(threadId, page, authorId).let {
-                        jsonMapper.readValue(it, RatePostsWrapper::class.java)
-                    }
-                }
-            }
-            emit(rates)
-        }.flowOn(Dispatchers.IO)
+        val ratePostFlow = getRatePostsWrapper(threadId, page, authorId, cacheParam)
         val interceptor = object : ApiCacheInterceptor<PostsWrapper> {
             override fun interceptQueryCache(cache: PostsWrapper): PostsWrapper {
                 // 从缓存获取时，将帖数更新为最新
@@ -176,7 +167,7 @@ class S1ApiCacheProvider(
         val apiCacheFlow = ApiCacheFlow(
             downloadPerf, cacheBiz, user, jsonMapper,
             cacheType,
-            CacheParam(ignoreCache = ignoreCache || !cacheValid),
+            cacheParam,
             PostsWrapper::class.java,
             loadTime = loadTime,
             printTime = false,
@@ -217,19 +208,19 @@ class S1ApiCacheProvider(
         // 评分缓存过期的回帖，先展示缓存，然后再刷新
         val outdatedRatePostIds = mutableListOf<Int>()
         return apiCacheFlow.getFlow()
-            .combine(ratePostFlow) { it, ratePostWrapper ->
-                if (it.source.isCloud()) {
+            .combineTransform(ratePostFlow) { it, ratePostWrapper ->
+                if (it.source.isCloud() && ratePostWrapper.source.isCloud()) {
                     withContext(Dispatchers.IO) {
                         var hasError = false
                         val postWrapper = it.data
                         ratePostWrapper.apply {
-                            if (this.isFailure) {
+                            if (this.isError) {
                                 hasError = true
                             }
                         }
 
                         //Set comment init info(if it has comment)
-                        ratePostWrapper.getOrNull()?.data?.commentCountMap?.apply {
+                        ratePostWrapper.data?.data?.commentCountMap?.apply {
                             postWrapper?.data?.initCommentCount(this)
                         }
 
@@ -274,8 +265,10 @@ class S1ApiCacheProvider(
                             }
                         }
                     }
+                    emit(it)
+                } else if (it.source.isCache() && ratePostWrapper.source.isCache()) {
+                    emit(it)
                 }
-                it
             }.onEach {
                 if (it.source.isCloud()) {
                     netPostsWrapper = it.data
@@ -338,6 +331,31 @@ class S1ApiCacheProvider(
 
     private fun getRateKey(threadId: String?, pid: Int): String {
         return "u${user.uid ?: ""}#${threadId ?: ""}#$pid"
+    }
+
+    private suspend fun getRatePostsWrapper(
+        threadId: String,
+        page: Int,
+        authorId: String?,
+        cacheParam: CacheParam,
+    ): Flow<Resource<RatePostsWrapper>> {
+        val cacheType = ApiCacheConstants.CacheType.PostsNew
+        val cacheKeys = listOf(threadId, page)
+        val interceptor = ApiCacheValidatorCache<RatePostsWrapper> {
+            (it.data?.postList?.size ?: 0) > 0
+        }
+        val apiCacheFlow = ApiCacheFlow(
+            downloadPerf, cacheBiz, user, jsonMapper,
+            cacheType,
+            cacheParam,
+            RatePostsWrapper::class.java,
+            api = {
+                s1Service.getPostsWrapperNew(threadId, page, authorId)
+            },
+            interceptor = interceptor,
+            keys = cacheKeys
+        )
+        return apiCacheFlow.getFlow()
     }
 
     override suspend fun getPostRates(threadId: String, postId: Int): Resource<List<Rate>> {

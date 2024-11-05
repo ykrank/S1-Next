@@ -88,7 +88,7 @@ class ForumFragment : BaseRecyclerViewFragment<ForumGroupsWrapper>(),
     }
 
     override suspend fun getSource(loading: Int): Flow<Resource<ForumGroupsWrapper>> {
-        return apiCacheProvider.getForumGroupsWrapper(CacheParam(isForceLoading))
+        return apiCacheProvider.getForumGroupsWrapper(CacheParam(isIgnoreCache))
     }
 
     override fun onNext(data: ForumGroupsWrapper) {

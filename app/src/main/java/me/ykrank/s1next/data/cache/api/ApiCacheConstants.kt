@@ -17,6 +17,7 @@ object ApiCacheConstants {
         ForumGroups("forum_groups"),
         Threads("threads"),
         Posts("posts"),
+        PostsNew("posts_new"),
     }
 
 }

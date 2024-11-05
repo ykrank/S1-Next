@@ -99,7 +99,7 @@ class ThreadListPagerFragment : BaseRecyclerViewFragment<ThreadsWrapper>() {
     override suspend fun getSource(loading: Int): Flow<Resource<ThreadsWrapper>>? {
         val source = apiCacheProvider.getThreadsWrapper(
             mForumId?:"", mTypeId, mPageNum,
-            CacheParam(isForceLoading)
+            CacheParam(isIgnoreCache)
         )
         if (mGeneralPreferencesManager.isPostDisableSticky) {
             return source.map {

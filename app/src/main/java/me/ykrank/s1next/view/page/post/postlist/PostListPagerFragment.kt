@@ -281,7 +281,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
     override suspend fun getSource(loading: Int): Flow<Resource<PostsWrapper>> {
         return apiCacheProvider.getPostsWrapper(
             mThreadId?:"", mPageNum, mAuthorId,
-            ignoreCache = isForceLoading,
+            ignoreCache = isIgnoreCache,
         ) { pid, rates ->
             mRecyclerAdapter.dataSet.filterIsInstance<Post>()
                 .forEachIndexed { index, post ->

@@ -74,6 +74,9 @@ abstract class LibBaseRecyclerViewFragment<D> : LibBaseFragment() {
     protected val isForceLoading: Boolean
         get() = mLoadingViewModel.loading == LoadingViewModel.LOADING_PULL_UP_TO_REFRESH || mLoadingViewModel.loading == LoadingViewModel.LOADING_SWIPE_REFRESH
 
+    protected val isIgnoreCache: Boolean
+        get() = mBaseRecycleViewModel.data != null && isForceLoading
+
     /**
      * Whether we are pulling up to refresh.
      */
