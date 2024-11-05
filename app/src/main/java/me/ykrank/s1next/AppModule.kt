@@ -18,6 +18,7 @@ import me.ykrank.s1next.data.api.app.AppTokenInterceptor
 import me.ykrank.s1next.data.cache.api.S1ApiCacheProvider
 import me.ykrank.s1next.data.cache.biz.CacheBiz
 import me.ykrank.s1next.data.cache.biz.CacheGroupBiz
+import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.pref.AppDataPreferencesManager
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 import me.ykrank.s1next.data.pref.NetworkPreferencesManager
@@ -158,6 +159,7 @@ class AppModule {
         cacheGroupBiz: CacheGroupBiz,
         user: User,
         jsonMapper: ObjectMapper,
+        blackListBiz: BlackListBiz,
     ): ApiCacheProvider {
         return S1ApiCacheProvider(
             downloadPreferencesManager,
@@ -165,7 +167,8 @@ class AppModule {
             cacheBiz,
             cacheGroupBiz,
             user,
-            jsonMapper
+            jsonMapper,
+            blackListBiz
         )
     }
 

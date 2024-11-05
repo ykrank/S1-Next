@@ -5,7 +5,7 @@
 
     <data>
 
-        <variable
+    <variable
             name="model"
             type="me.ykrank.s1next.data.api.model.Rate" />
     </data>
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/spacing_normal"
             android:layout_marginRight="@dimen/spacing_normal"
-            android:text="@{model.symbolScore}"
+            android:text="@{model.blacklistScore}"
             android:textSize="@dimen/text_size_caption_small"
             tools:text="+1" />
 
@@ -51,7 +51,7 @@
             android:layout_marginRight="@dimen/spacing_normal"
             android:layout_weight="1"
             android:singleLine="true"
-            android:text="@{model.content}"
+            android:text="@{model.blacklistContent(context)}"
             android:textSize="@dimen/text_size_caption_small"
             tools:text="Content" />
     </LinearLayout>

@@ -1,12 +1,18 @@
 package me.ykrank.s1next.data.api.model
 
+import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.util.L
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import me.ykrank.s1next.binding.TextViewBindingAdapter
 import me.ykrank.s1next.data.api.ApiUtil
 import me.ykrank.s1next.data.api.model.link.UserLink
+import me.ykrank.s1next.data.db.biz.BlackListBiz
+import me.ykrank.s1next.data.db.dbmodel.BlackList
 import org.jsoup.Jsoup
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
@@ -31,10 +37,32 @@ class Rate : PaperParcelable, StableIdModel {
     @JsonProperty("time")
     var time: Long? = null
 
-    val symbolScore: String get() = if ((score ?: 0) < 0) "$score" else "+$score"
+    @JsonProperty("_hide")
+    @Post.HideFLag
+    var hide: Int = Post.HIDE_NO
 
-    override val stableId: Long
-        get() = uid?.toLongOrNull() ?: RecyclerView.NO_ID
+    @JsonProperty("_remark")
+    var remark: String? = null
+
+    val symbolScore: String
+        get() {
+            return if ((score ?: 0) < 0) "$score" else "+$score"
+        }
+
+    val blacklistScore: String
+        get() {
+            if (hide != Post.HIDE_NO) {
+                return "*"
+            }
+            return symbolScore
+        }
+
+    fun blacklistContent(context: Context): String? {
+        if (hide == Post.HIDE_NO) {
+            return content
+        }
+        return TextViewBindingAdapter.buildBlacklistContent(context, hide, remark)
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -47,6 +75,8 @@ class Rate : PaperParcelable, StableIdModel {
         if (content != other.content) return false
         if (score != other.score) return false
         if (time != other.time) return false
+        if (hide != other.hide) return false
+        if (remark != other.remark) return false
 
         return true
     }
@@ -57,8 +87,14 @@ class Rate : PaperParcelable, StableIdModel {
         result = 31 * result + (content?.hashCode() ?: 0)
         result = 31 * result + (score ?: 0)
         result = 31 * result + (time?.hashCode() ?: 0)
+        result = 31 * result + hide
+        result = 31 * result + (remark?.hashCode() ?: 0)
         return result
     }
+
+    override val stableId: Long
+        get() = uid?.toLongOrNull() ?: RecyclerView.NO_ID
+
 
     companion object {
         //2018-4-14 22:20
@@ -95,6 +131,26 @@ class Rate : PaperParcelable, StableIdModel {
             }
 
             return rates
+        }
+
+        suspend fun blacklist(blackListBiz: BlackListBiz, rates: List<Rate>): List<Rate> {
+            return withContext(Dispatchers.IO) {
+                rates.mapNotNull {
+                    val blackList = blackListBiz.getMergedBlackList(
+                        it.uid?.toIntOrNull() ?: -1, it.uname, enableCache = true
+                    )
+                    it.hide = Post.HIDE_NO
+                    when (blackList?.post) {
+                        BlackList.HIDE_POST -> it.apply {
+                            hide = Post.HIDE_USER
+                            remark = blackList.remark
+                        }
+
+                        BlackList.DEL_POST -> null
+                        else -> it
+                    }
+                }
+            }
         }
     }
 }

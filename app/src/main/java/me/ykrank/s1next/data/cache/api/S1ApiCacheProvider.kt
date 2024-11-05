@@ -33,6 +33,7 @@ import me.ykrank.s1next.data.cache.biz.CacheBiz
 import me.ykrank.s1next.data.cache.biz.CacheGroupBiz
 import me.ykrank.s1next.data.cache.dbmodel.Cache
 import me.ykrank.s1next.data.cache.exmodel.BaseCache
+import me.ykrank.s1next.data.db.biz.BlackListBiz
 import me.ykrank.s1next.data.pref.DownloadPreferencesManager
 
 class S1ApiCacheProvider(
@@ -42,6 +43,7 @@ class S1ApiCacheProvider(
     private val cacheGroupBiz: CacheGroupBiz,
     private val user: User,
     private val jsonMapper: ObjectMapper,
+    private val blackListBiz: BlackListBiz,
 ) : ApiCacheProvider {
     private val ratesCache = LruCache<String, BaseCache<List<Rate>>>(256)
 
@@ -244,12 +246,12 @@ class S1ApiCacheProvider(
                         }
 
                         //从内存缓存中获取评分详情。
-                        fun loadRatesFromCache(it: Post) {
+                        suspend fun loadRatesFromCache(it: Post) {
                             val cacheKey = getRateKey(threadId, it.id)
                             val cache = ratesCache[cacheKey]
 
                             if (cache != null) {
-                                val rates = cache.data
+                                val rates = Rate.blacklist(blackListBiz, cache.data)
                                 it.rates = rates
                                 if (System.currentTimeMillis() - cache.time > CACHE_RATE_MILLS) {
                                     outdatedRatePostIds.add(it.id)
@@ -291,18 +293,15 @@ class S1ApiCacheProvider(
                                             .asFlow()
                                             .map {
                                                 val pid = it.id
-                                                val cacheKey = getRateKey(threadId, it.id)
-                                                val rateHtml = loadTime.run("get_rate_${it.id}") {
-                                                    s1Service.getRates(threadId, pid.toString())
+                                                val rates = loadTime.run("get_rate_${pid}") {
+                                                    getPostRates(
+                                                        threadId,
+                                                        pid
+                                                    ).data
                                                 }
-                                                val rates = Rate.fromHtml(rateHtml).apply {
-                                                    ratesCache.put(
-                                                        cacheKey,
-                                                        BaseCache(System.currentTimeMillis(), this)
-                                                    )
-                                                }
+
                                                 // 最新数据和缓存不同时，才刷新
-                                                if (it.rates != rates) {
+                                                if (rates != null && it.rates != rates) {
                                                     it.rates = rates
                                                     launch(Dispatchers.Main) {
                                                         onRateUpdate(pid, rates)
@@ -381,6 +380,8 @@ class S1ApiCacheProvider(
                     getRateKey(threadId, postId),
                     BaseCache(System.currentTimeMillis(), this)
                 )
+            }.let {
+                Rate.blacklist(blackListBiz, it)
             }
         }
         return Resource.fromResult(Source.CLOUD, rate)

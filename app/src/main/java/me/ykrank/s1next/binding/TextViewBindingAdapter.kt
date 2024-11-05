@@ -1,6 +1,7 @@
 package me.ykrank.s1next.binding
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
@@ -218,6 +219,31 @@ object TextViewBindingAdapter {
     }
 
     @JvmStatic
+    fun buildBlacklistContent(context: Context, @Post.HideFLag hide: Int, remark: String?): String {
+        val textHide: String = if (hide == Post.HIDE_USER) {
+            context.getString(R.string.user_in_blacklist)
+        } else {
+            context.getString(R.string.word_in_black_word)
+        }
+        var text = "[$textHide]"
+        if (!remark.isNullOrEmpty()) {
+            text += "-[$remark]"
+        }
+        return text
+    }
+
+    private fun concatBlacklist(textView: TextView, @Post.HideFLag hide: Int, remark: String?) {
+        if (hide != Post.HIDE_NO) {
+            textView.text = ""
+            // add reply's blacklist hint
+            ViewUtil.concatWithTwoSpacesForRtlSupport(
+                textView,
+                buildBlacklistContent(textView.context, hide, remark)
+            )
+        }
+    }
+
+    @JvmStatic
     @BindingAdapter("lifecycleOwner", "reply")
     fun setReply(
         textView: TextView,
@@ -234,18 +260,7 @@ object TextViewBindingAdapter {
             return
         }
         if (post.hide != Post.HIDE_NO) {
-            textView.text = ""
-            val textHide: String = if (post.hide == Post.HIDE_USER) {
-                textView.context.getString(R.string.user_in_blacklist)
-            } else {
-                textView.context.getString(R.string.word_in_black_word)
-            }
-            var text = "[$textHide]"
-            if (!TextUtils.isEmpty(post.remark)) {
-                text += "-[" + post.remark + "]"
-            }
-            // add reply's blacklist hint
-            ViewUtil.concatWithTwoSpacesForRtlSupport(textView, text)
+            concatBlacklist(textView, post.hide, post.remark)
             return
         }
         var oReply: String? = null
