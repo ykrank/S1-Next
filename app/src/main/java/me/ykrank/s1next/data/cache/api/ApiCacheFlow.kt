@@ -9,8 +9,10 @@ import com.github.ykrank.androidtools.data.Source
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.widget.LoadTime
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.merge
@@ -176,12 +178,14 @@ open class ApiCacheFlow<T>(
             return null
         }
 
-        val timeoutFallbackTask = flow {
+        var timeoutChannel: SendChannel<Resource.Success<T>>? = null
+        val timeoutFallbackTask = channelFlow {
             // 超时则先降级返回缓存
             if (cacheFallback && fallbackTimeout != Duration.INFINITE) {
+                timeoutChannel = channel
                 delay(fallbackTimeout)
                 emitFallbackCache()?.apply {
-                    emit(this)
+                    trySend(this)
                 }
             }
         }
@@ -240,6 +244,7 @@ open class ApiCacheFlow<T>(
                 netResultReturned = true
                 emit(Resource.fromResult<T>(Source.CLOUD, data))
             }
+            timeoutChannel?.close()
         }
 
         return merge(timeoutFallbackTask, normalTask).flowOn(Dispatchers.IO)
