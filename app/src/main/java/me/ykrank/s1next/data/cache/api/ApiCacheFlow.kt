@@ -178,7 +178,7 @@ open class ApiCacheFlow<T>(
 
         val timeoutFallbackTask = flow {
             // 超时则先降级返回缓存
-            if (fallbackTimeout != Duration.INFINITE) {
+            if (cacheFallback && fallbackTimeout != Duration.INFINITE) {
                 delay(fallbackTimeout)
                 emitFallbackCache()?.apply {
                     emit(this)
@@ -189,6 +189,7 @@ open class ApiCacheFlow<T>(
         val normalTask = flow {
             if (cacheFirst) {
                 getCacheResource()?.apply {
+                    cacheResultReturned = true
                     emit(this)
                 }
             }
