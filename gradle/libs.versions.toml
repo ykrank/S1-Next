@@ -10,7 +10,7 @@ bugly_crashreport = "4.1.9.3"
 bugly_crashreport_upgrade = "1.6.1"
 bugly_nativecrashreport = "3.9.2"
 dagger = "2.51.1"
-flipperNoop = "0.250.0"
+flipper = "0.271.0"
 glide = "4.16.0"
 guava = "33.2.0-android"
 # https://github.com/FasterXML/jackson-databind/issues/3702
@@ -72,9 +72,10 @@ bugly-nativecrashreport = { module = "com.tencent.bugly:nativecrashreport", vers
 bugly-crashreport = { module = "com.tencent.bugly:crashreport", version.ref = "bugly_crashreport" }
 bugly-crashreport_upgrade = { module = "com.tencent.bugly:crashreport_upgrade", version.ref = "bugly_crashreport_upgrade" }
 databinding-compiler = { module = "com.android.databinding:compiler", version.ref = "databinding_compiler" }
-flipper = { module = "com.facebook.flipper:flipper", version.ref = "flipperNoop" }
-flipper-network-plugin = { module = "com.facebook.flipper:flipper-network-plugin", version.ref = "flipperNoop" }
-flipper-noop = { module = "com.facebook.flipper:flipper-noop", version.ref = "flipperNoop" }
+flipper = { module = "com.facebook.flipper:flipper", version.ref = "flipper" }
+flipper-network-plugin = { module = "com.facebook.flipper:flipper-network-plugin", version.ref = "flipper" }
+flipper-leakcanary-plugin = { module = "com.facebook.flipper:flipper-leakcanary2-plugin", version.ref = "flipper" }
+flipper-noop = { module = "com.facebook.flipper:flipper-noop", version.ref = "flipper" }
 glide-ksp = { module = "com.github.bumptech.glide:ksp", version.ref = "glide" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }

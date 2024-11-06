@@ -171,6 +171,7 @@ dependencies {
     debugImplementation(libs.flipper)
     debugImplementation(libs.soloader)
     debugImplementation(libs.flipper.network.plugin)
+    debugImplementation(libs.flipper.leakcanary.plugin)
 
     implementation(libs.alicloud.android.httpdns)
 
