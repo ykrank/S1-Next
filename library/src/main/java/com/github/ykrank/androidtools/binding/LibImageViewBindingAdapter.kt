@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.RippleDrawable
+import android.net.Uri
 import android.text.TextUtils
 import android.webkit.URLUtil
 import android.widget.ImageView
@@ -39,6 +40,62 @@ object LibImageViewBindingAdapter {
             drawable, null
         )
         imageView.setImageDrawable(rippleDrawable)
+    }
+
+    @JvmStatic
+    @BindingAdapter("url", "localUri")
+    fun loadImageNetLocal(imageView: ImageView, url: String?, localUri: Uri?) {
+        if (localUri == null) {
+            loadImage(imageView, url)
+            return
+        }
+        val localRequest = Glide.with(imageView)
+            .load(localUri)
+            .downsample(GlMaxTextureSizeDownSampleStrategy())
+            .fitCenter()
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+        if (url == null) {
+            localRequest.into(imageView)
+        } else {
+            val requestOptions = RequestOptions()
+                .diskCacheStrategy(
+                    if (URLUtil.isNetworkUrl(url)) {
+                        DiskCacheStrategy.DATA
+                    } else {
+                        DiskCacheStrategy.NONE
+                    }
+                )
+                .downsample(GlMaxTextureSizeDownSampleStrategy())
+                .fitCenter()
+                .priority(Priority.HIGH)
+
+            Glide.with(imageView)
+                .load(url)
+                .apply(requestOptions)
+                .thumbnail(localRequest)
+                .listener(object : RequestListener<Drawable?> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable?>,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        return true
+                    }
+
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        model: Any,
+                        target: Target<Drawable?>?,
+                        dataSource: DataSource,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        return false
+                    }
+
+                })
+                .into(imageView)
+        }
     }
 
     @JvmStatic

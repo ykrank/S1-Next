@@ -182,7 +182,7 @@ class GalleryFragment : Fragment() {
                     if (imageType == null) {
                         imageType = ".jpg"
                     }
-                    val name: String = AppFileUtil.createRandomFileName(imageType)
+                    val name: String = AppFileUtil.createRandomFileName(context, imageType)
                     AppFileUtil.getDownloadPath(parentFragmentManager, { uri ->
                         val file = uri.createFile("image/${imageType}", name)
                         file?.uri?.also { fileUri ->

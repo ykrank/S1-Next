@@ -25,12 +25,14 @@ import java.io.FileInputStream
 import java.io.IOException
 import java.io.OutputStream
 import java.text.DecimalFormat
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Created by ykrank on 2017/6/6.
  */
 object FileUtil {
     private var dfTwoDecimal = DecimalFormat("0.00")
+    private var randomCount = AtomicInteger()
 
     @Throws(IOException::class)
     fun copyFile(source: File, sink: File) {
@@ -145,5 +147,18 @@ object FileUtil {
     suspend fun calculateTotalSize(directory: File): Long {
         return getFolderSizeFlow(directory)
             .reduce { accumulator, size -> accumulator + size } // 累加所有大小
+    }
+
+    /**
+     * create a random file name
+     */
+    fun createRandomFileName(context: Context, suffix: String = ""): String {
+        val num = randomCount.addAndGet(1)
+        return "${
+            context.packageName.replace(
+                ".",
+                "_"
+            )
+        }_${System.currentTimeMillis()}_${num}$suffix"
     }
 }

@@ -11,13 +11,10 @@ import paperparcel.PaperParcelable
 @PaperParcel
 data class LocalMedia(
     val uri: Uri,
+    val isCompressed: Boolean = false,
+    val compressPath: Uri? = null
 ) : PaperParcelable {
 
-    @Transient
-    val isCompressed = false
-
-    @Transient
-    val compressPath: String? = null
 
     companion object {
         @JvmField

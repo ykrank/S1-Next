@@ -3,7 +3,6 @@ package com.github.ykrank.androidtools.widget.uploadimg
 import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.core.net.toUri
 import com.github.ykrank.androidtools.ui.adapter.StableIdModel
 import com.github.ykrank.androidtools.ui.adapter.model.DiffSameItem
 import com.github.ykrank.androidtools.widget.imagepicker.LocalMedia
@@ -34,7 +33,7 @@ class ModelImageUpload(val media: LocalMedia?) : DiffSameItem, Parcelable, Stabl
         } else if (!media.isCompressed) {
             media.uri
         } else {
-            media.compressPath?.toUri()
+            media.compressPath
         }
 
     constructor(parcel: Parcel) : this(

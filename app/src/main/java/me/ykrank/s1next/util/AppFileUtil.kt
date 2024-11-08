@@ -1,8 +1,9 @@
 package me.ykrank.s1next.util;
 
+import android.content.Context
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentManager
-import me.ykrank.s1next.BuildConfig
+import com.github.ykrank.androidtools.util.FileUtil
 import me.ykrank.s1next.widget.saf.SAFFragment
 
 /**
@@ -14,9 +15,8 @@ object AppFileUtil {
     /**
      * create a random file name
      */
-    fun createRandomFileName(suffix: String): String {
-        val name = BuildConfig.APPLICATION_ID.replace(".", "_") + "_" + System.currentTimeMillis();
-        return name + suffix;
+    fun createRandomFileName(context: Context, suffix: String): String {
+        return FileUtil.createRandomFileName(context, suffix)
     }
 
     fun getDownloadPath(
