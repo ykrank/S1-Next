@@ -6,15 +6,15 @@ import kotlin.time.toDuration
 
 /**
  * Created by ykrank on 7/16/24
- * 
+ *
  */
 data class CacheParam(
-    val strategy: CacheStrategy = CacheStrategy.NET_FIRST,
+    val strategy: CacheStrategy = CacheStrategy.DEFAULT,
 ) {
 
     constructor(
         ignoreCache: Boolean,
-    ) : this(if (ignoreCache) CacheStrategy.NO_CACHE else CacheStrategy.NET_FIRST)
+    ) : this(if (ignoreCache) CacheStrategy.NO_CACHE else CacheStrategy.DEFAULT)
 }
 
 data class CacheStrategy(
@@ -23,12 +23,14 @@ data class CacheStrategy(
     // 请求失败时的降级策略
     val fallbackStrategy: CacheStrategyData,
     // 超时则先降级返回缓存
-    val fallbackTimeout: Duration = 3.toDuration(DurationUnit.SECONDS),
+    val fallbackTimeout: Duration = (2500).toDuration(DurationUnit.MILLISECONDS),
 ) {
     companion object {
+        // 10分钟内优先缓存，其次网络，短时间超时或失败时降级到缓存
+        val DEFAULT = CacheStrategy(CacheStrategyData(10.toDuration(DurationUnit.MINUTES)), CacheStrategyData.INFINITE)
         val CACHE_FIRST = CacheStrategy(CacheStrategyData.ONE_DAY, CacheStrategyData.INFINITE)
         val NET_FIRST = CacheStrategy(CacheStrategyData.NO_CACHE, CacheStrategyData.INFINITE)
-        val NO_CACHE = CacheStrategy(CacheStrategyData.NO_CACHE, CacheStrategyData.NO_CACHE)
+        val NO_CACHE = CacheStrategy(CacheStrategyData.NO_CACHE, CacheStrategyData.NO_CACHE, Duration.INFINITE)
     }
 }
 

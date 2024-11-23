@@ -209,9 +209,11 @@ class S1ApiCacheProvider(
 
         // 评分缓存过期的回帖，先展示缓存，然后再刷新
         val outdatedRatePostIds = mutableListOf<Int>()
+        var emitCount = 0
         return apiCacheFlow.getFlow()
             .combineTransform(ratePostFlow) { it, ratePostWrapper ->
-                if (it.source.isCloud() && ratePostWrapper.source.isCloud()) {
+                loadTime.addPoint("posts combine results: ${it.source.name} ${ratePostWrapper.source.name}")
+                if (it.source.isCloud() && ratePostWrapper.source.isNewData()) {
                     withContext(Dispatchers.IO) {
                         var hasError = false
                         val postWrapper = it.data
@@ -276,9 +278,14 @@ class S1ApiCacheProvider(
                         }
                     }
 
+                    loadTime.addPoint("posts emit net")
+                    emitCount++
+                    emit(it)
+
                     val postsWrapper = it.data
                     // 获取评分详情。
                     if (onRateUpdate != null && postsWrapper != null) {
+                        loadTime.addPoint("posts rates launch")
                         coroutineScope {
                             launch {
                                 val posts = postsWrapper.data?.postList
@@ -325,10 +332,15 @@ class S1ApiCacheProvider(
                             }
                         }
                     }
+                } else if (it.isSuccess && emitCount == 0) {
+                    loadTime.addPoint("posts emit cache ${it.source.name} ${it.data?.data?.postList?.size}")
+                    emitCount++
 
-                    emit(it)
-                } else if (it.source.isCache() && ratePostWrapper.source.isCache()) {
-                    emit(it)
+                    if (it.source.isCloud()) {
+                        emit(Resource.Success(Source.MEMORY, it.data!!))
+                    } else {
+                        emit(it)
+                    }
                 }
             }.onCompletion {
                 loadTime.addPoint("completion")

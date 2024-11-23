@@ -70,7 +70,7 @@ open class ApiCacheFlow<T>(
 ) {
     private val key = getKey(type, keys)
 
-    private val cacheStrategy = param?.strategy ?: CacheStrategy.NET_FIRST
+    private val cacheStrategy = param?.strategy ?: CacheStrategy.DEFAULT
 
     @get:WorkerThread
     private val cacheData: Cache? by lazy {
@@ -130,7 +130,7 @@ open class ApiCacheFlow<T>(
         if (!expired) {
             decodeCacheData?.apply {
                 printTimeWhenEmit(ApiCacheConstants.Time.TIME_EMIT_CACHE)
-                return Resource.Success<T>(Source.PERSISTENCE, this)
+                return Resource.Success<T>(Source.MEMORY, this)
             }
         }
         return null
@@ -154,7 +154,6 @@ open class ApiCacheFlow<T>(
      * 不指定CacheParam时，优先从网络获取
      */
     fun getFlow(): Flow<Resource<T>> {
-        val cacheStrategy = param?.strategy ?: CacheStrategy.NET_FIRST
         // 优先拉取缓存
         val cacheFirst = downloadPerf.netCacheEnable && !cacheStrategy.strategy.ignoreCache
         val cacheFallback =
@@ -194,7 +193,10 @@ open class ApiCacheFlow<T>(
             if (cacheFirst) {
                 getCacheResource()?.apply {
                     cacheResultReturned = true
+                    // 太快返回可能动画未结束
+                    delay(300)
                     emit(this)
+                    return@flow
                 }
             }
 

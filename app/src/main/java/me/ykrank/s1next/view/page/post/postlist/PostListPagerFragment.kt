@@ -92,7 +92,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
 
     private var refreshAfterBlacklistChangeDisposable: Disposable? = null
 
-    val pageNum:Int
+    val pageNum: Int
         get() = mPageNum
 
     override fun onAttach(context: Context) {
@@ -280,7 +280,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
 
     override suspend fun getSource(loading: Int): Flow<Resource<PostsWrapper>> {
         return apiCacheProvider.getPostsWrapper(
-            mThreadId?:"", mPageNum, mAuthorId,
+            mThreadId ?: "", mPageNum, mAuthorId,
             ignoreCache = isIgnoreCache,
         ) { pid, rates ->
             mRecyclerAdapter.dataSet.filterIsInstance<Post>()
@@ -314,7 +314,7 @@ class PostListPagerFragment : BaseRecyclerViewFragment<PostsWrapper>(),
                 }
             }
 
-            if (resource.source.isCloud()) {
+            if (resource.source.isNewData()) {
                 val threadId = mThreadId ?: posts?.postListInfo?.id
                 if (threadId != null) {
                     if (isAdded && userVisibleHint) {

@@ -10,7 +10,7 @@ import me.ykrank.s1next.data.cache.exmodel.CacheGroupModel
 
 /**
  * Created by ykrank on 7/17/24
- * 
+ *
  */
 @Entity(
     tableName = "Cache",
@@ -66,7 +66,10 @@ class Cache {
     @Ignore
     var decodeZipString: String? = null
 
-    constructor()
+    constructor() {
+        this.timestamp = System.currentTimeMillis()
+    }
+
     constructor(
         key: String,
         uid: Int?,
