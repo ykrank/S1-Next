@@ -49,7 +49,7 @@
     <string name="prompt_thread_link_or_id">帖子链接/ID</string>
     <string name="error_field_invalid_or_unsupported_thread_link_or_id">无效的、或者是并不支持的帖子链接/ID格式</string>
     <string name="error_field_invalid_or_unsupported_word">无效的、或者是并不支持的屏蔽词格式</string>
-    <string name="message_thread_link_copy">帖子的链接已复制到剪切板</string>
+    <string name="message_link_copied">链接已复制到剪切板</string>
     <string name="prompt_reply">写点内容吧…</string>
     <string name="signature">—— 来自 &lt;a href=\"%1$s\">鹅球&lt;/a> v%2$s</string>
     <string name="signature_in_reply">—— 来自 [url=%1$s]鹅球[/url] v%2$s</string>
@@ -249,4 +249,5 @@
     <string name="stop">停止</string>
     <string name="menu_prefetch_after_posts">预加载本页之后</string>
     <string name="menu_refresh_avatar">刷新头像</string>
+    <string name="menu_copy_link">复制链接</string>
 </resources>

@@ -19,6 +19,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.chrisbanes.photoview.PhotoView
 import com.github.ykrank.androidtools.ui.adapter.delegate.item.ProgressItem
+import com.github.ykrank.androidtools.util.ClipboardUtil
 import com.github.ykrank.androidtools.util.FileUtil
 import com.github.ykrank.androidtools.util.L
 import com.github.ykrank.androidtools.util.isNetwork
@@ -136,6 +137,12 @@ class GalleryFragment : Fragment() {
 
             R.id.menu_browser -> {
                 IntentUtil.startViewIntentExcludeOurApp(requireContext(), mImageUrl)
+                return true
+            }
+
+            R.id.menu_copy_link -> {
+                ClipboardUtil.copyText(requireContext(), "Url of image", mImageUrl.toString())
+                Toast.makeText(requireContext(), R.string.message_link_copied, Toast.LENGTH_SHORT).show()
                 return true
             }
 

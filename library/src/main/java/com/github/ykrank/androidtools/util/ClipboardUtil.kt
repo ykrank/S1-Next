@@ -1,25 +1,19 @@
-package com.github.ykrank.androidtools.util;
+package com.github.ykrank.androidtools.util
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 
-public final class ClipboardUtil {
-
-    private ClipboardUtil() {
-    }
-
+object ClipboardUtil {
     /**
      * Copies text.
      *
      * @param text The actual text we want to copyFrom.
      */
-    public static void copyText(Context context, CharSequence label, CharSequence text) {
-        ClipboardManager clipboardManager = (ClipboardManager)
-                context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText(label, text);
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(clipData);
-        }
+    fun copyText(context: Context, label: CharSequence?, text: CharSequence?) {
+        val clipboardManager =
+            context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
+        val clipData = ClipData.newPlainText(label, text)
+        clipboardManager?.setPrimaryClip(clipData)
     }
 }

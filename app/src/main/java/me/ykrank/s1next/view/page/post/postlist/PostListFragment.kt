@@ -320,13 +320,13 @@ class PostListFragment : BaseViewPagerFragment(), PostListPagerFragment.PagerCal
 
             R.id.menu_link -> {
                 ClipboardUtil.copyText(
-                    context, "Url of $mThreadTitle", Api.getPostListUrlForBrowser(
+                    requireContext(), "Url of $mThreadTitle", Api.getPostListUrlForBrowser(
                         mThreadId,
                         currentPage
                     )
                 )
                 (activity as CoordinatorLayoutAnchorDelegate).showSnackbar(
-                    R.string.message_thread_link_copy
+                    R.string.message_link_copied
                 )
 
                 return true

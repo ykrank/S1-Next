@@ -96,7 +96,7 @@
     <string name="error_field_invalid_or_unsupported_thread_link_or_id">無效的、或者是並不支持的帖子鏈接/ID格式</string>
     <string name="error_field_invalid_or_unsupported_word">無效的、或者是並不支持的屏蔽詞格式</string>
         
-    <string name="message_thread_link_copy">帖子的鏈接已復製到剪切板</string>
+    <string name="message_link_copied">鏈接已復製到剪切板</string>
         
     <string name="prompt_reply">寫點內容吧…</string>
         
@@ -440,4 +440,5 @@
     <string name="stop">停止</string>
     <string name="menu_prefetch_after_posts">預加載本頁之後</string>
     <string name="menu_refresh_avatar">刷新頭像</string>
+    <string name="menu_copy_link">複製鏈接</string>
 </resources>

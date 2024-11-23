@@ -22,4 +22,9 @@
         android:orderInCategory="22"
         android:title="@string/menu_browser"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_copy_link"
+        android:orderInCategory="20"
+        android:title="@string/menu_copy_link"
+        app:showAsAction="never" />
 </menu>
