@@ -5,6 +5,7 @@
     <string name="pref_key_dark_theme" translatable="false">pref_key_dark_theme</string>
     <string name="pref_key_font_size" translatable="false">pref_key_font_size_v2</string>
     <string name="pref_key_signature" translatable="false">pref_key_signature</string>
+    <string name="pref_key_device_info" translatable="false">pref_key_device_info</string>
     <string name="pref_key_downloads" translatable="false">pref_key_downloads</string>
     <string name="pref_key_blacklists" translatable="false">pref_key_blacklists</string>
     <string name="pref_key_post_read" translatable="false">pref_key_post_read_progress</string>
