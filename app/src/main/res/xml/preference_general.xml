@@ -47,7 +47,7 @@
         <SwitchPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:defaultValue="@bool/pref_signature_default_value"
+            android:defaultValue="@bool/pref_device_info_default_value"
             android:title="@string/pref_device_info"
             app:iconSpaceReserved="false"
             app:key="@string/pref_key_device_info" />
