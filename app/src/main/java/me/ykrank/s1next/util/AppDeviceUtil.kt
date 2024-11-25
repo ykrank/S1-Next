@@ -44,11 +44,35 @@ object AppDeviceUtil {
     }
 
     /**
+     * Gets the string signature with device info which is used for reply (append this to last line of the reply).
+     */
+    fun getSignatureWithDeviceInfo(context: Context): String {
+        return context.getString(
+            R.string.signature_with_device_info,
+            deviceNameWithVersion,
+            getAppDownloadUrl(),
+            getAppFullVersionName()
+        )
+    }
+
+    /**
      * Gets the string signature which is used for reply (append this to last line of the reply).
      */
     fun getPostSignature(context: Context): String {
         return context.getString(
             R.string.signature_in_reply,
+            getAppDownloadUrl(),
+            getAppFullVersionName()
+        )
+    }
+
+    /**
+     * Gets the string signature with device info which is used for reply (append this to last line of the reply).
+     */
+    fun getPostSignatureWithDeviceInfo(context: Context): String {
+        return context.getString(
+            R.string.signature_in_reply_with_device_info,
+            deviceNameWithVersion,
             getAppDownloadUrl(),
             getAppFullVersionName()
         )
