@@ -9,6 +9,7 @@
     <string name="pref_font_size">Font size</string>
     <string name="pref_font_size_default_value" translatable="false">1.0</string>
     <string name="pref_signature">Signature</string>
+    <string name="pref_device_info">Show Device Info in Signature</string>
     <string name="pref_net_cache_enable">Net data cache</string>
     <string name="pref_multi_download">Multi threads download</string>
     <string name="pref_post_max_image_show">Max image show in one post</string>

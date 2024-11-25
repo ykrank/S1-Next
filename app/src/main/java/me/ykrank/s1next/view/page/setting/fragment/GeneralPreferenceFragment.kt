@@ -66,9 +66,18 @@ class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefere
             findPreference<Preference>(getString(R.string.pref_key_check_update))?.onPreferenceClickListener = this
         }
 
+        updateSignature()
+    }
+
+    fun updateSignature() {
         lifecycleScope.launch {
-            val html = withContext(Dispatchers.Default){
-                HtmlCompat.fromHtml(AppDeviceUtil.getSignature(requireContext()), FROM_HTML_MODE_LEGACY)
+            val signature = if (mGeneralPreferencesManager.isDeviceInfoShownInSignature) {
+                AppDeviceUtil.getSignatureWithDeviceInfo(requireContext())
+            } else {
+                AppDeviceUtil.getSignature(requireContext())
+            }
+            val html = withContext(Dispatchers.Default) {
+                HtmlCompat.fromHtml(signature, FROM_HTML_MODE_LEGACY)
             }
             findPreference<Preference>(getString(R.string.pref_key_signature))?.summary = html
         }
@@ -90,6 +99,8 @@ class GeneralPreferenceFragment : BasePreferenceFragment(), Preference.OnPrefere
                 mGeneralPreferencesManager.fontScale
             )
             mEventBus.postDefault(FontSizeChangeEvent())
+        } else if (key == getString(R.string.pref_key_device_info)) {
+            updateSignature()
         }
     }
 
