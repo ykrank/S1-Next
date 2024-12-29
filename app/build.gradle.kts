@@ -147,6 +147,7 @@ dependencies {
 
     implementation(libs.okhttp.urlconnection)
     implementation(libs.okhttp.coroutines)
+    implementation(libs.okhttp)
     implementation(libs.retrofit2)
     implementation(libs.retrofit2.adapter.rxjava2)
     implementation(libs.retrofit2.converter.jackson)
