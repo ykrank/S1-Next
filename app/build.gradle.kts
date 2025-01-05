@@ -76,18 +76,18 @@ android {
             }
         }
 
+        // flipper相关依赖在x86模拟器上会报错, 故添加一移除flipper等不兼容x86的依赖的buildType
+        create("debugx86") {
+            initWith(getByName("debug"))
+            matchingFallbacks += "debug"
+            versionNameSuffix += "-x86"
+        }
+
         create("alpha") {
-            multiDexEnabled = true
+            initWith(getByName("release"))
+            matchingFallbacks += listOf("release", "debug")
             applicationIdSuffix = ".alpha"
             versionNameSuffix = "-alpha"
-            if (signingConfigs.findByName("release") != null) {
-                signingConfig = signingConfigs.getByName("release")
-            }
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-
-            matchingFallbacks += listOf("release", "debug")
         }
 
         release {
@@ -129,6 +129,7 @@ ksp {
 }
 
 val alphaImplementation by configurations
+val debugx86Implementation by configurations
 dependencies {
     implementation(fileTree("libs") { include("*.jar", "*.aar") })
 
@@ -169,6 +170,7 @@ dependencies {
 //  flipper
     releaseImplementation(libs.flipper.noop)
     alphaImplementation(libs.flipper.noop)
+    debugx86Implementation(libs.flipper.noop)
     debugImplementation(libs.flipper)
     debugImplementation(libs.soloader)
     debugImplementation(libs.flipper.network.plugin)
