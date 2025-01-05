@@ -88,6 +88,7 @@ android {
             matchingFallbacks += listOf("release", "debug")
             applicationIdSuffix = ".alpha"
             versionNameSuffix = "-alpha"
+            // TODO: 好像有问题...
         }
 
         release {
