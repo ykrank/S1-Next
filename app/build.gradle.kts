@@ -83,14 +83,6 @@ android {
             versionNameSuffix += "-x86"
         }
 
-        create("alpha") {
-            initWith(getByName("release"))
-            matchingFallbacks += listOf("release", "debug")
-            applicationIdSuffix = ".alpha"
-            versionNameSuffix = "-alpha"
-            // TODO: 好像有问题...
-        }
-
         release {
             multiDexEnabled = true
             if (signingConfigs.findByName("release") != null) {
@@ -99,6 +91,13 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        }
+
+        create("alpha") {
+            initWith(getByName("release"))
+            matchingFallbacks += listOf("release", "debug")
+            applicationIdSuffix = ".alpha"
+            versionNameSuffix = "-alpha"
         }
     }
 
